@@ -1,0 +1,7 @@
+compiler: gcc
+dist: xenial
+
+script:
+    - echo "build merlict_c89"
+    - gcc test.c -o test -std=c89 -lm -Wall -pedantic
+    - ./test
