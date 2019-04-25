@@ -181,7 +181,7 @@ int mliMesch_init_from_off(const char *path, mliMesh* m) {
 
     if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;
 
-    if (strcmp(line, "OFF\n") != 0) goto close_and_exit_failure;;
+    if (strcmp(line, "OFF\n") != 0) goto close_and_exit_failure;
 
     if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;
 
