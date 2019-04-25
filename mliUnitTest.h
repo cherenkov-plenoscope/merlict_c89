@@ -1,4 +1,4 @@
-// Copyright 2019 Sebastian Achim Mueller
+/* Copyright 2019 Sebastian Achim Mueller */
 #ifndef MERLICT_UNITTEST_H_
 #define MERLICT_UNITTEST_H_
 
@@ -23,4 +23,4 @@
         } \
     } while (0)
 
-#endif  // MERLICT_UNITTEST_H_
+#endif

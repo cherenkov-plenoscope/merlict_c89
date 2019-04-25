@@ -1,37 +1,39 @@
-// Copyright 2019 Sebastian Achim Mueller
+/* Copyright 2019 Sebastian Achim Mueller */
 #ifndef MERLICT_MLIMESH_H_
 #define MERLICT_MLIMESH_H_
 
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
 #include <stdint.h>
 
-
-struct mliFace {
+typedef struct {
     uint32_t a;
     uint32_t b;
-    uint32_t c;};
+    uint32_t c;
+} mliFace;
 
 
-struct mliMesh {
+typedef struct {
     uint32_t num_vertices;
-    struct mliVec *vertices;
+    mliVec *vertices;
     uint32_t num_faces;
-    struct mliFace *faces;};
+    mliFace *faces;
+} mliMesh;
 
 
 void mliMesh_init(
-    struct mliMesh* m,
+    mliMesh* m,
     const uint32_t num_vertices,
     const uint32_t num_faces) {
     m->num_vertices = num_vertices;
-    m->vertices = (struct mliVec*)malloc(m->num_vertices*sizeof(struct mliVec));
+    m->vertices = (mliVec*)malloc(m->num_vertices*sizeof(mliVec));
     m->num_faces = num_faces;
-    m->faces = (struct mliFace*)malloc(m->num_faces*sizeof(struct mliFace));}
+    m->faces = (mliFace*)malloc(m->num_faces*sizeof(mliFace));}
 
 
-void mliMesh_free(struct mliMesh *m) {
+void mliMesh_free(mliMesh *m) {
     free(m->vertices);
     m->num_vertices = 0;
     free(m->faces);
@@ -41,28 +43,29 @@ int ml_parse_three_ints(const char *line, int *a, int* b, int*c) {
     int state = 0;
     int old_state = state;
     int statemachine[][2] = {
-    //  ws  print
-        {0,   1},  // 0
-        {2,   1},  // 1 first
-        {2,   3},  // 2
-        {4,   3},  // 3 second
-        {4,   5},  // 4
-        {6,   5},  // 5 third
+    /*  ws  print */
+        {0,   1},  /* 0 */
+        {2,   1},  /* 1 first */
+        {2,   3},  /* 2 */
+        {4,   3},  /* 3 second */
+        {4,   5},  /* 4 */
+        {6,   5},  /* 5 third  */
     };
     int idx = 0;
     char aaa[64];
     int aidx = 0;
-    while (true) {
+    char z;
+    while (1) {
         if (state == 6)
             break;
-        char z = line[idx];
+         z = line[idx];
         if (z == '\0')
             state = 6;
         else if (isspace(z))
             state = statemachine[state][0];
         else
             state = statemachine[state][1];
-        // printf("state: %d, char: '%c'\n", state, z);
+        /* printf("state: %d, char: '%c'\n", state, z); */
         idx++;
 
         if (state == 1) {
@@ -104,28 +107,29 @@ int ml_parse_three_floats(const char *line, float *a, float* b, float*c) {
     int state = 0;
     int old_state = state;
     int statemachine[][2] = {
-    //  ws  print
-        {0,   1},  // 0
-        {2,   1},  // 1 first
-        {2,   3},  // 2
-        {4,   3},  // 3 second
-        {4,   5},  // 4
-        {6,   5},  // 5 third
+    /*  ws  print  */
+        {0,   1},  /* 0        */
+        {2,   1},  /* 1 first  */
+        {2,   3},  /* 2        */
+        {4,   3},  /* 3 second */
+        {4,   5},  /* 4        */
+        {6,   5},  /* 5 third  */
     };
     int idx = 0;
     char aaa[64];
     int aidx = 0;
-    while (true) {
+    char z;
+    while (1) {
         if (state == 6)
             break;
-        char z = line[idx];
+        z = line[idx];
         if (z == '\0')
             state = 6;
         else if (isspace(z))
             state = statemachine[state][0];
         else
             state = statemachine[state][1];
-        // printf("state: %d, char: '%c'\n", state, z);
+        /* printf("state: %d, char: '%c'\n", state, z); */
         idx++;
 
         if (state == 1) {
@@ -162,66 +166,62 @@ int ml_parse_three_floats(const char *line, float *a, float* b, float*c) {
     return state;
 }
 
-
-int mliMesch_init_from_off(const char *path, struct mliMesh* m) {
+int mliMesch_init_from_off(const char *path, mliMesh* m) {
     FILE * fin;
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
-
-    fin = fopen(path, "r");
-    if (fin == NULL) return EXIT_FAILURE;
-
-    read = getline(&line, &len, fin);
-    if (read == -1) return -1;
-    if (!strcmp(line, "OFF")) return EXIT_FAILURE;
-
-    read = getline(&line, &len, fin);
-    if (read == -1) return -1;
+    char line[1024];
+    int len = 1024;
     int num_vertices;
     int num_faces;
     int not_used;
+    uint32_t vertex_idx = 0;
+    uint32_t face_idx = 0;
+
+    fin = fopen(path, "r");
+    if (fin == NULL) goto close_and_exit_failure;;
+
+    if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;
+
+    if (strcmp(line, "OFF\n") != 0) goto close_and_exit_failure;;
+
+    if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;
+
     ml_parse_three_ints(line, &num_vertices, &num_faces, &not_used);
-    // printf("num ver %i\n", num_vertices);
 
     mliMesh_init(m, num_vertices, num_faces);
 
-    uint32_t vertex_idx = 0;
-    while (true) {
-        read = getline(&line, &len, fin);
-        if (read == -1) return - 1;
+    while (1) {
+        if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;;
         if (vertex_idx == m->num_vertices) break;
         if (strlen(line) > 1) {
-            // printf("'%s'\n", line);
-            struct mliVec poi;
+            /* printf("'%s'\n", line); */
+            mliVec poi;
             ml_parse_three_floats(line, &poi.x, &poi.y, &poi.z);
             m->vertices[vertex_idx] = poi;
-            // printf("%f %f %f\n", a, b, c);
+            /* printf("%f %f %f\n", a, b, c); */
             vertex_idx++;
         }
     }
 
-    uint32_t face_idx = 0;
-    while (true) {
+    while (1) {
         if (face_idx == m->num_faces) break;
         if (strlen(line) > 1) {
             int ia, ib, ic;
+            mliFace fa;
             ml_parse_three_ints(strchr(line, ' '), &ia, &ib, &ic);
-            struct mliFace fa;
             fa.a = ia; fa.b = ib; fa.c = ic;
             m->faces[face_idx] = fa;
-            // printf("%f %f %f\n", a, b, c);
+            /* printf("%f %f %f\n", a, b, c); */
             face_idx++;
         }
-        read = getline(&line, &len, fin);
-        if (read == -1) return -1;
+        if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;
     }
-
     fclose(fin);
-    if (line)
-        free(line);
     return EXIT_SUCCESS;
+
+    close_and_exit_failure:
+    fclose(fin);
+    return EXIT_FAILURE;
 }
 
 
-#endif  // MERLICT_MLIMESH_H_
+#endif

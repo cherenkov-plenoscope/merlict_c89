@@ -1,5 +1,5 @@
-// Copyright 2019 Sebastian Achim Mueller
-// Compile with: gcc test.cpp -o test -lm -Wall -pedantic
+/* Copyright 2019 Sebastian Achim Mueller                                     */
+/* Compile with: gcc test.c -o test -std=c89 -lm -Wall -pedantic              */
 #include "mliVec.h"
 #include "mliUnitTest.h"
 #include "mliMesh.h"
@@ -127,16 +127,18 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        // x y z octant
-        // - - -   0
-        // - - +   1
-        // - + -   2
-        // - + +   3
-        // + - -   4
-        // + - +   5
-        // + + -   6
-        // + + +   7
-        struct mliVec a;
+        /*
+            x y z octant
+            - - -   0
+            - - +   1
+            - + -   2
+            - + +   3
+            + - -   4
+            + - +   5
+            + + -   6
+            + + +   7
+        */
+        mliVec a;
 
         const float p = +1.;
         const float n = -1.;
@@ -242,6 +244,7 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func;
+        float y;
         mliFunc_init(&func, 5u);
         CHECK(func.num_points == 5u);
 
@@ -259,18 +262,19 @@ int main(int argc, char *argv[]) {
 
         CHECK(mliFunc_x_is_causal(&func));
         CHECK(mliFunc_upper_compare(&func, 1.5) == 2);
-        float y;
         CHECK(mliFunc_evaluate(&func, 1.5, &y) == 0);
         CHECK(y == 2.);
         mliFunc_free(&func);
     }
 
+
     {
         mliMesh m;
-        mliMesch_init_from_off("text_on_cube.off", &m);
         mliVec support = {0 ,0 ,0};
         mliVec direction = {0 ,0 ,1};
-        for (uint64_t i = 0; i < m.num_faces; i++) {
+        uint64_t i;
+        mliMesch_init_from_off("text_on_cube.off", &m);
+        for (i = 0; i < m.num_faces; i++) {
             mliVec intersection_position;
             if(
                 mliRay_intersects_triangle(
@@ -281,7 +285,8 @@ int main(int argc, char *argv[]) {
                     &m.vertices[m.faces[i].c],
                     &intersection_position)
             ) {
-                printf( "hit in idx %d\n", (int)i);
+                CHECK(i == 1782);
+                /* printf( "hit in idx %d\n", (int)i); */
             }
         }
         mliMesh_free(&m);
