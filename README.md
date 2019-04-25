@@ -1,4 +1,4 @@
-# merlict_c89
+# merlict_c89 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
 Exploring the merlict raytracing-project rewritten in C89 aka. ANSI-C
 
 ### Not sure where this is going to...
