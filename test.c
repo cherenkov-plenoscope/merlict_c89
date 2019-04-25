@@ -5,9 +5,89 @@
 #include "mliMesh.h"
 #include "mliFunc.h"
 #include "mliTriangleIntersection.h"
+#include "mliColor.h"
+#include "mliImage.h"
 
 
 int main(int argc, char *argv[]) {
+    /* mliColor */
+    {
+        mliColor red = {255., 0., 0.};
+        mliColor blue = {0., 0., 255.};
+        mliColor mix;
+        mliColor_mix(&red, &blue, 0.2, &mix);
+        CHECK_MARGIN(mix.r, 255.*0.8, 1e-6);
+        CHECK_MARGIN(mix.g, 0., 1e-6);
+        CHECK_MARGIN(mix.b, 255.*0.2, 1e-6);
+    }
+
+    {
+        mliColor colors[3];
+        mliColor one = {10., 20., 30.};
+        mliColor two = {1., 2., 3.};
+        mliColor three = {50., 60., 70.};
+        mliColor mean;
+        colors[0] = one;
+        colors[1] = two;
+        colors[2] = three;
+        mliColor_mean(colors, 3, &mean);
+        CHECK_MARGIN(mean.r, (10. + 1. + 50.)/3., 1e-6);
+        CHECK_MARGIN(mean.g, (20. + 2. + 60.)/3., 1e-6);
+        CHECK_MARGIN(mean.b, (30. + 3. + 70.)/3., 1e-5);
+    }
+
+    /* mliImage */
+    {
+        mliImage img;
+        mliImage_init(&img, 3, 2);
+        CHECK(img.num_cols == 3u);
+        CHECK(img.num_rows == 2u);
+        mliImage_free(&img);
+        CHECK(img.num_cols == 0u);
+        CHECK(img.num_rows == 0u);
+    }
+
+    {
+        mliImage img;
+        mliImage back;
+        uint32_t col;
+        uint32_t row;
+        float tone;
+        mliImage_init(&img, 3, 2);
+        CHECK(img.num_cols == 3u);
+        CHECK(img.num_rows == 2u);
+        tone = 0.;
+        for (col = 0; col < img.num_cols; col++) {
+            for (row = 0; row < img.num_rows; row++) {
+                mliColor color;
+                tone = (float)col * (float)row;
+                color.r = tone;
+                color.g = tone + 1.;
+                color.b = tone + 2.;
+                mliImage_set(&img, col, row, color);
+            }
+        }
+        mliImage_write_to_ppm(&img, "img.ppm.tmp");
+
+        mliImage_init_from_ppm(&back, "img.ppm.tmp");
+        CHECK(back.num_cols == 3u);
+        CHECK(back.num_rows == 2u);
+
+        for (col = 0; col < back.num_cols; col++) {
+            for (row = 0; row < back.num_rows; row++) {
+                mliColor c_in = mliImage_at(&img, col, row);
+                mliColor c_back = mliImage_at(&back, col, row);
+                CHECK_MARGIN(c_in.r, c_back.r, 1.);
+                CHECK_MARGIN(c_in.g, c_back.g, 1.);
+                CHECK_MARGIN(c_in.b, c_back.b, 1.);
+            }
+        }
+
+        mliImage_free(&img);
+        mliImage_free(&back);
+    }
+
+    /* mliVec */
     {
         mliVec a = {1., 2., 3.};
         CHECK_MARGIN(a.x, 1.0, 1e-6);
