@@ -1,6 +1,7 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 /* Compile with: gcc test.c -o test -std=c89 -lm -Wall -pedantic              */
 #include <math.h>
+#include "mliMath.h"
 #include "mliVec.h"
 #include "mliUnitTest.h"
 #include "mliMesh.h"
@@ -12,6 +13,37 @@
 
 
 int main(int argc, char *argv[]) {
+    /* mliMath */
+    {
+        int i;
+        for (i = -721; i < 721; i++) {
+            double angle_in_deg = (double)i;
+            CHECK_MARGIN(
+                angle_in_deg,
+                mli_rad2deg(
+                    mli_deg2rad(angle_in_deg)
+                ),
+                1e-9);
+        }
+    }
+
+    {
+        CHECK_MARGIN(mli_deg2rad(0.), 0., 1e-9);
+        CHECK_MARGIN(mli_deg2rad(90.), mli_PI/2, 1e-9);
+        CHECK_MARGIN(mli_deg2rad(180.), mli_PI, 1e-9);
+        CHECK_MARGIN(mli_deg2rad(-90.), -mli_PI/2.0, 1e-9);
+        CHECK_MARGIN(mli_deg2rad(-180.), -mli_PI, 1e-9);
+        CHECK_MARGIN(mli_deg2rad(360.), 2.*mli_PI, 1e-9);
+    }
+
+    {
+        CHECK_MARGIN(mli_rad2deg(0.*mli_PI), 0., 1e-9);
+        CHECK_MARGIN(mli_rad2deg(.25*mli_PI), 45., 1e-9);
+        CHECK_MARGIN(mli_rad2deg(.5*mli_PI), 90., 1e-9);
+        CHECK_MARGIN(mli_rad2deg(1.*mli_PI), 180., 1e-9);
+        CHECK_MARGIN(mli_rad2deg(1.e3*mli_PI), 180.e3, 1e-9);
+    }
+
     /* mliQuadraticEquation */
     {
         /* ax**2 + bx + c = 0 */
