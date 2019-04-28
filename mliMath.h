@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdint.h>
 
-const double mli_PI = 3.14159265358979323846;
+#define mli_PI 3.14159265358979323846
 
 double mli_rad2deg(const double angle_in_rad) {
     return 180.*angle_in_rad/mli_PI;}
