@@ -16,6 +16,9 @@
 #include "mliCamera.h"
 #include "mliScenery.h"
 #include "mliTracer.h"
+#include "mliHexagonalPrismZ.h"
+#include "mliSphericalCap.h"
+#include "mliOuterPrismBound.h"
 
 
 int main(int argc, char *argv[]) {
@@ -32,7 +35,8 @@ int main(int argc, char *argv[]) {
         mliImage img;
 
         scenery.num_functions = 1;
-        scenery.functions = (mliFunc*)malloc(scenery.num_functions*sizeof(mliFunc));
+        scenery.functions = (mliFunc*)malloc(
+            scenery.num_functions*sizeof(mliFunc));
 
         mliFunc_init(&scenery.functions[0] , 2u);
         scenery.functions[0].x[0] = 200.e-9;
@@ -41,12 +45,14 @@ int main(int argc, char *argv[]) {
         scenery.functions[0].y[1] = 0.;
 
         scenery.num_colors = 1;
-        scenery.colors = (mliColor*)malloc(scenery.num_colors*sizeof(mliColor));
+        scenery.colors = (mliColor*)malloc(
+            scenery.num_colors*sizeof(mliColor));
         scenery.colors[0] = red;
 
         mliMesh_init_from_off("diff_cube_sphere.off", &scenery.mesh);
 
-        scenery.mesh_colors = (uint32_t*)malloc(scenery.mesh.num_faces*sizeof(uint32_t));
+        scenery.mesh_colors = (uint32_t*)malloc(
+            scenery.mesh.num_faces*sizeof(uint32_t));
         for (i = 0; i < scenery.mesh.num_faces; i++) {
             scenery.mesh_colors[i] = 0;
         }
@@ -633,6 +639,69 @@ int main(int argc, char *argv[]) {
         CHECK(m.num_vertices == 432);
         CHECK(m.num_faces == 880);
         mliMesh_free(&m);
+    }
+
+    /* mliHexagonalPrismZ */
+    {
+        mliVec c;
+        double inner_radius = 0.5;
+        double outer_radius = inner_radius/cos(mli_PI/6.0);
+        c.z = 0.;
+        for (c.x = -1.; c.x < 1.; c.x = c.x + 0.01) {
+            for (c.y = -1.; c.y < 1.; c.y = c.y + 0.01) {
+                if (mliVec_norm(&c) <= inner_radius)
+                    CHECK(mli_inside_hexagonal_prism_z(&c, inner_radius));
+                else if(mliVec_norm(&c) > outer_radius)
+                    CHECK(!mli_inside_hexagonal_prism_z(&c, inner_radius));
+                else
+                    continue;
+            }
+        }
+    }
+
+    /* mliSphericalCap */
+    {
+        const double radius = 0.3;
+        const mliVec support = {0., 0., 1.};
+        const mliVec direction = {0., 0., -1.};
+        const mliRay ray = mliRay_set(support, direction);
+        double plus_solution, minus_solution;
+        mliVec intersection_point;
+        mliVec surface_normal;
+        CHECK(mli_spherical_cap_equation(
+                &ray,
+                radius,
+                &plus_solution,
+                &minus_solution));
+        CHECK_MARGIN(plus_solution, 1.0, 1e-9);
+        CHECK_MARGIN(minus_solution, (1.0 - 2.*radius), 1e-9);
+
+        intersection_point = mliRay_at(&ray, plus_solution);
+        surface_normal = mli_spherical_cap_surface_normal(
+            &intersection_point,
+            radius);
+        CHECK_MARGIN(surface_normal.x, 0., 1e-9);
+        CHECK_MARGIN(surface_normal.y, 0., 1e-9);
+        CHECK_MARGIN(surface_normal.z, 1., 1e-9);
+    }
+
+    {
+        double causal_solution;
+        const mliVec support = {0., 0., 1.};
+        const mliVec direction = {0., 0., -1.};
+        const mliRay ray = mliRay_set(support, direction);
+
+        mliBoundSurfaceChecklist cl;
+        cl.plus_solution = 1.0;
+        cl.minus_solution = 0.0;
+        cl.plus_intersec = mliRay_at(&ray, cl.plus_solution);
+        cl.minus_intersec = mliRay_at(&ray, cl.minus_solution);
+        cl.plus_is_inside = 0;
+        cl.minus_is_inside = 1;
+
+        mli_outer_bound_surface_causal_intersection(
+            cl,
+            &causal_solution);
     }
 
     return EXIT_SUCCESS;

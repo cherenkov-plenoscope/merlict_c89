@@ -11,6 +11,16 @@ typedef struct {
     float z;
 } mliVec;
 
+mliVec mliVec_set(
+    const float x,
+    const float y,
+    const float z) {
+    mliVec out;
+    out.x = x;
+    out.y = y;
+    out.z = z;
+    return out;}
+
 mliVec mliVec_add(
     const mliVec *a,
     const mliVec *b) {

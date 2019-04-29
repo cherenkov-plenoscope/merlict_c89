@@ -11,14 +11,8 @@
 #include "mliFunc.h"
 #include "mliTriangleIntersection.h"
 #include "mliScenery.h"
+#include "mliIntersection.h"
 
-#define MLI_VOID_FACE -1
-
-typedef struct {
-    uint32_t idx_face;
-    mliVec position;
-    mliVec surface_normal;
-} mliIntersection;
 
 int first_casual_intersection(
     const mliScenery *scenery,
@@ -54,7 +48,7 @@ int first_casual_intersection(
     if (hit) {
         intersection->idx_face = idx_closest_face;
         intersection->position = mliRay_at(ray, smallest_ray_parameter);
-        intersection->surface_normal = mli_triangle_surface_normal(
+        intersection->surface_normal_local = mli_triangle_surface_normal(
                 &scenery->mesh.vertices[
                     scenery->mesh.faces[intersection->idx_face].a],
                 &scenery->mesh.vertices[
