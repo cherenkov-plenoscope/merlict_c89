@@ -10,6 +10,7 @@
 
 typedef struct {
     uint32_t idx_face;
+    uint32_t idx_mesh;
     mliVec position;
     mliVec surface_normal_local;
     float distance_of_ray;

@@ -19,12 +19,14 @@
 #include "mliHexagonalPrismZ.h"
 #include "mliSphericalCap.h"
 #include "mliOuterPrismBound.h"
+#include "mliVector.h"
 
 
 int main(int argc, char *argv[]) {
     /* assert */
     {
         assert(1);
+        printf("%u\n", UINT32_MAX);
     }
     /* mliScenery */
     {
@@ -33,10 +35,14 @@ int main(int argc, char *argv[]) {
         mliColor red = {255., 0., 0.};
         mliCamera camera;
         mliImage img;
+        mliSceneryCapacity capa;
+        capa.num_functions = 1u;
+        capa.num_colors = 1u;
+        capa.num_surfaces = 0u;
+        capa.num_meshes = 1u;
+        capa.num_spherical_cap_hex_bound = 1u;
 
-        scenery.num_functions = 1;
-        scenery.functions = (mliFunc*)malloc(
-            scenery.num_functions*sizeof(mliFunc));
+        mliScenery_init(&scenery, capa);
 
         mliFunc_init(&scenery.functions[0] , 2u);
         scenery.functions[0].x[0] = 200.e-9;
@@ -44,18 +50,16 @@ int main(int argc, char *argv[]) {
         scenery.functions[0].y[0] = 0.;
         scenery.functions[0].y[1] = 0.;
 
-        scenery.num_colors = 1;
-        scenery.colors = (mliColor*)malloc(
-            scenery.num_colors*sizeof(mliColor));
         scenery.colors[0] = red;
 
-        mliMesh_init_from_off("diff_cube_sphere.off", &scenery.mesh);
+        mliMesh_init_from_off("diff_cube_sphere.off", &scenery.meshes[0]);
 
-        scenery.mesh_colors = (uint32_t*)malloc(
-            scenery.mesh.num_faces*sizeof(uint32_t));
-        for (i = 0; i < scenery.mesh.num_faces; i++) {
+        for (i = 0; i < scenery.num_meshes; i++) {
             scenery.mesh_colors[i] = 0;
         }
+
+        scenery.spherical_cap_hex_bound[0].curvature_radius = 4.89*2.;
+        scenery.spherical_cap_hex_bound[0].inner_hex_radius = 0.32;
 
         camera.position.x = 0.;
         camera.position.y = 0.;
@@ -69,6 +73,32 @@ int main(int argc, char *argv[]) {
 
         mliImage_free(&img);
         mliScenery_free(&scenery);
+    }
+
+    /* mliVector */
+    {
+        int i;
+        mliVector vec;
+        mliVector_set(&vec, 0u, sizeof(mliVec));
+        CHECK(vec.size == 0u);
+
+        for (i = 0; i < 100; i++) {
+            mliVec hans = {0., 1., 2.};
+            CHECK(vec.size == i);
+            mliVector_push_back(&vec, &hans);
+            CHECK(vec.size == i + 1);
+        }
+
+        for (i = 0; i < vec.size; i++) {
+            mliVec hans = *(mliVec*)mliVector_get(&vec, i);
+            CHECK_MARGIN(hans.x, 0., 1e-9);
+            CHECK_MARGIN(hans.y, 1., 1e-9);
+            CHECK_MARGIN(hans.z, 2., 1e-9);
+            CHECK(vec.size == 100);
+        }
+
+        mliVector_free(&vec);
+        CHECK(vec.size == 0);
     }
 
     /* mliHomTra */
