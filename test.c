@@ -1,8 +1,10 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 /* Compile with: gcc test.c -o test -std=c89 -lm -Wall -pedantic              */
 #include <math.h>
+#include <assert.h>
 #include "mliMath.h"
 #include "mliVec.h"
+#include "mliRay.h"
 #include "mliUnitTest.h"
 #include "mliMesh.h"
 #include "mliFunc.h"
@@ -11,13 +13,61 @@
 #include "mliImage.h"
 #include "mliQuadraticEquation.h"
 #include "mliHomTra.h"
+#include "mliCamera.h"
+#include "mliScenery.h"
+#include "mliTracer.h"
 
 
 int main(int argc, char *argv[]) {
+    /* assert */
+    {
+        assert(1);
+    }
+    /* mliScenery */
+    {
+        int i;
+        mliScenery scenery;
+        mliColor red = {255., 0., 0.};
+        mliCamera camera;
+        mliImage img;
+
+        scenery.num_functions = 1;
+        scenery.functions = (mliFunc*)malloc(scenery.num_functions*sizeof(mliFunc));
+
+        mliFunc_init(&scenery.functions[0] , 2u);
+        scenery.functions[0].x[0] = 200.e-9;
+        scenery.functions[0].x[1] = 1200.e-9;
+        scenery.functions[0].y[0] = 0.;
+        scenery.functions[0].y[1] = 0.;
+
+        scenery.num_colors = 1;
+        scenery.colors = (mliColor*)malloc(scenery.num_colors*sizeof(mliColor));
+        scenery.colors[0] = red;
+
+        mliMesh_init_from_off("diff_cube_sphere.off", &scenery.mesh);
+
+        scenery.mesh_colors = (uint32_t*)malloc(scenery.mesh.num_faces*sizeof(uint32_t));
+        for (i = 0; i < scenery.mesh.num_faces; i++) {
+            scenery.mesh_colors[i] = 0;
+        }
+
+        camera.position.x = 0.;
+        camera.position.y = 0.;
+        camera.position.z = -20.;
+        camera.rotation = mliRotMat_init_tait_bryan(0., 0., 0.);
+        camera.field_of_view = mli_deg2rad(80.);
+
+        mliImage_init(&img, 64u, 64u);
+        mliCamera_render_image(&camera, &scenery, &img);
+        mliImage_write_to_ppm(&img, "my_image.ppm.tmp");
+
+        mliImage_free(&img);
+        mliScenery_free(&scenery);
+    }
+
     /* mliHomTra */
     {
-        mliRotMat rot;
-        mliRotMat_init_tait_bryan(0., 0., 0., &rot);
+        mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., 0.);
         CHECK_MARGIN(rot.r00, 1., 1e-9);
         CHECK_MARGIN(rot.r01, 0., 1e-9);
         CHECK_MARGIN(rot.r02, 0., 1e-9);
@@ -30,7 +80,7 @@ int main(int argc, char *argv[]) {
         CHECK_MARGIN(rot.r21, 0., 1e-9);
         CHECK_MARGIN(rot.r22, 1., 1e-9);
 
-        mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(90), &rot);
+        rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(90));
         CHECK_MARGIN(rot.r00, 0., 1e-9);
         CHECK_MARGIN(rot.r01, 1., 1e-9);
         CHECK_MARGIN(rot.r02, 0., 1e-9);
@@ -53,7 +103,7 @@ int main(int argc, char *argv[]) {
     {
         mliRotMat rot;
         mliVec axis = {0., 0., 1.};
-        mliRotMat_init_axis(&axis, 0., &rot);
+        rot = mliRotMat_init_axis(&axis, 0.);
         CHECK_MARGIN(rot.r00, 1., 1e-9);
         CHECK_MARGIN(rot.r01, 0., 1e-9);
         CHECK_MARGIN(rot.r02, 0., 1e-9);
@@ -66,7 +116,7 @@ int main(int argc, char *argv[]) {
         CHECK_MARGIN(rot.r21, 0., 1e-9);
         CHECK_MARGIN(rot.r22, 1., 1e-9);
 
-        mliRotMat_init_axis(&axis, mli_deg2rad(90.), &rot);
+        rot = mliRotMat_init_axis(&axis, mli_deg2rad(90.));
         CHECK_MARGIN(rot.r00, 0., 1e-9);
         CHECK_MARGIN(rot.r01, 1., 1e-9);
         CHECK_MARGIN(rot.r02, 0., 1e-9);
@@ -84,8 +134,8 @@ int main(int argc, char *argv[]) {
         mliRotMat rot;
         mliVec a = {0., 0., 1.};
         mliVec a_rot;
-        mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.), &rot);
-        mli_transform_orientation(&rot, &a, &a_rot);
+        rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.));
+        a_rot = mli_transform_orientation(&rot, &a);
         CHECK_MARGIN(a_rot.x, 0., 1e-9);
         CHECK_MARGIN(a_rot.y, 0., 1e-9);
         CHECK_MARGIN(a_rot.z, 1., 1e-9);
@@ -95,13 +145,13 @@ int main(int argc, char *argv[]) {
         mliRotMat rot;
         mliVec x = {1., 0., 0.};
         mliVec x_rot;
-        mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.), &rot);
-        mli_transform_orientation(&rot, &x, &x_rot);
+        rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.));
+        x_rot = mli_transform_orientation(&rot, &x);
         CHECK_MARGIN(x_rot.x, 1./sqrt(2.), 1e-6);
         CHECK_MARGIN(x_rot.y, -1./sqrt(2.), 1e-6);
         CHECK_MARGIN(x_rot.z, 0., 1e-9);
 
-        mli_transform_orientation_inverse(&rot, &x, &x_rot);
+        x_rot = mli_transform_orientation_inverse(&rot, &x);
         CHECK_MARGIN(x_rot.x, 1./sqrt(2.), 1e-6);
         CHECK_MARGIN(x_rot.y, 1./sqrt(2.), 1e-6);
         CHECK_MARGIN(x_rot.z, 0., 1e-9);
@@ -112,13 +162,13 @@ int main(int argc, char *argv[]) {
         mliVec trans = {0., 0., 3.};
         mliVec x = {1., 0., 0.};
         mliVec x_t;
-        mliRotMat_init_tait_bryan(0., 0., 0., &rot);
-        mli_transform_position(&rot, &trans, &x, &x_t);
+        rot = mliRotMat_init_tait_bryan(0., 0., 0.);
+        x_t = mli_transform_position(&rot, &trans, &x);
         CHECK_MARGIN(x_t.x, 1., 1e-6);
         CHECK_MARGIN(x_t.y, 0., 1e-6);
         CHECK_MARGIN(x_t.z, 3., 1e-9);
 
-        mli_transform_position_inverse(&rot, &trans, &x, &x_t);
+        x_t = mli_transform_position_inverse(&rot, &trans, &x);
         CHECK_MARGIN(x_t.x, 1., 1e-6);
         CHECK_MARGIN(x_t.y, 0., 1e-6);
         CHECK_MARGIN(x_t.z, -3., 1e-9);
@@ -226,8 +276,7 @@ int main(int argc, char *argv[]) {
     {
         mliColor red = {255., 0., 0.};
         mliColor blue = {0., 0., 255.};
-        mliColor mix;
-        mliColor_mix(&red, &blue, 0.2, &mix);
+        mliColor mix = mliColor_mix(&red, &blue, 0.2);
         CHECK_MARGIN(mix.r, 255.*0.8, 1e-6);
         CHECK_MARGIN(mix.g, 0., 1e-6);
         CHECK_MARGIN(mix.b, 255.*0.2, 1e-6);
@@ -242,7 +291,7 @@ int main(int argc, char *argv[]) {
         colors[0] = one;
         colors[1] = two;
         colors[2] = three;
-        mliColor_mean(colors, 3, &mean);
+        mean = mliColor_mean(colors, 3);
         CHECK_MARGIN(mean.r, (10. + 1. + 50.)/3., 1e-6);
         CHECK_MARGIN(mean.g, (20. + 2. + 60.)/3., 1e-6);
         CHECK_MARGIN(mean.b, (30. + 3. + 70.)/3., 1e-5);
@@ -310,8 +359,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec a = {1., 2., 3.};
         mliVec b = {4., 5., 6.};
-        mliVec out;
-        mliVec_add(&a, &b, &out);
+        mliVec out = mliVec_add(&a, &b);
         CHECK_MARGIN(out.x, 5.0, 1e-6);
         CHECK_MARGIN(out.y, 7.0, 1e-6);
         CHECK_MARGIN(out.z, 9.0, 1e-6);
@@ -320,8 +368,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec a = {1., 2., 3.};
         mliVec b = {4., 6., 8.};
-        mliVec out;
-        mliVec_substract(&a, &b, &out);
+        mliVec out = mliVec_substract(&a, &b);
         CHECK_MARGIN(out.x, -3.0, 1e-6);
         CHECK_MARGIN(out.y, -4.0, 1e-6);
         CHECK_MARGIN(out.z, -5.0, 1e-6);
@@ -354,8 +401,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec a = {1., 0., 0.};
         mliVec b = {0., 1., 0.};
-        mliVec out;
-        mliVec_cross(&a, &b, &out);
+        mliVec out = mliVec_cross(&a, &b);
         CHECK_MARGIN(out.x, 0., 1e-6);
         CHECK_MARGIN(out.y, 0., 1e-6);
         CHECK_MARGIN(out.z, 1., 1e-6);
@@ -364,8 +410,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec a = {1., 0., 0.};
         mliVec b = {0., 0., 1.};
-        mliVec out;
-        mliVec_cross(&a, &b, &out);
+        mliVec out = mliVec_cross(&a, &b);
         CHECK_MARGIN(out.x, 0., 1e-6);
         CHECK_MARGIN(out.y, -1., 1e-6);
         CHECK_MARGIN(out.z, 0., 1e-6);
@@ -389,8 +434,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec in = {0., 0., -1.};
         mliVec surface_normal = {0., 0., 1.};
-        mliVec out;
-        mliVec_mirror(&in, &surface_normal, &out);
+        mliVec out = mliVec_mirror(&in, &surface_normal);
         CHECK_MARGIN(out.x, 0., 1e-6);
         CHECK_MARGIN(out.y, 0., 1e-6);
         CHECK_MARGIN(out.z, 1., 1e-6);
@@ -399,8 +443,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec in = {1., 0., -1.};
         mliVec surface_normal = {0., 0., 1.};
-        mliVec out;
-        mliVec_mirror(&in, &surface_normal, &out);
+        mliVec out = mliVec_mirror(&in, &surface_normal);
         CHECK_MARGIN(out.x, 1., 1e-6);
         CHECK_MARGIN(out.y, 0., 1e-6);
         CHECK_MARGIN(out.z, 1., 1e-6);
@@ -565,9 +608,9 @@ int main(int argc, char *argv[]) {
         mliVec support = {0 ,0 ,0};
         mliVec direction = {0 ,0 ,1};
         uint64_t i;
-        mliMesch_init_from_off("text_on_cube.off", &m);
+        mliMesh_init_from_off("text_on_cube.off", &m);
         for (i = 0; i < m.num_faces; i++) {
-            mliVec intersection_position;
+            double ray_parameter;
             if(
                 mliRay_intersects_triangle(
                     &support,
@@ -575,12 +618,20 @@ int main(int argc, char *argv[]) {
                     &m.vertices[m.faces[i].a],
                     &m.vertices[m.faces[i].b],
                     &m.vertices[m.faces[i].c],
-                    &intersection_position)
+                    &ray_parameter)
             ) {
                 CHECK(i == 1782);
                 /* printf( "hit in idx %d\n", (int)i); */
             }
         }
+        mliMesh_free(&m);
+    }
+
+    {
+        mliMesh m;
+        mliMesh_init_from_off("diff_cube_sphere.off", &m);
+        CHECK(m.num_vertices == 432);
+        CHECK(m.num_faces == 880);
         mliMesh_free(&m);
     }
 

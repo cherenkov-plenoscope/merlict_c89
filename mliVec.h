@@ -11,43 +11,57 @@ typedef struct {
     float z;
 } mliVec;
 
-void mliVec_add(
+mliVec mliVec_add(
     const mliVec *a,
-    const mliVec *b,
-    mliVec *out) {
-    out->x = a->x + b->x;
-    out->y = a->y + b->y;
-    out->z = a->z + b->z;}
+    const mliVec *b) {
+    mliVec out;
+    out.x = a->x + b->x;
+    out.y = a->y + b->y;
+    out.z = a->z + b->z;
+    return out;}
 
-void mliVec_substract(
+mliVec mliVec_substract(
     const mliVec *a,
-    const mliVec *b,
-    mliVec *out) {
-    out->x = a->x - b->x;
-    out->y = a->y - b->y;
-    out->z = a->z - b->z;}
+    const mliVec *b) {
+    mliVec out;
+    out.x = a->x - b->x;
+    out.y = a->y - b->y;
+    out.z = a->z - b->z;
+    return out;}
 
-void mliVec_cross(
+mliVec mliVec_cross(
     const mliVec *a,
-    const mliVec *b,
-    mliVec *out) {
-    out->x = (a->y*b->z - a->z*b->y);
-    out->y = (a->z*b->x - a->x*b->z);
-    out->z = (a->x*b->y - a->y*b->x);}
+    const mliVec *b) {
+    mliVec out;
+    out.x = (a->y*b->z - a->z*b->y);
+    out.y = (a->z*b->x - a->x*b->z);
+    out.z = (a->x*b->y - a->y*b->x);
+    return out;}
 
 float mliVec_dot(
     const mliVec *a,
     const mliVec *b) {
     return a->x*b->x + a->y*b->y + a->z*b->z;}
 
+mliVec mliVec_multiply(const mliVec *v, const float a) {
+    mliVec out;
+    out.x = v->x*a;
+    out.y = v->y*a;
+    out.z = v->z*a;
+    return out;}
+
 float mliVec_norm(
     const mliVec *a) {
     return sqrt(mliVec_dot(a, a));}
 
-void mliVec_mirror(
+float mliVec_angle_between(const mliVec *a, const mliVec *b) {
+    mliVec a_normalized = mliVec_multiply(a, 1./mliVec_norm(a));
+    mliVec b_normalized = mliVec_multiply(b, 1./mliVec_norm(b));
+    return acos(mliVec_dot(&a_normalized, &b_normalized));}
+
+mliVec mliVec_mirror(
     const mliVec *in,
-    const mliVec *surface_normal,
-    mliVec *out) {
+    const mliVec *surface_normal) {
     /*  This is taken from
         (OPTI 421/521 – Introductory Optomechanical Engineering)
         J.H. Bruge
@@ -77,17 +91,19 @@ void mliVec_mirror(
                      [0 1 0]
                      [0 0 1]
     */
-    out->x = (1. - 2.*surface_normal->x*surface_normal->x) * in->x +
+    mliVec out;
+    out.x = (1. - 2.*surface_normal->x*surface_normal->x) * in->x +
                  - 2.*surface_normal->x*surface_normal->y  * in->y +
                  - 2.*surface_normal->x*surface_normal->z  * in->z;
 
-    out->y =     - 2.*surface_normal->x*surface_normal->y  * in->x +
+    out.y =     - 2.*surface_normal->x*surface_normal->y  * in->x +
              (1. - 2.*surface_normal->y*surface_normal->y) * in->y +
                  - 2.*surface_normal->y*surface_normal->z  * in->z;
 
-    out->z =     - 2.*surface_normal->x*surface_normal->z  * in->x +
+    out.z =     - 2.*surface_normal->x*surface_normal->z  * in->x +
                  - 2.*surface_normal->y*surface_normal->z  * in->y +
              (1. - 2.*surface_normal->z*surface_normal->z) * in->z;
+    return out;
 }
 
 int mliVec_equal_margin(
@@ -96,7 +112,7 @@ int mliVec_equal_margin(
     const float distance_margin) {
     mliVec diff;
     float distance_squared;
-    mliVec_substract(a, b, &diff);
+    diff = mliVec_substract(a, b);
     distance_squared = mliVec_dot(&diff, &diff);
     return distance_squared <= distance_margin*distance_margin;}
 
@@ -117,13 +133,6 @@ uint32_t mliVec_octant(const mliVec *a) {
     const uint32_t sz = a->z >= 0.;
     return 4*sx + 2*sy + 1*sz;}
 
-void mliRay_pos_at(
-    const mliVec *support,
-    const mliVec *direction,
-    const float t,
-    mliVec* out) {
-    out->x = support->x + t *direction->x;
-    out->y = support->y + t *direction->y;
-    out->z = support->z + t *direction->z;}
+
 
 #endif

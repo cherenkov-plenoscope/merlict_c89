@@ -11,30 +11,29 @@ typedef struct {
     float b;
 } mliColor;
 
-void mliColor_mix(
+mliColor mliColor_mix(
     const mliColor *a,
     const mliColor *b,
-    const float refl,
-    mliColor *out) {
-    out->r = (1.f - refl)*a->r + refl * b->r;
-    out->g = (1.f - refl)*a->g + refl * b->g;
-    out->b = (1.f - refl)*a->b + refl * b->b;}
+    const float refl) {
+    mliColor out;
+    out.r = (1.f - refl)*a->r + refl * b->r;
+    out.g = (1.f - refl)*a->g + refl * b->g;
+    out.b = (1.f - refl)*a->b + refl * b->b;
+    return out;}
 
-void mliColor_mean(
+mliColor mliColor_mean(
     const mliColor colors[],
-    const uint32_t num_colors,
-    mliColor *out) {
+    const uint32_t num_colors) {
+    mliColor out = {0., 0., 0.};
     uint32_t i;
-    out->r = 0.;
-    out->g = 0.;
-    out->b = 0.;
     for (i = 0; i < num_colors; i++) {
-        out->r = out->r + colors[i].r;
-        out->g = out->g + colors[i].g;
-        out->b = out->b + colors[i].b;}
-    out->r = out->r/num_colors;
-    out->g = out->g/num_colors;
-    out->b = out->b/num_colors;}
+        out.r = out.r + colors[i].r;
+        out.g = out.g + colors[i].g;
+        out.b = out.b + colors[i].b;}
+    out.r = out.r/num_colors;
+    out.g = out.g/num_colors;
+    out.b = out.b/num_colors;
+    return out;}
 
 mliColor mliColor_truncate_to_uint8(const mliColor color) {
     mliColor out;

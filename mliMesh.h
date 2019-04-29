@@ -166,7 +166,7 @@ int ml_parse_three_floats(const char *line, float *a, float* b, float*c) {
     return state;
 }
 
-int mliMesch_init_from_off(const char *path, mliMesh* m) {
+int mliMesh_init_from_off(const char *path, mliMesh* m) {
     FILE * fin;
     char line[1024];
     int len = 1024;
