@@ -10,9 +10,120 @@
 #include "mliColor.h"
 #include "mliImage.h"
 #include "mliQuadraticEquation.h"
+#include "mliHomTra.h"
 
 
 int main(int argc, char *argv[]) {
+    /* mliHomTra */
+    {
+        mliRotMat rot;
+        mliRotMat_init_tait_bryan(0., 0., 0., &rot);
+        CHECK_MARGIN(rot.r00, 1., 1e-9);
+        CHECK_MARGIN(rot.r01, 0., 1e-9);
+        CHECK_MARGIN(rot.r02, 0., 1e-9);
+
+        CHECK_MARGIN(rot.r10, 0., 1e-9);
+        CHECK_MARGIN(rot.r11, 1., 1e-9);
+        CHECK_MARGIN(rot.r12, 0., 1e-9);
+
+        CHECK_MARGIN(rot.r20, 0., 1e-9);
+        CHECK_MARGIN(rot.r21, 0., 1e-9);
+        CHECK_MARGIN(rot.r22, 1., 1e-9);
+
+        mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(90), &rot);
+        CHECK_MARGIN(rot.r00, 0., 1e-9);
+        CHECK_MARGIN(rot.r01, 1., 1e-9);
+        CHECK_MARGIN(rot.r02, 0., 1e-9);
+
+        CHECK_MARGIN(rot.r10, -1., 1e-9);
+        CHECK_MARGIN(rot.r11, 0., 1e-9);
+        CHECK_MARGIN(rot.r12, 0., 1e-9);
+
+        CHECK_MARGIN(rot.r20, 0., 1e-9);
+        CHECK_MARGIN(rot.r21, 0., 1e-9);
+        CHECK_MARGIN(rot.r22, 1., 1e-9);
+        /*
+            |y       rot z 90deg        |x
+            |           --->            |
+            |                           |
+            --------x            y-------
+        */
+    }
+
+    {
+        mliRotMat rot;
+        mliVec axis = {0., 0., 1.};
+        mliRotMat_init_axis(&axis, 0., &rot);
+        CHECK_MARGIN(rot.r00, 1., 1e-9);
+        CHECK_MARGIN(rot.r01, 0., 1e-9);
+        CHECK_MARGIN(rot.r02, 0., 1e-9);
+
+        CHECK_MARGIN(rot.r10, 0., 1e-9);
+        CHECK_MARGIN(rot.r11, 1., 1e-9);
+        CHECK_MARGIN(rot.r12, 0., 1e-9);
+
+        CHECK_MARGIN(rot.r20, 0., 1e-9);
+        CHECK_MARGIN(rot.r21, 0., 1e-9);
+        CHECK_MARGIN(rot.r22, 1., 1e-9);
+
+        mliRotMat_init_axis(&axis, mli_deg2rad(90.), &rot);
+        CHECK_MARGIN(rot.r00, 0., 1e-9);
+        CHECK_MARGIN(rot.r01, 1., 1e-9);
+        CHECK_MARGIN(rot.r02, 0., 1e-9);
+
+        CHECK_MARGIN(rot.r10, -1., 1e-9);
+        CHECK_MARGIN(rot.r11, 0., 1e-9);
+        CHECK_MARGIN(rot.r12, 0., 1e-9);
+
+        CHECK_MARGIN(rot.r20, 0., 1e-9);
+        CHECK_MARGIN(rot.r21, 0., 1e-9);
+        CHECK_MARGIN(rot.r22, 1., 1e-9);
+    }
+
+    {
+        mliRotMat rot;
+        mliVec a = {0., 0., 1.};
+        mliVec a_rot;
+        mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.), &rot);
+        mli_transform_orientation(&rot, &a, &a_rot);
+        CHECK_MARGIN(a_rot.x, 0., 1e-9);
+        CHECK_MARGIN(a_rot.y, 0., 1e-9);
+        CHECK_MARGIN(a_rot.z, 1., 1e-9);
+    }
+
+    {
+        mliRotMat rot;
+        mliVec x = {1., 0., 0.};
+        mliVec x_rot;
+        mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.), &rot);
+        mli_transform_orientation(&rot, &x, &x_rot);
+        CHECK_MARGIN(x_rot.x, 1./sqrt(2.), 1e-6);
+        CHECK_MARGIN(x_rot.y, -1./sqrt(2.), 1e-6);
+        CHECK_MARGIN(x_rot.z, 0., 1e-9);
+
+        mli_transform_orientation_inverse(&rot, &x, &x_rot);
+        CHECK_MARGIN(x_rot.x, 1./sqrt(2.), 1e-6);
+        CHECK_MARGIN(x_rot.y, 1./sqrt(2.), 1e-6);
+        CHECK_MARGIN(x_rot.z, 0., 1e-9);
+    }
+
+    {
+        mliRotMat rot;
+        mliVec trans = {0., 0., 3.};
+        mliVec x = {1., 0., 0.};
+        mliVec x_t;
+        mliRotMat_init_tait_bryan(0., 0., 0., &rot);
+        mli_transform_position(&rot, &trans, &x, &x_t);
+        CHECK_MARGIN(x_t.x, 1., 1e-6);
+        CHECK_MARGIN(x_t.y, 0., 1e-6);
+        CHECK_MARGIN(x_t.z, 3., 1e-9);
+
+        mli_transform_position_inverse(&rot, &trans, &x, &x_t);
+        CHECK_MARGIN(x_t.x, 1., 1e-6);
+        CHECK_MARGIN(x_t.y, 0., 1e-6);
+        CHECK_MARGIN(x_t.z, -3., 1e-9);
+    }
+
     /* mliMath */
     {
         int i;
