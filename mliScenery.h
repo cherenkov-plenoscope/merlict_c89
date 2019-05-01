@@ -10,7 +10,11 @@
 #include "mliFunc.h"
 #include "mliMesh.h"
 #include "mliSphericalCap.h"
-#include "mliSurfaceProperty.h"
+#include "mliSurface.h"
+
+#define MLI_MESH 1u
+#define MLI_SPHERICAL_CAP_HEX 2u
+#define MLI_NUM_OBJECT_CLASSES 2u
 
 typedef struct {
     uint32_t num_functions;
@@ -22,12 +26,18 @@ typedef struct {
     uint32_t num_surfaces;
     mliSurface *surfaces;
 
-    uint32_t num_meshes;
-    mliMesh *meshes;
-    uint32_t *mesh_colors;
+    uint32_t num_vertices;
+    mliVec *vertices;
 
-    uint32_t num_spherical_cap_hex_bound;
+    uint32_t num_faces;
+    mliFace *faces;
+    uint32_t *faces_outer_surfaces;
+    uint32_t *faces_inner_surfaces;
+
+    uint32_t num_spherical_cap_hex;
     mliSphericalCapHeagonal *spherical_cap_hex_bound;
+    uint32_t *spherical_cap_hex_outer_surfaces;
+    uint32_t *spherical_cap_hex_inner_surfaces;
 } mliScenery;
 
 void mliScenery_malloc(mliScenery* scenery) {
@@ -43,16 +53,24 @@ void mliScenery_malloc(mliScenery* scenery) {
     scenery->surfaces = (mliSurface*)malloc(
         scenery->num_surfaces*sizeof(mliSurface));
 
-    /* meshes */
-    scenery->meshes = (mliMesh*)malloc(
-        scenery->num_meshes*sizeof(mliMesh));
+    /* vertices */
+    scenery->vertices = (mliVec*)malloc(scenery->num_vertices*sizeof(mliVec));
 
-    scenery->mesh_colors = (uint32_t*)malloc(
-        scenery->num_meshes*sizeof(uint32_t));
+    /* faces */
+    scenery->faces = (mliFace*)malloc(scenery->num_faces*sizeof(mliFace));
+    scenery->faces_outer_surfaces =
+        (uint32_t*)malloc(scenery->num_faces*sizeof(uint32_t));
+    scenery->faces_inner_surfaces =
+        (uint32_t*)malloc(scenery->num_faces*sizeof(uint32_t));
 
+    /* spherical_cap_hex */
     scenery->spherical_cap_hex_bound = (mliSphericalCapHeagonal*)malloc(
-        scenery->num_spherical_cap_hex_bound*
+        scenery->num_spherical_cap_hex*
         sizeof(mliSphericalCapHeagonal));
+    scenery->spherical_cap_hex_outer_surfaces =
+        (uint32_t*)malloc(scenery->num_spherical_cap_hex*sizeof(uint32_t));
+    scenery->spherical_cap_hex_inner_surfaces =
+        (uint32_t*)malloc(scenery->num_spherical_cap_hex*sizeof(uint32_t));
 }
 
 void mliScenery_free(mliScenery *scenery) {
@@ -67,21 +85,24 @@ void mliScenery_free(mliScenery *scenery) {
     free(scenery->colors);
     scenery->num_colors = 0;
 
+    free(scenery->vertices);
+    scenery->num_vertices = 0;
+
     /* surfaces */
     free(scenery->surfaces);
     scenery->num_surfaces = 0;
 
-    /* meshes */
-    for (i = 0; i < scenery->num_meshes; i++) {
-        mliMesh_free(&(scenery->meshes[i]));}
-    scenery->num_meshes = 0u;
-
-    /* mesh_colors */
-    free(scenery->mesh_colors);
+    /* faces */
+    free(scenery->faces);
+    free(scenery->faces_outer_surfaces);
+    free(scenery->faces_inner_surfaces);
+    scenery->num_faces = 0;
 
     /* spherical_cap_hex_bound */
     free(scenery->spherical_cap_hex_bound);
-    scenery->num_spherical_cap_hex_bound = 0;
+    free(scenery->spherical_cap_hex_outer_surfaces);
+    free(scenery->spherical_cap_hex_inner_surfaces);
+    scenery->num_spherical_cap_hex = 0;
 }
 
 #endif

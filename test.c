@@ -26,20 +26,25 @@ int main(int argc, char *argv[]) {
     /* assert */
     {
         assert(1);
-        printf("%u\n", UINT32_MAX);
+        /* printf("%u\n", UINT32_MAX); */
     }
     /* mliScenery */
     {
         int i;
         mliScenery scenery;
+        mliMesh diff_cube_sphere;
         mliColor red = {255., 0., 0.};
         mliCamera camera;
         mliImage img;
         scenery.num_functions = 1u;
         scenery.num_colors = 1u;
         scenery.num_surfaces = 1u;
-        scenery.num_meshes = 1u;
-        scenery.num_spherical_cap_hex_bound = 1u;
+        scenery.num_spherical_cap_hex = 1u;
+
+        mliMesh_init_from_off("diff_cube_sphere.off", &diff_cube_sphere);
+
+        scenery.num_vertices = diff_cube_sphere.num_vertices;
+        scenery.num_faces = diff_cube_sphere.num_faces;
 
         mliScenery_malloc(&scenery);
 
@@ -56,14 +61,25 @@ int main(int argc, char *argv[]) {
         scenery.surfaces[0].refraction = 0u;
         scenery.surfaces[0].absorbtion = 0u;
 
-        mliMesh_init_from_off("diff_cube_sphere.off", &scenery.meshes[0]);
+        mliVec_ncpy(
+            diff_cube_sphere.vertices,
+            scenery.vertices,
+            diff_cube_sphere.num_vertices);
 
-        for (i = 0; i < scenery.num_meshes; i++) {
-            scenery.mesh_colors[i] = 0;
-        }
+        mliFace_ncpy(
+            diff_cube_sphere.faces,
+            scenery.faces,
+            diff_cube_sphere.num_faces);
+
+        for (i = 0; i < scenery.num_faces; i++) {
+            scenery.faces_outer_surfaces[i] = 0u;
+            scenery.faces_inner_surfaces[i] = 0u;}
 
         scenery.spherical_cap_hex_bound[0].curvature_radius = 4.89*2.;
         scenery.spherical_cap_hex_bound[0].inner_hex_radius = 0.32;
+
+        scenery.spherical_cap_hex_outer_surfaces = 0u;
+        scenery.spherical_cap_hex_inner_surfaces = 0u;
 
         camera.position.x = 0.;
         camera.position.y = 0.;
@@ -575,6 +591,22 @@ int main(int argc, char *argv[]) {
 
         a.x = p; a.y = 0.; a.z = p;
         CHECK(mliVec_octant(&a) == 7u);
+    }
+
+    {
+        int i;
+        mliVec a[3];
+        mliVec b[3];
+        a[0] = mliVec_set(0., 1., 2.);
+        a[1] = mliVec_set(3., 4., 5.);
+        a[2] = mliVec_set(6., 7., 8.);
+
+        mliVec_ncpy(a, b, 3);  /* <--- to be tested */
+
+        for (i = 0; i < 3; i++) {
+            CHECK(a[i].x == b[i].x);
+            CHECK(a[i].y == b[i].y);
+            CHECK(a[i].z == b[i].z);}
     }
 
     {

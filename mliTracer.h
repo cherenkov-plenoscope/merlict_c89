@@ -20,47 +20,37 @@ int first_casual_intersection(
     int32_t face_coming_from,
     mliIntersection *intersection) {
     int hit = 0;
-    int32_t idx_mesh;
     int32_t idx_face;
     int32_t idx_closest_face = 0;
-    int32_t idx_closest_mesh = 0;
     double smallest_ray_parameter = 9e99;
     double ray_parameter;
 
-    for (idx_mesh = 0; idx_mesh < scenery->num_meshes; idx_mesh++) {
-        for (idx_face = 0; idx_face < scenery->meshes[idx_mesh].num_faces; idx_face++) {
-            if (face_coming_from == idx_face)
-                continue;
-
-            if (
-                mliRay_intersects_triangle(
-                    &ray->support,
-                    &ray->direction,
-                    &scenery->meshes[idx_mesh].vertices[scenery->meshes[idx_mesh].faces[idx_face].a],
-                    &scenery->meshes[idx_mesh].vertices[scenery->meshes[idx_mesh].faces[idx_face].b],
-                    &scenery->meshes[idx_mesh].vertices[scenery->meshes[idx_mesh].faces[idx_face].c],
-                    &ray_parameter)
-            ) {
-                hit = hit + 1;
-                if (ray_parameter < smallest_ray_parameter) {
-                    smallest_ray_parameter = ray_parameter;
-                    idx_closest_face = idx_face;
-                    idx_closest_mesh = idx_mesh;
-                }
+    for (idx_face = 0; idx_face < scenery->num_faces; idx_face++) {
+        if (face_coming_from == idx_face)
+            continue;
+        if (
+            mliRay_intersects_triangle(
+                &ray->support,
+                &ray->direction,
+                &scenery->vertices[scenery->faces[idx_face].a],
+                &scenery->vertices[scenery->faces[idx_face].b],
+                &scenery->vertices[scenery->faces[idx_face].c],
+                &ray_parameter)
+        ) {
+            hit = hit + 1;
+            if (ray_parameter < smallest_ray_parameter) {
+                smallest_ray_parameter = ray_parameter;
+                idx_closest_face = idx_face;
             }
         }
     }
     if (hit) {
         intersection->idx_face = idx_closest_face;
-        intersection->idx_mesh = idx_closest_mesh;
         intersection->position = mliRay_at(ray, smallest_ray_parameter);
         intersection->surface_normal_local = mli_triangle_surface_normal(
-                &scenery->meshes[intersection->idx_mesh].vertices[
-                    scenery->meshes[intersection->idx_mesh].faces[intersection->idx_face].a],
-                &scenery->meshes[intersection->idx_mesh].vertices[
-                    scenery->meshes[intersection->idx_mesh].faces[intersection->idx_face].b],
-                &scenery->meshes[intersection->idx_mesh].vertices[
-                    scenery->meshes[intersection->idx_mesh].faces[intersection->idx_face].c]);
+                &scenery->vertices[scenery->faces[intersection->idx_face].a],
+                &scenery->vertices[scenery->faces[intersection->idx_face].b],
+                &scenery->vertices[scenery->faces[intersection->idx_face].c]);
     }
     return hit;
 }
@@ -77,13 +67,17 @@ mliColor mli_trace(
             MLI_VOID_FACE,
             &intersection)
     ) {
+        uint32_t surface_idx;
+        uint32_t color_idx;
         mliIntersection global_light_intersection;
         mliRay line_of_sight_to_source;
         mliVec dir_to_source = {1., 1., -3.};
         line_of_sight_to_source = mliRay_set(
             intersection.position,
             dir_to_source);
-        color = scenery->colors[scenery->mesh_colors[intersection.idx_mesh]];
+        surface_idx = scenery->faces_outer_surfaces[intersection.idx_face];
+        color_idx = scenery->surfaces[surface_idx].color;
+        color = scenery->colors[color_idx];
 
         if (first_casual_intersection(
                 scenery,

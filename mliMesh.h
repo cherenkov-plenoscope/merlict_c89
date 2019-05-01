@@ -14,6 +14,13 @@ typedef struct {
     uint32_t c;
 } mliFace;
 
+void mliFace_ncpy(
+    const mliFace *from,
+    mliFace* to,
+    const uint64_t num) {
+    uint64_t i;
+    for (i = 0; i < num; i++) {
+        to[i] = from[i];}}
 
 typedef struct {
     uint32_t num_vertices;
