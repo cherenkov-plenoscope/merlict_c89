@@ -35,14 +35,13 @@ int main(int argc, char *argv[]) {
         mliColor red = {255., 0., 0.};
         mliCamera camera;
         mliImage img;
-        mliSceneryCapacity capa;
-        capa.num_functions = 1u;
-        capa.num_colors = 1u;
-        capa.num_surfaces = 0u;
-        capa.num_meshes = 1u;
-        capa.num_spherical_cap_hex_bound = 1u;
+        scenery.num_functions = 1u;
+        scenery.num_colors = 1u;
+        scenery.num_surfaces = 1u;
+        scenery.num_meshes = 1u;
+        scenery.num_spherical_cap_hex_bound = 1u;
 
-        mliScenery_malloc(&scenery, capa);
+        mliScenery_malloc(&scenery);
 
         mliFunc_init(&scenery.functions[0] , 2u);
         scenery.functions[0].x[0] = 200.e-9;
@@ -51,6 +50,11 @@ int main(int argc, char *argv[]) {
         scenery.functions[0].y[1] = 0.;
 
         scenery.colors[0] = red;
+
+        scenery.surfaces[0].color = 0u;
+        scenery.surfaces[0].reflection = 0u;
+        scenery.surfaces[0].refraction = 0u;
+        scenery.surfaces[0].absorbtion = 0u;
 
         mliMesh_init_from_off("diff_cube_sphere.off", &scenery.meshes[0]);
 

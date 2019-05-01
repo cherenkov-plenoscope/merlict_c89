@@ -14,21 +14,13 @@
 
 typedef struct {
     uint32_t num_functions;
-    uint32_t num_colors;
-    uint32_t num_surfaces;
-    uint32_t num_meshes;
-    uint32_t num_spherical_cap_hex_bound;
-} mliSceneryCapacity;
-
-typedef struct {
-    uint32_t num_functions;
     mliFunc *functions;
 
     uint32_t num_colors;
     mliColor *colors;
 
-    uint32_t num_surfaces_properties;
-    mliSurfaceProperty *surfaces_properties;
+    uint32_t num_surfaces;
+    mliSurface *surfaces;
 
     uint32_t num_meshes;
     mliMesh *meshes;
@@ -38,26 +30,26 @@ typedef struct {
     mliSphericalCapHeagonal *spherical_cap_hex_bound;
 } mliScenery;
 
-void mliScenery_malloc(
-    mliScenery* scenery,
-    const mliSceneryCapacity capacity) {
-    scenery->num_functions = capacity.num_functions;
+void mliScenery_malloc(mliScenery* scenery) {
+    /* functions */
     scenery->functions = (mliFunc*)malloc(
         scenery->num_functions*sizeof(mliFunc));
 
-    scenery->num_colors = capacity.num_colors;
+    /* colors */
     scenery->colors = (mliColor*)malloc(
         scenery->num_colors*sizeof(mliColor));
 
-    scenery->num_meshes = capacity.num_meshes;
+    /* surfaces */
+    scenery->surfaces = (mliSurface*)malloc(
+        scenery->num_surfaces*sizeof(mliSurface));
+
+    /* meshes */
     scenery->meshes = (mliMesh*)malloc(
         scenery->num_meshes*sizeof(mliMesh));
 
     scenery->mesh_colors = (uint32_t*)malloc(
         scenery->num_meshes*sizeof(uint32_t));
 
-    scenery->num_spherical_cap_hex_bound =
-        capacity.num_spherical_cap_hex_bound;
     scenery->spherical_cap_hex_bound = (mliSphericalCapHeagonal*)malloc(
         scenery->num_spherical_cap_hex_bound*
         sizeof(mliSphericalCapHeagonal));
@@ -65,21 +57,29 @@ void mliScenery_malloc(
 
 void mliScenery_free(mliScenery *scenery) {
     int i;
+    /* functions */
     for (i = 0; i < scenery->num_functions; i++) {
-        mliFunc_free(&(scenery->functions[i]));
-    }
+        mliFunc_free(&(scenery->functions[i]));}
     free(scenery->functions);
     scenery->num_functions = 0;
 
+    /* colors */
     free(scenery->colors);
     scenery->num_colors = 0;
 
+    /* surfaces */
+    free(scenery->surfaces);
+    scenery->num_surfaces = 0;
+
+    /* meshes */
     for (i = 0; i < scenery->num_meshes; i++) {
-        mliMesh_free(&(scenery->meshes[i]));
-    }
+        mliMesh_free(&(scenery->meshes[i]));}
     scenery->num_meshes = 0u;
+
+    /* mesh_colors */
     free(scenery->mesh_colors);
 
+    /* spherical_cap_hex_bound */
     free(scenery->spherical_cap_hex_bound);
     scenery->num_spherical_cap_hex_bound = 0;
 }
