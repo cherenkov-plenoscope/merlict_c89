@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
         capa.num_meshes = 1u;
         capa.num_spherical_cap_hex_bound = 1u;
 
-        mliScenery_init(&scenery, capa);
+        mliScenery_malloc(&scenery, capa);
 
         mliFunc_init(&scenery.functions[0] , 2u);
         scenery.functions[0].x[0] = 200.e-9;

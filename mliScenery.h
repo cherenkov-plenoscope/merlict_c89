@@ -10,18 +10,7 @@
 #include "mliFunc.h"
 #include "mliMesh.h"
 #include "mliSphericalCap.h"
-
-typedef struct {
-    uint32_t type;
-    uint32_t idx;
-} mliIdx;
-
-typedef struct {
-    uint32_t i_color;
-    uint32_t i_reflection;
-    uint32_t i_refraction;
-    uint32_t i_absorbtion;
-} mliSurface;
+#include "mliSurfaceProperty.h"
 
 typedef struct {
     uint32_t num_functions;
@@ -38,8 +27,8 @@ typedef struct {
     uint32_t num_colors;
     mliColor *colors;
 
-    uint32_t num_surfaces;
-    mliSurface *surfaces;
+    uint32_t num_surfaces_properties;
+    mliSurfaceProperty *surfaces_properties;
 
     uint32_t num_meshes;
     mliMesh *meshes;
@@ -49,7 +38,7 @@ typedef struct {
     mliSphericalCapHeagonal *spherical_cap_hex_bound;
 } mliScenery;
 
-void mliScenery_init(
+void mliScenery_malloc(
     mliScenery* scenery,
     const mliSceneryCapacity capacity) {
     scenery->num_functions = capacity.num_functions;
@@ -73,7 +62,6 @@ void mliScenery_init(
         scenery->num_spherical_cap_hex_bound*
         sizeof(mliSphericalCapHeagonal));
 }
-
 
 void mliScenery_free(mliScenery *scenery) {
     int i;
