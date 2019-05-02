@@ -32,10 +32,9 @@ int main(int argc, char *argv[]) {
     {
         int i;
         mliScenery scenery;
+        mliScenery scenery_back;
         mliMesh diff_cube_sphere;
         mliColor red = {255., 0., 0.};
-        mliCamera camera;
-        mliImage img;
         scenery.num_functions = 1u;
         scenery.num_colors = 1u;
         scenery.num_surfaces = 1u;
@@ -48,7 +47,7 @@ int main(int argc, char *argv[]) {
 
         mliScenery_malloc(&scenery);
 
-        mliFunc_init(&scenery.functions[0] , 2u);
+        mliFunc_malloc(&scenery.functions[0] , 2u);
         scenery.functions[0].x[0] = 200.e-9;
         scenery.functions[0].x[1] = 1200.e-9;
         scenery.functions[0].y[0] = 0.;
@@ -72,14 +71,29 @@ int main(int argc, char *argv[]) {
             diff_cube_sphere.num_faces);
 
         for (i = 0; i < scenery.num_faces; i++) {
-            scenery.faces_outer_surfaces[i] = 0u;
-            scenery.faces_inner_surfaces[i] = 0u;}
+            scenery.faces_surfaces[i].outer = 0u;
+            scenery.faces_surfaces[i].inner = 0u;}
 
-        scenery.spherical_cap_hex_bound[0].curvature_radius = 4.89*2.;
-        scenery.spherical_cap_hex_bound[0].inner_hex_radius = 0.32;
+        scenery.spherical_cap_hex[0].curvature_radius = 4.89*2.;
+        scenery.spherical_cap_hex[0].inner_hex_radius = 0.32;
 
-        scenery.spherical_cap_hex_outer_surfaces = 0u;
-        scenery.spherical_cap_hex_inner_surfaces = 0u;
+        scenery.spherical_cap_hex_surfaces[0].outer = 0u;
+        scenery.spherical_cap_hex_surfaces[0].inner = 0u;
+
+        mliScenery_write_to_path(&scenery, "my_scenery.mli.tmp");
+        mliScenery_read_from_path(&scenery_back, "my_scenery.mli.tmp");
+
+        CHECK(mliScenery_is_equal(&scenery, &scenery_back));
+
+        mliScenery_free(&scenery);
+    }
+
+    /* render image */
+    {
+        mliScenery scenery;
+        mliCamera camera;
+        mliImage img;
+        mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
 
         camera.position.x = 0.;
         camera.position.y = 0.;
@@ -611,7 +625,7 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func;
-        mliFunc_init(&func, 0u);
+        mliFunc_malloc(&func, 0u);
         CHECK(func.num_points == 0u);
         CHECK(mliFunc_x_is_causal(&func));
         mliFunc_free(&func);
@@ -619,7 +633,7 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func;
-        mliFunc_init(&func, 3u);
+        mliFunc_malloc(&func, 3u);
         CHECK(func.num_points == 3u);
         func.x[0] = 0.;
         func.x[1] = 1.;
@@ -630,7 +644,7 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func;
-        mliFunc_init(&func, 3u);
+        mliFunc_malloc(&func, 3u);
         func.x[0] = 0.;
         func.x[1] = 1.;
         func.x[2] = 2.;
@@ -642,7 +656,7 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func;
-        mliFunc_init(&func, 0u);
+        mliFunc_malloc(&func, 0u);
         CHECK(mliFunc_x_is_causal(&func));
         CHECK(mliFunc_upper_compare(&func, -1.) == 1);
         CHECK(mliFunc_upper_compare(&func, 3.) == 1);
@@ -652,7 +666,7 @@ int main(int argc, char *argv[]) {
     {
         mliFunc func;
         float y;
-        mliFunc_init(&func, 5u);
+        mliFunc_malloc(&func, 5u);
         CHECK(func.num_points == 5u);
 
         func.x[0] = 0.;
@@ -673,7 +687,6 @@ int main(int argc, char *argv[]) {
         CHECK(y == 2.);
         mliFunc_free(&func);
     }
-
 
     {
         mliMesh m;

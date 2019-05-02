@@ -48,4 +48,10 @@ mliColor mliColor_truncate_to_uint8(const mliColor color) {
     if (out.b < 0.) out.b = 0.;
     return out;}
 
+int mliColor_is_equal(const mliColor* a, const mliColor *b) {
+    if (a->r != b->r) return 0;
+    if (a->g != b->g) return 0;
+    if (a->b != b->b) return 0;
+    return 1;}
+
 #endif

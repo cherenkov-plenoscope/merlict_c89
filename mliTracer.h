@@ -75,7 +75,7 @@ mliColor mli_trace(
         line_of_sight_to_source = mliRay_set(
             intersection.position,
             dir_to_source);
-        surface_idx = scenery->faces_outer_surfaces[intersection.idx_face];
+        surface_idx = scenery->faces_surfaces[intersection.idx_face].outer;
         color_idx = scenery->surfaces[surface_idx].color;
         color = scenery->colors[color_idx];
 

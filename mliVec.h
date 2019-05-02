@@ -126,6 +126,12 @@ int mliVec_equal_margin(
     distance_squared = mliVec_dot(&diff, &diff);
     return distance_squared <= distance_margin*distance_margin;}
 
+int mliVec_is_equal(const mliVec *a, const mliVec *b) {
+    if (a->x != b->x) return 0;
+    if (a->y != b->y) return 0;
+    if (a->z != b->z) return 0;
+    return 1;}
+
 uint32_t mliVec_octant(const mliVec *a) {
     /*  encodes the octant sectors where the vector is pointing to
         x y z sector
