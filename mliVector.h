@@ -38,7 +38,7 @@ int mliVector_set(mliVector* vector, size_t capacity, size_t sizeof_element) {
     assert(vector != NULL);
     if (vector == NULL) return MLI_VECTOR_ERROR;
     vector->size = 0;
-    vector->capacity = mli_max_int(MLI_VECTOR_MINIMUM_CAPACITY, capacity);
+    vector->capacity = MLI_MAX2(MLI_VECTOR_MINIMUM_CAPACITY, capacity);
     vector->sizeof_element = sizeof_element;
     vector->data = malloc(vector->capacity*sizeof_element);
     return vector->data == NULL ? MLI_VECTOR_ERROR : MLI_VECTOR_SUCCESS;
@@ -78,7 +78,7 @@ int mliVector_reallocate(mliVector* vector, size_t new_capacity) {
 int mliVector_adjust_capacity(mliVector* vector) {
     return mliVector_reallocate(
         vector,
-        mli_max_int(1, vector->size*MLI_VECTOR_GROWTH_FACTOR));
+        MLI_MAX2(1, vector->size*MLI_VECTOR_GROWTH_FACTOR));
 }
 
 void* mliVector_offset(const mliVector* vector, size_t index) {

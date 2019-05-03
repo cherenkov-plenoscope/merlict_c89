@@ -4,6 +4,8 @@
 #include <assert.h>
 #include "mliMath.h"
 #include "mliVec.h"
+#include "mliRotMat.h"
+#include "mliQuaternion.h"
 #include "mliRay.h"
 #include "mliUnitTest.h"
 #include "mliMesh.h"
@@ -15,14 +17,87 @@
 #include "mliHomTra.h"
 #include "mliCamera.h"
 #include "mliScenery.h"
+#include "mliIndex.h"
 #include "mliTracer.h"
 #include "mliHexagonalPrismZ.h"
 #include "mliSphericalCap.h"
 #include "mliOuterPrismBound.h"
 #include "mliVector.h"
+#include "mliVec_OBB.h"
+#include "mliTriangle_OBB.h"
 
 
 int main(int argc, char *argv[]) {
+    /* Orientated-Bounding-Box */
+
+    /* OBB mliVec */
+    {
+        mliVec point_inside = {1., 1., 1.};
+        mliVec point_outside = {-1., -2., -3.};
+        mliVec low = {0. ,0., 0.};
+        mliVec upp = {2., 2., 2.};
+        CHECK(mliVec_overlap_OBB(point_inside, low, upp));
+        CHECK(!mliVec_overlap_OBB(point_outside, low, upp));
+    }
+
+    {
+        mliVec low = {0. ,0., 0.};
+        mliVec upp = {2., 2., 2.};
+        CHECK(mliVec_overlap_OBB(mliVec_set(0., 0., 0.), low, upp));
+        CHECK(mliVec_overlap_OBB(mliVec_set(0., 0., 1.), low, upp));
+        CHECK(mliVec_overlap_OBB(mliVec_set(0., 1., 1.), low, upp));
+        CHECK(mliVec_overlap_OBB(mliVec_set(2., 2., 2.), low, upp));
+        CHECK(mliVec_overlap_OBB(mliVec_set(1., 2., 2.), low, upp));
+        CHECK(mliVec_overlap_OBB(mliVec_set(1., 1., 2.), low, upp));
+    }
+    /* OBB mliTriangle */
+    {
+        mliVec low = {0. ,0., 0.};
+        mliVec upp = {2., 2., 2.};
+        CHECK(mliTriangle_overlap_obb(
+            mliVec_set(0., 0., 0.),
+            mliVec_set(2., 2., 2.),
+            mliVec_set(1., 1., 1.),
+            low,
+            upp));
+
+        CHECK(!mliTriangle_overlap_obb(
+            mliVec_set(0., 0., 5.),
+            mliVec_set(0., 1., 5.),
+            mliVec_set(1., 1., 5.),
+            low,
+            upp));
+
+        CHECK(mliTriangle_overlap_obb(
+            mliVec_set(0., 0., 2.),
+            mliVec_set(0., 1., 2.),
+            mliVec_set(1., 1., 2.),
+            low,
+            upp));
+
+        CHECK(mliTriangle_overlap_obb(
+            mliVec_set(2., 2., 1.),
+            mliVec_set(2., 3., 1.),
+            mliVec_set(3., 3., 1.),
+            low,
+            upp));
+
+        CHECK(!mliTriangle_overlap_obb(
+            mliVec_set(2.1, 2., 1.),
+            mliVec_set(2.1, 3., 1.),
+            mliVec_set(3., 3., 1.),
+            low,
+            upp));
+
+        CHECK(mliTriangle_overlap_obb(
+            mliVec_set(-50, -50, 1.),
+            mliVec_set(50, -50, 1.),
+            mliVec_set(0., 50, 1.),
+            low,
+            upp));
+
+    }
+
     /* assert */
     {
         assert(1);
@@ -76,7 +151,11 @@ int main(int argc, char *argv[]) {
 
         scenery.spherical_cap_hex[0].curvature_radius = 4.89*2.;
         scenery.spherical_cap_hex[0].inner_hex_radius = 0.32;
-
+        scenery.spherical_cap_hex_T[0].translation = mliVec_set(0., 0., 1.);
+        scenery.spherical_cap_hex_T[0].rotation =
+            mliQuaternion_set_rotaxis_and_angle(
+                mliVec_set(0., 0., 0.),
+                0.);
         scenery.spherical_cap_hex_surfaces[0].outer = 0u;
         scenery.spherical_cap_hex_surfaces[0].inner = 0u;
 
@@ -109,11 +188,42 @@ int main(int argc, char *argv[]) {
         mliScenery_free(&scenery);
     }
 
-    /* render image */
+    /* scenery indexes are valid */
     {
         mliScenery scenery;
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
         CHECK(mliScenery_valid(&scenery));     /* <--- to be tested */
+        mliScenery_free(&scenery);
+    }
+
+    /* scenery indexes are valid */
+    {
+        mliVec obb_lower;
+        mliVec obb_upper;
+        uint64_t i;
+        uint64_t num_surface_entities;
+        mliScenery scenery;
+        mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+        num_surface_entities = scenery.num_triangles;
+        num_surface_entities += scenery.num_spherical_cap_hex;
+
+        CHECK(mliScenery_first(&scenery) == 0u);
+        CHECK(mliScenery_last(&scenery) == num_surface_entities);
+
+        obb_lower = mliVec_set(-1e2, -1e2, -1e2);
+        obb_upper = mliVec_set(1e2, 1e2, 1e2);
+        for (
+            i = mliScenery_first(&scenery);
+            i <= mliScenery_last(&scenery);
+            i++
+        ) {
+            CHECK(mliScenery_overlap_obb(
+                &scenery,
+                i,
+                obb_lower,
+                obb_upper));
+        }
+
         mliScenery_free(&scenery);
     }
 
@@ -281,6 +391,25 @@ int main(int argc, char *argv[]) {
         CHECK_MARGIN(mli_rad2deg(.5*mli_PI), 90., 1e-9);
         CHECK_MARGIN(mli_rad2deg(1.*mli_PI), 180., 1e-9);
         CHECK_MARGIN(mli_rad2deg(1.e3*mli_PI), 180.e3, 1e-9);
+    }
+
+    {
+        CHECK(MLI_MAX2(3, 4) == 4);
+        CHECK(MLI_MAX2(4, 3) == 4);
+    }
+
+    {
+        CHECK(MLI_MIN3(4, 5, 6) == 4);
+        CHECK(MLI_MIN3(5, 4, 6) == 4);
+        CHECK(MLI_MIN3(5, 6, 4) == 4);
+
+        CHECK(MLI_MAX3(4, 5, 6) == 6);
+        CHECK(MLI_MAX3(5, 4, 6) == 6);
+        CHECK(MLI_MAX3(5, 6, 4) == 6);
+
+        CHECK(MLI_MAX3(4., 5., 6.) == 6.);
+        CHECK(MLI_MAX3(5., 4., 6.) == 6.);
+        CHECK(MLI_MAX3(5., 6., 4.) == 6.);
     }
 
     /* mliQuadraticEquation */

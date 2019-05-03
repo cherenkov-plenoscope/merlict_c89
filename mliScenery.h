@@ -13,9 +13,8 @@
 #include "mliSurface.h"
 #include "mliSurfaces.h"
 
-#define MLI_MESH 1u
-#define MLI_SPHERICAL_CAP_HEX 2u
-#define MLI_NUM_OBJECT_CLASSES 2u
+#define MLI_TRIANGLE 0u
+#define MLI_SPHERICAL_CAP_HEX 1u
 
 typedef struct {
     uint32_t num_functions;
@@ -37,6 +36,7 @@ typedef struct {
     uint32_t num_spherical_cap_hex;
     mliSphericalCapHeagonal *spherical_cap_hex;
     mliSurfaces *spherical_cap_hex_surfaces;
+    mliHomTra* spherical_cap_hex_T;
 } mliScenery;
 
 void mliScenery_malloc(mliScenery* scenery) {
@@ -67,6 +67,8 @@ void mliScenery_malloc(mliScenery* scenery) {
         sizeof(mliSphericalCapHeagonal));
     scenery->spherical_cap_hex_surfaces = (mliSurfaces*)malloc(
         scenery->num_spherical_cap_hex*sizeof(mliSurfaces));
+    scenery->spherical_cap_hex_T = (mliHomTra*)malloc(
+        scenery->num_spherical_cap_hex*sizeof(mliHomTra));
 }
 
 void mliScenery_free(mliScenery *scenery) {
@@ -97,6 +99,7 @@ void mliScenery_free(mliScenery *scenery) {
     /* spherical_cap_hex */
     free(scenery->spherical_cap_hex);
     free(scenery->spherical_cap_hex_surfaces);
+    free(scenery->spherical_cap_hex_T);
     scenery->num_spherical_cap_hex = 0;
 }
 
@@ -145,6 +148,11 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     fwrite(
         scenery->spherical_cap_hex_surfaces,
         sizeof(mliSurfaces),
+        scenery->num_spherical_cap_hex,
+        f);
+    fwrite(
+        scenery->spherical_cap_hex_T,
+        sizeof(mliHomTra),
         scenery->num_spherical_cap_hex,
         f);
 
@@ -203,6 +211,10 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     fread(
         scenery->spherical_cap_hex_surfaces,
         sizeof(mliSurfaces),
+        scenery->num_spherical_cap_hex, f);
+    fread(
+        scenery->spherical_cap_hex_T,
+        sizeof(mliHomTra),
         scenery->num_spherical_cap_hex, f);
 
     fclose(f);

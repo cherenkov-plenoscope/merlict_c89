@@ -17,13 +17,9 @@ int mli_min_int(const int x, const int y) {
     return (x < y) ? x : y;
 }
 
-int mli_max_int(const int x, const int y) {
-    return (x > y) ? x : y;
-}
+#define MLI_MAX2(a,b) (((a) > (b)) ? (a) : (b))
 
-float mli_min_float(const float x, const float y) {
-    return (x < y) ? x : y;
-}
-
+#define MLI_MIN3(a,b,c) ((((a)<(b))&&((a)<(c))) ? (a) : (((b)<(c)) ? (b) : (c)))
+#define MLI_MAX3(a,b,c) ((((a)>(b))&&((a)>(c))) ? (a) : (((b)>(c)) ? (b) : (c)))
 
 #endif
