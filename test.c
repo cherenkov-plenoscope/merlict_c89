@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
         mliMesh_init_from_off("diff_cube_sphere.off", &diff_cube_sphere);
 
         scenery.num_vertices = diff_cube_sphere.num_vertices;
-        scenery.num_faces = diff_cube_sphere.num_faces;
+        scenery.num_triangles = diff_cube_sphere.num_faces;
 
         mliScenery_malloc(&scenery);
 
@@ -67,12 +67,12 @@ int main(int argc, char *argv[]) {
 
         mliFace_ncpy(
             diff_cube_sphere.faces,
-            scenery.faces,
+            scenery.triangles,
             diff_cube_sphere.num_faces);
 
-        for (i = 0; i < scenery.num_faces; i++) {
-            scenery.faces_surfaces[i].outer = 0u;
-            scenery.faces_surfaces[i].inner = 0u;}
+        for (i = 0; i < scenery.num_triangles; i++) {
+            scenery.triangles_surfaces[i].outer = 0u;
+            scenery.triangles_surfaces[i].inner = 0u;}
 
         scenery.spherical_cap_hex[0].curvature_radius = 4.89*2.;
         scenery.spherical_cap_hex[0].inner_hex_radius = 0.32;

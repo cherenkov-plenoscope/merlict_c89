@@ -9,8 +9,7 @@
 #define MLI_VOID_FACE -1
 
 typedef struct {
-    uint32_t idx_face;
-    uint32_t idx_mesh;
+    uint32_t idx_tri;
     mliVec position;
     mliVec surface_normal_local;
     float distance_of_ray;

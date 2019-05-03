@@ -30,9 +30,9 @@ typedef struct {
     uint32_t num_vertices;
     mliVec *vertices;
 
-    uint32_t num_faces;
-    mliFace *faces;
-    mliSurfaces *faces_surfaces;
+    uint32_t num_triangles;
+    mliFace *triangles;
+    mliSurfaces *triangles_surfaces;
 
     uint32_t num_spherical_cap_hex;
     mliSphericalCapHeagonal *spherical_cap_hex;
@@ -55,10 +55,11 @@ void mliScenery_malloc(mliScenery* scenery) {
     /* vertices */
     scenery->vertices = (mliVec*)malloc(scenery->num_vertices*sizeof(mliVec));
 
-    /* faces */
-    scenery->faces = (mliFace*)malloc(scenery->num_faces*sizeof(mliFace));
-    scenery->faces_surfaces =
-        (mliSurfaces*)malloc(scenery->num_faces*sizeof(mliSurfaces));
+    /* triangles */
+    scenery->triangles = (mliFace*)malloc(
+        scenery->num_triangles*sizeof(mliFace));
+    scenery->triangles_surfaces =
+        (mliSurfaces*)malloc(scenery->num_triangles*sizeof(mliSurfaces));
 
     /* spherical_cap_hex */
     scenery->spherical_cap_hex = (mliSphericalCapHeagonal*)malloc(
@@ -88,10 +89,10 @@ void mliScenery_free(mliScenery *scenery) {
     free(scenery->vertices);
     scenery->num_vertices = 0;
 
-    /* faces */
-    free(scenery->faces);
-    free(scenery->faces_surfaces);
-    scenery->num_faces = 0;
+    /* triangles */
+    free(scenery->triangles);
+    free(scenery->triangles_surfaces);
+    scenery->num_triangles = 0;
 
     /* spherical_cap_hex */
     free(scenery->spherical_cap_hex);
@@ -111,7 +112,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     fwrite(&scenery->num_colors, sizeof(uint32_t), 1u, f);
     fwrite(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
     fwrite(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_faces, sizeof(uint32_t), 1u, f);
+    fwrite(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
     fwrite(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
 
     /* functions */
@@ -127,19 +128,25 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     /* vertices */
     fwrite(scenery->vertices, sizeof(mliVec), scenery->num_vertices, f);
 
-    /* faces */
-    fwrite(scenery->faces, sizeof(mliFace), scenery->num_faces, f);
-    fwrite(scenery->faces_surfaces, sizeof(mliSurfaces), scenery->num_faces, f);
+    /* triangles */
+    fwrite(scenery->triangles, sizeof(mliFace), scenery->num_triangles, f);
+    fwrite(
+        scenery->triangles_surfaces,
+        sizeof(mliSurfaces),
+        scenery->num_triangles,
+        f);
 
     /* spherical_cap_hex */
     fwrite(
         scenery->spherical_cap_hex,
         sizeof(mliSphericalCapHeagonal),
-        scenery->num_spherical_cap_hex, f);
+        scenery->num_spherical_cap_hex,
+        f);
     fwrite(
         scenery->spherical_cap_hex_surfaces,
         sizeof(mliSurfaces),
-        scenery->num_spherical_cap_hex, f);
+        scenery->num_spherical_cap_hex,
+        f);
 
     fclose(f);
     return EXIT_SUCCESS;
@@ -162,7 +169,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     fread(&scenery->num_colors, sizeof(uint32_t), 1u, f);
     fread(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
     fread(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_faces, sizeof(uint32_t), 1u, f);
+    fread(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
     fread(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
 
     mliScenery_malloc(scenery);
@@ -180,9 +187,13 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     /* vertices */
     fread(scenery->vertices, sizeof(mliVec), scenery->num_vertices, f);
 
-    /* faces */
-    fread(scenery->faces, sizeof(mliFace), scenery->num_faces, f);
-    fread(scenery->faces_surfaces, sizeof(mliSurfaces), scenery->num_faces, f);
+    /* triangles */
+    fread(scenery->triangles, sizeof(mliFace), scenery->num_triangles, f);
+    fread(
+        scenery->triangles_surfaces,
+        sizeof(mliSurfaces),
+        scenery->num_triangles,
+        f);
 
     /* spherical_cap_hex */
     fread(
@@ -207,7 +218,7 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
     if (a->num_colors != b->num_colors ) return 0;
     if (a->num_surfaces != b->num_surfaces ) return 0;
     if (a->num_vertices != b->num_vertices ) return 0;
-    if (a->num_faces != b->num_faces ) return 0;
+    if (a->num_triangles != b->num_triangles ) return 0;
     if (a->num_spherical_cap_hex != b->num_spherical_cap_hex ) return 0;
     for (i = 0; i < a->num_functions; i++) {
         if (!mliFunc_is_equal(&a->functions[i], &b->functions[i])) return 0;}
@@ -217,10 +228,12 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
         if (!mliSurface_is_equal(&a->surfaces[i], &b->surfaces[i])) return 0;}
     for (i = 0; i < a->num_vertices; i++) {
         if (!mliVec_is_equal(&a->vertices[i], &b->vertices[i])) return 0;}
-    for (i = 0; i < a->num_faces; i++) {
-        if (!mliFace_is_equal(&a->faces[i], &b->faces[i]))
+    for (i = 0; i < a->num_triangles; i++) {
+        if (!mliFace_is_equal(&a->triangles[i], &b->triangles[i]))
             return 0;
-        if (!mliSurfaces_is_equal(&a->faces_surfaces[i], &b->faces_surfaces[i]))
+        if (!mliSurfaces_is_equal(
+            &a->triangles_surfaces[i],
+            &b->triangles_surfaces[i]))
             return 0;}
     for (i = 0; i < a->num_spherical_cap_hex; i++) {
         if (!mliSphericalCapHeagonal_is_equal(
@@ -247,18 +260,18 @@ int mliScenery_valid_surfaces(const mliScenery *scenery) {
             return 0;}
     return 1;}
 
-int mliScenery_valid_faces(const mliScenery *scenery) {
+int mliScenery_valid_triangles(const mliScenery *scenery) {
     int i;
-    for (i = 0; i < scenery->num_faces; i++) {
-        if (scenery->faces[i].a >= scenery->num_vertices)
+    for (i = 0; i < scenery->num_triangles; i++) {
+        if (scenery->triangles[i].a >= scenery->num_vertices)
             return 0;
-        if (scenery->faces[i].b >= scenery->num_vertices)
+        if (scenery->triangles[i].b >= scenery->num_vertices)
             return 0;
-        if (scenery->faces[i].c >= scenery->num_vertices)
+        if (scenery->triangles[i].c >= scenery->num_vertices)
             return 0;
-        if (scenery->faces_surfaces[i].inner >= scenery->num_surfaces)
+        if (scenery->triangles_surfaces[i].inner >= scenery->num_surfaces)
             return 0;
-        if (scenery->faces_surfaces[i].outer >= scenery->num_surfaces)
+        if (scenery->triangles_surfaces[i].outer >= scenery->num_surfaces)
             return 0;}
     return 1;}
 
@@ -277,7 +290,7 @@ int mliScenery_valid_spherical_cap_hex(const mliScenery *scenery) {
 int mliScenery_valid(const mliScenery *scenery) {
     if (!mliScenery_valid_surfaces(scenery))
         return 0;
-    if (!mliScenery_valid_faces(scenery))
+    if (!mliScenery_valid_triangles(scenery))
         return 0;
     if (!mliScenery_valid_spherical_cap_hex(scenery))
         return 0;
