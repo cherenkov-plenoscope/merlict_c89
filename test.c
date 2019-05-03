@@ -109,6 +109,14 @@ int main(int argc, char *argv[]) {
         mliScenery_free(&scenery);
     }
 
+    /* render image */
+    {
+        mliScenery scenery;
+        mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+        CHECK(mliScenery_valid(&scenery));     /* <--- to be tested */
+        mliScenery_free(&scenery);
+    }
+
     /* mliVector */
     {
         int i;

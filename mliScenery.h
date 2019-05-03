@@ -209,25 +209,19 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
     if (a->num_vertices != b->num_vertices ) return 0;
     if (a->num_faces != b->num_faces ) return 0;
     if (a->num_spherical_cap_hex != b->num_spherical_cap_hex ) return 0;
-
     for (i = 0; i < a->num_functions; i++) {
         if (!mliFunc_is_equal(&a->functions[i], &b->functions[i])) return 0;}
-
     for (i = 0; i < a->num_colors; i++) {
         if (!mliColor_is_equal(&a->colors[i], &b->colors[i])) return 0;}
-
     for (i = 0; i < a->num_surfaces; i++) {
         if (!mliSurface_is_equal(&a->surfaces[i], &b->surfaces[i])) return 0;}
-
     for (i = 0; i < a->num_vertices; i++) {
         if (!mliVec_is_equal(&a->vertices[i], &b->vertices[i])) return 0;}
-
     for (i = 0; i < a->num_faces; i++) {
         if (!mliFace_is_equal(&a->faces[i], &b->faces[i]))
             return 0;
         if (!mliSurfaces_is_equal(&a->faces_surfaces[i], &b->faces_surfaces[i]))
             return 0;}
-
     for (i = 0; i < a->num_spherical_cap_hex; i++) {
         if (!mliSphericalCapHeagonal_is_equal(
                 &a->spherical_cap_hex[i],
@@ -237,8 +231,56 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
                 &a->spherical_cap_hex_surfaces[i],
                 &b->spherical_cap_hex_surfaces[i]))
             return 0;}
+    return 1;}
 
-    return 1;
-}
+
+int mliScenery_valid_surfaces(const mliScenery *scenery) {
+    int i;
+    for (i = 0; i < scenery->num_surfaces; i++) {
+        if (scenery->surfaces[i].color >= scenery->num_colors)
+            return 0;
+        if (scenery->surfaces[i].reflection >= scenery->num_functions)
+            return 0;
+        if (scenery->surfaces[i].refraction >= scenery->num_functions)
+            return 0;
+        if (scenery->surfaces[i].absorbtion >= scenery->num_functions)
+            return 0;}
+    return 1;}
+
+int mliScenery_valid_faces(const mliScenery *scenery) {
+    int i;
+    for (i = 0; i < scenery->num_faces; i++) {
+        if (scenery->faces[i].a >= scenery->num_vertices)
+            return 0;
+        if (scenery->faces[i].b >= scenery->num_vertices)
+            return 0;
+        if (scenery->faces[i].c >= scenery->num_vertices)
+            return 0;
+        if (scenery->faces_surfaces[i].inner >= scenery->num_surfaces)
+            return 0;
+        if (scenery->faces_surfaces[i].outer >= scenery->num_surfaces)
+            return 0;}
+    return 1;}
+
+int mliScenery_valid_spherical_cap_hex(const mliScenery *scenery) {
+    int i;
+    for (i = 0; i < scenery->num_spherical_cap_hex; i++) {
+        if (    scenery->spherical_cap_hex_surfaces[i].inner >=
+                scenery->num_surfaces)
+            return 0;
+        if (    scenery->spherical_cap_hex_surfaces[i].outer >=
+                scenery->num_surfaces)
+            return 0;
+    }
+    return 1;}
+
+int mliScenery_valid(const mliScenery *scenery) {
+    if (!mliScenery_valid_surfaces(scenery))
+        return 0;
+    if (!mliScenery_valid_faces(scenery))
+        return 0;
+    if (!mliScenery_valid_spherical_cap_hex(scenery))
+        return 0;
+    return 1;}
 
 #endif
