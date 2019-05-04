@@ -25,10 +25,56 @@
 #include "mliVector.h"
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"
+#include "mliOctTree.h"
 
 
 int main(int argc, char *argv[]) {
+    /* OctTree*/
+    {
+        int i, j;
+        mliOctTree tree;
+        tree.num_nodes = 3u;
+        mliOctTree_malloc(&tree);
+
+        for (i = 0; i < 3u; i++) {
+            for (j = 0; j < MLI_NUM_CHILDREN_OCTTREE; j++) {
+                mliOctTree_set_node_child(&tree, i, j, i+j);
+            }
+        }
+
+        for (i = 0; i < 3u; i++) {
+            for (j = 0; j < MLI_NUM_CHILDREN_OCTTREE; j++) {
+                CHECK(mliOctTree_at_node_child(&tree, i, j) == i+j);
+            }
+        }
+
+        mliOctTree_free(&tree);
+    }
     /* Orientated-Bounding-Box */
+
+    {
+        mliVec center;
+        mliOBB obb;
+        obb.lower = mliVec_set(.5, .5, .5);
+        obb.upper = mliVec_set(1.5, 1.5, 1.5);
+        center = mliOBB_center(obb);
+        CHECK_MARGIN(center.x, 1., 1e-7);
+        CHECK_MARGIN(center.y, 1., 1e-7);
+        CHECK_MARGIN(center.z, 1., 1e-7);
+    }
+
+    {
+        mliOBB obb = mliTriangle_obb(
+            mliVec_set(-5., 2., -.8),
+            mliVec_set(20., -3., 19.),
+            mliVec_set(10., 6., 2.5));
+        CHECK_MARGIN(obb.lower.x, -5., 1e-7);
+        CHECK_MARGIN(obb.lower.y, -3., 1e-7);
+        CHECK_MARGIN(obb.lower.z, -.8, 1e-7);
+        CHECK_MARGIN(obb.upper.x, 20., 1e-7);
+        CHECK_MARGIN(obb.upper.y, 6., 1e-7);
+        CHECK_MARGIN(obb.upper.z, 19., 1e-7);
+    }
 
     /* OBB mliVec */
     {
@@ -52,49 +98,44 @@ int main(int argc, char *argv[]) {
     }
     /* OBB mliTriangle */
     {
-        mliVec low = {0. ,0., 0.};
-        mliVec upp = {2., 2., 2.};
+        mliOBB obb;
+        obb.lower = mliVec_set(0. ,0., 0.);
+        obb.upper = mliVec_set(2., 2., 2.);
         CHECK(mliTriangle_overlap_obb(
             mliVec_set(0., 0., 0.),
             mliVec_set(2., 2., 2.),
             mliVec_set(1., 1., 1.),
-            low,
-            upp));
+            obb));
 
         CHECK(!mliTriangle_overlap_obb(
             mliVec_set(0., 0., 5.),
             mliVec_set(0., 1., 5.),
             mliVec_set(1., 1., 5.),
-            low,
-            upp));
+            obb));
 
         CHECK(mliTriangle_overlap_obb(
             mliVec_set(0., 0., 2.),
             mliVec_set(0., 1., 2.),
             mliVec_set(1., 1., 2.),
-            low,
-            upp));
+            obb));
 
         CHECK(mliTriangle_overlap_obb(
             mliVec_set(2., 2., 1.),
             mliVec_set(2., 3., 1.),
             mliVec_set(3., 3., 1.),
-            low,
-            upp));
+            obb));
 
         CHECK(!mliTriangle_overlap_obb(
             mliVec_set(2.1, 2., 1.),
             mliVec_set(2.1, 3., 1.),
             mliVec_set(3., 3., 1.),
-            low,
-            upp));
+            obb));
 
         CHECK(mliTriangle_overlap_obb(
             mliVec_set(-50, -50, 1.),
             mliVec_set(50, -50, 1.),
             mliVec_set(0., 50, 1.),
-            low,
-            upp));
+            obb));
 
     }
 
@@ -198,8 +239,7 @@ int main(int argc, char *argv[]) {
 
     /* scenery indexes are valid */
     {
-        mliVec obb_lower;
-        mliVec obb_upper;
+        mliOBB obb;
         uint64_t i;
         uint64_t num_surface_entities;
         mliScenery scenery;
@@ -209,15 +249,31 @@ int main(int argc, char *argv[]) {
 
         CHECK(mliScenery_num_entities(&scenery) == num_surface_entities);
 
-        obb_lower = mliVec_set(-1e2, -1e2, -1e2);
-        obb_upper = mliVec_set(1e2, 1e2, 1e2);
+        obb.lower = mliVec_set(-1e2, -1e2, -1e2);
+        obb.upper = mliVec_set(1e2, 1e2, 1e2);
         for (i = 0u; i <= mliScenery_num_entities(&scenery); i++) {
             CHECK(mliScenery_overlap_obb(
                 &scenery,
                 i,
-                obb_lower,
-                obb_upper));
+                obb));
         }
+
+        mliScenery_free(&scenery);
+    }
+
+    {
+        mliScenery scenery;
+        mliOBB obb;
+        mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+        CHECK(mliScenery_valid(&scenery));
+
+        obb = mliScenery_outermost_obb(&scenery);
+        CHECK_MARGIN(obb.lower.x, -7.5, 1e-7);
+        CHECK_MARGIN(obb.lower.y, -7.5, 1e-7);
+        CHECK_MARGIN(obb.lower.z, -7.5, 1e-7);
+        CHECK_MARGIN(obb.upper.x, +7.5, 1e-7);
+        CHECK_MARGIN(obb.upper.y, +7.5, 1e-7);
+        CHECK_MARGIN(obb.upper.z, +7.5, 1e-7);
 
         mliScenery_free(&scenery);
     }

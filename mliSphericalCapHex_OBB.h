@@ -4,13 +4,22 @@
 
 #include <math.h>
 #include "mliScenery.h"
+#include "mliOBB.h"
 
 int mliSphericalCapHex_overlap_obb(
     const mliSphericalCapHeagonal cap,
     const mliHomTra trafo,
-    const mliVec obb_lower,
-    const mliVec obb_upper) {
+    const mliOBB obb) {
     /* to be done... */
     return 1;}
+
+mliOBB mliSphericalCapHex_obb(
+    const mliSphericalCapHeagonal cap,
+    const mliHomTra trafo) {
+    mliOBB obb;
+    /* FIXME */
+    obb.lower = mliVec_set(0., 0., 0);
+    obb.upper = mliVec_set(0., 0., 0);
+    return obb;}
 
 #endif

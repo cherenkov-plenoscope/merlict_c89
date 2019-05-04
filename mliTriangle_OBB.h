@@ -7,6 +7,7 @@
 #include "mliScenery.h"
 #include "mliVec.h"
 #include "mliMath.h"
+#include "mliOBB.h"
 
 /* Voorhies, Douglas,
  * Triangle-Cube Intersection,
@@ -302,20 +303,18 @@ int64_t __mli_triangle_cube_intersection(mliTriangle t) {
 
 }
 
-void mliTriangle_transform_into_obb(
+void __mliTriangle_transform_into_obb(
     const mliVec a,
     const mliVec b,
     const mliVec c,
-    const mliVec obb_lower,
-    const mliVec obb_upper,
+    const mliOBB obb,
     mliVec *a_out,
     mliVec *b_out,
     mliVec *c_out) {
-    mliVec sum = mliVec_add(&obb_upper, &obb_lower);
-    mliVec obb_center = mliVec_multiply(&sum, .5);
-    const float scale_x = obb_upper.x - obb_lower.x;
-    const float scale_y = obb_upper.y - obb_lower.y;
-    const float scale_z = obb_upper.z - obb_lower.z;
+    mliVec obb_center = mliOBB_center(obb);
+    const float scale_x = obb.upper.x - obb.lower.x;
+    const float scale_y = obb.upper.y - obb.lower.y;
+    const float scale_z = obb.upper.z - obb.lower.z;
     /* translate */
     (*a_out) = mliVec_substract(&a, &obb_center);
     (*b_out) = mliVec_substract(&b, &obb_center);
@@ -335,16 +334,28 @@ int mliTriangle_overlap_obb(
     const mliVec a,
     const mliVec b,
     const mliVec c,
-    const mliVec obb_lower,
-    const mliVec obb_upper) {
+    const mliOBB obb) {
     mliTriangle tri;
-    mliTriangle_transform_into_obb(
+    __mliTriangle_transform_into_obb(
         a, b, c,
-        obb_lower, obb_upper,
+        obb,
         &tri.v1, &tri.v2, &tri.v3);
     if (__mli_triangle_cube_intersection(tri) == MLI_INSIDE)
         return 1;
     else
         return 0;}
+
+mliOBB mliTriangle_obb(
+    const mliVec a,
+    const mliVec b,
+    const mliVec c) {
+    mliOBB obb;
+    obb.lower.x = MLI_MIN3(a.x, b.x, c.x);
+    obb.lower.y = MLI_MIN3(a.y, b.y, c.y);
+    obb.lower.z = MLI_MIN3(a.z, b.z, c.z);
+    obb.upper.x = MLI_MAX3(a.x, b.x, c.x);
+    obb.upper.y = MLI_MAX3(a.y, b.y, c.y);
+    obb.upper.z = MLI_MAX3(a.z, b.z, c.z);
+    return obb;}
 
 #endif
