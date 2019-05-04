@@ -207,16 +207,11 @@ int main(int argc, char *argv[]) {
         num_surface_entities = scenery.num_triangles;
         num_surface_entities += scenery.num_spherical_cap_hex;
 
-        CHECK(mliScenery_first(&scenery) == 0u);
-        CHECK(mliScenery_last(&scenery) == num_surface_entities);
+        CHECK(mliScenery_num_entities(&scenery) == num_surface_entities);
 
         obb_lower = mliVec_set(-1e2, -1e2, -1e2);
         obb_upper = mliVec_set(1e2, 1e2, 1e2);
-        for (
-            i = mliScenery_first(&scenery);
-            i <= mliScenery_last(&scenery);
-            i++
-        ) {
+        for (i = 0u; i <= mliScenery_num_entities(&scenery); i++) {
             CHECK(mliScenery_overlap_obb(
                 &scenery,
                 i,

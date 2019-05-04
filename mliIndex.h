@@ -13,10 +13,7 @@ typedef struct {
     uint32_t idx;
 } mliIndex;
 
-uint64_t mliScenery_first(const mliScenery* scenery) {
-    return 0u;}
-
-uint64_t mliScenery_last(const mliScenery* scenery) {
+uint64_t mliScenery_num_entities(const mliScenery* scenery) {
     uint64_t last = 0;
     last += scenery->num_triangles;
     last += scenery->num_spherical_cap_hex;
@@ -35,7 +32,7 @@ mliIndex __mliScenery_resolve_index(
         ri.idx = idx - scenery->num_triangles;
         return ri;
     }
-    assert(idx < mliScenery_last(scenery) + 1);
+    assert(idx < mliScenery_num_entities(scenery) + 1);
     ri.type = 0u;
     ri.idx = 0u;
     return ri;}
