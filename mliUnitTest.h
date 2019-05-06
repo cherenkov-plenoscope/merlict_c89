@@ -7,7 +7,7 @@
 
 #define CHECK_MARGIN(a, b, margin) \
     do { \
-        if ( (fabs(a - b) > margin) ) { \
+        if ( (fabs((a) - (b)) > margin) ) { \
             printf("In %s, line %d\n", __FILE__, __LINE__); \
             printf("Expected fabs(%f - %f) < %f.\n", a, b, margin); \
             return EXIT_FAILURE; \
