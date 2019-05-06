@@ -12,13 +12,13 @@ typedef struct {
 } mliColor;
 
 mliColor mliColor_mix(
-    const mliColor *a,
-    const mliColor *b,
+    const mliColor a,
+    const mliColor b,
     const float refl) {
     mliColor out;
-    out.r = (1.f - refl)*a->r + refl * b->r;
-    out.g = (1.f - refl)*a->g + refl * b->g;
-    out.b = (1.f - refl)*a->b + refl * b->b;
+    out.r = (1.f - refl)*a.r + refl * b.r;
+    out.g = (1.f - refl)*a.g + refl * b.g;
+    out.b = (1.f - refl)*a.b + refl * b.b;
     return out;}
 
 mliColor mliColor_mean(
@@ -48,10 +48,10 @@ mliColor mliColor_truncate_to_uint8(const mliColor color) {
     if (out.b < 0.) out.b = 0.;
     return out;}
 
-int mliColor_is_equal(const mliColor* a, const mliColor *b) {
-    if (a->r != b->r) return 0;
-    if (a->g != b->g) return 0;
-    if (a->b != b->b) return 0;
+int mliColor_is_equal(const mliColor a, const mliColor b) {
+    if (a.r != b.r) return 0;
+    if (a.g != b.g) return 0;
+    if (a.b != b.b) return 0;
     return 1;}
 
 #endif

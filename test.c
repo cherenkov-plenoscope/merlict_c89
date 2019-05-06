@@ -585,7 +585,7 @@ int main(int argc, char *argv[]) {
     {
         mliColor red = {255., 0., 0.};
         mliColor blue = {0., 0., 255.};
-        mliColor mix = mliColor_mix(&red, &blue, 0.2);
+        mliColor mix = mliColor_mix(red, blue, 0.2);
         CHECK_MARGIN(mix.r, 255.*0.8, 1e-6);
         CHECK_MARGIN(mix.g, 0., 1e-6);
         CHECK_MARGIN(mix.b, 255.*0.2, 1e-6);

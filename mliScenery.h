@@ -235,7 +235,7 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
     for (i = 0; i < a->num_functions; i++) {
         if (!mliFunc_is_equal(&a->functions[i], &b->functions[i])) return 0;}
     for (i = 0; i < a->num_colors; i++) {
-        if (!mliColor_is_equal(&a->colors[i], &b->colors[i])) return 0;}
+        if (!mliColor_is_equal(a->colors[i], b->colors[i])) return 0;}
     for (i = 0; i < a->num_surfaces; i++) {
         if (!mliSurface_is_equal(&a->surfaces[i], &b->surfaces[i])) return 0;}
     for (i = 0; i < a->num_vertices; i++) {
