@@ -53,6 +53,22 @@ int main(int argc, char *argv[]) {
     /* Orientated-Bounding-Box */
 
     {
+        mliOBB a;
+        mliOBB cube;
+        a.lower = mliVec_set(.0, .0, .0);
+        a.upper = mliVec_set(1., 2., 3.);
+        cube = mliOBB_outer_cube(a);
+
+        CHECK_MARGIN(cube.lower.x, 0.5 - 1.5, 1e-7);
+        CHECK_MARGIN(cube.lower.y, 1. - 1.5, 1e-7);
+        CHECK_MARGIN(cube.lower.z, 1.5 - 1.5, 1e-7);
+
+        CHECK_MARGIN(cube.upper.x, .5 + 1.5, 1e-7);
+        CHECK_MARGIN(cube.upper.y, 1. + 1.5, 1e-7);
+        CHECK_MARGIN(cube.upper.z, 1.5 + 1.5, 1e-7);
+    }
+
+    {
         mliVec center;
         mliOBB obb;
         obb.lower = mliVec_set(.5, .5, .5);

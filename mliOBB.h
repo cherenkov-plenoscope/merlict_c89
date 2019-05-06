@@ -24,4 +24,19 @@ mliVec mliOBB_center(const mliOBB a) {
     mliVec sum = mliVec_add(&a.upper, &a.lower);
     return mliVec_multiply(&sum, .5);}
 
+mliOBB mliOBB_outer_cube(const mliOBB a) {
+    mliOBB cube;
+    mliVec center;
+    mliVec half_diagonal;
+    float max_half_length;
+    mliVec diff = mliVec_substract(&a.upper, &a.lower);
+    max_half_length = .5*MLI_MAX3(diff.x, diff.y, diff.z);
+    half_diagonal.x = max_half_length;
+    half_diagonal.y = max_half_length;
+    half_diagonal.z = max_half_length;
+    center = mliOBB_center(a);
+    cube.lower = mliVec_substract(&center, &half_diagonal);
+    cube.upper = mliVec_add(&center, &half_diagonal);
+    return cube;}
+
 #endif
