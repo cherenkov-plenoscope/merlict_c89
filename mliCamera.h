@@ -43,14 +43,14 @@ void mliCamera_render_image(
     distance_to_principal_point = (
         (.5*image->num_cols)/tan(.5*camera->field_of_view));
     principal_point = mliVec_multiply(
-        &sensor.optical_axis,
+        sensor.optical_axis,
         distance_to_principal_point);
     for (row = 0; row < image->num_rows; row++) {
         for (col = 0; col < image->num_cols; col++) {
             int row_idx_on_sensor = row - image->num_rows/2;
             int col_idx_on_sensor = col - image->num_cols/2;
-            mliVec s_row = mliVec_multiply(&sensor.row_axis, row_idx_on_sensor);
-            mliVec s_col = mliVec_multiply(&sensor.col_axis, col_idx_on_sensor);
+            mliVec s_row = mliVec_multiply(sensor.row_axis, row_idx_on_sensor);
+            mliVec s_col = mliVec_multiply(sensor.col_axis, col_idx_on_sensor);
             mliRay ray;
             mliColor color;
             mliVec sensor_intersection = principal_point;

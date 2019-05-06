@@ -31,47 +31,47 @@ mliVec mliVec_add(
     return out;}
 
 mliVec mliVec_substract(
-    const mliVec *a,
-    const mliVec *b) {
+    const mliVec a,
+    const mliVec b) {
     mliVec out;
-    out.x = a->x - b->x;
-    out.y = a->y - b->y;
-    out.z = a->z - b->z;
+    out.x = a.x - b.x;
+    out.y = a.y - b.y;
+    out.z = a.z - b.z;
     return out;}
 
 mliVec mliVec_cross(
-    const mliVec *a,
-    const mliVec *b) {
+    const mliVec a,
+    const mliVec b) {
     mliVec out;
-    out.x = (a->y*b->z - a->z*b->y);
-    out.y = (a->z*b->x - a->x*b->z);
-    out.z = (a->x*b->y - a->y*b->x);
+    out.x = (a.y*b.z - a.z*b.y);
+    out.y = (a.z*b.x - a.x*b.z);
+    out.z = (a.x*b.y - a.y*b.x);
     return out;}
 
 float mliVec_dot(
-    const mliVec *a,
-    const mliVec *b) {
-    return a->x*b->x + a->y*b->y + a->z*b->z;}
+    const mliVec a,
+    const mliVec b) {
+    return a.x*b.x + a.y*b.y + a.z*b.z;}
 
-mliVec mliVec_multiply(const mliVec *v, const float a) {
+mliVec mliVec_multiply(const mliVec v, const float a) {
     mliVec out;
-    out.x = v->x*a;
-    out.y = v->y*a;
-    out.z = v->z*a;
+    out.x = v.x*a;
+    out.y = v.y*a;
+    out.z = v.z*a;
     return out;}
 
 float mliVec_norm(
-    const mliVec *a) {
+    const mliVec a) {
     return sqrt(mliVec_dot(a, a));}
 
-float mliVec_angle_between(const mliVec *a, const mliVec *b) {
+float mliVec_angle_between(const mliVec a, const mliVec b) {
     mliVec a_normalized = mliVec_multiply(a, 1./mliVec_norm(a));
     mliVec b_normalized = mliVec_multiply(b, 1./mliVec_norm(b));
-    return acos(mliVec_dot(&a_normalized, &b_normalized));}
+    return acos(mliVec_dot(a_normalized, b_normalized));}
 
 mliVec mliVec_mirror(
-    const mliVec *in,
-    const mliVec *surface_normal) {
+    const mliVec in,
+    const mliVec surface_normal) {
     /*  This is taken from
         (OPTI 421/521 – Introductory Optomechanical Engineering)
         J.H. Bruge
@@ -102,37 +102,37 @@ mliVec mliVec_mirror(
                      [0 0 1]
     */
     mliVec out;
-    out.x = (1. - 2.*surface_normal->x*surface_normal->x) * in->x +
-                 - 2.*surface_normal->x*surface_normal->y  * in->y +
-                 - 2.*surface_normal->x*surface_normal->z  * in->z;
+    out.x = (1.  - 2.*surface_normal.x*surface_normal.x) * in.x +
+                 - 2.*surface_normal.x*surface_normal.y  * in.y +
+                 - 2.*surface_normal.x*surface_normal.z  * in.z;
 
-    out.y =     - 2.*surface_normal->x*surface_normal->y  * in->x +
-             (1. - 2.*surface_normal->y*surface_normal->y) * in->y +
-                 - 2.*surface_normal->y*surface_normal->z  * in->z;
+    out.y =      - 2.*surface_normal.x*surface_normal.y  * in.x +
+             (1. - 2.*surface_normal.y*surface_normal.y) * in.y +
+                 - 2.*surface_normal.y*surface_normal.z  * in.z;
 
-    out.z =     - 2.*surface_normal->x*surface_normal->z  * in->x +
-                 - 2.*surface_normal->y*surface_normal->z  * in->y +
-             (1. - 2.*surface_normal->z*surface_normal->z) * in->z;
+    out.z =     -  2.*surface_normal.x*surface_normal.z  * in.x +
+                 - 2.*surface_normal.y*surface_normal.z  * in.y +
+             (1. - 2.*surface_normal.z*surface_normal.z) * in.z;
     return out;
 }
 
 int mliVec_equal_margin(
-    const mliVec *a,
-    const mliVec *b,
+    const mliVec a,
+    const mliVec b,
     const float distance_margin) {
     mliVec diff;
     float distance_squared;
     diff = mliVec_substract(a, b);
-    distance_squared = mliVec_dot(&diff, &diff);
+    distance_squared = mliVec_dot(diff, diff);
     return distance_squared <= distance_margin*distance_margin;}
 
-int mliVec_is_equal(const mliVec *a, const mliVec *b) {
-    if (a->x != b->x) return 0;
-    if (a->y != b->y) return 0;
-    if (a->z != b->z) return 0;
+int mliVec_is_equal(const mliVec a, const mliVec b) {
+    if (a.x != b.x) return 0;
+    if (a.y != b.y) return 0;
+    if (a.z != b.z) return 0;
     return 1;}
 
-uint32_t mliVec_octant(const mliVec *a) {
+uint32_t mliVec_octant(const mliVec a) {
     /*  encodes the octant sectors where the vector is pointing to
         x y z sector
         - - -   0
@@ -144,9 +144,9 @@ uint32_t mliVec_octant(const mliVec *a) {
         + + -   6
         + + +   7
     */
-    const uint32_t sx = a->x >= 0.;
-    const uint32_t sy = a->y >= 0.;
-    const uint32_t sz = a->z >= 0.;
+    const uint32_t sx = a.x >= 0.;
+    const uint32_t sy = a.y >= 0.;
+    const uint32_t sz = a.z >= 0.;
     return 4*sx + 2*sy + 1*sz;}
 
 void mliVec_ncpy(

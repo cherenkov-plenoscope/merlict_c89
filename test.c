@@ -393,7 +393,7 @@ int main(int argc, char *argv[]) {
     {
         mliRotMat rot;
         mliVec axis = {0., 0., 1.};
-        rot = mliRotMat_init_axis(&axis, 0.);
+        rot = mliRotMat_init_axis(axis, 0.);
         CHECK_MARGIN(rot.r00, 1., 1e-9);
         CHECK_MARGIN(rot.r01, 0., 1e-9);
         CHECK_MARGIN(rot.r02, 0., 1e-9);
@@ -406,7 +406,7 @@ int main(int argc, char *argv[]) {
         CHECK_MARGIN(rot.r21, 0., 1e-9);
         CHECK_MARGIN(rot.r22, 1., 1e-9);
 
-        rot = mliRotMat_init_axis(&axis, mli_deg2rad(90.));
+        rot = mliRotMat_init_axis(axis, mli_deg2rad(90.));
         CHECK_MARGIN(rot.r00, 0., 1e-9);
         CHECK_MARGIN(rot.r01, 1., 1e-9);
         CHECK_MARGIN(rot.r02, 0., 1e-9);
@@ -677,7 +677,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec a = {1., 2., 3.};
         mliVec b = {4., 6., 8.};
-        mliVec out = mliVec_substract(&a, &b);
+        mliVec out = mliVec_substract(a, b);
         CHECK_MARGIN(out.x, -3.0, 1e-6);
         CHECK_MARGIN(out.y, -4.0, 1e-6);
         CHECK_MARGIN(out.z, -5.0, 1e-6);
@@ -686,31 +686,31 @@ int main(int argc, char *argv[]) {
     {
         mliVec a = {1., 2., 3.};
         mliVec b = {4., 5., 6.};
-        CHECK_MARGIN(mliVec_dot(&a, &b), 32.0, 1e-6);
+        CHECK_MARGIN(mliVec_dot(a, b), 32.0, 1e-6);
     }
 
     {
         mliVec a = {0., 0., 1.};
         mliVec b = {0., 1., 0.};
-        CHECK_MARGIN(mliVec_dot(&a, &b), 0., 1e-6);
+        CHECK_MARGIN(mliVec_dot(a, b), 0., 1e-6);
     }
 
     {
         mliVec a = {0., 0., 1.};
         mliVec b = {1., 0., 0.};
-        CHECK_MARGIN(mliVec_dot(&a, &b), 0., 1e-6);
+        CHECK_MARGIN(mliVec_dot(a, b), 0., 1e-6);
     }
 
     {
         mliVec a = {0., 0., 1.};
         mliVec b = {0., 0., 1.};
-        CHECK_MARGIN(mliVec_dot(&a, &b), 1., 1e-6);
+        CHECK_MARGIN(mliVec_dot(a, b), 1., 1e-6);
     }
 
     {
         mliVec a = {1., 0., 0.};
         mliVec b = {0., 1., 0.};
-        mliVec out = mliVec_cross(&a, &b);
+        mliVec out = mliVec_cross(a, b);
         CHECK_MARGIN(out.x, 0., 1e-6);
         CHECK_MARGIN(out.y, 0., 1e-6);
         CHECK_MARGIN(out.z, 1., 1e-6);
@@ -719,7 +719,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec a = {1., 0., 0.};
         mliVec b = {0., 0., 1.};
-        mliVec out = mliVec_cross(&a, &b);
+        mliVec out = mliVec_cross(a, b);
         CHECK_MARGIN(out.x, 0., 1e-6);
         CHECK_MARGIN(out.y, -1., 1e-6);
         CHECK_MARGIN(out.z, 0., 1e-6);
@@ -727,23 +727,23 @@ int main(int argc, char *argv[]) {
 
     {
         mliVec a = {1., 0., 0.};
-        CHECK_MARGIN(mliVec_norm(&a), 1., 1e-6);
+        CHECK_MARGIN(mliVec_norm(a), 1., 1e-6);
     }
 
     {
         mliVec a = {3., 4., 0.};
-        CHECK_MARGIN(mliVec_norm(&a), 5., 1e-6);
+        CHECK_MARGIN(mliVec_norm(a), 5., 1e-6);
     }
 
     {
         mliVec a = {0., 0., -1.};
-        CHECK_MARGIN(mliVec_norm(&a), 1., 1e-6);
+        CHECK_MARGIN(mliVec_norm(a), 1., 1e-6);
     }
 
     {
         mliVec in = {0., 0., -1.};
         mliVec surface_normal = {0., 0., 1.};
-        mliVec out = mliVec_mirror(&in, &surface_normal);
+        mliVec out = mliVec_mirror(in, surface_normal);
         CHECK_MARGIN(out.x, 0., 1e-6);
         CHECK_MARGIN(out.y, 0., 1e-6);
         CHECK_MARGIN(out.z, 1., 1e-6);
@@ -752,7 +752,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec in = {1., 0., -1.};
         mliVec surface_normal = {0., 0., 1.};
-        mliVec out = mliVec_mirror(&in, &surface_normal);
+        mliVec out = mliVec_mirror(in, surface_normal);
         CHECK_MARGIN(out.x, 1., 1e-6);
         CHECK_MARGIN(out.y, 0., 1e-6);
         CHECK_MARGIN(out.z, 1., 1e-6);
@@ -761,13 +761,13 @@ int main(int argc, char *argv[]) {
     {
         mliVec a = {0., 0., 0.};
         mliVec b = {0., 0., 0.};
-        CHECK(mliVec_equal_margin(&a, &b, 1e-6));
+        CHECK(mliVec_equal_margin(a, b, 1e-6));
     }
 
     {
         mliVec a = {1., 0., 0.};
         mliVec b = {1. + 1e-5, 0., 0.};
-        CHECK(!mliVec_equal_margin(&a, &b, 1e-6));
+        CHECK(!mliVec_equal_margin(a, b, 1e-6));
     }
 
     {
@@ -790,60 +790,60 @@ int main(int argc, char *argv[]) {
         a.x = n;
         a.y = n;
         a.z = n;
-        CHECK(mliVec_octant(&a) == 0u);
+        CHECK(mliVec_octant(a) == 0u);
 
         a.x = n;
         a.y = n;
         a.z = p;
-        CHECK(mliVec_octant(&a) == 1u);
+        CHECK(mliVec_octant(a) == 1u);
 
         a.x = n;
         a.y = p;
         a.z = n;
-        CHECK(mliVec_octant(&a) == 2u);
+        CHECK(mliVec_octant(a) == 2u);
 
         a.x = n;
         a.y = p;
         a.z = p;
-        CHECK(mliVec_octant(&a) == 3u);
+        CHECK(mliVec_octant(a) == 3u);
 
         a.x = p;
         a.y = n;
         a.z = n;
-        CHECK(mliVec_octant(&a) == 4u);
+        CHECK(mliVec_octant(a) == 4u);
 
         a.x = p;
         a.y = n;
         a.z = p;
-        CHECK(mliVec_octant(&a) == 5u);
+        CHECK(mliVec_octant(a) == 5u);
 
         a.x = p;
         a.y = p;
         a.z = n;
-        CHECK(mliVec_octant(&a) == 6u);
+        CHECK(mliVec_octant(a) == 6u);
 
         a.x = p;
         a.y = p;
         a.z = p;
-        CHECK(mliVec_octant(&a) == 7u);
+        CHECK(mliVec_octant(a) == 7u);
 
         a.x = 0.; a.y = 0.; a.z = p;
-        CHECK(mliVec_octant(&a) == 7u);
+        CHECK(mliVec_octant(a) == 7u);
 
         a.x = 0.; a.y = p; a.z = 0.;
-        CHECK(mliVec_octant(&a) == 7u);
+        CHECK(mliVec_octant(a) == 7u);
 
         a.x = p; a.y = 0.; a.z = 0.;
-        CHECK(mliVec_octant(&a) == 7u);
+        CHECK(mliVec_octant(a) == 7u);
 
         a.x = 0.; a.y = p; a.z = p;
-        CHECK(mliVec_octant(&a) == 7u);
+        CHECK(mliVec_octant(a) == 7u);
 
         a.x = p; a.y = p; a.z = 0.;
-        CHECK(mliVec_octant(&a) == 7u);
+        CHECK(mliVec_octant(a) == 7u);
 
         a.x = p; a.y = 0.; a.z = p;
-        CHECK(mliVec_octant(&a) == 7u);
+        CHECK(mliVec_octant(a) == 7u);
     }
 
     {
@@ -937,11 +937,11 @@ int main(int argc, char *argv[]) {
             double ray_parameter;
             if(
                 mliRay_intersects_triangle(
-                    &support,
-                    &direction,
-                    &m.vertices[m.faces[i].a],
-                    &m.vertices[m.faces[i].b],
-                    &m.vertices[m.faces[i].c],
+                    support,
+                    direction,
+                    m.vertices[m.faces[i].a],
+                    m.vertices[m.faces[i].b],
+                    m.vertices[m.faces[i].c],
                     &ray_parameter)
             ) {
                 CHECK(i == 1782);
@@ -967,10 +967,10 @@ int main(int argc, char *argv[]) {
         c.z = 0.;
         for (c.x = -1.; c.x < 1.; c.x = c.x + 0.01) {
             for (c.y = -1.; c.y < 1.; c.y = c.y + 0.01) {
-                if (mliVec_norm(&c) <= inner_radius)
-                    CHECK(mli_inside_hexagonal_prism_z(&c, inner_radius));
-                else if(mliVec_norm(&c) > outer_radius)
-                    CHECK(!mli_inside_hexagonal_prism_z(&c, inner_radius));
+                if (mliVec_norm(c) <= inner_radius)
+                    CHECK(mli_inside_hexagonal_prism_z(c, inner_radius));
+                else if(mliVec_norm(c) > outer_radius)
+                    CHECK(!mli_inside_hexagonal_prism_z(c, inner_radius));
                 else
                     continue;
             }
@@ -996,7 +996,7 @@ int main(int argc, char *argv[]) {
 
         intersection_point = mliRay_at(&ray, plus_solution);
         surface_normal = mli_spherical_cap_surface_normal(
-            &intersection_point,
+            intersection_point,
             radius);
         CHECK_MARGIN(surface_normal.x, 0., 1e-9);
         CHECK_MARGIN(surface_normal.y, 0., 1e-9);

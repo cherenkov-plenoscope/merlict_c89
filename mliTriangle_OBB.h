@@ -153,20 +153,20 @@ int64_t __mli_point_triangle_intersection(mliVec p, mliTriangle t) {
 /* signs of its X,Y,Z components indicate whether P was to the inside or    */
 /* to the outside of this triangle side.                                    */
 
-   vect12 = mliVec_substract(&t.v1, &t.v2);
-   vect1h = mliVec_substract(&t.v1, &p);
-   cross12_1p = mliVec_cross(&vect12, &vect1h);
+   vect12 = mliVec_substract(t.v1, t.v2);
+   vect1h = mliVec_substract(t.v1, p);
+   cross12_1p = mliVec_cross(vect12, vect1h);
    sign12 = MLI_SIGN3(cross12_1p);
    /* Extract X,Y,Z signs as 0..7 or 0...63 integer */
 
-   vect23 = mliVec_substract(&t.v2, &t.v3);
-   vect2h = mliVec_substract(&t.v2, &p);
-   cross23_2p = mliVec_cross(&vect23, &vect2h);
+   vect23 = mliVec_substract(t.v2, t.v3);
+   vect2h = mliVec_substract(t.v2, p);
+   cross23_2p = mliVec_cross(vect23, vect2h);
    sign23 = MLI_SIGN3(cross23_2p);
 
-   vect31 = mliVec_substract(&t.v3, &t.v1);
-   vect3h = mliVec_substract(&t.v3, &p);
-   cross31_3p = mliVec_cross(&vect31, &vect3h);
+   vect31 = mliVec_substract(t.v3, t.v1);
+   vect3h = mliVec_substract(t.v3, p);
+   cross31_3p = mliVec_cross(vect31, vect3h);
    sign31 = MLI_SIGN3(cross31_3p);
 
 /* If all three crossproduct vectors agree in their component signs,  */
@@ -249,9 +249,9 @@ int64_t __mli_triangle_cube_intersection(mliTriangle t) {
 /* To find plane of the triangle, first perform crossproduct on  */
 /* two triangle side vectors to compute the normal vector.       */
 
-    vect12 = mliVec_substract(&t.v1, &t.v2);
-    vect13 = mliVec_substract(&t.v1, &t.v3);
-    norm = mliVec_cross(&vect12, &vect13);
+    vect12 = mliVec_substract(t.v1, t.v2);
+    vect13 = mliVec_substract(t.v1, t.v3);
+    norm = mliVec_cross(vect12, vect13);
 
 /* The normal vector "norm" X,Y,Z components are the coefficients */
 /* of the triangles AX + BY + CZ + D = 0 plane equation.  If we   */
@@ -316,9 +316,9 @@ void __mliTriangle_transform_into_obb(
     const float scale_y = obb.upper.y - obb.lower.y;
     const float scale_z = obb.upper.z - obb.lower.z;
     /* translate */
-    (*a_out) = mliVec_substract(&a, &obb_center);
-    (*b_out) = mliVec_substract(&b, &obb_center);
-    (*c_out) = mliVec_substract(&c, &obb_center);
+    (*a_out) = mliVec_substract(a, obb_center);
+    (*b_out) = mliVec_substract(b, obb_center);
+    (*c_out) = mliVec_substract(c, obb_center);
     /* scale */
     a_out->x /= scale_x;
     b_out->x /= scale_x;

@@ -41,13 +41,13 @@ mliRotMat mliRotMat_init_tait_bryan(
     return rot;}
 
 mliRotMat mliRotMat_init_axis(
-    const mliVec* rot_axis,
+    const mliVec rot_axis,
     const double rot_angle) {
     mliRotMat rot;
     const double norm = mliVec_norm(rot_axis);
-    const double rx = rot_axis->x/norm;
-    const double ry = rot_axis->y/norm;
-    const double rz = rot_axis->z/norm;
+    const double rx = rot_axis.x/norm;
+    const double ry = rot_axis.y/norm;
+    const double rz = rot_axis.z/norm;
     const double sinR = sin(-rot_angle);
     const double cosR = cos(-rot_angle);
     rot.r00 = cosR +  rx*rx*(1.-cosR);

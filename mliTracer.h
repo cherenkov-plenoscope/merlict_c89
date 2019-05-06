@@ -30,11 +30,11 @@ int first_casual_intersection(
             continue;
         if (
             mliRay_intersects_triangle(
-                &ray->support,
-                &ray->direction,
-                &scenery->vertices[scenery->triangles[idx_tri].a],
-                &scenery->vertices[scenery->triangles[idx_tri].b],
-                &scenery->vertices[scenery->triangles[idx_tri].c],
+                ray->support,
+                ray->direction,
+                scenery->vertices[scenery->triangles[idx_tri].a],
+                scenery->vertices[scenery->triangles[idx_tri].b],
+                scenery->vertices[scenery->triangles[idx_tri].c],
                 &ray_parameter)
         ) {
             hit = hit + 1;
@@ -48,9 +48,9 @@ int first_casual_intersection(
         intersection->idx_tri = idx_closest_face;
         intersection->position = mliRay_at(ray, smallest_ray_parameter);
         intersection->surface_normal_local = mli_triangle_surface_normal(
-            &scenery->vertices[scenery->triangles[intersection->idx_tri].a],
-            &scenery->vertices[scenery->triangles[intersection->idx_tri].b],
-            &scenery->vertices[scenery->triangles[intersection->idx_tri].c]);
+            scenery->vertices[scenery->triangles[intersection->idx_tri].a],
+            scenery->vertices[scenery->triangles[intersection->idx_tri].b],
+            scenery->vertices[scenery->triangles[intersection->idx_tri].c]);
     }
     return hit;
 }

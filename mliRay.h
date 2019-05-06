@@ -12,8 +12,7 @@ mliRay mliRay_set(
     const mliVec direction) {
     mliRay ray;
     ray.support = support;
-    ray.direction = mliVec_multiply(
-        &direction, 1./mliVec_norm(&direction));
+    ray.direction = mliVec_multiply(direction, 1./mliVec_norm(direction));
     return ray;}
 
 mliVec mliRay_at(

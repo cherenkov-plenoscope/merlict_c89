@@ -27,9 +27,9 @@ int mli_spherical_cap_equation(
     */
     const mliVec sup = ray->support;
     const mliVec dir = ray->direction;
-    const double dir_times_dir = mliVec_dot(&dir, &dir);
-    const double sup_times_sup = mliVec_dot(&sup, &sup);
-    const double sup_times_dir = mliVec_dot(&sup, &dir);
+    const double dir_times_dir = mliVec_dot(dir, dir);
+    const double sup_times_sup = mliVec_dot(sup, sup);
+    const double sup_times_dir = mliVec_dot(sup, dir);
     const double R_times_dir_z = radius*dir.z;
     const double R_times_sup_z = radius*sup.z;
     const double P = 2. * (sup_times_dir - R_times_dir_z) / dir_times_dir;
@@ -37,16 +37,16 @@ int mli_spherical_cap_equation(
     return mli_quadratiq_equation(P, Q, plus_solution, minus_solution);}
 
 mliVec mli_spherical_cap_surface_normal(
-    const mliVec *intersection_point,
+    const mliVec intersection_point,
     const double radius) {
     mliVec radial = mliVec_set(0., 0., radius);
-    mliVec normal = mliVec_substract(&radial, intersection_point);
-    normal = mliVec_multiply(&normal, 1./mliVec_norm(&normal));
+    mliVec normal = mliVec_substract(radial, intersection_point);
+    normal = mliVec_multiply(normal, 1./mliVec_norm(normal));
     return normal;}
 
 int mli_ray_runs_from_outside_to_inside(
-    const mliVec *ray_direction_local,
-    const mliVec *surface_normal_local) {
+    const mliVec ray_direction_local,
+    const mliVec surface_normal_local) {
     const double proj = mliVec_dot(surface_normal_local, ray_direction_local);
     if (proj < 0.)
         return 1;
@@ -73,9 +73,9 @@ int mli_spherical_cap_hex_bound_intersection(
         cl.plus_intersec = mliRay_at(ray_local, cl.plus_solution);
         cl.minus_intersec = mliRay_at(ray_local, cl.minus_solution);
         cl.plus_is_inside = mli_inside_hexagonal_prism_z(
-            &cl.plus_intersec, inner_hex_radius);
+            cl.plus_intersec, inner_hex_radius);
         cl.minus_is_inside = mli_inside_hexagonal_prism_z(
-            &cl.minus_intersec, inner_hex_radius);
+            cl.minus_intersec, inner_hex_radius);
 
         if (mli_outer_bound_surface_causal_intersection(
             cl,
@@ -85,12 +85,12 @@ int mli_spherical_cap_hex_bound_intersection(
             intersection->position = mliRay_at(ray_local, causal_solution);
             intersection->surface_normal_local =
                 mli_spherical_cap_surface_normal(
-                    &intersection->position,
+                    intersection->position,
                     curvature_radius);
             intersection->from_outside_to_inside =
                 mli_ray_runs_from_outside_to_inside(
-                    &ray_local->direction,
-                    &intersection->surface_normal_local);
+                    ray_local->direction,
+                    intersection->surface_normal_local);
 
             return 1;
         }

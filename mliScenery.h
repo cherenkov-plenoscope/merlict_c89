@@ -239,7 +239,7 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
     for (i = 0; i < a->num_surfaces; i++) {
         if (!mliSurface_is_equal(&a->surfaces[i], &b->surfaces[i])) return 0;}
     for (i = 0; i < a->num_vertices; i++) {
-        if (!mliVec_is_equal(&a->vertices[i], &b->vertices[i])) return 0;}
+        if (!mliVec_is_equal(a->vertices[i], b->vertices[i])) return 0;}
     for (i = 0; i < a->num_triangles; i++) {
         if (!mliFace_is_equal(&a->triangles[i], &b->triangles[i]))
             return 0;
