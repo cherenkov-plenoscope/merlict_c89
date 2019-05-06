@@ -14,10 +14,10 @@ typedef struct {
     uint32_t c;
 } mliFace;
 
-int mliFace_is_equal (const mliFace *a, const mliFace *b) {
-    if (a->a != b->a) return 0;
-    if (a->b != b->b) return 0;
-    if (a->c != b->c) return 0;
+int mliFace_is_equal (const mliFace a, const mliFace b) {
+    if (a.a != b.a) return 0;
+    if (a.b != b.b) return 0;
+    if (a.c != b.c) return 0;
     return 1;}
 
 void mliFace_ncpy(
