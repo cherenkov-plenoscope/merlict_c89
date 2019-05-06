@@ -668,7 +668,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec a = {1., 2., 3.};
         mliVec b = {4., 5., 6.};
-        mliVec out = mliVec_add(&a, &b);
+        mliVec out = mliVec_add(a, b);
         CHECK_MARGIN(out.x, 5.0, 1e-6);
         CHECK_MARGIN(out.y, 7.0, 1e-6);
         CHECK_MARGIN(out.z, 9.0, 1e-6);

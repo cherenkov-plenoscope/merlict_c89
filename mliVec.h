@@ -22,12 +22,12 @@ mliVec mliVec_set(
     return out;}
 
 mliVec mliVec_add(
-    const mliVec *a,
-    const mliVec *b) {
+    const mliVec a,
+    const mliVec b) {
     mliVec out;
-    out.x = a->x + b->x;
-    out.y = a->y + b->y;
-    out.z = a->z + b->z;
+    out.x = a.x + b.x;
+    out.y = a.y + b.y;
+    out.z = a.z + b.z;
     return out;}
 
 mliVec mliVec_substract(

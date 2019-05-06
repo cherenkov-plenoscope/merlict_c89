@@ -54,8 +54,8 @@ void mliCamera_render_image(
             mliRay ray;
             mliColor color;
             mliVec sensor_intersection = principal_point;
-            sensor_intersection = mliVec_add(&sensor_intersection, &s_row);
-            sensor_intersection = mliVec_add(&sensor_intersection, &s_col);
+            sensor_intersection = mliVec_add(sensor_intersection, s_row);
+            sensor_intersection = mliVec_add(sensor_intersection, s_col);
             ray = mliRay_set(camera->position, sensor_intersection);
             color = mli_trace(scenery, &ray);
             mliImage_set(image, col, row, color);

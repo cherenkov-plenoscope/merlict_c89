@@ -21,7 +21,7 @@ mliOBB mliOBB_outermost(const mliOBB a, const mliOBB b) {
     return obb;}
 
 mliVec mliOBB_center(const mliOBB a) {
-    mliVec sum = mliVec_add(&a.upper, &a.lower);
+    mliVec sum = mliVec_add(a.upper, a.lower);
     return mliVec_multiply(&sum, .5);}
 
 mliOBB mliOBB_outer_cube(const mliOBB a) {
@@ -36,7 +36,7 @@ mliOBB mliOBB_outer_cube(const mliOBB a) {
     half_diagonal.z = max_half_length;
     center = mliOBB_center(a);
     cube.lower = mliVec_substract(&center, &half_diagonal);
-    cube.upper = mliVec_add(&center, &half_diagonal);
+    cube.upper = mliVec_add(center, half_diagonal);
     return cube;}
 
 mliOBB mliOBB_octtree_child(
