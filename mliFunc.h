@@ -82,12 +82,12 @@ int mliFunc_fread(mliFunc *func, FILE* f) {
     fread(func->y, sizeof(float), func->num_points, f);
     return EXIT_SUCCESS;}
 
-int mliFunc_is_equal(const mliFunc *a, const mliFunc *b) {
+int mliFunc_is_equal(const mliFunc a, const mliFunc b) {
     int i;
-    if (a->num_points != b->num_points ) return 0;
-    for (i = 0; i < a->num_points; i++) {
-        if (a->x[i] != b->x[i]) return 0;
-        if (a->y[i] != b->y[i]) return 0;}
+    if (a.num_points != b.num_points ) return 0;
+    for (i = 0; i < a.num_points; i++) {
+        if (a.x[i] != b.x[i]) return 0;
+        if (a.y[i] != b.y[i]) return 0;}
     return 1;}
 
 #endif

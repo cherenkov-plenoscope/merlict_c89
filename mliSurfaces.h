@@ -9,9 +9,9 @@ typedef struct {
     uint32_t outer;
 } mliSurfaces;
 
-int mliSurfaces_is_equal(const mliSurfaces* a, const mliSurfaces *b) {
-    if (a->inner != b->inner) return 0;
-    if (a->outer != b->outer) return 0;
+int mliSurfaces_is_equal(const mliSurfaces a, const mliSurfaces b) {
+    if (a.inner != b.inner) return 0;
+    if (a.outer != b.outer) return 0;
     return 1;}
 
 #endif

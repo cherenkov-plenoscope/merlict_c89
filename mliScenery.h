@@ -233,28 +233,28 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
     if (a->num_triangles != b->num_triangles ) return 0;
     if (a->num_spherical_cap_hex != b->num_spherical_cap_hex ) return 0;
     for (i = 0; i < a->num_functions; i++) {
-        if (!mliFunc_is_equal(&a->functions[i], &b->functions[i])) return 0;}
+        if (!mliFunc_is_equal(a->functions[i], b->functions[i])) return 0;}
     for (i = 0; i < a->num_colors; i++) {
         if (!mliColor_is_equal(a->colors[i], b->colors[i])) return 0;}
     for (i = 0; i < a->num_surfaces; i++) {
-        if (!mliSurface_is_equal(&a->surfaces[i], &b->surfaces[i])) return 0;}
+        if (!mliSurface_is_equal(a->surfaces[i], b->surfaces[i])) return 0;}
     for (i = 0; i < a->num_vertices; i++) {
         if (!mliVec_is_equal(a->vertices[i], b->vertices[i])) return 0;}
     for (i = 0; i < a->num_triangles; i++) {
         if (!mliFace_is_equal(a->triangles[i], b->triangles[i]))
             return 0;
         if (!mliSurfaces_is_equal(
-            &a->triangles_surfaces[i],
-            &b->triangles_surfaces[i]))
+            a->triangles_surfaces[i],
+            b->triangles_surfaces[i]))
             return 0;}
     for (i = 0; i < a->num_spherical_cap_hex; i++) {
         if (!mliSphericalCapHeagonal_is_equal(
-                &a->spherical_cap_hex[i],
-                &b->spherical_cap_hex[i]))
+                a->spherical_cap_hex[i],
+                b->spherical_cap_hex[i]))
             return 0;
         if (!mliSurfaces_is_equal(
-                &a->spherical_cap_hex_surfaces[i],
-                &b->spherical_cap_hex_surfaces[i]))
+                a->spherical_cap_hex_surfaces[i],
+                b->spherical_cap_hex_surfaces[i]))
             return 0;}
     return 1;}
 
