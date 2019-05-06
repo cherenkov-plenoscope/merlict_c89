@@ -17,6 +17,14 @@ int mli_min_int(const int x, const int y) {
     return (x < y) ? x : y;
 }
 
+void mli_uint32_ncpy(
+    const uint32_t *from,
+    uint32_t* to,
+    const uint64_t num) {
+    uint64_t i;
+    for (i = 0; i < num; i++) {
+        to[i] = from[i];}}
+
 #define MLI_MIN2(a,b) (((a) < (b)) ? (a) : (b))
 #define MLI_MAX2(a,b) (((a) > (b)) ? (a) : (b))
 

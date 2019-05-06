@@ -39,4 +39,26 @@ mliOBB mliOBB_outer_cube(const mliOBB a) {
     cube.upper = mliVec_add(&center, &half_diagonal);
     return cube;}
 
+mliOBB mliOBB_octtree_child(
+    const mliOBB node,
+    const uint32_t sx,
+    const uint32_t sy,
+    const uint32_t sz) {
+    mliOBB child;
+    mliVec length;
+    mliVec center = mliOBB_center(node);
+    length = mliVec_substract(&center, &node.lower);
+    child.lower = node.lower;
+    child.upper = center;
+    if (sx) {
+        child.lower.x += length.x;
+        child.upper.x += length.x;}
+    if (sy) {
+        child.lower.y += length.y;
+        child.upper.y += length.y;}
+    if (sz) {
+        child.lower.z += length.z;
+        child.upper.z += length.z;}
+    return child;}
+
 #endif

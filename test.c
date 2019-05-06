@@ -29,28 +29,49 @@
 
 
 int main(int argc, char *argv[]) {
-    /* OctTree*/
-    {
-        int i, j;
-        mliOctTree tree;
-        tree.num_nodes = 3u;
-        mliOctTree_malloc(&tree);
-
-        for (i = 0; i < 3u; i++) {
-            for (j = 0; j < MLI_NUM_CHILDREN_OCTTREE; j++) {
-                mliOctTree_set_node_child(&tree, i, j, i+j);
-            }
-        }
-
-        for (i = 0; i < 3u; i++) {
-            for (j = 0; j < MLI_NUM_CHILDREN_OCTTREE; j++) {
-                CHECK(mliOctTree_at_node_child(&tree, i, j) == i+j);
-            }
-        }
-
-        mliOctTree_free(&tree);
-    }
     /* Orientated-Bounding-Box */
+
+    {
+        mliOBB node;
+        mliOBB child;
+        node.lower = mliVec_set(.0, .0, .0);
+        node.upper = mliVec_set(2., 2., 2.);
+        child = mliOBB_octtree_child(node, 0, 0, 0);
+        CHECK_MARGIN(child.lower.x, 0., 1e-7);
+        CHECK_MARGIN(child.lower.y, 0., 1e-7);
+        CHECK_MARGIN(child.lower.z, 0., 1e-7);
+
+        CHECK_MARGIN(child.upper.x, 1., 1e-7);
+        CHECK_MARGIN(child.upper.y, 1., 1e-7);
+        CHECK_MARGIN(child.upper.z, 1., 1e-7);
+
+        child = mliOBB_octtree_child(node, 0, 0, 1);
+        CHECK_MARGIN(child.lower.x, 0., 1e-7);
+        CHECK_MARGIN(child.lower.y, 0., 1e-7);
+        CHECK_MARGIN(child.lower.z, 1., 1e-7);
+
+        CHECK_MARGIN(child.upper.x, 1., 1e-7);
+        CHECK_MARGIN(child.upper.y, 1., 1e-7);
+        CHECK_MARGIN(child.upper.z, 2., 1e-7);
+
+        child = mliOBB_octtree_child(node, 0, 1, 0);
+        CHECK_MARGIN(child.lower.x, 0., 1e-7);
+        CHECK_MARGIN(child.lower.y, 1., 1e-7);
+        CHECK_MARGIN(child.lower.z, 0., 1e-7);
+
+        CHECK_MARGIN(child.upper.x, 1., 1e-7);
+        CHECK_MARGIN(child.upper.y, 2., 1e-7);
+        CHECK_MARGIN(child.upper.z, 1., 1e-7);
+
+        child = mliOBB_octtree_child(node, 1, 0, 0);
+        CHECK_MARGIN(child.lower.x, 1., 1e-7);
+        CHECK_MARGIN(child.lower.y, 0., 1e-7);
+        CHECK_MARGIN(child.lower.z, 0., 1e-7);
+
+        CHECK_MARGIN(child.upper.x, 2., 1e-7);
+        CHECK_MARGIN(child.upper.y, 1., 1e-7);
+        CHECK_MARGIN(child.upper.z, 1., 1e-7);
+    }
 
     {
         mliOBB a;
@@ -291,6 +312,20 @@ int main(int argc, char *argv[]) {
         CHECK_MARGIN(obb.upper.y, +7.5, 1e-7);
         CHECK_MARGIN(obb.upper.z, +7.5, 1e-7);
 
+        mliScenery_free(&scenery);
+    }
+
+    /* OctTree*/
+    {
+        mliScenery scenery;
+        mliNode tree;
+        mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+        mliNode_init(&tree);
+
+        mliNode_for_scenery(&tree, &scenery);
+
+        /* mliNode_print(&tree, 0u); */
+        mliNode_free(&tree);
         mliScenery_free(&scenery);
     }
 
