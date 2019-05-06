@@ -25,9 +25,9 @@ void mliCameraSensor_init(const mliCamera *camera, mliCameraSensor *sensor) {
     mliVec unit_x = {1., 0., 0.};
     mliVec unit_y = {0., 1., 0.};
     mliVec unit_z = {0., 0., 1.};
-    sensor->optical_axis = mli_transform_orientation(&camera->rotation, &unit_z);
-    sensor->col_axis = mli_transform_orientation(&camera->rotation, &unit_y);
-    sensor->row_axis = mli_transform_orientation(&camera->rotation, &unit_x);}
+    sensor->optical_axis = mli_transform_orientation(&camera->rotation, unit_z);
+    sensor->col_axis = mli_transform_orientation(&camera->rotation, unit_y);
+    sensor->row_axis = mli_transform_orientation(&camera->rotation, unit_x);}
 
 void mliCamera_render_image(
     const mliCamera *camera,

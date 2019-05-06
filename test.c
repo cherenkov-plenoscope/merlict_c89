@@ -425,7 +425,7 @@ int main(int argc, char *argv[]) {
         mliVec a = {0., 0., 1.};
         mliVec a_rot;
         rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.));
-        a_rot = mli_transform_orientation(&rot, &a);
+        a_rot = mli_transform_orientation(&rot, a);
         CHECK_MARGIN(a_rot.x, 0., 1e-9);
         CHECK_MARGIN(a_rot.y, 0., 1e-9);
         CHECK_MARGIN(a_rot.z, 1., 1e-9);
@@ -436,12 +436,12 @@ int main(int argc, char *argv[]) {
         mliVec x = {1., 0., 0.};
         mliVec x_rot;
         rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.));
-        x_rot = mli_transform_orientation(&rot, &x);
+        x_rot = mli_transform_orientation(&rot, x);
         CHECK_MARGIN(x_rot.x, 1./sqrt(2.), 1e-6);
         CHECK_MARGIN(x_rot.y, -1./sqrt(2.), 1e-6);
         CHECK_MARGIN(x_rot.z, 0., 1e-9);
 
-        x_rot = mli_transform_orientation_inverse(&rot, &x);
+        x_rot = mli_transform_orientation_inverse(&rot, x);
         CHECK_MARGIN(x_rot.x, 1./sqrt(2.), 1e-6);
         CHECK_MARGIN(x_rot.y, 1./sqrt(2.), 1e-6);
         CHECK_MARGIN(x_rot.z, 0., 1e-9);
@@ -453,12 +453,12 @@ int main(int argc, char *argv[]) {
         mliVec x = {1., 0., 0.};
         mliVec x_t;
         rot = mliRotMat_init_tait_bryan(0., 0., 0.);
-        x_t = mli_transform_position(&rot, &trans, &x);
+        x_t = mli_transform_position(&rot, trans, x);
         CHECK_MARGIN(x_t.x, 1., 1e-6);
         CHECK_MARGIN(x_t.y, 0., 1e-6);
         CHECK_MARGIN(x_t.z, 3., 1e-9);
 
-        x_t = mli_transform_position_inverse(&rot, &trans, &x);
+        x_t = mli_transform_position_inverse(&rot, trans, x);
         CHECK_MARGIN(x_t.x, 1., 1e-6);
         CHECK_MARGIN(x_t.y, 0., 1e-6);
         CHECK_MARGIN(x_t.z, -3., 1e-9);
