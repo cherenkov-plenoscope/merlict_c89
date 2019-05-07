@@ -47,7 +47,7 @@ int first_casual_intersection(
     if (hit) {
         intersection->object_idx = idx_closest_face;
         intersection->position = mliRay_at(ray, smallest_ray_parameter);
-        intersection->surface_normal_local = mli_triangle_surface_normal(
+        intersection->surface_normal = mli_triangle_surface_normal(
             scenery->vertices[scenery->triangles[intersection->object_idx].a],
             scenery->vertices[scenery->triangles[intersection->object_idx].b],
             scenery->vertices[scenery->triangles[intersection->object_idx].c]);

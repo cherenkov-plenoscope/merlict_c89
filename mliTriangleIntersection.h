@@ -75,7 +75,7 @@ int mliTriangle_intersection(
             &ray_parameter)
     ) {
         intersection->position = mliRay_at(&ray, ray_parameter);
-        intersection->surface_normal_local = mli_triangle_surface_normal(
+        intersection->surface_normal = mli_triangle_surface_normal(
             vertex0,
             vertex1,
             vertex2);

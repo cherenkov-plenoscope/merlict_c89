@@ -11,7 +11,7 @@
 typedef struct {
     uint32_t object_idx;
     mliVec position;
-    mliVec surface_normal_local;
+    mliVec surface_normal;
     float distance_of_ray;
     int32_t from_outside_to_inside;
 } mliIntersection;

@@ -83,14 +83,14 @@ int mli_spherical_cap_hex_bound_intersection(
         ) {
             intersection->distance_of_ray = causal_solution;
             intersection->position = mliRay_at(ray_local, causal_solution);
-            intersection->surface_normal_local =
+            intersection->surface_normal =
                 mli_spherical_cap_surface_normal(
                     intersection->position,
                     curvature_radius);
             intersection->from_outside_to_inside =
                 mli_ray_runs_from_outside_to_inside(
                     ray_local->direction,
-                    intersection->surface_normal_local);
+                    intersection->surface_normal);
 
             return 1;
         }
