@@ -26,7 +26,7 @@
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"
 #include "mliOctTree.h"
-/*#include "ray_octtree.h"*/
+#include "mli_ray_octree_traversal.h"
 
 
 int main(int argc, char *argv[]) {
