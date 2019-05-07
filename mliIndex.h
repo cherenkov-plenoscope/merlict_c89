@@ -113,7 +113,7 @@ int mliScenery_intersection(
     const uint64_t idx,
     mliIntersection *intersection) {
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
-    intersection->idx_tri = idx;
+    intersection->object_idx = idx;
     switch(i.type) {
         case MLI_TRIANGLE:
             return mliTriangle_intersection(

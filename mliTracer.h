@@ -45,12 +45,12 @@ int first_casual_intersection(
         }
     }
     if (hit) {
-        intersection->idx_tri = idx_closest_face;
+        intersection->object_idx = idx_closest_face;
         intersection->position = mliRay_at(ray, smallest_ray_parameter);
         intersection->surface_normal_local = mli_triangle_surface_normal(
-            scenery->vertices[scenery->triangles[intersection->idx_tri].a],
-            scenery->vertices[scenery->triangles[intersection->idx_tri].b],
-            scenery->vertices[scenery->triangles[intersection->idx_tri].c]);
+            scenery->vertices[scenery->triangles[intersection->object_idx].a],
+            scenery->vertices[scenery->triangles[intersection->object_idx].b],
+            scenery->vertices[scenery->triangles[intersection->object_idx].c]);
     }
     return hit;
 }
@@ -75,14 +75,15 @@ mliColor mli_trace(
         line_of_sight_to_source = mliRay_set(
             intersection.position,
             dir_to_source);
-        surface_idx = scenery->triangles_surfaces[intersection.idx_tri].outer;
+        surface_idx =
+            scenery->triangles_surfaces[intersection.object_idx].outer;
         color_idx = scenery->surfaces[surface_idx].color;
         color = scenery->colors[color_idx];
 
         if (first_casual_intersection(
                 scenery,
                 &line_of_sight_to_source,
-                intersection.idx_tri,
+                intersection.object_idx,
                 &global_light_intersection)
         ) {
             color.r = color.r*.5;
