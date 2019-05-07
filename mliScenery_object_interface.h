@@ -7,6 +7,7 @@
 #include "mliVec.h"
 #include "mliTriangle_OBB.h"
 #include "mliSphericalCapHex_OBB.h"
+#include "mliSphericalCapHex_intersection.h"
 #include "mliOBB.h"
 #include "mliIntersection.h"
 
