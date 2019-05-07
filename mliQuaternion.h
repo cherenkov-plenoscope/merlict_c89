@@ -13,6 +13,13 @@ typedef struct {
     float z;
 } mliQuaternion;
 
+int mliQuaternion_is_equal(const mliQuaternion a, const mliQuaternion b) {
+    if (a.w != b.w) return 0;
+    if (a.x != b.x) return 0;
+    if (a.y != b.y) return 0;
+    if (a.z != b.z) return 0;
+    return 1;}
+
 mliQuaternion mliQuaternion_set_rotaxis_and_angle(
     const mliVec rot_axis,
     const float angle) {

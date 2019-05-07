@@ -30,6 +30,26 @@
 
 
 int main(int argc, char *argv[]) {
+    /* sphere */
+    {
+        float c;
+        for (c = -2.5; c < 2.5; c += .25) {
+            mliHomTra T;
+            mliOBB b;
+            float radius = 1.;
+            T.translation = mliVec_set(0., 0., c);
+            T.rotation = mliQuaternion_set_rotaxis_and_angle(
+                mliVec_set(0., 0., 1.),
+                0.);
+            b = mliSphere_obb(radius, T);
+            CHECK_MARGIN(b.lower.x, -1. + c, 1e-6);
+            CHECK_MARGIN(b.lower.y, -1. + c, 1e-6);
+            CHECK_MARGIN(b.lower.z, -1. + c, 1e-6);
+            CHECK_MARGIN(b.upper.x,  1. + c, 1e-6);
+            CHECK_MARGIN(b.upper.y,  1. + c, 1e-6);
+            CHECK_MARGIN(b.upper.z,  1. + c, 1e-6);
+        }
+    }
     /* Orientated-Bounding-Box */
     {
         mliOBB node;
@@ -192,6 +212,7 @@ int main(int argc, char *argv[]) {
         scenery.num_colors = 1u;
         scenery.num_surfaces = 1u;
         scenery.num_spherical_cap_hex = 1u;
+        scenery.num_spheres = 1u;
 
         mliMesh_init_from_off("diff_cube_sphere.off", &diff_cube_sphere);
 
@@ -227,6 +248,7 @@ int main(int argc, char *argv[]) {
             scenery.triangles_surfaces[i].outer = 0u;
             scenery.triangles_surfaces[i].inner = 0u;}
 
+        /* spherical_cap_hex */
         scenery.spherical_cap_hex[0].curvature_radius = 4.89*2.;
         scenery.spherical_cap_hex[0].inner_hex_radius = 0.32;
         scenery.spherical_cap_hex_T[0].translation = mliVec_set(0., 0., 1.);
@@ -236,6 +258,16 @@ int main(int argc, char *argv[]) {
                 0.);
         scenery.spherical_cap_hex_surfaces[0].outer = 0u;
         scenery.spherical_cap_hex_surfaces[0].inner = 0u;
+
+        /* spheres */
+        scenery.spheres[0] = 0.5;
+        scenery.spheres_surfaces[0].outer = 0u;
+        scenery.spheres_surfaces[0].inner = 0u;
+        scenery.spheres_T[0].translation = mliVec_set(0., 0., 0.);
+        scenery.spheres_T[0].rotation =
+            mliQuaternion_set_rotaxis_and_angle(
+                mliVec_set(0., 0., 0.),
+                0.);
 
         mliScenery_write_to_path(&scenery, "my_scenery.mli.tmp");
         mliScenery_read_from_path(&scenery_back, "my_scenery.mli.tmp");

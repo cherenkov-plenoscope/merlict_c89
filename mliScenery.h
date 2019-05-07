@@ -15,6 +15,7 @@
 
 #define MLI_TRIANGLE 0u
 #define MLI_SPHERICAL_CAP_HEX 1u
+#define MLI_SPHERE 2u
 
 typedef struct {
     uint32_t num_functions;
@@ -37,6 +38,11 @@ typedef struct {
     mliSphericalCapHeagonal *spherical_cap_hex;
     mliSurfaces *spherical_cap_hex_surfaces;
     mliHomTra* spherical_cap_hex_T;
+
+    uint32_t num_spheres;
+    float *spheres;
+    mliSurfaces *spheres_surfaces;
+    mliHomTra* spheres_T;
 } mliScenery;
 
 void mliScenery_malloc(mliScenery* scenery) {
@@ -69,6 +75,13 @@ void mliScenery_malloc(mliScenery* scenery) {
         scenery->num_spherical_cap_hex*sizeof(mliSurfaces));
     scenery->spherical_cap_hex_T = (mliHomTra*)malloc(
         scenery->num_spherical_cap_hex*sizeof(mliHomTra));
+
+    /* spheres */
+    scenery->spheres = (float*)malloc(scenery->num_spheres*sizeof(float));
+    scenery->spheres_surfaces = (mliSurfaces*)malloc(
+        scenery->num_spheres*sizeof(mliSurfaces));
+    scenery->spheres_T = (mliHomTra*)malloc(
+        scenery->num_spheres*sizeof(mliHomTra));
 }
 
 void mliScenery_free(mliScenery *scenery) {
@@ -101,6 +114,12 @@ void mliScenery_free(mliScenery *scenery) {
     free(scenery->spherical_cap_hex_surfaces);
     free(scenery->spherical_cap_hex_T);
     scenery->num_spherical_cap_hex = 0;
+
+    /* spheres */
+    free(scenery->spheres);
+    free(scenery->spheres_surfaces);
+    free(scenery->spheres_T);
+    scenery->num_spheres = 0;
 }
 
 int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
@@ -117,6 +136,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     fwrite(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
     fwrite(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
     fwrite(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
+    fwrite(&scenery->num_spheres, sizeof(uint32_t), 1u, f);
 
     /* functions */
     for (i = 0; i < scenery->num_functions; i++) {
@@ -156,6 +176,19 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
         scenery->num_spherical_cap_hex,
         f);
 
+    /* spheres */
+    fwrite(scenery->spheres, sizeof(float), scenery->num_spheres, f);
+    fwrite(
+        scenery->spheres_surfaces,
+        sizeof(mliSurfaces),
+        scenery->num_spheres,
+        f);
+    fwrite(
+        scenery->spheres_T,
+        sizeof(mliHomTra),
+        scenery->num_spheres,
+        f);
+
     fclose(f);
     return EXIT_SUCCESS;
 
@@ -179,6 +212,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     fread(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
     fread(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
     fread(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
+    fread(&scenery->num_spheres, sizeof(uint32_t), 1u, f);
 
     mliScenery_malloc(scenery);
 
@@ -217,6 +251,20 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
         sizeof(mliHomTra),
         scenery->num_spherical_cap_hex, f);
 
+    /* spheres */
+    fread(
+        scenery->spheres,
+        sizeof(float),
+        scenery->num_spheres, f);
+    fread(
+        scenery->spheres_surfaces,
+        sizeof(mliSurfaces),
+        scenery->num_spheres, f);
+    fread(
+        scenery->spheres_T,
+        sizeof(mliHomTra),
+        scenery->num_spheres, f);
+
     fclose(f);
     return EXIT_SUCCESS;
 
@@ -232,6 +280,7 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
     if (a->num_vertices != b->num_vertices ) return 0;
     if (a->num_triangles != b->num_triangles ) return 0;
     if (a->num_spherical_cap_hex != b->num_spherical_cap_hex ) return 0;
+    if (a->num_spheres != b->num_spheres) return 0;
     for (i = 0; i < a->num_functions; i++) {
         if (!mliFunc_is_equal(a->functions[i], b->functions[i])) return 0;}
     for (i = 0; i < a->num_colors; i++) {
@@ -246,7 +295,8 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
         if (!mliSurfaces_is_equal(
             a->triangles_surfaces[i],
             b->triangles_surfaces[i]))
-            return 0;}
+            return 0;
+    }
     for (i = 0; i < a->num_spherical_cap_hex; i++) {
         if (!mliSphericalCapHeagonal_is_equal(
                 a->spherical_cap_hex[i],
@@ -255,7 +305,24 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
         if (!mliSurfaces_is_equal(
                 a->spherical_cap_hex_surfaces[i],
                 b->spherical_cap_hex_surfaces[i]))
-            return 0;}
+            return 0;
+        if(!mliHomTra_is_equal(
+            a->spherical_cap_hex_T[i],
+            b->spherical_cap_hex_T[i]))
+            return 0;
+    }
+    for (i = 0; i < a->num_spheres; i++) {
+        if (a->spheres[i] != b->spheres[i])
+            return 0;
+        if (!mliSurfaces_is_equal(
+                a->spheres_surfaces[i],
+                b->spheres_surfaces[i]))
+            return 0;
+        if(!mliHomTra_is_equal(
+            a->spheres_T[i],
+            b->spheres_T[i]))
+            return 0;
+    }
     return 1;}
 
 
@@ -299,12 +366,26 @@ int mliScenery_valid_spherical_cap_hex(const mliScenery *scenery) {
     }
     return 1;}
 
+int mliScenery_valid_spheres(const mliScenery *scenery) {
+    int i;
+    for (i = 0; i < scenery->num_spheres; i++) {
+        if (    scenery->spheres_surfaces[i].inner >=
+                scenery->num_surfaces)
+            return 0;
+        if (    scenery->spheres_surfaces[i].outer >=
+                scenery->num_surfaces)
+            return 0;
+    }
+    return 1;}
+
 int mliScenery_valid(const mliScenery *scenery) {
     if (!mliScenery_valid_surfaces(scenery))
         return 0;
     if (!mliScenery_valid_triangles(scenery))
         return 0;
     if (!mliScenery_valid_spherical_cap_hex(scenery))
+        return 0;
+    if (!mliScenery_valid_spheres(scenery))
         return 0;
     return 1;}
 

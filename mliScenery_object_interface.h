@@ -6,6 +6,7 @@
 #include "mliScenery.h"
 #include "mliVec.h"
 #include "mliTriangle_OBB.h"
+#include "mliSphere_OBB.h"
 #include "mliSphericalCapHex_OBB.h"
 #include "mliSphericalCapHex_intersection.h"
 #include "mliOBB.h"

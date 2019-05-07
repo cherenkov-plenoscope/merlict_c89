@@ -54,4 +54,11 @@ mliVec mli_transform_position_inverse(
         (rot->r02*trans.x + rot->r12*trans.y + rot->r22*trans.z);
     return out;}
 
+int mliHomTra_is_equal(const mliHomTra a, const mliHomTra b) {
+    if (!mliVec_is_equal(a.translation, b.translation))
+        return 0;
+    if (!mliQuaternion_is_equal(a.rotation, b.rotation))
+        return 0;
+    return 1;}
+
 #endif
