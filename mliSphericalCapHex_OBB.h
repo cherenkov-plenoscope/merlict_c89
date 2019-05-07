@@ -7,13 +7,13 @@
 #include "mliOBB.h"
 
 
-int mliSphericalCapHex_overlap_obb(
+int mliSphericalCapHex_has_overlap_obb(
     const mliSphericalCapHeagonal cap,
     const mliHomTra trafo,
     const mliOBB obb) {
     /* FIXME */
     /* assume spherical */
-    float bounding_radius = mliSphericalCapHex_bounding_radius(cap);
+    /* float bounding_radius = mliSphericalCapHex_bounding_radius(cap);*/
 
     return 1;}
 

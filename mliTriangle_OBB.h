@@ -330,7 +330,7 @@ void __mliTriangle_transform_into_obb(
     b_out->z /= scale_z;
     c_out->z /= scale_z;}
 
-int mliTriangle_overlap_obb(
+int mliTriangle_has_overlap_obb(
     const mliVec a,
     const mliVec b,
     const mliVec c,

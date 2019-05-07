@@ -47,14 +47,14 @@ int mliScenery_overlap_obb(
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {
         case MLI_TRIANGLE:
-            return mliTriangle_overlap_obb(
+            return mliTriangle_has_overlap_obb(
                 scenery->vertices[scenery->triangles[i.idx].a],
                 scenery->vertices[scenery->triangles[i.idx].b],
                 scenery->vertices[scenery->triangles[i.idx].c],
                 obb);
             break;
         case MLI_SPHERICAL_CAP_HEX:
-            return mliSphericalCapHex_overlap_obb(
+            return mliSphericalCapHex_has_overlap_obb(
                 scenery->spherical_cap_hex[i.idx],
                 scenery->spherical_cap_hex_T[i.idx],
                 obb);
