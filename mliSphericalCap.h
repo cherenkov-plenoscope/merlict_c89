@@ -110,4 +110,11 @@ int mliSphericalCapHeagonal_is_equal(
     if (a.inner_hex_radius != b.inner_hex_radius) return 0;
     return 1;}
 
+int mliSphericalCapHex_intersection(
+    const mliSphericalCapHeagonal cap,
+    const mliHomTra T,
+    const mliRay ray,
+    mliIntersection *intersection) {
+    return 0;}
+
 #endif

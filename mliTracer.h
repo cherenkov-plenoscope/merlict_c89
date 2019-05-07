@@ -17,7 +17,7 @@
 int first_casual_intersection(
     const mliScenery *scenery,
     const mliRay *ray,
-    int32_t face_coming_from,
+    const int32_t face_coming_from,
     mliIntersection *intersection) {
     int hit = 0;
     int32_t idx_tri;

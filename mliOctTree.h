@@ -8,7 +8,6 @@
 #include "mliOBB.h"
 #include "mliMath.h"
 
-#define MLI_NUM_CHILDREN_OCTTREE 8u
 
 typedef struct mliNode {
     struct mliNode* mother;
@@ -17,6 +16,7 @@ typedef struct mliNode {
     uint32_t *objects;
 } mliNode;
 
+
 void mliNode_init(mliNode *n) {
     int c;
     n->mother = NULL;
@@ -24,6 +24,7 @@ void mliNode_init(mliNode *n) {
         n->children[c] = NULL;}
     n->num_objects = 0u;
     n->objects = NULL;}
+
 
 int mliNode_is_blank(const mliNode *n) {
     int c;
@@ -36,24 +37,24 @@ int mliNode_is_blank(const mliNode *n) {
         return 0;
     return 1;}
 
-int mliNode_is_leaf(const mliNode *n) {
-    return n->num_objects > 0u;}
-
-int mliNode_is_node(const mliNode *n) {
-    return !mliNode_is_leaf(n);}
 
 void mliNode_free(mliNode *n) {
-    if (mliNode_is_node(n)) {
-        uint32_t c;
-        for (c = 0; c < 8u; c++) {
-            if (n->children[c] != NULL)  {
-                mliNode_free(n->children[c]);
-            }
-        }
-    } else {
-        free(n->objects);
-    }
-}
+    uint32_t c;
+    for (c = 0; c < 8u; c++)
+        if (n->children[c] != NULL)
+            mliNode_free(n->children[c]);
+    if (n->num_objects)
+        free(n->objects);}
+
+
+int mliNode_num_children(const mliNode *node) {
+    uint32_t c;
+    uint32_t num_leafs = 0u;
+    for (c = 0u; c < 8u; c++)
+        if (node->children[c] != NULL)
+            num_leafs++;
+    return num_leafs;}
+
 
 uint32_t mliNode_signs_to_child(
     const uint32_t sx,
@@ -61,17 +62,6 @@ uint32_t mliNode_signs_to_child(
     const uint32_t sz) {
     return 4*sx + 2*sy + 1*sz;}
 
-void mliNode_child_to_signs(
-    const uint32_t child,
-    uint32_t *sx,
-    uint32_t *sy,
-    uint32_t *sz) {
-    uint32_t rest;
-    (*sx) = child / 4;
-    rest = child - (*sx);
-    (*sy) = rest / 2;
-    rest = rest - (*sy);
-    (*sz) = rest;}
 
 void mliNode_add_children(
     mliNode *node,
@@ -80,8 +70,7 @@ void mliNode_add_children(
     uint32_t sx, sy, sz, obj, ovrerlaps_child;
     uint32_t child;
     uint32_t *overlapping_objects;
-    overlapping_objects =
-        (uint32_t*)malloc(node->num_objects*sizeof(uint32_t));
+    overlapping_objects = (uint32_t*)malloc(node->num_objects*sizeof(uint32_t));
     for (sx = 0u; sx < 2u; sx++) {
         for (sy = 0u; sy < 2u; sy++) {
             for (sz = 0u; sz < 2u; sz++) {
@@ -97,7 +86,10 @@ void mliNode_add_children(
                 }
 
                 /*fprintf(stderr, "ovrerlaps_child %u\n", ovrerlaps_child);*/
-                if (ovrerlaps_child == node->num_objects || ovrerlaps_child  <= 16u) {
+                if (
+                    ovrerlaps_child == node->num_objects ||
+                    ovrerlaps_child  <= 16u
+                ) {
                     /* No point in creating this child node */
                 } else {
                     node->children[child] = (mliNode*)malloc(sizeof(mliNode));
@@ -121,27 +113,64 @@ void mliNode_add_children(
     free(overlapping_objects);
 }
 
-void mliNode_for_scenery(mliNode *tree, const mliScenery *scenery) {
+
+mliNode mliNode_from_scenery(const mliScenery *scenery) {
+    mliNode tree;
     mliOBB cube_obb;
     mliOBB scenery_obb;
     uint32_t idx;
-    assert(mliNode_is_blank(tree));
+    mliNode_init(&tree);
+    assert(mliNode_is_blank(&tree));
     scenery_obb = mliScenery_outermost_obb(scenery);
     cube_obb = mliOBB_outer_cube(scenery_obb);
-    tree->mother = NULL;
-    tree->num_objects = mliScenery_num_entities(scenery);
-    tree->objects = (uint32_t*)malloc(tree->num_objects*sizeof(uint32_t));
-    for (idx = 0; idx < tree->num_objects; idx++) {
-        tree->objects[idx] = idx;}
-    mliNode_add_children(tree, scenery, cube_obb);
-
+    tree.mother = NULL;
+    tree.num_objects = mliScenery_num_entities(scenery);
+    tree.objects = (uint32_t*)malloc(tree.num_objects*sizeof(uint32_t));
+    for (idx = 0; idx < tree.num_objects; idx++) {
+        tree.objects[idx] = idx;}
+    mliNode_add_children(&tree, scenery, cube_obb);
+    return tree;
 }
+
+
+void __mliNode_num_nodes_recursive(const mliNode *node, uint32_t *num_nodes) {
+    uint32_t c;
+    (*num_nodes)++;
+    for (c = 0u; c < 8u; c++) {
+        if (node->children[c] != NULL) {
+            __mliNode_num_nodes_recursive(node->children[c], num_nodes);}}}
+
+
+uint32_t mliNode_num_nodes(const mliNode *node) {
+    uint32_t num_nodes = 0u;
+    __mliNode_num_nodes_recursive(node, &num_nodes);
+    return num_nodes;}
+
+
+void __mliNode_capacity_objects_recursive(
+    const mliNode *node,
+    uint32_t *capacity_objects) {
+    if (mliNode_num_children(node) == 0u) {
+        (*capacity_objects) += node->num_objects;
+    } else {
+        uint32_t c;
+        for (c = 0u; c < 8u; c++) {
+            if (node->children[c] != NULL) {
+                __mliNode_capacity_objects_recursive(
+                    node->children[c],
+                    capacity_objects);}}}}
+
+
+uint32_t mliNode_capacity_objects(const mliNode *node) {
+    uint32_t capacity_objects = 0u;
+    __mliNode_capacity_objects_recursive(node, &capacity_objects);
+    return capacity_objects;}
+
 
 void mliNode_print(const mliNode *node, const uint32_t indent) {
     uint32_t i;
-    uint32_t num_c = 0u;
+    uint32_t num_c = mliNode_num_children(node);
     for (i = 0u; i < indent; i++) printf(" ");
-    for (i = 0u; i < 8u; i++) if (node->children[i] != NULL) num_c++;
     if (num_c == 0)
         printf("|-Leaf: overlaps: %u", node->num_objects);
     else

@@ -8,6 +8,7 @@
 #include "mliTriangle_OBB.h"
 #include "mliSphericalCapHex_OBB.h"
 #include "mliOBB.h"
+#include "mliIntersection.h"
 
 typedef struct {
     uint32_t type;
@@ -104,6 +105,36 @@ mliOBB mliScenery_outermost_obb(const mliScenery *scenery) {
         obb = mliOBB_outermost(obb, obj_obb);
     }
     return obb;
+}
+
+int mliScenery_intersection(
+    const mliScenery* scenery,
+    const mliRay ray,
+    const uint64_t idx,
+    mliIntersection *intersection) {
+    mliIndex i = __mliScenery_resolve_index(scenery, idx);
+    intersection->idx_tri = idx;
+    switch(i.type) {
+        case MLI_TRIANGLE:
+            return mliTriangle_intersection(
+                scenery->vertices[scenery->triangles[i.idx].a],
+                scenery->vertices[scenery->triangles[i.idx].b],
+                scenery->vertices[scenery->triangles[i.idx].c],
+                ray,
+                intersection);
+            break;
+        case MLI_SPHERICAL_CAP_HEX:
+            return mliSphericalCapHex_intersection(
+                scenery->spherical_cap_hex[i.idx],
+                scenery->spherical_cap_hex_T[i.idx],
+                ray,
+                intersection);
+            break;
+        default:
+            return 0;
+            break;
+    }
+    return 0;
 }
 
 #endif

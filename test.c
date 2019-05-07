@@ -26,11 +26,11 @@
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"
 #include "mliOctTree.h"
+/*#include "ray_octtree.h"*/
 
 
 int main(int argc, char *argv[]) {
     /* Orientated-Bounding-Box */
-
     {
         mliOBB node;
         mliOBB child;
@@ -319,12 +319,26 @@ int main(int argc, char *argv[]) {
     {
         mliScenery scenery;
         mliNode tree;
+        /*mliOBB scenery_obb;*/
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
-        mliNode_init(&tree);
+        /*scenery_obb = mliScenery_outermost_obb(&scenery);*/
+        tree = mliNode_from_scenery(&scenery);
 
-        mliNode_for_scenery(&tree, &scenery);
+        /*mliNode_print(&tree, 0u);*/
+        /*
+        fprintf(stderr ,"num_nodes: %u\n", mliNode_num_nodes(&tree));
+        fprintf(
+            stderr,
+            "capacity_objects: %u\n",
+            mliNode_capacity_objects(&tree));*/
+        /*
+        ray_octree_traversal(
+            scenery_obb,
+            &tree,
+            mliRay_set(
+                mliVec_set(0. ,2.5, 10.),
+                mliVec_set(1e-7 ,1e-7, -1.)));*/
 
-        /* mliNode_print(&tree, 0u); */
         mliNode_free(&tree);
         mliScenery_free(&scenery);
     }

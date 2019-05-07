@@ -3,6 +3,8 @@
 #define MERLICT_MLITRIANGLEINTERSECTION_H_
 #include <math.h>
 #include "mliVec.h"
+#include "mliRay.h"
+#include "mliIntersection.h"
 
 
 int mliRay_intersects_triangle(
@@ -55,5 +57,32 @@ mliVec mli_triangle_surface_normal(
     mliVec edge1 = mliVec_substract(vertex1, vertex0);
     mliVec edge2 = mliVec_substract(vertex2, vertex0);
     return mliVec_cross(edge1, edge2);}
+
+
+int mliTriangle_intersection(
+    const mliVec vertex0,
+    const mliVec vertex1,
+    const mliVec vertex2,
+    const mliRay ray,
+    mliIntersection *intersection) {
+    double ray_parameter;
+    if (mliRay_intersects_triangle(
+            ray.support,
+            ray.direction,
+            vertex0,
+            vertex1,
+            vertex2,
+            &ray_parameter)
+    ) {
+        intersection->position = mliRay_at(&ray, ray_parameter);
+        intersection->surface_normal_local = mli_triangle_surface_normal(
+            vertex0,
+            vertex1,
+            vertex2);
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 #endif
