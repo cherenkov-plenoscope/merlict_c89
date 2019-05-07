@@ -6,11 +6,15 @@
 #include "mliScenery.h"
 #include "mliOBB.h"
 
+
 int mliSphericalCapHex_overlap_obb(
     const mliSphericalCapHeagonal cap,
     const mliHomTra trafo,
     const mliOBB obb) {
-    /* to be done... */
+    /* FIXME */
+    /* assume spherical */
+    float bounding_radius = mliSphericalCapHex_bounding_radius(cap);
+
     return 1;}
 
 mliOBB mliSphericalCapHex_obb(

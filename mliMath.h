@@ -17,6 +17,15 @@ int mli_min_int(const int x, const int y) {
     return (x < y) ? x : y;
 }
 
+double hypot(const double a, const double b) {
+    return sqrt(a*a + b*b);}
+
+double z_sphere(double x, double curvature_radius) {
+    double half_curvature_radius = .5*curvature_radius;
+    return half_curvature_radius - sqrt(
+        half_curvature_radius*half_curvature_radius - x*x);}
+
+
 void mli_uint32_ncpy(
     const uint32_t *from,
     uint32_t* to,
