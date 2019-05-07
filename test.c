@@ -20,7 +20,7 @@
 #include "mliScenery_object_interface.h"
 #include "mliTracer.h"
 #include "mliHexagonalPrismZ.h"
-#include "mliSphericalCap.h"
+#include "mliSphericalCapHex.h"
 #include "mliOuterPrismBound.h"
 #include "mliVector.h"
 #include "mliVec_OBB.h"

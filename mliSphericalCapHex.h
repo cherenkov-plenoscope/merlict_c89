@@ -1,6 +1,6 @@
 /* Copyright 2019 Sebastian Achim Mueller */
-#ifndef MERLICT_MLISPHERICALCAP_H_
-#define MERLICT_MLISPHERICALCAP_H_
+#ifndef MERLICT_MLISPHERICALCAPHEX_H_
+#define MERLICT_MLISPHERICALCAPHEX_H_
 
 #include <math.h>
 #include "mliVec.h"

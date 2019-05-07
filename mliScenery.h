@@ -9,7 +9,7 @@
 #include "mliColor.h"
 #include "mliFunc.h"
 #include "mliMesh.h"
-#include "mliSphericalCap.h"
+#include "mliSphericalCapHex.h"
 #include "mliSurface.h"
 #include "mliSurfaces.h"
 
