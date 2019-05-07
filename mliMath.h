@@ -25,7 +25,6 @@ double z_sphere(double x, double curvature_radius) {
     return half_curvature_radius - sqrt(
         half_curvature_radius*half_curvature_radius - x*x);}
 
-
 void mli_uint32_ncpy(
     const uint32_t *from,
     uint32_t* to,
@@ -33,6 +32,8 @@ void mli_uint32_ncpy(
     uint64_t i;
     for (i = 0; i < num; i++) {
         to[i] = from[i];}}
+
+#define MLI_SQUARED(a) ((a)*(a))
 
 #define MLI_MIN2(a,b) (((a) < (b)) ? (a) : (b))
 #define MLI_MAX2(a,b) (((a) > (b)) ? (a) : (b))

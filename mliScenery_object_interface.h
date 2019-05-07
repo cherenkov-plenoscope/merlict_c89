@@ -7,6 +7,7 @@
 #include "mliVec.h"
 #include "mliTriangle_OBB.h"
 #include "mliSphere_OBB.h"
+#include "mliSphere_intersection.h"
 #include "mliSphericalCapHex_OBB.h"
 #include "mliSphericalCapHex_intersection.h"
 #include "mliOBB.h"
@@ -21,19 +22,30 @@ uint64_t mliScenery_num_entities(const mliScenery* scenery) {
     uint64_t last = 0;
     last += scenery->num_triangles;
     last += scenery->num_spherical_cap_hex;
+    last += scenery->num_spheres;
     return last;}
 
 mliIndex __mliScenery_resolve_index(
     const mliScenery* scenery,
     const uint64_t idx) {
+    const uint64_t idx_start_spherical_cap_hex =
+        scenery->num_triangles;
+    const uint64_t idx_start_spheres =
+        idx_start_spherical_cap_hex + scenery->num_spherical_cap_hex;
+    const uint64_t idx_next =
+        idx_start_spheres + scenery->num_spheres;
     mliIndex ri;
     if (idx < scenery->num_triangles) {
         ri.type = MLI_TRIANGLE;
         ri.idx = idx;
         return ri;
-    } else if (idx < scenery->num_triangles + scenery->num_spherical_cap_hex) {
+    } else if (idx < idx_start_spheres) {
         ri.type = MLI_SPHERICAL_CAP_HEX;
-        ri.idx = idx - scenery->num_triangles;
+        ri.idx = idx - idx_start_spherical_cap_hex;
+        return ri;
+    } else if (idx < idx_next) {
+        ri.type = MLI_SPHERE;
+        ri.idx = idx - idx_start_spheres;
         return ri;
     }
     assert(idx < mliScenery_num_entities(scenery) + 1);
@@ -60,6 +72,12 @@ int mliScenery_overlap_obb(
                 scenery->spherical_cap_hex_T[i.idx],
                 obb);
             break;
+        case MLI_SPHERE:
+            return mliSphere_has_overlap_obb(
+                scenery->spheres[i.idx],
+                scenery->spheres_T[i.idx].translation,
+                obb);
+            break;
         default:
             return 0;
             break;
@@ -83,6 +101,11 @@ mliOBB mliScenery_obb(
             return mliSphericalCapHex_obb(
                 scenery->spherical_cap_hex[i.idx],
                 scenery->spherical_cap_hex_T[i.idx]);
+            break;
+        case MLI_SPHERE:
+            return mliSphere_obb(
+                scenery->spheres[i.idx],
+                scenery->spheres_T[i.idx].translation);
             break;
         default:
             obb.lower = mliVec_set(0., 0., 0);
@@ -129,6 +152,13 @@ int mliScenery_intersection(
             return mliSphericalCapHex_intersection(
                 scenery->spherical_cap_hex[i.idx],
                 scenery->spherical_cap_hex_T[i.idx],
+                ray,
+                intersection);
+            break;
+        case MLI_SPHERE:
+            return mliSphere_intersection(
+                scenery->spheres[i.idx],
+                scenery->spheres_T[i.idx],
                 ray,
                 intersection);
             break;

@@ -34,21 +34,84 @@ int main(int argc, char *argv[]) {
     {
         float c;
         for (c = -2.5; c < 2.5; c += .25) {
-            mliHomTra T;
             mliOBB b;
             float radius = 1.;
-            T.translation = mliVec_set(0., 0., c);
-            T.rotation = mliQuaternion_set_rotaxis_and_angle(
-                mliVec_set(0., 0., 1.),
-                0.);
-            b = mliSphere_obb(radius, T);
-            CHECK_MARGIN(b.lower.x, -1. + c, 1e-6);
-            CHECK_MARGIN(b.lower.y, -1. + c, 1e-6);
-            CHECK_MARGIN(b.lower.z, -1. + c, 1e-6);
-            CHECK_MARGIN(b.upper.x,  1. + c, 1e-6);
-            CHECK_MARGIN(b.upper.y,  1. + c, 1e-6);
-            CHECK_MARGIN(b.upper.z,  1. + c, 1e-6);
+            b = mliSphere_obb(radius, mliVec_set(c, c*2., c*3.));
+            CHECK_MARGIN(b.lower.x, (-1. + c), 1e-6);
+            CHECK_MARGIN(b.lower.y, (-1. + c*2), 1e-6);
+            CHECK_MARGIN(b.lower.z, (-1. + c*3), 1e-6);
+            CHECK_MARGIN(b.upper.x, ( 1. + c), 1e-6);
+            CHECK_MARGIN(b.upper.y, ( 1. + c*2), 1e-6);
+            CHECK_MARGIN(b.upper.z, ( 1. + c*3), 1e-6);
         }
+    }
+
+    {
+        float radius = 1.;
+        mliOBB obb;
+        obb.lower = mliVec_set(-1., -1., -1.);
+        obb.upper = mliVec_set(1., 1., 1.);
+        CHECK(mliSphere_has_overlap_obb(radius, mliVec_set(0., 0., 0.), obb));
+        CHECK(mliSphere_has_overlap_obb(radius, mliVec_set(0., 0., .5), obb));
+        CHECK(mliSphere_has_overlap_obb(radius, mliVec_set(.5, .5, .5), obb));
+        CHECK(!mliSphere_has_overlap_obb(radius, mliVec_set(.0, .0, 2.5), obb));
+        CHECK(!mliSphere_has_overlap_obb(radius, mliVec_set(.0, 2.5, 0.), obb));
+        CHECK(!mliSphere_has_overlap_obb(radius, mliVec_set(2.5, 0., 0.), obb));
+        CHECK(!mliSphere_has_overlap_obb(radius, mliVec_set(-2.5, 0., 0.), obb));
+        CHECK(mliSphere_has_overlap_obb(radius, mliVec_set(1.99, 0., 0.), obb));
+        CHECK(!mliSphere_has_overlap_obb(radius, mliVec_set(2.01, 0., 0.), obb));
+    }
+
+    {
+        double radius = 1.;
+        double plus_solution, minus_solution;
+        mliRay ray;
+        ray.support = mliVec_set(0., 0., -10);
+        ray.direction = mliVec_set(0., 0., 1.);
+        CHECK(
+            mli_sphere_intersection_equation(
+                radius,
+                ray,
+                &plus_solution,
+                &minus_solution));
+        CHECK_MARGIN(plus_solution, 11., 1e-6);
+        CHECK_MARGIN(minus_solution, 9., 1e-6);
+        CHECK(
+            mliSphere_facing_sphere_from_outside_given_p_m(
+                plus_solution,
+                minus_solution));
+    }
+
+    {
+        double radius = 1.;
+        double plus_solution, minus_solution;
+        mliRay ray;
+        ray.support = mliVec_set(0., 0., 10);
+        ray.direction = mliVec_set(0., 0., 1.);
+        CHECK(
+            mli_sphere_intersection_equation(
+                radius,
+                ray,
+                &plus_solution,
+                &minus_solution));
+        CHECK(
+            mliSphere_facing_away_from_outside_given_p_m(
+                plus_solution,
+                minus_solution));
+    }
+
+    {
+        double radius = 1.;
+        double plus_solution, minus_solution;
+        mliRay ray;
+        ray.support = mliVec_set(0., 2., -10);
+        ray.direction = mliVec_set(0., 0., 1.);
+        CHECK(
+            !mli_sphere_intersection_equation(
+                radius,
+                ray,
+                &plus_solution,
+                &minus_solution));
     }
     /* Orientated-Bounding-Box */
     {
@@ -315,6 +378,7 @@ int main(int argc, char *argv[]) {
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
         num_surface_entities = scenery.num_triangles;
         num_surface_entities += scenery.num_spherical_cap_hex;
+        num_surface_entities += scenery.num_spheres;
 
         CHECK(mliScenery_num_entities(&scenery) == num_surface_entities);
 
