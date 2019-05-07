@@ -4,7 +4,6 @@
 
 #include <stdint.h>
 #include "mliScenery.h"
-#include "mliIndex.h"
 #include "mliOBB.h"
 #include "mliMath.h"
 

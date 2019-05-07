@@ -17,7 +17,7 @@
 #include "mliHomTra.h"
 #include "mliCamera.h"
 #include "mliScenery.h"
-#include "mliIndex.h"
+#include "mliScenery_object_interface.h"
 #include "mliTracer.h"
 #include "mliHexagonalPrismZ.h"
 #include "mliSphericalCap.h"
