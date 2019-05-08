@@ -9,48 +9,43 @@
 #include "mliHomTra.h"
 #include "mliColor.h"
 #include "mliFunc.h"
-#include "mliTriangle_intersection.h"
 #include "mliScenery.h"
+#include "mliScenery_object_interface.h"
 #include "mliIntersection.h"
 
 
 int first_casual_intersection(
     const mliScenery *scenery,
     const mliRay *ray,
-    const int32_t face_coming_from,
+    const int64_t face_coming_from,
     mliIntersection *intersection) {
-    int hit = 0;
-    int32_t idx_tri;
-    int32_t idx_closest_face = 0;
-    double smallest_ray_parameter = 9e99;
-    double ray_parameter;
+    int64_t hit = 0;
+    int64_t idx;
+    int64_t num_objects;
 
-    for (idx_tri = 0; idx_tri < scenery->num_triangles; idx_tri++) {
-        if (face_coming_from == idx_tri)
+    mliIntersection closest_isec;
+    mliIntersection temp_isec;
+    temp_isec.distance_of_ray = 9e99;
+    closest_isec.distance_of_ray = 9e99;
+    num_objects = mliScenery_num_entities(scenery);
+    for (idx = 0; idx < num_objects; idx++) {
+        if (face_coming_from == idx)
             continue;
         if (
-            mliRay_intersects_triangle(
-                ray->support,
-                ray->direction,
-                scenery->vertices[scenery->triangles[idx_tri].a],
-                scenery->vertices[scenery->triangles[idx_tri].b],
-                scenery->vertices[scenery->triangles[idx_tri].c],
-                &ray_parameter)
+            mliScenery_intersection(
+                scenery,
+                (*ray),
+                idx,
+                &temp_isec)
         ) {
             hit = hit + 1;
-            if (ray_parameter < smallest_ray_parameter) {
-                smallest_ray_parameter = ray_parameter;
-                idx_closest_face = idx_tri;
+            if (temp_isec.distance_of_ray < closest_isec.distance_of_ray) {
+                closest_isec = temp_isec;
             }
         }
     }
-    if (hit) {
-        intersection->object_idx = idx_closest_face;
-        intersection->position = mliRay_at(ray, smallest_ray_parameter);
-        intersection->surface_normal = mli_triangle_surface_normal(
-            scenery->vertices[scenery->triangles[intersection->object_idx].a],
-            scenery->vertices[scenery->triangles[intersection->object_idx].b],
-            scenery->vertices[scenery->triangles[intersection->object_idx].c]);
+    if (hit>0) {
+        (*intersection) = closest_isec;
     }
     return hit;
 }
@@ -67,18 +62,22 @@ mliColor mli_trace(
             MLI_VOID_FACE,
             &intersection)
     ) {
-        uint32_t surface_idx;
-        uint32_t color_idx;
         mliIntersection global_light_intersection;
         mliRay line_of_sight_to_source;
+        mliSurfaces surfaces;
+        mliSurface outer_surface;
         mliVec dir_to_source = {1., 1., -3.};
+
         line_of_sight_to_source = mliRay_set(
             intersection.position,
             dir_to_source);
-        surface_idx =
-            scenery->triangles_surfaces[intersection.object_idx].outer;
-        color_idx = scenery->surfaces[surface_idx].color;
-        color = scenery->colors[color_idx];
+
+        surfaces = mliScenery_object_surfaces(
+            scenery,
+            intersection.object_idx);
+
+        outer_surface = scenery->surfaces[surfaces.outer];
+        color = scenery->colors[outer_surface.color];
 
         if (first_casual_intersection(
                 scenery,

@@ -336,7 +336,7 @@ int main(int argc, char *argv[]) {
         scenery.spherical_cap_hex_surfaces[0].inner = 0u;
 
         /* spheres */
-        scenery.spheres[0] = 0.5;
+        scenery.spheres[0] = 2.5;
         scenery.spheres_surfaces[0].outer = 0u;
         scenery.spheres_surfaces[0].inner = 0u;
         scenery.spheres_T[0].trans = mliVec_set(0., 0., 0.);
@@ -420,6 +420,43 @@ int main(int argc, char *argv[]) {
         CHECK_MARGIN(obb.upper.x, +7.5, 1e-7);
         CHECK_MARGIN(obb.upper.y, +7.5, 1e-7);
         CHECK_MARGIN(obb.upper.z, +7.5, 1e-7);
+
+        mliScenery_free(&scenery);
+    }
+
+    /* scenery intersection interface -> sphere */
+    {
+        mliScenery scenery;
+        mliIntersection isec;
+        int hit = 0;
+        uint64_t sphere_idx;
+        double sphere_radius = 2.5;
+        mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+
+        sphere_idx = mliScenery_num_entities(&scenery) - 1u;
+
+        hit = mliScenery_intersection(
+            &scenery,
+            mliRay_set(
+                mliVec_set(0., 0., -10.),
+                mliVec_set(0. ,0., 1.)),
+            sphere_idx,
+            &isec);
+
+        CHECK(hit);
+        CHECK(isec.object_idx == sphere_idx);
+        CHECK(
+            mliVec_equal_margin(
+                isec.position,
+                mliVec_set(0., 0., -sphere_radius),
+                1e-6));
+        CHECK(
+            mliVec_equal_margin(
+                isec.surface_normal,
+                mliVec_set(0., 0., -1),
+                1e-6));
+        CHECK(isec.from_outside_to_inside);
+        CHECK_MARGIN(isec.distance_of_ray, 10 - sphere_radius, 1e-6);
 
         mliScenery_free(&scenery);
     }
