@@ -27,7 +27,7 @@ int first_casual_intersection(
     mliIntersection temp_isec;
     temp_isec.distance_of_ray = 9e99;
     closest_isec.distance_of_ray = 9e99;
-    num_objects = mliScenery_num_entities(scenery);
+    num_objects = mliScenery_num_objects(scenery);
     for (idx = 0; idx < num_objects; idx++) {
         if (face_coming_from == idx)
             continue;

@@ -90,7 +90,12 @@ void __mli_proc_subtree (
     }
 
     if (mliNode_num_children(node) == 0u){
-        /* fprintf(stderr, "Reached leaf\n"); */
+        /*uint64_t c;
+        fprintf(stderr, "Reached leaf\n");
+        for (c = 0; c < node->num_objects; c++) {
+            fprintf(stderr, "%u, ", node->objects[c]);
+        }
+        fprintf(stderr, "\n");*/
         return;
     } else {
         /* fprintf(stderr, "Reached node\n"); */

@@ -396,11 +396,11 @@ int main(int argc, char *argv[]) {
         num_surface_entities += scenery.num_spherical_cap_hex;
         num_surface_entities += scenery.num_spheres;
 
-        CHECK(mliScenery_num_entities(&scenery) == num_surface_entities);
+        CHECK(mliScenery_num_objects(&scenery) == num_surface_entities);
 
         obb.lower = mliVec_set(-1e2, -1e2, -1e2);
         obb.upper = mliVec_set(1e2, 1e2, 1e2);
-        for (i = 0u; i <= mliScenery_num_entities(&scenery); i++) {
+        for (i = 0u; i <= mliScenery_num_objects(&scenery); i++) {
             CHECK(mliScenery_overlap_obb(
                 &scenery,
                 i,
@@ -436,7 +436,7 @@ int main(int argc, char *argv[]) {
         double sphere_radius = 2.5;
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
 
-        sphere_idx = mliScenery_num_entities(&scenery) - 1u;
+        sphere_idx = mliScenery_num_objects(&scenery) - 1u;
 
         hit = mliScenery_intersection(
             &scenery,

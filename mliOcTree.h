@@ -123,7 +123,7 @@ mliNode mliNode_from_scenery(const mliScenery *scenery, const mliCube scenery_cu
     uint32_t idx;
     mliNode_init(&tree);
     tree.mother = NULL;
-    tree.num_objects = mliScenery_num_entities(scenery);
+    tree.num_objects = mliScenery_num_objects(scenery);
     tree.objects = (uint32_t*)malloc(tree.num_objects*sizeof(uint32_t));
     for (idx = 0; idx < tree.num_objects; idx++) {
         tree.objects[idx] = idx;}
