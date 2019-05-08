@@ -8,6 +8,7 @@
 #include "mliVec.h"
 #include "mliHomTra.h"
 #include "mliTracer.h"
+#include "mliOcTree.h"
 
 typedef struct {
     mliVec position;
@@ -32,6 +33,7 @@ void mliCameraSensor_init(const mliCamera *camera, mliCameraSensor *sensor) {
 void mliCamera_render_image(
     const mliCamera *camera,
     const mliScenery *scenery,
+    const mliOcTree *octree,
     mliImage *image) {
     uint32_t row, col;
     float distance_to_principal_point;
@@ -57,7 +59,14 @@ void mliCamera_render_image(
             sensor_intersection = mliVec_add(sensor_intersection, s_row);
             sensor_intersection = mliVec_add(sensor_intersection, s_col);
             ray = mliRay_set(camera->position, sensor_intersection);
-            color = mli_trace(scenery, &ray);
+            /*fprintf(stderr, "-----ray---- [%f, %f, %f] [%f, %f, %f]\n",
+                ray.support.x,
+                ray.support.y,
+                ray.support.z,
+                ray.direction.x,
+                ray.direction.y,
+                ray.direction.z,);*/
+            color = mli_trace(scenery, octree, ray);
             mliImage_set(image, col, row, color);
         }
     }

@@ -12,8 +12,10 @@
 #include "mliScenery.h"
 #include "mliScenery_object_interface.h"
 #include "mliIntersection.h"
+#include "mliOcTree.h"
+#include "mli_ray_octree_traversal.h"
 
-
+/*
 int first_casual_intersection(
     const mliScenery *scenery,
     const mliRay *ray,
@@ -48,18 +50,40 @@ int first_casual_intersection(
         (*intersection) = closest_isec;
     }
     return hit;
+}*/
+
+int first_casual_intersection(
+    const mliScenery *scenery,
+    const mliOcTree* octree,
+    const mliRay ray,
+    const int64_t face_coming_from,
+    mliIntersection *intersection) {
+    mli_ray_octree_traversal(
+        scenery,
+        octree,
+        ray,
+        intersection,
+        face_coming_from);
+    if (intersection->distance_of_ray < FLT_MAX)
+        return 1;
+    else
+        return 0;
 }
+
+
 
 mliColor mli_trace(
     const mliScenery *scenery,
-    const mliRay *ray) {
+    const mliOcTree* octree,
+    const mliRay ray) {
     mliColor color = {128., 128., 128.};
     mliIntersection intersection;
     if (
         first_casual_intersection(
             scenery,
+            octree,
             ray,
-            MLI_VOID_FACE,
+            mliScenery_num_objects(scenery),
             &intersection)
     ) {
         mliIntersection global_light_intersection;
@@ -81,7 +105,8 @@ mliColor mli_trace(
 
         if (first_casual_intersection(
                 scenery,
-                &line_of_sight_to_source,
+                octree,
+                line_of_sight_to_source,
                 intersection.object_idx,
                 &global_light_intersection)
         ) {
