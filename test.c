@@ -467,12 +467,9 @@ int main(int argc, char *argv[]) {
     /* OctTree*/
     {
         mliScenery scenery;
-        mliNode tree;
-        mliCube scenery_cube;
+        mliOcTree octree;
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
-        scenery_cube = mliCube_outermost_cube(
-            mliScenery_outermost_obb(&scenery));
-        tree = mliNode_from_scenery(&scenery, scenery_cube);
+        octree = mliOcTree_from_scenery(&scenery);
 
         /*mliNode_print(&tree, 0u);*/
         /*
@@ -483,13 +480,13 @@ int main(int argc, char *argv[]) {
             mliNode_capacity_objects(&tree));*/
 
         mli_ray_octree_traversal(
-            scenery_cube,
-            &tree,
+            octree.cube,
+            &octree.root,
             mliRay_set(
                 mliVec_set(0.1 ,2.5, 10.),
                 mliVec_set(0. ,0., -1.)));
 
-        mliNode_free(&tree);
+        mliOcTree_free(&octree);
         mliScenery_free(&scenery);
     }
 

@@ -182,4 +182,21 @@ void mliNode_print(const mliNode *node, const uint32_t indent) {
     }
 }
 
+typedef struct {
+    mliCube cube;
+    mliNode root;
+} mliOcTree;
+
+void mliOcTree_free(mliOcTree *octree) {
+    mliNode_free(&octree->root);}
+
+mliOcTree mliOcTree_from_scenery(const mliScenery *scenery) {
+    mliOcTree octree;
+    octree.cube = mliCube_outermost_cube(
+            mliScenery_outermost_obb(scenery));
+    octree.root = mliNode_from_scenery(
+        scenery,
+        octree.cube);
+    return octree;}
+
 #endif
