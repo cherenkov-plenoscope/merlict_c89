@@ -67,7 +67,7 @@ int mli_spherical_cap_hex_bound_intersection(
 
 int mliSphericalCapHex_intersection(
     const mliSphericalCapHeagonal cap,
-    const mliHomTra T,
+    const mliHomTraComp T,
     const mliRay ray,
     mliIntersection *intersection) {
     return 0;}

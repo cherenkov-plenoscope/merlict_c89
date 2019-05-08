@@ -9,7 +9,7 @@
 
 int mliSphericalCapHex_has_overlap_obb(
     const mliSphericalCapHeagonal cap,
-    const mliHomTra trafo,
+    const mliHomTraComp trafo,
     const mliOBB obb) {
     /* FIXME */
     /* assume spherical */
@@ -19,7 +19,7 @@ int mliSphericalCapHex_has_overlap_obb(
 
 mliOBB mliSphericalCapHex_obb(
     const mliSphericalCapHeagonal cap,
-    const mliHomTra trafo) {
+    const mliHomTraComp trafo) {
     mliOBB obb;
     /* FIXME */
     obb.lower = mliVec_set(0., 0., 0);

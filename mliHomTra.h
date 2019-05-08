@@ -11,7 +11,13 @@
 typedef struct {
     mliVec translation;
     mliQuaternion rotation;
-} mliHomTra;
+} mliHomTraComp;
+
+/*
+typedef struct {
+    mliVec translation;
+    mliRotMat rotation;
+} mliHomTra*/
 
 mliVec mli_transform_orientation(
     const mliRotMat *rot,
@@ -54,7 +60,7 @@ mliVec mli_transform_position_inverse(
         (rot->r02*trans.x + rot->r12*trans.y + rot->r22*trans.z);
     return out;}
 
-int mliHomTra_is_equal(const mliHomTra a, const mliHomTra b) {
+int mliHomTraComp_is_equal(const mliHomTraComp a, const mliHomTraComp b) {
     if (!mliVec_is_equal(a.translation, b.translation))
         return 0;
     if (!mliQuaternion_is_equal(a.rotation, b.rotation))
