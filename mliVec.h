@@ -64,6 +64,9 @@ float mliVec_norm(
     const mliVec a) {
     return sqrt(mliVec_dot(a, a));}
 
+mliVec mliVec_normalized(mliVec a) {
+    return mliVec_multiply(a, 1./mliVec_norm(a));}
+
 float mliVec_angle_between(const mliVec a, const mliVec b) {
     mliVec a_normalized = mliVec_multiply(a, 1./mliVec_norm(a));
     mliVec b_normalized = mliVec_multiply(b, 1./mliVec_norm(b));

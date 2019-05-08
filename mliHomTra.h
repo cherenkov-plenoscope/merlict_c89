@@ -65,6 +65,35 @@ mliVec mli_transform_position_inverse(
         (rot->r02*trans.x + rot->r12*trans.y + rot->r22*trans.z);
     return out;}
 
+mliRay mli_transform_ray(
+    const mliRotMat *rot,
+    const mliVec trans,
+    const mliRay in) {
+    mliRay out;
+    out.support = mli_transform_position(
+        rot,
+        trans,
+        in.support);
+    out.direction = mli_transform_orientation(
+        rot,
+        in.direction);
+    return out;}
+
+mliRay mliHomTra_ray(const mliHomTra *t, const mliRay in) {
+    return mli_transform_ray(&t->rot, t->trans, in);}
+
+mliVec mliHomTra_pos(const mliHomTra *t, const mliVec in) {
+    return mli_transform_position(&t->rot, t->trans, in);}
+
+mliVec mliHomTra_pos_inverse(const mliHomTra *t, const mliVec in) {
+    return mli_transform_position_inverse(&t->rot, t->trans, in);}
+
+mliVec mliHomTra_dir(const mliHomTra *t, const mliVec in) {
+    return mli_transform_orientation(&t->rot, in);}
+
+mliVec mliHomTra_dir_inverse(const mliHomTra *t, const mliVec in) {
+    return mli_transform_orientation_inverse(&t->rot, in);}
+
 int mliHomTraComp_is_equal(const mliHomTraComp a, const mliHomTraComp b) {
     if (!mliVec_is_equal(a.trans, b.trans))
         return 0;

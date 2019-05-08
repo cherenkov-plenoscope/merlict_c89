@@ -9,6 +9,7 @@
 #include "mliHomTra.h"
 #include "mliIntersection.h"
 #include "mliQuadraticEquation.h"
+#include "mli_from_outside_to_inside.h"
 
 int mli_sphere_intersection_equation(
     const double radius,
@@ -46,26 +47,35 @@ int mliSphere_facing_away_from_outside_given_p_m(
     return v_Plus < 0. && v_Minus < 0.;}
 
 void mliSphere_set_intersection(
-    mliIntersection *intersection,
-    mliRay ray,
-    double ray_parameter) {
-    /* transformation */
-    intersection->position = mliRay_at(&ray, ray_parameter);
-    intersection->surface_normal = intersection->position;
-}
+    const mliHomTra *root2local,
+    const mliRay *ray_local,
+    const double ray_solution,
+    mliIntersection *intersection) {
+    mliVec position_local = mliRay_at(ray_local, ray_solution);
+    mliVec normal_local = mliVec_normalized(position_local);
+    intersection->position = mliHomTra_pos_inverse(
+        root2local,
+        position_local);
+    intersection->surface_normal = mliHomTra_dir_inverse(
+        root2local,
+        normal_local);
+    intersection->distance_of_ray = ray_solution;
+    intersection->from_outside_to_inside = mli_ray_runs_from_outside_to_inside(
+        ray_local->direction,
+        normal_local);}
 
 int mliSphere_intersection(
     const float radius,
-    const mliHomTraComp trafo,
+    const mliHomTraComp root2local_comp,
     const mliRay ray,
     mliIntersection *intersection) {
-    /*    mliRay local_ray;
-    local_ray.support = mliHomTra_transform_position(trafo, )*/
+    mliHomTra root2local = mliHomTra_from_compact(root2local_comp);
+    mliRay ray_local = mliHomTra_ray(&root2local, ray);
 
     double plus_solution, minus_solution;
     if (mli_sphere_intersection_equation(
         radius,
-        ray,
+        ray_local,
         &plus_solution,
         &minus_solution)
     ) {
@@ -73,12 +83,20 @@ int mliSphere_intersection(
             plus_solution,
             minus_solution)
         ) {
-            mliSphere_set_intersection(intersection, ray, minus_solution);
+            mliSphere_set_intersection(
+                &root2local,
+                &ray_local,
+                minus_solution,
+                intersection);
         } else if (mliSphere_facing_away_from_outside_given_p_m(
             plus_solution,
             minus_solution)
         ) {
-            mliSphere_set_intersection(intersection, ray, plus_solution);
+            mliSphere_set_intersection(
+                &root2local,
+                &ray_local,
+                plus_solution,
+                intersection);
         }
         return 1;
     }

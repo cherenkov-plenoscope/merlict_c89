@@ -79,6 +79,7 @@ int mliTriangle_intersection(
             vertex0,
             vertex1,
             vertex2);
+        intersection->distance_of_ray = ray_parameter;
         return 1;
     } else {
         return 0;
