@@ -25,7 +25,7 @@
 #include "mliVector.h"
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"
-#include "mliOctTree.h"
+#include "mliOcTree.h"
 #include "mli_ray_octree_traversal.h"
 #include "mli_from_outside_to_inside.h"
 

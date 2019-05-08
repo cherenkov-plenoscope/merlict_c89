@@ -14,7 +14,7 @@
 #ifndef MERLICT_MLIRAYOCTREE_H_
 #define MERLICT_MLIRAYOCTREE_H_
 #include <stdint.h>
-#include "mliOctTree.h"
+#include "mliOcTree.h"
 #include "mliCube.h"
 
 int __mli_first_node(
