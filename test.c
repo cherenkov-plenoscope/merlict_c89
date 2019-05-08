@@ -27,9 +27,22 @@
 #include "mliTriangle_OBB.h"
 #include "mliOctTree.h"
 #include "mli_ray_octree_traversal.h"
+#include "mli_from_outside_to_inside.h"
 
 
 int main(int argc, char *argv[]) {
+    /* from_outside_to_inside */
+    {
+        mliVec normal = {0., 0., 1.};
+        mliVec direction = {0., 0., -1.};
+        CHECK(mli_ray_runs_from_outside_to_inside(direction, normal));
+    }
+
+    {
+        mliVec normal = {0., 0., 1.};
+        mliVec direction = {0., 0., 1.};
+        CHECK(!mli_ray_runs_from_outside_to_inside(direction, normal));
+    }
     /* sphere */
     {
         float c;
