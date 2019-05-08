@@ -128,61 +128,64 @@ int main(int argc, char *argv[]) {
     }
     /* Orientated-Bounding-Box */
     {
-        mliOBB node;
-        mliOBB child;
+        mliCube node;
+        mliCube child;
         node.lower = mliVec_set(.0, .0, .0);
-        node.upper = mliVec_set(2., 2., 2.);
-        child = mliOBB_octtree_child(node, 0, 0, 0);
+        node.edge_length = 2.;
+        child = mliCube_octree_child(node, 0, 0, 0);
         CHECK_MARGIN(child.lower.x, 0., 1e-7);
         CHECK_MARGIN(child.lower.y, 0., 1e-7);
         CHECK_MARGIN(child.lower.z, 0., 1e-7);
+        CHECK_MARGIN(child.edge_length, 1., 1e-7);
 
-        CHECK_MARGIN(child.upper.x, 1., 1e-7);
-        CHECK_MARGIN(child.upper.y, 1., 1e-7);
-        CHECK_MARGIN(child.upper.z, 1., 1e-7);
-
-        child = mliOBB_octtree_child(node, 0, 0, 1);
+        child = mliCube_octree_child(node, 0, 0, 1);
         CHECK_MARGIN(child.lower.x, 0., 1e-7);
         CHECK_MARGIN(child.lower.y, 0., 1e-7);
         CHECK_MARGIN(child.lower.z, 1., 1e-7);
+        CHECK_MARGIN(child.edge_length, 1., 1e-7);
 
-        CHECK_MARGIN(child.upper.x, 1., 1e-7);
-        CHECK_MARGIN(child.upper.y, 1., 1e-7);
-        CHECK_MARGIN(child.upper.z, 2., 1e-7);
-
-        child = mliOBB_octtree_child(node, 0, 1, 0);
+        child = mliCube_octree_child(node, 0, 1, 0);
         CHECK_MARGIN(child.lower.x, 0., 1e-7);
         CHECK_MARGIN(child.lower.y, 1., 1e-7);
         CHECK_MARGIN(child.lower.z, 0., 1e-7);
+        CHECK_MARGIN(child.edge_length, 1., 1e-7);
 
-        CHECK_MARGIN(child.upper.x, 1., 1e-7);
-        CHECK_MARGIN(child.upper.y, 2., 1e-7);
-        CHECK_MARGIN(child.upper.z, 1., 1e-7);
-
-        child = mliOBB_octtree_child(node, 1, 0, 0);
+        child = mliCube_octree_child(node, 1, 0, 0);
         CHECK_MARGIN(child.lower.x, 1., 1e-7);
         CHECK_MARGIN(child.lower.y, 0., 1e-7);
         CHECK_MARGIN(child.lower.z, 0., 1e-7);
-
-        CHECK_MARGIN(child.upper.x, 2., 1e-7);
-        CHECK_MARGIN(child.upper.y, 1., 1e-7);
-        CHECK_MARGIN(child.upper.z, 1., 1e-7);
+        CHECK_MARGIN(child.edge_length, 1., 1e-7);
     }
 
     {
         mliOBB a;
-        mliOBB cube;
+        mliCube cube;
+        cube.lower = mliVec_set(.0, .0, .0);
+        cube.edge_length = 1.;
+        a = mliCube_to_obb(cube);
+        CHECK(
+            mliVec_equal_margin(
+                a.lower,
+                cube.lower,
+                1e-6));
+        CHECK(
+            mliVec_equal_margin(
+                a.upper,
+                mliVec_set(1., 1., 1.),
+                1e-6));
+    }
+
+    {
+        mliOBB a;
+        mliCube cube;
         a.lower = mliVec_set(.0, .0, .0);
         a.upper = mliVec_set(1., 2., 3.);
-        cube = mliOBB_outer_cube(a);
+        cube = mliCube_outermost_cube(a);
 
         CHECK_MARGIN(cube.lower.x, 0.5 - 1.5, 1e-7);
         CHECK_MARGIN(cube.lower.y, 1. - 1.5, 1e-7);
         CHECK_MARGIN(cube.lower.z, 1.5 - 1.5, 1e-7);
-
-        CHECK_MARGIN(cube.upper.x, .5 + 1.5, 1e-7);
-        CHECK_MARGIN(cube.upper.y, 1. + 1.5, 1e-7);
-        CHECK_MARGIN(cube.upper.z, 1.5 + 1.5, 1e-7);
+        CHECK_MARGIN(cube.edge_length, 3., 1e-7);
     }
 
     {
@@ -465,10 +468,11 @@ int main(int argc, char *argv[]) {
     {
         mliScenery scenery;
         mliNode tree;
-        /*mliOBB scenery_obb;*/
+        mliCube scenery_cube;
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
-        /*scenery_obb = mliScenery_outermost_obb(&scenery);*/
-        tree = mliNode_from_scenery(&scenery);
+        scenery_cube = mliCube_outermost_cube(
+            mliScenery_outermost_obb(&scenery));
+        tree = mliNode_from_scenery(&scenery, scenery_cube);
 
         /*mliNode_print(&tree, 0u);*/
         /*
@@ -477,13 +481,13 @@ int main(int argc, char *argv[]) {
             stderr,
             "capacity_objects: %u\n",
             mliNode_capacity_objects(&tree));*/
-        /*
-        ray_octree_traversal(
-            scenery_obb,
+
+        mli_ray_octree_traversal(
+            scenery_cube,
             &tree,
             mliRay_set(
-                mliVec_set(0. ,2.5, 10.),
-                mliVec_set(1e-7 ,1e-7, -1.)));*/
+                mliVec_set(0.1 ,2.5, 10.),
+                mliVec_set(0. ,0., -1.)));
 
         mliNode_free(&tree);
         mliScenery_free(&scenery);

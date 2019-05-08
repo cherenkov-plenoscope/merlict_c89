@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "mliScenery.h"
 #include "mliOBB.h"
+#include "mliCube.h"
 #include "mliMath.h"
 
 
@@ -65,7 +66,7 @@ uint32_t mliNode_signs_to_child(
 void mliNode_add_children(
     mliNode *node,
     const mliScenery *scenery,
-    const mliOBB obb) {
+    const mliCube cube_bound) {
     uint32_t sx, sy, sz, obj, ovrerlaps_child;
     uint32_t child;
     uint32_t *overlapping_objects;
@@ -73,13 +74,17 @@ void mliNode_add_children(
     for (sx = 0u; sx < 2u; sx++) {
         for (sy = 0u; sy < 2u; sy++) {
             for (sz = 0u; sz < 2u; sz++) {
-                mliOBB child_obb;
+                mliCube child_cube_bound;
                 child = mliNode_signs_to_child(sx, sy, sz);
-                child_obb = mliOBB_octtree_child(obb, sx, sy, sz);
+                child_cube_bound = mliCube_octree_child(cube_bound, sx, sy, sz);
                 ovrerlaps_child = 0u;
                 for (obj = 0u; obj < node->num_objects; obj++) {
                     uint32_t obj_idx = node->objects[obj];
-                    if (mliScenery_overlap_obb(scenery, obj_idx, child_obb)) {
+                    if (mliScenery_overlap_obb(
+                        scenery,
+                        obj_idx,
+                        mliCube_to_obb(child_cube_bound))
+                    ) {
                         overlapping_objects[ovrerlaps_child++] = obj_idx;
                     }
                 }
@@ -104,7 +109,7 @@ void mliNode_add_children(
                     mliNode_add_children(
                         node->children[child],
                         scenery,
-                        child_obb);
+                        child_cube_bound);
                 }
             }
         }
@@ -113,21 +118,16 @@ void mliNode_add_children(
 }
 
 
-mliNode mliNode_from_scenery(const mliScenery *scenery) {
+mliNode mliNode_from_scenery(const mliScenery *scenery, const mliCube scenery_cube) {
     mliNode tree;
-    mliOBB cube_obb;
-    mliOBB scenery_obb;
     uint32_t idx;
     mliNode_init(&tree);
-    assert(mliNode_is_blank(&tree));
-    scenery_obb = mliScenery_outermost_obb(scenery);
-    cube_obb = mliOBB_outer_cube(scenery_obb);
     tree.mother = NULL;
     tree.num_objects = mliScenery_num_entities(scenery);
     tree.objects = (uint32_t*)malloc(tree.num_objects*sizeof(uint32_t));
     for (idx = 0; idx < tree.num_objects; idx++) {
         tree.objects[idx] = idx;}
-    mliNode_add_children(&tree, scenery, cube_obb);
+    mliNode_add_children(&tree, scenery, scenery_cube);
     return tree;
 }
 

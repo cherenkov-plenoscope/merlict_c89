@@ -15,7 +15,7 @@
 #define MERLICT_MLIRAYOCTREE_H_
 #include <stdint.h>
 #include "mliOctTree.h"
-#include "mliOBB.h"
+#include "mliCube.h"
 
 int __mli_first_node(
     double tx0,
@@ -90,10 +90,10 @@ void __mli_proc_subtree (
     }
 
     if (mliNode_num_children(node) == 0u){
-        fprintf(stderr, "Reached leaf\n");
+        /* fprintf(stderr, "Reached leaf\n"); */
         return;
     } else {
-        fprintf(stderr, "Reached node\n");
+        /* fprintf(stderr, "Reached node\n"); */
     }
 
     txm = 0.5*(tx0 + tx1);
@@ -141,16 +141,12 @@ void __mli_proc_subtree (
 }
 
 void mli_ray_octree_traversal(
-    const mliOBB obb,
+    const mliCube cube,
     const mliNode *root,
     mliRay ray) {
     double divx;
     double divy;
     double divz;
-
-    double sizex;
-    double sizey;
-    double sizez;
 
     double tx0;
     double tx1;
@@ -158,24 +154,21 @@ void mli_ray_octree_traversal(
     double ty1;
     double tz0;
     double tz1;
-
+    mliVec cube_upper = mliCube_upper(cube);
     uint8_t a = 0;
-    sizex = obb.upper.x - obb.lower.x;
-    sizey = obb.upper.y - obb.lower.y;
-    sizez = obb.upper.z - obb.lower.z;
 
     if (ray.direction.x < 0) {
-        ray.support.x = sizex - ray.support.x;
+        ray.support.x = cube.edge_length - ray.support.x;
         ray.direction.x = - ray.direction.x;
         a |= 4;
     }
     if (ray.direction.y < 0) {
-        ray.support.y = sizey - ray.support.y;
+        ray.support.y = cube.edge_length - ray.support.y;
         ray.direction.y = - ray.direction.y;
         a |= 2;
     }
     if (ray.direction.z < 0) {
-        ray.support.z = sizez - ray.support.z;
+        ray.support.z = cube.edge_length - ray.support.z;
         ray.direction.z = - ray.direction.z;
         a |= 1;
     }
@@ -184,12 +177,12 @@ void mli_ray_octree_traversal(
     divy = 1 / ray.direction.y;
     divz = 1 / ray.direction.z;
 
-    tx0 = (obb.lower.x - ray.support.x) * divx;
-    tx1 = (obb.upper.x - ray.support.x) * divx;
-    ty0 = (obb.lower.y - ray.support.y) * divy;
-    ty1 = (obb.upper.y - ray.support.y) * divy;
-    tz0 = (obb.lower.z - ray.support.z) * divz;
-    tz1 = (obb.upper.z - ray.support.z) * divz;
+    tx0 = (cube.lower.x - ray.support.x) * divx;
+    tx1 = (cube_upper.x - ray.support.x) * divx;
+    ty0 = (cube.lower.y - ray.support.y) * divy;
+    ty1 = (cube_upper.y - ray.support.y) * divy;
+    tz0 = (cube.lower.z - ray.support.z) * divz;
+    tz1 = (cube_upper.z - ray.support.z) * divz;
 
     if (MLI_MAX3(tx0, ty0, tz0) < MLI_MIN3(tx1, ty1, tz1)) {
         __mli_proc_subtree(tx0, ty0, tz0, tx1, ty1, tz1, root, a);
