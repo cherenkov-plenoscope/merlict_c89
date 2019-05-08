@@ -10,7 +10,7 @@
 #include "mliUnitTest.h"
 #include "mliMesh.h"
 #include "mliFunc.h"
-#include "mliTriangleIntersection.h"
+#include "mliTriangle_intersection.h"
 #include "mliColor.h"
 #include "mliImage.h"
 #include "mliQuadraticEquation.h"
