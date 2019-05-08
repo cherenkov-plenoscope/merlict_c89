@@ -5,6 +5,7 @@
 #include "mliVec.h"
 #include "mliRay.h"
 #include "mliIntersection.h"
+#include "mli_from_outside_to_inside.h"
 
 
 int mliRay_intersects_triangle(
@@ -80,6 +81,10 @@ int mliTriangle_intersection(
             vertex1,
             vertex2);
         intersection->distance_of_ray = ray_parameter;
+        intersection->from_outside_to_inside =
+            mli_ray_runs_from_outside_to_inside(
+                ray.direction,
+                intersection->surface_normal);
         return 1;
     } else {
         return 0;
