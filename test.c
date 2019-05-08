@@ -314,8 +314,8 @@ int main(int argc, char *argv[]) {
         /* spherical_cap_hex */
         scenery.spherical_cap_hex[0].curvature_radius = 4.89*2.;
         scenery.spherical_cap_hex[0].inner_hex_radius = 0.32;
-        scenery.spherical_cap_hex_T[0].translation = mliVec_set(0., 0., 1.);
-        scenery.spherical_cap_hex_T[0].rotation =
+        scenery.spherical_cap_hex_T[0].trans = mliVec_set(0., 0., 1.);
+        scenery.spherical_cap_hex_T[0].rot =
             mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 0.),
                 0.);
@@ -326,8 +326,8 @@ int main(int argc, char *argv[]) {
         scenery.spheres[0] = 0.5;
         scenery.spheres_surfaces[0].outer = 0u;
         scenery.spheres_surfaces[0].inner = 0u;
-        scenery.spheres_T[0].translation = mliVec_set(0., 0., 0.);
-        scenery.spheres_T[0].rotation =
+        scenery.spheres_T[0].trans = mliVec_set(0., 0., 0.);
+        scenery.spheres_T[0].rot =
             mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 0.),
                 0.);

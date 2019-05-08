@@ -75,7 +75,7 @@ int mliScenery_overlap_obb(
         case MLI_SPHERE:
             return mliSphere_has_overlap_obb(
                 scenery->spheres[i.idx],
-                scenery->spheres_T[i.idx].translation,
+                scenery->spheres_T[i.idx].trans,
                 obb);
             break;
         default:
@@ -105,7 +105,7 @@ mliOBB mliScenery_obb(
         case MLI_SPHERE:
             return mliSphere_obb(
                 scenery->spheres[i.idx],
-                scenery->spheres_T[i.idx].translation);
+                scenery->spheres_T[i.idx].trans);
             break;
         default:
             obb.lower = mliVec_set(0., 0., 0);

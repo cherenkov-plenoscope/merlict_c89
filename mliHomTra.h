@@ -9,15 +9,20 @@
 #include "mliQuaternion.h"
 
 typedef struct {
-    mliVec translation;
-    mliQuaternion rotation;
+    mliVec trans;
+    mliQuaternion rot;
 } mliHomTraComp;
 
-/*
 typedef struct {
-    mliVec translation;
-    mliRotMat rotation;
-} mliHomTra*/
+    mliVec trans;
+    mliRotMat rot;
+} mliHomTra;
+
+mliHomTra mliHomTra_from_compact(const mliHomTraComp trafo) {
+    mliHomTra t;
+    t.trans = trafo.trans;
+    t.rot = mliQuaternion_to_matrix(trafo.rot);
+    return t;}
 
 mliVec mli_transform_orientation(
     const mliRotMat *rot,
@@ -61,9 +66,9 @@ mliVec mli_transform_position_inverse(
     return out;}
 
 int mliHomTraComp_is_equal(const mliHomTraComp a, const mliHomTraComp b) {
-    if (!mliVec_is_equal(a.translation, b.translation))
+    if (!mliVec_is_equal(a.trans, b.trans))
         return 0;
-    if (!mliQuaternion_is_equal(a.rotation, b.rotation))
+    if (!mliQuaternion_is_equal(a.rot, b.rot))
         return 0;
     return 1;}
 
