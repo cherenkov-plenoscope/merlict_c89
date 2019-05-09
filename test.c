@@ -288,9 +288,10 @@ int main(int argc, char *argv[]) {
         mliMesh diff_cube_sphere;
         mliColor red = {255., 0., 0.};
         mliColor blue = {0., 0., 255.};
+        mliColor green = {0., 255., 0.};
         scenery.num_functions = 1u;
-        scenery.num_colors = 2u;
-        scenery.num_surfaces = 2u;
+        scenery.num_colors = 3u;
+        scenery.num_surfaces = 3u;
         scenery.num_spherical_cap_hex = 1u;
         scenery.num_spheres = 1u;
 
@@ -309,6 +310,7 @@ int main(int argc, char *argv[]) {
 
         scenery.colors[0] = red;
         scenery.colors[1] = blue;
+        scenery.colors[2] = green;
 
         scenery.surfaces[0].color = 0u;
         scenery.surfaces[0].reflection = 0u;
@@ -319,6 +321,11 @@ int main(int argc, char *argv[]) {
         scenery.surfaces[1].reflection = 0u;
         scenery.surfaces[1].refraction = 0u;
         scenery.surfaces[1].absorbtion = 0u;
+
+        scenery.surfaces[2].color = 2u;
+        scenery.surfaces[2].reflection = 0u;
+        scenery.surfaces[2].refraction = 0u;
+        scenery.surfaces[2].absorbtion = 0u;
 
         mliVec_ncpy(
             diff_cube_sphere.vertices,
@@ -335,15 +342,15 @@ int main(int argc, char *argv[]) {
             scenery.triangles_surfaces[i].inner = 0u;}
 
         /* spherical_cap_hex */
-        scenery.spherical_cap_hex[0].curvature_radius = 4.89*2.;
-        scenery.spherical_cap_hex[0].inner_hex_radius = 0.32;
-        scenery.spherical_cap_hex_T[0].trans = mliVec_set(0., 0., 1.);
+        scenery.spherical_cap_hex[0].curvature_radius = 10*2.;
+        scenery.spherical_cap_hex[0].inner_hex_radius = 1;
+        scenery.spherical_cap_hex_T[0].trans = mliVec_set(0., 0., 5.);
         scenery.spherical_cap_hex_T[0].rot =
             mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 0.),
                 0.);
-        scenery.spherical_cap_hex_surfaces[0].outer = 0u;
-        scenery.spherical_cap_hex_surfaces[0].inner = 0u;
+        scenery.spherical_cap_hex_surfaces[0].outer = 2u;
+        scenery.spherical_cap_hex_surfaces[0].inner = 2u;
 
         /* spheres */
         scenery.spheres[0] = 2.5;
@@ -1247,5 +1254,116 @@ int main(int argc, char *argv[]) {
             bounding_radius < 1.1*cap.inner_hex_radius*MLI_INNER_TO_OUTER_HEX);
     }
 
+    {
+        mliHomTraComp Tcomp;
+        mliHomTra T;
+        mliVec v1, v2, v3;
+        Tcomp.trans = mliVec_set(1., 0., 0.);
+        Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 1.),
+            mli_deg2rad(90));
+        T = mliHomTra_from_compact(Tcomp);
+        v1 = mliVec_set(1., 0., 0.);
+        v2 = mliHomTra_dir(&T, v1);
+        CHECK_MARGIN(v2.x, 0., 1e-6);
+        CHECK_MARGIN(v2.y, 1., 1e-6);
+        CHECK_MARGIN(v2.z, 0., 1e-6);
+
+        v3 = mliHomTra_dir_inverse(&T, v2);
+        CHECK_MARGIN(v3.x, v1.x, 1e-6);
+        CHECK_MARGIN(v3.y, v1.y, 1e-6);
+        CHECK_MARGIN(v3.z, v1.z, 1e-6);
+    }
+
+    /* unity transformation must not change ray */
+    {
+        mliRay ray = mliRay_set(
+            mliVec_set(0., 0., 1.),
+            mliVec_set(0., 0., 1.));
+        mliRay ray2;
+        mliHomTraComp Tcomp;
+        mliHomTra T;
+        Tcomp.trans = mliVec_set(0., 0., 0.);
+        Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 0.),
+            0.);
+        T = mliHomTra_from_compact(Tcomp);
+        ray2 = mliHomTra_ray(&T, ray);
+        CHECK(mliVec_equal_margin(ray2.support, ray.support, 1e-6));
+        CHECK(mliVec_equal_margin(ray2.direction, ray.direction, 1e-6));
+    }
+
+    /* translation */
+    {
+        mliRay ray = mliRay_set(
+            mliVec_set(0., 0., 1.),
+            mliVec_set(0., 0., 1.));
+        mliRay ray2;
+        mliHomTraComp Tcomp;
+        mliHomTra T;
+        Tcomp.trans = mliVec_set(1., 0., 0.);
+        Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 1.),
+            0.);
+        T = mliHomTra_from_compact(Tcomp);
+        ray2 = mliHomTra_ray(&T, ray);
+        CHECK(ray2.support.x == 1.);
+        CHECK(ray2.support.y == 0.);
+        CHECK(ray2.support.z == 1.);
+        CHECK(mliVec_equal_margin(ray2.direction, ray.direction, 1e-6));
+    }
+
+    /* rotation */
+    {
+        mliRay ray = mliRay_set(
+            mliVec_set(0., 0., 1.),
+            mliVec_set(1., 0., 0.));
+        mliRay ray2;
+        mliHomTraComp Tcomp;
+        mliHomTra T;
+        Tcomp.trans = mliVec_set(0., 0., 0.);
+        Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 1.),
+            mli_deg2rad(90));
+        T = mliHomTra_from_compact(Tcomp);
+        ray2 = mliHomTra_ray(&T, ray);
+        CHECK(mliVec_equal_margin(ray2.support, ray.support, 1e-6));
+        CHECK_MARGIN(ray2.direction.x, 0., 1e-6);
+        CHECK_MARGIN(ray2.direction.y, 1., 1e-6);
+        CHECK_MARGIN(ray2.direction.z, 0., 1e-6);
+    }
+
+    /* translation and rotation */
+    {
+        mliRay ray = mliRay_set(
+            mliVec_set(0., 0., 1.),
+            mliVec_set(1., 0., 0.));
+        mliRay ray2;
+        mliRay ray3;
+        mliHomTraComp Tcomp;
+        mliHomTra T;
+        Tcomp.trans = mliVec_set(0., 1., 0.);
+        Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 1.),
+            mli_deg2rad(90));
+        T = mliHomTra_from_compact(Tcomp);
+        ray2 = mliHomTra_ray(&T, ray);
+        CHECK_MARGIN(ray2.support.x, 0., 1e-6);
+        CHECK_MARGIN(ray2.support.y, 1., 1e-6);
+        CHECK_MARGIN(ray2.support.z, 1., 1e-6);
+        CHECK_MARGIN(ray2.direction.x, 0., 1e-6);
+        CHECK_MARGIN(ray2.direction.y, 1., 1e-6);
+        CHECK_MARGIN(ray2.direction.z, 0., 1e-6);
+
+        /* and back again */
+        ray3.support = mliHomTra_pos_inverse(&T, ray2.support);
+        ray3.direction = mliHomTra_dir_inverse(&T, ray2.direction);
+        CHECK_MARGIN(ray3.support.x,   ray.support.x, 1e-6);
+        CHECK_MARGIN(ray3.support.y,   ray.support.y, 1e-6);
+        CHECK_MARGIN(ray3.support.z,   ray.support.z, 1e-6);
+        CHECK_MARGIN(ray3.direction.x, ray.direction.x, 1e-6);
+        CHECK_MARGIN(ray3.direction.y, ray.direction.y, 1e-6);
+        CHECK_MARGIN(ray3.direction.z, ray.direction.z, 1e-6);
+    }
     return EXIT_SUCCESS;
 }
