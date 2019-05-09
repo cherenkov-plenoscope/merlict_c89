@@ -116,8 +116,6 @@ void __mli_proc_subtree (
             /*fprintf(stderr, "num_hits %lu\n", num_hits);*/
         }
         return;
-    } else {
-        /*fprintf(stderr, "Node %u\n", node->i);*/
     }
 
     txm = 0.5*(tx0 + tx1);
@@ -231,7 +229,6 @@ void mli_ray_octree_traversal(
         a |= 1;
     }
 
-    /*fprintf(stderr, "a: %d\n", a);*/
     divx = 1 / ray_octree.direction.x;
     divy = 1 / ray_octree.direction.y;
     divz = 1 / ray_octree.direction.z;
