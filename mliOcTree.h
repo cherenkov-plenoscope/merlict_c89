@@ -89,7 +89,8 @@ void mliNode_add_children(
         for (sy = 0u; sy < 2u; sy++) {
             for (sz = 0u; sz < 2u; sz++) {
                 child = mliNode_signs_to_child(sx, sy, sz);
-                child_cube_bounds[child] = mliCube_octree_child(cube_bound, sx, sy, sz);
+                child_cube_bounds[child] = mliCube_octree_child(
+                    cube_bound, sx, sy, sz);
                 num_ovrerlaps[child] = 0u;
                 for (obj = 0u; obj < node->num_objects; obj++) {
                     uint32_t obj_idx = node->objects[obj];
@@ -98,7 +99,8 @@ void mliNode_add_children(
                         obj_idx,
                         mliCube_to_obb(child_cube_bounds[child]))
                     ) {
-                        overlapping_objects[child][num_ovrerlaps[child]] = obj_idx;
+                        overlapping_objects[child][num_ovrerlaps[child]] =
+                            obj_idx;
                         num_ovrerlaps[child]++;
                     }
                 }
@@ -141,7 +143,9 @@ void mliNode_add_children(
     }
 }
 
-mliNode mliNode_from_scenery(const mliScenery *scenery, const mliCube scenery_cube) {
+mliNode mliNode_from_scenery(
+    const mliScenery *scenery,
+    const mliCube scenery_cube) {
     mliNode tree;
     uint32_t idx;
     mliNode_init(&tree);

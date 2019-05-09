@@ -100,8 +100,7 @@ void __mli_proc_subtree (
     if (mliNode_num_children(node) == 0u) {
         mliIntersection tmp_isec;
         uint64_t c;
-        uint64_t hit = 0;
-        /*fprintf(stderr, "Leaf %u\n", node->i);*/
+        uint64_t num_hits = 0;
         for (c = 0; c < node->num_objects; c++) {
             uint64_t object_idx = node->objects[c];
             if (object_idx_coming_from == object_idx)
@@ -113,14 +112,14 @@ void __mli_proc_subtree (
                     object_idx,
                     &tmp_isec)
             ) {
-                hit += 1u;
+                num_hits += 1u;
                 if (tmp_isec.distance_of_ray < isec->distance_of_ray) {
                     (*isec) = tmp_isec;
                 }
             }
         }
-        if (hit) {
-            /*fprintf(stderr, "hits %lu\n", hit);*/
+        if (num_hits) {
+            /*fprintf(stderr, "num_hits %lu\n", num_hits);*/
         }
         return;
     } else {
