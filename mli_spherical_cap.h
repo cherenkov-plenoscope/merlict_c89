@@ -8,7 +8,7 @@
 #include "mliQuadraticEquation.h"
 
 int mli_spherical_cap_equation(
-    const mliRay *ray,
+    const mliRay ray,
     const double radius,
     double *plus_solution,
     double *minus_solution) {
@@ -22,8 +22,8 @@ int mli_spherical_cap_equation(
         v^2*(d*d) + v*2(s*d -R*dz) +s*s -2*R*sz = 0
         v^2 + v 2(s*d - R*dz)/(d*d) + (s*s - 2*R*sz)/(d*d) = 0
     */
-    const mliVec sup = ray->support;
-    const mliVec dir = ray->direction;
+    const mliVec sup = ray.support;
+    const mliVec dir = ray.direction;
     const double dir_times_dir = mliVec_dot(dir, dir);
     const double sup_times_sup = mliVec_dot(sup, sup);
     const double sup_times_dir = mliVec_dot(sup, dir);

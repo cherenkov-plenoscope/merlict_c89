@@ -35,7 +35,7 @@ typedef struct {
     mliSurfaces *triangles_surfaces;
 
     uint32_t num_spherical_cap_hex;
-    mliSphericalCapHeagonal *spherical_cap_hex;
+    mliSphericalCapHex *spherical_cap_hex;
     mliSurfaces *spherical_cap_hex_surfaces;
     mliHomTraComp* spherical_cap_hex_T;
 
@@ -68,9 +68,9 @@ void mliScenery_malloc(mliScenery* scenery) {
         (mliSurfaces*)malloc(scenery->num_triangles*sizeof(mliSurfaces));
 
     /* spherical_cap_hex */
-    scenery->spherical_cap_hex = (mliSphericalCapHeagonal*)malloc(
+    scenery->spherical_cap_hex = (mliSphericalCapHex*)malloc(
         scenery->num_spherical_cap_hex*
-        sizeof(mliSphericalCapHeagonal));
+        sizeof(mliSphericalCapHex));
     scenery->spherical_cap_hex_surfaces = (mliSurfaces*)malloc(
         scenery->num_spherical_cap_hex*sizeof(mliSurfaces));
     scenery->spherical_cap_hex_T = (mliHomTraComp*)malloc(
@@ -162,7 +162,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     /* spherical_cap_hex */
     fwrite(
         scenery->spherical_cap_hex,
-        sizeof(mliSphericalCapHeagonal),
+        sizeof(mliSphericalCapHex),
         scenery->num_spherical_cap_hex,
         f);
     fwrite(
@@ -240,7 +240,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     /* spherical_cap_hex */
     fread(
         scenery->spherical_cap_hex,
-        sizeof(mliSphericalCapHeagonal),
+        sizeof(mliSphericalCapHex),
         scenery->num_spherical_cap_hex, f);
     fread(
         scenery->spherical_cap_hex_surfaces,
@@ -298,7 +298,7 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
             return 0;
     }
     for (i = 0; i < a->num_spherical_cap_hex; i++) {
-        if (!mliSphericalCapHeagonal_is_equal(
+        if (!mliSphericalCapHex_is_equal(
                 a->spherical_cap_hex[i],
                 b->spherical_cap_hex[i]))
             return 0;

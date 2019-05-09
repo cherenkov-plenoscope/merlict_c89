@@ -5,25 +5,22 @@
 #include <math.h>
 #include "mliScenery.h"
 #include "mliOBB.h"
+#include "mliSphere_OBB.h"
 
 
 int mliSphericalCapHex_has_overlap_obb(
-    const mliSphericalCapHeagonal cap,
+    const mliSphericalCapHex cap,
     const mliHomTraComp trafo,
     const mliOBB obb) {
-    /* FIXME */
-    /* assume spherical */
-    /* float bounding_radius = mliSphericalCapHex_bounding_radius(cap);*/
-
-    return 1;}
+    /* For now, we use a bounding sphere */
+    const double bounding_radius = mliSphericalCapHex_bounding_radius(cap);
+    return mliSphere_has_overlap_obb(bounding_radius, trafo.trans, obb);}
 
 mliOBB mliSphericalCapHex_obb(
-    const mliSphericalCapHeagonal cap,
+    const mliSphericalCapHex cap,
     const mliHomTraComp trafo) {
-    mliOBB obb;
-    /* FIXME */
-    obb.lower = mliVec_set(0., 0., 0);
-    obb.upper = mliVec_set(0., 0., 0);
-    return obb;}
+    /* For now, we use a sphere to enclose the spherical cap. */
+    const double bounding_radius = mliSphericalCapHex_bounding_radius(cap);
+    return mliSphere_obb(bounding_radius, trafo.trans);}
 
 #endif

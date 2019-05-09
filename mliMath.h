@@ -7,6 +7,8 @@
 
 #define mli_PI 3.14159265358979323846
 
+#define MLI_INNER_TO_OUTER_HEX 1.1547005383792517
+
 double mli_rad2deg(const double angle_in_rad) {
     return 180.*angle_in_rad/mli_PI;}
 
