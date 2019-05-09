@@ -7,12 +7,12 @@
 #include "mliOBB.h"
 #include "mliCube.h"
 #include "mliMath.h"
+#include "mliOctOverlaps.h"
 
 
 typedef struct mliNode {
     struct mliNode* mother;
     struct mliNode* children[8];
-    uint32_t i;
     uint32_t num_objects;
     uint32_t *objects;
 } mliNode;
@@ -24,7 +24,6 @@ void mliNode_init(mliNode *n) {
     for (c = 0; c < 8u; c++) {
         n->children[c] = NULL;}
     n->num_objects = 0u;
-    n->i = 0u;
     n->objects = NULL;}
 
 
@@ -71,37 +70,32 @@ void mliNode_add_children(
     int make_children;
     uint32_t c;
     uint32_t sx, sy, sz, obj;
-    uint32_t child;
     mliCube child_cube_bounds[8];
-    uint32_t num_ovrerlaps[8];
-    uint32_t **overlapping_objects;
+    mliOctOverlaps overlaps;
 
     if (node->num_objects <= 32u) {
-        return;
-    }
+        return;}
 
-    overlapping_objects = malloc(8u*sizeof(uint32_t*));
-    for (c = 0; c < 8u; c++) {
-        overlapping_objects[c] = malloc(node->num_objects*sizeof(uint32_t));}
+    mliOctOverlaps_init(&overlaps, node->num_objects);
 
     /* sense possible children */
     for (sx = 0u; sx < 2u; sx++) {
         for (sy = 0u; sy < 2u; sy++) {
             for (sz = 0u; sz < 2u; sz++) {
-                child = mliNode_signs_to_child(sx, sy, sz);
+                const uint32_t child = mliNode_signs_to_child(sx, sy, sz);
                 child_cube_bounds[child] = mliCube_octree_child(
                     cube_bound, sx, sy, sz);
-                num_ovrerlaps[child] = 0u;
+                overlaps.num[child] = 0u;
                 for (obj = 0u; obj < node->num_objects; obj++) {
-                    uint32_t obj_idx = node->objects[obj];
+                    const uint32_t object_idx = node->objects[obj];
                     if (mliScenery_overlap_obb(
                         scenery,
-                        obj_idx,
+                        object_idx,
                         mliCube_to_obb(child_cube_bounds[child]))
                     ) {
-                        overlapping_objects[child][num_ovrerlaps[child]] =
-                            obj_idx;
-                        num_ovrerlaps[child]++;
+                        overlaps.objects[child][overlaps.num[child]] =
+                            object_idx;
+                        overlaps.num[child]++;
                     }
                 }
             }
@@ -110,7 +104,7 @@ void mliNode_add_children(
 
     make_children = 0;
     for (c = 0; c < 8u; c++) {
-        if (num_ovrerlaps[c] < node->num_objects/4) {
+        if (overlaps.num[c] < node->num_objects/4) {
             make_children += 1;}}
 
     if (make_children) {
@@ -118,20 +112,17 @@ void mliNode_add_children(
             node->children[c] = (mliNode*)malloc(sizeof(mliNode));
             mliNode_init(node->children[c]);
             node->children[c]->mother = node;
-            node->children[c]->num_objects = num_ovrerlaps[c];
-            node->children[c]->i = c;
-            node->children[c]->objects =
-                (uint32_t*)malloc(num_ovrerlaps[c]*sizeof(uint32_t));
+            node->children[c]->num_objects = overlaps.num[c];
+            node->children[c]->objects = (uint32_t*)malloc(
+                overlaps.num[c]*sizeof(uint32_t));
             mli_uint32_ncpy(
-                overlapping_objects[c],
+                overlaps.objects[c],
                 node->children[c]->objects,
-                num_ovrerlaps[c]);
+                overlaps.num[c]);
         }
     }
 
-    for (c = 0; c < 8u; c++) {
-        free(overlapping_objects[c]);}
-    free(overlapping_objects);
+    mliOctOverlaps_free(&overlaps);
 
     if (make_children) {
         for (c = 0; c < 8u; c++) {
@@ -198,9 +189,9 @@ void mliNode_print(const mliNode *node, const uint32_t indent) {
     uint32_t num_c = mliNode_num_children(node);
     for (i = 0u; i < indent; i++) printf(" ");
     if (num_c == 0)
-        printf("|-Leaf %u: overlaps: %u", node->i, node->num_objects);
+        printf("|-Leaf: overlaps: %u", node->num_objects);
     else
-        printf("Node %u: num_children %u", node->i, num_c);
+        printf("Node: num_children %u", num_c);
     printf("\n");
     for (i = 0u; i < 8u; i++) {
         if (node->children[i] != NULL) {
