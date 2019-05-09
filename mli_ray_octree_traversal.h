@@ -17,6 +17,7 @@
 #include <float.h>
 #include "mliOcTree.h"
 #include "mliCube.h"
+#include "mliMath.h"
 
 
 int __mli_first_node(
@@ -70,8 +71,6 @@ int __mli_new_node(
     }
     return z; /* X-Y-plane */
 }
-
-#define MLI_IS_NAN(a) ((a) != (a))
 
 void mli_set_txm_tym_tzm(
     double tx0,

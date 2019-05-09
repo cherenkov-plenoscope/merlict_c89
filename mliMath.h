@@ -33,6 +33,8 @@ void mli_uint32_ncpy(
     for (i = 0; i < num; i++) {
         to[i] = from[i];}}
 
+#define MLI_IS_NAN(a) ((a) != (a))
+
 #define MLI_SQUARED(a) ((a)*(a))
 
 #define MLI_MIN2(a,b) (((a) < (b)) ? (a) : (b))
