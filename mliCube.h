@@ -67,4 +67,23 @@ mliCube mliCube_octree_child(
         child.lower.z += length.z;}
     return child;}
 
+#define MLI_IS_BIT(var,pos) ((var) & (1<<(pos)))
+
+mliCube mliCube_octree_child_code(
+    const mliCube cube,
+    const uint8_t a) {
+    mliCube child;
+    mliVec length;
+    mliVec center = mliCube_center(cube);
+    length = mliVec_substract(center, cube.lower);
+    child.lower = cube.lower;
+    child.edge_length = .5*cube.edge_length;
+    if (MLI_IS_BIT(a, 2)) {
+        child.lower.x += length.x;}
+    if (MLI_IS_BIT(a, 1)) {
+        child.lower.y += length.y;}
+    if (MLI_IS_BIT(a, 0)) {
+        child.lower.z += length.z;}
+    return child;}
+
 #endif
