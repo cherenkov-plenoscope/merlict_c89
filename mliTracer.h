@@ -15,42 +15,6 @@
 #include "mliOcTree.h"
 #include "mli_ray_octree_traversal.h"
 
-/*
-int first_casual_intersection(
-    const mliScenery *scenery,
-    const mliRay *ray,
-    const int64_t face_coming_from,
-    mliIntersection *intersection) {
-    int64_t hit = 0;
-    int64_t idx;
-    int64_t num_objects;
-
-    mliIntersection closest_isec;
-    mliIntersection temp_isec;
-    temp_isec.distance_of_ray = 9e99;
-    closest_isec.distance_of_ray = 9e99;
-    num_objects = mliScenery_num_objects(scenery);
-    for (idx = 0; idx < num_objects; idx++) {
-        if (face_coming_from == idx)
-            continue;
-        if (
-            mliScenery_intersection(
-                scenery,
-                (*ray),
-                idx,
-                &temp_isec)
-        ) {
-            hit = hit + 1;
-            if (temp_isec.distance_of_ray < closest_isec.distance_of_ray) {
-                closest_isec = temp_isec;
-            }
-        }
-    }
-    if (hit>0) {
-        (*intersection) = closest_isec;
-    }
-    return hit;
-}*/
 
 int first_casual_intersection(
     const mliScenery *scenery,
@@ -69,8 +33,6 @@ int first_casual_intersection(
     else
         return 0;
 }
-
-
 
 mliColor mli_trace(
     const mliScenery *scenery,
