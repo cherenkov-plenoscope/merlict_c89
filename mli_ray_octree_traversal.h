@@ -93,10 +93,6 @@ void __mli_proc_subtree (
     float txm, tym, tzm;
     int currNode;
 
-    if(node == NULL) {
-        return;
-    }
-
     if (tx1 < 0 || ty1 < 0 || tz1 < 0) {
         return;
     }
