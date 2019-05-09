@@ -253,7 +253,8 @@ void mli_ray_octree_traversal(
     if (MLI_MAX3(tx0, ty0, tz0) < MLI_MIN3(tx1, ty1, tz1)) {
         __mli_proc_subtree(
             tx0, ty0, tz0, tx1, ty1, tz1,
-            root, a, isec, scenery, ray, object_idx_coming_from);
+            root, a,
+            isec, scenery, ray, object_idx_coming_from);
     }
 }
 
