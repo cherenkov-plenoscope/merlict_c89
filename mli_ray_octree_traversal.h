@@ -18,12 +18,6 @@
 #include "mliOcTree.h"
 #include "mliCube.h"
 
-typedef struct {
-    const mliScenery* scenery;
-    mliRay ray;
-    mliIntersection *intersection;
-    uint64_t object_idx_coming_from;
-} mliBag;
 
 int __mli_first_node(
     double tx0,
