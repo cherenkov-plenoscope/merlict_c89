@@ -372,7 +372,7 @@ int main(int argc, char *argv[]) {
         camera.rotation = mliRotMat_init_tait_bryan(0., 0., 0.);
         camera.field_of_view = mli_deg2rad(80.);
 
-        mliImage_init(&img, 640u, 640u);
+        mliImage_init(&img, 640u, 480u);
         mliCamera_render_image(&camera, &scenery, &octree, &img);
         mliImage_write_to_ppm(&img, "my_image.ppm.tmp");
 

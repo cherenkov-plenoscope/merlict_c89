@@ -85,8 +85,8 @@ int mliImage_init_from_ppm(
     if (fgets(line, 1024, fin) == NULL) goto close_and_exit_failure;
     if (strcmp(line, "255\n") != 0) goto close_and_exit_failure;
     mliImage_init(img, num_cols, num_rows);
-    for (col = 0; col < img->num_cols; col++) {
-        for (row = 0; row < img->num_rows; row++) {
+    for (row = 0; row < img->num_rows; row++) {
+        for (col = 0; col < img->num_cols; col++) {
             uint8_t r, g, b;
             mliColor color;
             fread(&r, sizeof(uint8_t), 1u, fin);
@@ -117,8 +117,8 @@ int mliImage_write_to_ppm(const mliImage *img, const char *path) {
     fprintf(fout, "%d\n", img->num_cols);
     fprintf(fout, "%d\n", img->num_rows);
     fprintf(fout, "255\n");
-    for (col = 0; col < img->num_cols; col++) {
-        for (row = 0; row < img->num_rows; row++) {
+    for (row = 0; row < img->num_rows; row++) {
+        for (col = 0; col < img->num_cols; col++) {
             mliColor color = mliImage_at(img, col, row);
             mliColor out = mliColor_truncate_to_uint8(color);
             uint8_t r = (uint8_t)out.r;
