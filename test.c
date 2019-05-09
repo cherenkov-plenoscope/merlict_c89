@@ -1180,21 +1180,60 @@ int main(int argc, char *argv[]) {
 
     {
         double causal_solution;
-        const mliVec support = {0., 0., 1.};
-        const mliVec direction = {0., 0., -1.};
-        const mliRay ray = mliRay_set(support, direction);
-
+        int rc;
         mliBoundSurfaceChecklist cl;
-        cl.plus_solution = 1.0;
-        cl.minus_solution = 0.0;
-        cl.plus_intersec = mliRay_at(&ray, cl.plus_solution);
-        cl.minus_intersec = mliRay_at(&ray, cl.minus_solution);
-        cl.plus_is_inside = 0;
-        cl.minus_is_inside = 1;
 
-        mli_outer_bound_surface_causal_intersection(
+        /*       _/_ps
+         *      //  \
+         *     |/ ms |
+         *     /\___/
+         *    /
+         *   X support
+         */
+        cl.plus_solution = 2.0;
+        cl.minus_solution = 1.0;
+        cl.plus_is_inside = 1;
+        cl.minus_is_inside = 1;
+        rc = mli_outer_bound_surface_causal_intersection(
             cl,
             &causal_solution);
+        CHECK(causal_solution == cl.minus_solution);
+        CHECK(rc);
+
+        /*       _/_ps
+         *      //  \
+         *     |X support
+         *  ms /\___/
+         *    /
+         *
+         */
+        cl.plus_solution = 1.0;
+        cl.minus_solution = -1.0;
+        cl.plus_is_inside = 1;
+        cl.minus_is_inside = 1;
+        rc = mli_outer_bound_surface_causal_intersection(
+            cl,
+            &causal_solution);
+        CHECK(causal_solution == cl.plus_solution);
+        CHECK(rc);
+
+        /*          /
+         *         X
+         *       _/_ps
+         *      //  \
+         *     |/    |
+         *  ms /\___/
+         *    /
+         *
+         */
+        cl.plus_solution = -1.0;
+        cl.minus_solution = -2.0;
+        cl.plus_is_inside = 1;
+        cl.minus_is_inside = 1;
+        rc = mli_outer_bound_surface_causal_intersection(
+            cl,
+            &causal_solution);
+        CHECK(!rc);
     }
 
     {
@@ -1204,7 +1243,8 @@ int main(int argc, char *argv[]) {
         cap.inner_hex_radius = .1;
         bounding_radius = mliSphericalCapHex_bounding_radius(cap);
         CHECK(bounding_radius > cap.inner_hex_radius*MLI_INNER_TO_OUTER_HEX);
-        CHECK(bounding_radius < 1.1*cap.inner_hex_radius*MLI_INNER_TO_OUTER_HEX);
+        CHECK(
+            bounding_radius < 1.1*cap.inner_hex_radius*MLI_INNER_TO_OUTER_HEX);
     }
 
     return EXIT_SUCCESS;

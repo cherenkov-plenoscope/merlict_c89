@@ -10,8 +10,6 @@
 typedef struct {
     double plus_solution;
     double minus_solution;
-    mliVec plus_intersec;
-    mliVec minus_intersec;
     int plus_is_inside;
     int minus_is_inside;
 } mliBoundSurfaceChecklist;

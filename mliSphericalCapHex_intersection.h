@@ -30,15 +30,16 @@ int mliSphericalCapHex_intersection(
     ) {
         double causal_solution;
         mliBoundSurfaceChecklist cl;
+        mliVec plus_intersec, minus_intersec;
         cl.plus_solution = plus_solution;
         cl.minus_solution = minus_solution;
-        cl.plus_intersec = mliRay_at(&ray_local, cl.plus_solution);
-        cl.minus_intersec = mliRay_at(&ray_local, cl.minus_solution);
+        plus_intersec = mliRay_at(&ray_local, cl.plus_solution);
+        minus_intersec = mliRay_at(&ray_local, cl.minus_solution);
         cl.plus_is_inside = mli_inside_hexagonal_prism_z(
-            cl.plus_intersec,
+            plus_intersec,
             cap.inner_hex_radius);
         cl.minus_is_inside = mli_inside_hexagonal_prism_z(
-            cl.minus_intersec,
+            minus_intersec,
             cap.inner_hex_radius);
 
         if (mli_outer_bound_surface_causal_intersection(
