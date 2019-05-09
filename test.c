@@ -344,7 +344,7 @@ int main(int argc, char *argv[]) {
         /* spherical_cap_hex */
         scenery.spherical_cap_hex[0].curvature_radius = 10*2.;
         scenery.spherical_cap_hex[0].inner_hex_radius = 1;
-        scenery.spherical_cap_hex_T[0].trans = mliVec_set(0., 0., 5.);
+        scenery.spherical_cap_hex_T[0].trans = mliVec_set(0., 0., 4);
         scenery.spherical_cap_hex_T[0].rot =
             mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 0.),
