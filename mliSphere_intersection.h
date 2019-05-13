@@ -47,17 +47,17 @@ int mliSphere_facing_away_from_outside_given_p_m(
     return v_Plus < 0. && v_Minus < 0.;}
 
 void mliSphere_set_intersection(
-    const mliHomTra *root2local,
+    const mliHomTra *local2root,
     const mliRay *ray_local,
     const double ray_solution,
     mliIntersection *intersection) {
     mliVec position_local = mliRay_at(ray_local, ray_solution);
     mliVec normal_local = mliVec_normalized(position_local);
-    intersection->position = mliHomTra_pos_inverse(
-        root2local,
+    intersection->position = mliHomTra_pos(
+        local2root,
         position_local);
-    intersection->surface_normal = mliHomTra_dir_inverse(
-        root2local,
+    intersection->surface_normal = mliHomTra_dir(
+        local2root,
         normal_local);
     intersection->distance_of_ray = ray_solution;
     intersection->from_outside_to_inside = mli_ray_runs_from_outside_to_inside(
@@ -66,11 +66,11 @@ void mliSphere_set_intersection(
 
 int mliSphere_intersection(
     const float radius,
-    const mliHomTraComp root2local_comp,
+    const mliHomTraComp local2root_comp,
     const mliRay ray,
     mliIntersection *intersection) {
-    mliHomTra root2local = mliHomTra_from_compact(root2local_comp);
-    mliRay ray_local = mliHomTra_ray(&root2local, ray);
+    mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
+    mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
 
     double plus_solution, minus_solution;
     if (mli_sphere_intersection_equation(
@@ -84,7 +84,7 @@ int mliSphere_intersection(
             minus_solution)
         ) {
             mliSphere_set_intersection(
-                &root2local,
+                &local2root,
                 &ray_local,
                 minus_solution,
                 intersection);
@@ -93,7 +93,7 @@ int mliSphere_intersection(
             minus_solution)
         ) {
             mliSphere_set_intersection(
-                &root2local,
+                &local2root,
                 &ray_local,
                 plus_solution,
                 intersection);

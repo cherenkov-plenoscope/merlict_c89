@@ -14,11 +14,11 @@
 
 int mliSphericalCapHex_intersection(
     const mliSphericalCapHex cap,
-    const mliHomTraComp root2local_comp,
+    const mliHomTraComp local2root_comp,
     const mliRay ray,
     mliIntersection *intersection) {
-    mliHomTra root2local = mliHomTra_from_compact(root2local_comp);
-    mliRay ray_local = mliHomTra_ray(&root2local, ray);
+    mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
+    mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
 
     double plus_solution, minus_solution;
     if (
@@ -52,11 +52,11 @@ int mliSphericalCapHex_intersection(
                 cap.curvature_radius);
 
             intersection->distance_of_ray = causal_solution;
-            intersection->position =  mliHomTra_pos_inverse(
-                &root2local,
+            intersection->position =  mliHomTra_pos(
+                &local2root,
                 position_local);
-            intersection->surface_normal = mliHomTra_dir_inverse(
-                &root2local,
+            intersection->surface_normal = mliHomTra_dir(
+                &local2root,
                 normal_local);
             intersection->from_outside_to_inside =
                 mli_ray_runs_from_outside_to_inside(
