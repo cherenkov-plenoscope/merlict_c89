@@ -136,4 +136,19 @@ int mliImage_write_to_ppm(const mliImage *img, const char *path) {
     fclose(fout);
     return EXIT_FAILURE;}
 
+void mliImage_print(const mliImage* img) {
+    uint32_t col;
+    uint32_t row;
+    for (row = 0; row < img->num_rows; row = row + 2u) {
+        for (col = 0; col < img->num_cols; col++) {
+            mliColor color = mliImage_at(img, col, row);
+            mliColor out = mliColor_truncate_to_uint8(color);
+            uint8_t r = (uint8_t)out.r;
+            uint8_t g = (uint8_t)out.g;
+            uint8_t b = (uint8_t)out.b;
+            printf("\033[48;2;%u;%u;%um \033[0m", r, g, b);
+        }
+        printf("\n");}}
+
+
 #endif
