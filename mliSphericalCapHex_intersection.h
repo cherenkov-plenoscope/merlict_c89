@@ -47,23 +47,27 @@ int mliSphericalCapHex_intersection(
                 &causal_solution)
         ) {
             mliVec position_local = mliRay_at(&ray_local, causal_solution);
-            mliVec normal_local = mli_spherical_cap_surface_normal(
-                position_local,
-                cap.curvature_radius);
+            if (position_local.z >= cap.curvature_radius) {
+                return 0;
+            } else {
+                mliVec normal_local = mli_spherical_cap_surface_normal(
+                    position_local,
+                    cap.curvature_radius);
 
-            intersection->distance_of_ray = causal_solution;
-            intersection->position =  mliHomTra_pos(
-                &local2root,
-                position_local);
-            intersection->surface_normal = mliHomTra_dir(
-                &local2root,
-                normal_local);
-            intersection->from_outside_to_inside =
-                mli_ray_runs_from_outside_to_inside(
-                    ray_local.direction,
+                intersection->distance_of_ray = causal_solution;
+                intersection->position =  mliHomTra_pos(
+                    &local2root,
+                    position_local);
+                intersection->surface_normal = mliHomTra_dir(
+                    &local2root,
                     normal_local);
+                intersection->from_outside_to_inside =
+                    mli_ray_runs_from_outside_to_inside(
+                        ray_local.direction,
+                        normal_local);
 
-            return 1;
+                return 1;
+            }
         }
     }
     return 0;
