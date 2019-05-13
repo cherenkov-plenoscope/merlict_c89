@@ -1225,7 +1225,7 @@ int main(int argc, char *argv[]) {
         CHECK(rc);
 
         /*          /
-         *         X
+         *         X support
          *       _/_ps
          *      //  \
          *     |/    |
