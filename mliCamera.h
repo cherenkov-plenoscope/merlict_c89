@@ -11,8 +11,14 @@
 #include "mliOcTree.h"
 
 typedef struct {
+    float x;
+    float y;
+    float z;
+} mliTaitBryanAngles;
+
+typedef struct {
     mliVec position;
-    mliRotMat rotation;
+    mliTaitBryanAngles rotation;
     double field_of_view;
 } mliCamera;
 
@@ -22,13 +28,115 @@ typedef struct {
     mliVec row_axis;
 } mliCameraSensor;
 
+mliVec mliCamera_optical_axis(const mliCamera cam) {
+    mliRotMat rot = mliRotMat_init_tait_bryan(
+        cam.rotation.x,
+        cam.rotation.y,
+        cam.rotation.z);
+    return mli_transform_orientation(&rot, mliVec_set(0., 0., 1.));}
+
+mliVec mliCamera_direction_right(const mliCamera cam) {
+    mliRotMat rot = mliRotMat_init_tait_bryan(
+        cam.rotation.x,
+        cam.rotation.y,
+        cam.rotation.z);
+    return mli_transform_orientation(&rot, mliVec_set(0., 1., 0.));}
+
+mliVec mliCamera_direction_up(const mliCamera cam) {
+    mliRotMat rot = mliRotMat_init_tait_bryan(
+        cam.rotation.x,
+        cam.rotation.y,
+        cam.rotation.z);
+    return mli_transform_orientation(&rot, mliVec_set(1., 0., 0.));}
+
+mliCamera mliCamera_move_forward(const mliCamera camin, const float rate) {
+    mliCamera camout = camin;
+    mliVec optical_axis = mliCamera_optical_axis(camin);
+    camout.position = mliVec_add(
+        camout.position,
+        mliVec_multiply(optical_axis, rate));
+    return camout;}
+
+mliCamera mliCamera_move_right(const mliCamera camin, const float rate) {
+    mliCamera camout = camin;
+    mliVec direction_right = mliCamera_direction_right(camout);
+    camout.position = mliVec_add(
+        camout.position,
+        mliVec_multiply(direction_right, rate));
+    return camout;}
+
+mliCamera mliCamera_move_up(const mliCamera camin, const float rate) {
+    mliCamera camout = camin;
+    camout.position.z += rate;
+    return camout;}
+
+mliCamera mliCamera_look_right(const mliCamera camin, const float rate) {
+    mliCamera camout = camin;
+    camout.rotation.z = fmod(camout.rotation.z + rate, (2.*mli_PI));
+    return camout;}
+
+mliCamera mliCamera_look_down_when_possible(
+    const mliCamera camin,
+    const float rate) {
+    mliCamera camout = camin;
+    int fals_forward_over = camin.rotation.y < -mli_PI + rate;
+    if (fals_forward_over) {
+        camout.rotation.y = - mli_PI;
+        return camout;
+    } else {
+        camout.rotation.y = camout.rotation.y - rate;
+        return camout;
+    }
+}
+
+mliCamera mliCamera_increase_fov(
+    const mliCamera camin,
+    const float rate) {
+    mliCamera camout = camin;
+    if (camout.field_of_view * rate > mli_deg2rad(170)) {
+        camout.field_of_view = mli_deg2rad(170);
+    } else {
+        camout.field_of_view *= rate;
+    }
+    return camout;}
+
+mliCamera mliCamera_decrease_fov(
+    const mliCamera camin,
+    const float rate) {
+    mliCamera camout = camin;
+    if (camout.field_of_view / rate < mli_deg2rad(.1)) {
+        camout.field_of_view = mli_deg2rad(.1);
+    } else {
+        camout.field_of_view /= rate;
+    }
+    return camout;}
+
+mliCamera mliCamera_look_up_when_possible(
+    const mliCamera camin,
+    const float rate) {
+    mliCamera camout = camin;
+    int fals_backwards_over = camin.rotation.y > rate;
+    if (fals_backwards_over) {
+        camout.rotation.y = 0.;
+        return camout;
+    } else {
+        camout.rotation.y = camout.rotation.y + rate;
+        return camout;
+    }
+}
+
 void mliCameraSensor_init(const mliCamera *camera, mliCameraSensor *sensor) {
+    mliRotMat rot;
     mliVec unit_x = {1., 0., 0.};
     mliVec unit_y = {0., 1., 0.};
     mliVec unit_z = {0., 0., 1.};
-    sensor->optical_axis = mli_transform_orientation(&camera->rotation, unit_z);
-    sensor->col_axis = mli_transform_orientation(&camera->rotation, unit_y);
-    sensor->row_axis = mli_transform_orientation(&camera->rotation, unit_x);}
+    rot = mliRotMat_init_tait_bryan(
+        camera->rotation.x,
+        camera->rotation.y,
+        camera->rotation.z);
+    sensor->optical_axis = mli_transform_orientation(&rot, unit_z);
+    sensor->col_axis = mli_transform_orientation(&rot, unit_y);
+    sensor->row_axis = mli_transform_orientation(&rot, unit_x);}
 
 void mliCamera_render_image(
     const mliCamera *camera,

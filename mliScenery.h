@@ -190,18 +190,18 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
         f);
 
     fclose(f);
-    return EXIT_SUCCESS;
+    return 1;
 
     close_failure:
     fclose(f);
-    return EXIT_FAILURE;}
+    return 0;}
 
 int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     FILE *f;
     int i;
     char line[64];
     f = fopen(path, "r");
-    if (f == NULL) goto close_failure;
+    if (f == NULL) return 0;
     if (fgets(line, 1024, f) == NULL) goto close_failure;
     if (strcmp(line, "merlict_c89\n") != 0) goto close_failure;
 
@@ -266,11 +266,11 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
         scenery->num_spheres, f);
 
     fclose(f);
-    return EXIT_SUCCESS;
+    return 1;
 
     close_failure:
     fclose(f);
-    return EXIT_FAILURE;}
+    return 0;}
 
 int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
     int i;

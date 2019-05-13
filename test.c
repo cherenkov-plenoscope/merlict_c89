@@ -2,32 +2,7 @@
 /* Compile with: gcc test.c -o test -std=c89 -lm -Wall -pedantic              */
 #include <math.h>
 #include <assert.h>
-#include "mliMath.h"
-#include "mliVec.h"
-#include "mliRotMat.h"
-#include "mliQuaternion.h"
-#include "mliRay.h"
-#include "mliUnitTest.h"
-#include "mliMesh.h"
-#include "mliFunc.h"
-#include "mliTriangle_intersection.h"
-#include "mliColor.h"
-#include "mliImage.h"
-#include "mliQuadraticEquation.h"
-#include "mliHomTra.h"
-#include "mliCamera.h"
-#include "mliScenery.h"
-#include "mliScenery_object_interface.h"
-#include "mliTracer.h"
-#include "mliHexagonalPrismZ.h"
-#include "mliSphericalCapHex.h"
-#include "mliOuterPrismBound.h"
-#include "mliVector.h"
-#include "mliVec_OBB.h"
-#include "mliTriangle_OBB.h"
-#include "mliOcTree.h"
-#include "mli_ray_octree_traversal.h"
-#include "mli_from_outside_to_inside.h"
+#include "merlict_c89.h"
 
 
 int main(int argc, char *argv[]) {
@@ -384,7 +359,9 @@ int main(int argc, char *argv[]) {
         camera.position.x = 0.;
         camera.position.y = 0.;
         camera.position.z = -20.;
-        camera.rotation = mliRotMat_init_tait_bryan(0., 0., 0.);
+        camera.rotation.x = 0.;
+        camera.rotation.y = 0.;
+        camera.rotation.z = 0.;
         camera.field_of_view = mli_deg2rad(80.);
 
         mliImage_init(&img, 640u, 480u);
@@ -445,6 +422,13 @@ int main(int argc, char *argv[]) {
 
         mliScenery_free(&scenery);
     }
+
+    /* read non existing file */
+    {
+        mliScenery scenery;
+        CHECK(!mliScenery_read_from_path(&scenery, "does_not_exist.tmp"));
+    }
+
 
     /* scenery intersection interface -> sphere */
     {
@@ -573,7 +557,9 @@ int main(int argc, char *argv[]) {
         camera.position.x = 0.;
         camera.position.y = 0.;
         camera.position.z = -20.;
-        camera.rotation = mliRotMat_init_tait_bryan(0., 0., 0.);
+        camera.rotation.x = 0.;
+        camera.rotation.y = 0.;
+        camera.rotation.z = 0.;
         camera.field_of_view = mli_deg2rad(80.);
 
         mliImage_init(&img, 640u, 480u);

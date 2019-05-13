@@ -52,7 +52,7 @@ mliColor mli_trace(
         mliRay line_of_sight_to_source;
         mliSurfaces surfaces;
         mliSurface outer_surface;
-        mliVec dir_to_source = {1., 1., -3.};
+        mliVec dir_to_source = {1., 1., 3.};
 
         line_of_sight_to_source = mliRay_set(
             intersection.position,
