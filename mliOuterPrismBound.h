@@ -47,8 +47,6 @@ int mli_outer_bound_surface_causal_intersection(
     } else if (cl.minus_is_inside && min_is_causal) {
             (*causal_solution) = cl.minus_solution;
             is_inside_cylinder = 1;
-    } else {
-        (*causal_solution) = cl.minus_solution;
     }
 
     if (is_inside_cylinder) {
