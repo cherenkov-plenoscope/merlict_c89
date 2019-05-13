@@ -188,9 +188,14 @@ void mliNode_print(const mliNode *node, const uint32_t indent) {
     uint32_t i;
     uint32_t num_c = mliNode_num_children(node);
     for (i = 0u; i < indent; i++) printf(" ");
-    if (num_c == 0)
-        printf("|-Leaf: overlaps: %u", node->num_objects);
-    else
+    if (num_c == 0) {
+        int j;
+        printf("|-Leaf: overlaps: %u [", node->num_objects);
+        for(j = 0; j < node->num_objects; j++) {
+            printf("%u, ", node->objects[j]);
+        }
+        printf("]");
+    } else
         printf("Node: num_children %u", num_c);
     printf("\n");
     for (i = 0u; i < 8u; i++) {
