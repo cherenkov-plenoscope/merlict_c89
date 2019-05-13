@@ -11,6 +11,13 @@ typedef struct {
     float b;
 } mliColor;
 
+mliColor mliColor_set(const float r, const float g, const float b) {
+    mliColor rgb;
+    rgb.r = r;
+    rgb.g = g;
+    rgb.b = b;
+    return rgb;}
+
 mliColor mliColor_mix(
     const mliColor a,
     const mliColor b,
