@@ -343,8 +343,8 @@ int main(int argc, char *argv[]) {
 
         /* spherical_cap_hex */
         scenery.spherical_cap_hex[0].curvature_radius = 10*2.;
-        scenery.spherical_cap_hex[0].inner_hex_radius = 1;
-        scenery.spherical_cap_hex_T[0].trans = mliVec_set(0., 0., 4);
+        scenery.spherical_cap_hex[0].inner_hex_radius = 3.3;
+        scenery.spherical_cap_hex_T[0].trans = mliVec_set(0., -2, 0);
         scenery.spherical_cap_hex_T[0].rot =
             mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 0.),
@@ -368,6 +368,7 @@ int main(int argc, char *argv[]) {
         CHECK(mliScenery_is_equal(&scenery, &scenery_back));
 
         mliScenery_free(&scenery);
+        mliScenery_free(&scenery_back);
     }
 
     /* render image */
@@ -507,6 +508,79 @@ int main(int argc, char *argv[]) {
             &isec,
             mliScenery_num_objects(&scenery));
 
+        mliOcTree_free(&octree);
+        mliScenery_free(&scenery);
+    }
+
+    /* mliScenery asymetric */
+    {
+        mliScenery scenery;
+        mliVec offset;
+        uint64_t i;
+        scenery.num_functions = 1u;
+        scenery.num_colors = 1u;
+        scenery.num_surfaces = 1u;
+        scenery.num_spherical_cap_hex = 0u;
+        scenery.num_spheres = 50u;
+        scenery.num_vertices = 0u;
+        scenery.num_triangles = 0u;
+
+        mliScenery_malloc(&scenery);
+
+        mliFunc_malloc(&scenery.functions[0] , 2u);
+        scenery.functions[0].x[0] = 200.e-9;
+        scenery.functions[0].x[1] = 1200.e-9;
+        scenery.functions[0].y[0] = 0.;
+        scenery.functions[0].y[1] = 0.;
+
+        scenery.colors[0] = mliColor_set(255., 0., 0.);
+
+        scenery.surfaces[0].color = 0u;
+        scenery.surfaces[0].reflection = 0u;
+        scenery.surfaces[0].refraction = 0u;
+        scenery.surfaces[0].absorbtion = 0u;
+        offset = mliVec_set(0, 0, -8);
+        for (i = 0; i < scenery.num_spheres; i ++) {
+            const double phi = 2.*mli_PI*(double)(i)/scenery.num_spheres;
+            const double ii = (double)(i)/scenery.num_spheres;
+            const double zoff = 0.5 - ii;
+            scenery.spheres[i] = 0.1;
+            scenery.spheres_surfaces[i].outer = 0u;
+            scenery.spheres_surfaces[i].inner = 0u;
+            scenery.spheres_T[i].trans = mliVec_set(
+                5*cos(phi) + offset.x,
+                -5*sin(phi) + offset.y,
+                5*zoff + offset.z);
+            scenery.spheres_T[i].rot =
+                mliQuaternion_set_rotaxis_and_angle(
+                    mliVec_set(0., 0., 0.),
+                    0.);
+        }
+        mliScenery_write_to_path(&scenery, "asymetric_scenery.mli.tmp");
+        mliScenery_free(&scenery);
+    }
+
+    /* render image asymetric scenery */
+    {
+        mliScenery scenery;
+        mliOcTree octree;
+        mliCamera camera;
+        mliImage img;
+        mliScenery_read_from_path(&scenery, "asymetric_scenery.mli.tmp");
+        octree = mliOcTree_from_scenery(&scenery);
+        CHECK(mliNode_num_nodes(&octree.root) == 9);
+        /* mliNode_print(&octree.root, 0); */
+        camera.position.x = 0.;
+        camera.position.y = 0.;
+        camera.position.z = -20.;
+        camera.rotation = mliRotMat_init_tait_bryan(0., 0., 0.);
+        camera.field_of_view = mli_deg2rad(80.);
+
+        mliImage_init(&img, 640u, 480u);
+        mliCamera_render_image(&camera, &scenery, &octree, &img);
+        mliImage_write_to_ppm(&img, "asymetric_image.ppm.tmp");
+
+        mliImage_free(&img);
         mliOcTree_free(&octree);
         mliScenery_free(&scenery);
     }
