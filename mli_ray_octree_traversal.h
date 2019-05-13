@@ -270,6 +270,7 @@ void mli_ray_octree_traversal(
     double tz1;
     mliRay ray_octree;
     mliVec cube_upper;
+    mliVec cube_size;
     mliCube cube;
     const mliNode *root;
     uint8_t a = 0;
@@ -279,19 +280,20 @@ void mli_ray_octree_traversal(
     root = &octree->root;
     ray_octree = ray;
     num_hits = 0u;
+    cube_size = mliVec_add(cube.lower, cube_upper);
 
     if (ray_octree.direction.x < 0) {
-        ray_octree.support.x = - ray_octree.support.x;
+        ray_octree.support.x = - ray_octree.support.x + cube_size.x;
         ray_octree.direction.x = - ray_octree.direction.x;
         a |= 4;
     }
     if (ray_octree.direction.y < 0) {
-        ray_octree.support.y = - ray_octree.support.y;
+        ray_octree.support.y = - ray_octree.support.y + cube_size.y;
         ray_octree.direction.y = - ray_octree.direction.y;
         a |= 2;
     }
     if (ray_octree.direction.z < 0) {
-        ray_octree.support.z = - ray_octree.support.z;
+        ray_octree.support.z = - ray_octree.support.z + cube_size.z;
         ray_octree.direction.z = - ray_octree.direction.z;
         a |= 1;
     }
