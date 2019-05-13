@@ -24,30 +24,16 @@ int mli_outer_bound_surface_causal_intersection(
 
     int is_inside_cylinder = 0;
 
-    if (cl.plus_solution > 0.0) {
-        plu_is_causal = 1;
-    } else {
-        plu_is_causal = 0;
-    }
-
-    if (cl.minus_solution > 0.0) {
-        min_is_causal = 1;
-    } else {
-        min_is_causal = 0;
-    }
+    plu_is_causal = cl.plus_solution > 0. ? 1 : 0;
+    min_is_causal = cl.minus_solution > 0. ? 1 : 0;
 
     plu_and_min_are_inside = cl.plus_is_inside * cl.minus_is_inside;
     plu_and_min_are_causal = plu_is_causal * min_is_causal;
 
     if (plu_and_min_are_inside) {
         if (plu_and_min_are_causal) {
-            if (cl.minus_solution >= cl.plus_solution) {
-                (*causal_solution) = cl.plus_solution;
-                is_inside_cylinder = 1;
-            } else {
-                (*causal_solution) = cl.minus_solution;
-                is_inside_cylinder = 1;
-            }
+            (*causal_solution) = cl.minus_solution;
+            is_inside_cylinder = 1;
         } else if (plu_is_causal) {
             (*causal_solution) = cl.plus_solution;
             is_inside_cylinder = 1;
