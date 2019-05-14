@@ -25,6 +25,9 @@ double mli_z_sphere(double x, double curvature_radius) {
     return half_curvature_radius - sqrt(
         half_curvature_radius*half_curvature_radius - x*x);}
 
+double mli_squared(const double a) {
+    return a*a;}
+
 void mli_uint32_ncpy(
     const uint32_t *from,
     uint32_t* to,
@@ -34,8 +37,6 @@ void mli_uint32_ncpy(
         to[i] = from[i];}}
 
 #define MLI_IS_NAN(a) ((a) != (a))
-
-#define MLI_SQUARED(a) ((a)*(a))
 
 #define MLI_MIN2(a,b) (((a) < (b)) ? (a) : (b))
 #define MLI_MAX2(a,b) (((a) > (b)) ? (a) : (b))
