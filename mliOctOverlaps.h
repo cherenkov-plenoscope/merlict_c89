@@ -11,9 +11,9 @@ typedef struct {
 
 void mliOctOverlaps_init(mliOctOverlaps *a, const uint32_t max_num_objects) {
     uint32_t c;
-    a->objects = malloc(8u*sizeof(uint32_t*));
+    a->objects = (uint32_t**)malloc(8u*sizeof(uint32_t*));
     for (c = 0; c < 8u; c++) {
-        a->objects[c] = malloc(max_num_objects*sizeof(uint32_t));}}
+        a->objects[c] = (uint32_t*)malloc(max_num_objects*sizeof(uint32_t));}}
 
 void mliOctOverlaps_free(mliOctOverlaps *a) {
     uint32_t c;
