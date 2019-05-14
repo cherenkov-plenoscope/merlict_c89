@@ -17,10 +17,6 @@ double mli_rad2deg(const double angle_in_rad) {
 double mli_deg2rad(const double angle_in_deg) {
     return angle_in_deg*(1./180.)*mli_PI;}
 
-int mli_min_int(const int x, const int y) {
-    return (x < y) ? x : y;
-}
-
 double mli_hypot(const double a, const double b) {
     return sqrt(a*a + b*b);}
 
