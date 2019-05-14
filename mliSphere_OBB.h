@@ -6,7 +6,7 @@
 #include "mliMath.h"
 
 mliOBB mliSphere_obb(
-    const float radius,
+    const double radius,
     const mliVec translation) {
     mliOBB obb;
     mliVec r = mliVec_set(radius, radius, radius);
@@ -15,13 +15,13 @@ mliOBB mliSphere_obb(
     return obb;}
 
 int mliSphere_has_overlap_obb(
-    const float radius,
+    const double radius,
     const mliVec translation,
     const mliOBB obb) {
     /* Ben Voigt
      * https://stackoverflow.com/questions/4578967/cube-sphere-intersection-test
      */
-    float dist_squared = radius*radius;
+    double dist_squared = radius*radius;
     if (translation.x < obb.lower.x)
         dist_squared -= mli_squared(translation.x - obb.lower.x);
     else if (translation.x > obb.upper.x)

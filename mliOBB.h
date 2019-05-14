@@ -28,4 +28,14 @@ mliVec mliOBB_center(const mliOBB a) {
     mliVec sum = mliVec_add(a.upper, a.lower);
     return mliVec_multiply(sum, .5);}
 
+mliOBB mliOBB_dilate(const mliOBB a, const double dilation_radius) {
+    mliOBB out = a;
+    out.lower.x -= dilation_radius;
+    out.lower.y -= dilation_radius;
+    out.lower.z -= dilation_radius;
+    out.upper.x += dilation_radius;
+    out.upper.y += dilation_radius;
+    out.upper.z += dilation_radius;
+    return out;}
+
 #endif
