@@ -525,7 +525,7 @@ int main(int argc, char *argv[]) {
         scenery.surfaces[0].absorbtion = 0u;
         offset = mliVec_set(0, 0, -8);
         for (i = 0; i < scenery.num_spheres; i ++) {
-            const double phi = 2.*mli_PI*(double)(i)/scenery.num_spheres;
+            const double phi = 2.*MLI_PI*(double)(i)/scenery.num_spheres;
             const double ii = (double)(i)/scenery.num_spheres;
             const double zoff = 0.5 - ii;
             scenery.spheres[i] = 0.1;
@@ -722,19 +722,19 @@ int main(int argc, char *argv[]) {
 
     {
         CHECK_MARGIN(mli_deg2rad(0.), 0., 1e-9);
-        CHECK_MARGIN(mli_deg2rad(90.), mli_PI/2, 1e-9);
-        CHECK_MARGIN(mli_deg2rad(180.), mli_PI, 1e-9);
-        CHECK_MARGIN(mli_deg2rad(-90.), -mli_PI/2.0, 1e-9);
-        CHECK_MARGIN(mli_deg2rad(-180.), -mli_PI, 1e-9);
-        CHECK_MARGIN(mli_deg2rad(360.), 2.*mli_PI, 1e-9);
+        CHECK_MARGIN(mli_deg2rad(90.), MLI_PI/2, 1e-9);
+        CHECK_MARGIN(mli_deg2rad(180.), MLI_PI, 1e-9);
+        CHECK_MARGIN(mli_deg2rad(-90.), -MLI_PI/2.0, 1e-9);
+        CHECK_MARGIN(mli_deg2rad(-180.), -MLI_PI, 1e-9);
+        CHECK_MARGIN(mli_deg2rad(360.), 2.*MLI_PI, 1e-9);
     }
 
     {
-        CHECK_MARGIN(mli_rad2deg(0.*mli_PI), 0., 1e-9);
-        CHECK_MARGIN(mli_rad2deg(.25*mli_PI), 45., 1e-9);
-        CHECK_MARGIN(mli_rad2deg(.5*mli_PI), 90., 1e-9);
-        CHECK_MARGIN(mli_rad2deg(1.*mli_PI), 180., 1e-9);
-        CHECK_MARGIN(mli_rad2deg(1.e3*mli_PI), 180.e3, 1e-9);
+        CHECK_MARGIN(mli_rad2deg(0.*MLI_PI), 0., 1e-9);
+        CHECK_MARGIN(mli_rad2deg(.25*MLI_PI), 45., 1e-9);
+        CHECK_MARGIN(mli_rad2deg(.5*MLI_PI), 90., 1e-9);
+        CHECK_MARGIN(mli_rad2deg(1.*MLI_PI), 180., 1e-9);
+        CHECK_MARGIN(mli_rad2deg(1.e3*MLI_PI), 180.e3, 1e-9);
     }
 
     {
@@ -1205,7 +1205,7 @@ int main(int argc, char *argv[]) {
     {
         mliVec c;
         double inner_radius = 0.5;
-        double outer_radius = inner_radius/cos(mli_PI/6.0);
+        double outer_radius = inner_radius/cos(MLI_PI/6.0);
         c.z = 0.;
         for (c.x = -1.; c.x < 1.; c.x = c.x + 0.01) {
             for (c.y = -1.; c.y < 1.; c.y = c.y + 0.01) {

@@ -72,16 +72,16 @@ mliCamera mliCamera_move_up(const mliCamera camin, const float rate) {
 
 mliCamera mliCamera_look_right(const mliCamera camin, const float rate) {
     mliCamera camout = camin;
-    camout.rotation.z = fmod(camout.rotation.z + rate, (2.*mli_PI));
+    camout.rotation.z = fmod(camout.rotation.z + rate, (2.*MLI_PI));
     return camout;}
 
 mliCamera mliCamera_look_down_when_possible(
     const mliCamera camin,
     const float rate) {
     mliCamera camout = camin;
-    int fals_forward_over = camin.rotation.y < -mli_PI + rate;
+    int fals_forward_over = camin.rotation.y < -MLI_PI + rate;
     if (fals_forward_over) {
-        camout.rotation.y = - mli_PI;
+        camout.rotation.y = - MLI_PI;
         return camout;
     } else {
         camout.rotation.y = camout.rotation.y - rate;
