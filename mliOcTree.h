@@ -19,7 +19,7 @@ typedef struct mliNode {
 
 
 void mliNode_init(mliNode *n) {
-    int c;
+    uint64_t c;
     n->mother = NULL;
     for (c = 0; c < 8u; c++) {
         n->children[c] = NULL;}
@@ -28,7 +28,7 @@ void mliNode_init(mliNode *n) {
 
 
 int mliNode_is_blank(const mliNode *n) {
-    int c;
+    uint64_t c;
     if (n->mother != NULL)
         return 0;
     for (c = 0; c < 8u; c++)
@@ -189,7 +189,7 @@ void mliNode_print(const mliNode *node, const uint32_t indent) {
     uint32_t num_c = mliNode_num_children(node);
     for (i = 0u; i < indent; i++) printf(" ");
     if (num_c == 0) {
-        int j;
+        uint32_t j;
         printf("|-Leaf: overlaps: %u [", node->num_objects);
         for(j = 0; j < node->num_objects; j++) {
             printf("%u, ", node->objects[j]);

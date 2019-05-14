@@ -85,7 +85,7 @@ void mliScenery_malloc(mliScenery* scenery) {
 }
 
 void mliScenery_free(mliScenery *scenery) {
-    int i;
+    uint64_t i;
     /* functions */
     for (i = 0; i < scenery->num_functions; i++) {
         mliFunc_free(&(scenery->functions[i]));}
@@ -124,7 +124,7 @@ void mliScenery_free(mliScenery *scenery) {
 
 int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     FILE *f;
-    int i;
+    uint64_t i;
     f = fopen(path, "w");
     if (f == NULL) goto close_failure;
     fprintf(f, "merlict_c89\n");
@@ -198,7 +198,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
 
 int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     FILE *f;
-    int i;
+    uint64_t i;
     char line[64];
     f = fopen(path, "r");
     if (f == NULL) return 0;
@@ -273,7 +273,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     return 0;}
 
 int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
-    int i;
+    uint64_t i;
     if (a->num_functions != b->num_functions) return 0;
     if (a->num_colors != b->num_colors ) return 0;
     if (a->num_surfaces != b->num_surfaces ) return 0;
@@ -327,7 +327,7 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
 
 
 int mliScenery_valid_surfaces(const mliScenery *scenery) {
-    int i;
+    uint64_t i;
     for (i = 0; i < scenery->num_surfaces; i++) {
         if (scenery->surfaces[i].color >= scenery->num_colors)
             return 0;
@@ -340,7 +340,7 @@ int mliScenery_valid_surfaces(const mliScenery *scenery) {
     return 1;}
 
 int mliScenery_valid_triangles(const mliScenery *scenery) {
-    int i;
+    uint64_t i;
     for (i = 0; i < scenery->num_triangles; i++) {
         if (scenery->triangles[i].a >= scenery->num_vertices)
             return 0;
@@ -355,7 +355,7 @@ int mliScenery_valid_triangles(const mliScenery *scenery) {
     return 1;}
 
 int mliScenery_valid_spherical_cap_hex(const mliScenery *scenery) {
-    int i;
+    uint64_t i;
     for (i = 0; i < scenery->num_spherical_cap_hex; i++) {
         if (    scenery->spherical_cap_hex_surfaces[i].inner >=
                 scenery->num_surfaces)
@@ -367,7 +367,7 @@ int mliScenery_valid_spherical_cap_hex(const mliScenery *scenery) {
     return 1;}
 
 int mliScenery_valid_spheres(const mliScenery *scenery) {
-    int i;
+    uint64_t i;
     for (i = 0; i < scenery->num_spheres; i++) {
         if (    scenery->spheres_surfaces[i].inner >=
                 scenery->num_surfaces)

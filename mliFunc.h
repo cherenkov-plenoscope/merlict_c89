@@ -83,7 +83,7 @@ int mliFunc_fread(mliFunc *func, FILE* f) {
     return EXIT_SUCCESS;}
 
 int mliFunc_is_equal(const mliFunc a, const mliFunc b) {
-    int i;
+    uint64_t i;
     if (a.num_points != b.num_points ) return 0;
     for (i = 0; i < a.num_points; i++) {
         if (a.x[i] != b.x[i]) return 0;

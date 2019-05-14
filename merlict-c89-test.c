@@ -258,7 +258,7 @@ int main(int argc, char *argv[]) {
     }
     /* mliScenery */
     {
-        int i;
+        uint64_t i;
         mliScenery scenery;
         mliScenery scenery_back;
         mliMesh diff_cube_sphere;
@@ -573,7 +573,7 @@ int main(int argc, char *argv[]) {
 
     /* mliVector */
     {
-        int i;
+        uint64_t i;
         mliVector vec;
         mliVector_set(&vec, 0u, sizeof(mliVec));
         CHECK(vec.size == 0u);
