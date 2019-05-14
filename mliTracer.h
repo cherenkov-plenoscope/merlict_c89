@@ -20,14 +20,12 @@ int first_casual_intersection(
     const mliScenery *scenery,
     const mliOcTree* octree,
     const mliRay ray,
-    const int64_t face_coming_from,
     mliIntersection *intersection) {
     mli_ray_octree_traversal(
         scenery,
         octree,
         ray,
-        intersection,
-        face_coming_from);
+        intersection);
     if (intersection->distance_of_ray < FLT_MAX)
         return 1;
     else
@@ -45,7 +43,6 @@ mliColor mli_trace(
             scenery,
             octree,
             ray,
-            mliScenery_num_objects(scenery),
             &intersection)
     ) {
         mliIntersection global_light_intersection;
@@ -69,7 +66,6 @@ mliColor mli_trace(
                 scenery,
                 octree,
                 line_of_sight_to_source,
-                intersection.object_idx,
                 &global_light_intersection)
         ) {
             color.r = color.r*.5;

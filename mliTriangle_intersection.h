@@ -2,6 +2,7 @@
 #ifndef MERLICT_MLITRIANGLEINTERSECTION_H_
 #define MERLICT_MLITRIANGLEINTERSECTION_H_
 #include <math.h>
+#include "mliMath.h"
 #include "mliVec.h"
 #include "mliRay.h"
 #include "mliIntersection.h"
@@ -16,7 +17,6 @@ int mliRay_intersects_triangle(
     const mliVec vertex2,
     double *ray_parameter)
 {
-    const float EPSILON = 1e-6;
     /* Moeller-Trumbore-intersection-algorithm */
     mliVec edge1;
     mliVec edge2;
@@ -27,7 +27,7 @@ int mliRay_intersects_triangle(
     h = mliVec_cross(direction, edge2);
     a = mliVec_dot(edge1, h);
 
-    if (a > -EPSILON && a < EPSILON)
+    if (a > -MLI_EPSILON && a < MLI_EPSILON)
         return 0;    /* This ray is parallel to this triangle. */
     f = 1.0/a;
     s = mliVec_substract(support, vertex0);
@@ -41,7 +41,7 @@ int mliRay_intersects_triangle(
     /* At this stage we can compute t to find out where the intersection */
     /* point is on the line. */
     t = f * mliVec_dot(edge2, q);
-    if (t > EPSILON) {
+    if (t > MLI_EPSILON) {
         (*ray_parameter) = t;
         return 1;
     } else {

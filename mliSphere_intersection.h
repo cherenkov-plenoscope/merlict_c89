@@ -3,6 +3,7 @@
 #define MERLICT_MLISPHERE_INTERSECTIOM_H_
 
 #include <math.h>
+#include "mliMath.h"
 #include "mliOBB.h"
 #include "mliVec.h"
 #include "mliRay.h"
@@ -71,7 +72,6 @@ int mliSphere_intersection(
     mliIntersection *intersection) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
-
     double plus_solution, minus_solution;
     if (mli_sphere_intersection_equation(
         radius,
@@ -79,26 +79,37 @@ int mliSphere_intersection(
         &plus_solution,
         &minus_solution)
     ) {
-        if (mliSphere_facing_sphere_from_outside_given_p_m(
-            plus_solution,
-            minus_solution)
-        ) {
+        int m_gt_e = minus_solution > MLI_EPSILON;
+        int p_gt_e = plus_solution > MLI_EPSILON;
+        int fm_le_e = fabs(minus_solution) <= MLI_EPSILON;
+        int fp_le_e = fabs(plus_solution) <= MLI_EPSILON;
+
+        if (m_gt_e && p_gt_e && !fm_le_e && !fp_le_e) {
             mliSphere_set_intersection(
                 &local2root,
                 &ray_local,
                 minus_solution,
                 intersection);
-        } else if (mliSphere_facing_away_from_outside_given_p_m(
-            plus_solution,
-            minus_solution)
-        ) {
+            return 1;
+        }
+
+        if (!m_gt_e && p_gt_e && !fm_le_e && !fp_le_e) {
             mliSphere_set_intersection(
                 &local2root,
                 &ray_local,
                 plus_solution,
                 intersection);
+            return 1;
         }
-        return 1;
+
+        if (!m_gt_e && p_gt_e && fm_le_e && !fp_le_e) {
+            mliSphere_set_intersection(
+                &local2root,
+                &ray_local,
+                minus_solution,
+                intersection);
+            return 1;
+        }
     }
     return 0;
 }

@@ -490,8 +490,7 @@ int main(int argc, char *argv[]) {
             mliRay_set(
                 mliVec_set(0.1 ,2.5, 10.),
                 mliVec_set(0. ,0., -1.)),
-            &isec,
-            mliScenery_num_objects(&scenery));
+            &isec);
 
         mliOcTree_free(&octree);
         mliScenery_free(&scenery);
@@ -1244,6 +1243,29 @@ int main(int argc, char *argv[]) {
         CHECK_MARGIN(surface_normal.x, 0., 1e-9);
         CHECK_MARGIN(surface_normal.y, 0., 1e-9);
         CHECK_MARGIN(surface_normal.z, 1., 1e-9);
+    }
+
+    {
+        const float radius = 1.;
+        mliIntersection intersection;
+        mliHomTraComp local2root_comp;
+        local2root_comp.trans = mliVec_set(0., 0., 0.);
+        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 0.),
+            0.);
+
+        CHECK(!mliSphere_intersection(
+            radius,
+            local2root_comp,
+            mliRay_set(mliVec_set(0., 0., 5.), mliVec_set(0., 0., 1.)),
+            &intersection));
+
+        CHECK(mliSphere_intersection(
+            radius,
+            local2root_comp,
+            mliRay_set(mliVec_set(0., 0., -5.), mliVec_set(0., 0., 1.)),
+            &intersection));
+        CHECK_MARGIN(intersection.distance_of_ray, 4., 1e-6);
     }
 
     {
