@@ -12,12 +12,26 @@ Reasons in no particular order:
 I have the feeling that esspecially classes and inheritance cause most of the current issues in the merlict raytracer which make e.g. python wrapping very difficult. 
 
 
-### compile
+## Tests
+#### Compile
 ```
-gcc test.c -o test -std=c89 -lm -Wall -pedantic
+gcc merlict-c89-test.c -o merlict-c89-test -std=c89 -lm -Wall -pedantic
 ```
 
-### run tests
+#### Run
 ```
-./test
+./merlict-c89-test
 ```
+
+## Viewer
+A terminal-viewer using ANSI-escape-sequences.
+#### Compile
+```
+gcc merlict-c89-view.c -o merlict-c89-view -std=c89 -lm -Wall -pedantic
+```
+
+#### Run
+```
+./merlict-c89-view my_scenery.mli.tmp
+```
+Here ``` my_scenery.mli.tmp``` is scenery for testing created by ```./merlict-c89-test```.
