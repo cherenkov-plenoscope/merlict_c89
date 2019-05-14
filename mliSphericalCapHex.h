@@ -20,9 +20,9 @@ int mliSphericalCapHex_is_equal(
 float mliSphericalCapHex_bounding_radius(
     const mliSphericalCapHex cap) {
     const double outer_hex_radius = cap.inner_hex_radius*MLI_INNER_TO_OUTER_HEX;
-    return hypot(
+    return mli_hypot(
         outer_hex_radius,
-        z_sphere(
+        mli_z_sphere(
             cap.inner_hex_radius*MLI_INNER_TO_OUTER_HEX,
             cap.curvature_radius));}
 
