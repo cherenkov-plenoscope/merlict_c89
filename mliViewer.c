@@ -18,7 +18,8 @@ void clear_screen() {
 
 void print_help() {
     clear_screen();
-    printf("merlict c89 by Sebastian Achim Mueller\n");
+    printf("merlict-c89\n-----------\n\n");
+    printf("Copyright 2019 Sebastian Achim Mueller\n");
     printf("\n");
     printf("_Position__________________   _Orientation_______________\n");
     printf(" move forward........[ w ]     look up.............[ i ]\n");
@@ -35,8 +36,21 @@ void print_help() {
     printf(" print help..........[ h ]\n");
     printf(" exit ...............[ESC]\n");
     printf("\n");
-    printf("[  space key  ] full resolution.\n");
-}
+    printf("[  space key  ] full resolution.\n");}
+
+void print_info_line(const mliCamera camera) {
+    printf(
+        "Press 'h' for help. "
+        "Pos.: [%.2f, %.2f, %.2f]m, "
+        "Rot.: [%.2f, %.2f %.2f]deg, "
+        "FoV.: %.2fdeg.\n",
+        camera.position.x,
+        camera.position.y,
+        camera.position.z,
+        mli_rad2deg(camera.rotation.x),
+        mli_rad2deg(camera.rotation.y),
+        mli_rad2deg(camera.rotation.z),
+        mli_rad2deg(camera.field_of_view));}
 
 void time_stamp(char* buffer) {
     time_t now = time(0);
@@ -97,6 +111,8 @@ int main(int argc, char *argv[]) {
 
     mliImage_init(&img, 128u, 72u);
 
+    goto show_image;
+
     while((key = key_truncate_8bit(getchar())) != MLI_ESCAPE_KEY) {
         update_image = 1;
         switch (key) {
@@ -146,7 +162,7 @@ int main(int argc, char *argv[]) {
                     char path[1024];
                     mliImage full;
                     sprintf(path, "%s_%06lu.ppm", timestamp, num_screenshots++);
-                    mliImage_init(&full, 1920u, 1080);
+                    mliImage_init(&full, 1920u, 1080u);
                     mliCamera_render_image(&camera, &scenery, &octree, &full);
                     mliImage_write_to_ppm(&full, path);
                     mliImage_free(&full);
@@ -154,22 +170,12 @@ int main(int argc, char *argv[]) {
                 update_image = 0;
             break;
         }
+        show_image:
         if (update_image) {
             mliCamera_render_image(&camera, &scenery, &octree, &img);
             clear_screen();
             mliImage_print(&img);
-            printf(
-                "Press 'h' for help. "
-                "Pos.: [%.2f, %.2f, %.2f]m, "
-                "Rot.: [%.2f, %.2f %.2f]deg, "
-                "FoV.: %.2fdeg.\n",
-                camera.position.x,
-                camera.position.y,
-                camera.position.z,
-                mli_rad2deg(camera.rotation.x),
-                mli_rad2deg(camera.rotation.y),
-                mli_rad2deg(camera.rotation.z),
-                mli_rad2deg(camera.field_of_view));
+            print_info_line(camera);
         }
     }
 
