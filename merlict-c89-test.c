@@ -1478,6 +1478,56 @@ int main(int argc, char *argv[]) {
                 obb));
     }
 
+    /* cylinder intersection test */
+    {
+        double plus_solution, minus_solution;
+        /* ray starts infron of cylinder */
+        CHECK(
+            mli_cylinder_equation(
+                1.,
+                mliRay_set(
+                    mliVec_set(-5.,0., 0.),
+                    mliVec_set(1., 0., 0.)),
+                &plus_solution,
+                &minus_solution));
+        CHECK_MARGIN(minus_solution, 4., 1e-6);
+        CHECK_MARGIN(plus_solution, 6., 1e-6);
+
+        /* ray starts inside cylinder */
+        CHECK(
+            mli_cylinder_equation(
+                1.,
+                mliRay_set(
+                    mliVec_set(0.,0., 0.),
+                    mliVec_set(1., 0., 0.)),
+                &plus_solution,
+                &minus_solution));
+        CHECK_MARGIN(minus_solution, -1., 1e-6);
+        CHECK_MARGIN(plus_solution, +1., 1e-6);
+
+        /* ray starts behind cylinder */
+        CHECK(
+            mli_cylinder_equation(
+                1.,
+                mliRay_set(
+                    mliVec_set(5.,0., 0.),
+                    mliVec_set(1., 0., 0.)),
+                &plus_solution,
+                &minus_solution));
+        CHECK_MARGIN(minus_solution, -6., 1e-6);
+        CHECK_MARGIN(plus_solution, -4., 1e-6);
+
+        /* ray runs beside cylinder */
+        CHECK(
+            !mli_cylinder_equation(
+                1.,
+                mliRay_set(
+                    mliVec_set(-5., 5., 0.),
+                    mliVec_set(1., 0., 0.)),
+                &plus_solution,
+                &minus_solution));
+    }
+
     /* mliRay OBB */
     {
         mliOBB obb;
