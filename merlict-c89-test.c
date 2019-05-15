@@ -1518,6 +1518,18 @@ int main(int argc, char *argv[]) {
                     mliVec_set(1., 0., 0.)),
                 &plus_solution,
                 &minus_solution));
+
+
+        /* ray runs inside and parallel to cylinder */
+        CHECK(
+            !mli_cylinder_equation(
+                1.,
+                mliRay_set(
+                    mliVec_set(0., 0., 0.),
+                    mliVec_set(0., 0., 1.)),
+                &plus_solution,
+                &minus_solution));
+
     }
 
     /* mliRay OBB */
