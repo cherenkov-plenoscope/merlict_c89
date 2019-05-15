@@ -257,9 +257,10 @@ int main(int argc, char *argv[]) {
         mliColor red = {255., 0., 0.};
         mliColor blue = {0., 0., 255.};
         mliColor green = {0., 255., 0.};
+        mliColor violet = {255., 0., 255.};
         scenery.num_functions = 1u;
-        scenery.num_colors = 3u;
-        scenery.num_surfaces = 3u;
+        scenery.num_colors = 4u;
+        scenery.num_surfaces = 4u;
         scenery.num_spherical_cap_hex = 1u;
         scenery.num_spheres = 1u;
         scenery.num_cylinders = 1u;
@@ -280,6 +281,7 @@ int main(int argc, char *argv[]) {
         scenery.colors[0] = red;
         scenery.colors[1] = blue;
         scenery.colors[2] = green;
+        scenery.colors[3] = violet;
 
         scenery.surfaces[0].color = 0u;
         scenery.surfaces[0].reflection = 0u;
@@ -295,6 +297,11 @@ int main(int argc, char *argv[]) {
         scenery.surfaces[2].reflection = 0u;
         scenery.surfaces[2].refraction = 0u;
         scenery.surfaces[2].absorbtion = 0u;
+
+        scenery.surfaces[3].color = 3u;
+        scenery.surfaces[3].reflection = 0u;
+        scenery.surfaces[3].refraction = 0u;
+        scenery.surfaces[3].absorbtion = 0u;
 
         mliVec_ncpy(
             diff_cube_sphere.vertices,
@@ -334,8 +341,8 @@ int main(int argc, char *argv[]) {
         /* cylinders */
         scenery.cylinders[0].radius = 1.;
         scenery.cylinders[0].length = 7.;
-        scenery.cylinders_surfaces[0].outer = 1u;
-        scenery.cylinders_surfaces[0].inner = 1u;
+        scenery.cylinders_surfaces[0].outer = 3u;
+        scenery.cylinders_surfaces[0].inner = 3u;
         scenery.cylinders_T[0].trans = mliVec_set(0., 3., 0.);
         scenery.cylinders_T[0].rot =
             mliQuaternion_set_rotaxis_and_angle(
