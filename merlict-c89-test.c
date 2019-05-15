@@ -65,10 +65,6 @@ int main(int argc, char *argv[]) {
                 &minus_solution));
         CHECK_MARGIN(plus_solution, 11., 1e-6);
         CHECK_MARGIN(minus_solution, 9., 1e-6);
-        CHECK(
-            mliSphere_facing_sphere_from_outside_given_p_m(
-                plus_solution,
-                minus_solution));
     }
 
     {
@@ -83,10 +79,6 @@ int main(int argc, char *argv[]) {
                 ray,
                 &plus_solution,
                 &minus_solution));
-        CHECK(
-            mliSphere_facing_away_from_outside_given_p_m(
-                plus_solution,
-                minus_solution));
     }
 
     {

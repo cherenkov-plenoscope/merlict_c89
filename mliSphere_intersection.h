@@ -37,16 +37,6 @@ int mli_sphere_intersection_equation(
         plus_solution,
         minus_solution);}
 
-int mliSphere_facing_sphere_from_outside_given_p_m(
-    const double v_Plus,
-    const double v_Minus) {
-    return v_Plus >= 0. && v_Minus >= 0.;}
-
-int mliSphere_facing_away_from_outside_given_p_m(
-    const double v_Plus,
-    const double v_Minus) {
-    return v_Plus < 0. && v_Minus < 0.;}
-
 void mliSphere_set_intersection(
     const mliHomTra *local2root,
     const mliRay *ray_local,
