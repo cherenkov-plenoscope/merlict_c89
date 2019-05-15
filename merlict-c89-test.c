@@ -262,6 +262,7 @@ int main(int argc, char *argv[]) {
         scenery.num_surfaces = 3u;
         scenery.num_spherical_cap_hex = 1u;
         scenery.num_spheres = 1u;
+        scenery.num_cylinders = 1u;
 
         mliMesh_init_from_off("diff_cube_sphere.off", &diff_cube_sphere);
 
@@ -330,6 +331,17 @@ int main(int argc, char *argv[]) {
                 mliVec_set(0., 0., 0.),
                 0.);
 
+        /* cylinders */
+        scenery.cylinders[0].radius = 1.;
+        scenery.cylinders[0].length = 7.;
+        scenery.cylinders_surfaces[0].outer = 1u;
+        scenery.cylinders_surfaces[0].inner = 1u;
+        scenery.cylinders_T[0].trans = mliVec_set(0., 3., 0.);
+        scenery.cylinders_T[0].rot =
+            mliQuaternion_set_rotaxis_and_angle(
+                mliVec_set(0., 0., 0.),
+                0.);
+
         mliScenery_write_to_path(&scenery, "my_scenery.mli.tmp");
         mliScenery_read_from_path(&scenery_back, "my_scenery.mli.tmp");
 
@@ -384,6 +396,7 @@ int main(int argc, char *argv[]) {
         num_surface_entities = scenery.num_triangles;
         num_surface_entities += scenery.num_spherical_cap_hex;
         num_surface_entities += scenery.num_spheres;
+        num_surface_entities += scenery.num_cylinders;
 
         CHECK(mliScenery_num_objects(&scenery) == num_surface_entities);
 
@@ -432,7 +445,8 @@ int main(int argc, char *argv[]) {
         double sphere_radius = 2.5;
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
 
-        sphere_idx = mliScenery_num_objects(&scenery) - 1u;
+        sphere_idx = scenery.num_triangles +
+            scenery.num_spherical_cap_hex;
 
         hit = mliScenery_intersection(
             &scenery,

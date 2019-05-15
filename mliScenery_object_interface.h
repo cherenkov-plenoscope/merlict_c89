@@ -9,6 +9,8 @@
 #include "mliSphere_OBB.h"
 #include "mliSphere_intersection.h"
 #include "mliSphericalCapHex_OBB.h"
+#include "mliCylinder_intersection.h"
+#include "mliCylinder_OBB.h"
 #include "mliSphericalCapHex_intersection.h"
 #include "mliOBB.h"
 #include "mliIntersection.h"
@@ -23,17 +25,25 @@ uint64_t mliScenery_num_objects(const mliScenery* scenery) {
     last += scenery->num_triangles;
     last += scenery->num_spherical_cap_hex;
     last += scenery->num_spheres;
+    last += scenery->num_cylinders;
     return last;}
 
 mliIndex __mliScenery_resolve_index(
     const mliScenery* scenery,
     const uint64_t idx) {
+
     const uint64_t idx_start_spherical_cap_hex =
         scenery->num_triangles;
+
     const uint64_t idx_start_spheres =
         idx_start_spherical_cap_hex + scenery->num_spherical_cap_hex;
-    const uint64_t idx_next =
+
+    const uint64_t idx_start_cylinders =
         idx_start_spheres + scenery->num_spheres;
+
+    const uint64_t idx_next =
+        idx_start_cylinders + scenery->num_cylinders;
+
     mliIndex ri;
     if (idx < scenery->num_triangles) {
         ri.type = MLI_TRIANGLE;
@@ -43,9 +53,13 @@ mliIndex __mliScenery_resolve_index(
         ri.type = MLI_SPHERICAL_CAP_HEX;
         ri.idx = idx - idx_start_spherical_cap_hex;
         return ri;
-    } else if (idx < idx_next) {
+    } else if (idx < idx_start_cylinders) {
         ri.type = MLI_SPHERE;
         ri.idx = idx - idx_start_spheres;
+        return ri;
+    } else if (idx < idx_next) {
+        ri.type = MLI_CYLINDER;
+        ri.idx = idx - idx_start_cylinders;
         return ri;
     }
     assert(idx < mliScenery_num_objects(scenery) + 1);
@@ -78,6 +92,12 @@ int mliScenery_overlap_obb(
                 scenery->spheres_T[i.idx].trans,
                 obb);
             break;
+        case MLI_CYLINDER:
+            return mliCylinder_has_overlap_obb(
+                scenery->cylinders[i.idx],
+                scenery->cylinders_T[i.idx],
+                obb);
+            break;
         default:
             return 0;
             break;
@@ -106,6 +126,11 @@ mliOBB mliScenery_obb(
             return mliSphere_obb(
                 scenery->spheres[i.idx],
                 scenery->spheres_T[i.idx].trans);
+            break;
+        case MLI_CYLINDER:
+            return mliCylinder_obb(
+                scenery->cylinders[i.idx],
+                scenery->cylinders_T[i.idx]);
             break;
         default:
             obb.lower = mliVec_set(0., 0., 0);
@@ -162,6 +187,13 @@ int mliScenery_intersection(
                 ray,
                 intersection);
             break;
+        case MLI_CYLINDER:
+            return mliCylinder_intersection(
+                scenery->cylinders[i.idx],
+                scenery->cylinders_T[i.idx],
+                ray,
+                intersection);
+            break;
         default:
             return 0;
             break;
@@ -183,6 +215,9 @@ mliSurfaces mliScenery_object_surfaces(
             break;
         case MLI_SPHERE:
             return scenery->spheres_surfaces[i.idx];
+            break;
+        case MLI_CYLINDER:
+            return scenery->cylinders_surfaces[i.idx];
             break;
     }
     return null;
