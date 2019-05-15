@@ -346,8 +346,8 @@ int main(int argc, char *argv[]) {
         scenery.cylinders_T[0].trans = mliVec_set(0., 3., 0.);
         scenery.cylinders_T[0].rot =
             mliQuaternion_set_rotaxis_and_angle(
-                mliVec_set(0., 0., 0.),
-                0.);
+                mliVec_set(0., 1., 0.),
+                mli_deg2rad(30));
 
         mliScenery_write_to_path(&scenery, "my_scenery.mli.tmp");
         mliScenery_read_from_path(&scenery_back, "my_scenery.mli.tmp");
