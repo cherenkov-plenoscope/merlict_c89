@@ -1553,6 +1553,47 @@ int main(int argc, char *argv[]) {
 
     }
 
+    {
+        mliCylinder cylinder;
+        mliHomTraComp local2root_comp;
+        mliIntersection intersection;
+        local2root_comp.trans = mliVec_set(0., 0., 0.);
+        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 1.),
+            mli_deg2rad(0.));
+
+        cylinder.radius = 1.;
+        cylinder.length = 2.;
+        CHECK(
+            mliCylinder_intersection(
+                cylinder,
+                local2root_comp,
+                mliRay_set(
+                    mliVec_set(0., 0., 0.),
+                    mliVec_set(1., 0., 0.)),
+                &intersection));
+        CHECK_MARGIN(intersection.distance_of_ray, 1., 1e-6);
+
+        CHECK(
+            !mliCylinder_intersection(
+                cylinder,
+                local2root_comp,
+                mliRay_set(
+                    mliVec_set(1., 0., 0.),
+                    mliVec_set(1., 0., 0.)),
+                &intersection));
+
+        CHECK(
+            mliCylinder_intersection(
+                cylinder,
+                local2root_comp,
+                mliRay_set(
+                    mliVec_set(1., 0., 0.),
+                    mliVec_set(-1., 0., 0.)),
+                &intersection));
+        CHECK_MARGIN(intersection.distance_of_ray, 2., 1e-6);
+    }
+
     /* mliRay OBB */
     {
         mliOBB obb;

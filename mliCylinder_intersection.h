@@ -149,8 +149,8 @@ int mliCylinder_intersection(
     /*    /                                                                   */
     /*   /                                                                    */
     /*                                                                        */
-    /*      [0,1,0,1]              [0,1,1,1]                                  */
-    /*      10                     14                                         */
+    /*      [0,1,0,1]              [0,1,1,1]            [0,1,1,0]             */
+    /*      10                     14                   6                     */
 
     /* support inside                                                         */
     /*                                                             /          */
@@ -247,6 +247,10 @@ int mliCylinder_intersection(
         &plus_solution,
         &minus_solution)
     ) {
+        if (plus_solution < MLI_EPSILON) {
+            return 0;
+        }
+
         const int m_gt_e = minus_solution > MLI_EPSILON;
         const int fm_le_e = fabs(minus_solution) <= MLI_EPSILON;
         const int fmz_le_hl = fabs(mliRay_at(&ray_local, minus_solution).z) <=
@@ -273,6 +277,9 @@ int mliCylinder_intersection(
                 break;
             case 14:
                 causal_solution = plus_solution;
+                break;
+            case 6:
+                causal_solution = minus_solution;
                 break;
 
             case 8:
