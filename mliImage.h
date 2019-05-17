@@ -92,9 +92,9 @@ int mliImage_init_from_ppm(
             fread(&r, sizeof(uint8_t), 1u, fin);
             fread(&g, sizeof(uint8_t), 1u, fin);
             fread(&b, sizeof(uint8_t), 1u, fin);
-            color.r = (float)r;
-            color.g = (float)g;
-            color.b = (float)b;
+            color.r = (double)r;
+            color.g = (double)g;
+            color.b = (double)b;
             mliImage_set(img, col, row, color);
         }
     }

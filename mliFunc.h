@@ -9,16 +9,16 @@
 
 typedef struct {
     uint32_t num_points;
-    float *x;
-    float *y;
+    double *x;
+    double *y;
 } mliFunc;
 
 void mliFunc_malloc(
     mliFunc* f,
     const uint32_t num_points) {
     f->num_points = num_points;
-    f->x = (float*)malloc(f->num_points*sizeof(float));
-    f->y = (float*)malloc(f->num_points*sizeof(float));}
+    f->x = (double*)malloc(f->num_points*sizeof(double));
+    f->y = (double*)malloc(f->num_points*sizeof(double));}
 
 void mliFunc_free(mliFunc *f) {
     free(f->x);
@@ -35,7 +35,7 @@ int mliFunc_x_is_causal(mliFunc* f) {
 
 uint32_t mliFunc_upper_compare(
     mliFunc* f,
-    const float xarg) {
+    const double xarg) {
     uint32_t first, last, middle;
     first = 0;
     last = f->num_points - 1;
@@ -56,8 +56,8 @@ uint32_t mliFunc_upper_compare(
 
 int mliFunc_evaluate(
     mliFunc* f,
-    const float xarg,
-    float *out) {
+    const double xarg,
+    double *out) {
     uint32_t idx = mliFunc_upper_compare(f, xarg);
     if (idx == 0) {
         return 1;
@@ -71,15 +71,15 @@ int mliFunc_evaluate(
 
 int mliFunc_fwrite(const mliFunc *func, FILE* f) {
     fwrite(&func->num_points, sizeof(uint32_t), 1u, f);
-    fwrite(func->x, sizeof(float), func->num_points, f);
-    fwrite(func->y, sizeof(float), func->num_points, f);
+    fwrite(func->x, sizeof(double), func->num_points, f);
+    fwrite(func->y, sizeof(double), func->num_points, f);
     return EXIT_SUCCESS;}
 
 int mliFunc_fread(mliFunc *func, FILE* f) {
     fread(&func->num_points, sizeof(uint32_t), 1u, f);
     mliFunc_malloc(func, func->num_points);
-    fread(func->x, sizeof(float), func->num_points, f);
-    fread(func->y, sizeof(float), func->num_points, f);
+    fread(func->x, sizeof(double), func->num_points, f);
+    fread(func->y, sizeof(double), func->num_points, f);
     return EXIT_SUCCESS;}
 
 int mliFunc_is_equal(const mliFunc a, const mliFunc b) {

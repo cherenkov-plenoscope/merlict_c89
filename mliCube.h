@@ -12,7 +12,7 @@ typedef struct {
      * oriented w.r.t. the unit-vectors.
      */
     mliVec lower;
-    float edge_length;
+    double edge_length;
 } mliCube;
 
 mliVec mliCube_upper(const mliCube a) {
@@ -37,7 +37,7 @@ mliCube mliCube_outermost_cube(const mliOBB a) {
     mliVec center;
     mliVec half_diagonal;
     mliVec diff;
-    float max_half_length;
+    double max_half_length;
     center = mliOBB_center(a);
     diff = mliVec_substract(a.upper, a.lower);
     max_half_length = .5*MLI_MAX3(diff.x, diff.y, diff.z);

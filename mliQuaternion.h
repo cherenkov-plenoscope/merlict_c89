@@ -7,10 +7,10 @@
 #include "mliVec.h"
 
 typedef struct {
-    float w;
-    float x;
-    float y;
-    float z;
+    double w;
+    double x;
+    double y;
+    double z;
 } mliQuaternion;
 
 int mliQuaternion_is_equal(const mliQuaternion a, const mliQuaternion b) {
@@ -22,10 +22,10 @@ int mliQuaternion_is_equal(const mliQuaternion a, const mliQuaternion b) {
 
 mliQuaternion mliQuaternion_set_rotaxis_and_angle(
     const mliVec rot_axis,
-    const float angle) {
+    const double angle) {
     mliQuaternion quat;
-    const float angle_half = .5*angle;
-    const float sin_angle_half = sin(angle_half);
+    const double angle_half = .5*angle;
+    const double sin_angle_half = sin(angle_half);
     quat.w = cos(angle_half);
     quat.x = rot_axis.x * sin_angle_half;
     quat.y = rot_axis.y * sin_angle_half;

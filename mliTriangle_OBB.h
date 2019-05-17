@@ -91,7 +91,7 @@ int64_t __mli_bevel_3d(mliVec p) {
 /* See if it is on a face of the cube              */
 /* Consider only faces in "mask"                   */
 
-int64_t __mli_check_point(mliVec p1, mliVec p2, float alpha, int64_t mask) {
+int64_t __mli_check_point(mliVec p1, mliVec p2, double alpha, int64_t mask) {
     mliVec plane_point;
     plane_point.x = MLI_LERP(alpha, p1.x, p2.x);
     plane_point.y = MLI_LERP(alpha, p1.y, p2.y);
@@ -190,7 +190,7 @@ int64_t __mli_point_triangle_intersection(mliVec p, mliTriangle t) {
 
 int64_t __mli_triangle_cube_intersection(mliTriangle t) {
     int64_t v1_test,v2_test,v3_test;
-    float d,denom;
+    double d,denom;
     mliVec vect12,vect13,norm;
     mliVec hitpp,hitpn,hitnp,hitnn;
 
@@ -312,9 +312,9 @@ void __mliTriangle_transform_into_obb(
     mliVec *b_out,
     mliVec *c_out) {
     mliVec obb_center = mliOBB_center(obb);
-    const float scale_x = obb.upper.x - obb.lower.x;
-    const float scale_y = obb.upper.y - obb.lower.y;
-    const float scale_z = obb.upper.z - obb.lower.z;
+    const double scale_x = obb.upper.x - obb.lower.x;
+    const double scale_y = obb.upper.y - obb.lower.y;
+    const double scale_z = obb.upper.z - obb.lower.z;
     /* translate */
     (*a_out) = mliVec_substract(a, obb_center);
     (*b_out) = mliVec_substract(b, obb_center);

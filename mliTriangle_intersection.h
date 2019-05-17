@@ -21,7 +21,7 @@ int mliRay_intersects_triangle(
     mliVec edge1;
     mliVec edge2;
     mliVec h, s, q;
-    float a, f, u, v, t;
+    double a, f, u, v, t;
     edge1 = mliVec_substract(vertex1, vertex0);
     edge2 = mliVec_substract(vertex2, vertex0);
     h = mliVec_cross(direction, edge2);

@@ -21,10 +21,10 @@ int main(int argc, char *argv[]) {
     }
     /* sphere */
     {
-        float c;
+        double c;
         for (c = -2.5; c < 2.5; c += .25) {
             mliOBB b;
-            float radius = 1.;
+            double radius = 1.;
             b = mliSphere_obb(radius, mliVec_set(c, c*2., c*3.));
             CHECK_MARGIN(b.lower.x, (-1. + c), 1e-6);
             CHECK_MARGIN(b.lower.y, (-1. + c*2), 1e-6);
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        float radius = 1.;
+        double radius = 1.;
         mliOBB obb;
         obb.lower = mliVec_set(-1., -1., -1.);
         obb.upper = mliVec_set(1., 1., 1.);
@@ -889,7 +889,7 @@ int main(int argc, char *argv[]) {
         mliImage back;
         uint32_t col;
         uint32_t row;
-        float tone;
+        double tone;
         mliImage_init(&img, 3, 2);
         CHECK(img.num_cols == 3u);
         CHECK(img.num_rows == 2u);
@@ -897,7 +897,7 @@ int main(int argc, char *argv[]) {
         for (col = 0; col < img.num_cols; col++) {
             for (row = 0; row < img.num_rows; row++) {
                 mliColor color;
-                tone = (float)col * (float)row;
+                tone = (double)col * (double)row;
                 color.r = tone;
                 color.g = tone + 1.;
                 color.b = tone + 2.;
@@ -1051,8 +1051,8 @@ int main(int argc, char *argv[]) {
         */
         mliVec a;
 
-        const float p = +1.;
-        const float n = -1.;
+        const double p = +1.;
+        const double n = -1.;
 
         a.x = n;
         a.y = n;
@@ -1171,7 +1171,7 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func;
-        float y;
+        double y;
         mliFunc_malloc(&func, 5u);
         CHECK(func.num_points == 5u);
 
@@ -1357,7 +1357,7 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        const float radius = 1.;
+        const double radius = 1.;
         mliIntersection intersection;
         mliHomTraComp local2root_comp;
         local2root_comp.trans = mliVec_set(0., 0., 0.);

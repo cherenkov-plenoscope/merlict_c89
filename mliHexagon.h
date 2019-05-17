@@ -4,7 +4,7 @@
 
 
 typedef struct {
-    float inner_radius;
+    double inner_radius;
 } mliHexagon;
 
 int mliHexagon_is_equal(const mliHexagon a, const mliHexagon b) {

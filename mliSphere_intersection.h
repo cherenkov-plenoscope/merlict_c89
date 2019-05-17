@@ -56,7 +56,7 @@ void mliSphere_set_intersection(
         normal_local);}
 
 int mliSphere_intersection(
-    const float radius,
+    const double radius,
     const mliHomTraComp local2root_comp,
     const mliRay ray,
     mliIntersection *intersection) {

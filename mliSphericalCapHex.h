@@ -6,8 +6,8 @@
 #include "mliMath.h"
 
 typedef struct {
-    float curvature_radius;
-    float inner_hex_radius;
+    double curvature_radius;
+    double inner_hex_radius;
 } mliSphericalCapHex;
 
 int mliSphericalCapHex_is_equal(
@@ -17,7 +17,7 @@ int mliSphericalCapHex_is_equal(
     if (a.inner_hex_radius != b.inner_hex_radius) return 0;
     return 1;}
 
-float mliSphericalCapHex_bounding_radius(
+double mliSphericalCapHex_bounding_radius(
     const mliSphericalCapHex cap) {
     const double outer_hex_radius = cap.inner_hex_radius*MLI_2_OVER_SQRT3;
     return mli_hypot(

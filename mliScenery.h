@@ -44,7 +44,7 @@ typedef struct {
     mliHomTraComp* spherical_cap_hex_T;
 
     uint32_t num_spheres;
-    float *spheres;
+    double *spheres;
     mliSurfaces *spheres_surfaces;
     mliHomTraComp* spheres_T;
 
@@ -91,7 +91,7 @@ void mliScenery_malloc(mliScenery* scenery) {
         scenery->num_spherical_cap_hex*sizeof(mliHomTraComp));
 
     /* spheres */
-    scenery->spheres = (float*)malloc(scenery->num_spheres*sizeof(float));
+    scenery->spheres = (double*)malloc(scenery->num_spheres*sizeof(double));
     scenery->spheres_surfaces = (mliSurfaces*)malloc(
         scenery->num_spheres*sizeof(mliSurfaces));
     scenery->spheres_T = (mliHomTraComp*)malloc(
@@ -221,7 +221,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
         f);
 
     /* spheres */
-    fwrite(scenery->spheres, sizeof(float), scenery->num_spheres, f);
+    fwrite(scenery->spheres, sizeof(double), scenery->num_spheres, f);
     fwrite(
         scenery->spheres_surfaces,
         sizeof(mliSurfaces),
@@ -326,7 +326,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     /* spheres */
     fread(
         scenery->spheres,
-        sizeof(float),
+        sizeof(double),
         scenery->num_spheres, f);
     fread(
         scenery->spheres_surfaces,

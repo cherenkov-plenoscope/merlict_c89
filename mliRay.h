@@ -17,7 +17,7 @@ mliRay mliRay_set(
 
 mliVec mliRay_at(
     const mliRay *ray,
-    const float t) {
+    const double t) {
     mliVec out;
     out.x = ray->support.x + t *ray->direction.x;
     out.y = ray->support.y + t *ray->direction.y;

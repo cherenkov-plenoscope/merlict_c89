@@ -6,8 +6,8 @@
 #include "mliMath.h"
 
 typedef struct {
-    float radius;
-    float length;
+    double radius;
+    double length;
 } mliCylinder;
 
 int mliCylinder_is_equal(

@@ -81,9 +81,9 @@ void mli_set_txm_tym_tzm(
     double tz1,
     const mliCube cube,
     const mliVec ray_octree_support,
-    float *txm,
-    float *tym,
-    float *tzm) {
+    double *txm,
+    double *tym,
+    double *tzm) {
     /*
      * This implements Section 3.3
      * "Generalising for Rays Parallel to One Main Axis"
@@ -101,9 +101,9 @@ void mli_set_txm_tym_tzm(
         const double x0 = cube.lower.x;
         const double x1 = cube_upper.x;
         if ( ray_octree_support.x < (x0 + x1)*.5 )
-            (*txm) = FLT_MAX;
+            (*txm) = DBL_MAX;
         else
-            (*txm) = -FLT_MAX;
+            (*txm) = -DBL_MAX;
     }
 
     (*tym) = 0.5*(ty0 + ty1);
@@ -112,9 +112,9 @@ void mli_set_txm_tym_tzm(
         const double y0 = cube.lower.y;
         const double y1 = cube_upper.y;
         if ( ray_octree_support.y < (y0 + y1)*.5 )
-            (*tym) = FLT_MAX;
+            (*tym) = DBL_MAX;
         else
-            (*tym) = -FLT_MAX;
+            (*tym) = -DBL_MAX;
     }
 
     (*tzm) = 0.5*(tz0 + tz1);
@@ -123,9 +123,9 @@ void mli_set_txm_tym_tzm(
         const double z0 = cube.lower.z;
         const double z1 = cube_upper.z;
         if ( ray_octree_support.z < (z0 + z1)*.5 )
-            (*tzm) = FLT_MAX;
+            (*tzm) = DBL_MAX;
         else
-            (*tzm) = -FLT_MAX;
+            (*tzm) = -DBL_MAX;
     }
 }
 
@@ -144,7 +144,7 @@ void __mli_proc_subtree (
     const mliScenery* scenery,
     const mliRay ray,
     uint64_t *num_hits) {
-    float txm, tym, tzm;
+    double txm, tym, tzm;
     int currNode;
 
     if (tx1 < 0 || ty1 < 0 || tz1 < 0) {

@@ -11,9 +11,9 @@
 #include "mliOcTree.h"
 
 typedef struct {
-    float x;
-    float y;
-    float z;
+    double x;
+    double y;
+    double z;
 } mliTaitBryanAngles;
 
 typedef struct {
@@ -49,7 +49,7 @@ mliVec mliCamera_direction_up(const mliCamera cam) {
         cam.rotation.z);
     return mli_transform_orientation(&rot, mliVec_set(1., 0., 0.));}
 
-mliCamera mliCamera_move_forward(const mliCamera camin, const float rate) {
+mliCamera mliCamera_move_forward(const mliCamera camin, const double rate) {
     mliCamera camout = camin;
     mliVec optical_axis = mliCamera_optical_axis(camin);
     camout.position = mliVec_add(
@@ -57,7 +57,7 @@ mliCamera mliCamera_move_forward(const mliCamera camin, const float rate) {
         mliVec_multiply(optical_axis, rate));
     return camout;}
 
-mliCamera mliCamera_move_right(const mliCamera camin, const float rate) {
+mliCamera mliCamera_move_right(const mliCamera camin, const double rate) {
     mliCamera camout = camin;
     mliVec direction_right = mliCamera_direction_right(camout);
     camout.position = mliVec_add(
@@ -65,19 +65,19 @@ mliCamera mliCamera_move_right(const mliCamera camin, const float rate) {
         mliVec_multiply(direction_right, rate));
     return camout;}
 
-mliCamera mliCamera_move_up(const mliCamera camin, const float rate) {
+mliCamera mliCamera_move_up(const mliCamera camin, const double rate) {
     mliCamera camout = camin;
     camout.position.z += rate;
     return camout;}
 
-mliCamera mliCamera_look_right(const mliCamera camin, const float rate) {
+mliCamera mliCamera_look_right(const mliCamera camin, const double rate) {
     mliCamera camout = camin;
     camout.rotation.z = fmod(camout.rotation.z + rate, (2.*MLI_PI));
     return camout;}
 
 mliCamera mliCamera_look_down_when_possible(
     const mliCamera camin,
-    const float rate) {
+    const double rate) {
     mliCamera camout = camin;
     int fals_forward_over = camin.rotation.y < -MLI_PI + rate;
     if (fals_forward_over) {
@@ -91,7 +91,7 @@ mliCamera mliCamera_look_down_when_possible(
 
 mliCamera mliCamera_increase_fov(
     const mliCamera camin,
-    const float rate) {
+    const double rate) {
     mliCamera camout = camin;
     if (camout.field_of_view * rate > mli_deg2rad(170)) {
         camout.field_of_view = mli_deg2rad(170);
@@ -102,7 +102,7 @@ mliCamera mliCamera_increase_fov(
 
 mliCamera mliCamera_decrease_fov(
     const mliCamera camin,
-    const float rate) {
+    const double rate) {
     mliCamera camout = camin;
     if (camout.field_of_view / rate < mli_deg2rad(.1)) {
         camout.field_of_view = mli_deg2rad(.1);
@@ -113,7 +113,7 @@ mliCamera mliCamera_decrease_fov(
 
 mliCamera mliCamera_look_up_when_possible(
     const mliCamera camin,
-    const float rate) {
+    const double rate) {
     mliCamera camout = camin;
     int fals_backwards_over = camin.rotation.y > rate;
     if (fals_backwards_over) {
@@ -144,7 +144,7 @@ void mliCamera_render_image(
     const mliOcTree *octree,
     mliImage *image) {
     uint32_t row, col;
-    float distance_to_principal_point;
+    double distance_to_principal_point;
     mliVec principal_point;
     mliCameraSensor sensor;
     assert(camera->field_of_view > 0.);

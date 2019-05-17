@@ -6,12 +6,12 @@
 #include <stdint.h>
 
 typedef struct {
-    float r;
-    float g;
-    float b;
+    double r;
+    double g;
+    double b;
 } mliColor;
 
-mliColor mliColor_set(const float r, const float g, const float b) {
+mliColor mliColor_set(const double r, const double g, const double b) {
     mliColor rgb;
     rgb.r = r;
     rgb.g = g;
@@ -21,7 +21,7 @@ mliColor mliColor_set(const float r, const float g, const float b) {
 mliColor mliColor_mix(
     const mliColor a,
     const mliColor b,
-    const float refl) {
+    const double refl) {
     mliColor out;
     out.r = (1.f - refl)*a.r + refl * b.r;
     out.g = (1.f - refl)*a.g + refl * b.g;
