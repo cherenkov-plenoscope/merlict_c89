@@ -7,6 +7,18 @@
 
 
 int main(int argc, char *argv[]) {
+    /* pseudo random number generator */
+    {
+        double sum = 0;
+        uint64_t i;
+        mliMT19937 prng;
+        mliMT19937_init(&prng, 0u);
+        for (i = 0; i < 1000000; i++) {
+            sum += mliMT19937_uniform(&prng);
+        }
+        CHECK_MARGIN(sum, 5e5, 2e2);
+    }
+
     /* from_outside_to_inside */
     {
         mliVec normal = {0., 0., 1.};
@@ -19,6 +31,7 @@ int main(int argc, char *argv[]) {
         mliVec direction = {0., 0., 1.};
         CHECK(!mli_ray_runs_from_outside_to_inside(direction, normal));
     }
+
     /* sphere */
     {
         double c;

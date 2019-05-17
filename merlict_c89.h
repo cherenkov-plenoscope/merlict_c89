@@ -3,6 +3,7 @@
 #define MERLICT_MERLICT_C89_H_
 
 #include "mliMath.h"
+#include "mliMT19937.h"
 #include "mliVec.h"
 #include "mliRotMat.h"
 #include "mliQuaternion.h"
