@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mliVec.h"
 
-int mliVec_overlap_OBB(
+int mliVec_overlap_obb(
     const mliVec a,
     const mliVec obb_lower,
     const mliVec obb_upper) {

@@ -186,19 +186,19 @@ int main(int argc, char *argv[]) {
         mliVec point_outside = {-1., -2., -3.};
         mliVec low = {0. ,0., 0.};
         mliVec upp = {2., 2., 2.};
-        CHECK(mliVec_overlap_OBB(point_inside, low, upp));
-        CHECK(!mliVec_overlap_OBB(point_outside, low, upp));
+        CHECK(mliVec_overlap_obb(point_inside, low, upp));
+        CHECK(!mliVec_overlap_obb(point_outside, low, upp));
     }
 
     {
         mliVec low = {0. ,0., 0.};
         mliVec upp = {2., 2., 2.};
-        CHECK(mliVec_overlap_OBB(mliVec_set(0., 0., 0.), low, upp));
-        CHECK(mliVec_overlap_OBB(mliVec_set(0., 0., 1.), low, upp));
-        CHECK(mliVec_overlap_OBB(mliVec_set(0., 1., 1.), low, upp));
-        CHECK(mliVec_overlap_OBB(mliVec_set(2., 2., 2.), low, upp));
-        CHECK(mliVec_overlap_OBB(mliVec_set(1., 2., 2.), low, upp));
-        CHECK(mliVec_overlap_OBB(mliVec_set(1., 1., 2.), low, upp));
+        CHECK(mliVec_overlap_obb(mliVec_set(0., 0., 0.), low, upp));
+        CHECK(mliVec_overlap_obb(mliVec_set(0., 0., 1.), low, upp));
+        CHECK(mliVec_overlap_obb(mliVec_set(0., 1., 1.), low, upp));
+        CHECK(mliVec_overlap_obb(mliVec_set(2., 2., 2.), low, upp));
+        CHECK(mliVec_overlap_obb(mliVec_set(1., 2., 2.), low, upp));
+        CHECK(mliVec_overlap_obb(mliVec_set(1., 1., 2.), low, upp));
     }
     /* OBB mliTriangle */
     {
@@ -1216,6 +1216,17 @@ int main(int argc, char *argv[]) {
 
     /* mliHexagonalPrismZ */
     {
+        /*
+                      /\ y
+                  ____|____
+                 /    |    \
+                /     |     \
+            __ /______|______\___\ x
+               \      |      /   /
+                \     |     /
+                 \____|____/
+                      |
+        */
         mliVec c;
         double inner_radius = 0.5;
         double outer_radius = inner_radius/cos(MLI_PI/6.0);
@@ -1230,6 +1241,81 @@ int main(int argc, char *argv[]) {
                     continue;
             }
         }
+
+        /*
+                      /\ y
+                  ____|____
+                 /    |    \
+                /     |     \
+            __ /______|_____X\___\ x
+               \      |      /   /
+                \     |     /
+                 \____|____/
+                      |
+        */
+        CHECK(
+            mli_inside_hexagonal_prism_z(
+                mliVec_set(inner_radius + 1e-6, 0., 0.),
+                inner_radius));
+
+        /*
+                      /\ y
+                  ____X____
+                 /    |    \
+                /     |     \
+            __ /______|______\___\ x
+               \      |      /   /
+                \     |     /
+                 \____|____/
+                      |
+        */
+        CHECK(
+            !mli_inside_hexagonal_prism_z(
+                mliVec_set(0., inner_radius + 1e-6, 0.),
+                inner_radius));
+    }
+
+    /* hexagon corners */
+    {
+        /*
+                      /\ y
+                2 ____|____ 1
+                 /    |    \
+                /     |     \
+            __ /______|______\_0_\ x
+             3 \      |      /   /
+                \     |     /
+                 \____|____/
+                4     |    5
+        */
+        uint64_t i;
+        for (i = 0; i < 20; i++) {
+            mliVec corner =  mli_hexagon_corner(i);
+            CHECK_MARGIN(mliVec_norm(corner), 1., 1e-6);
+        }
+        CHECK(mli_hexagon_corner(0).x == 1.);
+        CHECK(mli_hexagon_corner(0).y == 0.);
+        CHECK(mli_hexagon_corner(0).z == 0.);
+
+        CHECK(mli_hexagon_corner(1).x > 0.);
+        CHECK(mli_hexagon_corner(1).y > 0.);
+        CHECK(mli_hexagon_corner(1).z == 0.);
+
+        CHECK(mli_hexagon_corner(2).x < 0.);
+        CHECK(mli_hexagon_corner(2).y > 0.);
+        CHECK(mli_hexagon_corner(2).z == 0.);
+
+        CHECK(mli_hexagon_corner(3).x == -1.);
+        CHECK(mli_hexagon_corner(3).y == 0.);
+        CHECK(mli_hexagon_corner(3).z == 0.);
+
+        CHECK(mli_hexagon_corner(4).x < 0.);
+        CHECK(mli_hexagon_corner(4).y < 0.);
+        CHECK(mli_hexagon_corner(4).z == 0.);
+
+        CHECK(mli_hexagon_corner(5).x > 0.);
+        CHECK(mli_hexagon_corner(5).y < 0.);
+        CHECK(mli_hexagon_corner(5).z == 0.);
     }
 
     /* mliSphericalCap */
@@ -1592,6 +1678,250 @@ int main(int argc, char *argv[]) {
                     mliVec_set(-1., 0., 0.)),
                 &intersection));
         CHECK_MARGIN(intersection.distance_of_ray, 2., 1e-6);
+    }
+
+    /* mliHexagon */
+    {
+        mliHexagon a;
+        mliHexagon b;
+        mliHexagon c;
+        a.inner_radius = 1.;
+        b.inner_radius = 1.;
+        c.inner_radius = 0.5;
+        CHECK(mliHexagon_is_equal(a, b));
+        CHECK(!mliHexagon_is_equal(a, c));
+        CHECK(!mliHexagon_is_equal(b, c));
+    }
+
+    /* mliHexagon_intersection */
+    {
+        mliHexagon hex;
+        mliHomTraComp local2root_comp;
+        mliIntersection intersection;
+        hex.inner_radius = 1.;
+        local2root_comp.trans = mliVec_set(0., 0., 0.);
+        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 1.),
+            mli_deg2rad(0.));
+
+        CHECK(
+            mliHexagon_intersection(
+                hex,
+                local2root_comp,
+                mliRay_set(
+                    mliVec_set(0., 0., 1.),
+                    mliVec_set(0., 0., -1.)),
+                &intersection));
+        CHECK_MARGIN(intersection.distance_of_ray, 1., 1e-6);
+
+        /*
+                      /\ y
+                  ____|____
+                 /    |    \
+                /     |     \   <- P is inside
+            __ /______|_____P\___\ x
+               \      |      /   /
+                \     |     /
+                 \____|____/
+                      |
+        */
+        CHECK(
+            mliHexagon_intersection(
+                hex,
+                local2root_comp,
+                mliRay_set(
+                    mliVec_set(1.001, 0., 1.),
+                    mliVec_set(0., 0., -1.)),
+                &intersection));
+        CHECK_MARGIN(intersection.distance_of_ray, 1., 1e-6);
+
+        /*
+                      /\ y
+                  ____P____ <- P is outside
+                 /    |    \
+                /     |     \
+            __ /______|______\___\ x
+               \      |      /   /
+                \     |     /
+                 \____|____/
+                      |
+        */
+        CHECK(
+            !mliHexagon_intersection(
+                hex,
+                local2root_comp,
+                mliRay_set(
+                    mliVec_set(0., 1.001, 1.),
+                    mliVec_set(0., 0., -1.)),
+                &intersection));
+    }
+
+    {
+        mliHexagon hex;
+        mliHomTraComp local2root_comp;
+        mliOBB obb;
+        hex.inner_radius = 1.;
+
+        local2root_comp.trans = mliVec_set(0., 0., 0.);
+        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 1.),
+            mli_deg2rad(0.));
+        obb = mliHexagon_obb(hex, local2root_comp);
+        CHECK_MARGIN(obb.lower.x, -1., 1e-6);
+        CHECK_MARGIN(obb.upper.x, +1., 1e-6);
+        CHECK_MARGIN(obb.lower.y, -MLI_SQRT3_OVER_2, 1e-6);
+        CHECK_MARGIN(obb.upper.y, +MLI_SQRT3_OVER_2, 1e-6);
+        CHECK_MARGIN(obb.lower.z, 0., 1e-6);
+        CHECK_MARGIN(obb.upper.z, 0., 1e-6);
+
+        /* translation */
+        local2root_comp.trans = mliVec_set(1., 2., 3.);
+        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 1.),
+            mli_deg2rad(0.));
+        obb = mliHexagon_obb(hex, local2root_comp);
+        CHECK_MARGIN(obb.lower.x, -1. + 1., 1e-6);
+        CHECK_MARGIN(obb.upper.x, +1. + 1., 1e-6);
+        CHECK_MARGIN(obb.lower.y, -MLI_SQRT3_OVER_2 + 2., 1e-6);
+        CHECK_MARGIN(obb.upper.y, +MLI_SQRT3_OVER_2 + 2., 1e-6);
+        CHECK_MARGIN(obb.lower.z, 0. + 3., 1e-6);
+        CHECK_MARGIN(obb.upper.z, 0. + 3., 1e-6);
+
+        /* rotation y-axis 90deg*/
+        local2root_comp.trans = mliVec_set(0., 0., 0.);
+        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 1., 0.),
+            mli_deg2rad(90.));
+        obb = mliHexagon_obb(hex, local2root_comp);
+        CHECK_MARGIN(obb.lower.x, 0., 1e-6);
+        CHECK_MARGIN(obb.upper.x, 0., 1e-6);
+        CHECK_MARGIN(obb.lower.y, -MLI_SQRT3_OVER_2, 1e-6);
+        CHECK_MARGIN(obb.upper.y, +MLI_SQRT3_OVER_2, 1e-6);
+        CHECK_MARGIN(obb.lower.z, -1., 1e-6);
+        CHECK_MARGIN(obb.upper.z, +1., 1e-6);
+
+        /* rotation y-axis 45deg */
+        local2root_comp.trans = mliVec_set(0., 0., 0.);
+        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 1., 0.),
+            mli_deg2rad(45.));
+        obb = mliHexagon_obb(hex, local2root_comp);
+        CHECK_MARGIN(obb.lower.x, -sqrt(2)/2, 1e-6);
+        CHECK_MARGIN(obb.upper.x, +sqrt(2)/2, 1e-6);
+        CHECK_MARGIN(obb.lower.y, -MLI_SQRT3_OVER_2, 1e-6);
+        CHECK_MARGIN(obb.upper.y, +MLI_SQRT3_OVER_2, 1e-6);
+        CHECK_MARGIN(obb.lower.z, -sqrt(2)/2, 1e-6);
+        CHECK_MARGIN(obb.upper.z, +sqrt(2)/2., 1e-6);
+    }
+
+    {
+        mliHexagon hex;
+        mliHomTraComp local2root_comp;
+        mliOBB obb;
+        hex.inner_radius = 1.;
+        local2root_comp.trans = mliVec_set(0., 0., 0.);
+        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+            mliVec_set(0., 0., 1.),
+            mli_deg2rad(0.));
+
+        /*
+            _obb____________________  + 2
+           |                        |
+           |                        |
+           |       _________ + 1    |
+           |      /         \       |
+           |     /           \      |
+           |    /             \     |
+           |    \             /     |
+           |     \           /      |
+           |      \_________/ - 1   |
+           |                        |
+           |                        |
+           |________________________| - 2
+
+            y
+            |__x
+        */
+        obb.lower = mliVec_set(-2., -2., -2.);
+        obb.upper = mliVec_set(2., 2., 2.);
+        CHECK(mliHexagon_has_overlap_obb(hex, local2root_comp, obb));
+
+        /*
+               obb   |                                                         *
+                     |                                                         *
+                   __|______ + 1                                               *
+            _____ /__|      \                                                  *
+                 /           \                                                 *
+                /             \                                                *
+                \             /                                                *
+                 \           /                                                 *
+                  \_________/ - 1                                              *
+                                                                               *
+                                                                               *
+            y
+            |__x
+        */
+        obb.lower = mliVec_set(-3., -3., -1.);
+        obb.upper = mliVec_set(-0.5, 0.5, 1.);
+        CHECK(mliHexagon_has_overlap_obb(hex, local2root_comp, obb));
+
+        /*
+                                                                               *
+                                                                               *
+                   _________ + 1                                               *
+                  /  _____  \                                                  *
+                 /  | obb |  \                                                 *
+                /   |     |   \                                                *
+                \   |_____|   /                                                *
+                 \           /                                                 *
+                  \_________/ - 1                                              *
+                                                                               *
+                                                                               *
+            y
+            |__x
+        */
+        obb.lower = mliVec_set(-.5, -.5, -1.);
+        obb.upper = mliVec_set(.5, .5, 1.);
+        CHECK(mliHexagon_has_overlap_obb(hex, local2root_comp, obb));
+
+        /*
+                                                                               *
+                                                                               *
+                   _________ + 1                                               *
+                  /         \         _____                                    *
+                 /           \       | obb |                                   *
+                /             \      |     |                                   *
+                \             /      |_____|                                   *
+                 \           /                                                 *
+                  \_________/ - 1                                              *
+                                                                               *
+                                                                               *
+            y
+            |__x
+        */
+        obb.lower = mliVec_set(6, -.5, -1.);
+        obb.upper = mliVec_set(7, .5, 1.);
+        CHECK(!mliHexagon_has_overlap_obb(hex, local2root_comp, obb));
+
+        /*
+                                                                               *
+                                                                               *
+                                   _________ + 1                               *
+                                  /  _____  \                                  *
+                                 /  | obb |  \                                 *
+                                /   |     |   \                                *
+                                \   |_____|   /                                *
+                                 \           /                                 *
+                                  \_________/ - 1                              *
+                                                                               *
+                                                                               *
+            y
+            |__x
+        */
+        local2root_comp.trans = mliVec_set(6.5, 0., 0.);
+        obb.lower = mliVec_set(6, -.5, -1.);
+        obb.upper = mliVec_set(7, .5, 1.);
+        CHECK(mliHexagon_has_overlap_obb(hex, local2root_comp, obb));
     }
 
     /* mliRay OBB */

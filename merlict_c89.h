@@ -26,9 +26,15 @@
 #include "mliVector.h"
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"
+
 #include "mliCylinder.h"
 #include "mliCylinder_OBB.h"
 #include "mliCylinder_intersection.h"
+
+#include "mliHexagon.h"
+#include "mliHexagon_OBB.h"
+#include "mliHexagon_intersection.h"
+
 #include "mliOcTree.h"
 #include "mli_ray_octree_traversal.h"
 #include "mli_from_outside_to_inside.h"

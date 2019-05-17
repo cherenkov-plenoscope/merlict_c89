@@ -2,8 +2,11 @@
 #ifndef MERLICT_MLIOBB_H_
 #define MERLICT_MLIOBB_H_
 
+#include <assert.h>
 #include "mliVec.h"
 #include "mliMath.h"
+#include "mliRay.h"
+#include "mliEdge.h"
 
 typedef struct {
     /*
@@ -37,5 +40,102 @@ mliOBB mliOBB_dilate(const mliOBB a, const double dilation_radius) {
     out.upper.y += dilation_radius;
     out.upper.z += dilation_radius;
     return out;}
+
+mliEdge mliOBB_edge(const mliOBB obb, const uint64_t edge_idx) {
+    /*
+     *              (l,l,u)         [11]            (l,u,u)
+     *                     O---------/------------O
+     *                    /.                     /|
+     *               [8]-/ .                    / |
+     *                  /  .                   /-[10]
+     *                 /   .-[4]              /   |-[7]
+     *        (u,l,u) O-----------/----------O (u,u,u)
+     *                |    .    [9]          |    |
+     *      Z         |    .         [3]     |    |
+     *      |     (l,l|l)  O- - - - -/- - - -| - -O (l,u,l)
+     *      |     [5]-|   .              [6]-|   /
+     *      |         |  .                   |  /
+     *      /-----Y   | .-[0]                | /-[2]
+     *     /          |.                     |/
+     *    X           O----------/-----------O
+     *        (u,l,l)          [1]            (u,u,l)
+     *
+     * l: lower
+     * u: upper
+     *
+     */
+    mliEdge edge;
+    const mliVec l = obb.lower;
+    const mliVec u = obb.upper;
+    mliVec start;
+    mliVec stop;
+    switch (edge_idx) {
+        case 0:
+            start = mliVec_set(l.x, l.y, l.z);
+            stop  = mliVec_set(u.x, l.y, l.z);
+            edge.length = stop.x - start.x;
+            break;
+        case 1:
+            start = mliVec_set(u.x, l.y, l.z);
+            stop  = mliVec_set(u.x, u.y, l.z);
+            edge.length = stop.y - start.y;
+            break;
+        case 2:
+            start = mliVec_set(u.x, u.y, l.z);
+            stop  = mliVec_set(l.x, u.y, l.z);
+            edge.length = stop.x - start.x;
+            break;
+        case 3:
+            start = mliVec_set(l.x, u.y, l.z);
+            stop  = mliVec_set(l.x, l.y, l.z);
+            edge.length = stop.y - start.y;
+            break;
+        case 4:
+            start = mliVec_set(l.x, l.y, l.z);
+            stop  = mliVec_set(l.x, l.y, u.z);
+            edge.length = stop.z - start.z;
+            break;
+        case 5:
+            start = mliVec_set(u.x, l.y, l.z);
+            stop  = mliVec_set(u.x, l.y, u.z);
+            edge.length = stop.z - start.z;
+            break;
+        case 6:
+            start = mliVec_set(u.x, u.y, l.z);
+            stop  = mliVec_set(u.x, u.y, u.z);
+            edge.length = stop.z - start.z;
+            break;
+        case 7:
+            start = mliVec_set(l.x, u.y, l.z);
+            stop  = mliVec_set(l.x, u.y, u.z);
+            edge.length = stop.z - start.z;
+            break;
+        case 8:
+            start = mliVec_set(l.x, l.y, u.z);
+            stop  = mliVec_set(u.x, l.y, u.z);
+            edge.length = stop.x - start.x;
+            break;
+        case 9:
+            start = mliVec_set(u.x, l.y, u.z);
+            stop  = mliVec_set(u.x, u.y, u.z);
+            edge.length = stop.y - start.y;
+            break;
+        case 10:
+            start = mliVec_set(u.x, u.y, u.z);
+            stop  = mliVec_set(l.x, u.y, u.z);
+            edge.length = stop.x - start.x;
+            break;
+        case 11:
+            start = mliVec_set(l.x, u.y, u.z);
+            stop  = mliVec_set(l.x, l.y, u.z);
+            edge.length = stop.y - start.y;
+            break;
+        default:
+            assert(0);
+            break;
+    }
+    edge.ray = mliRay_set(start, mliVec_substract(stop, start));
+    return edge;
+}
 
 #endif

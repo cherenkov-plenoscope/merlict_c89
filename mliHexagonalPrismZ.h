@@ -3,6 +3,8 @@
 #define MERLICT_MLIHEXAGONAL_PRISMZ_H_
 
 #include <math.h>
+#include <stdint.h>
+#include <assert.h>
 #include "mliVec.h"
 #include "mliMath.h"
 
@@ -36,5 +38,42 @@ int mli_inside_hexagonal_prism_z(
     }
 }
 
+mliVec mli_hexagon_corner(const uint64_t corner) {
+    /*
+                  /\ y
+            2 ____|____ 1
+             /    |    \
+            /     |     \
+        __ /______|______\_0_\ x
+         3 \      |      /   /
+            \     |     /
+             \____|____/
+            4     |    5
+    */
+    const uint64_t corner_mod = corner % 6;
+    switch (corner_mod) {
+        case 0u:
+            return mliVec_set(1., 0., 0.);
+            break;
+        case 1u:
+            return mliVec_set(.5, MLI_SQRT3_OVER_2, 0.);
+            break;
+        case 2u:
+            return mliVec_set(-.5, MLI_SQRT3_OVER_2, 0.);
+            break;
+        case 3u:
+            return mliVec_set(-1., 0., 0.);
+            break;
+        case 4u:
+            return mliVec_set(-.5, -MLI_SQRT3_OVER_2, 0.);
+            break;
+        case 5u:
+            return mliVec_set(.5, -MLI_SQRT3_OVER_2, 0.);
+            break;
+        default:
+            assert(0);
+            break;
+    }
+}
 
 #endif
