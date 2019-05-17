@@ -1722,9 +1722,9 @@ int main(int argc, char *argv[]) {
         cap.curvature_radius = 1.0;
         cap.inner_hex_radius = .1;
         bounding_radius = mliSphericalCapHex_bounding_radius(cap);
-        CHECK(bounding_radius > cap.inner_hex_radius*MLI_INNER_TO_OUTER_HEX);
+        CHECK(bounding_radius > cap.inner_hex_radius*MLI_2_OVER_SQRT3);
         CHECK(
-            bounding_radius < 1.1*cap.inner_hex_radius*MLI_INNER_TO_OUTER_HEX);
+            bounding_radius < 1.1*cap.inner_hex_radius*MLI_2_OVER_SQRT3);
     }
 
     {
