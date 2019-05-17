@@ -26,7 +26,7 @@ int first_casual_intersection(
         octree,
         ray,
         intersection);
-    if (intersection->distance_of_ray < FLT_MAX)
+    if (intersection->distance_of_ray < DBL_MAX)
         return 1;
     else
         return 0;

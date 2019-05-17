@@ -270,7 +270,7 @@ void mli_ray_octree_traversal(
     mliCube cube;
     const mliNode *root;
     uint8_t a = 0;
-    isec->distance_of_ray = FLT_MAX;
+    isec->distance_of_ray = DBL_MAX;
     cube = octree->cube;
     cube_upper = mliCube_upper(cube);
     root = &octree->root;
