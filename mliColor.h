@@ -6,9 +6,9 @@
 #include <stdint.h>
 
 typedef struct {
-    double r;
-    double g;
-    double b;
+    float r;
+    float g;
+    float b;
 } mliColor;
 
 mliColor mliColor_set(const double r, const double g, const double b) {
