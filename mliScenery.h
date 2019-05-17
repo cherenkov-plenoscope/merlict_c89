@@ -11,6 +11,7 @@
 #include "mliMesh.h"
 #include "mliSphericalCapHex.h"
 #include "mliCylinder.h"
+#include "mliHexagon.h"
 #include "mliSurface.h"
 #include "mliSurfaces.h"
 
@@ -18,6 +19,7 @@
 #define MLI_SPHERICAL_CAP_HEX 1u
 #define MLI_SPHERE 2u
 #define MLI_CYLINDER 3u
+#define MLI_HEXAGON 4u
 
 typedef struct {
     uint32_t num_functions;
@@ -50,6 +52,11 @@ typedef struct {
     mliCylinder *cylinders;
     mliSurfaces *cylinders_surfaces;
     mliHomTraComp* cylinders_T;
+
+    uint32_t num_hexagons;
+    mliHexagon *hexagons;
+    mliSurfaces *hexagons_surfaces;
+    mliHomTraComp* hexagons_T;
 } mliScenery;
 
 void mliScenery_malloc(mliScenery* scenery) {
@@ -97,6 +104,14 @@ void mliScenery_malloc(mliScenery* scenery) {
         scenery->num_cylinders*sizeof(mliSurfaces));
     scenery->cylinders_T = (mliHomTraComp*)malloc(
         scenery->num_cylinders*sizeof(mliHomTraComp));
+
+    /* hexagons */
+    scenery->hexagons = (mliHexagon*)malloc(
+        scenery->num_hexagons*sizeof(mliHexagon));
+    scenery->hexagons_surfaces = (mliSurfaces*)malloc(
+        scenery->num_hexagons*sizeof(mliSurfaces));
+    scenery->hexagons_T = (mliHomTraComp*)malloc(
+        scenery->num_hexagons*sizeof(mliHomTraComp));
 }
 
 void mliScenery_free(mliScenery *scenery) {
@@ -141,6 +156,12 @@ void mliScenery_free(mliScenery *scenery) {
     free(scenery->cylinders_surfaces);
     free(scenery->cylinders_T);
     scenery->num_cylinders = 0;
+
+    /* hexagons */
+    free(scenery->hexagons);
+    free(scenery->hexagons_surfaces);
+    free(scenery->hexagons_T);
+    scenery->num_hexagons = 0;
 }
 
 int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
@@ -159,6 +180,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     fwrite(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
     fwrite(&scenery->num_spheres, sizeof(uint32_t), 1u, f);
     fwrite(&scenery->num_cylinders, sizeof(uint32_t), 1u, f);
+    fwrite(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
 
     /* functions */
     for (i = 0; i < scenery->num_functions; i++) {
@@ -224,6 +246,19 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
         scenery->num_cylinders,
         f);
 
+    /* hexagons */
+    fwrite(scenery->hexagons, sizeof(mliHexagon), scenery->num_hexagons, f);
+    fwrite(
+        scenery->hexagons_surfaces,
+        sizeof(mliSurfaces),
+        scenery->num_hexagons,
+        f);
+    fwrite(
+        scenery->hexagons_T,
+        sizeof(mliHomTraComp),
+        scenery->num_hexagons,
+        f);
+
     fclose(f);
     return 1;
 
@@ -249,6 +284,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     fread(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
     fread(&scenery->num_spheres, sizeof(uint32_t), 1u, f);
     fread(&scenery->num_cylinders, sizeof(uint32_t), 1u, f);
+    fread(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
 
     mliScenery_malloc(scenery);
 
@@ -314,6 +350,20 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
         scenery->cylinders_T,
         sizeof(mliHomTraComp),
         scenery->num_cylinders, f);
+
+    /* hexagons */
+    fread(
+        scenery->hexagons,
+        sizeof(mliHexagon),
+        scenery->num_hexagons, f);
+    fread(
+        scenery->hexagons_surfaces,
+        sizeof(mliSurfaces),
+        scenery->num_hexagons, f);
+    fread(
+        scenery->hexagons_T,
+        sizeof(mliHomTraComp),
+        scenery->num_hexagons, f);
 
     fclose(f);
     return 1;
@@ -386,6 +436,18 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
             b->cylinders_T[i]))
             return 0;
     }
+    for (i = 0; i < a->num_hexagons; i++) {
+        if (!mliHexagon_is_equal(a->hexagons[i], b->hexagons[i]))
+            return 0;
+        if (!mliSurfaces_is_equal(
+                a->hexagons_surfaces[i],
+                b->hexagons_surfaces[i]))
+            return 0;
+        if(!mliHomTraComp_is_equal(
+            a->hexagons_T[i],
+            b->hexagons_T[i]))
+            return 0;
+    }
     return 1;}
 
 
@@ -453,6 +515,18 @@ int mliScenery_valid_cylinders(const mliScenery *scenery) {
     }
     return 1;}
 
+int mliScenery_valid_hexagons(const mliScenery *scenery) {
+    uint64_t i;
+    for (i = 0; i < scenery->num_hexagons; i++) {
+        if (scenery->hexagons_surfaces[i].inner >= scenery->num_surfaces) {
+            return 0;
+        }
+        if (scenery->hexagons_surfaces[i].outer >= scenery->num_surfaces) {
+            return 0;
+        }
+    }
+    return 1;}
+
 int mliScenery_valid(const mliScenery *scenery) {
     if (!mliScenery_valid_surfaces(scenery))
         return 0;
@@ -463,6 +537,8 @@ int mliScenery_valid(const mliScenery *scenery) {
     if (!mliScenery_valid_spheres(scenery))
         return 0;
     if (!mliScenery_valid_cylinders(scenery))
+        return 0;
+    if (!mliScenery_valid_hexagons(scenery))
         return 0;
     return 1;}
 

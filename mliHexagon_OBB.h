@@ -5,6 +5,7 @@
 #include <math.h>
 #include "mliOBB.h"
 #include "mliHexagon.h"
+#include "mliVec_OBB.h"
 #include "mliHexagon_intersection.h"
 
 
@@ -51,9 +52,9 @@ mliOBB mliHexagon_obb(
     const mliVec first_corner_root = mliHomTra_pos(
         &local2root,
         first_corner_local);
+    uint64_t corner_idx;
     obb.lower = first_corner_root;
     obb.upper = first_corner_root;
-    uint64_t corner_idx;
     for (corner_idx = 1; corner_idx < 5; corner_idx++) {
         const mliVec corner_local = mli_hexagon_corner(corner_idx);
         const mliVec corner_root = mliHomTra_pos(&local2root, corner_local);

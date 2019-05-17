@@ -238,9 +238,9 @@ int mliCylinder_intersection(
     /*   /                                                                    */
     /*                                                                        */
 
+    double plus_solution, minus_solution;
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
-    double plus_solution, minus_solution;
     if (mli_cylinder_equation(
         cylinder.radius,
         ray_local,
@@ -249,58 +249,59 @@ int mliCylinder_intersection(
     ) {
         if (plus_solution < MLI_EPSILON) {
             return 0;
-        }
+        } else {
+            const int m_gt_e = minus_solution > MLI_EPSILON;
+            const int fm_le_e = fabs(minus_solution) <= MLI_EPSILON;
+            const int fmz_le_hl =
+                fabs(mliRay_at(&ray_local, minus_solution).z) <=
+                cylinder.length*.5;
+            const int fpz_le_hl =
+                fabs(mliRay_at(&ray_local, plus_solution).z) <=
+                cylinder.length*.5;
+            int scenario = m_gt_e*1 + fm_le_e*2 + fmz_le_hl*4 + fpz_le_hl*8;
+            double causal_solution;
+            int causal = 1;
+            switch (scenario) {
+                case 9:
+                    causal_solution = plus_solution;
+                    break;
+                case 13:
+                    causal_solution = minus_solution;
+                    break;
+                case 5:
+                    causal_solution = minus_solution;
+                    break;
 
-        const int m_gt_e = minus_solution > MLI_EPSILON;
-        const int fm_le_e = fabs(minus_solution) <= MLI_EPSILON;
-        const int fmz_le_hl = fabs(mliRay_at(&ray_local, minus_solution).z) <=
-            cylinder.length*.5;
-        const int fpz_le_hl = fabs(mliRay_at(&ray_local, plus_solution).z) <=
-            cylinder.length*.5;
+                case 10:
+                    causal_solution = plus_solution;
+                    break;
+                case 14:
+                    causal_solution = plus_solution;
+                    break;
+                case 6:
+                    causal_solution = minus_solution;
+                    break;
 
-        int scenario = m_gt_e*1 + fm_le_e*2 + fmz_le_hl*4 + fpz_le_hl*8;
-        double causal_solution;
-        int causal = 1;
-        switch (scenario) {
-            case 9:
-                causal_solution = plus_solution;
-                break;
-            case 13:
-                causal_solution = minus_solution;
-                break;
-            case 5:
-                causal_solution = minus_solution;
-                break;
+                case 8:
+                    causal_solution = plus_solution;
+                    break;
+                case 12:
+                    causal_solution = plus_solution;
+                    break;
 
-            case 10:
-                causal_solution = plus_solution;
-                break;
-            case 14:
-                causal_solution = plus_solution;
-                break;
-            case 6:
-                causal_solution = minus_solution;
-                break;
+                default:
+                    causal = 0;
+                    break;
+            }
 
-            case 8:
-                causal_solution = plus_solution;
-                break;
-            case 12:
-                causal_solution = plus_solution;
-                break;
-
-            default:
-                causal = 0;
-                break;
-        }
-
-        if (causal) {
-            mliCylinder_set_intersection(
-                &local2root,
-                &ray_local,
-                causal_solution,
-                intersection);
-            return 1;
+            if (causal) {
+                mliCylinder_set_intersection(
+                    &local2root,
+                    &ray_local,
+                    causal_solution,
+                    intersection);
+                return 1;
+            }
         }
     }
     return 0;

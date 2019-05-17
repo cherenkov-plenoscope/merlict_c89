@@ -264,6 +264,7 @@ int main(int argc, char *argv[]) {
         scenery.num_spherical_cap_hex = 1u;
         scenery.num_spheres = 1u;
         scenery.num_cylinders = 1u;
+        scenery.num_hexagons = 1u;
 
         mliMesh_init_from_off("diff_cube_sphere.off", &diff_cube_sphere);
 
@@ -349,6 +350,16 @@ int main(int argc, char *argv[]) {
                 mliVec_set(0., 1., 0.),
                 mli_deg2rad(30));
 
+        /* hexagons */
+        scenery.hexagons[0].inner_radius = 1.;
+        scenery.hexagons_surfaces[0].outer = 0u;
+        scenery.hexagons_surfaces[0].inner = 0u;
+        scenery.hexagons_T[0].trans = mliVec_set(2., 3., 0.);
+        scenery.hexagons_T[0].rot =
+            mliQuaternion_set_rotaxis_and_angle(
+                mliVec_set(0., 1., 0.),
+                mli_deg2rad(-30));
+
         mliScenery_write_to_path(&scenery, "my_scenery.mli.tmp");
         mliScenery_read_from_path(&scenery_back, "my_scenery.mli.tmp");
 
@@ -404,6 +415,7 @@ int main(int argc, char *argv[]) {
         num_surface_entities += scenery.num_spherical_cap_hex;
         num_surface_entities += scenery.num_spheres;
         num_surface_entities += scenery.num_cylinders;
+        num_surface_entities += scenery.num_hexagons;
 
         CHECK(mliScenery_num_objects(&scenery) == num_surface_entities);
 
