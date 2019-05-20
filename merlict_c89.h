@@ -37,6 +37,10 @@
 #include "mliHexagon_OBB.h"
 #include "mliHexagon_intersection.h"
 
+#include "mliBiCirclePlane.h"
+#include "mliBiCirclePlane_OBB.h"
+#include "mliBiCirclePlane_intersection.h"
+
 #include "mliOcTree.h"
 #include "mli_ray_octree_traversal.h"
 #include "mli_from_outside_to_inside.h"

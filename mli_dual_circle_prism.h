@@ -7,8 +7,8 @@
 int mli_is_inside_dual_circle_prism(
     const double x,
     const double y,
-    const double height,
-    const double width) {
+    const double x_height,
+    const double y_width) {
     /*
      *                  ______|_______                      ___
      *            _____/      |       \_____                 |
@@ -21,8 +21,9 @@ int mli_is_inside_dual_circle_prism(
      *                        |x
      *      |_______________________width_________|
      */
-    const double circle_distance = (width*width - height*height)/(2.*height);
-    const double circle_radius = circle_distance/2. + height/2.;
+    const double circle_distance = (y_width*y_width - x_height*x_height)/
+        (2.*x_height);
+    const double circle_radius = circle_distance/2. + x_height/2.;
 
     const double circ1_x = +circle_distance/2.;
     const double circ1_y = 0.;
