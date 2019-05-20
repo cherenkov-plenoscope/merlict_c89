@@ -41,6 +41,4 @@
 #include "mli_from_outside_to_inside.h"
 #include "mli_xyplane.h"
 
-#include "mliHistogram.h"
-
 #endif

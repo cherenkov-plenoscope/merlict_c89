@@ -46,50 +46,88 @@ void mli_uint32_ncpy(
 #define MLI_MIN3(a,b,c) ((((a)<(b))&&((a)<(c))) ? (a) : (((b)<(c)) ? (b) : (c)))
 #define MLI_MAX3(a,b,c) ((((a)>(b))&&((a)>(c))) ? (a) : (((b)>(c)) ? (b) : (c)))
 
+#define MLI_ZEROS(points, num_points) \
+    do { \
+        uint64_t i; \
+        for (i = 0; i < num_points; i++) { \
+            points[i] = 0; \
+        } \
+    } while (0)
+
 void mli_zeros_double(double *points, const uint64_t num_points) {
-    uint64_t i;
-    for (i = 0; i < num_points; i++) {
-        points[i] = 0.;
-    }
-}
+    MLI_ZEROS(points, num_points);}
 
 void mli_zeros_uint64_t(uint64_t *points, const uint64_t num_points) {
-    uint64_t i;
-    for (i = 0; i < num_points; i++) {
-        points[i] = 0u;
-    }
-}
+    MLI_ZEROS(points, num_points);}
 
-uint64_t mli_upper_compare(
-    const double *points,
-    const uint64_t num_points,
-    const double point_arg) {
+#define MLI_UPPER_COMPARE(points, num_points, point_arg) \
     /*
     parameters
     ----------
         points          Sorted array in ascending order.
         num_points      Number floats in points. Its length.
         point_arg       The point to find the upper-bound for.
-    */
-    uint64_t first, last, middle;
-    first = 0u;
-    last = num_points - 1u;
-    middle = (last - first)/2;
-    if (num_points == 0) {
-        return 0;
+    */ \
+    do { \
+        uint64_t first, last, middle; \
+        first = 0u; \
+        last = num_points - 1u; \
+        middle = (last - first)/2; \
+        if (num_points == 0) { \
+            return 0; \
+        } \
+        if (point_arg >= points[num_points - 1u]) { \
+            return num_points; \
+        } \
+        while (first < last) { \
+            if (points[middle] > point_arg) { \
+                last = middle; \
+            } else { \
+                first = middle + 1u; \
+            } \
+            middle = first + (last - first)/2; \
+        } \
+        return last; \
+    } while (0)
+
+uint64_t mli_upper_compare_double(
+    const double *points,
+    const uint64_t num_points,
+    const double point_arg) {
+    MLI_UPPER_COMPARE(points, num_points, point_arg);}
+
+void mli_histogram(
+    const double *bin_edges,
+    const uint64_t num_bin_edges,
+    uint64_t *underflow_bin,
+    uint64_t *bins,
+    uint64_t *overflow_bin,
+    const double point) {
+    uint64_t idx_upper = mli_upper_compare_double(
+        bin_edges,
+        num_bin_edges,
+        point);
+    if (idx_upper == 0) {
+        (*underflow_bin) += 1u;
+    } else if (idx_upper == num_bin_edges) {
+        (*overflow_bin) += 1u;
+    } else {
+        bins[idx_upper - 1] += 1u;
     }
-    if (point_arg >= points[num_points - 1u]) {
-        return num_points;
-    }
-    while (first < last) {
-        if (points[middle] > point_arg) {
-            last = middle;
-        } else {
-            first = middle + 1u;
-        }
-        middle = first + (last - first)/2;
-    }
-    return last;
 }
+
+void mli_linspace(
+    const double start,
+    const double stop,
+    double *points,
+    const uint64_t num_points) {
+    uint64_t i;
+    const double range = stop - start;
+    const double step = range/(double)(num_points - 1u);
+    for (i = 0; i < num_points; i++) {
+        points[i] = (double)i * step;
+    }
+}
+
 
 #endif

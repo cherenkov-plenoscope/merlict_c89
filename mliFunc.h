@@ -36,7 +36,7 @@ int mliFunc_evaluate(
     mliFunc* f,
     const double xarg,
     double *out) {
-    uint32_t idx = mli_upper_compare(f->x, f->num_points, xarg);
+    uint32_t idx = mli_upper_compare_double(f->x, f->num_points, xarg);
     if (idx == 0) {
         return 1;
     } else if (idx == f->num_points) {

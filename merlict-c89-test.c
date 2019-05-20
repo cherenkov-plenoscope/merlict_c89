@@ -11,44 +11,44 @@ int main(int argc, char *argv[]) {
     {
         double points[3] = {0., 1., 2.};
         uint64_t num_points = 3;
-        CHECK(mli_upper_compare(points, num_points, -1.) == 0);
-        CHECK(mli_upper_compare(points, num_points, 3.) == 3);
+        CHECK(mli_upper_compare_double(points, num_points, -1.) == 0);
+        CHECK(mli_upper_compare_double(points, num_points, 3.) == 3);
     }
 
     {
         double *points = NULL;
         uint64_t num_points = 0;
-        CHECK(mli_upper_compare(points, num_points, 4.5) == 0);
+        CHECK(mli_upper_compare_double(points, num_points, 4.5) == 0);
     }
 
     {
         double points[8] = {1., 2., 3., 4., 5., 6., 7., 8.};
         uint64_t num_points = 8;
-        CHECK(mli_upper_compare(points, num_points, 4.5) == 4);
+        CHECK(mli_upper_compare_double(points, num_points, 4.5) == 4);
     }
 
     {
         double points[8] = {1., 2., 3.};
         uint64_t num_points = 3;
-        CHECK(mli_upper_compare(points, num_points, 9.) == 3);
+        CHECK(mli_upper_compare_double(points, num_points, 9.) == 3);
     }
 
     {
         double points[8] = {1., 2., 3., 4., 5., 6., 7., 8.};
         uint64_t num_points = 8;
-        CHECK(mli_upper_compare(points, num_points, 0.) == 0);
+        CHECK(mli_upper_compare_double(points, num_points, 0.) == 0);
     }
 
     {
         double points[8] = {1., 2., 3., 4., 5., 6., 7., 8.};
         uint64_t num_points = 8;
-        CHECK(mli_upper_compare(points, num_points, 2.) == 2);
+        CHECK(mli_upper_compare_double(points, num_points, 2.) == 2);
     }
 
     {
         double points[3] = {1., 2., 3.};
         uint64_t num_points = 3;
-        CHECK(mli_upper_compare(points, num_points, 2.5) == 2);
+        CHECK(mli_upper_compare_double(points, num_points, 2.5) == 2);
     }
 
     /* histogram 1D */
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
     {
         double bin_edges[3];
         const uint64_t num_bin_edges = 3;
-        mli_bin_edges_linspace(0., 1., bin_edges, num_bin_edges);
+        mli_linspace(0., 1., bin_edges, num_bin_edges);
         CHECK_MARGIN(bin_edges[0], 0., 1e-6);
         CHECK_MARGIN(bin_edges[1], 0.5, 1e-6);
         CHECK_MARGIN(bin_edges[2], 1., 1e-6);
@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
         overflow_bin = 0u;
         underflow_bin = 0u;
         mli_zeros_uint64_t(bins, num_bins);
-        mli_bin_edges_linspace(0., 1., bin_edges, num_bin_edges);
+        mli_linspace(0., 1., bin_edges, num_bin_edges);
         mliMT19937_init(&prng, 0u);
         for (i = 0; i < 100000u; i++) {
             mli_histogram(
@@ -1320,7 +1320,7 @@ int main(int argc, char *argv[]) {
         func.y[4] = 0.;
 
         CHECK(mliFunc_x_is_causal(&func));
-        CHECK(mli_upper_compare(func.x, func.num_points, 1.5) == 2);
+        CHECK(mli_upper_compare_double(func.x, func.num_points, 1.5) == 2);
         CHECK(mliFunc_evaluate(&func, 1.5, &y) == 0);
         CHECK(y == 2.);
         mliFunc_free(&func);
