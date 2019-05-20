@@ -4,8 +4,7 @@
 
 #include <stdlib.h>
 #include <math.h>
-#include "mliVector.h"
-
+#include "mliMath.h"
 
 typedef struct {
     uint32_t num_points;
@@ -33,32 +32,11 @@ int mliFunc_x_is_causal(mliFunc* f) {
     }
     return 1;}
 
-uint32_t mliFunc_upper_compare(
-    mliFunc* f,
-    const double xarg) {
-    uint32_t first, last, middle;
-    first = 0;
-    last = f->num_points - 1;
-    middle = (last - first)/2;
-    if (f->num_points == 0)
-        return 1;
-    while (first < last) {
-        if (f->x[middle] > xarg) {
-            last = middle;
-        } else if(f->x[middle] <= xarg) {
-            first = middle + 1;
-        }
-        middle = (last - first)/2;
-    }
-    if (first + 1 == f->num_points) {
-        return f->num_points;}
-    return first;}
-
 int mliFunc_evaluate(
     mliFunc* f,
     const double xarg,
     double *out) {
-    uint32_t idx = mliFunc_upper_compare(f, xarg);
+    uint32_t idx = mli_upper_compare(f->x, f->num_points, xarg);
     if (idx == 0) {
         return 1;
     } else if (idx == f->num_points) {

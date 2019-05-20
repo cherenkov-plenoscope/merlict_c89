@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #define MLI_PI 3.14159265358979323846
 
@@ -44,5 +45,51 @@ void mli_uint32_ncpy(
 
 #define MLI_MIN3(a,b,c) ((((a)<(b))&&((a)<(c))) ? (a) : (((b)<(c)) ? (b) : (c)))
 #define MLI_MAX3(a,b,c) ((((a)>(b))&&((a)>(c))) ? (a) : (((b)>(c)) ? (b) : (c)))
+
+void mli_zeros_double(double *points, const uint64_t num_points) {
+    uint64_t i;
+    for (i = 0; i < num_points; i++) {
+        points[i] = 0.;
+    }
+}
+
+void mli_zeros_uint64_t(uint64_t *points, const uint64_t num_points) {
+    uint64_t i;
+    for (i = 0; i < num_points; i++) {
+        points[i] = 0u;
+    }
+}
+
+uint64_t mli_upper_compare(
+    const double *points,
+    const uint64_t num_points,
+    const double point_arg) {
+    /*
+    parameters
+    ----------
+        points          Sorted array in ascending order.
+        num_points      Number floats in points. Its length.
+        point_arg       The point to find the upper-bound for.
+    */
+    uint64_t first, last, middle;
+    first = 0u;
+    last = num_points - 1u;
+    middle = (last - first)/2;
+    if (num_points == 0) {
+        return 0;
+    }
+    if (point_arg >= points[num_points - 1u]) {
+        return num_points;
+    }
+    while (first < last) {
+        if (points[middle] > point_arg) {
+            last = middle;
+        } else {
+            first = middle + 1u;
+        }
+        middle = first + (last - first)/2;
+    }
+    return last;
+}
 
 #endif
