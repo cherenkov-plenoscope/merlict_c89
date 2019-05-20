@@ -3,6 +3,7 @@
 #define MERLICT_MERLICT_C89_H_
 
 #include "mliMath.h"
+#include "mli_dual_circle_prism.h"
 #include "mliMT19937.h"
 #include "mliVec.h"
 #include "mliRotMat.h"
