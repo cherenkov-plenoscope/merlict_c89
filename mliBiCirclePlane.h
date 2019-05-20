@@ -19,4 +19,15 @@ int mliBiCirclePlane_is_equal(
     }
     return 1;}
 
+int mliBiCirclePlane_is_valid(const mliBiCirclePlane a) {
+    if (a.x_height <= 0.) {
+        return 0;
+    }
+    if (a.y_width <= 0.) {
+        return 0;
+    }
+    return 1;
+}
+
+
 #endif
