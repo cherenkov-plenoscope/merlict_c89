@@ -159,6 +159,26 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    /* throw Pi test */
+    {
+        uint64_t num_throws = 1000000u;
+        uint64_t i;
+        uint64_t num_in_circle = 0u;
+        double pi_estimate;
+        mliMT19937 prng;
+        mliMT19937_init(&prng, 0u);
+        for (i = 0; i < num_throws; i++) {
+            const double x = mliMT19937_uniform(&prng);
+            const double y = mliMT19937_uniform(&prng);
+            const double r_sq = x*x + y*y;
+            if (r_sq <= 1.) {
+                num_in_circle += 1u;
+            }
+        }
+        pi_estimate = 4*(double)num_in_circle/(double)num_throws;
+        CHECK_MARGIN(pi_estimate, MLI_PI, 1e-3);
+    }
+
     /* from_outside_to_inside */
     {
         mliVec normal = {0., 0., 1.};
