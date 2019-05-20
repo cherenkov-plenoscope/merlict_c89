@@ -8,8 +8,8 @@
     Adopted from https://en.wikipedia.org/wiki/Mersenne_Twister
 */
 typedef struct {
-    int N;
-    int M;
+    uint32_t N;
+    uint32_t M;
     int R;
     int A;
     int F;
