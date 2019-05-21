@@ -445,9 +445,9 @@ int main(int argc, char *argv[]) {
         scenery.num_vertices = diff_cube_sphere.num_vertices;
         scenery.num_triangles = diff_cube_sphere.num_faces;
 
-        mliScenery_malloc(&scenery);
+        CHECK(mliScenery_malloc(&scenery));
 
-        mliFunc_malloc(&scenery.functions[0] , 2u);
+        CHECK(mliFunc_malloc(&scenery.functions[0] , 2u));
         scenery.functions[0].x[0] = 200.e-9;
         scenery.functions[0].x[1] = 1200.e-9;
         scenery.functions[0].y[0] = 0.;
@@ -572,7 +572,7 @@ int main(int argc, char *argv[]) {
         camera.rotation.z = 0.;
         camera.field_of_view = mli_deg2rad(80.);
 
-        mliImage_init(&img, 640u, 480u);
+        CHECK(mliImage_malloc(&img, 640u, 480u));
         mliCamera_render_image(&camera, &scenery, &octree, &img);
         mliImage_write_to_ppm(&img, "my_image.ppm.tmp");
 
@@ -720,9 +720,9 @@ int main(int argc, char *argv[]) {
         scenery.num_vertices = 0u;
         scenery.num_triangles = 0u;
 
-        mliScenery_malloc(&scenery);
+        CHECK(mliScenery_malloc(&scenery));
 
-        mliFunc_malloc(&scenery.functions[0] , 2u);
+        CHECK(mliFunc_malloc(&scenery.functions[0] , 2u));
         scenery.functions[0].x[0] = 200.e-9;
         scenery.functions[0].x[1] = 1200.e-9;
         scenery.functions[0].y[0] = 0.;
@@ -760,7 +760,7 @@ int main(int argc, char *argv[]) {
         mliScenery scenery;
         mliOcTree octree;
         mliCamera camera;
-        mliImage img;
+        mliImage img = mliImage_init();
         mliScenery_read_from_path(&scenery, "asymetric_scenery.mli.tmp");
         octree = mliOcTree_from_scenery(&scenery);
         CHECK(mliNode_num_nodes(&octree.root) == 9);
@@ -773,7 +773,7 @@ int main(int argc, char *argv[]) {
         camera.rotation.z = 0.;
         camera.field_of_view = mli_deg2rad(80.);
 
-        mliImage_init(&img, 640u, 480u);
+        CHECK(mliImage_malloc(&img, 640u, 480u));
         mliCamera_render_image(&camera, &scenery, &octree, &img);
         mliImage_write_to_ppm(&img, "asymetric_image.ppm.tmp");
 
@@ -1061,8 +1061,8 @@ int main(int argc, char *argv[]) {
 
     /* mliImage */
     {
-        mliImage img;
-        mliImage_init(&img, 3, 2);
+        mliImage img = mliImage_init();
+        CHECK(mliImage_malloc(&img, 3, 2));
         CHECK(img.num_cols == 3u);
         CHECK(img.num_rows == 2u);
         mliImage_free(&img);
@@ -1071,12 +1071,12 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        mliImage img;
-        mliImage back;
+        mliImage img = mliImage_init();
+        mliImage back = mliImage_init();
         uint32_t col;
         uint32_t row;
         double tone;
-        mliImage_init(&img, 3, 2);
+        CHECK(mliImage_malloc(&img, 3, 2));
         CHECK(img.num_cols == 3u);
         CHECK(img.num_rows == 2u);
         tone = 0.;
@@ -1092,7 +1092,7 @@ int main(int argc, char *argv[]) {
         }
         mliImage_write_to_ppm(&img, "img.ppm.tmp");
 
-        mliImage_init_from_ppm(&back, "img.ppm.tmp");
+        CHECK(mliImage_malloc_from_ppm(&back, "img.ppm.tmp"));
         CHECK(back.num_cols == 3u);
         CHECK(back.num_rows == 2u);
 
@@ -1317,7 +1317,7 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func;
-        mliFunc_malloc(&func, 0u);
+        CHECK(mliFunc_malloc(&func, 0u));
         CHECK(func.num_points == 0u);
         CHECK(mliFunc_x_is_causal(&func));
         mliFunc_free(&func);
@@ -1325,7 +1325,7 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func;
-        mliFunc_malloc(&func, 3u);
+        CHECK(mliFunc_malloc(&func, 3u));
         CHECK(func.num_points == 3u);
         func.x[0] = 0.;
         func.x[1] = 1.;
@@ -1337,7 +1337,7 @@ int main(int argc, char *argv[]) {
     {
         mliFunc func;
         double y;
-        mliFunc_malloc(&func, 5u);
+        CHECK(mliFunc_malloc(&func, 5u));
         CHECK(func.num_points == 5u);
 
         func.x[0] = 0.;

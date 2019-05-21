@@ -2,6 +2,7 @@
 #ifndef MERLICT_MERLICT_C89_H_
 #define MERLICT_MERLICT_C89_H_
 
+#include "mli_debug.h"
 #include "mliMath.h"
 #include "mli_dual_circle_prism.h"
 #include "mliMT19937.h"

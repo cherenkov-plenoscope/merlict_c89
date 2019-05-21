@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <math.h>
+#include "mli_debug.h"
 #include "mliMath.h"
 
 typedef struct {
@@ -12,17 +13,21 @@ typedef struct {
     double *y;
 } mliFunc;
 
-void mliFunc_malloc(
-    mliFunc* f,
-    const uint32_t num_points) {
-    f->num_points = num_points;
-    f->x = (double*)malloc(f->num_points*sizeof(double));
-    f->y = (double*)malloc(f->num_points*sizeof(double));}
-
 void mliFunc_free(mliFunc *f) {
     free(f->x);
     free(f->y);
     f->num_points = 0;}
+
+int mliFunc_malloc(
+    mliFunc* f,
+    const uint32_t num_points) {
+    f->num_points = num_points;
+    mli_malloc(f->x, double, f->num_points);
+    mli_malloc(f->y, double, f->num_points);
+    return 1;
+error:
+    mliFunc_free(f);
+    return 0;}
 
 int mliFunc_x_is_causal(mliFunc* f) {
     uint32_t i;

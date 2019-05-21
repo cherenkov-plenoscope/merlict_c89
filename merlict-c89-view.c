@@ -88,16 +88,16 @@ int main(int argc, char *argv[]) {
     mliScenery scenery;
     mliOcTree octree;
     mliCamera camera;
-    mliImage img;
+    mliImage img = mliImage_init();
     int update_image = 1;
     time_stamp(timestamp);
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <scenery-path>\n", argv[0]);
-        goto restore_terminal_and_exit;
+        goto error;
     }
     if (!mliScenery_read_from_path(&scenery, argv[1])) {
         fprintf(stderr, "Can not open '%s'\n", argv[1]);
-        goto restore_terminal_and_exit;
+        goto error;
     }
 
     octree = mliOcTree_from_scenery(&scenery);
@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
     camera.rotation.z = 0.;
     camera.field_of_view = mli_deg2rad(80.);
 
-    mliImage_init(&img, 128u, 72u);
+    mli_check_mem(mliImage_malloc(&img, 128u, 72u));
 
     goto show_image;
 
@@ -161,9 +161,10 @@ int main(int argc, char *argv[]) {
             case MLI_SPACE_KEY:
                 {
                     char path[1024];
-                    mliImage full;
+                    mliImage full = mliImage_init();
                     sprintf(path, "%s_%06lu.ppm", timestamp, num_screenshots++);
-                    mliImage_init(&full, 1920u, 1080u);
+                    mli_check_mem(
+                        mliImage_malloc(&full, 1920u, 1080u));
                     mliCamera_render_image(&camera, &scenery, &octree, &full);
                     mliImage_write_to_ppm(&full, path);
                     mliImage_free(&full);
@@ -184,7 +185,7 @@ int main(int argc, char *argv[]) {
     mliOcTree_free(&octree);
     mliScenery_free(&scenery);
 
-    restore_terminal_and_exit:
+error:
     tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal);
     return EXIT_SUCCESS;
 }

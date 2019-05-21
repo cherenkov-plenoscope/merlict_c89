@@ -1,0 +1,41 @@
+/* Copyright 2019 Sebastian Achim Mueller                                     */
+/* Based on Zed Shawn's awesome Debug Macros from his book:                   */
+/* Learn C the hard way                                                       */
+#ifndef MERLICT_MLI_DEBUG_H_
+#define MERLICT_MLI_DEBUG_H_
+
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
+
+#define mli_clean_errno() (errno == 0 ? "None" : strerror(errno))
+
+#define mli_log_err(M) \
+    fprintf( \
+        stderr, \
+        "[ERROR] (%s:%d: errno: %s) " M "\n", \
+        __FILE__, \
+        __LINE__, \
+        mli_clean_errno())
+
+#define mli_check(A, M) \
+    if (!(A)) {\
+        mli_log_err(M); \
+        errno = 0; \
+        goto error; \
+    }
+
+#define mli_check_mem(A) mli_check((A), "Out of memory.")
+
+#define mli_sentinel(M) { \
+    mli_log_err(M); \
+    errno = 0; \
+    goto error; \
+}
+
+#define mli_malloc(PTR, TYPE, NUM) { \
+    PTR = (TYPE*)malloc(NUM*sizeof(TYPE)); \
+    mli_check_mem(PTR); \
+}
+
+#endif

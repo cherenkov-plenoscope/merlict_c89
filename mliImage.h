@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "mli_debug.h"
 #include "mliColor.h"
 
 typedef struct {
@@ -14,23 +15,31 @@ typedef struct {
     mliColor *raw;
 } mliImage;
 
+mliImage mliImage_init() {
+    mliImage img;
+    img.num_cols = 0u;
+    img.num_rows = 0u;
+    img.raw = NULL;
+    return img;}
 
-void mliImage_init(
+void mliImage_free(
+    mliImage *img) {
+    free(img->raw);
+    img->raw = NULL;
+    img->num_cols = 0u;
+    img->num_rows = 0u;}
+
+int mliImage_malloc(
     mliImage *img,
     const uint32_t num_cols,
     const uint32_t num_rows) {
     img->num_cols = num_cols;
     img->num_rows = num_rows;
-    img->raw = (mliColor*)malloc(
-        img->num_cols*img->num_rows * sizeof(mliColor));}
-
-
-void mliImage_free(
-    mliImage *img) {
-    free(img->raw);
-    img->num_cols = 0u;
-    img->num_rows = 0u;}
-
+    mli_malloc(img->raw, mliColor, img->num_cols*img->num_rows);
+    return 1;
+error:
+    mliImage_free(img);
+    return 0;}
 
 uint32_t mliImage_idx(
     const mliImage *img,
@@ -55,8 +64,7 @@ mliColor mliImage_at(
     out = img->raw[mliImage_idx(img, col, row)];
     return out;}
 
-
-int mliImage_init_from_ppm(
+int mliImage_malloc_from_ppm(
     mliImage *img,
     const char *path) {
     char line[1024];
@@ -67,12 +75,12 @@ int mliImage_init_from_ppm(
     uint32_t row;
     FILE *fin;
     fin = fopen(path, "rb");
-    if (fin == NULL) goto close_and_exit_failure;
-    if (fgets(line, 1024, fin) == NULL) goto close_and_exit_failure;
-    if (strcmp(line, "P6\n") != 0) goto close_and_exit_failure;
+    mli_check(fin, "Can not open ppm.");
+    mli_check(fgets(line, 1024, fin), "Can not read header-line.")
+    mli_check(strcmp(line, "P6\n") == 0, "Expected header to start with 'P6'.");
     while (1) {
-        if (num_commen_lines > 1024) goto close_and_exit_failure;
-        if (fgets(line, 1024, fin) == NULL) goto close_and_exit_failure;
+        mli_check(num_commen_lines < 1024, "Expected less than 1024 lines.");
+        mli_check(fgets(line, 1024, fin), "Can not read header-line.");
         if (line[0] == '#') {
             num_commen_lines += 1u;
         } else {
@@ -80,11 +88,11 @@ int mliImage_init_from_ppm(
         }
     }
     num_cols = atoi(line);
-    if (fgets(line, 1024, fin) == NULL) goto close_and_exit_failure;
+    mli_check(fgets(line, 1024, fin), "Can not read header-line.");
     num_rows = atoi(line);
-    if (fgets(line, 1024, fin) == NULL) goto close_and_exit_failure;
-    if (strcmp(line, "255\n") != 0) goto close_and_exit_failure;
-    mliImage_init(img, num_cols, num_rows);
+    mli_check(fgets(line, 1024, fin), "Can not read header-line.");
+    mli_check(strcmp(line, "255\n") == 0, "Expected 8bit range '255'.");
+    mli_check_mem(mliImage_malloc(img, num_cols, num_rows));
     for (row = 0; row < img->num_rows; row++) {
         for (col = 0; col < img->num_cols; col++) {
             uint8_t r, g, b;
@@ -98,12 +106,15 @@ int mliImage_init_from_ppm(
             mliImage_set(img, col, row, color);
         }
     }
+    mli_check(!feof(fin), "Unexpected end-of-file.");
+    mli_check(!ferror(fin), "File error.");
     fclose(fin);
-    return EXIT_SUCCESS;
+    return 1;
 
-    close_and_exit_failure:
+error:
+    mliImage_free(img);
     fclose(fin);
-    return EXIT_FAILURE;}
+    return 0;}
 
 
 int mliImage_write_to_ppm(const mliImage *img, const char *path) {
@@ -111,7 +122,7 @@ int mliImage_write_to_ppm(const mliImage *img, const char *path) {
     uint32_t col;
     uint32_t row;
     fout = fopen(path, "w");
-    if (fout == NULL) goto close_and_exit_failure;
+    mli_check(fout, "Can not open ppm-image for writing.");
     fprintf(fout, "P6\n");
     fprintf(fout, "# CREATOR: merlict_c89\n");
     fprintf(fout, "%d\n", img->num_cols);
@@ -129,12 +140,14 @@ int mliImage_write_to_ppm(const mliImage *img, const char *path) {
             fwrite(&b, sizeof(uint8_t), 1u, fout);
         }
     }
+    mli_check(!feof(fout), "Unexpected end-of-file.");
+    mli_check(!ferror(fout), "File error.");
     fclose(fout);
-    return EXIT_SUCCESS;
+    return 1;
 
-    close_and_exit_failure:
+error:
     fclose(fout);
-    return EXIT_FAILURE;}
+    return 0;}
 
 void mliImage_print(const mliImage* img) {
     uint32_t col;
@@ -149,6 +162,5 @@ void mliImage_print(const mliImage* img) {
             printf("\033[48;2;%u;%u;%um \033[0m", r, g, b);
         }
         printf("\n");}}
-
 
 #endif
