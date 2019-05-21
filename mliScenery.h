@@ -66,6 +66,79 @@ typedef struct {
     mliHomTraComp* bicircleplanes_T;
 } mliScenery;
 
+void __mliScenery_free_functions(mliScenery *scenery) {
+    uint64_t i;
+    for (i = 0; i < scenery->num_functions; i++) {
+        mliFunc_free(&(scenery->functions[i]));
+    }
+    free(scenery->functions);
+    scenery->num_functions = 0;
+}
+
+void __mliScenery_free_colors(mliScenery *scenery) {
+    free(scenery->colors);
+    scenery->num_colors = 0;
+}
+void __mliScenery_free_surfaces(mliScenery *scenery) {
+    free(scenery->surfaces);
+    scenery->num_surfaces = 0;
+}
+
+void __mliScenery_free_vertices_and_triangles(mliScenery *scenery) {
+    free(scenery->vertices);
+    scenery->num_vertices = 0;
+    free(scenery->triangles);
+    free(scenery->triangles_surfaces);
+    scenery->num_triangles = 0;
+}
+
+void __mliScenery_free_spherical_cap_hex(mliScenery *scenery) {
+    free(scenery->spherical_cap_hex);
+    free(scenery->spherical_cap_hex_surfaces);
+    free(scenery->spherical_cap_hex_T);
+    scenery->num_spherical_cap_hex = 0;
+}
+
+void __mliScenery_free_spheres(mliScenery *scenery) {
+    free(scenery->spheres);
+    free(scenery->spheres_surfaces);
+    free(scenery->spheres_T);
+    scenery->num_spheres = 0;
+}
+
+void __mliScenery_free_cylinders(mliScenery *scenery) {
+    free(scenery->cylinders);
+    free(scenery->cylinders_surfaces);
+    free(scenery->cylinders_T);
+    scenery->num_cylinders = 0;
+}
+
+void __mliScenery_free_hexagons(mliScenery *scenery) {
+    free(scenery->hexagons);
+    free(scenery->hexagons_surfaces);
+    free(scenery->hexagons_T);
+    scenery->num_hexagons = 0;
+}
+
+void __mliScenery_free_bicircleplanes(mliScenery *scenery) {
+    free(scenery->bicircleplanes);
+    free(scenery->bicircleplanes_surfaces);
+    free(scenery->bicircleplanes_T);
+    scenery->num_bicircleplanes = 0;
+}
+
+void mliScenery_free(mliScenery *scenery) {
+    __mliScenery_free_functions(scenery);
+    __mliScenery_free_colors(scenery);
+    __mliScenery_free_surfaces(scenery);
+    __mliScenery_free_vertices_and_triangles(scenery);
+    __mliScenery_free_spherical_cap_hex(scenery);
+    __mliScenery_free_spheres(scenery);
+    __mliScenery_free_cylinders(scenery);
+    __mliScenery_free_hexagons(scenery);
+    __mliScenery_free_bicircleplanes(scenery);
+}
+
 void __mliScenery_malloc_vertices_and_triangles(mliScenery* scenery) {
     scenery->vertices = (mliVec*)malloc(scenery->num_vertices*sizeof(mliVec));
     scenery->triangles = (mliFace*)malloc(
@@ -145,79 +218,6 @@ void mliScenery_malloc(mliScenery* scenery) {
     __mliScenery_malloc_cylinders(scenery);
     __mliScenery_malloc_hexagons(scenery);
     __mliScenery_malloc_bicircleplane(scenery);
-}
-
-void __mliScenery_free_functions(mliScenery *scenery) {
-    uint64_t i;
-    for (i = 0; i < scenery->num_functions; i++) {
-        mliFunc_free(&(scenery->functions[i]));
-    }
-    free(scenery->functions);
-    scenery->num_functions = 0;
-}
-
-void __mliScenery_free_colors(mliScenery *scenery) {
-    free(scenery->colors);
-    scenery->num_colors = 0;
-}
-void __mliScenery_free_surfaces(mliScenery *scenery) {
-    free(scenery->surfaces);
-    scenery->num_surfaces = 0;
-}
-
-void __mliScenery_free_vertices_and_triangles(mliScenery *scenery) {
-    free(scenery->vertices);
-    scenery->num_vertices = 0;
-    free(scenery->triangles);
-    free(scenery->triangles_surfaces);
-    scenery->num_triangles = 0;
-}
-
-void __mliScenery_free_spherical_cap_hex(mliScenery *scenery) {
-    free(scenery->spherical_cap_hex);
-    free(scenery->spherical_cap_hex_surfaces);
-    free(scenery->spherical_cap_hex_T);
-    scenery->num_spherical_cap_hex = 0;
-}
-
-void __mliScenery_free_spheres(mliScenery *scenery) {
-    free(scenery->spheres);
-    free(scenery->spheres_surfaces);
-    free(scenery->spheres_T);
-    scenery->num_spheres = 0;
-}
-
-void __mliScenery_free_cylinders(mliScenery *scenery) {
-    free(scenery->cylinders);
-    free(scenery->cylinders_surfaces);
-    free(scenery->cylinders_T);
-    scenery->num_cylinders = 0;
-}
-
-void __mliScenery_free_hexagons(mliScenery *scenery) {
-    free(scenery->hexagons);
-    free(scenery->hexagons_surfaces);
-    free(scenery->hexagons_T);
-    scenery->num_hexagons = 0;
-}
-
-void __mliScenery_free_bicircleplanes(mliScenery *scenery) {
-    free(scenery->bicircleplanes);
-    free(scenery->bicircleplanes_surfaces);
-    free(scenery->bicircleplanes_T);
-    scenery->num_bicircleplanes = 0;
-}
-
-void mliScenery_free(mliScenery *scenery) {
-    __mliScenery_free_functions(scenery);
-    __mliScenery_free_colors(scenery);
-    __mliScenery_free_surfaces(scenery);
-    __mliScenery_free_vertices_and_triangles(scenery);
-    __mliScenery_free_spherical_cap_hex(scenery);
-    __mliScenery_free_spheres(scenery);
-    __mliScenery_free_cylinders(scenery);
-    __mliScenery_free_hexagons(scenery);
-    __mliScenery_free_bicircleplanes(scenery);
 }
 
 void __mliScenery_write_spherical_cap_hex(const mliScenery *scenery, FILE *f) {
