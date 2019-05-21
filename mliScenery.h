@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include <stdint.h>
+#include "mli_debug.h"
 #include "mliVec.h"
 #include "mliHomTra.h"
 #include "mliColor.h"
@@ -139,85 +140,98 @@ void mliScenery_free(mliScenery *scenery) {
     __mliScenery_free_bicircleplanes(scenery);
 }
 
-void __mliScenery_malloc_vertices_and_triangles(mliScenery* scenery) {
-    scenery->vertices = (mliVec*)malloc(scenery->num_vertices*sizeof(mliVec));
-    scenery->triangles = (mliFace*)malloc(
-        scenery->num_triangles*sizeof(mliFace));
-    scenery->triangles_surfaces =
-        (mliSurfaces*)malloc(scenery->num_triangles*sizeof(mliSurfaces));
+int __mliScenery_malloc_vertices_and_triangles(mliScenery* s) {
+    mli_malloc(s->vertices, mliVec, s->num_vertices);
+    mli_malloc(s->triangles, mliFace, s->num_triangles);
+    mli_malloc(s->triangles_surfaces, mliSurfaces, s->num_triangles);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_malloc_spherical_cap_hex(mliScenery* scenery) {
-    scenery->spherical_cap_hex = (mliSphericalCapHex*)malloc(
-        scenery->num_spherical_cap_hex*
-        sizeof(mliSphericalCapHex));
-    scenery->spherical_cap_hex_surfaces = (mliSurfaces*)malloc(
-        scenery->num_spherical_cap_hex*sizeof(mliSurfaces));
-    scenery->spherical_cap_hex_T = (mliHomTraComp*)malloc(
-        scenery->num_spherical_cap_hex*sizeof(mliHomTraComp));
+int __mliScenery_malloc_spherical_cap_hex(mliScenery* s) {
+    mli_malloc(
+        s->spherical_cap_hex, mliSphericalCapHex, s->num_spherical_cap_hex);
+    mli_malloc(
+        s->spherical_cap_hex_surfaces, mliSurfaces, s->num_spherical_cap_hex);
+    mli_malloc(
+        s->spherical_cap_hex_T, mliHomTraComp, s->num_spherical_cap_hex);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_malloc_spheres(mliScenery* scenery) {
-    scenery->spheres = (double*)malloc(scenery->num_spheres*sizeof(double));
-    scenery->spheres_surfaces = (mliSurfaces*)malloc(
-        scenery->num_spheres*sizeof(mliSurfaces));
-    scenery->spheres_T = (mliHomTraComp*)malloc(
-        scenery->num_spheres*sizeof(mliHomTraComp));
+int __mliScenery_malloc_spheres(mliScenery* s) {
+    mli_malloc(s->spheres, double, s->num_spheres);
+    mli_malloc(s->spheres_surfaces, mliSurfaces, s->num_spheres);
+    mli_malloc(s->spheres_T, mliHomTraComp, s->num_spheres);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_malloc_cylinders(mliScenery* scenery) {
-    scenery->cylinders = (mliCylinder*)malloc(
-        scenery->num_cylinders*sizeof(mliCylinder));
-    scenery->cylinders_surfaces = (mliSurfaces*)malloc(
-        scenery->num_cylinders*sizeof(mliSurfaces));
-    scenery->cylinders_T = (mliHomTraComp*)malloc(
-        scenery->num_cylinders*sizeof(mliHomTraComp));
+int __mliScenery_malloc_cylinders(mliScenery* s) {
+    mli_malloc(s->cylinders, mliCylinder, s->num_cylinders);
+    mli_malloc(s->cylinders_surfaces, mliSurfaces, s->num_cylinders);
+    mli_malloc(s->cylinders_T, mliHomTraComp, s->num_cylinders);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_malloc_hexagons(mliScenery* scenery) {
-    scenery->hexagons = (mliHexagon*)malloc(
-        scenery->num_hexagons*sizeof(mliHexagon));
-    scenery->hexagons_surfaces = (mliSurfaces*)malloc(
-        scenery->num_hexagons*sizeof(mliSurfaces));
-    scenery->hexagons_T = (mliHomTraComp*)malloc(
-        scenery->num_hexagons*sizeof(mliHomTraComp));
+int __mliScenery_malloc_hexagons(mliScenery* s) {
+    mli_malloc(s->hexagons, mliHexagon, s->num_hexagons);
+    mli_malloc(s->hexagons_surfaces, mliSurfaces, s->num_hexagons);
+    mli_malloc(s->hexagons_T, mliHomTraComp, s->num_hexagons);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_malloc_bicircleplane(mliScenery* scenery) {
-    const uint32_t num = scenery->num_bicircleplanes;
-    scenery->bicircleplanes =
-        (mliBiCirclePlane*)malloc(num*sizeof(mliBiCirclePlane));
-    scenery->bicircleplanes_surfaces =
-        (mliSurfaces*)malloc(num*sizeof(mliSurfaces));
-    scenery->bicircleplanes_T =
-        (mliHomTraComp*)malloc(num*sizeof(mliHomTraComp));
+int __mliScenery_malloc_bicircleplane(mliScenery* s) {
+    mli_malloc(s->bicircleplanes, mliBiCirclePlane, s->num_bicircleplanes);
+    mli_malloc(s->bicircleplanes_surfaces, mliSurfaces, s->num_bicircleplanes);
+    mli_malloc(s->bicircleplanes_T, mliHomTraComp, s->num_bicircleplanes);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_malloc_functions(mliScenery* scenery) {
-    scenery->functions = (mliFunc*)malloc(
-        scenery->num_functions*sizeof(mliFunc));
+int __mliScenery_malloc_functions(mliScenery* s) {
+    mli_malloc(s->functions, mliFunc, s->num_functions);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_malloc_colors(mliScenery* scenery) {
-    scenery->colors = (mliColor*)malloc(
-        scenery->num_colors*sizeof(mliColor));
+int __mliScenery_malloc_colors(mliScenery* s) {
+    mli_malloc(s->colors, mliColor, s->num_colors);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_malloc_surfaces(mliScenery* scenery) {
-    scenery->surfaces = (mliSurface*)malloc(
-        scenery->num_surfaces*sizeof(mliSurface));
+int __mliScenery_malloc_surfaces(mliScenery* s) {
+    mli_malloc(s->surfaces, mliSurface, s->num_surfaces);
+    return 1;
+error:
+    return 0;
 }
 
-void mliScenery_malloc(mliScenery* scenery) {
-    __mliScenery_malloc_functions(scenery);
-    __mliScenery_malloc_colors(scenery);
-    __mliScenery_malloc_surfaces(scenery);
-    __mliScenery_malloc_vertices_and_triangles(scenery);
-    __mliScenery_malloc_spherical_cap_hex(scenery);
-    __mliScenery_malloc_spheres(scenery);
-    __mliScenery_malloc_cylinders(scenery);
-    __mliScenery_malloc_hexagons(scenery);
-    __mliScenery_malloc_bicircleplane(scenery);
+int mliScenery_malloc(mliScenery* s) {
+    mli_check_mem(__mliScenery_malloc_functions(s));
+    mli_check_mem(__mliScenery_malloc_colors(s));
+    mli_check_mem(__mliScenery_malloc_surfaces(s));
+    mli_check_mem(__mliScenery_malloc_vertices_and_triangles(s));
+    mli_check_mem(__mliScenery_malloc_spherical_cap_hex(s));
+    mli_check_mem(__mliScenery_malloc_spheres(s));
+    mli_check_mem(__mliScenery_malloc_cylinders(s));
+    mli_check_mem(__mliScenery_malloc_hexagons(s));
+    mli_check_mem(__mliScenery_malloc_bicircleplane(s));
+    return 1;
+error:
+    mliScenery_free(s);
+    return 0;
 }
 
 void __mliScenery_write_spherical_cap_hex(const mliScenery *scenery, FILE *f) {
@@ -302,7 +316,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     FILE *f;
     uint64_t i;
     f = fopen(path, "w");
-    if (f == NULL) goto close_failure;
+    if (f == NULL) goto error;
     fprintf(f, "merlict_c89\n");
 
     /* nums */
@@ -347,7 +361,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     fclose(f);
     return 1;
 
-    close_failure:
+error:
     fclose(f);
     return 0;}
 
@@ -446,8 +460,8 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     char line[64];
     f = fopen(path, "r");
     if (f == NULL) return 0;
-    if (fgets(line, 1024, f) == NULL) goto close_failure;
-    if (strcmp(line, "merlict_c89\n") != 0) goto close_failure;
+    if (fgets(line, 1024, f) == NULL) goto error;
+    if (strcmp(line, "merlict_c89\n") != 0) goto error;
 
     /* nums */
     fread(&scenery->num_functions, sizeof(uint32_t), 1u, f);
@@ -461,7 +475,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     fread(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
     fread(&scenery->num_bicircleplanes, sizeof(uint32_t), 1u, f);
 
-    mliScenery_malloc(scenery);
+    mli_check_mem(mliScenery_malloc(scenery));
 
     /* functions */
     for (i = 0; i < scenery->num_functions; i++) {
@@ -483,7 +497,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     fclose(f);
     return 1;
 
-    close_failure:
+error:
     fclose(f);
     return 0;}
 
