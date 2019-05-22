@@ -13,6 +13,13 @@ typedef struct {
     double *y;
 } mliFunc;
 
+mliFunc mliFunc_init() {
+    mliFunc f;
+    f.num_points = 0u;
+    f.x = NULL;
+    f.y = NULL;
+    return f;}
+
 void mliFunc_free(mliFunc *f) {
     free(f->x);
     free(f->y);

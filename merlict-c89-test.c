@@ -1316,7 +1316,7 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        mliFunc func;
+        mliFunc func = mliFunc_init();
         CHECK(mliFunc_malloc(&func, 0u));
         CHECK(func.num_points == 0u);
         CHECK(mliFunc_x_is_causal(&func));
@@ -1324,7 +1324,7 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        mliFunc func;
+        mliFunc func = mliFunc_init();
         CHECK(mliFunc_malloc(&func, 3u));
         CHECK(func.num_points == 3u);
         func.x[0] = 0.;
@@ -1335,7 +1335,7 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        mliFunc func;
+        mliFunc func = mliFunc_init();
         double y;
         CHECK(mliFunc_malloc(&func, 5u));
         CHECK(func.num_points == 5u);
