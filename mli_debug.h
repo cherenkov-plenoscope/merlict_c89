@@ -25,6 +25,8 @@
         goto error; \
     }
 
+#define mli_c(A) mli_check(A, "Not expected.")
+
 #define mli_check_mem(A) mli_check((A), "Out of memory.")
 
 #define mli_sentinel(M) { \
@@ -36,6 +38,16 @@
 #define mli_malloc(PTR, TYPE, NUM) { \
     PTR = (TYPE*)malloc(NUM*sizeof(TYPE)); \
     mli_check_mem(PTR); \
+}
+
+#define mli_fwrite(PTR, SIZE_OF_TYPE, NUM, F) { \
+    const size_t num_written = fwrite(PTR, SIZE_OF_TYPE, NUM, F); \
+    mli_check(num_written == NUM, "Can not write to file."); \
+}
+
+#define mli_fread(PTR, SIZE_OF_TYPE, NUM, F) { \
+    const size_t num_read = fread(PTR, SIZE_OF_TYPE, NUM, F); \
+    mli_check(num_read == NUM, "Can not read from file."); \
 }
 
 #endif

@@ -67,6 +67,50 @@ typedef struct {
     mliHomTraComp* bicircleplanes_T;
 } mliScenery;
 
+mliScenery mliScenery_init() {
+    mliScenery s;
+    s.num_functions = 0u;
+    s.functions = NULL;
+
+    s.num_colors = 0u;
+    s.colors = NULL;
+
+    s.num_surfaces = 0u;
+    s.surfaces = NULL;
+
+    s.num_vertices = 0u;
+    s.vertices = NULL;
+
+    s.num_triangles = 0u;
+    s.triangles = NULL;
+    s.triangles_surfaces = NULL;
+
+    s.num_spherical_cap_hex = 0u;
+    s.spherical_cap_hex = NULL;
+    s.spherical_cap_hex_surfaces = NULL;
+    s.spherical_cap_hex_T = NULL;
+
+    s.num_spheres = 0u;
+    s.spheres = NULL;
+    s.spheres_surfaces = NULL;
+    s.spheres_T = NULL;
+
+    s.num_cylinders = 0u;
+    s.cylinders = NULL;
+    s.cylinders_surfaces = NULL;
+    s.cylinders_T = NULL;
+
+    s.num_hexagons = 0u;
+    s.hexagons = NULL;
+    s.hexagons_surfaces = NULL;
+    s.hexagons_T = NULL;
+
+    s.num_bicircleplanes = 0u;
+    s.bicircleplanes = NULL;
+    s.bicircleplanes_surfaces = NULL;
+    s.bicircleplanes_T = NULL;
+    return s;}
+
 void __mliScenery_free_functions(mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_functions; i++) {
@@ -234,224 +278,261 @@ error:
     return 0;
 }
 
-void __mliScenery_write_spherical_cap_hex(const mliScenery *scenery, FILE *f) {
-    fwrite(
+int __mliScenery_write_spherical_cap_hex(const mliScenery *scenery, FILE *f) {
+    mli_fwrite(
         scenery->spherical_cap_hex,
         sizeof(mliSphericalCapHex),
         scenery->num_spherical_cap_hex,
         f);
-    fwrite(
+    mli_fwrite(
         scenery->spherical_cap_hex_surfaces,
         sizeof(mliSurfaces),
         scenery->num_spherical_cap_hex,
         f);
-    fwrite(
+    mli_fwrite(
         scenery->spherical_cap_hex_T,
         sizeof(mliHomTraComp),
         scenery->num_spherical_cap_hex,
         f);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_write_spheres(const mliScenery *scenery, FILE *f) {
-    fwrite(scenery->spheres, sizeof(double), scenery->num_spheres, f);
-    fwrite(
+int __mliScenery_write_spheres(const mliScenery *scenery, FILE *f) {
+    mli_fwrite(scenery->spheres, sizeof(double), scenery->num_spheres, f);
+    mli_fwrite(
         scenery->spheres_surfaces,
         sizeof(mliSurfaces),
         scenery->num_spheres,
         f);
-    fwrite(
+    mli_fwrite(
         scenery->spheres_T,
         sizeof(mliHomTraComp),
         scenery->num_spheres,
         f);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_write_cylinders(const mliScenery *scenery, FILE *f) {
-    fwrite(scenery->cylinders, sizeof(mliCylinder), scenery->num_cylinders, f);
-    fwrite(
+int __mliScenery_write_cylinders(const mliScenery *scenery, FILE *f) {
+    mli_fwrite(scenery->cylinders, sizeof(mliCylinder), scenery->num_cylinders, f);
+    mli_fwrite(
         scenery->cylinders_surfaces,
         sizeof(mliSurfaces),
         scenery->num_cylinders,
         f);
-    fwrite(
+    mli_fwrite(
         scenery->cylinders_T,
         sizeof(mliHomTraComp),
         scenery->num_cylinders,
         f);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_write_hexagons(const mliScenery *scenery, FILE *f) {
-    fwrite(scenery->hexagons, sizeof(mliHexagon), scenery->num_hexagons, f);
-    fwrite(
+int __mliScenery_write_hexagons(const mliScenery *scenery, FILE *f) {
+    mli_fwrite(scenery->hexagons, sizeof(mliHexagon), scenery->num_hexagons, f);
+    mli_fwrite(
         scenery->hexagons_surfaces,
         sizeof(mliSurfaces),
         scenery->num_hexagons,
         f);
-    fwrite(
+    mli_fwrite(
         scenery->hexagons_T,
         sizeof(mliHomTraComp),
         scenery->num_hexagons,
         f);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_write_bicircleplanes(const mliScenery *scenery, FILE *f) {
-    fwrite(
+int __mliScenery_write_bicircleplanes(const mliScenery *scenery, FILE *f) {
+    mli_fwrite(
         scenery->bicircleplanes,
         sizeof(mliBiCirclePlane),
         scenery->num_bicircleplanes,
         f);
-    fwrite(
+    mli_fwrite(
         scenery->bicircleplanes_surfaces,
         sizeof(mliSurfaces),
         scenery->num_bicircleplanes,
         f);
-    fwrite(
+    mli_fwrite(
         scenery->bicircleplanes_T,
         sizeof(mliHomTraComp),
         scenery->num_bicircleplanes,
         f);
+    return 1;
+error:
+    return 0;
 }
 
 int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     FILE *f;
     uint64_t i;
+    char magic[12] = "merlict_c89\n";
     f = fopen(path, "w");
-    if (f == NULL) goto error;
-    fprintf(f, "merlict_c89\n");
+    mli_check(f != NULL, "Can not open Scenery-file for writing.");
+
+    /* magic identifier */
+    mli_fwrite(magic, sizeof(char), 12u, f);
 
     /* nums */
-    fwrite(&scenery->num_functions, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_colors, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_spheres, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_cylinders, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
-    fwrite(&scenery->num_bicircleplanes, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_functions, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_colors, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_spheres, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_cylinders, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_bicircleplanes, sizeof(uint32_t), 1u, f);
 
     /* functions */
     for (i = 0; i < scenery->num_functions; i++) {
         mliFunc_fwrite(&scenery->functions[i], f);}
 
     /* colors */
-    fwrite(scenery->colors, sizeof(mliColor), scenery->num_colors, f);
+    mli_fwrite(scenery->colors, sizeof(mliColor), scenery->num_colors, f);
 
     /* surfaces */
-    fwrite(scenery->surfaces, sizeof(mliSurface), scenery->num_surfaces, f);
+    mli_fwrite(scenery->surfaces, sizeof(mliSurface), scenery->num_surfaces, f);
 
     /* vertices */
-    fwrite(scenery->vertices, sizeof(mliVec), scenery->num_vertices, f);
+    mli_fwrite(scenery->vertices, sizeof(mliVec), scenery->num_vertices, f);
 
     /* triangles */
-    fwrite(scenery->triangles, sizeof(mliFace), scenery->num_triangles, f);
-    fwrite(
+    mli_fwrite(scenery->triangles, sizeof(mliFace), scenery->num_triangles, f);
+    mli_fwrite(
         scenery->triangles_surfaces,
         sizeof(mliSurfaces),
         scenery->num_triangles,
         f);
 
-    __mliScenery_write_spherical_cap_hex(scenery, f);
-    __mliScenery_write_spheres(scenery, f);
-    __mliScenery_write_cylinders(scenery, f);
-    __mliScenery_write_hexagons(scenery, f);
-    __mliScenery_write_bicircleplanes(scenery, f);
+    mli_c(__mliScenery_write_spherical_cap_hex(scenery, f));
+    mli_c(__mliScenery_write_spheres(scenery, f));
+    mli_c(__mliScenery_write_cylinders(scenery, f));
+    mli_c(__mliScenery_write_hexagons(scenery, f));
+    mli_c(__mliScenery_write_bicircleplanes(scenery, f));
 
     fclose(f);
     return 1;
-
 error:
-    fclose(f);
+    if (f != NULL) {
+        fclose(f);
+    }
     return 0;}
 
 
-void __mliScenery_read_vertices_and_triangles(mliScenery *scenery, FILE* f) {
-    fread(scenery->vertices, sizeof(mliVec), scenery->num_vertices, f);
-    fread(scenery->triangles, sizeof(mliFace), scenery->num_triangles, f);
-    fread(
+int __mliScenery_read_vertices_and_triangles(mliScenery *scenery, FILE* f) {
+    mli_fread(scenery->vertices, sizeof(mliVec), scenery->num_vertices, f);
+    mli_fread(scenery->triangles, sizeof(mliFace), scenery->num_triangles, f);
+    mli_fread(
         scenery->triangles_surfaces,
         sizeof(mliSurfaces),
         scenery->num_triangles,
         f);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_read_spherical_cap_hex(mliScenery *scenery, FILE* f) {
-    fread(
+int __mliScenery_read_spherical_cap_hex(mliScenery *scenery, FILE* f) {
+    mli_fread(
         scenery->spherical_cap_hex,
         sizeof(mliSphericalCapHex),
         scenery->num_spherical_cap_hex, f);
-    fread(
+    mli_fread(
         scenery->spherical_cap_hex_surfaces,
         sizeof(mliSurfaces),
         scenery->num_spherical_cap_hex, f);
-    fread(
+    mli_fread(
         scenery->spherical_cap_hex_T,
         sizeof(mliHomTraComp),
         scenery->num_spherical_cap_hex, f);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_read_spheres(mliScenery *scenery, FILE* f) {
-    fread(
+int __mliScenery_read_spheres(mliScenery *scenery, FILE* f) {
+    mli_fread(
         scenery->spheres,
         sizeof(double),
         scenery->num_spheres, f);
-    fread(
+    mli_fread(
         scenery->spheres_surfaces,
         sizeof(mliSurfaces),
         scenery->num_spheres, f);
-    fread(
+    mli_fread(
         scenery->spheres_T,
         sizeof(mliHomTraComp),
         scenery->num_spheres, f);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_read_cylinders(mliScenery *scenery, FILE* f) {
-    fread(
+int __mliScenery_read_cylinders(mliScenery *scenery, FILE* f) {
+    mli_fread(
         scenery->cylinders,
         sizeof(mliCylinder),
         scenery->num_cylinders, f);
-    fread(
+    mli_fread(
         scenery->cylinders_surfaces,
         sizeof(mliSurfaces),
         scenery->num_cylinders, f);
-    fread(
+    mli_fread(
         scenery->cylinders_T,
         sizeof(mliHomTraComp),
         scenery->num_cylinders, f);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_read_hexagons(mliScenery *scenery, FILE* f) {
-    fread(
+int __mliScenery_read_hexagons(mliScenery *scenery, FILE* f) {
+    mli_fread(
         scenery->hexagons,
         sizeof(mliHexagon),
         scenery->num_hexagons, f);
-    fread(
+    mli_fread(
         scenery->hexagons_surfaces,
         sizeof(mliSurfaces),
         scenery->num_hexagons, f);
-    fread(
+    mli_fread(
         scenery->hexagons_T,
         sizeof(mliHomTraComp),
         scenery->num_hexagons, f);
+    return 1;
+error:
+    return 0;
 }
 
-void __mliScenery_read_bicircleplanes(mliScenery *scenery, FILE* f) {
-    fread(
+int __mliScenery_read_bicircleplanes(mliScenery *scenery, FILE* f) {
+    mli_fread(
         scenery->bicircleplanes,
         sizeof(mliBiCirclePlane),
         scenery->num_bicircleplanes,
         f);
-    fread(
+    mli_fread(
         scenery->bicircleplanes_surfaces,
         sizeof(mliSurfaces),
         scenery->num_bicircleplanes,
         f);
-    fread(
+    mli_fread(
         scenery->bicircleplanes_T,
         sizeof(mliHomTraComp),
         scenery->num_bicircleplanes,
         f);
+    return 1;
+error:
+    return 0;
 }
 
 int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
@@ -459,21 +540,22 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     uint64_t i;
     char line[64];
     f = fopen(path, "r");
-    if (f == NULL) return 0;
-    if (fgets(line, 1024, f) == NULL) goto error;
-    if (strcmp(line, "merlict_c89\n") != 0) goto error;
+    mli_check(f != NULL, "Can not open Scenery-file for reading.")
+    mli_check(fgets(line, 1024, f) != NULL, "Can not read magic-line");
+    mli_check(strcmp(line, "merlict_c89\n") == 0,
+        "Expected magic identifier to be 'merlict_c89'");
 
     /* nums */
-    fread(&scenery->num_functions, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_colors, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_spheres, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_cylinders, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
-    fread(&scenery->num_bicircleplanes, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_functions, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_colors, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_spheres, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_cylinders, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_bicircleplanes, sizeof(uint32_t), 1u, f);
 
     mli_check_mem(mliScenery_malloc(scenery));
 
@@ -482,23 +564,25 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
         mliFunc_fread(&scenery->functions[i], f);}
 
     /* colors */
-    fread(scenery->colors, sizeof(mliColor), scenery->num_colors, f);
+    mli_fread(scenery->colors, sizeof(mliColor), scenery->num_colors, f);
 
     /* surfaces */
-    fread(scenery->surfaces, sizeof(mliSurface), scenery->num_surfaces, f);
+    mli_fread(scenery->surfaces, sizeof(mliSurface), scenery->num_surfaces, f);
 
-    __mliScenery_read_vertices_and_triangles(scenery, f);
-    __mliScenery_read_spherical_cap_hex(scenery, f);
-    __mliScenery_read_spheres(scenery, f);
-    __mliScenery_read_cylinders(scenery, f);
-    __mliScenery_read_hexagons(scenery, f);
-    __mliScenery_read_bicircleplanes(scenery, f);
+    mli_c(__mliScenery_read_vertices_and_triangles(scenery, f));
+    mli_c(__mliScenery_read_spherical_cap_hex(scenery, f));
+    mli_c(__mliScenery_read_spheres(scenery, f));
+    mli_c(__mliScenery_read_cylinders(scenery, f));
+    mli_c(__mliScenery_read_hexagons(scenery, f));
+    mli_c(__mliScenery_read_bicircleplanes(scenery, f));
 
     fclose(f);
     return 1;
-
 error:
-    fclose(f);
+    if (f != NULL) {
+        fclose(f);
+    }
+    mliScenery_free(scenery);
     return 0;}
 
 int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {

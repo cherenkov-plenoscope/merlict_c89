@@ -424,8 +424,8 @@ int main(int argc, char *argv[]) {
     /* mliScenery */
     {
         uint64_t i;
-        mliScenery scenery;
-        mliScenery scenery_back;
+        mliScenery scenery = mliScenery_init();
+        mliScenery scenery_back = mliScenery_init();
         mliMesh diff_cube_sphere;
         mliColor red = {255., 0., 0.};
         mliColor blue = {0., 0., 255.};
@@ -556,7 +556,7 @@ int main(int argc, char *argv[]) {
 
     /* render image */
     {
-        mliScenery scenery;
+        mliScenery scenery = mliScenery_init();
         mliOcTree octree;
         mliCamera camera;
         mliImage img = mliImage_init();
@@ -583,7 +583,7 @@ int main(int argc, char *argv[]) {
 
     /* scenery indexes are valid */
     {
-        mliScenery scenery;
+        mliScenery scenery = mliScenery_init();
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
         CHECK(mliScenery_valid(&scenery));     /* <--- to be tested */
         mliScenery_free(&scenery);
@@ -594,7 +594,7 @@ int main(int argc, char *argv[]) {
         mliOBB obb;
         uint64_t i;
         uint64_t num_surface_entities;
-        mliScenery scenery;
+        mliScenery scenery = mliScenery_init();
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
         num_surface_entities = scenery.num_triangles;
         num_surface_entities += scenery.num_spherical_cap_hex;
@@ -618,7 +618,7 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        mliScenery scenery;
+        mliScenery scenery = mliScenery_init();
         mliOBB obb;
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
         CHECK(mliScenery_valid(&scenery));
@@ -636,14 +636,14 @@ int main(int argc, char *argv[]) {
 
     /* read non existing file */
     {
-        mliScenery scenery;
+        mliScenery scenery = mliScenery_init();
         CHECK(!mliScenery_read_from_path(&scenery, "does_not_exist.tmp"));
     }
 
 
     /* scenery intersection interface -> sphere */
     {
-        mliScenery scenery;
+        mliScenery scenery = mliScenery_init();
         mliIntersection isec;
         int hit = 0;
         uint64_t sphere_idx;
@@ -681,7 +681,7 @@ int main(int argc, char *argv[]) {
 
     /* OctTree*/
     {
-        mliScenery scenery;
+        mliScenery scenery = mliScenery_init();
         mliOcTree octree;
         mliIntersection isec;
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
@@ -709,7 +709,7 @@ int main(int argc, char *argv[]) {
 
     /* mliScenery asymetric */
     {
-        mliScenery scenery;
+        mliScenery scenery = mliScenery_init();
         mliVec offset;
         uint64_t i;
         scenery.num_functions = 1u;
@@ -757,7 +757,7 @@ int main(int argc, char *argv[]) {
 
     /* render image asymetric scenery */
     {
-        mliScenery scenery;
+        mliScenery scenery = mliScenery_init();
         mliOcTree octree;
         mliCamera camera;
         mliImage img = mliImage_init();

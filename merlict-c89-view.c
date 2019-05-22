@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
     int key;
     uint64_t num_screenshots = 0;
     char timestamp[1024];
-    mliScenery scenery;
+    mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     mliCamera camera;
     mliImage img = mliImage_init();
@@ -185,7 +185,8 @@ int main(int argc, char *argv[]) {
     mliOcTree_free(&octree);
     mliScenery_free(&scenery);
 
+    return EXIT_SUCCESS;
 error:
     tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal);
-    return EXIT_SUCCESS;
+    return EXIT_FAILURE;
 }
