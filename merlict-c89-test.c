@@ -559,7 +559,7 @@ int main(int argc, char *argv[]) {
         mliScenery scenery;
         mliOcTree octree;
         mliCamera camera;
-        mliImage img;
+        mliImage img = mliImage_init();
         mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
         octree = mliOcTree_from_scenery(&scenery);
         /* mliNode_print(&octree.root, 0); */
