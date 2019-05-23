@@ -371,15 +371,17 @@ error:
     return 0;
 }
 
+#define MLI_SCENERY_MAGIC 43180u
+
 int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     FILE *f;
     uint64_t i;
-    char magic[12] = "merlict_c89\n";
+    uint64_t magic = MLI_SCENERY_MAGIC;
     f = fopen(path, "w");
     mli_check(f != NULL, "Can not open Scenery-file for writing.");
 
     /* magic identifier */
-    mli_fwrite(magic, sizeof(char), 12u, f);
+    mli_fwrite(&magic, sizeof(uint64_t), 1u, f);
 
     /* nums */
     mli_fwrite(&scenery->num_functions, sizeof(uint32_t), 1u, f);
@@ -538,12 +540,11 @@ error:
 int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     FILE *f;
     uint64_t i;
-    char line[64];
+    uint64_t magic = 0u;
     f = fopen(path, "r");
     mli_check(f != NULL, "Can not open Scenery-file for reading.")
-    mli_check(fgets(line, 1024, f) != NULL, "Can not read magic-line");
-    mli_check(strcmp(line, "merlict_c89\n") == 0,
-        "Expected magic identifier to be 'merlict_c89'");
+    mli_fread(&magic, sizeof(uint64_t), 1u, f);
+    mli_check(magic == MLI_SCENERY_MAGIC, "Expected magic identifier.'");
 
     /* nums */
     mli_fread(&scenery->num_functions, sizeof(uint32_t), 1u, f);
