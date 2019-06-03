@@ -63,14 +63,17 @@ int mliFunc_fwrite(const mliFunc *func, FILE* f) {
     fwrite(&func->num_points, sizeof(uint32_t), 1u, f);
     fwrite(func->x, sizeof(double), func->num_points, f);
     fwrite(func->y, sizeof(double), func->num_points, f);
-    return EXIT_SUCCESS;}
+    return 1;}
 
 int mliFunc_fread(mliFunc *func, FILE* f) {
-    fread(&func->num_points, sizeof(uint32_t), 1u, f);
+    mli_fread(&func->num_points, sizeof(uint32_t), 1u, f);
     mliFunc_malloc(func, func->num_points);
-    fread(func->x, sizeof(double), func->num_points, f);
-    fread(func->y, sizeof(double), func->num_points, f);
-    return EXIT_SUCCESS;}
+    mli_fread(func->x, sizeof(double), func->num_points, f);
+    mli_fread(func->y, sizeof(double), func->num_points, f);
+    return 1;
+error:
+    mliFunc_free(func);
+    return 0;}
 
 int mliFunc_is_equal(const mliFunc a, const mliFunc b) {
     uint64_t i;

@@ -97,9 +97,9 @@ int mliImage_malloc_from_ppm(
         for (col = 0; col < img->num_cols; col++) {
             uint8_t r, g, b;
             mliColor color;
-            fread(&r, sizeof(uint8_t), 1u, fin);
-            fread(&g, sizeof(uint8_t), 1u, fin);
-            fread(&b, sizeof(uint8_t), 1u, fin);
+            mli_fread(&r, sizeof(uint8_t), 1u, fin);
+            mli_fread(&g, sizeof(uint8_t), 1u, fin);
+            mli_fread(&b, sizeof(uint8_t), 1u, fin);
             color.r = (float)r;
             color.g = (float)g;
             color.b = (float)b;
@@ -110,7 +110,6 @@ int mliImage_malloc_from_ppm(
     mli_check(!ferror(fin), "File error.");
     fclose(fin);
     return 1;
-
 error:
     mliImage_free(img);
     fclose(fin);
