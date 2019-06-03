@@ -16,6 +16,8 @@
 #include "mliHexagon_intersection.h"
 #include "mliBiCirclePlane_OBB.h"
 #include "mliBiCirclePlane_intersection.h"
+#include "mliDisc_OBB.h"
+#include "mliDisc_intersection.h"
 #include "mliOBB.h"
 #include "mliIntersection.h"
 
@@ -32,6 +34,7 @@ uint64_t mliScenery_num_objects(const mliScenery* scenery) {
     last += scenery->num_cylinders;
     last += scenery->num_hexagons;
     last += scenery->num_bicircleplanes;
+    last += scenery->num_discs;
     return last;}
 
 mliIndex __mliScenery_resolve_index(
@@ -53,8 +56,11 @@ mliIndex __mliScenery_resolve_index(
     const uint64_t idx_start_bicircleplanes =
         idx_start_hexagons + scenery->num_hexagons;
 
-    const uint64_t idx_next =
+    const uint64_t idx_start_discs =
         idx_start_bicircleplanes + scenery->num_bicircleplanes;
+
+    const uint64_t idx_next =
+        idx_start_discs + scenery->num_discs;
 
     mliIndex ri;
     if (idx < scenery->num_triangles) {
@@ -77,9 +83,13 @@ mliIndex __mliScenery_resolve_index(
         ri.type = MLI_HEXAGON;
         ri.idx = idx - idx_start_hexagons;
         return ri;
-    } else if (idx < idx_next) {
+    } else if (idx < idx_start_discs) {
         ri.type = MLI_BICIRCLEPLANE;
         ri.idx = idx - idx_start_bicircleplanes;
+        return ri;
+    } else if (idx < idx_next) {
+        ri.type = MLI_DISC;
+        ri.idx = idx - idx_start_discs;
         return ri;
     }
     assert(idx < mliScenery_num_objects(scenery) + 1);
@@ -130,6 +140,12 @@ int mliScenery_overlap_obb(
                 scenery->bicircleplanes_T[i.idx],
                 obb);
             break;
+        case MLI_DISC:
+            return mliDisc_has_overlap_obb(
+                scenery->discs[i.idx],
+                scenery->discs_T[i.idx],
+                obb);
+            break;
         default:
             return 0;
             break;
@@ -173,6 +189,11 @@ mliOBB mliScenery_obb(
             return mliBiCirclePlane_obb(
                 scenery->bicircleplanes[i.idx],
                 scenery->bicircleplanes_T[i.idx]);
+            break;
+        case MLI_DISC:
+            return mliDisc_obb(
+                scenery->discs[i.idx],
+                scenery->discs_T[i.idx]);
             break;
         default:
             obb.lower = mliVec_set(0., 0., 0);
@@ -250,6 +271,13 @@ int mliScenery_intersection(
                 ray,
                 intersection);
             break;
+        case MLI_DISC:
+            return mliDisc_intersection(
+                scenery->discs[i.idx],
+                scenery->discs_T[i.idx],
+                ray,
+                intersection);
+            break;
         default:
             return 0;
             break;
@@ -280,6 +308,9 @@ mliSurfaces mliScenery_object_surfaces(
             break;
         case MLI_BICIRCLEPLANE:
             return scenery->bicircleplanes_surfaces[i.idx];
+            break;
+        case MLI_DISC:
+            return scenery->discs_surfaces[i.idx];
             break;
     }
     return null;

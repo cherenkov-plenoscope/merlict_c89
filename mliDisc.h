@@ -7,7 +7,13 @@ typedef struct {
     double radius;
 } mliDisc;
 
+
 int mliDisc_is_equal(const mliDisc a, const mliDisc b) {
     return a.radius == b.radius;}
+
+
+int mliDisc_is_valid(const mliDisc a) {
+    return a.radius >= 0.;}
+
 
 #endif

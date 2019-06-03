@@ -14,6 +14,7 @@
 #include "mliCylinder.h"
 #include "mliHexagon.h"
 #include "mliBiCirclePlane.h"
+#include "mliDisc.h"
 #include "mliSurface.h"
 #include "mliSurfaces.h"
 
@@ -23,6 +24,7 @@
 #define MLI_CYLINDER 3u
 #define MLI_HEXAGON 4u
 #define MLI_BICIRCLEPLANE 5u
+#define MLI_DISC 6u
 
 typedef struct {
     uint32_t num_functions;
@@ -65,6 +67,11 @@ typedef struct {
     mliBiCirclePlane *bicircleplanes;
     mliSurfaces *bicircleplanes_surfaces;
     mliHomTraComp* bicircleplanes_T;
+
+    uint32_t num_discs;
+    mliDisc *discs;
+    mliSurfaces *discs_surfaces;
+    mliHomTraComp* discs_T;
 } mliScenery;
 
 mliScenery mliScenery_init() {
@@ -109,6 +116,11 @@ mliScenery mliScenery_init() {
     s.bicircleplanes = NULL;
     s.bicircleplanes_surfaces = NULL;
     s.bicircleplanes_T = NULL;
+
+    s.num_discs = 0u;
+    s.discs = NULL;
+    s.discs_surfaces = NULL;
+    s.discs_T = NULL;
     return s;}
 
 void __mliScenery_free_functions(mliScenery *scenery) {
@@ -172,6 +184,13 @@ void __mliScenery_free_bicircleplanes(mliScenery *scenery) {
     scenery->num_bicircleplanes = 0;
 }
 
+void __mliScenery_free_discs(mliScenery *scenery) {
+    free(scenery->discs);
+    free(scenery->discs_surfaces);
+    free(scenery->discs_T);
+    scenery->num_discs = 0;
+}
+
 void mliScenery_free(mliScenery *scenery) {
     __mliScenery_free_functions(scenery);
     __mliScenery_free_colors(scenery);
@@ -182,6 +201,7 @@ void mliScenery_free(mliScenery *scenery) {
     __mliScenery_free_cylinders(scenery);
     __mliScenery_free_hexagons(scenery);
     __mliScenery_free_bicircleplanes(scenery);
+    __mliScenery_free_discs(scenery);
 }
 
 int __mliScenery_malloc_vertices_and_triangles(mliScenery* s) {
@@ -241,6 +261,15 @@ error:
     return 0;
 }
 
+int __mliScenery_malloc_discs(mliScenery* s) {
+    mli_malloc(s->discs, mliDisc, s->num_discs);
+    mli_malloc(s->discs_surfaces, mliSurfaces, s->num_discs);
+    mli_malloc(s->discs_T, mliHomTraComp, s->num_discs);
+    return 1;
+error:
+    return 0;
+}
+
 int __mliScenery_malloc_functions(mliScenery* s) {
     mli_malloc(s->functions, mliFunc, s->num_functions);
     return 1;
@@ -272,6 +301,7 @@ int mliScenery_malloc(mliScenery* s) {
     mli_check_mem(__mliScenery_malloc_cylinders(s));
     mli_check_mem(__mliScenery_malloc_hexagons(s));
     mli_check_mem(__mliScenery_malloc_bicircleplane(s));
+    mli_check_mem(__mliScenery_malloc_discs(s));
     return 1;
 error:
     mliScenery_free(s);
@@ -371,6 +401,27 @@ error:
     return 0;
 }
 
+int __mliScenery_write_discs(const mliScenery *scenery, FILE *f) {
+    mli_fwrite(
+        scenery->discs,
+        sizeof(mliDisc),
+        scenery->num_discs,
+        f);
+    mli_fwrite(
+        scenery->discs_surfaces,
+        sizeof(mliSurfaces),
+        scenery->num_discs,
+        f);
+    mli_fwrite(
+        scenery->discs_T,
+        sizeof(mliHomTraComp),
+        scenery->num_discs,
+        f);
+    return 1;
+error:
+    return 0;
+}
+
 #define MLI_SCENERY_MAGIC 43180u
 
 int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
@@ -394,6 +445,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     mli_fwrite(&scenery->num_cylinders, sizeof(uint32_t), 1u, f);
     mli_fwrite(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
     mli_fwrite(&scenery->num_bicircleplanes, sizeof(uint32_t), 1u, f);
+    mli_fwrite(&scenery->num_discs, sizeof(uint32_t), 1u, f);
 
     /* functions */
     for (i = 0; i < scenery->num_functions; i++) {
@@ -421,6 +473,7 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     mli_c(__mliScenery_write_cylinders(scenery, f));
     mli_c(__mliScenery_write_hexagons(scenery, f));
     mli_c(__mliScenery_write_bicircleplanes(scenery, f));
+    mli_c(__mliScenery_write_discs(scenery, f));
 
     fclose(f);
     return 1;
@@ -537,6 +590,27 @@ error:
     return 0;
 }
 
+int __mliScenery_read_discs(mliScenery *scenery, FILE* f) {
+    mli_fread(
+        scenery->discs,
+        sizeof(mliDisc),
+        scenery->num_discs,
+        f);
+    mli_fread(
+        scenery->discs_surfaces,
+        sizeof(mliSurfaces),
+        scenery->num_discs,
+        f);
+    mli_fread(
+        scenery->discs_T,
+        sizeof(mliHomTraComp),
+        scenery->num_discs,
+        f);
+    return 1;
+error:
+    return 0;
+}
+
 int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     FILE *f;
     uint64_t i;
@@ -557,6 +631,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     mli_fread(&scenery->num_cylinders, sizeof(uint32_t), 1u, f);
     mli_fread(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
     mli_fread(&scenery->num_bicircleplanes, sizeof(uint32_t), 1u, f);
+    mli_fread(&scenery->num_discs, sizeof(uint32_t), 1u, f);
 
     mli_check_mem(mliScenery_malloc(scenery));
 
@@ -576,6 +651,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
     mli_c(__mliScenery_read_cylinders(scenery, f));
     mli_c(__mliScenery_read_hexagons(scenery, f));
     mli_c(__mliScenery_read_bicircleplanes(scenery, f));
+    mli_c(__mliScenery_read_discs(scenery, f));
 
     fclose(f);
     return 1;
@@ -596,6 +672,10 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
     if (a->num_spherical_cap_hex != b->num_spherical_cap_hex ) return 0;
     if (a->num_spheres != b->num_spheres) return 0;
     if (a->num_cylinders != b->num_cylinders) return 0;
+    if (a->num_hexagons != b->num_hexagons) return 0;
+    if (a->num_bicircleplanes != b->num_bicircleplanes) return 0;
+    if (a->num_discs != b->num_discs) return 0;
+
     for (i = 0; i < a->num_functions; i++) {
         if (!mliFunc_is_equal(a->functions[i], b->functions[i])) return 0;}
     for (i = 0; i < a->num_colors; i++) {
@@ -676,6 +756,15 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
         if(!mliHomTraComp_is_equal(
             a->bicircleplanes_T[i],
             b->bicircleplanes_T[i]))
+            return 0;
+    }
+    for (i = 0; i < a->num_discs; i++) {
+        if (!mliDisc_is_equal(a->discs[i], b->discs[i])) {
+            return 0;
+        }
+        if (!mliSurfaces_is_equal(a->discs_surfaces[i], b->discs_surfaces[i]))
+            return 0;
+        if(!mliHomTraComp_is_equal(a->discs_T[i], b->discs_T[i]))
             return 0;
     }
     return 1;}
@@ -776,6 +865,25 @@ int mliScenery_valid_bicircleplanes(const mliScenery *scenery) {
     }
     return 1;}
 
+int mliScenery_valid_disc(const mliScenery *scenery) {
+    uint64_t i;
+    for (i = 0; i < scenery->num_discs; i++) {
+        if (scenery->discs_surfaces[i].inner >=
+            scenery->num_surfaces
+        ) {
+            return 0;
+        }
+        if (scenery->discs_surfaces[i].outer >=
+            scenery->num_surfaces
+        ) {
+            return 0;
+        }
+        if (!mliDisc_is_valid(scenery->discs[i])) {
+            return 0;
+        }
+    }
+    return 1;}
+
 int mliScenery_valid(const mliScenery *scenery) {
     if (!mliScenery_valid_surfaces(scenery))
         return 0;
@@ -790,6 +898,8 @@ int mliScenery_valid(const mliScenery *scenery) {
     if (!mliScenery_valid_hexagons(scenery))
         return 0;
     if (!mliScenery_valid_bicircleplanes(scenery))
+        return 0;
+    if (!mliScenery_valid_disc(scenery))
         return 0;
     return 1;}
 
