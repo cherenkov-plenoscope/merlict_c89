@@ -42,6 +42,10 @@
 #include "mliBiCirclePlane_OBB.h"
 #include "mliBiCirclePlane_intersection.h"
 
+#include "mliDisc.h"
+#include "mliDisc_OBB.h"
+#include "mliDisc_intersection.h"
+
 #include "mliOcTree.h"
 #include "mli_ray_octree_traversal.h"
 #include "mli_from_outside_to_inside.h"
