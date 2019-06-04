@@ -162,4 +162,85 @@ void mliImage_print(const mliImage* img) {
         }
         printf("\n");}}
 
+
+void mliImage_sobel(const mliImage *image, mliImage* out) {
+    uint64_t col, row;
+    for (col = 1; col < image->num_cols - 1; col++) {
+        for (row = 1; row < image->num_rows - 1; row++) {
+            const uint64_t idx_cm1_rp1 = mliImage_idx(image, col - 1, row + 1);
+            const uint64_t idx_cm1_rp0 = mliImage_idx(image, col - 1, row    );
+            const uint64_t idx_cm1_rm1 = mliImage_idx(image, col - 1, row - 1);
+
+            const uint64_t idx_cp1_rp1 = mliImage_idx(image, col + 1, row + 1);
+            const uint64_t idx_cp1_rp0 = mliImage_idx(image, col + 1, row    );
+            const uint64_t idx_cp1_rm1 = mliImage_idx(image, col + 1, row - 1);
+
+            const uint64_t idx_cp0_rp1 = mliImage_idx(image, col,     row + 1);
+            const uint64_t idx_cp0_rm1 = mliImage_idx(image, col,     row - 1);
+
+            const uint64_t idx = mliImage_idx(out, col, row);
+
+            double xr = 0;
+            double xg = 0;
+            double xb = 0;
+
+            double yr = 0;
+            double yg = 0;
+            double yb = 0;
+
+            xr += -1.*image->raw[idx_cm1_rp1].r;
+            xg += -1.*image->raw[idx_cm1_rp1].g;
+            xb += -1.*image->raw[idx_cm1_rp1].b;
+
+            xr += -2.*image->raw[idx_cm1_rp0].r;
+            xg += -2.*image->raw[idx_cm1_rp0].g;
+            xb += -2.*image->raw[idx_cm1_rp0].b;
+
+            xr += -1.*image->raw[idx_cm1_rm1].r;
+            xg += -1.*image->raw[idx_cm1_rm1].g;
+            xb += -1.*image->raw[idx_cm1_rm1].b;
+
+            xr += +1.*image->raw[idx_cp1_rp1].r;
+            xg += +1.*image->raw[idx_cp1_rp1].g;
+            xb += +1.*image->raw[idx_cp1_rp1].b;
+
+            xr += +2.*image->raw[idx_cp1_rp0].r;
+            xg += +2.*image->raw[idx_cp1_rp0].g;
+            xb += +2.*image->raw[idx_cp1_rp0].b;
+
+            xr += +1.*image->raw[idx_cp1_rm1].r;
+            xg += +1.*image->raw[idx_cp1_rm1].g;
+            xb += +1.*image->raw[idx_cp1_rm1].b;
+
+            yr += -1.*image->raw[idx_cm1_rp1].r;
+            yg += -1.*image->raw[idx_cm1_rp1].g;
+            yb += -1.*image->raw[idx_cm1_rp1].b;
+
+            yr += -2.*image->raw[idx_cp0_rp1].r;
+            yg += -2.*image->raw[idx_cp0_rp1].g;
+            yb += -2.*image->raw[idx_cp0_rp1].b;
+
+            yr += -1.*image->raw[idx_cp1_rp1].r;
+            yg += -1.*image->raw[idx_cp1_rp1].g;
+            yb += -1.*image->raw[idx_cp1_rp1].b;
+
+            yr += +1.*image->raw[idx_cp1_rm1].r;
+            yg += +1.*image->raw[idx_cp1_rm1].g;
+            yb += +1.*image->raw[idx_cp1_rm1].b;
+
+            yr += +2.*image->raw[idx_cp0_rm1].r;
+            yg += +2.*image->raw[idx_cp0_rm1].g;
+            yb += +2.*image->raw[idx_cp0_rm1].b;
+
+            yr += +1.*image->raw[idx_cm1_rm1].r;
+            yg += +1.*image->raw[idx_cm1_rm1].g;
+            yb += +1.*image->raw[idx_cm1_rm1].b;
+
+            out->raw[idx].r = mli_hypot(xr, yr);
+            out->raw[idx].g = mli_hypot(xg, yg);
+            out->raw[idx].b = mli_hypot(xb, yb);
+        }
+    }
+}
+
 #endif
