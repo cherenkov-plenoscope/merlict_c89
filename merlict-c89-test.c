@@ -2555,5 +2555,48 @@ int main(int argc, char *argv[]) {
         CHECK(!mli_is_inside_dual_circle_prism(.51, 0., 1., 1.));
         CHECK(mli_is_inside_dual_circle_prism(.49, 0., 1., 1.));
     }
+
+    /* json parsing */
+    {
+        char s[] = "{\"hans\": 84, \"cosmo\": [1, 3, 7]}\0";
+        char *end;
+        int64_t num_tokens;
+        jsmn_parser p;
+        jsmntok_t t[128]; /* We expect no more than 128 JSON tokens */
+
+        jsmn_init(&p);
+        num_tokens = jsmn_parse(&p, s, strlen(s), t, 128);
+
+        CHECK(num_tokens == 8);
+        CHECK(t[0].type == JSMN_OBJECT);
+        CHECK(t[0].size == 2);
+
+        CHECK(t[1].type == JSMN_STRING);
+        CHECK(t[1].size == 1);
+
+        CHECK(t[2].type == JSMN_PRIMITIVE);
+        CHECK(t[2].size == 0);
+
+        CHECK(t[3].type == JSMN_STRING);
+        CHECK(t[3].size == 1);
+
+        CHECK(t[4].type == JSMN_ARRAY);
+        CHECK(t[4].size == 3);
+
+        CHECK(t[5].type == JSMN_PRIMITIVE);
+        CHECK(t[5].size == 0);
+        CHECK(strtol(s + t[5].start, &end, 10) == 1);
+        CHECK(end == s + t[5].end);
+
+        CHECK(t[6].type == JSMN_PRIMITIVE);
+        CHECK(t[6].size == 0);
+        CHECK(strtol(s + t[6].start, &end, 10) == 3);
+        CHECK(end == s + t[6].end);
+
+        CHECK(t[7].type == JSMN_PRIMITIVE);
+        CHECK(t[7].size == 0);
+        CHECK(strtol(s + t[7].start, &end, 10) == 7);
+        CHECK(end == s + t[7].end);
+    }
     return EXIT_SUCCESS;
 }
