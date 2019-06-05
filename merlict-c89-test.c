@@ -2556,6 +2556,116 @@ int main(int argc, char *argv[]) {
         CHECK(mli_is_inside_dual_circle_prism(.49, 0., 1., 1.));
     }
 
+    /* string to int */
+    {
+        int64_t i;
+        /* Lazy to calculate this size properly. */
+        char s[256];
+
+        /* Simple case. */
+        sprintf(s, "11");
+        CHECK(mli_string_to_int(&i, s, 10));
+        CHECK(i == 11);
+
+        /* Negative number . */
+        sprintf(s, "-11");
+        CHECK(mli_string_to_int(&i, s, 10));
+        CHECK(i == -11);
+
+        /* Different base. */
+        sprintf(s, "11");
+        CHECK(mli_string_to_int(&i, s, 16));
+        CHECK(i == 17);
+
+        /* 0 */
+        sprintf(s, "0");
+        CHECK(mli_string_to_int(&i, s, 10));
+        CHECK(i == 0);
+
+        /* INT_MAX. */
+        sprintf(s, "%d", INT_MAX);
+        CHECK(mli_string_to_int(&i, s, 10));
+        CHECK(i == INT_MAX);
+
+        /* INT_MIN. */
+        sprintf(s, "%d", INT_MIN);
+        CHECK(mli_string_to_int(&i, s, 10));
+        CHECK(i == INT_MIN);
+
+        /* Leading and trailing space. */
+        sprintf(s, " 1");
+        CHECK(!mli_string_to_int(&i, s, 10));
+        sprintf(s, "1 ");
+        CHECK(!mli_string_to_int(&i, s, 10));
+
+        /* Trash characters. */
+        sprintf(s, "a10 ");
+        CHECK(!mli_string_to_int(&i, s, 10));
+        sprintf(s, "10a ");
+        CHECK(!mli_string_to_int(&i, s, 10));
+
+        /* long overflow */
+        sprintf(s, "%ld0", LONG_MAX);
+        CHECK(!mli_string_to_int(&i, s, 10));
+
+        /* long underflow */
+        sprintf(s, "%ld0", LONG_MIN);
+        CHECK(!mli_string_to_int(&i, s, 10));
+
+    }
+    /* string to float */
+    {
+        double i;
+        /* Lazy to calculate this size properly. */
+        char s[256];
+
+        /* Simple case. */
+        sprintf(s, "11.");
+        CHECK(mli_string_to_float(&i, s));
+        CHECK(i == 11.);
+
+        /* Negative number . */
+        sprintf(s, "-11.");
+        CHECK(mli_string_to_float(&i, s));
+        CHECK(i == -11);
+
+        sprintf(s, ".11");
+        CHECK(mli_string_to_float(&i, s));
+        CHECK(i == .11);
+
+        /* 0 */
+        sprintf(s, "0");
+        CHECK(mli_string_to_float(&i, s));
+        CHECK(i == 0);
+        sprintf(s, "0.");
+        CHECK(mli_string_to_float(&i, s));
+        CHECK(i == 0);
+        sprintf(s, ".0");
+        CHECK(mli_string_to_float(&i, s));
+        CHECK(i == 0);
+
+        /* Leading and trailing space. */
+        sprintf(s, " 1");
+        CHECK(!mli_string_to_float(&i, s));
+        sprintf(s, "1 ");
+        CHECK(!mli_string_to_float(&i, s));
+
+        /* Trash characters. */
+        sprintf(s, "a10");
+        CHECK(!mli_string_to_float(&i, s));
+        sprintf(s, "10a");
+        CHECK(!mli_string_to_float(&i, s));
+
+        /* long overflow */
+        sprintf(s, "9.9e9999");
+        CHECK(!mli_string_to_float(&i, s));
+
+        /* long underflow */
+        sprintf(s, "-9.9e9999");
+        CHECK(!mli_string_to_float(&i, s));
+
+    }
+
     /* json parsing */
     {
         char s[] = "{\"hans\": 84, \"cosmo\": [1, 3, 7]}\0";
@@ -2598,5 +2708,56 @@ int main(int argc, char *argv[]) {
         CHECK(strtol(s + t[7].start, &end, 10) == 7);
         CHECK(end == s + t[7].end);
     }
+
+    {
+        mliJson json = mliJson_init();
+        CHECK(json.num_chars == 0u);
+        CHECK(json.chars == NULL);
+        CHECK(json.num_tokens == 0u);
+        CHECK(json.tokens == NULL);
+    }
+
+    {
+        mliJson json = mliJson_init();
+        json.num_chars = 10;
+        json.num_tokens = 5;
+        CHECK(mliJson_malloc(&json));
+        mliJson_free(&json);
+    }
+
+    {
+        mliJson json = mliJson_init();
+        uint64_t return_idx;
+        int64_t myint;
+        double myfloat;
+        CHECK(mliJson_malloc_from_file(&json, "example.json"));
+        /* mliJson_print(&json); */
+        CHECK(mliJson_find_key(&json, 0, "name", &return_idx));
+        CHECK(return_idx == 1);
+        CHECK(mliJson_find_key(&json, 0, "skill", &return_idx));
+        CHECK(return_idx == 3);
+        CHECK(mliJson_as_float64(&json, 3 + 1, &myfloat));
+        CHECK(myfloat == 1.337);
+        CHECK(mliJson_find_key(&json, 0, "bug_rate", &return_idx));
+        CHECK(return_idx == 5);
+        CHECK(mliJson_as_int64(&json, 5 + 1, &myint));
+        CHECK(myint == 42);
+
+        CHECK(mliJson_find_key(&json, 0, "some_numbers", &return_idx));
+        CHECK(return_idx == 7);
+        CHECK(mliJson_find_key(&json, 0, "fair", &return_idx));
+        CHECK(return_idx == 13);
+
+        CHECK(mliJson_find_key(&json, 14, "trade", &return_idx));
+        CHECK(return_idx == 15);
+
+        CHECK(mliJson_find_key(&json, 14, "uff", &return_idx));
+        CHECK(return_idx == 17);
+
+        CHECK(mliJson_find_key(&json, 0, "not_exist", &return_idx) == 0);
+        CHECK(mliJson_find_key(&json, 14, "not_exist", &return_idx) == 0);
+        mliJson_free(&json);
+    }
+
     return EXIT_SUCCESS;
 }

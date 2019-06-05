@@ -51,6 +51,7 @@
 #include "mli_from_outside_to_inside.h"
 #include "mli_xyplane.h"
 
+#include "mli_string_to.h"
 #include "mli_json.h"
 
 #endif
