@@ -2730,8 +2730,13 @@ int main(int argc, char *argv[]) {
         uint64_t return_idx;
         int64_t myint;
         double myfloat;
+        FILE* f;
         CHECK(mliJson_malloc_from_file(&json, "example.json"));
-        /* mliJson_print(&json); */
+        f = fopen("example.json.debug.tmp", "wt");
+        CHECK(f != NULL);
+        mliJson_fprint_debug(f, &json);
+        fclose(f);
+
         CHECK(mliJson_find_key(&json, 0, "name", &return_idx));
         CHECK(return_idx == 1);
         CHECK(mliJson_find_key(&json, 0, "skill", &return_idx));

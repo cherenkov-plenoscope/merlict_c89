@@ -153,18 +153,17 @@ error:
 }
 
 
-void mliJson_print(const mliJson *json) {
+void mliJson_fprint_debug(FILE* f, const mliJson *json) {
     uint64_t i;
     char buff[1024];
     for (i = 0; i < json->num_tokens; i++) {
         jsmntok_t t = json->tokens[i];
-        printf("Token: %lu ", i);
-        printf("sz: %d ", t.size);
-        printf("tp: %d ", t.type);
-        printf("(%d -> %d, %d)\n", t.start, t.end, t.end - t.start);
-        memcpy(buff, json->chars + t.start, t.end - t.start);
-        buff[t.end - t.start] = '\0';
-        printf("%s\n", buff);
+        fprintf(f, "Token: %lu ", i);
+        fprintf(f, "sz: %d ", t.size);
+        fprintf(f, "tp: %d ", t.type);
+        fprintf(f, "(%d -> %d, %d)\n", t.start, t.end, t.end - t.start);
+        mliJson_string(json, i, buff);
+        fprintf(f, "%s\n", buff);
     }
 }
 
