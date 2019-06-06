@@ -1,0 +1,10 @@
+{
+    "name": "merlict",
+    "skill": 1.337,
+    "bug_rate": 42,
+    "some_numbers": [1, 2, 3, 4],
+    "fair": {
+        "trade": "nope",
+        "uff": 3.141
+    }
+}

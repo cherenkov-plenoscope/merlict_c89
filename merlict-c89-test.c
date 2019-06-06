@@ -2730,12 +2730,9 @@ int main(int argc, char *argv[]) {
         uint64_t return_idx;
         int64_t myint;
         double myfloat;
-        FILE* f;
+
         CHECK(mliJson_malloc_from_file(&json, "example.json"));
-        f = fopen("example.json.debug.tmp", "wt");
-        CHECK(f != NULL);
-        mliJson_fprint_debug(f, &json);
-        fclose(f);
+        CHECK(mliJson_write_debug(&json, "example.json.debug.tmp"));
 
         CHECK(mliJson_find_key(&json, 0, "name", &return_idx));
         CHECK(return_idx == 1);
@@ -2764,5 +2761,22 @@ int main(int argc, char *argv[]) {
         mliJson_free(&json);
     }
 
+    {
+        mliJson json = mliJson_init();
+        mliScenery scenery = mliScenery_init();
+        uint64_t token;
+        CHECK(mliJson_malloc_from_file(&json, "small_scenery.json"));
+        CHECK(mliJson_write_debug(&json, "small_scenery.json.debug.tmp"));
+        CHECK(mliJson_find_key(&json, 0, "functions", &token));
+        CHECK(mliScenery_capacity_from_json(&scenery, &json));
+        CHECK(scenery.num_functions == 4u);
+        CHECK(scenery.num_colors == 11u);
+        CHECK(scenery.num_surfaces == 1u);
+
+        CHECK(scenery.num_discs == 1u);
+        CHECK(scenery.num_spheres == 1u);
+        CHECK(scenery.num_cylinders == 1u);
+        mliJson_free(&json);
+    }
     return EXIT_SUCCESS;
 }
