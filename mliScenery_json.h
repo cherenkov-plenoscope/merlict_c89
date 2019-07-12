@@ -73,25 +73,32 @@ error:
 
 int mliScenery_capacity_from_json(mliScenery *s, const mliJson *json) {
     uint64_t token;
-    mli_check(mliJson_find_key(json, 0, "functions", &token),
+    mli_check(
+        mliJson_find_key(json, 0, "functions", &token),
         "Expected scenery-json to have key 'functions'.");
-    mli_check(json->tokens[token + 1].type == JSMN_ARRAY,
+    mli_check(
+        json->tokens[token + 1].type == JSMN_ARRAY,
         "Expected key 'functions' to point to an array.")
     s->num_functions = json->tokens[token + 1].size;
 
-    mli_check(mliJson_find_key(json, 0, "colors", &token),
+    mli_check(
+        mliJson_find_key(json, 0, "colors", &token),
         "Expected scenery-json to have key 'colors'.");
-    mli_check(json->tokens[token + 1].type == JSMN_ARRAY,
+    mli_check(
+        json->tokens[token + 1].type == JSMN_ARRAY,
         "Expected key 'colors' to point to an array.")
     s->num_colors = json->tokens[token + 1].size;
 
-    mli_check(mliJson_find_key(json, 0, "surfaces", &token),
+    mli_check(
+        mliJson_find_key(json, 0, "surfaces", &token),
         "Expected scenery-json to have key 'surfaces'.");
-    mli_check(json->tokens[token + 1].type == JSMN_ARRAY,
+    mli_check(
+        json->tokens[token + 1].type == JSMN_ARRAY,
         "Expected key 'colors' to point to an array.")
     s->num_surfaces = json->tokens[token + 1].size;
 
-    mli_check(mliJson_find_key(json, 0, "children", &token),
+    mli_check(
+        mliJson_find_key(json, 0, "children", &token),
         "Expected scenery-json to have key 'children'.");
     mli_check(
         mliScenery_capacity_walk_children_json(s, json, token + 1),
