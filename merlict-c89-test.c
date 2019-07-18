@@ -505,7 +505,7 @@ int main(int argc, char *argv[]) {
         scenery.spherical_cap_hex_surfaces[0].inner = 2u;
 
         /* spheres */
-        scenery.spheres[0] = 2.5;
+        scenery.spheres[0].radius = 2.5;
         scenery.spheres_surfaces[0].outer = 1u;
         scenery.spheres_surfaces[0].inner = 1u;
         scenery.spheres_T[0].trans = mliVec_set(0., 0., 0.);
@@ -751,7 +751,7 @@ int main(int argc, char *argv[]) {
             const double phi = 2.*MLI_PI*(double)(i)/scenery.num_spheres;
             const double ii = (double)(i)/scenery.num_spheres;
             const double zoff = 0.5 - ii;
-            scenery.spheres[i] = 0.1;
+            scenery.spheres[i].radius = 0.1;
             scenery.spheres_surfaces[i].outer = 0u;
             scenery.spheres_surfaces[i].inner = 0u;
             scenery.spheres_T[i].trans = mliVec_set(
@@ -1534,22 +1534,23 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        const double radius = 1.;
+        mliSphere sphere;
         mliIntersection intersection;
         mliHomTraComp local2root_comp;
+        sphere.radius = 1.;
         local2root_comp.trans = mliVec_set(0., 0., 0.);
         local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
             mliVec_set(0., 0., 0.),
             0.);
 
         CHECK(!mliSphere_intersection(
-            radius,
+            sphere,
             local2root_comp,
             mliRay_set(mliVec_set(0., 0., 5.), mliVec_set(0., 0., 1.)),
             &intersection));
 
         CHECK(mliSphere_intersection(
-            radius,
+            sphere,
             local2root_comp,
             mliRay_set(mliVec_set(0., 0., -5.), mliVec_set(0., 0., 1.)),
             &intersection));

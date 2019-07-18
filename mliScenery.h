@@ -11,6 +11,7 @@
 #include "mliFunc.h"
 #include "mliMesh.h"
 #include "mliSphericalCapHex.h"
+#include "mliSphere.h"
 #include "mliCylinder.h"
 #include "mliHexagon.h"
 #include "mliBiCirclePlane.h"
@@ -49,7 +50,7 @@ typedef struct {
     mliHomTraComp* spherical_cap_hex_T;
 
     uint32_t num_spheres;
-    double *spheres;
+    mliSphere *spheres;
     mliSurfaces *spheres_surfaces;
     mliHomTraComp* spheres_T;
 
@@ -226,7 +227,7 @@ error:
 }
 
 int __mliScenery_malloc_spheres(mliScenery* s) {
-    mli_malloc(s->spheres, double, s->num_spheres);
+    mli_malloc(s->spheres, mliSphere, s->num_spheres);
     mli_malloc(s->spheres_surfaces, mliSurfaces, s->num_spheres);
     mli_malloc(s->spheres_T, mliHomTraComp, s->num_spheres);
     return 1;
@@ -707,7 +708,7 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
             return 0;
     }
     for (i = 0; i < a->num_spheres; i++) {
-        if (a->spheres[i] != b->spheres[i])
+        if (!mliSphere_is_equal(a->spheres[i], b->spheres[i]))
             return 0;
         if (!mliSurfaces_is_equal(
                 a->spheres_surfaces[i],

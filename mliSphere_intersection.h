@@ -3,6 +3,7 @@
 #define MERLICT_MLISPHERE_INTERSECTIOM_H_
 
 #include <math.h>
+#include "mliSphere.h"
 #include "mliMath.h"
 #include "mliOBB.h"
 #include "mliVec.h"
@@ -56,7 +57,7 @@ void mliSphere_set_intersection(
         normal_local);}
 
 int mliSphere_intersection(
-    const double radius,
+    const mliSphere sphere,
     const mliHomTraComp local2root_comp,
     const mliRay ray,
     mliIntersection *intersection) {
@@ -64,7 +65,7 @@ int mliSphere_intersection(
     mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
     double plus_solution, minus_solution;
     if (mli_sphere_intersection_equation(
-        radius,
+        sphere.radius,
         ray_local,
         &plus_solution,
         &minus_solution)
