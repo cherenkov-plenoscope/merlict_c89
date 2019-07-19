@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "mli_debug.h"
 #include "mliMath.h"
 
 #define MLI_VECTOR_ERROR 0
@@ -14,13 +15,13 @@
 #define MLI_VECTOR_GROWTH_FACTOR 2
 
 typedef struct {
-    size_t size;
-    size_t capacity;
-    size_t sizeof_element;
+    uint64_t size;
+    uint64_t capacity;
+    uint64_t sizeof_element;
     void* data;
 } mliVector;
 
-size_t mliVector_byte_size(const mliVector* vector) {
+uint64_t mliVector_byte_size(const mliVector* vector) {
     return vector->size * vector->sizeof_element;
 }
 
@@ -34,7 +35,10 @@ int mliVector_free(mliVector* vector) {
     return MLI_VECTOR_SUCCESS;
 }
 
-int mliVector_set(mliVector* vector, size_t capacity, size_t sizeof_element) {
+int mliVector_set(
+    mliVector* vector,
+    uint64_t capacity,
+    uint64_t sizeof_element) {
     assert(vector != NULL);
     if (vector == NULL) return MLI_VECTOR_ERROR;
     vector->size = 0;
@@ -52,8 +56,8 @@ int mliVector_should_grow(mliVector* vector) {
         return 0;
 }
 
-int mliVector_reallocate(mliVector* vector, size_t new_capacity) {
-    size_t new_capacity_in_bytes;
+int mliVector_reallocate(mliVector* vector, uint64_t new_capacity) {
+    uint64_t new_capacity_in_bytes;
     void* old;
     assert(vector != NULL);
     if (new_capacity < MLI_VECTOR_MINIMUM_CAPACITY) {
@@ -81,11 +85,11 @@ int mliVector_adjust_capacity(mliVector* vector) {
         MLI_MAX2(1, vector->size*MLI_VECTOR_GROWTH_FACTOR));
 }
 
-void* mliVector_offset(const mliVector* vector, size_t index) {
+void* mliVector_offset(const mliVector* vector, uint64_t index) {
     return (uint8_t*)vector->data + (index * vector->sizeof_element);
 }
 
-void mliVector_assign(mliVector* vector, size_t index, void* element) {
+void mliVector_assign(mliVector* vector, uint64_t index, void* element) {
     /* Insert the element */
     void* offset = mliVector_offset(vector, index);
     memcpy(offset, element, vector->sizeof_element);
@@ -104,7 +108,7 @@ int mliVector_push_back(mliVector* vector, void* element) {
     return MLI_VECTOR_SUCCESS;
 }
 
-void* mliVector_get(const mliVector* vector, size_t index) {
+void* mliVector_get(const mliVector* vector, uint64_t index) {
     assert(vector != NULL);
     assert(index < vector->size);
     if (vector == NULL) return NULL;
