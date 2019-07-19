@@ -799,27 +799,26 @@ int main(int argc, char *argv[]) {
     /* mliVector */
     {
         uint64_t i;
-        mliVector vec;
-        mliVector_set(&vec, 0u, sizeof(mliVec));
+        mliVector vec = mliVector_init();
+        CHECK(mliVector_malloc(&vec, 0u, sizeof(mliColor)));
         CHECK(vec.size == 0u);
 
         for (i = 0; i < 100; i++) {
-            mliVec hans = {0., 1., 2.};
+            mliColor color = mliColor_set(i*1., i*2., i*3.);
             CHECK(vec.size == i);
-            mliVector_push_back(&vec, &hans);
-            CHECK(vec.size == i + 1);
-        }
+            CHECK(mliVector_push_back(&vec, &color));
+            CHECK(vec.size == i + 1);}
 
         for (i = 0; i < vec.size; i++) {
-            mliVec hans = *(mliVec*)mliVector_get(&vec, i);
-            CHECK_MARGIN(hans.x, 0., 1e-9);
-            CHECK_MARGIN(hans.y, 1., 1e-9);
-            CHECK_MARGIN(hans.z, 2., 1e-9);
-            CHECK(vec.size == 100);
-        }
+            mliColor color = *(mliColor*)mliVector_at(&vec, i);
+            CHECK_MARGIN(color.r, i*1., 1e-9);
+            CHECK_MARGIN(color.g, i*2., 1e-9);
+            CHECK_MARGIN(color.b, i*3., 1e-9);
+            CHECK(vec.size == 100);}
 
         mliVector_free(&vec);
         CHECK(vec.size == 0);
+        CHECK(vec.capacity == 0);
     }
 
     /* mliHomTra */
