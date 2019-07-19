@@ -17,7 +17,7 @@ typedef struct {
     mliFace *faces;
 } mliMesh;
 
-void mliMesh_init(
+void mliMesh_malloc(
     mliMesh* m,
     const uint32_t num_vertices,
     const uint32_t num_faces) {
@@ -159,7 +159,7 @@ int ml_parse_three_doubles(const char *line, double *a, double* b, double*c) {
     return state;
 }
 
-int mliMesh_init_from_off(const char *path, mliMesh* m) {
+int mliMesh_malloc_from_off(const char *path, mliMesh* m) {
     FILE * fin;
     char line[1024];
     int len = 1024;
@@ -180,7 +180,7 @@ int mliMesh_init_from_off(const char *path, mliMesh* m) {
 
     ml_parse_three_ints(line, &num_vertices, &num_faces, &not_used);
 
-    mliMesh_init(m, num_vertices, num_faces);
+    mliMesh_malloc(m, num_vertices, num_faces);
 
     while (1) {
         if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;;
