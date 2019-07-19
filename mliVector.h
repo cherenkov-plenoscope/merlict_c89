@@ -71,8 +71,7 @@ int mliVector_reallocate(mliVector* vector, uint64_t new_capacity) {
     free(old);
     return 1;
 error:
-    return 0;
-}
+    return 0;}
 
 int mliVector_adjust_capacity(mliVector* vector) {
     return mliVector_reallocate(
@@ -97,8 +96,7 @@ int mliVector_push_back(mliVector* vector, void* element) {
     vector->size += 1;
     return 1;
 error:
-    return 0;
-}
+    return 0;}
 
 void* mliVector_at(const mliVector* vector, uint64_t index) {
     assert(index < vector->size);
