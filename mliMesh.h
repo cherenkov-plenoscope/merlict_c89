@@ -94,7 +94,7 @@ int ml_parse_three_ints(const char *line, int *a, int* b, int*c) {
 }
 
 
-int ml_parse_three_doubles(const char *line, double *a, double* b, double*c) {
+int mli_parse_three_doubles(const char *line, double *a, double* b, double*c) {
     int state = 0;
     int old_state = state;
     int statemachine[][2] = {
@@ -188,7 +188,7 @@ int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
         if (strlen(line) > 1) {
             /* printf("'%s'\n", line); */
             mliVec poi;
-            ml_parse_three_doubles(line, &poi.x, &poi.y, &poi.z);
+            mli_parse_three_doubles(line, &poi.x, &poi.y, &poi.z);
             m->vertices[vertex_idx] = poi;
             /* printf("%f %f %f\n", a, b, c); */
             vertex_idx++;
