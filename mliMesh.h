@@ -17,13 +17,8 @@ typedef struct {
     mliFace *faces;
 } mliMesh;
 
-int mliMesh_malloc(
-    mliMesh* m,
-    const uint32_t num_vertices,
-    const uint32_t num_faces) {
-    m->num_vertices = num_vertices;
+int mliMesh_malloc(mliMesh* m) {
     mli_malloc(m->vertices, mliVec, m->num_vertices);
-    m->num_faces = num_faces;
     mli_malloc(m->faces, mliFace, m->num_faces);
     return 1;
 error:
@@ -183,7 +178,9 @@ int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
 
     ml_parse_three_ints(line, &num_vertices, &num_faces, &not_used);
 
-    mliMesh_malloc(m, num_vertices, num_faces);
+    m->num_faces = num_faces;
+    m->num_vertices = num_vertices;
+    mliMesh_malloc(m);
 
     while (1) {
         if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;;
