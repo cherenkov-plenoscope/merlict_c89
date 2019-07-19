@@ -17,6 +17,14 @@ typedef struct {
     mliFace *faces;
 } mliMesh;
 
+mliMesh mliMesh_init() {
+    mliMesh m;
+    m.num_vertices = 0;
+    m.vertices = NULL;
+    m.num_faces = 0;
+    m.faces = NULL;
+    return m;}
+
 int mliMesh_malloc(mliMesh* m) {
     mli_malloc(m->vertices, mliVec, m->num_vertices);
     mli_malloc(m->faces, mliFace, m->num_faces);

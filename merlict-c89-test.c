@@ -426,7 +426,7 @@ int main(int argc, char *argv[]) {
         uint64_t i;
         mliScenery scenery = mliScenery_init();
         mliScenery scenery_back = mliScenery_init();
-        mliMesh diff_cube_sphere;
+        mliMesh diff_cube_sphere = mliMesh_init();
         mliColor red = {255., 0., 0.};
         mliColor blue = {0., 0., 255.};
         mliColor green = {0., 255., 0.};
@@ -1374,7 +1374,7 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        mliMesh m;
+        mliMesh m = mliMesh_init();
         mliVec support = {0 ,0 ,0};
         mliVec direction = {0 ,0 ,1};
         uint64_t i;
@@ -1398,7 +1398,7 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        mliMesh m;
+        mliMesh m = mliMesh_init();
         mliMesh_malloc_from_object_file("diff_cube_sphere.off", &m);
         CHECK(m.num_vertices == 432);
         CHECK(m.num_faces == 880);
