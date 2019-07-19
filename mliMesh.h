@@ -17,14 +17,17 @@ typedef struct {
     mliFace *faces;
 } mliMesh;
 
-void mliMesh_malloc(
+int mliMesh_malloc(
     mliMesh* m,
     const uint32_t num_vertices,
     const uint32_t num_faces) {
     m->num_vertices = num_vertices;
-    m->vertices = (mliVec*)malloc(m->num_vertices*sizeof(mliVec));
+    mli_malloc(m->vertices, mliVec, m->num_vertices);
     m->num_faces = num_faces;
-    m->faces = (mliFace*)malloc(m->num_faces*sizeof(mliFace));}
+    mli_malloc(m->faces, mliFace, m->num_faces);
+    return 1;
+error:
+    return 0;}
 
 void mliMesh_free(mliMesh *m) {
     free(m->vertices);
