@@ -30,7 +30,7 @@ void mliMesh_free(mliMesh *m) {
     free(m->faces);
     m->num_faces = 0;}
 
-int ml_parse_three_ints(const char *line, int *a, int* b, int*c) {
+int mli_parse_three_ints(const char *line, int *a, int* b, int*c) {
     int state = 0;
     int old_state = state;
     int statemachine[][2] = {
@@ -168,52 +168,49 @@ int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
     uint32_t face_idx = 0;
 
     fin = fopen(path, "r");
-    if (fin == NULL) goto close_and_exit_failure;;
-
-    if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;
-
-    if (strcmp(line, "OFF\n") != 0) goto close_and_exit_failure;
-
-    if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;
-
-    ml_parse_three_ints(line, &num_vertices, &num_faces, &not_used);
-
+    mli_check(fin != NULL, "Can not open object-file for reading.");
+    mli_check(fgets(line, len, fin) != NULL, "Can not read first line.");
+    mli_check(strcmp(line, "OFF\n") == 0, "Expected first line to be 'OFF\\n'");
+    mli_check(fgets(line, len, fin) != NULL, "Can not read second line.");
+    mli_check(
+        mli_parse_three_ints(line, &num_vertices, &num_faces, &not_used),
+        "Can not parse num_vertices and num_faces.");
     m->num_faces = num_faces;
     m->num_vertices = num_vertices;
     mliMesh_malloc(m);
 
     while (1) {
-        if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;;
+        mli_check(fgets(line, len, fin) != NULL, "Can not read vertex line.");
         if (vertex_idx == m->num_vertices) break;
         if (strlen(line) > 1) {
-            /* printf("'%s'\n", line); */
             mliVec poi;
-            mli_parse_three_doubles(line, &poi.x, &poi.y, &poi.z);
+            mli_check(
+                mli_parse_three_doubles(line, &poi.x, &poi.y, &poi.z),
+                "Can not parse vertex.");
             m->vertices[vertex_idx] = poi;
-            /* printf("%f %f %f\n", a, b, c); */
             vertex_idx++;
         }
     }
 
     while (1) {
-        if (face_idx == m->num_faces) break;
         if (strlen(line) > 1) {
             int ia, ib, ic;
             mliFace fa;
-            ml_parse_three_ints(strchr(line, ' '), &ia, &ib, &ic);
+            mli_check(
+                mli_parse_three_ints(strchr(line, ' '), &ia, &ib, &ic),
+                "Can not parse face.");
             fa.a = ia; fa.b = ib; fa.c = ic;
             m->faces[face_idx] = fa;
-            /* printf("%f %f %f\n", a, b, c); */
             face_idx++;
         }
-        if (fgets(line, len, fin) == NULL) goto close_and_exit_failure;
+        if (face_idx == m->num_faces) break;
+        mli_check(fgets(line, len, fin) != NULL, "Can not read face line.");
     }
     fclose(fin);
-    return EXIT_SUCCESS;
-
-    close_and_exit_failure:
+    return 1;
+error:
     fclose(fin);
-    return EXIT_FAILURE;
+    return 0;
 }
 
 
