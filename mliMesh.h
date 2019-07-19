@@ -17,7 +17,6 @@ typedef struct {
     mliFace *faces;
 } mliMesh;
 
-
 void mliMesh_init(
     mliMesh* m,
     const uint32_t num_vertices,
@@ -26,7 +25,6 @@ void mliMesh_init(
     m->vertices = (mliVec*)malloc(m->num_vertices*sizeof(mliVec));
     m->num_faces = num_faces;
     m->faces = (mliFace*)malloc(m->num_faces*sizeof(mliFace));}
-
 
 void mliMesh_free(mliMesh *m) {
     free(m->vertices);
