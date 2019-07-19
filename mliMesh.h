@@ -159,7 +159,7 @@ int ml_parse_three_doubles(const char *line, double *a, double* b, double*c) {
     return state;
 }
 
-int mliMesh_malloc_from_off(const char *path, mliMesh* m) {
+int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
     FILE * fin;
     char line[1024];
     int len = 1024;

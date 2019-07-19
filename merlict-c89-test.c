@@ -441,7 +441,9 @@ int main(int argc, char *argv[]) {
         scenery.num_bicircleplanes = 1u;
         scenery.num_discs = 1u;
 
-        mliMesh_malloc_from_off("diff_cube_sphere.off", &diff_cube_sphere);
+        mliMesh_malloc_from_object_file(
+            "diff_cube_sphere.off",
+            &diff_cube_sphere);
 
         scenery.num_vertices = diff_cube_sphere.num_vertices;
         scenery.num_triangles = diff_cube_sphere.num_faces;
@@ -1376,7 +1378,7 @@ int main(int argc, char *argv[]) {
         mliVec support = {0 ,0 ,0};
         mliVec direction = {0 ,0 ,1};
         uint64_t i;
-        mliMesh_malloc_from_off("text_on_cube.off", &m);
+        mliMesh_malloc_from_object_file("text_on_cube.off", &m);
         for (i = 0; i < m.num_faces; i++) {
             double ray_parameter;
             if(
@@ -1397,7 +1399,7 @@ int main(int argc, char *argv[]) {
 
     {
         mliMesh m;
-        mliMesh_malloc_from_off("diff_cube_sphere.off", &m);
+        mliMesh_malloc_from_object_file("diff_cube_sphere.off", &m);
         CHECK(m.num_vertices == 432);
         CHECK(m.num_faces == 880);
         mliMesh_free(&m);
