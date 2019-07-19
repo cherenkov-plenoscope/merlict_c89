@@ -11,6 +11,7 @@
 #include "mliQuaternion.h"
 #include "mliRay.h"
 #include "mliUnitTest.h"
+#include "mliFace.h"
 #include "mliMesh.h"
 #include "mliFunc.h"
 #include "mliTriangle_intersection.h"
