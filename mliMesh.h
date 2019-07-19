@@ -34,8 +34,10 @@ error:
 
 void mliMesh_free(mliMesh *m) {
     free(m->vertices);
+    m->vertices = NULL;
     m->num_vertices = 0;
     free(m->faces);
+    m->faces = NULL;
     m->num_faces = 0;}
 
 int mli_parse_three_ints(const char *line, int *a, int* b, int*c) {
@@ -218,6 +220,7 @@ int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
     return 1;
 error:
     fclose(fin);
+    mliMesh_free(m);
     return 0;
 }
 
