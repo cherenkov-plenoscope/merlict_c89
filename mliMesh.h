@@ -185,7 +185,9 @@ int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
     mli_check(
         mli_parse_three_ints(line, &num_vertices, &num_faces, &not_used),
         "Can not parse num_vertices and num_faces.");
+    mli_check(num_faces >= 0, "Expected num_faces >= 0.");
     m->num_faces = num_faces;
+    mli_check(num_vertices >= 0, "Expected num_vertices >= 0.");
     m->num_vertices = num_vertices;
     mliMesh_malloc(m);
 
