@@ -7,6 +7,158 @@
 
 
 int main(int argc, char *argv[]) {
+    /* mliFrame */
+    /* A scenery-tree */
+    {
+        mliFrame f = mliFrame_init();
+        CHECK(f.mother == NULL);
+        CHECK(f.children.size == 0u);
+        CHECK(f.type == MLI_FRAME);
+    }
+
+    /* mliFrame */
+    /* malloc frame */
+    {
+        mliFrame f = mliFrame_init();
+        CHECK(mliFrame_malloc_FRAME(&f));
+        mliFrame_free(&f);
+        CHECK(f.mother == NULL);
+        CHECK(f.children.size == 0u);
+        CHECK(f.type == MLI_FRAME);
+    }
+
+    /* mliFrame */
+    /* add two childs */
+    {
+        mliFrame* child1 = NULL;
+        mliFrame* child2 = NULL;
+        mliFrame mother = mliFrame_init();
+        CHECK(mliFrame_malloc_FRAME(&mother));
+        CHECK(mliFrame_set_name(&mother, "mutter"));
+
+        child1 = mliFrame_add_FRAME(&mother);
+        CHECK(child1);
+        CHECK(mliFrame_set_name(child1, "kind_1"));
+
+        child2 = mliFrame_add_FRAME(&mother);
+        CHECK(child2);
+        CHECK(mliFrame_set_name(child2, "kind_2"));
+
+        CHECK(mother.children.size == 2);
+        CHECK(&mother == (mliFrame*)child1->mother);
+        CHECK(&mother == (mliFrame*)child2->mother);
+        mliFrame_free(&mother);
+    }
+
+    /* mliFrame */
+    /* add grand childs */
+    {
+        /*
+                            |--child_00
+                |--child_0--|
+                |           |--child_01
+        mother--|
+                |           |--child_10
+                |--child_1--|
+                            |--child_11
+        */
+        mliFrame* child_0 = NULL;
+        mliFrame* child_1 = NULL;
+        mliFrame* child_00 = NULL;
+        mliFrame* child_01 = NULL;
+        mliFrame* child_10 = NULL;
+        mliFrame* child_11 = NULL;
+        mliFrame mother = mliFrame_init();
+        CHECK(mliFrame_malloc_FRAME(&mother));
+        CHECK(mliFrame_set_name(&mother, "mother"));
+        child_0 = mliFrame_add_FRAME(&mother);
+        CHECK(child_0);
+        CHECK(mliFrame_set_name(child_0, "child_0"));
+        child_00 = mliFrame_add_FRAME(child_0);
+        CHECK(child_00);
+        CHECK(mliFrame_set_name(child_00, "child_00"));
+        child_01 = mliFrame_add_FRAME(child_0);
+        CHECK(child_01);
+        CHECK(mliFrame_set_name(child_01, "child_01"));
+
+        child_1 = mliFrame_add_FRAME(&mother);
+        CHECK(child_1);
+        CHECK(mliFrame_set_name(child_1, "child_1"));
+        child_10 = mliFrame_add_FRAME(child_1);
+        CHECK(child_10);
+        CHECK(mliFrame_set_name(child_10, "child_10"));
+        child_11 = mliFrame_add_FRAME(child_1);
+        CHECK(child_11);
+        CHECK(mliFrame_set_name(child_11, "child_11"));
+
+        CHECK(mother.children.size == 2);
+        CHECK(&mother == (mliFrame*)child_0->mother);
+        CHECK(&mother == (mliFrame*)child_0->mother);
+
+        CHECK(child_0->children.size == 2);
+        CHECK(child_0 == (mliFrame*)child_00->mother);
+        CHECK(child_0 == (mliFrame*)child_01->mother);
+
+        CHECK(child_1->children.size == 2);
+        CHECK(child_1 == (mliFrame*)child_10->mother);
+        CHECK(child_1 == (mliFrame*)child_11->mother);
+
+        mliFrame_free(&mother);
+    }
+
+    /* mliFrame */
+    /* valid names */
+    {
+        mliFrame f = mliFrame_init();
+        CHECK(1 == mliFrame_set_name(&f, "A_nice_name"));
+        CHECK(1 == mliFrame_set_name(&f, ""));
+        CHECK(0 == mliFrame_set_name(&f, "I use whitespaces"));
+        CHECK(0 == mliFrame_set_name(&f, "I\tfeel\rlike\tusing\nwhitespaces"));
+        CHECK(0 == mliFrame_set_name(&f, "bad\ttab"));
+        CHECK(0 == mliFrame_set_name(&f, "bad\rreturn"));
+        CHECK(0 == mliFrame_set_name(&f, "bad\nnewline"));
+        CHECK(0 == mliFrame_set_name(&f, "I/use/the/delimiter/symbol"));
+        CHECK(0 == mliFrame_set_name(&f, " "));
+    }
+
+    /* mliFrame */
+    /* basic mesh allocation and initialization */
+    {
+        mliFrame* child = NULL;
+        mliFrame mother = mliFrame_init();
+        CHECK(mliFrame_malloc_FRAME(&mother));
+        CHECK(mliFrame_set_name(&mother, "mother"));
+
+        child = mliFrame_add_MESH(&mother);
+        CHECK(child);
+        CHECK(child->type == MLI_MESH);
+        CHECK(mliFrame_set_name(child, "my_mesh"));
+        child->primitive.mesh->num_vertices = 3;
+        child->primitive.mesh->num_faces = 1;
+        mliMesh_malloc(child->primitive.mesh);
+        child->primitive.mesh->vertices[0] = mliVec_set(1., 0., 0.);
+        child->primitive.mesh->vertices[0] = mliVec_set(0., 1., 0.);
+        child->primitive.mesh->vertices[0] = mliVec_set(0., 0., 1.);
+        child->primitive.mesh->faces[0] = mliFace_set(0, 1, 2);
+        mliFrame_free(&mother);
+    }
+
+    /* mliFrame */
+    /* basic sphere */
+    {
+        mliFrame* child = NULL;
+        mliFrame mother = mliFrame_init();
+        CHECK(mliFrame_malloc_FRAME(&mother));
+        CHECK(mliFrame_set_name(&mother, "mother"));
+
+        child = mliFrame_add_SPHERE(&mother);
+        CHECK(child);
+        CHECK(child->type == MLI_SPHERE);
+        CHECK(mliFrame_set_name(child, "my_sphere"));
+        child->primitive.sphere->radius = 1.;
+        mliFrame_free(&mother);
+    }
+
     /* upper bound */
     {
         double points[3] = {0., 1., 2.};
@@ -815,6 +967,29 @@ int main(int argc, char *argv[]) {
             CHECK_MARGIN(color.g, i*2., 1e-9);
             CHECK_MARGIN(color.b, i*3., 1e-9);
             CHECK(vec.size == 100);}
+
+        mliVector_free(&vec);
+        CHECK(vec.size == 0);
+        CHECK(vec.capacity == 0);
+    }
+
+    /* mliVector with pointers */
+    {
+        uint64_t i;
+        mliVector vec = mliVector_init();
+        CHECK(mliVector_malloc(&vec, 0u, sizeof(mliColor*)));
+        CHECK(vec.size == 0u);
+
+        for (i = 0; i < 10; i++) {
+            mliColor* ptr_color_in = (void*)(i*i);
+            CHECK(vec.size == i);
+            CHECK(mliVector_push_back(&vec, &ptr_color_in));
+            CHECK(vec.size == i + 1);}
+
+        for (i = 0; i < vec.size; i++) {
+            mliColor* ptr_color_out = *((mliColor**)mliVector_at(&vec, i));
+            CHECK(ptr_color_out == (void*)(i*i));
+            CHECK(vec.size == 10);}
 
         mliVector_free(&vec);
         CHECK(vec.size == 0);

@@ -56,4 +56,6 @@
 #include "mli_json.h"
 #include "mliScenery_json.h"
 
+#include "mliFrame.h"
+
 #endif
