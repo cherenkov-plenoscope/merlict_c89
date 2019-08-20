@@ -13,12 +13,51 @@ typedef struct {
     double z;
 } mliQuaternion;
 
+mliQuaternion mliQuaternion_set(
+    const double w,
+    const double x,
+    const double y,
+    const double z) {
+    mliQuaternion o;
+    o.w = w;
+    o.x = x;
+    o.y = y;
+    o.z = z;
+    return o;}
+
 int mliQuaternion_is_equal(const mliQuaternion a, const mliQuaternion b) {
     if (a.w != b.w) return 0;
     if (a.x != b.x) return 0;
     if (a.y != b.y) return 0;
     if (a.z != b.z) return 0;
     return 1;}
+
+mliQuaternion mliQuaternion_complex_conjugate(const mliQuaternion q) {
+    mliQuaternion c;
+    c.w = q.w;
+    c.x = -q.x;
+    c.y = -q.y;
+    c.z = -q.z;
+    return c;}
+
+mliQuaternion mliQuaternion_product(
+    const mliQuaternion p,
+    const mliQuaternion q) {
+    mliQuaternion pq;
+    const mliVec P = mliVec_set(p.x, p.y, p.z);
+    const mliVec Q = mliVec_set(q.x, q.y, q.z);
+    const mliVec P_cross_Q = mliVec_cross(P, Q);
+    pq.w = p.w*q.w - mliVec_dot(P, Q);
+    pq.x = p.w*Q.x + q.w*P.x + P_cross_Q.x;
+    pq.y = p.w*Q.y + q.w*P.y + P_cross_Q.y;
+    pq.z = p.w*Q.z + q.w*P.z + P_cross_Q.z;
+    return pq;}
+
+double mliQuaternion_product_complex_conjugate(const mliQuaternion p) {
+    return p.w*p.w + p.x*p.x + p.y*p.y + p.z*p.z;}
+
+double mliQuaternion_norm(const mliQuaternion q) {
+    return sqrt(mliQuaternion_product_complex_conjugate(q));}
 
 mliQuaternion mliQuaternion_set_rotaxis_and_angle(
     const mliVec rot_axis,
@@ -44,8 +83,8 @@ mliRotMat mliQuaternion_to_matrix(const mliQuaternion quat) {
     /* const double 2xw */
     const double _2xy = 2. * quat.x * quat.y;
     const double _2xz = 2. * quat.x * quat.z;
-    /* const double 2ca */
-    /* const double 2cb */
+    /* const double 2yw */
+    /* const double 2yx */
     const double _2yz = 2. * quat.y * quat.z;
     o.r00 = w2 + x2 - y2 - z2;
     o.r01 = _2xy - _2wz;
@@ -54,8 +93,11 @@ mliRotMat mliQuaternion_to_matrix(const mliQuaternion quat) {
     o.r11 = w2 - x2 + y2 - z2;
     o.r12 = _2yz - _2wx;
     o.r20 = _2xz - _2wy;
-    o.r21 = _2yz - _2wx;
+    o.r21 = _2yz + _2wx;
     o.r22 = w2 - x2 - y2 + z2;
     return o;}
+
+void mliQuaternion_print(const mliQuaternion q) {
+    printf("(w:%f, [%f, %f, %f])", q.w, q.x, q.y, q.z);}
 
 #endif

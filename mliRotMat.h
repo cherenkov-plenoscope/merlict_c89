@@ -61,4 +61,9 @@ mliRotMat mliRotMat_init_axis(
     rot.r22 = cosR +  rz*rz*(1.-cosR);
     return rot;}
 
+void mliRotMat_print(const mliRotMat rot) {
+    printf("[%f, %f, %f]\n", rot.r00, rot.r01, rot.r02);
+    printf("[%f, %f, %f]\n", rot.r10, rot.r11, rot.r12);
+    printf("[%f, %f, %f]",   rot.r20, rot.r21, rot.r22);}
+
 #endif
