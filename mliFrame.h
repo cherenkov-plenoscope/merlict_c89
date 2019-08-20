@@ -142,39 +142,13 @@ int mliFrame_set_mother_and_child(mliFrame* mother, mliFrame* child) {
 error:
     return 0;}
 
-mliFrame* mliFrame_add_FRAME(mliFrame* mother) {
+mliFrame* mliFrame_add(mliFrame* mother, const uint64_t type) {
     mliFrame* child = NULL;
     mli_malloc(child, mliFrame, 1u);
     *child = mliFrame_init();
     mli_check(
-        mliFrame_malloc_as_type(child, MLI_FRAME),
+        mliFrame_malloc_as_type(child, type),
         "Can not allocate child-frame.");
-    mli_check(
-        mliFrame_set_mother_and_child(mother, child),
-        "Can not allocate child-pointer.");
-    return child;
-error:
-    return NULL;}
-
-mliFrame* mliFrame_add_MESH(mliFrame* mother) {
-    mliFrame* child = NULL;
-    mli_malloc(child, mliFrame, 1u);
-    *child = mliFrame_init();
-    mli_check(mliFrame_malloc_as_type(child, MLI_MESH),
-        "Can not allocate child-frame, MESH.");
-    mli_check(
-        mliFrame_set_mother_and_child(mother, child),
-        "Can not allocate child-pointer.");
-    return child;
-error:
-    return NULL;}
-
-mliFrame* mliFrame_add_SPHERE(mliFrame* mother) {
-    mliFrame* child = NULL;
-    mli_malloc(child, mliFrame, 1u);
-    *child = mliFrame_init();
-    mli_check(mliFrame_malloc_as_type(child, MLI_SPHERE),
-        "Can not allocate child-frame, SPHERE.");
     mli_check(
         mliFrame_set_mother_and_child(mother, child),
         "Can not allocate child-pointer.");

@@ -36,11 +36,11 @@ int main(int argc, char *argv[]) {
         CHECK(mliFrame_malloc_as_type(&mother, MLI_FRAME));
         CHECK(mliFrame_set_name(&mother, "mutter"));
 
-        child1 = mliFrame_add_FRAME(&mother);
+        child1 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child1);
         CHECK(mliFrame_set_name(child1, "kind_1"));
 
-        child2 = mliFrame_add_FRAME(&mother);
+        child2 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child2);
         CHECK(mliFrame_set_name(child2, "kind_2"));
 
@@ -71,23 +71,23 @@ int main(int argc, char *argv[]) {
         mliFrame mother = mliFrame_init();
         CHECK(mliFrame_malloc_as_type(&mother, MLI_FRAME));
         CHECK(mliFrame_set_name(&mother, "mother"));
-        child_0 = mliFrame_add_FRAME(&mother);
+        child_0 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child_0);
         CHECK(mliFrame_set_name(child_0, "child_0"));
-        child_00 = mliFrame_add_FRAME(child_0);
+        child_00 = mliFrame_add(child_0, MLI_FRAME);
         CHECK(child_00);
         CHECK(mliFrame_set_name(child_00, "child_00"));
-        child_01 = mliFrame_add_FRAME(child_0);
+        child_01 = mliFrame_add(child_0, MLI_FRAME);
         CHECK(child_01);
         CHECK(mliFrame_set_name(child_01, "child_01"));
 
-        child_1 = mliFrame_add_FRAME(&mother);
+        child_1 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child_1);
         CHECK(mliFrame_set_name(child_1, "child_1"));
-        child_10 = mliFrame_add_FRAME(child_1);
+        child_10 = mliFrame_add(child_1, MLI_FRAME);
         CHECK(child_10);
         CHECK(mliFrame_set_name(child_10, "child_10"));
-        child_11 = mliFrame_add_FRAME(child_1);
+        child_11 = mliFrame_add(child_1, MLI_FRAME);
         CHECK(child_11);
         CHECK(mliFrame_set_name(child_11, "child_11"));
 
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
         CHECK(mliFrame_malloc_as_type(&mother, MLI_FRAME));
         CHECK(mliFrame_set_name(&mother, "mother"));
 
-        child = mliFrame_add_MESH(&mother);
+        child = mliFrame_add(&mother, MLI_MESH);
         CHECK(child);
         CHECK(child->type == MLI_MESH);
         CHECK(mliFrame_set_name(child, "my_mesh"));
@@ -151,7 +151,7 @@ int main(int argc, char *argv[]) {
         CHECK(mliFrame_malloc_as_type(&mother, MLI_FRAME));
         CHECK(mliFrame_set_name(&mother, "mother"));
 
-        child = mliFrame_add_SPHERE(&mother);
+        child = mliFrame_add(&mother, MLI_SPHERE);
         CHECK(child);
         CHECK(child->type == MLI_SPHERE);
         CHECK(mliFrame_set_name(child, "my_sphere"));
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
         mliFrame* sphere = NULL;
         mliScenery scenery = mliScenery_init();
         CHECK(mliFrame_malloc_as_type(&root, MLI_FRAME));
-        sphere = mliFrame_add_SPHERE(&root);
+        sphere = mliFrame_add(&root, MLI_SPHERE);
         CHECK(sphere);
         CHECK(__mliScenery_set_primitive_capacity(&scenery, &root));
 
