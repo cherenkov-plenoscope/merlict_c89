@@ -25,7 +25,7 @@
 #define MLI_NAME_CAPACITY 64u
 #define MLI_DELIMITER '/'
 
-typedef struct {
+typedef struct mliFrame {
     char name[MLI_NAME_CAPACITY];
     struct mliFrame* mother;
     mliVector children;
