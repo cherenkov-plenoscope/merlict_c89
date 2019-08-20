@@ -981,14 +981,14 @@ int main(int argc, char *argv[]) {
         CHECK(vec.size == 0u);
 
         for (i = 0; i < 10; i++) {
-            mliColor* ptr_color_in = (void*)(i*i);
+            mliColor* ptr_color_in = (mliColor*)(i*i);
             CHECK(vec.size == i);
             CHECK(mliVector_push_back(&vec, &ptr_color_in));
             CHECK(vec.size == i + 1);}
 
         for (i = 0; i < vec.size; i++) {
             mliColor* ptr_color_out = *((mliColor**)mliVector_at(&vec, i));
-            CHECK(ptr_color_out == (void*)(i*i));
+            CHECK(ptr_color_out == (mliColor*)(i*i));
             CHECK(vec.size == 10);}
 
         mliVector_free(&vec);
