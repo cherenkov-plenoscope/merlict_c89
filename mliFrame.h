@@ -1,6 +1,6 @@
 /* Copyright 2019 Sebastian Achim Mueller */
-#ifndef MERLICT_TREE_SCENERY_H_
-#define MERLICT_TREE_SCENERY_H_
+#ifndef MERLICT_FRAME_H_
+#define MERLICT_FRAME_H_
 
 #include <math.h>
 #include <stdint.h>
