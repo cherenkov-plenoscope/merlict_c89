@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     /* malloc frame */
     {
         mliFrame f = mliFrame_init();
-        CHECK(mliFrame_malloc_FRAME(&f));
+        CHECK(mliFrame_malloc_as_type(&f, MLI_FRAME));
         mliFrame_free(&f);
         CHECK(f.mother == NULL);
         CHECK(f.children.size == 0u);
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
         mliFrame* child1 = NULL;
         mliFrame* child2 = NULL;
         mliFrame mother = mliFrame_init();
-        CHECK(mliFrame_malloc_FRAME(&mother));
+        CHECK(mliFrame_malloc_as_type(&mother, MLI_FRAME));
         CHECK(mliFrame_set_name(&mother, "mutter"));
 
         child1 = mliFrame_add_FRAME(&mother);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
         mliFrame* child_10 = NULL;
         mliFrame* child_11 = NULL;
         mliFrame mother = mliFrame_init();
-        CHECK(mliFrame_malloc_FRAME(&mother));
+        CHECK(mliFrame_malloc_as_type(&mother, MLI_FRAME));
         CHECK(mliFrame_set_name(&mother, "mother"));
         child_0 = mliFrame_add_FRAME(&mother);
         CHECK(child_0);
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
     {
         mliFrame* child = NULL;
         mliFrame mother = mliFrame_init();
-        CHECK(mliFrame_malloc_FRAME(&mother));
+        CHECK(mliFrame_malloc_as_type(&mother, MLI_FRAME));
         CHECK(mliFrame_set_name(&mother, "mother"));
 
         child = mliFrame_add_MESH(&mother);
@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
     {
         mliFrame* child = NULL;
         mliFrame mother = mliFrame_init();
-        CHECK(mliFrame_malloc_FRAME(&mother));
+        CHECK(mliFrame_malloc_as_type(&mother, MLI_FRAME));
         CHECK(mliFrame_set_name(&mother, "mother"));
 
         child = mliFrame_add_SPHERE(&mother);
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
         mliFrame root = mliFrame_init();
         mliFrame* sphere = NULL;
         mliScenery scenery = mliScenery_init();
-        CHECK(mliFrame_malloc_FRAME(&root));
+        CHECK(mliFrame_malloc_as_type(&root, MLI_FRAME));
         sphere = mliFrame_add_SPHERE(&root);
         CHECK(sphere);
         CHECK(__mliScenery_set_primitive_capacity(&scenery, &root));

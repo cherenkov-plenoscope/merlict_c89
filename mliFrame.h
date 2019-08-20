@@ -56,28 +56,41 @@ mliFrame mliFrame_init() {
     f.type = MLI_FRAME;
     return f;}
 
-int mliFrame_malloc_FRAME(mliFrame *f) {
-    f->type = MLI_FRAME;
-    mli_check(
-        mliVector_malloc(&f->children, 0u, sizeof(mliFrame*)),
-        "Can not allocate memory for children of frame.");
+int mliFrame_malloc_as_type(mliFrame *f, const uint64_t type) {
+    f->type = type;
+    switch(type) {
+        case MLI_FRAME:
+            mli_check(
+                mliVector_malloc(&f->children, 0u, sizeof(mliFrame*)),
+                "Can not allocate memory for children of frame.");
+            break;
+        case MLI_MESH:
+            mli_malloc(f->primitive.mesh, mliMesh, 1u);
+            break;
+        case MLI_SPHERICAL_CAP_HEX:
+            mli_malloc(f->primitive.spherical_cap_hex, mliSphericalCapHex, 1u);
+            break;
+        case MLI_SPHERE:
+            mli_malloc(f->primitive.sphere, mliSphere, 1u);
+            break;
+        case MLI_CYLINDER:
+            mli_malloc(f->primitive.cylinder, mliCylinder, 1u);
+            break;
+        case MLI_HEXAGON:
+            mli_malloc(f->primitive.hexagon, mliHexagon, 1u);
+            break;
+        case MLI_BICIRCLEPLANE:
+            mli_malloc(f->primitive.bicircleplane, mliBiCirclePlane, 1u);
+            break;
+        case MLI_DISC:
+            mli_malloc(f->primitive.disc, mliDisc, 1u);
+            break;
+        default: mli_sentinel("Unknown type of primitive."); break;
+    }
     return 1;
 error:
-    return 0;}
-
-int mliFrame_malloc_MESH(mliFrame *f) {
-    f->type = MLI_MESH;
-    mli_malloc(f->primitive.mesh, mliMesh, 1u);
-    return 1;
-error:
-    return 0;}
-
-int mliFrame_malloc_SPHERE(mliFrame *f) {
-    f->type = MLI_SPHERE;
-    mli_malloc(f->primitive.sphere, mliSphere, 1u);
-    return 1;
-error:
-    return 0;}
+    return 0;
+}
 
 void mliFrame_free(mliFrame *f) {
     uint64_t c;
@@ -112,7 +125,9 @@ void mliFrame_free(mliFrame *f) {
             free(f->primitive.disc);
             break;
         default:
-            break;}
+            assert(0);
+            break;
+    }
     *f = mliFrame_init();}
 
 int mliFrame_set_mother_and_child(mliFrame* mother, mliFrame* child) {
@@ -132,7 +147,7 @@ mliFrame* mliFrame_add_FRAME(mliFrame* mother) {
     mli_malloc(child, mliFrame, 1u);
     *child = mliFrame_init();
     mli_check(
-        mliFrame_malloc_FRAME(child),
+        mliFrame_malloc_as_type(child, MLI_FRAME),
         "Can not allocate child-frame.");
     mli_check(
         mliFrame_set_mother_and_child(mother, child),
@@ -145,7 +160,7 @@ mliFrame* mliFrame_add_MESH(mliFrame* mother) {
     mliFrame* child = NULL;
     mli_malloc(child, mliFrame, 1u);
     *child = mliFrame_init();
-    mli_check(mliFrame_malloc_MESH(child),
+    mli_check(mliFrame_malloc_as_type(child, MLI_MESH),
         "Can not allocate child-frame, MESH.");
     mli_check(
         mliFrame_set_mother_and_child(mother, child),
@@ -158,7 +173,7 @@ mliFrame* mliFrame_add_SPHERE(mliFrame* mother) {
     mliFrame* child = NULL;
     mli_malloc(child, mliFrame, 1u);
     *child = mliFrame_init();
-    mli_check(mliFrame_malloc_SPHERE(child),
+    mli_check(mliFrame_malloc_as_type(child, MLI_SPHERE),
         "Can not allocate child-frame, SPHERE.");
     mli_check(
         mliFrame_set_mother_and_child(mother, child),
