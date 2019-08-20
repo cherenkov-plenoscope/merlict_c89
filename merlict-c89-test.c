@@ -159,6 +159,42 @@ int main(int argc, char *argv[]) {
         mliFrame_free(&mother);
     }
 
+    /* mli_frame_to_scenery */
+    /* estimate capacity */
+    {
+        mliFrame root = mliFrame_init();
+        mliFrame* sphere = NULL;
+        mliScenery scenery = mliScenery_init();
+        CHECK(mliFrame_malloc_FRAME(&root));
+        sphere = mliFrame_add_SPHERE(&root);
+        CHECK(sphere);
+        CHECK(__mliScenery_set_primitive_capacity(&scenery, &root));
+
+        CHECK(scenery.num_spheres == 1u);
+
+        mliScenery_free(&scenery);
+        mliFrame_free(&root);
+    }
+
+    /* mliUserScenery */
+    {
+        mliUserScenery uscn = mliUserScenery_init();
+        CHECK(mliUserScenery_malloc(&uscn));
+        mliUserScenery_free(&uscn);
+    }
+
+    /* mli_frame_to_scenery */
+    {
+        mliUserScenery uscn = mliUserScenery_init();
+        mliScenery scenery = mliScenery_init();
+        CHECK(mliUserScenery_malloc(&uscn));
+
+        CHECK(mliScenery_malloc_from_mliUserScenery(&scenery, &uscn));
+
+        mliScenery_free(&scenery);
+        mliUserScenery_free(&uscn);
+    }
+
     /* upper bound */
     {
         double points[3] = {0., 1., 2.};

@@ -57,5 +57,7 @@
 #include "mliScenery_json.h"
 
 #include "mliFrame.h"
+#include "mliUserScenery.h"
+#include "mli_frame_to_scenery.h"
 
 #endif
