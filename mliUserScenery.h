@@ -55,7 +55,7 @@ int mliUserScenery_malloc(mliUserScenery* uscn) {
         mliVector_malloc(&uscn->surfaces, 0u, sizeof(mliSurface)),
         "Can not allocate surfaces.");
     mli_check(
-        mliFrame_malloc_as_type(&uscn->root, MLI_FRAME),
+        mliFrame_malloc(&uscn->root, MLI_FRAME),
         "Can not allocate root-frame.")
     return 1;
 error:

@@ -56,7 +56,7 @@ mliFrame mliFrame_init() {
     f.type = MLI_FRAME;
     return f;}
 
-int mliFrame_malloc_as_type(mliFrame *f, const uint64_t type) {
+int mliFrame_malloc(mliFrame *f, const uint64_t type) {
     f->type = type;
     switch(type) {
         case MLI_FRAME:
@@ -147,7 +147,7 @@ mliFrame* mliFrame_add(mliFrame* mother, const uint64_t type) {
     mli_malloc(child, mliFrame, 1u);
     *child = mliFrame_init();
     mli_check(
-        mliFrame_malloc_as_type(child, type),
+        mliFrame_malloc(child, type),
         "Can not allocate child-frame.");
     mli_check(
         mliFrame_set_mother_and_child(mother, child),
