@@ -22,11 +22,9 @@
 
 #define MLI_FRAME 1000u
 #define MLI_MESH 1001u
-#define MLI_NAME_CAPACITY 64u
-#define MLI_DELIMITER '/'
 
 typedef struct mliFrame {
-    char name[MLI_NAME_CAPACITY];
+    uint64_t id;
     struct mliFrame* mother;
     mliVector children;
 
@@ -46,7 +44,7 @@ typedef struct mliFrame {
 
 mliFrame mliFrame_init() {
     mliFrame f;
-    f.name[0] = '\0';
+    f.id = 0u;
     f.children = mliVector_init();
     f.mother = NULL;
     f.frame2mother.trans = mliVec_set(0., 0., 0.);
@@ -168,14 +166,20 @@ void mli_type_to_string(const uint64_t type, char* s) {
         case MLI_DISC: sprintf(s, "Disc"); break;
         default: break;}}
 
-void mliFrame_print(mliFrame *f, const uint64_t indention) {
+void __mliFrame_print(mliFrame *f, const uint64_t indention) {
     uint64_t c;
     char type_string[1024];
     mli_type_to_string(f->type, type_string);
     printf("%*s", (int)indention, "");
-    printf(" __%s__: \"%s\", %p\n", type_string, f->name, (void*)f);
+    printf(" __%s__ id:%lu, at:%p\n", type_string, f->id, (void*)f);
     printf("%*s", (int)indention, "");
-    printf("|-mother: %p\n", (void*)f->mother);
+    printf("|-mother: id:");
+    if (f->mother != NULL) {
+        printf("%lu,", f->mother->id);
+    } else {
+        printf("%p,", (void*)f->mother);
+    }
+    printf(" at:%p\n", (void*)f->mother);
     printf("%*s", (int)indention, "");
     printf("|-pos: (%0.1f, %0.1f, %0.1f)\n",
         f->frame2mother.trans.x,
@@ -189,28 +193,12 @@ void mliFrame_print(mliFrame *f, const uint64_t indention) {
         f->frame2mother.rot.z);
     for (c = 0; c < f->children.size; c++) {
         mliFrame* child = *((mliFrame**)mliVector_at(&f->children, c));
-        mliFrame_print(child, indention + 2);
+        __mliFrame_print(child, indention + 4);
     }
 }
 
-int mliFrame_set_name(mliFrame* f, const char* name) {
-    uint64_t n;
-    uint64_t c;
-    uint64_t num_white = 0;
-    uint64_t num_delimiters = 0;
-    mli_check(strlen(name) < MLI_NAME_CAPACITY, "Expected strlen(name) < 64.");
-    for (c = 0; c < strlen(name); c++) {
-        if (isspace(name[c])) {
-            num_white++;}}
-    mli_check(num_white == 0, "Expected name to not contain whitespaces.");
-    for (c = 0; c < strlen(name); c++) {
-        if (name[c] == MLI_DELIMITER) {
-            num_delimiters++;}}
-    mli_check(num_delimiters == 0, "Expected name to not contain '/'.");
-    n = sprintf(f->name, "%s", name);
-    mli_check(n < MLI_NAME_CAPACITY, "Name is too long for assignment.");
-    return 1;
-error:
-    return 0;}
+void mliFrame_print(mliFrame *f) {
+    __mliFrame_print(f, 0u);
+}
 
 #endif

@@ -34,15 +34,15 @@ int main(int argc, char *argv[]) {
         mliFrame* child2 = NULL;
         mliFrame mother = mliFrame_init();
         CHECK(mliFrame_malloc(&mother, MLI_FRAME));
-        CHECK(mliFrame_set_name(&mother, "mutter"));
+        mother.id = 1337;
 
         child1 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child1);
-        CHECK(mliFrame_set_name(child1, "kind_1"));
+        child1->id = 41;
 
         child2 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child2);
-        CHECK(mliFrame_set_name(child2, "kind_2"));
+        child2->id = 42;
 
         CHECK(mother.children.size == 2);
         CHECK(&mother == (mliFrame*)child1->mother);
@@ -70,26 +70,26 @@ int main(int argc, char *argv[]) {
         mliFrame* child_11 = NULL;
         mliFrame mother = mliFrame_init();
         CHECK(mliFrame_malloc(&mother, MLI_FRAME));
-        CHECK(mliFrame_set_name(&mother, "mother"));
+        mother.id = 1337;
         child_0 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child_0);
-        CHECK(mliFrame_set_name(child_0, "child_0"));
+        child_0->id = 10;
         child_00 = mliFrame_add(child_0, MLI_FRAME);
         CHECK(child_00);
-        CHECK(mliFrame_set_name(child_00, "child_00"));
+        child_00->id = 100;
         child_01 = mliFrame_add(child_0, MLI_FRAME);
         CHECK(child_01);
-        CHECK(mliFrame_set_name(child_01, "child_01"));
+        child_01->id = 101;
 
         child_1 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child_1);
-        CHECK(mliFrame_set_name(child_1, "child_1"));
+        child_1->id = 20;
         child_10 = mliFrame_add(child_1, MLI_FRAME);
         CHECK(child_10);
-        CHECK(mliFrame_set_name(child_10, "child_10"));
+        child_10->id = 200;
         child_11 = mliFrame_add(child_1, MLI_FRAME);
         CHECK(child_11);
-        CHECK(mliFrame_set_name(child_11, "child_11"));
+        child_11->id = 201;
 
         CHECK(mother.children.size == 2);
         CHECK(&mother == (mliFrame*)child_0->mother);
@@ -102,23 +102,9 @@ int main(int argc, char *argv[]) {
         CHECK(child_1->children.size == 2);
         CHECK(child_1 == (mliFrame*)child_10->mother);
         CHECK(child_1 == (mliFrame*)child_11->mother);
+        /* mliFrame_print(&mother); */
 
         mliFrame_free(&mother);
-    }
-
-    /* mliFrame */
-    /* valid names */
-    {
-        mliFrame f = mliFrame_init();
-        CHECK(1 == mliFrame_set_name(&f, "A_nice_name"));
-        CHECK(1 == mliFrame_set_name(&f, ""));
-        CHECK(0 == mliFrame_set_name(&f, "I use whitespaces"));
-        CHECK(0 == mliFrame_set_name(&f, "I\tfeel\rlike\tusing\nwhitespaces"));
-        CHECK(0 == mliFrame_set_name(&f, "bad\ttab"));
-        CHECK(0 == mliFrame_set_name(&f, "bad\rreturn"));
-        CHECK(0 == mliFrame_set_name(&f, "bad\nnewline"));
-        CHECK(0 == mliFrame_set_name(&f, "I/use/the/delimiter/symbol"));
-        CHECK(0 == mliFrame_set_name(&f, " "));
     }
 
     /* mliFrame */
@@ -127,12 +113,12 @@ int main(int argc, char *argv[]) {
         mliFrame* child = NULL;
         mliFrame mother = mliFrame_init();
         CHECK(mliFrame_malloc(&mother, MLI_FRAME));
-        CHECK(mliFrame_set_name(&mother, "mother"));
+        mother.id = 1337;
 
         child = mliFrame_add(&mother, MLI_MESH);
         CHECK(child);
         CHECK(child->type == MLI_MESH);
-        CHECK(mliFrame_set_name(child, "my_mesh"));
+        child->id = 42;
         child->primitive.mesh->num_vertices = 3;
         child->primitive.mesh->num_faces = 1;
         mliMesh_malloc(child->primitive.mesh);
@@ -149,12 +135,12 @@ int main(int argc, char *argv[]) {
         mliFrame* child = NULL;
         mliFrame mother = mliFrame_init();
         CHECK(mliFrame_malloc(&mother, MLI_FRAME));
-        CHECK(mliFrame_set_name(&mother, "mother"));
+        mother.id = 1337;
 
         child = mliFrame_add(&mother, MLI_SPHERE);
         CHECK(child);
         CHECK(child->type == MLI_SPHERE);
-        CHECK(mliFrame_set_name(child, "my_sphere"));
+        child->id = 33;
         child->primitive.sphere->radius = 1.;
         mliFrame_free(&mother);
     }
@@ -3111,27 +3097,5 @@ int main(int argc, char *argv[]) {
         mliJson_free(&json);
     }
 
-    /* mli_string_hash */
-    {
-        char s[1024];
-        uint64_t h;
-        sprintf(s, "%s", "");
-        CHECK(s[0] == '\0');
-        h = mli_string_hash(s);
-        CHECK(h == MLI_DJB2_START_HASH);
-    }
-
-    {
-        char s[1024];
-        uint64_t wtf, abc, wtf2;
-        sprintf(s, "wtf");
-        wtf = mli_string_hash(s);
-        sprintf(s, "abc");
-        abc = mli_string_hash(s);
-        sprintf(s, "wtf");
-        wtf2 = mli_string_hash(s);
-        CHECK(wtf != abc);
-        CHECK(wtf == wtf2);
-    }
     return EXIT_SUCCESS;
 }
