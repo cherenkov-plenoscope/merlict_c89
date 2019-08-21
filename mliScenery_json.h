@@ -45,7 +45,9 @@ int mliUserScenery_malloc_from_json(mliUserScenery *uscn, const mliJson *json) {
     mli_check(
         __mliScenery_surface_capacity_from_json(&uscn->surface_resources, json),
         "Could not estimate capacity for surface_resources.");
-    mliUserScenery_malloc(uscn);
+    mli_check(
+        mliUserScenery_malloc(uscn),
+        "Could not allocate memory for mliUserScenery.");
 
 
 
