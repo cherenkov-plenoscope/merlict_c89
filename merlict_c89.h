@@ -60,4 +60,6 @@
 #include "mliUserScenery.h"
 #include "mli_frame_to_scenery.h"
 
+#include "mli_string_hash.h"
+
 #endif

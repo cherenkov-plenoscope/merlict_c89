@@ -3110,5 +3110,28 @@ int main(int argc, char *argv[]) {
         CHECK(scenery.num_cylinders == 1u);
         mliJson_free(&json);
     }
+
+    /* mli_string_hash */
+    {
+        char s[1024];
+        uint64_t h;
+        sprintf(s, "%s", "");
+        CHECK(s[0] == '\0');
+        h = mli_string_hash(s);
+        CHECK(h == MLI_DJB2_START_HASH);
+    }
+
+    {
+        char s[1024];
+        uint64_t wtf, abc, wtf2;
+        sprintf(s, "wtf");
+        wtf = mli_string_hash(s);
+        sprintf(s, "abc");
+        abc = mli_string_hash(s);
+        sprintf(s, "wtf");
+        wtf2 = mli_string_hash(s);
+        CHECK(wtf != abc);
+        CHECK(wtf == wtf2);
+    }
     return EXIT_SUCCESS;
 }
