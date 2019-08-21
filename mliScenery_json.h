@@ -6,7 +6,55 @@
 #include <stdlib.h>
 #include "mli_debug.h"
 #include "mli_json.h"
+#include "mliUserScenery.h"
 
+
+int __mliScenery_surface_capacity_from_json(
+    mliScenery *surface_resources,
+    const mliJson *json) {
+    uint64_t token;
+    mli_check(
+        mliJson_find_key(json, 0, "functions", &token),
+        "Expected scenery-json to have key 'functions'.");
+    mli_check(
+        json->tokens[token + 1].type == JSMN_ARRAY,
+        "Expected key 'functions' to point to a json-array.")
+    surface_resources->num_functions = json->tokens[token + 1].size;
+
+    mli_check(
+        mliJson_find_key(json, 0, "colors", &token),
+        "Expected scenery-json to have key 'colors'.");
+    mli_check(
+        json->tokens[token + 1].type == JSMN_ARRAY,
+        "Expected key 'colors' to point to a json-array.")
+    surface_resources->num_colors = json->tokens[token + 1].size;
+
+    mli_check(
+        mliJson_find_key(json, 0, "surfaces", &token),
+        "Expected scenery-json to have key 'surfaces'.");
+    mli_check(
+        json->tokens[token + 1].type == JSMN_ARRAY,
+        "Expected key 'colors' to point to a json-array.")
+    surface_resources->num_surfaces = json->tokens[token + 1].size;
+    return 1;
+error:
+    return 0;}
+
+int mliUserScenery_malloc_from_json(mliUserScenery *uscn, const mliJson *json) {
+    uint64_t token;
+    mli_check(
+        __mliScenery_surface_capacity_from_json(&uscn->surface_resources, json),
+        "Could not estimate capacity for surface_resources.");
+    mliUserScenery_malloc(uscn);
+
+
+
+    mli_check(
+        mliJson_find_key(json, 0, "children", &token),
+        "Expected scenery-json to have key 'children'.");
+    return 1;
+error:
+    return 0;}
 
 int mliScenery_bumb_capacity_child_json(
     mliScenery *s,

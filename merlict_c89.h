@@ -55,6 +55,8 @@
 #include "mli_string_to.h"
 #include "mli_json.h"
 #include "mliScenery_json.h"
+#include "mliFunc_malloc_from_json_token.h"
+#include "mliVec_from_json_token.h"
 
 #include "mliFrame.h"
 #include "mliUserScenery.h"

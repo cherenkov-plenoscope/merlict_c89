@@ -3079,13 +3079,85 @@ int main(int argc, char *argv[]) {
         mliJson_free(&json);
     }
 
+    /* json malloc mliFunc */
+    {
+        uint64_t token;
+        mliJson json = mliJson_init();
+        mliFunc f = mliFunc_init();
+        CHECK(mliJson_malloc_from_file(&json, "test_mliFunc.json"));
+        CHECK(mliJson_write_debug(&json, "test_mliFunc.json.debug.tmp"));
+        CHECK(mliJson_find_key(&json, 0, "two_functions", &token));
+        CHECK(json.tokens[token + 1].size == 2);
+        token += 1;
+        CHECK(token == 2);
+        token += 1;
+        CHECK(token == 3);
+        /* the first function */
+        CHECK(mliFunc_malloc_from_json_token(&f, &json, token));
+        CHECK(f.num_points == 2);
+        CHECK_MARGIN(f.x[0], 200e-9, 1e-9);
+        CHECK_MARGIN(f.x[1], 1200e-9, 1e-9);
+        CHECK_MARGIN(f.y[0], 0., 1e-9);
+        CHECK_MARGIN(f.y[1], 0., 1e-9);
+        mliFunc_free(&f);
+
+        token = 10;
+        /* the second function */
+        f = mliFunc_init();
+        CHECK(mliFunc_malloc_from_json_token(&f, &json, token));
+        CHECK(f.num_points == 3);
+        CHECK_MARGIN(f.x[0], -200e-9, 1e-9);
+        CHECK_MARGIN(f.x[1], 600e-9, 1e-9);
+        CHECK_MARGIN(f.x[2], 1200e-9, 1e-9);
+        CHECK_MARGIN(f.y[0], 1.49, 1e-6);
+        CHECK_MARGIN(f.y[1], -0.59, 1e-6);
+        CHECK_MARGIN(f.y[2], -7.9, 1e-6);
+        mliFunc_free(&f);
+
+        mliJson_free(&json);
+    }
+
+    /* json parse mliVec and mliColor */
+    {
+        uint64_t token;
+        mliJson json = mliJson_init();
+        mliVec vec1 = mliVec_set(0., 0., 0.);
+        mliVec vec2 = mliVec_set(0., 0., 0.);
+        mliColor col = mliColor_set(0., 0., 0.);
+        CHECK(mliJson_malloc_from_file(&json, "test_mliVec.json"));
+        CHECK(mliJson_write_debug(&json, "test_mliVec.json.debug.tmp"));
+
+        CHECK(mliJson_find_key(&json, 0, "vec1", &token));
+        CHECK(mliVec_from_json_token(&vec1, &json, token + 1));
+        CHECK_MARGIN(vec1.x, 1.5, 1e-6);
+        CHECK_MARGIN(vec1.y, 2.5, 1e-6);
+        CHECK_MARGIN(vec1.z, 3.5, 1e-6);
+
+        CHECK(mliJson_find_key(&json, 0, "vec2", &token));
+        CHECK(mliVec_from_json_token(&vec2, &json, token + 1));
+        CHECK_MARGIN(vec2.x, 1.2, 1e-6);
+        CHECK_MARGIN(vec2.y, 3.4, 1e-6);
+        CHECK_MARGIN(vec2.z, -5.6, 1e-6);
+
+        CHECK(mliJson_find_key(&json, 0, "color", &token));
+        CHECK(mliColor_from_json_token(&col, &json, token + 1));
+        CHECK_MARGIN(col.r, 128., 1e-6);
+        CHECK_MARGIN(col.g, 255., 1e-6);
+        CHECK_MARGIN(col.b, 12., 1e-6);
+
+        mliJson_free(&json);
+    }
+
     {
         mliJson json = mliJson_init();
         mliUserScenery uscn = mliUserScenery_init();
-        uint64_t token;
         CHECK(mliJson_malloc_from_file(&json, "small_scenery.json"));
         CHECK(mliJson_write_debug(&json, "small_scenery.json.debug.tmp"));
-        CHECK(mliJson_find_key(&json, 0, "functions", &token));
+
+        CHECK(mliUserScenery_malloc_from_json(&uscn, &json));
+
+        printf("%s, %d\n", __FILE__, __LINE__);
+        mliUserScenery_free(&uscn);
         mliJson_free(&json);
     }
 
