@@ -3081,19 +3081,11 @@ int main(int argc, char *argv[]) {
 
     {
         mliJson json = mliJson_init();
-        mliScenery scenery = mliScenery_init();
+        mliUserScenery uscn = mliUserScenery_init();
         uint64_t token;
         CHECK(mliJson_malloc_from_file(&json, "small_scenery.json"));
         CHECK(mliJson_write_debug(&json, "small_scenery.json.debug.tmp"));
         CHECK(mliJson_find_key(&json, 0, "functions", &token));
-        CHECK(mliScenery_capacity_from_json(&scenery, &json));
-        CHECK(scenery.num_functions == 4u);
-        CHECK(scenery.num_colors == 11u);
-        CHECK(scenery.num_surfaces == 1u);
-
-        CHECK(scenery.num_discs == 1u);
-        CHECK(scenery.num_spheres == 1u);
-        CHECK(scenery.num_cylinders == 1u);
         mliJson_free(&json);
     }
 

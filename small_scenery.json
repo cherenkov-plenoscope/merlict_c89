@@ -1,100 +1,66 @@
 {
   "functions": [
-    { "name": "zero",
-      "argument_versus_value": [
+    [
         [200e-9, 0.0],
-        [1200e-9, 0.0]]},
-    { "name": "leaf_reflection",
-      "argument_versus_value": [
-        [200e-9, 0.5],
-        [1200e-9, 0.5]]},
-    { "name": "mirror_reflection",
-      "argument_versus_value": [
-        [200e-9, 0.95],
-        [1200e-9, 0.95]]},
-    { "name": "glas_refraction",
-      "argument_versus_value": [
+        [1200e-9, 0.0]
+    ],
+    [
         [200e-9, 1.49],
-        [1200e-9, 1.49]]}
+        [1200e-9, 1.49]
+    ]
   ],
-  "colors":
-  [
-    {"name": "grass_green", "rgb": [22, 91, 49]},
-    {"name": "orange", "rgb": [255, 91, 49]},
-    {"name": "leaf_green", "rgb": [22, 200, 49]},
-    {"name": "wood_brown", "rgb": [200, 200, 0]},
-    {"name": "water_blue", "rgb": [22, 22, 200]},
-    {"name": "dark_bricks", "rgb": [110, 110, 110]},
-    {"name": "brick_gray", "rgb": [180,180,180]},
-    {"name": "roof_red", "rgb": [190,0,80]},
-    {"name": "body_white", "rgb": [230,230,215]},
-    {"name": "sensor_green", "rgb": [0,255,128]},
-    {"name": "carbon_black", "rgb": [75,75,75]}
+  "colors": [
+    [22, 91, 49],
+    [122, 91, 49],
+    [22, 191, 49],
+    [22, 91, 149],
   ],
-  "surfaces":
-  [
-    {
-      "name": "grass",
-      "color": "grass_green",
-      "reflectivity": "zero",
-      "refractivity": "zero"
-    }
+  "surfaces": [
+    {"color": 0, "reflectivity": 0, "refractivity": 0},
+    {"color": 1, "reflectivity": 0, "refractivity": 0},
+    {"color": 2, "reflectivity": 0, "refractivity": 0},
+    {"color": 3, "reflectivity": 0, "refractivity": 2}
   ],
   "children": [
     {
       "type": "Disc",
-      "name": "ground",
+      "id": 1,
       "pos": [0, 0, -2],
       "rot": [0, 0,  0],
       "radius": 100,
-      "surface": {
-        "outer_color": "grass",
-        "inner_color": "grass_green"
-      },
-      "children": []
-    },
-    {
-      "type": "StereoLitography",
-      "name": "Spyder",
-      "pos": [-5, 3, -1.5],
-      "rot": [0, 0,  0],
-      "path": "spider.stl",
-      "scale": 0.15,
-      "surface": {
-        "outer_color": "orange",
-        "inner_color": "orange"
-      },
-      "children": []
+      "surface": 0
     },
     {
       "type": "Frame",
-      "name": "tree",
+      "id": 2,
       "pos": [5, 5, -2],
       "rot": [0, 0, 0],
       "children": [
         {
           "type": "Sphere",
-          "name": "leaf_ball",
+          "id": 3,
           "pos": [0, 0, 3],
           "rot": [0, 0, 0],
           "radius": 1.5,
-          "surface": {
-            "outer_color": "leaf_green"
-          },
-          "children": []
+          "surface": 2
         },
         {
           "type": "Cylinder",
-          "name": "pole",
-          "start_pos": [0, 0, 0],
-          "end_pos": [0, 0, 1.5],
+          "id": 4,
+          "pos": [0, 0, 0.75],
+          "rot": [0, 0, 0],
           "radius": 0.25,
-          "surface": {
-            "outer_color": "wood_brown"
-          },
-          "children": []
+          "surface": 1
         }
       ]
-    }
+    },
+    {
+      "type": "Sphere",
+      "id": 1337,
+      "pos": [3, 3, 1.5],
+      "rot": [0, 0, 0],
+      "radius": 1.5,
+      "surface": 3
+    },
   ]
 }
