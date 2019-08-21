@@ -57,10 +57,12 @@ int mliFunc_evaluate(
 }
 
 int mliFunc_fwrite(const mliFunc *func, FILE* f) {
-    fwrite(&func->num_points, sizeof(uint32_t), 1u, f);
-    fwrite(func->x, sizeof(double), func->num_points, f);
-    fwrite(func->y, sizeof(double), func->num_points, f);
-    return 1;}
+    mli_fwrite(&func->num_points, sizeof(uint32_t), 1u, f);
+    mli_fwrite(func->x, sizeof(double), func->num_points, f);
+    mli_fwrite(func->y, sizeof(double), func->num_points, f);
+    return 1;
+error:
+    return 0;}
 
 int mliFunc_fread(mliFunc *func, FILE* f) {
     mli_fread(&func->num_points, sizeof(uint32_t), 1u, f);
