@@ -64,7 +64,7 @@ int mliFunc_fwrite(const mliFunc *func, FILE* f) {
 error:
     return 0;}
 
-int mliFunc_fread(mliFunc *func, FILE* f) {
+int mliFunc_malloc_from_file(mliFunc *func, FILE* f) {
     mli_fread(&func->num_points, sizeof(uint32_t), 1u, f);
     mliFunc_malloc(func);
     mli_fread(func->x, sizeof(double), func->num_points, f);
