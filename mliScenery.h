@@ -641,7 +641,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
 
     /* functions */
     for (i = 0; i < scenery->num_functions; i++) {
-        mliFunc_malloc_from_file(&scenery->functions[i], f);}
+        mli_c(mliFunc_malloc_from_file(&scenery->functions[i], f));}
 
     /* colors */
     mli_fread(scenery->colors, sizeof(mliColor), scenery->num_colors, f);
