@@ -272,7 +272,10 @@ error:
 }
 
 int __mliScenery_malloc_functions(mliScenery* s) {
+    uint64_t i;
     mli_malloc(s->functions, mliFunc, s->num_functions);
+    for (i = 0; i < s->num_functions; i++) {
+        s->functions[i] = mliFunc_init();}
     return 1;
 error:
     return 0;
