@@ -1688,7 +1688,7 @@ int main(int argc, char *argv[]) {
 
         CHECK(mliFunc_x_is_causal(&func));
         CHECK(mli_upper_compare_double(func.x, func.num_points, 1.5) == 2);
-        CHECK(mliFunc_evaluate(&func, 1.5, &y) == 0);
+        CHECK(mliFunc_evaluate(&func, 1.5, &y));
         CHECK(y == 2.);
         mliFunc_free(&func);
     }

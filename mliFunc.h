@@ -36,25 +36,22 @@ error:
 int mliFunc_x_is_causal(mliFunc* f) {
     uint32_t i;
     for (i = 1; i < f->num_points; i++) {
-        if (f->x[i] <= f->x[i - 1])
-            return 0;
-    }
+        if (f->x[i] <= f->x[i - 1]) {
+            return 0;}}
     return 1;}
 
-int mliFunc_evaluate(
-    mliFunc* f,
-    const double xarg,
-    double *out) {
+int mliFunc_evaluate(mliFunc* f, const double xarg, double *out) {
     uint32_t idx = mli_upper_compare_double(f->x, f->num_points, xarg);
     if (idx == 0) {
-        return 1;
+        mli_sentinel("mliFunc argument below lower bound.");
     } else if (idx == f->num_points) {
-        return 1;
+        mli_sentinel("mliFunc argument larger upper bound.");
     } else {
         (*out) = f->y[idx];
-        return 0;
     }
-}
+    return 1;
+error:
+    return 0;}
 
 int mliFunc_fwrite(const mliFunc *func, FILE* f) {
     mli_fwrite(&func->num_points, sizeof(uint32_t), 1u, f);
@@ -69,6 +66,9 @@ int mliFunc_malloc_from_file(mliFunc *func, FILE* f) {
     mliFunc_malloc(func);
     mli_fread(func->x, sizeof(double), func->num_points, f);
     mli_fread(func->y, sizeof(double), func->num_points, f);
+    mli_check(
+        mliFunc_x_is_causal(func),
+        "Expected function x-arguments to be ascending, but they are not.");
     return 1;
 error:
     mliFunc_free(func);
