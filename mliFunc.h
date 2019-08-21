@@ -23,7 +23,7 @@ mliFunc mliFunc_init() {
 void mliFunc_free(mliFunc *f) {
     free(f->x);
     free(f->y);
-    f->num_points = 0;}
+    *f = mliFunc_init();}
 
 int mliFunc_malloc(
     mliFunc* f,
