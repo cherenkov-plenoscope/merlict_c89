@@ -3161,10 +3161,10 @@ int main(int argc, char *argv[]) {
 
         CHECK(mliUserScenery_malloc_from_json(&uscn, &json));
 
-        printf("%s, %d\n", __FILE__, __LINE__);
         mliUserScenery_free(&uscn);
         mliJson_free(&json);
     }
 
+    printf("__SUCCESS__\n");
     return EXIT_SUCCESS;
 }
