@@ -624,7 +624,8 @@ int main(int argc, char *argv[]) {
 
         CHECK(mliScenery_malloc(&scenery));
 
-        CHECK(mliFunc_malloc(&scenery.functions[0] , 2u));
+        scenery.functions[0].num_points = 2u;
+        CHECK(mliFunc_malloc(&scenery.functions[0]));
         scenery.functions[0].x[0] = 200.e-9;
         scenery.functions[0].x[1] = 1200.e-9;
         scenery.functions[0].y[0] = 0.;
@@ -910,7 +911,8 @@ int main(int argc, char *argv[]) {
 
         CHECK(mliScenery_malloc(&scenery));
 
-        CHECK(mliFunc_malloc(&scenery.functions[0] , 2u));
+        scenery.functions[0].num_points = 2u;
+        CHECK(mliFunc_malloc(&scenery.functions[0]));
         scenery.functions[0].x[0] = 200.e-9;
         scenery.functions[0].x[1] = 1200.e-9;
         scenery.functions[0].y[0] = 0.;
@@ -1646,7 +1648,8 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func = mliFunc_init();
-        CHECK(mliFunc_malloc(&func, 0u));
+        func.num_points = 0u;
+        CHECK(mliFunc_malloc(&func));
         CHECK(func.num_points == 0u);
         CHECK(mliFunc_x_is_causal(&func));
         mliFunc_free(&func);
@@ -1654,7 +1657,8 @@ int main(int argc, char *argv[]) {
 
     {
         mliFunc func = mliFunc_init();
-        CHECK(mliFunc_malloc(&func, 3u));
+        func.num_points = 3u;
+        CHECK(mliFunc_malloc(&func));
         CHECK(func.num_points == 3u);
         func.x[0] = 0.;
         func.x[1] = 1.;
@@ -1664,9 +1668,10 @@ int main(int argc, char *argv[]) {
     }
 
     {
-        mliFunc func = mliFunc_init();
         double y;
-        CHECK(mliFunc_malloc(&func, 5u));
+        mliFunc func = mliFunc_init();
+        func.num_points = 5u;
+        CHECK(mliFunc_malloc(&func));
         CHECK(func.num_points == 5u);
 
         func.x[0] = 0.;

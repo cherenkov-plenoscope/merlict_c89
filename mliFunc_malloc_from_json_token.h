@@ -15,8 +15,9 @@ int mliFunc_malloc_from_json_token(
     mli_check(
         json->tokens[token].type == JSMN_ARRAY,
         "Expected func-token to be a json-array.");
+    f->num_points = json->tokens[token].size;
     mli_check(
-        mliFunc_malloc(f, json->tokens[token].size),
+        mliFunc_malloc(f),
         "Can not allocate function.");
     point_token = token + 1;
     for (point = 0; point < f->num_points; point++) {

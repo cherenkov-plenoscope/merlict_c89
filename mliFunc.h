@@ -25,10 +25,7 @@ void mliFunc_free(mliFunc *f) {
     free(f->y);
     *f = mliFunc_init();}
 
-int mliFunc_malloc(
-    mliFunc* f,
-    const uint32_t num_points) {
-    f->num_points = num_points;
+int mliFunc_malloc(mliFunc* f) {
     mli_malloc(f->x, double, f->num_points);
     mli_malloc(f->y, double, f->num_points);
     return 1;
@@ -67,7 +64,7 @@ int mliFunc_fwrite(const mliFunc *func, FILE* f) {
 
 int mliFunc_fread(mliFunc *func, FILE* f) {
     mli_fread(&func->num_points, sizeof(uint32_t), 1u, f);
-    mliFunc_malloc(func, func->num_points);
+    mliFunc_malloc(func);
     mli_fread(func->x, sizeof(double), func->num_points, f);
     mli_fread(func->y, sizeof(double), func->num_points, f);
     return 1;
