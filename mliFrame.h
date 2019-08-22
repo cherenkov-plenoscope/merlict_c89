@@ -66,6 +66,7 @@ int mliFrame_malloc(mliFrame *f, const uint64_t type) {
             break;
         case MLI_MESH:
             mli_malloc(f->primitive.mesh, mliMesh, 1u);
+            *f->primitive.mesh = mliMesh_init();
             break;
         case MLI_SPHERICAL_CAP_HEX:
             mli_malloc(f->primitive.spherical_cap_hex, mliSphericalCapHex, 1u);
@@ -167,6 +168,30 @@ void mli_type_to_string(const uint64_t type, char* s) {
         case MLI_BICIRCLEPLANE: sprintf(s, "BiCirclePlane"); break;
         case MLI_DISC: sprintf(s, "Disc"); break;
         default: break;}}
+
+int mli_string_to_type(const char* s, uint64_t *type) {
+    if (strcmp(s, "Frame") == 0) {
+        *type = MLI_FRAME;
+    } else if (strcmp(s, "Mesh") == 0) {
+        *type = MLI_MESH;
+    } else if (strcmp(s, "SphericalCapHex") == 0) {
+        *type = MLI_SPHERICAL_CAP_HEX;
+    } else if (strcmp(s, "Sphere") == 0) {
+        *type = MLI_SPHERE;
+    } else if (strcmp(s, "Cylinder") == 0) {
+        *type = MLI_CYLINDER;
+    } else if (strcmp(s, "Hexagon") == 0) {
+        *type = MLI_HEXAGON;
+    } else if (strcmp(s, "BiCirclePlane") == 0) {
+        *type = MLI_BICIRCLEPLANE;
+    } else if (strcmp(s, "Disc") == 0) {
+        *type = MLI_DISC;
+    } else {
+        mli_sentinel("Type is unknown.");
+    }
+    return 1;
+error:
+    return 0;}
 
 void __mliFrame_print(mliFrame *f, const uint64_t indention) {
     uint64_t c;
