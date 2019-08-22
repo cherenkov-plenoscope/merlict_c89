@@ -56,7 +56,8 @@ int __mliScenery_malloc_functions_from_json(
         json->tokens[token_functions].type == JSMN_ARRAY,
         "Expected key 'functions' to point to a json-array.")
     mli_check(
-        surface_resources->num_functions == json->tokens[token_functions].size,
+        surface_resources->num_functions ==
+        (uint64_t)json->tokens[token_functions].size,
         "Expected num_functions in mliScenery to match json-array.");
 
     for (f = 0; f < surface_resources->num_functions; f++) {
@@ -86,7 +87,8 @@ int __mliScenery_assign_colors_from_json(
         json->tokens[token_colors].type == JSMN_ARRAY,
         "Expected key 'colors' to point to a json-array.")
     mli_check(
-        surface_resources->num_colors == json->tokens[token_colors].size,
+        surface_resources->num_colors ==
+        (uint64_t)json->tokens[token_colors].size,
         "Expected num_colors in mliScenery to match json-array.");
     for (c = 0; c < surface_resources->num_colors; c++) {
         uint64_t token_c = mliJson_array_child_token(json, token_colors, c);
@@ -149,7 +151,8 @@ int __mliScenery_assign_surfaces_from_json(
         json->tokens[token_surfaces].type == JSMN_ARRAY,
         "Expected key 'surfaces' to point to a json-array.")
     mli_check(
-        surface_resources->num_surfaces == json->tokens[token_surfaces].size,
+        surface_resources->num_surfaces ==
+        (uint64_t)json->tokens[token_surfaces].size,
         "Expected num_surfaces in mliScenery to match json-array.");
     for (s = 0; s < surface_resources->num_surfaces; s++) {
         uint64_t token_s = mliJson_array_child_token(json, token_surfaces, s);
