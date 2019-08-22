@@ -48,16 +48,21 @@ mliOBB mliHexagon_obb(
     const mliHomTraComp local2root_comp) {
     mliOBB obb;
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-    const mliVec first_corner_local = mli_hexagon_corner(0);
-    const mliVec first_corner_root = mliHomTra_pos(
+    mliVec first_corner_local = mliVec_multiply(
+        mli_hexagon_corner(0),
+        hex.inner_radius/MLI_SQRT3_OVER_2);
+    mliVec first_corner_root = mliHomTra_pos(
         &local2root,
         first_corner_local);
     uint64_t corner_idx;
     obb.lower = first_corner_root;
     obb.upper = first_corner_root;
     for (corner_idx = 1; corner_idx < 5; corner_idx++) {
-        const mliVec corner_local = mli_hexagon_corner(corner_idx);
-        const mliVec corner_root = mliHomTra_pos(&local2root, corner_local);
+        mliVec corner_root;
+        mliVec corner_local = mliVec_multiply(
+            mli_hexagon_corner(corner_idx),
+            hex.inner_radius/MLI_SQRT3_OVER_2);
+        corner_root = mliHomTra_pos(&local2root, corner_local);
         obb.lower.x = MLI_MIN2(obb.lower.x, corner_root.x);
         obb.lower.y = MLI_MIN2(obb.lower.y, corner_root.y);
         obb.lower.z = MLI_MIN2(obb.lower.z, corner_root.z);
