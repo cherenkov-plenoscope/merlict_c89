@@ -184,6 +184,36 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    /* mliFrame */
+    /* mliFrame_set_frame2root */
+    /* test only translation z-component */
+    {
+        mliFrame* c1;
+        mliFrame* c2;
+        mliFrame* c1_c1;
+        mliFrame root = mliFrame_init();
+        CHECK(mliFrame_malloc(&root, MLI_FRAME));
+        root.id = 1337;
+        c1 = mliFrame_add(&root, MLI_FRAME);
+        CHECK(c1);
+        c1->id = 1;
+        c1->frame2mother.trans = mliVec_set(0., 0., 1.);
+        c2 = mliFrame_add(&root, MLI_FRAME);
+        CHECK(c2);
+        c2->id = 2;
+        c2->frame2mother.trans = mliVec_set(0., 0., -1.);
+        c1_c1 = mliFrame_add(c1, MLI_FRAME);
+        CHECK(c1_c1);
+        c1_c1->id = 11;
+        c1_c1->frame2mother.trans = mliVec_set(0., 0., 1.);
+
+        mliFrame_set_frame2root(&root);
+        CHECK_MARGIN(root.frame2root.trans.z, 0., 1e-9);
+        CHECK_MARGIN(c1->frame2root.trans.z, 1., 1e-9);
+        CHECK_MARGIN(c2->frame2root.trans.z, -1., 1e-9);
+        CHECK_MARGIN(c1_c1->frame2root.trans.z, 2., 1e-9);
+    }
+
     /* mliUserScenery */
     {
         mliUserScenery uscn = mliUserScenery_init();
@@ -1196,6 +1226,125 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
+    }
+
+    /* mliHomTraComp */
+    /* sequence, unity and unity shall be unity*/
+    {
+        mliHomTraComp a;
+        mliHomTraComp b;
+        mliHomTraComp a_b;
+
+        a.trans = mliVec_set(0., 0., 0.);
+        a.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
+
+        b.trans = mliVec_set(0., 0., 0.);
+        b.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
+
+        a_b = mliHomTraComp_sequence(a, b);
+        CHECK_MARGIN(a_b.trans.x, 0., 1e-9);
+        CHECK_MARGIN(a_b.trans.y, 0., 1e-9);
+        CHECK_MARGIN(a_b.trans.z, 0., 1e-9);
+
+        CHECK_MARGIN(a_b.rot.w, 1., 1e-9);
+    }
+
+    {
+        mliHomTraComp a; /* only translation */
+        mliHomTraComp b; /* only rotation */
+        mliHomTraComp a_b;
+        mliHomTra a_b_;
+
+        a.trans = mliVec_set(0., 0., 1.);
+        a.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
+
+        b.trans = mliVec_set(0., 0., 0.);
+        b.rot = mliQuaternion_set_tait_bryan(0., 0., mli_deg2rad(90.));
+
+        a_b = mliHomTraComp_sequence(a, b);
+        a_b_ = mliHomTra_from_compact(a_b);
+        /* mliHomTra_print(a_b_); */
+        CHECK_MARGIN(a_b_.trans.x, 0., 1e-9);
+        CHECK_MARGIN(a_b_.trans.y, 0., 1e-9);
+        CHECK_MARGIN(a_b_.trans.z, 1., 1e-9);
+
+        CHECK_MARGIN(a_b_.rot.r00,  0., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r10, -1., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r20,  0., 1e-9);
+
+        CHECK_MARGIN(a_b_.rot.r01,  1., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r11,  0., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r21,  0., 1e-9);
+
+        CHECK_MARGIN(a_b_.rot.r02,  0., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r12,  0., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r22,  1., 1e-9);
+    }
+
+    /* cancelation */
+    {
+        mliHomTraComp a;
+        mliHomTraComp a_inverse; /* inverse ov a */
+        mliHomTraComp a_a_inverse;
+        mliHomTra a_a_inverse_;
+
+        a.trans = mliVec_set(0., 0., 1.);
+        a.rot = mliQuaternion_set_tait_bryan(0., 0., -mli_deg2rad(90.));
+
+        a_inverse.trans = mliVec_set(0., 0., -1.);
+        a_inverse.rot = mliQuaternion_set_tait_bryan(0., 0., mli_deg2rad(90.));
+
+        a_a_inverse = mliHomTraComp_sequence(a, a_inverse);
+        a_a_inverse_ = mliHomTra_from_compact(a_a_inverse);
+        /* mliHomTra_print(a_a_inverse_); */
+        CHECK_MARGIN(a_a_inverse_.trans.x, 0., 1e-9);
+        CHECK_MARGIN(a_a_inverse_.trans.y, 0., 1e-9);
+        CHECK_MARGIN(a_a_inverse_.trans.z, 0., 1e-9);
+
+        CHECK_MARGIN(a_a_inverse_.rot.r00,  1., 1e-9);
+        CHECK_MARGIN(a_a_inverse_.rot.r10,  0., 1e-9);
+        CHECK_MARGIN(a_a_inverse_.rot.r20,  0., 1e-9);
+
+        CHECK_MARGIN(a_a_inverse_.rot.r01,  0., 1e-9);
+        CHECK_MARGIN(a_a_inverse_.rot.r11,  1., 1e-9);
+        CHECK_MARGIN(a_a_inverse_.rot.r21,  0., 1e-9);
+
+        CHECK_MARGIN(a_a_inverse_.rot.r02,  0., 1e-9);
+        CHECK_MARGIN(a_a_inverse_.rot.r12,  0., 1e-9);
+        CHECK_MARGIN(a_a_inverse_.rot.r22,  1., 1e-9);
+    }
+
+    /* simple sequence */
+    {
+        mliHomTraComp a;
+        mliHomTraComp b;
+        mliHomTraComp a_b;
+        mliHomTra a_b_;
+
+        a.trans = mliVec_set(0., 0., 1.);
+        a.rot = mliQuaternion_set_tait_bryan(0., 0., mli_deg2rad(90.));
+
+        b.trans = mliVec_set(1., 0., 0.);
+        b.rot = mliQuaternion_set_tait_bryan(mli_deg2rad(90.), 0., 0.);
+
+        a_b = mliHomTraComp_sequence(a, b);
+        a_b_ = mliHomTra_from_compact(a_b);
+        /* mliHomTra_print(a_b_); */
+        CHECK_MARGIN(a_b_.trans.x, 1., 1e-9);
+        CHECK_MARGIN(a_b_.trans.y, 0., 1e-9);
+        CHECK_MARGIN(a_b_.trans.z, 1., 1e-9);
+
+        CHECK_MARGIN(a_b_.rot.r00,  0., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r10, -1., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r20,  0., 1e-9);
+
+        CHECK_MARGIN(a_b_.rot.r01,  0., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r11,  0., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r21, -1., 1e-9);
+
+        CHECK_MARGIN(a_b_.rot.r02,  1., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r12,  0., 1e-9);
+        CHECK_MARGIN(a_b_.rot.r22,  0., 1e-9);
     }
 
     /* mliHomTra */

@@ -160,4 +160,7 @@ void mliVec_ncpy(
     for (i = 0; i < num; i++) {
         to[i] = from[i];}}
 
+void mliVec_print(const mliVec v) {
+    printf("[%.2f, %.2f, %.2f]", v.x, v.y, v.z);}
+
 #endif

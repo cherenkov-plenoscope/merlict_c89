@@ -29,6 +29,7 @@ typedef struct mliFrame {
     mliVector children;
 
     mliHomTraComp frame2mother;
+    mliHomTraComp frame2root;
 
     uint32_t type;
     union {
@@ -52,6 +53,7 @@ mliFrame mliFrame_init() {
     f.frame2mother.rot = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 0.),
         0.);
+    f.frame2root = f.frame2mother;
     f.type = MLI_FRAME;
     f.surface = 0u;
     return f;}
@@ -233,6 +235,23 @@ void __mliFrame_print(mliFrame *f, const uint64_t indention) {
 
 void mliFrame_print(mliFrame *f) {
     __mliFrame_print(f, 0u);
+}
+
+void mliFrame_set_frame2root(mliFrame *f) {
+    if (f->mother == NULL) {
+        f->frame2root = f->frame2mother;
+    } else {
+        f->frame2root = mliHomTraComp_sequence(
+            f->mother->frame2root,
+            f->frame2mother);
+    }
+    if (f->type == MLI_FRAME) {
+        uint64_t c;
+        for (c = 0; c < f->children.size; c++) {
+            mliFrame* child = *((mliFrame**)mliVector_at(&f->children, c));
+            mliFrame_set_frame2root(child);
+        }
+    }
 }
 
 #endif

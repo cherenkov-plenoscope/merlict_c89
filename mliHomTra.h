@@ -118,4 +118,23 @@ int mliHomTraComp_is_equal(const mliHomTraComp a, const mliHomTraComp b) {
         return 0;
     return 1;}
 
+mliHomTraComp mliHomTraComp_sequence(
+    const mliHomTraComp a,
+    const mliHomTraComp b) {
+    mliHomTraComp s;
+    mliRotMat rot_a = mliQuaternion_to_matrix(a.rot);
+    s.trans = mli_transform_orientation(&rot_a, a.trans);
+    s.trans = mliVec_add(s.trans, b.trans);
+    s.rot = mliQuaternion_product(a.rot, b.rot);
+    return s;}
+
+void mliHomTra_print(const mliHomTra h) {
+    printf("[%.1f, %.1f, %.1f | %.1f]\n",
+        h.rot.r00, h.rot.r01, h.rot.r02, h.trans.x);
+    printf("[%.1f, %.1f, %.1f | %.1f]\n",
+        h.rot.r10, h.rot.r11, h.rot.r12, h.trans.y);
+    printf("[%.1f, %.1f, %.1f | %.1f]\n",
+        h.rot.r20, h.rot.r21, h.rot.r22, h.trans.z);
+    printf("[  0,   0,   0 |   1]\n");}
+
 #endif
