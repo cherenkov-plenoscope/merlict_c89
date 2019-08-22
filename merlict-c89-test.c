@@ -162,6 +162,28 @@ int main(int argc, char *argv[]) {
         mliFrame_free(&root);
     }
 
+    /* mliFrame type: uint64 <-> string */
+    {
+        uint64_t i;
+        uint64_t types[8] = {
+            MLI_FRAME,
+            MLI_MESH,
+            MLI_SPHERICAL_CAP_HEX,
+            MLI_SPHERE,
+            MLI_CYLINDER,
+            MLI_HEXAGON,
+            MLI_BICIRCLEPLANE,
+            MLI_DISC};
+        uint64_t type;
+        char type_string[1024];
+        CHECK(!mli_string_to_type("Wtf?", &type));
+        for (i = 0; i < 8; i++) {
+            mli_type_to_string(types[i], type_string);
+            CHECK(mli_string_to_type(type_string, &type));
+            CHECK(type == types[i]);
+        }
+    }
+
     /* mliUserScenery */
     {
         mliUserScenery uscn = mliUserScenery_init();
