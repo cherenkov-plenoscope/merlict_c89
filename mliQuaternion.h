@@ -97,6 +97,22 @@ mliRotMat mliQuaternion_to_matrix(const mliQuaternion quat) {
     o.r22 = w2 - x2 - y2 + z2;
     return o;}
 
+mliQuaternion mliQuaternion_set_tait_bryan(
+    const double rx,
+    const double ry,
+    const double rz) {
+    const mliQuaternion qz = mliQuaternion_set_rotaxis_and_angle(
+        mliVec_set(0,0,1),
+        rx);
+    const mliQuaternion qy = mliQuaternion_set_rotaxis_and_angle(
+        mliVec_set(0,1,0),
+        ry);
+    const mliQuaternion qx = mliQuaternion_set_rotaxis_and_angle(
+        mliVec_set(1,0,0),
+        rz);
+    const mliQuaternion qz_qy = mliQuaternion_product(qz, qy);
+    return mliQuaternion_product(qz_qy, qx);}
+
 void mliQuaternion_print(const mliQuaternion q) {
     printf("(w:%f, [%f, %f, %f])", q.w, q.x, q.y, q.z);}
 
