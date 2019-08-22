@@ -103,13 +103,13 @@ mliQuaternion mliQuaternion_set_tait_bryan(
     const double rz) {
     const mliQuaternion qz = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0,0,1),
-        rx);
+        -rz);
     const mliQuaternion qy = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0,1,0),
-        ry);
+        -ry);
     const mliQuaternion qx = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(1,0,0),
-        rz);
+        -rx);
     const mliQuaternion qz_qy = mliQuaternion_product(qz, qy);
     return mliQuaternion_product(qz_qy, qx);}
 

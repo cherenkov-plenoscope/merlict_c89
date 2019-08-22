@@ -1161,6 +1161,43 @@ int main(int argc, char *argv[]) {
         CHECK_MARGIN(r_z90_x90.r22, 0., 1e-6);
     }
 
+    /* mliQuaternion */
+    /* Tait-Bryan-angles */
+    {
+        mliQuaternion q = mliQuaternion_set_tait_bryan(0., 0.,0.);
+        CHECK_MARGIN(mliQuaternion_norm(q), 1., 1e-6);
+    }
+
+    {
+        mliQuaternion q = mliQuaternion_set_tait_bryan(0., 0., mli_deg2rad(90));
+        mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(90));
+        mliRotMat rot_from_q;
+        CHECK_MARGIN(mliQuaternion_norm(q), 1., 1e-6);
+        rot_from_q = mliQuaternion_to_matrix(q);
+        CHECK(mliRotMat_equal_margin(rot, rot_from_q, 1e-9));
+    }
+
+    /* Tait-Bryan-angles */
+    /* multiple combinations */
+    {
+        double rx, ry, rz;
+        for (rx = -400; rx < 400; rx += 25) {
+            for (ry = -400; ry < 400; ry += 25) {
+                for (rz = -400; rz < 400; rz += 25) {
+                    double xrad = mli_deg2rad(rx);
+                    double yrad = mli_deg2rad(ry);
+                    double zrad = mli_deg2rad(rz);
+                    mliQuaternion q = mliQuaternion_set_tait_bryan(
+                        xrad, yrad, zrad);
+                    mliRotMat rot = mliRotMat_init_tait_bryan(
+                        xrad, yrad, zrad);
+                    mliRotMat rot_from_q = mliQuaternion_to_matrix(q);
+                    CHECK(mliRotMat_equal_margin(rot, rot_from_q, 1e-9));
+                }
+            }
+        }
+    }
+
     /* mliHomTra */
     {
         mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., 0.);

@@ -62,8 +62,23 @@ mliRotMat mliRotMat_init_axis(
     return rot;}
 
 void mliRotMat_print(const mliRotMat rot) {
-    printf("[%f, %f, %f]\n", rot.r00, rot.r01, rot.r02);
-    printf("[%f, %f, %f]\n", rot.r10, rot.r11, rot.r12);
-    printf("[%f, %f, %f]",   rot.r20, rot.r21, rot.r22);}
+    printf("[%.2f, %.2f, %.2f]\n", rot.r00, rot.r01, rot.r02);
+    printf("[%.2f, %.2f, %.2f]\n", rot.r10, rot.r11, rot.r12);
+    printf("[%.2f, %.2f, %.2f]",   rot.r20, rot.r21, rot.r22);}
+
+int mliRotMat_equal_margin(
+    const mliRotMat a,
+    const mliRotMat b,
+    const double margin) {
+    if (fabs(a.r00 - b.r00) > margin) return 0;
+    if (fabs(a.r01 - b.r01) > margin) return 0;
+    if (fabs(a.r02 - b.r02) > margin) return 0;
+    if (fabs(a.r10 - b.r10) > margin) return 0;
+    if (fabs(a.r11 - b.r11) > margin) return 0;
+    if (fabs(a.r12 - b.r12) > margin) return 0;
+    if (fabs(a.r20 - b.r20) > margin) return 0;
+    if (fabs(a.r21 - b.r21) > margin) return 0;
+    if (fabs(a.r22 - b.r22) > margin) return 0;
+    return 1;}
 
 #endif
