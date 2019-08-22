@@ -3156,10 +3156,81 @@ int main(int argc, char *argv[]) {
     {
         mliJson json = mliJson_init();
         mliUserScenery uscn = mliUserScenery_init();
+        mliFrame* f;
         CHECK(mliJson_malloc_from_file(&json, "small_scenery.json"));
         CHECK(mliJson_write_debug(&json, "small_scenery.json.debug.tmp"));
 
         CHECK(mliUserScenery_malloc_from_json(&uscn, &json));
+
+        /* functions */
+        CHECK(uscn.surface_resources.num_functions == 2u);
+        CHECK(uscn.surface_resources.functions[0].num_points == 2u);
+        CHECK_MARGIN(uscn.surface_resources.functions[0].x[0], 200e-9, 1e-9);
+        CHECK_MARGIN(uscn.surface_resources.functions[0].y[0], 0., 1e-9);
+        CHECK_MARGIN(uscn.surface_resources.functions[0].x[1], 1200e-9, 1e-9);
+        CHECK_MARGIN(uscn.surface_resources.functions[0].y[1], 0., 1e-9);
+        CHECK(uscn.surface_resources.functions[1].num_points == 2u);
+        CHECK_MARGIN(uscn.surface_resources.functions[1].x[0], 200e-9, 1e-9);
+        CHECK_MARGIN(uscn.surface_resources.functions[1].y[0], 1.49, 1e-9);
+        CHECK_MARGIN(uscn.surface_resources.functions[1].x[1], 1200e-9, 1e-9);
+        CHECK_MARGIN(uscn.surface_resources.functions[1].y[1], 1.49, 1e-9);
+
+        /* colors */
+        CHECK(uscn.surface_resources.num_colors == 4u);
+        CHECK(mliColor_is_equal(
+            uscn.surface_resources.colors[0],
+            mliColor_set(22, 91, 49)));
+        CHECK(mliColor_is_equal(
+            uscn.surface_resources.colors[1],
+            mliColor_set(122, 91, 49)));
+        CHECK(mliColor_is_equal(
+            uscn.surface_resources.colors[2],
+            mliColor_set(22, 191, 49)));
+        CHECK(mliColor_is_equal(
+            uscn.surface_resources.colors[3],
+            mliColor_set(22, 91, 149)));
+
+        /* surfaces */
+        CHECK(uscn.surface_resources.num_surfaces == 4u);
+        CHECK(uscn.surface_resources.surfaces[0].color == 0);
+        CHECK(uscn.surface_resources.surfaces[0].reflection == 0);
+        CHECK(uscn.surface_resources.surfaces[0].refraction == 0);
+        CHECK(uscn.surface_resources.surfaces[1].color == 1);
+        CHECK(uscn.surface_resources.surfaces[1].reflection == 0);
+        CHECK(uscn.surface_resources.surfaces[1].refraction == 0);
+        CHECK(uscn.surface_resources.surfaces[2].color == 2);
+        CHECK(uscn.surface_resources.surfaces[2].reflection == 0);
+        CHECK(uscn.surface_resources.surfaces[2].refraction == 0);
+        CHECK(uscn.surface_resources.surfaces[3].color == 3);
+        CHECK(uscn.surface_resources.surfaces[3].reflection == 0);
+        CHECK(uscn.surface_resources.surfaces[3].refraction == 2);
+
+        /* frames */
+        CHECK(uscn.root.children.size == 4u);
+        f = *((mliFrame**)mliVector_at(&uscn.root.children, 0u));
+        CHECK(f->type == MLI_DISC);
+        f = *((mliFrame**)mliVector_at(&uscn.root.children, 1u));
+        CHECK(f->type == MLI_FRAME);
+        f = *((mliFrame**)mliVector_at(&uscn.root.children, 2u));
+        CHECK(f->type == MLI_MESH);
+        CHECK(f->primitive.mesh->num_vertices == 4u);
+        CHECK_MARGIN(f->primitive.mesh->vertices[0].x, 0., 1e-6);
+        CHECK_MARGIN(f->primitive.mesh->vertices[0].y, 0., 1e-6);
+        CHECK_MARGIN(f->primitive.mesh->vertices[0].z, 0., 1e-6);
+        CHECK_MARGIN(f->primitive.mesh->vertices[1].x, 1., 1e-6);
+        CHECK_MARGIN(f->primitive.mesh->vertices[1].y, 0., 1e-6);
+        CHECK_MARGIN(f->primitive.mesh->vertices[1].z, 0., 1e-6);
+
+        CHECK(f->primitive.mesh->num_faces == 4u);
+        CHECK(f->primitive.mesh->faces[0].a == 0);
+        CHECK(f->primitive.mesh->faces[0].b == 1);
+        CHECK(f->primitive.mesh->faces[0].c == 2);
+        CHECK(f->primitive.mesh->faces[1].a == 0);
+        CHECK(f->primitive.mesh->faces[1].b == 1);
+        CHECK(f->primitive.mesh->faces[1].c == 3);
+
+        f = *((mliFrame**)mliVector_at(&uscn.root.children, 3u));
+        CHECK(f->type == MLI_SPHERE);
 
         mliUserScenery_free(&uscn);
         mliJson_free(&json);
