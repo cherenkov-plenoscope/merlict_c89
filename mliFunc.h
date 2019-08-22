@@ -82,4 +82,16 @@ int mliFunc_is_equal(const mliFunc a, const mliFunc b) {
         if (a.y[i] != b.y[i]) return 0;}
     return 1;}
 
+int mliFunc_cpy(mliFunc* destination, const mliFunc* source) {
+    uint64_t p;
+    mli_check(
+        destination->num_points == source->num_points,
+        "Expected source and destination mliFunc to have same num_points.");
+    for (p = 0; p < destination->num_points; p++) {
+        destination->x[p] = source->x[p];
+        destination->y[p] = source->y[p];}
+    return 1;
+error:
+    return 0;}
+
 #endif
