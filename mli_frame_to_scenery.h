@@ -15,8 +15,7 @@ int __mliScenery_set_primitive_capacity(
     switch(frame->type) {
         case MLI_FRAME:
             for (c = 0; c < frame->children.size; c++) {
-                mliFrame* child = *(
-                    (mliFrame**)mliVector_at(&frame->children, c));
+                mliFrame* child = mliFrame_child(frame, c);
                 mli_c(__mliScenery_set_primitive_capacity(scenery, child));
             }
             break;

@@ -95,12 +95,20 @@ error:
     return 0;
 }
 
+mliFrame* mliFrame_child(const mliFrame* mother, const uint64_t idx) {
+    mliFrame* child = NULL;
+    mli_check(idx <= mother->children.size, "Child-index is out of range.");
+    child = *((mliFrame**)mliVector_at(&mother->children, idx));
+    return child;
+error:
+    return NULL;}
+
 void mliFrame_free(mliFrame *f) {
     uint64_t c;
     switch(f->type) {
         case MLI_FRAME:
             for (c = 0; c < f->children.size; c++) {
-                mliFrame* child = *((mliFrame**)mliVector_at(&f->children, c));
+                mliFrame* child = mliFrame_child(f, c);
                 mliFrame_free(child);
             }
             mliVector_free(&f->children);
@@ -228,7 +236,7 @@ void __mliFrame_print(mliFrame *f, const uint64_t indention) {
         printf("|-surface: %lu\n", f->surface);
     }
     for (c = 0; c < f->children.size; c++) {
-        mliFrame* child = *((mliFrame**)mliVector_at(&f->children, c));
+        mliFrame* child = mliFrame_child(f, c);
         __mliFrame_print(child, indention + 4);
     }
 }
@@ -248,7 +256,7 @@ void mliFrame_set_frame2root(mliFrame *f) {
     if (f->type == MLI_FRAME) {
         uint64_t c;
         for (c = 0; c < f->children.size; c++) {
-            mliFrame* child = *((mliFrame**)mliVector_at(&f->children, c));
+            mliFrame* child = mliFrame_child(f, c);
             mliFrame_set_frame2root(child);
         }
     }

@@ -3415,11 +3415,11 @@ int main(int argc, char *argv[]) {
 
         /* frames */
         CHECK(uscn.root.children.size == 4u);
-        f = *((mliFrame**)mliVector_at(&uscn.root.children, 0u));
+        f = mliFrame_child(&uscn.root, 0);
         CHECK(f->type == MLI_DISC);
-        f = *((mliFrame**)mliVector_at(&uscn.root.children, 1u));
+        f = mliFrame_child(&uscn.root, 1);
         CHECK(f->type == MLI_FRAME);
-        f = *((mliFrame**)mliVector_at(&uscn.root.children, 2u));
+        f = mliFrame_child(&uscn.root, 2);
         CHECK(f->type == MLI_MESH);
         CHECK(f->primitive.mesh->num_vertices == 4u);
         CHECK_MARGIN(f->primitive.mesh->vertices[0].x, 0., 1e-6);
@@ -3437,7 +3437,7 @@ int main(int argc, char *argv[]) {
         CHECK(f->primitive.mesh->faces[1].b == 1);
         CHECK(f->primitive.mesh->faces[1].c == 3);
 
-        f = *((mliFrame**)mliVector_at(&uscn.root.children, 3u));
+        f = mliFrame_child(&uscn.root, 3);
         CHECK(f->type == MLI_SPHERE);
 
         mliUserScenery_free(&uscn);
