@@ -229,6 +229,23 @@ int __mliFrame_set_id_pos_rot(
 error:
     return 0;}
 
+int __mliFrame_set_surface_idx(
+    mliFrame* frame,
+    const mliJson *json,
+    const uint64_t token) {
+    uint64_t token_surface;
+    int64_t surface_idx;
+    mli_check(
+        mliJson_find_key(json, token, "surface", &token_surface),
+        "Expected primitive (except for Frame) to have key 'surface'.");
+    mli_check(
+        mliJson_as_int64(json, token_surface + 1, &surface_idx),
+        "Failed to parse mliFrame's 'surface' integer from json.");
+    mli_check(surface_idx >= 0, "Expected mliFrame's surface index >= 0.");
+    frame->surface = surface_idx;
+    return 1;
+error:
+    return 0;}
 
 int __mliFrame_set_Sphere(
     mliFrame* frame,
@@ -505,6 +522,10 @@ int __mliFrame_from_json(
         mli_check(
             __mliFrame_set_id_pos_rot(child, json, token_child),
             "Failed to set id, pos, and rot of frame from json.");
+        if (type != MLI_FRAME) {
+            mli_check(
+                __mliFrame_set_surface_idx(child, json, token_child),
+                "Failed parsing mliFrame's surface index from json.");}
         switch(type) {
             case MLI_FRAME:
                 mli_check(
