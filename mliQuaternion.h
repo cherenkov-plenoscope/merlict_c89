@@ -32,6 +32,16 @@ int mliQuaternion_is_equal(const mliQuaternion a, const mliQuaternion b) {
     if (a.z != b.z) return 0;
     return 1;}
 
+int mliQuaternion_is_equal_margin(
+    const mliQuaternion a,
+    const mliQuaternion b,
+    const double margin) {
+    if (fabs(a.w - b.w) >= margin) {return 0;}
+    if (fabs(a.x - b.x) >= margin) {return 0;}
+    if (fabs(a.y - b.y) >= margin) {return 0;}
+    if (fabs(a.z - b.z) >= margin) {return 0;}
+    return 1;}
+
 mliQuaternion mliQuaternion_complex_conjugate(const mliQuaternion q) {
     mliQuaternion c;
     c.w = q.w;
