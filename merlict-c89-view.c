@@ -28,8 +28,8 @@ void print_help() {
     printf(" move left...........[ a ]     look left...........[ j ]\n");
     printf(" move right..........[ d ]     look right..........[ l ]\n");
     printf(" move up.............[ q ]\n");
-    printf(" move down...........[ e ]\n");
-    printf("\n");
+    printf(" move down...........[ e ]    _Quality___________________\n");
+    printf("                               super resolution....[ b ]\n");
     printf("_Field_of_View_____________\n");
     printf(" increace............[ n ]\n");
     printf(" decreace............[ m ]\n");
@@ -83,12 +83,16 @@ int key_truncate_8bit(const int key) {
 int main(int argc, char *argv[]) {
     struct termios old_terminal = mli_disable_terminal_stdin_buffer();
     int key;
+    const uint64_t num_cols = 128u;
+    const uint64_t num_rows = 72u;
+    int super_resolution = 0;
     uint64_t num_screenshots = 0;
     char timestamp[1024];
     mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     mliCamera camera;
     mliImage img = mliImage_init();
+    mliImage img2 = mliImage_init();
     int update_image = 1;
     time_stamp(timestamp);
     if (argc != 2) {
@@ -124,7 +128,8 @@ int main(int argc, char *argv[]) {
     camera.rotation.z = 0.;
     camera.field_of_view = mli_deg2rad(80.);
 
-    mli_check_mem(mliImage_malloc(&img, 128u, 72u));
+    mli_check_mem(mliImage_malloc(&img, num_cols, num_rows));
+    mli_check_mem(mliImage_malloc(&img2, num_cols*2u, num_rows*2u));
 
     goto show_image;
 
@@ -172,6 +177,9 @@ int main(int argc, char *argv[]) {
                 print_help();
                 update_image = 0;
                 break;
+            case 'b':
+                super_resolution = !super_resolution;
+                break;
             case MLI_SPACE_KEY:
                 {
                     char path[1024];
@@ -188,7 +196,12 @@ int main(int argc, char *argv[]) {
         }
         show_image:
         if (update_image) {
-            mliCamera_render_image(&camera, &scenery, &octree, &img);
+            if (super_resolution) {
+                mliCamera_render_image(&camera, &scenery, &octree, &img2);
+                mliImage_scale_down_twice(&img2, &img);
+            } else {
+                mliCamera_render_image(&camera, &scenery, &octree, &img);
+            }
             clear_screen();
             mliImage_print(&img);
             print_info_line(camera);
@@ -196,6 +209,7 @@ int main(int argc, char *argv[]) {
     }
 
     mliImage_free(&img);
+    mliImage_free(&img2);
     mliOcTree_free(&octree);
     mliScenery_free(&scenery);
 
