@@ -162,6 +162,26 @@ void mliImage_print(const mliImage* img) {
         }
         printf("\n");}}
 
+int mliImage_scale_down_twice(const mliImage *source, mliImage* destination) {
+    uint64_t row, col, sr, sc;
+    mli_check(
+        destination->num_cols*2u == source->num_cols,
+        "Expected destination.num_cols*2u == source.num_cols");
+    mli_check(destination->num_rows*2u == source->num_rows,
+        "Expected destination.num_rows*2u == source.num_rows");
+    for (row = 0; row < destination->num_rows; row++) {
+        for (col = 0; col < destination->num_cols; col++) {
+            mliColor mix[4];
+            sr = row*2u;
+            sc = col*2u;
+            mix[0] = mliImage_at(source, sc + 0, sr + 0);
+            mix[1] = mliImage_at(source, sc + 0, sr + 1);
+            mix[2] = mliImage_at(source, sc + 1, sr + 0);
+            mix[3] = mliImage_at(source, sc + 1, sr + 1);
+            mliImage_set(destination, col, row, mliColor_mean(mix, 4));}}
+    return 1;
+error:
+    return 0;}
 
 void mliImage_sobel(const mliImage *image, mliImage* out) {
     uint64_t col, row;
