@@ -278,11 +278,15 @@ int __mliQuaternion_from_json(
     mli_malloc(repr_str, char, num_chars);
     mliJson_string(json, token_repr + 1, repr_str);
     if (strcmp(repr_str, "tait_bryan") == 0) {
-        mli_c(__mliQuaternion_tait_bryan_from_json(quat, json, token));
+        mli_check(
+            __mliQuaternion_tait_bryan_from_json(quat, json, token),
+            "Failed to parse tait_bryan rotation.");
     } else if (strcmp(repr_str, "axis_angle") == 0) {
-        mli_c(__mliQuaternion_axis_angle_from_json(quat, json, token));
+        mli_check(__mliQuaternion_axis_angle_from_json(quat, json, token),
+            "Failed to parse axis_angle rotation.");
     } else if (strcmp(repr_str, "quaternion") == 0) {
-        mli_c(__mliQuaternion_quaternion_from_json(quat, json, token));
+        mli_check(__mliQuaternion_quaternion_from_json(quat, json, token),
+            "Failed to parse quaternion rotation.");
     } else {
         mli_sentinel("Unknown representation ('repr') in rotation.");
     }
@@ -297,7 +301,6 @@ int __mliFrame_set_id_pos_rot(
     const uint64_t token) {
     uint64_t token_id, token_pos, token_rot;
     int64_t id;
-    mliVec tmp;
     /* id */
     mli_check(
         mliJson_find_key(json, token, "id", &token_id),
@@ -321,9 +324,11 @@ int __mliFrame_set_id_pos_rot(
         mliJson_find_key(json, token, "rot", &token_rot),
         "Expected json-frame to have key 'rot'.");
     mli_check(
-        mliVec_from_json_token(&tmp, json, token_rot + 1),
+        __mliQuaternion_from_json(
+            &frame->frame2mother.rot,
+            json,
+            token_rot + 1),
         "Failed to parse frame's 'rot' from json.");
-    frame->frame2mother.rot = mliQuaternion_set_tait_bryan(tmp.x, tmp.y, tmp.z);
     return 1;
 error:
     return 0;}

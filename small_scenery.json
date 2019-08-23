@@ -26,7 +26,7 @@
       "type": "Disc",
       "id": 1,
       "pos": [0, 0, -2],
-      "rot": [0, 0,  0],
+      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 100,
       "surface": 0
     },
@@ -34,13 +34,13 @@
       "type": "Frame",
       "id": 2,
       "pos": [5, 5, -2],
-      "rot": [0, 0, 0],
+      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "children": [
         {
           "type": "Sphere",
           "id": 3,
           "pos": [0, 0, 3],
-          "rot": [0, 0, 0],
+          "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
           "radius": 1.5,
           "surface": 2
         },
@@ -48,7 +48,7 @@
           "type": "Cylinder",
           "id": 4,
           "pos": [0, 0, 0.75],
-          "rot": [0, 0, 0],
+          "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
           "radius": 0.25,
           "length": 1.5,
           "surface": 1
@@ -59,7 +59,7 @@
       "type": "Mesh",
       "id": 42,
       "pos": [-5, 5, 1],
-      "rot": [0, 0, 0],
+      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "surface": 1,
       "vertices": [
         [0, 0, 0],
@@ -78,7 +78,7 @@
       "type": "Sphere",
       "id": 1337,
       "pos": [3, 3, 1.5],
-      "rot": [0, 0, 0],
+      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.5,
       "surface": 3
     },

@@ -42,11 +42,13 @@ error:
 
 int mliJson_malloc_from_string(mliJson *json, const char *json_str) {
     int64_t num_tokens_parsed;
+    uint64_t num_json_chars = strlen(json_str);
     jsmn_parser parser;
-    json->num_chars = strlen(json_str);
+    json->num_chars = num_json_chars + 1u;
     json->num_tokens = json->num_chars/3;  /* A rather safe guess. */
     mli_check_mem(mliJson_malloc(json));
     strcpy(json->chars, json_str);
+    json->chars[num_json_chars] = '\0';
     jsmn_init(&parser);
     num_tokens_parsed = jsmn_parse(
         &parser,
@@ -71,13 +73,16 @@ error:
 int mliJson_malloc_from_file(mliJson *json, const char *path) {
     char* json_str = NULL;
     uint64_t num_chars = 0u;
+    uint64_t num_chars_and_null = 0u;
     FILE * f = fopen(path, "rt");
     mli_check(f != NULL, "Can not read json from path.");
     fseek(f, 0, SEEK_END);
     num_chars = ftell(f);
+    num_chars_and_null = num_chars + 1u;
     fseek(f, 0, SEEK_SET);
-    mli_malloc(json_str, char, num_chars);
+    mli_malloc(json_str, char, num_chars_and_null);
     mli_fread(json_str, sizeof(char), num_chars, f);
+    json_str[num_chars] = '\0';
     fclose(f);
     mli_check(
         mliJson_malloc_from_string(json, json_str),
