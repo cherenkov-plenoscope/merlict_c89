@@ -3197,6 +3197,16 @@ int main(int argc, char *argv[]) {
 
     }
 
+    /* mli_string_ends_with */
+    {
+        CHECK(mli_string_ends_with("123", ""));
+        CHECK(mli_string_ends_with("", ""));
+        CHECK(!mli_string_ends_with("", "123"));
+        CHECK(mli_string_ends_with("123", "123"));
+        CHECK(mli_string_ends_with("my_file.json", ".json"));
+        CHECK(!mli_string_ends_with("my_file.json.stuff", ".json"));
+    }
+
     /* json parsing */
     {
         char s[] = "{\"hans\": 84, \"cosmo\": [1, 3, 7]}\0";

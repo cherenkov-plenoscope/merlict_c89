@@ -80,14 +80,6 @@ int key_truncate_8bit(const int key) {
     else
         return key & 255;}
 
-int string_ends_with(const char *str, const char *suffix) {
-    uint64_t lenstr, lensuffix;
-    if (!str || !suffix) {return 0;}
-    lenstr = strlen(str);
-    lensuffix = strlen(suffix);
-    if (lensuffix >  lenstr) {return 0;}
-    return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;}
-
 int main(int argc, char *argv[]) {
     struct termios old_terminal = mli_disable_terminal_stdin_buffer();
     int key;
@@ -103,7 +95,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Usage: %s <scenery-path>\n", argv[0]);
         goto error;
     }
-    if (string_ends_with(argv[1], ".json")) {
+    if (mli_string_ends_with(argv[1], ".json")) {
         mliJson json = mliJson_init();
         mliUserScenery uscn = mliUserScenery_init();
         mli_check(
