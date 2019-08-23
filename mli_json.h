@@ -40,17 +40,13 @@ error:
     return 0;}
 
 
-int mliJson_malloc_from_file(mliJson *json, const char *path) {
-    FILE * f = fopen(path, "rt");
+int mliJson_malloc_from_string(mliJson *json, const char *json_str) {
     int64_t num_tokens_parsed;
     jsmn_parser parser;
-    mli_check(f != NULL, "Can not read json.");
-    fseek(f, 0, SEEK_END);
-    json->num_chars = ftell(f);
-    json->num_tokens = json->num_chars/3;
-    fseek(f, 0, SEEK_SET);
+    json->num_chars = strlen(json_str);
+    json->num_tokens = json->num_chars/3;  /* A rather safe guess. */
     mli_check_mem(mliJson_malloc(json));
-    mli_fread(json->chars, sizeof(char), json->num_chars, f);
+    strcpy(json->chars, json_str);
     jsmn_init(&parser);
     num_tokens_parsed = jsmn_parse(
         &parser,
@@ -64,16 +60,35 @@ int mliJson_malloc_from_file(mliJson *json, const char *path) {
         "Invalid character inside JSON string.")
     mli_check(num_tokens_parsed != JSMN_ERROR_PART,
         "The string is not a full JSON packet, more bytes expected.")
-
     mli_check(num_tokens_parsed >= 0, "Can not parse Json-string");
     json->num_tokens = num_tokens_parsed;
-    fclose(f);
     return 1;
 error:
+    mliJson_free(json);
+    return 0;}
+
+
+int mliJson_malloc_from_file(mliJson *json, const char *path) {
+    char* json_str = NULL;
+    uint64_t num_chars = 0u;
+    FILE * f = fopen(path, "rt");
+    mli_check(f != NULL, "Can not read json from path.");
+    fseek(f, 0, SEEK_END);
+    num_chars = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    mli_malloc(json_str, char, num_chars);
+    mli_fread(json_str, sizeof(char), num_chars, f);
+    fclose(f);
+    mli_check(
+        mliJson_malloc_from_string(json, json_str),
+        "Failed to parse json-string read from path.");
+    free(json_str);
+    return 1;
+error:
+    free(json_str);
     if (f != NULL) {
         fclose(f);}
-    return 0;
-}
+    return 0;}
 
 
 void mliJson_string(

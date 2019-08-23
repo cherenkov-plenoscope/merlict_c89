@@ -3294,6 +3294,7 @@ int main(int argc, char *argv[]) {
         CHECK(end == s + t[7].end);
     }
 
+    /* mliJson */
     {
         mliJson json = mliJson_init();
         CHECK(json.num_chars == 0u);
@@ -3343,6 +3344,21 @@ int main(int argc, char *argv[]) {
 
         CHECK(mliJson_find_key(&json, 0, "not_exist", &return_idx) == 0);
         CHECK(mliJson_find_key(&json, 14, "not_exist", &return_idx) == 0);
+        mliJson_free(&json);
+    }
+
+    /* mliJson */
+    /* from string */
+    {
+        mliJson json = mliJson_init();
+        char json_str[1024];
+        uint64_t token = 0u;
+        int64_t value = 0;
+        sprintf(json_str, "{\"key\": 1337}");
+        CHECK(mliJson_malloc_from_string(&json, json_str));
+        CHECK(mliJson_find_key(&json, 0, "key", &token));
+        CHECK(mliJson_as_int64(&json, token + 1, &value));
+        CHECK(value == 1337);
         mliJson_free(&json);
     }
 
