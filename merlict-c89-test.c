@@ -3431,6 +3431,71 @@ int main(int argc, char *argv[]) {
         mliJson_free(&json);
     }
 
+    /* mliJson */
+    /* rotation representations */
+    {
+        char json_str[1024];
+        mliQuaternion q;
+        mliQuaternion q_expected;
+        mliJson json = mliJson_init();
+
+        /* unity */
+        q_expected = mliQuaternion_set_tait_bryan(0., 0., 0.);
+
+        sprintf(
+            json_str,
+            "{\"repr\": \"tait_bryan\", \"xyz\": [0, 0, 0]}");
+        CHECK(mliJson_malloc_from_string(&json, json_str));
+        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        mliJson_free(&json);
+        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+
+        sprintf(
+            json_str,
+            "{\"repr\": \"axis_angle\", \"axis\": [0, 0, 0], \"angle\": 0.}");
+        CHECK(mliJson_malloc_from_string(&json, json_str));
+        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        mliJson_free(&json);
+        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+
+        sprintf(
+            json_str,
+            "{\"repr\": \"quaternion\", \"xyz\": [0, 0, 0]}");
+        CHECK(mliJson_malloc_from_string(&json, json_str));
+        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        mliJson_free(&json);
+        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+
+        /* z-axis, 45deg */
+        q_expected = mliQuaternion_set_tait_bryan(0., 0., -mli_deg2rad(45.));
+
+        sprintf(
+            json_str,
+            "{\"repr\": \"tait_bryan\", \"xyz\": [0, 0, %f]}",
+            -mli_deg2rad(45.));
+        CHECK(mliJson_malloc_from_string(&json, json_str));
+        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        mliJson_free(&json);
+        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+
+        sprintf(
+            json_str,
+            "{\"repr\": \"axis_angle\", \"axis\": [0, 0, 1], \"angle\": %f}",
+            mli_deg2rad(45.));
+        CHECK(mliJson_malloc_from_string(&json, json_str));
+        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        mliJson_free(&json);
+        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+
+        sprintf(
+            json_str,
+            "{\"repr\": \"quaternion\", \"xyz\": [0, 0, %f]}", q_expected.z);
+        CHECK(mliJson_malloc_from_string(&json, json_str));
+        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        mliJson_free(&json);
+        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+    }
+
     {
         mliJson json = mliJson_init();
         mliUserScenery uscn = mliUserScenery_init();

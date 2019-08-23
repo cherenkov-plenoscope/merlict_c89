@@ -191,6 +191,78 @@ int __mliFrame_type_from_json(
 error:
     return 0;}
 
+int __mliQuaternion_from_json(
+    mliQuaternion* quat,
+    const mliJson *json,
+    const uint64_t token) {
+    uint64_t token_repr = 0u;
+    char* repr_str = NULL;
+    uint64_t num_chars = 0u;
+    mli_check(
+        mliJson_find_key(json, token, "repr", &token_repr),
+        "Expected 'rot' to have key 'repr'.");
+    num_chars = (
+        json->tokens[token_repr + 1].end -
+        json->tokens[token_repr + 1].start);
+    mli_malloc(repr_str, char, num_chars);
+    mliJson_string(json, token_repr + 1, repr_str);
+    if (strcmp(repr_str, "tait_bryan") == 0) {
+        uint64_t token_xyz;
+        mliVec xyz;
+        mli_check(
+            mliJson_find_key(json, token, "xyz", &token_xyz),
+            "Expected tait_bryan to have key 'xyz'.");
+        mli_check(
+            mliVec_from_json_token(&xyz, json, token_xyz + 1),
+            "Failed to parse tait_bryan's 'xyz' from json.");
+        *quat = mliQuaternion_set_tait_bryan(xyz.x, xyz.y, xyz.z);
+    } else if (strcmp(repr_str, "axis_angle") == 0) {
+        uint64_t token_axis, token_angle;
+        double angle;
+        mliVec axis;
+        mli_check(
+            mliJson_find_key(json, token, "axis", &token_axis),
+            "Expected axis_angle to have key 'axis'.");
+        mli_check(
+            mliVec_from_json_token(&axis, json, token_axis + 1),
+            "Failed to parse axis_angle's 'axis' from json.");
+        mli_check(
+            mliJson_find_key(json, token, "angle", &token_angle),
+            "Expected axis_angle to have key 'axis'.");
+        mli_check(
+            mliJson_as_float64(json, token_angle + 1, &angle),
+            "Failed to parse axis_angle's 'angle' from json.");
+        *quat = mliQuaternion_set_rotaxis_and_angle(axis, angle);
+    } else if (strcmp(repr_str, "quaternion") == 0) {
+        uint64_t token_xyz;
+        double w;
+        mliVec q;
+        mli_check(
+            mliJson_find_key(json, token, "xyz", &token_xyz),
+            "Expected quaternion to have key 'xyz'.");
+        mli_check(
+            mliVec_from_json_token(&q, json, token_xyz + 1),
+            "Failed to parse quaternion's 'xyz' from json.");
+        /*
+            Recover 4th element: q.w.
+            Expect unit-quaternion:
+            1.0 != q.w**2 + q.x**2 + q.y**2 + q.z**2
+            thus:
+            q.w**2 = 1.0 - q.x**2 - q.y**2 - q.z**2
+            q.w = sqrt(1.0 - q.x**2 - q.y**2 - q.z**2)
+        */
+        w = sqrt(1. - q.x*q.x - q.y*q.y - q.z*q.z);
+        *quat = mliQuaternion_set(w, q.x, q.y, q.z);
+        mli_check(
+            fabs(mliQuaternion_norm(*quat) - 1.) < 1e-6,
+            "Expected norm(quaternion) < 1e-6. Expected unit-quaternion.");
+    } else {
+        mli_sentinel("Unknown representation ('repr') in rotation.");
+    }
+    free(repr_str);
+    return 1;
+error:
+    return 0;}
 
 int __mliFrame_set_id_pos_rot(
     mliFrame* frame,
