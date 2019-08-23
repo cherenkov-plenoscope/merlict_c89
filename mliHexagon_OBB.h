@@ -50,7 +50,7 @@ mliOBB mliHexagon_obb(
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     mliVec first_corner_local = mliVec_multiply(
         mli_hexagon_corner(0),
-        hex.inner_radius/MLI_SQRT3_OVER_2);
+        hex.inner_radius*MLI_2_OVER_SQRT3);
     mliVec first_corner_root = mliHomTra_pos(
         &local2root,
         first_corner_local);
@@ -61,7 +61,7 @@ mliOBB mliHexagon_obb(
         mliVec corner_root;
         mliVec corner_local = mliVec_multiply(
             mli_hexagon_corner(corner_idx),
-            hex.inner_radius/MLI_SQRT3_OVER_2);
+            hex.inner_radius*MLI_2_OVER_SQRT3);
         corner_root = mliHomTra_pos(&local2root, corner_local);
         obb.lower.x = MLI_MIN2(obb.lower.x, corner_root.x);
         obb.lower.y = MLI_MIN2(obb.lower.y, corner_root.y);

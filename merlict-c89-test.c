@@ -2487,10 +2487,10 @@ int main(int argc, char *argv[]) {
             mliVec_set(0., 0., 1.),
             mli_deg2rad(0.));
         obb = mliHexagon_obb(hex, local2root_comp);
-        CHECK_MARGIN(obb.lower.x, -1., 1e-6);
-        CHECK_MARGIN(obb.upper.x, +1., 1e-6);
-        CHECK_MARGIN(obb.lower.y, -MLI_SQRT3_OVER_2, 1e-6);
-        CHECK_MARGIN(obb.upper.y, +MLI_SQRT3_OVER_2, 1e-6);
+        CHECK_MARGIN(obb.lower.x, -MLI_2_OVER_SQRT3, 1e-6);
+        CHECK_MARGIN(obb.upper.x, +MLI_2_OVER_SQRT3, 1e-6);
+        CHECK_MARGIN(obb.lower.y, -1., 1e-6);
+        CHECK_MARGIN(obb.upper.y, +1., 1e-6);
         CHECK_MARGIN(obb.lower.z, 0., 1e-6);
         CHECK_MARGIN(obb.upper.z, 0., 1e-6);
 
@@ -2500,10 +2500,10 @@ int main(int argc, char *argv[]) {
             mliVec_set(0., 0., 1.),
             mli_deg2rad(0.));
         obb = mliHexagon_obb(hex, local2root_comp);
-        CHECK_MARGIN(obb.lower.x, -1. + 1., 1e-6);
-        CHECK_MARGIN(obb.upper.x, +1. + 1., 1e-6);
-        CHECK_MARGIN(obb.lower.y, -MLI_SQRT3_OVER_2 + 2., 1e-6);
-        CHECK_MARGIN(obb.upper.y, +MLI_SQRT3_OVER_2 + 2., 1e-6);
+        CHECK_MARGIN(obb.lower.x, -MLI_2_OVER_SQRT3 + 1., 1e-6);
+        CHECK_MARGIN(obb.upper.x, +MLI_2_OVER_SQRT3 + 1., 1e-6);
+        CHECK_MARGIN(obb.lower.y, -1. + 2., 1e-6);
+        CHECK_MARGIN(obb.upper.y, +1. + 2., 1e-6);
         CHECK_MARGIN(obb.lower.z, 0. + 3., 1e-6);
         CHECK_MARGIN(obb.upper.z, 0. + 3., 1e-6);
 
@@ -2515,10 +2515,10 @@ int main(int argc, char *argv[]) {
         obb = mliHexagon_obb(hex, local2root_comp);
         CHECK_MARGIN(obb.lower.x, 0., 1e-6);
         CHECK_MARGIN(obb.upper.x, 0., 1e-6);
-        CHECK_MARGIN(obb.lower.y, -MLI_SQRT3_OVER_2, 1e-6);
-        CHECK_MARGIN(obb.upper.y, +MLI_SQRT3_OVER_2, 1e-6);
-        CHECK_MARGIN(obb.lower.z, -1., 1e-6);
-        CHECK_MARGIN(obb.upper.z, +1., 1e-6);
+        CHECK_MARGIN(obb.lower.y, -1., 1e-6);
+        CHECK_MARGIN(obb.upper.y, +1., 1e-6);
+        CHECK_MARGIN(obb.lower.z, -MLI_2_OVER_SQRT3, 1e-6);
+        CHECK_MARGIN(obb.upper.z, +MLI_2_OVER_SQRT3, 1e-6);
 
         /* rotation y-axis 45deg */
         local2root_comp.trans = mliVec_set(0., 0., 0.);
@@ -2526,12 +2526,12 @@ int main(int argc, char *argv[]) {
             mliVec_set(0., 1., 0.),
             mli_deg2rad(45.));
         obb = mliHexagon_obb(hex, local2root_comp);
-        CHECK_MARGIN(obb.lower.x, -sqrt(2)/2, 1e-6);
-        CHECK_MARGIN(obb.upper.x, +sqrt(2)/2, 1e-6);
-        CHECK_MARGIN(obb.lower.y, -MLI_SQRT3_OVER_2, 1e-6);
-        CHECK_MARGIN(obb.upper.y, +MLI_SQRT3_OVER_2, 1e-6);
-        CHECK_MARGIN(obb.lower.z, -sqrt(2)/2, 1e-6);
-        CHECK_MARGIN(obb.upper.z, +sqrt(2)/2., 1e-6);
+        CHECK_MARGIN(obb.lower.x, -MLI_2_OVER_SQRT3/sqrt(2), 1e-6);
+        CHECK_MARGIN(obb.upper.x, +MLI_2_OVER_SQRT3/sqrt(2), 1e-6);
+        CHECK_MARGIN(obb.lower.y, -1., 1e-6);
+        CHECK_MARGIN(obb.upper.y, +1., 1e-6);
+        CHECK_MARGIN(obb.lower.z, -MLI_2_OVER_SQRT3/sqrt(2), 1e-6);
+        CHECK_MARGIN(obb.upper.z, +MLI_2_OVER_SQRT3/sqrt(2), 1e-6);
     }
 
     {
