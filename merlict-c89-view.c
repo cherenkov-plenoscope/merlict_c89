@@ -128,8 +128,12 @@ int main(int argc, char *argv[]) {
     camera.rotation.z = 0.;
     camera.field_of_view = mli_deg2rad(80.);
 
-    mli_check_mem(mliImage_malloc(&img, num_cols, num_rows));
-    mli_check_mem(mliImage_malloc(&img2, num_cols*2u, num_rows*2u));
+    img.num_cols = num_cols;
+    img.num_rows = num_rows;
+    img2.num_cols = num_cols*2u;
+    img2.num_rows = num_rows*2u;
+    mli_check_mem(mliImage_malloc(&img));
+    mli_check_mem(mliImage_malloc(&img2));
 
     goto show_image;
 
@@ -185,8 +189,9 @@ int main(int argc, char *argv[]) {
                     char path[1024];
                     mliImage full = mliImage_init();
                     sprintf(path, "%s_%06lu.ppm", timestamp, num_screenshots++);
-                    mli_check_mem(
-                        mliImage_malloc(&full, 1920u, 1080u));
+                    full.num_cols = 1920u;
+                    full.num_rows = 1080u;
+                    mli_check_mem(mliImage_malloc(&full));
                     mliCamera_render_image(&camera, &scenery, &octree, &full);
                     mliImage_write_to_ppm(&full, path);
                     mliImage_free(&full);

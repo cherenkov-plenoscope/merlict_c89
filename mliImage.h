@@ -29,12 +29,7 @@ void mliImage_free(
     img->num_cols = 0u;
     img->num_rows = 0u;}
 
-int mliImage_malloc(
-    mliImage *img,
-    const uint32_t num_cols,
-    const uint32_t num_rows) {
-    img->num_cols = num_cols;
-    img->num_rows = num_rows;
+int mliImage_malloc(mliImage *img) {
     mli_malloc(img->raw, mliColor, img->num_cols*img->num_rows);
     return 1;
 error:
@@ -92,7 +87,9 @@ int mliImage_malloc_from_ppm(
     num_rows = atoi(line);
     mli_check(fgets(line, 1024, fin), "Can not read header-line.");
     mli_check(strcmp(line, "255\n") == 0, "Expected 8bit range '255'.");
-    mli_check_mem(mliImage_malloc(img, num_cols, num_rows));
+    img->num_cols = num_cols;
+    img->num_rows = num_rows;
+    mli_check_mem(mliImage_malloc(img));
     for (row = 0; row < img->num_rows; row++) {
         for (col = 0; col < img->num_cols; col++) {
             uint8_t r, g, b;

@@ -812,7 +812,9 @@ int main(int argc, char *argv[]) {
         camera.rotation.z = 0.;
         camera.field_of_view = mli_deg2rad(80.);
 
-        CHECK(mliImage_malloc(&img, 640u, 480u));
+        img.num_cols = 640u;
+        img.num_rows = 480u;
+        CHECK(mliImage_malloc(&img));
         mliCamera_render_image(&camera, &scenery, &octree, &img);
         mliImage_write_to_ppm(&img, "my_image.ppm.tmp");
 
@@ -1015,7 +1017,9 @@ int main(int argc, char *argv[]) {
         camera.rotation.z = 0.;
         camera.field_of_view = mli_deg2rad(80.);
 
-        CHECK(mliImage_malloc(&img, 640u, 480u));
+        img.num_cols = 640u;
+        img.num_rows = 480u;
+        CHECK(mliImage_malloc(&img));
         mliCamera_render_image(&camera, &scenery, &octree, &img);
         mliImage_write_to_ppm(&img, "asymetric_image.ppm.tmp");
 
@@ -1601,7 +1605,9 @@ int main(int argc, char *argv[]) {
     /* mliImage */
     {
         mliImage img = mliImage_init();
-        CHECK(mliImage_malloc(&img, 3, 2));
+        img.num_cols = 3u;
+        img.num_rows = 2u;
+        CHECK(mliImage_malloc(&img));
         CHECK(img.num_cols == 3u);
         CHECK(img.num_rows == 2u);
         mliImage_free(&img);
@@ -1614,8 +1620,10 @@ int main(int argc, char *argv[]) {
     {
         mliImage src = mliImage_init();
         mliImage dst = mliImage_init();
-        CHECK(mliImage_malloc(&src, 4, 4));
-        CHECK(mliImage_malloc(&dst, 2, 2));
+        src.num_cols = 4u; src.num_rows = 4u;
+        dst.num_cols = 2u; dst.num_rows = 2u;
+        CHECK(mliImage_malloc(&src));
+        CHECK(mliImage_malloc(&dst));
         /*
             src:
                      0    1    2    3  cols
@@ -1659,9 +1667,9 @@ int main(int argc, char *argv[]) {
         uint32_t col;
         uint32_t row;
         double tone;
-        CHECK(mliImage_malloc(&img, 3, 2));
-        CHECK(img.num_cols == 3u);
-        CHECK(img.num_rows == 2u);
+        img.num_cols = 3u;
+        img.num_rows = 2u;
+        CHECK(mliImage_malloc(&img));
         tone = 0.;
         for (col = 0; col < img.num_cols; col++) {
             for (row = 0; row < img.num_rows; row++) {
