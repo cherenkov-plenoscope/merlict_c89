@@ -34,11 +34,8 @@ error:
 
 void mliMesh_free(mliMesh *m) {
     free(m->vertices);
-    m->vertices = NULL;
-    m->num_vertices = 0;
     free(m->faces);
-    m->faces = NULL;
-    m->num_faces = 0;}
+    *m = mliMesh_init();}
 
 int mli_parse_three_ints(const char *line, int *a, int* b, int*c) {
     int state = 0;
