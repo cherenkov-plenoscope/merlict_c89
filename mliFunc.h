@@ -40,14 +40,43 @@ int mliFunc_x_is_causal(mliFunc* f) {
             return 0;}}
     return 1;}
 
+double mli_linear_interpolate(
+    const double xarg,
+    const double x0,
+    const double y0,
+    const double x1,
+    const double y1) {
+    /*
+        |
+    y1 -|            o
+        |
+    y0 -|    o
+        |       xarg
+        +----|---|---|----
+            x0       x1
+
+    f(x) = m*x + b
+    m = (y1 - y0)/(x1 - x0)
+    y0 = m*x0 + b
+    b = y0 - m*x0
+    */
+    const double m = (y1 - y0)/(x1 - x0);
+    const double b = y0 - m*x0;
+    return m*xarg + b;}
+
 int mliFunc_evaluate(mliFunc* f, const double xarg, double *out) {
+    double y1, y0, x1, x0;
     uint32_t idx = mli_upper_compare_double(f->x, f->num_points, xarg);
     if (idx == 0) {
         mli_sentinel("mliFunc argument below lower bound.");
     } else if (idx == f->num_points) {
         mli_sentinel("mliFunc argument larger upper bound.");
     } else {
-        (*out) = f->y[idx];
+        y1 = f->y[idx];
+        y0 = f->y[idx - 1u];
+        x1 = f->x[idx];
+        x0 = f->x[idx - 1u];
+        (*out) = mli_linear_interpolate(xarg, x0, y0, x1, y1);
     }
     return 1;
 error:

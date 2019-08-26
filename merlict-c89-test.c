@@ -1898,6 +1898,13 @@ int main(int argc, char *argv[]) {
             CHECK(a[i].z == b[i].z);}
     }
 
+    /* linear interpolation */
+    {   /*                                 xarg  x0  y0  x1  y1            */
+        CHECK_MARGIN(mli_linear_interpolate(0.5, 0., 1., 1., 2.), 1.5, 1e-9);
+        CHECK_MARGIN(mli_linear_interpolate(0.5, 0., 1., 1., 1.), 1., 1e-9);
+        CHECK_MARGIN(mli_linear_interpolate(0.5, 0., 1., 1., 0.), .5, 1e-9);
+    }
+
     {
         mliFunc func = mliFunc_init();
         func.num_points = 0u;
@@ -1941,7 +1948,23 @@ int main(int argc, char *argv[]) {
         CHECK(mliFunc_x_is_causal(&func));
         CHECK(mli_upper_compare_double(func.x, func.num_points, 1.5) == 2);
         CHECK(mliFunc_evaluate(&func, 1.5, &y));
-        CHECK(y == 2.);
+        CHECK(y == 2.5);
+        mliFunc_free(&func);
+    }
+
+    {
+        double x, y;
+        mliFunc func = mliFunc_init();
+        func.num_points = 2u;
+        CHECK(mliFunc_malloc(&func));
+        func.x[0] = 0.;
+        func.x[1] = 1.;
+        func.y[0] = 0.;
+        func.y[1] = 1.;
+        CHECK(mliFunc_x_is_causal(&func));
+        for (x = 0.; x < 1.; x = x + 1e-2) {
+            CHECK(mliFunc_evaluate(&func, x, &y));
+            CHECK_MARGIN(y, x, 1e-6);}
         mliFunc_free(&func);
     }
 
