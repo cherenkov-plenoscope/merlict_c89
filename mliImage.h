@@ -264,8 +264,8 @@ void mliImage_luminance_threshold_dilatation(
     const mliImage *image,
     const float threshold,
     mliImage* out) {
-    const uint32_t rows = image->num_rows;
-    const uint32_t cols = image->num_cols;
+    const int32_t rows = image->num_rows;
+    const int32_t cols = image->num_cols;
     int32_t col, row;
     const mliColor color_max = mliColor_set(255., 255., 255.);
     for (row = 0; row < rows; row++) {
