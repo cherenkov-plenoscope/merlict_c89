@@ -72,19 +72,21 @@ mliCamera mliCamera_move_up(const mliCamera camin, const double rate) {
 
 mliCamera mliCamera_look_right(const mliCamera camin, const double rate) {
     mliCamera camout = camin;
-    camout.rotation.z = fmod(camout.rotation.z + rate, (2.*MLI_PI));
+    const double diff = camin.field_of_view*rate;
+    camout.rotation.z = fmod(camout.rotation.z + diff, (2.*MLI_PI));
     return camout;}
 
 mliCamera mliCamera_look_down_when_possible(
     const mliCamera camin,
     const double rate) {
+    const double diff = camin.field_of_view*rate;
     mliCamera camout = camin;
-    int fals_forward_over = camin.rotation.y < -MLI_PI + rate;
+    int fals_forward_over = camin.rotation.y < -MLI_PI + diff;
     if (fals_forward_over) {
         camout.rotation.y = - MLI_PI;
         return camout;
     } else {
-        camout.rotation.y = camout.rotation.y - rate;
+        camout.rotation.y = camout.rotation.y - diff;
         return camout;
     }
 }
@@ -114,13 +116,14 @@ mliCamera mliCamera_decrease_fov(
 mliCamera mliCamera_look_up_when_possible(
     const mliCamera camin,
     const double rate) {
+    const double diff = camin.field_of_view*rate;
     mliCamera camout = camin;
-    int fals_backwards_over = camin.rotation.y > rate;
+    int fals_backwards_over = camin.rotation.y > diff;
     if (fals_backwards_over) {
         camout.rotation.y = 0.;
         return camout;
     } else {
-        camout.rotation.y = camout.rotation.y + rate;
+        camout.rotation.y = camout.rotation.y + diff;
         return camout;
     }
 }
