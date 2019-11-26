@@ -260,4 +260,48 @@ void mliImage_sobel(const mliImage *image, mliImage* out) {
     }
 }
 
+void mliImage_luminance_threshold_dilatation(
+    const mliImage *image,
+    const float threshold,
+    mliImage* out) {
+    const uint32_t rows = image->num_rows;
+    const uint32_t cols = image->num_cols;
+    int32_t col, row;
+    const mliColor color_max = mliColor_set(255., 255., 255.);
+    for (row = 0; row < rows; row++) {
+        for (col = 0; col < cols; col++) {
+            const mliColor color_at = mliImage_at(image, col, row);
+            const float luminance = (color_at.r + color_at.g + color_at.b);
+            if (luminance > threshold) {
+                int32_t orow, ocol;
+                for (orow = -1; orow < 2; orow++) {
+                    for (ocol = -1; ocol < 2; ocol++) {
+                        if (
+                            row + orow >= 0 &&
+                            col + ocol >= 0 &&
+                            row + orow < rows &&
+                            col + ocol < cols
+                        ) {
+                            mliImage_set(image, col+ocol, row+orow, color_max);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void mliImage_from_sum_and_exposure(
+    const mliImage *sum,
+    const mliImage *exposure,
+    mliImage* out
+) {
+    uint32_t pix;
+    for (pix = 0; pix < out->num_rows*out->num_cols; pix++) {
+        out->raw[pix].r = sum->raw[pix].r/exposure->raw[pix].r;
+        out->raw[pix].g = sum->raw[pix].g/exposure->raw[pix].g;
+        out->raw[pix].b = sum->raw[pix].b/exposure->raw[pix].b;
+    }
+}
+
 #endif
