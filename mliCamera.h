@@ -81,14 +81,13 @@ mliCamera mliCamera_look_down_when_possible(
     const double rate) {
     const double diff = camin.field_of_view*rate;
     mliCamera camout = camin;
-    int fals_forward_over = camin.rotation.y < -MLI_PI + diff;
+    const int fals_forward_over = camin.rotation.y < -MLI_PI + diff;
     if (fals_forward_over) {
         camout.rotation.y = - MLI_PI;
-        return camout;
     } else {
         camout.rotation.y = camout.rotation.y - diff;
-        return camout;
     }
+    return camout;
 }
 
 mliCamera mliCamera_increase_fov(
@@ -118,14 +117,13 @@ mliCamera mliCamera_look_up_when_possible(
     const double rate) {
     const double diff = camin.field_of_view*rate;
     mliCamera camout = camin;
-    int fals_backwards_over = camin.rotation.y > diff;
+    const int fals_backwards_over = camin.rotation.y > diff;
     if (fals_backwards_over) {
         camout.rotation.y = 0.;
-        return camout;
     } else {
         camout.rotation.y = camout.rotation.y + diff;
-        return camout;
     }
+    return camout;
 }
 
 void mliCameraSensor_init(const mliCamera *camera, mliCameraSensor *sensor) {
