@@ -17,6 +17,7 @@
 #include "mliTriangle_intersection.h"
 #include "mliColor.h"
 #include "mliImage.h"
+#include "mliPixels.h"
 #include "mliQuadraticEquation.h"
 #include "mliHomTra.h"
 #include "mliCamera.h"

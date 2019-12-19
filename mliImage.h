@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "mli_debug.h"
 #include "mliColor.h"
+#include "mliPixels.h"
 
 typedef struct {
     uint32_t num_cols;
@@ -296,11 +297,72 @@ void mliImage_from_sum_and_exposure(
     const mliImage *exposure,
     mliImage* out
 ) {
-    uint32_t pix;
-    for (pix = 0; pix < out->num_rows*out->num_cols; pix++) {
+    uint64_t pix;
+    for (pix = 0u; pix < out->num_rows*out->num_cols; pix++) {
         out->raw[pix].r = sum->raw[pix].r/exposure->raw[pix].r;
         out->raw[pix].g = sum->raw[pix].g/exposure->raw[pix].g;
         out->raw[pix].b = sum->raw[pix].b/exposure->raw[pix].b;
+    }
+}
+
+int mliPixels_malloc_and_set_from_image(
+    mliPixels* pixels,
+    const mliImage* image) {
+    uint64_t i, r, c;
+    pixels->num_pixels = image->num_cols*image->num_rows;
+    mli_check_mem(mliPixels_malloc(pixels));
+    i = 0u;
+    for (r = 0u; r < image->num_rows; r++) {
+        for (c = 0u; c < image->num_cols; c++) {
+            pixels->pixels[i].row = r;
+            pixels->pixels[i].col = c;
+            i++;}}
+    return 1;
+error:
+    return 0;
+}
+
+int mliPixels_malloc_from_image_above_threshold(
+    mliPixels* pixels,
+    const mliImage* image,
+    const float threshold) {
+    uint64_t i, r, c;
+    for (r = 0u; r < image->num_rows; r++) {
+        for (c = 0u; c < image->num_cols; c++) {
+            mliColor col = mliImage_at(image, c, r);
+            if (col.r + col.g + col.b > threshold) {
+                pixels->num_pixels++;}}}
+    mli_check_mem(mliPixels_malloc(pixels));
+    i = 0u;
+    for (r = 0u; r < image->num_rows; r++) {
+        for (c = 0u; c < image->num_cols; c++) {
+            mliColor col = mliImage_at(image, c, r);
+            if (col.r + col.g + col.b > threshold) {
+                pixels->pixels[i].row = r;
+                pixels->pixels[i].col = c;
+                i++;}}}
+    return 1;
+error:
+    return 0;
+}
+
+void mliImage_assign_pixel_colors_to_sum_and_exposure_image(
+    const mliPixels* pixels,
+    const mliImage* colors,
+    mliImage* sum_image,
+    mliImage* exposure_image) {
+    uint64_t pix;
+    for (pix = 0u; pix < pixels->num_pixels; pix++) {
+        const uint64_t idx = mliImage_idx(
+            sum_image,
+            pixels->pixels[pix].col,
+            pixels->pixels[pix].row);
+        sum_image->raw[idx].r += colors->raw[idx].r;
+        sum_image->raw[idx].g += colors->raw[idx].g;
+        sum_image->raw[idx].b += colors->raw[idx].b;
+        exposure_image->raw[idx].r += 1.;
+        exposure_image->raw[idx].g += 1.;
+        exposure_image->raw[idx].b += 1.;
     }
 }
 
