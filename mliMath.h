@@ -30,13 +30,8 @@ double mli_z_sphere(double x, double curvature_radius) {
 double mli_squared(const double a) {
     return a*a;}
 
-void mli_uint32_ncpy(
-    const uint32_t *from,
-    uint32_t* to,
-    const uint64_t num) {
-    uint64_t i;
-    for (i = 0; i < num; i++) {
-        to[i] = from[i];}}
+void mli_uint32_ncpy(const uint32_t *src, uint32_t* dst, const uint64_t num) {
+    uint64_t i; for (i = 0; i < num; i++) {dst[i] = src[i];}}
 
 #define MLI_IS_NAN(a) ((a) != (a))
 
