@@ -65,7 +65,7 @@ CASE("mliJson_malloc_from_file") {
     double myfloat;
 
     CHECK(mliJson_malloc_from_file(&json, "tests/resources/example.json"));
-    CHECK(mliJson_write_debug(&json, "tests/resources/example.json.debug.tmp"));
+    CHECK(mliJson_write_debug(&json, "tests/resources/example.debug.tmp"));
 
     CHECK(mliJson_find_key(&json, 0, "name", &return_idx));
     CHECK(return_idx == 1);
@@ -111,8 +111,8 @@ CASE("parse mliFunc") {
     uint64_t token;
     mliJson json = mliJson_init();
     mliFunc f = mliFunc_init();
-    CHECK(mliJson_malloc_from_file(&json, "test_mliFunc.json"));
-    CHECK(mliJson_write_debug(&json, "test_mliFunc.json.debug.tmp"));
+    CHECK(mliJson_malloc_from_file(&json, "tests/resources/function.json"));
+    CHECK(mliJson_write_debug(&json, "tests/resources/function.debug.tmp"));
     CHECK(mliJson_find_key(&json, 0, "two_functions", &token));
     CHECK(json.tokens[token + 1].size == 2);
     token += 1;
@@ -150,8 +150,8 @@ CASE("parse mliVec and mliColor") {
     mliVec vec1 = mliVec_set(0., 0., 0.);
     mliVec vec2 = mliVec_set(0., 0., 0.);
     mliColor col = mliColor_set(0., 0., 0.);
-    CHECK(mliJson_malloc_from_file(&json, "test_mliVec.json"));
-    CHECK(mliJson_write_debug(&json, "test_mliVec.json.debug.tmp"));
+    CHECK(mliJson_malloc_from_file(&json, "tests/resources/vec.json"));
+    CHECK(mliJson_write_debug(&json, "tests/resources/vec.debug.tmp"));
 
     CHECK(mliJson_find_key(&json, 0, "vec1", &token));
     CHECK(mliVec_from_json_token(&vec1, &json, token + 1));
@@ -245,7 +245,7 @@ CASE("parse mliUserScenery") {
     CHECK(mliJson_malloc_from_file(&json,
         "tests/resources/small_scenery.json"));
     CHECK(mliJson_write_debug(&json,
-        "tests/resources/small_scenery.json.debug.tmp"));
+        "tests/resources/small_scenery.debug.tmp"));
 
     CHECK(mliUserScenery_malloc_from_json(&uscn, &json));
 
