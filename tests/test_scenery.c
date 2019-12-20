@@ -42,24 +42,36 @@
     scenery.colors[3] = violet;
 
     scenery.surfaces[0].color = 0u;
-    scenery.surfaces[0].reflection = 0u;
-    scenery.surfaces[0].refraction = 0u;
-    scenery.surfaces[0].absorbtion = 0u;
+    scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
+    scenery.surfaces[0].boundary_layer_specular_reflection = 0u;
+    scenery.surfaces[0].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[0].boundary_layer_transmission = 0u;
+    scenery.surfaces[0].medium_refraction = 0u;
+    scenery.surfaces[0].medium_absorbtion = 0u;
 
     scenery.surfaces[1].color = 1u;
-    scenery.surfaces[1].reflection = 0u;
-    scenery.surfaces[1].refraction = 0u;
-    scenery.surfaces[1].absorbtion = 0u;
+    scenery.surfaces[1].material = MLI_MATERIAL_PHONG;
+    scenery.surfaces[1].boundary_layer_specular_reflection = 0u;
+    scenery.surfaces[1].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[1].boundary_layer_transmission = 0u;
+    scenery.surfaces[1].medium_refraction = 0u;
+    scenery.surfaces[1].medium_absorbtion = 0u;
 
     scenery.surfaces[2].color = 2u;
-    scenery.surfaces[2].reflection = 0u;
-    scenery.surfaces[2].refraction = 0u;
-    scenery.surfaces[2].absorbtion = 0u;
+    scenery.surfaces[2].material = MLI_MATERIAL_PHONG;
+    scenery.surfaces[2].boundary_layer_specular_reflection = 0u;
+    scenery.surfaces[2].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[2].boundary_layer_transmission = 0u;
+    scenery.surfaces[2].medium_refraction = 0u;
+    scenery.surfaces[2].medium_absorbtion = 0u;
 
     scenery.surfaces[3].color = 3u;
-    scenery.surfaces[3].reflection = 0u;
-    scenery.surfaces[3].refraction = 0u;
-    scenery.surfaces[3].absorbtion = 0u;
+    scenery.surfaces[3].material = MLI_MATERIAL_PHONG;
+    scenery.surfaces[3].boundary_layer_specular_reflection = 0u;
+    scenery.surfaces[3].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[3].boundary_layer_transmission = 0u;
+    scenery.surfaces[3].medium_refraction = 0u;
+    scenery.surfaces[3].medium_absorbtion = 0u;
 
     mliVec_ncpy(
         diff_cube_sphere.vertices,
@@ -328,9 +340,12 @@
     scenery.colors[0] = mliColor_set(255., 0., 0.);
 
     scenery.surfaces[0].color = 0u;
-    scenery.surfaces[0].reflection = 0u;
-    scenery.surfaces[0].refraction = 0u;
-    scenery.surfaces[0].absorbtion = 0u;
+    scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
+    scenery.surfaces[0].boundary_layer_specular_reflection = 0u;
+    scenery.surfaces[0].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[0].boundary_layer_transmission = 0u;
+    scenery.surfaces[0].medium_refraction = 0u;
+    scenery.surfaces[0].medium_absorbtion = 0u;
     offset = mliVec_set(0, 0, -8);
     for (i = 0; i < scenery.num_spheres; i ++) {
         const double phi = 2.*MLI_PI*(double)(i)/scenery.num_spheres;

@@ -87,57 +87,48 @@ int __mliScenery_set_primitive(
                 triangle.b += vertex_offset;
                 triangle.c += vertex_offset;
                 scenery->triangles[count->triangles] = triangle;
-                scenery->triangles_surfaces[count->triangles].inner =
-                    frame->surface;
-                scenery->triangles_surfaces[count->triangles].outer =
-                    frame->surface;
+                scenery->triangles_surfaces[count->triangles] = frame->surfaces;
                 count->triangles += 1;}
             break;
         case MLI_SPHERICAL_CAP_HEX:
             i = count->spherical_cap_hex;
             scenery->spherical_cap_hex[i] = *frame->primitive.spherical_cap_hex;
-            scenery->spherical_cap_hex_surfaces[i].inner = frame->surface;
-            scenery->spherical_cap_hex_surfaces[i].outer = frame->surface;
+            scenery->spherical_cap_hex_surfaces[i] = frame->surfaces;
             scenery->spherical_cap_hex_T[i] = frame->frame2root;
             count->spherical_cap_hex += 1;
             break;
         case MLI_SPHERE:
             i = count->spheres;
             scenery->spheres[i] = *frame->primitive.sphere;
-            scenery->spheres_surfaces[i].inner = frame->surface;
-            scenery->spheres_surfaces[i].outer = frame->surface;
+            scenery->spheres_surfaces[i] = frame->surfaces;
             scenery->spheres_T[i] = frame->frame2root;
             count->spheres += 1;
             break;
         case MLI_CYLINDER:
             i = count->cylinders;
             scenery->cylinders[i] = *frame->primitive.cylinder;
-            scenery->cylinders_surfaces[i].inner = frame->surface;
-            scenery->cylinders_surfaces[i].outer = frame->surface;
+            scenery->cylinders_surfaces[i] = frame->surfaces;
             scenery->cylinders_T[i] = frame->frame2root;
             count->cylinders += 1;
             break;
         case MLI_HEXAGON:
             i = count->hexagons;
             scenery->hexagons[i] = *frame->primitive.hexagon;
-            scenery->hexagons_surfaces[i].inner = frame->surface;
-            scenery->hexagons_surfaces[i].outer = frame->surface;
+            scenery->hexagons_surfaces[i] = frame->surfaces;
             scenery->hexagons_T[i] = frame->frame2root;
             count->hexagons += 1;
             break;
         case MLI_BICIRCLEPLANE:
             i = count->bicircleplanes;
             scenery->bicircleplanes[i] = *frame->primitive.bicircleplane;
-            scenery->bicircleplanes_surfaces[i].inner = frame->surface;
-            scenery->bicircleplanes_surfaces[i].outer = frame->surface;
+            scenery->bicircleplanes_surfaces[i] = frame->surfaces;
             scenery->bicircleplanes_T[i] = frame->frame2root;
             count->bicircleplanes += 1;
             break;
         case MLI_DISC:
             i = count->discs;
             scenery->discs[i] = *frame->primitive.disc;
-            scenery->discs_surfaces[i].inner = frame->surface;
-            scenery->discs_surfaces[i].outer = frame->surface;
+            scenery->discs_surfaces[i] = frame->surfaces;
             scenery->discs_T[i] = frame->frame2root;
             count->discs += 1;
             break;
@@ -214,6 +205,8 @@ int mliScenery_malloc_from_json_path(mliScenery* scenery, const char* path) {
     mliUserScenery_free(&uscn);
     return 1;
 error:
+    mliJson_free(&json);
+    mliUserScenery_free(&uscn);
     return 0;}
 
 #endif

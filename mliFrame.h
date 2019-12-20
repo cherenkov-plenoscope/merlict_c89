@@ -41,7 +41,7 @@ typedef struct mliFrame {
         mliBiCirclePlane* bicircleplane;
         mliDisc* disc;
     } primitive;
-    uint64_t surface;
+    mliSurfaces surfaces;
 } mliFrame;
 
 mliFrame mliFrame_init() {
@@ -55,7 +55,8 @@ mliFrame mliFrame_init() {
         0.);
     f.frame2root = f.frame2mother;
     f.type = MLI_FRAME;
-    f.surface = 0u;
+    f.surfaces.inner = 0u;
+    f.surfaces.outer = 0u;
     return f;}
 
 int mliFrame_malloc(mliFrame *f, const uint64_t type) {
@@ -233,7 +234,8 @@ void __mliFrame_print(mliFrame *f, const uint64_t indention) {
         f->frame2mother.rot.z);
     if (f->type != MLI_FRAME) {
         printf("%*s", (int)indention, "");
-        printf("|-surface: %lu\n", f->surface);
+        printf("|-surface (inner: %u, outer: %u)\n",
+            f->surfaces.inner, f->surfaces.outer);
     }
     for (c = 0; c < f->children.size; c++) {
         mliFrame* child = mliFrame_child(f, c);

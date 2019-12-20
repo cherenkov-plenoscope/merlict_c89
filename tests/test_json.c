@@ -248,8 +248,11 @@
     mliJson json = mliJson_init();
     mliUserScenery uscn = mliUserScenery_init();
     mliFrame* f;
-    CHECK(mliJson_malloc_from_file(&json, "small_scenery.json"));
-    CHECK(mliJson_write_debug(&json, "small_scenery.json.debug.tmp"));
+    mliSurface* uscn_srfs;
+    CHECK(mliJson_malloc_from_file(&json,
+        "tests/resources/small_scenery.json"));
+    CHECK(mliJson_write_debug(&json,
+        "tests/resources/small_scenery.json.debug.tmp"));
 
     CHECK(mliUserScenery_malloc_from_json(&uscn, &json));
 
@@ -283,18 +286,39 @@
 
     /* surfaces */
     CHECK(uscn.surface_resources.num_surfaces == 4u);
-    CHECK(uscn.surface_resources.surfaces[0].color == 0);
-    CHECK(uscn.surface_resources.surfaces[0].reflection == 0);
-    CHECK(uscn.surface_resources.surfaces[0].refraction == 0);
-    CHECK(uscn.surface_resources.surfaces[1].color == 1);
-    CHECK(uscn.surface_resources.surfaces[1].reflection == 0);
-    CHECK(uscn.surface_resources.surfaces[1].refraction == 0);
-    CHECK(uscn.surface_resources.surfaces[2].color == 2);
-    CHECK(uscn.surface_resources.surfaces[2].reflection == 0);
-    CHECK(uscn.surface_resources.surfaces[2].refraction == 0);
-    CHECK(uscn.surface_resources.surfaces[3].color == 3);
-    CHECK(uscn.surface_resources.surfaces[3].reflection == 0);
-    CHECK(uscn.surface_resources.surfaces[3].refraction == 2);
+    uscn_srfs = uscn.surface_resources.surfaces;
+
+    CHECK(uscn_srfs[0].color == 0u);
+    CHECK(uscn_srfs[0].material == MLI_MATERIAL_PHONG);
+    CHECK(uscn_srfs[0].boundary_layer_specular_reflection == 0u);
+    CHECK(uscn_srfs[0].boundary_layer_diffuse_reflection == 0u);
+    CHECK(uscn_srfs[0].boundary_layer_transmission == 0u);
+    CHECK(uscn_srfs[0].medium_refraction == 0u);
+    CHECK(uscn_srfs[0].medium_absorbtion == 0u);
+
+    CHECK(uscn_srfs[1].color == 1u);
+    CHECK(uscn_srfs[1].material == MLI_MATERIAL_PHONG);
+    CHECK(uscn_srfs[1].boundary_layer_specular_reflection == 0u);
+    CHECK(uscn_srfs[1].boundary_layer_diffuse_reflection == 0u);
+    CHECK(uscn_srfs[1].boundary_layer_transmission == 0u);
+    CHECK(uscn_srfs[1].medium_refraction == 0u);
+    CHECK(uscn_srfs[1].medium_absorbtion == 0u);
+
+    CHECK(uscn_srfs[2].color == 2u);
+    CHECK(uscn_srfs[2].material == MLI_MATERIAL_PHONG);
+    CHECK(uscn_srfs[2].boundary_layer_specular_reflection == 0u);
+    CHECK(uscn_srfs[2].boundary_layer_diffuse_reflection == 0u);
+    CHECK(uscn_srfs[2].boundary_layer_transmission == 0u);
+    CHECK(uscn_srfs[2].medium_refraction == 0u);
+    CHECK(uscn_srfs[2].medium_absorbtion == 0u);
+
+    CHECK(uscn_srfs[3].color == 3u);
+    CHECK(uscn_srfs[3].material == MLI_MATERIAL_PHONG);
+    CHECK(uscn_srfs[3].boundary_layer_specular_reflection == 0u);
+    CHECK(uscn_srfs[3].boundary_layer_diffuse_reflection == 0u);
+    CHECK(uscn_srfs[3].boundary_layer_transmission == 0u);
+    CHECK(uscn_srfs[3].medium_refraction == 1u);
+    CHECK(uscn_srfs[3].medium_absorbtion == 0u);
 
     /* frames */
     CHECK(uscn.root.children.size == 4u);

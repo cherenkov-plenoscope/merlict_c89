@@ -107,32 +107,58 @@ int __mliSurface_from_json(
     mliSurface* surface,
     const mliJson *json,
     const uint64_t token_s) {
-    int64_t tmp;
-    uint64_t token_color, token_reflectivity, token_refractivity;
-    mli_check(
-        mliJson_find_key(json, token_s, "color", &token_color),
+    int64_t idx_tmp;
+    uint64_t token_tmp;
+
+    mli_check(mliJson_find_key(json, token_s, "material", &token_tmp),
+        "Expected json-surface-item to contain key 'material'.");
+    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
+        "Could not parse material from json.");
+    mli_check(idx_tmp >= 0, "Expected material-index to be positive.");
+    surface->material = idx_tmp;
+
+    mli_check(mliJson_find_key(json, token_s, "medium_refraction", &token_tmp),
+        "Expected json-surface-item to contain key 'medium_refraction'.");
+    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
+        "Could not parse medium_refraction from json.");
+    mli_check(idx_tmp >= 0, "Expected medium_refraction-index to be positive.");
+    surface->medium_refraction = idx_tmp;
+
+    mli_check(mliJson_find_key(json, token_s, "medium_absorbtion", &token_tmp),
+        "Expected json-surface-item to contain key 'medium_absorbtion'.");
+    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
+        "Could not parse medium_absorbtion from json.");
+    mli_check(idx_tmp >= 0, "Expected medium_absorbtion-index to be positive.");
+    surface->medium_absorbtion = idx_tmp;
+
+    mli_check(mliJson_find_key(json, token_s, "boundary_layer_specular_reflection", &token_tmp),
+        "Expected json-surface-item to contain key 'boundary_layer_specular_reflection'.");
+    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
+        "Could not parse boundary_layer_specular_reflection from json.");
+    mli_check(idx_tmp >= 0, "Expected boundary_layer_specular_reflection-index to be positive.");
+    surface->boundary_layer_specular_reflection = idx_tmp;
+
+    mli_check(mliJson_find_key(json, token_s, "boundary_layer_diffuse_reflection", &token_tmp),
+        "Expected json-surface-item to contain key 'boundary_layer_diffuse_reflection'.");
+    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
+        "Could not parse boundary_layer_diffuse_reflection from json.");
+    mli_check(idx_tmp >= 0, "Expected boundary_layer_diffuse_reflection-index to be positive.");
+    surface->boundary_layer_diffuse_reflection = idx_tmp;
+
+    mli_check(mliJson_find_key(json, token_s, "boundary_layer_transmission", &token_tmp),
+        "Expected json-surface-item to contain key 'boundary_layer_transmission'.");
+    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
+        "Could not parse boundary_layer_transmission from json.");
+    mli_check(idx_tmp >= 0, "Expected boundary_layer_transmission-index to be positive.");
+    surface->boundary_layer_transmission = idx_tmp;
+
+    mli_check(mliJson_find_key(json, token_s, "color", &token_tmp),
         "Expected json-surface-item to contain key 'color'.");
-    mli_check(
-        mliJson_find_key(json, token_s, "reflectivity", &token_reflectivity),
-        "Expected json-surface-item to contain key 'reflectivity'.");
-    mli_check(
-        mliJson_find_key(json, token_s, "refractivity", &token_refractivity),
-        "Expected json-surface-item to contain key 'refractivity'.");
-    mli_check(
-        mliJson_as_int64(json, token_color + 1, &tmp),
-        "Could not parse color-idx from json.");
-    mli_check(tmp >= 0, "Expected color-index to be positive.");
-    surface->color = tmp;
-    mli_check(
-        mliJson_as_int64(json, token_reflectivity + 1, &tmp),
-        "Could not parse reflectivity-idx from json.");
-    mli_check(tmp >= 0, "Expected reflectivity-index to be positive.");
-    surface->reflection = tmp;
-    mli_check(
-        mliJson_as_int64(json, token_refractivity + 1, &tmp),
-        "Could not parse refractivity-idx from json.");
-    mli_check(tmp >= 0, "Expected refractivity-index to be positive.");
-    surface->refraction = tmp;
+    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
+        "Could not parse color from json.");
+    mli_check(idx_tmp >= 0, "Expected color-index to be positive.");
+    surface->color = idx_tmp;
+
     return 1;
 error:
     return 0;}
@@ -337,16 +363,29 @@ int __mliFrame_set_surface_idx(
     mliFrame* frame,
     const mliJson *json,
     const uint64_t token) {
-    uint64_t token_surface;
-    int64_t surface_idx;
+    uint64_t token_surface, token_inner, token_outer;
+    int64_t inner_surface_idx, outer_surface_idx;
     mli_check(
         mliJson_find_key(json, token, "surface", &token_surface),
         "Expected primitive (except for Frame) to have key 'surface'.");
+
     mli_check(
-        mliJson_as_int64(json, token_surface + 1, &surface_idx),
-        "Failed to parse mliFrame's 'surface' integer from json.");
-    mli_check(surface_idx >= 0, "Expected mliFrame's surface index >= 0.");
-    frame->surface = surface_idx;
+        mliJson_find_key(json, token_surface + 1, "inner", &token_inner),
+        "Expected key 'inner' in surface.");
+    mli_check(
+        mliJson_find_key(json, token_surface + 1, "outer", &token_outer),
+        "Expected key 'outer' in surface.");
+
+    mli_check(
+        mliJson_as_int64(json, token_inner + 1, &inner_surface_idx),
+        "Failed to parse mliFrame's 'surface->inner' integer from json.");
+    mli_check(inner_surface_idx >= 0, "Expected inner_surface_idx >= 0.");
+    mli_check(
+        mliJson_as_int64(json, token_outer + 1, &outer_surface_idx),
+        "Failed to parse mliFrame's 'surface->outer' integer from json.");
+    mli_check(outer_surface_idx >= 0, "Expected outer_surface_idx >= 0.");
+    frame->surfaces.inner = inner_surface_idx;
+    frame->surfaces.outer = outer_surface_idx;
     return 1;
 error:
     return 0;}

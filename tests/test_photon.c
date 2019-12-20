@@ -34,7 +34,8 @@
 
     surfaces = mliScenery_object_surfaces(&scenery, intersection.object_idx);
     CHECK(surfaces.inner == 0);
-    CHECK(surfaces.outer == 0);
+    CHECK(surfaces.outer == 1);
 
     mliScenery_free(&scenery);
+    mliOcTree_free(&octree);
 }

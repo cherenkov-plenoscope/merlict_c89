@@ -14,8 +14,24 @@
     [255, 91, 49],
   ],
   "surfaces": [
-    {"color": 0, "reflectivity": 0, "refractivity": 0},
-    {"color": 1, "reflectivity": 0, "refractivity": 0},
+    {
+      "material": 100,
+      "medium_refraction": 0,
+      "medium_absorbtion": 0,
+      "boundary_layer_specular_reflection": 0,
+      "boundary_layer_diffuse_reflection": 0,
+      "boundary_layer_transmission": 0,
+      "color": 0
+    },
+    {
+      "material": 100,
+      "medium_refraction": 1,
+      "medium_absorbtion": 0,
+      "boundary_layer_specular_reflection": 0,
+      "boundary_layer_diffuse_reflection": 0,
+      "boundary_layer_transmission": 0,
+      "color": 1
+    }
   ],
   "children": [
     {
@@ -24,7 +40,7 @@
       "pos": [0, 0, -1],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.0,
-      "surface": 0
+      "surface": {"inner": 0, "outer": 1}
     },
     {
       "type": "Cylinder",
@@ -33,7 +49,7 @@
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.0,
       "length": 2.0,
-      "surface": 1
+      "surface": {"inner": 0, "outer": 1}
     },
     {
       "type": "Disc",
@@ -41,7 +57,7 @@
       "pos": [0, 0, 1],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.0,
-      "surface": 0
+      "surface": {"inner": 1, "outer": 0}
     }
   ]
 }

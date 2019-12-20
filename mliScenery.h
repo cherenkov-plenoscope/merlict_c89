@@ -781,14 +781,27 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
 int mliScenery_valid_surfaces(const mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_surfaces; i++) {
+        switch (scenery->surfaces[i].material) {
+            case MLI_MATERIAL_PHONG: break;
+            case MLI_MATERIAL_METAL: break;
+            case MLI_MATERIAL_TRANSPARENT: break;
+            default: return 0; break;}
         if (scenery->surfaces[i].color >= scenery->num_colors)
             return 0;
-        if (scenery->surfaces[i].reflection >= scenery->num_functions)
+        if (scenery->surfaces[i].medium_refraction >= scenery->num_functions)
             return 0;
-        if (scenery->surfaces[i].refraction >= scenery->num_functions)
+        if (scenery->surfaces[i].medium_refraction >= scenery->num_functions)
             return 0;
-        if (scenery->surfaces[i].absorbtion >= scenery->num_functions)
-            return 0;}
+        if (scenery->surfaces[i].boundary_layer_specular_reflection >=
+            scenery->num_functions)
+            return 0;
+        if (scenery->surfaces[i].boundary_layer_diffuse_reflection >=
+            scenery->num_functions)
+            return 0;
+        if (scenery->surfaces[i].boundary_layer_transmission >=
+            scenery->num_functions)
+            return 0;
+    }
     return 1;}
 
 int mliScenery_valid_triangles(const mliScenery *scenery) {
