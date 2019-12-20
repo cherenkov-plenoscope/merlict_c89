@@ -1,6 +1,6 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-/* json parsing */
-{
+
+CASE("Tokenize json-literal") {
     char s[] = "{\"hans\": 84, \"cosmo\": [1, 3, 7]}\0";
     char *end;
     int64_t num_tokens;
@@ -42,8 +42,7 @@
     CHECK(end == s + t[7].end);
 }
 
-/* mliJson */
-{
+CASE("mliJson_init, defaults") {
     mliJson json = mliJson_init();
     CHECK(json.num_chars == 0u);
     CHECK(json.chars == NULL);
@@ -51,7 +50,7 @@
     CHECK(json.tokens == NULL);
 }
 
-{
+CASE("mliJson malloc, and free") {
     mliJson json = mliJson_init();
     json.num_chars = 10;
     json.num_tokens = 5;
@@ -59,7 +58,7 @@
     mliJson_free(&json);
 }
 
-{
+CASE("mliJson_malloc_from_file") {
     mliJson json = mliJson_init();
     uint64_t return_idx;
     int64_t myint;
@@ -95,9 +94,7 @@
     mliJson_free(&json);
 }
 
-/* mliJson */
-/* from string */
-{
+CASE("mliJson_malloc_from_string") {
     mliJson json = mliJson_init();
     char json_str[1024];
     uint64_t token = 0u;
@@ -110,8 +107,7 @@
     mliJson_free(&json);
 }
 
-/* json malloc mliFunc */
-{
+CASE("parse mliFunc") {
     uint64_t token;
     mliJson json = mliJson_init();
     mliFunc f = mliFunc_init();
@@ -148,8 +144,7 @@
     mliJson_free(&json);
 }
 
-/* json parse mliVec and mliColor */
-{
+CASE("parse mliVec and mliColor") {
     uint64_t token;
     mliJson json = mliJson_init();
     mliVec vec1 = mliVec_set(0., 0., 0.);
@@ -179,9 +174,7 @@
     mliJson_free(&json);
 }
 
-/* mliJson */
-/* rotation representations */
-{
+CASE("rotation representations") {
     char json_str[1024];
     mliQuaternion q;
     mliQuaternion q_expected;
@@ -244,7 +237,7 @@
     CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
 }
 
-{
+CASE("parse mliUserScenery") {
     mliJson json = mliJson_init();
     mliUserScenery uscn = mliUserScenery_init();
     mliFrame* f;
