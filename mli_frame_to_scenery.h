@@ -198,4 +198,22 @@ error:
     return 0;
 }
 
+int mliScenery_malloc_from_json_path(mliScenery* scenery, const char* path) {
+    mliJson json = mliJson_init();
+    mliUserScenery uscn = mliUserScenery_init();
+    mli_check(
+        mliJson_malloc_from_file(&json, path),
+        "Failed to parse json-scenery.");
+    mli_check(
+        mliUserScenery_malloc_from_json(&uscn, &json),
+        "Failed to parse json-scenery.");
+    mli_check(
+        mliScenery_malloc_from_mliUserScenery(scenery, &uscn),
+        "Failed to translate mliUserScenery to mliScenery.")
+    mliJson_free(&json);
+    mliUserScenery_free(&uscn);
+    return 1;
+error:
+    return 0;}
+
 #endif

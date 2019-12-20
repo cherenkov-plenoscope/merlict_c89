@@ -100,17 +100,9 @@ int main(int argc, char *argv[]) {
         goto error;
     }
     if (mli_string_ends_with(argv[1], ".json")) {
-        mliJson json = mliJson_init();
-        mliUserScenery uscn = mliUserScenery_init();
         mli_check(
-            mliJson_malloc_from_file(&json, argv[1]),
-            "Failed to parse json-scenery.");
-        mli_check(
-            mliUserScenery_malloc_from_json(&uscn, &json),
-            "Failed to parse json-scenery.");
-        mli_check(
-            mliScenery_malloc_from_mliUserScenery(&scenery, &uscn),
-            "Failed to translate mliUserScenery to mliScenery.")
+            mliScenery_malloc_from_json_path(&scenery, argv[1]),
+            "Can not read scenery from json.");
     } else {
         if (!mliScenery_read_from_path(&scenery, argv[1])) {
             fprintf(stderr, "Can not open '%s'\n", argv[1]);
