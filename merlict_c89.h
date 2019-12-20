@@ -2,6 +2,7 @@
 #ifndef MERLICT_MERLICT_C89_H_
 #define MERLICT_MERLICT_C89_H_
 
+#include "mli_testing.h"
 #include "mli_debug.h"
 #include "mliMath.h"
 #include "mli_dual_circle_prism.h"
@@ -10,7 +11,6 @@
 #include "mliRotMat.h"
 #include "mliQuaternion.h"
 #include "mliRay.h"
-#include "mliUnitTest.h"
 #include "mliFace.h"
 #include "mliMesh.h"
 #include "mliFunc.h"
