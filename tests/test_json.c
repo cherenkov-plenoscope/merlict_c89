@@ -64,8 +64,8 @@ CASE("mliJson_malloc_from_file") {
     int64_t myint;
     double myfloat;
 
-    CHECK(mliJson_malloc_from_file(&json, "example.json"));
-    CHECK(mliJson_write_debug(&json, "example.json.debug.tmp"));
+    CHECK(mliJson_malloc_from_file(&json, "tests/resources/example.json"));
+    CHECK(mliJson_write_debug(&json, "tests/resources/example.json.debug.tmp"));
 
     CHECK(mliJson_find_key(&json, 0, "name", &return_idx));
     CHECK(return_idx == 1);
