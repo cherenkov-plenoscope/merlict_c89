@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliColor */
-{
+CASE("mliColor_mix") {
     mliColor red = {255., 0., 0.};
     mliColor blue = {0., 0., 255.};
     mliColor mix = mliColor_mix(red, blue, 0.2);
@@ -10,7 +9,7 @@
     CHECK_MARGIN(mix.b, 255.*0.2, 1e-6);
 }
 
-{
+CASE("mliColor_mean") {
     mliColor colors[3];
     mliColor one = {10., 20., 30.};
     mliColor two = {1., 2., 3.};

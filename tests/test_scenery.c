@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliScenery */
-{
+CASE("mliScenery, mliMesh_malloc_from_object_file") {
     uint64_t i;
     mliScenery scenery = mliScenery_init();
     mliScenery scenery_back = mliScenery_init();
@@ -20,9 +19,9 @@
     scenery.num_bicircleplanes = 1u;
     scenery.num_discs = 1u;
 
-    mliMesh_malloc_from_object_file(
-        "diff_cube_sphere.off",
-        &diff_cube_sphere);
+    CHECK(mliMesh_malloc_from_object_file(
+        "tests/resources/diff_cube_sphere.off",
+        &diff_cube_sphere));
 
     scenery.num_vertices = diff_cube_sphere.num_vertices;
     scenery.num_triangles = diff_cube_sphere.num_faces;

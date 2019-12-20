@@ -27,6 +27,8 @@
         NUM_CHECKS += 1; \
     } while (0)
 
-#define CASE(msg) printf("[%s:%d: %s]\n", __FILE__, __LINE__, msg);
+#define CASE(msg) \
+    printf("[%s:%d: %s]\n", __FILE__, __LINE__, msg); \
+    fflush(stdout);
 
 #endif

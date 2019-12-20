@@ -1,6 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-{
+CASE("mliFunc_malloc") {
     mliFunc func = mliFunc_init();
     func.num_points = 0u;
     CHECK(mliFunc_malloc(&func));
@@ -9,7 +9,7 @@
     mliFunc_free(&func);
 }
 
-{
+CASE("mliFunc_x_is_causal") {
     mliFunc func = mliFunc_init();
     func.num_points = 3u;
     CHECK(mliFunc_malloc(&func));
@@ -21,7 +21,7 @@
     mliFunc_free(&func);
 }
 
-{
+CASE("mliFunc_evaluate, explicit") {
     double y;
     mliFunc func = mliFunc_init();
     func.num_points = 5u;
@@ -47,7 +47,7 @@
     mliFunc_free(&func);
 }
 
-{
+CASE("mliFunc_evaluate, loop") {
     double x, y;
     mliFunc func = mliFunc_init();
     func.num_points = 2u;

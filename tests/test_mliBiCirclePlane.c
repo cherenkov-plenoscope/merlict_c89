@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliBiCirclePlane OBB */
-{
+CASE("mliBiCirclePlane_obb") {
     mliOBB obb;
     mliBiCirclePlane plane;
     mliHomTraComp local2root_comp;
@@ -57,7 +56,7 @@
     CHECK_MARGIN(obb.upper.z, sqrt(2.)/4, 1e-6);
 }
 
-{
+CASE("mliBiCirclePlane_has_overlap_obb") {
     mliOBB obb;
     mliBiCirclePlane plane;
     mliHomTraComp local2root_comp;
@@ -94,7 +93,7 @@
     CHECK(mliBiCirclePlane_has_overlap_obb(plane, local2root_comp, obb));
 }
 
-{
+CASE("mliBiCirclePlane_intersection") {
     mliBiCirclePlane plane;
     mliHomTraComp local2root_comp;
     mliIntersection intersection;

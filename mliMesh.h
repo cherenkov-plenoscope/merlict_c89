@@ -218,7 +218,7 @@ int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
     fclose(fin);
     return 1;
 error:
-    fclose(fin);
+    if (fin != NULL) {fclose(fin);}
     mliMesh_free(m);
     return 0;
 }

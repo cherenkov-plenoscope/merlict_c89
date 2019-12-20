@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* dual spherical prism */
-{
+CASE("mli_is_inside_dual_circle_prism") {
     CHECK(mli_is_inside_dual_circle_prism(0., 0., 1., 2.));
 
     CHECK(mli_is_inside_dual_circle_prism(0., 0.9, 1., 2.));

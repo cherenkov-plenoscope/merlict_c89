@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliCylinder */
-{
+CASE("mliCylinder_is_equal") {
     mliCylinder a, b;
     a.radius = 1.;
     a.length = 2.;
@@ -12,7 +11,7 @@
     CHECK(!mliCylinder_is_equal(a, b));
 }
 
-{
+CASE("mliCylinder_start_local, mliCylinder_end_local") {
     mliCylinder a;
     mliVec start_local;
     mliVec end_local;
@@ -28,8 +27,7 @@
     CHECK_MARGIN(end_local.z, a.length/2, 1e-6);
 }
 
-/* slim cylinder obb */
-{
+CASE("slim cylinder obb") {
     mliCylinder a;
     mliOBB obb;
     mliHomTraComp trafo;
@@ -48,8 +46,7 @@
     CHECK_MARGIN(obb.upper.z, 6.5, 1e-6);
 }
 
-/* fat cylinder obb */
-{
+CASE("fat cylinder obb") {
     mliCylinder a;
     mliOBB obb;
     mliHomTraComp trafo;
@@ -68,8 +65,7 @@
     CHECK_MARGIN(obb.upper.z, 5.5, 1e-6);
 }
 
-/* slim cylinder obb transformed */
-{
+CASE("slim cylinder obb transformed") {
     mliCylinder a;
     mliOBB obb;
     mliHomTraComp trafo;
@@ -88,8 +84,7 @@
     CHECK_MARGIN(obb.upper.z, 1.5, 1e-6);
 }
 
-/* cylinder overlap with its own obb */
-{
+CASE("cylinder overlap with its own obb") {
     mliCylinder a;
     mliOBB obb;
     mliHomTraComp local2root_comp;
@@ -107,8 +102,7 @@
             obb));
 }
 
-/* cylinder overlap with its own obb */
-{
+CASE("cylinder overlap with its own obb, 2") {
     mliCylinder a;
     mliOBB obb;
     mliHomTraComp local2root_comp;
@@ -210,8 +204,7 @@
             obb));
 }
 
-/* cylinder intersection test */
-{
+CASE("cylinder intersection") {
     double plus_solution, minus_solution;
     /* ray starts infron of cylinder */
     CHECK(
@@ -269,10 +262,9 @@
                 mliVec_set(0., 0., 1.)),
             &plus_solution,
             &minus_solution));
-
 }
 
-{
+CASE("cylinder intersection, 2") {
     mliCylinder cylinder;
     mliHomTraComp local2root_comp;
     mliIntersection intersection;

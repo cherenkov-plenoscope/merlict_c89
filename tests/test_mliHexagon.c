@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliHexagon */
-{
+CASE("mliHexagon") {
     mliHexagon a;
     mliHexagon b;
     mliHexagon c;
@@ -13,8 +12,7 @@
     CHECK(!mliHexagon_is_equal(b, c));
 }
 
-/* mliHexagon_intersection */
-{
+CASE("mliHexagon_intersection") {
     mliHexagon hex;
     mliHomTraComp local2root_comp;
     mliIntersection intersection;
@@ -76,7 +74,7 @@
             &intersection));
 }
 
-{
+CASE("mliHexagon transformation") {
     mliHexagon hex;
     mliHomTraComp local2root_comp;
     mliOBB obb;
@@ -134,7 +132,7 @@
     CHECK_MARGIN(obb.upper.z, +MLI_2_OVER_SQRT3/sqrt(2), 1e-6);
 }
 
-{
+CASE("mliHexagon_has_overlap_obb") {
     mliHexagon hex;
     mliHomTraComp local2root_comp;
     mliOBB obb;

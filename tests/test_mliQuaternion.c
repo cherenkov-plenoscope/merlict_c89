@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliQuaternion */
-{
+CASE("mliQuaternion, defaults") {
     mliQuaternion p = mliQuaternion_set(1., 2., 3., 4.);
     CHECK(p.w = 1.);
     CHECK(p.x = 2.);
@@ -10,18 +9,14 @@
     CHECK_MARGIN(mliQuaternion_norm(p), sqrt(1.+4.+9.+16.), 1e-6);
 }
 
-/* mliQuaternion */
-/* rotation is pure i.e. norm is 1. */
-{
+CASE("rotation is pure i.e. norm is 1.") {
     mliQuaternion q = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(1., 0., 0.),
         mli_deg2rad(23.));
     CHECK_MARGIN(mliQuaternion_norm(q), 1., 1e-6);
 }
 
-/* mliQuaternion */
-/* unity quaternion and matrix */
-{
+CASE("unity quaternion and matrix") {
     mliQuaternion q_eye = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(1., 0., 0.),
         mli_deg2rad(0.));
@@ -39,9 +34,7 @@
     CHECK_MARGIN(r_eye.r22, 1., 1e-6);
 }
 
-/* mliQuaternion */
-/* rotation matrix z-axis +90deg */
-{
+CASE("rotation matrix z-axis +90deg") {
     mliQuaternion z90 = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 1.),
         mli_deg2rad(90.));
@@ -60,9 +53,7 @@
     CHECK_MARGIN(r_z90.r22, 1., 1e-6);
 }
 
-/* mliQuaternion */
-/* sequence of rotations */
-{
+CASE("sequence of rotations") {
     /*
     __initial__
 
@@ -119,14 +110,12 @@
     CHECK_MARGIN(r_z90_x90.r22, 0., 1e-6);
 }
 
-/* mliQuaternion */
-/* Tait-Bryan-angles */
-{
+CASE("Tait-Bryan-angles") {
     mliQuaternion q = mliQuaternion_set_tait_bryan(0., 0.,0.);
     CHECK_MARGIN(mliQuaternion_norm(q), 1., 1e-6);
 }
 
-{
+CASE("Tait-Bryan-angles, 2") {
     mliQuaternion q = mliQuaternion_set_tait_bryan(0., 0., mli_deg2rad(90));
     mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(90));
     mliRotMat rot_from_q;
@@ -135,9 +124,7 @@
     CHECK(mliRotMat_equal_margin(rot, rot_from_q, 1e-9));
 }
 
-/* Tait-Bryan-angles */
-/* multiple combinations */
-{
+CASE("multiple combinations") {
     double rx, ry, rz;
     for (rx = -400; rx < 400; rx += 25) {
         for (ry = -400; ry < 400; ry += 25) {

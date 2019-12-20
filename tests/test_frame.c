@@ -1,17 +1,13 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliFrame */
-/* A scenery-tree */
-{
+CASE("mliFrame_init, defaults") {
     mliFrame f = mliFrame_init();
     CHECK(f.mother == NULL);
     CHECK(f.children.size == 0u);
     CHECK(f.type == MLI_FRAME);
 }
 
-/* mliFrame */
-/* malloc frame */
-{
+CASE("mliFrame_malloc, free") {
     mliFrame f = mliFrame_init();
     CHECK(mliFrame_malloc(&f, MLI_FRAME));
     mliFrame_free(&f);
@@ -20,9 +16,7 @@
     CHECK(f.type == MLI_FRAME);
 }
 
-/* mliFrame */
-/* add two childs */
-{
+CASE("add two childs") {
     mliFrame* child1 = NULL;
     mliFrame* child2 = NULL;
     mliFrame mother = mliFrame_init();
@@ -43,9 +37,7 @@
     mliFrame_free(&mother);
 }
 
-/* mliFrame */
-/* add grand childs */
-{
+CASE("add grand childs") {
     /*
                         |--child_00
             |--child_0--|
@@ -100,9 +92,7 @@
     mliFrame_free(&mother);
 }
 
-/* mliFrame */
-/* basic mesh allocation and initialization */
-{
+CASE("basic mesh allocation and initialization") {
     mliFrame* child = NULL;
     mliFrame mother = mliFrame_init();
     CHECK(mliFrame_malloc(&mother, MLI_FRAME));
@@ -122,9 +112,7 @@
     mliFrame_free(&mother);
 }
 
-/* mliFrame */
-/* basic sphere */
-{
+CASE("basic sphere") {
     mliFrame* child = NULL;
     mliFrame mother = mliFrame_init();
     CHECK(mliFrame_malloc(&mother, MLI_FRAME));
@@ -138,9 +126,7 @@
     mliFrame_free(&mother);
 }
 
-/* mli_frame_to_scenery */
-/* estimate capacity */
-{
+CASE("estimate capacity") {
     mliFrame root = mliFrame_init();
     mliFrame* sphere = NULL;
     mliScenery scenery = mliScenery_init();
@@ -155,8 +141,7 @@
     mliFrame_free(&root);
 }
 
-/* mliFrame type: uint64 <-> string */
-{
+CASE("mapping frame-type-string to uint64") {
     uint64_t i;
     uint64_t types[8] = {
         MLI_FRAME,
@@ -177,10 +162,7 @@
     }
 }
 
-/* mliFrame */
-/* mliFrame_set_frame2root */
-/* test only translation z-component */
-{
+CASE("mliFrame_set_frame2root, only translation z-component") {
     mliFrame* c1;
     mliFrame* c2;
     mliFrame* c1_c1;
@@ -207,15 +189,13 @@
     CHECK_MARGIN(c1_c1->frame2root.trans.z, 2., 1e-9);
 }
 
-/* mliUserScenery */
-{
+CASE("mliUserScenery_malloc, free") {
     mliUserScenery uscn = mliUserScenery_init();
     CHECK(mliUserScenery_malloc(&uscn));
     mliUserScenery_free(&uscn);
 }
 
-/* mli_frame_to_scenery */
-{
+CASE("mli_frame_to_scenery") {
     mliUserScenery uscn = mliUserScenery_init();
     mliScenery scenery = mliScenery_init();
     CHECK(mliUserScenery_malloc(&uscn));

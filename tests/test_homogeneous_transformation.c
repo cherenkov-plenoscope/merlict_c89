@@ -1,8 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliHomTraComp */
-/* sequence, unity and unity shall be unity*/
-{
+CASE("sequence, unity and unity shall be unity") {
     mliHomTraComp a;
     mliHomTraComp b;
     mliHomTraComp a_b;
@@ -21,7 +19,7 @@
     CHECK_MARGIN(a_b.rot.w, 1., 1e-9);
 }
 
-{
+CASE("sequence, one translation, one rotation") {
     mliHomTraComp a; /* only translation */
     mliHomTraComp b; /* only rotation */
     mliHomTraComp a_b;
@@ -53,8 +51,7 @@
     CHECK_MARGIN(a_b_.rot.r22,  1., 1e-9);
 }
 
-/* cancelation */
-{
+CASE("sequence, cancelation") {
     mliHomTraComp a;
     mliHomTraComp a_inverse; /* inverse ov a */
     mliHomTraComp a_a_inverse;
@@ -86,8 +83,7 @@
     CHECK_MARGIN(a_a_inverse_.rot.r22,  1., 1e-9);
 }
 
-/* simple sequence */
-{
+CASE("simple sequence") {
     mliHomTraComp a;
     mliHomTraComp b;
     mliHomTraComp a_b;
@@ -119,8 +115,7 @@
     CHECK_MARGIN(a_b_.rot.r22,  0., 1e-9);
 }
 
-/* mliHomTra */
-{
+CASE("mliRotMat_init_tait_bryan") {
     mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., 0.);
     CHECK_MARGIN(rot.r00, 1., 1e-9);
     CHECK_MARGIN(rot.r01, 0., 1e-9);
@@ -154,7 +149,7 @@
     */
 }
 
-{
+CASE("mliRotMat_init_axis") {
     mliRotMat rot;
     mliVec axis = {0., 0., 1.};
     rot = mliRotMat_init_axis(axis, 0.);
@@ -184,7 +179,7 @@
     CHECK_MARGIN(rot.r22, 1., 1e-9);
 }
 
-{
+CASE("mliRotMat_init_tait_bryan, 45deg") {
     mliRotMat rot;
     mliVec a = {0., 0., 1.};
     mliVec a_rot;
@@ -195,7 +190,7 @@
     CHECK_MARGIN(a_rot.z, 1., 1e-9);
 }
 
-{
+CASE("mli_transform_orientation_inverse") {
     mliRotMat rot;
     mliVec x = {1., 0., 0.};
     mliVec x_rot;
@@ -211,7 +206,7 @@
     CHECK_MARGIN(x_rot.z, 0., 1e-9);
 }
 
-{
+CASE("only translation, mli_transform_position_inverse") {
     mliRotMat rot;
     mliVec trans = {0., 0., 3.};
     mliVec x = {1., 0., 0.};

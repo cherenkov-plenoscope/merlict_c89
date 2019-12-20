@@ -1,8 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliHexagonalPrismZ */
-
-{
+CASE("mliHexagonalPrismZ") {
     /*
                   /\ y
               ____|____
@@ -62,8 +60,7 @@
             inner_radius));
 }
 
-/* hexagon corners */
-{
+CASE("hexagon corners") {
     /*
                   /\ y
             2 ____|____ 1

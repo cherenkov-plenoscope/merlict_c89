@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* histogram 1D */
-{
+CASE("histogram 1D") {
     const double bin_edges[3] = {1., 2., 3.};
     const uint64_t num_bin_edges = 3;
     uint64_t bins[2] = {0u, 0u};
@@ -58,8 +57,7 @@
     CHECK(overflow_bin == 2u);
 }
 
-/* mli_bin_edges_linspace */
-{
+CASE("mli_bin_edges_linspace"){
     double bin_edges[3];
     const uint64_t num_bin_edges = 3;
     mli_linspace(0., 1., bin_edges, num_bin_edges);

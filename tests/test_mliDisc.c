@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliDisc */
-{
+CASE("mliDisc") {
     mliDisc disc;
     mliHomTraComp local2root_comp;
     mliOBB obb;

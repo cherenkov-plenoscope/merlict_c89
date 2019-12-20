@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliPixels */
-{
+CASE("mliPixels") {
     uint64_t i;
     mliPixels p = mliPixels_init();
     CHECK(p.num_pixels == 0u);

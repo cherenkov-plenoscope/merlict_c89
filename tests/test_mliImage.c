@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliImage */
-{
+CASE("mliImage_malloc") {
     mliImage img = mliImage_init();
     img.num_cols = 3u;
     img.num_rows = 2u;
@@ -13,9 +12,7 @@
     CHECK(img.num_rows == 0u);
 }
 
-/* mliImage */
-/* scaling */
-{
+CASE("scaling") {
     mliImage src = mliImage_init();
     mliImage dst = mliImage_init();
     src.num_cols = 4u; src.num_rows = 4u;
@@ -59,7 +56,7 @@
     mliImage_free(&dst);
 }
 
-{
+CASE("mliImage_write_to_ppm, mliImage_malloc_from_ppm") {
     mliImage img = mliImage_init();
     mliImage back = mliImage_init();
     uint32_t col;
