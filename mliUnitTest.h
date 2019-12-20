@@ -4,6 +4,9 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdint.h>
+
+uint64_t NUM_CHECKS;
 
 #define CHECK_MARGIN(a, b, margin) \
     do { \
@@ -13,6 +16,7 @@
             printf("first: %f\nsecond: %f\nmargin: %f\n", a, b, margin); \
             return EXIT_FAILURE; \
         } \
+        NUM_CHECKS += 1; \
     } while (0)
 
 #define CHECK(test) \
@@ -22,6 +26,7 @@
             printf("Expected true\n"); \
             return EXIT_FAILURE; \
         } \
+        NUM_CHECKS += 1; \
     } while (0)
 
 #endif
