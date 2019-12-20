@@ -7,7 +7,7 @@
 
 
 int main(int argc, char *argv[]) {
-    NUM_CHECKS = 0;
+    uint64_t NUM_CHECKS = 0;
     #include "tests/test_frame.c"
     #include "tests/test_upper_bound.c"
     #include "tests/test_histogram.c"
@@ -40,7 +40,6 @@ int main(int argc, char *argv[]) {
     #include "tests/test_parsing_from_string.c"
     #include "tests/test_json.c"
     #include "tests/test_photon.c"
-
     printf("num. checks: %ld\n", NUM_CHECKS);
     printf("__SUCCESS__\n");
     return EXIT_SUCCESS;

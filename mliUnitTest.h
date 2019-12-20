@@ -6,8 +6,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-uint64_t NUM_CHECKS;
-
 #define CHECK_MARGIN(a, b, margin) \
     do { \
         if ( (fabs((a) - (b)) > margin) ) { \
