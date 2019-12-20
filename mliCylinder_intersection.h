@@ -3,7 +3,7 @@
 #define MERLICT_MLICYLINDER_INTERSECTION_H_
 
 #include <math.h>
-#include "mliMath.h"
+#include "mli_math.h"
 #include "mliIntersection.h"
 #include "mliQuadraticEquation.h"
 

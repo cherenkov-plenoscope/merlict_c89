@@ -2,7 +2,7 @@
 #ifndef MERLICT_MLITRIANGLEINTERSECTION_H_
 #define MERLICT_MLITRIANGLEINTERSECTION_H_
 #include <math.h>
-#include "mliMath.h"
+#include "mli_math.h"
 #include "mliVec.h"
 #include "mliRay.h"
 #include "mliIntersection.h"

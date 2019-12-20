@@ -4,7 +4,7 @@
 
 #include "mli_testing.h"
 #include "mli_debug.h"
-#include "mliMath.h"
+#include "mli_math.h"
 #include "mli_dual_circle_prism.h"
 #include "mliMT19937.h"
 #include "mliVec.h"

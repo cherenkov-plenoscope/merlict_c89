@@ -3,7 +3,7 @@
 #define MERLICT_MLICUBE_H_
 
 #include "mliVec.h"
-#include "mliMath.h"
+#include "mli_math.h"
 #include "mliOBB.h"
 
 typedef struct {

@@ -3,7 +3,7 @@
 #define MERLICT_MLISPHERICALCAPHEX_H_
 
 #include <math.h>
-#include "mliMath.h"
+#include "mli_math.h"
 
 typedef struct {
     double curvature_radius;

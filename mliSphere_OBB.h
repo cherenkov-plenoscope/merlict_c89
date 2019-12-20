@@ -3,7 +3,7 @@
 #define MERLICT_MLISPHERE_OBB_H_
 
 #include <math.h>
-#include "mliMath.h"
+#include "mli_math.h"
 
 mliOBB mliSphere_obb(
     const double radius,

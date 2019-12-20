@@ -3,7 +3,6 @@
 #define MERLICT_MLICYLINDER_H_
 
 #include <math.h>
-#include "mliMath.h"
 
 typedef struct {
     double radius;

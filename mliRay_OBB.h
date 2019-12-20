@@ -3,7 +3,7 @@
 #define MERLICT_MLIRAY_OBB_H_
 
 #include <stdint.h>
-#include "mliMath.h"
+#include "mli_math.h"
 
 int mliRay_has_overlap_obb(
     const mliRay ray,

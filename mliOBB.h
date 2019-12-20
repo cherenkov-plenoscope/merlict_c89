@@ -4,7 +4,7 @@
 
 #include <assert.h>
 #include "mliVec.h"
-#include "mliMath.h"
+#include "mli_math.h"
 #include "mliRay.h"
 #include "mliEdge.h"
 

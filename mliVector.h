@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "mli_debug.h"
-#include "mliMath.h"
+#include "mli_math.h"
 
 #define MLI_VECTOR_MINIMUM_CAPACITY 2
 #define MLI_VECTOR_GROWTH_FACTOR 2

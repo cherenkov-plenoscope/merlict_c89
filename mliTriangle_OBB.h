@@ -6,7 +6,7 @@
 #include <math.h>
 #include "mliScenery.h"
 #include "mliVec.h"
-#include "mliMath.h"
+#include "mli_math.h"
 #include "mliOBB.h"
 
 /* Voorhies, Douglas,

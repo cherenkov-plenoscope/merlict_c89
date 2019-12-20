@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include "mliVec.h"
-#include "mliMath.h"
+#include "mli_math.h"
 
 
 int mli_inside_hexagonal_prism_z(

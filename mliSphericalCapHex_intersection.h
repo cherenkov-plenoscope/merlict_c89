@@ -3,7 +3,7 @@
 #define MERLICT_MLISPHERICALCAPHEX_INTERSECTION_H_
 
 #include <math.h>
-#include "mliMath.h"
+#include "mli_math.h"
 #include "mliVec.h"
 #include "mliRay.h"
 #include "mliHomTra.h"

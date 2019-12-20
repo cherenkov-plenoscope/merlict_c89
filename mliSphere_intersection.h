@@ -4,7 +4,7 @@
 
 #include <math.h>
 #include "mliSphere.h"
-#include "mliMath.h"
+#include "mli_math.h"
 #include "mliOBB.h"
 #include "mliVec.h"
 #include "mliRay.h"

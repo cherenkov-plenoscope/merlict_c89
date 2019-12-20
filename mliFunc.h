@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "mli_debug.h"
-#include "mliMath.h"
+#include "mli_math.h"
 
 typedef struct {
     uint32_t num_points;

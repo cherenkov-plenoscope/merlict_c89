@@ -17,7 +17,7 @@
 #include <float.h>
 #include "mliOcTree.h"
 #include "mliCube.h"
-#include "mliMath.h"
+#include "mli_math.h"
 
 
 int __mli_first_node(
