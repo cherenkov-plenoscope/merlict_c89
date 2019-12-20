@@ -351,7 +351,11 @@ error:
 }
 
 int __mliScenery_write_cylinders(const mliScenery *scenery, FILE *f) {
-    mli_fwrite(scenery->cylinders, sizeof(mliCylinder), scenery->num_cylinders, f);
+    mli_fwrite(
+        scenery->cylinders,
+        sizeof(mliCylinder),
+        scenery->num_cylinders,
+        f);
     mli_fwrite(
         scenery->cylinders_surfaces,
         sizeof(mliSurfaces),
