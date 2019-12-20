@@ -1,0 +1,47 @@
+{
+  "functions": [
+    [
+        [200e-9, 0.0],
+        [1200e-9, 0.0]
+    ],
+    [
+        [200e-9, 1.49],
+        [1200e-9, 1.49]
+    ]
+  ],
+  "colors": [
+    [22, 9, 255],
+    [255, 91, 49],
+  ],
+  "surfaces": [
+    {"color": 0, "reflectivity": 0, "refractivity": 0},
+    {"color": 1, "reflectivity": 0, "refractivity": 0},
+  ],
+  "children": [
+    {
+      "type": "Disc",
+      "id": 1,
+      "pos": [0, 0, -1],
+      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+      "radius": 1.0,
+      "surface": 0
+    },
+    {
+      "type": "Cylinder",
+      "id": 4,
+      "pos": [0, 0, 0.75],
+      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+      "radius": 1.0,
+      "length": 2.0,
+      "surface": 1
+    },
+    {
+      "type": "Disc",
+      "id": 1,
+      "pos": [0, 0, 1],
+      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+      "radius": 1.0,
+      "surface": 0
+    }
+  ]
+}
