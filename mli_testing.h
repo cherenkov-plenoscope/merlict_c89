@@ -9,26 +9,24 @@
 #define CHECK_MARGIN(a, b, margin) \
     do { \
         if ( (fabs((a) - (b)) > margin) ) { \
-            printf("In %s, line %d\n", __FILE__, __LINE__); \
-            printf("Expected fabs(first - second) < %f.\n", margin); \
-            printf("first: %f\nsecond: %f\nmargin: %f\n", a, b, margin); \
-            return EXIT_FAILURE; \
+            printf("  In %s, line %d\n", __FILE__, __LINE__); \
+            printf("  Expected fabs(first - second) < %f.\n", margin); \
+            printf("  first: %f\nsecond: %f\nmargin: %f\n", a, b, margin); \
+            goto test_failure; \
         } \
-        NUM_CHECKS += 1; \
     } while (0)
 
 #define CHECK(test) \
     do { \
         if ( !(test) ) { \
-            printf("In %s, line %d\n", __FILE__, __LINE__); \
-            printf("Expected true\n"); \
-            return EXIT_FAILURE; \
+            printf("  In %s, line %d\n", __FILE__, __LINE__); \
+            printf("  Expected true\n"); \
+            goto test_failure; \
         } \
-        NUM_CHECKS += 1; \
     } while (0)
 
 #define CASE(msg) \
-    printf("[%s:%d: %s]\n", __FILE__, __LINE__, msg); \
-    fflush(stdout);
+    printf("%s: %d, %s\n", __FILE__, __LINE__, msg); \
+    fflush(stdout); \
 
 #endif
