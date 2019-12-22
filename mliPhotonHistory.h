@@ -16,9 +16,9 @@ typedef struct {
     int32_t *actions;
 } mliPhotonHistory;
 
-mliPhotonHistory mliPhotonHistory_init() {
+mliPhotonHistory mliPhotonHistory_init(const uint32_t num_reserved) {
     mliPhotonHistory history;
-    history.num_reserved = 0u;
+    history.num_reserved = num_reserved;
     history.num = 0u;
     history.sections = NULL;
     history.actions = NULL;
@@ -27,7 +27,7 @@ mliPhotonHistory mliPhotonHistory_init() {
 void mliPhotonHistory_free(mliPhotonHistory *history) {
     free(history->sections);
     free(history->actions);
-    (*history) = mliPhotonHistory_init();}
+    (*history) = mliPhotonHistory_init(0);}
 
 int mliPhotonHistory_malloc(mliPhotonHistory *history) {
     mli_malloc(history->sections, mliIntersection, history->num_reserved);

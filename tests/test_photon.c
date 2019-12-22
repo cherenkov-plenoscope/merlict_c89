@@ -1,37 +1,5 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 
-CASE("mliPhotonHistory, malloc, free") {
-    mliPhotonHistory history = mliPhotonHistory_init();
-    mliIntersection isec;
-    CHECK(history.num_reserved == 0u);
-    CHECK(history.num == 0u);
-    CHECK(history.sections == NULL);
-    CHECK(history.actions == NULL);
-
-    history.num_reserved = 42u;
-    CHECK(mliPhotonHistory_malloc(&history));
-    CHECK(history.num == 0u);
-
-    isec.object_idx = 37u;
-    isec.position = mliVec_set(1, 2, 1);
-    isec.surface_normal = mliVec_set(0, 0, 1);
-    isec.distance_of_ray = 13.0;
-    isec.from_outside_to_inside = 1;
-
-    history.sections[0] = isec;
-    history.actions[0] = 1337;
-
-    CHECK(history.sections[0].object_idx == 37u);
-    CHECK(mliVec_equal_margin(
-            history.sections[0].position, mliVec_set(1, 2, 1), 1e-7));
-    CHECK(mliVec_equal_margin(
-            history.sections[0].surface_normal, mliVec_set(0, 0, 1), 1e-7));
-    CHECK(history.sections[0].distance_of_ray == 13.0);
-    CHECK(history.sections[0].from_outside_to_inside == 1);
-
-    mliPhotonHistory_free(&history);
-}
-
 CASE("mliPhoton_set") {
     mliPhoton ph = mliPhoton_set(
         mliRay_set(mliVec_set(1, 2, 3), mliVec_set(0, 0, 1)),
@@ -42,10 +10,13 @@ CASE("mliPhoton_set") {
 }
 
 CASE("simple propagation") {
+    mliMT19937 prng;
     mliScenery scenery = mliScenery_init();
     mliOcTree octree;
+    mliPhotonHistory history = mliPhotonHistory_init(16u);
     mliIntersection intersection;
-    mliSurfaces surfaces;
+    mliSurface surf_coming_from, surf_going_to;
+    mliEnv env;
     mliPhoton photon = mliPhoton_set(
         mliRay_set(mliVec_set(0, 0, -3), mliVec_set(0, 0, 1)), 600e-9);
     CHECK(mliScenery_malloc_from_json_path(
@@ -65,9 +36,25 @@ CASE("simple propagation") {
         intersection.surface_normal, mliVec_set(0, 0, 1), 1e-9));
     CHECK_MARGIN(intersection.distance_of_ray, 2., 1e-9);
 
-    surfaces = mliScenery_object_surfaces(&scenery, intersection.object_idx);
-    CHECK(surfaces.inner == 0);
-    CHECK(surfaces.outer == 1);
+    env.scenery = &scenery;
+    env.octree = &octree;
+    env.history = &history;
+    env.photon = &photon;
+    env.prng = &prng;
+
+    surf_coming_from = _mli_surface_coming_from(&env, &intersection);
+    surf_going_to = _mli_surface_going_to(&env, &intersection);
+
+    CHECK(surf_coming_from.material == 100);
+    CHECK(surf_coming_from.medium_refraction == 0);
+    CHECK(surf_coming_from.color == 0);
+
+    CHECK(surf_going_to.material == 100);
+    CHECK(surf_going_to.medium_refraction == 1);
+    CHECK(surf_going_to.color == 1);
+
+    mliMT19937_init(&prng, 0u);
+    /* CHECK(mli_propagate_photon(&env)); */
 
     mliScenery_free(&scenery);
     mliOcTree_free(&octree);

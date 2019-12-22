@@ -40,7 +40,7 @@
       "pos": [0, 0, -1],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.0,
-      "surface": {"inner": 0, "outer": 1}
+      "surface": {"inner": 1, "outer": 0}
     },
     {
       "type": "Cylinder",
@@ -57,7 +57,7 @@
       "pos": [0, 0, 1],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.0,
-      "surface": {"inner": 1, "outer": 0}
+      "surface": {"inner": 0, "outer": 1}
     }
   ]
 }

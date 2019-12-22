@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
     #include "tests/test_dual_spherical_prism.c"
     #include "tests/test_parsing_from_string.c"
     #include "tests/test_json.c"
+    #include "tests/test_mliPhotonHistory.c"
     #include "tests/test_photon.c"
 
     printf("__SUCCESS__\n");

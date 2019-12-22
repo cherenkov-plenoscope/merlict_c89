@@ -65,5 +65,6 @@
 
 #include "mliPhotonHistory.h"
 #include "mliPhoton.h"
+#include "mli_photon_propagation.h"
 
 #endif

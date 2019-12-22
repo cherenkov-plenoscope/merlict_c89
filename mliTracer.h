@@ -16,7 +16,7 @@
 #include "mli_ray_octree_traversal.h"
 
 
-int first_casual_intersection(
+int mli_first_casual_intersection(
     const mliScenery *scenery,
     const mliOcTree* octree,
     const mliRay ray,
@@ -39,7 +39,7 @@ mliColor mli_trace(
     mliColor color = {128., 128., 128.};
     mliIntersection intersection;
     if (
-        first_casual_intersection(
+        mli_first_casual_intersection(
             scenery,
             octree,
             ray,
@@ -62,7 +62,7 @@ mliColor mli_trace(
         outer_surface = scenery->surfaces[surfaces.outer];
         color = scenery->colors[outer_surface.color];
 
-        if (first_casual_intersection(
+        if (mli_first_casual_intersection(
                 scenery,
                 octree,
                 line_of_sight_to_source,
