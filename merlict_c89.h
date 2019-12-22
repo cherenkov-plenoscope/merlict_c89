@@ -63,6 +63,7 @@
 #include "mliUserScenery.h"
 #include "mli_frame_to_scenery.h"
 
+#include "mliPhotonHistory.h"
 #include "mliPhoton.h"
 
 #endif
