@@ -158,8 +158,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     mliScenery_free(&scenery_back);
 }
 
-/* render image */
-{
+CASE("mliScenery, render image") {
     mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     mliCamera camera;
@@ -187,16 +186,14 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     mliScenery_free(&scenery);
 }
 
-/* scenery indexes are valid */
-{
+CASE("scenery indexes are valid") {
     mliScenery scenery = mliScenery_init();
     mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
     CHECK(mliScenery_valid(&scenery));     /* <--- to be tested */
     mliScenery_free(&scenery);
 }
 
-/* scenery indexes are valid */
-{
+CASE("mliScenery_overlap_obb") {
     mliOBB obb;
     uint64_t i;
     uint64_t num_surface_entities;
@@ -224,7 +221,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     mliScenery_free(&scenery);
 }
 
-{
+CASE("mliScenery_outermost_obb") {
     mliScenery scenery = mliScenery_init();
     mliOBB obb;
     mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
@@ -241,15 +238,12 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     mliScenery_free(&scenery);
 }
 
-/* read non existing file */
-{
+CASE("read non existing file") {
     mliScenery scenery = mliScenery_init();
     CHECK(!mliScenery_read_from_path(&scenery, "does_not_exist.tmp"));
 }
 
-
-/* scenery intersection interface -> sphere */
-{
+CASE("scenery intersection interface -> sphere") {
     mliScenery scenery = mliScenery_init();
     mliIntersection isec;
     int hit = 0;
@@ -286,8 +280,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     mliScenery_free(&scenery);
 }
 
-/* OctTree*/
-{
+CASE("mliOcTree_from_scenery") {
     mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     mliIntersection isec;
@@ -314,8 +307,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     mliScenery_free(&scenery);
 }
 
-/* mliScenery asymetric */
-{
+CASE("mliScenery asymetric") {
     mliScenery scenery = mliScenery_init();
     mliVec offset;
     uint64_t i;
@@ -366,8 +358,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     mliScenery_free(&scenery);
 }
 
-/* render image asymetric scenery */
-{
+CASE("render image asymetric scenery") {
     mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     mliCamera camera;

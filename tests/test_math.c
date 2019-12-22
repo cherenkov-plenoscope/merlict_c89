@@ -6,9 +6,7 @@ CASE("rad2deg, deg2rad") {
         double angle_in_deg = (double)i;
         CHECK_MARGIN(
             angle_in_deg,
-            mli_rad2deg(
-                mli_deg2rad(angle_in_deg)
-            ),
+            mli_rad2deg(mli_deg2rad(angle_in_deg)),
             1e-9);
     }
 }

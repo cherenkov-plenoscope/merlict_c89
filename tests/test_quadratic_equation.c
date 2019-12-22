@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliQuadraticEquation */
-{
+CASE("b/a=1., c/a=1., no real solutions") {
     /* ax**2 + bx + c = 0 */
     const double b_over_a = 1.;
     const double c_over_a = 1.;
@@ -12,11 +11,10 @@
         c_over_a,
         &plus_solution,
         &minus_solution);
-
     CHECK(!valid_solutions);
 }
 
-{
+CASE("b/a=0., c/a=0., solutions both 0.") {
     /* ax**2 + bx + c = 0 */
     const double b_over_a = 0.;
     const double c_over_a = 0.;
@@ -27,12 +25,11 @@
         c_over_a,
         &plus_solution,
         &minus_solution));
-
     CHECK(minus_solution == 0.);
     CHECK(plus_solution == 0.);
 }
 
-{
+CASE("b/a=0., c/a=-1.") {
     /* ax**2 + bx + c = 0 */
     const double b_over_a = 0.;
     const double c_over_a = -1.;
@@ -43,12 +40,11 @@
         c_over_a,
         &plus_solution,
         &minus_solution));
-
     CHECK(minus_solution == -1.);
     CHECK(plus_solution == +1.);
 }
 
-{
+CASE("looping combinations") {
     /* ax**2 + bx + c = 0 */
     double a, b, c;
     for (a = -5.0; a < 5.0; a = a+.25) {

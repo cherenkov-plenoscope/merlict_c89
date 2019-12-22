@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliVector */
-{
+CASE("malloc, and free") {
     uint64_t i;
     mliVector vec = mliVector_init();
     CHECK(mliVector_malloc(&vec, 0u, sizeof(mliColor)));
@@ -25,8 +24,7 @@
     CHECK(vec.capacity == 0);
 }
 
-/* mliVector with pointers */
-{
+CASE("with pointers to mliColor") {
     uint64_t i;
     mliVector vec = mliVector_init();
     CHECK(mliVector_malloc(&vec, 0u, sizeof(mliColor*)));

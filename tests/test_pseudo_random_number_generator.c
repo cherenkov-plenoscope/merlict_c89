@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* pseudo random number generator */
-{
+CASE("average of uniform distribution") {
     double sum = 0;
     uint64_t i;
     mliMT19937 prng;
@@ -12,7 +11,7 @@
     CHECK_MARGIN(sum, 5e5, 2e2);
 }
 
-{
+CASE("uniform population of histogram") {
     uint64_t i;
     mliMT19937 prng;
     double bin_edges[100];
@@ -41,8 +40,7 @@
     }
 }
 
-/* throw Pi test */
-{
+CASE("throwing Pi") {
     uint64_t num_throws = 1000000u;
     uint64_t i;
     uint64_t num_in_circle = 0u;

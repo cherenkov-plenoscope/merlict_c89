@@ -1,6 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-{
+CASE("mliSphere_intersection") {
     mliSphere sphere;
     mliIntersection intersection;
     mliHomTraComp local2root_comp;
@@ -24,7 +24,7 @@
     CHECK_MARGIN(intersection.distance_of_ray, 4., 1e-6);
 }
 
-{
+CASE("mliSphere_obb") {
     double c;
     for (c = -2.5; c < 2.5; c += .25) {
         mliOBB b;
@@ -39,7 +39,7 @@
     }
 }
 
-{
+CASE("mliSphere_has_overlap_obb") {
     double radius = 1.;
     mliOBB obb;
     obb.lower = mliVec_set(-1., -1., -1.);

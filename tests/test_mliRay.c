@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliRay OBB */
-{
+CASE("ray and orientated bounding box") {
     mliOBB obb;
     /*         (-1, -2,  0)                         (-1, -1,  0)
      *                     O----------------------O
@@ -64,7 +63,7 @@
             &ray_parameter));
 }
 
-{
+CASE("ray has causal intersection") {
     double causal_solution;
     int rc;
     mliBoundSurfaceChecklist cl;
@@ -122,18 +121,17 @@
     CHECK(!rc);
 }
 
-{
+CASE("mliSphericalCapHex, bounding radius") {
     mliSphericalCapHex cap;
     double bounding_radius;
     cap.curvature_radius = 1.0;
     cap.inner_hex_radius = .1;
     bounding_radius = mliSphericalCapHex_bounding_radius(cap);
     CHECK(bounding_radius > cap.inner_hex_radius*MLI_2_OVER_SQRT3);
-    CHECK(
-        bounding_radius < 1.1*cap.inner_hex_radius*MLI_2_OVER_SQRT3);
+    CHECK(bounding_radius < 1.1*cap.inner_hex_radius*MLI_2_OVER_SQRT3);
 }
 
-{
+CASE("mliHomTraComp, transform direction") {
     mliHomTraComp Tcomp;
     mliHomTra T;
     mliVec v1, v2, v3;
@@ -154,8 +152,7 @@
     CHECK_MARGIN(v3.z, v1.z, 1e-6);
 }
 
-/* unity transformation must not change ray */
-{
+CASE("unity transformation must not change ray") {
     mliRay ray = mliRay_set(
         mliVec_set(0., 0., 1.),
         mliVec_set(0., 0., 1.));
@@ -172,8 +169,7 @@
     CHECK(mliVec_equal_margin(ray2.direction, ray.direction, 1e-6));
 }
 
-/* translation */
-{
+CASE("translation") {
     mliRay ray = mliRay_set(
         mliVec_set(0., 0., 1.),
         mliVec_set(0., 0., 1.));
@@ -192,8 +188,7 @@
     CHECK(mliVec_equal_margin(ray2.direction, ray.direction, 1e-6));
 }
 
-/* rotation */
-{
+CASE("rotation") {
     mliRay ray = mliRay_set(
         mliVec_set(0., 0., 1.),
         mliVec_set(1., 0., 0.));
@@ -212,8 +207,7 @@
     CHECK_MARGIN(ray2.direction.z, 0., 1e-6);
 }
 
-/* translation and rotation */
-{
+CASE("translation and rotation") {
     mliRay ray = mliRay_set(
         mliVec_set(0., 0., 1.),
         mliVec_set(1., 0., 0.));
@@ -245,7 +239,7 @@
     CHECK_MARGIN(ray3.direction.z, ray.direction.z, 1e-6);
 }
 
-{
+CASE("mli_xyplane_equation") {
     double solution;
     CHECK(
         mli_xyplane_equation(

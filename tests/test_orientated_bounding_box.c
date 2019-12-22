@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* Orientated-Bounding-Box */
-{
+CASE("mliCube_octree_child") {
     mliCube node;
     mliCube child;
     node.lower = mliVec_set(.0, .0, .0);
@@ -31,7 +30,7 @@
     CHECK_MARGIN(child.edge_length, 1., 1e-7);
 }
 
-{
+CASE("Cube to Orientated-Bounding-Box") {
     mliOBB a;
     mliCube cube;
     cube.lower = mliVec_set(.0, .0, .0);
@@ -49,7 +48,7 @@
             1e-6));
 }
 
-{
+CASE("mliCube_outermost_cube") {
     mliOBB a;
     mliCube cube;
     a.lower = mliVec_set(.0, .0, .0);
@@ -62,7 +61,7 @@
     CHECK_MARGIN(cube.edge_length, 3., 1e-7);
 }
 
-{
+CASE("mliOBB_center") {
     mliVec center;
     mliOBB obb;
     obb.lower = mliVec_set(.5, .5, .5);
@@ -73,7 +72,7 @@
     CHECK_MARGIN(center.z, 1., 1e-7);
 }
 
-{
+CASE("mliTriangle_obb") {
     mliOBB obb = mliTriangle_obb(
         mliVec_set(-5., 2., -.8),
         mliVec_set(20., -3., 19.),
@@ -86,8 +85,7 @@
     CHECK_MARGIN(obb.upper.z, 19., 1e-7);
 }
 
-/* OBB mliVec */
-{
+CASE("mliVec_overlap_obb") {
     mliVec point_inside = {1., 1., 1.};
     mliVec point_outside = {-1., -2., -3.};
     mliVec low = {0. ,0., 0.};
@@ -96,7 +94,7 @@
     CHECK(!mliVec_overlap_obb(point_outside, low, upp));
 }
 
-{
+CASE("mliVec_overlap_obb, upper, and lower cases") {
     mliVec low = {0. ,0., 0.};
     mliVec upp = {2., 2., 2.};
     CHECK(mliVec_overlap_obb(mliVec_set(0., 0., 0.), low, upp));
@@ -106,8 +104,8 @@
     CHECK(mliVec_overlap_obb(mliVec_set(1., 2., 2.), low, upp));
     CHECK(mliVec_overlap_obb(mliVec_set(1., 1., 2.), low, upp));
 }
-/* OBB mliTriangle */
-{
+
+CASE("mliTriangle_has_overlap_obb") {
     mliOBB obb;
     obb.lower = mliVec_set(0. ,0., 0.);
     obb.upper = mliVec_set(2., 2., 2.);

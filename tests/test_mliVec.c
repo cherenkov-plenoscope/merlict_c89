@@ -1,14 +1,13 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliVec */
-{
+CASE("struct, constructor") {
     mliVec a = {1., 2., 3.};
     CHECK_MARGIN(a.x, 1.0, 1e-6);
     CHECK_MARGIN(a.y, 2.0, 1e-6);
     CHECK_MARGIN(a.z, 3.0, 1e-6);
 }
 
-{
+CASE("add") {
     mliVec a = {1., 2., 3.};
     mliVec b = {4., 5., 6.};
     mliVec out = mliVec_add(a, b);
@@ -17,7 +16,7 @@
     CHECK_MARGIN(out.z, 9.0, 1e-6);
 }
 
-{
+CASE("substract") {
     mliVec a = {1., 2., 3.};
     mliVec b = {4., 6., 8.};
     mliVec out = mliVec_substract(a, b);
@@ -26,31 +25,31 @@
     CHECK_MARGIN(out.z, -5.0, 1e-6);
 }
 
-{
+CASE("dot-product") {
     mliVec a = {1., 2., 3.};
     mliVec b = {4., 5., 6.};
     CHECK_MARGIN(mliVec_dot(a, b), 32.0, 1e-6);
 }
 
-{
+CASE("dot-product, perpendicular") {
     mliVec a = {0., 0., 1.};
     mliVec b = {0., 1., 0.};
     CHECK_MARGIN(mliVec_dot(a, b), 0., 1e-6);
 }
 
-{
+CASE("dot-product, perpendicular, 2") {
     mliVec a = {0., 0., 1.};
     mliVec b = {1., 0., 0.};
     CHECK_MARGIN(mliVec_dot(a, b), 0., 1e-6);
 }
 
-{
+CASE("dot-product, parallel") {
     mliVec a = {0., 0., 1.};
     mliVec b = {0., 0., 1.};
     CHECK_MARGIN(mliVec_dot(a, b), 1., 1e-6);
 }
 
-{
+CASE("cross-product, perpendicular") {
     mliVec a = {1., 0., 0.};
     mliVec b = {0., 1., 0.};
     mliVec out = mliVec_cross(a, b);
@@ -59,7 +58,7 @@
     CHECK_MARGIN(out.z, 1., 1e-6);
 }
 
-{
+CASE("cross-product, perpendicular, 2") {
     mliVec a = {1., 0., 0.};
     mliVec b = {0., 0., 1.};
     mliVec out = mliVec_cross(a, b);
@@ -68,22 +67,22 @@
     CHECK_MARGIN(out.z, 0., 1e-6);
 }
 
-{
+CASE("norm, only x") {
     mliVec a = {1., 0., 0.};
     CHECK_MARGIN(mliVec_norm(a), 1., 1e-6);
 }
 
-{
+CASE("norm, x, and y") {
     mliVec a = {3., 4., 0.};
     CHECK_MARGIN(mliVec_norm(a), 5., 1e-6);
 }
 
-{
+CASE("norm, negative z") {
     mliVec a = {0., 0., -1.};
     CHECK_MARGIN(mliVec_norm(a), 1., 1e-6);
 }
 
-{
+CASE("mirror") {
     mliVec in = {0., 0., -1.};
     mliVec surface_normal = {0., 0., 1.};
     mliVec out = mliVec_mirror(in, surface_normal);
@@ -92,7 +91,7 @@
     CHECK_MARGIN(out.z, 1., 1e-6);
 }
 
-{
+CASE("mirror, 2") {
     mliVec in = {1., 0., -1.};
     mliVec surface_normal = {0., 0., 1.};
     mliVec out = mliVec_mirror(in, surface_normal);
@@ -101,19 +100,19 @@
     CHECK_MARGIN(out.z, 1., 1e-6);
 }
 
-{
+CASE("equal_margin, null-vectors") {
     mliVec a = {0., 0., 0.};
     mliVec b = {0., 0., 0.};
     CHECK(mliVec_equal_margin(a, b, 1e-6));
 }
 
-{
+CASE("equal_margin, expect false") {
     mliVec a = {1., 0., 0.};
     mliVec b = {1. + 1e-5, 0., 0.};
     CHECK(!mliVec_equal_margin(a, b, 1e-6));
 }
 
-{
+CASE("octant") {
     /*
         x y z octant
         - - -   0
@@ -189,7 +188,7 @@
     CHECK(mliVec_octant(a) == 7u);
 }
 
-{
+CASE("ncpy") {
     int i;
     mliVec a[3];
     mliVec b[3];

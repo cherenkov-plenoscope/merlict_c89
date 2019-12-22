@@ -1,6 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-{
+CASE("mli_sphere_intersection_equation") {
     double radius = 1.;
     double plus_solution, minus_solution;
     mliRay ray;
@@ -16,7 +16,7 @@
     CHECK_MARGIN(minus_solution, 9., 1e-6);
 }
 
-{
+CASE("mli_sphere_intersection_equation, 2") {
     double radius = 1.;
     double plus_solution, minus_solution;
     mliRay ray;
@@ -30,7 +30,7 @@
             &minus_solution));
 }
 
-{
+CASE("mli_sphere_intersection_equation, 3") {
     double radius = 1.;
     double plus_solution, minus_solution;
     mliRay ray;

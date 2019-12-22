@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* string to int */
-{
+CASE("string to int") {
     int64_t i;
     /* Lazy to calculate this size properly. */
     char s[256];
@@ -57,8 +56,8 @@
     CHECK(!mli_string_to_int(&i, s, 10));
 
 }
-/* string to float */
-{
+
+CASE("string to float") {
     double i;
     /* Lazy to calculate this size properly. */
     char s[256];
@@ -110,8 +109,7 @@
 
 }
 
-/* mli_string_ends_with */
-{
+CASE("mli_string_ends_with") {
     CHECK(mli_string_ends_with("123", ""));
     CHECK(mli_string_ends_with("", ""));
     CHECK(!mli_string_ends_with("", "123"));

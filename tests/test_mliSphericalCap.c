@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/* mliSphericalCap */
-{
+CASE("mliSphericalCap") {
     const double radius = 0.3;
     const mliVec support = {0., 0., 1.};
     const mliVec direction = {0., 0., -1.};
