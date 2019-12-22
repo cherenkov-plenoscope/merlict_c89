@@ -149,8 +149,8 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
             mliVec_set(0., 1., 0.),
             mli_deg2rad(0.));
 
-    mliScenery_write_to_path(&scenery, "my_scenery.mli.tmp");
-    mliScenery_read_from_path(&scenery_back, "my_scenery.mli.tmp");
+    mliScenery_write_to_path(&scenery, "tests/resources/scn1.mli.tmp");
+    mliScenery_read_from_path(&scenery_back, "tests/resources/scn1.mli.tmp");
 
     CHECK(mliScenery_is_equal(&scenery, &scenery_back));
 
@@ -163,7 +163,7 @@ CASE("mliScenery, render image") {
     mliOcTree octree;
     mliCamera camera;
     mliImage img = mliImage_init();
-    mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+    mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     octree = mliOcTree_from_scenery(&scenery);
     /* mliNode_print(&octree.root, 0); */
 
@@ -179,7 +179,7 @@ CASE("mliScenery, render image") {
     img.num_rows = 480u;
     CHECK(mliImage_malloc(&img));
     mliCamera_render_image(&camera, &scenery, &octree, &img);
-    mliImage_write_to_ppm(&img, "my_image.ppm.tmp");
+    mliImage_write_to_ppm(&img, "tests/resources/scn1.ppm.tmp");
 
     mliImage_free(&img);
     mliOcTree_free(&octree);
@@ -188,7 +188,7 @@ CASE("mliScenery, render image") {
 
 CASE("scenery indexes are valid") {
     mliScenery scenery = mliScenery_init();
-    mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+    mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     CHECK(mliScenery_valid(&scenery));     /* <--- to be tested */
     mliScenery_free(&scenery);
 }
@@ -198,7 +198,7 @@ CASE("mliScenery_overlap_obb") {
     uint64_t i;
     uint64_t num_surface_entities;
     mliScenery scenery = mliScenery_init();
-    mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+    mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     num_surface_entities = scenery.num_triangles;
     num_surface_entities += scenery.num_spherical_cap_hex;
     num_surface_entities += scenery.num_spheres;
@@ -224,7 +224,7 @@ CASE("mliScenery_overlap_obb") {
 CASE("mliScenery_outermost_obb") {
     mliScenery scenery = mliScenery_init();
     mliOBB obb;
-    mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+    mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     CHECK(mliScenery_valid(&scenery));
 
     obb = mliScenery_outermost_obb(&scenery);
@@ -249,7 +249,7 @@ CASE("scenery intersection interface -> sphere") {
     int hit = 0;
     uint64_t sphere_idx;
     double sphere_radius = 2.5;
-    mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+    mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
 
     sphere_idx = scenery.num_triangles +
         scenery.num_spherical_cap_hex;
@@ -284,7 +284,7 @@ CASE("mliOcTree_from_scenery") {
     mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     mliIntersection isec;
-    mliScenery_read_from_path(&scenery, "my_scenery.mli.tmp");
+    mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     octree = mliOcTree_from_scenery(&scenery);
 
     /*mliNode_print(&tree, 0u);*/
@@ -354,7 +354,7 @@ CASE("mliScenery asymetric") {
                 mliVec_set(0., 0., 0.),
                 0.);
     }
-    mliScenery_write_to_path(&scenery, "asymetric_scenery.mli.tmp");
+    mliScenery_write_to_path(&scenery, "tests/resources/scn_asym.mli.tmp");
     mliScenery_free(&scenery);
 }
 
@@ -363,7 +363,7 @@ CASE("render image asymetric scenery") {
     mliOcTree octree;
     mliCamera camera;
     mliImage img = mliImage_init();
-    mliScenery_read_from_path(&scenery, "asymetric_scenery.mli.tmp");
+    mliScenery_read_from_path(&scenery, "tests/resources/scn_asym.mli.tmp");
     octree = mliOcTree_from_scenery(&scenery);
     CHECK(mliNode_num_nodes(&octree.root) == 9);
     /* mliNode_print(&octree.root, 0); */
@@ -379,7 +379,7 @@ CASE("render image asymetric scenery") {
     img.num_rows = 480u;
     CHECK(mliImage_malloc(&img));
     mliCamera_render_image(&camera, &scenery, &octree, &img);
-    mliImage_write_to_ppm(&img, "asymetric_image.ppm.tmp");
+    mliImage_write_to_ppm(&img, "tests/resources/scn_asym.ppm.tmp");
 
     mliImage_free(&img);
     mliOcTree_free(&octree);
