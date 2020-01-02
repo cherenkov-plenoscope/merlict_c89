@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     mli_check(
         mlivr_run_interactive_viewer(&scenery, &octree, mlivrConfig_default()),
         "Failure in viewer");
-    
+
     mliOcTree_free(&octree);
     mliScenery_free(&scenery);
     return EXIT_SUCCESS;

@@ -86,13 +86,13 @@ typedef struct {
     uint64_t export_num_cols;
     uint64_t export_num_rows;
     mliCamera camera;
-} mlivrConfig ; 
+} mlivrConfig ;
 
 mlivrConfig mlivrConfig_default() {
     mlivrConfig cfg;
     cfg.preview_num_cols = 128u;
     cfg.preview_num_rows = 72u;
-    
+
     cfg.export_num_cols = 1920u;
     cfg.export_num_rows = 1080u;
 
@@ -149,7 +149,7 @@ int mlivr_run_interactive_viewer(
             case 'm': camera = mliCamera_increase_fov(camera, 1.05); break;
             case 'h': mlivr_print_help(); update_image = 0; break;
             case 'b': super_resolution = !super_resolution; break;
-            case MLIVR_SPACE_KEY: 
+            case MLIVR_SPACE_KEY:
                 {
                     char path[1024];
                     mliImage full = mliImage_init();
