@@ -1,7 +1,8 @@
 # merlict_c89 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
-We :hearts: more light! 
+We :hearts: light! 
 
 ## Features
+
 ### Scenery
 Represent your geometry with triangle-meshes. merlict also supports few surfaces common in optics, such as sperical caps.  Use triangle-meshes to approximate your geometry. When you need more performance, or run out of memory, use existing primitives, or add your own primitives.
 
@@ -14,9 +15,11 @@ Represent your geometry with triangle-meshes. merlict also supports few surfaces
 | Disc                       |             |
 | Plane, bi-circular         |             |
 
+Define your scenery in '''json''' 
+
 ### Photons
 
-### Path
+### Rendering
 
 ## Tests
 #### Compile
