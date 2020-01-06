@@ -42,6 +42,25 @@ CASE("Tokenize json-literal") {
     CHECK(end == s + t[7].end);
 }
 
+CASE("mliJson_as_string") {
+    mliJson json = mliJson_init();
+    char json_str[] = "{\"hans\": 1337}";
+    /*             0         1 */
+    /*             01234567890 */
+    /*             hans0       */
+    char buff[] = "abcde";
+    CHECK(mliJson_malloc_from_string(&json, json_str));
+    CHECK(mliJson_string(&json, 1, buff, 5));
+    CHECK(buff[0] == 'h');
+    CHECK(buff[1] == 'a');
+    CHECK(buff[2] == 'n');
+    CHECK(buff[3] == 's');
+    CHECK(buff[4] == '\0');
+
+    CHECK(!mliJson_string(&json, 1, buff, 4));
+    mliJson_free(&json);
+}
+
 CASE("mliJson_init, defaults") {
     mliJson json = mliJson_init();
     CHECK(json.num_chars == 0u);

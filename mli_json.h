@@ -96,13 +96,22 @@ error:
     return 0;}
 
 
-void mliJson_string(
+int mliJson_string(
     const mliJson *json,
     const uint64_t token_idx,
-    char *return_string) {
-    jsmntok_t t = json->tokens[token_idx];
-    memcpy(return_string, json->chars + t.start, t.end - t.start);
-    return_string[t.end - t.start] = '\0';}
+    char *return_string,
+    const uint64_t return_string_size) {
+    const jsmntok_t t = json->tokens[token_idx];
+    const uint64_t actual_length = t.end - t.start;
+    mli_check(
+        actual_length < return_string_size,
+        "Expected return_string_size to be sufficiently large for "
+        "json-string, but it is not.")
+    memcpy(return_string, json->chars + t.start, actual_length);
+    return_string[actual_length] = '\0';
+    return 1;
+error:
+    return 0;}
 
 
 int mliJson_as_int64(
@@ -110,13 +119,13 @@ int mliJson_as_int64(
     const uint64_t token_idx,
     int64_t *return_int64) {
     jsmntok_t t = json->tokens[token_idx];
-    uint64_t token_string_size = t.end - t.start;
+    uint64_t buff_size = t.end - t.start + 1u;
     char *buff;
     mli_check(
         t.type == JSMN_PRIMITIVE,
         "Json int64 parsing expected json-token-to be JSMN_PRIMITIVE.");
-    mli_malloc(buff, char, token_string_size);
-    mliJson_string(json, token_idx, buff);
+    mli_malloc(buff, char, buff_size);
+    mliJson_string(json, token_idx, buff, buff_size);
     mli_check(mli_string_to_int(return_int64, buff, 10), "Can not parse int.");
     free(buff);
     return 1;
@@ -131,13 +140,13 @@ int mliJson_as_float64(
     const uint64_t token_idx,
     double *return_float64) {
     jsmntok_t t = json->tokens[token_idx];
-    uint64_t token_string_size = t.end - t.start;
+    uint64_t buff_size = t.end - t.start + 1u;
     char *buff;
     mli_check(
         t.type == JSMN_PRIMITIVE,
         "Json float64 parsing expected json-token-to be JSMN_PRIMITIVE.");
-    mli_malloc(buff, char, token_string_size);
-    mliJson_string(json, token_idx, buff);
+    mli_malloc(buff, char, buff_size);
+    mliJson_string(json, token_idx, buff, buff_size);
     mli_check(
         mli_string_to_float(return_float64, buff),
         "Can not parse float.");
@@ -161,7 +170,7 @@ int mliJson_find_key(
     char *buff;
     mli_malloc(buff, char, json->num_chars);
     while (child < json->tokens[start_token_idx].size) {
-        mliJson_string(json, idx, buff);
+        mliJson_string(json, idx, buff, json->num_chars);
         /* fprintf(stderr, "child:%ld idx:%ld str:%s\n", child, idx, buff); */
         if (strcmp(buff, key) == 0 && strlen(buff) == strlen(key)) {
             (*return_idx) = idx;
@@ -217,7 +226,7 @@ int mliJson_fprint_debug(FILE* f, const mliJson *json) {
         fprintf(f, "sz: %d ", t.size);
         fprintf(f, "tp: %d ", t.type);
         fprintf(f, "(%d -> %d, %d)\n", t.start, t.end, t.end - t.start);
-        mliJson_string(json, i, buff);
+        mliJson_string(json, i, buff, json->num_chars);
         fprintf(f, "%s\n", buff);
     }
     free(buff);

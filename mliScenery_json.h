@@ -199,9 +199,10 @@ int __mliFrame_type_from_json(
         "Expected json-frame to have key 'type'.");
     num_chars_for_type = (
         json->tokens[token_type + 1].end -
-        json->tokens[token_type + 1].start);
+        json->tokens[token_type + 1].start +
+        1u);
     mli_malloc(type_string, char, num_chars_for_type);
-    mliJson_string(json, token_type + 1, type_string);
+    mliJson_string(json, token_type + 1, type_string, num_chars_for_type);
     mli_check(
         mli_string_to_type(type_string, type),
         "Expected frame-type to be known.");
@@ -293,9 +294,10 @@ int __mliQuaternion_from_json(
         "Expected 'rot' to have key 'repr'.");
     num_chars = (
         json->tokens[token_repr + 1].end -
-        json->tokens[token_repr + 1].start);
+        json->tokens[token_repr + 1].start +
+        1u);
     mli_malloc(repr_str, char, num_chars);
-    mliJson_string(json, token_repr + 1, repr_str);
+    mliJson_string(json, token_repr + 1, repr_str, num_chars);
     if (strcmp(repr_str, "tait_bryan") == 0) {
         mli_check(
             __mliQuaternion_tait_bryan_from_json(quat, json, token),

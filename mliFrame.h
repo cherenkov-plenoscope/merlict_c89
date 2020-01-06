@@ -23,7 +23,10 @@
 #define MLI_FRAME 1000u
 #define MLI_MESH 1001u
 
+#define MLI_FRAME_NAME_SIZE 64u
+
 typedef struct mliFrame {
+    char name[MLI_FRAME_NAME_SIZE];
     uint64_t id;
     struct mliFrame* mother;
     mliVector children;
@@ -46,6 +49,7 @@ typedef struct mliFrame {
 
 mliFrame mliFrame_init() {
     mliFrame f;
+    MLI_ZEROS(f.name, MLI_FRAME_NAME_SIZE);
     f.id = 0u;
     f.children = mliVector_init();
     f.mother = NULL;
