@@ -50,14 +50,14 @@ CASE("mliJson_as_string") {
     /*             hans0       */
     char buff[] = "abcde";
     CHECK(mliJson_malloc_from_string(&json, json_str));
-    CHECK(mliJson_string(&json, 1, buff, 5));
+    CHECK(mliJson_as_string(&json, 1, buff, 5));
     CHECK(buff[0] == 'h');
     CHECK(buff[1] == 'a');
     CHECK(buff[2] == 'n');
     CHECK(buff[3] == 's');
     CHECK(buff[4] == '\0');
 
-    CHECK(!mliJson_string(&json, 1, buff, 4));
+    CHECK(!mliJson_as_string(&json, 1, buff, 4));
     mliJson_free(&json);
 }
 
