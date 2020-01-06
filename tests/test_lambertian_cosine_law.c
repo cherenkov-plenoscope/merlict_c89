@@ -1,8 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("lambertian cosine law, populate histogram, check cosine law") {
-    int n;
-    const int NUM_TRAILS = 1000*100;
+    uint64_t n;
+    const uint64_t NUM_TRAILS = 1000*100;
     mliVec unit_z = mliVec_set(0, 0, 1);
     mliMT19937 prng;
 
@@ -52,9 +52,9 @@ CASE("lambertian cosine law, populate histogram, check cosine law") {
 }
 
 CASE("lambertian cosine law, relative to surface normal") {
-    int n, m, o;
-    const int NUM_NORMALS = 25;
-    const int NUM_TRAILS = 5000;
+    uint64_t n, m, o;
+    const uint64_t NUM_NORMALS = 25;
+    const uint64_t NUM_TRAILS = 5000;
     double theta;
     mliVec surface_normal;
     mliMT19937 prng;
