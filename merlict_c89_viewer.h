@@ -239,10 +239,11 @@ int mlivr_run_interactive_viewer(
         }
         mlivr_clear_screen();
         if (cursor.active) {
-            char symbols[1] = "X";
+            char symbols[1];
             uint64_t rows[1];
             uint64_t cols[1];
             const uint64_t num_symbols = 1u;
+            symbols[0] = 'X';
             rows[0] = cursor.row;
             cols[0] = cursor.col;
             mliImage_print_chars(&img, symbols, rows, cols, num_symbols);
