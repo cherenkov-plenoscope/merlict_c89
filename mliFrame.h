@@ -104,7 +104,7 @@ mliFrame* mliFrame_child(const mliFrame* mother, const uint64_t idx) {
 error:
     return NULL;}
 
-void mliFrame_free(mliFrame *f) {
+int mliFrame_free(mliFrame *f) {
     uint64_t c;
     switch(f->type) {
         case MLI_FRAME:
@@ -137,10 +137,13 @@ void mliFrame_free(mliFrame *f) {
             free(f->primitive.disc);
             break;
         default:
-            assert(0);
+            mli_sentinel("Can not free unknown type of primitive.");
             break;
     }
-    *f = mliFrame_init();}
+    *f = mliFrame_init();
+    return 1;
+error:
+    return 0;}
 
 int mliFrame_set_mother_and_child(mliFrame* mother, mliFrame* child) {
     mli_check(
