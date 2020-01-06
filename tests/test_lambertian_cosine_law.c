@@ -12,7 +12,8 @@ CASE("lambertian cosine law, populate histogram, check cosine law") {
     const uint64_t hist_num_bins = hist_num_bin_edges - 1u;
     uint64_t hist_bins[NUM_BINS];
     double hist_bins_norm[NUM_BINS];
-    uint64_t hist_overflow_bin, hist_underflow_bin;
+    uint64_t hist_overflow_bin = 0u;
+    uint64_t hist_underflow_bin = 0u;
     mli_zeros_uint64_t(hist_bins, hist_num_bins);
     mli_linspace(0., MLI_PI/2.0, hist_bin_edges, hist_num_bin_edges);
 
@@ -63,7 +64,8 @@ CASE("lambertian cosine law, relative to surface normal") {
     const uint64_t hist_num_bin_edges = 10 + 1;
     const uint64_t hist_num_bins = hist_num_bin_edges - 1u;
     uint64_t hist_bins[10];
-    uint64_t hist_overflow_bin, hist_underflow_bin;
+    uint64_t hist_overflow_bin = 0u;
+    uint64_t hist_underflow_bin = 0u;
     mli_zeros_uint64_t(hist_bins, hist_num_bins);
     mli_linspace(0., MLI_PI/2.0, hist_bin_edges, hist_num_bin_edges);
 
