@@ -64,7 +64,7 @@ double mli_linear_interpolate(
     const double b = y0 - m*x0;
     return m*xarg + b;}
 
-int mliFunc_evaluate(mliFunc* f, const double xarg, double *out) {
+int mliFunc_evaluate(const mliFunc* f, const double xarg, double *out) {
     double y1, y0, x1, x0;
     uint32_t idx = mli_upper_compare_double(f->x, f->num_points, xarg);
     if (idx == 0) {

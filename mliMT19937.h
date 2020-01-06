@@ -101,4 +101,8 @@ double mliMT19937_uniform(mliMT19937* mt) {
     double max_uint32 = (double)UINT32_MAX;
     return rn/max_uint32;}
 
+double mliMT19937_expovariate(mliMT19937* mt, const double rate) {
+    /* sampling from a poisson distribution */
+    return -log(mliMT19937_uniform(mt))/rate;}
+
 #endif

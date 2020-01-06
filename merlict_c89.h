@@ -8,6 +8,7 @@
 #include "mli_dual_circle_prism.h"
 #include "mliMT19937.h"
 #include "mliVec.h"
+#include "mliIntersection.h"
 #include "mliRotMat.h"
 #include "mliQuaternion.h"
 #include "mliRay.h"
@@ -31,6 +32,8 @@
 #include "mliVector.h"
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"
+
+#include "mli_intersection_and_scenery.h"
 
 #include "mliCylinder.h"
 #include "mliCylinder_OBB.h"
@@ -63,7 +66,11 @@
 #include "mliUserScenery.h"
 #include "mli_frame_to_scenery.h"
 
+#include "mli_lambertian_cosine_law.h"
+#include "mliFresnel.h"
 #include "mliPhotonHistory.h"
 #include "mliPhoton.h"
+#include "mliPhotonInteraction.h"
+#include "mli_photon_propagation.h"
 
 #endif
