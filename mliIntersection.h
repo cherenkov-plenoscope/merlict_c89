@@ -6,8 +6,6 @@
 #include <stdint.h>
 #include "mliVec.h"
 
-#define MLI_VOID_FACE -1
-
 typedef struct {
     uint64_t object_idx;
     mliVec position;

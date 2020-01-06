@@ -783,7 +783,6 @@ int mliScenery_valid_surfaces(const mliScenery *scenery) {
     for (i = 0; i < scenery->num_surfaces; i++) {
         switch (scenery->surfaces[i].material) {
             case MLI_MATERIAL_PHONG: break;
-            case MLI_MATERIAL_METAL: break;
             case MLI_MATERIAL_TRANSPARENT: break;
             default: return 0; break;}
         if (scenery->surfaces[i].color >= scenery->num_colors)
@@ -796,9 +795,6 @@ int mliScenery_valid_surfaces(const mliScenery *scenery) {
             scenery->num_functions)
             return 0;
         if (scenery->surfaces[i].boundary_layer_diffuse_reflection >=
-            scenery->num_functions)
-            return 0;
-        if (scenery->surfaces[i].boundary_layer_transmission >=
             scenery->num_functions)
             return 0;
     }

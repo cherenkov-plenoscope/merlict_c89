@@ -22,7 +22,6 @@
       "medium_absorbtion": 0,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
-      "boundary_layer_transmission": 0,
       "color": 0
     },
     {
@@ -31,7 +30,6 @@
       "medium_absorbtion": 0,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
-      "boundary_layer_transmission": 0,
       "color": 1
     },
     {
@@ -40,7 +38,6 @@
       "medium_absorbtion": 0,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
-      "boundary_layer_transmission": 0,
       "color": 2
     },
     {
@@ -49,7 +46,6 @@
       "medium_absorbtion": 0,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
-      "boundary_layer_transmission": 0,
       "color": 3
     }
   ],

@@ -16,9 +16,11 @@ CASE("simple propagation") {
     mliPhotonHistory history = mliPhotonHistory_init(16u);
     mliIntersection intersection;
     mliSurface surf_coming_from, surf_going_to;
-    mliEnv env;
     mliPhoton photon = mliPhoton_set(
-        mliRay_set(mliVec_set(0, 0, -3), mliVec_set(0, 0, 1)), 600e-9);
+        mliRay_set(
+            mliVec_set(0, 0, -3),
+            mliVec_set(0, 0, 1)),
+        600e-9);
     CHECK(mliScenery_malloc_from_json_path(
         &scenery,
         "tests/resources/glass_cylinder_in_air.json"));
@@ -36,26 +38,41 @@ CASE("simple propagation") {
         intersection.surface_normal, mliVec_set(0, 0, 1), 1e-9));
     CHECK_MARGIN(intersection.distance_of_ray, 2., 1e-9);
 
-    env.scenery = &scenery;
-    env.octree = &octree;
-    env.history = &history;
-    env.photon = &photon;
-    env.prng = &prng;
+    surf_coming_from = _mli_surface_coming_from(&scenery, &intersection);
+    surf_going_to = _mli_surface_going_to(&scenery, &intersection);
 
-    surf_coming_from = _mli_surface_coming_from(&env, &intersection);
-    surf_going_to = _mli_surface_going_to(&env, &intersection);
-
-    CHECK(surf_coming_from.material == 100);
+    CHECK(surf_coming_from.material == MLI_MATERIAL_TRANSPARENT);
     CHECK(surf_coming_from.medium_refraction == 0);
+    CHECK(surf_coming_from.medium_absorbtion == 2);
     CHECK(surf_coming_from.color == 0);
 
-    CHECK(surf_going_to.material == 100);
+    CHECK(surf_going_to.material == MLI_MATERIAL_TRANSPARENT);
     CHECK(surf_going_to.medium_refraction == 1);
+    CHECK(surf_going_to.medium_absorbtion == 2);
     CHECK(surf_going_to.color == 1);
 
     mliMT19937_init(&prng, 0u);
-    /* CHECK(mli_propagate_photon(&env)); */
+    CHECK(mliPhotonHistory_malloc(&history));
+    history.actions[0].type = MLI_PHOTON_CREATION;
+    history.actions[0].position = photon.ray.support;
+    history.actions[0].refraction_going_to = 0u;
+    history.actions[0].absorbtion_going_to = 2u;
+    history.actions[0].refraction_coming_from = 0u;
+    history.actions[0].absorbtion_coming_from = 2u;
+    history.actions[0]._object_idx = -1;
+    history.actions[0]._from_outside_to_inside = 1;
+    history.num += 1;
+
+    CHECK(mli_propagate_photon(
+            &scenery,
+            &octree,
+            &history,
+            &photon,
+            &prng));
+
+    mliPhotonHistory_print(&history);
 
     mliScenery_free(&scenery);
     mliOcTree_free(&octree);
+    mliPhotonHistory_free(&history);
 }

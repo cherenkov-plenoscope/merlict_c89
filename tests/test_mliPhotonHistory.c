@@ -2,31 +2,50 @@
 
 CASE("mliPhotonHistory, malloc, free") {
     mliPhotonHistory history = mliPhotonHistory_init(42u);
-    mliIntersection isec;
+    mliPhotonInteraction action;
     CHECK(history.num_reserved == 42u);
     CHECK(history.num == 0u);
-    CHECK(history.sections == NULL);
     CHECK(history.actions == NULL);
 
     CHECK(mliPhotonHistory_malloc(&history));
     CHECK(history.num == 0u);
 
-    isec.object_idx = 37u;
-    isec.position = mliVec_set(1, 2, 1);
-    isec.surface_normal = mliVec_set(0, 0, 1);
-    isec.distance_of_ray = 13.0;
-    isec.from_outside_to_inside = 1;
+    action.type = MLI_PHOTON_CREATION;
+    action.position = mliVec_set(1, 2, 1);
+    action.refraction_going_to = 1u;
+    action.absorbtion_going_to = 2u;
+    action.refraction_coming_from = 1u;
+    action.absorbtion_coming_from = 2u;
 
-    history.sections[0] = isec;
-    history.actions[0] = 1337;
-
-    CHECK(history.sections[0].object_idx == 37u);
+    history.actions[0] = action;
+    CHECK(history.actions[0].type == MLI_PHOTON_CREATION);
     CHECK(mliVec_equal_margin(
-            history.sections[0].position, mliVec_set(1, 2, 1), 1e-7));
-    CHECK(mliVec_equal_margin(
-            history.sections[0].surface_normal, mliVec_set(0, 0, 1), 1e-7));
-    CHECK(history.sections[0].distance_of_ray == 13.0);
-    CHECK(history.sections[0].from_outside_to_inside == 1);
+        history.actions[0].position,
+        mliVec_set(1, 2, 1),
+        1e-7));
+    CHECK(history.actions[0].refraction_going_to == 1u);
+    CHECK(history.actions[0].absorbtion_going_to == 2u);
 
+    mliPhotonHistory_free(&history);
+}
+
+CASE("mliPhotonHistory, push back") {
+    const uint64_t num_reserved = 42u;
+    uint64_t i;
+    mliPhotonHistory history = mliPhotonHistory_init(num_reserved);
+    mliPhotonInteraction action;
+    CHECK(mliPhotonHistory_malloc(&history));
+    for (i = 0u; i < num_reserved; i++) {
+        action.type = i;
+        action.position = mliVec_set(1, 2, 1);
+        action.distance_of_ray = 13.0;
+        action.refraction_going_to = 1u;
+        action.absorbtion_going_to = 2u;
+        action.refraction_coming_from = 1u;
+        action.absorbtion_coming_from = 2u;
+        CHECK(mliPhotonHistory_push_back(&history, action));
+        CHECK(history.num == i+1);
+    }
+    CHECK(!mliPhotonHistory_push_back(&history, action));
     mliPhotonHistory_free(&history);
 }

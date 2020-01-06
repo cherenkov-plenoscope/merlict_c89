@@ -145,13 +145,6 @@ int __mliSurface_from_json(
     mli_check(idx_tmp >= 0, "Expected boundary_layer_diffuse_reflection-index to be positive.");
     surface->boundary_layer_diffuse_reflection = idx_tmp;
 
-    mli_check(mliJson_find_key(json, token_s, "boundary_layer_transmission", &token_tmp),
-        "Expected json-surface-item to contain key 'boundary_layer_transmission'.");
-    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
-        "Could not parse boundary_layer_transmission from json.");
-    mli_check(idx_tmp >= 0, "Expected boundary_layer_transmission-index to be positive.");
-    surface->boundary_layer_transmission = idx_tmp;
-
     mli_check(mliJson_find_key(json, token_s, "color", &token_tmp),
         "Expected json-surface-item to contain key 'color'.");
     mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),

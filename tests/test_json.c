@@ -285,7 +285,6 @@ CASE("parse mliUserScenery") {
     CHECK(uscn_srfs[0].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[0].boundary_layer_specular_reflection == 0u);
     CHECK(uscn_srfs[0].boundary_layer_diffuse_reflection == 0u);
-    CHECK(uscn_srfs[0].boundary_layer_transmission == 0u);
     CHECK(uscn_srfs[0].medium_refraction == 0u);
     CHECK(uscn_srfs[0].medium_absorbtion == 0u);
 
@@ -293,7 +292,6 @@ CASE("parse mliUserScenery") {
     CHECK(uscn_srfs[1].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[1].boundary_layer_specular_reflection == 0u);
     CHECK(uscn_srfs[1].boundary_layer_diffuse_reflection == 0u);
-    CHECK(uscn_srfs[1].boundary_layer_transmission == 0u);
     CHECK(uscn_srfs[1].medium_refraction == 0u);
     CHECK(uscn_srfs[1].medium_absorbtion == 0u);
 
@@ -301,7 +299,6 @@ CASE("parse mliUserScenery") {
     CHECK(uscn_srfs[2].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[2].boundary_layer_specular_reflection == 0u);
     CHECK(uscn_srfs[2].boundary_layer_diffuse_reflection == 0u);
-    CHECK(uscn_srfs[2].boundary_layer_transmission == 0u);
     CHECK(uscn_srfs[2].medium_refraction == 0u);
     CHECK(uscn_srfs[2].medium_absorbtion == 0u);
 
@@ -309,7 +306,6 @@ CASE("parse mliUserScenery") {
     CHECK(uscn_srfs[3].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[3].boundary_layer_specular_reflection == 0u);
     CHECK(uscn_srfs[3].boundary_layer_diffuse_reflection == 0u);
-    CHECK(uscn_srfs[3].boundary_layer_transmission == 0u);
     CHECK(uscn_srfs[3].medium_refraction == 1u);
     CHECK(uscn_srfs[3].medium_absorbtion == 0u);
 

@@ -39,7 +39,9 @@ int main(int argc, char *argv[]) {
     #include "tests/test_parsing_from_string.c"
     #include "tests/test_json.c"
     #include "tests/test_mliPhotonHistory.c"
+    #include "tests/test_mliFresnel.c"
     #include "tests/test_photon.c"
+    #include "tests/test_lambertian_cosine_law.c"
 
     printf("__SUCCESS__\n");
     return EXIT_SUCCESS;

@@ -1,63 +1,118 @@
 {
   "functions": [
     [
-        [200e-9, 0.0],
-        [1200e-9, 0.0]
+        [200e-9, 1.0],
+        [1200e-9, 1.0]
     ],
     [
         [200e-9, 1.49],
         [1200e-9, 1.49]
-    ]
+    ],
+    [
+        [200e-9, 9e99],
+        [1200e-9, 9e99]
+    ],
+    [
+        [200e-9, 0.0],
+        [1200e-9, 0.0]
+    ],
   ],
   "colors": [
     [22, 9, 255],
     [255, 91, 49],
+    [16, 255, 0]
   ],
   "surfaces": [
     {
-      "material": 100,
+      "material": 102,
       "medium_refraction": 0,
-      "medium_absorbtion": 0,
+      "medium_absorbtion": 2,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
-      "boundary_layer_transmission": 0,
       "color": 0
     },
     {
-      "material": 100,
+      "material": 102,
       "medium_refraction": 1,
-      "medium_absorbtion": 0,
+      "medium_absorbtion": 2,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
-      "boundary_layer_transmission": 0,
       "color": 1
+    },
+    {
+      "material": 100,
+      "medium_refraction": 0,
+      "medium_absorbtion": 2,
+      "boundary_layer_specular_reflection": 0,
+      "boundary_layer_diffuse_reflection": 3,
+      "color": 2
+    },
+    {
+      "material": 100,
+      "medium_refraction": 0,
+      "medium_absorbtion": 2,
+      "boundary_layer_specular_reflection": 3,
+      "boundary_layer_diffuse_reflection": 3,
+      "color": 2
     }
   ],
   "children": [
     {
-      "type": "Disc",
-      "id": 1,
-      "pos": [0, 0, -1],
+      "type": "Frame",
+      "id": 42,
+      "pos": [0, 0, 0],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-      "radius": 1.0,
-      "surface": {"inner": 1, "outer": 0}
+      "children": [
+        {
+          "type": "Disc",
+          "id": 1,
+          "pos": [0, 0, -1],
+          "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+          "radius": 1.0,
+          "surface": {"inner": 1, "outer": 0}
+        },
+        {
+          "type": "Cylinder",
+          "id": 3,
+          "pos": [0, 0, 0.75],
+          "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+          "radius": 1.0,
+          "length": 2.0,
+          "surface": {"inner": 0, "outer": 1}
+        },
+        {
+          "type": "Disc",
+          "id": 2,
+          "pos": [0, 0, 1],
+          "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+          "radius": 1.0,
+          "surface": {"inner": 0, "outer": 1}
+        }
+      ]
     },
     {
-      "type": "Cylinder",
-      "id": 4,
-      "pos": [0, 0, 0.75],
+      "type": "Disc",
+      "id": 37,
+      "pos": [0, 0, 5],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.0,
-      "length": 2.0,
-      "surface": {"inner": 0, "outer": 1}
+      "surface": {"inner": 2, "outer": 2}
     },
     {
       "type": "Disc",
-      "id": 1,
-      "pos": [0, 0, 1],
-      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+      "id": 47,
+      "pos": [0, 0, -5],
+      "rot": {"repr": "tait_bryan", "xyz": [0, 0.785, 0]},
       "radius": 1.0,
-      "surface": {"inner": 0, "outer": 1}
+      "surface": {"inner": 2, "outer": 2}
+    },
+    {
+      "type": "Sphere",
+      "id": 12,
+      "pos": [-5, 0, -5],
+      "rot": {"repr": "tait_bryan", "xyz": [0, 0.785, 0]},
+      "radius": 1.0,
+      "surface": {"inner": 3, "outer": 3}
     }
   ]
 }

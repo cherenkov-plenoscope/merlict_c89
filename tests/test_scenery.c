@@ -44,7 +44,6 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[0].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[0].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[0].boundary_layer_transmission = 0u;
     scenery.surfaces[0].medium_refraction = 0u;
     scenery.surfaces[0].medium_absorbtion = 0u;
 
@@ -52,7 +51,6 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     scenery.surfaces[1].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[1].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[1].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[1].boundary_layer_transmission = 0u;
     scenery.surfaces[1].medium_refraction = 0u;
     scenery.surfaces[1].medium_absorbtion = 0u;
 
@@ -60,7 +58,6 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     scenery.surfaces[2].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[2].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[2].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[2].boundary_layer_transmission = 0u;
     scenery.surfaces[2].medium_refraction = 0u;
     scenery.surfaces[2].medium_absorbtion = 0u;
 
@@ -68,7 +65,6 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     scenery.surfaces[3].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[3].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[3].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[3].boundary_layer_transmission = 0u;
     scenery.surfaces[3].medium_refraction = 0u;
     scenery.surfaces[3].medium_absorbtion = 0u;
 
@@ -334,7 +330,6 @@ CASE("mliScenery asymetric") {
     scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[0].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[0].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[0].boundary_layer_transmission = 0u;
     scenery.surfaces[0].medium_refraction = 0u;
     scenery.surfaces[0].medium_absorbtion = 0u;
     offset = mliVec_set(0, 0, -8);
