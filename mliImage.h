@@ -146,9 +146,14 @@ error:
     fclose(fout);
     return 0;}
 
-void mliImage_print(const mliImage* img) {
-    uint32_t col;
-    uint32_t row;
+void mliImage_print_chars(
+    const mliImage* img,
+    const char *symbols,
+    const uint64_t *rows,
+    const uint64_t *cols,
+    const uint64_t num_symbols) {
+    uint32_t col, row, sym;
+    char symbol;
     for (row = 0; row < img->num_rows; row = row + 2u) {
         for (col = 0; col < img->num_cols; col++) {
             mliColor color = mliImage_at(img, col, row);
@@ -156,9 +161,20 @@ void mliImage_print(const mliImage* img) {
             uint8_t r = (uint8_t)out.r;
             uint8_t g = (uint8_t)out.g;
             uint8_t b = (uint8_t)out.b;
-            printf("\033[48;2;%u;%u;%um \033[0m", r, g, b);
+            symbol = ' ';
+            for (sym = 0; sym < num_symbols; sym++) {
+                if (rows[sym] == row && cols[sym] == col) {
+                    symbol = symbols[sym];
+                    break;
+                }
+            }
+            printf("\033[48;2;%u;%u;%um%c\033[0m", r, g, b, symbol);
         }
         printf("\n");}}
+
+void mliImage_print(const mliImage* img) {
+    const uint64_t num_symbols = 0;
+    mliImage_print_chars(img, NULL, NULL, NULL, num_symbols);}
 
 int mliImage_scale_down_twice(const mliImage *source, mliImage* destination) {
     uint64_t row, col, sr, sc;

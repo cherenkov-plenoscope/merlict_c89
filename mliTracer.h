@@ -14,7 +14,7 @@
 #include "mliIntersection.h"
 #include "mliOcTree.h"
 #include "mli_ray_octree_traversal.h"
-
+#include "mli_intersection_and_scenery.h"
 
 int mli_first_casual_intersection(
     const mliScenery *scenery,
@@ -47,20 +47,15 @@ mliColor mli_trace(
     ) {
         mliIntersection global_light_intersection;
         mliRay line_of_sight_to_source;
-        mliSurfaces surfaces;
-        mliSurface outer_surface;
+        mliSurface surface;
         mliVec dir_to_source = {1., 1., 3.};
 
         line_of_sight_to_source = mliRay_set(
             intersection.position,
             dir_to_source);
 
-        surfaces = mliScenery_object_surfaces(
-            scenery,
-            intersection.object_idx);
-
-        outer_surface = scenery->surfaces[surfaces.outer];
-        color = scenery->colors[outer_surface.color];
+        surface = _mli_surface_going_to(scenery, &intersection);
+        color = scenery->colors[surface.color];
 
         if (mli_first_casual_intersection(
                 scenery,

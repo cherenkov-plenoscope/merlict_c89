@@ -33,23 +33,23 @@ CASE("simple propagation") {
         &intersection);
 
     CHECK(mliVec_equal_margin(
-        intersection.position, mliVec_set(0, 0, -1), 1e-9));
+        intersection.position, mliVec_set(0, 0, 0), 1e-9));
     CHECK(mliVec_equal_margin(
         intersection.surface_normal, mliVec_set(0, 0, 1), 1e-9));
-    CHECK_MARGIN(intersection.distance_of_ray, 2., 1e-9);
+    CHECK_MARGIN(intersection.distance_of_ray, 3., 1e-9);
 
     surf_coming_from = _mli_surface_coming_from(&scenery, &intersection);
     surf_going_to = _mli_surface_going_to(&scenery, &intersection);
 
-    CHECK(surf_coming_from.material == MLI_MATERIAL_TRANSPARENT);
-    CHECK(surf_coming_from.medium_refraction == 0);
-    CHECK(surf_coming_from.medium_absorbtion == 2);
-    CHECK(surf_coming_from.color == 0);
-
     CHECK(surf_going_to.material == MLI_MATERIAL_TRANSPARENT);
-    CHECK(surf_going_to.medium_refraction == 1);
+    CHECK(surf_going_to.medium_refraction == 0);
     CHECK(surf_going_to.medium_absorbtion == 2);
-    CHECK(surf_going_to.color == 1);
+    CHECK(surf_going_to.color == 0);
+
+    CHECK(surf_coming_from.material == MLI_MATERIAL_TRANSPARENT);
+    CHECK(surf_coming_from.medium_refraction == 1);
+    CHECK(surf_coming_from.medium_absorbtion == 2);
+    CHECK(surf_coming_from.color == 1);
 
     mliMT19937_init(&prng, 0u);
     CHECK(mliPhotonHistory_malloc(&history));

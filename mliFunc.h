@@ -82,6 +82,29 @@ int mliFunc_evaluate(const mliFunc* f, const double xarg, double *out) {
 error:
     return 0;}
 
+int mliFunc_fold_numeric(const mliFunc* a, const mliFunc* b, double* fold) {
+    uint64_t i;
+    const uint64_t NUM_STEPS = 1024*8;
+    const double xmin = a->x[0];
+    const double xmax = a->x[a->num_points-1];
+    const double step_size = (xmax - xmin)/(double)NUM_STEPS;
+    mli_check(a->num_points >= 2u, "Expect a->num_points >= 2.");
+    mli_check(b->num_points >= 2u, "Expect b->num_points >= 2.");
+    mli_check(a->x[0] == b->x[0], "Expect a->x[0] == b->x[0].");
+    mli_check(a->x[a->num_points-1] == b->x[b->num_points-1],
+        "Expect a->x[:-1] == b->x[:-1].");
+    (*fold) = 0.0;
+    for (i = 0; i < NUM_STEPS; i++) {
+        double ra, rb;
+        double x = xmin + (double)i*step_size;
+        mli_c(mliFunc_evaluate(a, x, &ra));
+        mli_c(mliFunc_evaluate(b, x, &rb));
+        (*fold) += (ra*rb)*step_size;
+    }
+    return 1;
+error:
+    return 0;}
+
 int mliFunc_fwrite(const mliFunc *func, FILE* f) {
     mli_fwrite(&func->num_points, sizeof(uint32_t), 1u, f);
     mli_fwrite(func->x, sizeof(double), func->num_points, f);

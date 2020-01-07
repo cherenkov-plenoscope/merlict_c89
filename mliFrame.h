@@ -177,6 +177,7 @@ error:
 
 int mli_type_to_string(const uint64_t type, char* s) {
     switch (type) {
+        case MLI_TRIANGLE: sprintf(s, "Triangle"); break;
         case MLI_FRAME: sprintf(s, "Frame"); break;
         case MLI_MESH: sprintf(s, "Mesh"); break;
         case MLI_SPHERICAL_CAP_HEX: sprintf(s, "SphericalCapHex"); break;
@@ -185,7 +186,9 @@ int mli_type_to_string(const uint64_t type, char* s) {
         case MLI_HEXAGON: sprintf(s, "Hexagon"); break;
         case MLI_BICIRCLEPLANE: sprintf(s, "BiCirclePlane"); break;
         case MLI_DISC: sprintf(s, "Disc"); break;
-        default: mli_sentinel("Type is unknown."); break;}
+        default:
+            fprintf(stderr, "Unknown Type: %ld\n", type);
+            mli_sentinel("Type is unknown."); break;}
     return 1;
 error:
     return 0;}

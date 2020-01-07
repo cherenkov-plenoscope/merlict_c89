@@ -6,12 +6,14 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define CHECK_MARGIN(a, b, margin) \
+#define CHECK_MARGIN(first, second, margin) \
     do { \
-        if ( (fabs((a) - (b)) > margin) ) { \
+        if ( (fabs((first) - (second)) > margin) ) { \
             printf("  In %s, line %d\n", __FILE__, __LINE__); \
-            printf("  Expected fabs(first - second) < %f.\n", margin); \
-            printf("  first: %f\nsecond: %f\nmargin: %f\n", a, b, margin); \
+            printf("  Expected fabs(first - second) < margin.\n"); \
+            printf("  first:  %E\n", first); \
+            printf("  second: %E\n", second); \
+            printf("  margin: %E\n", margin); \
             goto test_failure; \
         } \
     } while (0)
