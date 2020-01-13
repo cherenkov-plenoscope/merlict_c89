@@ -66,14 +66,19 @@ uint32_t mliNode_signs_to_child(
 int mliNode_add_children(
     mliNode *node,
     const mliScenery *scenery,
-    const mliCube cube) {
-    int make_children;
+    const mliCube cube,
+    const uint64_t depth,
+    const uint64_t max_depth) {
     uint32_t c;
     uint32_t sx, sy, sz, obj;
     mliCube child_cubes[8];
     mliOctOverlap overlap[8];
 
     if (node->num_objects <= 32u) {
+        return 1;
+    }
+
+    if (depth == max_depth) {
         return 1;
     }
 
@@ -105,37 +110,31 @@ int mliNode_add_children(
         }
     }
 
-    make_children = 0;
     for (c = 0; c < 8u; c++) {
-        if (overlap[c].count < node->num_objects/4) {
-            make_children += 1;}}
-
-    if (make_children) {
-        for (c = 0; c < 8u; c++) {
-            mli_malloc(node->children[c], mliNode, 1u);
-            mliNode_init(node->children[c]);
-            node->children[c]->mother = node;
-            node->children[c]->num_objects = overlap[c].count;
-            mli_malloc(node->children[c]->objects, uint32_t, overlap[c].count);
-            mli_uint32_ncpy(
-                overlap[c].objects,
-                node->children[c]->objects,
-                overlap[c].count);
-        }
+        mli_malloc(node->children[c], mliNode, 1u);
+        mliNode_init(node->children[c]);
+        node->children[c]->mother = node;
+        node->children[c]->num_objects = overlap[c].count;
+        mli_malloc(node->children[c]->objects, uint32_t, overlap[c].count);
+        mli_uint32_ncpy(
+            overlap[c].objects,
+            node->children[c]->objects,
+            overlap[c].count);
     }
 
     for (c = 0u; c < 8u; c++) {
         mliOctOverlap_free(&overlap[c]);
     }
 
-    if (make_children) {
-        for (c = 0; c < 8u; c++) {
-            mliNode_add_children(
-                node->children[c],
-                scenery,
-                child_cubes[c]);
-        }
+    for (c = 0; c < 8u; c++) {
+        mliNode_add_children(
+            node->children[c],
+            scenery,
+            child_cubes[c],
+            depth + 1u,
+            max_depth);
     }
+
     return 1;
 error:
     return 0;
@@ -144,16 +143,19 @@ error:
 mliNode mliNode_from_scenery(
     const mliScenery *scenery,
     const mliCube scenery_cube) {
-    mliNode tree;
+    mliNode root;
     uint32_t idx;
-    mliNode_init(&tree);
-    tree.mother = NULL;
-    tree.num_objects = mliScenery_num_objects(scenery);
-    tree.objects = (uint32_t*)malloc(tree.num_objects*sizeof(uint32_t));
-    for (idx = 0; idx < tree.num_objects; idx++) {
-        tree.objects[idx] = idx;}
-    mliNode_add_children(&tree, scenery, scenery_cube);
-    return tree;
+    uint64_t depth, max_depth;
+    depth = 0u;
+    mliNode_init(&root);
+    root.mother = NULL;
+    root.num_objects = mliScenery_num_objects(scenery);
+    max_depth = 1u + (uint64_t)ceil(log((double)root.num_objects)/log(8.0));
+    root.objects = (uint32_t*)malloc(root.num_objects*sizeof(uint32_t));
+    for (idx = 0; idx < root.num_objects; idx++) {
+        root.objects[idx] = idx;}
+    mliNode_add_children(&root, scenery, scenery_cube, depth, max_depth);
+    return root;
 }
 
 
