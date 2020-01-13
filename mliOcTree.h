@@ -63,39 +63,42 @@ uint32_t mliNode_signs_to_child(
     const uint32_t sz) {
     return 4*sx + 2*sy + 1*sz;}
 
-void mliNode_add_children(
+int mliNode_add_children(
     mliNode *node,
     const mliScenery *scenery,
-    const mliCube cube_bound) {
+    const mliCube cube) {
     int make_children;
     uint32_t c;
     uint32_t sx, sy, sz, obj;
-    mliCube child_cube_bounds[8];
-    mliOctOverlaps overlaps;
+    mliCube child_cubes[8];
+    mliOctOverlap overlap[8];
 
     if (node->num_objects <= 32u) {
-        return;}
+        return 1;
+    }
 
-    mliOctOverlaps_init(&overlaps, node->num_objects);
+    for (c = 0u; c < 8u; c++) {
+        overlap[c] = mliOctOverlap_init();
+        overlap[c].num = node->num_objects;
+        mli_c(mliOctOverlap_malloc(&overlap[c]));
+    }
 
     /* sense possible children */
     for (sx = 0u; sx < 2u; sx++) {
         for (sy = 0u; sy < 2u; sy++) {
             for (sz = 0u; sz < 2u; sz++) {
                 const uint32_t child = mliNode_signs_to_child(sx, sy, sz);
-                child_cube_bounds[child] = mliCube_octree_child(
-                    cube_bound, sx, sy, sz);
-                overlaps.num[child] = 0u;
+                child_cubes[child] = mliCube_octree_child(cube, sx, sy, sz);
                 for (obj = 0u; obj < node->num_objects; obj++) {
                     const uint32_t object_idx = node->objects[obj];
                     if (mliScenery_overlap_obb(
                         scenery,
                         object_idx,
-                        mliCube_to_obb(child_cube_bounds[child]))
+                        mliCube_to_obb(child_cubes[child]))
                     ) {
-                        overlaps.objects[child][overlaps.num[child]] =
-                            object_idx;
-                        overlaps.num[child]++;
+                        mli_c(mliOctOverlap_push_back(
+                            &overlap[child],
+                            object_idx));
                     }
                 }
             }
@@ -104,34 +107,38 @@ void mliNode_add_children(
 
     make_children = 0;
     for (c = 0; c < 8u; c++) {
-        if (overlaps.num[c] < node->num_objects/4) {
+        if (overlap[c].count < node->num_objects/4) {
             make_children += 1;}}
 
     if (make_children) {
         for (c = 0; c < 8u; c++) {
-            node->children[c] = (mliNode*)malloc(sizeof(mliNode));
+            mli_malloc(node->children[c], mliNode, 1u);
             mliNode_init(node->children[c]);
             node->children[c]->mother = node;
-            node->children[c]->num_objects = overlaps.num[c];
-            node->children[c]->objects = (uint32_t*)malloc(
-                overlaps.num[c]*sizeof(uint32_t));
+            node->children[c]->num_objects = overlap[c].count;
+            mli_malloc(node->children[c]->objects, uint32_t, overlap[c].count);
             mli_uint32_ncpy(
-                overlaps.objects[c],
+                overlap[c].objects,
                 node->children[c]->objects,
-                overlaps.num[c]);
+                overlap[c].count);
         }
     }
 
-    mliOctOverlaps_free(&overlaps);
+    for (c = 0u; c < 8u; c++) {
+        mliOctOverlap_free(&overlap[c]);
+    }
 
     if (make_children) {
         for (c = 0; c < 8u; c++) {
             mliNode_add_children(
                 node->children[c],
                 scenery,
-                child_cube_bounds[c]);
+                child_cubes[c]);
         }
     }
+    return 1;
+error:
+    return 0;
 }
 
 mliNode mliNode_from_scenery(
@@ -152,15 +159,35 @@ mliNode mliNode_from_scenery(
 
 void __mliNode_num_nodes_recursive(const mliNode *node, uint32_t *num_nodes) {
     uint32_t c;
-    (*num_nodes)++;
+    *num_nodes += 1;
     for (c = 0u; c < 8u; c++) {
         if (node->children[c] != NULL) {
-            __mliNode_num_nodes_recursive(node->children[c], num_nodes);}}}
+            __mliNode_num_nodes_recursive(node->children[c], num_nodes);
+        }
+    }
+}
 
 
 uint32_t mliNode_num_nodes(const mliNode *node) {
     uint32_t num_nodes = 0u;
     __mliNode_num_nodes_recursive(node, &num_nodes);
+    return num_nodes;}
+
+
+void _mliNode_capacity_nodes(const mliNode *node, uint32_t *num_nodes) {
+    uint32_t c;
+    for (c = 0u; c < 8u; c++) {
+        if (node->children[c] != NULL) {
+            *num_nodes += 1;
+            _mliNode_capacity_nodes(node->children[c], num_nodes);
+        }
+    }
+}
+
+
+uint32_t mliNode_capacity_nodes(const mliNode *node) {
+    uint32_t num_nodes = 1u;
+    _mliNode_capacity_nodes(node, &num_nodes);
     return num_nodes;}
 
 
@@ -184,23 +211,24 @@ uint32_t mliNode_capacity_objects(const mliNode *node) {
     return capacity_objects;}
 
 
-void mliNode_print(const mliNode *node, const uint32_t indent) {
+void mliNode_print(const mliNode *node, const uint32_t indent, const uint32_t ch) {
     uint32_t i;
+    uint32_t c;
     uint32_t num_c = mliNode_num_children(node);
     for (i = 0u; i < indent; i++) printf(" ");
     if (num_c == 0) {
         uint32_t j;
-        printf("|-Leaf: overlaps: %u [", node->num_objects);
+        printf("|-Leaf %u: %u [", ch, node->num_objects);
         for(j = 0; j < node->num_objects; j++) {
             printf("%u, ", node->objects[j]);
         }
         printf("]");
     } else
-        printf("Node: num_children %u", num_c);
+        printf("Node: %u", ch);
     printf("\n");
-    for (i = 0u; i < 8u; i++) {
-        if (node->children[i] != NULL) {
-            mliNode_print(node->children[i], indent + 2);
+    for (c = 0u; c < 8u; c++) {
+        if (node->children[c] != NULL) {
+            mliNode_print(node->children[c], indent + 2, c);
         }
     }
 }

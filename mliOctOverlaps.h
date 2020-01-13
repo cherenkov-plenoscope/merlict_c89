@@ -5,20 +5,36 @@
 #include <stdint.h>
 
 typedef struct {
-    uint32_t num[8];
-    uint32_t **objects;
-} mliOctOverlaps;
+    uint32_t num;
+    uint32_t count;
+    uint32_t *objects;
+} mliOctOverlap;
 
-void mliOctOverlaps_init(mliOctOverlaps *a, const uint32_t max_num_objects) {
-    uint32_t c;
-    a->objects = (uint32_t**)malloc(8u*sizeof(uint32_t*));
-    for (c = 0; c < 8u; c++) {
-        a->objects[c] = (uint32_t*)malloc(max_num_objects*sizeof(uint32_t));}}
+mliOctOverlap mliOctOverlap_init() {
+    mliOctOverlap oo;
+    oo.num = 0u;
+    oo.count = 0u;
+    oo.objects = NULL;
+    return oo;}
 
-void mliOctOverlaps_free(mliOctOverlaps *a) {
-    uint32_t c;
-    for (c = 0; c < 8u; c++) {
-        free(a->objects[c]);}
-    free(a->objects);}
+void mliOctOverlap_free(mliOctOverlap *a) {
+    free(a->objects);
+    (*a) = mliOctOverlap_init();}
+
+int mliOctOverlap_malloc(mliOctOverlap *a) {
+    mli_malloc(a->objects, uint32_t, a->num);
+    return 1;
+error:
+    return 0;}
+
+int mliOctOverlap_push_back(mliOctOverlap *a, const uint32_t v) {
+    mli_check(
+        a->count < a->num,
+        "Expected mliOctOverlap to have at least one free field");
+    a->objects[a->count] = v;
+    a->count += 1u;
+    return 1;
+error:
+    return 0;}
 
 #endif
