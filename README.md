@@ -1,25 +1,17 @@
-# merlict_c89 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
-We :hearts: light! 
+![merlict c89 logo](/readme/merlict_c89_logo_wide_32by9_low.jpg)
 
-## Features
+[![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
 
-### Scenery
-Represent your geometry with triangle-meshes. merlict also supports few surfaces common in optics, such as sperical caps.  Use triangle-meshes to approximate your geometry. When you need more performance, or run out of memory, use existing primitives, or add your own primitives.
+Merlict simulates light. It propagates photons in a scenery, and it can render simple images. Merlict is a header-only-library written in ```c89```. 
 
-| Primitives                 |             |
-|----------------------------|:-----------:|
-| Triangle                   | Native design for large meshes |
-| Spherical cap, hexagonal   |             |
-| Sphere                     |             |
-| Cylinder                   |             |
-| Disc                       |             |
-| Plane, bi-circular         |             |
+## Library Goals
+- Wide compatibility. ```c89```.
+- Easy to use. Header only library.
+- Independent. Only c-standard-library.
+- Unit tests
 
-Define your scenery in '''json''' 
-
-### Photons
-
-### Rendering
+## Science Goals
+- Accurate propagation of photons in complex sceneries.
 
 ## Tests
 #### Compile
@@ -45,7 +37,8 @@ gcc merlict-c89-view.c -o merlict-c89-view -std=c89 -lm -Wall -pedantic
 ```
 Here ``` my_scenery.mli.tmp``` is scenery for testing created by ```./merlict-c89-test```.
 
-### Not sure where this is going to...
+
+### Why
 Exploring the merlict raytracing-project rewritten in C89 aka. C90, aka. ANSI-C.
 This project might never be finished. It is just an exploration to find out what it feels like to rewrite the merlict raytracing-project in ANSI-C aka. C89.
 Reasons in no particular order:
