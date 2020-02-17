@@ -2,7 +2,7 @@
 
 CASE("mliPixels") {
     uint64_t i;
-    mliPixels p = mliPixels_init();
+    struct mliPixels p = mliPixels_init();
     CHECK(p.num_pixels == 0u);
     CHECK(p.pixels == NULL);
 

@@ -7,28 +7,28 @@
 #include <stdio.h>
 #include "mli_debug.h"
 
-typedef struct {
+struct mliPixel {
     uint16_t row;
     uint16_t col;
-} mliPixel;
+};
 
-typedef struct {
+struct mliPixels {
     uint32_t num_pixels;
-    mliPixel *pixels;
-} mliPixels;
+    struct mliPixel *pixels;
+};
 
-mliPixels mliPixels_init() {
-    mliPixels pix;
+struct mliPixels mliPixels_init() {
+    struct mliPixels pix;
     pix.num_pixels = 0u;
     pix.pixels = NULL;
     return pix;}
 
-void mliPixels_free(mliPixels *pix) {
+void mliPixels_free(struct mliPixels *pix) {
     free(pix->pixels);
     *pix = mliPixels_init();}
 
-int mliPixels_malloc(mliPixels *pix) {
-    mli_malloc(pix->pixels, mliPixel, pix->num_pixels);
+int mliPixels_malloc(struct mliPixels *pix) {
+    mli_malloc(pix->pixels, struct mliPixel, pix->num_pixels);
     return 1;
 error:
     mliPixels_free(pix);

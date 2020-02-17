@@ -327,7 +327,7 @@ void mliImage_from_sum_and_exposure(
 }
 
 int mliPixels_malloc_and_set_from_image(
-    mliPixels* pixels,
+    struct mliPixels *pixels,
     const struct mliImage *image)
 {
     uint64_t i, r, c;
@@ -345,7 +345,7 @@ error:
 }
 
 int mliPixels_malloc_from_image_above_threshold(
-    mliPixels* pixels,
+    struct mliPixels *pixels,
     const struct mliImage *image,
     const float threshold)
 {
@@ -370,7 +370,7 @@ error:
 }
 
 void mliImage_assign_pixel_colors_to_sum_and_exposure_image(
-    const mliPixels* pixels,
+    const struct mliPixels *pixels,
     const struct mliImage *colors,
     struct mliImage *sum_image,
     struct mliImage *exposure_image)
