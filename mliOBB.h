@@ -76,8 +76,8 @@ struct mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx)
     struct mliEdge edge;
     const struct mliVec l = obb.lower;
     const struct mliVec u = obb.upper;
-    struct mliVec start;
-    struct mliVec stop;
+    struct mliVec start = mliVec_set(MLI_NAN, MLI_NAN, MLI_NAN);
+    struct mliVec stop = mliVec_set(MLI_NAN, MLI_NAN, MLI_NAN);
     switch (edge_idx) {
         case 0:
             start = mliVec_set(l.x, l.y, l.z);
@@ -140,6 +140,8 @@ struct mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx)
             edge.length = stop.y - start.y;
             break;
         default:
+            edge.length = MLI_NAN;
+            fprintf(stderr, "Unable to determine the edge of a cube.\n");
             assert(0);
             break;
     }
