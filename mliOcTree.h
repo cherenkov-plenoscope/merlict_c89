@@ -72,7 +72,7 @@ int mliNode_add_children(
     uint32_t c;
     uint32_t sx, sy, sz, obj;
     struct mliCube child_cubes[8];
-    mliOctOverlap overlap[8];
+    struct mliOctOverlap overlap[8];
 
     if (node->num_objects <= 32u) {
         return 1;
