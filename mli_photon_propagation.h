@@ -12,7 +12,7 @@
 #include "mli_intersection_and_scenery.h"
 
 typedef struct {
-    const mliScenery *scenery;
+    const struct mliScenery *scenery;
     const mliOcTree* octree;
     mliPhotonHistory* history;
     mliPhoton *photon;
@@ -23,7 +23,7 @@ int _mli_propagate_photon(mliEnv *env);
 
 mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     const int64_t type,
-    const mliScenery *scenery,
+    const struct mliScenery *scenery,
     const mliIntersection *isec) {
     mliPhotonInteraction phia;
     mliSurfaces surfaces;
@@ -136,7 +136,7 @@ error:
     return 0;}
 
 int _mli_probability_passing_medium_coming_from(
-    const mliScenery *scenery,
+    const struct mliScenery *scenery,
     const mliPhoton* photon,
     const mliIntersection *isec,
     double *probability_passing) {
@@ -299,7 +299,7 @@ error:
     return 0;}
 
 int mli_propagate_photon(
-    mliScenery* scenery,
+    struct mliScenery *scenery,
     mliOcTree* octree,
     mliPhotonHistory* history,
     mliPhoton* photon,
@@ -314,6 +314,7 @@ int mli_propagate_photon(
     mli_c(_mli_propagate_photon(&env));
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 #endif

@@ -12,7 +12,7 @@
 
 
 int __mliScenery_surface_capacity_from_json(
-    mliScenery *surface_resources,
+    struct mliScenery *surface_resources,
     const struct mliJson *json) {
     uint64_t token;
     mli_check(
@@ -43,7 +43,7 @@ error:
     return 0;}
 
 int __mliScenery_malloc_functions_from_json(
-    mliScenery *surface_resources,
+    struct mliScenery *surface_resources,
     const struct mliJson *json) {
     uint64_t token;
     uint64_t token_functions;
@@ -58,7 +58,7 @@ int __mliScenery_malloc_functions_from_json(
     mli_check(
         surface_resources->num_functions ==
         (uint64_t)json->tokens[token_functions].size,
-        "Expected num_functions in mliScenery to match json-array.");
+        "Expected num_functions in struct mliScenery to match json-array.");
 
     for (f = 0; f < surface_resources->num_functions; f++) {
         uint64_t token_f = mliJson_array_child_token(json, token_functions, f);
@@ -67,14 +67,14 @@ int __mliScenery_malloc_functions_from_json(
                 &surface_resources->functions[f],
                 json,
                 token_f),
-            "Could not malloc struct mliFunc in mliScenery from json.");
+            "Could not malloc struct mliFunc in struct mliScenery from json.");
     }
     return 1;
 error:
     return 0;}
 
 int __mliScenery_assign_colors_from_json(
-    mliScenery *surface_resources,
+    struct mliScenery *surface_resources,
     const struct mliJson *json) {
     uint64_t token;
     uint64_t token_colors;
@@ -89,7 +89,7 @@ int __mliScenery_assign_colors_from_json(
     mli_check(
         surface_resources->num_colors ==
         (uint64_t)json->tokens[token_colors].size,
-        "Expected num_colors in mliScenery to match json-array.");
+        "Expected num_colors in struct mliScenery to match json-array.");
     for (c = 0; c < surface_resources->num_colors; c++) {
         uint64_t token_c = mliJson_array_child_token(json, token_colors, c);
         mli_check(
@@ -157,7 +157,7 @@ error:
     return 0;}
 
 int __mliScenery_assign_surfaces_from_json(
-    mliScenery *surface_resources,
+    struct mliScenery *surface_resources,
     const struct mliJson *json) {
     uint64_t token;
     uint64_t token_surfaces;
@@ -172,7 +172,7 @@ int __mliScenery_assign_surfaces_from_json(
     mli_check(
         surface_resources->num_surfaces ==
         (uint64_t)json->tokens[token_surfaces].size,
-        "Expected num_surfaces in mliScenery to match json-array.");
+        "Expected num_surfaces in struct mliScenery to match json-array.");
     for (s = 0; s < surface_resources->num_surfaces; s++) {
         uint64_t token_s = mliJson_array_child_token(json, token_surfaces, s);
         mli_check(

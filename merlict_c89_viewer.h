@@ -134,9 +134,10 @@ void _mlivr_mv_cursor_left(struct mlivrCursor *cursor) {
     if (cursor->col + 1u < cursor->num_cols) {cursor->col += 1;}}
 
 int mlivr_run_interactive_viewer(
-    const mliScenery* scenery,
+    const struct mliScenery *scenery,
     const mliOcTree* octree,
-    const struct mlivrConfig config) {
+    const struct mlivrConfig config)
+{
     struct termios old_terminal = mlivr_disable_stdin_buffer();
 
     int key;

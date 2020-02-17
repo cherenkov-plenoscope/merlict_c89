@@ -129,7 +129,7 @@ CASE("basic sphere") {
 CASE("estimate capacity") {
     struct mliFrame root = mliFrame_init();
     struct mliFrame *sphere = NULL;
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     CHECK(mliFrame_malloc(&root, MLI_FRAME));
     sphere = mliFrame_add(&root, MLI_SPHERE);
     CHECK(sphere);
@@ -197,7 +197,7 @@ CASE("mliUserScenery_malloc, free") {
 
 CASE("mli_frame_to_scenery") {
     mliUserScenery uscn = mliUserScenery_init();
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     CHECK(mliUserScenery_malloc(&uscn));
 
     CHECK(mliScenery_malloc_from_mliUserScenery(&scenery, &uscn));

@@ -27,7 +27,7 @@
 #define MLI_BICIRCLEPLANE 5u
 #define MLI_DISC 6u
 
-typedef struct {
+struct mliScenery {
     uint32_t num_functions;
     struct mliFunc *functions;
 
@@ -73,10 +73,10 @@ typedef struct {
     mliDisc *discs;
     mliSurfaces *discs_surfaces;
     struct mliHomTraComp *discs_T;
-} mliScenery;
+};
 
-mliScenery mliScenery_init() {
-    mliScenery s;
+struct mliScenery mliScenery_init() {
+    struct mliScenery s;
     s.num_functions = 0u;
     s.functions = NULL;
 
@@ -124,7 +124,7 @@ mliScenery mliScenery_init() {
     s.discs_T = NULL;
     return s;}
 
-void __mliScenery_free_functions(mliScenery *scenery) {
+void __mliScenery_free_functions(struct mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_functions; i++) {
         mliFunc_free(&(scenery->functions[i]));
@@ -133,16 +133,16 @@ void __mliScenery_free_functions(mliScenery *scenery) {
     scenery->num_functions = 0;
 }
 
-void __mliScenery_free_colors(mliScenery *scenery) {
+void __mliScenery_free_colors(struct mliScenery *scenery) {
     free(scenery->colors);
     scenery->num_colors = 0;
 }
-void __mliScenery_free_surfaces(mliScenery *scenery) {
+void __mliScenery_free_surfaces(struct mliScenery *scenery) {
     free(scenery->surfaces);
     scenery->num_surfaces = 0;
 }
 
-void __mliScenery_free_vertices_and_triangles(mliScenery *scenery) {
+void __mliScenery_free_vertices_and_triangles(struct mliScenery *scenery) {
     free(scenery->vertices);
     scenery->num_vertices = 0;
     free(scenery->triangles);
@@ -150,49 +150,49 @@ void __mliScenery_free_vertices_and_triangles(mliScenery *scenery) {
     scenery->num_triangles = 0;
 }
 
-void __mliScenery_free_spherical_cap_hex(mliScenery *scenery) {
+void __mliScenery_free_spherical_cap_hex(struct mliScenery *scenery) {
     free(scenery->spherical_cap_hex);
     free(scenery->spherical_cap_hex_surfaces);
     free(scenery->spherical_cap_hex_T);
     scenery->num_spherical_cap_hex = 0;
 }
 
-void __mliScenery_free_spheres(mliScenery *scenery) {
+void __mliScenery_free_spheres(struct mliScenery *scenery) {
     free(scenery->spheres);
     free(scenery->spheres_surfaces);
     free(scenery->spheres_T);
     scenery->num_spheres = 0;
 }
 
-void __mliScenery_free_cylinders(mliScenery *scenery) {
+void __mliScenery_free_cylinders(struct mliScenery *scenery) {
     free(scenery->cylinders);
     free(scenery->cylinders_surfaces);
     free(scenery->cylinders_T);
     scenery->num_cylinders = 0;
 }
 
-void __mliScenery_free_hexagons(mliScenery *scenery) {
+void __mliScenery_free_hexagons(struct mliScenery *scenery) {
     free(scenery->hexagons);
     free(scenery->hexagons_surfaces);
     free(scenery->hexagons_T);
     scenery->num_hexagons = 0;
 }
 
-void __mliScenery_free_bicircleplanes(mliScenery *scenery) {
+void __mliScenery_free_bicircleplanes(struct mliScenery *scenery) {
     free(scenery->bicircleplanes);
     free(scenery->bicircleplanes_surfaces);
     free(scenery->bicircleplanes_T);
     scenery->num_bicircleplanes = 0;
 }
 
-void __mliScenery_free_discs(mliScenery *scenery) {
+void __mliScenery_free_discs(struct mliScenery *scenery) {
     free(scenery->discs);
     free(scenery->discs_surfaces);
     free(scenery->discs_T);
     scenery->num_discs = 0;
 }
 
-void mliScenery_free(mliScenery *scenery) {
+void mliScenery_free(struct mliScenery *scenery) {
     __mliScenery_free_functions(scenery);
     __mliScenery_free_colors(scenery);
     __mliScenery_free_surfaces(scenery);
@@ -205,7 +205,7 @@ void mliScenery_free(mliScenery *scenery) {
     __mliScenery_free_discs(scenery);
 }
 
-int __mliScenery_malloc_vertices_and_triangles(mliScenery* s) {
+int __mliScenery_malloc_vertices_and_triangles(struct mliScenery *s) {
     mli_malloc(s->vertices, struct mliVec, s->num_vertices);
     mli_malloc(s->triangles, struct mliFace, s->num_triangles);
     mli_malloc(s->triangles_surfaces, mliSurfaces, s->num_triangles);
@@ -214,7 +214,7 @@ error:
     return 0;
 }
 
-int __mliScenery_malloc_spherical_cap_hex(mliScenery* s) {
+int __mliScenery_malloc_spherical_cap_hex(struct mliScenery *s) {
     mli_malloc(
         s->spherical_cap_hex, mliSphericalCapHex, s->num_spherical_cap_hex);
     mli_malloc(
@@ -226,7 +226,7 @@ error:
     return 0;
 }
 
-int __mliScenery_malloc_spheres(mliScenery* s) {
+int __mliScenery_malloc_spheres(struct mliScenery *s) {
     mli_malloc(s->spheres, mliSphere, s->num_spheres);
     mli_malloc(s->spheres_surfaces, mliSurfaces, s->num_spheres);
     mli_malloc(s->spheres_T, struct mliHomTraComp, s->num_spheres);
@@ -235,7 +235,7 @@ error:
     return 0;
 }
 
-int __mliScenery_malloc_cylinders(mliScenery* s) {
+int __mliScenery_malloc_cylinders(struct mliScenery *s) {
     mli_malloc(s->cylinders, mliCylinder, s->num_cylinders);
     mli_malloc(s->cylinders_surfaces, mliSurfaces, s->num_cylinders);
     mli_malloc(s->cylinders_T, struct mliHomTraComp, s->num_cylinders);
@@ -244,7 +244,7 @@ error:
     return 0;
 }
 
-int __mliScenery_malloc_hexagons(mliScenery* s) {
+int __mliScenery_malloc_hexagons(struct mliScenery *s) {
     mli_malloc(s->hexagons, mliHexagon, s->num_hexagons);
     mli_malloc(s->hexagons_surfaces, mliSurfaces, s->num_hexagons);
     mli_malloc(s->hexagons_T, struct mliHomTraComp, s->num_hexagons);
@@ -253,7 +253,7 @@ error:
     return 0;
 }
 
-int __mliScenery_malloc_bicircleplane(mliScenery* s) {
+int __mliScenery_malloc_bicircleplane(struct mliScenery *s) {
     mli_malloc(s->bicircleplanes, mliBiCirclePlane, s->num_bicircleplanes);
     mli_malloc(s->bicircleplanes_surfaces, mliSurfaces, s->num_bicircleplanes);
     mli_malloc(
@@ -263,7 +263,7 @@ error:
     return 0;
 }
 
-int __mliScenery_malloc_discs(mliScenery* s) {
+int __mliScenery_malloc_discs(struct mliScenery *s) {
     mli_malloc(s->discs, mliDisc, s->num_discs);
     mli_malloc(s->discs_surfaces, mliSurfaces, s->num_discs);
     mli_malloc(s->discs_T, struct mliHomTraComp, s->num_discs);
@@ -272,7 +272,7 @@ error:
     return 0;
 }
 
-int __mliScenery_malloc_functions(mliScenery* s) {
+int __mliScenery_malloc_functions(struct mliScenery *s) {
     uint64_t i;
     mli_malloc(s->functions, struct mliFunc, s->num_functions);
     for (i = 0; i < s->num_functions; i++) {
@@ -282,21 +282,21 @@ error:
     return 0;
 }
 
-int __mliScenery_malloc_colors(mliScenery* s) {
+int __mliScenery_malloc_colors(struct mliScenery *s) {
     mli_malloc(s->colors, struct mliColor, s->num_colors);
     return 1;
 error:
     return 0;
 }
 
-int __mliScenery_malloc_surfaces(mliScenery* s) {
+int __mliScenery_malloc_surfaces(struct mliScenery *s) {
     mli_malloc(s->surfaces, mliSurface, s->num_surfaces);
     return 1;
 error:
     return 0;
 }
 
-int mliScenery_malloc(mliScenery* s) {
+int mliScenery_malloc(struct mliScenery *s) {
     mli_check_mem(__mliScenery_malloc_functions(s));
     mli_check_mem(__mliScenery_malloc_colors(s));
     mli_check_mem(__mliScenery_malloc_surfaces(s));
@@ -313,7 +313,10 @@ error:
     return 0;
 }
 
-int __mliScenery_write_spherical_cap_hex(const mliScenery *scenery, FILE *f) {
+int __mliScenery_write_spherical_cap_hex(
+    const struct mliScenery *scenery,
+    FILE *f)
+{
     mli_fwrite(
         scenery->spherical_cap_hex,
         sizeof(mliSphericalCapHex),
@@ -334,7 +337,7 @@ error:
     return 0;
 }
 
-int __mliScenery_write_spheres(const mliScenery *scenery, FILE *f) {
+int __mliScenery_write_spheres(const struct mliScenery *scenery, FILE *f) {
     mli_fwrite(scenery->spheres, sizeof(double), scenery->num_spheres, f);
     mli_fwrite(
         scenery->spheres_surfaces,
@@ -351,7 +354,7 @@ error:
     return 0;
 }
 
-int __mliScenery_write_cylinders(const mliScenery *scenery, FILE *f) {
+int __mliScenery_write_cylinders(const struct mliScenery *scenery, FILE *f) {
     mli_fwrite(
         scenery->cylinders,
         sizeof(mliCylinder),
@@ -372,7 +375,7 @@ error:
     return 0;
 }
 
-int __mliScenery_write_hexagons(const mliScenery *scenery, FILE *f) {
+int __mliScenery_write_hexagons(const struct mliScenery *scenery, FILE *f) {
     mli_fwrite(scenery->hexagons, sizeof(mliHexagon), scenery->num_hexagons, f);
     mli_fwrite(
         scenery->hexagons_surfaces,
@@ -389,7 +392,7 @@ error:
     return 0;
 }
 
-int __mliScenery_write_bicircleplanes(const mliScenery *scenery, FILE *f) {
+int __mliScenery_write_bicircleplanes(const struct mliScenery *scenery, FILE *f) {
     mli_fwrite(
         scenery->bicircleplanes,
         sizeof(mliBiCirclePlane),
@@ -410,7 +413,7 @@ error:
     return 0;
 }
 
-int __mliScenery_write_discs(const mliScenery *scenery, FILE *f) {
+int __mliScenery_write_discs(const struct mliScenery *scenery, FILE *f) {
     mli_fwrite(
         scenery->discs,
         sizeof(mliDisc),
@@ -433,7 +436,7 @@ error:
 
 #define MLI_SCENERY_MAGIC 43180u
 
-int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
+int mliScenery_write_to_path(const struct mliScenery *scenery, const char* path) {
     FILE *f;
     uint64_t i;
     uint64_t magic = MLI_SCENERY_MAGIC;
@@ -496,7 +499,7 @@ error:
     return 0;}
 
 
-int __mliScenery_read_vertices_and_triangles(mliScenery *scenery, FILE* f) {
+int __mliScenery_read_vertices_and_triangles(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->vertices, sizeof(struct mliVec), scenery->num_vertices, f);
     mli_fread(
@@ -511,7 +514,7 @@ error:
     return 0;
 }
 
-int __mliScenery_read_spherical_cap_hex(mliScenery *scenery, FILE* f) {
+int __mliScenery_read_spherical_cap_hex(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->spherical_cap_hex,
         sizeof(mliSphericalCapHex),
@@ -529,7 +532,7 @@ error:
     return 0;
 }
 
-int __mliScenery_read_spheres(mliScenery *scenery, FILE* f) {
+int __mliScenery_read_spheres(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->spheres,
         sizeof(double),
@@ -547,7 +550,7 @@ error:
     return 0;
 }
 
-int __mliScenery_read_cylinders(mliScenery *scenery, FILE* f) {
+int __mliScenery_read_cylinders(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->cylinders,
         sizeof(mliCylinder),
@@ -565,7 +568,7 @@ error:
     return 0;
 }
 
-int __mliScenery_read_hexagons(mliScenery *scenery, FILE* f) {
+int __mliScenery_read_hexagons(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->hexagons,
         sizeof(mliHexagon),
@@ -583,7 +586,7 @@ error:
     return 0;
 }
 
-int __mliScenery_read_bicircleplanes(mliScenery *scenery, FILE* f) {
+int __mliScenery_read_bicircleplanes(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->bicircleplanes,
         sizeof(mliBiCirclePlane),
@@ -604,7 +607,7 @@ error:
     return 0;
 }
 
-int __mliScenery_read_discs(mliScenery *scenery, FILE* f) {
+int __mliScenery_read_discs(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->discs,
         sizeof(mliDisc),
@@ -625,7 +628,7 @@ error:
     return 0;
 }
 
-int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
+int mliScenery_read_from_path(struct mliScenery *scenery, const char* path) {
     FILE *f;
     uint64_t i;
     uint64_t magic = 0u;
@@ -676,7 +679,7 @@ error:
     mliScenery_free(scenery);
     return 0;}
 
-int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
+int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b) {
     uint64_t i;
     if (a->num_functions != b->num_functions) return 0;
     if (a->num_colors != b->num_colors ) return 0;
@@ -784,7 +787,7 @@ int mliScenery_is_equal(const mliScenery *a, const mliScenery *b) {
     return 1;}
 
 
-int mliScenery_valid_surfaces(const mliScenery *scenery) {
+int mliScenery_valid_surfaces(const struct mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_surfaces; i++) {
         switch (scenery->surfaces[i].material) {
@@ -806,7 +809,7 @@ int mliScenery_valid_surfaces(const mliScenery *scenery) {
     }
     return 1;}
 
-int mliScenery_valid_triangles(const mliScenery *scenery) {
+int mliScenery_valid_triangles(const struct mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_triangles; i++) {
         if (scenery->triangles[i].a >= scenery->num_vertices)
@@ -821,7 +824,7 @@ int mliScenery_valid_triangles(const mliScenery *scenery) {
             return 0;}
     return 1;}
 
-int mliScenery_valid_spherical_cap_hex(const mliScenery *scenery) {
+int mliScenery_valid_spherical_cap_hex(const struct mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_spherical_cap_hex; i++) {
         if (    scenery->spherical_cap_hex_surfaces[i].inner >=
@@ -833,7 +836,7 @@ int mliScenery_valid_spherical_cap_hex(const mliScenery *scenery) {
     }
     return 1;}
 
-int mliScenery_valid_spheres(const mliScenery *scenery) {
+int mliScenery_valid_spheres(const struct mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_spheres; i++) {
         if (    scenery->spheres_surfaces[i].inner >=
@@ -845,7 +848,7 @@ int mliScenery_valid_spheres(const mliScenery *scenery) {
     }
     return 1;}
 
-int mliScenery_valid_cylinders(const mliScenery *scenery) {
+int mliScenery_valid_cylinders(const struct mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_cylinders; i++) {
         if (    scenery->cylinders_surfaces[i].inner >=
@@ -857,7 +860,7 @@ int mliScenery_valid_cylinders(const mliScenery *scenery) {
     }
     return 1;}
 
-int mliScenery_valid_hexagons(const mliScenery *scenery) {
+int mliScenery_valid_hexagons(const struct mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_hexagons; i++) {
         if (scenery->hexagons_surfaces[i].inner >= scenery->num_surfaces) {
@@ -869,7 +872,7 @@ int mliScenery_valid_hexagons(const mliScenery *scenery) {
     }
     return 1;}
 
-int mliScenery_valid_bicircleplanes(const mliScenery *scenery) {
+int mliScenery_valid_bicircleplanes(const struct mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_bicircleplanes; i++) {
         if (scenery->bicircleplanes_surfaces[i].inner >=
@@ -888,7 +891,7 @@ int mliScenery_valid_bicircleplanes(const mliScenery *scenery) {
     }
     return 1;}
 
-int mliScenery_valid_disc(const mliScenery *scenery) {
+int mliScenery_valid_disc(const struct mliScenery *scenery) {
     uint64_t i;
     for (i = 0; i < scenery->num_discs; i++) {
         if (scenery->discs_surfaces[i].inner >=
@@ -907,7 +910,7 @@ int mliScenery_valid_disc(const mliScenery *scenery) {
     }
     return 1;}
 
-int mliScenery_valid(const mliScenery *scenery) {
+int mliScenery_valid(const struct mliScenery *scenery) {
     if (!mliScenery_valid_surfaces(scenery))
         return 0;
     if (!mliScenery_valid_triangles(scenery))

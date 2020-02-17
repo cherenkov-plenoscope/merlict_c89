@@ -32,7 +32,7 @@ struct mliPrimitiveCount mliPrimitiveCount_init() {
     return i;}
 
 int __mliScenery_set_primitive_capacity(
-    mliScenery* scenery,
+    struct mliScenery *scenery,
     const struct mliFrame *frame)
 {
     uint64_t c;
@@ -60,7 +60,7 @@ error:
 }
 
 int __mliScenery_set_primitive(
-    mliScenery* scenery,
+    struct mliScenery *scenery,
     const struct mliFrame *frame,
     struct mliPrimitiveCount *count)
 {
@@ -141,9 +141,9 @@ error:
     return 0;}
 
 int mliScenery_malloc_from_mliUserScenery(
-    mliScenery* scenery,
-    mliUserScenery* uscn) {
-
+    struct mliScenery *scenery,
+    mliUserScenery *uscn)
+{
     uint64_t i;
     struct mliPrimitiveCount count = mliPrimitiveCount_init();
 
@@ -192,7 +192,10 @@ error:
     return 0;
 }
 
-int mliScenery_malloc_from_json_path(mliScenery* scenery, const char* path) {
+int mliScenery_malloc_from_json_path(
+    struct mliScenery *scenery,
+    const char* path)
+{
     struct mliJson json = mliJson_init();
     mliUserScenery uscn = mliUserScenery_init();
     mli_check(
@@ -210,6 +213,7 @@ int mliScenery_malloc_from_json_path(mliScenery* scenery, const char* path) {
 error:
     mliJson_free(&json);
     mliUserScenery_free(&uscn);
-    return 0;}
+    return 0;
+}
 
 #endif

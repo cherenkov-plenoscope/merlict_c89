@@ -16,7 +16,7 @@
     which is optimized for ray tracing.
 */
 typedef struct {
-    mliScenery surface_resources; /* stores only the surfaces */
+    struct mliScenery surface_resources; /* stores only the surfaces */
     struct mliFrame root;
 } mliUserScenery;
 

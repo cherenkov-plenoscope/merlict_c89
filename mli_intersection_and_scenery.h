@@ -9,7 +9,7 @@
 #include "mliPhotonInteraction.h"
 
 mliSurface _mli_surface_coming_from(
-    const mliScenery *scenery,
+    const struct mliScenery *scenery,
     const mliIntersection *isec) {
     mliSurfaces surfaces = mliScenery_object_surfaces(
         scenery,
@@ -20,7 +20,7 @@ mliSurface _mli_surface_coming_from(
         return scenery->surfaces[surfaces.outer];}
 
 mliSurface _mli_surface_going_to(
-    const mliScenery *scenery,
+    const struct mliScenery *scenery,
     const mliIntersection *isec) {
     mliSurfaces surfaces = mliScenery_object_surfaces(
         scenery,
@@ -31,7 +31,7 @@ mliSurface _mli_surface_going_to(
         return scenery->surfaces[surfaces.inner];}
 
 const struct mliFunc *_mli_refractive_index_going_to(
-    const mliScenery *scenery,
+    const struct mliScenery *scenery,
     const mliIntersection *isec) {
     const struct mliFunc *refractive_index;
     const mliSurface going_to = _mli_surface_going_to(scenery, isec);
@@ -39,7 +39,7 @@ const struct mliFunc *_mli_refractive_index_going_to(
     return refractive_index;}
 
 const struct mliFunc *_mli_refractive_index_coming_from(
-    const mliScenery *scenery,
+    const struct mliScenery *scenery,
     const mliIntersection *isec) {
     const struct mliFunc *refractive_index;
     const mliSurface coming_from = _mli_surface_coming_from(scenery, isec);

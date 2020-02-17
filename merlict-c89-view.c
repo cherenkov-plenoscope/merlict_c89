@@ -7,7 +7,7 @@
 #include "merlict_c89_viewer.h"
 
 int main(int argc, char *argv[]) {
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     mliOcTree octree;
 
     if (argc != 2) {

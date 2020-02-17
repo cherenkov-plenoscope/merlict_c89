@@ -2,8 +2,8 @@
 
 CASE("mliScenery, mliMesh_malloc_from_object_file") {
     uint64_t i;
-    mliScenery scenery = mliScenery_init();
-    mliScenery scenery_back = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery_back = mliScenery_init();
     mliMesh diff_cube_sphere = mliMesh_init();
     struct mliColor red = {255., 0., 0.};
     struct mliColor blue = {0., 0., 255.};
@@ -155,7 +155,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
 }
 
 CASE("mliScenery, render image") {
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     struct mliCamera camera;
     struct mliImage img = mliImage_init();
@@ -183,7 +183,7 @@ CASE("mliScenery, render image") {
 }
 
 CASE("scenery indexes are valid") {
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     CHECK(mliScenery_valid(&scenery));     /* <--- to be tested */
     mliScenery_free(&scenery);
@@ -193,7 +193,7 @@ CASE("mliScenery_overlap_obb") {
     struct mliOBB obb;
     uint64_t i;
     uint64_t num_surface_entities;
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     num_surface_entities = scenery.num_triangles;
     num_surface_entities += scenery.num_spherical_cap_hex;
@@ -218,7 +218,7 @@ CASE("mliScenery_overlap_obb") {
 }
 
 CASE("mliScenery_outermost_obb") {
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     struct mliOBB obb;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     CHECK(mliScenery_valid(&scenery));
@@ -235,12 +235,12 @@ CASE("mliScenery_outermost_obb") {
 }
 
 CASE("read non existing file") {
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     CHECK(!mliScenery_read_from_path(&scenery, "does_not_exist.tmp"));
 }
 
 CASE("scenery intersection interface -> sphere") {
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     mliIntersection isec;
     int hit = 0;
     uint64_t sphere_idx;
@@ -277,7 +277,7 @@ CASE("scenery intersection interface -> sphere") {
 }
 
 CASE("mliOcTree_from_scenery") {
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     mliIntersection isec;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
@@ -303,8 +303,8 @@ CASE("mliOcTree_from_scenery") {
     mliScenery_free(&scenery);
 }
 
-CASE("mliScenery asymetric") {
-    mliScenery scenery = mliScenery_init();
+CASE("struct mliScenery asymetric") {
+    struct mliScenery scenery = mliScenery_init();
     struct mliVec offset;
     uint64_t i;
     scenery.num_functions = 1u;
@@ -354,7 +354,7 @@ CASE("mliScenery asymetric") {
 }
 
 CASE("render image asymetric scenery") {
-    mliScenery scenery = mliScenery_init();
+    struct mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     struct mliCamera camera;
     struct mliImage img = mliImage_init();

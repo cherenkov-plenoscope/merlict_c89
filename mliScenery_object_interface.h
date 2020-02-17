@@ -26,7 +26,7 @@ typedef struct {
     uint32_t idx;
 } mliIndex;
 
-uint64_t mliScenery_num_objects(const mliScenery* scenery) {
+uint64_t mliScenery_num_objects(const struct mliScenery *scenery) {
     uint64_t last = 0;
     last += scenery->num_triangles;
     last += scenery->num_spherical_cap_hex;
@@ -38,9 +38,9 @@ uint64_t mliScenery_num_objects(const mliScenery* scenery) {
     return last;}
 
 mliIndex __mliScenery_resolve_index(
-    const mliScenery* scenery,
-    const uint64_t idx) {
-
+    const struct mliScenery *scenery,
+    const uint64_t idx)
+{
     const uint64_t idx_start_spherical_cap_hex =
         scenery->num_triangles;
 
@@ -98,9 +98,10 @@ mliIndex __mliScenery_resolve_index(
     return ri;}
 
 int mliScenery_overlap_obb(
-    const mliScenery* scenery,
+    const struct mliScenery *scenery,
     const uint64_t idx,
-    const struct mliOBB obb) {
+    const struct mliOBB obb)
+{
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {
         case MLI_TRIANGLE:
@@ -154,8 +155,9 @@ int mliScenery_overlap_obb(
 }
 
 struct mliOBB mliScenery_obb(
-    const mliScenery* scenery,
-    const uint64_t idx) {
+    const struct mliScenery *scenery,
+    const uint64_t idx)
+{
     struct mliOBB obb;
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {
@@ -206,7 +208,7 @@ struct mliOBB mliScenery_obb(
     return obb;
 }
 
-struct mliOBB mliScenery_outermost_obb(const mliScenery *scenery) {
+struct mliOBB mliScenery_outermost_obb(const struct mliScenery *scenery) {
     uint64_t i;
     uint64_t num_objects;
     struct mliOBB obb;
@@ -221,10 +223,11 @@ struct mliOBB mliScenery_outermost_obb(const mliScenery *scenery) {
 }
 
 int mliScenery_intersection(
-    const mliScenery* scenery,
+    const struct mliScenery *scenery,
     const struct mliRay ray,
     const uint64_t idx,
-    mliIntersection *intersection) {
+    mliIntersection *intersection)
+{
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
     intersection->object_idx = idx;
     switch(i.type) {
@@ -286,8 +289,9 @@ int mliScenery_intersection(
 }
 
 mliSurfaces mliScenery_object_surfaces(
-    const mliScenery* scenery,
-    const uint64_t idx) {
+    const struct mliScenery *scenery,
+    const uint64_t idx)
+{
     mliSurfaces null = {0, 0};
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {

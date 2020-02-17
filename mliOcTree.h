@@ -65,7 +65,7 @@ uint32_t mliNode_signs_to_child(
 
 int mliNode_add_children(
     mliNode *node,
-    const mliScenery *scenery,
+    const struct mliScenery *scenery,
     const struct mliCube cube,
     const uint64_t depth,
     const uint64_t max_depth) {
@@ -141,7 +141,7 @@ error:
 }
 
 mliNode mliNode_from_scenery(
-    const mliScenery *scenery,
+    const struct mliScenery *scenery,
     const struct mliCube scenery_cube) {
     mliNode root;
     uint32_t idx;
@@ -243,7 +243,7 @@ typedef struct {
 void mliOcTree_free(mliOcTree *octree) {
     mliNode_free(&octree->root);}
 
-mliOcTree mliOcTree_from_scenery(const mliScenery *scenery) {
+mliOcTree mliOcTree_from_scenery(const struct mliScenery *scenery) {
     mliOcTree octree;
     octree.cube = mliCube_outermost_cube(
             mliScenery_outermost_obb(scenery));
