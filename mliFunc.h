@@ -13,52 +13,63 @@ struct mliFunc{
     double *y;
 };
 
-struct mliFunc mliFunc_init() {
+struct mliFunc mliFunc_init()
+{
     struct mliFunc f;
     f.num_points = 0u;
     f.x = NULL;
     f.y = NULL;
-    return f;}
+    return f;
+}
 
-void mliFunc_free(struct mliFunc *f) {
+void mliFunc_free(struct mliFunc *f)
+{
     free(f->x);
     free(f->y);
-    *f = mliFunc_init();}
+    *f = mliFunc_init();
+}
 
-int mliFunc_malloc(struct mliFunc *f) {
+int mliFunc_malloc(struct mliFunc *f)
+{
+    free(f->x);
     mli_malloc(f->x, double, f->num_points);
+    free(f->y);
     mli_malloc(f->y, double, f->num_points);
     return 1;
 error:
     mliFunc_free(f);
-    return 0;}
+    return 0;
+}
 
-int mliFunc_x_is_causal(struct mliFunc *f) {
+int mliFunc_x_is_causal(struct mliFunc *f)
+{
     uint32_t i;
     for (i = 1; i < f->num_points; i++) {
         if (f->x[i] <= f->x[i - 1]) {
             return 0;}}
-    return 1;}
+    return 1;
+}
 
 double mli_linear_interpolate(
     const double xarg,
     const double x0,
     const double y0,
     const double x1,
-    const double y1) {
+    const double y1)
+{
     /*
-        |
-    y1 -|            o
-        |
-    y0 -|    o
-        |       xarg
-        +----|---|---|----
-            x0       x1
-
-    f(x) = m*x + b
-    m = (y1 - y0)/(x1 - x0)
-    y0 = m*x0 + b
-    b = y0 - m*x0
+     *      |
+     *  y1 -|            o
+     *      |
+     *  y0 -|    o
+     *      |       xarg
+     *      +----|---|---|----
+     *          x0       x1
+     *
+     *  f(x) = m*x + b
+     *  m = (y1 - y0)/(x1 - x0)
+     *  y0 = m*x0 + b
+     *  b = y0 - m*x0
     */
     const double m = (y1 - y0)/(x1 - x0);
     const double b = y0 - m*x0;
@@ -85,7 +96,8 @@ error:
 int mliFunc_fold_numeric(
     const struct mliFunc *a,
     const struct mliFunc *b,
-    double* fold) {
+    double* fold)
+{
     uint64_t i;
     const uint64_t NUM_STEPS = 1024*8;
     const double xmin = a->x[0];
@@ -98,7 +110,8 @@ int mliFunc_fold_numeric(
         "Expect a->x[:-1] == b->x[:-1].");
     (*fold) = 0.0;
     for (i = 0; i < NUM_STEPS; i++) {
-        double ra, rb;
+        double ra = MLI_NAN;
+        double rb = MLI_NAN;
         double x = xmin + (double)i*step_size;
         mli_c(mliFunc_evaluate(a, x, &ra));
         mli_c(mliFunc_evaluate(b, x, &rb));
@@ -106,19 +119,23 @@ int mliFunc_fold_numeric(
     }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
-int mliFunc_fwrite(const struct mliFunc *func, FILE* f) {
+int mliFunc_fwrite(const struct mliFunc *func, FILE* f)
+{
     mli_fwrite(&func->num_points, sizeof(uint32_t), 1u, f);
     mli_fwrite(func->x, sizeof(double), func->num_points, f);
     mli_fwrite(func->y, sizeof(double), func->num_points, f);
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
-int mliFunc_malloc_from_file(struct mliFunc *func, FILE* f) {
+int mliFunc_malloc_from_file(struct mliFunc *func, FILE* f)
+{
     mli_fread(&func->num_points, sizeof(uint32_t), 1u, f);
-    mliFunc_malloc(func);
+    mli_c(mliFunc_malloc(func));
     mli_fread(func->x, sizeof(double), func->num_points, f);
     mli_fread(func->y, sizeof(double), func->num_points, f);
     mli_check(
@@ -127,26 +144,33 @@ int mliFunc_malloc_from_file(struct mliFunc *func, FILE* f) {
     return 1;
 error:
     mliFunc_free(func);
-    return 0;}
+    return 0;
+}
 
-int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b) {
+int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b)
+{
     uint64_t i;
     if (a.num_points != b.num_points ) return 0;
     for (i = 0; i < a.num_points; i++) {
         if (a.x[i] != b.x[i]) return 0;
-        if (a.y[i] != b.y[i]) return 0;}
-    return 1;}
+        if (a.y[i] != b.y[i]) return 0;
+    }
+    return 1;
+}
 
-int mliFunc_cpy(struct mliFunc *destination, const struct mliFunc *source) {
+int mliFunc_cpy(struct mliFunc *destination, const struct mliFunc *source)
+{
     uint64_t p;
     mli_check(
         destination->num_points == source->num_points,
         "Expected source and destination mliFunc to have same num_points.");
     for (p = 0; p < destination->num_points; p++) {
         destination->x[p] = source->x[p];
-        destination->y[p] = source->y[p];}
+        destination->y[p] = source->y[p];
+    }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 #endif

@@ -8,7 +8,9 @@
 #include <ctype.h>
 #include <stdint.h>
 #include "mli_debug.h"
+#include "mli_math.h"
 #include "mliFace.h"
+#include "mliVec.h"
 
 struct mliMesh {
     uint32_t num_vertices;
@@ -17,7 +19,8 @@ struct mliMesh {
     struct mliFace *faces;
 };
 
-struct mliMesh mliMesh_init() {
+struct mliMesh mliMesh_init()
+{
     struct mliMesh m;
     m.num_vertices = 0;
     m.vertices = NULL;
@@ -28,7 +31,9 @@ struct mliMesh mliMesh_init() {
 
 int mliMesh_malloc(struct mliMesh *m)
 {
+    free(m->vertices);
     mli_malloc(m->vertices, struct mliVec, m->num_vertices);
+    free(m->faces);
     mli_malloc(m->faces, struct mliFace, m->num_faces);
     return 1;
 error:
@@ -172,8 +177,8 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
     FILE * fin;
     char line[1024];
     int len = 1024;
-    int num_vertices;
-    int num_faces;
+    int num_vertices = 0;
+    int num_faces = 0;
     int not_used;
     uint32_t vertex_idx = 0;
     uint32_t face_idx = 0;
@@ -190,13 +195,13 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
     m->num_faces = num_faces;
     mli_check(num_vertices >= 0, "Expected num_vertices >= 0.");
     m->num_vertices = num_vertices;
-    mliMesh_malloc(m);
+    mli_c(mliMesh_malloc(m));
 
     while (1) {
         mli_check(fgets(line, len, fin) != NULL, "Can not read vertex line.");
         if (vertex_idx == m->num_vertices) break;
         if (strlen(line) > 1) {
-            struct mliVec poi;
+            struct mliVec poi = mliVec_set(MLI_NAN, MLI_NAN, MLI_NAN);
             mli_check(
                 mli_parse_three_doubles(line, &poi.x, &poi.y, &poi.z),
                 "Can not parse vertex.");
@@ -207,22 +212,26 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
 
     while (1) {
         if (strlen(line) > 1) {
-            int ia, ib, ic;
+            int ia = 0, ib = 0, ic = 0;
             struct mliFace fa;
             mli_check(
                 mli_parse_three_ints(strchr(line, ' '), &ia, &ib, &ic),
                 "Can not parse face.");
-            fa.a = ia; fa.b = ib; fa.c = ic;
+            fa.a = ia;
+            fa.b = ib;
+            fa.c = ic;
             m->faces[face_idx] = fa;
             face_idx++;
         }
         if (face_idx == m->num_faces) break;
         mli_check(fgets(line, len, fin) != NULL, "Can not read face line.");
     }
-    fclose(fin);
+    mli_check(fclose(fin) == 0, "Can not close object-file.");
     return 1;
 error:
-    if (fin != NULL) {fclose(fin);}
+    if (fin != NULL) {
+        mli_check(fclose(fin) == 0, "Can not close object-file.");
+    }
     mliMesh_free(m);
     return 0;
 }
