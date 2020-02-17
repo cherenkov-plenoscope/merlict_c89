@@ -66,7 +66,7 @@ CASE("ray and orientated bounding box") {
 CASE("ray has causal intersection") {
     double causal_solution;
     int rc;
-    mliBoundSurfaceChecklist cl;
+    struct mliBoundSurfaceChecklist cl;
 
     /*       _/_ps
      *      //  \

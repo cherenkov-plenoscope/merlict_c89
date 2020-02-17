@@ -30,7 +30,7 @@ int mliSphericalCapHex_intersection(
             &minus_solution)
     ) {
         double causal_solution;
-        mliBoundSurfaceChecklist cl;
+        struct mliBoundSurfaceChecklist cl;
         struct mliVec plus_intersec, minus_intersec;
         cl.plus_solution = plus_solution;
         cl.minus_solution = minus_solution;

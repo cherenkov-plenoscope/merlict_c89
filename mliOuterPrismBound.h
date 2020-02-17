@@ -7,15 +7,15 @@
 #include "mliRay.h"
 
 
-typedef struct {
+struct mliBoundSurfaceChecklist {
     double plus_solution;
     double minus_solution;
     int plus_is_inside;
     int minus_is_inside;
-} mliBoundSurfaceChecklist;
+};
 
 int mli_outer_bound_surface_causal_intersection(
-    const mliBoundSurfaceChecklist cl,
+    const struct mliBoundSurfaceChecklist cl,
     double *causal_solution) {
     int min_is_causal;
     int plu_is_causal;
