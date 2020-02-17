@@ -86,13 +86,13 @@ struct mliVec mliVec_mirror(const struct mliVec in, const struct mliVec normal)
          *      J.H. Bruge
          *      University of Arizona
          *
-         *                                 k1    n     k2
-         *                                      \    /\   /
-         *                                       \   |   /
-         *                                        \  |  /
-         *                                         \ | /
+         *                     k1    n     k2
+         *                      \    /\   /
+         *                       \   |   /
+         *                        \  |  /
+         *                         \ | /
          *      ____________________\|/______________________
-         *       mirror-surface
+         *      mirror-surface
          *
          *      k1: incidate ray
          *      k2: reflected ray
@@ -107,8 +107,8 @@ struct mliVec mliVec_mirror(const struct mliVec in, const struct mliVec normal)
          *      M = EYE - 2*n*n^T
          *
          *      using EYE =  [1 0 0]
-         *                               [0 1 0]
-         *                               [0 0 1]
+         *                   [0 1 0]
+         *                   [0 0 1]
          */
         struct mliVec out;
         out.x = (1. - 2.*normal.x*normal.x) * in.x +
