@@ -38,7 +38,7 @@ struct mliFrame {
     union {
         mliMesh *mesh;
         mliSphericalCapHex *spherical_cap_hex;
-        mliSphere *sphere;
+        struct mliSphere *sphere;
         struct mliCylinder *cylinder;
         mliHexagon *hexagon;
         mliBiCirclePlane *bicircleplane;
@@ -79,7 +79,7 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type) {
             mli_malloc(f->primitive.spherical_cap_hex, mliSphericalCapHex, 1u);
             break;
         case MLI_SPHERE:
-            mli_malloc(f->primitive.sphere, mliSphere, 1u);
+            mli_malloc(f->primitive.sphere, struct mliSphere, 1u);
             break;
         case MLI_CYLINDER:
             mli_malloc(f->primitive.cylinder, struct mliCylinder, 1u);

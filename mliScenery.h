@@ -50,7 +50,7 @@ struct mliScenery {
     struct mliHomTraComp *spherical_cap_hex_T;
 
     uint32_t num_spheres;
-    mliSphere *spheres;
+    struct mliSphere *spheres;
     mliSurfaces *spheres_surfaces;
     struct mliHomTraComp *spheres_T;
 
@@ -227,7 +227,7 @@ error:
 }
 
 int __mliScenery_malloc_spheres(struct mliScenery *s) {
-    mli_malloc(s->spheres, mliSphere, s->num_spheres);
+    mli_malloc(s->spheres, struct mliSphere, s->num_spheres);
     mli_malloc(s->spheres_surfaces, mliSurfaces, s->num_spheres);
     mli_malloc(s->spheres_T, struct mliHomTraComp, s->num_spheres);
     return 1;

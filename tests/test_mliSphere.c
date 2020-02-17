@@ -1,7 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliSphere_intersection") {
-    mliSphere sphere;
+    struct mliSphere sphere;
     struct mliIntersection intersection;
     struct mliHomTraComp local2root_comp;
     sphere.radius = 1.;

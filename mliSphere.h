@@ -2,13 +2,15 @@
 #ifndef MERLICT_SPHERE_H_
 #define MERLICT_SPHERE_H_
 
-typedef struct {
+struct mliSphere {
     double radius;
-} mliSphere;
+};
 
 int mliSphere_is_equal(
-    const mliSphere a,
-    const mliSphere b) {
-    return a.radius == b.radius;}
+    const struct mliSphere a,
+    const struct mliSphere b)
+{
+    return a.radius == b.radius;
+}
 
 #endif
