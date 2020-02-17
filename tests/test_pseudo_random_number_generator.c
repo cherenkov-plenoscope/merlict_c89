@@ -3,7 +3,7 @@
 CASE("average of uniform distribution") {
     double sum = 0;
     uint64_t i;
-    mliMT19937 prng;
+    struct mliMT19937 prng;
     mliMT19937_init(&prng, 0u);
     for (i = 0; i < 1000000; i++) {
         sum += mliMT19937_uniform(&prng);
@@ -13,7 +13,7 @@ CASE("average of uniform distribution") {
 
 CASE("uniform population of histogram") {
     uint64_t i;
-    mliMT19937 prng;
+    struct mliMT19937 prng;
     double bin_edges[100];
     const uint64_t num_bin_edges = 100;
     const uint64_t num_bins = num_bin_edges - 1u;
@@ -45,7 +45,7 @@ CASE("throwing Pi") {
     uint64_t i;
     uint64_t num_in_circle = 0u;
     double pi_estimate;
-    mliMT19937 prng;
+    struct mliMT19937 prng;
     mliMT19937_init(&prng, 0u);
     for (i = 0; i < num_throws; i++) {
         const double x = mliMT19937_uniform(&prng);

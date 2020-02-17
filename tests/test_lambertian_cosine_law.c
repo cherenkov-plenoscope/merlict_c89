@@ -4,7 +4,7 @@ CASE("lambertian cosine law, populate histogram, check cosine law") {
     uint64_t n;
     const uint64_t NUM_TRAILS = 1000*100;
     struct mliVec unit_z = mliVec_set(0, 0, 1);
-    mliMT19937 prng;
+    struct mliMT19937 prng;
 
     #define NUM_BINS 25
     double hist_bin_edges[NUM_BINS + 1];
@@ -58,7 +58,7 @@ CASE("lambertian cosine law, relative to surface normal") {
     const uint64_t NUM_TRAILS = 5000;
     double theta;
     struct mliVec surface_normal;
-    mliMT19937 prng;
+    struct mliMT19937 prng;
 
     double hist_bin_edges[10 + 1];
     const uint64_t hist_num_bin_edges = 10 + 1;

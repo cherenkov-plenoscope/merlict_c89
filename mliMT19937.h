@@ -7,7 +7,7 @@
 /*
     Adopted from https://en.wikipedia.org/wiki/Mersenne_Twister
 */
-typedef struct {
+struct mliMT19937 {
     uint32_t N;
     uint32_t M;
     int R;
@@ -23,9 +23,10 @@ typedef struct {
     int MASK_UPPER;
     uint32_t  mt[624];
     uint16_t  index;
-} mliMT19937;
+};
 
-void mliMT19937_define_constants(mliMT19937* mt) {
+void mliMT19937_define_constants(struct mliMT19937 *mt)
+{
     /*
         Define MT19937 constants (32-bit RNG)
         Assumes W = 32 (omitting this)
@@ -47,7 +48,8 @@ void mliMT19937_define_constants(mliMT19937* mt) {
 }
 
 /* Re-init with a given seed */
-void mliMT19937_init(mliMT19937* mt, const uint32_t seed) {
+void mliMT19937_init(struct mliMT19937 *mt, const uint32_t seed)
+{
     uint32_t  i;
     mliMT19937_define_constants(mt);
     mt->mt[0] = seed;
@@ -57,7 +59,8 @@ void mliMT19937_init(mliMT19937* mt, const uint32_t seed) {
     mt->index = mt->N;
 }
 
-void mliMT19937_twist(mliMT19937* mt) {
+void mliMT19937_twist(struct mliMT19937 *mt)
+{
     uint32_t  i, x, xA;
 
     for ( i = 0; i < mt->N; i++ ) {
@@ -75,7 +78,8 @@ void mliMT19937_twist(mliMT19937* mt) {
     mt->index = 0;
 }
 
-uint32_t mliMT19937_uint32(mliMT19937* mt) {
+uint32_t mliMT19937_uint32(struct mliMT19937 *mt)
+{
     uint32_t  y;
     int i = mt->index;
 
@@ -95,14 +99,18 @@ uint32_t mliMT19937_uint32(mliMT19937* mt) {
     return y;
 }
 
-double mliMT19937_uniform(mliMT19937* mt) {
+double mliMT19937_uniform(struct mliMT19937 *mt)
+{
     uint32_t rn_int = mliMT19937_uint32(mt);
     double rn = (double)rn_int;
     double max_uint32 = (double)UINT32_MAX;
-    return rn/max_uint32;}
+    return rn/max_uint32;
+}
 
-double mliMT19937_expovariate(mliMT19937* mt, const double rate) {
+double mliMT19937_expovariate(struct mliMT19937 *mt, const double rate)
+{
     /* sampling from a poisson distribution */
-    return -log(mliMT19937_uniform(mt))/rate;}
+    return -log(mliMT19937_uniform(mt))/rate;
+}
 
 #endif

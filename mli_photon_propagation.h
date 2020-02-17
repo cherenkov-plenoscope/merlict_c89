@@ -16,7 +16,7 @@ struct mliEnv {
     const struct mliOcTree *octree;
     mliPhotonHistory *history;
     mliPhoton *photon;
-    mliMT19937 *prng;
+    struct mliMT19937 *prng;
 };
 
 int _mli_propagate_photon(struct mliEnv *env);
@@ -304,7 +304,7 @@ int mli_propagate_photon(
     struct mliOcTree *octree,
     mliPhotonHistory *history,
     mliPhoton *photon,
-    mliMT19937 *prng)
+    struct mliMT19937 *prng)
 {
     struct mliEnv env;
     env.scenery = scenery;

@@ -10,7 +10,7 @@ CASE("mliPhoton_set") {
 }
 
 CASE("simple propagation") {
-    mliMT19937 prng;
+    struct mliMT19937 prng;
     struct mliScenery scenery = mliScenery_init();
     struct mliOcTree octree;
     mliPhotonHistory history = mliPhotonHistory_init(16u);
