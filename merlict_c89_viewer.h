@@ -135,7 +135,7 @@ void _mlivr_mv_cursor_left(struct mlivrCursor *cursor) {
 
 int mlivr_run_interactive_viewer(
     const struct mliScenery *scenery,
-    const mliOcTree* octree,
+    const struct mliOcTree *octree,
     const struct mlivrConfig config)
 {
     struct termios old_terminal = mlivr_disable_stdin_buffer();

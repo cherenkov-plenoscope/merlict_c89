@@ -156,7 +156,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
 
 CASE("mliScenery, render image") {
     struct mliScenery scenery = mliScenery_init();
-    mliOcTree octree;
+    struct mliOcTree octree;
     struct mliCamera camera;
     struct mliImage img = mliImage_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
@@ -278,7 +278,7 @@ CASE("scenery intersection interface -> sphere") {
 
 CASE("mliOcTree_from_scenery") {
     struct mliScenery scenery = mliScenery_init();
-    mliOcTree octree;
+    struct mliOcTree octree;
     mliIntersection isec;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     octree = mliOcTree_from_scenery(&scenery);
@@ -355,7 +355,7 @@ CASE("struct mliScenery asymetric") {
 
 CASE("render image asymetric scenery") {
     struct mliScenery scenery = mliScenery_init();
-    mliOcTree octree;
+    struct mliOcTree octree;
     struct mliCamera camera;
     struct mliImage img = mliImage_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn_asym.mli.tmp");

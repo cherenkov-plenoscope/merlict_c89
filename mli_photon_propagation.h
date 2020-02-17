@@ -13,8 +13,8 @@
 
 typedef struct {
     const struct mliScenery *scenery;
-    const mliOcTree* octree;
-    mliPhotonHistory* history;
+    const struct mliOcTree *octree;
+    mliPhotonHistory *history;
     mliPhoton *photon;
     mliMT19937 *prng;
 } mliEnv;
@@ -300,10 +300,10 @@ error:
 
 int mli_propagate_photon(
     struct mliScenery *scenery,
-    mliOcTree* octree,
-    mliPhotonHistory* history,
-    mliPhoton* photon,
-    mliMT19937* prng)
+    struct mliOcTree *octree,
+    mliPhotonHistory *history,
+    mliPhoton *photon,
+    mliMT19937 *prng)
 {
     mliEnv env;
     env.scenery = scenery;

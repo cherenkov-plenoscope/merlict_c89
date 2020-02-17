@@ -235,16 +235,16 @@ void mliNode_print(const struct mliNode *node, const uint32_t indent, const uint
     }
 }
 
-typedef struct {
+struct mliOcTree {
     struct mliCube cube;
     struct mliNode root;
-} mliOcTree;
+};
 
-void mliOcTree_free(mliOcTree *octree) {
+void mliOcTree_free(struct mliOcTree *octree) {
     mliNode_free(&octree->root);}
 
-mliOcTree mliOcTree_from_scenery(const struct mliScenery *scenery) {
-    mliOcTree octree;
+struct mliOcTree mliOcTree_from_scenery(const struct mliScenery *scenery) {
+    struct mliOcTree octree;
     octree.cube = mliCube_outermost_cube(
             mliScenery_outermost_obb(scenery));
     octree.root = mliNode_from_scenery(

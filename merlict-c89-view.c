@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[]) {
     struct mliScenery scenery = mliScenery_init();
-    mliOcTree octree;
+    struct mliOcTree octree;
 
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <scenery-path>\n", argv[0]);
