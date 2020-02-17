@@ -69,7 +69,7 @@ CASE("mliImage_write_to_ppm, mliImage_malloc_from_ppm") {
     tone = 0.;
     for (col = 0; col < img.num_cols; col++) {
         for (row = 0; row < img.num_rows; row++) {
-            mliColor color;
+            struct mliColor color;
             tone = (double)col * (double)row;
             color.r = tone;
             color.g = tone + 1.;
@@ -85,8 +85,8 @@ CASE("mliImage_write_to_ppm, mliImage_malloc_from_ppm") {
 
     for (col = 0; col < back.num_cols; col++) {
         for (row = 0; row < back.num_rows; row++) {
-            mliColor c_in = mliImage_at(&img, col, row);
-            mliColor c_back = mliImage_at(&back, col, row);
+            struct mliColor c_in = mliImage_at(&img, col, row);
+            struct mliColor c_back = mliImage_at(&back, col, row);
             CHECK_MARGIN(c_in.r, c_back.r, 1.);
             CHECK_MARGIN(c_in.g, c_back.g, 1.);
             CHECK_MARGIN(c_in.b, c_back.b, 1.);

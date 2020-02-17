@@ -5,33 +5,33 @@
 #include <math.h>
 #include <stdint.h>
 
-typedef struct {
+struct mliColor {
     float r;
     float g;
     float b;
-} mliColor;
+};
 
-mliColor mliColor_set(const double r, const double g, const double b) {
-    mliColor rgb;
+struct mliColor mliColor_set(const double r, const double g, const double b) {
+    struct mliColor rgb;
     rgb.r = r;
     rgb.g = g;
     rgb.b = b;
     return rgb;}
 
-mliColor mliColor_mix(
-    const mliColor a,
-    const mliColor b,
+struct mliColor mliColor_mix(
+    const struct mliColor a,
+    const struct mliColor b,
     const double refl) {
-    mliColor out;
+    struct mliColor out;
     out.r = (1.f - refl)*a.r + refl * b.r;
     out.g = (1.f - refl)*a.g + refl * b.g;
     out.b = (1.f - refl)*a.b + refl * b.b;
     return out;}
 
-mliColor mliColor_mean(
-    const mliColor colors[],
+struct mliColor mliColor_mean(
+    const struct mliColor colors[],
     const uint32_t num_colors) {
-    mliColor out = {0., 0., 0.};
+    struct mliColor out = {0., 0., 0.};
     uint32_t i;
     for (i = 0; i < num_colors; i++) {
         out.r = out.r + colors[i].r;
@@ -42,8 +42,8 @@ mliColor mliColor_mean(
     out.b = out.b/num_colors;
     return out;}
 
-mliColor mliColor_truncate_to_uint8(const mliColor color) {
-    mliColor out;
+struct mliColor mliColor_truncate_to_uint8(const struct mliColor color) {
+    struct mliColor out;
     out.r = color.r;
     out.g = color.g;
     out.b = color.b;
@@ -55,7 +55,7 @@ mliColor mliColor_truncate_to_uint8(const mliColor color) {
     if (out.b < 0.) out.b = 0.;
     return out;}
 
-int mliColor_is_equal(const mliColor a, const mliColor b) {
+int mliColor_is_equal(const struct mliColor a, const struct mliColor b) {
     if (a.r != b.r) return 0;
     if (a.g != b.g) return 0;
     if (a.b != b.b) return 0;

@@ -5,10 +5,10 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     mliScenery scenery = mliScenery_init();
     mliScenery scenery_back = mliScenery_init();
     mliMesh diff_cube_sphere = mliMesh_init();
-    mliColor red = {255., 0., 0.};
-    mliColor blue = {0., 0., 255.};
-    mliColor green = {0., 255., 0.};
-    mliColor violet = {255., 0., 255.};
+    struct mliColor red = {255., 0., 0.};
+    struct mliColor blue = {0., 0., 255.};
+    struct mliColor green = {0., 255., 0.};
+    struct mliColor violet = {255., 0., 255.};
     scenery.num_functions = 1u;
     scenery.num_colors = 4u;
     scenery.num_surfaces = 4u;

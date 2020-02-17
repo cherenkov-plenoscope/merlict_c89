@@ -182,7 +182,7 @@ void mliCamera_render_image(
                 image,
                 row,
                 col);
-            mliColor color = mli_trace(scenery, octree, ray);
+            struct mliColor color = mli_trace(scenery, octree, ray);
             mliImage_set(image, col, row, color);
         }
     }

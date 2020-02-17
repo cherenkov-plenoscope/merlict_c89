@@ -1,20 +1,20 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliColor_mix") {
-    mliColor red = {255., 0., 0.};
-    mliColor blue = {0., 0., 255.};
-    mliColor mix = mliColor_mix(red, blue, 0.2);
+    struct mliColor red = {255., 0., 0.};
+    struct mliColor blue = {0., 0., 255.};
+    struct mliColor mix = mliColor_mix(red, blue, 0.2);
     CHECK_MARGIN(mix.r, 255.*0.8, 1e-6);
     CHECK_MARGIN(mix.g, 0., 1e-6);
     CHECK_MARGIN(mix.b, 255.*0.2, 1e-6);
 }
 
 CASE("mliColor_mean") {
-    mliColor colors[3];
-    mliColor one = {10., 20., 30.};
-    mliColor two = {1., 2., 3.};
-    mliColor three = {50., 60., 70.};
-    mliColor mean;
+    struct mliColor colors[3];
+    struct mliColor one = {10., 20., 30.};
+    struct mliColor two = {1., 2., 3.};
+    struct mliColor three = {50., 60., 70.};
+    struct mliColor mean;
     colors[0] = one;
     colors[1] = two;
     colors[2] = three;

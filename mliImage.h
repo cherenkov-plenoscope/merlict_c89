@@ -13,7 +13,7 @@
 typedef struct {
     uint32_t num_cols;
     uint32_t num_rows;
-    mliColor *raw;
+    struct mliColor *raw;
 } mliImage;
 
 mliImage mliImage_init() {
@@ -31,7 +31,7 @@ void mliImage_free(
     img->num_rows = 0u;}
 
 int mliImage_malloc(mliImage *img) {
-    mli_malloc(img->raw, mliColor, img->num_cols*img->num_rows);
+    mli_malloc(img->raw, struct mliColor, img->num_cols*img->num_rows);
     return 1;
 error:
     mliImage_free(img);
@@ -48,15 +48,15 @@ void mliImage_set(
     const mliImage *img,
     const uint32_t col,
     const uint32_t row,
-    const mliColor color) {
+    const struct mliColor color) {
     img->raw[mliImage_idx(img, col, row)] = color;}
 
 
-mliColor mliImage_at(
+struct mliColor mliImage_at(
     const mliImage *img,
     const uint32_t col,
     const uint32_t row) {
-    mliColor out;
+    struct mliColor out;
     out = img->raw[mliImage_idx(img, col, row)];
     return out;}
 
@@ -94,7 +94,7 @@ int mliImage_malloc_from_ppm(
     for (row = 0; row < img->num_rows; row++) {
         for (col = 0; col < img->num_cols; col++) {
             uint8_t r, g, b;
-            mliColor color;
+            struct mliColor color;
             mli_fread(&r, sizeof(uint8_t), 1u, fin);
             mli_fread(&g, sizeof(uint8_t), 1u, fin);
             mli_fread(&b, sizeof(uint8_t), 1u, fin);
@@ -127,8 +127,8 @@ int mliImage_write_to_ppm(const mliImage *img, const char *path) {
     fprintf(fout, "255\n");
     for (row = 0; row < img->num_rows; row++) {
         for (col = 0; col < img->num_cols; col++) {
-            mliColor color = mliImage_at(img, col, row);
-            mliColor out = mliColor_truncate_to_uint8(color);
+            struct mliColor color = mliImage_at(img, col, row);
+            struct mliColor out = mliColor_truncate_to_uint8(color);
             uint8_t r = (uint8_t)out.r;
             uint8_t g = (uint8_t)out.g;
             uint8_t b = (uint8_t)out.b;
@@ -156,8 +156,8 @@ void mliImage_print_chars(
     char symbol;
     for (row = 0; row < img->num_rows; row = row + 2u) {
         for (col = 0; col < img->num_cols; col++) {
-            mliColor color = mliImage_at(img, col, row);
-            mliColor out = mliColor_truncate_to_uint8(color);
+            struct mliColor color = mliImage_at(img, col, row);
+            struct mliColor out = mliColor_truncate_to_uint8(color);
             uint8_t r = (uint8_t)out.r;
             uint8_t g = (uint8_t)out.g;
             uint8_t b = (uint8_t)out.b;
@@ -185,7 +185,7 @@ int mliImage_scale_down_twice(const mliImage *source, mliImage* destination) {
         "Expected destination.num_rows*2u == source.num_rows");
     for (row = 0; row < destination->num_rows; row++) {
         for (col = 0; col < destination->num_cols; col++) {
-            mliColor mix[4];
+            struct mliColor mix[4];
             sr = row*2u;
             sc = col*2u;
             mix[0] = mliImage_at(source, sc + 0, sr + 0);
@@ -284,10 +284,10 @@ void mliImage_luminance_threshold_dilatation(
     const int32_t rows = image->num_rows;
     const int32_t cols = image->num_cols;
     int32_t col, row;
-    const mliColor color_max = mliColor_set(255., 255., 255.);
+    const struct mliColor color_max = mliColor_set(255., 255., 255.);
     for (row = 0; row < rows; row++) {
         for (col = 0; col < cols; col++) {
-            const mliColor color_at = mliImage_at(image, col, row);
+            const struct mliColor color_at = mliImage_at(image, col, row);
             const float luminance = (color_at.r + color_at.g + color_at.b);
             if (luminance > threshold) {
                 int32_t orow, ocol;
@@ -345,14 +345,14 @@ int mliPixels_malloc_from_image_above_threshold(
     uint64_t i, r, c;
     for (r = 0u; r < image->num_rows; r++) {
         for (c = 0u; c < image->num_cols; c++) {
-            mliColor col = mliImage_at(image, c, r);
+            struct mliColor col = mliImage_at(image, c, r);
             if (col.r + col.g + col.b > threshold) {
                 pixels->num_pixels++;}}}
     mli_check_mem(mliPixels_malloc(pixels));
     i = 0u;
     for (r = 0u; r < image->num_rows; r++) {
         for (c = 0u; c < image->num_cols; c++) {
-            mliColor col = mliImage_at(image, c, r);
+            struct mliColor col = mliImage_at(image, c, r);
             if (col.r + col.g + col.b > threshold) {
                 pixels->pixels[i].row = r;
                 pixels->pixels[i].col = c;

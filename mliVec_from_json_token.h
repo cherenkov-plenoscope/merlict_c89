@@ -31,7 +31,7 @@ error:
     return 0;}
 
 int mliColor_from_json_token(
-    mliColor* c,
+    struct mliColor *c,
     const mliJson *json,
     const uint64_t token) {
     struct mliVec v;

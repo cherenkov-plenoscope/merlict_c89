@@ -32,7 +32,7 @@ typedef struct {
     struct mliFunc *functions;
 
     uint32_t num_colors;
-    mliColor *colors;
+    struct mliColor *colors;
 
     uint32_t num_surfaces;
     mliSurface *surfaces;
@@ -283,7 +283,7 @@ error:
 }
 
 int __mliScenery_malloc_colors(mliScenery* s) {
-    mli_malloc(s->colors, mliColor, s->num_colors);
+    mli_malloc(s->colors, struct mliColor, s->num_colors);
     return 1;
 error:
     return 0;
@@ -461,7 +461,8 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
         mliFunc_fwrite(&scenery->functions[i], f);}
 
     /* colors */
-    mli_fwrite(scenery->colors, sizeof(mliColor), scenery->num_colors, f);
+    mli_fwrite(
+        scenery->colors, sizeof(struct mliColor), scenery->num_colors, f);
 
     /* surfaces */
     mli_fwrite(scenery->surfaces, sizeof(mliSurface), scenery->num_surfaces, f);
@@ -653,7 +654,7 @@ int mliScenery_read_from_path(mliScenery *scenery, const char* path) {
         mli_c(mliFunc_malloc_from_file(&scenery->functions[i], f));}
 
     /* colors */
-    mli_fread(scenery->colors, sizeof(mliColor), scenery->num_colors, f);
+    mli_fread(scenery->colors, sizeof(struct mliColor), scenery->num_colors, f);
 
     /* surfaces */
     mli_fread(scenery->surfaces, sizeof(mliSurface), scenery->num_surfaces, f);

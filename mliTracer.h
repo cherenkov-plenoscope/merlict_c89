@@ -32,11 +32,11 @@ int mli_first_casual_intersection(
         return 0;
 }
 
-mliColor mli_trace(
+struct mliColor mli_trace(
     const mliScenery *scenery,
     const mliOcTree* octree,
     const struct mliRay ray) {
-    mliColor color = {128., 128., 128.};
+    struct mliColor color = {128., 128., 128.};
     mliIntersection intersection;
     if (
         mli_first_casual_intersection(
