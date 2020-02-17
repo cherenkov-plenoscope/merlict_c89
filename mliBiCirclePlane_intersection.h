@@ -2,6 +2,7 @@
 #ifndef MERLICT_MLIBICIRCLEPLANE_INTERSECTION_H_
 #define MERLICT_MLIBICIRCLEPLANE_INTERSECTION_H_
 
+#include "mli_math.h"
 #include "mliVec.h"
 #include "mliRay.h"
 #include "mliHomTra.h"
@@ -9,16 +10,18 @@
 #include "mliBiCirclePlane.h"
 #include "mli_xyplane.h"
 #include "mli_from_outside_to_inside.h"
+#include "mli_dual_circle_prism.h"
 
 
 int mliBiCirclePlane_intersection(
     const struct mliBiCirclePlane plane,
     const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
-    struct mliIntersection *intersection) {
+    struct mliIntersection *intersection)
+{
     struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
-    double solution;
+    double solution = MLI_NAN;
     if (mli_xyplane_equation(
         ray_local,
         &solution)
