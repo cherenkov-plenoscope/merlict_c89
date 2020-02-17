@@ -1,8 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliCube_octree_child") {
-    mliCube node;
-    mliCube child;
+    struct mliCube node;
+    struct mliCube child;
     node.lower = mliVec_set(.0, .0, .0);
     node.edge_length = 2.;
     child = mliCube_octree_child(node, 0, 0, 0);
@@ -32,7 +32,7 @@ CASE("mliCube_octree_child") {
 
 CASE("Cube to Orientated-Bounding-Box") {
     mliOBB a;
-    mliCube cube;
+    struct mliCube cube;
     cube.lower = mliVec_set(.0, .0, .0);
     cube.edge_length = 1.;
     a = mliCube_to_obb(cube);
@@ -50,7 +50,7 @@ CASE("Cube to Orientated-Bounding-Box") {
 
 CASE("mliCube_outermost_cube") {
     mliOBB a;
-    mliCube cube;
+    struct mliCube cube;
     a.lower = mliVec_set(.0, .0, .0);
     a.upper = mliVec_set(1., 2., 3.);
     cube = mliCube_outermost_cube(a);

@@ -66,12 +66,12 @@ uint32_t mliNode_signs_to_child(
 int mliNode_add_children(
     mliNode *node,
     const mliScenery *scenery,
-    const mliCube cube,
+    const struct mliCube cube,
     const uint64_t depth,
     const uint64_t max_depth) {
     uint32_t c;
     uint32_t sx, sy, sz, obj;
-    mliCube child_cubes[8];
+    struct mliCube child_cubes[8];
     mliOctOverlap overlap[8];
 
     if (node->num_objects <= 32u) {
@@ -142,7 +142,7 @@ error:
 
 mliNode mliNode_from_scenery(
     const mliScenery *scenery,
-    const mliCube scenery_cube) {
+    const struct mliCube scenery_cube) {
     mliNode root;
     uint32_t idx;
     uint64_t depth, max_depth;
@@ -236,7 +236,7 @@ void mliNode_print(const mliNode *node, const uint32_t indent, const uint32_t ch
 }
 
 typedef struct {
-    mliCube cube;
+    struct mliCube cube;
     mliNode root;
 } mliOcTree;
 

@@ -79,7 +79,7 @@ void mli_set_txm_tym_tzm(
     double tx1,
     double ty1,
     double tz1,
-    const mliCube cube,
+    const struct mliCube cube,
     const struct mliVec ray_octree_support,
     double *txm,
     double *tym,
@@ -138,7 +138,7 @@ void __mli_proc_subtree (
     double tz1,
     const mliNode* node,
     uint8_t a,
-    const mliCube cube,
+    const struct mliCube cube,
     const struct mliVec ray_octree_support,
     mliIntersection* isec,
     const mliScenery* scenery,
@@ -267,7 +267,7 @@ void mli_ray_octree_traversal(
     struct mliRay ray_octree;
     struct mliVec cube_upper;
     struct mliVec cube_size;
-    mliCube cube;
+    struct mliCube cube;
     const mliNode *root;
     uint8_t a = 0;
     isec->distance_of_ray = DBL_MAX;

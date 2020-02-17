@@ -6,34 +6,34 @@
 #include "mli_math.h"
 #include "mliOBB.h"
 
-typedef struct {
+struct mliCube {
     /*
      * Cubic Oriented-Bounding-Box
      * oriented w.r.t. the unit-vectors.
      */
     struct mliVec lower;
     double edge_length;
-} mliCube;
+};
 
-struct mliVec mliCube_upper(const mliCube a) {
+struct mliVec mliCube_upper(const struct mliCube a) {
     return mliVec_add(
         a.lower,
         mliVec_set(a.edge_length, a.edge_length, a.edge_length));}
 
-mliOBB mliCube_to_obb(const mliCube a) {
+mliOBB mliCube_to_obb(const struct mliCube a) {
     mliOBB out;
     out.lower = a.lower;
     out.upper = mliCube_upper(a);
     return out;}
 
-struct mliVec mliCube_center(const mliCube a) {
+struct mliVec mliCube_center(const struct mliCube a) {
     return mliVec_set(
         a.lower.x + a.edge_length*.5,
         a.lower.y + a.edge_length*.5,
         a.lower.z + a.edge_length*.5);}
 
-mliCube mliCube_outermost_cube(const mliOBB a) {
-    mliCube cube;
+struct mliCube mliCube_outermost_cube(const mliOBB a) {
+    struct mliCube cube;
     struct mliVec center;
     struct mliVec half_diagonal;
     struct mliVec diff;
@@ -48,12 +48,12 @@ mliCube mliCube_outermost_cube(const mliOBB a) {
     cube.edge_length = max_half_length*2.;
     return cube;}
 
-mliCube mliCube_octree_child(
-    const mliCube cube,
+struct mliCube mliCube_octree_child(
+    const struct mliCube cube,
     const uint32_t sx,
     const uint32_t sy,
     const uint32_t sz) {
-    mliCube child;
+    struct mliCube child;
     struct mliVec length;
     struct mliVec center = mliCube_center(cube);
     length = mliVec_substract(center, cube.lower);
@@ -69,10 +69,10 @@ mliCube mliCube_octree_child(
 
 #define MLI_IS_BIT(var,pos) ((var) & (1<<(pos)))
 
-mliCube mliCube_octree_child_code(
-    const mliCube cube,
+struct mliCube mliCube_octree_child_code(
+    const struct mliCube cube,
     const uint8_t a) {
-    mliCube child;
+    struct mliCube child;
     struct mliVec length;
     struct mliVec center = mliCube_center(cube);
     length = mliVec_substract(center, cube.lower);
