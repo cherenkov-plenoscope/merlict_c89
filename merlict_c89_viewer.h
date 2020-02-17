@@ -40,15 +40,18 @@ void mlivr_print_help() {
     printf("\n");
     printf("[  space key  ] full resolution.\n");}
 
-typedef struct {
+struct mlivrCursor {
     int64_t active;
     uint64_t col;
     uint64_t row;
     uint64_t num_cols;
     uint64_t num_rows;
-} mlivrCursor;
+};
 
-void mlivr_print_info_line(const mliCamera camera, const mlivrCursor cursor) {
+void mlivr_print_info_line(
+    const mliCamera camera,
+    const struct mlivrCursor cursor)
+{
     printf(
         "Press 'h' for help. "
         "Pos.: [ % -.1f, % -.1f, % -.1f]m, "
@@ -93,16 +96,16 @@ int mlivr_truncate_8bit(const int key) {
     else
         return key & 255;}
 
-typedef struct {
+struct mlivrConfig{
     uint64_t preview_num_cols;
     uint64_t preview_num_rows;
     uint64_t export_num_cols;
     uint64_t export_num_rows;
     mliCamera camera;
-} mlivrConfig ;
+};
 
-mlivrConfig mlivrConfig_default() {
-    mlivrConfig cfg;
+struct mlivrConfig mlivrConfig_default() {
+    struct mlivrConfig cfg;
     cfg.preview_num_cols = 128u;
     cfg.preview_num_rows = 72u;
 
@@ -118,27 +121,27 @@ mlivrConfig mlivrConfig_default() {
     cfg.camera.field_of_view = mli_deg2rad(80.);
     return cfg;}
 
-void _mlivr_mv_cursor_up(mlivrCursor *cursor) {
+void _mlivr_mv_cursor_up(struct mlivrCursor *cursor) {
     if (cursor->row != 0) {cursor->row -= 2;}}
 
-void _mlivr_mv_cursor_down(mlivrCursor *cursor) {
+void _mlivr_mv_cursor_down(struct mlivrCursor *cursor) {
     if (cursor->row + 2u < cursor->num_rows) {cursor->row += 2;}}
 
-void _mlivr_mv_cursor_right(mlivrCursor *cursor) {
+void _mlivr_mv_cursor_right(struct mlivrCursor *cursor) {
     if (cursor->col != 0) {cursor->col -= 1;}}
 
-void _mlivr_mv_cursor_left(mlivrCursor *cursor) {
+void _mlivr_mv_cursor_left(struct mlivrCursor *cursor) {
     if (cursor->col + 1u < cursor->num_cols) {cursor->col += 1;}}
 
 int mlivr_run_interactive_viewer(
     const mliScenery* scenery,
     const mliOcTree* octree,
-    const mlivrConfig config) {
+    const struct mlivrConfig config) {
     struct termios old_terminal = mlivr_disable_stdin_buffer();
 
     int key;
     int super_resolution = 0;
-    mlivrCursor cursor;
+    struct mlivrCursor cursor;
     uint64_t num_screenshots = 0;
     char timestamp[20];
     mliCamera camera = config.camera;
