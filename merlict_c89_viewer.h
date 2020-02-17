@@ -152,7 +152,7 @@ int mlivr_run_interactive_viewer(
     int print_help = 0;
     struct mliRay probing_ray;
     int has_probing_intersection;
-    mliIntersection probing_intersection;
+    struct mliIntersection probing_intersection;
 
     mlivr_timestamp_now_19chars(timestamp);
     img.num_cols = config.preview_num_cols;

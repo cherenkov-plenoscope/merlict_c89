@@ -241,7 +241,7 @@ CASE("read non existing file") {
 
 CASE("scenery intersection interface -> sphere") {
     struct mliScenery scenery = mliScenery_init();
-    mliIntersection isec;
+    struct mliIntersection isec;
     int hit = 0;
     uint64_t sphere_idx;
     double sphere_radius = 2.5;
@@ -279,7 +279,7 @@ CASE("scenery intersection interface -> sphere") {
 CASE("mliOcTree_from_scenery") {
     struct mliScenery scenery = mliScenery_init();
     struct mliOcTree octree;
-    mliIntersection isec;
+    struct mliIntersection isec;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     octree = mliOcTree_from_scenery(&scenery);
 

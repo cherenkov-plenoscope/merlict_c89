@@ -16,7 +16,7 @@ int mliDisc_intersection(
     const mliDisc disc,
     const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
-    mliIntersection *intersection) {
+    struct mliIntersection *intersection) {
     struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
     double solution;

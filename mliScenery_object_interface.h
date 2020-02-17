@@ -226,7 +226,7 @@ int mliScenery_intersection(
     const struct mliScenery *scenery,
     const struct mliRay ray,
     const uint64_t idx,
-    mliIntersection *intersection)
+    struct mliIntersection *intersection)
 {
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
     intersection->object_idx = idx;

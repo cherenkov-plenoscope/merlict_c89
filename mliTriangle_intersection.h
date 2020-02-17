@@ -65,7 +65,7 @@ int mliTriangle_intersection(
     const struct mliVec vertex1,
     const struct mliVec vertex2,
     const struct mliRay ray,
-    mliIntersection *intersection) {
+    struct mliIntersection *intersection) {
     double ray_parameter;
     if (mliRay_intersects_triangle(
             ray.support,

@@ -24,7 +24,7 @@ int _mli_propagate_photon(mliEnv *env);
 mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     const int64_t type,
     const struct mliScenery *scenery,
-    const mliIntersection *isec) {
+    const struct mliIntersection *isec) {
     mliPhotonInteraction phia;
     mliSurfaces surfaces;
     mliSurface surf_coming_from, surf_going_to;
@@ -49,7 +49,7 @@ mliPhotonInteraction mliPhotonInteraction_from_Intersection(
 
 int _mli_phong(
     mliEnv* env,
-    const mliIntersection *isec) {
+    const struct mliIntersection *isec) {
     double specular;
     double diffuse;
     double rnd;
@@ -117,7 +117,7 @@ error:
 
 int _mli_pass_boundary_layer(
     mliEnv *env,
-    const mliIntersection *isec,
+    const struct mliIntersection *isec,
     const mliFresnel fresnel) {
     uint64_t n = env->history->num;
     env->history->actions[n] = mliPhotonInteraction_from_Intersection(
@@ -138,7 +138,7 @@ error:
 int _mli_probability_passing_medium_coming_from(
     const struct mliScenery *scenery,
     const mliPhoton* photon,
-    const mliIntersection *isec,
+    const struct mliIntersection *isec,
     double *probability_passing) {
     const mliSurface surface_coming_from = _mli_surface_coming_from(
         scenery,
@@ -157,7 +157,7 @@ error:
 
 int _mli_fresnel_refraction_and_reflection(
     mliEnv *env,
-    const mliIntersection *isec) {
+    const struct mliIntersection *isec) {
     mliFresnel fresnel;
     double n_going_to;
     double n_coming_from;
@@ -204,7 +204,7 @@ int _mli_fresnel_refraction_and_reflection(
 error:
     return 0;}
 
-int _mli_interact_with_object(mliEnv *env, const mliIntersection *isec) {
+int _mli_interact_with_object(mliEnv *env, const struct mliIntersection *isec) {
     const mliSurface surface_coming_from = _mli_surface_coming_from(
         env->scenery,
         isec);
@@ -248,7 +248,7 @@ error:
 
 int _mli_work_on_causal_intersection(mliEnv *env) {
     int hit;
-    mliIntersection isec;
+    struct mliIntersection isec;
     double distance_until_next_absorbtion;
     hit = mli_first_casual_intersection(
         env->scenery,

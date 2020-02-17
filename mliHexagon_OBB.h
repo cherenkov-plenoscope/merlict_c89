@@ -29,7 +29,7 @@ int mliHexagon_has_overlap_obb(
     }
     for (edge_idx = 0; edge_idx < 12; edge_idx++) {
         struct mliEdge edge = mliOBB_edge(obb, edge_idx);
-        mliIntersection intersection;
+        struct mliIntersection intersection;
         if (mliHexagon_intersection(
             hex,
             local2root_comp,

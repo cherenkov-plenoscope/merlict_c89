@@ -53,7 +53,7 @@ void mliCylinder_set_intersection(
     const struct mliHomTra *local2root,
     const struct mliRay *ray_local,
     const double ray_solution,
-    mliIntersection *intersection) {
+    struct mliIntersection *intersection) {
     struct mliVec position_local = mliRay_at(ray_local, ray_solution);
     struct mliVec normal_local = mliCylinder_surface_normal(
         position_local.x,
@@ -75,7 +75,7 @@ int mliCylinder_intersection(
     const mliCylinder cylinder,
     const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
-    mliIntersection *intersection) {
+    struct mliIntersection *intersection) {
     /*                                                                        */
     /* m > epsilon                                                            */
     /* p > epsilon                  (always true for causal intersections)    */

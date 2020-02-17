@@ -15,7 +15,7 @@ CASE("mliHexagon") {
 CASE("mliHexagon_intersection") {
     mliHexagon hex;
     struct mliHomTraComp local2root_comp;
-    mliIntersection intersection;
+    struct mliIntersection intersection;
     hex.inner_radius = 1.;
     local2root_comp.trans = mliVec_set(0., 0., 0.);
     local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(

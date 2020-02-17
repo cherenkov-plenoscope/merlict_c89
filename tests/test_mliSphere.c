@@ -2,7 +2,7 @@
 
 CASE("mliSphere_intersection") {
     mliSphere sphere;
-    mliIntersection intersection;
+    struct mliIntersection intersection;
     struct mliHomTraComp local2root_comp;
     sphere.radius = 1.;
     local2root_comp.trans = mliVec_set(0., 0., 0.);

@@ -140,7 +140,7 @@ void __mli_proc_subtree (
     uint8_t a,
     const struct mliCube cube,
     const struct mliVec ray_octree_support,
-    mliIntersection* isec,
+    struct mliIntersection *isec,
     const struct mliScenery *scenery,
     const struct mliRay ray,
     uint64_t *num_hits)
@@ -153,7 +153,7 @@ void __mli_proc_subtree (
     }
 
     if (mliNode_num_children(node) == 0u) {
-        mliIntersection tmp_isec;
+        struct mliIntersection tmp_isec;
         uint64_t c;
         for (c = 0; c < node->num_objects; c++) {
             uint64_t object_idx = node->objects[c];
@@ -253,7 +253,7 @@ void mli_ray_octree_traversal(
     const struct mliScenery *scenery,
     const struct mliOcTree *octree,
     const struct mliRay ray,
-    mliIntersection *isec)
+    struct mliIntersection *isec)
 {
     uint64_t num_hits;
     double divx;

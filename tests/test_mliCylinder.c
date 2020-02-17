@@ -267,7 +267,7 @@ CASE("cylinder intersection") {
 CASE("cylinder intersection, 2") {
     mliCylinder cylinder;
     struct mliHomTraComp local2root_comp;
-    mliIntersection intersection;
+    struct mliIntersection intersection;
     local2root_comp.trans = mliVec_set(0., 0., 0.);
     local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 1.),
