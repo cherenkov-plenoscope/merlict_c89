@@ -9,24 +9,24 @@
 #include "mli_debug.h"
 #include "mliPhotonInteraction.h"
 
-typedef struct {
+struct mliPhotonHistory {
     uint32_t num_reserved;
     uint32_t num;
     mliPhotonInteraction *actions;
-} mliPhotonHistory;
+};
 
-mliPhotonHistory mliPhotonHistory_init(const uint32_t num_reserved) {
-    mliPhotonHistory history;
+struct mliPhotonHistory mliPhotonHistory_init(const uint32_t num_reserved) {
+    struct mliPhotonHistory history;
     history.num_reserved = num_reserved;
     history.num = 0u;
     history.actions = NULL;
     return history;}
 
-void mliPhotonHistory_free(mliPhotonHistory *history) {
+void mliPhotonHistory_free(struct mliPhotonHistory *history) {
     free(history->actions);
     (*history) = mliPhotonHistory_init(0);}
 
-int mliPhotonHistory_malloc(mliPhotonHistory *history) {
+int mliPhotonHistory_malloc(struct mliPhotonHistory *history) {
     mli_malloc(history->actions, mliPhotonInteraction, history->num_reserved);
     return 1;
 error:
@@ -34,7 +34,7 @@ error:
     return 0;}
 
 int mliPhotonHistory_push_back(
-    mliPhotonHistory *history,
+    struct mliPhotonHistory *history,
     const mliPhotonInteraction action) {
     mli_check(history->num < history->num_reserved, "Too many interactions.");
     history->actions[history->num] = action;
@@ -43,7 +43,7 @@ int mliPhotonHistory_push_back(
 error:
     return 0;}
 
-void mliPhotonHistory_print(const mliPhotonHistory *history) {
+void mliPhotonHistory_print(const struct mliPhotonHistory *history) {
     int64_t i;
     char type_string[1024];
     char out_in[] = "out->in";

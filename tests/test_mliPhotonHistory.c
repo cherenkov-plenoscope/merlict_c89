@@ -1,7 +1,7 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 
 CASE("mliPhotonHistory, malloc, free") {
-    mliPhotonHistory history = mliPhotonHistory_init(42u);
+    struct mliPhotonHistory history = mliPhotonHistory_init(42u);
     mliPhotonInteraction action;
     CHECK(history.num_reserved == 42u);
     CHECK(history.num == 0u);
@@ -32,7 +32,7 @@ CASE("mliPhotonHistory, malloc, free") {
 CASE("mliPhotonHistory, push back") {
     const uint64_t num_reserved = 42u;
     uint64_t i;
-    mliPhotonHistory history = mliPhotonHistory_init(num_reserved);
+    struct mliPhotonHistory history = mliPhotonHistory_init(num_reserved);
     mliPhotonInteraction action;
     CHECK(mliPhotonHistory_malloc(&history));
     for (i = 0u; i < num_reserved; i++) {

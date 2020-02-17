@@ -14,7 +14,7 @@
 struct mliEnv {
     const struct mliScenery *scenery;
     const struct mliOcTree *octree;
-    mliPhotonHistory *history;
+    struct mliPhotonHistory *history;
     struct mliPhoton *photon;
     struct mliMT19937 *prng;
 };
@@ -207,7 +207,10 @@ int _mli_fresnel_refraction_and_reflection(
 error:
     return 0;}
 
-int _mli_interact_with_object(struct mliEnv *env, const struct mliIntersection *isec) {
+int _mli_interact_with_object(
+    struct mliEnv *env,
+    const struct mliIntersection *isec)
+{
     const struct mliSurface surface_coming_from = _mli_surface_coming_from(
         env->scenery,
         isec);
@@ -228,7 +231,8 @@ int _mli_interact_with_object(struct mliEnv *env, const struct mliIntersection *
     }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int _mli_distance_until_next_absorbtion(
     struct mliEnv *env,
@@ -304,7 +308,7 @@ error:
 int mli_propagate_photon(
     struct mliScenery *scenery,
     struct mliOcTree *octree,
-    mliPhotonHistory *history,
+    struct mliPhotonHistory *history,
     struct mliPhoton *photon,
     struct mliMT19937 *prng)
 {
