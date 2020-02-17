@@ -4,14 +4,18 @@
 
 #include <stdint.h>
 
-typedef struct {
+struct mliSurfaces {
     uint32_t inner;
     uint32_t outer;
-} mliSurfaces;
+};
 
-int mliSurfaces_is_equal(const mliSurfaces a, const mliSurfaces b) {
+int mliSurfaces_is_equal(
+    const struct mliSurfaces a,
+    const struct mliSurfaces b)
+{
     if (a.inner != b.inner) return 0;
     if (a.outer != b.outer) return 0;
-    return 1;}
+    return 1;
+}
 
 #endif

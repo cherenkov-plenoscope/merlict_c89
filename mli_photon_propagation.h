@@ -26,7 +26,7 @@ mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec) {
     mliPhotonInteraction phia;
-    mliSurfaces surfaces;
+    struct mliSurfaces surfaces;
     struct mliSurface surf_coming_from, surf_going_to;
     surfaces = mliScenery_object_surfaces(scenery, isec->object_idx);
     if (isec->from_outside_to_inside) {

@@ -11,7 +11,7 @@
 struct mliSurface _mli_surface_coming_from(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec) {
-    mliSurfaces surfaces = mliScenery_object_surfaces(
+    struct mliSurfaces surfaces = mliScenery_object_surfaces(
         scenery,
         isec->object_idx);
     if (isec->from_outside_to_inside)
@@ -22,7 +22,7 @@ struct mliSurface _mli_surface_coming_from(
 struct mliSurface _mli_surface_going_to(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec) {
-    mliSurfaces surfaces = mliScenery_object_surfaces(
+    struct mliSurfaces surfaces = mliScenery_object_surfaces(
         scenery,
         isec->object_idx);
     if (isec->from_outside_to_inside)

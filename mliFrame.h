@@ -44,7 +44,7 @@ struct mliFrame {
         mliBiCirclePlane *bicircleplane;
         mliDisc *disc;
     } primitive;
-    mliSurfaces surfaces;
+    struct mliSurfaces surfaces;
 };
 
 struct mliFrame mliFrame_init() {

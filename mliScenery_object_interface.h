@@ -288,11 +288,11 @@ int mliScenery_intersection(
     return 0;
 }
 
-mliSurfaces mliScenery_object_surfaces(
+struct mliSurfaces mliScenery_object_surfaces(
     const struct mliScenery *scenery,
     const uint64_t idx)
 {
-    mliSurfaces null = {0, 0};
+    struct mliSurfaces null = {0, 0};
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {
         case MLI_TRIANGLE:
