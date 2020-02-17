@@ -190,13 +190,13 @@ CASE("mliFrame_set_frame2root, only translation z-component") {
 }
 
 CASE("mliUserScenery_malloc, free") {
-    mliUserScenery uscn = mliUserScenery_init();
+    struct mliUserScenery uscn = mliUserScenery_init();
     CHECK(mliUserScenery_malloc(&uscn));
     mliUserScenery_free(&uscn);
 }
 
 CASE("mli_frame_to_scenery") {
-    mliUserScenery uscn = mliUserScenery_init();
+    struct mliUserScenery uscn = mliUserScenery_init();
     struct mliScenery scenery = mliScenery_init();
     CHECK(mliUserScenery_malloc(&uscn));
 

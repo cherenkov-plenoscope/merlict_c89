@@ -142,7 +142,7 @@ error:
 
 int mliScenery_malloc_from_mliUserScenery(
     struct mliScenery *scenery,
-    mliUserScenery *uscn)
+    struct mliUserScenery *uscn)
 {
     uint64_t i;
     struct mliPrimitiveCount count = mliPrimitiveCount_init();
@@ -197,7 +197,7 @@ int mliScenery_malloc_from_json_path(
     const char* path)
 {
     struct mliJson json = mliJson_init();
-    mliUserScenery uscn = mliUserScenery_init();
+    struct mliUserScenery uscn = mliUserScenery_init();
     mli_check(
         mliJson_malloc_from_file(&json, path),
         "Failed to parse json-scenery.");
@@ -206,7 +206,7 @@ int mliScenery_malloc_from_json_path(
         "Failed to parse json-scenery.");
     mli_check(
         mliScenery_malloc_from_mliUserScenery(scenery, &uscn),
-        "Failed to translate mliUserScenery to mliScenery.")
+        "Failed to translate struct mliUserScenery to mliScenery.")
     mliJson_free(&json);
     mliUserScenery_free(&uscn);
     return 1;

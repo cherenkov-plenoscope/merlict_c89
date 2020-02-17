@@ -741,7 +741,7 @@ error:
 }
 
 
-int mliUserScenery_malloc_from_json(mliUserScenery *uscn, const struct mliJson *json) {
+int mliUserScenery_malloc_from_json(struct mliUserScenery *uscn, const struct mliJson *json) {
     uint64_t token;
     mli_check(
         __mliScenery_surface_capacity_from_json(&uscn->surface_resources, json),

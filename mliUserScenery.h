@@ -15,22 +15,26 @@
     Before ray tracing, this UserScenery will be translated into a Scenery
     which is optimized for ray tracing.
 */
-typedef struct {
+struct mliUserScenery {
     struct mliScenery surface_resources; /* stores only the surfaces */
     struct mliFrame root;
-} mliUserScenery;
+};
 
-mliUserScenery mliUserScenery_init() {
-    mliUserScenery uscn;
+struct mliUserScenery mliUserScenery_init() {
+    struct mliUserScenery uscn;
     uscn.surface_resources = mliScenery_init();
     uscn.root = mliFrame_init();
-    return uscn;}
+    return uscn;
+}
 
-void mliUserScenery_free(mliUserScenery* uscn) {
+void mliUserScenery_free(struct mliUserScenery *uscn)
+{
     mliScenery_free(&uscn->surface_resources);
-    mliFrame_free(&uscn->root);}
+    mliFrame_free(&uscn->root);
+}
 
-int mliUserScenery_malloc(mliUserScenery* uscn) {
+int mliUserScenery_malloc(struct mliUserScenery *uscn)
+{
     mli_check(
         mliScenery_malloc(&uscn->surface_resources),
         "Can not allocate surface_resources in UserScenery.");
@@ -39,6 +43,7 @@ int mliUserScenery_malloc(mliUserScenery* uscn) {
         "Can not allocate root-frame in UserScenery.")
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 #endif

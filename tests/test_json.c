@@ -258,7 +258,7 @@ CASE("rotation representations") {
 
 CASE("parse mliUserScenery") {
     struct mliJson json = mliJson_init();
-    mliUserScenery uscn = mliUserScenery_init();
+    struct mliUserScenery uscn = mliUserScenery_init();
     struct mliFrame *f;
     struct mliSurface *uscn_srfs;
     CHECK(mliJson_malloc_from_file(&json,
