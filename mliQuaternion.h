@@ -3,6 +3,7 @@
 #define MERLICT_MLIQUATERNION_H_
 
 #include <math.h>
+#include <float.h>
 #include <stdint.h>
 #include "mliVec.h"
 
@@ -26,10 +27,10 @@ mliQuaternion mliQuaternion_set(
     return o;}
 
 int mliQuaternion_is_equal(const mliQuaternion a, const mliQuaternion b) {
-    if (a.w != b.w) return 0;
-    if (a.x != b.x) return 0;
-    if (a.y != b.y) return 0;
-    if (a.z != b.z) return 0;
+    if (fabs(a.w - b.w) > DBL_EPSILON) return 0;
+    if (fabs(a.x - b.x) > DBL_EPSILON) return 0;
+    if (fabs(a.y - b.y) > DBL_EPSILON) return 0;
+    if (fabs(a.z - b.z) > DBL_EPSILON) return 0;
     return 1;}
 
 int mliQuaternion_is_equal_margin(
