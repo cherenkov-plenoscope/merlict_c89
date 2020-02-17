@@ -119,7 +119,7 @@ error:
 int _mli_pass_boundary_layer(
     struct mliEnv *env,
     const struct mliIntersection *isec,
-    const mliFresnel fresnel) {
+    const struct mliFresnel fresnel) {
     uint64_t n = env->history->num;
     env->history->actions[n] = mliPhotonInteraction_from_Intersection(
         MLI_PHOTON_REFRACTION,
@@ -159,7 +159,7 @@ error:
 int _mli_fresnel_refraction_and_reflection(
     struct mliEnv *env,
     const struct mliIntersection *isec) {
-    mliFresnel fresnel;
+    struct mliFresnel fresnel;
     double n_going_to;
     double n_coming_from;
     double reflection_propability;
