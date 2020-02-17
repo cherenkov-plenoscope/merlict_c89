@@ -11,15 +11,15 @@
 #include "mliMT19937.h"
 #include "mli_intersection_and_scenery.h"
 
-typedef struct {
+struct mliEnv {
     const struct mliScenery *scenery;
     const struct mliOcTree *octree;
     mliPhotonHistory *history;
     mliPhoton *photon;
     mliMT19937 *prng;
-} mliEnv;
+};
 
-int _mli_propagate_photon(mliEnv *env);
+int _mli_propagate_photon(struct mliEnv *env);
 
 mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     const int64_t type,
@@ -48,8 +48,9 @@ mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     return phia;}
 
 int _mli_phong(
-    mliEnv* env,
-    const struct mliIntersection *isec) {
+    struct mliEnv *env,
+    const struct mliIntersection *isec)
+{
     double specular;
     double diffuse;
     double rnd;
@@ -116,7 +117,7 @@ error:
     return 0;}
 
 int _mli_pass_boundary_layer(
-    mliEnv *env,
+    struct mliEnv *env,
     const struct mliIntersection *isec,
     const mliFresnel fresnel) {
     uint64_t n = env->history->num;
@@ -156,7 +157,7 @@ error:
     return 0;}
 
 int _mli_fresnel_refraction_and_reflection(
-    mliEnv *env,
+    struct mliEnv *env,
     const struct mliIntersection *isec) {
     mliFresnel fresnel;
     double n_going_to;
@@ -204,7 +205,7 @@ int _mli_fresnel_refraction_and_reflection(
 error:
     return 0;}
 
-int _mli_interact_with_object(mliEnv *env, const struct mliIntersection *isec) {
+int _mli_interact_with_object(struct mliEnv *env, const struct mliIntersection *isec) {
     const mliSurface surface_coming_from = _mli_surface_coming_from(
         env->scenery,
         isec);
@@ -228,7 +229,7 @@ error:
     return 0;}
 
 int _mli_distance_until_next_absorbtion(
-    mliEnv *env,
+    struct mliEnv *env,
     double *distance_to_next_absorption){
     double one_over_e_way;
     uint64_t last_interaction = env->history->num - 1;
@@ -246,7 +247,7 @@ int _mli_distance_until_next_absorbtion(
 error:
     return 0;}
 
-int _mli_work_on_causal_intersection(mliEnv *env) {
+int _mli_work_on_causal_intersection(struct mliEnv *env) {
     int hit;
     struct mliIntersection isec;
     double distance_until_next_absorbtion;
@@ -289,7 +290,7 @@ int _mli_work_on_causal_intersection(mliEnv *env) {
 error:
     return 0;}
 
-int _mli_propagate_photon(mliEnv *env) {
+int _mli_propagate_photon(struct mliEnv *env) {
     if(env->history->num_reserved > env->history->num) {
         mli_check(_mli_work_on_causal_intersection(env),
             "Failed to work on intersection.");
@@ -305,7 +306,7 @@ int mli_propagate_photon(
     mliPhoton *photon,
     mliMT19937 *prng)
 {
-    mliEnv env;
+    struct mliEnv env;
     env.scenery = scenery;
     env.octree = octree;
     env.history = history;
