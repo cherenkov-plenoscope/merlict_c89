@@ -50,7 +50,7 @@ struct mliVec mliCylinder_surface_normal(const double x, const double y) {
     return mliVec_normalized(surface_normal);}
 
 void mliCylinder_set_intersection(
-    const mliHomTra *local2root,
+    const struct mliHomTra *local2root,
     const struct mliRay *ray_local,
     const double ray_solution,
     mliIntersection *intersection) {
@@ -239,7 +239,7 @@ int mliCylinder_intersection(
     /*                                                                        */
 
     double plus_solution, minus_solution;
-    mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
+    struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
     if (mli_cylinder_equation(
         cylinder.radius,

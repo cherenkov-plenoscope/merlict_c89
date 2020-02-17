@@ -23,7 +23,7 @@ CASE("sequence, one translation, one rotation") {
     struct mliHomTraComp a; /* only translation */
     struct mliHomTraComp b; /* only rotation */
     struct mliHomTraComp a_b;
-    mliHomTra a_b_;
+    struct mliHomTra a_b_;
 
     a.trans = mliVec_set(0., 0., 1.);
     a.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
@@ -55,7 +55,7 @@ CASE("sequence, cancelation") {
     struct mliHomTraComp a;
     struct mliHomTraComp a_inverse; /* inverse ov a */
     struct mliHomTraComp a_a_inverse;
-    mliHomTra a_a_inverse_;
+    struct mliHomTra a_a_inverse_;
 
     a.trans = mliVec_set(0., 0., 1.);
     a.rot = mliQuaternion_set_tait_bryan(0., 0., -mli_deg2rad(90.));
@@ -87,7 +87,7 @@ CASE("simple sequence") {
     struct mliHomTraComp a;
     struct mliHomTraComp b;
     struct mliHomTraComp a_b;
-    mliHomTra a_b_;
+    struct mliHomTra a_b_;
 
     a.trans = mliVec_set(0., 0., 1.);
     a.rot = mliQuaternion_set_tait_bryan(0., 0., mli_deg2rad(90.));

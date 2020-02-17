@@ -13,7 +13,7 @@ int mliHexagon_has_overlap_obb(
     const mliHexagon hex,
     const struct mliHomTraComp local2root_comp,
     const mliOBB obb) {
-    mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
+    struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     /*
     Either one of the hexagons corners is inside the cube, or one of the cube's
     edges has to intersect the hexagon.
@@ -47,7 +47,7 @@ mliOBB mliHexagon_obb(
     const mliHexagon hex,
     const struct mliHomTraComp local2root_comp) {
     mliOBB obb;
-    mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
+    struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec first_corner_local = mliVec_multiply(
         mli_hexagon_corner(0),
         hex.inner_radius*MLI_2_OVER_SQRT3);

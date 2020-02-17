@@ -133,7 +133,7 @@ CASE("mliSphericalCapHex, bounding radius") {
 
 CASE("mliHomTraComp, transform direction") {
     struct mliHomTraComp Tcomp;
-    mliHomTra T;
+    struct mliHomTra T;
     struct mliVec v1, v2, v3;
     Tcomp.trans = mliVec_set(1., 0., 0.);
     Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
@@ -158,7 +158,7 @@ CASE("unity transformation must not change ray") {
         mliVec_set(0., 0., 1.));
     struct mliRay ray2;
     struct mliHomTraComp Tcomp;
-    mliHomTra T;
+    struct mliHomTra T;
     Tcomp.trans = mliVec_set(0., 0., 0.);
     Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 0.),
@@ -175,7 +175,7 @@ CASE("translation") {
         mliVec_set(0., 0., 1.));
     struct mliRay ray2;
     struct mliHomTraComp Tcomp;
-    mliHomTra T;
+    struct mliHomTra T;
     Tcomp.trans = mliVec_set(1., 0., 0.);
     Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 1.),
@@ -194,7 +194,7 @@ CASE("rotation") {
         mliVec_set(1., 0., 0.));
     struct mliRay ray2;
     struct mliHomTraComp Tcomp;
-    mliHomTra T;
+    struct mliHomTra T;
     Tcomp.trans = mliVec_set(0., 0., 0.);
     Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 1.),
@@ -214,7 +214,7 @@ CASE("translation and rotation") {
     struct mliRay ray2;
     struct mliRay ray3;
     struct mliHomTraComp Tcomp;
-    mliHomTra T;
+    struct mliHomTra T;
     Tcomp.trans = mliVec_set(0., 1., 0.);
     Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 1.),

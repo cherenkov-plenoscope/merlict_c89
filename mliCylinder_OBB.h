@@ -17,19 +17,19 @@ struct mliVec mliCylinder_end_local(const mliCylinder cylinder) {
 
 struct mliVec mliCylinder_start_root(
     const mliCylinder cylinder,
-    const mliHomTra *local2root) {
+    const struct mliHomTra *local2root) {
     return mliHomTra_pos(local2root, mliCylinder_start_local(cylinder));}
 
 struct mliVec mliCylinder_end_root(
     const mliCylinder cylinder,
-    const mliHomTra *local2root) {
+    const struct mliHomTra *local2root) {
     return mliHomTra_pos(local2root, mliCylinder_end_local(cylinder));}
 
 int mliCylinder_has_overlap_obb(
     const mliCylinder cylinder,
     const struct mliHomTraComp local2root_comp,
     const mliOBB obb) {
-    mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
+    struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
     struct mliVec end_root = mliCylinder_end_root(cylinder, &local2root);
     struct mliRay cylinder_ray_root = mliRay_set(
@@ -50,7 +50,7 @@ int mliCylinder_has_overlap_obb(
 mliOBB mliCylinder_obb(
     const mliCylinder cylinder,
     const struct mliHomTraComp local2root_comp) {
-    mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
+    struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
     struct mliVec end_root = mliCylinder_end_root(cylinder, &local2root);
     mliOBB start_obb = mliSphere_obb(cylinder.radius, start_root);

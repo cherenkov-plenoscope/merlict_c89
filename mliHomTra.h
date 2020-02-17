@@ -13,13 +13,13 @@ struct mliHomTraComp{
     struct mliQuaternion rot;
 };
 
-typedef struct {
+struct mliHomTra{
     struct mliVec trans;
     mliRotMat rot;
-} mliHomTra;
+};
 
-mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo) {
-    mliHomTra t;
+struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo) {
+    struct mliHomTra t;
     t.trans = trafo.trans;
     t.rot = mliQuaternion_to_matrix(trafo.rot);
     return t;}
@@ -93,25 +93,25 @@ struct mliRay mli_transform_ray_inverse(
         in.direction);
     return out;}
 
-struct mliRay mliHomTra_ray(const mliHomTra *t, const struct mliRay in) {
+struct mliRay mliHomTra_ray(const struct mliHomTra *t, const struct mliRay in) {
     return mli_transform_ray(&t->rot, t->trans, in);}
 
-struct mliRay mliHomTra_ray_inverse(const mliHomTra *t, const struct mliRay in) {
+struct mliRay mliHomTra_ray_inverse(const struct mliHomTra *t, const struct mliRay in) {
     return mli_transform_ray_inverse(&t->rot, t->trans, in);}
 
-struct mliVec mliHomTra_pos(const mliHomTra *t, const struct mliVec in) {
+struct mliVec mliHomTra_pos(const struct mliHomTra *t, const struct mliVec in) {
     return mli_transform_position(&t->rot, t->trans, in);}
 
 struct mliVec mliHomTra_pos_inverse(
-    const mliHomTra *t,
+    const struct mliHomTra *t,
     const struct mliVec in) {
     return mli_transform_position_inverse(&t->rot, t->trans, in);}
 
-struct mliVec mliHomTra_dir(const mliHomTra *t, const struct mliVec in) {
+struct mliVec mliHomTra_dir(const struct mliHomTra *t, const struct mliVec in) {
     return mli_transform_orientation(&t->rot, in);}
 
 struct mliVec mliHomTra_dir_inverse(
-    const mliHomTra *t,
+    const struct mliHomTra *t,
     const struct mliVec in) {
     return mli_transform_orientation_inverse(&t->rot, in);}
 
@@ -132,7 +132,7 @@ struct mliHomTraComp mliHomTraComp_sequence(
     s.rot = mliQuaternion_product(a.rot, b.rot);
     return s;}
 
-void mliHomTra_print(const mliHomTra h) {
+void mliHomTra_print(const struct mliHomTra h) {
     printf("[%.1f, %.1f, %.1f | %.1f]\n",
         h.rot.r00, h.rot.r01, h.rot.r02, h.trans.x);
     printf("[%.1f, %.1f, %.1f | %.1f]\n",
