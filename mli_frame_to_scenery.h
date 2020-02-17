@@ -168,7 +168,7 @@ int mliScenery_malloc_from_mliUserScenery(
             uscn->surface_resources.functions[i].num_points;
         mli_check(
             mliFunc_malloc(&scenery->functions[i]),
-            "Failed to allocate mliFunc in mliScenery.");
+            "Failed to allocate struct mliFunc in mliScenery.");
         mli_check(
             mliFunc_cpy(
                 &scenery->functions[i],

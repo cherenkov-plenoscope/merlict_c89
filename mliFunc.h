@@ -7,25 +7,25 @@
 #include "mli_debug.h"
 #include "mli_math.h"
 
-typedef struct {
+struct mliFunc{
     uint32_t num_points;
     double *x;
     double *y;
-} mliFunc;
+};
 
-mliFunc mliFunc_init() {
-    mliFunc f;
+struct mliFunc mliFunc_init() {
+    struct mliFunc f;
     f.num_points = 0u;
     f.x = NULL;
     f.y = NULL;
     return f;}
 
-void mliFunc_free(mliFunc *f) {
+void mliFunc_free(struct mliFunc *f) {
     free(f->x);
     free(f->y);
     *f = mliFunc_init();}
 
-int mliFunc_malloc(mliFunc* f) {
+int mliFunc_malloc(struct mliFunc *f) {
     mli_malloc(f->x, double, f->num_points);
     mli_malloc(f->y, double, f->num_points);
     return 1;
@@ -33,7 +33,7 @@ error:
     mliFunc_free(f);
     return 0;}
 
-int mliFunc_x_is_causal(mliFunc* f) {
+int mliFunc_x_is_causal(struct mliFunc *f) {
     uint32_t i;
     for (i = 1; i < f->num_points; i++) {
         if (f->x[i] <= f->x[i - 1]) {
@@ -64,7 +64,7 @@ double mli_linear_interpolate(
     const double b = y0 - m*x0;
     return m*xarg + b;}
 
-int mliFunc_evaluate(const mliFunc* f, const double xarg, double *out) {
+int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out) {
     double y1, y0, x1, x0;
     uint32_t idx = mli_upper_compare_double(f->x, f->num_points, xarg);
     if (idx == 0) {
@@ -82,7 +82,10 @@ int mliFunc_evaluate(const mliFunc* f, const double xarg, double *out) {
 error:
     return 0;}
 
-int mliFunc_fold_numeric(const mliFunc* a, const mliFunc* b, double* fold) {
+int mliFunc_fold_numeric(
+    const struct mliFunc *a,
+    const struct mliFunc *b,
+    double* fold) {
     uint64_t i;
     const uint64_t NUM_STEPS = 1024*8;
     const double xmin = a->x[0];
@@ -105,7 +108,7 @@ int mliFunc_fold_numeric(const mliFunc* a, const mliFunc* b, double* fold) {
 error:
     return 0;}
 
-int mliFunc_fwrite(const mliFunc *func, FILE* f) {
+int mliFunc_fwrite(const struct mliFunc *func, FILE* f) {
     mli_fwrite(&func->num_points, sizeof(uint32_t), 1u, f);
     mli_fwrite(func->x, sizeof(double), func->num_points, f);
     mli_fwrite(func->y, sizeof(double), func->num_points, f);
@@ -113,7 +116,7 @@ int mliFunc_fwrite(const mliFunc *func, FILE* f) {
 error:
     return 0;}
 
-int mliFunc_malloc_from_file(mliFunc *func, FILE* f) {
+int mliFunc_malloc_from_file(struct mliFunc *func, FILE* f) {
     mli_fread(&func->num_points, sizeof(uint32_t), 1u, f);
     mliFunc_malloc(func);
     mli_fread(func->x, sizeof(double), func->num_points, f);
@@ -126,7 +129,7 @@ error:
     mliFunc_free(func);
     return 0;}
 
-int mliFunc_is_equal(const mliFunc a, const mliFunc b) {
+int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b) {
     uint64_t i;
     if (a.num_points != b.num_points ) return 0;
     for (i = 0; i < a.num_points; i++) {
@@ -134,7 +137,7 @@ int mliFunc_is_equal(const mliFunc a, const mliFunc b) {
         if (a.y[i] != b.y[i]) return 0;}
     return 1;}
 
-int mliFunc_cpy(mliFunc* destination, const mliFunc* source) {
+int mliFunc_cpy(struct mliFunc *destination, const struct mliFunc *source) {
     uint64_t p;
     mli_check(
         destination->num_points == source->num_points,

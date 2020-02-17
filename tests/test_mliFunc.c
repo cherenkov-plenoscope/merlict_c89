@@ -1,7 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliFunc_malloc") {
-    mliFunc func = mliFunc_init();
+    struct mliFunc func = mliFunc_init();
     func.num_points = 0u;
     CHECK(mliFunc_malloc(&func));
     CHECK(func.num_points == 0u);
@@ -10,7 +10,7 @@ CASE("mliFunc_malloc") {
 }
 
 CASE("mliFunc_x_is_causal") {
-    mliFunc func = mliFunc_init();
+    struct mliFunc func = mliFunc_init();
     func.num_points = 3u;
     CHECK(mliFunc_malloc(&func));
     CHECK(func.num_points == 3u);
@@ -23,7 +23,7 @@ CASE("mliFunc_x_is_causal") {
 
 CASE("mliFunc_evaluate, explicit") {
     double y;
-    mliFunc func = mliFunc_init();
+    struct mliFunc func = mliFunc_init();
     func.num_points = 5u;
     CHECK(mliFunc_malloc(&func));
     CHECK(func.num_points == 5u);
@@ -49,7 +49,7 @@ CASE("mliFunc_evaluate, explicit") {
 
 CASE("mliFunc_evaluate, loop") {
     double x, y;
-    mliFunc func = mliFunc_init();
+    struct mliFunc func = mliFunc_init();
     func.num_points = 2u;
     CHECK(mliFunc_malloc(&func));
     func.x[0] = 0.;
@@ -65,7 +65,7 @@ CASE("mliFunc_evaluate, loop") {
 
 CASE("mliFunc_fold_numeric") {
     double aa, ab, ba, bb, integral_0_1_x_square;
-    mliFunc a, b;
+    struct mliFunc a, b;
     a = mliFunc_init();
     b = mliFunc_init();
     a.num_points = 6u;

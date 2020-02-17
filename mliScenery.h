@@ -29,7 +29,7 @@
 
 typedef struct {
     uint32_t num_functions;
-    mliFunc *functions;
+    struct mliFunc *functions;
 
     uint32_t num_colors;
     mliColor *colors;
@@ -274,7 +274,7 @@ error:
 
 int __mliScenery_malloc_functions(mliScenery* s) {
     uint64_t i;
-    mli_malloc(s->functions, mliFunc, s->num_functions);
+    mli_malloc(s->functions, struct mliFunc, s->num_functions);
     for (i = 0; i < s->num_functions; i++) {
         s->functions[i] = mliFunc_init();}
     return 1;

@@ -232,7 +232,7 @@ int _mli_distance_until_next_absorbtion(
     double *distance_to_next_absorption){
     double one_over_e_way;
     uint64_t last_interaction = env->history->num - 1;
-    mliFunc* absorbtion_in_medium_coming_from = &env->scenery->functions[
+    struct mliFunc *absorbtion_in_medium_coming_from = &env->scenery->functions[
             env->history->actions[last_interaction].absorbtion_going_to];
     mli_check(mliFunc_evaluate(
         absorbtion_in_medium_coming_from,

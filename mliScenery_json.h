@@ -67,7 +67,7 @@ int __mliScenery_malloc_functions_from_json(
                 &surface_resources->functions[f],
                 json,
                 token_f),
-            "Could not malloc mliFunc in mliScenery from json.");
+            "Could not malloc struct mliFunc in mliScenery from json.");
     }
     return 1;
 error:

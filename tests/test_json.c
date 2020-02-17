@@ -129,7 +129,7 @@ CASE("mliJson_malloc_from_string") {
 CASE("parse mliFunc") {
     uint64_t token;
     mliJson json = mliJson_init();
-    mliFunc f = mliFunc_init();
+    struct mliFunc f = mliFunc_init();
     CHECK(mliJson_malloc_from_file(&json, "tests/resources/function.json"));
     CHECK(mliJson_write_debug(&json, "tests/resources/function.debug.tmp"));
     CHECK(mliJson_find_key(&json, 0, "two_functions", &token));

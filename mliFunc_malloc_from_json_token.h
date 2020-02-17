@@ -7,7 +7,7 @@
 #include "mli_json.h"
 
 int mliFunc_malloc_from_json_token(
-    mliFunc* f,
+    struct mliFunc *f,
     const mliJson *json,
     const uint64_t token) {
     uint64_t point;

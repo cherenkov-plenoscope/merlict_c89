@@ -30,18 +30,18 @@ mliSurface _mli_surface_going_to(
     else
         return scenery->surfaces[surfaces.inner];}
 
-const mliFunc* _mli_refractive_index_going_to(
+const struct mliFunc *_mli_refractive_index_going_to(
     const mliScenery *scenery,
     const mliIntersection *isec) {
-    const mliFunc* refractive_index;
+    const struct mliFunc *refractive_index;
     const mliSurface going_to = _mli_surface_going_to(scenery, isec);
     refractive_index = &scenery->functions[going_to.medium_refraction];
     return refractive_index;}
 
-const mliFunc* _mli_refractive_index_coming_from(
+const struct mliFunc *_mli_refractive_index_coming_from(
     const mliScenery *scenery,
     const mliIntersection *isec) {
-    const mliFunc* refractive_index;
+    const struct mliFunc *refractive_index;
     const mliSurface coming_from = _mli_surface_coming_from(scenery, isec);
     refractive_index = &scenery->functions[coming_from.medium_refraction];
     return refractive_index;}
