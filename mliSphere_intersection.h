@@ -58,7 +58,7 @@ void mliSphere_set_intersection(
 
 int mliSphere_intersection(
     const mliSphere sphere,
-    const mliHomTraComp local2root_comp,
+    const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
     mliIntersection *intersection) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);

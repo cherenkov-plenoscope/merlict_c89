@@ -48,7 +48,7 @@ struct mliVec __mliBiCirclePlane_rectangle_corners(
 
 int mliBiCirclePlane_has_overlap_obb(
     const mliBiCirclePlane plane,
-    const mliHomTraComp local2root_comp,
+    const struct mliHomTraComp local2root_comp,
     const mliOBB obb) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec c0_local, c1_local, c2_local, c3_local,
@@ -70,7 +70,7 @@ int mliBiCirclePlane_has_overlap_obb(
 
 mliOBB mliBiCirclePlane_obb(
     const mliBiCirclePlane plane,
-    const mliHomTraComp local2root_comp) {
+    const struct mliHomTraComp local2root_comp) {
     mliOBB obb;
     uint64_t corner_idx;
     struct mliVec c0_local, c0_root;

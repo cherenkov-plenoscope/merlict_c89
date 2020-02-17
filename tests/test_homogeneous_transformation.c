@@ -1,9 +1,9 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("sequence, unity and unity shall be unity") {
-    mliHomTraComp a;
-    mliHomTraComp b;
-    mliHomTraComp a_b;
+    struct mliHomTraComp a;
+    struct mliHomTraComp b;
+    struct mliHomTraComp a_b;
 
     a.trans = mliVec_set(0., 0., 0.);
     a.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
@@ -20,9 +20,9 @@ CASE("sequence, unity and unity shall be unity") {
 }
 
 CASE("sequence, one translation, one rotation") {
-    mliHomTraComp a; /* only translation */
-    mliHomTraComp b; /* only rotation */
-    mliHomTraComp a_b;
+    struct mliHomTraComp a; /* only translation */
+    struct mliHomTraComp b; /* only rotation */
+    struct mliHomTraComp a_b;
     mliHomTra a_b_;
 
     a.trans = mliVec_set(0., 0., 1.);
@@ -52,9 +52,9 @@ CASE("sequence, one translation, one rotation") {
 }
 
 CASE("sequence, cancelation") {
-    mliHomTraComp a;
-    mliHomTraComp a_inverse; /* inverse ov a */
-    mliHomTraComp a_a_inverse;
+    struct mliHomTraComp a;
+    struct mliHomTraComp a_inverse; /* inverse ov a */
+    struct mliHomTraComp a_a_inverse;
     mliHomTra a_a_inverse_;
 
     a.trans = mliVec_set(0., 0., 1.);
@@ -84,9 +84,9 @@ CASE("sequence, cancelation") {
 }
 
 CASE("simple sequence") {
-    mliHomTraComp a;
-    mliHomTraComp b;
-    mliHomTraComp a_b;
+    struct mliHomTraComp a;
+    struct mliHomTraComp b;
+    struct mliHomTraComp a_b;
     mliHomTra a_b_;
 
     a.trans = mliVec_set(0., 0., 1.);

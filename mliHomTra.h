@@ -8,17 +8,17 @@
 #include "mliRotMat.h"
 #include "mliQuaternion.h"
 
-typedef struct {
+struct mliHomTraComp{
     struct mliVec trans;
     struct mliQuaternion rot;
-} mliHomTraComp;
+};
 
 typedef struct {
     struct mliVec trans;
     mliRotMat rot;
 } mliHomTra;
 
-mliHomTra mliHomTra_from_compact(const mliHomTraComp trafo) {
+mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo) {
     mliHomTra t;
     t.trans = trafo.trans;
     t.rot = mliQuaternion_to_matrix(trafo.rot);
@@ -115,17 +115,17 @@ struct mliVec mliHomTra_dir_inverse(
     const struct mliVec in) {
     return mli_transform_orientation_inverse(&t->rot, in);}
 
-int mliHomTraComp_is_equal(const mliHomTraComp a, const mliHomTraComp b) {
+int mliHomTraComp_is_equal(const struct mliHomTraComp a, const struct mliHomTraComp b) {
     if (!mliVec_is_equal(a.trans, b.trans))
         return 0;
     if (!mliQuaternion_is_equal(a.rot, b.rot))
         return 0;
     return 1;}
 
-mliHomTraComp mliHomTraComp_sequence(
-    const mliHomTraComp a,
-    const mliHomTraComp b) {
-    mliHomTraComp s;
+struct mliHomTraComp mliHomTraComp_sequence(
+    const struct mliHomTraComp a,
+    const struct mliHomTraComp b) {
+    struct mliHomTraComp s;
     mliRotMat rot_a = mliQuaternion_to_matrix(a.rot);
     s.trans = mli_transform_orientation(&rot_a, a.trans);
     s.trans = mliVec_add(s.trans, b.trans);

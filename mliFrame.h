@@ -31,8 +31,8 @@ typedef struct mliFrame {
     struct mliFrame* mother;
     mliVector children;
 
-    mliHomTraComp frame2mother;
-    mliHomTraComp frame2root;
+    struct mliHomTraComp frame2mother;
+    struct mliHomTraComp frame2root;
 
     uint32_t type;
     union {

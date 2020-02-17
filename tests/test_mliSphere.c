@@ -3,7 +3,7 @@
 CASE("mliSphere_intersection") {
     mliSphere sphere;
     mliIntersection intersection;
-    mliHomTraComp local2root_comp;
+    struct mliHomTraComp local2root_comp;
     sphere.radius = 1.;
     local2root_comp.trans = mliVec_set(0., 0., 0.);
     local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(

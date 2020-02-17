@@ -73,7 +73,7 @@ void mliCylinder_set_intersection(
 
 int mliCylinder_intersection(
     const mliCylinder cylinder,
-    const mliHomTraComp local2root_comp,
+    const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
     mliIntersection *intersection) {
     /*                                                                        */

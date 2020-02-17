@@ -47,32 +47,32 @@ typedef struct {
     uint32_t num_spherical_cap_hex;
     mliSphericalCapHex *spherical_cap_hex;
     mliSurfaces *spherical_cap_hex_surfaces;
-    mliHomTraComp* spherical_cap_hex_T;
+    struct mliHomTraComp *spherical_cap_hex_T;
 
     uint32_t num_spheres;
     mliSphere *spheres;
     mliSurfaces *spheres_surfaces;
-    mliHomTraComp* spheres_T;
+    struct mliHomTraComp *spheres_T;
 
     uint32_t num_cylinders;
     mliCylinder *cylinders;
     mliSurfaces *cylinders_surfaces;
-    mliHomTraComp* cylinders_T;
+    struct mliHomTraComp *cylinders_T;
 
     uint32_t num_hexagons;
     mliHexagon *hexagons;
     mliSurfaces *hexagons_surfaces;
-    mliHomTraComp* hexagons_T;
+    struct mliHomTraComp *hexagons_T;
 
     uint32_t num_bicircleplanes;
     mliBiCirclePlane *bicircleplanes;
     mliSurfaces *bicircleplanes_surfaces;
-    mliHomTraComp* bicircleplanes_T;
+    struct mliHomTraComp * bicircleplanes_T;
 
     uint32_t num_discs;
     mliDisc *discs;
     mliSurfaces *discs_surfaces;
-    mliHomTraComp* discs_T;
+    struct mliHomTraComp *discs_T;
 } mliScenery;
 
 mliScenery mliScenery_init() {
@@ -220,7 +220,7 @@ int __mliScenery_malloc_spherical_cap_hex(mliScenery* s) {
     mli_malloc(
         s->spherical_cap_hex_surfaces, mliSurfaces, s->num_spherical_cap_hex);
     mli_malloc(
-        s->spherical_cap_hex_T, mliHomTraComp, s->num_spherical_cap_hex);
+        s->spherical_cap_hex_T, struct mliHomTraComp, s->num_spherical_cap_hex);
     return 1;
 error:
     return 0;
@@ -229,7 +229,7 @@ error:
 int __mliScenery_malloc_spheres(mliScenery* s) {
     mli_malloc(s->spheres, mliSphere, s->num_spheres);
     mli_malloc(s->spheres_surfaces, mliSurfaces, s->num_spheres);
-    mli_malloc(s->spheres_T, mliHomTraComp, s->num_spheres);
+    mli_malloc(s->spheres_T, struct mliHomTraComp, s->num_spheres);
     return 1;
 error:
     return 0;
@@ -238,7 +238,7 @@ error:
 int __mliScenery_malloc_cylinders(mliScenery* s) {
     mli_malloc(s->cylinders, mliCylinder, s->num_cylinders);
     mli_malloc(s->cylinders_surfaces, mliSurfaces, s->num_cylinders);
-    mli_malloc(s->cylinders_T, mliHomTraComp, s->num_cylinders);
+    mli_malloc(s->cylinders_T, struct mliHomTraComp, s->num_cylinders);
     return 1;
 error:
     return 0;
@@ -247,7 +247,7 @@ error:
 int __mliScenery_malloc_hexagons(mliScenery* s) {
     mli_malloc(s->hexagons, mliHexagon, s->num_hexagons);
     mli_malloc(s->hexagons_surfaces, mliSurfaces, s->num_hexagons);
-    mli_malloc(s->hexagons_T, mliHomTraComp, s->num_hexagons);
+    mli_malloc(s->hexagons_T, struct mliHomTraComp, s->num_hexagons);
     return 1;
 error:
     return 0;
@@ -256,7 +256,8 @@ error:
 int __mliScenery_malloc_bicircleplane(mliScenery* s) {
     mli_malloc(s->bicircleplanes, mliBiCirclePlane, s->num_bicircleplanes);
     mli_malloc(s->bicircleplanes_surfaces, mliSurfaces, s->num_bicircleplanes);
-    mli_malloc(s->bicircleplanes_T, mliHomTraComp, s->num_bicircleplanes);
+    mli_malloc(
+        s->bicircleplanes_T, struct mliHomTraComp, s->num_bicircleplanes);
     return 1;
 error:
     return 0;
@@ -265,7 +266,7 @@ error:
 int __mliScenery_malloc_discs(mliScenery* s) {
     mli_malloc(s->discs, mliDisc, s->num_discs);
     mli_malloc(s->discs_surfaces, mliSurfaces, s->num_discs);
-    mli_malloc(s->discs_T, mliHomTraComp, s->num_discs);
+    mli_malloc(s->discs_T, struct mliHomTraComp, s->num_discs);
     return 1;
 error:
     return 0;
@@ -325,7 +326,7 @@ int __mliScenery_write_spherical_cap_hex(const mliScenery *scenery, FILE *f) {
         f);
     mli_fwrite(
         scenery->spherical_cap_hex_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_spherical_cap_hex,
         f);
     return 1;
@@ -342,7 +343,7 @@ int __mliScenery_write_spheres(const mliScenery *scenery, FILE *f) {
         f);
     mli_fwrite(
         scenery->spheres_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_spheres,
         f);
     return 1;
@@ -363,7 +364,7 @@ int __mliScenery_write_cylinders(const mliScenery *scenery, FILE *f) {
         f);
     mli_fwrite(
         scenery->cylinders_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_cylinders,
         f);
     return 1;
@@ -380,7 +381,7 @@ int __mliScenery_write_hexagons(const mliScenery *scenery, FILE *f) {
         f);
     mli_fwrite(
         scenery->hexagons_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_hexagons,
         f);
     return 1;
@@ -401,7 +402,7 @@ int __mliScenery_write_bicircleplanes(const mliScenery *scenery, FILE *f) {
         f);
     mli_fwrite(
         scenery->bicircleplanes_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_bicircleplanes,
         f);
     return 1;
@@ -422,7 +423,7 @@ int __mliScenery_write_discs(const mliScenery *scenery, FILE *f) {
         f);
     mli_fwrite(
         scenery->discs_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_discs,
         f);
     return 1;
@@ -518,7 +519,7 @@ int __mliScenery_read_spherical_cap_hex(mliScenery *scenery, FILE* f) {
         scenery->num_spherical_cap_hex, f);
     mli_fread(
         scenery->spherical_cap_hex_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_spherical_cap_hex, f);
     return 1;
 error:
@@ -536,7 +537,7 @@ int __mliScenery_read_spheres(mliScenery *scenery, FILE* f) {
         scenery->num_spheres, f);
     mli_fread(
         scenery->spheres_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_spheres, f);
     return 1;
 error:
@@ -554,7 +555,7 @@ int __mliScenery_read_cylinders(mliScenery *scenery, FILE* f) {
         scenery->num_cylinders, f);
     mli_fread(
         scenery->cylinders_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_cylinders, f);
     return 1;
 error:
@@ -572,7 +573,7 @@ int __mliScenery_read_hexagons(mliScenery *scenery, FILE* f) {
         scenery->num_hexagons, f);
     mli_fread(
         scenery->hexagons_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_hexagons, f);
     return 1;
 error:
@@ -592,7 +593,7 @@ int __mliScenery_read_bicircleplanes(mliScenery *scenery, FILE* f) {
         f);
     mli_fread(
         scenery->bicircleplanes_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_bicircleplanes,
         f);
     return 1;
@@ -613,7 +614,7 @@ int __mliScenery_read_discs(mliScenery *scenery, FILE* f) {
         f);
     mli_fread(
         scenery->discs_T,
-        sizeof(mliHomTraComp),
+        sizeof(struct mliHomTraComp),
         scenery->num_discs,
         f);
     return 1;

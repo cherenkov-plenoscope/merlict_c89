@@ -11,7 +11,7 @@
 
 int mliDisc_has_overlap_obb(
     const mliDisc disc,
-    const mliHomTraComp local2root_comp,
+    const struct mliHomTraComp local2root_comp,
     const mliOBB obb) {
     mliHexagon hex;
     hex.inner_radius = disc.radius;
@@ -19,7 +19,7 @@ int mliDisc_has_overlap_obb(
 
 mliOBB mliDisc_obb(
     const mliDisc disc,
-    const mliHomTraComp local2root_comp) {
+    const struct mliHomTraComp local2root_comp) {
     mliHexagon hex;
     hex.inner_radius = disc.radius;
     return mliHexagon_obb(hex, local2root_comp);

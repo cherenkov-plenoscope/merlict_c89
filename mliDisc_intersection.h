@@ -14,7 +14,7 @@
 
 int mliDisc_intersection(
     const mliDisc disc,
-    const mliHomTraComp local2root_comp,
+    const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
     mliIntersection *intersection) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);

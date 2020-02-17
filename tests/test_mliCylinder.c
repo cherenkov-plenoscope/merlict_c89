@@ -30,7 +30,7 @@ CASE("mliCylinder_start_local, mliCylinder_end_local") {
 CASE("slim cylinder obb") {
     mliCylinder a;
     mliOBB obb;
-    mliHomTraComp trafo;
+    struct mliHomTraComp trafo;
     a.radius = .5;
     a.length = 12.;
     trafo.trans = mliVec_set(0., 0., 0.);
@@ -49,7 +49,7 @@ CASE("slim cylinder obb") {
 CASE("fat cylinder obb") {
     mliCylinder a;
     mliOBB obb;
-    mliHomTraComp trafo;
+    struct mliHomTraComp trafo;
     a.radius = 5;
     a.length = 1.;
     trafo.trans = mliVec_set(0., 0., 0.);
@@ -68,7 +68,7 @@ CASE("fat cylinder obb") {
 CASE("slim cylinder obb transformed") {
     mliCylinder a;
     mliOBB obb;
-    mliHomTraComp trafo;
+    struct mliHomTraComp trafo;
     a.radius = .5;
     a.length = 12.;
     trafo.trans = mliVec_set(0., 0., 1.);
@@ -87,7 +87,7 @@ CASE("slim cylinder obb transformed") {
 CASE("cylinder overlap with its own obb") {
     mliCylinder a;
     mliOBB obb;
-    mliHomTraComp local2root_comp;
+    struct mliHomTraComp local2root_comp;
     a.radius = .5;
     a.length = 12.;
     local2root_comp.trans = mliVec_set(0., 0., 1.);
@@ -105,7 +105,7 @@ CASE("cylinder overlap with its own obb") {
 CASE("cylinder overlap with its own obb, 2") {
     mliCylinder a;
     mliOBB obb;
-    mliHomTraComp local2root_comp;
+    struct mliHomTraComp local2root_comp;
     a.radius = .5;
     a.length = 12.;
     local2root_comp.trans = mliVec_set(0., 0., 1.);
@@ -266,7 +266,7 @@ CASE("cylinder intersection") {
 
 CASE("cylinder intersection, 2") {
     mliCylinder cylinder;
-    mliHomTraComp local2root_comp;
+    struct mliHomTraComp local2root_comp;
     mliIntersection intersection;
     local2root_comp.trans = mliVec_set(0., 0., 0.);
     local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(

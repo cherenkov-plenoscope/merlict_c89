@@ -27,7 +27,7 @@ struct mliVec mliCylinder_end_root(
 
 int mliCylinder_has_overlap_obb(
     const mliCylinder cylinder,
-    const mliHomTraComp local2root_comp,
+    const struct mliHomTraComp local2root_comp,
     const mliOBB obb) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
@@ -49,7 +49,7 @@ int mliCylinder_has_overlap_obb(
 
 mliOBB mliCylinder_obb(
     const mliCylinder cylinder,
-    const mliHomTraComp local2root_comp) {
+    const struct mliHomTraComp local2root_comp) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
     struct mliVec end_root = mliCylinder_end_root(cylinder, &local2root);

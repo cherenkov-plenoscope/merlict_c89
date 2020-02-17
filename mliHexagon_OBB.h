@@ -11,7 +11,7 @@
 
 int mliHexagon_has_overlap_obb(
     const mliHexagon hex,
-    const mliHomTraComp local2root_comp,
+    const struct mliHomTraComp local2root_comp,
     const mliOBB obb) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     /*
@@ -45,7 +45,7 @@ int mliHexagon_has_overlap_obb(
 
 mliOBB mliHexagon_obb(
     const mliHexagon hex,
-    const mliHomTraComp local2root_comp) {
+    const struct mliHomTraComp local2root_comp) {
     mliOBB obb;
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec first_corner_local = mliVec_multiply(

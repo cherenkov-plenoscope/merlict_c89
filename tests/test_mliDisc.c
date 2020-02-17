@@ -2,7 +2,7 @@
 
 CASE("mliDisc") {
     mliDisc disc;
-    mliHomTraComp local2root_comp;
+    struct mliHomTraComp local2root_comp;
     mliOBB obb;
     disc.radius = 1.;
     local2root_comp.trans = mliVec_set(0., 0., 0.);
