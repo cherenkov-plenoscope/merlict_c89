@@ -56,41 +56,46 @@ void mli_zeros_double(double *points, const uint64_t num_points) {
 void mli_zeros_uint64_t(uint64_t *points, const uint64_t num_points) {
     MLI_ZEROS(points, num_points);}
 
-#define MLI_UPPER_COMPARE(points, num_points, point_arg) \
-    /*
-    parameters
-    ----------
-        points          Sorted array in ascending order.
-        num_points      Number floats in points. Its length.
-        point_arg       The point to find the upper-bound for.
-    */ \
+/*
+ *  parameters
+ *  ----------
+ *      points          Sorted array in ascending order.
+ *      num_points      Number of points.
+ *      point_arg       The point to find the upper-bound for.
+ */
+#define MLI_UPPER_COMPARE(points, num_points, point_arg, return_idx) \
     do { \
         uint64_t first, last, middle; \
         first = 0u; \
         last = num_points - 1u; \
         middle = (last - first)/2; \
         if (num_points == 0) { \
-            return 0; \
-        } \
-        if (point_arg >= points[num_points - 1u]) { \
-            return num_points; \
-        } \
-        while (first < last) { \
-            if (points[middle] > point_arg) { \
-                last = middle; \
+            return_idx = 0; \
+        } else { \
+            if (point_arg >= points[num_points - 1u]) { \
+                return_idx = num_points; \
             } else { \
-                first = middle + 1u; \
+                while (first < last) { \
+                    if (points[middle] > point_arg) { \
+                        last = middle; \
+                    } else { \
+                        first = middle + 1u; \
+                    } \
+                    middle = first + (last - first)/2; \
+                } \
+                return_idx = last; \
             } \
-            middle = first + (last - first)/2; \
-        } \
-        return last; \
+        }\
     } while (0)
 
 uint64_t mli_upper_compare_double(
     const double *points,
     const uint64_t num_points,
     const double point_arg) {
-    MLI_UPPER_COMPARE(points, num_points, point_arg);}
+    uint64_t upper_index = 0;
+    MLI_UPPER_COMPARE(points, num_points, point_arg, upper_index);
+    return upper_index;
+}
 
 void mli_histogram(
     const double *bin_edges,
@@ -98,7 +103,8 @@ void mli_histogram(
     uint64_t *underflow_bin,
     uint64_t *bins,
     uint64_t *overflow_bin,
-    const double point) {
+    const double point)
+{
     uint64_t idx_upper = mli_upper_compare_double(
         bin_edges,
         num_bin_edges,
