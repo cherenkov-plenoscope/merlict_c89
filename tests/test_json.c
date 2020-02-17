@@ -4,8 +4,8 @@ CASE("Tokenize json-literal") {
     char s[] = "{\"hans\": 84, \"cosmo\": [1, 3, 7]}\0";
     char *end;
     int64_t num_tokens;
-    jsmn_parser p;
-    jsmntok_t t[128]; /* We expect no more than 128 JSON tokens */
+    struct jsmn_parser p;
+    struct jsmntok_t t[128]; /* We expect no more than 128 JSON tokens */
 
     jsmn_init(&p);
     num_tokens = jsmn_parse(&p, s, strlen(s), t, 128);

@@ -12,7 +12,7 @@ struct mliJson {
     uint64_t num_chars;
     char* chars;
     uint64_t num_tokens;
-    jsmntok_t *tokens;
+    struct jsmntok_t *tokens;
 };
 
 
@@ -33,7 +33,7 @@ void mliJson_free(struct mliJson *json) {
 
 int mliJson_malloc(struct mliJson *json) {
     mli_malloc(json->chars, char, json->num_chars);
-    mli_malloc(json->tokens, jsmntok_t, json->num_tokens);
+    mli_malloc(json->tokens, struct jsmntok_t, json->num_tokens);
     return 1;
 error:
     mliJson_free(json);
@@ -43,7 +43,7 @@ error:
 int mliJson_malloc_from_string(struct mliJson *json, const char *json_str) {
     int64_t num_tokens_parsed;
     uint64_t num_json_chars = strlen(json_str);
-    jsmn_parser parser;
+    struct jsmn_parser parser;
     json->num_chars = num_json_chars + 1u;
     json->num_tokens = json->num_chars/3;  /* A rather safe guess. */
     mli_check_mem(mliJson_malloc(json));
@@ -101,7 +101,7 @@ int mliJson_as_string(
     const uint64_t token_idx,
     char *return_string,
     const uint64_t return_string_size) {
-    const jsmntok_t t = json->tokens[token_idx];
+    const struct jsmntok_t t = json->tokens[token_idx];
     const uint64_t actual_length = t.end - t.start;
     mli_check(
         actual_length < return_string_size,
@@ -118,7 +118,7 @@ int mliJson_as_int64(
     const struct mliJson *json,
     const uint64_t token_idx,
     int64_t *return_int64) {
-    jsmntok_t t = json->tokens[token_idx];
+    struct jsmntok_t t = json->tokens[token_idx];
     uint64_t buff_size = t.end - t.start + 1u;
     char *buff;
     mli_check(
@@ -139,7 +139,7 @@ int mliJson_as_float64(
     const struct mliJson *json,
     const uint64_t token_idx,
     double *return_float64) {
-    jsmntok_t t = json->tokens[token_idx];
+    struct jsmntok_t t = json->tokens[token_idx];
     uint64_t buff_size = t.end - t.start + 1u;
     char *buff;
     mli_check(
@@ -221,7 +221,7 @@ int mliJson_fprint_debug(FILE* f, const struct mliJson *json) {
     char *buff;
     mli_malloc(buff, char, json->num_chars);
     for (i = 0; i < json->num_tokens; i++) {
-        jsmntok_t t = json->tokens[i];
+        struct jsmntok_t t = json->tokens[i];
         fprintf(f, "Token: %lu ", i);
         fprintf(f, "sz: %d ", t.size);
         fprintf(f, "tp: %d ", t.type);
