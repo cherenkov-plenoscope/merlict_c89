@@ -29,7 +29,7 @@ typedef struct mliFrame {
     char name[MLI_FRAME_NAME_SIZE];
     uint64_t id;
     struct mliFrame* mother;
-    mliVector children;
+    struct mliVector children;
 
     struct mliHomTraComp frame2mother;
     struct mliHomTraComp frame2root;

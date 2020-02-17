@@ -2,7 +2,7 @@
 
 CASE("malloc, and free") {
     uint64_t i;
-    mliVector vec = mliVector_init();
+    struct mliVector vec = mliVector_init();
     CHECK(mliVector_malloc(&vec, 0u, sizeof(struct mliColor)));
     CHECK(vec.size == 0u);
 
@@ -26,7 +26,7 @@ CASE("malloc, and free") {
 
 CASE("with pointers to mliColor") {
     uint64_t i;
-    mliVector vec = mliVector_init();
+    struct mliVector vec = mliVector_init();
     CHECK(mliVector_malloc(&vec, 0u, sizeof(struct mliColor*)));
     CHECK(vec.size == 0u);
 
