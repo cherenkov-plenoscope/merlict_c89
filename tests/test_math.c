@@ -48,3 +48,10 @@ CASE("MAX3") {
     CHECK(MLI_MAX3(5., 4., 6.) == 6.);
     CHECK(MLI_MAX3(5., 6., 4.) == 6.);
 }
+
+CASE("NAN") {
+    float hans = MLI_NAN;
+    float peter = 0.;
+    CHECK(MLI_IS_NAN(hans));
+    CHECK(!MLI_IS_NAN(peter));
+}

@@ -34,6 +34,7 @@ double mli_squared(const double a) {
 void mli_uint32_ncpy(const uint32_t *src, uint32_t* dst, const uint64_t num) {
     uint64_t i; for (i = 0; i < num; i++) {dst[i] = src[i];}}
 
+#define MLI_NAN 0./0.
 #define MLI_IS_NAN(a) ((a) != (a))
 
 #define MLI_MIN2(a,b) (((a) < (b)) ? (a) : (b))
