@@ -55,7 +55,7 @@ struct mliScenery {
     struct mliHomTraComp *spheres_T;
 
     uint32_t num_cylinders;
-    mliCylinder *cylinders;
+    struct mliCylinder *cylinders;
     mliSurfaces *cylinders_surfaces;
     struct mliHomTraComp *cylinders_T;
 
@@ -236,7 +236,7 @@ error:
 }
 
 int __mliScenery_malloc_cylinders(struct mliScenery *s) {
-    mli_malloc(s->cylinders, mliCylinder, s->num_cylinders);
+    mli_malloc(s->cylinders, struct mliCylinder, s->num_cylinders);
     mli_malloc(s->cylinders_surfaces, mliSurfaces, s->num_cylinders);
     mli_malloc(s->cylinders_T, struct mliHomTraComp, s->num_cylinders);
     return 1;
@@ -357,7 +357,7 @@ error:
 int __mliScenery_write_cylinders(const struct mliScenery *scenery, FILE *f) {
     mli_fwrite(
         scenery->cylinders,
-        sizeof(mliCylinder),
+        sizeof(struct mliCylinder),
         scenery->num_cylinders,
         f);
     mli_fwrite(
@@ -553,7 +553,7 @@ error:
 int __mliScenery_read_cylinders(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->cylinders,
-        sizeof(mliCylinder),
+        sizeof(struct mliCylinder),
         scenery->num_cylinders, f);
     mli_fread(
         scenery->cylinders_surfaces,

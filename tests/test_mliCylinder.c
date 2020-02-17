@@ -1,7 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliCylinder_is_equal") {
-    mliCylinder a, b;
+    struct mliCylinder a, b;
     a.radius = 1.;
     a.length = 2.;
     b.radius = 1.;
@@ -12,7 +12,7 @@ CASE("mliCylinder_is_equal") {
 }
 
 CASE("mliCylinder_start_local, mliCylinder_end_local") {
-    mliCylinder a;
+    struct mliCylinder a;
     struct mliVec start_local;
     struct mliVec end_local;
     a.radius = .1;
@@ -28,7 +28,7 @@ CASE("mliCylinder_start_local, mliCylinder_end_local") {
 }
 
 CASE("slim cylinder obb") {
-    mliCylinder a;
+    struct mliCylinder a;
     struct mliOBB obb;
     struct mliHomTraComp trafo;
     a.radius = .5;
@@ -47,7 +47,7 @@ CASE("slim cylinder obb") {
 }
 
 CASE("fat cylinder obb") {
-    mliCylinder a;
+    struct mliCylinder a;
     struct mliOBB obb;
     struct mliHomTraComp trafo;
     a.radius = 5;
@@ -66,7 +66,7 @@ CASE("fat cylinder obb") {
 }
 
 CASE("slim cylinder obb transformed") {
-    mliCylinder a;
+    struct mliCylinder a;
     struct mliOBB obb;
     struct mliHomTraComp trafo;
     a.radius = .5;
@@ -85,7 +85,7 @@ CASE("slim cylinder obb transformed") {
 }
 
 CASE("cylinder overlap with its own obb") {
-    mliCylinder a;
+    struct mliCylinder a;
     struct mliOBB obb;
     struct mliHomTraComp local2root_comp;
     a.radius = .5;
@@ -103,7 +103,7 @@ CASE("cylinder overlap with its own obb") {
 }
 
 CASE("cylinder overlap with its own obb, 2") {
-    mliCylinder a;
+    struct mliCylinder a;
     struct mliOBB obb;
     struct mliHomTraComp local2root_comp;
     a.radius = .5;
@@ -265,7 +265,7 @@ CASE("cylinder intersection") {
 }
 
 CASE("cylinder intersection, 2") {
-    mliCylinder cylinder;
+    struct mliCylinder cylinder;
     struct mliHomTraComp local2root_comp;
     struct mliIntersection intersection;
     local2root_comp.trans = mliVec_set(0., 0., 0.);
