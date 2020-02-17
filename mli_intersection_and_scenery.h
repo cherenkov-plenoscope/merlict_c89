@@ -8,7 +8,7 @@
 #include "mliScenery.h"
 #include "mliPhotonInteraction.h"
 
-mliSurface _mli_surface_coming_from(
+struct mliSurface _mli_surface_coming_from(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec) {
     mliSurfaces surfaces = mliScenery_object_surfaces(
@@ -19,7 +19,7 @@ mliSurface _mli_surface_coming_from(
     else
         return scenery->surfaces[surfaces.outer];}
 
-mliSurface _mli_surface_going_to(
+struct mliSurface _mli_surface_going_to(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec) {
     mliSurfaces surfaces = mliScenery_object_surfaces(
@@ -34,7 +34,7 @@ const struct mliFunc *_mli_refractive_index_going_to(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec) {
     const struct mliFunc *refractive_index;
-    const mliSurface going_to = _mli_surface_going_to(scenery, isec);
+    const struct mliSurface going_to = _mli_surface_going_to(scenery, isec);
     refractive_index = &scenery->functions[going_to.medium_refraction];
     return refractive_index;}
 
@@ -42,7 +42,7 @@ const struct mliFunc *_mli_refractive_index_coming_from(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec) {
     const struct mliFunc *refractive_index;
-    const mliSurface coming_from = _mli_surface_coming_from(scenery, isec);
+    const struct mliSurface coming_from = _mli_surface_coming_from(scenery, isec);
     refractive_index = &scenery->functions[coming_from.medium_refraction];
     return refractive_index;}
 

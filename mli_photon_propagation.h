@@ -27,7 +27,7 @@ mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     const struct mliIntersection *isec) {
     mliPhotonInteraction phia;
     mliSurfaces surfaces;
-    mliSurface surf_coming_from, surf_going_to;
+    struct mliSurface surf_coming_from, surf_going_to;
     surfaces = mliScenery_object_surfaces(scenery, isec->object_idx);
     if (isec->from_outside_to_inside) {
         surf_coming_from = scenery->surfaces[surfaces.outer];
@@ -54,7 +54,7 @@ int _mli_phong(
     double specular;
     double diffuse;
     double rnd;
-    mliSurface surface = _mli_surface_coming_from(env->scenery, isec);
+    struct mliSurface surface = _mli_surface_coming_from(env->scenery, isec);
     mli_check(mliFunc_evaluate(
         &env->scenery->functions[surface.boundary_layer_diffuse_reflection],
         env->photon->wavelength,
@@ -141,7 +141,7 @@ int _mli_probability_passing_medium_coming_from(
     const mliPhoton* photon,
     const struct mliIntersection *isec,
     double *probability_passing) {
-    const mliSurface surface_coming_from = _mli_surface_coming_from(
+    const struct mliSurface surface_coming_from = _mli_surface_coming_from(
         scenery,
         isec);
     double one_over_e_way;
@@ -206,7 +206,7 @@ error:
     return 0;}
 
 int _mli_interact_with_object(struct mliEnv *env, const struct mliIntersection *isec) {
-    const mliSurface surface_coming_from = _mli_surface_coming_from(
+    const struct mliSurface surface_coming_from = _mli_surface_coming_from(
         env->scenery,
         isec);
     switch (surface_coming_from.material) {

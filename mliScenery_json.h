@@ -104,9 +104,10 @@ error:
     return 0;}
 
 int __mliSurface_from_json(
-    mliSurface* surface,
+    struct mliSurface *surface,
     const struct mliJson *json,
-    const uint64_t token_s) {
+    const uint64_t token_s)
+{
     int64_t idx_tmp;
     uint64_t token_tmp;
 
@@ -154,7 +155,8 @@ int __mliSurface_from_json(
 
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int __mliScenery_assign_surfaces_from_json(
     struct mliScenery *surface_resources,

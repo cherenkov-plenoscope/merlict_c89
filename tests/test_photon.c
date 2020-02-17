@@ -15,7 +15,7 @@ CASE("simple propagation") {
     struct mliOcTree octree;
     mliPhotonHistory history = mliPhotonHistory_init(16u);
     struct mliIntersection intersection;
-    mliSurface surf_coming_from, surf_going_to;
+    struct mliSurface surf_coming_from, surf_going_to;
     mliPhoton photon = mliPhoton_set(
         mliRay_set(
             mliVec_set(0, 0, -3),

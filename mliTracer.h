@@ -49,7 +49,7 @@ struct mliColor mli_trace(
     ) {
         struct mliIntersection global_light_intersection;
         struct mliRay line_of_sight_to_source;
-        mliSurface surface;
+        struct mliSurface surface;
         struct mliVec dir_to_source = {1., 1., 3.};
 
         line_of_sight_to_source = mliRay_set(

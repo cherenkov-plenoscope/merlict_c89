@@ -35,7 +35,7 @@ struct mliScenery {
     struct mliColor *colors;
 
     uint32_t num_surfaces;
-    mliSurface *surfaces;
+    struct mliSurface *surfaces;
 
     uint32_t num_vertices;
     struct mliVec *vertices;
@@ -290,7 +290,7 @@ error:
 }
 
 int __mliScenery_malloc_surfaces(struct mliScenery *s) {
-    mli_malloc(s->surfaces, mliSurface, s->num_surfaces);
+    mli_malloc(s->surfaces, struct mliSurface, s->num_surfaces);
     return 1;
 error:
     return 0;
@@ -468,7 +468,8 @@ int mliScenery_write_to_path(const struct mliScenery *scenery, const char* path)
         scenery->colors, sizeof(struct mliColor), scenery->num_colors, f);
 
     /* surfaces */
-    mli_fwrite(scenery->surfaces, sizeof(mliSurface), scenery->num_surfaces, f);
+    mli_fwrite(
+        scenery->surfaces, sizeof(struct mliSurface), scenery->num_surfaces, f);
 
     /* vertices */
     mli_fwrite(
@@ -660,7 +661,8 @@ int mliScenery_read_from_path(struct mliScenery *scenery, const char* path) {
     mli_fread(scenery->colors, sizeof(struct mliColor), scenery->num_colors, f);
 
     /* surfaces */
-    mli_fread(scenery->surfaces, sizeof(mliSurface), scenery->num_surfaces, f);
+    mli_fread(
+        scenery->surfaces, sizeof(struct mliSurface), scenery->num_surfaces, f);
 
     mli_c(__mliScenery_read_vertices_and_triangles(scenery, f));
     mli_c(__mliScenery_read_spherical_cap_hex(scenery, f));

@@ -7,7 +7,7 @@
 #define MLI_MATERIAL_PHONG 100u
 #define MLI_MATERIAL_TRANSPARENT 102u
 
-typedef struct {
+struct mliSurface {
     uint32_t material;
 
     uint32_t medium_refraction;
@@ -18,9 +18,9 @@ typedef struct {
     /* The color is only relevant for fast rendering of images.
      * Color will not effect the propagation of photons. */
     uint32_t color;
-} mliSurface;
+};
 
-int mliSurface_is_equal(const mliSurface a, const mliSurface b) {
+int mliSurface_is_equal(const struct mliSurface a, const struct mliSurface b) {
     if (a.material != b.material) return 0;
     if (a.medium_refraction != b.medium_refraction) return 0;
     if (a.medium_absorbtion != b.medium_absorbtion) return 0;
