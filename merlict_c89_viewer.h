@@ -49,7 +49,7 @@ struct mlivrCursor {
 };
 
 void mlivr_print_info_line(
-    const mliCamera camera,
+    const struct mliCamera camera,
     const struct mlivrCursor cursor)
 {
     printf(
@@ -101,7 +101,7 @@ struct mlivrConfig{
     uint64_t preview_num_rows;
     uint64_t export_num_cols;
     uint64_t export_num_rows;
-    mliCamera camera;
+    struct mliCamera camera;
 };
 
 struct mlivrConfig mlivrConfig_default() {
@@ -144,7 +144,7 @@ int mlivr_run_interactive_viewer(
     struct mlivrCursor cursor;
     uint64_t num_screenshots = 0;
     char timestamp[20];
-    mliCamera camera = config.camera;
+    struct mliCamera camera = config.camera;
     struct mliImage img = mliImage_init();
     struct mliImage img2 = mliImage_init();
     int update_image = 1;
@@ -251,7 +251,7 @@ int mlivr_run_interactive_viewer(
             cols[0] = cursor.col;
             mliImage_print_chars(&img, symbols, rows, cols, num_symbols);
             {
-                mliCameraSensor sensor;
+                struct mliCameraSensor sensor;
                 mliCameraSensor_init(&sensor, &camera, &img);
                 probing_ray = mliCamera_ray_at_row_col(
                     &camera,

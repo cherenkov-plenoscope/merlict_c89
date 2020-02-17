@@ -10,79 +10,79 @@
 #include "mliTracer.h"
 #include "mliOcTree.h"
 
-typedef struct {
+struct mliTaitBryanAngles {
     double x;
     double y;
     double z;
-} mliTaitBryanAngles;
+};
 
-typedef struct {
+struct mliCamera {
     struct mliVec position;
-    mliTaitBryanAngles rotation;
+    struct mliTaitBryanAngles rotation;
     double field_of_view;
-} mliCamera;
+};
 
-typedef struct {
+struct mliCameraSensor {
     struct mliVec optical_axis;
     struct mliVec col_axis;
     struct mliVec row_axis;
     struct mliVec principal_point;
     double distance_to_principal_point;
-} mliCameraSensor;
+};
 
-struct mliVec mliCamera_optical_axis(const mliCamera cam) {
+struct mliVec mliCamera_optical_axis(const struct mliCamera cam) {
     struct mliRotMat rot = mliRotMat_init_tait_bryan(
         cam.rotation.x,
         cam.rotation.y,
         cam.rotation.z);
     return mli_transform_orientation(&rot, mliVec_set(0., 0., 1.));}
 
-struct mliVec mliCamera_direction_right(const mliCamera cam) {
+struct mliVec mliCamera_direction_right(const struct mliCamera cam) {
     struct mliRotMat rot = mliRotMat_init_tait_bryan(
         cam.rotation.x,
         cam.rotation.y,
         cam.rotation.z);
     return mli_transform_orientation(&rot, mliVec_set(0., 1., 0.));}
 
-struct mliVec mliCamera_direction_up(const mliCamera cam) {
+struct mliVec mliCamera_direction_up(const struct mliCamera cam) {
     struct mliRotMat rot = mliRotMat_init_tait_bryan(
         cam.rotation.x,
         cam.rotation.y,
         cam.rotation.z);
     return mli_transform_orientation(&rot, mliVec_set(1., 0., 0.));}
 
-mliCamera mliCamera_move_forward(const mliCamera camin, const double rate) {
-    mliCamera camout = camin;
+struct mliCamera mliCamera_move_forward(const struct mliCamera camin, const double rate) {
+    struct mliCamera camout = camin;
     struct mliVec optical_axis = mliCamera_optical_axis(camin);
     camout.position = mliVec_add(
         camout.position,
         mliVec_multiply(optical_axis, rate));
     return camout;}
 
-mliCamera mliCamera_move_right(const mliCamera camin, const double rate) {
-    mliCamera camout = camin;
+struct mliCamera mliCamera_move_right(const struct mliCamera camin, const double rate) {
+    struct mliCamera camout = camin;
     struct mliVec direction_right = mliCamera_direction_right(camout);
     camout.position = mliVec_add(
         camout.position,
         mliVec_multiply(direction_right, rate));
     return camout;}
 
-mliCamera mliCamera_move_up(const mliCamera camin, const double rate) {
-    mliCamera camout = camin;
+struct mliCamera mliCamera_move_up(const struct mliCamera camin, const double rate) {
+    struct mliCamera camout = camin;
     camout.position.z += rate;
     return camout;}
 
-mliCamera mliCamera_look_right(const mliCamera camin, const double rate) {
-    mliCamera camout = camin;
+struct mliCamera mliCamera_look_right(const struct mliCamera camin, const double rate) {
+    struct mliCamera camout = camin;
     const double diff = camin.field_of_view*rate;
     camout.rotation.z = fmod(camout.rotation.z + diff, (2.*MLI_PI));
     return camout;}
 
-mliCamera mliCamera_look_down_when_possible(
-    const mliCamera camin,
+struct mliCamera mliCamera_look_down_when_possible(
+    const struct mliCamera camin,
     const double rate) {
     const double diff = camin.field_of_view*rate;
-    mliCamera camout = camin;
+    struct mliCamera camout = camin;
     const int fals_forward_over = camin.rotation.y < -MLI_PI + diff;
     if (fals_forward_over) {
         camout.rotation.y = - MLI_PI;
@@ -92,10 +92,10 @@ mliCamera mliCamera_look_down_when_possible(
     return camout;
 }
 
-mliCamera mliCamera_increase_fov(
-    const mliCamera camin,
+struct mliCamera mliCamera_increase_fov(
+    const struct mliCamera camin,
     const double rate) {
-    mliCamera camout = camin;
+    struct mliCamera camout = camin;
     if (camout.field_of_view * rate > mli_deg2rad(170)) {
         camout.field_of_view = mli_deg2rad(170);
     } else {
@@ -103,10 +103,10 @@ mliCamera mliCamera_increase_fov(
     }
     return camout;}
 
-mliCamera mliCamera_decrease_fov(
-    const mliCamera camin,
+struct mliCamera mliCamera_decrease_fov(
+    const struct mliCamera camin,
     const double rate) {
-    mliCamera camout = camin;
+    struct mliCamera camout = camin;
     if (camout.field_of_view / rate < mli_deg2rad(.1)) {
         camout.field_of_view = mli_deg2rad(.1);
     } else {
@@ -114,11 +114,11 @@ mliCamera mliCamera_decrease_fov(
     }
     return camout;}
 
-mliCamera mliCamera_look_up_when_possible(
-    const mliCamera camin,
+struct mliCamera mliCamera_look_up_when_possible(
+    const struct mliCamera camin,
     const double rate) {
     const double diff = camin.field_of_view*rate;
-    mliCamera camout = camin;
+    struct mliCamera camout = camin;
     const int fals_backwards_over = camin.rotation.y > diff;
     if (fals_backwards_over) {
         camout.rotation.y = 0.;
@@ -129,8 +129,8 @@ mliCamera mliCamera_look_up_when_possible(
 }
 
 void mliCameraSensor_init(
-    mliCameraSensor *sensor,
-    const mliCamera *camera,
+    struct mliCameraSensor *sensor,
+    const struct mliCamera *camera,
     const struct mliImage *image) {
     struct mliRotMat rot;
     struct mliVec unit_x = {1., 0., 0.};
@@ -150,8 +150,8 @@ void mliCameraSensor_init(
         sensor->distance_to_principal_point);}
 
 struct mliRay mliCamera_ray_at_row_col(
-    const mliCamera *camera,
-    const mliCameraSensor *sensor,
+    const struct mliCamera *camera,
+    const struct mliCameraSensor *sensor,
     const struct mliImage *image,
     const uint32_t row,
     const uint32_t col) {
@@ -165,12 +165,12 @@ struct mliRay mliCamera_ray_at_row_col(
     return mliRay_set(camera->position, sensor_intersection);}
 
 void mliCamera_render_image(
-    const mliCamera *camera,
+    const struct mliCamera *camera,
     const mliScenery *scenery,
     const mliOcTree *octree,
     struct mliImage *image) {
     uint32_t row, col;
-    mliCameraSensor sensor;
+    struct mliCameraSensor sensor;
     assert(camera->field_of_view > 0.);
     assert(camera->field_of_view < mli_deg2rad(180.));
     mliCameraSensor_init(&sensor, camera, image);
