@@ -317,9 +317,10 @@ error:
     return 0;}
 
 int __mliFrame_set_id_pos_rot(
-    mliFrame* frame,
+    struct mliFrame *frame,
     const struct mliJson *json,
-    const uint64_t token) {
+    const uint64_t token)
+{
     uint64_t token_id, token_pos, token_rot;
     int64_t id;
     /* id */
@@ -355,9 +356,10 @@ error:
     return 0;}
 
 int __mliFrame_set_surface_idx(
-    mliFrame* frame,
+    struct mliFrame *frame,
     const struct mliJson *json,
-    const uint64_t token) {
+    const uint64_t token)
+{
     uint64_t token_surface, token_inner, token_outer;
     int64_t inner_surface_idx, outer_surface_idx;
     mli_check(
@@ -383,12 +385,14 @@ int __mliFrame_set_surface_idx(
     frame->surfaces.outer = outer_surface_idx;
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int __mliFrame_set_Sphere(
-    mliFrame* frame,
+    struct mliFrame *frame,
     const struct mliJson *json,
-    const uint64_t token) {
+    const uint64_t token)
+{
     uint64_t token_radius;
     mli_check(
         mliJson_find_key(json, token, "radius", &token_radius),
@@ -401,13 +405,15 @@ int __mliFrame_set_Sphere(
         "Failed parsing Sphere's radius from json.");
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 
 int __mliFrame_set_Cylinder(
-    mliFrame* frame,
+    struct mliFrame *frame,
     const struct mliJson *json,
-    const uint64_t token) {
+    const uint64_t token)
+{
     uint64_t token_radius;
     uint64_t token_length;
     /* radius */
@@ -433,13 +439,15 @@ int __mliFrame_set_Cylinder(
         "Failed parsing Cylinder's length from json.");
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 
 int __mliFrame_set_SphericalCapHex(
-    mliFrame* frame,
+    struct mliFrame *frame,
     const struct mliJson *json,
-    const uint64_t token) {
+    const uint64_t token)
+{
     uint64_t token_curvature_radius;
     uint64_t token_inner_hex_radius;
     /* curvature_radius */
@@ -473,13 +481,15 @@ int __mliFrame_set_SphericalCapHex(
         "Failed parsing SphericalCapHex's inner_hex_radius from json.");
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 
 int __mliFrame_set_Hexagon(
-    mliFrame* frame,
+    struct mliFrame *frame,
     const struct mliJson *json,
-    const uint64_t token) {
+    const uint64_t token)
+{
     uint64_t token_inner_radius;
     mli_check(
         mliJson_find_key(json, token, "inner_radius", &token_inner_radius),
@@ -492,13 +502,15 @@ int __mliFrame_set_Hexagon(
         "Failed parsing Hexagon's inner_radius from json.");
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 
 int __mliFrame_set_BiCirclePlane(
-    mliFrame* frame,
+    struct mliFrame *frame,
     const struct mliJson *json,
-    const uint64_t token) {
+    const uint64_t token)
+{
     uint64_t token_x_height;
     uint64_t token_y_width;
     /* x_height */
@@ -532,13 +544,15 @@ int __mliFrame_set_BiCirclePlane(
         "Failed parsing BiCirclePlane's y_width from json.");
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 
 int __mliFrame_set_Disc(
-    mliFrame* frame,
+    struct mliFrame *frame,
     const struct mliJson *json,
-    const uint64_t token) {
+    const uint64_t token)
+{
     uint64_t token_radius;
     mli_check(
         mliJson_find_key(json, token, "radius", &token_radius),
@@ -551,7 +565,8 @@ int __mliFrame_set_Disc(
         "Failed parsing Disc's radius from json.");
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 
 int mliFace_from_json_token(
@@ -586,9 +601,10 @@ error:
 
 
 int __mliFrame_set_Mesh(
-    mliFrame* frame,
+    struct mliFrame *frame,
     const struct mliJson *json,
-    const uint64_t token) {
+    const uint64_t token)
+{
     uint64_t token_vertices;
     uint64_t token_faces;
     uint64_t v, f;
@@ -632,13 +648,15 @@ int __mliFrame_set_Mesh(
     }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 
 int __mliFrame_from_json(
-    mliFrame* mother,
+    struct mliFrame *mother,
     const struct mliJson *json,
-    const uint64_t token_children) {
+    const uint64_t token_children)
+{
     uint64_t num_children;
     uint64_t c;
     mli_check(
@@ -650,7 +668,7 @@ int __mliFrame_from_json(
             json,
             token_children,
             c);
-        mliFrame* child = NULL;
+        struct mliFrame *child = NULL;
         uint64_t type;
         uint64_t token_grandchildren;
         mli_check(
@@ -717,7 +735,8 @@ int __mliFrame_from_json(
     }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 
 int mliUserScenery_malloc_from_json(mliUserScenery *uscn, const struct mliJson *json) {

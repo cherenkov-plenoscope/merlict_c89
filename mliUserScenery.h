@@ -17,7 +17,7 @@
 */
 typedef struct {
     mliScenery surface_resources; /* stores only the surfaces */
-    mliFrame root;
+    struct mliFrame root;
 } mliUserScenery;
 
 mliUserScenery mliUserScenery_init() {

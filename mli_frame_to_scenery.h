@@ -33,12 +33,13 @@ struct mliPrimitiveCount mliPrimitiveCount_init() {
 
 int __mliScenery_set_primitive_capacity(
     mliScenery* scenery,
-    const mliFrame* frame) {
+    const struct mliFrame *frame)
+{
     uint64_t c;
     switch (frame->type) {
         case MLI_FRAME:
             for (c = 0; c < frame->children.size; c++) {
-                mliFrame* child = mliFrame_child(frame, c);
+                struct mliFrame *child = mliFrame_child(frame, c);
                 mli_c(__mliScenery_set_primitive_capacity(scenery, child));
             }
             break;
@@ -55,15 +56,16 @@ int __mliScenery_set_primitive_capacity(
         default: mli_sentinel("Unknown type of frame."); break;}
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int __mliScenery_set_primitive(
     mliScenery* scenery,
-    const mliFrame* frame,
+    const struct mliFrame *frame,
     struct mliPrimitiveCount *count)
 {
     uint64_t i, vertex_offset;
-    mliFrame* child;
+    struct mliFrame *child;
     struct mliVec vertex_in_root;
     struct mliVec vertex;
     struct mliFace triangle;

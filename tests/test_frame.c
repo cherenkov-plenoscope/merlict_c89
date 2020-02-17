@@ -1,14 +1,14 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliFrame_init, defaults") {
-    mliFrame f = mliFrame_init();
+    struct mliFrame f = mliFrame_init();
     CHECK(f.mother == NULL);
     CHECK(f.children.size == 0u);
     CHECK(f.type == MLI_FRAME);
 }
 
 CASE("mliFrame_malloc, free") {
-    mliFrame f = mliFrame_init();
+    struct mliFrame f = mliFrame_init();
     CHECK(mliFrame_malloc(&f, MLI_FRAME));
     mliFrame_free(&f);
     CHECK(f.mother == NULL);
@@ -17,9 +17,9 @@ CASE("mliFrame_malloc, free") {
 }
 
 CASE("add two childs") {
-    mliFrame* child1 = NULL;
-    mliFrame* child2 = NULL;
-    mliFrame mother = mliFrame_init();
+    struct mliFrame *child1 = NULL;
+    struct mliFrame *child2 = NULL;
+    struct mliFrame mother = mliFrame_init();
     CHECK(mliFrame_malloc(&mother, MLI_FRAME));
     mother.id = 1337;
 
@@ -32,8 +32,8 @@ CASE("add two childs") {
     child2->id = 42;
 
     CHECK(mother.children.size == 2);
-    CHECK(&mother == (mliFrame*)child1->mother);
-    CHECK(&mother == (mliFrame*)child2->mother);
+    CHECK(&mother == (struct mliFrame *)child1->mother);
+    CHECK(&mother == (struct mliFrame *)child2->mother);
     mliFrame_free(&mother);
 }
 
@@ -47,13 +47,13 @@ CASE("add grand childs") {
             |--child_1--|
                         |--child_11
     */
-    mliFrame* child_0 = NULL;
-    mliFrame* child_1 = NULL;
-    mliFrame* child_00 = NULL;
-    mliFrame* child_01 = NULL;
-    mliFrame* child_10 = NULL;
-    mliFrame* child_11 = NULL;
-    mliFrame mother = mliFrame_init();
+    struct mliFrame *child_0 = NULL;
+    struct mliFrame *child_1 = NULL;
+    struct mliFrame *child_00 = NULL;
+    struct mliFrame *child_01 = NULL;
+    struct mliFrame *child_10 = NULL;
+    struct mliFrame *child_11 = NULL;
+    struct mliFrame mother = mliFrame_init();
     CHECK(mliFrame_malloc(&mother, MLI_FRAME));
     mother.id = 1337;
     child_0 = mliFrame_add(&mother, MLI_FRAME);
@@ -77,24 +77,24 @@ CASE("add grand childs") {
     child_11->id = 201;
 
     CHECK(mother.children.size == 2);
-    CHECK(&mother == (mliFrame*)child_0->mother);
-    CHECK(&mother == (mliFrame*)child_0->mother);
+    CHECK(&mother == (struct mliFrame *)child_0->mother);
+    CHECK(&mother == (struct mliFrame *)child_0->mother);
 
     CHECK(child_0->children.size == 2);
-    CHECK(child_0 == (mliFrame*)child_00->mother);
-    CHECK(child_0 == (mliFrame*)child_01->mother);
+    CHECK(child_0 == (struct mliFrame *)child_00->mother);
+    CHECK(child_0 == (struct mliFrame *)child_01->mother);
 
     CHECK(child_1->children.size == 2);
-    CHECK(child_1 == (mliFrame*)child_10->mother);
-    CHECK(child_1 == (mliFrame*)child_11->mother);
+    CHECK(child_1 == (struct mliFrame *)child_10->mother);
+    CHECK(child_1 == (struct mliFrame *)child_11->mother);
     /* mliFrame_print(&mother); */
 
     mliFrame_free(&mother);
 }
 
 CASE("basic mesh allocation and initialization") {
-    mliFrame* child = NULL;
-    mliFrame mother = mliFrame_init();
+    struct mliFrame *child = NULL;
+    struct mliFrame mother = mliFrame_init();
     CHECK(mliFrame_malloc(&mother, MLI_FRAME));
     mother.id = 1337;
 
@@ -113,8 +113,8 @@ CASE("basic mesh allocation and initialization") {
 }
 
 CASE("basic sphere") {
-    mliFrame* child = NULL;
-    mliFrame mother = mliFrame_init();
+    struct mliFrame *child = NULL;
+    struct mliFrame mother = mliFrame_init();
     CHECK(mliFrame_malloc(&mother, MLI_FRAME));
     mother.id = 1337;
 
@@ -127,8 +127,8 @@ CASE("basic sphere") {
 }
 
 CASE("estimate capacity") {
-    mliFrame root = mliFrame_init();
-    mliFrame* sphere = NULL;
+    struct mliFrame root = mliFrame_init();
+    struct mliFrame *sphere = NULL;
     mliScenery scenery = mliScenery_init();
     CHECK(mliFrame_malloc(&root, MLI_FRAME));
     sphere = mliFrame_add(&root, MLI_SPHERE);
@@ -163,10 +163,10 @@ CASE("mapping frame-type-string to uint64") {
 }
 
 CASE("mliFrame_set_frame2root, only translation z-component") {
-    mliFrame* c1;
-    mliFrame* c2;
-    mliFrame* c1_c1;
-    mliFrame root = mliFrame_init();
+    struct mliFrame *c1;
+    struct mliFrame *c2;
+    struct mliFrame *c1_c1;
+    struct mliFrame root = mliFrame_init();
     CHECK(mliFrame_malloc(&root, MLI_FRAME));
     root.id = 1337;
     c1 = mliFrame_add(&root, MLI_FRAME);

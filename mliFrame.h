@@ -25,7 +25,7 @@
 
 #define MLI_FRAME_NAME_SIZE 64u
 
-typedef struct mliFrame {
+struct mliFrame {
     char name[MLI_FRAME_NAME_SIZE];
     uint64_t id;
     struct mliFrame* mother;
@@ -45,10 +45,10 @@ typedef struct mliFrame {
         mliDisc* disc;
     } primitive;
     mliSurfaces surfaces;
-} mliFrame;
+};
 
-mliFrame mliFrame_init() {
-    mliFrame f;
+struct mliFrame mliFrame_init() {
+    struct mliFrame f;
     MLI_ZEROS(f.name, MLI_FRAME_NAME_SIZE);
     f.id = 0u;
     f.children = mliVector_init();
@@ -63,12 +63,12 @@ mliFrame mliFrame_init() {
     f.surfaces.outer = 0u;
     return f;}
 
-int mliFrame_malloc(mliFrame *f, const uint64_t type) {
+int mliFrame_malloc(struct mliFrame *f, const uint64_t type) {
     f->type = type;
     switch(type) {
         case MLI_FRAME:
             mli_check(
-                mliVector_malloc(&f->children, 0u, sizeof(mliFrame*)),
+                mliVector_malloc(&f->children, 0u, sizeof(struct mliFrame*)),
                 "Can not allocate memory for children of frame.");
             break;
         case MLI_MESH:
@@ -100,20 +100,23 @@ error:
     return 0;
 }
 
-mliFrame* mliFrame_child(const mliFrame* mother, const uint64_t idx) {
-    mliFrame* child = NULL;
+struct mliFrame *mliFrame_child(
+    const struct mliFrame *mother,
+    const uint64_t idx)
+{
+    struct mliFrame *child = NULL;
     mli_check(idx <= mother->children.size, "Child-index is out of range.");
-    child = *((mliFrame**)mliVector_at(&mother->children, idx));
+    child = *((struct mliFrame **)mliVector_at(&mother->children, idx));
     return child;
 error:
     return NULL;}
 
-int mliFrame_free(mliFrame *f) {
+int mliFrame_free(struct mliFrame *f) {
     uint64_t c;
     switch(f->type) {
         case MLI_FRAME:
             for (c = 0; c < f->children.size; c++) {
-                mliFrame* child = mliFrame_child(f, c);
+                struct mliFrame *child = mliFrame_child(f, c);
                 mliFrame_free(child);
             }
             mliVector_free(&f->children);
@@ -147,9 +150,13 @@ int mliFrame_free(mliFrame *f) {
     *f = mliFrame_init();
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
-int mliFrame_set_mother_and_child(mliFrame* mother, mliFrame* child) {
+int mliFrame_set_mother_and_child(
+    struct mliFrame *mother,
+    struct mliFrame *child)
+{
     mli_check(
         mother->type == MLI_FRAME,
         "Expected mother to be of type FRAME");
@@ -159,11 +166,13 @@ int mliFrame_set_mother_and_child(mliFrame* mother, mliFrame* child) {
     child->mother = (struct mliFrame*)mother;
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
-mliFrame* mliFrame_add(mliFrame* mother, const uint64_t type) {
-    mliFrame* child = NULL;
-    mli_malloc(child, mliFrame, 1u);
+struct mliFrame *mliFrame_add(struct mliFrame *mother, const uint64_t type)
+{
+    struct mliFrame *child = NULL;
+    mli_malloc(child, struct mliFrame, 1u);
     *child = mliFrame_init();
     mli_check(
         mliFrame_malloc(child, type),
@@ -173,7 +182,8 @@ mliFrame* mliFrame_add(mliFrame* mother, const uint64_t type) {
         "Can not allocate child-pointer.");
     return child;
 error:
-    return NULL;}
+    return NULL;
+}
 
 int mli_type_to_string(const uint64_t type, char* s) {
     switch (type) {
@@ -217,7 +227,7 @@ int mli_string_to_type(const char* s, uint64_t *type) {
 error:
     return 0;}
 
-void __mliFrame_print(mliFrame *f, const uint64_t indention) {
+void __mliFrame_print(struct mliFrame *f, const uint64_t indention) {
     uint64_t c;
     char type_string[1024];
     mli_type_to_string(f->type, type_string);
@@ -248,16 +258,16 @@ void __mliFrame_print(mliFrame *f, const uint64_t indention) {
             f->surfaces.inner, f->surfaces.outer);
     }
     for (c = 0; c < f->children.size; c++) {
-        mliFrame* child = mliFrame_child(f, c);
+        struct mliFrame *child = mliFrame_child(f, c);
         __mliFrame_print(child, indention + 4);
     }
 }
 
-void mliFrame_print(mliFrame *f) {
+void mliFrame_print(struct mliFrame *f) {
     __mliFrame_print(f, 0u);
 }
 
-void mliFrame_set_frame2root(mliFrame *f) {
+void mliFrame_set_frame2root(struct mliFrame *f) {
     if (f->mother == NULL) {
         f->frame2root = f->frame2mother;
     } else {
@@ -268,7 +278,7 @@ void mliFrame_set_frame2root(mliFrame *f) {
     if (f->type == MLI_FRAME) {
         uint64_t c;
         for (c = 0; c < f->children.size; c++) {
-            mliFrame* child = mliFrame_child(f, c);
+            struct mliFrame *child = mliFrame_child(f, c);
             mliFrame_set_frame2root(child);
         }
     }
