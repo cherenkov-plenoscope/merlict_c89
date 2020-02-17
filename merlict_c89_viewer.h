@@ -273,7 +273,7 @@ int mlivr_run_interactive_viewer(
         if (cursor.active) {
             if (has_probing_intersection) {
                 char type_string[1024];
-                const mliIndex object_index = __mliScenery_resolve_index(
+                const struct mliIndex object_index = __mliScenery_resolve_index(
                     scenery,
                     probing_intersection.object_idx);
                 mli_c(mli_type_to_string(object_index.type, type_string));

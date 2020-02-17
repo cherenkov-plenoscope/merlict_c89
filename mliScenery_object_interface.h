@@ -21,10 +21,10 @@
 #include "mliOBB.h"
 #include "mliIntersection.h"
 
-typedef struct {
+struct mliIndex {
     uint32_t type;
     uint32_t idx;
-} mliIndex;
+};
 
 uint64_t mliScenery_num_objects(const struct mliScenery *scenery) {
     uint64_t last = 0;
@@ -37,7 +37,7 @@ uint64_t mliScenery_num_objects(const struct mliScenery *scenery) {
     last += scenery->num_discs;
     return last;}
 
-mliIndex __mliScenery_resolve_index(
+struct mliIndex __mliScenery_resolve_index(
     const struct mliScenery *scenery,
     const uint64_t idx)
 {
@@ -62,7 +62,7 @@ mliIndex __mliScenery_resolve_index(
     const uint64_t idx_next =
         idx_start_discs + scenery->num_discs;
 
-    mliIndex ri;
+    struct mliIndex ri;
     if (idx < scenery->num_triangles) {
         ri.type = MLI_TRIANGLE;
         ri.idx = idx;
@@ -102,7 +102,7 @@ int mliScenery_overlap_obb(
     const uint64_t idx,
     const struct mliOBB obb)
 {
-    mliIndex i = __mliScenery_resolve_index(scenery, idx);
+    struct mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {
         case MLI_TRIANGLE:
             return mliTriangle_has_overlap_obb(
@@ -159,7 +159,7 @@ struct mliOBB mliScenery_obb(
     const uint64_t idx)
 {
     struct mliOBB obb;
-    mliIndex i = __mliScenery_resolve_index(scenery, idx);
+    struct mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {
         case MLI_TRIANGLE:
             return mliTriangle_obb(
@@ -228,7 +228,7 @@ int mliScenery_intersection(
     const uint64_t idx,
     struct mliIntersection *intersection)
 {
-    mliIndex i = __mliScenery_resolve_index(scenery, idx);
+    struct mliIndex i = __mliScenery_resolve_index(scenery, idx);
     intersection->object_idx = idx;
     switch(i.type) {
         case MLI_TRIANGLE:
@@ -293,7 +293,7 @@ struct mliSurfaces mliScenery_object_surfaces(
     const uint64_t idx)
 {
     struct mliSurfaces null = {0, 0};
-    mliIndex i = __mliScenery_resolve_index(scenery, idx);
+    struct mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {
         case MLI_TRIANGLE:
             return scenery->triangles_surfaces[i.idx];
