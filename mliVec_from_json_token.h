@@ -9,7 +9,7 @@
 
 int mliVec_from_json_token(
     struct mliVec* v,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     mli_check(
         json->tokens[token].type == JSMN_ARRAY,
@@ -32,7 +32,7 @@ error:
 
 int mliColor_from_json_token(
     struct mliColor *c,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     struct mliVec v;
     mli_check(

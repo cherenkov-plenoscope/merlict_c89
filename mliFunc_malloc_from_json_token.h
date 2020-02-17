@@ -8,7 +8,7 @@
 
 int mliFunc_malloc_from_json_token(
     struct mliFunc *f,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t point;
     uint64_t point_token;

@@ -13,7 +13,7 @@
 
 int __mliScenery_surface_capacity_from_json(
     mliScenery *surface_resources,
-    const mliJson *json) {
+    const struct mliJson *json) {
     uint64_t token;
     mli_check(
         mliJson_find_key(json, 0, "functions", &token),
@@ -44,7 +44,7 @@ error:
 
 int __mliScenery_malloc_functions_from_json(
     mliScenery *surface_resources,
-    const mliJson *json) {
+    const struct mliJson *json) {
     uint64_t token;
     uint64_t token_functions;
     uint64_t f;
@@ -75,7 +75,7 @@ error:
 
 int __mliScenery_assign_colors_from_json(
     mliScenery *surface_resources,
-    const mliJson *json) {
+    const struct mliJson *json) {
     uint64_t token;
     uint64_t token_colors;
     uint64_t c;
@@ -105,7 +105,7 @@ error:
 
 int __mliSurface_from_json(
     mliSurface* surface,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token_s) {
     int64_t idx_tmp;
     uint64_t token_tmp;
@@ -158,7 +158,7 @@ error:
 
 int __mliScenery_assign_surfaces_from_json(
     mliScenery *surface_resources,
-    const mliJson *json) {
+    const struct mliJson *json) {
     uint64_t token;
     uint64_t token_surfaces;
     uint64_t s;
@@ -189,7 +189,7 @@ error:
 
 int __mliFrame_type_from_json(
     uint64_t* type,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token_child) {
     uint64_t token_type;
     char* type_string = NULL;
@@ -213,7 +213,7 @@ error:
 
 int __mliQuaternion_tait_bryan_from_json(
     struct mliQuaternion* quat,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_xyz;
     struct mliVec xyz;
@@ -230,7 +230,7 @@ error:
 
 int __mliQuaternion_axis_angle_from_json(
     struct mliQuaternion* quat,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_axis, token_angle;
     double angle;
@@ -254,7 +254,7 @@ error:
 
 int __mliQuaternion_quaternion_from_json(
     struct mliQuaternion* quat,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_xyz;
     double w;
@@ -284,7 +284,7 @@ error:
 
 int __mliQuaternion_from_json(
     struct mliQuaternion* quat,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_repr = 0u;
     char* repr_str = NULL;
@@ -318,7 +318,7 @@ error:
 
 int __mliFrame_set_id_pos_rot(
     mliFrame* frame,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_id, token_pos, token_rot;
     int64_t id;
@@ -356,7 +356,7 @@ error:
 
 int __mliFrame_set_surface_idx(
     mliFrame* frame,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_surface, token_inner, token_outer;
     int64_t inner_surface_idx, outer_surface_idx;
@@ -387,7 +387,7 @@ error:
 
 int __mliFrame_set_Sphere(
     mliFrame* frame,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_radius;
     mli_check(
@@ -406,7 +406,7 @@ error:
 
 int __mliFrame_set_Cylinder(
     mliFrame* frame,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_radius;
     uint64_t token_length;
@@ -438,7 +438,7 @@ error:
 
 int __mliFrame_set_SphericalCapHex(
     mliFrame* frame,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_curvature_radius;
     uint64_t token_inner_hex_radius;
@@ -478,7 +478,7 @@ error:
 
 int __mliFrame_set_Hexagon(
     mliFrame* frame,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_inner_radius;
     mli_check(
@@ -497,7 +497,7 @@ error:
 
 int __mliFrame_set_BiCirclePlane(
     mliFrame* frame,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_x_height;
     uint64_t token_y_width;
@@ -537,7 +537,7 @@ error:
 
 int __mliFrame_set_Disc(
     mliFrame* frame,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_radius;
     mli_check(
@@ -556,7 +556,7 @@ error:
 
 int mliFace_from_json_token(
     struct mliFace *f,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     int64_t tmp;
     mli_check(
@@ -587,7 +587,7 @@ error:
 
 int __mliFrame_set_Mesh(
     mliFrame* frame,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token) {
     uint64_t token_vertices;
     uint64_t token_faces;
@@ -637,7 +637,7 @@ error:
 
 int __mliFrame_from_json(
     mliFrame* mother,
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token_children) {
     uint64_t num_children;
     uint64_t c;
@@ -720,7 +720,7 @@ error:
     return 0;}
 
 
-int mliUserScenery_malloc_from_json(mliUserScenery *uscn, const mliJson *json) {
+int mliUserScenery_malloc_from_json(mliUserScenery *uscn, const struct mliJson *json) {
     uint64_t token;
     mli_check(
         __mliScenery_surface_capacity_from_json(&uscn->surface_resources, json),

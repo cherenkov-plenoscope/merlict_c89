@@ -8,16 +8,16 @@
 #include "mli_debug.h"
 #include "mli_string_to.h"
 
-typedef struct {
+struct mliJson {
     uint64_t num_chars;
     char* chars;
     uint64_t num_tokens;
     jsmntok_t *tokens;
-} mliJson;
+};
 
 
-mliJson mliJson_init() {
-    mliJson j;
+struct mliJson mliJson_init() {
+    struct mliJson j;
     j.num_chars = 0u;
     j.chars = NULL;
     j.num_tokens = 0u;
@@ -25,13 +25,13 @@ mliJson mliJson_init() {
     return j;}
 
 
-void mliJson_free(mliJson *json) {
+void mliJson_free(struct mliJson *json) {
     free(json->chars);
     free(json->tokens);
     (*json) = mliJson_init();}
 
 
-int mliJson_malloc(mliJson *json) {
+int mliJson_malloc(struct mliJson *json) {
     mli_malloc(json->chars, char, json->num_chars);
     mli_malloc(json->tokens, jsmntok_t, json->num_tokens);
     return 1;
@@ -40,7 +40,7 @@ error:
     return 0;}
 
 
-int mliJson_malloc_from_string(mliJson *json, const char *json_str) {
+int mliJson_malloc_from_string(struct mliJson *json, const char *json_str) {
     int64_t num_tokens_parsed;
     uint64_t num_json_chars = strlen(json_str);
     jsmn_parser parser;
@@ -70,7 +70,7 @@ error:
     return 0;}
 
 
-int mliJson_malloc_from_file(mliJson *json, const char *path) {
+int mliJson_malloc_from_file(struct mliJson *json, const char *path) {
     char* json_str = NULL;
     uint64_t num_chars = 0u;
     uint64_t num_chars_and_null = 0u;
@@ -97,7 +97,7 @@ error:
 
 
 int mliJson_as_string(
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token_idx,
     char *return_string,
     const uint64_t return_string_size) {
@@ -115,7 +115,7 @@ error:
 
 
 int mliJson_as_int64(
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token_idx,
     int64_t *return_int64) {
     jsmntok_t t = json->tokens[token_idx];
@@ -136,7 +136,7 @@ error:
 
 
 int mliJson_as_float64(
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t token_idx,
     double *return_float64) {
     jsmntok_t t = json->tokens[token_idx];
@@ -159,7 +159,7 @@ error:
 
 
 int mliJson_find_key(
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t start_token_idx,
     const char *key,
     uint64_t *return_idx) {
@@ -195,7 +195,7 @@ error:
 
 
 uint64_t mliJson_array_child_token(
-    const mliJson *json,
+    const struct mliJson *json,
     const uint64_t start_token_idx,
     const uint64_t child_idx) {
     uint64_t child = 0;
@@ -216,7 +216,7 @@ uint64_t mliJson_array_child_token(
 }
 
 
-int mliJson_fprint_debug(FILE* f, const mliJson *json) {
+int mliJson_fprint_debug(FILE* f, const struct mliJson *json) {
     uint64_t i;
     char *buff;
     mli_malloc(buff, char, json->num_chars);
@@ -236,7 +236,7 @@ error:
     return 0;
 }
 
-int mliJson_write_debug(const mliJson *json, const char* path) {
+int mliJson_write_debug(const struct mliJson *json, const char* path) {
     FILE* f;
     f = fopen(path, "wt");
     mli_check(f != NULL, "Can not open file to write Json debug output.");

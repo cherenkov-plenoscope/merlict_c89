@@ -43,7 +43,7 @@ CASE("Tokenize json-literal") {
 }
 
 CASE("mliJson_as_string") {
-    mliJson json = mliJson_init();
+    struct mliJson json = mliJson_init();
     char json_str[] = "{\"hans\": 1337}";
     /*             0         1 */
     /*             01234567890 */
@@ -62,15 +62,15 @@ CASE("mliJson_as_string") {
 }
 
 CASE("mliJson_init, defaults") {
-    mliJson json = mliJson_init();
+    struct mliJson json = mliJson_init();
     CHECK(json.num_chars == 0u);
     CHECK(json.chars == NULL);
     CHECK(json.num_tokens == 0u);
     CHECK(json.tokens == NULL);
 }
 
-CASE("mliJson malloc, and free") {
-    mliJson json = mliJson_init();
+CASE("struct mliJson malloc, and free") {
+    struct mliJson json = mliJson_init();
     json.num_chars = 10;
     json.num_tokens = 5;
     CHECK(mliJson_malloc(&json));
@@ -78,7 +78,7 @@ CASE("mliJson malloc, and free") {
 }
 
 CASE("mliJson_malloc_from_file") {
-    mliJson json = mliJson_init();
+    struct mliJson json = mliJson_init();
     uint64_t return_idx;
     int64_t myint;
     double myfloat;
@@ -114,7 +114,7 @@ CASE("mliJson_malloc_from_file") {
 }
 
 CASE("mliJson_malloc_from_string") {
-    mliJson json = mliJson_init();
+    struct mliJson json = mliJson_init();
     char json_str[1024];
     uint64_t token = 0u;
     int64_t value = 0;
@@ -128,7 +128,7 @@ CASE("mliJson_malloc_from_string") {
 
 CASE("parse mliFunc") {
     uint64_t token;
-    mliJson json = mliJson_init();
+    struct mliJson json = mliJson_init();
     struct mliFunc f = mliFunc_init();
     CHECK(mliJson_malloc_from_file(&json, "tests/resources/function.json"));
     CHECK(mliJson_write_debug(&json, "tests/resources/function.debug.tmp"));
@@ -165,7 +165,7 @@ CASE("parse mliFunc") {
 
 CASE("parse mliVec and mliColor") {
     uint64_t token;
-    mliJson json = mliJson_init();
+    struct mliJson json = mliJson_init();
     struct mliVec vec1 = mliVec_set(0., 0., 0.);
     struct mliVec vec2 = mliVec_set(0., 0., 0.);
     struct mliColor col = mliColor_set(0., 0., 0.);
@@ -197,7 +197,7 @@ CASE("rotation representations") {
     char json_str[1024];
     struct mliQuaternion q;
     struct mliQuaternion q_expected;
-    mliJson json = mliJson_init();
+    struct mliJson json = mliJson_init();
 
     /* unity */
     q_expected = mliQuaternion_set_tait_bryan(0., 0., 0.);
@@ -257,7 +257,7 @@ CASE("rotation representations") {
 }
 
 CASE("parse mliUserScenery") {
-    mliJson json = mliJson_init();
+    struct mliJson json = mliJson_init();
     mliUserScenery uscn = mliUserScenery_init();
     mliFrame* f;
     mliSurface* uscn_srfs;

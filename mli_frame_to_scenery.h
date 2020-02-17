@@ -190,7 +190,7 @@ error:
 }
 
 int mliScenery_malloc_from_json_path(mliScenery* scenery, const char* path) {
-    mliJson json = mliJson_init();
+    struct mliJson json = mliJson_init();
     mliUserScenery uscn = mliUserScenery_init();
     mli_check(
         mliJson_malloc_from_file(&json, path),
