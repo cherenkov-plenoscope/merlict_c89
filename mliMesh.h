@@ -14,7 +14,7 @@ typedef struct {
     uint32_t num_vertices;
     struct mliVec *vertices;
     uint32_t num_faces;
-    mliFace *faces;
+    struct mliFace *faces;
 } mliMesh;
 
 mliMesh mliMesh_init() {
@@ -27,7 +27,7 @@ mliMesh mliMesh_init() {
 
 int mliMesh_malloc(mliMesh* m) {
     mli_malloc(m->vertices, struct mliVec, m->num_vertices);
-    mli_malloc(m->faces, mliFace, m->num_faces);
+    mli_malloc(m->faces, struct mliFace, m->num_faces);
     return 1;
 error:
     return 0;}
@@ -204,7 +204,7 @@ int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
     while (1) {
         if (strlen(line) > 1) {
             int ia, ib, ic;
-            mliFace fa;
+            struct mliFace fa;
             mli_check(
                 mli_parse_three_ints(strchr(line, ' '), &ia, &ib, &ic),
                 "Can not parse face.");

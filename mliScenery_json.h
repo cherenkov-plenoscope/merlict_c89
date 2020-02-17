@@ -555,7 +555,7 @@ error:
 
 
 int mliFace_from_json_token(
-    mliFace* f,
+    struct mliFace *f,
     const mliJson *json,
     const uint64_t token) {
     int64_t tmp;

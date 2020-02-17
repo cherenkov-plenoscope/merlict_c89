@@ -65,7 +65,7 @@ int __mliScenery_set_primitive(
     mliFrame* child;
     struct mliVec vertex_in_root;
     struct mliVec vertex;
-    mliFace triangle;
+    struct mliFace triangle;
     struct mliHomTra frame2root;
     switch (frame->type) {
         case MLI_FRAME:
