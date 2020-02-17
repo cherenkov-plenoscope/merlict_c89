@@ -14,7 +14,7 @@
 #include "mli_from_outside_to_inside.h"
 
 int mliSphericalCapHex_intersection(
-    const mliSphericalCapHex cap,
+    const struct mliSphericalCapHex cap,
     const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
     struct mliIntersection *intersection) {

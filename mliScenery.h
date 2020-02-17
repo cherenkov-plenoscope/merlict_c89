@@ -45,7 +45,7 @@ struct mliScenery {
     struct mliSurfaces *triangles_surfaces;
 
     uint32_t num_spherical_cap_hex;
-    mliSphericalCapHex *spherical_cap_hex;
+    struct mliSphericalCapHex *spherical_cap_hex;
     struct mliSurfaces *spherical_cap_hex_surfaces;
     struct mliHomTraComp *spherical_cap_hex_T;
 
@@ -216,7 +216,9 @@ error:
 
 int __mliScenery_malloc_spherical_cap_hex(struct mliScenery *s) {
     mli_malloc(
-        s->spherical_cap_hex, mliSphericalCapHex, s->num_spherical_cap_hex);
+        s->spherical_cap_hex,
+        struct mliSphericalCapHex,
+        s->num_spherical_cap_hex);
     mli_malloc(
         s->spherical_cap_hex_surfaces,
         struct mliSurfaces,
@@ -324,7 +326,7 @@ int __mliScenery_write_spherical_cap_hex(
 {
     mli_fwrite(
         scenery->spherical_cap_hex,
-        sizeof(mliSphericalCapHex),
+        sizeof(struct mliSphericalCapHex),
         scenery->num_spherical_cap_hex,
         f);
     mli_fwrite(
@@ -532,7 +534,7 @@ error:
 int __mliScenery_read_spherical_cap_hex(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->spherical_cap_hex,
-        sizeof(mliSphericalCapHex),
+        sizeof(struct mliSphericalCapHex),
         scenery->num_spherical_cap_hex, f);
     mli_fread(
         scenery->spherical_cap_hex_surfaces,

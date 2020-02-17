@@ -122,7 +122,7 @@ CASE("ray has causal intersection") {
 }
 
 CASE("mliSphericalCapHex, bounding radius") {
-    mliSphericalCapHex cap;
+    struct mliSphericalCapHex cap;
     double bounding_radius;
     cap.curvature_radius = 1.0;
     cap.inner_hex_radius = .1;
