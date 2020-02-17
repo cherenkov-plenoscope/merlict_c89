@@ -1,9 +1,9 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliHexagon") {
-    mliHexagon a;
-    mliHexagon b;
-    mliHexagon c;
+    struct mliHexagon a;
+    struct mliHexagon b;
+    struct mliHexagon c;
     a.inner_radius = 1.;
     b.inner_radius = 1.;
     c.inner_radius = 0.5;
@@ -13,7 +13,7 @@ CASE("mliHexagon") {
 }
 
 CASE("mliHexagon_intersection") {
-    mliHexagon hex;
+    struct mliHexagon hex;
     struct mliHomTraComp local2root_comp;
     struct mliIntersection intersection;
     hex.inner_radius = 1.;
@@ -74,8 +74,8 @@ CASE("mliHexagon_intersection") {
             &intersection));
 }
 
-CASE("mliHexagon transformation") {
-    mliHexagon hex;
+CASE("struct mliHexagon transformation") {
+    struct mliHexagon hex;
     struct mliHomTraComp local2root_comp;
     struct mliOBB obb;
     hex.inner_radius = 1.;
@@ -133,7 +133,7 @@ CASE("mliHexagon transformation") {
 }
 
 CASE("mliHexagon_has_overlap_obb") {
-    mliHexagon hex;
+    struct mliHexagon hex;
     struct mliHomTraComp local2root_comp;
     struct mliOBB obb;
     hex.inner_radius = 1.;

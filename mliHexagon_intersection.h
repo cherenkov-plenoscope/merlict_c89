@@ -12,7 +12,7 @@
 
 
 int mliHexagon_intersection(
-    const mliHexagon hex,
+    const struct mliHexagon hex,
     const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
     struct mliIntersection *intersection) {

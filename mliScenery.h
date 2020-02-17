@@ -60,7 +60,7 @@ struct mliScenery {
     struct mliHomTraComp *cylinders_T;
 
     uint32_t num_hexagons;
-    mliHexagon *hexagons;
+    struct mliHexagon *hexagons;
     struct mliSurfaces *hexagons_surfaces;
     struct mliHomTraComp *hexagons_T;
 
@@ -251,7 +251,7 @@ error:
 }
 
 int __mliScenery_malloc_hexagons(struct mliScenery *s) {
-    mli_malloc(s->hexagons, mliHexagon, s->num_hexagons);
+    mli_malloc(s->hexagons, struct mliHexagon, s->num_hexagons);
     mli_malloc(s->hexagons_surfaces, struct mliSurfaces, s->num_hexagons);
     mli_malloc(s->hexagons_T, struct mliHomTraComp, s->num_hexagons);
     return 1;
@@ -383,7 +383,7 @@ error:
 }
 
 int __mliScenery_write_hexagons(const struct mliScenery *scenery, FILE *f) {
-    mli_fwrite(scenery->hexagons, sizeof(mliHexagon), scenery->num_hexagons, f);
+    mli_fwrite(scenery->hexagons, sizeof(struct mliHexagon), scenery->num_hexagons, f);
     mli_fwrite(
         scenery->hexagons_surfaces,
         sizeof(struct mliSurfaces),
@@ -588,7 +588,7 @@ error:
 int __mliScenery_read_hexagons(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->hexagons,
-        sizeof(mliHexagon),
+        sizeof(struct mliHexagon),
         scenery->num_hexagons, f);
     mli_fread(
         scenery->hexagons_surfaces,

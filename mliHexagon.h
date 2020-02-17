@@ -3,11 +3,13 @@
 #define MERLICT_MLIHEXAGON_H_
 
 
-typedef struct {
+struct mliHexagon {
     double inner_radius;
-} mliHexagon;
+};
 
-int mliHexagon_is_equal(const mliHexagon a, const mliHexagon b) {
-    return a.inner_radius == b.inner_radius;}
+int mliHexagon_is_equal(const struct mliHexagon a, const struct mliHexagon b)
+{
+    return a.inner_radius == b.inner_radius;
+}
 
 #endif
