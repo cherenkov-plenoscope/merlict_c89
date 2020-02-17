@@ -3,6 +3,7 @@
 #define MERLICT_MLISURFACE_H_
 
 #include <stdint.h>
+#include "mli_debug.h"
 
 #define MLI_MATERIAL_PHONG 100u
 #define MLI_MATERIAL_TRANSPARENT 102u
@@ -31,13 +32,16 @@ int mliSurface_is_equal(const struct mliSurface a, const struct mliSurface b) {
     if (a.color != b.color) return 0;
     return 1;}
 
-int mli_material_to_string(const uint32_t type, char* s) {
+int mli_material_to_string(const uint32_t type, char* s)
+{
     switch (type) {
         case MLI_MATERIAL_PHONG: sprintf(s, "Phong"); break;
         case MLI_MATERIAL_TRANSPARENT: sprintf(s, "transparent"); break;
-        default: mli_sentinel("material is unknown."); break;}
+        default: mli_sentinel("material is unknown.");
+    }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 #endif
