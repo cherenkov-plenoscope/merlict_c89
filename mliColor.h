@@ -11,36 +11,44 @@ struct mliColor {
     float b;
 };
 
-struct mliColor mliColor_set(const double r, const double g, const double b) {
+struct mliColor mliColor_set(const float r, const float g, const float b)
+{
     struct mliColor rgb;
     rgb.r = r;
     rgb.g = g;
     rgb.b = b;
-    return rgb;}
+    return rgb;
+}
 
 struct mliColor mliColor_mix(
     const struct mliColor a,
     const struct mliColor b,
-    const double refl) {
+    const float refl)
+{
     struct mliColor out;
     out.r = (1.f - refl)*a.r + refl * b.r;
     out.g = (1.f - refl)*a.g + refl * b.g;
     out.b = (1.f - refl)*a.b + refl * b.b;
-    return out;}
+    return out;
+}
 
 struct mliColor mliColor_mean(
     const struct mliColor colors[],
-    const uint32_t num_colors) {
+    const uint32_t num_colors)
+{
     struct mliColor out = {0., 0., 0.};
+    const float f_num_colors = (float)num_colors;
     uint32_t i;
     for (i = 0; i < num_colors; i++) {
         out.r = out.r + colors[i].r;
         out.g = out.g + colors[i].g;
-        out.b = out.b + colors[i].b;}
-    out.r = out.r/num_colors;
-    out.g = out.g/num_colors;
-    out.b = out.b/num_colors;
-    return out;}
+        out.b = out.b + colors[i].b;
+    }
+    out.r = out.r/f_num_colors;
+    out.g = out.g/f_num_colors;
+    out.b = out.b/f_num_colors;
+    return out;
+}
 
 struct mliColor mliColor_truncate_to_uint8(const struct mliColor color) {
     struct mliColor out;
