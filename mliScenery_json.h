@@ -212,7 +212,7 @@ error:
     return 0;}
 
 int __mliQuaternion_tait_bryan_from_json(
-    mliQuaternion* quat,
+    struct mliQuaternion* quat,
     const mliJson *json,
     const uint64_t token) {
     uint64_t token_xyz;
@@ -229,7 +229,7 @@ error:
     return 0;}
 
 int __mliQuaternion_axis_angle_from_json(
-    mliQuaternion* quat,
+    struct mliQuaternion* quat,
     const mliJson *json,
     const uint64_t token) {
     uint64_t token_axis, token_angle;
@@ -253,7 +253,7 @@ error:
     return 0;}
 
 int __mliQuaternion_quaternion_from_json(
-    mliQuaternion* quat,
+    struct mliQuaternion* quat,
     const mliJson *json,
     const uint64_t token) {
     uint64_t token_xyz;
@@ -283,7 +283,7 @@ error:
     return 0;}
 
 int __mliQuaternion_from_json(
-    mliQuaternion* quat,
+    struct mliQuaternion* quat,
     const mliJson *json,
     const uint64_t token) {
     uint64_t token_repr = 0u;

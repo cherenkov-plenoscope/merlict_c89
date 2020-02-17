@@ -195,8 +195,8 @@ CASE("parse mliVec and mliColor") {
 
 CASE("rotation representations") {
     char json_str[1024];
-    mliQuaternion q;
-    mliQuaternion q_expected;
+    struct mliQuaternion q;
+    struct mliQuaternion q_expected;
     mliJson json = mliJson_init();
 
     /* unity */

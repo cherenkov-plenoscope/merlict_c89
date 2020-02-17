@@ -7,26 +7,28 @@
 #include <stdint.h>
 #include "mliVec.h"
 
-typedef struct {
+struct mliQuaternion{
     double w;
     double x;
     double y;
     double z;
-} mliQuaternion;
+};
 
-mliQuaternion mliQuaternion_set(
+struct mliQuaternion mliQuaternion_set(
     const double w,
     const double x,
     const double y,
     const double z) {
-    mliQuaternion o;
+    struct mliQuaternion o;
     o.w = w;
     o.x = x;
     o.y = y;
     o.z = z;
     return o;}
 
-int mliQuaternion_is_equal(const mliQuaternion a, const mliQuaternion b) {
+int mliQuaternion_is_equal(
+    const struct mliQuaternion a,
+    const struct mliQuaternion b) {
     if (fabs(a.w - b.w) > DBL_EPSILON) return 0;
     if (fabs(a.x - b.x) > DBL_EPSILON) return 0;
     if (fabs(a.y - b.y) > DBL_EPSILON) return 0;
@@ -34,8 +36,8 @@ int mliQuaternion_is_equal(const mliQuaternion a, const mliQuaternion b) {
     return 1;}
 
 int mliQuaternion_is_equal_margin(
-    const mliQuaternion a,
-    const mliQuaternion b,
+    const struct mliQuaternion a,
+    const struct mliQuaternion b,
     const double margin) {
     if (fabs(a.w - b.w) >= margin) {return 0;}
     if (fabs(a.x - b.x) >= margin) {return 0;}
@@ -43,18 +45,19 @@ int mliQuaternion_is_equal_margin(
     if (fabs(a.z - b.z) >= margin) {return 0;}
     return 1;}
 
-mliQuaternion mliQuaternion_complex_conjugate(const mliQuaternion q) {
-    mliQuaternion c;
+struct mliQuaternion mliQuaternion_complex_conjugate(
+    const struct mliQuaternion q) {
+    struct mliQuaternion c;
     c.w = q.w;
     c.x = -q.x;
     c.y = -q.y;
     c.z = -q.z;
     return c;}
 
-mliQuaternion mliQuaternion_product(
-    const mliQuaternion p,
-    const mliQuaternion q) {
-    mliQuaternion pq;
+struct mliQuaternion mliQuaternion_product(
+    const struct mliQuaternion p,
+    const struct mliQuaternion q) {
+    struct mliQuaternion pq;
     const mliVec P = mliVec_set(p.x, p.y, p.z);
     const mliVec Q = mliVec_set(q.x, q.y, q.z);
     const mliVec P_cross_Q = mliVec_cross(P, Q);
@@ -64,16 +67,16 @@ mliQuaternion mliQuaternion_product(
     pq.z = p.w*Q.z + q.w*P.z + P_cross_Q.z;
     return pq;}
 
-double mliQuaternion_product_complex_conjugate(const mliQuaternion p) {
+double mliQuaternion_product_complex_conjugate(const struct mliQuaternion p) {
     return p.w*p.w + p.x*p.x + p.y*p.y + p.z*p.z;}
 
-double mliQuaternion_norm(const mliQuaternion q) {
+double mliQuaternion_norm(const struct mliQuaternion q) {
     return sqrt(mliQuaternion_product_complex_conjugate(q));}
 
-mliQuaternion mliQuaternion_set_rotaxis_and_angle(
+struct mliQuaternion mliQuaternion_set_rotaxis_and_angle(
     const mliVec rot_axis,
     const double angle) {
-    mliQuaternion quat;
+    struct mliQuaternion quat;
     const double angle_half = .5*angle;
     const double sin_angle_half = sin(angle_half);
     quat.w = cos(angle_half);
@@ -82,7 +85,7 @@ mliQuaternion mliQuaternion_set_rotaxis_and_angle(
     quat.z = rot_axis.z * sin_angle_half;
     return quat;}
 
-mliRotMat mliQuaternion_to_matrix(const mliQuaternion quat) {
+mliRotMat mliQuaternion_to_matrix(const struct mliQuaternion quat) {
     mliRotMat o;
     const double w2 = quat.w * quat.w;
     const double x2 = quat.x * quat.x;
@@ -108,23 +111,23 @@ mliRotMat mliQuaternion_to_matrix(const mliQuaternion quat) {
     o.r22 = w2 - x2 - y2 + z2;
     return o;}
 
-mliQuaternion mliQuaternion_set_tait_bryan(
+struct mliQuaternion mliQuaternion_set_tait_bryan(
     const double rx,
     const double ry,
     const double rz) {
-    const mliQuaternion qz = mliQuaternion_set_rotaxis_and_angle(
+    const struct mliQuaternion qz = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0,0,1),
         -rz);
-    const mliQuaternion qy = mliQuaternion_set_rotaxis_and_angle(
+    const struct mliQuaternion qy = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0,1,0),
         -ry);
-    const mliQuaternion qx = mliQuaternion_set_rotaxis_and_angle(
+    const struct mliQuaternion qx = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(1,0,0),
         -rx);
-    const mliQuaternion qz_qy = mliQuaternion_product(qz, qy);
+    const struct mliQuaternion qz_qy = mliQuaternion_product(qz, qy);
     return mliQuaternion_product(qz_qy, qx);}
 
-void mliQuaternion_print(const mliQuaternion q) {
+void mliQuaternion_print(const struct mliQuaternion q) {
     printf("(w:%f, [%f, %f, %f])", q.w, q.x, q.y, q.z);}
 
 #endif

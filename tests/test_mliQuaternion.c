@@ -1,7 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliQuaternion, defaults") {
-    mliQuaternion p = mliQuaternion_set(1., 2., 3., 4.);
+    struct mliQuaternion p = mliQuaternion_set(1., 2., 3., 4.);
     CHECK(p.w = 1.);
     CHECK(p.x = 2.);
     CHECK(p.y = 3.);
@@ -10,14 +10,14 @@ CASE("mliQuaternion, defaults") {
 }
 
 CASE("rotation is pure i.e. norm is 1.") {
-    mliQuaternion q = mliQuaternion_set_rotaxis_and_angle(
+    struct mliQuaternion q = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(1., 0., 0.),
         mli_deg2rad(23.));
     CHECK_MARGIN(mliQuaternion_norm(q), 1., 1e-6);
 }
 
 CASE("unity quaternion and matrix") {
-    mliQuaternion q_eye = mliQuaternion_set_rotaxis_and_angle(
+    struct mliQuaternion q_eye = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(1., 0., 0.),
         mli_deg2rad(0.));
     mliRotMat r_eye = mliQuaternion_to_matrix(q_eye);
@@ -35,7 +35,7 @@ CASE("unity quaternion and matrix") {
 }
 
 CASE("rotation matrix z-axis +90deg") {
-    mliQuaternion z90 = mliQuaternion_set_rotaxis_and_angle(
+    struct mliQuaternion z90 = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 1.),
         mli_deg2rad(90.));
     mliRotMat r_z90 = mliQuaternion_to_matrix(z90);
@@ -83,13 +83,13 @@ CASE("sequence of rotations") {
         z ______|/
 
     */
-    mliQuaternion x90 = mliQuaternion_set_rotaxis_and_angle(
+    struct mliQuaternion x90 = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(1., 0., 0.),
         mli_deg2rad(90.));
-    mliQuaternion z90 = mliQuaternion_set_rotaxis_and_angle(
+    struct mliQuaternion z90 = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 1.),
         mli_deg2rad(90.));
-    mliQuaternion z90_x90;
+    struct mliQuaternion z90_x90;
     mliRotMat r_z90_x90;
     CHECK_MARGIN(mliQuaternion_norm(x90), 1., 1e-6);
     CHECK_MARGIN(mliQuaternion_norm(z90), 1., 1e-6);
@@ -111,12 +111,15 @@ CASE("sequence of rotations") {
 }
 
 CASE("Tait-Bryan-angles") {
-    mliQuaternion q = mliQuaternion_set_tait_bryan(0., 0.,0.);
+    struct mliQuaternion q = mliQuaternion_set_tait_bryan(0., 0.,0.);
     CHECK_MARGIN(mliQuaternion_norm(q), 1., 1e-6);
 }
 
 CASE("Tait-Bryan-angles, 2") {
-    mliQuaternion q = mliQuaternion_set_tait_bryan(0., 0., mli_deg2rad(90));
+    struct mliQuaternion q = mliQuaternion_set_tait_bryan(
+        0.,
+        0.,
+        mli_deg2rad(90));
     mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(90));
     mliRotMat rot_from_q;
     CHECK_MARGIN(mliQuaternion_norm(q), 1., 1e-6);
@@ -132,7 +135,7 @@ CASE("multiple combinations") {
                 double xrad = mli_deg2rad(rx);
                 double yrad = mli_deg2rad(ry);
                 double zrad = mli_deg2rad(rz);
-                mliQuaternion q = mliQuaternion_set_tait_bryan(
+                struct mliQuaternion q = mliQuaternion_set_tait_bryan(
                     xrad, yrad, zrad);
                 mliRotMat rot = mliRotMat_init_tait_bryan(
                     xrad, yrad, zrad);

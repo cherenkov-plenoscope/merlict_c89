@@ -10,7 +10,7 @@
 
 typedef struct {
     mliVec trans;
-    mliQuaternion rot;
+    struct mliQuaternion rot;
 } mliHomTraComp;
 
 typedef struct {
