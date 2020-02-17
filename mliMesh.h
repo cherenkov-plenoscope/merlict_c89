@@ -10,29 +10,32 @@
 #include "mli_debug.h"
 #include "mliFace.h"
 
-typedef struct {
+struct mliMesh {
     uint32_t num_vertices;
     struct mliVec *vertices;
     uint32_t num_faces;
     struct mliFace *faces;
-} mliMesh;
+};
 
-mliMesh mliMesh_init() {
-    mliMesh m;
+struct mliMesh mliMesh_init() {
+    struct mliMesh m;
     m.num_vertices = 0;
     m.vertices = NULL;
     m.num_faces = 0;
     m.faces = NULL;
-    return m;}
+    return m;
+}
 
-int mliMesh_malloc(mliMesh* m) {
+int mliMesh_malloc(struct mliMesh *m)
+{
     mli_malloc(m->vertices, struct mliVec, m->num_vertices);
     mli_malloc(m->faces, struct mliFace, m->num_faces);
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
-void mliMesh_free(mliMesh *m) {
+void mliMesh_free(struct mliMesh *m) {
     free(m->vertices);
     free(m->faces);
     *m = mliMesh_init();}
@@ -164,7 +167,8 @@ int mli_parse_three_doubles(const char *line, double *a, double* b, double*c) {
     return state;
 }
 
-int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
+int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
+{
     FILE * fin;
     char line[1024];
     int len = 1024;

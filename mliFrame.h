@@ -36,7 +36,7 @@ struct mliFrame {
 
     uint32_t type;
     union {
-        mliMesh *mesh;
+        struct mliMesh *mesh;
         struct mliSphericalCapHex *spherical_cap_hex;
         struct mliSphere *sphere;
         struct mliCylinder *cylinder;
@@ -72,7 +72,7 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type) {
                 "Can not allocate memory for children of frame.");
             break;
         case MLI_MESH:
-            mli_malloc(f->primitive.mesh, mliMesh, 1u);
+            mli_malloc(f->primitive.mesh, struct mliMesh, 1u);
             *f->primitive.mesh = mliMesh_init();
             break;
         case MLI_SPHERICAL_CAP_HEX:

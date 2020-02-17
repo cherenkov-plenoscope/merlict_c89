@@ -585,17 +585,17 @@ int mliFace_from_json_token(
     mli_check(
         mliJson_as_int64(json, token + 1, &tmp),
         "Failed parsing mliFace's 1st-value.");
-    mli_check(tmp >= 0, "Expected mliMesh index 'a' >= 0.");
+    mli_check(tmp >= 0, "Expected struct mliMesh index 'a' >= 0.");
     f->a = tmp;
     mli_check(
         mliJson_as_int64(json, token + 2, &tmp),
         "Failed parsing mliFace's 2nd-value.");
-    mli_check(tmp >= 0, "Expected mliMesh index 'b' >= 0.");
+    mli_check(tmp >= 0, "Expected struct mliMesh index 'b' >= 0.");
     f->b = tmp;
     mli_check(
         mliJson_as_int64(json, token + 3, &tmp),
         "Failed parsing mliFace's 3rd-value.");
-    mli_check(tmp >= 0, "Expected mliMesh index 'c' >= 0.");
+    mli_check(tmp >= 0, "Expected struct mliMesh index 'c' >= 0.");
     f->c = tmp;
     return 1;
 error:
