@@ -1,7 +1,7 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 
 CASE("mliPhoton_set") {
-    mliPhoton ph = mliPhoton_set(
+    struct mliPhoton ph = mliPhoton_set(
         mliRay_set(mliVec_set(1, 2, 3), mliVec_set(0, 0, 1)),
         350e-9);
     CHECK(ph.wavelength == 350e-9);
@@ -16,7 +16,7 @@ CASE("simple propagation") {
     mliPhotonHistory history = mliPhotonHistory_init(16u);
     struct mliIntersection intersection;
     struct mliSurface surf_coming_from, surf_going_to;
-    mliPhoton photon = mliPhoton_set(
+    struct mliPhoton photon = mliPhoton_set(
         mliRay_set(
             mliVec_set(0, 0, -3),
             mliVec_set(0, 0, 1)),

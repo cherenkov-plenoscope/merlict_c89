@@ -15,7 +15,7 @@ struct mliEnv {
     const struct mliScenery *scenery;
     const struct mliOcTree *octree;
     mliPhotonHistory *history;
-    mliPhoton *photon;
+    struct mliPhoton *photon;
     struct mliMT19937 *prng;
 };
 
@@ -138,9 +138,10 @@ error:
 
 int _mli_probability_passing_medium_coming_from(
     const struct mliScenery *scenery,
-    const mliPhoton* photon,
+    const struct mliPhoton *photon,
     const struct mliIntersection *isec,
-    double *probability_passing) {
+    double *probability_passing)
+{
     const struct mliSurface surface_coming_from = _mli_surface_coming_from(
         scenery,
         isec);
@@ -154,7 +155,8 @@ int _mli_probability_passing_medium_coming_from(
      (*probability_passing) = exp(-isec->distance_of_ray/one_over_e_way);
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int _mli_fresnel_refraction_and_reflection(
     struct mliEnv *env,
@@ -303,7 +305,7 @@ int mli_propagate_photon(
     struct mliScenery *scenery,
     struct mliOcTree *octree,
     mliPhotonHistory *history,
-    mliPhoton *photon,
+    struct mliPhoton *photon,
     struct mliMT19937 *prng)
 {
     struct mliEnv env;
