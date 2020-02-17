@@ -17,7 +17,8 @@ struct mliOBB {
     struct mliVec upper;
 };
 
-struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b) {
+struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b)
+{
     struct mliOBB obb;
     obb.lower.x = MLI_MIN2(a.lower.x, b.lower.x);
     obb.lower.y = MLI_MIN2(a.lower.y, b.lower.y);
@@ -25,13 +26,19 @@ struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b) {
     obb.upper.x = MLI_MAX2(a.upper.x, b.upper.x);
     obb.upper.y = MLI_MAX2(a.upper.y, b.upper.y);
     obb.upper.z = MLI_MAX2(a.upper.z, b.upper.z);
-    return obb;}
+    return obb;
+}
 
-struct mliVec mliOBB_center(const struct mliOBB a) {
+struct mliVec mliOBB_center(const struct mliOBB a)
+{
     struct mliVec sum = mliVec_add(a.upper, a.lower);
-    return mliVec_multiply(sum, .5);}
+    return mliVec_multiply(sum, .5);
+}
 
-struct mliOBB mliOBB_dilate(const struct mliOBB a, const double dilation_radius) {
+struct mliOBB mliOBB_dilate(
+    const struct mliOBB a,
+    const double dilation_radius)
+{
     struct mliOBB out = a;
     out.lower.x -= dilation_radius;
     out.lower.y -= dilation_radius;
@@ -39,9 +46,11 @@ struct mliOBB mliOBB_dilate(const struct mliOBB a, const double dilation_radius)
     out.upper.x += dilation_radius;
     out.upper.y += dilation_radius;
     out.upper.z += dilation_radius;
-    return out;}
+    return out;
+}
 
-mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx) {
+mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx)
+{
     /*
      *              (l,l,u)         [11]            (l,u,u)
      *                     O---------/------------O
