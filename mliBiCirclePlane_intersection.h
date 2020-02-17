@@ -12,7 +12,7 @@
 
 
 int mliBiCirclePlane_intersection(
-    const mliBiCirclePlane plane,
+    const struct mliBiCirclePlane plane,
     const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
     struct mliIntersection *intersection) {

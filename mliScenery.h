@@ -65,7 +65,7 @@ struct mliScenery {
     struct mliHomTraComp *hexagons_T;
 
     uint32_t num_bicircleplanes;
-    mliBiCirclePlane *bicircleplanes;
+    struct mliBiCirclePlane *bicircleplanes;
     struct mliSurfaces *bicircleplanes_surfaces;
     struct mliHomTraComp * bicircleplanes_T;
 
@@ -260,7 +260,10 @@ error:
 }
 
 int __mliScenery_malloc_bicircleplane(struct mliScenery *s) {
-    mli_malloc(s->bicircleplanes, mliBiCirclePlane, s->num_bicircleplanes);
+    mli_malloc(
+        s->bicircleplanes,
+        struct mliBiCirclePlane,
+        s->num_bicircleplanes);
     mli_malloc(
         s->bicircleplanes_surfaces, struct mliSurfaces, s->num_bicircleplanes);
     mli_malloc(
@@ -405,7 +408,7 @@ int __mliScenery_write_bicircleplanes(
 {
     mli_fwrite(
         scenery->bicircleplanes,
-        sizeof(mliBiCirclePlane),
+        sizeof(struct mliBiCirclePlane),
         scenery->num_bicircleplanes,
         f);
     mli_fwrite(
@@ -606,7 +609,7 @@ error:
 int __mliScenery_read_bicircleplanes(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->bicircleplanes,
-        sizeof(mliBiCirclePlane),
+        sizeof(struct mliBiCirclePlane),
         scenery->num_bicircleplanes,
         f);
     mli_fread(

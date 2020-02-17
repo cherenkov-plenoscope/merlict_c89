@@ -2,7 +2,7 @@
 
 CASE("mliBiCirclePlane_obb") {
     struct mliOBB obb;
-    mliBiCirclePlane plane;
+    struct mliBiCirclePlane plane;
     struct mliHomTraComp local2root_comp;
     plane.x_height = 1.;
     plane.y_width = 2.;
@@ -58,7 +58,7 @@ CASE("mliBiCirclePlane_obb") {
 
 CASE("mliBiCirclePlane_has_overlap_obb") {
     struct mliOBB obb;
-    mliBiCirclePlane plane;
+    struct mliBiCirclePlane plane;
     struct mliHomTraComp local2root_comp;
     plane.x_height = 1.;
     plane.y_width = 2.;
@@ -94,7 +94,7 @@ CASE("mliBiCirclePlane_has_overlap_obb") {
 }
 
 CASE("mliBiCirclePlane_intersection") {
-    mliBiCirclePlane plane;
+    struct mliBiCirclePlane plane;
     struct mliHomTraComp local2root_comp;
     struct mliIntersection intersection;
     plane.x_height = 1.;

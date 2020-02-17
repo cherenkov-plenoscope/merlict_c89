@@ -41,7 +41,7 @@ struct mliFrame {
         struct mliSphere *sphere;
         struct mliCylinder *cylinder;
         struct mliHexagon *hexagon;
-        mliBiCirclePlane *bicircleplane;
+        struct mliBiCirclePlane *bicircleplane;
         mliDisc *disc;
     } primitive;
     struct mliSurfaces surfaces;
@@ -91,7 +91,7 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type) {
             mli_malloc(f->primitive.hexagon, struct mliHexagon, 1u);
             break;
         case MLI_BICIRCLEPLANE:
-            mli_malloc(f->primitive.bicircleplane, mliBiCirclePlane, 1u);
+            mli_malloc(f->primitive.bicircleplane, struct mliBiCirclePlane, 1u);
             break;
         case MLI_DISC:
             mli_malloc(f->primitive.disc, mliDisc, 1u);
