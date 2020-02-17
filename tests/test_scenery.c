@@ -158,7 +158,7 @@ CASE("mliScenery, render image") {
     mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     mliCamera camera;
-    mliImage img = mliImage_init();
+    struct mliImage img = mliImage_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     octree = mliOcTree_from_scenery(&scenery);
     /* mliNode_print(&octree.root, 0); */
@@ -357,7 +357,7 @@ CASE("render image asymetric scenery") {
     mliScenery scenery = mliScenery_init();
     mliOcTree octree;
     mliCamera camera;
-    mliImage img = mliImage_init();
+    struct mliImage img = mliImage_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn_asym.mli.tmp");
     octree = mliOcTree_from_scenery(&scenery);
     CHECK(mliNode_num_nodes(&octree.root) == 9);

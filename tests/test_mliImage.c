@@ -1,7 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliImage_malloc") {
-    mliImage img = mliImage_init();
+    struct mliImage img = mliImage_init();
     img.num_cols = 3u;
     img.num_rows = 2u;
     CHECK(mliImage_malloc(&img));
@@ -13,8 +13,8 @@ CASE("mliImage_malloc") {
 }
 
 CASE("scaling") {
-    mliImage src = mliImage_init();
-    mliImage dst = mliImage_init();
+    struct mliImage src = mliImage_init();
+    struct mliImage dst = mliImage_init();
     src.num_cols = 4u; src.num_rows = 4u;
     dst.num_cols = 2u; dst.num_rows = 2u;
     CHECK(mliImage_malloc(&src));
@@ -58,8 +58,8 @@ CASE("scaling") {
 
 CASE("mliImage_write_to_ppm, mliImage_malloc_from_ppm") {
     const char path[] = "tests/resources/img.ppm.tmp";
-    mliImage img = mliImage_init();
-    mliImage back = mliImage_init();
+    struct mliImage img = mliImage_init();
+    struct mliImage back = mliImage_init();
     uint32_t col;
     uint32_t row;
     double tone;

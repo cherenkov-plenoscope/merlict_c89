@@ -145,8 +145,8 @@ int mlivr_run_interactive_viewer(
     uint64_t num_screenshots = 0;
     char timestamp[20];
     mliCamera camera = config.camera;
-    mliImage img = mliImage_init();
-    mliImage img2 = mliImage_init();
+    struct mliImage img = mliImage_init();
+    struct mliImage img2 = mliImage_init();
     int update_image = 1;
     int print_help = 0;
     struct mliRay probing_ray;
@@ -210,7 +210,7 @@ int mlivr_run_interactive_viewer(
                 case MLIVR_SPACE_KEY:
                     {
                         char path[1024];
-                        mliImage full = mliImage_init();
+                        struct mliImage full = mliImage_init();
                         sprintf(
                             path,
                             "%s_%06lu.ppm",

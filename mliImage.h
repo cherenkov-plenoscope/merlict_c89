@@ -10,27 +10,27 @@
 #include "mliColor.h"
 #include "mliPixels.h"
 
-typedef struct {
+struct mliImage{
     uint32_t num_cols;
     uint32_t num_rows;
     struct mliColor *raw;
-} mliImage;
+};
 
-mliImage mliImage_init() {
-    mliImage img;
+struct mliImage mliImage_init() {
+    struct mliImage img;
     img.num_cols = 0u;
     img.num_rows = 0u;
     img.raw = NULL;
     return img;}
 
 void mliImage_free(
-    mliImage *img) {
+    struct mliImage *img) {
     free(img->raw);
     img->raw = NULL;
     img->num_cols = 0u;
     img->num_rows = 0u;}
 
-int mliImage_malloc(mliImage *img) {
+int mliImage_malloc(struct mliImage *img) {
     mli_malloc(img->raw, struct mliColor, img->num_cols*img->num_rows);
     return 1;
 error:
@@ -38,14 +38,14 @@ error:
     return 0;}
 
 uint32_t mliImage_idx(
-    const mliImage *img,
+    const struct mliImage *img,
     const uint32_t col,
     const uint32_t row) {
     return col*img->num_rows + row;}
 
 
 void mliImage_set(
-    const mliImage *img,
+    const struct mliImage *img,
     const uint32_t col,
     const uint32_t row,
     const struct mliColor color) {
@@ -53,7 +53,7 @@ void mliImage_set(
 
 
 struct mliColor mliImage_at(
-    const mliImage *img,
+    const struct mliImage *img,
     const uint32_t col,
     const uint32_t row) {
     struct mliColor out;
@@ -61,7 +61,7 @@ struct mliColor mliImage_at(
     return out;}
 
 int mliImage_malloc_from_ppm(
-    mliImage *img,
+    struct mliImage *img,
     const char *path) {
     char line[1024];
     uint32_t num_commen_lines = 0;
@@ -114,7 +114,7 @@ error:
     return 0;}
 
 
-int mliImage_write_to_ppm(const mliImage *img, const char *path) {
+int mliImage_write_to_ppm(const struct mliImage *img, const char *path) {
     FILE *fout;
     uint32_t col;
     uint32_t row;
@@ -147,7 +147,7 @@ error:
     return 0;}
 
 void mliImage_print_chars(
-    const mliImage* img,
+    const struct mliImage *img,
     const char *symbols,
     const uint64_t *rows,
     const uint64_t *cols,
@@ -172,11 +172,14 @@ void mliImage_print_chars(
         }
         printf("\n");}}
 
-void mliImage_print(const mliImage* img) {
+void mliImage_print(const struct mliImage *img) {
     const uint64_t num_symbols = 0;
     mliImage_print_chars(img, NULL, NULL, NULL, num_symbols);}
 
-int mliImage_scale_down_twice(const mliImage *source, mliImage* destination) {
+int mliImage_scale_down_twice(
+    const struct mliImage *source,
+    struct mliImage *destination)
+{
     uint64_t row, col, sr, sc;
     mli_check(
         destination->num_cols*2u == source->num_cols,
@@ -195,9 +198,10 @@ int mliImage_scale_down_twice(const mliImage *source, mliImage* destination) {
             mliImage_set(destination, col, row, mliColor_mean(mix, 4));}}
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
-void mliImage_sobel(const mliImage *image, mliImage* out) {
+void mliImage_sobel(const struct mliImage *image, struct mliImage *out) {
     uint64_t col, row;
     for (col = 1; col < image->num_cols - 1; col++) {
         for (row = 1; row < image->num_rows - 1; row++) {
@@ -278,9 +282,10 @@ void mliImage_sobel(const mliImage *image, mliImage* out) {
 }
 
 void mliImage_luminance_threshold_dilatation(
-    const mliImage *image,
+    const struct mliImage *image,
     const float threshold,
-    mliImage* out) {
+    struct mliImage *out)
+{
     const int32_t rows = image->num_rows;
     const int32_t cols = image->num_cols;
     int32_t col, row;
@@ -309,10 +314,10 @@ void mliImage_luminance_threshold_dilatation(
 }
 
 void mliImage_from_sum_and_exposure(
-    const mliImage *sum,
-    const mliImage *exposure,
-    mliImage* out
-) {
+    const struct mliImage *sum,
+    const struct mliImage *exposure,
+    struct mliImage *out)
+{
     uint64_t pix;
     for (pix = 0u; pix < out->num_rows*out->num_cols; pix++) {
         out->raw[pix].r = sum->raw[pix].r/exposure->raw[pix].r;
@@ -323,7 +328,8 @@ void mliImage_from_sum_and_exposure(
 
 int mliPixels_malloc_and_set_from_image(
     mliPixels* pixels,
-    const mliImage* image) {
+    const struct mliImage *image)
+{
     uint64_t i, r, c;
     pixels->num_pixels = image->num_cols*image->num_rows;
     mli_check_mem(mliPixels_malloc(pixels));
@@ -340,8 +346,9 @@ error:
 
 int mliPixels_malloc_from_image_above_threshold(
     mliPixels* pixels,
-    const mliImage* image,
-    const float threshold) {
+    const struct mliImage *image,
+    const float threshold)
+{
     uint64_t i, r, c;
     for (r = 0u; r < image->num_rows; r++) {
         for (c = 0u; c < image->num_cols; c++) {
@@ -364,9 +371,10 @@ error:
 
 void mliImage_assign_pixel_colors_to_sum_and_exposure_image(
     const mliPixels* pixels,
-    const mliImage* colors,
-    mliImage* sum_image,
-    mliImage* exposure_image) {
+    const struct mliImage *colors,
+    struct mliImage *sum_image,
+    struct mliImage *exposure_image)
+{
     uint64_t pix;
     for (pix = 0u; pix < pixels->num_pixels; pix++) {
         const uint64_t idx = mliImage_idx(

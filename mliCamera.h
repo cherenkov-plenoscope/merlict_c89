@@ -131,7 +131,7 @@ mliCamera mliCamera_look_up_when_possible(
 void mliCameraSensor_init(
     mliCameraSensor *sensor,
     const mliCamera *camera,
-    const mliImage *image) {
+    const struct mliImage *image) {
     struct mliRotMat rot;
     struct mliVec unit_x = {1., 0., 0.};
     struct mliVec unit_y = {0., 1., 0.};
@@ -152,7 +152,7 @@ void mliCameraSensor_init(
 struct mliRay mliCamera_ray_at_row_col(
     const mliCamera *camera,
     const mliCameraSensor *sensor,
-    const mliImage *image,
+    const struct mliImage *image,
     const uint32_t row,
     const uint32_t col) {
     int row_idx_on_sensor = row - image->num_rows/2;
@@ -168,7 +168,7 @@ void mliCamera_render_image(
     const mliCamera *camera,
     const mliScenery *scenery,
     const mliOcTree *octree,
-    mliImage *image) {
+    struct mliImage *image) {
     uint32_t row, col;
     mliCameraSensor sensor;
     assert(camera->field_of_view > 0.);
