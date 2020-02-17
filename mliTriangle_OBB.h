@@ -24,9 +24,9 @@
 #define MLI_OUTSIDE 1
 
 typedef struct{
-    struct mliVec v1;                 /* Vertex1 */
-    struct mliVec v2;                 /* Vertex2 */
-    struct mliVec v3;                 /* Vertex3 */
+    struct mliVec v1;
+    struct mliVec v2;
+    struct mliVec v3;
 } mliTriangle;
 
 /*___________________________________________________________________________*/
