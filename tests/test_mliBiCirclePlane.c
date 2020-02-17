@@ -1,7 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliBiCirclePlane_obb") {
-    mliOBB obb;
+    struct mliOBB obb;
     mliBiCirclePlane plane;
     struct mliHomTraComp local2root_comp;
     plane.x_height = 1.;
@@ -57,7 +57,7 @@ CASE("mliBiCirclePlane_obb") {
 }
 
 CASE("mliBiCirclePlane_has_overlap_obb") {
-    mliOBB obb;
+    struct mliOBB obb;
     mliBiCirclePlane plane;
     struct mliHomTraComp local2root_comp;
     plane.x_height = 1.;

@@ -190,7 +190,7 @@ CASE("scenery indexes are valid") {
 }
 
 CASE("mliScenery_overlap_obb") {
-    mliOBB obb;
+    struct mliOBB obb;
     uint64_t i;
     uint64_t num_surface_entities;
     mliScenery scenery = mliScenery_init();
@@ -219,7 +219,7 @@ CASE("mliScenery_overlap_obb") {
 
 CASE("mliScenery_outermost_obb") {
     mliScenery scenery = mliScenery_init();
-    mliOBB obb;
+    struct mliOBB obb;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     CHECK(mliScenery_valid(&scenery));
 

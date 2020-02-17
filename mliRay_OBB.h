@@ -7,7 +7,7 @@
 
 int mliRay_has_overlap_obb(
     const struct mliRay ray,
-    const mliOBB obb,
+    const struct mliOBB obb,
     double *ray_parameter) {
     const double frac_x = 1. / ray.direction.x;
     const double frac_y = 1. / ray.direction.y;

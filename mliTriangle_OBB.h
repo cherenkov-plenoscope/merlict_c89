@@ -312,7 +312,7 @@ void __mliTriangle_transform_into_obb(
     const struct mliVec a,
     const struct mliVec b,
     const struct mliVec c,
-    const mliOBB obb,
+    const struct mliOBB obb,
     struct mliVec *a_out,
     struct mliVec *b_out,
     struct mliVec *c_out) {
@@ -339,7 +339,7 @@ int mliTriangle_has_overlap_obb(
     const struct mliVec a,
     const struct mliVec b,
     const struct mliVec c,
-    const mliOBB obb) {
+    const struct mliOBB obb) {
     mliTriangle tri;
     __mliTriangle_transform_into_obb(
         a, b, c,
@@ -350,11 +350,11 @@ int mliTriangle_has_overlap_obb(
     else
         return 0;}
 
-mliOBB mliTriangle_obb(
+struct mliOBB mliTriangle_obb(
     const struct mliVec a,
     const struct mliVec b,
     const struct mliVec c) {
-    mliOBB obb;
+    struct mliOBB obb;
     obb.lower.x = MLI_MIN3(a.x, b.x, c.x);
     obb.lower.y = MLI_MIN3(a.y, b.y, c.y);
     obb.lower.z = MLI_MIN3(a.z, b.z, c.z);

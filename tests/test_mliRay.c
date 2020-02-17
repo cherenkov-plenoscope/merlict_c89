@@ -1,7 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("ray and orientated bounding box") {
-    mliOBB obb;
+    struct mliOBB obb;
     /*         (-1, -2,  0)                         (-1, -1,  0)
      *                     O----------------------O
      *                    /.                     /|

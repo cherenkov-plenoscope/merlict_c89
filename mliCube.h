@@ -20,8 +20,8 @@ struct mliVec mliCube_upper(const struct mliCube a) {
         a.lower,
         mliVec_set(a.edge_length, a.edge_length, a.edge_length));}
 
-mliOBB mliCube_to_obb(const struct mliCube a) {
-    mliOBB out;
+struct mliOBB mliCube_to_obb(const struct mliCube a) {
+    struct mliOBB out;
     out.lower = a.lower;
     out.upper = mliCube_upper(a);
     return out;}
@@ -32,7 +32,7 @@ struct mliVec mliCube_center(const struct mliCube a) {
         a.lower.y + a.edge_length*.5,
         a.lower.z + a.edge_length*.5);}
 
-struct mliCube mliCube_outermost_cube(const mliOBB a) {
+struct mliCube mliCube_outermost_cube(const struct mliOBB a) {
     struct mliCube cube;
     struct mliVec center;
     struct mliVec half_diagonal;

@@ -5,10 +5,10 @@
 #include <math.h>
 #include "mli_math.h"
 
-mliOBB mliSphere_obb(
+struct mliOBB mliSphere_obb(
     const double radius,
     const struct mliVec translation) {
-    mliOBB obb;
+    struct mliOBB obb;
     struct mliVec r = mliVec_set(radius, radius, radius);
     obb.lower = mliVec_substract(translation, r);
     obb.upper = mliVec_add(translation, r);
@@ -17,7 +17,7 @@ mliOBB mliSphere_obb(
 int mliSphere_has_overlap_obb(
     const double radius,
     const struct mliVec translation,
-    const mliOBB obb) {
+    const struct mliOBB obb) {
     /* Ben Voigt
      * https://stackoverflow.com/questions/4578967/cube-sphere-intersection-test
      */

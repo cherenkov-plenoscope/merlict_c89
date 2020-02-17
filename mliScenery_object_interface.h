@@ -100,7 +100,7 @@ mliIndex __mliScenery_resolve_index(
 int mliScenery_overlap_obb(
     const mliScenery* scenery,
     const uint64_t idx,
-    const mliOBB obb) {
+    const struct mliOBB obb) {
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {
         case MLI_TRIANGLE:
@@ -153,10 +153,10 @@ int mliScenery_overlap_obb(
     return 0;
 }
 
-mliOBB mliScenery_obb(
+struct mliOBB mliScenery_obb(
     const mliScenery* scenery,
     const uint64_t idx) {
-    mliOBB obb;
+    struct mliOBB obb;
     mliIndex i = __mliScenery_resolve_index(scenery, idx);
     switch(i.type) {
         case MLI_TRIANGLE:
@@ -206,15 +206,15 @@ mliOBB mliScenery_obb(
     return obb;
 }
 
-mliOBB mliScenery_outermost_obb(const mliScenery *scenery) {
+struct mliOBB mliScenery_outermost_obb(const mliScenery *scenery) {
     uint64_t i;
     uint64_t num_objects;
-    mliOBB obb;
+    struct mliOBB obb;
     obb.lower = mliVec_set(0., 0., 0.);
     obb.upper = mliVec_set(0., 0., 0.);
     num_objects = mliScenery_num_objects(scenery);
     for (i = 0; i < num_objects; i++) {
-        mliOBB obj_obb = mliScenery_obb(scenery, i);
+        struct mliOBB obj_obb = mliScenery_obb(scenery, i);
         obb = mliOBB_outermost(obb, obj_obb);
     }
     return obb;

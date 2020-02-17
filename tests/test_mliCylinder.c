@@ -29,7 +29,7 @@ CASE("mliCylinder_start_local, mliCylinder_end_local") {
 
 CASE("slim cylinder obb") {
     mliCylinder a;
-    mliOBB obb;
+    struct mliOBB obb;
     struct mliHomTraComp trafo;
     a.radius = .5;
     a.length = 12.;
@@ -48,7 +48,7 @@ CASE("slim cylinder obb") {
 
 CASE("fat cylinder obb") {
     mliCylinder a;
-    mliOBB obb;
+    struct mliOBB obb;
     struct mliHomTraComp trafo;
     a.radius = 5;
     a.length = 1.;
@@ -67,7 +67,7 @@ CASE("fat cylinder obb") {
 
 CASE("slim cylinder obb transformed") {
     mliCylinder a;
-    mliOBB obb;
+    struct mliOBB obb;
     struct mliHomTraComp trafo;
     a.radius = .5;
     a.length = 12.;
@@ -86,7 +86,7 @@ CASE("slim cylinder obb transformed") {
 
 CASE("cylinder overlap with its own obb") {
     mliCylinder a;
-    mliOBB obb;
+    struct mliOBB obb;
     struct mliHomTraComp local2root_comp;
     a.radius = .5;
     a.length = 12.;
@@ -104,7 +104,7 @@ CASE("cylinder overlap with its own obb") {
 
 CASE("cylinder overlap with its own obb, 2") {
     mliCylinder a;
-    mliOBB obb;
+    struct mliOBB obb;
     struct mliHomTraComp local2root_comp;
     a.radius = .5;
     a.length = 12.;

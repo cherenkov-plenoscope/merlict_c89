@@ -3,7 +3,7 @@
 CASE("mliDisc") {
     mliDisc disc;
     struct mliHomTraComp local2root_comp;
-    mliOBB obb;
+    struct mliOBB obb;
     disc.radius = 1.;
     local2root_comp.trans = mliVec_set(0., 0., 0.);
     local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(

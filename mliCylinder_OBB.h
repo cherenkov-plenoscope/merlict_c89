@@ -28,14 +28,14 @@ struct mliVec mliCylinder_end_root(
 int mliCylinder_has_overlap_obb(
     const mliCylinder cylinder,
     const struct mliHomTraComp local2root_comp,
-    const mliOBB obb) {
+    const struct mliOBB obb) {
     struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
     struct mliVec end_root = mliCylinder_end_root(cylinder, &local2root);
     struct mliRay cylinder_ray_root = mliRay_set(
         start_root,
         mliVec_substract(end_root, start_root));
-    mliOBB obb_dilated = mliOBB_dilate(obb, cylinder.radius);
+    struct mliOBB obb_dilated = mliOBB_dilate(obb, cylinder.radius);
     double cylinder_ray_parameter;
     if (mliRay_has_overlap_obb(
         cylinder_ray_root,
@@ -47,14 +47,14 @@ int mliCylinder_has_overlap_obb(
     }
     return 0;}
 
-mliOBB mliCylinder_obb(
+struct mliOBB mliCylinder_obb(
     const mliCylinder cylinder,
     const struct mliHomTraComp local2root_comp) {
     struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
     struct mliVec end_root = mliCylinder_end_root(cylinder, &local2root);
-    mliOBB start_obb = mliSphere_obb(cylinder.radius, start_root);
-    mliOBB end_obb = mliSphere_obb(cylinder.radius, end_root);
+    struct mliOBB start_obb = mliSphere_obb(cylinder.radius, start_root);
+    struct mliOBB end_obb = mliSphere_obb(cylinder.radius, end_root);
     return mliOBB_outermost(start_obb, end_obb);}
 
 #endif

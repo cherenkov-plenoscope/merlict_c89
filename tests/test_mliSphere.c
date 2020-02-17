@@ -27,7 +27,7 @@ CASE("mliSphere_intersection") {
 CASE("mliSphere_obb") {
     double c;
     for (c = -2.5; c < 2.5; c += .25) {
-        mliOBB b;
+        struct mliOBB b;
         double radius = 1.;
         b = mliSphere_obb(radius, mliVec_set(c, c*2., c*3.));
         CHECK_MARGIN(b.lower.x, (-1. + c), 1e-6);
@@ -41,7 +41,7 @@ CASE("mliSphere_obb") {
 
 CASE("mliSphere_has_overlap_obb") {
     double radius = 1.;
-    mliOBB obb;
+    struct mliOBB obb;
     obb.lower = mliVec_set(-1., -1., -1.);
     obb.upper = mliVec_set(1., 1., 1.);
     CHECK(mliSphere_has_overlap_obb(radius, mliVec_set(0., 0., 0.), obb));

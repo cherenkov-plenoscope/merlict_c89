@@ -77,7 +77,7 @@ CASE("mliHexagon_intersection") {
 CASE("mliHexagon transformation") {
     mliHexagon hex;
     struct mliHomTraComp local2root_comp;
-    mliOBB obb;
+    struct mliOBB obb;
     hex.inner_radius = 1.;
 
     local2root_comp.trans = mliVec_set(0., 0., 0.);
@@ -135,7 +135,7 @@ CASE("mliHexagon transformation") {
 CASE("mliHexagon_has_overlap_obb") {
     mliHexagon hex;
     struct mliHomTraComp local2root_comp;
-    mliOBB obb;
+    struct mliOBB obb;
     hex.inner_radius = 1.;
     local2root_comp.trans = mliVec_set(0., 0., 0.);
     local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
