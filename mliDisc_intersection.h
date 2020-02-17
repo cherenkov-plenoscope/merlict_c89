@@ -13,7 +13,7 @@
 
 
 int mliDisc_intersection(
-    const mliDisc disc,
+    const struct mliDisc disc,
     const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
     struct mliIntersection *intersection) {

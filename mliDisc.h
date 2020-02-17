@@ -3,17 +3,18 @@
 #define MERLICT_DISC_H_
 
 
-typedef struct {
+struct mliDisc {
     double radius;
-} mliDisc;
+};
 
+int mliDisc_is_equal(const struct mliDisc a, const struct mliDisc b)
+{
+    return a.radius == b.radius;
+}
 
-int mliDisc_is_equal(const mliDisc a, const mliDisc b) {
-    return a.radius == b.radius;}
-
-
-int mliDisc_is_valid(const mliDisc a) {
-    return a.radius >= 0.;}
-
+int mliDisc_is_valid(const struct mliDisc a)
+{
+    return a.radius >= 0.;
+}
 
 #endif

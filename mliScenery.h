@@ -70,7 +70,7 @@ struct mliScenery {
     struct mliHomTraComp * bicircleplanes_T;
 
     uint32_t num_discs;
-    mliDisc *discs;
+    struct mliDisc *discs;
     struct mliSurfaces *discs_surfaces;
     struct mliHomTraComp *discs_T;
 };
@@ -274,7 +274,7 @@ error:
 }
 
 int __mliScenery_malloc_discs(struct mliScenery *s) {
-    mli_malloc(s->discs, mliDisc, s->num_discs);
+    mli_malloc(s->discs, struct mliDisc, s->num_discs);
     mli_malloc(s->discs_surfaces, struct mliSurfaces, s->num_discs);
     mli_malloc(s->discs_T, struct mliHomTraComp, s->num_discs);
     return 1;
@@ -429,7 +429,7 @@ error:
 int __mliScenery_write_discs(const struct mliScenery *scenery, FILE *f) {
     mli_fwrite(
         scenery->discs,
-        sizeof(mliDisc),
+        sizeof(struct mliDisc),
         scenery->num_discs,
         f);
     mli_fwrite(
@@ -630,7 +630,7 @@ error:
 int __mliScenery_read_discs(struct mliScenery *scenery, FILE* f) {
     mli_fread(
         scenery->discs,
-        sizeof(mliDisc),
+        sizeof(struct mliDisc),
         scenery->num_discs,
         f);
     mli_fread(

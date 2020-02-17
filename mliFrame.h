@@ -42,7 +42,7 @@ struct mliFrame {
         struct mliCylinder *cylinder;
         struct mliHexagon *hexagon;
         struct mliBiCirclePlane *bicircleplane;
-        mliDisc *disc;
+        struct mliDisc *disc;
     } primitive;
     struct mliSurfaces surfaces;
 };
@@ -94,7 +94,7 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type) {
             mli_malloc(f->primitive.bicircleplane, struct mliBiCirclePlane, 1u);
             break;
         case MLI_DISC:
-            mli_malloc(f->primitive.disc, mliDisc, 1u);
+            mli_malloc(f->primitive.disc, struct mliDisc, 1u);
             break;
         default: mli_sentinel("Unknown type of primitive."); break;
     }

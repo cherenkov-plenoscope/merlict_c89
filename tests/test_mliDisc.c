@@ -1,7 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 CASE("mliDisc") {
-    mliDisc disc;
+    struct mliDisc disc;
     struct mliHomTraComp local2root_comp;
     struct mliOBB obb;
     disc.radius = 1.;
