@@ -49,7 +49,7 @@ struct mliOBB mliOBB_dilate(
     return out;
 }
 
-mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx)
+struct mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx)
 {
     /*
      *              (l,l,u)         [11]            (l,u,u)
@@ -73,7 +73,7 @@ mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx)
      * u: upper
      *
      */
-    mliEdge edge;
+    struct mliEdge edge;
     const struct mliVec l = obb.lower;
     const struct mliVec u = obb.upper;
     struct mliVec start;
