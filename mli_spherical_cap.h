@@ -8,7 +8,7 @@
 #include "mliQuadraticEquation.h"
 
 int mli_spherical_cap_equation(
-    const mliRay ray,
+    const struct mliRay ray,
     const double radius,
     double *plus_solution,
     double *minus_solution) {

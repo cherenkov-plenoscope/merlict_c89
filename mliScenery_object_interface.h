@@ -222,7 +222,7 @@ mliOBB mliScenery_outermost_obb(const mliScenery *scenery) {
 
 int mliScenery_intersection(
     const mliScenery* scenery,
-    const mliRay ray,
+    const struct mliRay ray,
     const uint64_t idx,
     mliIntersection *intersection) {
     mliIndex i = __mliScenery_resolve_index(scenery, idx);

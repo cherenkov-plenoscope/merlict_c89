@@ -14,10 +14,10 @@
 int mliHexagon_intersection(
     const mliHexagon hex,
     const mliHomTraComp local2root_comp,
-    const mliRay ray,
+    const struct mliRay ray,
     mliIntersection *intersection) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-    mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
+    struct mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
     double solution;
     if (mli_xyplane_equation(
         ray_local,

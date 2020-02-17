@@ -153,10 +153,10 @@ CASE("mliHomTraComp, transform direction") {
 }
 
 CASE("unity transformation must not change ray") {
-    mliRay ray = mliRay_set(
+    struct mliRay ray = mliRay_set(
         mliVec_set(0., 0., 1.),
         mliVec_set(0., 0., 1.));
-    mliRay ray2;
+    struct mliRay ray2;
     mliHomTraComp Tcomp;
     mliHomTra T;
     Tcomp.trans = mliVec_set(0., 0., 0.);
@@ -170,10 +170,10 @@ CASE("unity transformation must not change ray") {
 }
 
 CASE("translation") {
-    mliRay ray = mliRay_set(
+    struct mliRay ray = mliRay_set(
         mliVec_set(0., 0., 1.),
         mliVec_set(0., 0., 1.));
-    mliRay ray2;
+    struct mliRay ray2;
     mliHomTraComp Tcomp;
     mliHomTra T;
     Tcomp.trans = mliVec_set(1., 0., 0.);
@@ -189,10 +189,10 @@ CASE("translation") {
 }
 
 CASE("rotation") {
-    mliRay ray = mliRay_set(
+    struct mliRay ray = mliRay_set(
         mliVec_set(0., 0., 1.),
         mliVec_set(1., 0., 0.));
-    mliRay ray2;
+    struct mliRay ray2;
     mliHomTraComp Tcomp;
     mliHomTra T;
     Tcomp.trans = mliVec_set(0., 0., 0.);
@@ -208,11 +208,11 @@ CASE("rotation") {
 }
 
 CASE("translation and rotation") {
-    mliRay ray = mliRay_set(
+    struct mliRay ray = mliRay_set(
         mliVec_set(0., 0., 1.),
         mliVec_set(1., 0., 0.));
-    mliRay ray2;
-    mliRay ray3;
+    struct mliRay ray2;
+    struct mliRay ray3;
     mliHomTraComp Tcomp;
     mliHomTra T;
     Tcomp.trans = mliVec_set(0., 1., 0.);

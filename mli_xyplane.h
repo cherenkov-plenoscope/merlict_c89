@@ -8,7 +8,7 @@
 #include "mliQuadraticEquation.h"
 
 int mli_xyplane_equation(
-    const mliRay ray,
+    const struct mliRay ray,
     double *solution) {
     /*
      calculate intersection of  ray: g := sup+v*dir

@@ -3,13 +3,13 @@
 #define MERLICT_MLIPHOTON_H_
 
 typedef struct {
-    mliRay ray;
+    struct mliRay ray;
     /* mliVec electric_field_polarization; */
     double wavelength;
 } mliPhoton;
 
 mliPhoton mliPhoton_set(
-    const mliRay ray,
+    const struct mliRay ray,
     const double wavelength) {
     mliPhoton ph;
     ph.ray = ray;

@@ -48,7 +48,7 @@ const mliFunc* _mli_refractive_index_coming_from(
 
 mliIntersection mliIntersection_photon_creation(
     const uint64_t object_idx,
-    const mliRay ray) {
+    const struct mliRay ray) {
     mliIntersection isec;
     isec.object_idx = object_idx;
     isec.position = ray.support;

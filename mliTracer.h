@@ -19,7 +19,7 @@
 int mli_first_casual_intersection(
     const mliScenery *scenery,
     const mliOcTree* octree,
-    const mliRay ray,
+    const struct mliRay ray,
     mliIntersection *intersection) {
     mli_ray_octree_traversal(
         scenery,
@@ -35,7 +35,7 @@ int mli_first_casual_intersection(
 mliColor mli_trace(
     const mliScenery *scenery,
     const mliOcTree* octree,
-    const mliRay ray) {
+    const struct mliRay ray) {
     mliColor color = {128., 128., 128.};
     mliIntersection intersection;
     if (
@@ -46,7 +46,7 @@ mliColor mli_trace(
             &intersection)
     ) {
         mliIntersection global_light_intersection;
-        mliRay line_of_sight_to_source;
+        struct mliRay line_of_sight_to_source;
         mliSurface surface;
         struct mliVec dir_to_source = {1., 1., 3.};
 

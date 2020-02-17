@@ -6,7 +6,7 @@
 #include "mli_math.h"
 
 int mliRay_has_overlap_obb(
-    const mliRay ray,
+    const struct mliRay ray,
     const mliOBB obb,
     double *ray_parameter) {
     const double frac_x = 1. / ray.direction.x;

@@ -4,7 +4,7 @@ CASE("mliSphericalCap") {
     const double radius = 0.3;
     const struct mliVec support = {0., 0., 1.};
     const struct mliVec direction = {0., 0., -1.};
-    const mliRay ray = mliRay_set(support, direction);
+    const struct mliRay ray = mliRay_set(support, direction);
     double plus_solution, minus_solution;
     struct mliVec intersection_point;
     struct mliVec surface_normal;

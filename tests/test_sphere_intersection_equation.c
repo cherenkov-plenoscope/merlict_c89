@@ -3,7 +3,7 @@
 CASE("mli_sphere_intersection_equation") {
     double radius = 1.;
     double plus_solution, minus_solution;
-    mliRay ray;
+    struct mliRay ray;
     ray.support = mliVec_set(0., 0., -10);
     ray.direction = mliVec_set(0., 0., 1.);
     CHECK(
@@ -19,7 +19,7 @@ CASE("mli_sphere_intersection_equation") {
 CASE("mli_sphere_intersection_equation, 2") {
     double radius = 1.;
     double plus_solution, minus_solution;
-    mliRay ray;
+    struct mliRay ray;
     ray.support = mliVec_set(0., 0., 10);
     ray.direction = mliVec_set(0., 0., 1.);
     CHECK(
@@ -33,7 +33,7 @@ CASE("mli_sphere_intersection_equation, 2") {
 CASE("mli_sphere_intersection_equation, 3") {
     double radius = 1.;
     double plus_solution, minus_solution;
-    mliRay ray;
+    struct mliRay ray;
     ray.support = mliVec_set(0., 2., -10);
     ray.direction = mliVec_set(0., 0., 1.);
     CHECK(

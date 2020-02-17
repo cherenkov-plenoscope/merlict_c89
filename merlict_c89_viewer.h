@@ -146,7 +146,7 @@ int mlivr_run_interactive_viewer(
     mliImage img2 = mliImage_init();
     int update_image = 1;
     int print_help = 0;
-    mliRay probing_ray;
+    struct mliRay probing_ray;
     int has_probing_intersection;
     mliIntersection probing_intersection;
 

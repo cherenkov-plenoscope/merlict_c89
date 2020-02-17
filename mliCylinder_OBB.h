@@ -32,7 +32,7 @@ int mliCylinder_has_overlap_obb(
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     struct mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
     struct mliVec end_root = mliCylinder_end_root(cylinder, &local2root);
-    mliRay cylinder_ray_root = mliRay_set(
+    struct mliRay cylinder_ray_root = mliRay_set(
         start_root,
         mliVec_substract(end_root, start_root));
     mliOBB obb_dilated = mliOBB_dilate(obb, cylinder.radius);

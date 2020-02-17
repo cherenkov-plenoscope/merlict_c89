@@ -15,7 +15,7 @@
 
 int mli_sphere_intersection_equation(
     const double radius,
-    const mliRay ray,
+    const struct mliRay ray,
     double *plus_solution,
     double *minus_solution) {
     /*
@@ -40,7 +40,7 @@ int mli_sphere_intersection_equation(
 
 void mliSphere_set_intersection(
     const mliHomTra *local2root,
-    const mliRay *ray_local,
+    const struct mliRay *ray_local,
     const double ray_solution,
     mliIntersection *intersection) {
     struct mliVec position_local = mliRay_at(ray_local, ray_solution);
@@ -59,10 +59,10 @@ void mliSphere_set_intersection(
 int mliSphere_intersection(
     const mliSphere sphere,
     const mliHomTraComp local2root_comp,
-    const mliRay ray,
+    const struct mliRay ray,
     mliIntersection *intersection) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-    mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
+    struct mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
     double plus_solution, minus_solution;
     if (mli_sphere_intersection_equation(
         sphere.radius,

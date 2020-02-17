@@ -149,7 +149,7 @@ void mliCameraSensor_init(
         sensor->optical_axis,
         sensor->distance_to_principal_point);}
 
-mliRay mliCamera_ray_at_row_col(
+struct mliRay mliCamera_ray_at_row_col(
     const mliCamera *camera,
     const mliCameraSensor *sensor,
     const mliImage *image,
@@ -176,7 +176,7 @@ void mliCamera_render_image(
     mliCameraSensor_init(&sensor, camera, image);
     for (row = 0; row < image->num_rows; row++) {
         for (col = 0; col < image->num_cols; col++) {
-            mliRay ray = mliCamera_ray_at_row_col(
+            struct mliRay ray = mliCamera_ray_at_row_col(
                 camera,
                 &sensor,
                 image,

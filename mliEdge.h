@@ -5,7 +5,7 @@
 #include "mliRay.h"
 
 typedef struct {
-    mliRay ray;
+    struct mliRay ray;
     double length;
 } mliEdge;
 

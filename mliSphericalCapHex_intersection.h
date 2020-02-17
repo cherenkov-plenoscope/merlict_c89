@@ -16,10 +16,10 @@
 int mliSphericalCapHex_intersection(
     const mliSphericalCapHex cap,
     const mliHomTraComp local2root_comp,
-    const mliRay ray,
+    const struct mliRay ray,
     mliIntersection *intersection) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-    mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
+    struct mliRay ray_local = mliHomTra_ray_inverse(&local2root, ray);
 
     double plus_solution, minus_solution;
     if (
