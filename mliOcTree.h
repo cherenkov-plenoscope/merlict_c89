@@ -10,15 +10,15 @@
 #include "mliOctOverlaps.h"
 
 
-typedef struct mliNode {
+struct mliNode {
     struct mliNode* mother;
     struct mliNode* children[8];
     uint32_t num_objects;
     uint32_t *objects;
-} mliNode;
+};
 
 
-void mliNode_init(mliNode *n) {
+void mliNode_init(struct mliNode *n) {
     uint64_t c;
     n->mother = NULL;
     for (c = 0; c < 8u; c++) {
@@ -27,7 +27,7 @@ void mliNode_init(mliNode *n) {
     n->objects = NULL;}
 
 
-int mliNode_is_blank(const mliNode *n) {
+int mliNode_is_blank(const struct mliNode *n) {
     uint64_t c;
     if (n->mother != NULL)
         return 0;
@@ -39,7 +39,7 @@ int mliNode_is_blank(const mliNode *n) {
     return 1;}
 
 
-void mliNode_free(mliNode *n) {
+void mliNode_free(struct mliNode *n) {
     uint32_t c;
     for (c = 0; c < 8u; c++)
         if (n->children[c] != NULL)
@@ -48,7 +48,7 @@ void mliNode_free(mliNode *n) {
         free(n->objects);}
 
 
-int mliNode_num_children(const mliNode *node) {
+int mliNode_num_children(const struct mliNode *node) {
     uint32_t c;
     uint32_t num_leafs = 0u;
     for (c = 0u; c < 8u; c++)
@@ -64,7 +64,7 @@ uint32_t mliNode_signs_to_child(
     return 4*sx + 2*sy + 1*sz;}
 
 int mliNode_add_children(
-    mliNode *node,
+    struct mliNode *node,
     const struct mliScenery *scenery,
     const struct mliCube cube,
     const uint64_t depth,
@@ -111,7 +111,7 @@ int mliNode_add_children(
     }
 
     for (c = 0; c < 8u; c++) {
-        mli_malloc(node->children[c], mliNode, 1u);
+        mli_malloc(node->children[c], struct mliNode, 1u);
         mliNode_init(node->children[c]);
         node->children[c]->mother = node;
         node->children[c]->num_objects = overlap[c].count;
@@ -140,10 +140,10 @@ error:
     return 0;
 }
 
-mliNode mliNode_from_scenery(
+struct mliNode mliNode_from_scenery(
     const struct mliScenery *scenery,
     const struct mliCube scenery_cube) {
-    mliNode root;
+    struct mliNode root;
     uint32_t idx;
     uint64_t depth, max_depth;
     depth = 0u;
@@ -159,7 +159,7 @@ mliNode mliNode_from_scenery(
 }
 
 
-void __mliNode_num_nodes_recursive(const mliNode *node, uint32_t *num_nodes) {
+void __mliNode_num_nodes_recursive(const struct mliNode *node, uint32_t *num_nodes) {
     uint32_t c;
     *num_nodes += 1;
     for (c = 0u; c < 8u; c++) {
@@ -170,13 +170,13 @@ void __mliNode_num_nodes_recursive(const mliNode *node, uint32_t *num_nodes) {
 }
 
 
-uint32_t mliNode_num_nodes(const mliNode *node) {
+uint32_t mliNode_num_nodes(const struct mliNode *node) {
     uint32_t num_nodes = 0u;
     __mliNode_num_nodes_recursive(node, &num_nodes);
     return num_nodes;}
 
 
-void _mliNode_capacity_nodes(const mliNode *node, uint32_t *num_nodes) {
+void _mliNode_capacity_nodes(const struct mliNode *node, uint32_t *num_nodes) {
     uint32_t c;
     for (c = 0u; c < 8u; c++) {
         if (node->children[c] != NULL) {
@@ -187,14 +187,14 @@ void _mliNode_capacity_nodes(const mliNode *node, uint32_t *num_nodes) {
 }
 
 
-uint32_t mliNode_capacity_nodes(const mliNode *node) {
+uint32_t mliNode_capacity_nodes(const struct mliNode *node) {
     uint32_t num_nodes = 1u;
     _mliNode_capacity_nodes(node, &num_nodes);
     return num_nodes;}
 
 
 void __mliNode_capacity_objects_recursive(
-    const mliNode *node,
+    const struct mliNode *node,
     uint32_t *capacity_objects) {
     if (mliNode_num_children(node) == 0u) {
         (*capacity_objects) += node->num_objects;
@@ -207,13 +207,13 @@ void __mliNode_capacity_objects_recursive(
                     capacity_objects);}}}}
 
 
-uint32_t mliNode_capacity_objects(const mliNode *node) {
+uint32_t mliNode_capacity_objects(const struct mliNode *node) {
     uint32_t capacity_objects = 0u;
     __mliNode_capacity_objects_recursive(node, &capacity_objects);
     return capacity_objects;}
 
 
-void mliNode_print(const mliNode *node, const uint32_t indent, const uint32_t ch) {
+void mliNode_print(const struct mliNode *node, const uint32_t indent, const uint32_t ch) {
     uint32_t i;
     uint32_t c;
     uint32_t num_c = mliNode_num_children(node);
@@ -237,7 +237,7 @@ void mliNode_print(const mliNode *node, const uint32_t indent, const uint32_t ch
 
 typedef struct {
     struct mliCube cube;
-    mliNode root;
+    struct mliNode root;
 } mliOcTree;
 
 void mliOcTree_free(mliOcTree *octree) {
