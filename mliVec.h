@@ -3,6 +3,7 @@
 #define MERLICT_MLIVEC_H_
 
 #include <math.h>
+#include <float.h>
 #include <stdint.h>
 
 typedef struct {
@@ -130,9 +131,9 @@ int mliVec_equal_margin(
     return distance_squared <= distance_margin*distance_margin;}
 
 int mliVec_is_equal(const mliVec a, const mliVec b) {
-    if (a.x != b.x) return 0;
-    if (a.y != b.y) return 0;
-    if (a.z != b.z) return 0;
+    if (fabs(a.x - b.x) > DBL_EPSILON) return 0;
+    if (fabs(a.y - b.y) > DBL_EPSILON) return 0;
+    if (fabs(a.z - b.z) > DBL_EPSILON) return 0;
     return 1;}
 
 uint32_t mliVec_octant(const mliVec a) {
