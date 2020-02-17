@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include "mliVec.h"
 
-typedef struct {
+struct mliRotMat{
     double r00;
     double r01;
     double r02;
@@ -16,13 +16,13 @@ typedef struct {
     double r20;
     double r21;
     double r22;
-} mliRotMat;
+};
 
-mliRotMat mliRotMat_init_tait_bryan(
+struct mliRotMat mliRotMat_init_tait_bryan(
     const double rx,
     const double ry,
     const double rz) {
-    mliRotMat rot;
+    struct mliRotMat rot;
     const double cosRx = cos(rx);
     const double cosRy = cos(ry);
     const double cosRz = cos(rz);
@@ -40,10 +40,10 @@ mliRotMat mliRotMat_init_tait_bryan(
     rot.r22 = cosRx*cosRy;
     return rot;}
 
-mliRotMat mliRotMat_init_axis(
+struct mliRotMat mliRotMat_init_axis(
     const struct mliVec rot_axis,
     const double rot_angle) {
-    mliRotMat rot;
+    struct mliRotMat rot;
     const double norm = mliVec_norm(rot_axis);
     const double rx = rot_axis.x/norm;
     const double ry = rot_axis.y/norm;
@@ -61,14 +61,14 @@ mliRotMat mliRotMat_init_axis(
     rot.r22 = cosR +  rz*rz*(1.-cosR);
     return rot;}
 
-void mliRotMat_print(const mliRotMat rot) {
+void mliRotMat_print(const struct mliRotMat rot) {
     printf("[%.2f, %.2f, %.2f]\n", rot.r00, rot.r01, rot.r02);
     printf("[%.2f, %.2f, %.2f]\n", rot.r10, rot.r11, rot.r12);
     printf("[%.2f, %.2f, %.2f]",   rot.r20, rot.r21, rot.r22);}
 
 int mliRotMat_equal_margin(
-    const mliRotMat a,
-    const mliRotMat b,
+    const struct mliRotMat a,
+    const struct mliRotMat b,
     const double margin) {
     if (fabs(a.r00 - b.r00) > margin) return 0;
     if (fabs(a.r01 - b.r01) > margin) return 0;

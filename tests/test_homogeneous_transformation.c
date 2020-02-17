@@ -116,7 +116,7 @@ CASE("simple sequence") {
 }
 
 CASE("mliRotMat_init_tait_bryan") {
-    mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., 0.);
+    struct mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., 0.);
     CHECK_MARGIN(rot.r00, 1., 1e-9);
     CHECK_MARGIN(rot.r01, 0., 1e-9);
     CHECK_MARGIN(rot.r02, 0., 1e-9);
@@ -150,7 +150,7 @@ CASE("mliRotMat_init_tait_bryan") {
 }
 
 CASE("mliRotMat_init_axis") {
-    mliRotMat rot;
+    struct mliRotMat rot;
     struct mliVec axis = {0., 0., 1.};
     rot = mliRotMat_init_axis(axis, 0.);
     CHECK_MARGIN(rot.r00, 1., 1e-9);
@@ -180,7 +180,7 @@ CASE("mliRotMat_init_axis") {
 }
 
 CASE("mliRotMat_init_tait_bryan, 45deg") {
-    mliRotMat rot;
+    struct mliRotMat rot;
     struct mliVec a = {0., 0., 1.};
     struct mliVec a_rot;
     rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.));
@@ -191,7 +191,7 @@ CASE("mliRotMat_init_tait_bryan, 45deg") {
 }
 
 CASE("mli_transform_orientation_inverse") {
-    mliRotMat rot;
+    struct mliRotMat rot;
     struct mliVec x = {1., 0., 0.};
     struct mliVec x_rot;
     rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(45.));
@@ -207,7 +207,7 @@ CASE("mli_transform_orientation_inverse") {
 }
 
 CASE("only translation, mli_transform_position_inverse") {
-    mliRotMat rot;
+    struct mliRotMat rot;
     struct mliVec trans = {0., 0., 3.};
     struct mliVec x = {1., 0., 0.};
     struct mliVec x_t;

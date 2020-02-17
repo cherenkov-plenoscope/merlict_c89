@@ -20,7 +20,7 @@ CASE("unity quaternion and matrix") {
     struct mliQuaternion q_eye = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(1., 0., 0.),
         mli_deg2rad(0.));
-    mliRotMat r_eye = mliQuaternion_to_matrix(q_eye);
+    struct mliRotMat r_eye = mliQuaternion_to_matrix(q_eye);
     CHECK_MARGIN(r_eye.r00, 1., 1e-6);
     CHECK_MARGIN(r_eye.r01, 0., 1e-6);
     CHECK_MARGIN(r_eye.r02, 0., 1e-6);
@@ -38,7 +38,7 @@ CASE("rotation matrix z-axis +90deg") {
     struct mliQuaternion z90 = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 1.),
         mli_deg2rad(90.));
-    mliRotMat r_z90 = mliQuaternion_to_matrix(z90);
+    struct mliRotMat r_z90 = mliQuaternion_to_matrix(z90);
 
     CHECK_MARGIN(r_z90.r00, 0., 1e-6);
     CHECK_MARGIN(r_z90.r01, -1., 1e-6);
@@ -90,7 +90,7 @@ CASE("sequence of rotations") {
         mliVec_set(0., 0., 1.),
         mli_deg2rad(90.));
     struct mliQuaternion z90_x90;
-    mliRotMat r_z90_x90;
+    struct mliRotMat r_z90_x90;
     CHECK_MARGIN(mliQuaternion_norm(x90), 1., 1e-6);
     CHECK_MARGIN(mliQuaternion_norm(z90), 1., 1e-6);
     z90_x90 = mliQuaternion_product(x90, z90);
@@ -120,8 +120,8 @@ CASE("Tait-Bryan-angles, 2") {
         0.,
         0.,
         mli_deg2rad(90));
-    mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(90));
-    mliRotMat rot_from_q;
+    struct mliRotMat rot = mliRotMat_init_tait_bryan(0., 0., mli_deg2rad(90));
+    struct mliRotMat rot_from_q;
     CHECK_MARGIN(mliQuaternion_norm(q), 1., 1e-6);
     rot_from_q = mliQuaternion_to_matrix(q);
     CHECK(mliRotMat_equal_margin(rot, rot_from_q, 1e-9));
@@ -137,9 +137,9 @@ CASE("multiple combinations") {
                 double zrad = mli_deg2rad(rz);
                 struct mliQuaternion q = mliQuaternion_set_tait_bryan(
                     xrad, yrad, zrad);
-                mliRotMat rot = mliRotMat_init_tait_bryan(
+                struct mliRotMat rot = mliRotMat_init_tait_bryan(
                     xrad, yrad, zrad);
-                mliRotMat rot_from_q = mliQuaternion_to_matrix(q);
+                struct mliRotMat rot_from_q = mliQuaternion_to_matrix(q);
                 CHECK(mliRotMat_equal_margin(rot, rot_from_q, 1e-9));
             }
         }

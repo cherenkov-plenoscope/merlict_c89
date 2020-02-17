@@ -31,21 +31,21 @@ typedef struct {
 } mliCameraSensor;
 
 struct mliVec mliCamera_optical_axis(const mliCamera cam) {
-    mliRotMat rot = mliRotMat_init_tait_bryan(
+    struct mliRotMat rot = mliRotMat_init_tait_bryan(
         cam.rotation.x,
         cam.rotation.y,
         cam.rotation.z);
     return mli_transform_orientation(&rot, mliVec_set(0., 0., 1.));}
 
 struct mliVec mliCamera_direction_right(const mliCamera cam) {
-    mliRotMat rot = mliRotMat_init_tait_bryan(
+    struct mliRotMat rot = mliRotMat_init_tait_bryan(
         cam.rotation.x,
         cam.rotation.y,
         cam.rotation.z);
     return mli_transform_orientation(&rot, mliVec_set(0., 1., 0.));}
 
 struct mliVec mliCamera_direction_up(const mliCamera cam) {
-    mliRotMat rot = mliRotMat_init_tait_bryan(
+    struct mliRotMat rot = mliRotMat_init_tait_bryan(
         cam.rotation.x,
         cam.rotation.y,
         cam.rotation.z);
@@ -132,7 +132,7 @@ void mliCameraSensor_init(
     mliCameraSensor *sensor,
     const mliCamera *camera,
     const mliImage *image) {
-    mliRotMat rot;
+    struct mliRotMat rot;
     struct mliVec unit_x = {1., 0., 0.};
     struct mliVec unit_y = {0., 1., 0.};
     struct mliVec unit_z = {0., 0., 1.};

@@ -15,7 +15,7 @@ struct mliHomTraComp{
 
 struct mliHomTra{
     struct mliVec trans;
-    mliRotMat rot;
+    struct mliRotMat rot;
 };
 
 struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo) {
@@ -25,7 +25,7 @@ struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo) {
     return t;}
 
 struct mliVec mli_transform_orientation(
-    const mliRotMat *rot,
+    const struct mliRotMat *rot,
     const struct mliVec in) {
     struct mliVec out;
     out.x = in.x*rot->r00 + in.y*rot->r01 + in.z*rot->r02;
@@ -34,7 +34,7 @@ struct mliVec mli_transform_orientation(
     return out;}
 
 struct mliVec mli_transform_orientation_inverse(
-    const mliRotMat *rot,
+    const struct mliRotMat *rot,
     const struct mliVec in) {
     struct mliVec out;
     out.x = in.x*rot->r00 + in.y*rot->r10 + in.z*rot->r20;
@@ -43,7 +43,7 @@ struct mliVec mli_transform_orientation_inverse(
     return out;}
 
 struct mliVec mli_transform_position(
-    const mliRotMat *rot,
+    const struct mliRotMat *rot,
     const struct mliVec trans,
     const struct mliVec in) {
     struct mliVec out;
@@ -53,7 +53,7 @@ struct mliVec mli_transform_position(
     return out;}
 
 struct mliVec mli_transform_position_inverse(
-    const mliRotMat *rot,
+    const struct mliRotMat *rot,
     const struct mliVec trans,
     const struct mliVec in) {
     struct mliVec out;
@@ -66,7 +66,7 @@ struct mliVec mli_transform_position_inverse(
     return out;}
 
 struct mliRay mli_transform_ray(
-    const mliRotMat *rot,
+    const struct mliRotMat *rot,
     const struct mliVec trans,
     const struct mliRay in) {
     struct mliRay out;
@@ -80,7 +80,7 @@ struct mliRay mli_transform_ray(
     return out;}
 
 struct mliRay mli_transform_ray_inverse(
-    const mliRotMat *rot,
+    const struct mliRotMat *rot,
     const struct mliVec trans,
     const struct mliRay in) {
     struct mliRay out;
@@ -126,7 +126,7 @@ struct mliHomTraComp mliHomTraComp_sequence(
     const struct mliHomTraComp a,
     const struct mliHomTraComp b) {
     struct mliHomTraComp s;
-    mliRotMat rot_a = mliQuaternion_to_matrix(a.rot);
+    struct mliRotMat rot_a = mliQuaternion_to_matrix(a.rot);
     s.trans = mli_transform_orientation(&rot_a, a.trans);
     s.trans = mliVec_add(s.trans, b.trans);
     s.rot = mliQuaternion_product(a.rot, b.rot);

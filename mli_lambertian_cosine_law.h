@@ -25,7 +25,7 @@ struct mliVec mli_draw_lambertian_direction_wrt_surface_normal(
         prng);
     const double rho = mliVec_angle_between(z, surface_normal);
     if (rho > 0.0) {
-        const mliRotMat rot = mliRotMat_init_axis(
+        const struct mliRotMat rot = mliRotMat_init_axis(
             mliVec_cross(z, surface_normal),
             -1.0*rho);
         return mli_transform_orientation(&rot, lambertian_wrt_z);
