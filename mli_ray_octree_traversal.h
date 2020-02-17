@@ -80,7 +80,7 @@ void mli_set_txm_tym_tzm(
     double ty1,
     double tz1,
     const mliCube cube,
-    const mliVec ray_octree_support,
+    const struct mliVec ray_octree_support,
     double *txm,
     double *tym,
     double *tzm) {
@@ -97,7 +97,7 @@ void mli_set_txm_tym_tzm(
      */
     (*txm) = 0.5*(tx0 + tx1);
     if (MLI_IS_NAN(*txm)) {
-        const mliVec cube_upper = mliCube_upper(cube);
+        const struct mliVec cube_upper = mliCube_upper(cube);
         const double x0 = cube.lower.x;
         const double x1 = cube_upper.x;
         if ( ray_octree_support.x < (x0 + x1)*.5 )
@@ -108,7 +108,7 @@ void mli_set_txm_tym_tzm(
 
     (*tym) = 0.5*(ty0 + ty1);
     if (MLI_IS_NAN(*tym)) {
-        const mliVec cube_upper = mliCube_upper(cube);
+        const struct mliVec cube_upper = mliCube_upper(cube);
         const double y0 = cube.lower.y;
         const double y1 = cube_upper.y;
         if ( ray_octree_support.y < (y0 + y1)*.5 )
@@ -119,7 +119,7 @@ void mli_set_txm_tym_tzm(
 
     (*tzm) = 0.5*(tz0 + tz1);
     if (MLI_IS_NAN(*tzm)) {
-        const mliVec cube_upper = mliCube_upper(cube);
+        const struct mliVec cube_upper = mliCube_upper(cube);
         const double z0 = cube.lower.z;
         const double z1 = cube_upper.z;
         if ( ray_octree_support.z < (z0 + z1)*.5 )
@@ -139,7 +139,7 @@ void __mli_proc_subtree (
     const mliNode* node,
     uint8_t a,
     const mliCube cube,
-    const mliVec ray_octree_support,
+    const struct mliVec ray_octree_support,
     mliIntersection* isec,
     const mliScenery* scenery,
     const mliRay ray,
@@ -265,8 +265,8 @@ void mli_ray_octree_traversal(
     double tz0;
     double tz1;
     mliRay ray_octree;
-    mliVec cube_upper;
-    mliVec cube_size;
+    struct mliVec cube_upper;
+    struct mliVec cube_size;
     mliCube cube;
     const mliNode *root;
     uint8_t a = 0;

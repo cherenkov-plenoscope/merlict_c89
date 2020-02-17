@@ -38,7 +38,7 @@ typedef struct {
     mliSurface *surfaces;
 
     uint32_t num_vertices;
-    mliVec *vertices;
+    struct mliVec *vertices;
 
     uint32_t num_triangles;
     mliFace *triangles;
@@ -206,7 +206,7 @@ void mliScenery_free(mliScenery *scenery) {
 }
 
 int __mliScenery_malloc_vertices_and_triangles(mliScenery* s) {
-    mli_malloc(s->vertices, mliVec, s->num_vertices);
+    mli_malloc(s->vertices, struct mliVec, s->num_vertices);
     mli_malloc(s->triangles, mliFace, s->num_triangles);
     mli_malloc(s->triangles_surfaces, mliSurfaces, s->num_triangles);
     return 1;
@@ -466,7 +466,8 @@ int mliScenery_write_to_path(const mliScenery *scenery, const char* path) {
     mli_fwrite(scenery->surfaces, sizeof(mliSurface), scenery->num_surfaces, f);
 
     /* vertices */
-    mli_fwrite(scenery->vertices, sizeof(mliVec), scenery->num_vertices, f);
+    mli_fwrite(
+        scenery->vertices, sizeof(struct mliVec), scenery->num_vertices, f);
 
     /* triangles */
     mli_fwrite(scenery->triangles, sizeof(mliFace), scenery->num_triangles, f);
@@ -493,7 +494,8 @@ error:
 
 
 int __mliScenery_read_vertices_and_triangles(mliScenery *scenery, FILE* f) {
-    mli_fread(scenery->vertices, sizeof(mliVec), scenery->num_vertices, f);
+    mli_fread(
+        scenery->vertices, sizeof(struct mliVec), scenery->num_vertices, f);
     mli_fread(scenery->triangles, sizeof(mliFace), scenery->num_triangles, f);
     mli_fread(
         scenery->triangles_surfaces,

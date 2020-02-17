@@ -24,7 +24,7 @@ int mliDisc_intersection(
         ray_local,
         &solution)
     ) {
-        mliVec position_local = mliRay_at(&ray_local, solution);
+        struct mliVec position_local = mliRay_at(&ray_local, solution);
         if (mli_inside_cylindrical_prism(
             position_local,
             disc.radius)
@@ -32,7 +32,7 @@ int mliDisc_intersection(
             if (solution < MLI_EPSILON) {
                 return 0;
             } else {
-                mliVec normal_local = mli_xyplane_surface_normal();
+                struct mliVec normal_local = mli_xyplane_surface_normal();
                 intersection->position = mliHomTra_pos(
                     &local2root,
                     position_local);

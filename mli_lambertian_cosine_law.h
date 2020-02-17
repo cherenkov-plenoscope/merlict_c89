@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include "mliVec.h"
 
-mliVec mli_draw_lambertian_direction_wrt_z(mliMT19937 *prng) {
+struct mliVec mli_draw_lambertian_direction_wrt_z(mliMT19937 *prng) {
     double azimuth;
     double sin_theta, cos_theta;
     azimuth = MLI_2PI*mliMT19937_uniform(prng);
@@ -17,11 +17,12 @@ mliVec mli_draw_lambertian_direction_wrt_z(mliMT19937 *prng) {
         sin_theta*sin(azimuth),
         cos_theta);}
 
-mliVec mli_draw_lambertian_direction_wrt_surface_normal(
+struct mliVec mli_draw_lambertian_direction_wrt_surface_normal(
     mliMT19937 *prng,
-    const mliVec surface_normal) {
-    const mliVec z = mliVec_set(0, 0, 1);
-    const mliVec lambertian_wrt_z = mli_draw_lambertian_direction_wrt_z(prng);
+    const struct mliVec surface_normal) {
+    const struct mliVec z = mliVec_set(0, 0, 1);
+    const struct mliVec lambertian_wrt_z = mli_draw_lambertian_direction_wrt_z(
+        prng);
     const double rho = mliVec_angle_between(z, surface_normal);
     if (rho > 0.0) {
         const mliRotMat rot = mliRotMat_init_axis(

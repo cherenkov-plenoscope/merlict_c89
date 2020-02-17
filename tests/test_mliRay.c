@@ -134,7 +134,7 @@ CASE("mliSphericalCapHex, bounding radius") {
 CASE("mliHomTraComp, transform direction") {
     mliHomTraComp Tcomp;
     mliHomTra T;
-    mliVec v1, v2, v3;
+    struct mliVec v1, v2, v3;
     Tcomp.trans = mliVec_set(1., 0., 0.);
     Tcomp.rot = mliQuaternion_set_rotaxis_and_angle(
         mliVec_set(0., 0., 1.),

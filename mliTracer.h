@@ -48,7 +48,7 @@ mliColor mli_trace(
         mliIntersection global_light_intersection;
         mliRay line_of_sight_to_source;
         mliSurface surface;
-        mliVec dir_to_source = {1., 1., 3.};
+        struct mliVec dir_to_source = {1., 1., 3.};
 
         line_of_sight_to_source = mliRay_set(
             intersection.position,

@@ -8,7 +8,7 @@
 
 
 int mli_inside_cylindrical_prism(
-    const mliVec v,
+    const struct mliVec v,
     const double radius) {
     const double distance_sq = v.x*v.x + v.y*v.y;
     if (distance_sq <= radius*radius) {

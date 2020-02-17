@@ -12,7 +12,7 @@
 
 typedef struct {
     uint32_t num_vertices;
-    mliVec *vertices;
+    struct mliVec *vertices;
     uint32_t num_faces;
     mliFace *faces;
 } mliMesh;
@@ -26,7 +26,7 @@ mliMesh mliMesh_init() {
     return m;}
 
 int mliMesh_malloc(mliMesh* m) {
-    mli_malloc(m->vertices, mliVec, m->num_vertices);
+    mli_malloc(m->vertices, struct mliVec, m->num_vertices);
     mli_malloc(m->faces, mliFace, m->num_faces);
     return 1;
 error:
@@ -192,7 +192,7 @@ int mliMesh_malloc_from_object_file(const char *path, mliMesh* m) {
         mli_check(fgets(line, len, fin) != NULL, "Can not read vertex line.");
         if (vertex_idx == m->num_vertices) break;
         if (strlen(line) > 1) {
-            mliVec poi;
+            struct mliVec poi;
             mli_check(
                 mli_parse_three_doubles(line, &poi.x, &poi.y, &poi.z),
                 "Can not parse vertex.");

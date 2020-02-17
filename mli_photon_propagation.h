@@ -162,7 +162,7 @@ int _mli_fresnel_refraction_and_reflection(
     double n_going_to;
     double n_coming_from;
     double reflection_propability;
-    mliVec facing_surface_normal;
+    struct mliVec facing_surface_normal;
     mli_check(mliFunc_evaluate(
         _mli_refractive_index_going_to(env->scenery, isec),
         env->photon->wavelength,

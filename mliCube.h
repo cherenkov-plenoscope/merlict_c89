@@ -11,11 +11,11 @@ typedef struct {
      * Cubic Oriented-Bounding-Box
      * oriented w.r.t. the unit-vectors.
      */
-    mliVec lower;
+    struct mliVec lower;
     double edge_length;
 } mliCube;
 
-mliVec mliCube_upper(const mliCube a) {
+struct mliVec mliCube_upper(const mliCube a) {
     return mliVec_add(
         a.lower,
         mliVec_set(a.edge_length, a.edge_length, a.edge_length));}
@@ -26,7 +26,7 @@ mliOBB mliCube_to_obb(const mliCube a) {
     out.upper = mliCube_upper(a);
     return out;}
 
-mliVec mliCube_center(const mliCube a) {
+struct mliVec mliCube_center(const mliCube a) {
     return mliVec_set(
         a.lower.x + a.edge_length*.5,
         a.lower.y + a.edge_length*.5,
@@ -34,9 +34,9 @@ mliVec mliCube_center(const mliCube a) {
 
 mliCube mliCube_outermost_cube(const mliOBB a) {
     mliCube cube;
-    mliVec center;
-    mliVec half_diagonal;
-    mliVec diff;
+    struct mliVec center;
+    struct mliVec half_diagonal;
+    struct mliVec diff;
     double max_half_length;
     center = mliOBB_center(a);
     diff = mliVec_substract(a.upper, a.lower);
@@ -54,8 +54,8 @@ mliCube mliCube_octree_child(
     const uint32_t sy,
     const uint32_t sz) {
     mliCube child;
-    mliVec length;
-    mliVec center = mliCube_center(cube);
+    struct mliVec length;
+    struct mliVec center = mliCube_center(cube);
     length = mliVec_substract(center, cube.lower);
     child.lower = cube.lower;
     child.edge_length = .5*cube.edge_length;
@@ -73,8 +73,8 @@ mliCube mliCube_octree_child_code(
     const mliCube cube,
     const uint8_t a) {
     mliCube child;
-    mliVec length;
-    mliVec center = mliCube_center(cube);
+    struct mliVec length;
+    struct mliVec center = mliCube_center(cube);
     length = mliVec_substract(center, cube.lower);
     child.lower = cube.lower;
     child.edge_length = .5*cube.edge_length;

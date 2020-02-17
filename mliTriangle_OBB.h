@@ -24,16 +24,16 @@
 #define MLI_OUTSIDE 1
 
 typedef struct{
-    mliVec v1;                 /* Vertex1 */
-    mliVec v2;                 /* Vertex2 */
-    mliVec v3;                 /* Vertex3 */
+    struct mliVec v1;                 /* Vertex1 */
+    struct mliVec v2;                 /* Vertex2 */
+    struct mliVec v3;                 /* Vertex3 */
 } mliTriangle;
 
 /*___________________________________________________________________________*/
 
 /* Which of the six face-plane(s) is point P outside of? */
 
-int64_t __mli_face_plane(mliVec p) {
+int64_t __mli_face_plane(struct mliVec p) {
     int64_t outcode;
     outcode = 0;
     if (p.x >  .5) outcode |= 0x01;
@@ -49,7 +49,7 @@ int64_t __mli_face_plane(mliVec p) {
 
 /* Which of the twelve edge plane(s) is point P outside of? */
 
-int64_t __mli_bevel_2d(mliVec p) {
+int64_t __mli_bevel_2d(struct mliVec p) {
     int64_t outcode;
     outcode = 0;
     if ( p.x + p.y > 1.0) outcode |= 0x001;
@@ -71,7 +71,7 @@ int64_t __mli_bevel_2d(mliVec p) {
 
 /* Which of the eight corner plane(s) is point P outside of? */
 
-int64_t __mli_bevel_3d(mliVec p) {
+int64_t __mli_bevel_3d(struct mliVec p) {
     int64_t outcode;
     outcode = 0;
     if (( p.x + p.y + p.z) > 1.5) outcode |= 0x01;
@@ -91,8 +91,13 @@ int64_t __mli_bevel_3d(mliVec p) {
 /* See if it is on a face of the cube              */
 /* Consider only faces in "mask"                   */
 
-int64_t __mli_check_point(mliVec p1, mliVec p2, double alpha, int64_t mask) {
-    mliVec plane_point;
+int64_t __mli_check_point(
+    struct mliVec p1,
+    struct mliVec p2,
+    double alpha,
+    int64_t mask)
+{
+    struct mliVec plane_point;
     plane_point.x = MLI_LERP(alpha, p1.x, p2.x);
     plane_point.y = MLI_LERP(alpha, p1.y, p2.y);
     plane_point.z = MLI_LERP(alpha, p1.z, p2.z);
@@ -106,7 +111,7 @@ int64_t __mli_check_point(mliVec p1, mliVec p2, double alpha, int64_t mask) {
 /* Consider only face planes in "outcode_diff"                     */
 /* Note: Zero bits in "outcode_diff" means face line is outside of */
 
-int64_t __mli_check_line(mliVec p1, mliVec p2, int64_t outcode_diff) {
+int64_t __mli_check_line(struct mliVec p1, struct mliVec p2, int64_t outcode_diff) {
    if ((0x01 & outcode_diff) != 0)
       if (__mli_check_point(p1,p2,( 0.5f-p1.x)/(p2.x-p1.x),0x3e) == MLI_INSIDE)
         return(MLI_INSIDE);
@@ -132,10 +137,10 @@ int64_t __mli_check_line(mliVec p1, mliVec p2, int64_t outcode_diff) {
 
 /* Test if 3D point is inside 3D triangle */
 
-int64_t __mli_point_triangle_intersection(mliVec p, mliTriangle t) {
+int64_t __mli_point_triangle_intersection(struct mliVec p, mliTriangle t) {
     int64_t sign12,sign23,sign31;
-    mliVec vect12,vect23,vect31,vect1h,vect2h,vect3h;
-    mliVec cross12_1p,cross23_2p,cross31_3p;
+    struct mliVec vect12,vect23,vect31,vect1h,vect2h,vect3h;
+    struct mliVec cross12_1p,cross23_2p,cross31_3p;
 
 /* First, a quick bounding-box test:                               */
 /* If P is outside triangle bbox, there cannot be an intersection. */
@@ -191,8 +196,8 @@ int64_t __mli_point_triangle_intersection(mliVec p, mliTriangle t) {
 int64_t __mli_triangle_cube_intersection(mliTriangle t) {
     int64_t v1_test,v2_test,v3_test;
     double d,denom;
-    mliVec vect12,vect13,norm;
-    mliVec hitpp,hitpn,hitnp,hitnn;
+    struct mliVec vect12,vect13,norm;
+    struct mliVec hitpp,hitpn,hitnp,hitnn;
 
 /* First compare all three vertexes with all six face-planes */
 /* If any vertex is inside the cube, return immediately!     */
@@ -304,14 +309,14 @@ int64_t __mli_triangle_cube_intersection(mliTriangle t) {
 }
 
 void __mliTriangle_transform_into_obb(
-    const mliVec a,
-    const mliVec b,
-    const mliVec c,
+    const struct mliVec a,
+    const struct mliVec b,
+    const struct mliVec c,
     const mliOBB obb,
-    mliVec *a_out,
-    mliVec *b_out,
-    mliVec *c_out) {
-    mliVec obb_center = mliOBB_center(obb);
+    struct mliVec *a_out,
+    struct mliVec *b_out,
+    struct mliVec *c_out) {
+    struct mliVec obb_center = mliOBB_center(obb);
     const double scale_x = obb.upper.x - obb.lower.x;
     const double scale_y = obb.upper.y - obb.lower.y;
     const double scale_z = obb.upper.z - obb.lower.z;
@@ -331,9 +336,9 @@ void __mliTriangle_transform_into_obb(
     c_out->z /= scale_z;}
 
 int mliTriangle_has_overlap_obb(
-    const mliVec a,
-    const mliVec b,
-    const mliVec c,
+    const struct mliVec a,
+    const struct mliVec b,
+    const struct mliVec c,
     const mliOBB obb) {
     mliTriangle tri;
     __mliTriangle_transform_into_obb(
@@ -346,9 +351,9 @@ int mliTriangle_has_overlap_obb(
         return 0;}
 
 mliOBB mliTriangle_obb(
-    const mliVec a,
-    const mliVec b,
-    const mliVec c) {
+    const struct mliVec a,
+    const struct mliVec b,
+    const struct mliVec c) {
     mliOBB obb;
     obb.lower.x = MLI_MIN3(a.x, b.x, c.x);
     obb.lower.y = MLI_MIN3(a.y, b.y, c.y);

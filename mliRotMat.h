@@ -41,7 +41,7 @@ mliRotMat mliRotMat_init_tait_bryan(
     return rot;}
 
 mliRotMat mliRotMat_init_axis(
-    const mliVec rot_axis,
+    const struct mliVec rot_axis,
     const double rot_angle) {
     mliRotMat rot;
     const double norm = mliVec_norm(rot_axis);

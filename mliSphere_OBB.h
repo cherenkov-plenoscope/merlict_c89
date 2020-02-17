@@ -7,16 +7,16 @@
 
 mliOBB mliSphere_obb(
     const double radius,
-    const mliVec translation) {
+    const struct mliVec translation) {
     mliOBB obb;
-    mliVec r = mliVec_set(radius, radius, radius);
+    struct mliVec r = mliVec_set(radius, radius, radius);
     obb.lower = mliVec_substract(translation, r);
     obb.upper = mliVec_add(translation, r);
     return obb;}
 
 int mliSphere_has_overlap_obb(
     const double radius,
-    const mliVec translation,
+    const struct mliVec translation,
     const mliOBB obb) {
     /* Ben Voigt
      * https://stackoverflow.com/questions/4578967/cube-sphere-intersection-test

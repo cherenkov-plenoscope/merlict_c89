@@ -10,17 +10,17 @@
 
 
 int mliRay_intersects_triangle(
-    const mliVec support,
-    const mliVec direction,
-    const mliVec vertex0,
-    const mliVec vertex1,
-    const mliVec vertex2,
+    const struct mliVec support,
+    const struct mliVec direction,
+    const struct mliVec vertex0,
+    const struct mliVec vertex1,
+    const struct mliVec vertex2,
     double *ray_parameter)
 {
     /* Moeller-Trumbore-intersection-algorithm */
-    mliVec edge1;
-    mliVec edge2;
-    mliVec h, s, q;
+    struct mliVec edge1;
+    struct mliVec edge2;
+    struct mliVec h, s, q;
     double a, f, u, v, t;
     edge1 = mliVec_substract(vertex1, vertex0);
     edge2 = mliVec_substract(vertex2, vertex0);
@@ -51,19 +51,19 @@ int mliRay_intersects_triangle(
     }
 }
 
-mliVec mli_triangle_surface_normal(
-    const mliVec vertex0,
-    const mliVec vertex1,
-    const mliVec vertex2) {
-    mliVec edge1 = mliVec_substract(vertex1, vertex0);
-    mliVec edge2 = mliVec_substract(vertex2, vertex0);
+struct mliVec mli_triangle_surface_normal(
+    const struct mliVec vertex0,
+    const struct mliVec vertex1,
+    const struct mliVec vertex2) {
+    struct mliVec edge1 = mliVec_substract(vertex1, vertex0);
+    struct mliVec edge2 = mliVec_substract(vertex2, vertex0);
     return mliVec_cross(edge1, edge2);}
 
 
 int mliTriangle_intersection(
-    const mliVec vertex0,
-    const mliVec vertex1,
-    const mliVec vertex2,
+    const struct mliVec vertex0,
+    const struct mliVec vertex1,
+    const struct mliVec vertex2,
     const mliRay ray,
     mliIntersection *intersection) {
     double ray_parameter;

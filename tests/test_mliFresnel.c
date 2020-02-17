@@ -3,8 +3,8 @@
 CASE("Fresnel: orthogonal_incident") {
     double n_from = 1.0;
     double n_going_to = 1.33;
-    mliVec incident = {0.0, 0.0, -1.0};
-    mliVec normal = {0.0, 0.0, 1.0};
+    struct mliVec incident = {0.0, 0.0, -1.0};
+    struct mliVec normal = {0.0, 0.0, 1.0};
     mliFresnel fresnel;
 
     incident = mliVec_normalized(incident);
@@ -26,8 +26,8 @@ CASE("Fresnel: orthogonal_incident") {
 CASE("Fresnel: flat_incident") {
     double n_from = 1.0;
     double n_going_to = 1.33;
-    mliVec incident = {100.0, 0.0, -1.0};
-    mliVec normal = {0.0, 0.0, 1.0};
+    struct mliVec incident = {100.0, 0.0, -1.0};
+    struct mliVec normal = {0.0, 0.0, 1.0};
     mliFresnel fresnel;
     double incident_to_normal;
     double outgoing_to_normal;
@@ -54,8 +54,8 @@ CASE("Fresnel: flat_incident") {
 CASE("Fresnel: orthogonal_incident_same_index") {
     double n_from = 1.0;
     double n_going_to = n_from;
-    mliVec incident = {0.0, 0.0, -1.0};
-    mliVec normal = {0.0, 0.0, 1.0};
+    struct mliVec incident = {0.0, 0.0, -1.0};
+    struct mliVec normal = {0.0, 0.0, 1.0};
     mliFresnel fresnel;
 
     incident = mliVec_normalized(incident);
@@ -75,8 +75,8 @@ CASE("Fresnel: orthogonal_incident_same_index") {
 CASE("Fresnel: flat_incident_same_index") {
     double n_from = 1.0;
     double n_going_to = n_from;
-    mliVec incident = {100.0, 0.0, -1.0};
-    mliVec normal = {0.0, 0.0, 1.0};
+    struct mliVec incident = {100.0, 0.0, -1.0};
+    struct mliVec normal = {0.0, 0.0, 1.0};
     mliFresnel fresnel;
 
     incident = mliVec_normalized(incident);

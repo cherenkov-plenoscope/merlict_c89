@@ -58,9 +58,9 @@ struct mliQuaternion mliQuaternion_product(
     const struct mliQuaternion p,
     const struct mliQuaternion q) {
     struct mliQuaternion pq;
-    const mliVec P = mliVec_set(p.x, p.y, p.z);
-    const mliVec Q = mliVec_set(q.x, q.y, q.z);
-    const mliVec P_cross_Q = mliVec_cross(P, Q);
+    const struct mliVec P = mliVec_set(p.x, p.y, p.z);
+    const struct mliVec Q = mliVec_set(q.x, q.y, q.z);
+    const struct mliVec P_cross_Q = mliVec_cross(P, Q);
     pq.w = p.w*q.w - mliVec_dot(P, Q);
     pq.x = p.w*Q.x + q.w*P.x + P_cross_Q.x;
     pq.y = p.w*Q.y + q.w*P.y + P_cross_Q.y;
@@ -74,7 +74,7 @@ double mliQuaternion_norm(const struct mliQuaternion q) {
     return sqrt(mliQuaternion_product_complex_conjugate(q));}
 
 struct mliQuaternion mliQuaternion_set_rotaxis_and_angle(
-    const mliVec rot_axis,
+    const struct mliVec rot_axis,
     const double angle) {
     struct mliQuaternion quat;
     const double angle_half = .5*angle;

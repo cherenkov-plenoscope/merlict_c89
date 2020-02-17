@@ -8,7 +8,7 @@
 #include "mli_json.h"
 
 int mliVec_from_json_token(
-    mliVec* v,
+    struct mliVec* v,
     const mliJson *json,
     const uint64_t token) {
     mli_check(
@@ -34,7 +34,7 @@ int mliColor_from_json_token(
     mliColor* c,
     const mliJson *json,
     const uint64_t token) {
-    mliVec v;
+    struct mliVec v;
     mli_check(
         mliVec_from_json_token(&v, json, token),
         "Can not parse json-float-triple to color.");

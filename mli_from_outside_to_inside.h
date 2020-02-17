@@ -5,8 +5,8 @@
 #include "mliVec.h"
 
 int mli_ray_runs_from_outside_to_inside(
-    const mliVec ray_direction_local,
-    const mliVec surface_normal_local) {
+    const struct mliVec ray_direction_local,
+    const struct mliVec surface_normal_local) {
     const double proj = mliVec_dot(surface_normal_local, ray_direction_local);
     if (proj < 0.)
         return 1;

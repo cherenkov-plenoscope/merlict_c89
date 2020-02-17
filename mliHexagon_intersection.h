@@ -23,7 +23,7 @@ int mliHexagon_intersection(
         ray_local,
         &solution)
     ) {
-        mliVec position_local = mliRay_at(&ray_local, solution);
+        struct mliVec position_local = mliRay_at(&ray_local, solution);
         if (mli_inside_hexagonal_prism_z(
             position_local,
             hex.inner_radius)
@@ -31,7 +31,7 @@ int mliHexagon_intersection(
             if (solution < MLI_EPSILON) {
                 return 0;
             } else {
-                mliVec normal_local = mli_xyplane_surface_normal();
+                struct mliVec normal_local = mli_xyplane_surface_normal();
                 intersection->position = mliHomTra_pos(
                     &local2root,
                     position_local);

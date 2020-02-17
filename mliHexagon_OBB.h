@@ -21,8 +21,8 @@ int mliHexagon_has_overlap_obb(
     uint64_t corner_idx;
     uint64_t edge_idx;
     for (corner_idx = 0; corner_idx < 5; corner_idx++) {
-        const mliVec corner_local = mli_hexagon_corner(corner_idx);
-        const mliVec corner_root = mliHomTra_pos(&local2root, corner_local);
+        const struct mliVec corner_local = mli_hexagon_corner(corner_idx);
+        const struct mliVec corner_root = mliHomTra_pos(&local2root, corner_local);
         if (mliVec_overlap_obb(corner_root, obb.lower, obb.upper)) {
             return 1;
         }
@@ -48,18 +48,18 @@ mliOBB mliHexagon_obb(
     const mliHomTraComp local2root_comp) {
     mliOBB obb;
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-    mliVec first_corner_local = mliVec_multiply(
+    struct mliVec first_corner_local = mliVec_multiply(
         mli_hexagon_corner(0),
         hex.inner_radius*MLI_2_OVER_SQRT3);
-    mliVec first_corner_root = mliHomTra_pos(
+    struct mliVec first_corner_root = mliHomTra_pos(
         &local2root,
         first_corner_local);
     uint64_t corner_idx;
     obb.lower = first_corner_root;
     obb.upper = first_corner_root;
     for (corner_idx = 1; corner_idx < 5; corner_idx++) {
-        mliVec corner_root;
-        mliVec corner_local = mliVec_multiply(
+        struct mliVec corner_root;
+        struct mliVec corner_local = mliVec_multiply(
             mli_hexagon_corner(corner_idx),
             hex.inner_radius*MLI_2_OVER_SQRT3);
         corner_root = mliHomTra_pos(&local2root, corner_local);

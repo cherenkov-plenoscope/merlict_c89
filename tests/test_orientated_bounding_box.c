@@ -62,7 +62,7 @@ CASE("mliCube_outermost_cube") {
 }
 
 CASE("mliOBB_center") {
-    mliVec center;
+    struct mliVec center;
     mliOBB obb;
     obb.lower = mliVec_set(.5, .5, .5);
     obb.upper = mliVec_set(1.5, 1.5, 1.5);
@@ -86,17 +86,17 @@ CASE("mliTriangle_obb") {
 }
 
 CASE("mliVec_overlap_obb") {
-    mliVec point_inside = {1., 1., 1.};
-    mliVec point_outside = {-1., -2., -3.};
-    mliVec low = {0. ,0., 0.};
-    mliVec upp = {2., 2., 2.};
+    struct mliVec point_inside = {1., 1., 1.};
+    struct mliVec point_outside = {-1., -2., -3.};
+    struct mliVec low = {0. ,0., 0.};
+    struct mliVec upp = {2., 2., 2.};
     CHECK(mliVec_overlap_obb(point_inside, low, upp));
     CHECK(!mliVec_overlap_obb(point_outside, low, upp));
 }
 
 CASE("mliVec_overlap_obb, upper, and lower cases") {
-    mliVec low = {0. ,0., 0.};
-    mliVec upp = {2., 2., 2.};
+    struct mliVec low = {0. ,0., 0.};
+    struct mliVec upp = {2., 2., 2.};
     CHECK(mliVec_overlap_obb(mliVec_set(0., 0., 0.), low, upp));
     CHECK(mliVec_overlap_obb(mliVec_set(0., 0., 1.), low, upp));
     CHECK(mliVec_overlap_obb(mliVec_set(0., 1., 1.), low, upp));

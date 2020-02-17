@@ -305,7 +305,7 @@ CASE("mliOcTree_from_scenery") {
 
 CASE("mliScenery asymetric") {
     mliScenery scenery = mliScenery_init();
-    mliVec offset;
+    struct mliVec offset;
     uint64_t i;
     scenery.num_functions = 1u;
     scenery.num_colors = 1u;

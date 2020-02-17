@@ -19,7 +19,7 @@
 #define MLI_PHOTON_DIFFUSE_REFLECTION     106u
 
 typedef struct {
-    mliVec position;
+    struct mliVec position;
     uint32_t refraction_coming_from;
     uint32_t refraction_going_to;
     uint32_t absorbtion_coming_from;

@@ -22,8 +22,8 @@ int mli_spherical_cap_equation(
         v^2*(d*d) + v*2(s*d -R*dz) +s*s -2*R*sz = 0
         v^2 + v 2(s*d - R*dz)/(d*d) + (s*s - 2*R*sz)/(d*d) = 0
     */
-    const mliVec sup = ray.support;
-    const mliVec dir = ray.direction;
+    const struct mliVec sup = ray.support;
+    const struct mliVec dir = ray.direction;
     const double dir_times_dir = mliVec_dot(dir, dir);
     const double sup_times_sup = mliVec_dot(sup, sup);
     const double sup_times_dir = mliVec_dot(sup, dir);
@@ -33,11 +33,11 @@ int mli_spherical_cap_equation(
     const double Q = (sup_times_sup - 2.*R_times_sup_z) / dir_times_dir;
     return mli_quadratiq_equation(P, Q, plus_solution, minus_solution);}
 
-mliVec mli_spherical_cap_surface_normal(
-    const mliVec intersection_point,
+struct mliVec mli_spherical_cap_surface_normal(
+    const struct mliVec intersection_point,
     const double radius) {
-    mliVec radial = mliVec_set(0., 0., radius);
-    mliVec normal = mliVec_substract(radial, intersection_point);
+    struct mliVec radial = mliVec_set(0., 0., radius);
+    struct mliVec normal = mliVec_substract(radial, intersection_point);
     normal = mliVec_multiply(normal, 1./mliVec_norm(normal));
     return normal;}
 

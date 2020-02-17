@@ -63,8 +63,8 @@ int __mliScenery_set_primitive(
     mliPrimitiveCount* count) {
     uint64_t i, vertex_offset;
     mliFrame* child;
-    mliVec vertex_in_root;
-    mliVec vertex;
+    struct mliVec vertex_in_root;
+    struct mliVec vertex;
     mliFace triangle;
     mliHomTra frame2root;
     switch (frame->type) {

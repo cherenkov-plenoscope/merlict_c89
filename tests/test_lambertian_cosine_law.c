@@ -3,7 +3,7 @@
 CASE("lambertian cosine law, populate histogram, check cosine law") {
     uint64_t n;
     const uint64_t NUM_TRAILS = 1000*100;
-    mliVec unit_z = mliVec_set(0, 0, 1);
+    struct mliVec unit_z = mliVec_set(0, 0, 1);
     mliMT19937 prng;
 
     #define NUM_BINS 25
@@ -21,7 +21,7 @@ CASE("lambertian cosine law, populate histogram, check cosine law") {
 
     for (n = 0; n < NUM_TRAILS; n++) {
         double theta;
-        mliVec lambertian_reflex;
+        struct mliVec lambertian_reflex;
         lambertian_reflex = mli_draw_lambertian_direction_wrt_z(&prng);
         theta = mliVec_angle_between(unit_z, lambertian_reflex);
         mli_histogram(
@@ -57,7 +57,7 @@ CASE("lambertian cosine law, relative to surface normal") {
     const uint64_t NUM_NORMALS = 25;
     const uint64_t NUM_TRAILS = 5000;
     double theta;
-    mliVec surface_normal;
+    struct mliVec surface_normal;
     mliMT19937 prng;
 
     double hist_bin_edges[10 + 1];
@@ -79,7 +79,7 @@ CASE("lambertian cosine law, relative to surface normal") {
 
         mli_zeros_uint64_t(hist_bins, hist_num_bins);
         for (m = 0; m < NUM_TRAILS; m++) {
-            mliVec lambertian_reflex =
+            struct mliVec lambertian_reflex =
                 mli_draw_lambertian_direction_wrt_surface_normal(
                     &prng,
                     surface_normal);

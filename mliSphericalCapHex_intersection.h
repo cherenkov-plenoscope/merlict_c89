@@ -31,7 +31,7 @@ int mliSphericalCapHex_intersection(
     ) {
         double causal_solution;
         mliBoundSurfaceChecklist cl;
-        mliVec plus_intersec, minus_intersec;
+        struct mliVec plus_intersec, minus_intersec;
         cl.plus_solution = plus_solution;
         cl.minus_solution = minus_solution;
         plus_intersec = mliRay_at(&ray_local, cl.plus_solution);
@@ -50,13 +50,16 @@ int mliSphericalCapHex_intersection(
             if (causal_solution < MLI_EPSILON) {
                 return 0;
             } else {
-                mliVec position_local = mliRay_at(&ray_local, causal_solution);
+                struct mliVec position_local = mliRay_at(
+                    &ray_local,
+                    causal_solution);
                 if (position_local.z >= cap.curvature_radius) {
                     return 0;
                 } else {
-                    mliVec normal_local = mli_spherical_cap_surface_normal(
-                        position_local,
-                        cap.curvature_radius);
+                    struct mliVec normal_local =
+                        mli_spherical_cap_surface_normal(
+                            position_local,
+                            cap.curvature_radius);
 
                     intersection->distance_of_ray = causal_solution;
                     intersection->position =  mliHomTra_pos(

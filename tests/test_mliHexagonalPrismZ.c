@@ -12,7 +12,7 @@ CASE("mliHexagonalPrismZ") {
              \____|____/
                   |
     */
-    mliVec c;
+    struct mliVec c;
     double inner_radius = 0.5;
     double outer_radius = inner_radius/cos(MLI_PI/6.0);
     c.z = 0.;
@@ -74,7 +74,7 @@ CASE("hexagon corners") {
     */
     uint64_t i;
     for (i = 0; i < 20; i++) {
-        mliVec corner =  mli_hexagon_corner(i);
+        struct mliVec corner =  mli_hexagon_corner(i);
         CHECK_MARGIN(mliVec_norm(corner), 1., 1e-6);
     }
     CHECK(mli_hexagon_corner(0).x == 1.);

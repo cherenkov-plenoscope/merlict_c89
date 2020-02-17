@@ -5,8 +5,8 @@
 #include <math.h>
 
 typedef struct {
-    mliVec incident;
-    mliVec normal;
+    struct mliVec incident;
+    struct mliVec normal;
     double n_from;
     double n_to;
 
@@ -17,8 +17,8 @@ typedef struct {
 } mliFresnel;
 
 mliFresnel mliFresnel_init(
-    const mliVec incident,
-    const mliVec normal,
+    const struct mliVec incident,
+    const struct mliVec normal,
     const double n_from,
     const double n_to) {
     mliFresnel fresnel;
@@ -48,14 +48,14 @@ double mliFresnel_reflection_propability(const mliFresnel fresnel) {
         const double rPara = (nToCosI - nFromCosT)/(nToCosI + nFromCosT);
         return (rOrth*rOrth + rPara*rPara) / 2.0;}}
 
-mliVec mliFresnel_reflection_direction(const mliFresnel fresnel) {
+struct mliVec mliFresnel_reflection_direction(const mliFresnel fresnel) {
     return mliVec_add(
         fresnel.incident,
         mliVec_multiply(
             fresnel.normal,
             fresnel._cosI*2.0));}
 
-mliVec mliFresnel_refraction_direction(const mliFresnel fresnel) {
+struct mliVec mliFresnel_refraction_direction(const mliFresnel fresnel) {
     return mliVec_add(
         mliVec_multiply(
             fresnel.incident,

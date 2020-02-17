@@ -29,7 +29,7 @@ int mli_xyplane_equation(
     }
 }
 
-mliVec mli_xyplane_surface_normal() {
+struct mliVec mli_xyplane_surface_normal() {
     return mliVec_set(0., 0., 1.);}
 
 #endif

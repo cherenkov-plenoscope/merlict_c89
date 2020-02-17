@@ -13,8 +13,8 @@ CASE("mliCylinder_is_equal") {
 
 CASE("mliCylinder_start_local, mliCylinder_end_local") {
     mliCylinder a;
-    mliVec start_local;
-    mliVec end_local;
+    struct mliVec start_local;
+    struct mliVec end_local;
     a.radius = .1;
     a.length = .5;
     start_local = mliCylinder_start_local(a);

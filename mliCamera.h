@@ -17,34 +17,34 @@ typedef struct {
 } mliTaitBryanAngles;
 
 typedef struct {
-    mliVec position;
+    struct mliVec position;
     mliTaitBryanAngles rotation;
     double field_of_view;
 } mliCamera;
 
 typedef struct {
-    mliVec optical_axis;
-    mliVec col_axis;
-    mliVec row_axis;
-    mliVec principal_point;
+    struct mliVec optical_axis;
+    struct mliVec col_axis;
+    struct mliVec row_axis;
+    struct mliVec principal_point;
     double distance_to_principal_point;
 } mliCameraSensor;
 
-mliVec mliCamera_optical_axis(const mliCamera cam) {
+struct mliVec mliCamera_optical_axis(const mliCamera cam) {
     mliRotMat rot = mliRotMat_init_tait_bryan(
         cam.rotation.x,
         cam.rotation.y,
         cam.rotation.z);
     return mli_transform_orientation(&rot, mliVec_set(0., 0., 1.));}
 
-mliVec mliCamera_direction_right(const mliCamera cam) {
+struct mliVec mliCamera_direction_right(const mliCamera cam) {
     mliRotMat rot = mliRotMat_init_tait_bryan(
         cam.rotation.x,
         cam.rotation.y,
         cam.rotation.z);
     return mli_transform_orientation(&rot, mliVec_set(0., 1., 0.));}
 
-mliVec mliCamera_direction_up(const mliCamera cam) {
+struct mliVec mliCamera_direction_up(const mliCamera cam) {
     mliRotMat rot = mliRotMat_init_tait_bryan(
         cam.rotation.x,
         cam.rotation.y,
@@ -53,7 +53,7 @@ mliVec mliCamera_direction_up(const mliCamera cam) {
 
 mliCamera mliCamera_move_forward(const mliCamera camin, const double rate) {
     mliCamera camout = camin;
-    mliVec optical_axis = mliCamera_optical_axis(camin);
+    struct mliVec optical_axis = mliCamera_optical_axis(camin);
     camout.position = mliVec_add(
         camout.position,
         mliVec_multiply(optical_axis, rate));
@@ -61,7 +61,7 @@ mliCamera mliCamera_move_forward(const mliCamera camin, const double rate) {
 
 mliCamera mliCamera_move_right(const mliCamera camin, const double rate) {
     mliCamera camout = camin;
-    mliVec direction_right = mliCamera_direction_right(camout);
+    struct mliVec direction_right = mliCamera_direction_right(camout);
     camout.position = mliVec_add(
         camout.position,
         mliVec_multiply(direction_right, rate));
@@ -133,9 +133,9 @@ void mliCameraSensor_init(
     const mliCamera *camera,
     const mliImage *image) {
     mliRotMat rot;
-    mliVec unit_x = {1., 0., 0.};
-    mliVec unit_y = {0., 1., 0.};
-    mliVec unit_z = {0., 0., 1.};
+    struct mliVec unit_x = {1., 0., 0.};
+    struct mliVec unit_y = {0., 1., 0.};
+    struct mliVec unit_z = {0., 0., 1.};
     rot = mliRotMat_init_tait_bryan(
         camera->rotation.x,
         camera->rotation.y,
@@ -157,9 +157,9 @@ mliRay mliCamera_ray_at_row_col(
     const uint32_t col) {
     int row_idx_on_sensor = row - image->num_rows/2;
     int col_idx_on_sensor = col - image->num_cols/2;
-    mliVec s_row = mliVec_multiply(sensor->row_axis, row_idx_on_sensor);
-    mliVec s_col = mliVec_multiply(sensor->col_axis, col_idx_on_sensor);
-    mliVec sensor_intersection = sensor->principal_point;
+    struct mliVec s_row = mliVec_multiply(sensor->row_axis, row_idx_on_sensor);
+    struct mliVec s_col = mliVec_multiply(sensor->col_axis, col_idx_on_sensor);
+    struct mliVec sensor_intersection = sensor->principal_point;
     sensor_intersection = mliVec_add(sensor_intersection, s_row);
     sensor_intersection = mliVec_add(sensor_intersection, s_col);
     return mliRay_set(camera->position, sensor_intersection);}

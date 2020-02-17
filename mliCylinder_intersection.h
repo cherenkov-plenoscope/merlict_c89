@@ -45,8 +45,8 @@ int mli_cylinder_equation(
     return mli_quadratiq_equation(p, q, plus_solution, minus_solution);
 }
 
-mliVec mliCylinder_surface_normal(const double x, const double y) {
-    mliVec surface_normal = mliVec_set(x, y, 0.);
+struct mliVec mliCylinder_surface_normal(const double x, const double y) {
+    struct mliVec surface_normal = mliVec_set(x, y, 0.);
     return mliVec_normalized(surface_normal);}
 
 void mliCylinder_set_intersection(
@@ -54,8 +54,8 @@ void mliCylinder_set_intersection(
     const mliRay *ray_local,
     const double ray_solution,
     mliIntersection *intersection) {
-    mliVec position_local = mliRay_at(ray_local, ray_solution);
-    mliVec normal_local = mliCylinder_surface_normal(
+    struct mliVec position_local = mliRay_at(ray_local, ray_solution);
+    struct mliVec normal_local = mliCylinder_surface_normal(
         position_local.x,
         position_local.y);
     intersection->position = mliHomTra_pos(

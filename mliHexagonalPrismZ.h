@@ -10,11 +10,11 @@
 
 
 int mli_inside_hexagonal_prism_z(
-    const mliVec v,
+    const struct mliVec v,
     const double inner_radius) {
-    const mliVec MLIVEC_UNIT_U = {0., 1., 0.,};
-    const mliVec MLIVEC_UNIT_V = { MLI_SQRT3_OVER_2, -0.5, 0.,};
-    const mliVec MLIVEC_UNIT_W = {-MLI_SQRT3_OVER_2, -0.5, 0.,};
+    const struct mliVec MLIVEC_UNIT_U = {0., 1., 0.,};
+    const struct mliVec MLIVEC_UNIT_V = { MLI_SQRT3_OVER_2, -0.5, 0.,};
+    const struct mliVec MLIVEC_UNIT_W = {-MLI_SQRT3_OVER_2, -0.5, 0.,};
 
     const double projection_onto_UNIT_U = mliVec_dot(MLIVEC_UNIT_U, v);
     const double projection_onto_UNIT_V = mliVec_dot(MLIVEC_UNIT_V, v);
@@ -38,7 +38,7 @@ int mli_inside_hexagonal_prism_z(
     }
 }
 
-mliVec mli_hexagon_corner(const uint64_t corner) {
+struct mliVec mli_hexagon_corner(const uint64_t corner) {
     /*
                   /\ y
             2 ____|____ 1

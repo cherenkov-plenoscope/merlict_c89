@@ -2,12 +2,12 @@
 
 CASE("mliSphericalCap") {
     const double radius = 0.3;
-    const mliVec support = {0., 0., 1.};
-    const mliVec direction = {0., 0., -1.};
+    const struct mliVec support = {0., 0., 1.};
+    const struct mliVec direction = {0., 0., -1.};
     const mliRay ray = mliRay_set(support, direction);
     double plus_solution, minus_solution;
-    mliVec intersection_point;
-    mliVec surface_normal;
+    struct mliVec intersection_point;
+    struct mliVec surface_normal;
     CHECK(mli_spherical_cap_equation(
             ray,
             radius,

@@ -9,18 +9,18 @@
 #include "mliSphere_OBB.h"
 #include "mliRay_OBB.h"
 
-mliVec mliCylinder_start_local(const mliCylinder cylinder) {
+struct mliVec mliCylinder_start_local(const mliCylinder cylinder) {
     return mliVec_set(0., 0., -cylinder.length*.5);}
 
-mliVec mliCylinder_end_local(const mliCylinder cylinder) {
+struct mliVec mliCylinder_end_local(const mliCylinder cylinder) {
     return mliVec_set(0., 0., cylinder.length*.5);}
 
-mliVec mliCylinder_start_root(
+struct mliVec mliCylinder_start_root(
     const mliCylinder cylinder,
     const mliHomTra *local2root) {
     return mliHomTra_pos(local2root, mliCylinder_start_local(cylinder));}
 
-mliVec mliCylinder_end_root(
+struct mliVec mliCylinder_end_root(
     const mliCylinder cylinder,
     const mliHomTra *local2root) {
     return mliHomTra_pos(local2root, mliCylinder_end_local(cylinder));}
@@ -30,8 +30,8 @@ int mliCylinder_has_overlap_obb(
     const mliHomTraComp local2root_comp,
     const mliOBB obb) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-    mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
-    mliVec end_root = mliCylinder_end_root(cylinder, &local2root);
+    struct mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
+    struct mliVec end_root = mliCylinder_end_root(cylinder, &local2root);
     mliRay cylinder_ray_root = mliRay_set(
         start_root,
         mliVec_substract(end_root, start_root));
@@ -51,8 +51,8 @@ mliOBB mliCylinder_obb(
     const mliCylinder cylinder,
     const mliHomTraComp local2root_comp) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-    mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
-    mliVec end_root = mliCylinder_end_root(cylinder, &local2root);
+    struct mliVec start_root = mliCylinder_start_root(cylinder, &local2root);
+    struct mliVec end_root = mliCylinder_end_root(cylinder, &local2root);
     mliOBB start_obb = mliSphere_obb(cylinder.radius, start_root);
     mliOBB end_obb = mliSphere_obb(cylinder.radius, end_root);
     return mliOBB_outermost(start_obb, end_obb);}

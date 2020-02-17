@@ -216,7 +216,7 @@ int __mliQuaternion_tait_bryan_from_json(
     const mliJson *json,
     const uint64_t token) {
     uint64_t token_xyz;
-    mliVec xyz;
+    struct mliVec xyz;
     mli_check(
         mliJson_find_key(json, token, "xyz", &token_xyz),
         "Expected tait_bryan to have key 'xyz'.");
@@ -234,7 +234,7 @@ int __mliQuaternion_axis_angle_from_json(
     const uint64_t token) {
     uint64_t token_axis, token_angle;
     double angle;
-    mliVec axis;
+    struct mliVec axis;
     mli_check(
         mliJson_find_key(json, token, "axis", &token_axis),
         "Expected axis_angle to have key 'axis'.");
@@ -258,7 +258,7 @@ int __mliQuaternion_quaternion_from_json(
     const uint64_t token) {
     uint64_t token_xyz;
     double w;
-    mliVec q;
+    struct mliVec q;
     mli_check(
         mliJson_find_key(json, token, "xyz", &token_xyz),
         "Expected quaternion to have key 'xyz'.");

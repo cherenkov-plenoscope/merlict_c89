@@ -9,7 +9,7 @@
 #include "mliTriangle_OBB.h"
 
 
-mliVec __mliBiCirclePlane_rectangle_corners(
+struct mliVec __mliBiCirclePlane_rectangle_corners(
     const mliBiCirclePlane plane,
     const uint64_t corner_idx) {
     /*
@@ -51,7 +51,7 @@ int mliBiCirclePlane_has_overlap_obb(
     const mliHomTraComp local2root_comp,
     const mliOBB obb) {
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-    mliVec c0_local, c1_local, c2_local, c3_local,
+    struct mliVec c0_local, c1_local, c2_local, c3_local,
              c0_root, c1_root, c2_root, c3_root;
     /* approximation using two triangles */
     c0_local = __mliBiCirclePlane_rectangle_corners(plane, 0);
@@ -73,7 +73,7 @@ mliOBB mliBiCirclePlane_obb(
     const mliHomTraComp local2root_comp) {
     mliOBB obb;
     uint64_t corner_idx;
-    mliVec c0_local, c0_root;
+    struct mliVec c0_local, c0_root;
     mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
 
     c0_local = __mliBiCirclePlane_rectangle_corners(plane, 0);
@@ -82,7 +82,7 @@ mliOBB mliBiCirclePlane_obb(
     obb.lower = c0_root;
     obb.upper = c0_root;
     for (corner_idx = 1; corner_idx < 4; corner_idx ++) {
-        mliVec c_local, c_root;
+        struct mliVec c_local, c_root;
         c_local = __mliBiCirclePlane_rectangle_corners(plane, corner_idx);
         c_root = mliHomTra_pos(&local2root, c_local);
         obb.lower.x = MLI_MIN2(obb.lower.x, c_root.x);

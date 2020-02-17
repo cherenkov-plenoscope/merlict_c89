@@ -23,7 +23,7 @@ int mliBiCirclePlane_intersection(
         ray_local,
         &solution)
     ) {
-        mliVec position_local = mliRay_at(&ray_local, solution);
+        struct mliVec position_local = mliRay_at(&ray_local, solution);
         if (mli_is_inside_dual_circle_prism(
                 position_local.x,
                 position_local.y,
@@ -33,7 +33,7 @@ int mliBiCirclePlane_intersection(
             if (solution < MLI_EPSILON) {
                 return 0;
             } else {
-                mliVec normal_local = mli_xyplane_surface_normal();
+                struct mliVec normal_local = mli_xyplane_surface_normal();
                 intersection->position = mliHomTra_pos(
                     &local2root,
                     position_local);

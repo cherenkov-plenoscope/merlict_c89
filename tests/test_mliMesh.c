@@ -2,8 +2,8 @@
 
 CASE("mliMesh_malloc_from_object_file") {
     mliMesh m = mliMesh_init();
-    mliVec support = {0 ,0 ,0};
-    mliVec direction = {0 ,0 ,1};
+    struct mliVec support = {0 ,0 ,0};
+    struct mliVec direction = {0 ,0 ,1};
     uint64_t i;
     mliMesh_malloc_from_object_file("tests/resources/text_on_cube.off", &m);
     for (i = 0; i < m.num_faces; i++) {

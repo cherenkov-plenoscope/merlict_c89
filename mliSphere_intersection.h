@@ -43,8 +43,8 @@ void mliSphere_set_intersection(
     const mliRay *ray_local,
     const double ray_solution,
     mliIntersection *intersection) {
-    mliVec position_local = mliRay_at(ray_local, ray_solution);
-    mliVec normal_local = mliVec_normalized(position_local);
+    struct mliVec position_local = mliRay_at(ray_local, ray_solution);
+    struct mliVec normal_local = mliVec_normalized(position_local);
     intersection->position = mliHomTra_pos(
         local2root,
         position_local);

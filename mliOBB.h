@@ -13,8 +13,8 @@ typedef struct {
      * Rectangular Oriented-Bounding-Box
      * oriented w.r.t. the unit-vectors.
      */
-    mliVec lower;
-    mliVec upper;
+    struct mliVec lower;
+    struct mliVec upper;
 } mliOBB;
 
 mliOBB mliOBB_outermost(const mliOBB a, const mliOBB b) {
@@ -27,8 +27,8 @@ mliOBB mliOBB_outermost(const mliOBB a, const mliOBB b) {
     obb.upper.z = MLI_MAX2(a.upper.z, b.upper.z);
     return obb;}
 
-mliVec mliOBB_center(const mliOBB a) {
-    mliVec sum = mliVec_add(a.upper, a.lower);
+struct mliVec mliOBB_center(const mliOBB a) {
+    struct mliVec sum = mliVec_add(a.upper, a.lower);
     return mliVec_multiply(sum, .5);}
 
 mliOBB mliOBB_dilate(const mliOBB a, const double dilation_radius) {
@@ -65,10 +65,10 @@ mliEdge mliOBB_edge(const mliOBB obb, const uint64_t edge_idx) {
      *
      */
     mliEdge edge;
-    const mliVec l = obb.lower;
-    const mliVec u = obb.upper;
-    mliVec start;
-    mliVec stop;
+    const struct mliVec l = obb.lower;
+    const struct mliVec u = obb.upper;
+    struct mliVec start;
+    struct mliVec stop;
     switch (edge_idx) {
         case 0:
             start = mliVec_set(l.x, l.y, l.z);
