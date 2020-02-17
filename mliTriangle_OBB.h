@@ -23,11 +23,11 @@
 #define MLI_INSIDE 0
 #define MLI_OUTSIDE 1
 
-typedef struct{
+struct mliTriangle {
     struct mliVec v1;
     struct mliVec v2;
     struct mliVec v3;
-} mliTriangle;
+};
 
 /*___________________________________________________________________________*/
 
@@ -137,7 +137,7 @@ int64_t __mli_check_line(struct mliVec p1, struct mliVec p2, int64_t outcode_dif
 
 /* Test if 3D point is inside 3D triangle */
 
-int64_t __mli_point_triangle_intersection(struct mliVec p, mliTriangle t) {
+int64_t __mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t) {
     int64_t sign12,sign23,sign31;
     struct mliVec vect12,vect23,vect31,vect1h,vect2h,vect3h;
     struct mliVec cross12_1p,cross23_2p,cross31_3p;
@@ -193,7 +193,7 @@ int64_t __mli_point_triangle_intersection(struct mliVec p, mliTriangle t) {
 /* intersects or does not intersect the cube. */
 /**********************************************/
 
-int64_t __mli_triangle_cube_intersection(mliTriangle t) {
+int64_t __mli_triangle_cube_intersection(struct mliTriangle t) {
     int64_t v1_test,v2_test,v3_test;
     double d,denom;
     struct mliVec vect12,vect13,norm;
@@ -340,7 +340,7 @@ int mliTriangle_has_overlap_obb(
     const struct mliVec b,
     const struct mliVec c,
     const struct mliOBB obb) {
-    mliTriangle tri;
+    struct mliTriangle tri;
     __mliTriangle_transform_into_obb(
         a, b, c,
         obb,
