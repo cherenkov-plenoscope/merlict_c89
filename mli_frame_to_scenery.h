@@ -8,7 +8,7 @@
 #include "mliScenery.h"
 #include "mliUserScenery.h"
 
-typedef struct {
+struct mliPrimitiveCount {
     uint32_t vertices;
     uint32_t triangles;
     uint32_t spherical_cap_hex;
@@ -17,10 +17,10 @@ typedef struct {
     uint32_t hexagons;
     uint32_t bicircleplanes;
     uint32_t discs;
-} mliPrimitiveCount;
+};
 
-mliPrimitiveCount mliPrimitiveCount_init() {
-    mliPrimitiveCount i;
+struct mliPrimitiveCount mliPrimitiveCount_init() {
+    struct mliPrimitiveCount i;
     i.vertices = 0;
     i.triangles = 0;
     i.spherical_cap_hex = 0;
@@ -60,7 +60,8 @@ error:
 int __mliScenery_set_primitive(
     mliScenery* scenery,
     const mliFrame* frame,
-    mliPrimitiveCount* count) {
+    struct mliPrimitiveCount *count)
+{
     uint64_t i, vertex_offset;
     mliFrame* child;
     struct mliVec vertex_in_root;
@@ -142,7 +143,7 @@ int mliScenery_malloc_from_mliUserScenery(
     mliUserScenery* uscn) {
 
     uint64_t i;
-    mliPrimitiveCount count = mliPrimitiveCount_init();
+    struct mliPrimitiveCount count = mliPrimitiveCount_init();
 
     /* transformations */
     mliFrame_set_frame2root(&uscn->root);
