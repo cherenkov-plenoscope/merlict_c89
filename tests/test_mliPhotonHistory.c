@@ -2,7 +2,7 @@
 
 CASE("mliPhotonHistory, malloc, free") {
     struct mliPhotonHistory history = mliPhotonHistory_init(42u);
-    mliPhotonInteraction action;
+    struct mliPhotonInteraction action;
     CHECK(history.num_reserved == 42u);
     CHECK(history.num == 0u);
     CHECK(history.actions == NULL);
@@ -33,7 +33,7 @@ CASE("mliPhotonHistory, push back") {
     const uint64_t num_reserved = 42u;
     uint64_t i;
     struct mliPhotonHistory history = mliPhotonHistory_init(num_reserved);
-    mliPhotonInteraction action;
+    struct mliPhotonInteraction action;
     CHECK(mliPhotonHistory_malloc(&history));
     for (i = 0u; i < num_reserved; i++) {
         action.type = i;

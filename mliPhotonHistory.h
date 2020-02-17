@@ -12,7 +12,7 @@
 struct mliPhotonHistory {
     uint32_t num_reserved;
     uint32_t num;
-    mliPhotonInteraction *actions;
+    struct mliPhotonInteraction *actions;
 };
 
 struct mliPhotonHistory mliPhotonHistory_init(const uint32_t num_reserved) {
@@ -27,7 +27,8 @@ void mliPhotonHistory_free(struct mliPhotonHistory *history) {
     (*history) = mliPhotonHistory_init(0);}
 
 int mliPhotonHistory_malloc(struct mliPhotonHistory *history) {
-    mli_malloc(history->actions, mliPhotonInteraction, history->num_reserved);
+    mli_malloc(
+        history->actions, struct mliPhotonInteraction, history->num_reserved);
     return 1;
 error:
     mliPhotonHistory_free(history);
@@ -35,7 +36,7 @@ error:
 
 int mliPhotonHistory_push_back(
     struct mliPhotonHistory *history,
-    const mliPhotonInteraction action) {
+    const struct mliPhotonInteraction action) {
     mli_check(history->num < history->num_reserved, "Too many interactions.");
     history->actions[history->num] = action;
     history->num += 1;

@@ -21,11 +21,11 @@ struct mliEnv {
 
 int _mli_propagate_photon(struct mliEnv *env);
 
-mliPhotonInteraction mliPhotonInteraction_from_Intersection(
+struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     const int64_t type,
     const struct mliScenery *scenery,
     const struct mliIntersection *isec) {
-    mliPhotonInteraction phia;
+    struct mliPhotonInteraction phia;
     struct mliSurfaces surfaces;
     struct mliSurface surf_coming_from, surf_going_to;
     surfaces = mliScenery_object_surfaces(scenery, isec->object_idx);

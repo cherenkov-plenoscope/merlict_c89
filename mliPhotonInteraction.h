@@ -18,7 +18,7 @@
 #define MLI_PHOTON_SPECULAR_REFLECTION    105u
 #define MLI_PHOTON_DIFFUSE_REFLECTION     106u
 
-typedef struct {
+struct mliPhotonInteraction {
     struct mliVec position;
     uint32_t refraction_coming_from;
     uint32_t refraction_going_to;
@@ -28,7 +28,7 @@ typedef struct {
     int32_t _object_idx;
     int8_t _from_outside_to_inside;
     int8_t type;
-} mliPhotonInteraction;
+};
 
 int mli_photoninteraction_type_to_string(const int8_t type, char* s) {
     switch (type) {
