@@ -88,15 +88,20 @@ void mlivr_timestamp_now_19chars(char* buffer)
                 nowtm->tm_sec);
 }
 
+/* Thanks to Edwin Buck */
 struct termios mlivr_disable_stdin_buffer()
 {
-        /* Thanks to Edwin Buck */
-        struct termios old_terminal, new_terminal;
+        struct termios old_terminal;
+        struct termios new_terminal;
         tcgetattr(STDIN_FILENO, &old_terminal);
         new_terminal = old_terminal;
         new_terminal.c_lflag &= ~(ICANON);
         tcsetattr(STDIN_FILENO, TCSANOW, &new_terminal);
         return old_terminal;
+}
+
+void mlivr_restore_stdin_buffer(struct termios *old_terminal) {
+        tcsetattr(STDIN_FILENO, TCSANOW, old_terminal);
 }
 
 int mlivr_truncate_8bit(const int key)
@@ -158,6 +163,30 @@ void _mlivr_mv_cursor_left(struct mlivrCursor *cursor)
                 cursor->col += 1;
 }
 
+int _mlivr_export_image(
+        const struct mliScenery *scenery,
+        const struct mliOcTree *octree,
+        const struct mlivrConfig config,
+        const struct mliCamera camera,
+        const char *path)
+{
+        struct mliImage full = mliImage_init();
+        full.num_cols = config.export_num_cols;
+        full.num_rows = config.export_num_rows;
+        mli_check_mem(mliImage_malloc(&full));
+        mliCamera_render_image(
+                &camera,
+                scenery,
+                octree,
+                &full);
+        mli_check(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
+        mliImage_free(&full);
+        return 1;
+error:
+        return 0;
+}
+
+
 int mlivr_run_interactive_viewer(
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
@@ -165,6 +194,7 @@ int mlivr_run_interactive_viewer(
 {
         struct termios old_terminal = mlivr_disable_stdin_buffer();
 
+        char path[1024];
         int key;
         int super_resolution = 0;
         struct mlivrCursor cursor;
@@ -211,44 +241,68 @@ int mlivr_run_interactive_viewer(
                         }
                 } else {
                         switch (key) {
-                        case 'w': camera = mliCamera_move_forward(camera, 1); break;
-                        case 's': camera = mliCamera_move_forward(camera, -1); break;
-                        case 'a': camera = mliCamera_move_right(camera, -1.); break;
-                        case 'd': camera = mliCamera_move_right(camera, 1.); break;
-                        case 'q': camera = mliCamera_move_up(camera, 1.); break;
-                        case 'e': camera = mliCamera_move_up(camera, -1.); break;
+                        case 'w':
+                                camera = mliCamera_move_forward(camera, 1);
+                                break;
+                        case 's':
+                                camera = mliCamera_move_forward(camera, -1);
+                                break;
+                        case 'a':
+                                camera = mliCamera_move_right(camera, -1.);
+                                break;
+                        case 'd':
+                                camera = mliCamera_move_right(camera, 1.);
+                                break;
+                        case 'q':
+                                camera = mliCamera_move_up(camera, 1.);
+                                break;
+                        case 'e':
+                                camera = mliCamera_move_up(camera, -1.);
+                                break;
                         case 'i':
-                                camera = mliCamera_look_up_when_possible(camera, .05);
+                                camera = mliCamera_look_up_when_possible(
+                                        camera,
+                                        .05);
                                 break;
                         case 'k':
-                                camera = mliCamera_look_down_when_possible(camera, .05);
+                                camera = mliCamera_look_down_when_possible(
+                                        camera,
+                                        .05);
                                 break;
-                        case 'l': camera = mliCamera_look_right(camera, -.05); break;
-                        case 'j': camera = mliCamera_look_right(camera, .05); break;
-                        case 'n': camera = mliCamera_decrease_fov(camera, 1.05); break;
-                        case 'm': camera = mliCamera_increase_fov(camera, 1.05); break;
-                        case 'h': print_help = 1; update_image = 0; break;
+                        case 'l':
+                                camera = mliCamera_look_right(camera, -.05);
+                                break;
+                        case 'j':
+                                camera = mliCamera_look_right(camera, .05);
+                                break;
+                        case 'n':
+                                camera = mliCamera_decrease_fov(camera, 1.05);
+                                break;
+                        case 'm':
+                                camera = mliCamera_increase_fov(camera, 1.05);
+                                break;
+                        case 'h':
+                                print_help = 1;
+                                update_image = 0;
+                                break;
                         case 'b': super_resolution = !super_resolution; break;
                         case 'c':
                                 cursor.active = !cursor.active;
                                 update_image = 0;
                                 break;
                         case MLIVR_SPACE_KEY:
-                                {
-                                        char path[1024];
-                                        struct mliImage full = mliImage_init();
-                                        sprintf(
-                                                path,
-                                                "%s_%06lu.ppm",
-                                                timestamp,
-                                                num_screenshots++);
-                                        full.num_cols = config.export_num_cols;
-                                        full.num_rows = config.export_num_rows;
-                                        mli_check_mem(mliImage_malloc(&full));
-                                        mliCamera_render_image(&camera, scenery, octree, &full);
-                                        mliImage_write_to_ppm(&full, path);
-                                        mliImage_free(&full);
-                                }
+                                sprintf(
+                                        path,
+                                        "%s_%06lu.ppm",
+                                        timestamp,
+                                        num_screenshots);
+                                num_screenshots++;
+                                mli_c(_mlivr_export_image(
+                                        scenery,
+                                        octree,
+                                        config,
+                                        camera,
+                                        path));
                                 update_image = 0;
                                 break;
                         default:
@@ -260,10 +314,18 @@ int mlivr_run_interactive_viewer(
         show_image:
                 if (update_image) {
                         if (super_resolution) {
-                                mliCamera_render_image(&camera, scenery, octree, &img2);
+                                mliCamera_render_image(
+                                        &camera,
+                                        scenery,
+                                        octree,
+                                        &img2);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
-                                mliCamera_render_image(&camera, scenery, octree, &img);
+                                mliCamera_render_image(
+                                        &camera,
+                                        scenery,
+                                        octree,
+                                        &img);
                         }
                 }
                 mlivr_clear_screen();
@@ -275,7 +337,12 @@ int mlivr_run_interactive_viewer(
                         symbols[0] = 'X';
                         rows[0] = cursor.row;
                         cols[0] = cursor.col;
-                        mliImage_print_chars(&img, symbols, rows, cols, num_symbols);
+                        mliImage_print_chars(
+                                &img,
+                                symbols,
+                                rows,
+                                cols,
+                                num_symbols);
                         {
                                 struct mliCameraSensor sensor;
                                 mliCameraSensor_init(&sensor, &camera, &img);
@@ -285,11 +352,12 @@ int mlivr_run_interactive_viewer(
                                         &img,
                                         cursor.row,
                                         cursor.col);
-                                has_probing_intersection = mli_first_casual_intersection(
-                                        scenery,
-                                        octree,
-                                        probing_ray,
-                                        &probing_intersection);
+                                has_probing_intersection =
+                                        mli_first_casual_intersection(
+                                                scenery,
+                                                octree,
+                                                probing_ray,
+                                                &probing_intersection);
                         }
                 } else {
                         mliImage_print(&img);
@@ -298,10 +366,14 @@ int mlivr_run_interactive_viewer(
                 if (cursor.active) {
                         if (has_probing_intersection) {
                                 char type_string[1024];
-                                const struct mliIndex object_index = __mliScenery_resolve_index(
-                                        scenery,
-                                        probing_intersection.object_idx);
-                                mli_c(mli_type_to_string(object_index.type, type_string));
+                                const struct mliIndex object_index =
+                                        __mliScenery_resolve_index(
+                                                scenery,
+                                                probing_intersection.
+                                                        object_idx);
+                                mli_c(mli_type_to_string(
+                                        object_index.type,
+                                        type_string));
                                 printf(
                                         "Obj % 6ld, %-16s, "
                                         "dist % 3.1fm, "
@@ -313,7 +385,8 @@ int mlivr_run_interactive_viewer(
                                         probing_intersection.surface_normal.x,
                                         probing_intersection.surface_normal.y,
                                         probing_intersection.surface_normal.z,
-                                        probing_intersection.from_outside_to_inside);
+                                        probing_intersection.
+                                                from_outside_to_inside);
                         } else {
                                 printf("No intersection.\n");
                         }
@@ -327,11 +400,11 @@ int mlivr_run_interactive_viewer(
 
         mliImage_free(&img);
         mliImage_free(&img2);
-        tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal);
+        mlivr_restore_stdin_buffer(&old_terminal);
         return 1;
 error:
         mliImage_free(&img);
         mliImage_free(&img2);
-        tcsetattr(STDIN_FILENO, TCSANOW, &old_terminal);
+        mlivr_restore_stdin_buffer(&old_terminal);
         return 0;
 }
