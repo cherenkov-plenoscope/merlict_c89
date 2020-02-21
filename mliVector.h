@@ -16,7 +16,7 @@ struct mliVector{
         uint64_t size;
         uint64_t capacity;
         uint64_t sizeof_element;
-        void* data;
+        void *data;
 };
 
 struct mliVector mliVector_init() {
@@ -93,13 +93,13 @@ int mliVector_adjust_capacity(struct mliVector *vector)
 
 void *mliVector_offset(const struct mliVector *vector, uint64_t index)
 {
-        return (uint8_t*)vector->data + (index * vector->sizeof_element);
+        return (uint8_t *)vector->data + (index * vector->sizeof_element);
 }
 
 void mliVector_assign(
         struct mliVector *vector,
         uint64_t index,
-        const void* element)
+        const void *element)
 {
         /* Insert the element */
         void* offset = mliVector_offset(vector, index);
