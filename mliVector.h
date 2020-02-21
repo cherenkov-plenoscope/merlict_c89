@@ -83,12 +83,12 @@ int mliVector_adjust_capacity(struct mliVector *vector) {
 void *mliVector_offset(const struct mliVector *vector, uint64_t index) {
     return (uint8_t*)vector->data + (index * vector->sizeof_element);}
 
-void mliVector_assign(struct mliVector *vector, uint64_t index, void* element) {
+void mliVector_assign(struct mliVector *vector, uint64_t index, const void* element) {
     /* Insert the element */
     void* offset = mliVector_offset(vector, index);
     memcpy(offset, element, vector->sizeof_element);}
 
-int mliVector_push_back(struct mliVector *vector, void *element) {
+int mliVector_push_back(struct mliVector *vector, const void *element) {
     if (mliVector_should_grow(vector)) {
         mli_check(
             mliVector_adjust_capacity(vector),
