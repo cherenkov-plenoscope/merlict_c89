@@ -19,7 +19,8 @@ struct mliVector{
         void *data;
 };
 
-struct mliVector mliVector_init() {
+struct mliVector mliVector_init()
+{
         struct mliVector v;
         v.size = 0;
         v.capacity = 0;
