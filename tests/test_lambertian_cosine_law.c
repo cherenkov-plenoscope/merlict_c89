@@ -4,7 +4,7 @@ CASE("lambertian cosine law, populate histogram, check cosine law") {
     uint64_t n;
     const uint64_t NUM_TRAILS = 1000*100;
     struct mliVec unit_z = mliVec_set(0, 0, 1);
-    struct mliMT19937 prng;
+    struct mliMT19937 prng = mliMT19937_init(0);
 
     #define NUM_BINS 25
     double hist_bin_edges[NUM_BINS + 1];
@@ -16,8 +16,6 @@ CASE("lambertian cosine law, populate histogram, check cosine law") {
     uint64_t hist_underflow_bin = 0u;
     mli_zeros_uint64_t(hist_bins, hist_num_bins);
     mli_linspace(0., MLI_PI/2.0, hist_bin_edges, hist_num_bin_edges);
-
-    mliMT19937_init(&prng, 0);
 
     for (n = 0; n < NUM_TRAILS; n++) {
         double theta;
@@ -58,7 +56,7 @@ CASE("lambertian cosine law, relative to surface normal") {
     const uint64_t NUM_TRAILS = 5000;
     double theta;
     struct mliVec surface_normal;
-    struct mliMT19937 prng;
+    struct mliMT19937 prng = mliMT19937_init(1);
 
     double hist_bin_edges[10 + 1];
     const uint64_t hist_num_bin_edges = 10 + 1;
@@ -69,7 +67,6 @@ CASE("lambertian cosine law, relative to surface normal") {
     mli_zeros_uint64_t(hist_bins, hist_num_bins);
     mli_linspace(0., MLI_PI/2.0, hist_bin_edges, hist_num_bin_edges);
 
-    mliMT19937_init(&prng, 1);
     for (n = 0; n < NUM_NORMALS; n++) {
         surface_normal = mliVec_set(
             mliMT19937_uniform(&prng) - .5,

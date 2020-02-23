@@ -10,7 +10,7 @@ CASE("mliPhoton_set") {
 }
 
 CASE("simple propagation") {
-    struct mliMT19937 prng;
+    struct mliMT19937 prng = mliMT19937_init(0u);
     struct mliScenery scenery = mliScenery_init();
     struct mliOcTree octree;
     struct mliPhotonHistory history = mliPhotonHistory_init(16u);
@@ -51,7 +51,6 @@ CASE("simple propagation") {
     CHECK(surf_coming_from.medium_absorbtion == 2);
     CHECK(surf_coming_from.color == 1);
 
-    mliMT19937_init(&prng, 0u);
     CHECK(mliPhotonHistory_malloc(&history));
     history.actions[0].type = MLI_PHOTON_CREATION;
     history.actions[0].position = photon.ray.support;

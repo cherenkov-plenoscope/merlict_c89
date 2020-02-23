@@ -3,8 +3,7 @@
 CASE("average of uniform distribution") {
     double sum = 0;
     uint64_t i;
-    struct mliMT19937 prng;
-    mliMT19937_init(&prng, 0u);
+    struct mliMT19937 prng = mliMT19937_init(0u);
     for (i = 0; i < 1000000; i++) {
         sum += mliMT19937_uniform(&prng);
     }
@@ -13,7 +12,7 @@ CASE("average of uniform distribution") {
 
 CASE("uniform population of histogram") {
     uint64_t i;
-    struct mliMT19937 prng;
+    struct mliMT19937 prng = mliMT19937_init(0u);
     double bin_edges[100];
     const uint64_t num_bin_edges = 100;
     const uint64_t num_bins = num_bin_edges - 1u;
@@ -23,7 +22,6 @@ CASE("uniform population of histogram") {
     underflow_bin = 0u;
     mli_zeros_uint64_t(bins, num_bins);
     mli_linspace(0., 1., bin_edges, num_bin_edges);
-    mliMT19937_init(&prng, 0u);
     for (i = 0; i < 100000u; i++) {
         mli_histogram(
             bin_edges,
@@ -45,8 +43,7 @@ CASE("throwing Pi") {
     uint64_t i;
     uint64_t num_in_circle = 0u;
     double pi_estimate;
-    struct mliMT19937 prng;
-    mliMT19937_init(&prng, 0u);
+    struct mliMT19937 prng = mliMT19937_init(0u);
     for (i = 0; i < num_throws; i++) {
         const double x = mliMT19937_uniform(&prng);
         const double y = mliMT19937_uniform(&prng);
@@ -60,7 +57,7 @@ CASE("throwing Pi") {
 }
 
 CASE("normal, Irwin Hall approximation") {
-    struct mliMT19937 prng;
+    struct mliMT19937 prng = mliMT19937_init(0u);
 
     const uint64_t num_scenarios = 6;
     const uint64_t num_throws = 100u*1000u;
@@ -72,7 +69,6 @@ CASE("normal, Irwin Hall approximation") {
     for (s = 0; s < num_scenarios; s++ ) {
         double mean = 0.;
         double std = 0.;
-        mliMT19937_init(&prng, 0u);
         for (i = 0; i < num_throws; i++) {
             throws[i] = mliMT19937_normal_Irwin_Hall_approximation(
                 &prng,

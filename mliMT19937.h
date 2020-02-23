@@ -47,8 +47,7 @@ void mliMT19937_define_constants(struct mliMT19937 *mt)
     mt->MASK_UPPER = (1u << mt->R);
 }
 
-/* Re-init with a given seed */
-void mliMT19937_init(struct mliMT19937 *mt, const uint32_t seed)
+void mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed)
 {
     uint32_t  i;
     mliMT19937_define_constants(mt);
@@ -57,6 +56,13 @@ void mliMT19937_init(struct mliMT19937 *mt, const uint32_t seed)
         mt->mt[i] = (mt->F * (mt->mt[i - 1] ^ (mt->mt[i - 1] >> 30)) + i);
     }
     mt->index = mt->N;
+}
+
+struct mliMT19937 mliMT19937_init(const uint32_t seed)
+{
+        struct mliMT19937 mt;
+        mliMT19937_reinit(&mt, seed);
+        return mt;
 }
 
 void mliMT19937_twist(struct mliMT19937 *mt)
