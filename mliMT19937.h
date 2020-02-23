@@ -25,7 +25,7 @@ struct mliMT19937 {
     uint16_t  index;
 };
 
-void mliMT19937_define_constants(struct mliMT19937 *mt)
+void _mliMT19937_set_constants(struct mliMT19937 *mt)
 {
     /*
         Define MT19937 constants (32-bit RNG)
@@ -47,10 +47,10 @@ void mliMT19937_define_constants(struct mliMT19937 *mt)
     mt->MASK_UPPER = (1u << mt->R);
 }
 
-void mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed)
+void _mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed)
 {
     uint32_t  i;
-    mliMT19937_define_constants(mt);
+    _mliMT19937_set_constants(mt);
     mt->mt[0] = seed;
     for ( i = 1; i < mt->N; i++ ) {
         mt->mt[i] = (mt->F * (mt->mt[i - 1] ^ (mt->mt[i - 1] >> 30)) + i);
@@ -61,11 +61,11 @@ void mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed)
 struct mliMT19937 mliMT19937_init(const uint32_t seed)
 {
         struct mliMT19937 mt;
-        mliMT19937_reinit(&mt, seed);
+        _mliMT19937_reinit(&mt, seed);
         return mt;
 }
 
-void mliMT19937_twist(struct mliMT19937 *mt)
+void _mliMT19937_twist(struct mliMT19937 *mt)
 {
     uint32_t  i, x, xA;
 
@@ -90,7 +90,7 @@ uint32_t mliMT19937_uint32(struct mliMT19937 *mt)
     int i = mt->index;
 
     if ( mt->index >= mt->N ) {
-        mliMT19937_twist(mt);
+        _mliMT19937_twist(mt);
         i = mt->index;
     }
 
