@@ -113,4 +113,19 @@ double mliMT19937_expovariate(struct mliMT19937 *mt, const double rate)
     return -log(mliMT19937_uniform(mt))/rate;
 }
 
+double mliMT19937_normal_Irwin_Hall_approximation(
+        struct mliMT19937 *mt,
+        const double mean,
+        const double std)
+{
+        uint64_t i;
+        double sum_of_12 = 0.;
+        double std1 = 0.;
+        for(i = 0; i < 12; i++) {
+                sum_of_12 += mliMT19937_uniform(mt);
+        }
+        std1 = sum_of_12 - 6.;
+        return mean + std1*std;
+}
+
 #endif

@@ -58,3 +58,31 @@ CASE("throwing Pi") {
     pi_estimate = 4*(double)num_in_circle/(double)num_throws;
     CHECK_MARGIN(pi_estimate, MLI_PI, 1e-3);
 }
+
+CASE("normal, Irwin Hall approximation") {
+    struct mliMT19937 prng;
+
+    const uint64_t num_scenarios = 6;
+    const uint64_t num_throws = 100u*1000u;
+    const double target_mean[6] = {1., -1., 0., 1e-5, 1e5, -1e3};
+    const double taregt_std[6] = {.1, 0., 1e-3, 1e-8, 1e2, 1e0};
+    double throws[1000*1000];
+
+    uint64_t i, s;
+    for (s = 0; s < num_scenarios; s++ ) {
+        double mean = 0.;
+        double std = 0.;
+        mliMT19937_init(&prng, 0u);
+        for (i = 0; i < num_throws; i++) {
+            throws[i] = mliMT19937_normal_Irwin_Hall_approximation(
+                &prng,
+                target_mean[s],
+                taregt_std[s]);
+        }
+        mean = mli_mean(throws, num_throws);
+        std = mli_std(throws, num_throws, mean);
+
+        CHECK_MARGIN(mean, target_mean[s], 1e3+fabs(target_mean[s]*1e-2));
+        CHECK_MARGIN(std, taregt_std[s], 1e-3+fabs(taregt_std[s]*1e-2));
+    }
+}

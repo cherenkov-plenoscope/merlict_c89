@@ -132,5 +132,24 @@ void mli_linspace(
     }
 }
 
+double mli_mean(const double vals[], const uint64_t size)
+{
+    uint64_t i;
+    double sum = 0;
+    for (i = 0; i < size; i++) {
+        sum = sum + vals[i];
+    }
+    return sum/(double)size;
+}
+
+double mli_std(const double vals[], const uint64_t size, const double vals_mean)
+{
+    uint64_t i;
+    double s = 0.;
+    for (i = 0; i < size; i++) {
+        s = s + (vals[i] - vals_mean)*(vals[i] - vals_mean);
+    }
+    return sqrt(s/(double)size);
+}
 
 #endif
