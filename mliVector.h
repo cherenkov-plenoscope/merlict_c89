@@ -38,7 +38,7 @@ void mliVector_free(struct mliVector *vector)
         vector->sizeof_element = 0;
 }
 
-uint64_t mliVector_byte_size(const struct mliVector *vector)
+uint64_t _mliVector_byte_size(const struct mliVector *vector)
 {
         return vector->size * vector->sizeof_element;
 }
@@ -57,13 +57,13 @@ error:
         return 0;
 }
 
-int mliVector_should_grow(struct mliVector *vector)
+int _mliVector_should_grow(struct mliVector *vector)
 {
         assert(vector->size <= vector->capacity);
         return vector->size == vector->capacity ? 1 : 0;
 }
 
-int mliVector_reallocate(struct mliVector *vector, uint64_t new_capacity)
+int _mliVector_reallocate(struct mliVector *vector, uint64_t new_capacity)
 {
         uint64_t new_capacity_in_bytes;
         void* old;
@@ -77,7 +77,7 @@ int mliVector_reallocate(struct mliVector *vector, uint64_t new_capacity)
         new_capacity_in_bytes = new_capacity*vector->sizeof_element;
         old = vector->data;
         mli_malloc(vector->data, char, new_capacity_in_bytes);
-        memcpy(vector->data, old, mliVector_byte_size(vector));
+        memcpy(vector->data, old, _mliVector_byte_size(vector));
         vector->capacity = new_capacity;
         free(old);
         return 1;
@@ -87,12 +87,12 @@ error:
 
 int mliVector_adjust_capacity(struct mliVector *vector)
 {
-        return mliVector_reallocate(
+        return _mliVector_reallocate(
                 vector,
                 MLI_MAX2(1, vector->size*MLI_VECTOR_GROWTH_FACTOR));
 }
 
-void *mliVector_offset(const struct mliVector *vector, uint64_t index)
+void *_mliVector_offset(const struct mliVector *vector, uint64_t index)
 {
         return (uint8_t *)vector->data + (index * vector->sizeof_element);
 }
@@ -103,13 +103,13 @@ void mliVector_assign(
         const void *element)
 {
         /* Insert the element */
-        void* offset = mliVector_offset(vector, index);
+        void* offset = _mliVector_offset(vector, index);
         memcpy(offset, element, vector->sizeof_element);
 }
 
 int mliVector_push_back(struct mliVector *vector, const void *element)
 {
-        if (mliVector_should_grow(vector)) {
+        if (_mliVector_should_grow(vector)) {
                 mli_check(
                         mliVector_adjust_capacity(vector),
                         "Failed to grow vector capacity.");
@@ -124,7 +124,7 @@ error:
 void *mliVector_at(const struct mliVector *vector, uint64_t index)
 {
         assert(index < vector->size);
-        return mliVector_offset(vector, index);
+        return _mliVector_offset(vector, index);
 }
 
 #endif
