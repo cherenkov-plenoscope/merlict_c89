@@ -50,4 +50,10 @@
     mli_check(num_read == NUM, "Can not read from file."); \
 }
 
+#define mli_write_type(TYPE, VALUE, F) { \
+    TYPE __temp_value = (TYPE)VALUE; \
+    const size_t __num_written = fwrite(&__temp_value, sizeof(TYPE), 1, F); \
+    mli_check(__num_written == 1, "Can not write type to file."); \
+}
+
 #endif

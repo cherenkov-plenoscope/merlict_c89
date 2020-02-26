@@ -152,4 +152,8 @@ double mli_std(const double vals[], const uint64_t size, const double vals_mean)
     return sqrt(s/(double)size);
 }
 
+#define mli_roundf(num) (num - floor(num) > 0.5) ? ceil(num) : floor(num)
+
+#define mli_near_int(x) ((x)>0?(int64_t)((x)+0.5):(int64_t)((x)-0.5))
+
 #endif

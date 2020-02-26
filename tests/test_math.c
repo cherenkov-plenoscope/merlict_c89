@@ -55,3 +55,45 @@ CASE("NAN") {
     CHECK(MLI_IS_NAN(hans));
     CHECK(!MLI_IS_NAN(peter));
 }
+
+CASE("round to float") {
+    double f;
+
+    f = 0.;
+    CHECK(mli_roundf(f) == 0.0);
+    f = 0.1;
+    CHECK(mli_roundf(f) == 0.0);
+    f = 0.5 - 1e-6;
+    CHECK(mli_roundf(f) == 0.0);
+    f = 0.5 + 1e-6;
+    CHECK(mli_roundf(f) == 1.0);
+    f = 0.99;
+    CHECK(mli_roundf(f) == 1.0);
+    f = 1.0;
+    CHECK(mli_roundf(f) == 1.0);
+    f = -0.5 -1e-9;
+    CHECK(mli_roundf(f) == -1.0);
+    f = -0.4;
+    CHECK_MARGIN(mli_roundf(f), 0.0, 1e-9);
+}
+
+CASE("round to int") {
+    double f;
+
+    f = 0.;
+    CHECK(mli_near_int(f) == 0);
+    f = 0.1;
+    CHECK(mli_near_int(f) == 0);
+    f = 0.5 - 1e-6;
+    CHECK(mli_near_int(f) == 0);
+    f = 0.5 + 1e-6;
+    CHECK(mli_near_int(f) == 1);
+    f = 0.99;
+    CHECK(mli_near_int(f) == 1);
+    f = 1.0;
+    CHECK(mli_near_int(f) == 1);
+    f = -0.5 -1e-9;
+    CHECK(mli_near_int(f) == -1);
+    f = -0.4;
+    CHECK(mli_near_int(f) == 0);
+}
