@@ -1,6 +1,9 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-/* Compile with:                                                              */
-/* gcc merlict-c89-test.c -o merlict-c89-test -std=c89 -lm -Wall -pedantic    */
+/* Compile with e.g.:                                                         */
+/* gcc   merlict-c89-test.c -o merlict-c89-test -std=c89 -lm -Wall -pedantic  */
+/* g++   merlict-c89-test.c -o merlict-c89-test          -lm -Wall -pedantic  */
+/* clang merlict-c89-test.c -o merlict-c89-test -std=c89 -lm -Wall -pedantic  */
+/* clang merlict-c89-test.c -o merlict-c89-test          -lm -Wall -pedantic  */
 #include <math.h>
 #include <assert.h>
 #include "merlict_c89.h"
