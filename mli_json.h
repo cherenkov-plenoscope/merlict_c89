@@ -120,7 +120,7 @@ int mliJson_as_int64(
     int64_t *return_int64) {
     struct jsmntok_t t = json->tokens[token_idx];
     uint64_t buff_size = t.end - t.start + 1u;
-    char *buff;
+    char *buff = NULL;
     mli_check(
         t.type == JSMN_PRIMITIVE,
         "Json int64 parsing expected json-token-to be JSMN_PRIMITIVE.");
@@ -141,7 +141,7 @@ int mliJson_as_float64(
     double *return_float64) {
     struct jsmntok_t t = json->tokens[token_idx];
     uint64_t buff_size = t.end - t.start + 1u;
-    char *buff;
+    char *buff = NULL;
     mli_check(
         t.type == JSMN_PRIMITIVE,
         "Json float64 parsing expected json-token-to be JSMN_PRIMITIVE.");
