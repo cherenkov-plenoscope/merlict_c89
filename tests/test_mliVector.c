@@ -46,3 +46,34 @@ CASE("with pointers to mliColor") {
     CHECK(vec.size == 0);
     CHECK(vec.capacity == 0);
 }
+
+CASE("DynArray") {
+        struct mliColor c;
+        struct mliDynColor colors = mliDynColor_init();
+        CHECK(_mliDynColor_test_after_init(&colors));
+
+        CHECK(mliDynColor_malloc(&colors, 10));
+        CHECK(_mliDynColor_test_after_malloc(&colors, 10));
+
+        colors.arr[0].r = 4.0;
+        colors.arr[0].g = 5.9;
+        colors.arr[0].b = 2.9;
+        c = colors.arr[0];
+        CHECK_MARGIN(c.r, 4.0, 1e-6);
+        CHECK_MARGIN(c.g, 5.9, 1e-6);
+        CHECK_MARGIN(c.b, 2.9, 1e-6);
+
+        mliDynColor_free(&colors);
+        CHECK(_mliDynColor_test_after_free(&colors));
+}
+
+CASE("DynArray malloc 0") {
+        struct mliDynColor colors = mliDynColor_init();
+        CHECK(_mliDynColor_test_after_init(&colors));
+
+        CHECK(mliDynColor_malloc(&colors, 0));
+        CHECK(_mliDynColor_test_after_malloc(&colors, 0));
+
+        mliDynColor_free(&colors);
+        CHECK(_mliDynColor_test_after_free(&colors));
+}

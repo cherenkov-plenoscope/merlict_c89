@@ -30,6 +30,7 @@
 #include "mliSphericalCapHex.h"
 #include "mliOuterPrismBound.h"
 #include "mliVector.h"
+#include "mliDynArray.h"
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"
 
