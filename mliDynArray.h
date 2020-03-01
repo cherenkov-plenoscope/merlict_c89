@@ -20,14 +20,8 @@ struct mliDynArray {
 /* internal implementation */
 /* ----------------------- */
 
-uint64_t _mliDynArray_byte_size(const struct mliDynArray *dyn)
-{
-        return dyn->size*dyn->sizeof_element;
-}
-
 int _mliDynArray_should_grow(const struct mliDynArray *dyn)
 {
-        assert(dyn->size <= dyn->capacity);
         return dyn->size == dyn->capacity ? 1 : 0;
 }
 
@@ -37,7 +31,6 @@ int _mliDynArray_reallocate(
         uint64_t new_capacity)
 {
         uint64_t new_capacity_in_bytes = new_capacity*dyn->sizeof_element;
-        fprintf(stderr, "next size %ld\n", new_capacity_in_bytes);
         (*arr) = realloc((*arr), new_capacity_in_bytes);
         mli_check_mem((*arr));
         dyn->capacity = new_capacity;
@@ -164,8 +157,5 @@ int _mliDynArray_test_after_free(
 {
         return _mliDynArray_test_after_init(dyn, arr, sizeof_element);
 }
-
-
-
 
 #endif

@@ -38,8 +38,8 @@ int __mliScenery_set_primitive_capacity(
     uint64_t c;
     switch (frame->type) {
         case MLI_FRAME:
-            for (c = 0; c < frame->children.size; c++) {
-                struct mliFrame *child = mliFrame_child(frame, c);
+            for (c = 0; c < frame->children.dyn.size; c++) {
+                struct mliFrame *child = frame->children.arr[c];
                 mli_c(__mliScenery_set_primitive_capacity(scenery, child));
             }
             break;
@@ -72,8 +72,8 @@ int __mliScenery_set_primitive(
     struct mliHomTra frame2root;
     switch (frame->type) {
         case MLI_FRAME:
-            for (i = 0; i < frame->children.size; i++) {
-                child = mliFrame_child(frame, i);
+            for (i = 0; i < frame->children.dyn.size; i++) {
+                child = frame->children.arr[i];
                 __mliScenery_set_primitive(scenery, child, count);}
             break;
         case MLI_MESH:

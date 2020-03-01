@@ -3,7 +3,7 @@
 CASE("mliFrame_init, defaults") {
     struct mliFrame f = mliFrame_init();
     CHECK(f.mother == NULL);
-    CHECK(f.children.size == 0u);
+    CHECK(f.children.dyn.size == 0u);
     CHECK(f.type == MLI_FRAME);
 }
 
@@ -12,7 +12,7 @@ CASE("mliFrame_malloc, free") {
     CHECK(mliFrame_malloc(&f, MLI_FRAME));
     mliFrame_free(&f);
     CHECK(f.mother == NULL);
-    CHECK(f.children.size == 0u);
+    CHECK(f.children.dyn.size == 0u);
     CHECK(f.type == MLI_FRAME);
 }
 
@@ -31,7 +31,7 @@ CASE("add two childs") {
     CHECK(child2);
     child2->id = 42;
 
-    CHECK(mother.children.size == 2);
+    CHECK(mother.children.dyn.size == 2);
     CHECK(&mother == (struct mliFrame *)child1->mother);
     CHECK(&mother == (struct mliFrame *)child2->mother);
     mliFrame_free(&mother);
@@ -76,15 +76,15 @@ CASE("add grand childs") {
     CHECK(child_11);
     child_11->id = 201;
 
-    CHECK(mother.children.size == 2);
+    CHECK(mother.children.dyn.size == 2);
     CHECK(&mother == (struct mliFrame *)child_0->mother);
     CHECK(&mother == (struct mliFrame *)child_0->mother);
 
-    CHECK(child_0->children.size == 2);
+    CHECK(child_0->children.dyn.size == 2);
     CHECK(child_0 == (struct mliFrame *)child_00->mother);
     CHECK(child_0 == (struct mliFrame *)child_01->mother);
 
-    CHECK(child_1->children.size == 2);
+    CHECK(child_1->children.dyn.size == 2);
     CHECK(child_1 == (struct mliFrame *)child_10->mother);
     CHECK(child_1 == (struct mliFrame *)child_11->mother);
     /* mliFrame_print(&mother); */

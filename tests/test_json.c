@@ -329,12 +329,12 @@ CASE("parse mliUserScenery") {
     CHECK(uscn_srfs[3].medium_absorbtion == 0u);
 
     /* frames */
-    CHECK(uscn.root.children.size == 4u);
-    f = mliFrame_child(&uscn.root, 0);
+    CHECK(uscn.root.children.dyn.size == 4u);
+    f = uscn.root.children.arr[0];
     CHECK(f->type == MLI_DISC);
-    f = mliFrame_child(&uscn.root, 1);
+    f = uscn.root.children.arr[1];
     CHECK(f->type == MLI_FRAME);
-    f = mliFrame_child(&uscn.root, 2);
+    f = uscn.root.children.arr[2];
     CHECK(f->type == MLI_MESH);
     CHECK(f->primitive.mesh->num_vertices == 4u);
     CHECK_MARGIN(f->primitive.mesh->vertices[0].x, 0., 1e-6);
@@ -352,7 +352,7 @@ CASE("parse mliUserScenery") {
     CHECK(f->primitive.mesh->faces[1].b == 1);
     CHECK(f->primitive.mesh->faces[1].c == 3);
 
-    f = mliFrame_child(&uscn.root, 3);
+    f = uscn.root.children.arr[3];
     CHECK(f->type == MLI_SPHERE);
 
     mliUserScenery_free(&uscn);

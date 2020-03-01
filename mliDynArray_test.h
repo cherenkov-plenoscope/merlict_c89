@@ -29,9 +29,9 @@ int LIB##Dyn##NAME##_malloc(struct LIB##Dyn##NAME *dh, const uint64_t cap) { \
  \
 int LIB##Dyn##NAME##_push_back( \
         struct LIB##Dyn##NAME *dh, \
-        const PAYLOAD_TYPE *pl) { \
+        const PAYLOAD_TYPE pl) { \
         return mliDynArray_push_back_in_host( \
-                &dh->dyn, (void **)&dh->arr, pl); \
+                &dh->dyn, (void **)&dh->arr, &pl); \
 } \
  \
 int _##LIB##Dyn##NAME##_test_after_init(const struct LIB##Dyn##NAME *dh) { \
@@ -55,6 +55,7 @@ int _##LIB##Dyn##NAME##_test_after_malloc( \
 
 MLIDYNARRAY_TEMPLATE(mli, Color, struct mliColor)
 
+MLIDYNARRAY_TEMPLATE(mli, ColorPtr, struct mliColor*)
 
 #define MLIDYNARRAY_2D_TEMPLATE(LIB, NAME, PAYLOAD_NAME) \
  \
@@ -77,7 +78,6 @@ void LIB##NAME##Channels_free(struct LIB##NAME##Channels *phs) \
         for (ch = 0u; ch < phs->num_channels; ch++) { \
                 PAYLOAD_NAME##_free(&phs->channels[ch]); \
         } \
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__); \
         free(phs->channels); \
         phs->num_channels = 0u; \
         phs->channels = NULL; \
