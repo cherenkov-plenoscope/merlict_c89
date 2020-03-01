@@ -77,3 +77,88 @@ CASE("DynArray malloc 0") {
         mliDynColor_free(&colors);
         CHECK(_mliDynColor_test_after_free(&colors));
 }
+
+CASE("DynArray push") {
+        uint64_t i;
+        struct mliDynColor channel = mliDynColor_init();
+        CHECK(_mliDynColor_test_after_init(&channel));
+
+        CHECK(mliDynColor_malloc(&channel, 0));
+        CHECK(_mliDynColor_test_after_malloc(&channel, 0));
+
+        for (i = 0; i < 1337*1337; i++) {
+                struct mliColor c = mliColor_set(
+                    1.*(float)i,
+                    2.*(float)i,
+                    -1.*(float)i);
+                CHECK(mliDynColor_push_back(&channel, &c));
+        }
+        CHECK(channel.dyn.size == 1337*1337);
+        CHECK(channel.arr != NULL);
+        CHECK(channel.dyn.capacity >= channel.dyn.size);
+
+        for (i = 0; i < channel.dyn.size; i++) {
+                CHECK_MARGIN(channel.arr[i].r, 1.*(float)i, 1e-1);
+                CHECK_MARGIN(channel.arr[i].g, 2.*(float)i, 1e-1);
+                CHECK_MARGIN(channel.arr[i].b, -1.*(float)i, 1e-1);
+        }
+        mliDynColor_free(&channel);
+        CHECK(_mliDynColor_test_after_free(&channel));
+
+        CHECK(mliDynColor_malloc(&channel, 100));
+        CHECK(_mliDynColor_test_after_malloc(&channel, 100));
+        mliDynColor_free(&channel);
+        CHECK(_mliDynColor_test_after_free(&channel));
+}
+
+
+CASE("num_pulses ExtractChannels") {
+        uint64_t num_channel_scenarios = 7;
+        uint64_t channel_scenarios[7] = {0, 1, 10, 100, 3, 4, 5};
+        uint64_t chsc = 0;
+
+        uint64_t num_pulse_scenarios = 9;
+        uint64_t pulse_scenarios[9] = {0, 1, 10, 50, 0, 3, 64, 12, 1337};
+        uint64_t pusc = 0;
+
+        for (
+                chsc = 0;
+                chsc < num_channel_scenarios;
+                chsc++)
+        {
+                for (
+                        pusc = 0;
+                        pusc < num_pulse_scenarios;
+                        pusc++)
+                {
+                        uint64_t p = 0;
+                        uint64_t c = 0;
+                        uint64_t expected_num_pulses =
+                                channel_scenarios[chsc]*
+                                pulse_scenarios[pusc];
+
+                        struct mliColor ex;
+                        struct mliColorChannels phs = mliColorChannels_init();
+
+                        CHECK(mliColorChannels_malloc(
+                                &phs,
+                                channel_scenarios[chsc]));
+                        CHECK(phs.num_channels == channel_scenarios[chsc]);
+
+                        for (c = 0; c < phs.num_channels; c++) {
+                                for (p = 0; p < pulse_scenarios[pusc]; p++) {
+                                        ex.r = p + 1 + c;
+                                        ex.g = p + c;
+                                        ex.b = 0;
+                                        CHECK(mliDynColor_push_back(
+                                                &phs.channels[c],
+                                                &ex));
+                                }
+                        }
+                        CHECK(
+                            mliColorChannels_total_num(&phs) ==
+                            expected_num_pulses);
+                        mliColorChannels_free(&phs);
+                }
+        }
+}

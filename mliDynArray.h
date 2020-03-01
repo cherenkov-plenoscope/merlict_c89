@@ -36,21 +36,10 @@ int _mliDynArray_reallocate(
         void **arr,
         uint64_t new_capacity)
 {
-        void *tmp = NULL;
-        uint64_t new_capacity_in_bytes;
-        if (new_capacity < MLI_DYNARRAY_MIN_CAPACITY) {
-                if (dyn->capacity > MLI_DYNARRAY_MIN_CAPACITY) {
-                        new_capacity = MLI_DYNARRAY_MIN_CAPACITY;
-                } else {
-                        return 1;
-                }
-        }
-        new_capacity_in_bytes = new_capacity*dyn->sizeof_element;
-        tmp = (*arr);
-        (*arr) = (void **)malloc(new_capacity_in_bytes);
+        uint64_t new_capacity_in_bytes = new_capacity*dyn->sizeof_element;
+        fprintf(stderr, "next size %ld\n", new_capacity_in_bytes);
+        (*arr) = realloc((*arr), new_capacity_in_bytes);
         mli_check_mem((*arr));
-        memcpy((*arr), tmp, _mliDynArray_byte_size(dyn));
-        free(tmp);
         dyn->capacity = new_capacity;
         return 1;
 error:
@@ -86,7 +75,7 @@ void mliDynArray_init_in_host(
         dyn->size = 0u;
         dyn->capacity = 0u;
         dyn->sizeof_element = sizeof_element;
-        (*arr) = NULL;
+        (*arr) = NULL ;
 }
 
 int mliDynArray_malloc_in_host(
@@ -94,10 +83,12 @@ int mliDynArray_malloc_in_host(
         void **arr,
         uint64_t capacity)
 {
+        uint64_t new_capacity;
         dyn->size = 0;
-        dyn->capacity = MLI_MAX2(MLI_DYNARRAY_MIN_CAPACITY, capacity);
-        (*arr) = (void **)malloc(_mliDynArray_byte_size(dyn));
+        new_capacity = MLI_MAX2(MLI_DYNARRAY_MIN_CAPACITY, capacity);
+        (*arr) = (void **)malloc(new_capacity*dyn->sizeof_element);
         mli_check_mem((*arr));
+        dyn->capacity = new_capacity;
         return 1;
 error:
         return 0;
