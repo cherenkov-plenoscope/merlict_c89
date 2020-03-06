@@ -78,4 +78,6 @@
 #include "mliPhotonInteraction.h"
 #include "mli_photon_propagation.h"
 
+#include "mli_lens_maker.h"
+
 #endif

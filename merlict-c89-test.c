@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
     #include "tests/test_photon.c"
     #include "tests/test_photon_sources.c"
     #include "tests/test_lambertian_cosine_law.c"
+    #include "tests/test_lensmaker.c"
 
     printf("__SUCCESS__\n");
     return EXIT_SUCCESS;
