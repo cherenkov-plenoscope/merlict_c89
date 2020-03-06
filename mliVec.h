@@ -79,6 +79,11 @@ double mliVec_angle_between(const struct mliVec a, const struct mliVec b)
         return acos(mliVec_dot(a_normalized, b_normalized));
 }
 
+double mliVec_norm_between(const struct mliVec a, const struct mliVec b)
+{
+        return mliVec_norm(mliVec_substract(a, b));
+}
+
 struct mliVec mliVec_mirror(const struct mliVec in, const struct mliVec normal)
 {
         /*  This is taken from

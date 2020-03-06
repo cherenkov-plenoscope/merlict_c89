@@ -4,18 +4,8 @@
 
 struct mliPhoton {
     struct mliRay ray;
-    /* mliVec electric_field_polarization; */
     double wavelength;
+    int64_t simulation_truth_id;
 };
-
-struct mliPhoton mliPhoton_set(
-    const struct mliRay ray,
-    const double wavelength)
-{
-    struct mliPhoton ph;
-    ph.ray = ray;
-    ph.wavelength = wavelength;
-    return ph;
-}
 
 #endif

@@ -1,14 +1,5 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 
-CASE("mliPhoton_set") {
-    struct mliPhoton ph = mliPhoton_set(
-        mliRay_set(mliVec_set(1, 2, 3), mliVec_set(0, 0, 1)),
-        350e-9);
-    CHECK(ph.wavelength == 350e-9);
-    CHECK(mliVec_equal_margin(ph.ray.support, mliVec_set(1, 2, 3), 1e-9));
-    CHECK(mliVec_equal_margin(ph.ray.direction, mliVec_set(0, 0, 1), 1e-9));
-}
-
 CASE("simple propagation") {
     struct mliMT19937 prng = mliMT19937_init(0u);
     struct mliScenery scenery = mliScenery_init();
@@ -16,11 +7,13 @@ CASE("simple propagation") {
     struct mliPhotonHistory history = mliPhotonHistory_init(16u);
     struct mliIntersection intersection;
     struct mliSurface surf_coming_from, surf_going_to;
-    struct mliPhoton photon = mliPhoton_set(
-        mliRay_set(
+    struct mliPhoton photon;
+    photon.ray =  mliRay_set(
             mliVec_set(0, 0, -3),
-            mliVec_set(0, 0, 1)),
-        600e-9);
+            mliVec_set(0, 0, 1));
+    photon.wavelength = 600e-9;
+    photon.simulation_truth_id = 0;
+
     CHECK(mliScenery_malloc_from_json_path(
         &scenery,
         "tests/resources/glass_cylinder_in_air.json"));

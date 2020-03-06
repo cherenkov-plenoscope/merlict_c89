@@ -65,7 +65,7 @@ int _mli_phong(
         env->photon->wavelength,
         &specular),
         "Failed to eval. specular reflection for wavelength.");
-    rnd = mliMT19937_uniform(env->prng);
+    rnd = mli_random_uniform(env->prng);
     /*
                                                   absorbtion
               diffuse      specular        (1.0 - diffuse - specular)
@@ -184,7 +184,7 @@ int _mli_fresnel_refraction_and_reflection(
         n_coming_from,
         n_going_to);
     reflection_propability = mliFresnel_reflection_propability(fresnel);
-    if (reflection_propability > mliMT19937_uniform(env->prng)) {
+    if (reflection_propability > mli_random_uniform(env->prng)) {
         uint64_t n;
         env->photon->ray = mliRay_set(
             isec->position,
@@ -246,7 +246,7 @@ int _mli_distance_until_next_absorbtion(
         env->photon->wavelength,
         &one_over_e_way),
         "Failed to eval. absorbtion in medium coming from for wavelength.");
-    (*distance_to_next_absorption) = mliMT19937_expovariate(
+    (*distance_to_next_absorption) = mli_random_expovariate(
         env->prng,
         1./one_over_e_way);
     return 1;

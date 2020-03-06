@@ -5,7 +5,7 @@ CASE("average of uniform distribution") {
     uint64_t i;
     struct mliMT19937 prng = mliMT19937_init(0u);
     for (i = 0; i < 1000000; i++) {
-        sum += mliMT19937_uniform(&prng);
+        sum += mli_random_uniform(&prng);
     }
     CHECK_MARGIN(sum, 5e5, 2e2);
 }
@@ -29,7 +29,7 @@ CASE("uniform population of histogram") {
             &underflow_bin,
             bins,
             &overflow_bin,
-            mliMT19937_uniform(&prng));
+            mli_random_uniform(&prng));
     }
     CHECK(underflow_bin == 0u);
     CHECK(overflow_bin == 0u);
@@ -39,14 +39,14 @@ CASE("uniform population of histogram") {
 }
 
 CASE("throwing Pi") {
-    uint64_t num_throws = 1000000u;
+    uint64_t num_throws = 1000u*1000u;
     uint64_t i;
     uint64_t num_in_circle = 0u;
     double pi_estimate;
     struct mliMT19937 prng = mliMT19937_init(0u);
     for (i = 0; i < num_throws; i++) {
-        const double x = mliMT19937_uniform(&prng);
-        const double y = mliMT19937_uniform(&prng);
+        const double x = mli_random_uniform(&prng);
+        const double y = mli_random_uniform(&prng);
         const double r_sq = x*x + y*y;
         if (r_sq <= 1.) {
             num_in_circle += 1u;
@@ -70,7 +70,7 @@ CASE("normal, Irwin Hall approximation") {
         double mean = 0.;
         double std = 0.;
         for (i = 0; i < num_throws; i++) {
-            throws[i] = mliMT19937_normal_Irwin_Hall_approximation(
+            throws[i] = mli_random_normal_Irwin_Hall_approximation(
                 &prng,
                 target_mean[s],
                 taregt_std[s]);
@@ -81,4 +81,180 @@ CASE("normal, Irwin Hall approximation") {
         CHECK_MARGIN(mean, target_mean[s], 1e3+fabs(target_mean[s]*1e-2));
         CHECK_MARGIN(std, taregt_std[s], 1e-3+fabs(taregt_std[s]*1e-2));
     }
+}
+
+CASE("uniform_0_to_1_stddev") {
+    struct mliMT19937 prng = mliMT19937_init(0u);
+    const uint64_t num_samples = 42*1337;
+    struct mliDynDouble samples = mliDynDouble_init();
+    double mean, std;
+    uint64_t i = 0;
+
+    CHECK(mliDynDouble_malloc(&samples, num_samples));
+    for (i = 0; i < num_samples; i++) {
+            mliDynDouble_push_back(&samples, mli_random_uniform(&prng));
+    }
+    mean = mli_mean(samples.arr, samples.dyn.size);
+    std = mli_std(samples.arr, samples.dyn.size, mean);
+
+    CHECK_MARGIN(1.0/sqrt(12.0), std, 1e-3);
+    mliDynDouble_free(&samples);
+}
+
+CASE("draw_from_poisson_distribution") {
+    struct mliMT19937 prng = mliMT19937_init(0u);
+    double sum = 0.0;
+    const double rate = 1e6;
+    uint64_t i = 0;
+    for (i = 0; i < rate; i++)
+        sum += mli_random_expovariate(&prng, rate);
+    CHECK_MARGIN(1.0, sum, 1e-3);
+}
+
+CASE("full_sphere") {
+    const uint64_t n = 1000*1000;
+    uint64_t i = 0;
+    struct mliMT19937 prng = mliMT19937_init(0u);
+    const struct mliRandomUniformRange azimuth = mliRandomUniformRange_set(
+        0.0,
+        2.0*MLI_PI);
+    const struct mliRandomZenithRange zenith = mliRandomZenithRange_set(
+        0.0,
+        MLI_PI);
+    struct mliVec mean_position = mliVec_set(0., 0., 0.);
+    CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
+    CHECK_MARGIN(zenith.z_range, -1.0, 1e-6);
+
+    for (i = 0; i < n; i++) {
+        mean_position = mliVec_add(
+            mean_position,
+            mli_random_draw_direction_in_zenith_azimuth_range(
+                zenith,
+                azimuth,
+                &prng));
+    }
+    mean_position = mliVec_multiply(mean_position, 1.0/(double)n);
+    CHECK_MARGIN(mean_position.x, 0.0, 1e-3);
+    CHECK_MARGIN(mean_position.y, 0.0, 1e-3);
+    CHECK_MARGIN(mean_position.z, 0.0, 1e-3);
+}
+
+CASE("octo_sphere") {
+    const uint64_t n = 1000*1000;
+    uint64_t i = 0;
+    struct mliMT19937 prng = mliMT19937_init(0u);
+    const struct mliRandomUniformRange azimuth = mliRandomUniformRange_set(
+        0.0,
+        MLI_PI/2.0);
+    const struct mliRandomZenithRange zenith = mliRandomZenithRange_set(
+        0.,
+        MLI_PI/2.0);
+    struct mliVec mean_position = mliVec_set(0., 0., 0.);
+    CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
+    CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
+    for (i = 0; i < n; i++) {
+        mean_position = mliVec_add(
+            mean_position,
+            mli_random_draw_direction_in_zenith_azimuth_range(
+                zenith,
+                azimuth,
+                &prng));
+    }
+    mean_position = mliVec_multiply(mean_position, 1.0/(double)n);
+    CHECK_MARGIN(mean_position.x, 0.5, 1e-3);
+    CHECK_MARGIN(mean_position.y, 0.5, 1e-3);
+    CHECK_MARGIN(mean_position.z, 0.5, 1e-3);
+}
+
+CASE("octo_sphere_minus_z") {
+    const uint64_t n = 1000*1000;
+    uint64_t i = 0;
+    struct mliMT19937 prng = mliMT19937_init(0u);
+    const struct mliRandomUniformRange azimuth = mliRandomUniformRange_set(
+        0.0,
+        MLI_PI/2.0);
+    const struct mliRandomZenithRange zenith = mliRandomZenithRange_set(
+        MLI_PI/2.0,
+        MLI_PI);
+    struct mliVec mean_position = mliVec_set(0., 0., 0.);
+    CHECK_MARGIN(zenith.z_min, 0.5, 1e-6);
+    CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
+    for (i = 0; i < n; i++) {
+        mean_position = mliVec_add(
+            mean_position,
+            mli_random_draw_direction_in_zenith_azimuth_range(
+                zenith,
+                azimuth,
+                &prng));
+    }
+    mean_position = mliVec_multiply(mean_position, 1.0/(double)n);
+    CHECK_MARGIN(mean_position.x, 0.5, 1e-3);
+    CHECK_MARGIN(mean_position.y, 0.5, 1e-3);
+    CHECK_MARGIN(mean_position.z, -0.5, 1e-3);
+}
+
+CASE("position_on_disc") {
+    struct mliMT19937 prng = mliMT19937_init(0u);
+    uint64_t n_points = 1e6;
+    double disc_radius = 1.337;
+    double evaluation_disc_radius = disc_radius/5.0;
+    struct mliDynVec points = mliDynVec_init();
+    struct mliDynDouble counts_in_evaluation_bins = mliDynDouble_init();
+    uint64_t i = 0;
+    struct mliVec mean;
+    double r, phi;
+    double mean_count, std_count;
+
+    CHECK(mliDynVec_malloc(&points, n_points));
+    for (i = 0; i < n_points; i++)
+        CHECK(mliDynVec_push_back(
+            &points,
+            mli_random_position_on_disc(disc_radius, &prng)));
+
+    /* mean position */
+    mean = mliVec_set(0., 0., 0.);
+    for (i = 0; i < points.dyn.size; i++)
+        mean = mliVec_add(mean, points.arr[i]);
+    mean = mliVec_multiply(mean, 1.0/(double)points.dyn.size);
+
+    CHECK_MARGIN(mean.x, 0.0, 1e-3);
+    CHECK_MARGIN(mean.y, 0.0, 1e-3);
+    CHECK_MARGIN(mean.z, 0.0, 1e-3);
+    /* distibution is evenly spread */
+
+    mliDynDouble_malloc(&counts_in_evaluation_bins, 0);
+    for (
+        r = evaluation_disc_radius;
+        r < disc_radius-evaluation_disc_radius;
+        r = r+evaluation_disc_radius
+    ) {
+        for (phi = 0; phi < 2.0*MLI_PI; phi = phi+MLI_PI/3.0) {
+            double counts_in_evaluation_bin = 0.0;
+            struct mliVec eval_disc_pos = mliVec_set(
+                r*cos(phi),
+                r*sin(phi),
+                0.0);
+            for (i = 0;i < points.dyn.size; i++) {
+                if (mliVec_norm_between(eval_disc_pos, points.arr[i])
+                    <= evaluation_disc_radius)
+                {
+                    counts_in_evaluation_bin++;
+                }
+            }
+            CHECK(mliDynDouble_push_back(
+                &counts_in_evaluation_bins,
+                counts_in_evaluation_bin));
+        }
+    }
+
+    /* Expect num. counts in evaluation-bins to be similar */
+    mean_count = mli_mean(
+        counts_in_evaluation_bins.arr,
+        counts_in_evaluation_bins.dyn.size);
+    std_count = mli_std(
+        counts_in_evaluation_bins.arr,
+        counts_in_evaluation_bins.dyn.size,
+        mean_count);
+    CHECK(std_count/mean_count < 1e-2);
+    mliDynVec_free(&points);
 }

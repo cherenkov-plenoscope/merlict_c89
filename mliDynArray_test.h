@@ -52,6 +52,9 @@ int _##LIB##Dyn##NAME##_test_after_malloc( \
                 &dh->dyn, (const void **)&dh->arr, sizeof(*dh->arr), cap); \
 } \
 
+MLIDYNARRAY_TEMPLATE(mli, Double, double)
+
+MLIDYNARRAY_TEMPLATE(mli, Vec, struct mliVec)
 
 MLIDYNARRAY_TEMPLATE(mli, Color, struct mliColor)
 

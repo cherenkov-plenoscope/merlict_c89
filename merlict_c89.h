@@ -7,6 +7,7 @@
 #include "mli_math.h"
 #include "mli_dual_circle_prism.h"
 #include "mliMT19937.h"
+#include "mli_random.h"
 #include "mliVec.h"
 #include "mliIntersection.h"
 #include "mliRotMat.h"
@@ -70,6 +71,8 @@
 #include "mliFresnel.h"
 #include "mliPhotonHistory.h"
 #include "mliPhoton.h"
+#include "mliDynPhoton.h"
+#include "mli_photon_sources.h"
 #include "mliPhotonInteraction.h"
 #include "mli_photon_propagation.h"
 

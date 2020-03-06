@@ -69,9 +69,9 @@ CASE("lambertian cosine law, relative to surface normal") {
 
     for (n = 0; n < NUM_NORMALS; n++) {
         surface_normal = mliVec_set(
-            mliMT19937_uniform(&prng) - .5,
-            mliMT19937_uniform(&prng) - .5,
-            mliMT19937_uniform(&prng) - .5);
+            mli_random_uniform(&prng) - .5,
+            mli_random_uniform(&prng) - .5,
+            mli_random_uniform(&prng) - .5);
         surface_normal = mliVec_normalized(surface_normal);
 
         mli_zeros_uint64_t(hist_bins, hist_num_bins);
