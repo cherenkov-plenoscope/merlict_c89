@@ -61,4 +61,8 @@ MLIDYNARRAY_TEMPLATE(mli, Color, struct mliColor)
 
 MLIDYNARRAY_TEMPLATE(mli, ColorPtr, struct mliColor*)
 
+MLIDYNARRAY_TEMPLATE(mli, Int64, int64_t)
+
+MLIDYNARRAY_TEMPLATE(mli, Char, char)
+
 #endif

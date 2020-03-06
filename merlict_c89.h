@@ -65,6 +65,7 @@
 #include "mliFunc_malloc_from_json_token.h"
 #include "mliVec_from_json_token.h"
 
+#include "mliMap.h"
 #include "mliFrame.h"
 #include "mliUserScenery.h"
 #include "mli_frame_to_scenery.h"
