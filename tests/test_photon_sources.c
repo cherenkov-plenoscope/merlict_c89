@@ -27,7 +27,7 @@ CASE("parallel_towards_z_from_xy_disc") {
                 CHECK(photons.arr[i].ray.direction.y == 0.0);
                 CHECK(photons.arr[i].ray.direction.z == 1.0);
                 CHECK(photons.arr[i].wavelength == wavelength);
-                CHECK(photons.arr[i].simulation_truth_id == i);
+                CHECK(photons.arr[i].simulation_truth_id == (int64_t)i);
         }
 
         mliDynPhoton_free(&photons);
