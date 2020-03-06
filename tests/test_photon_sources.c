@@ -57,6 +57,11 @@ CASE("point_like_towards_z") {
                         mliVec_norm(photons.arr[i].ray.direction),
                         1.0,
                         1e-6);
+                CHECK(
+                        mliVec_angle_between(
+                                photons.arr[i].ray.direction,
+                                mliVec_set(0., 0., 1.)) <=
+                        opening_angle);
                 CHECK(photons.arr[i].wavelength == wavelength);
                 CHECK(photons.arr[i].simulation_truth_id == (int64_t)i);
         }
