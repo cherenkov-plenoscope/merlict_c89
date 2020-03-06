@@ -18,7 +18,7 @@
 #include "mliDisc.h"
 #include "mliSurface.h"
 #include "mliSurfaces.h"
-#include "mliDynArray_test.h"
+#include "mliDynArray_template.h"
 
 #define MLI_FRAME 1000u
 #define MLI_MESH 1001u

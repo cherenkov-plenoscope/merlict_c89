@@ -31,6 +31,8 @@
 #include "mliSphericalCapHex.h"
 #include "mliOuterPrismBound.h"
 #include "mliDynArray.h"
+#include "mliDynArray_template.h"
+#include "mliDynArray_channels_template.h"
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"
 
