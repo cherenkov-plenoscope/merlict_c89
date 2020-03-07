@@ -295,9 +295,10 @@ struct mliMapNode *_mliMap_has(
 
 int mliMap_get(const struct mliMap *map, const char *key_str, uint64_t *out)
 {
-        struct mliDynUint8 tmp_key = mliDynUint8_init();
         struct mliMapNode *corresponding_node = NULL;
-        assert(mliDynUint8_malloc_char(&tmp_key, key_str));
+        struct mliDynUint8 tmp_key = mliDynUint8_init();
+        tmp_key.dyn.size = strlen(key_str) + 1;
+        tmp_key.arr = (uint8_t *)key_str;
         corresponding_node = _mliMap_has(
                 map->root,
                 &tmp_key);
@@ -307,7 +308,6 @@ int mliMap_get(const struct mliMap *map, const char *key_str, uint64_t *out)
                 (*out) = corresponding_node->value;
                 return 1;
         }
-        mliDynUint8_free(&tmp_key);
 }
 
 int mliMap_has(const struct mliMap *map, const char *key_str)
