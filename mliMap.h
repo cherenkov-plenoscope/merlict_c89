@@ -45,6 +45,25 @@ int mli_decimal_to_base255(uint64_t in,  struct mliDynUint8 *o)
         return 0;
 }
 
+int mliDynUint8_equal(
+        const struct mliDynUint8 *a,
+        const struct mliDynUint8 *b)
+{
+        if (a->dyn.size > b->dyn.size) {
+                return 0;
+        } else if (a->dyn.size == b->dyn.size) {
+                size_t i;
+                for (i = 0; i < a->dyn.size; i++) {
+                        if (a->arr[i] != b->arr[i]) {
+                                return 0;
+                        }
+                }
+                return 1;
+        } else {
+                return 0;
+        }
+}
+
 int mliDynUint8_greater_than(
         const struct mliDynUint8 *a,
         const struct mliDynUint8 *b)
@@ -52,7 +71,15 @@ int mliDynUint8_greater_than(
         if (a->dyn.size > b->dyn.size) {
                 return 1;
         } else if (a->dyn.size == b->dyn.size) {
-                return a->arr[a->dyn.size - 1] > b->arr[b->dyn.size - 1];
+                int64_t i;
+                for (i = a->dyn.size - 1; i >= 0 ; i--) {
+                        if (a->arr[i] > b->arr[i]) {
+                                return 1;
+                        } else if (a->arr[i] < b->arr[i]) {
+                                return 0;
+                        }
+                }
+                return 0;
         } else {
                 return 0;
         }
@@ -140,22 +167,13 @@ int mliDynUint8_malloc_char(struct mliDynUint8 *o, const char* str) {
 #define MLI_MAP_TYPE_LEAF 1
 #define MLI_MAP_TYPE_NODE 2
 
-uint64_t mli_dan_bernstein_hash_string(const char *str)
-{
-        uint64_t hash = 5381;
-        uint64_t c;
-        while ((c = *str++))
-                hash = ((hash << 5) + hash) + c;
-        return hash;
-}
 
 struct mliMapNode {
         struct mliMapNode *upper;
         struct mliMapNode *lower;
         uint64_t type;
         uint64_t value;
-        uint64_t key_hash;
-        char *key_str;
+        struct mliDynUint8 key;
 };
 
 struct mliMap {
@@ -176,7 +194,7 @@ void _mliMap_free_nodes(struct mliMapNode *node)
         _mliMap_free_nodes(node->lower);
         _mliMap_free_nodes(node->upper);
         if (node->type == MLI_MAP_TYPE_LEAF) {
-                free(node->key_str);
+                mliDynUint8_free(&node->key);
         }
         free(node);
 }
@@ -192,25 +210,30 @@ int _mliMap_insert(struct mliMapNode **node, struct mliMapNode *leaf)
         if ((*node) == NULL) {
                 *node = leaf;
         } else if ((*node)->type == MLI_MAP_TYPE_NODE) {
-                if (leaf->key_hash >= (*node)->key_hash) {
+                if (mliDynUint8_greater_than(&leaf->key, &(*node)->key)) {
                         _mliMap_insert(&(*node)->upper, leaf);
                 } else {
                         _mliMap_insert(&(*node)->lower, leaf);
                 }
         } else if ((*node)->type == MLI_MAP_TYPE_LEAF) {
+                struct mliDynUint8 tmp_sum = mliDynUint8_init();
                 struct mliMapNode *new_node;
-                uint64_t mid_key = (leaf->key_hash + (*node)->key_hash)/2;
-                mli_check(
-                        leaf->key_hash != (*node)->key_hash,
+                mli_c(mliDynUint8_add(
+                        &leaf->key,
+                        &((*node)->key),
+                        &tmp_sum));
+
+                mli_check(!mliDynUint8_equal(&leaf->key, &(*node)->key),
                         "Key already in use");
                 new_node = (struct mliMapNode *)malloc(
                         sizeof(struct mliMapNode));
                 mli_check(new_node, "Failed to malloc new node");
                 new_node->type = MLI_MAP_TYPE_NODE;
                 new_node->value = 0;
-                new_node->key_hash = mid_key;
-                new_node->key_str = NULL;
-                if (leaf->key_hash >= mid_key) {
+                new_node->key = mliDynUint8_init();
+                mli_c(mliDynUint8_divide_two(&tmp_sum, &new_node->key));
+
+                if (mliDynUint8_greater_than(&leaf->key, &new_node->key)) {
                         new_node->upper = leaf;
                         new_node->lower = (*node);
                 } else {
@@ -218,6 +241,7 @@ int _mliMap_insert(struct mliMapNode **node, struct mliMapNode *leaf)
                         new_node->lower = leaf;
                 }
                 (*node) = new_node;
+                mliDynUint8_free(&tmp_sum);
         } else {
                 assert(0);
         }
@@ -236,13 +260,8 @@ int mliMap_malloc_insert(
         mli_check(leaf != NULL, "Failed to malloc leaf");
         leaf->type = MLI_MAP_TYPE_LEAF;
         leaf->value = value;
-        leaf->key_hash = mli_dan_bernstein_hash_string(key_str);
-
-        leaf->key_str = (char *)malloc(strlen(key_str) + 1);
-        strncpy(leaf->key_str, key_str, strlen(key_str));
-        leaf->key_str[strlen(key_str)] = '\0';
-
-        mli_check(leaf->key_str, "Failed to insert");
+        leaf->key = mliDynUint8_init();
+        mli_c(mliDynUint8_malloc_char(&leaf->key, key_str));
         leaf->lower = NULL;
         leaf->upper = NULL;
         mli_check(_mliMap_insert(&map->root, leaf), "Failed to insert");
@@ -253,18 +272,18 @@ int mliMap_malloc_insert(
 
 struct mliMapNode *_mliMap_has(
         struct mliMapNode *node,
-        const uint64_t key_hash)
+        const struct mliDynUint8 *key)
 {
         if (node == NULL) {
                 return NULL;
         } else if (node->type == MLI_MAP_TYPE_NODE) {
-                if (key_hash >= node->key_hash) {
-                        return _mliMap_has(node->upper, key_hash);
+                if (mliDynUint8_greater_than(key, &node->key)) {
+                        return _mliMap_has(node->upper, key);
                 } else {
-                        return _mliMap_has(node->lower, key_hash);
+                        return _mliMap_has(node->lower, key);
                 }
         } else if (node->type == MLI_MAP_TYPE_LEAF) {
-                if (key_hash == node->key_hash) {
+                if (mliDynUint8_equal(key, &node->key)) {
                         return node;
                 } else {
                         return NULL;
@@ -276,16 +295,19 @@ struct mliMapNode *_mliMap_has(
 
 int mliMap_get(const struct mliMap *map, const char *key_str, uint64_t *out)
 {
-        const uint64_t key_hash = mli_dan_bernstein_hash_string(key_str);
-        struct mliMapNode *corresponding_node = _mliMap_has(
+        struct mliDynUint8 tmp_key = mliDynUint8_init();
+        struct mliMapNode *corresponding_node = NULL;
+        assert(mliDynUint8_malloc_char(&tmp_key, key_str));
+        corresponding_node = _mliMap_has(
                 map->root,
-                key_hash);
+                &tmp_key);
         if (corresponding_node == NULL) {
                 return 0;
         } else {
                 (*out) = corresponding_node->value;
                 return 1;
         }
+        mliDynUint8_free(&tmp_key);
 }
 
 int mliMap_has(const struct mliMap *map, const char *key_str)
@@ -303,14 +325,13 @@ void _mliMap_print(struct mliMapNode *node, const uint64_t indent)
         if (node == NULL) {
                 fprintf(stderr, "NULL\n");
         } else if (node->type == MLI_MAP_TYPE_NODE) {
-                fprintf(stderr, "NODE(%lu)\n", node->key_hash);
+                fprintf(stderr, "NODE\n");
                 _mliMap_print(node->lower, indent+4);
                 _mliMap_print(node->upper, indent+4);
         } else if (node->type == MLI_MAP_TYPE_LEAF) {
                 fprintf(
-                        stderr, "LEAF(%lu, '%s')\n",
-                        node->key_hash,
-                        node->key_str);
+                        stderr, "LEAF(%s)\n",
+                        node->key.arr);
         } else {
             assert(0);
         }

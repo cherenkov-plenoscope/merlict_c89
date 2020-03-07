@@ -27,10 +27,22 @@ CASE("dynUint8") {
                         CHECK(!mliDynUint8_greater_than(&a, &b));
                 }
 
+                if (aa == bb) {
+                        CHECK(mliDynUint8_equal(&a, &b));
+                } else {
+                        CHECK(!mliDynUint8_equal(&a, &b));
+                }
+
                 CHECK(mliDynUint8_add(&a, &b, &r));
                 CHECK(r.dyn.size >= MLI_MAX2(a.dyn.size, b.dyn.size));
                 rr = mli_base255_to_decimal(&r);
                 CHECK(aa + bb == rr);
+                if (rr > bb) {
+                        CHECK(mliDynUint8_greater_than(&r, &b));
+                }
+                if (rr > aa) {
+                        CHECK(mliDynUint8_greater_than(&r, &a));
+                }
 
                 CHECK(mliDynUint8_divide_two(&a, &r));
                 rr = mli_base255_to_decimal(&r);
@@ -92,9 +104,9 @@ CASE("map2") {
         struct mliMT19937 prng = mliMT19937_init(0);
         struct mliMap map = mliMap_init();
 
-        for (i = 0; i < 1000*100; i++) {
+        for (i = 0; i < 1000; i++) {
                 char key_str[1024];
-                uint64_t value = (uint64_t)mliMT19937_uint32(&prng);
+                uint64_t value = (uint64_t)(mli_random_uniform(&prng)*(1000));
                 sprintf(key_str, "%lu", value);
 
                 if (!mliMap_has(&map, key_str)) {
