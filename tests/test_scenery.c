@@ -11,6 +11,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     struct mliColor violet = {255., 0., 255.};
     scenery.num_functions = 1u;
     scenery.num_colors = 4u;
+    scenery.num_media = 1u;
     scenery.num_surfaces = 4u;
     scenery.num_spherical_cap_hex = 1u;
     scenery.num_spheres = 1u;
@@ -40,33 +41,28 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     scenery.colors[2] = green;
     scenery.colors[3] = violet;
 
+    scenery.media[0].refraction = 0u;
+    scenery.media[0].absorbtion = 0u;
+
     scenery.surfaces[0].color = 0u;
     scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[0].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[0].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[0].medium_refraction = 0u;
-    scenery.surfaces[0].medium_absorbtion = 0u;
 
     scenery.surfaces[1].color = 1u;
     scenery.surfaces[1].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[1].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[1].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[1].medium_refraction = 0u;
-    scenery.surfaces[1].medium_absorbtion = 0u;
 
     scenery.surfaces[2].color = 2u;
     scenery.surfaces[2].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[2].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[2].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[2].medium_refraction = 0u;
-    scenery.surfaces[2].medium_absorbtion = 0u;
 
     scenery.surfaces[3].color = 3u;
     scenery.surfaces[3].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[3].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[3].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[3].medium_refraction = 0u;
-    scenery.surfaces[3].medium_absorbtion = 0u;
 
     mliVec_ncpy(
         diff_cube_sphere.vertices,
@@ -79,8 +75,8 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
         diff_cube_sphere.num_faces);
 
     for (i = 0; i < scenery.num_triangles; i++) {
-        scenery.triangles_surfaces[i].outer = 0u;
-        scenery.triangles_surfaces[i].inner = 0u;}
+        scenery.triangles_surfaces[i].outer.surface = 0u;
+        scenery.triangles_surfaces[i].inner.surface = 0u;}
 
     /* spherical_cap_hex */
     scenery.spherical_cap_hex[0].curvature_radius = 10*2.;
@@ -90,13 +86,17 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
         mliQuaternion_set_rotaxis_and_angle(
             mliVec_set(0., 0., 0.),
             0.);
-    scenery.spherical_cap_hex_surfaces[0].outer = 2u;
-    scenery.spherical_cap_hex_surfaces[0].inner = 2u;
+    scenery.spherical_cap_hex_surfaces[0].outer.surface = 2u;
+    scenery.spherical_cap_hex_surfaces[0].inner.surface = 2u;
+    scenery.spherical_cap_hex_surfaces[0].outer.medium = 0u;
+    scenery.spherical_cap_hex_surfaces[0].inner.medium = 0u;
 
     /* spheres */
     scenery.spheres[0].radius = 2.5;
-    scenery.spheres_surfaces[0].outer = 1u;
-    scenery.spheres_surfaces[0].inner = 1u;
+    scenery.spheres_surfaces[0].outer.surface = 1u;
+    scenery.spheres_surfaces[0].inner.surface = 1u;
+    scenery.spheres_surfaces[0].outer.medium = 0u;
+    scenery.spheres_surfaces[0].inner.medium = 0u;
     scenery.spheres_T[0].trans = mliVec_set(0., 0., 0.);
     scenery.spheres_T[0].rot =
         mliQuaternion_set_rotaxis_and_angle(
@@ -106,8 +106,10 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     /* cylinders */
     scenery.cylinders[0].radius = 1.;
     scenery.cylinders[0].length = 7.;
-    scenery.cylinders_surfaces[0].outer = 3u;
-    scenery.cylinders_surfaces[0].inner = 3u;
+    scenery.cylinders_surfaces[0].outer.surface = 3u;
+    scenery.cylinders_surfaces[0].inner.surface = 3u;
+    scenery.cylinders_surfaces[0].outer.medium = 0u;
+    scenery.cylinders_surfaces[0].inner.medium = 0u;
     scenery.cylinders_T[0].trans = mliVec_set(0., 3., 0.);
     scenery.cylinders_T[0].rot =
         mliQuaternion_set_rotaxis_and_angle(
@@ -116,8 +118,10 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
 
     /* hexagons */
     scenery.hexagons[0].inner_radius = 1.;
-    scenery.hexagons_surfaces[0].outer = 0u;
-    scenery.hexagons_surfaces[0].inner = 0u;
+    scenery.hexagons_surfaces[0].outer.surface = 0u;
+    scenery.hexagons_surfaces[0].inner.surface = 0u;
+    scenery.hexagons_surfaces[0].outer.medium = 0u;
+    scenery.hexagons_surfaces[0].inner.medium = 0u;
     scenery.hexagons_T[0].trans = mliVec_set(2., 3., 0.);
     scenery.hexagons_T[0].rot =
         mliQuaternion_set_rotaxis_and_angle(
@@ -127,8 +131,10 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     /* bicircleplanes */
     scenery.bicircleplanes[0].y_width = 2.;
     scenery.bicircleplanes[0].x_height = 1.;
-    scenery.bicircleplanes_surfaces[0].outer = 0u;
-    scenery.bicircleplanes_surfaces[0].inner = 0u;
+    scenery.bicircleplanes_surfaces[0].outer.surface = 0u;
+    scenery.bicircleplanes_surfaces[0].inner.surface = 0u;
+    scenery.bicircleplanes_surfaces[0].outer.medium = 0u;
+    scenery.bicircleplanes_surfaces[0].inner.medium = 0u;
     scenery.bicircleplanes_T[0].trans = mliVec_set(0., 2., 5.);
     scenery.bicircleplanes_T[0].rot =
         mliQuaternion_set_rotaxis_and_angle(
@@ -137,8 +143,10 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
 
     /* discs */
     scenery.discs[0].radius = 2.;
-    scenery.discs_surfaces[0].outer = 1u;
-    scenery.discs_surfaces[0].inner = 1u;
+    scenery.discs_surfaces[0].outer.surface = 1u;
+    scenery.discs_surfaces[0].inner.surface = 1u;
+    scenery.discs_surfaces[0].outer.medium = 0u;
+    scenery.discs_surfaces[0].inner.medium = 0u;
     scenery.discs_T[0].trans = mliVec_set(0., -2., -5.);
     scenery.discs_T[0].rot =
         mliQuaternion_set_rotaxis_and_angle(
@@ -330,16 +338,16 @@ CASE("struct mliScenery asymetric") {
     scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
     scenery.surfaces[0].boundary_layer_specular_reflection = 0u;
     scenery.surfaces[0].boundary_layer_diffuse_reflection = 0u;
-    scenery.surfaces[0].medium_refraction = 0u;
-    scenery.surfaces[0].medium_absorbtion = 0u;
+    scenery.media[0].refraction = 0u;
+    scenery.media[0].absorbtion = 0u;
     offset = mliVec_set(0, 0, -8);
     for (i = 0; i < scenery.num_spheres; i ++) {
         const double phi = 2.*MLI_PI*(double)(i)/scenery.num_spheres;
         const double ii = (double)(i)/scenery.num_spheres;
         const double zoff = 0.5 - ii;
         scenery.spheres[i].radius = 0.1;
-        scenery.spheres_surfaces[i].outer = 0u;
-        scenery.spheres_surfaces[i].inner = 0u;
+        scenery.spheres_surfaces[i].outer.surface = 0u;
+        scenery.spheres_surfaces[i].inner.surface = 0u;
         scenery.spheres_T[i].trans = mliVec_set(
             5*cos(phi) + offset.x,
             -5*sin(phi) + offset.y,

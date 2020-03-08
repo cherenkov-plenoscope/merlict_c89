@@ -17,6 +17,7 @@
 #include "mliBiCirclePlane.h"
 #include "mliDisc.h"
 #include "mliSurface.h"
+#include "mliMedium.h"
 #include "mliSurfaces.h"
 
 #define MLI_TRIANGLE 0u
@@ -36,6 +37,9 @@ struct mliScenery {
 
         uint32_t num_surfaces;
         struct mliSurface *surfaces;
+
+        uint32_t num_media;
+        struct mliMedium *media;
 
         uint32_t num_vertices;
         struct mliVec *vertices;
@@ -83,6 +87,9 @@ struct mliScenery mliScenery_init()
 
         s.num_colors = 0u;
         s.colors = NULL;
+
+        s.num_media = 0u;
+        s.media = NULL;
 
         s.num_surfaces = 0u;
         s.surfaces = NULL;
@@ -141,6 +148,13 @@ void _mliScenery_free_colors(struct mliScenery *scenery)
         free(scenery->colors);
         scenery->num_colors = 0;
 }
+
+void _mliScenery_free_media(struct mliScenery *scenery)
+{
+        free(scenery->media);
+        scenery->num_media = 0;
+}
+
 void _mliScenery_free_surfaces(struct mliScenery *scenery)
 {
         free(scenery->surfaces);
@@ -208,6 +222,7 @@ void mliScenery_free(struct mliScenery *scenery)
 {
         _mliScenery_free_functions(scenery);
         _mliScenery_free_colors(scenery);
+        _mliScenery_free_media(scenery);
         _mliScenery_free_surfaces(scenery);
         _mliScenery_free_vertices_and_triangles(scenery);
         _mliScenery_free_spherical_cap_hex(scenery);
@@ -326,6 +341,15 @@ error:
         return 0;
 }
 
+int _mliScenery_malloc_media(struct mliScenery *s)
+{
+        mli_malloc(s->media, struct mliMedium, s->num_media);
+        return 1;
+error:
+        return 0;
+}
+
+
 int _mliScenery_malloc_surfaces(struct mliScenery *s)
 {
         mli_malloc(s->surfaces, struct mliSurface, s->num_surfaces);
@@ -338,6 +362,7 @@ int mliScenery_malloc(struct mliScenery *s)
 {
         mli_check_mem(_mliScenery_malloc_functions(s));
         mli_check_mem(_mliScenery_malloc_colors(s));
+        mli_check_mem(_mliScenery_malloc_media(s));
         mli_check_mem(_mliScenery_malloc_surfaces(s));
         mli_check_mem(_mliScenery_malloc_vertices_and_triangles(s));
         mli_check_mem(_mliScenery_malloc_spherical_cap_hex(s));

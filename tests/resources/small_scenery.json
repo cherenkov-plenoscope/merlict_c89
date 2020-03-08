@@ -15,35 +15,31 @@
     [22, 191, 49],
     [22, 91, 149],
   ],
+  "media": [
+    {"refraction": 0, "absorbtion": 0},
+    {"refraction": 1, "absorbtion": 0},
+  ],
   "surfaces": [
     {
       "material": 100,
-      "medium_refraction": 0,
-      "medium_absorbtion": 0,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
       "color": 0
     },
     {
       "material": 100,
-      "medium_refraction": 0,
-      "medium_absorbtion": 0,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
       "color": 1
     },
     {
       "material": 100,
-      "medium_refraction": 0,
-      "medium_absorbtion": 0,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
       "color": 2
     },
     {
       "material": 100,
-      "medium_refraction": 1,
-      "medium_absorbtion": 0,
       "boundary_layer_specular_reflection": 0,
       "boundary_layer_diffuse_reflection": 0,
       "color": 3
@@ -56,7 +52,10 @@
       "pos": [0, 0, -2],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 100,
-      "surface": {"inner": 0, "outer": 0}
+      "surface": {
+        "inner": {"medium": 0, "surface": 0},
+        "outer": {"medium": 0, "surface": 0}
+      }
     },
     {
       "type": "Frame",
@@ -70,7 +69,10 @@
           "pos": [0, 0, 3],
           "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
           "radius": 1.5,
-          "surface": {"inner": 2, "outer": 2}
+          "surface": {
+            "inner": {"medium": 0, "surface": 2},
+            "outer": {"medium": 0, "surface": 2}
+          }
         },
         {
           "type": "Cylinder",
@@ -79,7 +81,10 @@
           "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
           "radius": 0.25,
           "length": 1.5,
-          "surface": {"inner": 1, "outer": 1}
+          "surface": {
+            "inner": {"medium": 0, "surface": 1},
+            "outer": {"medium": 0, "surface": 1}
+          }
         }
       ]
     },
@@ -88,7 +93,10 @@
       "id": 42,
       "pos": [-5, 5, 1],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-      "surface": {"inner": 1, "outer": 1},
+      "surface": {
+        "inner": {"medium": 0, "surface": 1},
+        "outer": {"medium": 0, "surface": 1}
+      },
       "vertices": [
         [0, 0, 0],
         [1, 0, 0],
@@ -108,7 +116,10 @@
       "pos": [3, 3, 1.5],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.5,
-      "surface": {"inner": 3, "outer": 3}
+      "surface": {
+        "inner": {"medium": 0, "surface": 3},
+        "outer": {"medium": 0, "surface": 3}
+      },
     },
   ]
 }

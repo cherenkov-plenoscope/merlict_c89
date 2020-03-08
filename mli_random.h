@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include <stdint.h>
+#include <assert.h>
 #include "mliVec.h"
 
 double mli_random_uniform(struct mliMT19937 *prng)

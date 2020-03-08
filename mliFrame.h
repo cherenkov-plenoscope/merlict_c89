@@ -64,8 +64,10 @@ struct mliFrame mliFrame_init() {
         0.);
     f.frame2root = f.frame2mother;
     f.type = MLI_FRAME;
-    f.surfaces.inner = 0u;
-    f.surfaces.outer = 0u;
+    f.surfaces.inner.surface = 0u;
+    f.surfaces.outer.surface = 0u;
+    f.surfaces.inner.medium = 0u;
+    f.surfaces.outer.medium = 0u;
     return f;}
 
 int mliFrame_malloc(struct mliFrame *f, const uint64_t type) {
@@ -249,7 +251,7 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention) {
     if (f->type != MLI_FRAME) {
         printf("%*s", (int)indention, "");
         printf("|-surface (inner: %u, outer: %u)\n",
-            f->surfaces.inner, f->surfaces.outer);
+            f->surfaces.inner.surface, f->surfaces.outer.surface);
     }
     for (c = 0; c < f->children.dyn.size; c++) {
         const struct mliFrame *child = f->children.arr[c];

@@ -49,6 +49,7 @@ struct mliColor mli_trace(
     ) {
         struct mliIntersection global_light_intersection;
         struct mliRay line_of_sight_to_source;
+        struct mliSide side;
         struct mliSurface surface;
         struct mliVec dir_to_source = {1., 1., 3.};
 
@@ -56,7 +57,8 @@ struct mliColor mli_trace(
             intersection.position,
             dir_to_source);
 
-        surface = _mli_surface_going_to(scenery, &intersection);
+        side = _mli_side_going_to(scenery, &intersection);
+        surface = scenery->surfaces[side.surface];
         color = scenery->colors[surface.color];
 
         if (mli_first_casual_intersection(

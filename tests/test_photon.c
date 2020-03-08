@@ -6,7 +6,10 @@ CASE("simple propagation") {
     struct mliOcTree octree;
     struct mliPhotonHistory history = mliPhotonHistory_init(16u);
     struct mliIntersection intersection;
+    struct mliSide side_coming_from, side_going_to;
     struct mliSurface surf_coming_from, surf_going_to;
+    struct mliMedium medi_coming_from, medi_going_to;
+
     struct mliPhoton photon;
     photon.ray =  mliRay_set(
             mliVec_set(0, 0, -3),
@@ -31,18 +34,26 @@ CASE("simple propagation") {
         intersection.surface_normal, mliVec_set(0, 0, 1), 1e-9));
     CHECK_MARGIN(intersection.distance_of_ray, 3., 1e-9);
 
-    surf_coming_from = _mli_surface_coming_from(&scenery, &intersection);
-    surf_going_to = _mli_surface_going_to(&scenery, &intersection);
+    CHECK(scenery.num_media == 2);
+    CHECK(scenery.num_functions == 2);
+
+    side_coming_from = _mli_side_coming_from(&scenery, &intersection);
+    surf_coming_from = scenery.surfaces[side_coming_from.surface];
+    medi_coming_from = scenery.media[side_coming_from.medium];
+
+    side_going_to = _mli_side_going_to(&scenery, &intersection);
+    surf_going_to = scenery.surfaces[side_going_to.surface];
+    medi_going_to = scenery.media[side_going_to.medium];
 
     CHECK(surf_going_to.material == MLI_MATERIAL_TRANSPARENT);
-    CHECK(surf_going_to.medium_refraction == 0);
-    CHECK(surf_going_to.medium_absorbtion == 2);
     CHECK(surf_going_to.color == 0);
+    CHECK(medi_going_to.refraction == 0);
+    CHECK(medi_going_to.absorbtion == 2);
 
     CHECK(surf_coming_from.material == MLI_MATERIAL_TRANSPARENT);
-    CHECK(surf_coming_from.medium_refraction == 1);
-    CHECK(surf_coming_from.medium_absorbtion == 2);
     CHECK(surf_coming_from.color == 1);
+    CHECK(medi_coming_from.refraction == 1);
+    CHECK(medi_coming_from.absorbtion == 2);
 
     CHECK(mliPhotonHistory_malloc(&history));
     history.actions[0].type = MLI_PHOTON_CREATION;

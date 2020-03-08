@@ -261,6 +261,7 @@ CASE("parse mliUserScenery") {
     struct mliUserScenery uscn = mliUserScenery_init();
     struct mliFrame *f;
     struct mliSurface *uscn_srfs;
+    struct mliMedium *uscn_medi;
     CHECK(mliJson_malloc_from_file(&json,
         "tests/resources/small_scenery.json"));
     CHECK(mliJson_write_debug(&json,
@@ -299,34 +300,34 @@ CASE("parse mliUserScenery") {
     /* surfaces */
     CHECK(uscn.surface_resources.num_surfaces == 4u);
     uscn_srfs = uscn.surface_resources.surfaces;
+    uscn_medi = uscn.surface_resources.media;
 
+    CHECK(uscn.surface_resources.num_media == 2u);
+    CHECK(uscn_medi[0].refraction == 0u);
+    CHECK(uscn_medi[0].absorbtion == 0u);
+    CHECK(uscn_medi[1].refraction == 1u);
+    CHECK(uscn_medi[1].absorbtion == 0u);
+
+    CHECK(uscn.surface_resources.num_surfaces == 4u);
     CHECK(uscn_srfs[0].color == 0u);
     CHECK(uscn_srfs[0].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[0].boundary_layer_specular_reflection == 0u);
     CHECK(uscn_srfs[0].boundary_layer_diffuse_reflection == 0u);
-    CHECK(uscn_srfs[0].medium_refraction == 0u);
-    CHECK(uscn_srfs[0].medium_absorbtion == 0u);
 
     CHECK(uscn_srfs[1].color == 1u);
     CHECK(uscn_srfs[1].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[1].boundary_layer_specular_reflection == 0u);
     CHECK(uscn_srfs[1].boundary_layer_diffuse_reflection == 0u);
-    CHECK(uscn_srfs[1].medium_refraction == 0u);
-    CHECK(uscn_srfs[1].medium_absorbtion == 0u);
 
     CHECK(uscn_srfs[2].color == 2u);
     CHECK(uscn_srfs[2].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[2].boundary_layer_specular_reflection == 0u);
     CHECK(uscn_srfs[2].boundary_layer_diffuse_reflection == 0u);
-    CHECK(uscn_srfs[2].medium_refraction == 0u);
-    CHECK(uscn_srfs[2].medium_absorbtion == 0u);
 
     CHECK(uscn_srfs[3].color == 3u);
     CHECK(uscn_srfs[3].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[3].boundary_layer_specular_reflection == 0u);
     CHECK(uscn_srfs[3].boundary_layer_diffuse_reflection == 0u);
-    CHECK(uscn_srfs[3].medium_refraction == 1u);
-    CHECK(uscn_srfs[3].medium_absorbtion == 0u);
 
     /* frames */
     CHECK(uscn.root.children.dyn.size == 4u);

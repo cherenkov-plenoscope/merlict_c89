@@ -367,7 +367,7 @@ int mlivr_run_interactive_viewer(
                         if (has_probing_intersection) {
                                 char type_string[1024];
                                 const struct mliIndex object_index =
-                                        __mliScenery_resolve_index(
+                                        _mliScenery_resolve_index(
                                                 scenery,
                                                 probing_intersection.
                                                         object_idx);

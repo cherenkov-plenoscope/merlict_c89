@@ -159,6 +159,7 @@ int mliScenery_write_to_path(
         /* nums */
         mli_fwrite(&scenery->num_functions, sizeof(uint32_t), 1u, f);
         mli_fwrite(&scenery->num_colors, sizeof(uint32_t), 1u, f);
+        mli_fwrite(&scenery->num_media, sizeof(uint32_t), 1u, f);
         mli_fwrite(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
         mli_fwrite(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
         mli_fwrite(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
@@ -178,6 +179,13 @@ int mliScenery_write_to_path(
                 scenery->colors,
                 sizeof(struct mliColor),
                 scenery->num_colors,
+                f);
+
+        /* media */
+        mli_fwrite(
+                scenery->media,
+                sizeof(struct mliMedium),
+                scenery->num_media,
                 f);
 
         /* surfaces */

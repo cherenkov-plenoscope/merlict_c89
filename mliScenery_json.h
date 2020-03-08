@@ -31,12 +31,22 @@ int __mliScenery_surface_capacity_from_json(
         "Expected key 'colors' to point to a json-array.")
     surface_resources->num_colors = json->tokens[token + 1].size;
 
+
+    mli_check(
+        mliJson_find_key(json, 0, "media", &token),
+        "Expected scenery-json to have key 'media'.");
+    mli_check(
+        json->tokens[token + 1].type == JSMN_ARRAY,
+        "Expected key 'media' to point to a json-array.")
+    surface_resources->num_media = json->tokens[token + 1].size;
+
+
     mli_check(
         mliJson_find_key(json, 0, "surfaces", &token),
         "Expected scenery-json to have key 'surfaces'.");
     mli_check(
         json->tokens[token + 1].type == JSMN_ARRAY,
-        "Expected key 'colors' to point to a json-array.")
+        "Expected key 'surfaces' to point to a json-array.")
     surface_resources->num_surfaces = json->tokens[token + 1].size;
     return 1;
 error:
@@ -103,6 +113,65 @@ int __mliScenery_assign_colors_from_json(
 error:
     return 0;}
 
+int __mliMedium_from_json(
+    struct mliMedium *medium,
+    const struct mliJson *json,
+    const uint64_t token_s)
+{
+    int64_t idx_tmp;
+    uint64_t token_tmp;
+
+    mli_check(mliJson_find_key(json, token_s, "refraction", &token_tmp),
+        "Expected json-surface-item to contain key 'refraction'.");
+    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
+        "Could not parse medium_refraction from json.");
+    mli_check(idx_tmp >= 0, "Expected medium_refraction-index to be positive.");
+    medium->refraction = idx_tmp;
+
+    mli_check(mliJson_find_key(json, token_s, "absorbtion", &token_tmp),
+        "Expected json-surface-item to contain key 'absorbtion'.");
+    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
+        "Could not parse medium_absorbtion from json.");
+    mli_check(idx_tmp >= 0, "Expected medium_absorbtion-index to be positive.");
+    medium->absorbtion = idx_tmp;
+
+    return 1;
+error:
+    return 0;
+}
+
+int __mliScenery_assign_media_from_json(
+    struct mliScenery *surface_resources,
+    const struct mliJson *json)
+{
+    uint64_t token;
+    uint64_t token_surfaces;
+    uint64_t m;
+    mli_check(
+        mliJson_find_key(json, 0, "media", &token),
+        "Expected scenery-json to have key 'media'.");
+    token_surfaces = token + 1;
+    mli_check(
+        json->tokens[token_surfaces].type == JSMN_ARRAY,
+        "Expected key 'media' to point to a json-array.")
+    mli_check(
+        surface_resources->num_media ==
+        (uint64_t)json->tokens[token_surfaces].size,
+        "Expected num_media in struct mliScenery to match json-array.");
+    for (m = 0; m < surface_resources->num_media; m++) {
+        uint64_t token_m = mliJson_array_child_token(json, token_surfaces, m);
+        mli_check(
+            __mliMedium_from_json(
+                &surface_resources->media[m],
+                json,
+                token_m),
+            "Could not copy medium from json.");
+    }
+    return 1;
+error:
+    return 0;
+}
+
 int __mliSurface_from_json(
     struct mliSurface *surface,
     const struct mliJson *json,
@@ -117,20 +186,6 @@ int __mliSurface_from_json(
         "Could not parse material from json.");
     mli_check(idx_tmp >= 0, "Expected material-index to be positive.");
     surface->material = idx_tmp;
-
-    mli_check(mliJson_find_key(json, token_s, "medium_refraction", &token_tmp),
-        "Expected json-surface-item to contain key 'medium_refraction'.");
-    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
-        "Could not parse medium_refraction from json.");
-    mli_check(idx_tmp >= 0, "Expected medium_refraction-index to be positive.");
-    surface->medium_refraction = idx_tmp;
-
-    mli_check(mliJson_find_key(json, token_s, "medium_absorbtion", &token_tmp),
-        "Expected json-surface-item to contain key 'medium_absorbtion'.");
-    mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
-        "Could not parse medium_absorbtion from json.");
-    mli_check(idx_tmp >= 0, "Expected medium_absorbtion-index to be positive.");
-    surface->medium_absorbtion = idx_tmp;
 
     mli_check(mliJson_find_key(json, token_s, "boundary_layer_specular_reflection", &token_tmp),
         "Expected json-surface-item to contain key 'boundary_layer_specular_reflection'.");
@@ -357,34 +412,58 @@ int __mliFrame_set_id_pos_rot(
 error:
     return 0;}
 
+int __mliSide_set(
+    struct mliSide *side,
+    const struct mliJson *json,
+    const uint64_t side_token)
+{
+    uint64_t token_medium, token_surface;
+    int64_t medium_idx, surface_idx;
+
+    mli_check(
+        mliJson_find_key(json, side_token + 1, "medium", &token_medium),
+        "Expected key 'medium' in side.");
+    mli_check(
+        mliJson_find_key(json, side_token + 1, "surface", &token_surface),
+        "Expected key 'surface' in side.");
+
+    mli_check(
+        mliJson_as_int64(json, token_medium + 1, &medium_idx),
+        "Failed to parse mliSides' 'side->medium' integer from json.");
+    mli_check(medium_idx >= 0, "Expected side.medium >= 0.");
+    mli_check(
+        mliJson_as_int64(json, token_surface + 1, &surface_idx),
+        "Failed to parse mliSides' 'side->surface' integer from json.");
+    mli_check(surface_idx >= 0, "Expected side.surface >= 0.");
+
+    side->medium = medium_idx;
+    side->surface = surface_idx;
+    return 1;
+error:
+    return 0;
+}
+
 int __mliFrame_set_surface_idx(
     struct mliFrame *frame,
     const struct mliJson *json,
     const uint64_t token)
 {
-    uint64_t token_surface, token_inner, token_outer;
-    int64_t inner_surface_idx, outer_surface_idx;
+    uint64_t token_surface, token_inner_side, token_outer_side;
     mli_check(
         mliJson_find_key(json, token, "surface", &token_surface),
         "Expected primitive (except for Frame) to have key 'surface'.");
 
     mli_check(
-        mliJson_find_key(json, token_surface + 1, "inner", &token_inner),
+        mliJson_find_key(json, token_surface + 1, "inner", &token_inner_side),
         "Expected key 'inner' in surface.");
     mli_check(
-        mliJson_find_key(json, token_surface + 1, "outer", &token_outer),
+        mliJson_find_key(json, token_surface + 1, "outer", &token_outer_side),
         "Expected key 'outer' in surface.");
 
-    mli_check(
-        mliJson_as_int64(json, token_inner + 1, &inner_surface_idx),
-        "Failed to parse mliFrame's 'surface->inner' integer from json.");
-    mli_check(inner_surface_idx >= 0, "Expected inner_surface_idx >= 0.");
-    mli_check(
-        mliJson_as_int64(json, token_outer + 1, &outer_surface_idx),
-        "Failed to parse mliFrame's 'surface->outer' integer from json.");
-    mli_check(outer_surface_idx >= 0, "Expected outer_surface_idx >= 0.");
-    frame->surfaces.inner = inner_surface_idx;
-    frame->surfaces.outer = outer_surface_idx;
+    mli_check(__mliSide_set(&frame->surfaces.inner, json, token_inner_side),
+        "Failed to parse inner side.")
+    mli_check(__mliSide_set(&frame->surfaces.outer, json, token_outer_side),
+        "Failed to parse outer side.")
     return 1;
 error:
     return 0;
@@ -755,6 +834,9 @@ int mliUserScenery_malloc_from_json(struct mliUserScenery *uscn, const struct ml
     mli_check(
         __mliScenery_assign_colors_from_json(&uscn->surface_resources, json),
         "Could not copy colors from json.");
+    mli_check(
+        __mliScenery_assign_media_from_json(&uscn->surface_resources, json),
+        "Could not copy media from json.");
     mli_check(
         __mliScenery_assign_surfaces_from_json(&uscn->surface_resources, json),
         "Could not copy surfaces from json.");

@@ -153,6 +153,7 @@ int mliScenery_malloc_from_mliUserScenery(
     /* capacity of surfaces */
     scenery->num_functions = uscn->surface_resources.num_functions;
     scenery->num_colors = uscn->surface_resources.num_colors;
+    scenery->num_media = uscn->surface_resources.num_media;
     scenery->num_surfaces = uscn->surface_resources.num_surfaces;
 
     /* capacity of primitives */
@@ -179,9 +180,14 @@ int mliScenery_malloc_from_mliUserScenery(
             "Failed to copy function to mliScenery.");
     }
     for (i = 0; i < scenery->num_colors; i++) {
-        scenery->colors[i] = uscn->surface_resources.colors[i];}
+        scenery->colors[i] = uscn->surface_resources.colors[i];
+    }
+    for (i = 0; i < scenery->num_media; i++) {
+        scenery->media[i] = uscn->surface_resources.media[i];
+    }
     for (i = 0; i < scenery->num_surfaces; i++) {
-        scenery->surfaces[i] = uscn->surface_resources.surfaces[i];}
+        scenery->surfaces[i] = uscn->surface_resources.surfaces[i];
+    }
 
     mli_check(
         __mliScenery_set_primitive(scenery, &uscn->root, &count),

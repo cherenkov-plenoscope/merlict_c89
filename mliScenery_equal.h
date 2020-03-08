@@ -34,6 +34,22 @@ int _mliScenery_colors_equal(
         return 1;
 }
 
+int _mliScenery_media_equal(
+        const struct mliScenery *a,
+        const struct mliScenery *b)
+{
+        uint64_t i;
+        if (a->num_media != b->num_media ) return 0;
+        for (i = 0; i < a->num_media; i++) {
+                fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
+                if (!mliMedium_is_equal(
+                        a->media[i],
+                        b->media[i]))
+                        return 0;
+        }
+        return 1;
+}
+
 int _mliScenery_surfaces_equal(
         const struct mliScenery *a,
         const struct mliScenery *b)
@@ -225,6 +241,7 @@ int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
 {
         if (!_mliScenery_functions_equal(a, b)) return 0;
         if (!_mliScenery_colors_equal(a, b)) return 0;
+        if (!_mliScenery_media_equal(a, b)) return 0;
         if (!_mliScenery_surfaces_equal(a, b)) return 0;
         if (!_mliScenery_triangles_equal(a, b)) return 0;
         if (!_mliScenery_spherical_cap_hex_equal(a, b)) return 0;

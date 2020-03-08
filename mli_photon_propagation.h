@@ -26,22 +26,22 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec) {
     struct mliPhotonInteraction phia;
-    struct mliSurfaces surfaces;
-    struct mliSurface surf_coming_from, surf_going_to;
-    surfaces = mliScenery_object_surfaces(scenery, isec->object_idx);
-    if (isec->from_outside_to_inside) {
-        surf_coming_from = scenery->surfaces[surfaces.outer];
-        surf_going_to = scenery->surfaces[surfaces.inner];
-    } else {
-        surf_coming_from = scenery->surfaces[surfaces.inner];
-        surf_going_to = scenery->surfaces[surfaces.outer];
-    }
+
+    struct mliSide side_coming_from, side_going_to;
+    struct mliMedium medi_coming_from, medi_going_to;
+
+    side_coming_from = _mli_side_coming_from(scenery, isec);
+    medi_coming_from = scenery->media[side_coming_from.medium];
+
+    side_going_to = _mli_side_going_to(scenery, isec);
+    medi_going_to = scenery->media[side_going_to.medium];
+
     phia.type = type;
     phia.position = isec->position;
-    phia.refraction_coming_from = surf_coming_from.medium_refraction;
-    phia.refraction_going_to = surf_going_to.medium_refraction;
-    phia.absorbtion_coming_from = surf_coming_from.medium_absorbtion;
-    phia.absorbtion_going_to = surf_going_to.medium_absorbtion;
+    phia.refraction_coming_from = medi_coming_from.refraction;
+    phia.refraction_going_to = medi_going_to.refraction;
+    phia.absorbtion_coming_from = medi_coming_from.absorbtion;
+    phia.absorbtion_going_to = medi_going_to.absorbtion;
     phia.distance_of_ray = isec->distance_of_ray;
     phia._object_idx = isec->object_idx;
     phia._from_outside_to_inside = isec->from_outside_to_inside;
@@ -54,14 +54,17 @@ int _mli_phong(
     double specular;
     double diffuse;
     double rnd;
-    struct mliSurface surface = _mli_surface_coming_from(env->scenery, isec);
+    struct mliSurface surface_coming_from;
+    struct mliSide side_coming_from = _mli_side_coming_from(env->scenery, isec);
+    surface_coming_from = env->scenery->surfaces[side_coming_from.surface];
+
     mli_check(mliFunc_evaluate(
-        &env->scenery->functions[surface.boundary_layer_diffuse_reflection],
+        &env->scenery->functions[surface_coming_from.boundary_layer_diffuse_reflection],
         env->photon->wavelength,
         &diffuse),
         "Failed to eval. diffuse reflection for wavelength.");
     mli_check(mliFunc_evaluate(
-        &env->scenery->functions[surface.boundary_layer_specular_reflection],
+        &env->scenery->functions[surface_coming_from.boundary_layer_specular_reflection],
         env->photon->wavelength,
         &specular),
         "Failed to eval. specular reflection for wavelength.");
@@ -142,12 +145,14 @@ int _mli_probability_passing_medium_coming_from(
     const struct mliIntersection *isec,
     double *probability_passing)
 {
-    const struct mliSurface surface_coming_from = _mli_surface_coming_from(
+    double one_over_e_way;
+    struct mliMedium medium_coming_from;
+    const struct mliSide side_coming_from = _mli_side_coming_from(
         scenery,
         isec);
-    double one_over_e_way;
+    medium_coming_from = scenery->media[side_coming_from.medium];
     mli_check(mliFunc_evaluate(
-        &scenery->functions[surface_coming_from.medium_absorbtion],
+        &scenery->functions[medium_coming_from.absorbtion],
         photon->wavelength,
         &one_over_e_way),
         "Photon's wavelength is out of range to "
@@ -211,9 +216,11 @@ int _mli_interact_with_object(
     struct mliEnv *env,
     const struct mliIntersection *isec)
 {
-    const struct mliSurface surface_coming_from = _mli_surface_coming_from(
+    struct mliSurface surface_coming_from;
+    const struct mliSide side_coming_from = _mli_side_coming_from(
         env->scenery,
         isec);
+    surface_coming_from = env->scenery->surfaces[side_coming_from.surface];
     switch (surface_coming_from.material) {
         case MLI_MATERIAL_TRANSPARENT:
             mli_check(

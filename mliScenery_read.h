@@ -165,6 +165,7 @@ int mliScenery_read_from_path(struct mliScenery *scenery, const char* path)
         /* nums */
         mli_fread(&scenery->num_functions, sizeof(uint32_t), 1u, f);
         mli_fread(&scenery->num_colors, sizeof(uint32_t), 1u, f);
+        mli_fread(&scenery->num_media, sizeof(uint32_t), 1u, f);
         mli_fread(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
         mli_fread(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
         mli_fread(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
@@ -186,6 +187,13 @@ int mliScenery_read_from_path(struct mliScenery *scenery, const char* path)
                 scenery->colors,
                 sizeof(struct mliColor),
                 scenery->num_colors,
+                f);
+
+        /* media */
+        mli_fread(
+                scenery->media,
+                sizeof(struct mliMedium),
+                scenery->num_media,
                 f);
 
         /* surfaces */

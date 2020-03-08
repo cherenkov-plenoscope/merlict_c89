@@ -11,8 +11,6 @@
 struct mliSurface {
     uint32_t material;
 
-    uint32_t medium_refraction;
-    uint32_t medium_absorbtion;
     uint32_t boundary_layer_specular_reflection;
     uint32_t boundary_layer_diffuse_reflection;
 
@@ -23,8 +21,6 @@ struct mliSurface {
 
 int mliSurface_is_equal(const struct mliSurface a, const struct mliSurface b) {
     if (a.material != b.material) return 0;
-    if (a.medium_refraction != b.medium_refraction) return 0;
-    if (a.medium_absorbtion != b.medium_absorbtion) return 0;
     if (a.boundary_layer_specular_reflection !=
         b.boundary_layer_specular_reflection) return 0;
     if (a.boundary_layer_diffuse_reflection !=

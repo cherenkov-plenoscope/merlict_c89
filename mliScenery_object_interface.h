@@ -295,7 +295,7 @@ struct mliSurfaces mliScenery_object_surfaces(
         const struct mliScenery *scenery,
         const uint64_t idx)
 {
-        struct mliSurfaces null = {0, 0};
+        struct mliSurfaces null_surface;
         struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
         switch(i.type) {
                 case MLI_TRIANGLE:
@@ -320,7 +320,11 @@ struct mliSurfaces mliScenery_object_surfaces(
                         return scenery->discs_surfaces[i.idx];
                         break;
         }
-        return null;
+        null_surface.inner.surface = 0;
+        null_surface.outer.surface = 0;
+        null_surface.inner.medium = 0;
+        null_surface.outer.medium = 0;
+        return null_surface;
 }
 
 #endif
