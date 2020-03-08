@@ -23,8 +23,14 @@
 #include "mliQuadraticEquation.h"
 #include "mliHomTra.h"
 #include "mliCamera.h"
+
 #include "mliScenery.h"
+#include "mliScenery_write.h"
+#include "mliScenery_read.h"
+#include "mliScenery_equal.h"
+#include "mliScenery_valid.h"
 #include "mliScenery_object_interface.h"
+
 #include "mliTracer.h"
 #include "mliRay_OBB.h"
 #include "mliHexagonalPrismZ.h"
