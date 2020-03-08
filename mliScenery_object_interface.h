@@ -39,7 +39,7 @@ uint64_t mliScenery_num_objects(const struct mliScenery *scenery)
         return last;
 }
 
-struct mliIndex __mliScenery_resolve_index(
+struct mliIndex _mliScenery_resolve_index(
         const struct mliScenery *scenery,
         const uint64_t idx)
 {
@@ -104,7 +104,7 @@ int mliScenery_overlap_obb(
         const uint64_t idx,
         const struct mliOBB obb)
 {
-        struct mliIndex i = __mliScenery_resolve_index(scenery, idx);
+        struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
         switch(i.type) {
                 case MLI_TRIANGLE:
                         return mliTriangle_has_overlap_obb(
@@ -161,7 +161,7 @@ struct mliOBB mliScenery_obb(
         const uint64_t idx)
 {
         struct mliOBB obb;
-        struct mliIndex i = __mliScenery_resolve_index(scenery, idx);
+        struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
         switch(i.type) {
                 case MLI_TRIANGLE:
                         return mliTriangle_obb(
@@ -231,7 +231,7 @@ int mliScenery_intersection(
         const uint64_t idx,
         struct mliIntersection *intersection)
 {
-        struct mliIndex i = __mliScenery_resolve_index(scenery, idx);
+        struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
         intersection->object_idx = idx;
         switch(i.type) {
                 case MLI_TRIANGLE:
@@ -296,7 +296,7 @@ struct mliSurfaces mliScenery_object_surfaces(
         const uint64_t idx)
 {
         struct mliSurfaces null = {0, 0};
-        struct mliIndex i = __mliScenery_resolve_index(scenery, idx);
+        struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
         switch(i.type) {
                 case MLI_TRIANGLE:
                         return scenery->triangles_surfaces[i.idx];
