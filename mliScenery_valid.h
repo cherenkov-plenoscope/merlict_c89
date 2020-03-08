@@ -4,7 +4,7 @@
 
 #include "mliScenery.h"
 
-int mliScenery_valid_surfaces(const struct mliScenery *scenery)
+int _mliScenery_valid_surfaces(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_surfaces; i++) {
@@ -31,7 +31,7 @@ int mliScenery_valid_surfaces(const struct mliScenery *scenery)
         return 1;
 }
 
-int mliScenery_valid_triangles(const struct mliScenery *scenery)
+int _mliScenery_valid_triangles(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_triangles; i++) {
@@ -50,7 +50,7 @@ int mliScenery_valid_triangles(const struct mliScenery *scenery)
         return 1;
 }
 
-int mliScenery_valid_spherical_cap_hex(const struct mliScenery *scenery)
+int _mliScenery_valid_spherical_cap_hex(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_spherical_cap_hex; i++) {
@@ -64,7 +64,7 @@ int mliScenery_valid_spherical_cap_hex(const struct mliScenery *scenery)
         return 1;
 }
 
-int mliScenery_valid_spheres(const struct mliScenery *scenery)
+int _mliScenery_valid_spheres(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_spheres; i++) {
@@ -78,7 +78,7 @@ int mliScenery_valid_spheres(const struct mliScenery *scenery)
         return 1;
 }
 
-int mliScenery_valid_cylinders(const struct mliScenery *scenery)
+int _mliScenery_valid_cylinders(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_cylinders; i++) {
@@ -92,7 +92,7 @@ int mliScenery_valid_cylinders(const struct mliScenery *scenery)
         return 1;
 }
 
-int mliScenery_valid_hexagons(const struct mliScenery *scenery)
+int _mliScenery_valid_hexagons(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_hexagons; i++) {
@@ -106,7 +106,7 @@ int mliScenery_valid_hexagons(const struct mliScenery *scenery)
         return 1;
 }
 
-int mliScenery_valid_bicircleplanes(const struct mliScenery *scenery)
+int _mliScenery_valid_bicircleplanes(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_bicircleplanes; i++) {
@@ -122,7 +122,7 @@ int mliScenery_valid_bicircleplanes(const struct mliScenery *scenery)
         return 1;
 }
 
-int mliScenery_valid_disc(const struct mliScenery *scenery)
+int _mliScenery_valid_disc(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_discs; i++) {
@@ -140,21 +140,21 @@ int mliScenery_valid_disc(const struct mliScenery *scenery)
 
 int mliScenery_valid(const struct mliScenery *scenery)
 {
-        if (!mliScenery_valid_surfaces(scenery))
+        if (!_mliScenery_valid_surfaces(scenery))
                 return 0;
-        if (!mliScenery_valid_triangles(scenery))
+        if (!_mliScenery_valid_triangles(scenery))
                 return 0;
-        if (!mliScenery_valid_spherical_cap_hex(scenery))
+        if (!_mliScenery_valid_spherical_cap_hex(scenery))
                 return 0;
-        if (!mliScenery_valid_spheres(scenery))
+        if (!_mliScenery_valid_spheres(scenery))
                 return 0;
-        if (!mliScenery_valid_cylinders(scenery))
+        if (!_mliScenery_valid_cylinders(scenery))
                 return 0;
-        if (!mliScenery_valid_hexagons(scenery))
+        if (!_mliScenery_valid_hexagons(scenery))
                 return 0;
-        if (!mliScenery_valid_bicircleplanes(scenery))
+        if (!_mliScenery_valid_bicircleplanes(scenery))
                 return 0;
-        if (!mliScenery_valid_disc(scenery))
+        if (!_mliScenery_valid_disc(scenery))
                 return 0;
         return 1;
 }

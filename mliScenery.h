@@ -126,7 +126,7 @@ struct mliScenery mliScenery_init()
         return s;
 }
 
-void __mliScenery_free_functions(struct mliScenery *scenery)
+void _mliScenery_free_functions(struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_functions; i++) {
@@ -136,18 +136,18 @@ void __mliScenery_free_functions(struct mliScenery *scenery)
         scenery->num_functions = 0;
 }
 
-void __mliScenery_free_colors(struct mliScenery *scenery)
+void _mliScenery_free_colors(struct mliScenery *scenery)
 {
         free(scenery->colors);
         scenery->num_colors = 0;
 }
-void __mliScenery_free_surfaces(struct mliScenery *scenery)
+void _mliScenery_free_surfaces(struct mliScenery *scenery)
 {
         free(scenery->surfaces);
         scenery->num_surfaces = 0;
 }
 
-void __mliScenery_free_vertices_and_triangles(struct mliScenery *scenery)
+void _mliScenery_free_vertices_and_triangles(struct mliScenery *scenery)
 {
         free(scenery->vertices);
         scenery->num_vertices = 0;
@@ -156,7 +156,7 @@ void __mliScenery_free_vertices_and_triangles(struct mliScenery *scenery)
         scenery->num_triangles = 0;
 }
 
-void __mliScenery_free_spherical_cap_hex(struct mliScenery *scenery)
+void _mliScenery_free_spherical_cap_hex(struct mliScenery *scenery)
 {
         free(scenery->spherical_cap_hex);
         free(scenery->spherical_cap_hex_surfaces);
@@ -164,7 +164,7 @@ void __mliScenery_free_spherical_cap_hex(struct mliScenery *scenery)
         scenery->num_spherical_cap_hex = 0;
 }
 
-void __mliScenery_free_spheres(struct mliScenery *scenery)
+void _mliScenery_free_spheres(struct mliScenery *scenery)
 {
         free(scenery->spheres);
         free(scenery->spheres_surfaces);
@@ -172,7 +172,7 @@ void __mliScenery_free_spheres(struct mliScenery *scenery)
         scenery->num_spheres = 0;
 }
 
-void __mliScenery_free_cylinders(struct mliScenery *scenery)
+void _mliScenery_free_cylinders(struct mliScenery *scenery)
 {
         free(scenery->cylinders);
         free(scenery->cylinders_surfaces);
@@ -180,7 +180,7 @@ void __mliScenery_free_cylinders(struct mliScenery *scenery)
         scenery->num_cylinders = 0;
 }
 
-void __mliScenery_free_hexagons(struct mliScenery *scenery)
+void _mliScenery_free_hexagons(struct mliScenery *scenery)
 {
         free(scenery->hexagons);
         free(scenery->hexagons_surfaces);
@@ -188,7 +188,7 @@ void __mliScenery_free_hexagons(struct mliScenery *scenery)
         scenery->num_hexagons = 0;
 }
 
-void __mliScenery_free_bicircleplanes(struct mliScenery *scenery)
+void _mliScenery_free_bicircleplanes(struct mliScenery *scenery)
 {
         free(scenery->bicircleplanes);
         free(scenery->bicircleplanes_surfaces);
@@ -196,7 +196,7 @@ void __mliScenery_free_bicircleplanes(struct mliScenery *scenery)
         scenery->num_bicircleplanes = 0;
 }
 
-void __mliScenery_free_discs(struct mliScenery *scenery)
+void _mliScenery_free_discs(struct mliScenery *scenery)
 {
         free(scenery->discs);
         free(scenery->discs_surfaces);
@@ -206,19 +206,19 @@ void __mliScenery_free_discs(struct mliScenery *scenery)
 
 void mliScenery_free(struct mliScenery *scenery)
 {
-        __mliScenery_free_functions(scenery);
-        __mliScenery_free_colors(scenery);
-        __mliScenery_free_surfaces(scenery);
-        __mliScenery_free_vertices_and_triangles(scenery);
-        __mliScenery_free_spherical_cap_hex(scenery);
-        __mliScenery_free_spheres(scenery);
-        __mliScenery_free_cylinders(scenery);
-        __mliScenery_free_hexagons(scenery);
-        __mliScenery_free_bicircleplanes(scenery);
-        __mliScenery_free_discs(scenery);
+        _mliScenery_free_functions(scenery);
+        _mliScenery_free_colors(scenery);
+        _mliScenery_free_surfaces(scenery);
+        _mliScenery_free_vertices_and_triangles(scenery);
+        _mliScenery_free_spherical_cap_hex(scenery);
+        _mliScenery_free_spheres(scenery);
+        _mliScenery_free_cylinders(scenery);
+        _mliScenery_free_hexagons(scenery);
+        _mliScenery_free_bicircleplanes(scenery);
+        _mliScenery_free_discs(scenery);
 }
 
-int __mliScenery_malloc_vertices_and_triangles(struct mliScenery *s)
+int _mliScenery_malloc_vertices_and_triangles(struct mliScenery *s)
 {
         mli_malloc(s->vertices, struct mliVec, s->num_vertices);
         mli_malloc(s->triangles, struct mliFace, s->num_triangles);
@@ -228,7 +228,7 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_spherical_cap_hex(struct mliScenery *s)
+int _mliScenery_malloc_spherical_cap_hex(struct mliScenery *s)
 {
         mli_malloc(
                 s->spherical_cap_hex,
@@ -247,7 +247,7 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_spheres(struct mliScenery *s)
+int _mliScenery_malloc_spheres(struct mliScenery *s)
 {
         mli_malloc(s->spheres, struct mliSphere, s->num_spheres);
         mli_malloc(s->spheres_surfaces, struct mliSurfaces, s->num_spheres);
@@ -257,7 +257,7 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_cylinders(struct mliScenery *s)
+int _mliScenery_malloc_cylinders(struct mliScenery *s)
 {
         mli_malloc(s->cylinders, struct mliCylinder, s->num_cylinders);
         mli_malloc(s->cylinders_surfaces, struct mliSurfaces, s->num_cylinders);
@@ -267,7 +267,7 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_hexagons(struct mliScenery *s)
+int _mliScenery_malloc_hexagons(struct mliScenery *s)
 {
         mli_malloc(s->hexagons, struct mliHexagon, s->num_hexagons);
         mli_malloc(s->hexagons_surfaces, struct mliSurfaces, s->num_hexagons);
@@ -277,7 +277,7 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_bicircleplane(struct mliScenery *s)
+int _mliScenery_malloc_bicircleplane(struct mliScenery *s)
 {
         mli_malloc(
                 s->bicircleplanes,
@@ -296,7 +296,7 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_discs(struct mliScenery *s)
+int _mliScenery_malloc_discs(struct mliScenery *s)
 {
         mli_malloc(s->discs, struct mliDisc, s->num_discs);
         mli_malloc(s->discs_surfaces, struct mliSurfaces, s->num_discs);
@@ -306,7 +306,7 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_functions(struct mliScenery *s)
+int _mliScenery_malloc_functions(struct mliScenery *s)
 {
         uint64_t i;
         mli_malloc(s->functions, struct mliFunc, s->num_functions);
@@ -318,7 +318,7 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_colors(struct mliScenery *s)
+int _mliScenery_malloc_colors(struct mliScenery *s)
 {
         mli_malloc(s->colors, struct mliColor, s->num_colors);
         return 1;
@@ -326,7 +326,7 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_surfaces(struct mliScenery *s)
+int _mliScenery_malloc_surfaces(struct mliScenery *s)
 {
         mli_malloc(s->surfaces, struct mliSurface, s->num_surfaces);
         return 1;
@@ -336,16 +336,16 @@ error:
 
 int mliScenery_malloc(struct mliScenery *s)
 {
-        mli_check_mem(__mliScenery_malloc_functions(s));
-        mli_check_mem(__mliScenery_malloc_colors(s));
-        mli_check_mem(__mliScenery_malloc_surfaces(s));
-        mli_check_mem(__mliScenery_malloc_vertices_and_triangles(s));
-        mli_check_mem(__mliScenery_malloc_spherical_cap_hex(s));
-        mli_check_mem(__mliScenery_malloc_spheres(s));
-        mli_check_mem(__mliScenery_malloc_cylinders(s));
-        mli_check_mem(__mliScenery_malloc_hexagons(s));
-        mli_check_mem(__mliScenery_malloc_bicircleplane(s));
-        mli_check_mem(__mliScenery_malloc_discs(s));
+        mli_check_mem(_mliScenery_malloc_functions(s));
+        mli_check_mem(_mliScenery_malloc_colors(s));
+        mli_check_mem(_mliScenery_malloc_surfaces(s));
+        mli_check_mem(_mliScenery_malloc_vertices_and_triangles(s));
+        mli_check_mem(_mliScenery_malloc_spherical_cap_hex(s));
+        mli_check_mem(_mliScenery_malloc_spheres(s));
+        mli_check_mem(_mliScenery_malloc_cylinders(s));
+        mli_check_mem(_mliScenery_malloc_hexagons(s));
+        mli_check_mem(_mliScenery_malloc_bicircleplane(s));
+        mli_check_mem(_mliScenery_malloc_discs(s));
         return 1;
 error:
         mliScenery_free(s);

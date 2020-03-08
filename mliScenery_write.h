@@ -9,7 +9,7 @@
 
 #define MLI_SCENERY_MAGIC 43180u
 
-int __mliScenery_write_spherical_cap_hex(
+int _mliScenery_write_spherical_cap_hex(
         const struct mliScenery *scenery,
         FILE *f)
 {
@@ -33,7 +33,7 @@ error:
         return 0;
 }
 
-int __mliScenery_write_spheres(const struct mliScenery *scenery, FILE *f)
+int _mliScenery_write_spheres(const struct mliScenery *scenery, FILE *f)
 {
         mli_fwrite(
                 scenery->spheres,
@@ -55,7 +55,7 @@ error:
         return 0;
 }
 
-int __mliScenery_write_cylinders(const struct mliScenery *scenery, FILE *f)
+int _mliScenery_write_cylinders(const struct mliScenery *scenery, FILE *f)
 {
         mli_fwrite(
                 scenery->cylinders,
@@ -77,7 +77,7 @@ error:
         return 0;
 }
 
-int __mliScenery_write_hexagons(const struct mliScenery *scenery, FILE *f)
+int _mliScenery_write_hexagons(const struct mliScenery *scenery, FILE *f)
 {
         mli_fwrite(
                 scenery->hexagons,
@@ -99,7 +99,7 @@ error:
         return 0;
 }
 
-int __mliScenery_write_bicircleplanes(const struct mliScenery *scenery, FILE *f)
+int _mliScenery_write_bicircleplanes(const struct mliScenery *scenery, FILE *f)
 {
         mli_fwrite(
                 scenery->bicircleplanes,
@@ -121,7 +121,7 @@ error:
         return 0;
 }
 
-int __mliScenery_write_discs(const struct mliScenery *scenery, FILE *f)
+int _mliScenery_write_discs(const struct mliScenery *scenery, FILE *f)
 {
         mli_fwrite(
                 scenery->discs,
@@ -206,12 +206,12 @@ int mliScenery_write_to_path(
                 scenery->num_triangles,
                 f);
 
-        mli_c(__mliScenery_write_spherical_cap_hex(scenery, f));
-        mli_c(__mliScenery_write_spheres(scenery, f));
-        mli_c(__mliScenery_write_cylinders(scenery, f));
-        mli_c(__mliScenery_write_hexagons(scenery, f));
-        mli_c(__mliScenery_write_bicircleplanes(scenery, f));
-        mli_c(__mliScenery_write_discs(scenery, f));
+        mli_c(_mliScenery_write_spherical_cap_hex(scenery, f));
+        mli_c(_mliScenery_write_spheres(scenery, f));
+        mli_c(_mliScenery_write_cylinders(scenery, f));
+        mli_c(_mliScenery_write_hexagons(scenery, f));
+        mli_c(_mliScenery_write_bicircleplanes(scenery, f));
+        mli_c(_mliScenery_write_discs(scenery, f));
 
         fclose(f);
         return 1;

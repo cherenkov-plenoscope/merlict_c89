@@ -8,7 +8,7 @@
 #include "mliScenery.h"
 #include "mliScenery_write.h"
 
-int __mliScenery_read_vertices_and_triangles(
+int _mliScenery_read_vertices_and_triangles(
         struct mliScenery *scenery,
         FILE* f)
 {
@@ -32,7 +32,7 @@ error:
         return 0;
 }
 
-int __mliScenery_read_spherical_cap_hex(struct mliScenery *scenery, FILE* f)
+int _mliScenery_read_spherical_cap_hex(struct mliScenery *scenery, FILE* f)
 {
         mli_fread(
                 scenery->spherical_cap_hex,
@@ -51,7 +51,7 @@ error:
         return 0;
 }
 
-int __mliScenery_read_spheres(struct mliScenery *scenery, FILE* f)
+int _mliScenery_read_spheres(struct mliScenery *scenery, FILE* f)
 {
         mli_fread(
                 scenery->spheres,
@@ -70,7 +70,7 @@ error:
         return 0;
 }
 
-int __mliScenery_read_cylinders(struct mliScenery *scenery, FILE* f)
+int _mliScenery_read_cylinders(struct mliScenery *scenery, FILE* f)
 {
         mli_fread(
                 scenery->cylinders,
@@ -89,7 +89,7 @@ error:
         return 0;
 }
 
-int __mliScenery_read_hexagons(struct mliScenery *scenery, FILE* f)
+int _mliScenery_read_hexagons(struct mliScenery *scenery, FILE* f)
 {
         mli_fread(
                 scenery->hexagons,
@@ -108,7 +108,7 @@ error:
         return 0;
 }
 
-int __mliScenery_read_bicircleplanes(struct mliScenery *scenery, FILE* f)
+int _mliScenery_read_bicircleplanes(struct mliScenery *scenery, FILE* f)
 {
         mli_fread(
                 scenery->bicircleplanes,
@@ -130,7 +130,7 @@ error:
         return 0;
 }
 
-int __mliScenery_read_discs(struct mliScenery *scenery, FILE* f)
+int _mliScenery_read_discs(struct mliScenery *scenery, FILE* f)
 {
         mli_fread(
                 scenery->discs,
@@ -195,13 +195,13 @@ int mliScenery_read_from_path(struct mliScenery *scenery, const char* path)
                 scenery->num_surfaces,
                 f);
 
-        mli_c(__mliScenery_read_vertices_and_triangles(scenery, f));
-        mli_c(__mliScenery_read_spherical_cap_hex(scenery, f));
-        mli_c(__mliScenery_read_spheres(scenery, f));
-        mli_c(__mliScenery_read_cylinders(scenery, f));
-        mli_c(__mliScenery_read_hexagons(scenery, f));
-        mli_c(__mliScenery_read_bicircleplanes(scenery, f));
-        mli_c(__mliScenery_read_discs(scenery, f));
+        mli_c(_mliScenery_read_vertices_and_triangles(scenery, f));
+        mli_c(_mliScenery_read_spherical_cap_hex(scenery, f));
+        mli_c(_mliScenery_read_spheres(scenery, f));
+        mli_c(_mliScenery_read_cylinders(scenery, f));
+        mli_c(_mliScenery_read_hexagons(scenery, f));
+        mli_c(_mliScenery_read_bicircleplanes(scenery, f));
+        mli_c(_mliScenery_read_discs(scenery, f));
 
         fclose(f);
         return 1;
