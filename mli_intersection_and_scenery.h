@@ -12,26 +12,26 @@ struct mliSide _mli_side_coming_from(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec)
 {
-    struct mliSurfaces surfaces = mliScenery_object_surfaces(
+    struct mliBoundaryLayer layer = mliScenery_object_surfaces(
         scenery,
         isec->object_idx);
     if (isec->from_outside_to_inside)
-        return surfaces.inner;
+        return layer.inner;
     else
-        return surfaces.outer;
+        return layer.outer;
 }
 
 struct mliSide _mli_side_going_to(
     const struct mliScenery *scenery,
     const struct mliIntersection *isec)
 {
-    struct mliSurfaces surfaces = mliScenery_object_surfaces(
+    struct mliBoundaryLayer layer = mliScenery_object_surfaces(
         scenery,
         isec->object_idx);
     if (isec->from_outside_to_inside)
-        return surfaces.outer;
+        return layer.outer;
     else
-        return surfaces.inner;
+        return layer.inner;
 }
 
 const struct mliFunc *_mli_refractive_index_going_to(

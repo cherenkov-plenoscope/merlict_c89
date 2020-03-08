@@ -291,40 +291,40 @@ int mliScenery_intersection(
         return 0;
 }
 
-struct mliSurfaces mliScenery_object_surfaces(
+struct mliBoundaryLayer mliScenery_object_surfaces(
         const struct mliScenery *scenery,
         const uint64_t idx)
 {
-        struct mliSurfaces null_surface;
+        struct mliBoundaryLayer null_layer;
         struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
         switch(i.type) {
-                case MLI_TRIANGLE:
-                        return scenery->triangles_surfaces[i.idx];
-                        break;
-                case MLI_SPHERICAL_CAP_HEX:
-                        return scenery->spherical_cap_hex_surfaces[i.idx];
-                        break;
-                case MLI_SPHERE:
-                        return scenery->spheres_surfaces[i.idx];
-                        break;
-                case MLI_CYLINDER:
-                        return scenery->cylinders_surfaces[i.idx];
-                        break;
-                case MLI_HEXAGON:
-                        return scenery->hexagons_surfaces[i.idx];
-                        break;
-                case MLI_BICIRCLEPLANE:
-                        return scenery->bicircleplanes_surfaces[i.idx];
-                        break;
-                case MLI_DISC:
-                        return scenery->discs_surfaces[i.idx];
-                        break;
+        case MLI_TRIANGLE:
+                return scenery->triangles_boundary_layers[i.idx];
+                break;
+        case MLI_SPHERICAL_CAP_HEX:
+                return scenery->spherical_cap_hex_boundary_layers[i.idx];
+                break;
+        case MLI_SPHERE:
+                return scenery->spheres_boundary_layers[i.idx];
+                break;
+        case MLI_CYLINDER:
+                return scenery->cylinders_boundary_layers[i.idx];
+                break;
+        case MLI_HEXAGON:
+                return scenery->hexagons_boundary_layers[i.idx];
+                break;
+        case MLI_BICIRCLEPLANE:
+                return scenery->bicircleplanes_boundary_layers[i.idx];
+                break;
+        case MLI_DISC:
+                return scenery->discs_boundary_layers[i.idx];
+                break;
         }
-        null_surface.inner.surface = 0;
-        null_surface.outer.surface = 0;
-        null_surface.inner.medium = 0;
-        null_surface.outer.medium = 0;
-        return null_surface;
+        null_layer.inner.surface = 0;
+        null_layer.outer.surface = 0;
+        null_layer.inner.medium = 0;
+        null_layer.outer.medium = 0;
+        return null_layer;
 }
 
 #endif

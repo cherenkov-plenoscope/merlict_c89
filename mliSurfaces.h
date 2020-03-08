@@ -1,6 +1,6 @@
 /* Copyright 2019 Sebastian Achim Mueller */
-#ifndef MERLICT_MLISURFACES_H_
-#define MERLICT_MLISURFACES_H_
+#ifndef MERLICT_MLIBOUNDARYLAYER_H_
+#define MERLICT_MLIBOUNDARYLAYER_H_
 
 #include <stdint.h>
 
@@ -9,14 +9,14 @@ struct mliSide {
         uint32_t medium;
 };
 
-struct mliSurfaces {
+struct mliBoundaryLayer {
         struct mliSide inner;
         struct mliSide outer;
 };
 
-int mliSurfaces_is_equal(
-    const struct mliSurfaces a,
-    const struct mliSurfaces b)
+int mliBoundaryLayer_is_equal(
+    const struct mliBoundaryLayer a,
+    const struct mliBoundaryLayer b)
 {
     if (a.inner.surface != b.inner.surface) return 0;
     if (a.outer.surface != b.outer.surface) return 0;

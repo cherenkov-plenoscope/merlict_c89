@@ -90,48 +90,50 @@ int __mliScenery_set_primitive(
                 triangle.b += vertex_offset;
                 triangle.c += vertex_offset;
                 scenery->triangles[count->triangles] = triangle;
-                scenery->triangles_surfaces[count->triangles] = frame->surfaces;
+                scenery->triangles_boundary_layers[count->triangles] =
+                    frame->boundary_layer;
                 count->triangles += 1;}
             break;
         case MLI_SPHERICAL_CAP_HEX:
             i = count->spherical_cap_hex;
             scenery->spherical_cap_hex[i] = *frame->primitive.spherical_cap_hex;
-            scenery->spherical_cap_hex_surfaces[i] = frame->surfaces;
+            scenery->spherical_cap_hex_boundary_layers[i] =
+                frame->boundary_layer;
             scenery->spherical_cap_hex_T[i] = frame->frame2root;
             count->spherical_cap_hex += 1;
             break;
         case MLI_SPHERE:
             i = count->spheres;
             scenery->spheres[i] = *frame->primitive.sphere;
-            scenery->spheres_surfaces[i] = frame->surfaces;
+            scenery->spheres_boundary_layers[i] = frame->boundary_layer;
             scenery->spheres_T[i] = frame->frame2root;
             count->spheres += 1;
             break;
         case MLI_CYLINDER:
             i = count->cylinders;
             scenery->cylinders[i] = *frame->primitive.cylinder;
-            scenery->cylinders_surfaces[i] = frame->surfaces;
+            scenery->cylinders_boundary_layers[i] = frame->boundary_layer;
             scenery->cylinders_T[i] = frame->frame2root;
             count->cylinders += 1;
             break;
         case MLI_HEXAGON:
             i = count->hexagons;
             scenery->hexagons[i] = *frame->primitive.hexagon;
-            scenery->hexagons_surfaces[i] = frame->surfaces;
+            scenery->hexagons_boundary_layers[i] = frame->boundary_layer;
             scenery->hexagons_T[i] = frame->frame2root;
             count->hexagons += 1;
             break;
         case MLI_BICIRCLEPLANE:
             i = count->bicircleplanes;
             scenery->bicircleplanes[i] = *frame->primitive.bicircleplane;
-            scenery->bicircleplanes_surfaces[i] = frame->surfaces;
+            scenery->bicircleplanes_boundary_layers[i] = frame->boundary_layer;
             scenery->bicircleplanes_T[i] = frame->frame2root;
             count->bicircleplanes += 1;
             break;
         case MLI_DISC:
             i = count->discs;
             scenery->discs[i] = *frame->primitive.disc;
-            scenery->discs_surfaces[i] = frame->surfaces;
+            scenery->discs_boundary_layers[i] = frame->boundary_layer;
             scenery->discs_T[i] = frame->frame2root;
             count->discs += 1;
             break;

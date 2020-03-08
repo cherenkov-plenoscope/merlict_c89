@@ -91,9 +91,9 @@ int _mliScenery_triangles_equal(
                         a->triangles[i],
                         b->triangles[i]))
                         return 0;
-                if (!mliSurfaces_is_equal(
-                        a->triangles_surfaces[i],
-                        b->triangles_surfaces[i]))
+                if (!mliBoundaryLayer_is_equal(
+                        a->triangles_boundary_layers[i],
+                        b->triangles_boundary_layers[i]))
                         return 0;
         }
         return 1;
@@ -110,9 +110,9 @@ int _mliScenery_spherical_cap_hex_equal(
                         a->spherical_cap_hex[i],
                         b->spherical_cap_hex[i]))
                         return 0;
-                if (!mliSurfaces_is_equal(
-                        a->spherical_cap_hex_surfaces[i],
-                        b->spherical_cap_hex_surfaces[i]))
+                if (!mliBoundaryLayer_is_equal(
+                        a->spherical_cap_hex_boundary_layers[i],
+                        b->spherical_cap_hex_boundary_layers[i]))
                         return 0;
                 if(!mliHomTraComp_is_equal(
                         a->spherical_cap_hex_T[i],
@@ -133,9 +133,9 @@ int _mliScenery_spheres_equal(
                         a->spheres[i],
                         b->spheres[i]))
                         return 0;
-                if (!mliSurfaces_is_equal(
-                        a->spheres_surfaces[i],
-                        b->spheres_surfaces[i]))
+                if (!mliBoundaryLayer_is_equal(
+                        a->spheres_boundary_layers[i],
+                        b->spheres_boundary_layers[i]))
                         return 0;
                 if(!mliHomTraComp_is_equal(
                         a->spheres_T[i],
@@ -156,9 +156,9 @@ int _mliScenery_cylinders_equal(
                         a->cylinders[i],
                         b->cylinders[i]))
                         return 0;
-                if (!mliSurfaces_is_equal(
-                        a->cylinders_surfaces[i],
-                        b->cylinders_surfaces[i]))
+                if (!mliBoundaryLayer_is_equal(
+                        a->cylinders_boundary_layers[i],
+                        b->cylinders_boundary_layers[i]))
                         return 0;
                 if(!mliHomTraComp_is_equal(
                         a->cylinders_T[i],
@@ -179,9 +179,9 @@ int _mliScenery_hexagons_equal(
                         a->hexagons[i],
                         b->hexagons[i]))
                         return 0;
-                if (!mliSurfaces_is_equal(
-                        a->hexagons_surfaces[i],
-                        b->hexagons_surfaces[i]))
+                if (!mliBoundaryLayer_is_equal(
+                        a->hexagons_boundary_layers[i],
+                        b->hexagons_boundary_layers[i]))
                         return 0;
                 if(!mliHomTraComp_is_equal(
                         a->hexagons_T[i],
@@ -202,9 +202,9 @@ int _mliScenery_bicircleplanes_equal(
                         a->bicircleplanes[i],
                         b->bicircleplanes[i]))
                         return 0;
-                if (!mliSurfaces_is_equal(
-                        a->bicircleplanes_surfaces[i],
-                        b->bicircleplanes_surfaces[i]))
+                if (!mliBoundaryLayer_is_equal(
+                        a->bicircleplanes_boundary_layers[i],
+                        b->bicircleplanes_boundary_layers[i]))
                         return 0;
                 if(!mliHomTraComp_is_equal(
                         a->bicircleplanes_T[i],
@@ -225,9 +225,9 @@ int _mliScenery_discs_equal(
                         a->discs[i],
                         b->discs[i]))
                         return 0;
-                if (!mliSurfaces_is_equal(
-                        a->discs_surfaces[i],
-                        b->discs_surfaces[i]))
+                if (!mliBoundaryLayer_is_equal(
+                        a->discs_boundary_layers[i],
+                        b->discs_boundary_layers[i]))
                         return 0;
                 if(!mliHomTraComp_is_equal(
                         a->discs_T[i],

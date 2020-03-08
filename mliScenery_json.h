@@ -460,9 +460,15 @@ int __mliFrame_set_surface_idx(
         mliJson_find_key(json, token_surface + 1, "outer", &token_outer_side),
         "Expected key 'outer' in surface.");
 
-    mli_check(__mliSide_set(&frame->surfaces.inner, json, token_inner_side),
+    mli_check(__mliSide_set(
+        &frame->boundary_layer.inner,
+        json,
+        token_inner_side),
         "Failed to parse inner side.")
-    mli_check(__mliSide_set(&frame->surfaces.outer, json, token_outer_side),
+    mli_check(__mliSide_set(
+        &frame->boundary_layer.outer,
+        json,
+        token_outer_side),
         "Failed to parse outer side.")
     return 1;
 error:

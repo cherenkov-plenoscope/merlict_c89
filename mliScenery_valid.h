@@ -47,10 +47,10 @@ int _mliScenery_valid_triangles(const struct mliScenery *scenery)
                         return 0;
                 if (scenery->triangles[i].c >= scenery->num_vertices)
                         return 0;
-                if (scenery->triangles_surfaces[i].inner.surface >=
+                if (scenery->triangles_boundary_layers[i].inner.surface >=
                         scenery->num_surfaces)
                         return 0;
-                if (scenery->triangles_surfaces[i].outer.surface >=
+                if (scenery->triangles_boundary_layers[i].outer.surface >=
                         scenery->num_surfaces)
                         return 0;}
         return 1;
@@ -60,10 +60,12 @@ int _mliScenery_valid_spherical_cap_hex(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_spherical_cap_hex; i++) {
-                if (scenery->spherical_cap_hex_surfaces[i].inner.surface >=
+                if (scenery->
+                        spherical_cap_hex_boundary_layers[i].inner.surface >=
                         scenery->num_surfaces)
                         return 0;
-                if (scenery->spherical_cap_hex_surfaces[i].outer.surface >=
+                if (scenery->
+                        spherical_cap_hex_boundary_layers[i].outer.surface >=
                         scenery->num_surfaces)
                         return 0;
         }
@@ -74,10 +76,10 @@ int _mliScenery_valid_spheres(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_spheres; i++) {
-                if (scenery->spheres_surfaces[i].inner.surface >=
+                if (scenery->spheres_boundary_layers[i].inner.surface >=
                         scenery->num_surfaces)
                         return 0;
-                if (scenery->spheres_surfaces[i].outer.surface >=
+                if (scenery->spheres_boundary_layers[i].outer.surface >=
                         scenery->num_surfaces)
                         return 0;
         }
@@ -88,10 +90,10 @@ int _mliScenery_valid_cylinders(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_cylinders; i++) {
-                if (scenery->cylinders_surfaces[i].inner.surface >=
+                if (scenery->cylinders_boundary_layers[i].inner.surface >=
                         scenery->num_surfaces)
                         return 0;
-                if (scenery->cylinders_surfaces[i].outer.surface >=
+                if (scenery->cylinders_boundary_layers[i].outer.surface >=
                         scenery->num_surfaces)
                         return 0;
         }
@@ -102,10 +104,10 @@ int _mliScenery_valid_hexagons(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_hexagons; i++) {
-                if (scenery->hexagons_surfaces[i].inner.surface >=
+                if (scenery->hexagons_boundary_layers[i].inner.surface >=
                         scenery->num_surfaces)
                         return 0;
-                if (scenery->hexagons_surfaces[i].outer.surface >=
+                if (scenery->hexagons_boundary_layers[i].outer.surface >=
                         scenery->num_surfaces)
                         return 0;
         }
@@ -116,10 +118,10 @@ int _mliScenery_valid_bicircleplanes(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_bicircleplanes; i++) {
-                if (scenery->bicircleplanes_surfaces[i].inner.surface >=
+                if (scenery->bicircleplanes_boundary_layers[i].inner.surface >=
                         scenery->num_surfaces)
                         return 0;
-                if (scenery->bicircleplanes_surfaces[i].outer.surface >=
+                if (scenery->bicircleplanes_boundary_layers[i].outer.surface >=
                         scenery->num_surfaces)
                         return 0;
                 if (!mliBiCirclePlane_is_valid(scenery->bicircleplanes[i]))
@@ -132,10 +134,10 @@ int _mliScenery_valid_disc(const struct mliScenery *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_discs; i++) {
-                if (scenery->discs_surfaces[i].inner.surface >=
+                if (scenery->discs_boundary_layers[i].inner.surface >=
                         scenery->num_surfaces)
                         return 0;
-                if (scenery->discs_surfaces[i].outer.surface >=
+                if (scenery->discs_boundary_layers[i].outer.surface >=
                         scenery->num_surfaces)
                         return 0;
                 if (!mliDisc_is_valid(scenery->discs[i]))

@@ -19,8 +19,8 @@ int _mliScenery_write_spherical_cap_hex(
                 scenery->num_spherical_cap_hex,
                 f);
         mli_fwrite(
-                scenery->spherical_cap_hex_surfaces,
-                sizeof(struct mliSurfaces),
+                scenery->spherical_cap_hex_boundary_layers,
+                sizeof(struct mliBoundaryLayer),
                 scenery->num_spherical_cap_hex,
                 f);
         mli_fwrite(
@@ -41,8 +41,8 @@ int _mliScenery_write_spheres(const struct mliScenery *scenery, FILE *f)
                 scenery->num_spheres,
                 f);
         mli_fwrite(
-                scenery->spheres_surfaces,
-                sizeof(struct mliSurfaces),
+                scenery->spheres_boundary_layers,
+                sizeof(struct mliBoundaryLayer),
                 scenery->num_spheres,
                 f);
         mli_fwrite(
@@ -63,8 +63,8 @@ int _mliScenery_write_cylinders(const struct mliScenery *scenery, FILE *f)
                 scenery->num_cylinders,
                 f);
         mli_fwrite(
-                scenery->cylinders_surfaces,
-                sizeof(struct mliSurfaces),
+                scenery->cylinders_boundary_layers,
+                sizeof(struct mliBoundaryLayer),
                 scenery->num_cylinders,
                 f);
         mli_fwrite(
@@ -85,8 +85,8 @@ int _mliScenery_write_hexagons(const struct mliScenery *scenery, FILE *f)
                 scenery->num_hexagons,
                 f);
         mli_fwrite(
-                scenery->hexagons_surfaces,
-                sizeof(struct mliSurfaces),
+                scenery->hexagons_boundary_layers,
+                sizeof(struct mliBoundaryLayer),
                 scenery->num_hexagons,
                 f);
         mli_fwrite(
@@ -107,8 +107,8 @@ int _mliScenery_write_bicircleplanes(const struct mliScenery *scenery, FILE *f)
                 scenery->num_bicircleplanes,
                 f);
         mli_fwrite(
-                scenery->bicircleplanes_surfaces,
-                sizeof(struct mliSurfaces),
+                scenery->bicircleplanes_boundary_layers,
+                sizeof(struct mliBoundaryLayer),
                 scenery->num_bicircleplanes,
                 f);
         mli_fwrite(
@@ -129,8 +129,8 @@ int _mliScenery_write_discs(const struct mliScenery *scenery, FILE *f)
                 scenery->num_discs,
                 f);
         mli_fwrite(
-                scenery->discs_surfaces,
-                sizeof(struct mliSurfaces),
+                scenery->discs_boundary_layers,
+                sizeof(struct mliBoundaryLayer),
                 scenery->num_discs,
                 f);
         mli_fwrite(
@@ -209,8 +209,8 @@ int mliScenery_write_to_path(
                 scenery->num_triangles,
                 f);
         mli_fwrite(
-                scenery->triangles_surfaces,
-                sizeof(struct mliSurfaces),
+                scenery->triangles_boundary_layers,
+                sizeof(struct mliBoundaryLayer),
                 scenery->num_triangles,
                 f);
 
