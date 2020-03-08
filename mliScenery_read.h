@@ -13,9 +13,15 @@ int __mliScenery_read_vertices_and_triangles(
         FILE* f)
 {
         mli_fread(
-                scenery->vertices, sizeof(struct mliVec), scenery->num_vertices, f);
+                scenery->vertices,
+                sizeof(struct mliVec),
+                scenery->num_vertices,
+                f);
         mli_fread(
-                scenery->triangles, sizeof(struct mliFace), scenery->num_triangles, f);
+                scenery->triangles,
+                sizeof(struct mliFace),
+                scenery->num_triangles,
+                f);
         mli_fread(
                 scenery->triangles_surfaces,
                 sizeof(struct mliSurfaces),
@@ -26,7 +32,8 @@ error:
         return 0;
 }
 
-int __mliScenery_read_spherical_cap_hex(struct mliScenery *scenery, FILE* f) {
+int __mliScenery_read_spherical_cap_hex(struct mliScenery *scenery, FILE* f)
+{
         mli_fread(
                 scenery->spherical_cap_hex,
                 sizeof(struct mliSphericalCapHex),
@@ -44,7 +51,8 @@ error:
         return 0;
 }
 
-int __mliScenery_read_spheres(struct mliScenery *scenery, FILE* f) {
+int __mliScenery_read_spheres(struct mliScenery *scenery, FILE* f)
+{
         mli_fread(
                 scenery->spheres,
                 sizeof(double),
@@ -62,7 +70,8 @@ error:
         return 0;
 }
 
-int __mliScenery_read_cylinders(struct mliScenery *scenery, FILE* f) {
+int __mliScenery_read_cylinders(struct mliScenery *scenery, FILE* f)
+{
         mli_fread(
                 scenery->cylinders,
                 sizeof(struct mliCylinder),
@@ -80,7 +89,8 @@ error:
         return 0;
 }
 
-int __mliScenery_read_hexagons(struct mliScenery *scenery, FILE* f) {
+int __mliScenery_read_hexagons(struct mliScenery *scenery, FILE* f)
+{
         mli_fread(
                 scenery->hexagons,
                 sizeof(struct mliHexagon),
@@ -98,7 +108,8 @@ error:
         return 0;
 }
 
-int __mliScenery_read_bicircleplanes(struct mliScenery *scenery, FILE* f) {
+int __mliScenery_read_bicircleplanes(struct mliScenery *scenery, FILE* f)
+{
         mli_fread(
                 scenery->bicircleplanes,
                 sizeof(struct mliBiCirclePlane),
@@ -119,7 +130,8 @@ error:
         return 0;
 }
 
-int __mliScenery_read_discs(struct mliScenery *scenery, FILE* f) {
+int __mliScenery_read_discs(struct mliScenery *scenery, FILE* f)
+{
         mli_fread(
                 scenery->discs,
                 sizeof(struct mliDisc),
@@ -140,7 +152,8 @@ error:
         return 0;
 }
 
-int mliScenery_read_from_path(struct mliScenery *scenery, const char* path) {
+int mliScenery_read_from_path(struct mliScenery *scenery, const char* path)
+{
         FILE *f;
         uint64_t i;
         uint64_t magic = 0u;
@@ -169,11 +182,18 @@ int mliScenery_read_from_path(struct mliScenery *scenery, const char* path) {
                 mli_c(mliFunc_malloc_from_file(&scenery->functions[i], f));}
 
         /* colors */
-        mli_fread(scenery->colors, sizeof(struct mliColor), scenery->num_colors, f);
+        mli_fread(
+                scenery->colors,
+                sizeof(struct mliColor),
+                scenery->num_colors,
+                f);
 
         /* surfaces */
         mli_fread(
-                scenery->surfaces, sizeof(struct mliSurface), scenery->num_surfaces, f);
+                scenery->surfaces,
+                sizeof(struct mliSurface),
+                scenery->num_surfaces,
+                f);
 
         mli_c(__mliScenery_read_vertices_and_triangles(scenery, f));
         mli_c(__mliScenery_read_spherical_cap_hex(scenery, f));

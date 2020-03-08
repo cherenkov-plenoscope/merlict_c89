@@ -33,8 +33,13 @@ error:
         return 0;
 }
 
-int __mliScenery_write_spheres(const struct mliScenery *scenery, FILE *f) {
-        mli_fwrite(scenery->spheres, sizeof(double), scenery->num_spheres, f);
+int __mliScenery_write_spheres(const struct mliScenery *scenery, FILE *f)
+{
+        mli_fwrite(
+                scenery->spheres,
+                sizeof(double),
+                scenery->num_spheres,
+                f);
         mli_fwrite(
                 scenery->spheres_surfaces,
                 sizeof(struct mliSurfaces),
@@ -50,7 +55,8 @@ error:
         return 0;
 }
 
-int __mliScenery_write_cylinders(const struct mliScenery *scenery, FILE *f) {
+int __mliScenery_write_cylinders(const struct mliScenery *scenery, FILE *f)
+{
         mli_fwrite(
                 scenery->cylinders,
                 sizeof(struct mliCylinder),
@@ -71,7 +77,8 @@ error:
         return 0;
 }
 
-int __mliScenery_write_hexagons(const struct mliScenery *scenery, FILE *f) {
+int __mliScenery_write_hexagons(const struct mliScenery *scenery, FILE *f)
+{
         mli_fwrite(
                 scenery->hexagons,
                 sizeof(struct mliHexagon),
@@ -92,9 +99,7 @@ error:
         return 0;
 }
 
-int __mliScenery_write_bicircleplanes(
-        const struct mliScenery *scenery,
-        FILE *f)
+int __mliScenery_write_bicircleplanes(const struct mliScenery *scenery, FILE *f)
 {
         mli_fwrite(
                 scenery->bicircleplanes,
@@ -116,7 +121,8 @@ error:
         return 0;
 }
 
-int __mliScenery_write_discs(const struct mliScenery *scenery, FILE *f) {
+int __mliScenery_write_discs(const struct mliScenery *scenery, FILE *f)
+{
         mli_fwrite(
                 scenery->discs,
                 sizeof(struct mliDisc),
@@ -169,19 +175,31 @@ int mliScenery_write_to_path(
 
         /* colors */
         mli_fwrite(
-                scenery->colors, sizeof(struct mliColor), scenery->num_colors, f);
+                scenery->colors,
+                sizeof(struct mliColor),
+                scenery->num_colors,
+                f);
 
         /* surfaces */
         mli_fwrite(
-                scenery->surfaces, sizeof(struct mliSurface), scenery->num_surfaces, f);
+                scenery->surfaces,
+                sizeof(struct mliSurface),
+                scenery->num_surfaces,
+                f);
 
         /* vertices */
         mli_fwrite(
-                scenery->vertices, sizeof(struct mliVec), scenery->num_vertices, f);
+                scenery->vertices,
+                sizeof(struct mliVec),
+                scenery->num_vertices,
+                f);
 
         /* triangles */
         mli_fwrite(
-                scenery->triangles, sizeof(struct mliFace), scenery->num_triangles, f);
+                scenery->triangles,
+                sizeof(struct mliFace),
+                scenery->num_triangles,
+                f);
         mli_fwrite(
                 scenery->triangles_surfaces,
                 sizeof(struct mliSurfaces),

@@ -26,7 +26,8 @@ struct mliIndex {
         uint32_t idx;
 };
 
-uint64_t mliScenery_num_objects(const struct mliScenery *scenery) {
+uint64_t mliScenery_num_objects(const struct mliScenery *scenery)
+{
         uint64_t last = 0;
         last += scenery->num_triangles;
         last += scenery->num_spherical_cap_hex;
@@ -35,14 +36,14 @@ uint64_t mliScenery_num_objects(const struct mliScenery *scenery) {
         last += scenery->num_hexagons;
         last += scenery->num_bicircleplanes;
         last += scenery->num_discs;
-        return last;}
+        return last;
+}
 
 struct mliIndex __mliScenery_resolve_index(
         const struct mliScenery *scenery,
         const uint64_t idx)
 {
-        const uint64_t idx_start_spherical_cap_hex =
-                scenery->num_triangles;
+        const uint64_t idx_start_spherical_cap_hex = scenery->num_triangles;
 
         const uint64_t idx_start_spheres =
                 idx_start_spherical_cap_hex + scenery->num_spherical_cap_hex;
@@ -95,7 +96,8 @@ struct mliIndex __mliScenery_resolve_index(
         assert(idx < mliScenery_num_objects(scenery) + 1);
         ri.type = 0u;
         ri.idx = 0u;
-        return ri;}
+        return ri;
+}
 
 int mliScenery_overlap_obb(
         const struct mliScenery *scenery,
@@ -208,7 +210,8 @@ struct mliOBB mliScenery_obb(
         return obb;
 }
 
-struct mliOBB mliScenery_outermost_obb(const struct mliScenery *scenery) {
+struct mliOBB mliScenery_outermost_obb(const struct mliScenery *scenery)
+{
         uint64_t i;
         uint64_t num_objects;
         struct mliOBB obb;
