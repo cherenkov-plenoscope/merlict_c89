@@ -23,6 +23,7 @@
 #include "mliQuadraticEquation.h"
 #include "mliHomTra.h"
 #include "mliCamera.h"
+#include "mliBoundaryLayer.h"
 
 #include "mliScenery.h"
 #include "mliScenery_write.h"

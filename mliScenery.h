@@ -18,7 +18,7 @@
 #include "mliDisc.h"
 #include "mliSurface.h"
 #include "mliMedium.h"
-#include "mliSurfaces.h"
+#include "mliBoundaryLayer.h"
 
 #define MLI_TRIANGLE 0u
 #define MLI_SPHERICAL_CAP_HEX 1u

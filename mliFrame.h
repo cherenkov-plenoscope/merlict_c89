@@ -17,7 +17,7 @@
 #include "mliBiCirclePlane.h"
 #include "mliDisc.h"
 #include "mliSurface.h"
-#include "mliSurfaces.h"
+#include "mliBoundaryLayer.h"
 #include "mliDynArray_template.h"
 
 #define MLI_FRAME 1000u
