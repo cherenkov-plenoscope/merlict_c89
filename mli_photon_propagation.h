@@ -59,12 +59,12 @@ int _mli_phong(
     surface_coming_from = env->scenery->surfaces[side_coming_from.surface];
 
     mli_check(mliFunc_evaluate(
-        &env->scenery->functions[surface_coming_from.boundary_layer_diffuse_reflection],
+        &env->scenery->functions[surface_coming_from.diffuse_reflection],
         env->photon->wavelength,
         &diffuse),
         "Failed to eval. diffuse reflection for wavelength.");
     mli_check(mliFunc_evaluate(
-        &env->scenery->functions[surface_coming_from.boundary_layer_specular_reflection],
+        &env->scenery->functions[surface_coming_from.specular_reflection],
         env->photon->wavelength,
         &specular),
         "Failed to eval. specular reflection for wavelength.");

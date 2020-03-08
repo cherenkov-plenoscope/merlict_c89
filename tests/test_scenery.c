@@ -46,23 +46,23 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
 
     scenery.surfaces[0].color = 0u;
     scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[0].boundary_layer_specular_reflection = 0u;
-    scenery.surfaces[0].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[0].specular_reflection = 0u;
+    scenery.surfaces[0].diffuse_reflection = 0u;
 
     scenery.surfaces[1].color = 1u;
     scenery.surfaces[1].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[1].boundary_layer_specular_reflection = 0u;
-    scenery.surfaces[1].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[1].specular_reflection = 0u;
+    scenery.surfaces[1].diffuse_reflection = 0u;
 
     scenery.surfaces[2].color = 2u;
     scenery.surfaces[2].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[2].boundary_layer_specular_reflection = 0u;
-    scenery.surfaces[2].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[2].specular_reflection = 0u;
+    scenery.surfaces[2].diffuse_reflection = 0u;
 
     scenery.surfaces[3].color = 3u;
     scenery.surfaces[3].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[3].boundary_layer_specular_reflection = 0u;
-    scenery.surfaces[3].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[3].specular_reflection = 0u;
+    scenery.surfaces[3].diffuse_reflection = 0u;
 
     mliVec_ncpy(
         diff_cube_sphere.vertices,
@@ -336,8 +336,8 @@ CASE("struct mliScenery asymetric") {
 
     scenery.surfaces[0].color = 0u;
     scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[0].boundary_layer_specular_reflection = 0u;
-    scenery.surfaces[0].boundary_layer_diffuse_reflection = 0u;
+    scenery.surfaces[0].specular_reflection = 0u;
+    scenery.surfaces[0].diffuse_reflection = 0u;
     scenery.media[0].refraction = 0u;
     scenery.media[0].absorbtion = 0u;
     offset = mliVec_set(0, 0, -8);

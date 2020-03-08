@@ -11,8 +11,8 @@
 struct mliSurface {
     uint32_t material;
 
-    uint32_t boundary_layer_specular_reflection;
-    uint32_t boundary_layer_diffuse_reflection;
+    uint32_t specular_reflection;
+    uint32_t diffuse_reflection;
 
     /* The color is only relevant for fast rendering of images.
      * Color will not effect the propagation of photons. */
@@ -21,10 +21,10 @@ struct mliSurface {
 
 int mliSurface_is_equal(const struct mliSurface a, const struct mliSurface b) {
     if (a.material != b.material) return 0;
-    if (a.boundary_layer_specular_reflection !=
-        b.boundary_layer_specular_reflection) return 0;
-    if (a.boundary_layer_diffuse_reflection !=
-        b.boundary_layer_diffuse_reflection) return 0;
+    if (a.specular_reflection !=
+        b.specular_reflection) return 0;
+    if (a.diffuse_reflection !=
+        b.diffuse_reflection) return 0;
     if (a.color != b.color) return 0;
     return 1;}
 

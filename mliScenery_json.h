@@ -187,19 +187,19 @@ int __mliSurface_from_json(
     mli_check(idx_tmp >= 0, "Expected material-index to be positive.");
     surface->material = idx_tmp;
 
-    mli_check(mliJson_find_key(json, token_s, "boundary_layer_specular_reflection", &token_tmp),
-        "Expected json-surface-item to contain key 'boundary_layer_specular_reflection'.");
+    mli_check(mliJson_find_key(json, token_s, "specular_reflection", &token_tmp),
+        "Expected json-surface-item to contain key 'specular_reflection'.");
     mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
-        "Could not parse boundary_layer_specular_reflection from json.");
-    mli_check(idx_tmp >= 0, "Expected boundary_layer_specular_reflection-index to be positive.");
-    surface->boundary_layer_specular_reflection = idx_tmp;
+        "Could not parse specular_reflection from json.");
+    mli_check(idx_tmp >= 0, "Expected specular_reflection-index to be positive.");
+    surface->specular_reflection = idx_tmp;
 
-    mli_check(mliJson_find_key(json, token_s, "boundary_layer_diffuse_reflection", &token_tmp),
-        "Expected json-surface-item to contain key 'boundary_layer_diffuse_reflection'.");
+    mli_check(mliJson_find_key(json, token_s, "diffuse_reflection", &token_tmp),
+        "Expected json-surface-item to contain key 'diffuse_reflection'.");
     mli_check(mliJson_as_int64(json, token_tmp + 1, &idx_tmp),
-        "Could not parse boundary_layer_diffuse_reflection from json.");
-    mli_check(idx_tmp >= 0, "Expected boundary_layer_diffuse_reflection-index to be positive.");
-    surface->boundary_layer_diffuse_reflection = idx_tmp;
+        "Could not parse diffuse_reflection from json.");
+    mli_check(idx_tmp >= 0, "Expected diffuse_reflection-index to be positive.");
+    surface->diffuse_reflection = idx_tmp;
 
     mli_check(mliJson_find_key(json, token_s, "color", &token_tmp),
         "Expected json-surface-item to contain key 'color'.");

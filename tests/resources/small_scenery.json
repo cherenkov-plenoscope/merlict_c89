@@ -22,26 +22,26 @@
   "surfaces": [
     {
       "material": 100,
-      "boundary_layer_specular_reflection": 0,
-      "boundary_layer_diffuse_reflection": 0,
+      "specular_reflection": 0,
+      "diffuse_reflection": 0,
       "color": 0
     },
     {
       "material": 100,
-      "boundary_layer_specular_reflection": 0,
-      "boundary_layer_diffuse_reflection": 0,
+      "specular_reflection": 0,
+      "diffuse_reflection": 0,
       "color": 1
     },
     {
       "material": 100,
-      "boundary_layer_specular_reflection": 0,
-      "boundary_layer_diffuse_reflection": 0,
+      "specular_reflection": 0,
+      "diffuse_reflection": 0,
       "color": 2
     },
     {
       "material": 100,
-      "boundary_layer_specular_reflection": 0,
-      "boundary_layer_diffuse_reflection": 0,
+      "specular_reflection": 0,
+      "diffuse_reflection": 0,
       "color": 3
     }
   ],

@@ -31,29 +31,29 @@
     {
       "name": "glass_0",
       "material": 102,
-      "boundary_layer_specular_reflection": 0,
-      "boundary_layer_diffuse_reflection": 0,
+      "specular_reflection": 0,
+      "diffuse_reflection": 0,
       "color": 0
     },
     {
       "name": "glass_1",
       "material": 102,
-      "boundary_layer_specular_reflection": 0,
-      "boundary_layer_diffuse_reflection": 0,
+      "specular_reflection": 0,
+      "diffuse_reflection": 0,
       "color": 1
     },
     {
       "name": "mirror_2",
       "material": 100,
-      "boundary_layer_specular_reflection": 0,
-      "boundary_layer_diffuse_reflection": 3,
+      "specular_reflection": 0,
+      "diffuse_reflection": 3,
       "color": 2
     },
     {
       "name": "diffuse_3",
       "material": 100,
-      "boundary_layer_specular_reflection": 3,
-      "boundary_layer_diffuse_reflection": 3,
+      "specular_reflection": 3,
+      "diffuse_reflection": 3,
       "color": 3
     }
   ],

@@ -311,23 +311,23 @@ CASE("parse mliUserScenery") {
     CHECK(uscn.surface_resources.num_surfaces == 4u);
     CHECK(uscn_srfs[0].color == 0u);
     CHECK(uscn_srfs[0].material == MLI_MATERIAL_PHONG);
-    CHECK(uscn_srfs[0].boundary_layer_specular_reflection == 0u);
-    CHECK(uscn_srfs[0].boundary_layer_diffuse_reflection == 0u);
+    CHECK(uscn_srfs[0].specular_reflection == 0u);
+    CHECK(uscn_srfs[0].diffuse_reflection == 0u);
 
     CHECK(uscn_srfs[1].color == 1u);
     CHECK(uscn_srfs[1].material == MLI_MATERIAL_PHONG);
-    CHECK(uscn_srfs[1].boundary_layer_specular_reflection == 0u);
-    CHECK(uscn_srfs[1].boundary_layer_diffuse_reflection == 0u);
+    CHECK(uscn_srfs[1].specular_reflection == 0u);
+    CHECK(uscn_srfs[1].diffuse_reflection == 0u);
 
     CHECK(uscn_srfs[2].color == 2u);
     CHECK(uscn_srfs[2].material == MLI_MATERIAL_PHONG);
-    CHECK(uscn_srfs[2].boundary_layer_specular_reflection == 0u);
-    CHECK(uscn_srfs[2].boundary_layer_diffuse_reflection == 0u);
+    CHECK(uscn_srfs[2].specular_reflection == 0u);
+    CHECK(uscn_srfs[2].diffuse_reflection == 0u);
 
     CHECK(uscn_srfs[3].color == 3u);
     CHECK(uscn_srfs[3].material == MLI_MATERIAL_PHONG);
-    CHECK(uscn_srfs[3].boundary_layer_specular_reflection == 0u);
-    CHECK(uscn_srfs[3].boundary_layer_diffuse_reflection == 0u);
+    CHECK(uscn_srfs[3].specular_reflection == 0u);
+    CHECK(uscn_srfs[3].diffuse_reflection == 0u);
 
     /* frames */
     CHECK(uscn.root.children.dyn.size == 4u);

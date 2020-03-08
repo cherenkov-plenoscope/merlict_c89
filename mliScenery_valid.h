@@ -27,10 +27,10 @@ int _mliScenery_valid_surfaces(const struct mliScenery *scenery)
                 }
                 if (scenery->surfaces[i].color >= scenery->num_colors)
                         return 0;
-                if (scenery->surfaces[i].boundary_layer_specular_reflection >=
+                if (scenery->surfaces[i].specular_reflection >=
                         scenery->num_functions)
                         return 0;
-                if (scenery->surfaces[i].boundary_layer_diffuse_reflection >=
+                if (scenery->surfaces[i].diffuse_reflection >=
                         scenery->num_functions)
                         return 0;
         }
