@@ -35,7 +35,7 @@ CASE("simple propagation") {
     CHECK_MARGIN(intersection.distance_of_ray, 3., 1e-9);
 
     CHECK(scenery.num_media == 2);
-    CHECK(scenery.num_functions == 2);
+    CHECK(scenery.num_functions == 4);
 
     side_coming_from = _mli_side_coming_from(&scenery, &intersection);
     surf_coming_from = scenery.surfaces[side_coming_from.surface];
