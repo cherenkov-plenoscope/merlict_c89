@@ -9,6 +9,30 @@
 
 #define MLI_SCENERY_MAGIC 43180u
 
+int _mliScenery_write_vertices_and_triangles(
+        const struct mliScenery *scenery,
+        FILE *f)
+{
+        mli_fwrite(
+                scenery->vertices,
+                sizeof(struct mliVec),
+                scenery->num_vertices,
+                f);
+        mli_fwrite(
+                scenery->triangles,
+                sizeof(struct mliFace),
+                scenery->num_triangles,
+                f);
+        mli_fwrite(
+                scenery->triangles_boundary_layers,
+                sizeof(struct mliBoundaryLayer),
+                scenery->num_triangles,
+                f);
+        return 1;
+error:
+        return 0;
+}
+
 int _mliScenery_write_spherical_cap_hex(
         const struct mliScenery *scenery,
         FILE *f)
@@ -195,25 +219,7 @@ int mliScenery_write_to_path(
                 scenery->num_surfaces,
                 f);
 
-        /* vertices */
-        mli_fwrite(
-                scenery->vertices,
-                sizeof(struct mliVec),
-                scenery->num_vertices,
-                f);
-
-        /* triangles */
-        mli_fwrite(
-                scenery->triangles,
-                sizeof(struct mliFace),
-                scenery->num_triangles,
-                f);
-        mli_fwrite(
-                scenery->triangles_boundary_layers,
-                sizeof(struct mliBoundaryLayer),
-                scenery->num_triangles,
-                f);
-
+        mli_c(_mliScenery_write_vertices_and_triangles(scenery, f));
         mli_c(_mliScenery_write_spherical_cap_hex(scenery, f));
         mli_c(_mliScenery_write_spheres(scenery, f));
         mli_c(_mliScenery_write_cylinders(scenery, f));
