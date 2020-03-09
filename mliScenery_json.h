@@ -694,19 +694,20 @@ int __mliFrame_set_Mesh(
     uint64_t token_vertices;
     uint64_t token_faces;
     uint64_t v, f;
+    uint32_t num_vertices, num_faces;
     /* vertices */
     mli_check(
         mliJson_find_key(json, token, "vertices", &token_vertices),
         "Expected json-Mesh to have key 'vertices'.");
-    frame->primitive.mesh->num_vertices = json->tokens[token_vertices + 1].size;
+    num_vertices = json->tokens[token_vertices + 1].size;
     /* faces */
     mli_check(
         mliJson_find_key(json, token, "faces", &token_faces),
         "Expected json-Mesh to have key 'faces'.");
-    frame->primitive.mesh->num_faces = json->tokens[token_faces + 1].size;
+    num_faces = json->tokens[token_faces + 1].size;
     /* malloc */
     mli_check(
-        mliMesh_malloc(frame->primitive.mesh),
+        mliMesh_malloc(frame->primitive.mesh, num_vertices, num_faces),
         "Failed to allocate mesh from json.");
     for (v = 0; v < frame->primitive.mesh->num_vertices; v++) {
         uint64_t token_vertex = mliJson_array_child_token(

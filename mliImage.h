@@ -338,8 +338,8 @@ int mliPixels_malloc_and_set_from_image(
     const struct mliImage *image)
 {
     uint64_t i, r, c;
-    pixels->num_pixels = image->num_cols*image->num_rows;
-    mli_check_mem(mliPixels_malloc(pixels));
+    uint32_t num_pixels = image->num_cols*image->num_rows;
+    mli_check_mem(mliPixels_malloc(pixels, num_pixels));
     i = 0u;
     for (r = 0u; r < image->num_rows; r++) {
         for (c = 0u; c < image->num_cols; c++) {
@@ -357,12 +357,16 @@ int mliPixels_malloc_from_image_above_threshold(
     const float threshold)
 {
     uint64_t i, r, c;
+    uint32_t num_pixels = 0;
     for (r = 0u; r < image->num_rows; r++) {
         for (c = 0u; c < image->num_cols; c++) {
             struct mliColor col = mliImage_at(image, c, r);
             if (col.r + col.g + col.b > threshold) {
-                pixels->num_pixels++;}}}
-    mli_check_mem(mliPixels_malloc(pixels));
+                num_pixels++;
+            }
+        }
+    }
+    mli_check_mem(mliPixels_malloc(pixels, num_pixels));
     i = 0u;
     for (r = 0u; r < image->num_rows; r++) {
         for (c = 0u; c < image->num_cols; c++) {

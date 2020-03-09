@@ -4,11 +4,13 @@ CASE("simple propagation") {
     struct mliMT19937 prng = mliMT19937_init(0u);
     struct mliScenery scenery = mliScenery_init();
     struct mliOcTree octree;
-    struct mliPhotonHistory history = mliPhotonHistory_init(16u);
+    struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
+    struct mliPhotonInteraction creation;
     struct mliIntersection intersection;
     struct mliSide side_coming_from, side_going_to;
     struct mliSurface surf_coming_from, surf_going_to;
     struct mliMedium medi_coming_from, medi_going_to;
+    size_t max_interactions = 16;
 
     struct mliPhoton photon;
     photon.ray =  mliRay_set(
@@ -55,27 +57,29 @@ CASE("simple propagation") {
     CHECK(medi_coming_from.refraction == 1);
     CHECK(medi_coming_from.absorbtion == 2);
 
-    CHECK(mliPhotonHistory_malloc(&history));
-    history.actions[0].type = MLI_PHOTON_CREATION;
-    history.actions[0].position = photon.ray.support;
-    history.actions[0].refraction_going_to = 0u;
-    history.actions[0].absorbtion_going_to = 2u;
-    history.actions[0].refraction_coming_from = 0u;
-    history.actions[0].absorbtion_coming_from = 2u;
-    history.actions[0]._object_idx = -1;
-    history.actions[0]._from_outside_to_inside = 1;
-    history.num += 1;
+    CHECK(mliDynPhotonInteraction_malloc(&history, max_interactions));
+
+    creation.type = MLI_PHOTON_CREATION;
+    creation.position = photon.ray.support;
+    creation.refraction_going_to = 0u;
+    creation.absorbtion_going_to = 2u;
+    creation.refraction_coming_from = 0u;
+    creation.absorbtion_coming_from = 2u;
+    creation._object_idx = -1;
+    creation._from_outside_to_inside = 1;
+    CHECK(mliDynPhotonInteraction_push_back(&history, creation));
 
     CHECK(mli_propagate_photon(
             &scenery,
             &octree,
             &history,
             &photon,
-            &prng));
+            &prng,
+            max_interactions));
 
-    mliPhotonHistory_print(&history);
+    mliDynPhotonInteraction_print(&history);
 
     mliScenery_free(&scenery);
     mliOcTree_free(&octree);
-    mliPhotonHistory_free(&history);
+    mliDynPhotonInteraction_free(&history);
 }

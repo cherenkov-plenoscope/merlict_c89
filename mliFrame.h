@@ -70,45 +70,6 @@ struct mliFrame mliFrame_init() {
     f.boundary_layer.outer.medium = 0u;
     return f;}
 
-int mliFrame_malloc(struct mliFrame *f, const uint64_t type) {
-    f->type = type;
-    switch(type) {
-        case MLI_FRAME:
-            mli_check(mliDynFramePtr_malloc(&f->children, 0u),
-                "Can not allocate memory for children of frame.");
-            break;
-        case MLI_MESH:
-            mli_malloc(f->primitive.mesh, struct mliMesh, 1u);
-            *f->primitive.mesh = mliMesh_init();
-            break;
-        case MLI_SPHERICAL_CAP_HEX:
-            mli_malloc(
-                f->primitive.spherical_cap_hex,
-                struct mliSphericalCapHex,
-                1u);
-            break;
-        case MLI_SPHERE:
-            mli_malloc(f->primitive.sphere, struct mliSphere, 1u);
-            break;
-        case MLI_CYLINDER:
-            mli_malloc(f->primitive.cylinder, struct mliCylinder, 1u);
-            break;
-        case MLI_HEXAGON:
-            mli_malloc(f->primitive.hexagon, struct mliHexagon, 1u);
-            break;
-        case MLI_BICIRCLEPLANE:
-            mli_malloc(f->primitive.bicircleplane, struct mliBiCirclePlane, 1u);
-            break;
-        case MLI_DISC:
-            mli_malloc(f->primitive.disc, struct mliDisc, 1u);
-            break;
-        default: mli_sentinel("Unknown type of primitive."); break;
-    }
-    return 1;
-error:
-    return 0;
-}
-
 int mliFrame_free(struct mliFrame *f) {
     uint64_t c;
     switch(f->type) {
@@ -146,6 +107,46 @@ int mliFrame_free(struct mliFrame *f) {
             break;
     }
     *f = mliFrame_init();
+    return 1;
+error:
+    return 0;
+}
+
+int mliFrame_malloc(struct mliFrame *f, const uint64_t type) {
+    mli_check(mliFrame_free(f), "Failed to free Frame before malloc.");
+    f->type = type;
+    switch(type) {
+        case MLI_FRAME:
+            mli_check(mliDynFramePtr_malloc(&f->children, 0u),
+                "Can not allocate memory for children of frame.");
+            break;
+        case MLI_MESH:
+            mli_malloc(f->primitive.mesh, struct mliMesh, 1u);
+            *f->primitive.mesh = mliMesh_init();
+            break;
+        case MLI_SPHERICAL_CAP_HEX:
+            mli_malloc(
+                f->primitive.spherical_cap_hex,
+                struct mliSphericalCapHex,
+                1u);
+            break;
+        case MLI_SPHERE:
+            mli_malloc(f->primitive.sphere, struct mliSphere, 1u);
+            break;
+        case MLI_CYLINDER:
+            mli_malloc(f->primitive.cylinder, struct mliCylinder, 1u);
+            break;
+        case MLI_HEXAGON:
+            mli_malloc(f->primitive.hexagon, struct mliHexagon, 1u);
+            break;
+        case MLI_BICIRCLEPLANE:
+            mli_malloc(f->primitive.bicircleplane, struct mliBiCirclePlane, 1u);
+            break;
+        case MLI_DISC:
+            mli_malloc(f->primitive.disc, struct mliDisc, 1u);
+            break;
+        default: mli_sentinel("Unknown type of primitive."); break;
+    }
     return 1;
 error:
     return 0;

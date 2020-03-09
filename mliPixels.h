@@ -17,17 +17,23 @@ struct mliPixels {
     struct mliPixel *pixels;
 };
 
-struct mliPixels mliPixels_init() {
+struct mliPixels mliPixels_init()
+{
     struct mliPixels pix;
     pix.num_pixels = 0u;
     pix.pixels = NULL;
-    return pix;}
+    return pix;
+}
 
-void mliPixels_free(struct mliPixels *pix) {
+void mliPixels_free(struct mliPixels *pix)
+{
     free(pix->pixels);
-    *pix = mliPixels_init();}
+    *pix = mliPixels_init();
+}
 
-int mliPixels_malloc(struct mliPixels *pix) {
+int mliPixels_malloc(struct mliPixels *pix, const uint32_t num_pixels) {
+    mliPixels_free(pix);
+    pix->num_pixels = num_pixels;
     mli_malloc(pix->pixels, struct mliPixel, pix->num_pixels);
     return 1;
 error:

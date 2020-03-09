@@ -29,21 +29,27 @@ struct mliMesh mliMesh_init()
     return m;
 }
 
-int mliMesh_malloc(struct mliMesh *m)
+void mliMesh_free(struct mliMesh *m)
 {
     free(m->vertices);
-    mli_malloc(m->vertices, struct mliVec, m->num_vertices);
     free(m->faces);
+    *m = mliMesh_init();
+}
+
+int mliMesh_malloc(
+    struct mliMesh *m,
+    const uint32_t num_vertices,
+    const uint32_t num_faces)
+{
+    mliMesh_free(m);
+    m->num_vertices = num_vertices;
+    m->num_faces = num_faces;
+    mli_malloc(m->vertices, struct mliVec, m->num_vertices);
     mli_malloc(m->faces, struct mliFace, m->num_faces);
     return 1;
 error:
     return 0;
 }
-
-void mliMesh_free(struct mliMesh *m) {
-    free(m->vertices);
-    free(m->faces);
-    *m = mliMesh_init();}
 
 int mli_parse_three_ints(const char *line, int *a, int* b, int*c) {
     int state = 0;
@@ -192,10 +198,8 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
         mli_parse_three_ints(line, &num_vertices, &num_faces, &not_used),
         "Can not parse num_vertices and num_faces.");
     mli_check(num_faces >= 0, "Expected num_faces >= 0.");
-    m->num_faces = num_faces;
     mli_check(num_vertices >= 0, "Expected num_vertices >= 0.");
-    m->num_vertices = num_vertices;
-    mli_c(mliMesh_malloc(m));
+    mli_c(mliMesh_malloc(m, num_vertices, num_faces));
 
     while (1) {
         mli_check(fgets(line, len, fin) != NULL, "Can not read vertex line.");

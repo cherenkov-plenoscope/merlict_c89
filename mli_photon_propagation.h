@@ -14,9 +14,10 @@
 struct mliEnv {
     const struct mliScenery *scenery;
     const struct mliOcTree *octree;
-    struct mliPhotonHistory *history;
+    struct mliDynPhotonInteraction *history;
     struct mliPhoton *photon;
     struct mliMT19937 *prng;
+    size_t max_interactions;
 };
 
 int _mli_propagate_photon(struct mliEnv *env);
@@ -24,7 +25,8 @@ int _mli_propagate_photon(struct mliEnv *env);
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     const int64_t type,
     const struct mliScenery *scenery,
-    const struct mliIntersection *isec) {
+    const struct mliIntersection *isec)
+{
     struct mliPhotonInteraction phia;
 
     struct mliSide side_coming_from, side_going_to;
@@ -45,7 +47,8 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     phia.distance_of_ray = isec->distance_of_ray;
     phia._object_idx = isec->object_idx;
     phia._from_outside_to_inside = isec->from_outside_to_inside;
-    return phia;}
+    return phia;
+}
 
 int _mli_phong(
     struct mliEnv *env,
@@ -83,55 +86,57 @@ int _mli_phong(
            0.0      diffuse      diffuse + specular                1.0
     */
     if (rnd < diffuse) {
-        const uint64_t n = env->history->num;
+        mli_c(mliDynPhotonInteraction_push_back(
+            env->history,
+            mliPhotonInteraction_from_Intersection(
+                MLI_PHOTON_DIFFUSE_REFLECTION,
+                env->scenery,
+                isec)));
         env->photon->ray = mliRay_set(
             isec->position,
             mli_draw_lambertian_direction_wrt_surface_normal(
                 env->prng,
                 isec->surface_normal));
-        env->history->actions[n] = mliPhotonInteraction_from_Intersection(
-            MLI_PHOTON_DIFFUSE_REFLECTION,
-            env->scenery,
-            isec);
-        env->history->num += 1;
         mli_check(
             _mli_propagate_photon(env),
             "Failed to continue after diffuse reflection phong.");
     } else if (rnd < (specular + diffuse)) {
-        const uint64_t n = env->history->num;
+        mli_c(mliDynPhotonInteraction_push_back(
+            env->history,
+            mliPhotonInteraction_from_Intersection(
+                MLI_PHOTON_SPECULAR_REFLECTION,
+                env->scenery,
+                isec)));
         env->photon->ray = mliRay_set(
             isec->position,
             mliVec_mirror(env->photon->ray.direction, isec->surface_normal));
-        env->history->actions[n] = mliPhotonInteraction_from_Intersection(
-            MLI_PHOTON_SPECULAR_REFLECTION,
-            env->scenery,
-            isec);
-        env->history->num += 1;
         mli_check(
             _mli_propagate_photon(env),
             "Failed to continue after specular reflection phong.");
     } else {
-        const uint64_t n = env->history->num;
-        env->history->actions[n] = mliPhotonInteraction_from_Intersection(
-            MLI_PHOTON_ABSORBTION,
-            env->scenery,
-            isec);
-        env->history->num += 1;
+        mli_c(mliDynPhotonInteraction_push_back(
+            env->history,
+            mliPhotonInteraction_from_Intersection(
+                MLI_PHOTON_ABSORBTION,
+                env->scenery,
+                isec)));
     }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int _mli_pass_boundary_layer(
     struct mliEnv *env,
     const struct mliIntersection *isec,
-    const struct mliFresnel fresnel) {
-    uint64_t n = env->history->num;
-    env->history->actions[n] = mliPhotonInteraction_from_Intersection(
-        MLI_PHOTON_REFRACTION,
-        env->scenery,
-        isec);
-    env->history->num += 1;
+    const struct mliFresnel fresnel)
+{
+    mli_c(mliDynPhotonInteraction_push_back(
+        env->history,
+        mliPhotonInteraction_from_Intersection(
+            MLI_PHOTON_REFRACTION,
+            env->scenery,
+            isec)));
     env->photon->ray = mliRay_set(
         isec->position,
         mliFresnel_refraction_direction(fresnel));
@@ -140,7 +145,8 @@ int _mli_pass_boundary_layer(
         "Failed to continue after passing boundary layer");
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int _mli_probability_passing_medium_coming_from(
     const struct mliScenery *scenery,
@@ -168,7 +174,8 @@ error:
 
 int _mli_fresnel_refraction_and_reflection(
     struct mliEnv *env,
-    const struct mliIntersection *isec) {
+    const struct mliIntersection *isec)
+{
     struct mliFresnel fresnel;
     double n_going_to;
     double n_coming_from;
@@ -193,16 +200,15 @@ int _mli_fresnel_refraction_and_reflection(
         n_going_to);
     reflection_propability = mliFresnel_reflection_propability(fresnel);
     if (reflection_propability > mli_random_uniform(env->prng)) {
-        uint64_t n;
+        mli_c(mliDynPhotonInteraction_push_back(
+            env->history,
+            mliPhotonInteraction_from_Intersection(
+                MLI_PHOTON_FRESNEL_REFLECTION,
+                env->scenery,
+                isec)));
         env->photon->ray = mliRay_set(
             isec->position,
             mliFresnel_reflection_direction(fresnel));
-        n = env->history->num + 1;
-        env->history->actions[n] = mliPhotonInteraction_from_Intersection(
-            MLI_PHOTON_FRESNEL_REFLECTION,
-            env->scenery,
-            isec);
-        env->history->num += 1;
         mli_check(
             _mli_propagate_photon(env),
             "Failed to continue after reflection");
@@ -213,7 +219,8 @@ int _mli_fresnel_refraction_and_reflection(
     }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int _mli_interact_with_object(
     struct mliEnv *env,
@@ -250,10 +257,13 @@ int _mli_distance_until_next_absorbtion(
     double *distance_to_next_absorption)
 {
     double one_over_e_way;
-    uint64_t last_interaction = env->history->num - 1;
-    struct mliFunc *absorbtion_in_medium_coming_from =
+    uint64_t last_interaction;
+    struct mliFunc *absorbtion_in_medium_coming_from;
+    assert(env->history->dyn.size > 0u);
+    last_interaction = env->history->dyn.size - 1u;
+    absorbtion_in_medium_coming_from =
         &env->scenery->resources.functions[
-            env->history->actions[last_interaction].absorbtion_going_to];
+            env->history->arr[last_interaction].absorbtion_going_to];
     mli_check(mliFunc_evaluate(
         absorbtion_in_medium_coming_from,
         env->photon->wavelength,
@@ -264,9 +274,11 @@ int _mli_distance_until_next_absorbtion(
         1./one_over_e_way);
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
-int _mli_work_on_causal_intersection(struct mliEnv *env) {
+int _mli_work_on_causal_intersection(struct mliEnv *env)
+{
     int hit;
     struct mliIntersection isec;
     double distance_until_next_absorbtion;
@@ -284,46 +296,51 @@ int _mli_work_on_causal_intersection(struct mliEnv *env) {
             _mli_interact_with_object(env, &isec),
             "Failed to interact photon with object surface.");
     } else {
-        uint64_t n;
-        fprintf(stderr, "%s:%d absorb in void\n", __FILE__, __LINE__);
-        n = env->history->num + 1;
-        env->history->actions[n].type = MLI_PHOTON_ABSORBTION;
-        env->history->actions[n].position = mliRay_at(
+        uint64_t last =  env->history->dyn.size - 1;
+        struct mliPhotonInteraction action;
+        action.type = MLI_PHOTON_ABSORBTION;
+        action.position = mliRay_at(
             &env->photon->ray,
             distance_until_next_absorbtion);
-        env->history->actions[n].refraction_coming_from =
-            env->history->actions[n-1].refraction_coming_from;
-        env->history->actions[n].refraction_going_to =
-            env->history->actions[n-1].refraction_going_to;
-        env->history->actions[n].absorbtion_coming_from =
-            env->history->actions[n-1].absorbtion_coming_from;
-        env->history->actions[n].absorbtion_going_to =
-            env->history->actions[n-1].absorbtion_going_to;
-        env->history->actions[n].distance_of_ray =
+        action.refraction_coming_from =
+            env->history->arr[last].refraction_coming_from;
+        action.refraction_going_to =
+            env->history->arr[last].refraction_going_to;
+        action.absorbtion_coming_from =
+            env->history->arr[last].absorbtion_coming_from;
+        action.absorbtion_going_to =
+            env->history->arr[last].absorbtion_going_to;
+        action.distance_of_ray =
             distance_until_next_absorbtion;
-        env->history->actions[n]._object_idx = -1;
-        env->history->actions[n]._from_outside_to_inside = 1;
-        env->history->num += 1;
+        action._object_idx = -1;
+        action._from_outside_to_inside = 1;
+        mli_c(mliDynPhotonInteraction_push_back(env->history, action));
+        fprintf(stderr, "%s:%d absorb in void\n", __FILE__, __LINE__);
+
     }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
-int _mli_propagate_photon(struct mliEnv *env) {
-    if(env->history->num_reserved > env->history->num) {
+int _mli_propagate_photon(struct mliEnv *env)
+{
+    if(env->max_interactions > env->history->dyn.size) {
         mli_check(_mli_work_on_causal_intersection(env),
             "Failed to work on intersection.");
     }
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int mli_propagate_photon(
     struct mliScenery *scenery,
     struct mliOcTree *octree,
-    struct mliPhotonHistory *history,
+    struct mliDynPhotonInteraction *history,
     struct mliPhoton *photon,
-    struct mliMT19937 *prng)
+    struct mliMT19937 *prng,
+    const size_t max_interactions)
 {
     struct mliEnv env;
     env.scenery = scenery;
@@ -331,6 +348,7 @@ int mli_propagate_photon(
     env.history = history;
     env.photon = photon;
     env.prng = prng;
+    env.max_interactions = max_interactions;
     mli_c(_mli_propagate_photon(&env));
     return 1;
 error:

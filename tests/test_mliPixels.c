@@ -6,8 +6,8 @@ CASE("mliPixels") {
     CHECK(p.num_pixels == 0u);
     CHECK(p.pixels == NULL);
 
-    p.num_pixels = 5;
-    CHECK(mliPixels_malloc(&p));
+    CHECK(mliPixels_malloc(&p, 5u));
+    CHECK(p.num_pixels == 5u);
     for (i = 0; i < 5; i ++) {
         p.pixels[i].row = i;
         p.pixels[i].col = i + 1;}
@@ -19,8 +19,7 @@ CASE("mliPixels") {
     CHECK(p.num_pixels == 0u);
     CHECK(p.pixels == NULL);
 
-    p.num_pixels = 10;
-    CHECK(mliPixels_malloc(&p));
+    CHECK(mliPixels_malloc(&p, 10));
     mliPixels_free(&p);
 
     CHECK(p.num_pixels == 0u);

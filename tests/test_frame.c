@@ -102,9 +102,9 @@ CASE("basic mesh allocation and initialization") {
     CHECK(child);
     CHECK(child->type == MLI_MESH);
     child->id = 42;
-    child->primitive.mesh->num_vertices = 3;
-    child->primitive.mesh->num_faces = 1;
-    mliMesh_malloc(child->primitive.mesh);
+    mliMesh_malloc(child->primitive.mesh, 3, 1);
+    CHECK(child->primitive.mesh->num_vertices == 3);
+    CHECK(child->primitive.mesh->num_faces == 1);
     child->primitive.mesh->vertices[0] = mliVec_set(1., 0., 0.);
     child->primitive.mesh->vertices[0] = mliVec_set(0., 1., 0.);
     child->primitive.mesh->vertices[0] = mliVec_set(0., 0., 1.);
