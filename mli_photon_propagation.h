@@ -7,7 +7,7 @@
 #include "mliPhoton.h"
 #include "mliScenery.h"
 #include "mliOcTree.h"
-#include "mliPhotonHistory.h"
+#include "mliDynPhotonInteraction.h"
 #include "mliMT19937.h"
 #include "mli_intersection_and_scenery.h"
 

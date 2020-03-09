@@ -79,7 +79,7 @@
 
 #include "mli_lambertian_cosine_law.h"
 #include "mliFresnel.h"
-#include "mliPhotonHistory.h"
+#include "mliDynPhotonInteraction.h"
 #include "mliPhoton.h"
 #include "mliDynPhoton.h"
 #include "mli_photon_sources.h"
