@@ -70,10 +70,9 @@ CASE("mliJson_init, defaults") {
 }
 
 CASE("struct mliJson malloc, and free") {
+    size_t json_strlen = 10;
     struct mliJson json = mliJson_init();
-    json.num_chars = 10;
-    json.num_tokens = 5;
-    CHECK(mliJson_malloc(&json));
+    CHECK(mliJson_malloc(&json, json_strlen));
     mliJson_free(&json);
 }
 
