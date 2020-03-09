@@ -1,7 +1,64 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+CASE("mliSceneryResources, init") {
+    struct mliSceneryResources resources = mliSceneryResources_init();
+    CHECK(resources.num_functions == 0u);
+    CHECK(resources.functions == NULL);
+    CHECK(resources.num_colors == 0u);
+    CHECK(resources.colors == NULL);
+    CHECK(resources.num_surfaces == 0u);
+    CHECK(resources.surfaces == NULL);
+    CHECK(resources.num_media == 0u);
+    CHECK(resources.media == NULL);
+}
+
+CASE("mliScenery, init") {
+    struct mliScenery scenery = mliScenery_init();
+    CHECK(scenery.resources.num_functions == 0u);
+    CHECK(scenery.resources.functions == NULL);
+    CHECK(scenery.resources.num_colors == 0u);
+    CHECK(scenery.resources.colors == NULL);
+    CHECK(scenery.resources.num_surfaces == 0u);
+    CHECK(scenery.resources.surfaces == NULL);
+    CHECK(scenery.resources.num_media == 0u);
+    CHECK(scenery.resources.media == NULL);
+
+    CHECK(scenery.num_vertices == 0u);
+    CHECK(scenery.vertices == NULL);
+    CHECK(scenery.num_triangles == 0u);
+    CHECK(scenery.triangles == NULL);
+    CHECK(scenery.triangles_boundary_layers == NULL);
+    CHECK(scenery.num_spherical_cap_hex == 0u);
+    CHECK(scenery.spherical_cap_hex == NULL);
+    CHECK(scenery.spherical_cap_hex_boundary_layers == NULL);
+    CHECK(scenery.spherical_cap_hex_T == NULL);
+    CHECK(scenery.num_spheres == 0u);
+    CHECK(scenery.spheres == NULL);
+    CHECK(scenery.spheres_boundary_layers == NULL);
+    CHECK(scenery.spheres_T == NULL);
+    CHECK(scenery.num_cylinders == 0u);
+    CHECK(scenery.cylinders == NULL);
+    CHECK(scenery.cylinders_boundary_layers == NULL);
+    CHECK(scenery.cylinders_T == NULL);
+    CHECK(scenery.num_hexagons == 0u);
+    CHECK(scenery.hexagons == NULL);
+    CHECK(scenery.hexagons_boundary_layers == NULL);
+    CHECK(scenery.hexagons_T == NULL);
+    CHECK(scenery.num_bicircleplanes == 0u);
+    CHECK(scenery.bicircleplanes == NULL);
+    CHECK(scenery.bicircleplanes_boundary_layers == NULL);
+    CHECK(scenery.bicircleplanes_T == NULL);
+    CHECK(scenery.num_discs == 0u);
+    CHECK(scenery.discs == NULL);
+    CHECK(scenery.discs_boundary_layers == NULL);
+    CHECK(scenery.discs_T == NULL);
+}
+
 CASE("mliScenery, mliMesh_malloc_from_object_file") {
     uint64_t i;
+    struct mliSceneryResourcesCapacity res_capacity =
+        mliSceneryResourcesCapacity_init();
+    struct mliSceneryCapacity scn_capacity = mliSceneryCapacity_init();
     struct mliScenery scenery = mliScenery_init();
     struct mliScenery scenery_back = mliScenery_init();
     struct mliMesh diff_cube_sphere = mliMesh_init();
@@ -9,60 +66,61 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     struct mliColor blue = {0., 0., 255.};
     struct mliColor green = {0., 255., 0.};
     struct mliColor violet = {255., 0., 255.};
-    scenery.num_functions = 1u;
-    scenery.num_colors = 4u;
-    scenery.num_media = 1u;
-    scenery.num_surfaces = 4u;
-    scenery.num_spherical_cap_hex = 1u;
-    scenery.num_spheres = 1u;
-    scenery.num_cylinders = 1u;
-    scenery.num_hexagons = 1u;
-    scenery.num_bicircleplanes = 1u;
-    scenery.num_discs = 1u;
 
     CHECK(mliMesh_malloc_from_object_file(
         "tests/resources/diff_cube_sphere.off",
         &diff_cube_sphere));
 
-    scenery.num_vertices = diff_cube_sphere.num_vertices;
-    scenery.num_triangles = diff_cube_sphere.num_faces;
+    res_capacity.num_functions = 1u;
+    res_capacity.num_colors = 4u;
+    res_capacity.num_media = 1u;
+    res_capacity.num_surfaces = 4u;
 
-    CHECK(mliScenery_malloc(&scenery));
+    scn_capacity.num_spherical_cap_hex = 1u;
+    scn_capacity.num_spheres = 1u;
+    scn_capacity.num_cylinders = 1u;
+    scn_capacity.num_hexagons = 1u;
+    scn_capacity.num_bicircleplanes = 1u;
+    scn_capacity.num_discs = 1u;
+    scn_capacity.num_vertices = diff_cube_sphere.num_vertices;
+    scn_capacity.num_triangles = diff_cube_sphere.num_faces;
 
-    scenery.functions[0].num_points = 2u;
-    CHECK(mliFunc_malloc(&scenery.functions[0]));
-    scenery.functions[0].x[0] = 200.e-9;
-    scenery.functions[0].x[1] = 1200.e-9;
-    scenery.functions[0].y[0] = 0.;
-    scenery.functions[0].y[1] = 0.;
+    CHECK(mliScenery_malloc(&scenery, scn_capacity));
+    CHECK(mliSceneryResources_malloc(&scenery.resources, res_capacity));
+    CHECK(mliFunc_malloc(&scenery.resources.functions[0], 2u));
 
-    scenery.colors[0] = red;
-    scenery.colors[1] = blue;
-    scenery.colors[2] = green;
-    scenery.colors[3] = violet;
+    scenery.resources.functions[0].x[0] = 200.e-9;
+    scenery.resources.functions[0].x[1] = 1200.e-9;
+    scenery.resources.functions[0].y[0] = 0.;
+    scenery.resources.functions[0].y[1] = 0.;
 
-    scenery.media[0].refraction = 0u;
-    scenery.media[0].absorbtion = 0u;
+    scenery.resources.colors[0] = red;
+    scenery.resources.colors[1] = blue;
+    scenery.resources.colors[2] = green;
+    scenery.resources.colors[3] = violet;
 
-    scenery.surfaces[0].color = 0u;
-    scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[0].specular_reflection = 0u;
-    scenery.surfaces[0].diffuse_reflection = 0u;
+    scenery.resources.media[0].refraction = 0u;
+    scenery.resources.media[0].absorbtion = 0u;
 
-    scenery.surfaces[1].color = 1u;
-    scenery.surfaces[1].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[1].specular_reflection = 0u;
-    scenery.surfaces[1].diffuse_reflection = 0u;
+    scenery.resources.surfaces[0].color = 0u;
+    scenery.resources.surfaces[0].material = MLI_MATERIAL_PHONG;
+    scenery.resources.surfaces[0].specular_reflection = 0u;
+    scenery.resources.surfaces[0].diffuse_reflection = 0u;
 
-    scenery.surfaces[2].color = 2u;
-    scenery.surfaces[2].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[2].specular_reflection = 0u;
-    scenery.surfaces[2].diffuse_reflection = 0u;
+    scenery.resources.surfaces[1].color = 1u;
+    scenery.resources.surfaces[1].material = MLI_MATERIAL_PHONG;
+    scenery.resources.surfaces[1].specular_reflection = 0u;
+    scenery.resources.surfaces[1].diffuse_reflection = 0u;
 
-    scenery.surfaces[3].color = 3u;
-    scenery.surfaces[3].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[3].specular_reflection = 0u;
-    scenery.surfaces[3].diffuse_reflection = 0u;
+    scenery.resources.surfaces[2].color = 2u;
+    scenery.resources.surfaces[2].material = MLI_MATERIAL_PHONG;
+    scenery.resources.surfaces[2].specular_reflection = 0u;
+    scenery.resources.surfaces[2].diffuse_reflection = 0u;
+
+    scenery.resources.surfaces[3].color = 3u;
+    scenery.resources.surfaces[3].material = MLI_MATERIAL_PHONG;
+    scenery.resources.surfaces[3].specular_reflection = 0u;
+    scenery.resources.surfaces[3].diffuse_reflection = 0u;
 
     mliVec_ncpy(
         diff_cube_sphere.vertices,
@@ -156,6 +214,11 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
     mliScenery_write_to_path(&scenery, "tests/resources/scn1.mli.tmp");
     mliScenery_read_from_path(&scenery_back, "tests/resources/scn1.mli.tmp");
 
+    CHECK(scenery.resources.num_functions == scenery_back.resources.num_functions);
+    CHECK(scenery.resources.num_functions == 1);
+    CHECK(scenery.resources.functions[0].num_points == 2);
+    CHECK(scenery_back.resources.functions[0].num_points == 2);
+
     CHECK(mliScenery_is_equal(&scenery, &scenery_back));
 
     mliScenery_free(&scenery);
@@ -179,9 +242,7 @@ CASE("mliScenery, render image") {
     camera.rotation.z = 0.;
     camera.field_of_view = mli_deg2rad(80.);
 
-    img.num_cols = 640u;
-    img.num_rows = 480u;
-    CHECK(mliImage_malloc(&img));
+    CHECK(mliImage_malloc(&img, 640u, 480u));
     mliCamera_render_image(&camera, &scenery, &octree, &img);
     mliImage_write_to_ppm(&img, "tests/resources/scn1.ppm.tmp");
 
@@ -312,34 +373,39 @@ CASE("mliOcTree_from_scenery") {
 }
 
 CASE("struct mliScenery asymetric") {
+    struct mliSceneryResourcesCapacity res_capacity =
+        mliSceneryResourcesCapacity_init();
+    struct mliSceneryCapacity scn_capacity = mliSceneryCapacity_init();
     struct mliScenery scenery = mliScenery_init();
     struct mliVec offset;
     uint64_t i;
-    scenery.num_functions = 1u;
-    scenery.num_colors = 1u;
-    scenery.num_surfaces = 1u;
-    scenery.num_spherical_cap_hex = 0u;
-    scenery.num_spheres = 50u;
-    scenery.num_vertices = 0u;
-    scenery.num_triangles = 0u;
+    res_capacity.num_functions = 1u;
+    res_capacity.num_colors = 1u;
+    res_capacity.num_surfaces = 1u;
+    res_capacity.num_media = 1u;
 
-    CHECK(mliScenery_malloc(&scenery));
+    scn_capacity.num_spherical_cap_hex = 0u;
+    scn_capacity.num_spheres = 50u;
+    scn_capacity.num_vertices = 0u;
+    scn_capacity.num_triangles = 0u;
 
-    scenery.functions[0].num_points = 2u;
-    CHECK(mliFunc_malloc(&scenery.functions[0]));
-    scenery.functions[0].x[0] = 200.e-9;
-    scenery.functions[0].x[1] = 1200.e-9;
-    scenery.functions[0].y[0] = 0.;
-    scenery.functions[0].y[1] = 0.;
+    CHECK(mliScenery_malloc(&scenery, scn_capacity));
+    CHECK(mliSceneryResources_malloc(&scenery.resources, res_capacity));
+    CHECK(mliFunc_malloc(&scenery.resources.functions[0], 2u));
 
-    scenery.colors[0] = mliColor_set(255., 0., 0.);
+    scenery.resources.functions[0].x[0] = 200.e-9;
+    scenery.resources.functions[0].x[1] = 1200.e-9;
+    scenery.resources.functions[0].y[0] = 0.;
+    scenery.resources.functions[0].y[1] = 0.;
 
-    scenery.surfaces[0].color = 0u;
-    scenery.surfaces[0].material = MLI_MATERIAL_PHONG;
-    scenery.surfaces[0].specular_reflection = 0u;
-    scenery.surfaces[0].diffuse_reflection = 0u;
-    scenery.media[0].refraction = 0u;
-    scenery.media[0].absorbtion = 0u;
+    scenery.resources.colors[0] = mliColor_set(255., 0., 0.);
+
+    scenery.resources.surfaces[0].color = 0u;
+    scenery.resources.surfaces[0].material = MLI_MATERIAL_PHONG;
+    scenery.resources.surfaces[0].specular_reflection = 0u;
+    scenery.resources.surfaces[0].diffuse_reflection = 0u;
+    scenery.resources.media[0].refraction = 0u;
+    scenery.resources.media[0].absorbtion = 0u;
     offset = mliVec_set(0, 0, -8);
     for (i = 0; i < scenery.num_spheres; i ++) {
         const double phi = 2.*MLI_PI*(double)(i)/scenery.num_spheres;
@@ -378,9 +444,7 @@ CASE("render image asymetric scenery") {
     camera.rotation.z = 0.;
     camera.field_of_view = mli_deg2rad(80.);
 
-    img.num_cols = 640u;
-    img.num_rows = 480u;
-    CHECK(mliImage_malloc(&img));
+    CHECK(mliImage_malloc(&img, 640u, 480u));
     mliCamera_render_image(&camera, &scenery, &octree, &img);
     mliImage_write_to_ppm(&img, "tests/resources/scn_asym.ppm.tmp");
 

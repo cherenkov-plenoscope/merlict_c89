@@ -2,8 +2,7 @@
 
 CASE("mliFunc_malloc") {
     struct mliFunc func = mliFunc_init();
-    func.num_points = 0u;
-    CHECK(mliFunc_malloc(&func));
+    CHECK(mliFunc_malloc(&func, 0u));
     CHECK(func.num_points == 0u);
     CHECK(mliFunc_x_is_causal(&func));
     mliFunc_free(&func);
@@ -11,8 +10,7 @@ CASE("mliFunc_malloc") {
 
 CASE("mliFunc_x_is_causal") {
     struct mliFunc func = mliFunc_init();
-    func.num_points = 3u;
-    CHECK(mliFunc_malloc(&func));
+    CHECK(mliFunc_malloc(&func, 3u));
     CHECK(func.num_points == 3u);
     func.x[0] = 0.;
     func.x[1] = 1.;
@@ -24,8 +22,7 @@ CASE("mliFunc_x_is_causal") {
 CASE("mliFunc_evaluate, explicit") {
     double y;
     struct mliFunc func = mliFunc_init();
-    func.num_points = 5u;
-    CHECK(mliFunc_malloc(&func));
+    CHECK(mliFunc_malloc(&func, 5u));
     CHECK(func.num_points == 5u);
 
     func.x[0] = 0.;
@@ -50,8 +47,7 @@ CASE("mliFunc_evaluate, explicit") {
 CASE("mliFunc_evaluate, loop") {
     double x, y;
     struct mliFunc func = mliFunc_init();
-    func.num_points = 2u;
-    CHECK(mliFunc_malloc(&func));
+    CHECK(mliFunc_malloc(&func, 2u));
     func.x[0] = 0.;
     func.x[1] = 1.;
     func.y[0] = 0.;
@@ -68,10 +64,8 @@ CASE("mliFunc_fold_numeric") {
     struct mliFunc a, b;
     a = mliFunc_init();
     b = mliFunc_init();
-    a.num_points = 6u;
-    b.num_points = 6u;
-    CHECK(mliFunc_malloc(&a));
-    CHECK(mliFunc_malloc(&b));
+    CHECK(mliFunc_malloc(&a, 6u));
+    CHECK(mliFunc_malloc(&b, 6u));
 
     integral_0_1_x_square = 1./3.;
 

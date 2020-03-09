@@ -2,9 +2,7 @@
 
 CASE("mliImage_malloc") {
     struct mliImage img = mliImage_init();
-    img.num_cols = 3u;
-    img.num_rows = 2u;
-    CHECK(mliImage_malloc(&img));
+    CHECK(mliImage_malloc(&img, 3u, 2u));
     CHECK(img.num_cols == 3u);
     CHECK(img.num_rows == 2u);
     mliImage_free(&img);
@@ -15,10 +13,8 @@ CASE("mliImage_malloc") {
 CASE("scaling") {
     struct mliImage src = mliImage_init();
     struct mliImage dst = mliImage_init();
-    src.num_cols = 4u; src.num_rows = 4u;
-    dst.num_cols = 2u; dst.num_rows = 2u;
-    CHECK(mliImage_malloc(&src));
-    CHECK(mliImage_malloc(&dst));
+    CHECK(mliImage_malloc(&src, 4, 4));
+    CHECK(mliImage_malloc(&dst, 2, 2));
     /*
         src:
                  0    1    2    3  cols
@@ -63,9 +59,7 @@ CASE("mliImage_write_to_ppm, mliImage_malloc_from_ppm") {
     uint32_t col;
     uint32_t row;
     double tone;
-    img.num_cols = 3u;
-    img.num_rows = 2u;
-    CHECK(mliImage_malloc(&img));
+    CHECK(mliImage_malloc(&img, 3, 2));
     tone = 0.;
     for (col = 0; col < img.num_cols; col++) {
         for (row = 0; row < img.num_rows; row++) {

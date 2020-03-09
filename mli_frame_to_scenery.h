@@ -32,7 +32,7 @@ struct mliPrimitiveCount mliPrimitiveCount_init() {
     return i;}
 
 int __mliScenery_set_primitive_capacity(
-    struct mliScenery *scenery,
+    struct mliSceneryCapacity *scn_cap,
     const struct mliFrame *frame)
 {
     uint64_t c;
@@ -40,19 +40,19 @@ int __mliScenery_set_primitive_capacity(
         case MLI_FRAME:
             for (c = 0; c < frame->children.dyn.size; c++) {
                 struct mliFrame *child = frame->children.arr[c];
-                mli_c(__mliScenery_set_primitive_capacity(scenery, child));
+                mli_c(__mliScenery_set_primitive_capacity(scn_cap, child));
             }
             break;
         case MLI_MESH:
-            scenery->num_vertices += frame->primitive.mesh->num_vertices;
-            scenery->num_triangles += frame->primitive.mesh->num_faces;
+            scn_cap->num_vertices += frame->primitive.mesh->num_vertices;
+            scn_cap->num_triangles += frame->primitive.mesh->num_faces;
             break;
-        case MLI_SPHERICAL_CAP_HEX: scenery->num_spherical_cap_hex++; break;
-        case MLI_SPHERE: scenery->num_spheres++; break;
-        case MLI_CYLINDER: scenery->num_cylinders++; break;
-        case MLI_HEXAGON: scenery->num_hexagons++; break;
-        case MLI_BICIRCLEPLANE: scenery->num_bicircleplanes++; break;
-        case MLI_DISC: scenery->num_discs++; break;
+        case MLI_SPHERICAL_CAP_HEX: scn_cap->num_spherical_cap_hex++; break;
+        case MLI_SPHERE: scn_cap->num_spheres++; break;
+        case MLI_CYLINDER: scn_cap->num_cylinders++; break;
+        case MLI_HEXAGON: scn_cap->num_hexagons++; break;
+        case MLI_BICIRCLEPLANE: scn_cap->num_bicircleplanes++; break;
+        case MLI_DISC: scn_cap->num_discs++; break;
         default: mli_sentinel("Unknown type of frame."); break;}
     return 1;
 error:
@@ -147,48 +147,55 @@ int mliScenery_malloc_from_mliUserScenery(
     struct mliUserScenery *uscn)
 {
     uint64_t i;
+    struct mliSceneryCapacity scenery_capacity = mliSceneryCapacity_init();
+    struct mliSceneryResourcesCapacity resource_capacity =
+            mliSceneryResourcesCapacity_init();
     struct mliPrimitiveCount count = mliPrimitiveCount_init();
 
     /* transformations */
     mliFrame_set_frame2root(&uscn->root);
 
-    /* capacity of surfaces */
-    scenery->num_functions = uscn->surface_resources.num_functions;
-    scenery->num_colors = uscn->surface_resources.num_colors;
-    scenery->num_media = uscn->surface_resources.num_media;
-    scenery->num_surfaces = uscn->surface_resources.num_surfaces;
+    /* resource_capacity */
+    resource_capacity.num_functions = uscn->resources.num_functions;
+    resource_capacity.num_colors = uscn->resources.num_colors;
+    resource_capacity.num_media = uscn->resources.num_media;
+    resource_capacity.num_surfaces = uscn->resources.num_surfaces;
 
     /* capacity of primitives */
     mli_check(
-        __mliScenery_set_primitive_capacity(scenery, &uscn->root),
+        __mliScenery_set_primitive_capacity(&scenery_capacity, &uscn->root),
         "Can not estimate capacity of primitives.");
 
     /* malloc scenery */
-    mli_check(
-        mliScenery_malloc(scenery),
+    mli_check(mliScenery_malloc(scenery, scenery_capacity),
+        "Can not allocate scenery.");
+
+    mli_check(mliSceneryResources_malloc(
+        &scenery->resources,
+        resource_capacity),
         "Can not allocate scenery.");
 
     /* copy surfaces */
-    for (i = 0; i < scenery->num_functions; i++) {
-        scenery->functions[i].num_points =
-            uscn->surface_resources.functions[i].num_points;
+    for (i = 0; i < scenery->resources.num_functions; i++) {
         mli_check(
-            mliFunc_malloc(&scenery->functions[i]),
+            mliFunc_malloc(
+                &scenery->resources.functions[i],
+                uscn->resources.functions[i].num_points),
             "Failed to allocate struct mliFunc in mliScenery.");
         mli_check(
             mliFunc_cpy(
-                &scenery->functions[i],
-                &uscn->surface_resources.functions[i]),
+                &scenery->resources.functions[i],
+                &uscn->resources.functions[i]),
             "Failed to copy function to mliScenery.");
     }
-    for (i = 0; i < scenery->num_colors; i++) {
-        scenery->colors[i] = uscn->surface_resources.colors[i];
+    for (i = 0; i < scenery->resources.num_colors; i++) {
+        scenery->resources.colors[i] = uscn->resources.colors[i];
     }
-    for (i = 0; i < scenery->num_media; i++) {
-        scenery->media[i] = uscn->surface_resources.media[i];
+    for (i = 0; i < scenery->resources.num_media; i++) {
+        scenery->resources.media[i] = uscn->resources.media[i];
     }
-    for (i = 0; i < scenery->num_surfaces; i++) {
-        scenery->surfaces[i] = uscn->surface_resources.surfaces[i];
+    for (i = 0; i < scenery->resources.num_surfaces; i++) {
+        scenery->resources.surfaces[i] = uscn->resources.surfaces[i];
     }
 
     mli_check(

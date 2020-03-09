@@ -58,8 +58,8 @@ struct mliColor mli_trace(
             dir_to_source);
 
         side = _mli_side_going_to(scenery, &intersection);
-        surface = scenery->surfaces[side.surface];
-        color = scenery->colors[surface.color];
+        surface = scenery->resources.surfaces[side.surface];
+        color = scenery->resources.colors[surface.color];
 
         if (mli_first_casual_intersection(
                 scenery,

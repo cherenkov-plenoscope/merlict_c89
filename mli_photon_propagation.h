@@ -31,10 +31,10 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
     struct mliMedium medi_coming_from, medi_going_to;
 
     side_coming_from = _mli_side_coming_from(scenery, isec);
-    medi_coming_from = scenery->media[side_coming_from.medium];
+    medi_coming_from = scenery->resources.media[side_coming_from.medium];
 
     side_going_to = _mli_side_going_to(scenery, isec);
-    medi_going_to = scenery->media[side_going_to.medium];
+    medi_going_to = scenery->resources.media[side_going_to.medium];
 
     phia.type = type;
     phia.position = isec->position;
@@ -56,15 +56,18 @@ int _mli_phong(
     double rnd;
     struct mliSurface surface_coming_from;
     struct mliSide side_coming_from = _mli_side_coming_from(env->scenery, isec);
-    surface_coming_from = env->scenery->surfaces[side_coming_from.surface];
+    surface_coming_from =
+        env->scenery->resources.surfaces[side_coming_from.surface];
 
     mli_check(mliFunc_evaluate(
-        &env->scenery->functions[surface_coming_from.diffuse_reflection],
+        &env->scenery->resources.functions[
+            surface_coming_from.diffuse_reflection],
         env->photon->wavelength,
         &diffuse),
         "Failed to eval. diffuse reflection for wavelength.");
     mli_check(mliFunc_evaluate(
-        &env->scenery->functions[surface_coming_from.specular_reflection],
+        &env->scenery->resources.functions[
+            surface_coming_from.specular_reflection],
         env->photon->wavelength,
         &specular),
         "Failed to eval. specular reflection for wavelength.");
@@ -150,9 +153,9 @@ int _mli_probability_passing_medium_coming_from(
     const struct mliSide side_coming_from = _mli_side_coming_from(
         scenery,
         isec);
-    medium_coming_from = scenery->media[side_coming_from.medium];
+    medium_coming_from = scenery->resources.media[side_coming_from.medium];
     mli_check(mliFunc_evaluate(
-        &scenery->functions[medium_coming_from.absorbtion],
+        &scenery->resources.functions[medium_coming_from.absorbtion],
         photon->wavelength,
         &one_over_e_way),
         "Photon's wavelength is out of range to "
@@ -220,7 +223,8 @@ int _mli_interact_with_object(
     const struct mliSide side_coming_from = _mli_side_coming_from(
         env->scenery,
         isec);
-    surface_coming_from = env->scenery->surfaces[side_coming_from.surface];
+    surface_coming_from =
+        env->scenery->resources.surfaces[side_coming_from.surface];
     switch (surface_coming_from.material) {
         case MLI_MATERIAL_TRANSPARENT:
             mli_check(
@@ -243,10 +247,12 @@ error:
 
 int _mli_distance_until_next_absorbtion(
     struct mliEnv *env,
-    double *distance_to_next_absorption){
+    double *distance_to_next_absorption)
+{
     double one_over_e_way;
     uint64_t last_interaction = env->history->num - 1;
-    struct mliFunc *absorbtion_in_medium_coming_from = &env->scenery->functions[
+    struct mliFunc *absorbtion_in_medium_coming_from =
+        &env->scenery->resources.functions[
             env->history->actions[last_interaction].absorbtion_going_to];
     mli_check(mliFunc_evaluate(
         absorbtion_in_medium_coming_from,

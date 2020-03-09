@@ -12,8 +12,9 @@
 
 
 int __mliScenery_surface_capacity_from_json(
-    struct mliScenery *surface_resources,
-    const struct mliJson *json) {
+    struct mliSceneryResourcesCapacity *res_cap,
+    const struct mliJson *json)
+{
     uint64_t token;
     mli_check(
         mliJson_find_key(json, 0, "functions", &token),
@@ -21,7 +22,7 @@ int __mliScenery_surface_capacity_from_json(
     mli_check(
         json->tokens[token + 1].type == JSMN_ARRAY,
         "Expected key 'functions' to point to a json-array.")
-    surface_resources->num_functions = json->tokens[token + 1].size;
+    res_cap->num_functions = json->tokens[token + 1].size;
 
     mli_check(
         mliJson_find_key(json, 0, "colors", &token),
@@ -29,7 +30,7 @@ int __mliScenery_surface_capacity_from_json(
     mli_check(
         json->tokens[token + 1].type == JSMN_ARRAY,
         "Expected key 'colors' to point to a json-array.")
-    surface_resources->num_colors = json->tokens[token + 1].size;
+    res_cap->num_colors = json->tokens[token + 1].size;
 
 
     mli_check(
@@ -38,7 +39,7 @@ int __mliScenery_surface_capacity_from_json(
     mli_check(
         json->tokens[token + 1].type == JSMN_ARRAY,
         "Expected key 'media' to point to a json-array.")
-    surface_resources->num_media = json->tokens[token + 1].size;
+    res_cap->num_media = json->tokens[token + 1].size;
 
 
     mli_check(
@@ -47,14 +48,15 @@ int __mliScenery_surface_capacity_from_json(
     mli_check(
         json->tokens[token + 1].type == JSMN_ARRAY,
         "Expected key 'surfaces' to point to a json-array.")
-    surface_resources->num_surfaces = json->tokens[token + 1].size;
+    res_cap->num_surfaces = json->tokens[token + 1].size;
     return 1;
 error:
-    return 0;}
+    return 0;
+}
 
 int __mliScenery_malloc_functions_from_json(
-    struct mliScenery *surface_resources,
-    const struct mliJson *json) {
+    struct mliSceneryResources *resources,
+    const struct mliJson *json){
     uint64_t token;
     uint64_t token_functions;
     uint64_t f;
@@ -66,15 +68,15 @@ int __mliScenery_malloc_functions_from_json(
         json->tokens[token_functions].type == JSMN_ARRAY,
         "Expected key 'functions' to point to a json-array.")
     mli_check(
-        surface_resources->num_functions ==
+        resources->num_functions ==
         (uint64_t)json->tokens[token_functions].size,
         "Expected num_functions in struct mliScenery to match json-array.");
 
-    for (f = 0; f < surface_resources->num_functions; f++) {
+    for (f = 0; f < resources->num_functions; f++) {
         uint64_t token_f = mliJson_array_child_token(json, token_functions, f);
         mli_check(
             mliFunc_malloc_from_json_token(
-                &surface_resources->functions[f],
+                &resources->functions[f],
                 json,
                 token_f),
             "Could not malloc struct mliFunc in struct mliScenery from json.");
@@ -84,7 +86,7 @@ error:
     return 0;}
 
 int __mliScenery_assign_colors_from_json(
-    struct mliScenery *surface_resources,
+    struct mliSceneryResources *resources,
     const struct mliJson *json) {
     uint64_t token;
     uint64_t token_colors;
@@ -97,14 +99,13 @@ int __mliScenery_assign_colors_from_json(
         json->tokens[token_colors].type == JSMN_ARRAY,
         "Expected key 'colors' to point to a json-array.")
     mli_check(
-        surface_resources->num_colors ==
-        (uint64_t)json->tokens[token_colors].size,
+        resources->num_colors == (uint64_t)json->tokens[token_colors].size,
         "Expected num_colors in struct mliScenery to match json-array.");
-    for (c = 0; c < surface_resources->num_colors; c++) {
+    for (c = 0; c < resources->num_colors; c++) {
         uint64_t token_c = mliJson_array_child_token(json, token_colors, c);
         mli_check(
             mliColor_from_json_token(
-                &surface_resources->colors[c],
+                &resources->colors[c],
                 json,
                 token_c),
             "Could not assign color from json to mliScenery.");
@@ -141,7 +142,7 @@ error:
 }
 
 int __mliScenery_assign_media_from_json(
-    struct mliScenery *surface_resources,
+    struct mliSceneryResources *resources,
     const struct mliJson *json)
 {
     uint64_t token;
@@ -155,14 +156,13 @@ int __mliScenery_assign_media_from_json(
         json->tokens[token_surfaces].type == JSMN_ARRAY,
         "Expected key 'media' to point to a json-array.")
     mli_check(
-        surface_resources->num_media ==
-        (uint64_t)json->tokens[token_surfaces].size,
+        resources->num_media == (uint64_t)json->tokens[token_surfaces].size,
         "Expected num_media in struct mliScenery to match json-array.");
-    for (m = 0; m < surface_resources->num_media; m++) {
+    for (m = 0; m < resources->num_media; m++) {
         uint64_t token_m = mliJson_array_child_token(json, token_surfaces, m);
         mli_check(
             __mliMedium_from_json(
-                &surface_resources->media[m],
+                &resources->media[m],
                 json,
                 token_m),
             "Could not copy medium from json.");
@@ -214,7 +214,7 @@ error:
 }
 
 int __mliScenery_assign_surfaces_from_json(
-    struct mliScenery *surface_resources,
+    struct mliSceneryResources *resources,
     const struct mliJson *json) {
     uint64_t token;
     uint64_t token_surfaces;
@@ -227,14 +227,13 @@ int __mliScenery_assign_surfaces_from_json(
         json->tokens[token_surfaces].type == JSMN_ARRAY,
         "Expected key 'surfaces' to point to a json-array.")
     mli_check(
-        surface_resources->num_surfaces ==
-        (uint64_t)json->tokens[token_surfaces].size,
+        resources->num_surfaces == (uint64_t)json->tokens[token_surfaces].size,
         "Expected num_surfaces in struct mliScenery to match json-array.");
-    for (s = 0; s < surface_resources->num_surfaces; s++) {
+    for (s = 0; s < resources->num_surfaces; s++) {
         uint64_t token_s = mliJson_array_child_token(json, token_surfaces, s);
         mli_check(
             __mliSurface_from_json(
-                &surface_resources->surfaces[s],
+                &resources->surfaces[s],
                 json,
                 token_s),
             "Could not copy surface from json.");
@@ -826,25 +825,50 @@ error:
 }
 
 
-int mliUserScenery_malloc_from_json(struct mliUserScenery *uscn, const struct mliJson *json) {
+int mliUserScenery_malloc_from_json(
+    struct mliUserScenery *uscn,
+    const struct mliJson *json)
+{
     uint64_t token;
+    struct mliSceneryResourcesCapacity resources_capacity =
+        mliSceneryResourcesCapacity_init();
+
     mli_check(
-        __mliScenery_surface_capacity_from_json(&uscn->surface_resources, json),
-        "Could not estimate capacity for surface_resources.");
+        __mliScenery_surface_capacity_from_json(&resources_capacity, json),
+        "Failed to estimate capacity for surface_resources.");
+
     mli_check(
         mliUserScenery_malloc(uscn),
-        "Could not allocate memory for mliUserScenery.");
+        "Failed to allocate mliUserScenery.");
+
     mli_check(
-        __mliScenery_malloc_functions_from_json(&uscn->surface_resources, json),
+        mliSceneryResources_malloc(&uscn->resources, resources_capacity),
+        "Failed to allocate mliSceneryResources.");
+
+    mli_c(mliMap2_malloc(
+        &uscn->function_names,
+        resources_capacity.num_functions));
+    mli_c(mliMap2_malloc(
+        &uscn->color_names,
+        resources_capacity.num_colors));
+    mli_c(mliMap2_malloc(
+        &uscn->medium_names,
+        resources_capacity.num_media));
+    mli_c(mliMap2_malloc(
+        &uscn->surface_names,
+        resources_capacity.num_surfaces));
+
+    mli_check(
+        __mliScenery_malloc_functions_from_json(&uscn->resources, json),
         "Could not copy functions from json.");
     mli_check(
-        __mliScenery_assign_colors_from_json(&uscn->surface_resources, json),
+        __mliScenery_assign_colors_from_json(&uscn->resources, json),
         "Could not copy colors from json.");
     mli_check(
-        __mliScenery_assign_media_from_json(&uscn->surface_resources, json),
+        __mliScenery_assign_media_from_json(&uscn->resources, json),
         "Could not copy media from json.");
     mli_check(
-        __mliScenery_assign_surfaces_from_json(&uscn->surface_resources, json),
+        __mliScenery_assign_surfaces_from_json(&uscn->resources, json),
         "Could not copy surfaces from json.");
 
     mli_check(

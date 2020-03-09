@@ -6,7 +6,9 @@
 #include <stdint.h>
 #include "mli_debug.h"
 #include "mliScenery.h"
+#include "mliSceneryResources.h"
 #include "mliFrame.h"
+#include "mliMap.h"
 
 /*
     A scenery as a user wants to define it.
@@ -16,28 +18,41 @@
     which is optimized for ray tracing.
 */
 struct mliUserScenery {
-    struct mliScenery surface_resources; /* stores only the surfaces */
+    struct mliSceneryResources resources;
     struct mliFrame root;
+
+    struct mliMap2 function_names;
+    struct mliMap2 color_names;
+    struct mliMap2 medium_names;
+    struct mliMap2 surface_names;
 };
 
 struct mliUserScenery mliUserScenery_init() {
     struct mliUserScenery uscn;
-    uscn.surface_resources = mliScenery_init();
+    uscn.resources = mliSceneryResources_init();
     uscn.root = mliFrame_init();
+
+    uscn.function_names = mliMap2_init();
+    uscn.color_names = mliMap2_init();
+    uscn.medium_names = mliMap2_init();
+    uscn.surface_names = mliMap2_init();
     return uscn;
 }
 
 void mliUserScenery_free(struct mliUserScenery *uscn)
 {
-    mliScenery_free(&uscn->surface_resources);
+    mliSceneryResources_free(&uscn->resources);
     mliFrame_free(&uscn->root);
+
+    mliMap2_free(&uscn->function_names);
+    mliMap2_free(&uscn->color_names);
+    mliMap2_free(&uscn->medium_names);
+    mliMap2_free(&uscn->surface_names);
 }
 
 int mliUserScenery_malloc(struct mliUserScenery *uscn)
 {
-    mli_check(
-        mliScenery_malloc(&uscn->surface_resources),
-        "Can not allocate surface_resources in UserScenery.");
+    mliUserScenery_free(uscn);
     mli_check(
         mliFrame_malloc(&uscn->root, MLI_FRAME),
         "Can not allocate root-frame in UserScenery.")

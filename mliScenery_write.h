@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "mli_debug.h"
 #include "mliScenery.h"
+#include "mliSceneryResources_write.h"
 
 #define MLI_SCENERY_MAGIC 43180u
 
@@ -167,24 +168,8 @@ error:
         return 0;
 }
 
-int mliScenery_write_to_path(
-        const struct mliScenery *scenery,
-        const char* path)
+int mliScenery_write_capacity_to_file(const struct mliScenery *scenery, FILE *f)
 {
-        FILE *f;
-        uint64_t i;
-        uint64_t magic = MLI_SCENERY_MAGIC;
-        f = fopen(path, "w");
-        mli_check(f != NULL, "Can not open Scenery-file for writing.");
-
-        /* magic identifier */
-        mli_fwrite(&magic, sizeof(uint64_t), 1u, f);
-
-        /* nums */
-        mli_fwrite(&scenery->num_functions, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&scenery->num_colors, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&scenery->num_media, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
         mli_fwrite(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
         mli_fwrite(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
         mli_fwrite(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
@@ -193,31 +178,35 @@ int mliScenery_write_to_path(
         mli_fwrite(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
         mli_fwrite(&scenery->num_bicircleplanes, sizeof(uint32_t), 1u, f);
         mli_fwrite(&scenery->num_discs, sizeof(uint32_t), 1u, f);
+        return 1;
+error:
+        return 0;
+}
 
-        /* functions */
-        for (i = 0; i < scenery->num_functions; i++) {
-                mliFunc_fwrite(&scenery->functions[i], f);}
+int mliScenery_write_to_path(
+        const struct mliScenery *scenery,
+        const char* path)
+{
+        FILE *f;
+        uint64_t magic = MLI_SCENERY_MAGIC;
+        f = fopen(path, "w");
+        mli_check(f != NULL, "Can not open Scenery-file for writing.");
 
-        /* colors */
-        mli_fwrite(
-                scenery->colors,
-                sizeof(struct mliColor),
-                scenery->num_colors,
-                f);
+        /* magic identifier */
+        mli_fwrite(&magic, sizeof(uint64_t), 1u, f);
 
-        /* media */
-        mli_fwrite(
-                scenery->media,
-                sizeof(struct mliMedium),
-                scenery->num_media,
-                f);
+        mli_check(mliScenery_write_capacity_to_file(scenery, f),
+                "Failed to write Scenery's capacity to file.");
 
-        /* surfaces */
-        mli_fwrite(
-                scenery->surfaces,
-                sizeof(struct mliSurface),
-                scenery->num_surfaces,
-                f);
+        mli_check(mliSceneryResources_write_capacity_to_file(
+                &scenery->resources,
+                f),
+                "Failed to write SceneryResources' capacity to file.");
+
+        mli_check(mliSceneryResources_append_to_file(
+                &scenery->resources,
+                f),
+                "Can not write SceneryResources to file.");
 
         mli_c(_mliScenery_write_vertices_and_triangles(scenery, f));
         mli_c(_mliScenery_write_spherical_cap_hex(scenery, f));

@@ -4,6 +4,149 @@
 
 #include <stdint.h>
 #include "mli_debug.h"
+
+#define MLI_MAP_KEY_CAPACITY 128
+
+struct mliMap2 {
+        size_t capacity;
+        size_t size;
+        char **keys;
+        uint64_t *values;
+};
+
+struct mliMap2 mliMap2_init()
+{
+        struct mliMap2 map;
+        map.capacity = 0u;
+        map.size = 0u;
+        map.keys = NULL;
+        map.values = NULL;
+        return map;
+}
+
+void mliMap2_free(struct mliMap2 *map)
+{
+        if (map->keys != NULL) {
+            size_t i;
+            for (i = 0; i < map->capacity; i++) {
+                free(map->keys[i]);
+            }
+        }
+        free(map->keys);
+        free(map->values);
+        (*map) = mliMap2_init();
+}
+
+void _mliMap2_set_zero(struct mliMap2 *map)
+{
+        size_t i, j;
+        for (i = 0u; i < map->capacity; i++) {
+                for (j = 0u; j < MLI_MAP_KEY_CAPACITY; j++) {
+                        map->keys[i][j] = '\0';
+                }
+                map->values[i] = 0u;
+        }
+}
+
+int mliMap2_malloc(struct mliMap2 *map, const size_t capacity)
+{
+        size_t i;
+        mliMap2_free(map);
+        map->capacity = capacity;
+        mli_malloc(map->keys, char *, map->capacity);
+        for (i = 0u; i < map->capacity; i++) {
+                mli_malloc(map->keys[i], char, MLI_MAP_KEY_CAPACITY);
+        }
+        mli_malloc(map->values, uint64_t, map->capacity);
+        _mliMap2_set_zero(map);
+        return 1;
+    error:
+        return 0;
+}
+
+int64_t _mliMap2_key_idx(struct mliMap2 *map, const char *key)
+{
+        int64_t i;
+        for (i = 0; i < map->size; i++) {
+                if (strcmp(map->keys[i], key) == 0)
+                        return i;
+        }
+        return -1;
+}
+
+int64_t _mliMap2_value_idx(struct mliMap2 *map, const uint64_t value)
+{
+        int64_t i;
+        for (i = 0; i < map->size; i++) {
+                if (map->values[i] == value)
+                        return i;
+        }
+        return -1;
+}
+
+int mliMap2_insert(struct mliMap2 *map, const char *key, const uint64_t value)
+{
+        mli_check(map->size == map->capacity,
+                "Can not insert, reached capacity.");
+        mli_check(strlen(key) < MLI_MAP_KEY_CAPACITY,
+                "Can not insert, key is too long.");
+        mli_check(_mliMap2_key_idx(map, key) >= 0,
+                "Can not insert, key is already in use.");
+        mli_check(_mliMap2_value_idx(map, value) >= 0,
+                "Can not insert, value is already in use.");
+        strcpy(map->keys[map->size], key);
+        map->values[map->size] = value;
+        map->size++;
+        return 1;
+    error:
+        return 0;
+}
+
+int mliMap2_get_value(struct mliMap2 *map, const char *key, uint64_t *value)
+{
+        int64_t idx = _mliMap2_key_idx(map, key);
+        if (idx >= 0) {
+                (*value) = map->values[idx];
+                return 1;
+        } else {
+                return 0;
+        }
+}
+
+int mliMap2_get_key(struct mliMap2 *map, const uint64_t value, char *key)
+{
+        int64_t idx = _mliMap2_value_idx(map, value);
+        if (idx >= 0) {
+                strcpy(key, map->keys[idx]);
+                return 1;
+        } else {
+                return 0;
+        }
+}
+
+int mliMap2_has(struct mliMap2 *map, const char *key)
+{
+        return _mliMap2_key_idx(map, key) >= 0 ? 1 : 0;
+}
+
+int mliMap2_has_value(struct mliMap2 *map, const uint64_t value)
+{
+        return _mliMap2_value_idx(map, value) >= 0 ? 1 : 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #include "mli_variable_length_integer.h"
 
 #define MLI_MAP_TYPE_LEAF 1

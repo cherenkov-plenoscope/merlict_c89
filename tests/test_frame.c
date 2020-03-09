@@ -129,15 +129,12 @@ CASE("basic sphere") {
 CASE("estimate capacity") {
     struct mliFrame root = mliFrame_init();
     struct mliFrame *sphere = NULL;
-    struct mliScenery scenery = mliScenery_init();
+    struct mliSceneryCapacity scn_cap = mliSceneryCapacity_init();
     CHECK(mliFrame_malloc(&root, MLI_FRAME));
     sphere = mliFrame_add(&root, MLI_SPHERE);
     CHECK(sphere);
-    CHECK(__mliScenery_set_primitive_capacity(&scenery, &root));
-
-    CHECK(scenery.num_spheres == 1u);
-
-    mliScenery_free(&scenery);
+    CHECK(__mliScenery_set_primitive_capacity(&scn_cap, &root));
+    CHECK(scn_cap.num_spheres == 1u);
     mliFrame_free(&root);
 }
 

@@ -266,49 +266,46 @@ CASE("parse mliUserScenery") {
         "tests/resources/small_scenery.json"));
     CHECK(mliJson_write_debug(&json,
         "tests/resources/small_scenery.debug.tmp"));
-
     CHECK(mliUserScenery_malloc_from_json(&uscn, &json));
 
     /* functions */
-    CHECK(uscn.surface_resources.num_functions == 2u);
-    CHECK(uscn.surface_resources.functions[0].num_points == 2u);
-    CHECK_MARGIN(uscn.surface_resources.functions[0].x[0], 200e-9, 1e-9);
-    CHECK_MARGIN(uscn.surface_resources.functions[0].y[0], 0., 1e-9);
-    CHECK_MARGIN(uscn.surface_resources.functions[0].x[1], 1200e-9, 1e-9);
-    CHECK_MARGIN(uscn.surface_resources.functions[0].y[1], 0., 1e-9);
-    CHECK(uscn.surface_resources.functions[1].num_points == 2u);
-    CHECK_MARGIN(uscn.surface_resources.functions[1].x[0], 200e-9, 1e-9);
-    CHECK_MARGIN(uscn.surface_resources.functions[1].y[0], 1.49, 1e-9);
-    CHECK_MARGIN(uscn.surface_resources.functions[1].x[1], 1200e-9, 1e-9);
-    CHECK_MARGIN(uscn.surface_resources.functions[1].y[1], 1.49, 1e-9);
-
+    CHECK(uscn.resources.num_functions == 2u);
+    CHECK(uscn.resources.functions[0].num_points == 2u);
+    CHECK_MARGIN(uscn.resources.functions[0].x[0], 200e-9, 1e-9);
+    CHECK_MARGIN(uscn.resources.functions[0].y[0], 0., 1e-9);
+    CHECK_MARGIN(uscn.resources.functions[0].x[1], 1200e-9, 1e-9);
+    CHECK_MARGIN(uscn.resources.functions[0].y[1], 0., 1e-9);
+    CHECK(uscn.resources.functions[1].num_points == 2u);
+    CHECK_MARGIN(uscn.resources.functions[1].x[0], 200e-9, 1e-9);
+    CHECK_MARGIN(uscn.resources.functions[1].y[0], 1.49, 1e-9);
+    CHECK_MARGIN(uscn.resources.functions[1].x[1], 1200e-9, 1e-9);
+    CHECK_MARGIN(uscn.resources.functions[1].y[1], 1.49, 1e-9);
     /* colors */
-    CHECK(uscn.surface_resources.num_colors == 4u);
+    CHECK(uscn.resources.num_colors == 4u);
     CHECK(mliColor_is_equal(
-        uscn.surface_resources.colors[0],
+        uscn.resources.colors[0],
         mliColor_set(22, 91, 49)));
     CHECK(mliColor_is_equal(
-        uscn.surface_resources.colors[1],
+        uscn.resources.colors[1],
         mliColor_set(122, 91, 49)));
     CHECK(mliColor_is_equal(
-        uscn.surface_resources.colors[2],
+        uscn.resources.colors[2],
         mliColor_set(22, 191, 49)));
     CHECK(mliColor_is_equal(
-        uscn.surface_resources.colors[3],
+        uscn.resources.colors[3],
         mliColor_set(22, 91, 149)));
-
     /* surfaces */
-    CHECK(uscn.surface_resources.num_surfaces == 4u);
-    uscn_srfs = uscn.surface_resources.surfaces;
-    uscn_medi = uscn.surface_resources.media;
+    CHECK(uscn.resources.num_surfaces == 4u);
+    uscn_srfs = uscn.resources.surfaces;
+    uscn_medi = uscn.resources.media;
 
-    CHECK(uscn.surface_resources.num_media == 2u);
+    CHECK(uscn.resources.num_media == 2u);
     CHECK(uscn_medi[0].refraction == 0u);
     CHECK(uscn_medi[0].absorbtion == 0u);
     CHECK(uscn_medi[1].refraction == 1u);
     CHECK(uscn_medi[1].absorbtion == 0u);
 
-    CHECK(uscn.surface_resources.num_surfaces == 4u);
+    CHECK(uscn.resources.num_surfaces == 4u);
     CHECK(uscn_srfs[0].color == 0u);
     CHECK(uscn_srfs[0].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[0].specular_reflection == 0u);
@@ -328,7 +325,6 @@ CASE("parse mliUserScenery") {
     CHECK(uscn_srfs[3].material == MLI_MATERIAL_PHONG);
     CHECK(uscn_srfs[3].specular_reflection == 0u);
     CHECK(uscn_srfs[3].diffuse_reflection == 0u);
-
     /* frames */
     CHECK(uscn.root.children.dyn.size == 4u);
     f = uscn.root.children.arr[0];
@@ -344,7 +340,6 @@ CASE("parse mliUserScenery") {
     CHECK_MARGIN(f->primitive.mesh->vertices[1].x, 1., 1e-6);
     CHECK_MARGIN(f->primitive.mesh->vertices[1].y, 0., 1e-6);
     CHECK_MARGIN(f->primitive.mesh->vertices[1].z, 0., 1e-6);
-
     CHECK(f->primitive.mesh->num_faces == 4u);
     CHECK(f->primitive.mesh->faces[0].a == 0);
     CHECK(f->primitive.mesh->faces[0].b == 1);
@@ -352,10 +347,8 @@ CASE("parse mliUserScenery") {
     CHECK(f->primitive.mesh->faces[1].a == 0);
     CHECK(f->primitive.mesh->faces[1].b == 1);
     CHECK(f->primitive.mesh->faces[1].c == 3);
-
     f = uscn.root.children.arr[3];
     CHECK(f->type == MLI_SPHERE);
-
     mliUserScenery_free(&uscn);
     mliJson_free(&json);
 }

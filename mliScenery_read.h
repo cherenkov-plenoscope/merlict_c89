@@ -7,6 +7,7 @@
 #include "mli_debug.h"
 #include "mliScenery.h"
 #include "mliScenery_write.h"
+#include "mliSceneryResources_read.h"
 
 int _mliScenery_read_vertices_and_triangles(
         struct mliScenery *scenery,
@@ -152,56 +153,51 @@ error:
         return 0;
 }
 
+int mliScenery_read_capacity_from_file(struct mliSceneryCapacity *cap, FILE *f)
+{
+        mli_fread(&cap->num_vertices, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap->num_triangles, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap->num_spheres, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap->num_cylinders, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap->num_hexagons, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap->num_bicircleplanes, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap->num_discs, sizeof(uint32_t), 1u, f);
+        return 1;
+error:
+        return 0;
+}
+
 int mliScenery_read_from_path(struct mliScenery *scenery, const char* path)
 {
+        struct mliSceneryCapacity scenery_capacity = mliSceneryCapacity_init();
+        struct mliSceneryResourcesCapacity resource_capacity =
+                mliSceneryResourcesCapacity_init();
         FILE *f;
-        uint64_t i;
         uint64_t magic = 0u;
         f = fopen(path, "r");
         mli_check(f != NULL, "Can not open Scenery-file for reading.")
         mli_fread(&magic, sizeof(uint64_t), 1u, f);
         mli_check(magic == MLI_SCENERY_MAGIC, "Expected magic identifier.'");
 
-        /* nums */
-        mli_fread(&scenery->num_functions, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_colors, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_media, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_surfaces, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_vertices, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_triangles, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_spherical_cap_hex, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_spheres, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_cylinders, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_hexagons, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_bicircleplanes, sizeof(uint32_t), 1u, f);
-        mli_fread(&scenery->num_discs, sizeof(uint32_t), 1u, f);
+        mli_check(mliScenery_read_capacity_from_file(
+                &scenery_capacity,
+                f),
+                "Failed to read Scenery's capacity from file");
 
-        mli_check_mem(mliScenery_malloc(scenery));
+        mli_check(mliSceneryResources_read_capacity_from_file(
+                &resource_capacity,
+                f),
+                "Failed to read SceneryResources' capacity from file");
 
-        /* functions */
-        for (i = 0; i < scenery->num_functions; i++) {
-                mli_c(mliFunc_malloc_from_file(&scenery->functions[i], f));}
-
-        /* colors */
-        mli_fread(
-                scenery->colors,
-                sizeof(struct mliColor),
-                scenery->num_colors,
-                f);
-
-        /* media */
-        mli_fread(
-                scenery->media,
-                sizeof(struct mliMedium),
-                scenery->num_media,
-                f);
-
-        /* surfaces */
-        mli_fread(
-                scenery->surfaces,
-                sizeof(struct mliBoundaryLayer),
-                scenery->num_surfaces,
-                f);
+        mli_check_mem(mliScenery_malloc(
+                scenery,
+                scenery_capacity));
+        mli_check_mem(mliSceneryResources_malloc(
+                &scenery->resources,
+                resource_capacity));
+        mli_check(mliSceneryResources_read_from_file(&scenery->resources, f),
+                "Failed to read resources from file.");
 
         mli_c(_mliScenery_read_vertices_and_triangles(scenery, f));
         mli_c(_mliScenery_read_spherical_cap_hex(scenery, f));

@@ -34,16 +34,16 @@ CASE("simple propagation") {
         intersection.surface_normal, mliVec_set(0, 0, 1), 1e-9));
     CHECK_MARGIN(intersection.distance_of_ray, 3., 1e-9);
 
-    CHECK(scenery.num_media == 2);
-    CHECK(scenery.num_functions == 4);
+    CHECK(scenery.resources.num_media == 2);
+    CHECK(scenery.resources.num_functions == 4);
 
     side_coming_from = _mli_side_coming_from(&scenery, &intersection);
-    surf_coming_from = scenery.surfaces[side_coming_from.surface];
-    medi_coming_from = scenery.media[side_coming_from.medium];
+    surf_coming_from = scenery.resources.surfaces[side_coming_from.surface];
+    medi_coming_from = scenery.resources.media[side_coming_from.medium];
 
     side_going_to = _mli_side_going_to(&scenery, &intersection);
-    surf_going_to = scenery.surfaces[side_going_to.surface];
-    medi_going_to = scenery.media[side_going_to.medium];
+    surf_going_to = scenery.resources.surfaces[side_going_to.surface];
+    medi_going_to = scenery.resources.media[side_going_to.medium];
 
     CHECK(surf_going_to.material == MLI_MATERIAL_TRANSPARENT);
     CHECK(surf_going_to.color == 0);

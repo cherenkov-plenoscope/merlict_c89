@@ -26,14 +26,14 @@ void mliFunc_free(struct mliFunc *f)
 {
     free(f->x);
     free(f->y);
-    *f = mliFunc_init();
+    (*f) = mliFunc_init();
 }
 
-int mliFunc_malloc(struct mliFunc *f)
+int mliFunc_malloc(struct mliFunc *f, const uint32_t num_points)
 {
-    free(f->x);
+    mliFunc_free(f);
+    f->num_points = num_points;
     mli_malloc(f->x, double, f->num_points);
-    free(f->y);
     mli_malloc(f->y, double, f->num_points);
     return 1;
 error:
@@ -134,8 +134,9 @@ error:
 
 int mliFunc_malloc_from_file(struct mliFunc *func, FILE* f)
 {
-    mli_fread(&func->num_points, sizeof(uint32_t), 1u, f);
-    mli_c(mliFunc_malloc(func));
+    uint32_t num_points;
+    mli_fread(&num_points, sizeof(uint32_t), 1u, f);
+    mli_c(mliFunc_malloc(func, num_points));
     mli_fread(func->x, sizeof(double), func->num_points, f);
     mli_fread(func->y, sizeof(double), func->num_points, f);
     mli_check(

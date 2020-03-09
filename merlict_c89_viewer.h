@@ -171,9 +171,10 @@ int _mlivr_export_image(
         const char *path)
 {
         struct mliImage full = mliImage_init();
-        full.num_cols = config.export_num_cols;
-        full.num_rows = config.export_num_rows;
-        mli_check_mem(mliImage_malloc(&full));
+        mli_check_mem(mliImage_malloc(
+                &full,
+                config.export_num_cols,
+                config.export_num_rows));
         mliCamera_render_image(
                 &camera,
                 scenery,
@@ -210,12 +211,14 @@ int mlivr_run_interactive_viewer(
         struct mliIntersection probing_intersection;
 
         mlivr_timestamp_now_19chars(timestamp);
-        img.num_cols = config.preview_num_cols;
-        img.num_rows = config.preview_num_rows;
-        img2.num_cols = config.preview_num_cols*2u;
-        img2.num_rows = config.preview_num_rows*2u;
-        mli_check_mem(mliImage_malloc(&img));
-        mli_check_mem(mliImage_malloc(&img2));
+        mli_check_mem(mliImage_malloc(
+                &img,
+                config.preview_num_cols,
+                config.preview_num_rows));
+        mli_check_mem(mliImage_malloc(
+                &img2,
+                config.preview_num_cols*2u,
+                config.preview_num_rows*2u));
 
         cursor.active = 0;
         cursor.col = config.preview_num_cols/2;
