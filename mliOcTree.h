@@ -84,8 +84,7 @@ int mliNode_add_children(
 
     for (c = 0u; c < 8u; c++) {
         overlap[c] = mliOctOverlap_init();
-        overlap[c].num = node->num_objects;
-        mli_c(mliOctOverlap_malloc(&overlap[c]));
+        mli_c(mliOctOverlap_malloc(&overlap[c], node->num_objects));
     }
 
     /* sense possible children */
@@ -114,12 +113,12 @@ int mliNode_add_children(
         mli_malloc(node->children[c], struct mliNode, 1u);
         mliNode_init(node->children[c]);
         node->children[c]->mother = node;
-        node->children[c]->num_objects = overlap[c].count;
-        mli_malloc(node->children[c]->objects, uint32_t, overlap[c].count);
+        node->children[c]->num_objects = overlap[c].dyn.size;
+        mli_malloc(node->children[c]->objects, uint32_t, overlap[c].dyn.size);
         mli_uint32_ncpy(
-            overlap[c].objects,
+            overlap[c].arr,
             node->children[c]->objects,
-            overlap[c].count);
+            overlap[c].dyn.size);
     }
 
     for (c = 0u; c < 8u; c++) {

@@ -67,5 +67,7 @@ MLIDYNARRAY_TEMPLATE(mli, Char, char)
 
 MLIDYNARRAY_TEMPLATE(mli, Uint8, uint8_t)
 
+MLIDYNARRAY_TEMPLATE(mli, Uint32, uint32_t)
+
 
 #endif
