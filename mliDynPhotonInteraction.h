@@ -1,6 +1,6 @@
 /* Copyright 2019 Sebastian Achim Mueller */
-#ifndef MERLICT_MLIPHOTONHISTORY_H_
-#define MERLICT_MLIPHOTONHISTORY_H_
+#ifndef MERLICT_MLIDYNPHOTONINTERACTION_H_
+#define MERLICT_MLIDYNPHOTONINTERACTION_H_
 
 #include <math.h>
 #include <stdint.h>
@@ -21,8 +21,12 @@ void mliDynPhotonInteraction_print(
     printf("History[%ld of %ld]\n", history->dyn.size, history->dyn.capacity);
     printf("==================\n");
 
-    printf("idx, obj, [   x,   y,   z], type                , refr.  , abs.   , dist,\n");
-    printf("-------------------------------------------------------------------------\n");
+    printf(
+        "idx, obj, [   x,   y,   z], type                "
+        ", refr.  , abs.   , dist,\n");
+    printf(
+        "------------------------------------------------"
+        "-------------------------\n");
 
     for (i = 0; i < history->dyn.size; i++) {
 

@@ -1,60 +1,80 @@
 {
   "functions": [
-    [
-        [200e-9, 1.0],
-        [1200e-9, 1.0]
-    ],
-    [
-        [200e-9, 1.49],
-        [1200e-9, 1.49]
-    ],
-    [
-        [200e-9, 9e99],
-        [1200e-9, 9e99]
-    ],
-    [
-        [200e-9, 0.0],
-        [1200e-9, 0.0]
-    ],
+    {
+      "name": "unity",
+      "values": [
+          [200e-9, 1.0],
+          [1200e-9, 1.0]
+        ]
+    },
+    {
+      "name": "refraction_glass",
+      "values": [
+          [200e-9, 1.49],
+          [1200e-9, 1.49]
+        ]
+    },
+    {
+      "name": "+infinity",
+      "values": [
+          [200e-9, 9e99],
+          [1200e-9, 9e99]
+        ]
+    },
+    {
+      "name": "zero",
+      "values": [
+          [200e-9, 0.0],
+          [1200e-9, 0.0]
+        ]
+    }
   ],
   "colors": [
-    [22, 9, 255],
-    [255, 91, 49],
-    [16, 255, 0],
-    [23, 23, 23]
+    {"rgb": [22, 9, 255], "name": "blue"},
+    {"rgb": [255, 91, 49], "name": "red"},
+    {"rgb": [16, 255, 0], "name": "green"},
+    {"rgb": [23, 23, 23], "name": "grey"}
   ],
   "media": [
-    {"refraction": 0, "absorbtion": 2, "name": "vacuum"},
-    {"refraction": 1, "absorbtion": 2, "name": "water"},
+    {
+      "name": "vacuum",
+      "refraction": "unity",
+      "absorbtion": "+infinity"
+    },
+    {
+      "name": "glass",
+      "refraction": "refraction_glass",
+      "absorbtion": "+infinity",
+    }
   ],
   "surfaces": [
     {
-      "name": "glass_0",
-      "material": 102,
-      "specular_reflection": 0,
-      "diffuse_reflection": 0,
-      "color": 0
+      "name": "glass_blue",
+      "material": "Transparent",
+      "specular_reflection": "unity",
+      "diffuse_reflection": "unity",
+      "color": "blue"
     },
     {
-      "name": "glass_1",
-      "material": 102,
-      "specular_reflection": 0,
-      "diffuse_reflection": 0,
-      "color": 1
+      "name": "glass_red",
+      "material": "Transparent",
+      "specular_reflection": "unity",
+      "diffuse_reflection": "unity",
+      "color": "red"
     },
     {
-      "name": "mirror_2",
-      "material": 100,
-      "specular_reflection": 0,
-      "diffuse_reflection": 3,
-      "color": 2
+      "name": "specular_mirror",
+      "material": "Phong",
+      "specular_reflection": "unity",
+      "diffuse_reflection": "zero",
+      "color": "green"
     },
     {
-      "name": "diffuse_3",
-      "material": 100,
-      "specular_reflection": 3,
-      "diffuse_reflection": 3,
-      "color": 3
+      "name": "perfect_absorber",
+      "material": "Phong",
+      "specular_reflection": "zero",
+      "diffuse_reflection": "zero",
+      "color": "grey"
     }
   ],
   "children": [
@@ -71,8 +91,8 @@
           "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
           "radius": 1.0,
           "surface": {
-            "inner": {"medium": 0, "surface": 0},
-            "outer": {"medium": 1, "surface": 1}
+            "inner": {"medium": "vacuum", "surface": "glass_blue"},
+            "outer": {"medium": "glass", "surface": "glass_red"}
           }
         },
         {
@@ -83,8 +103,8 @@
           "radius": 1.0,
           "length": 2.0,
           "surface": {
-            "inner": {"medium": 1, "surface": 1},
-            "outer": {"medium": 0, "surface": 0}
+            "inner": {"medium": "glass", "surface": "glass_red"},
+            "outer": {"medium": "vacuum", "surface": "glass_blue"}
           }
         },
         {
@@ -94,10 +114,9 @@
           "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
           "radius": 1.0,
           "surface": {
-            "inner": {"medium": 0, "surface": 1},
-            "outer": {"medium": 1, "surface": 0}
+            "inner": {"medium": "vacuum", "surface": "glass_red"},
+            "outer": {"medium": "glass", "surface": "glass_blue"}
           }
-
         }
       ]
     },
@@ -108,8 +127,8 @@
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.0,
       "surface": {
-        "inner": {"medium": 0, "surface": 2},
-        "outer": {"medium": 0, "surface": 3}
+        "inner": {"medium": "vacuum", "surface": "specular_mirror"},
+        "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
       }
     },
     {
@@ -119,8 +138,8 @@
       "rot": {"repr": "tait_bryan", "xyz": [0, 0.785, 0]},
       "radius": 1.0,
       "surface": {
-        "inner": {"medium": 0, "surface": 3},
-        "outer": {"medium": 1, "surface": 2}
+        "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+        "outer": {"medium": "vacuum", "surface": "specular_mirror"}
       }
     },
     {
@@ -130,8 +149,8 @@
       "rot": {"repr": "tait_bryan", "xyz": [0, 0.785, 0]},
       "radius": 1.0,
       "surface": {
-        "inner": {"medium": 0, "surface": 3},
-        "outer": {"medium": 0, "surface": 3}
+        "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+        "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
       }
     }
   ]

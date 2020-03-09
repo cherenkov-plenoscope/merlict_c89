@@ -1,48 +1,66 @@
 {
   "functions": [
-    [
-        [200e-9, 0.0],
-        [1200e-9, 0.0]
-    ],
-    [
-        [200e-9, 1.49],
-        [1200e-9, 1.49]
-    ]
+    {
+      "name": "zero",
+      "values": [
+          [200e-9, 0.0],
+          [1200e-9, 0.0]
+        ]
+    },
+    {
+      "name": "refraction_glass",
+      "values": [
+          [200e-9, 1.49],
+          [1200e-9, 1.49]
+        ]
+    }
   ],
   "colors": [
-    [22, 91, 49],
-    [122, 91, 49],
-    [22, 191, 49],
-    [22, 91, 149],
+    {"rgb": [22, 91, 49], "name": "grass_green"},
+    {"rgb": [122, 91, 49], "name": "brown"},
+    {"rgb": [22, 191, 49], "name": "green"},
+    {"rgb": [22, 91, 149], "name": "blue"}
   ],
   "media": [
-    {"refraction": 0, "absorbtion": 0},
-    {"refraction": 1, "absorbtion": 0},
+    {
+      "name": "vacuum",
+      "refraction": "zero",
+      "absorbtion": "zero"
+    },
+    {
+      "name": "glass",
+      "refraction": "refraction_glass",
+      "absorbtion": "zero"
+    },
   ],
   "surfaces": [
     {
-      "material": 100,
-      "specular_reflection": 0,
-      "diffuse_reflection": 0,
-      "color": 0
+      "name": "grass",
+      "material": "Phong",
+      "specular_reflection": "zero",
+      "diffuse_reflection": "zero",
+      "color": "grass_green"
     },
     {
-      "material": 100,
-      "specular_reflection": 0,
-      "diffuse_reflection": 0,
-      "color": 1
+      "name": "wood",
+      "material": "Phong",
+      "specular_reflection": "zero",
+      "diffuse_reflection": "zero",
+      "color": "brown"
     },
     {
-      "material": 100,
-      "specular_reflection": 0,
-      "diffuse_reflection": 0,
-      "color": 2
+      "name": "leafs",
+      "material": "Phong",
+      "specular_reflection": "zero",
+      "diffuse_reflection": "zero",
+      "color": "green"
     },
     {
-      "material": 100,
-      "specular_reflection": 0,
-      "diffuse_reflection": 0,
-      "color": 3
+      "name": "blue_glass",
+      "material": "Phong",
+      "specular_reflection": "zero",
+      "diffuse_reflection": "zero",
+      "color": "blue"
     }
   ],
   "children": [
@@ -53,8 +71,8 @@
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 100,
       "surface": {
-        "inner": {"medium": 0, "surface": 0},
-        "outer": {"medium": 0, "surface": 0}
+        "inner": {"medium": "vacuum", "surface": "grass"},
+        "outer": {"medium": "vacuum", "surface": "grass"}
       }
     },
     {
@@ -70,8 +88,8 @@
           "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
           "radius": 1.5,
           "surface": {
-            "inner": {"medium": 0, "surface": 2},
-            "outer": {"medium": 0, "surface": 2}
+            "inner": {"medium": "vacuum", "surface": "leafs"},
+            "outer": {"medium": "vacuum", "surface": "leafs"}
           }
         },
         {
@@ -82,8 +100,8 @@
           "radius": 0.25,
           "length": 1.5,
           "surface": {
-            "inner": {"medium": 0, "surface": 1},
-            "outer": {"medium": 0, "surface": 1}
+            "inner": {"medium": "vacuum", "surface": "wood"},
+            "outer": {"medium": "vacuum", "surface": "wood"}
           }
         }
       ]
@@ -94,8 +112,8 @@
       "pos": [-5, 5, 1],
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "surface": {
-        "inner": {"medium": 0, "surface": 1},
-        "outer": {"medium": 0, "surface": 1}
+        "inner": {"medium": "vacuum", "surface": "wood"},
+        "outer": {"medium": "vacuum", "surface": "wood"}
       },
       "vertices": [
         [0, 0, 0],
@@ -117,8 +135,8 @@
       "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
       "radius": 1.5,
       "surface": {
-        "inner": {"medium": 0, "surface": 3},
-        "outer": {"medium": 0, "surface": 3}
+        "inner": {"medium": "vacuum", "surface": "blue_glass"},
+        "outer": {"medium": "vacuum", "surface": "blue_glass"}
       },
     },
   ]
