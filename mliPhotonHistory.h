@@ -11,43 +11,6 @@
 
 MLIDYNARRAY_TEMPLATE(mli, PhotonInteraction, struct mliPhotonInteraction)
 
-/*
-struct mliPhotonHistory {
-    uint32_t num_reserved;
-    uint32_t num;
-    struct mliPhotonInteraction *actions;
-};
-
-struct mliPhotonHistory mliPhotonHistory_init(const uint32_t num_reserved) {
-    struct mliPhotonHistory history;
-    history.num_reserved = num_reserved;
-    history.num = 0u;
-    history.actions = NULL;
-    return history;}
-
-void mliPhotonHistory_free(struct mliPhotonHistory *history) {
-    free(history->actions);
-    (*history) = mliPhotonHistory_init(0);}
-
-int mliPhotonHistory_malloc(struct mliPhotonHistory *history) {
-    mli_malloc(
-        history->actions, struct mliPhotonInteraction, history->num_reserved);
-    return 1;
-error:
-    mliPhotonHistory_free(history);
-    return 0;}
-
-int mliPhotonHistory_push_back(
-    struct mliPhotonHistory *history,
-    const struct mliPhotonInteraction action) {
-    mli_check(history->num < history->num_reserved, "Too many interactions.");
-    history->actions[history->num] = action;
-    history->num += 1;
-    return 1;
-error:
-    return 0;}
-*/
-
 void mliDynPhotonInteraction_print(
     const struct mliDynPhotonInteraction *history)
 {
