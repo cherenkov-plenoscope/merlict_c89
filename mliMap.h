@@ -67,7 +67,7 @@ int mliMap2_malloc(struct mliMap2 *map, const size_t capacity)
 int64_t _mliMap2_key_idx(struct mliMap2 *map, const char *key)
 {
         int64_t i;
-        for (i = 0; i < map->size; i++) {
+        for (i = 0; i < (int64_t)map->size; i++) {
                 if (strcmp(map->keys[i], key) == 0)
                         return i;
         }
@@ -77,7 +77,7 @@ int64_t _mliMap2_key_idx(struct mliMap2 *map, const char *key)
 int64_t _mliMap2_value_idx(struct mliMap2 *map, const uint64_t value)
 {
         int64_t i;
-        for (i = 0; i < map->size; i++) {
+        for (i = 0; i < (int64_t)map->size; i++) {
                 if (map->values[i] == value)
                         return i;
         }

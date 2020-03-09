@@ -14,7 +14,7 @@ MLIDYNARRAY_TEMPLATE(mli, PhotonInteraction, struct mliPhotonInteraction)
 void mliDynPhotonInteraction_print(
     const struct mliDynPhotonInteraction *history)
 {
-    int64_t i;
+    uint64_t i;
     char type_string[1024];
     char out_in[] = "out->in";
     char in_out[] = "in->out";
