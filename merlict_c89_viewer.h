@@ -379,12 +379,16 @@ int mlivr_run_interactive_viewer(
                                         type_string));
                                 printf(
                                         "Obj % 6ld, %-16s, "
-                                        "dist % 3.1fm, "
+                                        "dist % 6.1fm, "
+                                        "pos [% -.2f,% -.2f,% -.2f], "
                                         "normal [% -.2f,% -.2f,% -.2f], "
                                         "surf %d.\n",
                                         probing_intersection.object_idx,
                                         type_string,
                                         probing_intersection.distance_of_ray,
+                                        probing_intersection.position.x,
+                                        probing_intersection.position.y,
+                                        probing_intersection.position.z,
                                         probing_intersection.surface_normal.x,
                                         probing_intersection.surface_normal.y,
                                         probing_intersection.surface_normal.z,
