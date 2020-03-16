@@ -10,7 +10,6 @@
 #include "mliCamera.h"
 #include "mliScenery.h"
 #include "mliOcTree.h"
-#include "mliCaOctree.h"
 
 #define MLIVR_ESCAPE_KEY 27
 #define MLIVR_SPACE_KEY 32
@@ -166,7 +165,7 @@ void _mlivr_mv_cursor_left(struct mlivrCursor *cursor)
 
 int _mlivr_export_image(
         const struct mliScenery *scenery,
-        const struct mliCa2Octree *octree,
+        const struct mliOcTree *octree,
         const struct mlivrConfig config,
         const struct mliCamera camera,
         const char *path)
@@ -191,7 +190,7 @@ error:
 
 int mlivr_run_interactive_viewer(
         const struct mliScenery *scenery,
-        const struct mliCa2Octree *octree,
+        const struct mliOcTree *octree,
         const struct mlivrConfig config)
 {
         struct termios old_terminal = mlivr_disable_stdin_buffer();
