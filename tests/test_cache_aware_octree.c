@@ -11,40 +11,43 @@ CASE("sizeof mliNode") {
 }
 
 CASE("init mliCaOctree") {
-    struct mliScenery scenery = mliScenery_init();
-    struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
-    struct mliOcTree octree = mliOcTree_init();
-    struct mliIntersection isec;
-    size_t num_nodes, num_leafs, num_object_links;
-    mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
-    CHECK(mliTmpOcTree_malloc_from_scenery(&tmp_octree, &scenery));
-    fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
+        struct mliScenery scenery = mliScenery_init();
+        struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
+        struct mliOcTree octree = mliOcTree_init();
+        struct mliIntersection isec;
+        size_t num_nodes, num_leafs, num_object_links;
+        mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
+        CHECK(mliTmpOcTree_malloc_from_scenery(&tmp_octree, &scenery));
 
-    mliTmpNode_set_flat_index(&tmp_octree.root);
-    mliTmpNode_num_nodes_leafs_objects(
-        &tmp_octree.root,
-        &num_nodes,
-        &num_leafs,
-        &num_object_links);
+        mliTmpNode_set_flat_index(&tmp_octree.root);
+        mliTmpNode_num_nodes_leafs_objects(
+                &tmp_octree.root,
+                &num_nodes,
+                &num_leafs,
+                &num_object_links);
 
-    CHECK(mliOcTree_malloc(&octree, num_nodes, num_leafs, num_object_links));
-    mliOcTree_set(&octree, &tmp_octree);
+        CHECK(mliOcTree_malloc(
+            &octree,
+            num_nodes,
+            num_leafs,
+            num_object_links));
+        mliOcTree_set(&octree, &tmp_octree);
 
-    CHECK(num_nodes == 49);
-    CHECK(num_leafs == 265);
-    CHECK(num_object_links == 4308);
+        CHECK(num_nodes == 49);
+        CHECK(num_leafs == 265);
+        CHECK(num_object_links == 4308);
 
-    CHECK(mliOcTree_equal_payload(&octree, &tmp_octree));
+        CHECK(mliOcTree_equal_payload(&octree, &tmp_octree));
 
-    mli_ray_octree_traversal(
-        &scenery,
-        &octree,
-        mliRay_set(
-            mliVec_set(0.1 ,2.5, 10.),
-            mliVec_set(0. ,0., -1.)),
-        &isec);
+        mli_ray_octree_traversal(
+                &scenery,
+                &octree,
+                mliRay_set(
+                        mliVec_set(0.1 ,2.5, 10.),
+                        mliVec_set(0. ,0., -1.)),
+                &isec);
 
-    mliTmpOcTree_free(&tmp_octree);
-    mliOcTree_free(&octree);
-    mliScenery_free(&scenery);
+        mliTmpOcTree_free(&tmp_octree);
+        mliOcTree_free(&octree);
+        mliScenery_free(&scenery);
 }
