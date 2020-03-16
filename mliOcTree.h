@@ -50,18 +50,6 @@ error:
         return 0;
 }
 
-
-int mliNode_num_children(const struct mliNode *node)
-{
-        uint32_t c;
-        uint32_t num_leafs = 0u;
-        for (c = 0u; c < 8u; c++)
-                if (node->children[c] != NULL)
-                        num_leafs++;
-        return num_leafs;
-}
-
-
 uint32_t mliNode_signs_to_child(
         const uint32_t sx,
         const uint32_t sy,
@@ -181,6 +169,15 @@ error:
         return 0;
 }
 
+int mliNode_num_children(const struct mliNode *node)
+{
+        uint32_t c, num = 0;
+        for (c = 0u; c < 8u; c++)
+                if (node->children[c] != NULL)
+                        num++;
+        return num;
+}
+
 void mliNode_print(
         const struct mliNode *node,
         const uint32_t indent,
@@ -188,9 +185,9 @@ void mliNode_print(
 {
         uint32_t i;
         uint32_t c;
-        uint32_t num_c = mliNode_num_children(node);
+        uint32_t num_children = mliNode_num_children(node);
         for (i = 0u; i < indent; i++) printf(" ");
-        if (num_c == 0) {
+        if (num_children == 0) {
                 uint32_t j;
                 printf(
                         "|-Leaf[% 6d] %u: %u [",
@@ -200,8 +197,9 @@ void mliNode_print(
                         printf("%u, ", node->objects[j]);
                 }
                 printf("]");
-        } else
+        } else {
                 printf("Node[% 6d]: %u", node->flat_index, child);
+        }
         printf("\n");
         for (c = 0u; c < 8u; c++) {
                 if (node->children[c] != NULL) {
