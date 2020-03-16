@@ -12,7 +12,6 @@
 #define MLI_NODE_FLAT_INDEX_NONE -1
 
 struct mliNode {
-        struct mliNode* mother;
         struct mliNode* children[8];
         uint32_t num_objects;
         uint32_t *objects;
@@ -22,7 +21,6 @@ struct mliNode {
 void mliNode_init(struct mliNode *n)
 {
         uint64_t c;
-        n->mother = NULL;
         for (c = 0; c < 8u; c++) {
                 n->children[c] = NULL;
         }
@@ -120,7 +118,6 @@ int mliNode_add_children(
         for (c = 0; c < 8u; c++) {
                 mli_malloc(node->children[c], struct mliNode, 1u);
                 mliNode_init(node->children[c]);
-                node->children[c]->mother = node;
                 node->children[c]->num_objects = overlap[c].dyn.size;
                 mli_malloc(
                         node->children[c]->objects,
@@ -159,7 +156,6 @@ struct mliNode mliNode_from_scenery(
         uint64_t depth, max_depth;
         depth = 0u;
         mliNode_init(&root);
-        root.mother = NULL;
         root.num_objects = mliScenery_num_objects(scenery);
         max_depth = 1u + (uint64_t)ceil(log((double)root.num_objects)/log(8.0));
         root.objects = (uint32_t*)malloc(root.num_objects*sizeof(uint32_t));
