@@ -23,15 +23,6 @@ CASE("init mliCaOctree") {
         &octree));
 
     fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
-    mliNode_print(&octree.root, 4, 0u);
-    fprintf(
-        stderr,
-        "num_nodes: %u\n",
-        mliNode_capacity_nodes(&octree.root));
-    fprintf(
-        stderr,
-        "capacity_objects: %u\n",
-        mliNode_capacity_objects(&octree.root));
 
     mliCaOctree_print(&caoctree);
 

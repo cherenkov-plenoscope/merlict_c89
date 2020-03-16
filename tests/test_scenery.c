@@ -434,7 +434,6 @@ CASE("render image asymetric scenery") {
     struct mliImage img = mliImage_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn_asym.mli.tmp");
     CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
-    CHECK(mliNode_num_nodes(&octree.root) == 9);
     /* mliNode_print(&octree.root, 0); */
     camera.position.x = 0.;
     camera.position.y = 0.;

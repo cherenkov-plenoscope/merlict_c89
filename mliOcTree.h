@@ -181,70 +181,6 @@ error:
         return 0;
 }
 
-void __mliNode_num_nodes_recursive(
-        const struct mliNode *node,
-        uint32_t *num_nodes)
-{
-        uint32_t c;
-        *num_nodes += 1;
-        for (c = 0u; c < 8u; c++) {
-                if (node->children[c] != NULL) {
-                        __mliNode_num_nodes_recursive(
-                                node->children[c],
-                                num_nodes);
-                }
-        }
-}
-
-uint32_t mliNode_num_nodes(const struct mliNode *node)
-{
-        uint32_t num_nodes = 0u;
-        __mliNode_num_nodes_recursive(node, &num_nodes);
-        return num_nodes;
-}
-
-void _mliNode_capacity_nodes(const struct mliNode *node, uint32_t *num_nodes) {
-        uint32_t c;
-        for (c = 0u; c < 8u; c++) {
-                if (node->children[c] != NULL) {
-                        *num_nodes += 1;
-                        _mliNode_capacity_nodes(node->children[c], num_nodes);
-                }
-        }
-}
-
-uint32_t mliNode_capacity_nodes(const struct mliNode *node)
-{
-        uint32_t num_nodes = 1u;
-        _mliNode_capacity_nodes(node, &num_nodes);
-        return num_nodes;
-}
-
-void __mliNode_capacity_objects_recursive(
-        const struct mliNode *node,
-        uint32_t *capacity_objects)
-{
-        if (mliNode_num_children(node) == 0u) {
-                (*capacity_objects) += node->num_objects;
-        } else {
-                uint32_t c;
-                for (c = 0u; c < 8u; c++) {
-                        if (node->children[c] != NULL) {
-                                __mliNode_capacity_objects_recursive(
-                                        node->children[c],
-                                        capacity_objects);
-                        }
-                }
-        }
-}
-
-uint32_t mliNode_capacity_objects(const struct mliNode *node)
-{
-        uint32_t capacity_objects = 0u;
-        __mliNode_capacity_objects_recursive(node, &capacity_objects);
-        return capacity_objects;
-}
-
 void mliNode_print(
         const struct mliNode *node,
         const uint32_t indent,
@@ -273,7 +209,6 @@ void mliNode_print(
                 }
         }
 }
-
 
 /*
  * Assign a flat_index to every node that carries objects.
@@ -324,7 +259,9 @@ void mliNode_set_flat_index(struct mliNode *root_node)
         _mliNode_set_flat_index(root_node, &root_index);
 }
 
-
+/*
+ * The dynamic octree
+ */
 
 struct mliOcTree {
         struct mliCube cube;
