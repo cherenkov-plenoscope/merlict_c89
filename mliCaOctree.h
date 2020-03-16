@@ -205,7 +205,7 @@ void _mliCa2Octree_set(
 
 void mliCa2Octree_set(
         struct mliCa2Octree* tree,
-        const struct mliOcTree *dyntree)
+        const struct mliTmpOcTree *dyntree)
 {
         size_t object_link_size = 0u;
         tree->cube = dyntree->cube;
@@ -322,7 +322,7 @@ error:
 
 int mliCa2Octree_equal_payload(
         const struct mliCa2Octree *tree,
-        const struct mliOcTree *dyntree)
+        const struct mliTmpOcTree *dyntree)
 {
         int32_t root_node_idx = 0;
         int32_t root_node_type = MLI_OCTREE_TYPE_NODE;

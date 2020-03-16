@@ -12,12 +12,12 @@ CASE("sizeof mliCa2Node") {
 
 CASE("init mliCaOctree") {
     struct mliScenery scenery = mliScenery_init();
-    struct mliOcTree octree = mliOcTree_init();
+    struct mliTmpOcTree octree = mliTmpOcTree_init();
     struct mliCa2Octree tree2 = mliCa2Octree_init();
     struct mliIntersection isec;
     size_t num_nodes, num_leafs, num_object_links;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
-    CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
+    CHECK(mliTmpOcTree_malloc_from_scenery(&octree, &scenery));
     fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
 
     mliTmpNode_set_flat_index(&octree.root);
@@ -54,7 +54,7 @@ CASE("init mliCaOctree") {
             mliVec_set(0. ,0., -1.)),
         &isec);
 
-    mliOcTree_free(&octree);
+    mliTmpOcTree_free(&octree);
     mliCa2Octree_free(&tree2);
     mliScenery_free(&scenery);
 }

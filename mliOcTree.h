@@ -353,30 +353,30 @@ void mliTmpNode_num_nodes_leafs_objects(
  * The dynamic octree
  */
 
-struct mliOcTree {
+struct mliTmpOcTree {
         struct mliCube cube;
         struct mliTmpNode root;
 };
 
-struct mliOcTree mliOcTree_init()
+struct mliTmpOcTree mliTmpOcTree_init()
 {
-        struct mliOcTree octree;
+        struct mliTmpOcTree octree;
         octree.cube.lower = mliVec_set(0., 0., 0.);
         octree.cube.edge_length = 0.;
         octree.root = mliTmpNode_init();
         return octree;
 }
 
-void mliOcTree_free(struct mliOcTree *octree)
+void mliTmpOcTree_free(struct mliTmpOcTree *octree)
 {
         mliTmpNode_free(&octree->root);
 }
 
-int mliOcTree_malloc_from_scenery(
-        struct mliOcTree *octree,
+int mliTmpOcTree_malloc_from_scenery(
+        struct mliTmpOcTree *octree,
         const struct mliScenery *scenery)
 {
-        mliOcTree_free(octree);
+        mliTmpOcTree_free(octree);
         octree->cube = mliCube_outermost_cube(
                 mliScenery_outermost_obb(scenery));
         mli_check(mliTmpNode_malloc_tree_from_scenery(

@@ -251,7 +251,7 @@ void __mli_proc_subtree (
 
 void mli_ray_octree_traversal(
     const struct mliScenery *scenery,
-    const struct mliOcTree *octree,
+    const struct mliTmpOcTree *octree,
     const struct mliRay ray,
     struct mliIntersection *isec)
 {
