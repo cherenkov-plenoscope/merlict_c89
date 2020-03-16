@@ -3,7 +3,7 @@
 CASE("simple propagation") {
     struct mliMT19937 prng = mliMT19937_init(0u);
     struct mliScenery scenery = mliScenery_init();
-    struct mliOcTree octree;
+    struct mliOcTree octree = mliOcTree_init();
     struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
     struct mliPhotonInteraction creation;
     struct mliIntersection intersection;
@@ -22,7 +22,7 @@ CASE("simple propagation") {
     CHECK(mliScenery_malloc_from_json_path(
         &scenery,
         "tests/resources/glass_cylinder_in_air.json"));
-    octree = mliOcTree_from_scenery(&scenery);
+    CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
 
     mli_ray_octree_traversal(
         &scenery,

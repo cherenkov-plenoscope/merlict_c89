@@ -8,11 +8,11 @@ CASE("init mliCaOctree") {
 
 CASE("init mliCaOctree") {
     struct mliScenery scenery = mliScenery_init();
-    struct mliOcTree octree;
+    struct mliOcTree octree = mliOcTree_init();
     struct mliCaOctree caoctree = mliCaOctree_init();
     struct mliIntersection isec;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
-    octree = mliOcTree_from_scenery(&scenery);
+    CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
     fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
     CHECK(mliCaOctree_malloc(&caoctree));
 

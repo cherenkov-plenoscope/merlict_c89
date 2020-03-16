@@ -18,15 +18,17 @@ struct mliNode {
         int32_t flat_index;
 };
 
-void mliNode_init(struct mliNode *n)
+struct mliNode mliNode_init()
 {
+        struct mliNode n;
         uint64_t c;
         for (c = 0; c < 8u; c++) {
-                n->children[c] = NULL;
+                n.children[c] = NULL;
         }
-        n->num_objects = 0u;
-        n->objects = NULL;
-        n->flat_index = MLI_NODE_FLAT_INDEX_NONE;
+        n.num_objects = 0u;
+        n.objects = NULL;
+        n.flat_index = MLI_NODE_FLAT_INDEX_NONE;
+        return n;
 }
 
 void mliNode_free(struct mliNode *n)
@@ -36,6 +38,16 @@ void mliNode_free(struct mliNode *n)
                 if (n->children[c] != NULL)
                         mliNode_free(n->children[c]);
         free(n->objects);
+}
+
+int mliNode_malloc(struct mliNode *n, const uint32_t num_objects)
+{
+        mliNode_free(n);
+        n->num_objects = num_objects;
+        mli_malloc(n->objects, uint32_t, n->num_objects);
+        return 1;
+error:
+        return 0;
 }
 
 
@@ -116,7 +128,7 @@ int mliNode_add_children(
 
         for (c = 0; c < 8u; c++) {
                 mli_malloc(node->children[c], struct mliNode, 1u);
-                mliNode_init(node->children[c]);
+                (*node->children[c]) = mliNode_init();
                 node->children[c]->num_objects = overlap[c].dyn.size;
                 mli_malloc(
                         node->children[c]->objects,
@@ -146,23 +158,31 @@ error:
         return 0;
 }
 
-struct mliNode mliNode_from_scenery(
+int mliNode_malloc_tree_from_scenery(
+        struct mliNode* root_node,
         const struct mliScenery *scenery,
         const struct mliCube scenery_cube)
 {
-        struct mliNode root;
-        uint32_t idx;
-        uint64_t depth, max_depth;
+        uint32_t idx, depth, max_depth, num_objects;
         depth = 0u;
-        mliNode_init(&root);
-        root.num_objects = mliScenery_num_objects(scenery);
-        max_depth = 1u + (uint64_t)ceil(log((double)root.num_objects)/log(8.0));
-        root.objects = (uint32_t*)malloc(root.num_objects*sizeof(uint32_t));
-        for (idx = 0; idx < root.num_objects; idx++) {
-                root.objects[idx] = idx;
+        num_objects = mliScenery_num_objects(scenery);
+        max_depth = 1u + (uint32_t)ceil(log((double)num_objects)/log(8.0));
+
+        mli_check(mliNode_malloc(root_node, num_objects),
+                "Failed to allocate root-node in dynamic octree.")
+
+        for (idx = 0; idx < root_node->num_objects; idx++) {
+                root_node->objects[idx] = idx;
         }
-        mliNode_add_children(&root, scenery, scenery_cube, depth, max_depth);
-        return root;
+        mliNode_add_children(
+                root_node,
+                scenery,
+                scenery_cube,
+                depth,
+                max_depth);
+        return 1;
+error:
+        return 0;
 }
 
 void __mliNode_num_nodes_recursive(
@@ -315,20 +335,35 @@ struct mliOcTree {
         struct mliNode root;
 };
 
+struct mliOcTree mliOcTree_init()
+{
+        struct mliOcTree octree;
+        octree.cube.lower = mliVec_set(0., 0., 0.);
+        octree.cube.edge_length = 0.;
+        octree.root = mliNode_init();
+        return octree;
+}
+
 void mliOcTree_free(struct mliOcTree *octree)
 {
         mliNode_free(&octree->root);
 }
 
-struct mliOcTree mliOcTree_from_scenery(const struct mliScenery *scenery)
+int mliOcTree_malloc_from_scenery(
+        struct mliOcTree *octree,
+        const struct mliScenery *scenery)
 {
-        struct mliOcTree octree;
-        octree.cube = mliCube_outermost_cube(
-                        mliScenery_outermost_obb(scenery));
-        octree.root = mliNode_from_scenery(
+        mliOcTree_free(octree);
+        octree->cube = mliCube_outermost_cube(
+                mliScenery_outermost_obb(scenery));
+        mli_check(mliNode_malloc_tree_from_scenery(
+                &octree->root,
                 scenery,
-                octree.cube);
-        return octree;
+                octree->cube),
+                "Failed to allocate dynamic octree from scenery.");
+        return 1;
+error:
+        return 0;
 }
 
 #endif

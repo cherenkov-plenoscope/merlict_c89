@@ -227,11 +227,11 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
 
 CASE("mliScenery, render image") {
     struct mliScenery scenery = mliScenery_init();
-    struct mliOcTree octree;
+    struct mliOcTree octree = mliOcTree_init();
     struct mliCamera camera;
     struct mliImage img = mliImage_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
-    octree = mliOcTree_from_scenery(&scenery);
+    CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
     /* mliNode_print(&octree.root, 0); */
 
     camera.position.x = 0.;
@@ -347,10 +347,10 @@ CASE("scenery intersection interface -> sphere") {
 
 CASE("mliOcTree_from_scenery") {
     struct mliScenery scenery = mliScenery_init();
-    struct mliOcTree octree;
+    struct mliOcTree octree = mliOcTree_init();
     struct mliIntersection isec;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
-    octree = mliOcTree_from_scenery(&scenery);
+    CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
 
     /*mliNode_print(&tree, 0u);*/
     /*
@@ -429,11 +429,11 @@ CASE("struct mliScenery asymetric") {
 
 CASE("render image asymetric scenery") {
     struct mliScenery scenery = mliScenery_init();
-    struct mliOcTree octree;
+    struct mliOcTree octree = mliOcTree_init();
     struct mliCamera camera;
     struct mliImage img = mliImage_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn_asym.mli.tmp");
-    octree = mliOcTree_from_scenery(&scenery);
+    CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
     CHECK(mliNode_num_nodes(&octree.root) == 9);
     /* mliNode_print(&octree.root, 0); */
     camera.position.x = 0.;
