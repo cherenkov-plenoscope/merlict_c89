@@ -35,8 +35,7 @@ void mliNode_free(struct mliNode *n)
         for (c = 0; c < 8u; c++)
                 if (n->children[c] != NULL)
                         mliNode_free(n->children[c]);
-        if (n->num_objects)
-                free(n->objects);
+        free(n->objects);
 }
 
 
