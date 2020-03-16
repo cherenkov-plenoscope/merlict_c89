@@ -5,6 +5,72 @@
 #include <stdint.h>
 #include "mliTmpOcTree.h"
 
+/*
+ * mliOcTree
+ * =========
+ *
+ * A cache-aware mliOcTree to accelerate the traversal.
+ * mliOcTree is created from the dynamic, mliTmpOcTree.
+ *
+ * Structure of mliTmpOcTree
+ * -------------------------
+ *
+ *                               mliTmpNode(0,-)
+ *                                    |-objects[a,b,c,d,e,f,g,h]
+ *                     _______________|________________
+ *                    |                                |
+ *                mliTmpNode(1,-)                  mliTmpNode(2,-)
+ *                    |objects[a,b,c,d]                |objects[e,f,g,h]
+ *             _______|_______                 ________|________
+ *            |               |               |                 |
+ *        mliTmpNode(3,0) mliTmpNode(4,1) mliTmpNode(5,2)   mliTmpNode(6,3)
+ *            |objects[a,b,c] |objects[c,d]  |objects[e,f]     |objects[f,g,h]
+ *
+ *      mliTmpNode link to each other via pointer.
+ *      Each mliTmpNode is allocated separately.
+ *
+ *      advantages:
+ *              easy to grow and fill
+ *      disadvantage:
+ *              memory is scattered, difficult to serialize
+ *
+ * Structure of mliOcTree
+ * ----------------------
+ *
+ *                object_links w.r.t. mliScenery ->
+ *          leafs +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+ *            |---|  a  |  b  |  c  |  c  |  d  |  e  |  f  |  f  |  g  |  h  |
+ *            |   +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+ * mliOcTree  |   0     1     2     3     4     5     6     7     8     9     10
+ *  |         |   ^                 ^           ^           ^
+ *  |         |
+ *  |---------|   addresses
+ *  |         |   +-----+-----+-----+-----+
+ *  |         |---|  0  |  3  |  4  |  6  |
+ *  |             +-----+-----+-----+-----+ first w.r.t object_links
+ *  |             |  3  |  2  |  2  |  3  |
+ *  |             +-----+-----+-----+-----+ size w.r.t object_links
+ *  |             0     1     2     3
+ *  |
+ *  |         nodes ->
+ *  |         +-----+-----+-----+
+ *  |---------|node |leaf |leaf |
+ *            +-----+-----+-----+ ^
+ *            |node |leaf |leaf | |
+ *            +-----+-----+-----+ types   type == node
+ *            |  1  |  0  |  2  |                  w.r.t. mliOcTree.nodes
+ *            +-----+-----+-----+ ^       type == leaf
+ *            |  2  |  1  |  3  | |               w.r.t. leafs.addresses
+ *            +-----+-----+-----+ children
+ *            0     1     2
+ *
+ *      advantages:
+ *              small memory footprint, contoinous memory blocks,
+ *              easy to serialze
+ *      disadvantage:
+ *              can not grow
+ */
+
 struct mliLeafAddress {
         uint32_t first_object_link;
         uint32_t num_object_links;
@@ -284,15 +350,15 @@ int _mliOcTree_equal_payload(
         const struct mliOcTree *tree,
         const int32_t node_idx,
         const int32_t node_type,
-        const struct mliTmpNode *dynnode)
+        const struct mliTmpNode *tmp_node)
 {
         if (node_type == MLI_OCTREE_TYPE_LEAF) {
                 /* leaf */
                 size_t leaf_idx;
                 size_t obj;
                 mli_check(
-                        mliTmpNode_num_children(dynnode) == 0,
-                        "Expect dynnode to have 0 children when "
+                        mliTmpNode_num_children(tmp_node) == 0,
+                        "Expect tmp_node to have 0 children when "
                         "node_type == LEAF.");
                 leaf_idx = node_idx;
                 mli_check(
@@ -300,20 +366,20 @@ int _mliOcTree_equal_payload(
                         "The leaf_idx is out of range.");
                 mli_check(
                         tree->leafs.adresses[leaf_idx].num_object_links ==
-                        dynnode->num_objects,
+                        tmp_node->num_objects,
                         "Expected leafs to have equal num_object_links.");
-                for (obj = 0; obj < dynnode->num_objects; obj++) {
+                for (obj = 0; obj < tmp_node->num_objects; obj++) {
                         size_t l = obj +
                                 tree->leafs.adresses[leaf_idx].
                                         first_object_link;
                         mli_check(
                                 tree->leafs.object_links[l] ==
-                                dynnode->objects[obj],
+                                tmp_node->objects[obj],
                                 "Expected object_links in leaf to be equal.");
                 }
                 mli_check(
                         tree->leafs.adresses[leaf_idx].num_object_links ==
-                        dynnode->num_objects,
+                        tmp_node->num_objects,
                         "Expected leafs to have equal num_object_links.");
         } else if (node_type == MLI_OCTREE_TYPE_NODE) {
                 /* node */
@@ -322,25 +388,25 @@ int _mliOcTree_equal_payload(
                         node_idx >= 0,
                         "This node_idx is expected to point to a node.");
                 for (c = 0; c < 8u; c++) {
-                        if (dynnode->children[c] == NULL) {
+                        if (tmp_node->children[c] == NULL) {
                                 mli_check(
                                         tree->nodes[node_idx].children[c] == 0,
                                         "Expected node's child == "
-                                        "0 when dynnode's child == NULL");
+                                        "0 when tmp_node's child == NULL");
                         } else {
-                                if (dynnode->children[c]->num_objects == 0) {
+                                if (tmp_node->children[c]->num_objects == 0) {
                                         mli_check(
                                                 tree->nodes[node_idx].
                                                         children[c] == 0,
                                                 "Expected node's child != "
-                                                "0 when dynnode's child != "
+                                                "0 when tmp_node's child != "
                                                 "NULL");
                                 }
                         }
                 }
 
                 for (c = 0; c < 8u; c++) {
-                        if (dynnode->children[c] != NULL) {
+                        if (tmp_node->children[c] != NULL) {
                                 size_t child_node_idx =
                                         tree->nodes[node_idx].children[c];
                                 int32_t child_node_type =
@@ -350,7 +416,7 @@ int _mliOcTree_equal_payload(
                                                 tree,
                                                 child_node_idx,
                                                 child_node_type,
-                                                dynnode->children[c]),
+                                                tmp_node->children[c]),
                                         "Expected tree to be euqal further down"
                                         );
                         }

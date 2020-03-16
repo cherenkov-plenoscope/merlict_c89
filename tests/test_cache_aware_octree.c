@@ -27,22 +27,12 @@ CASE("init mliCaOctree") {
         &num_leafs,
         &num_object_links);
 
-    /*mliTmpNode_print(&tmp_octree.root, 4u, 0u);*/
-
-
     CHECK(mliOcTree_malloc(&octree, num_nodes, num_leafs, num_object_links));
-
-
     mliOcTree_set(&octree, &tmp_octree);
 
-    /*mliOcTree_print(&octree);*/
-
-    fprintf(
-        stderr,
-        "num nodes: %lu, leafs: %lu, objects: %lu\n",
-        num_nodes,
-        num_leafs,
-        num_object_links);
+    CHECK(num_nodes == 49);
+    CHECK(num_leafs == 265);
+    CHECK(num_object_links == 4308);
 
     CHECK(mliOcTree_equal_payload(&octree, &tmp_octree));
 

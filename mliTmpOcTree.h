@@ -9,7 +9,7 @@
 #include "mli_math.h"
 #include "mliOctOverlaps.h"
 
-#define MLI_NODE_FLAT_INDEX_NONE -1
+#define MLI_TMPNODE_FLAT_INDEX_NONE -1
 
 struct mliTmpNode {
         struct mliTmpNode* children[8];
@@ -30,9 +30,9 @@ struct mliTmpNode mliTmpNode_init()
         }
         n.num_objects = 0u;
         n.objects = NULL;
-        n.flat_index = MLI_NODE_FLAT_INDEX_NONE;
-        n.node_index = MLI_NODE_FLAT_INDEX_NONE;
-        n.leaf_index = MLI_NODE_FLAT_INDEX_NONE;
+        n.flat_index = MLI_TMPNODE_FLAT_INDEX_NONE;
+        n.node_index = MLI_TMPNODE_FLAT_INDEX_NONE;
+        n.leaf_index = MLI_TMPNODE_FLAT_INDEX_NONE;
         return n;
 }
 
@@ -315,10 +315,10 @@ void _mliTmpNode_num_nodes_leafs_objects(
         size_t *num_object_links)
 {
         size_t c;
-        if (node->node_index != MLI_NODE_FLAT_INDEX_NONE) {
+        if (node->node_index != MLI_TMPNODE_FLAT_INDEX_NONE) {
                 (*num_nodes)++;
         }
-        if (node->leaf_index != MLI_NODE_FLAT_INDEX_NONE) {
+        if (node->leaf_index != MLI_TMPNODE_FLAT_INDEX_NONE) {
                 (*num_leafs)++;
                 (*num_object_links) += node->num_objects;
         }
