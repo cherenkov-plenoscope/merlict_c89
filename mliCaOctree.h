@@ -137,7 +137,7 @@ error:
 
 void _mliCa2Octree_set_node(
         struct mliCa2Octree* tree,
-        const struct mliNode *dynnode)
+        const struct mliTmpNode *dynnode)
 {
         size_t c;
         size_t i = dynnode->node_index;
@@ -165,7 +165,7 @@ void _mliCa2Octree_set_node(
 
 void _mliCa2Octree_set_leaf(
         struct mliCa2Octree* tree,
-        const struct mliNode *dynnode,
+        const struct mliTmpNode *dynnode,
         size_t *object_link_size)
 {
         size_t o;
@@ -183,7 +183,7 @@ void _mliCa2Octree_set_leaf(
 
 void _mliCa2Octree_set(
         struct mliCa2Octree* tree,
-        const struct mliNode *dynnode,
+        const struct mliTmpNode *dynnode,
         size_t *object_link_size)
 {
         size_t c;
@@ -209,7 +209,7 @@ void mliCa2Octree_set(
 {
         size_t object_link_size = 0u;
         tree->cube = dyntree->cube;
-        if (mliNode_num_children(&dyntree->root) > 0) {
+        if (mliTmpNode_num_children(&dyntree->root) > 0) {
                 tree->root_type = MLI_OCTREE_TYPE_NODE;
         } else {
                 tree->root_type = MLI_OCTREE_TYPE_LEAF;
@@ -238,14 +238,14 @@ int _mliCa2Octree_equal_payload(
         const struct mliCa2Octree *tree,
         const int32_t node_idx,
         const int32_t node_type,
-        const struct mliNode *dynnode)
+        const struct mliTmpNode *dynnode)
 {
         if (node_type == MLI_OCTREE_TYPE_LEAF) {
                 /* leaf */
                 size_t leaf_idx;
                 size_t obj;
                 mli_check(
-                        mliNode_num_children(dynnode) == 0,
+                        mliTmpNode_num_children(dynnode) == 0,
                         "Expect dynnode to have 0 children when "
                         "node_type == LEAF.");
                 leaf_idx = node_idx;

@@ -136,7 +136,7 @@ void __mli_proc_subtree (
     double tx1,
     double ty1,
     double tz1,
-    const struct mliNode *node,
+    const struct mliTmpNode *node,
     uint8_t a,
     const struct mliCube cube,
     const struct mliVec ray_octree_support,
@@ -152,7 +152,7 @@ void __mli_proc_subtree (
         return;
     }
 
-    if (mliNode_num_children(node) == 0u) {
+    if (mliTmpNode_num_children(node) == 0u) {
         struct mliIntersection tmp_isec;
         uint64_t c;
         for (c = 0; c < node->num_objects; c++) {
@@ -270,7 +270,7 @@ void mli_ray_octree_traversal(
     struct mliVec cube_upper;
     struct mliVec cube_size;
     struct mliCube cube;
-    const struct mliNode *root;
+    const struct mliTmpNode *root;
     uint8_t a = 0;
     isec->distance_of_ray = DBL_MAX;
     cube = octree->cube;

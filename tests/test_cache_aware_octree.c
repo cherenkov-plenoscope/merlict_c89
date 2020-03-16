@@ -20,14 +20,14 @@ CASE("init mliCaOctree") {
     CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
     fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
 
-    mliNode_set_flat_index(&octree.root);
-    mliNode_num_nodes_leafs_objects(
+    mliTmpNode_set_flat_index(&octree.root);
+    mliTmpNode_num_nodes_leafs_objects(
         &octree.root,
         &num_nodes,
         &num_leafs,
         &num_object_links);
 
-    /*mliNode_print(&octree.root, 4u, 0u);*/
+    /*mliTmpNode_print(&octree.root, 4u, 0u);*/
 
 
     CHECK(mliCa2Octree_malloc(&tree2, num_nodes, num_leafs, num_object_links));
