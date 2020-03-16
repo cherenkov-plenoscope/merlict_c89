@@ -26,7 +26,8 @@ int __mli_first_node(
         double tz0,
         double txm,
         double tym,
-        double tzm) {
+        double tzm)
+{
         uint8_t child = 0;
         if (tx0 > ty0){
                 if (tx0 > tz0) {
@@ -56,7 +57,8 @@ int __mli_new_node(
         double tym,
         int y,
         double tzm,
-        int z) {
+        int z)
+{
         if(txm < tym){
                 if(txm < tzm) {
                         /* Y-Z-plane */
@@ -83,7 +85,8 @@ void mli_set_txm_tym_tzm(
         const struct mliVec ray_octree_support,
         double *txm,
         double *tym,
-        double *tzm) {
+        double *tzm)
+{
         /*
          * This implements Section 3.3
          * "Generalising for Rays Parallel to One Main Axis"
