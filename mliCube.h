@@ -104,4 +104,11 @@ struct mliCube mliCube_octree_child_code(
         return child;
 }
 
+int mliCube_is_equal(const struct mliCube a, const struct mliCube b)
+{
+    if (a.edge_length != b.edge_length) return 0;
+    if (!mliVec_is_equal(a.lower, b.lower)) return 0;
+    return 1;
+}
+
 #endif

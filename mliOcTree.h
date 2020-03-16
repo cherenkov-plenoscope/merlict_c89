@@ -15,7 +15,10 @@ struct mliNode {
         struct mliNode* children[8];
         uint32_t num_objects;
         uint32_t *objects;
+
         int32_t flat_index;
+        int32_t node_index;
+        int32_t leaf_index;
 };
 
 struct mliNode mliNode_init()
@@ -28,6 +31,8 @@ struct mliNode mliNode_init()
         n.num_objects = 0u;
         n.objects = NULL;
         n.flat_index = MLI_NODE_FLAT_INDEX_NONE;
+        n.node_index = MLI_NODE_FLAT_INDEX_NONE;
+        n.leaf_index = MLI_NODE_FLAT_INDEX_NONE;
         return n;
 }
 
@@ -190,15 +195,20 @@ void mliNode_print(
         if (num_children == 0) {
                 uint32_t j;
                 printf(
-                        "|-Leaf[% 6d] %u: %u [",
-                        node->flat_index,
+                        "|-Leaf[%d, %d] %u: %u [",
+                        node->node_index,
+                        node->leaf_index,
                         child, node->num_objects);
                 for(j = 0; j < node->num_objects; j++) {
                         printf("%u, ", node->objects[j]);
                 }
                 printf("]");
         } else {
-                printf("Node[% 6d]: %u", node->flat_index, child);
+                printf(
+                        "Node[%d, %d]: %u",
+                        node->node_index,
+                        node->leaf_index,
+                        child);
         }
         printf("\n");
         for (c = 0u; c < 8u; c++) {
@@ -234,27 +244,101 @@ int _mliNode_exists_and_objects(const struct mliNode *node)
         return 0;
 }
 
-void _mliNode_set_flat_index(struct mliNode *node, int32_t *idx)
+void _mliNode_set_flat_index(
+        struct mliNode *node,
+        int32_t *flat_index,
+        int32_t *node_index,
+        int32_t *leaf_index)
 {
         size_t c;
         for (c = 0u; c < 8u; c++) {
                 if(_mliNode_exists_and_objects(node->children[c])) {
-                        (*idx)++;
-                        node->children[c]->flat_index = *idx;
+                        (*flat_index)++;
+                        node->children[c]->flat_index = *flat_index;
+
+                        if (mliNode_num_children(node->children[c]) == 0) {
+                                node->children[c]->leaf_index = *leaf_index;
+                                (*leaf_index)++;
+                        } else {
+                                (*node_index)++;
+                                node->children[c]->node_index = *node_index;
+                        }
                 }
         }
         for (c = 0u; c < 8u; c++) {
                 if(_mliNode_exists_and_objects(node->children[c])) {
-                        _mliNode_set_flat_index(node->children[c], idx);
+                        _mliNode_set_flat_index(
+                                node->children[c],
+                                flat_index,
+                                node_index,
+                                leaf_index);
                 }
         }
 }
 
 void mliNode_set_flat_index(struct mliNode *root_node)
 {
-        int32_t root_index = 0;
-        root_node->flat_index = root_index;
-        _mliNode_set_flat_index(root_node, &root_index);
+        int32_t flat_index = 0;
+        int32_t node_index = 0;
+        int32_t leaf_index = 0;
+        root_node->flat_index = flat_index;
+
+        if (mliNode_num_children(root_node) == 0) {
+                root_node->leaf_index = leaf_index;
+        } else {
+                root_node->node_index = node_index;
+        }
+
+        _mliNode_set_flat_index(
+                root_node,
+                &flat_index,
+                &node_index,
+                &leaf_index);
+}
+
+/*
+ * Find the number of valid nodes in dynamic tree
+ */
+
+void _mliNode_num_nodes_leafs_objects(
+        const struct mliNode *node,
+        size_t *num_nodes,
+        size_t *num_leafs,
+        size_t *num_object_links)
+{
+        size_t c;
+        if (node->node_index != MLI_NODE_FLAT_INDEX_NONE) {
+                (*num_nodes)++;
+        }
+        if (node->leaf_index != MLI_NODE_FLAT_INDEX_NONE) {
+                (*num_leafs)++;
+                (*num_object_links) += node->num_objects;
+        }
+        for (c = 0; c < 8u; c++) {
+                if (node->children[c] != NULL) {
+                        _mliNode_num_nodes_leafs_objects(
+                                node->children[c],
+                                num_nodes,
+                                num_leafs,
+                                num_object_links);
+                }
+        }
+}
+
+void mliNode_num_nodes_leafs_objects(
+        const struct mliNode *root_node,
+        size_t *num_nodes,
+        size_t *num_leafs,
+        size_t *num_object_links)
+{
+        *num_nodes = 0;
+        *num_leafs = 0;
+        *num_object_links = 0;
+        _mliNode_num_nodes_leafs_objects(
+                root_node,
+                num_nodes,
+                num_leafs,
+                num_object_links);
 }
 
 /*
