@@ -389,7 +389,7 @@ void _mliOcTree_print(
         const struct mliOcTree *tree,
         const int32_t node_idx,
         const uint8_t node_type,
-        const int32_t indent,
+        const uint32_t indent,
         const uint32_t child)
 {
         uint32_t i;
@@ -405,7 +405,7 @@ void _mliOcTree_print(
         } else if (node_type == MLI_OCTREE_TYPE_LEAF) {
                 int32_t leaf_idx = node_idx;
                 uint32_t j;
-                assert(leaf_idx < tree->leafs.num_leafs);
+                assert(leaf_idx < (int32_t)tree->leafs.num_leafs);
                 printf(
                         "|-Leaf[%d, %d] %u: %u [",
                         -1,
@@ -434,7 +434,7 @@ void _mliOcTree_print(
                 if (node_type == MLI_OCTREE_TYPE_NODE) {
                         int32_t child_node_idx;
                         int32_t child_node_type;
-                        assert(node_idx < tree->num_nodes);
+                        assert(node_idx < (int32_t)tree->num_nodes);
                         child_node_idx = tree->nodes[node_idx].children[c];
                         child_node_type = tree->nodes[node_idx].types[c];
                         if (child_node_type != MLI_OCTREE_TYPE_NONE) {
