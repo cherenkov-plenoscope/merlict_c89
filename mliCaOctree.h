@@ -236,7 +236,6 @@ size_t mliCa2Octree_leaf_num_objects(
         const struct mliCa2Octree* tree,
         const size_t leaf)
 {
-        assert(leaf < tree->leafs.num_leafs);
         return tree->leafs.adresses[leaf].num_object_links;
 }
 
@@ -245,10 +244,7 @@ uint32_t mliCa2Octree_leaf_object_link(
         const size_t leaf,
         const size_t object_link)
 {
-        size_t i;
-        assert(leaf < tree->leafs.num_leafs);
-        assert(object_link < mliCa2Octree_leaf_num_objects(tree, leaf));
-        i = tree->leafs.adresses[leaf].first_object_link + object_link;
+        size_t i = tree->leafs.adresses[leaf].first_object_link + object_link;
         return tree->leafs.object_links[i];
 }
 
