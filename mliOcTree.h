@@ -147,15 +147,20 @@ error:
         return 0;
 }
 
+size_t mli_guess_octree_depth_based_on_num_objects(const size_t num_objects)
+{
+        return 1u + (size_t)ceil(log((double)num_objects)/log(8.0));
+}
+
 int mliNode_malloc_tree_from_scenery(
         struct mliNode* root_node,
         const struct mliScenery *scenery,
         const struct mliCube scenery_cube)
 {
-        uint32_t idx, depth, max_depth, num_objects;
-        depth = 0u;
+        uint32_t idx, start_depth, max_depth, num_objects;
+        start_depth = 0u;
         num_objects = mliScenery_num_objects(scenery);
-        max_depth = 1u + (uint32_t)ceil(log((double)num_objects)/log(8.0));
+        max_depth = mli_guess_octree_depth_based_on_num_objects(num_objects);
 
         mli_check(mliNode_malloc(root_node, num_objects),
                 "Failed to allocate root-node in dynamic octree.")
@@ -167,7 +172,7 @@ int mliNode_malloc_tree_from_scenery(
                 root_node,
                 scenery,
                 scenery_cube,
-                depth,
+                start_depth,
                 max_depth);
         return 1;
 error:
