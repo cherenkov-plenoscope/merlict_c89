@@ -13,7 +13,7 @@
 
 struct mliEnv {
     const struct mliScenery *scenery;
-    const struct mliCa2Octree *octree;
+    const struct mliOcTree *octree;
     struct mliDynPhotonInteraction *history;
     struct mliPhoton *photon;
     struct mliMT19937 *prng;
@@ -336,7 +336,7 @@ error:
 
 int mli_propagate_photon(
     struct mliScenery *scenery,
-    struct mliCa2Octree *octree,
+    struct mliOcTree *octree,
     struct mliDynPhotonInteraction *history,
     struct mliPhoton *photon,
     struct mliMT19937 *prng,

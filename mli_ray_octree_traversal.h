@@ -137,7 +137,7 @@ void __mli_proc_subtree (
     double tx1,
     double ty1,
     double tz1,
-    const struct mliCa2Octree *octree,
+    const struct mliOcTree *octree,
     const int32_t octree_node,
     const int32_t octree_type,
     uint8_t a,
@@ -162,8 +162,8 @@ void __mli_proc_subtree (
     if (octree_type == MLI_OCTREE_TYPE_LEAF) {
         struct mliIntersection tmp_isec;
         size_t o;
-        for (o = 0; o < mliCa2Octree_leaf_num_objects(octree, octree_node); o++) {
-            uint32_t object_idx = mliCa2Octree_leaf_object_link(
+        for (o = 0; o < mliOcTree_leaf_num_objects(octree, octree_node); o++) {
+            uint32_t object_idx = mliOcTree_leaf_object_link(
                 octree,
                 octree_node,
                 o);
@@ -286,7 +286,7 @@ void __mli_proc_subtree (
 
 void mli_ray_octree_traversal(
     const struct mliScenery *scenery,
-    const struct mliCa2Octree *octree,
+    const struct mliOcTree *octree,
     const struct mliRay ray,
     struct mliIntersection *isec)
 {

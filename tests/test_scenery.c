@@ -227,11 +227,11 @@ CASE("mliScenery, mliMesh_malloc_from_object_file") {
 
 CASE("mliScenery, render image") {
     struct mliScenery scenery = mliScenery_init();
-    struct mliCa2Octree octree = mliCa2Octree_init();
+    struct mliOcTree octree = mliOcTree_init();
     struct mliCamera camera;
     struct mliImage img = mliImage_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
-    CHECK(mliCa2Octree_malloc_from_scenery(&octree, &scenery));
+    CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
     /* mliNode_print(&octree.root, 0); */
 
     camera.position.x = 0.;
@@ -247,7 +247,7 @@ CASE("mliScenery, render image") {
     mliImage_write_to_ppm(&img, "tests/resources/scn1.ppm.tmp");
 
     mliImage_free(&img);
-    mliCa2Octree_free(&octree);
+    mliOcTree_free(&octree);
     mliScenery_free(&scenery);
 }
 
@@ -347,10 +347,10 @@ CASE("scenery intersection interface -> sphere") {
 
 CASE("mliTmpOcTree_from_scenery") {
     struct mliScenery scenery = mliScenery_init();
-    struct mliCa2Octree octree = mliCa2Octree_init();
+    struct mliOcTree octree = mliOcTree_init();
     struct mliIntersection isec;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
-    CHECK(mliCa2Octree_malloc_from_scenery(&octree, &scenery));
+    CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
 
     /*mliNode_print(&tree, 0u);*/
     /*
@@ -368,7 +368,7 @@ CASE("mliTmpOcTree_from_scenery") {
             mliVec_set(0. ,0., -1.)),
         &isec);
 
-    mliCa2Octree_free(&octree);
+    mliOcTree_free(&octree);
     mliScenery_free(&scenery);
 }
 
@@ -429,11 +429,11 @@ CASE("struct mliScenery asymetric") {
 
 CASE("render image asymetric scenery") {
     struct mliScenery scenery = mliScenery_init();
-    struct mliCa2Octree octree = mliCa2Octree_init();
+    struct mliOcTree octree = mliOcTree_init();
     struct mliCamera camera;
     struct mliImage img = mliImage_init();
     mliScenery_read_from_path(&scenery, "tests/resources/scn_asym.mli.tmp");
-    CHECK(mliCa2Octree_malloc_from_scenery(&octree, &scenery));
+    CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
     /* mliNode_print(&octree.root, 0); */
     camera.position.x = 0.;
     camera.position.y = 0.;
@@ -448,6 +448,6 @@ CASE("render image asymetric scenery") {
     mliImage_write_to_ppm(&img, "tests/resources/scn_asym.ppm.tmp");
 
     mliImage_free(&img);
-    mliCa2Octree_free(&octree);
+    mliOcTree_free(&octree);
     mliScenery_free(&scenery);
 }

@@ -89,7 +89,7 @@ struct mliNode mliNode_init()
         return node;
 }
 
-struct mliCa2Octree {
+struct mliOcTree {
         struct mliCube cube;
         size_t num_nodes;
         struct mliNode *nodes;
@@ -97,9 +97,9 @@ struct mliCa2Octree {
         uint8_t root_type;
 };
 
-struct mliCa2Octree mliCa2Octree_init()
+struct mliOcTree mliOcTree_init()
 {
-        struct mliCa2Octree tree;
+        struct mliOcTree tree;
         tree.cube.lower = mliVec_set(0., 0., 0.);
         tree.cube.edge_length = 0.;
         tree.num_nodes = 0u;
@@ -109,21 +109,21 @@ struct mliCa2Octree mliCa2Octree_init()
         return tree;
 }
 
-void mliCa2Octree_free(struct mliCa2Octree* tree)
+void mliOcTree_free(struct mliOcTree* tree)
 {
         free(tree->nodes);
         mliLeafArray_free(&tree->leafs);
-        *tree = mliCa2Octree_init();
+        *tree = mliOcTree_init();
 }
 
-int mliCa2Octree_malloc(
-        struct mliCa2Octree* tree,
+int mliOcTree_malloc(
+        struct mliOcTree* tree,
         const size_t num_nodes,
         const size_t num_leafs,
         const size_t num_object_links)
 {
         size_t i;
-        mliCa2Octree_free(tree);
+        mliOcTree_free(tree);
         tree->num_nodes = num_nodes;
         mli_malloc(tree->nodes, struct mliNode, tree->num_nodes);
         for (i = 0; i < tree->num_nodes; i++)
@@ -134,8 +134,8 @@ error:
         return 0;
 }
 
-void _mliCa2Octree_set_node(
-        struct mliCa2Octree* tree,
+void _mliOcTree_set_node(
+        struct mliOcTree* tree,
         const struct mliTmpNode *dynnode)
 {
         size_t c;
@@ -162,8 +162,8 @@ void _mliCa2Octree_set_node(
         }
 }
 
-void _mliCa2Octree_set_leaf(
-        struct mliCa2Octree* tree,
+void _mliOcTree_set_leaf(
+        struct mliOcTree* tree,
         const struct mliTmpNode *dynnode,
         size_t *object_link_size)
 {
@@ -180,21 +180,21 @@ void _mliCa2Octree_set_leaf(
         }
 }
 
-void _mliCa2Octree_set(
-        struct mliCa2Octree* tree,
+void _mliOcTree_set(
+        struct mliOcTree* tree,
         const struct mliTmpNode *dynnode,
         size_t *object_link_size)
 {
         size_t c;
         if (dynnode->node_index >= 0) {
-                _mliCa2Octree_set_node(tree, dynnode);
+                _mliOcTree_set_node(tree, dynnode);
         } else if (dynnode->leaf_index >= 0) {
-                _mliCa2Octree_set_leaf(tree, dynnode, object_link_size);
+                _mliOcTree_set_leaf(tree, dynnode, object_link_size);
         }
 
         for (c = 0; c < 8u; c++) {
                 if (dynnode->children[c] != NULL) {
-                        _mliCa2Octree_set(
+                        _mliOcTree_set(
                                 tree,
                                 dynnode->children[c],
                                 object_link_size);
@@ -202,8 +202,8 @@ void _mliCa2Octree_set(
         }
 }
 
-void mliCa2Octree_set(
-        struct mliCa2Octree* tree,
+void mliOcTree_set(
+        struct mliOcTree* tree,
         const struct mliTmpOcTree *dyntree)
 {
         size_t object_link_size = 0u;
@@ -214,11 +214,11 @@ void mliCa2Octree_set(
                 tree->root_type = MLI_OCTREE_TYPE_LEAF;
         }
 
-        _mliCa2Octree_set(tree, &dyntree->root, &object_link_size);
+        _mliOcTree_set(tree, &dyntree->root, &object_link_size);
 }
 
-size_t mliCa2Octree_node_num_children(
-        const struct mliCa2Octree* tree,
+size_t mliOcTree_node_num_children(
+        const struct mliOcTree* tree,
         const size_t node_idx)
 {
         size_t num = 0u;
@@ -231,15 +231,15 @@ size_t mliCa2Octree_node_num_children(
         return num;
 }
 
-size_t mliCa2Octree_leaf_num_objects(
-        const struct mliCa2Octree* tree,
+size_t mliOcTree_leaf_num_objects(
+        const struct mliOcTree* tree,
         const size_t leaf)
 {
         return tree->leafs.adresses[leaf].num_object_links;
 }
 
-uint32_t mliCa2Octree_leaf_object_link(
-        const struct mliCa2Octree* tree,
+uint32_t mliOcTree_leaf_object_link(
+        const struct mliOcTree* tree,
         const size_t leaf,
         const size_t object_link)
 {
@@ -247,8 +247,8 @@ uint32_t mliCa2Octree_leaf_object_link(
         return tree->leafs.object_links[i];
 }
 
-int mliCa2Octree_malloc_from_scenery(
-        struct mliCa2Octree *octree,
+int mliOcTree_malloc_from_scenery(
+        struct mliOcTree *octree,
         const struct mliScenery *scenery)
 {
         size_t num_nodes = 0;
@@ -265,14 +265,14 @@ int mliCa2Octree_malloc_from_scenery(
                 &num_leafs,
                 &num_object_links);
 
-        mliCa2Octree_free(octree);
-        mli_check(mliCa2Octree_malloc(
+        mliOcTree_free(octree);
+        mli_check(mliOcTree_malloc(
                 octree,
                 num_nodes,
                 num_leafs,
                 num_object_links),
                 "Failed to allocate cache-aware octree from dynamic octree.");
-        mliCa2Octree_set(octree, &tmp_octree);
+        mliOcTree_set(octree, &tmp_octree);
         mliTmpOcTree_free(&tmp_octree);
 
         return 1;
@@ -280,8 +280,8 @@ error:
         return 0;
 }
 
-int _mliCa2Octree_equal_payload(
-        const struct mliCa2Octree *tree,
+int _mliOcTree_equal_payload(
+        const struct mliOcTree *tree,
         const int32_t node_idx,
         const int32_t node_type,
         const struct mliTmpNode *dynnode)
@@ -346,7 +346,7 @@ int _mliCa2Octree_equal_payload(
                                 int32_t child_node_type =
                                         tree->nodes[node_idx].types[c];
                                 mli_check(
-                                        _mliCa2Octree_equal_payload(
+                                        _mliOcTree_equal_payload(
                                                 tree,
                                                 child_node_idx,
                                                 child_node_type,
@@ -366,15 +366,15 @@ error:
         return 0;
 }
 
-int mliCa2Octree_equal_payload(
-        const struct mliCa2Octree *tree,
+int mliOcTree_equal_payload(
+        const struct mliOcTree *tree,
         const struct mliTmpOcTree *tmp_octree)
 {
         int32_t root_node_idx = 0;
         int32_t root_node_type = MLI_OCTREE_TYPE_NODE;
         mli_check(mliCube_is_equal(tree->cube, tmp_octree->cube),
                 "Cubes are not equal");
-        mli_check(_mliCa2Octree_equal_payload(
+        mli_check(_mliOcTree_equal_payload(
                 tree,
                 root_node_idx,
                 root_node_type,
@@ -385,8 +385,8 @@ error:
         return 0;
 }
 
-void _mliCa2Octree_print(
-        const struct mliCa2Octree *tree,
+void _mliOcTree_print(
+        const struct mliOcTree *tree,
         const int32_t node_idx,
         const uint8_t node_type,
         const int32_t indent,
@@ -438,7 +438,7 @@ void _mliCa2Octree_print(
                         child_node_idx = tree->nodes[node_idx].children[c];
                         child_node_type = tree->nodes[node_idx].types[c];
                         if (child_node_type != MLI_OCTREE_TYPE_NONE) {
-                                _mliCa2Octree_print(
+                                _mliOcTree_print(
                                         tree,
                                         child_node_idx,
                                         child_node_type,
@@ -449,11 +449,11 @@ void _mliCa2Octree_print(
         }
 }
 
-void mliCa2Octree_print(const struct mliCa2Octree *tree)
+void mliOcTree_print(const struct mliOcTree *tree)
 {
         if (tree->num_nodes > 0) {
                 int32_t root_idx = 0;
-                _mliCa2Octree_print(
+                _mliOcTree_print(
                         tree,
                         root_idx,
                         tree->root_type,

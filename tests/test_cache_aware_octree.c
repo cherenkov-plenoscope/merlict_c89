@@ -2,7 +2,7 @@
 
 
 CASE("init mliCaOctree") {
-        struct mliCa2Octree caoctree = mliCa2Octree_init();
+        struct mliOcTree caoctree = mliOcTree_init();
         CHECK(caoctree.cube.lower.x == 0.0);
 }
 
@@ -13,7 +13,7 @@ CASE("sizeof mliNode") {
 CASE("init mliCaOctree") {
     struct mliScenery scenery = mliScenery_init();
     struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
-    struct mliCa2Octree octree = mliCa2Octree_init();
+    struct mliOcTree octree = mliOcTree_init();
     struct mliIntersection isec;
     size_t num_nodes, num_leafs, num_object_links;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
@@ -30,12 +30,12 @@ CASE("init mliCaOctree") {
     /*mliTmpNode_print(&tmp_octree.root, 4u, 0u);*/
 
 
-    CHECK(mliCa2Octree_malloc(&octree, num_nodes, num_leafs, num_object_links));
+    CHECK(mliOcTree_malloc(&octree, num_nodes, num_leafs, num_object_links));
 
 
-    mliCa2Octree_set(&octree, &tmp_octree);
+    mliOcTree_set(&octree, &tmp_octree);
 
-    /*mliCa2Octree_print(&octree);*/
+    /*mliOcTree_print(&octree);*/
 
     fprintf(
         stderr,
@@ -44,7 +44,7 @@ CASE("init mliCaOctree") {
         num_leafs,
         num_object_links);
 
-    CHECK(mliCa2Octree_equal_payload(&octree, &tmp_octree));
+    CHECK(mliOcTree_equal_payload(&octree, &tmp_octree));
 
     mli_ray_octree_traversal(
         &scenery,
@@ -55,6 +55,6 @@ CASE("init mliCaOctree") {
         &isec);
 
     mliTmpOcTree_free(&tmp_octree);
-    mliCa2Octree_free(&octree);
+    mliOcTree_free(&octree);
     mliScenery_free(&scenery);
 }

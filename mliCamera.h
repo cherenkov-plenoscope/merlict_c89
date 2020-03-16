@@ -203,7 +203,7 @@ struct mliRay mliCamera_ray_at_row_col(
 void mliCamera_render_image(
         const struct mliCamera *camera,
         const struct mliScenery *scenery,
-        const struct mliCa2Octree *octree,
+        const struct mliOcTree *octree,
         struct mliImage *image)
 {
         uint32_t row, col;
