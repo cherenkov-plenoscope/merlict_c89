@@ -20,7 +20,7 @@
 #include "mli_math.h"
 
 
-int __mli_first_node(
+int _mli_first_node(
         double tx0,
         double ty0,
         double tz0,
@@ -51,7 +51,7 @@ int __mli_first_node(
         return (int)child;
 }
 
-int __mli_new_node(
+int _mli_new_node(
         double txm,
         int x,
         double tym,
@@ -132,7 +132,7 @@ void mli_set_txm_tym_tzm(
         }
 }
 
-void __mli_proc_subtree (
+void _mli_proc_subtree (
         double tx0,
         double ty0,
         double tz0,
@@ -191,12 +191,12 @@ void __mli_proc_subtree (
                 cube, ray_octree_support,
                 &txm, &tym, &tzm);
 
-        currNode = __mli_first_node(tx0,ty0,tz0,txm,tym,tzm);
+        currNode = _mli_first_node(tx0,ty0,tz0,txm,tym,tzm);
         do{
                 switch (currNode)
                 {
                 case 0: {
-                        __mli_proc_subtree(
+                        _mli_proc_subtree(
                                 tx0,ty0,tz0,txm,tym,tzm,
                                 octree,
                                 octree->nodes[octree_node].children[a],
@@ -204,20 +204,20 @@ void __mli_proc_subtree (
                                 a,
                                 mliCube_octree_child_code(cube, a), ray_octree_support,
                                 isec, scenery, ray, num_hits);
-                        currNode = __mli_new_node(txm,4,tym,2,tzm,1);
+                        currNode = _mli_new_node(txm,4,tym,2,tzm,1);
                         break;}
                 case 1: {
-                        __mli_proc_subtree(
+                        _mli_proc_subtree(
                                 tx0,ty0,tzm,txm,tym,tz1,
                                 octree,
                                 octree->nodes[octree_node].children[1^a],
                                 octree->nodes[octree_node].types[1^a],
                                 a, cube, ray_octree_support,
                                 isec, scenery, ray, num_hits);
-                        currNode = __mli_new_node(txm,5,tym,3,tz1,8);
+                        currNode = _mli_new_node(txm,5,tym,3,tz1,8);
                         break;}
                 case 2: {
-                        __mli_proc_subtree(
+                        _mli_proc_subtree(
                                 tx0,tym,tz0,txm,ty1,tzm,
                                 octree,
                                 octree->nodes[octree_node].children[2^a],
@@ -225,10 +225,10 @@ void __mli_proc_subtree (
                                 a,
                                 mliCube_octree_child_code(cube, a), ray_octree_support,
                                 isec, scenery, ray, num_hits);
-                        currNode = __mli_new_node(txm,6,ty1,8,tzm,3);
+                        currNode = _mli_new_node(txm,6,ty1,8,tzm,3);
                         break;}
                 case 3: {
-                        __mli_proc_subtree(
+                        _mli_proc_subtree(
                                 tx0,tym,tzm,txm,ty1,tz1,
                                 octree,
                                 octree->nodes[octree_node].children[3^a],
@@ -236,10 +236,10 @@ void __mli_proc_subtree (
                                 a,
                                 mliCube_octree_child_code(cube, a), ray_octree_support,
                                 isec, scenery, ray, num_hits);
-                        currNode = __mli_new_node(txm,7,ty1,8,tz1,8);
+                        currNode = _mli_new_node(txm,7,ty1,8,tz1,8);
                         break;}
                 case 4: {
-                        __mli_proc_subtree(
+                        _mli_proc_subtree(
                                 txm,ty0,tz0,tx1,tym,tzm,
                                 octree,
                                 octree->nodes[octree_node].children[4^a],
@@ -247,10 +247,10 @@ void __mli_proc_subtree (
                                 a,
                                 mliCube_octree_child_code(cube, a), ray_octree_support,
                                 isec, scenery, ray, num_hits);
-                        currNode = __mli_new_node(tx1,8,tym,6,tzm,5);
+                        currNode = _mli_new_node(tx1,8,tym,6,tzm,5);
                         break;}
                 case 5: {
-                        __mli_proc_subtree(
+                        _mli_proc_subtree(
                                 txm,ty0,tzm,tx1,tym,tz1,
                                 octree,
                                 octree->nodes[octree_node].children[5^a],
@@ -258,10 +258,10 @@ void __mli_proc_subtree (
                                 a,
                                 mliCube_octree_child_code(cube, a), ray_octree_support,
                                 isec, scenery, ray, num_hits);
-                        currNode = __mli_new_node(tx1,8,tym,7,tz1,8);
+                        currNode = _mli_new_node(tx1,8,tym,7,tz1,8);
                         break;}
                 case 6: {
-                        __mli_proc_subtree(
+                        _mli_proc_subtree(
                                 txm,tym,tz0,tx1,ty1,tzm,
                                 octree,
                                 octree->nodes[octree_node].children[6^a],
@@ -269,10 +269,10 @@ void __mli_proc_subtree (
                                 a,
                                 mliCube_octree_child_code(cube, a), ray_octree_support,
                                 isec, scenery, ray, num_hits);
-                        currNode = __mli_new_node(tx1,8,ty1,8,tzm,7);
+                        currNode = _mli_new_node(tx1,8,ty1,8,tzm,7);
                         break;}
                 case 7: {
-                        __mli_proc_subtree(
+                        _mli_proc_subtree(
                                 txm,tym,tzm,tx1,ty1,tz1,
                                 octree,
                                 octree->nodes[octree_node].children[7^a],
@@ -347,7 +347,7 @@ void mli_ray_octree_traversal(
         tz1 = (cube_upper.z - ray_octree.support.z) * divz;
 
         if (MLI_MAX3(tx0, ty0, tz0) < MLI_MIN3(tx1, ty1, tz1)) {
-                __mli_proc_subtree(
+                _mli_proc_subtree(
                         tx0, ty0, tz0, tx1, ty1, tz1,
                         octree, octree_root_node, octree_root_type,
                         a, cube, ray_octree.support,
