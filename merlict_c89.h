@@ -62,6 +62,7 @@
 #include "mliDisc_intersection.h"
 
 #include "mliOcTree.h"
+#include "mliCaOctree.h"
 #include "mli_ray_octree_traversal.h"
 #include "mli_from_outside_to_inside.h"
 #include "mli_xyplane.h"

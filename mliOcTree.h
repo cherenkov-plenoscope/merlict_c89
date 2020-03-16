@@ -9,12 +9,14 @@
 #include "mli_math.h"
 #include "mliOctOverlaps.h"
 
+#define MLI_NODE_FLAT_INDEX_NONE -1
 
 struct mliNode {
         struct mliNode* mother;
         struct mliNode* children[8];
         uint32_t num_objects;
         uint32_t *objects;
+        int32_t flat_index;
 };
 
 void mliNode_init(struct mliNode *n)
@@ -26,21 +28,8 @@ void mliNode_init(struct mliNode *n)
         }
         n->num_objects = 0u;
         n->objects = NULL;
+        n->flat_index = MLI_NODE_FLAT_INDEX_NONE;
 }
-
-int mliNode_is_blank(const struct mliNode *n)
-{
-        uint64_t c;
-        if (n->mother != NULL)
-                return 0;
-        for (c = 0; c < 8u; c++)
-                if (n->children[c] != NULL)
-                        return 0;
-        if (n->num_objects != 0u)
-                return 0;
-        return 1;
-}
-
 
 void mliNode_free(struct mliNode *n)
 {
@@ -196,10 +185,12 @@ void __mliNode_num_nodes_recursive(
         }
 }
 
-uint32_t mliNode_num_nodes(const struct mliNode *node) {
+uint32_t mliNode_num_nodes(const struct mliNode *node)
+{
         uint32_t num_nodes = 0u;
         __mliNode_num_nodes_recursive(node, &num_nodes);
-        return num_nodes;}
+        return num_nodes;
+}
 
 void _mliNode_capacity_nodes(const struct mliNode *node, uint32_t *num_nodes) {
         uint32_t c;
@@ -211,14 +202,17 @@ void _mliNode_capacity_nodes(const struct mliNode *node, uint32_t *num_nodes) {
         }
 }
 
-uint32_t mliNode_capacity_nodes(const struct mliNode *node) {
+uint32_t mliNode_capacity_nodes(const struct mliNode *node)
+{
         uint32_t num_nodes = 1u;
         _mliNode_capacity_nodes(node, &num_nodes);
-        return num_nodes;}
+        return num_nodes;
+}
 
 void __mliNode_capacity_objects_recursive(
         const struct mliNode *node,
-        uint32_t *capacity_objects) {
+        uint32_t *capacity_objects)
+{
         if (mliNode_num_children(node) == 0u) {
                 (*capacity_objects) += node->num_objects;
         } else {
@@ -227,18 +221,23 @@ void __mliNode_capacity_objects_recursive(
                         if (node->children[c] != NULL) {
                                 __mliNode_capacity_objects_recursive(
                                         node->children[c],
-                                        capacity_objects);}}}}
+                                        capacity_objects);
+                        }
+                }
+        }
+}
 
-
-uint32_t mliNode_capacity_objects(const struct mliNode *node) {
+uint32_t mliNode_capacity_objects(const struct mliNode *node)
+{
         uint32_t capacity_objects = 0u;
         __mliNode_capacity_objects_recursive(node, &capacity_objects);
-        return capacity_objects;}
+        return capacity_objects;
+}
 
 void mliNode_print(
         const struct mliNode *node,
         const uint32_t indent,
-        const uint32_t ch)
+        const uint32_t child)
 {
         uint32_t i;
         uint32_t c;
@@ -246,13 +245,16 @@ void mliNode_print(
         for (i = 0u; i < indent; i++) printf(" ");
         if (num_c == 0) {
                 uint32_t j;
-                printf("|-Leaf %u: %u [", ch, node->num_objects);
+                printf(
+                        "|-Leaf[% 6d] %u: %u [",
+                        node->flat_index,
+                        child, node->num_objects);
                 for(j = 0; j < node->num_objects; j++) {
                         printf("%u, ", node->objects[j]);
                 }
                 printf("]");
         } else
-                printf("Node: %u", ch);
+                printf("Node[% 6d]: %u", node->flat_index, child);
         printf("\n");
         for (c = 0u; c < 8u; c++) {
                 if (node->children[c] != NULL) {
@@ -260,6 +262,58 @@ void mliNode_print(
                 }
         }
 }
+
+
+/*
+ * Assign a flat_index to every node that carries objects.
+ * The ordering is:
+ *      in tree:
+ *                          3
+ *                      1--{
+ *                     /    4
+ *                 0--{
+ *                    \    5
+ *                     2--{
+ *                         6
+ *
+ *      in flat list:
+ *      0, 1, 2, 3, 4, 5, 6, ...
+ */
+
+int _mliNode_exists_and_objects(const struct mliNode *node)
+{
+        if (node != NULL) {
+                if (node->num_objects > 0u) {
+                        return 1;
+                }
+        }
+        return 0;
+}
+
+void _mliNode_set_flat_index(struct mliNode *node, int32_t *idx)
+{
+        size_t c;
+        for (c = 0u; c < 8u; c++) {
+                if(_mliNode_exists_and_objects(node->children[c])) {
+                        (*idx)++;
+                        node->children[c]->flat_index = *idx;
+                }
+        }
+        for (c = 0u; c < 8u; c++) {
+                if(_mliNode_exists_and_objects(node->children[c])) {
+                        _mliNode_set_flat_index(node->children[c], idx);
+                }
+        }
+}
+
+void mliNode_set_flat_index(struct mliNode *root_node)
+{
+        int32_t root_index = 0;
+        root_node->flat_index = root_index;
+        _mliNode_set_flat_index(root_node, &root_index);
+}
+
+
 
 struct mliOcTree {
         struct mliCube cube;

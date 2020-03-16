@@ -47,6 +47,8 @@ int main(int argc, char *argv[]) {
     #include "tests/test_lensmaker.c"
     #include "tests/test_variable_length_integer.c"
     #include "tests/test_map.c"
+    #include "tests/test_cache_aware_octree.c"
+
 
     printf("__SUCCESS__\n");
     return EXIT_SUCCESS;
