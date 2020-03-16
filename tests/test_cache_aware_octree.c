@@ -6,36 +6,36 @@ CASE("init mliCaOctree") {
         CHECK(caoctree.cube.lower.x == 0.0);
 }
 
-CASE("sizeof mliCa2Node") {
-        CHECK(sizeof(struct mliCa2Node) == 5*8);
+CASE("sizeof mliNode") {
+        CHECK(sizeof(struct mliNode) == 5*8);
 }
 
 CASE("init mliCaOctree") {
     struct mliScenery scenery = mliScenery_init();
-    struct mliTmpOcTree octree = mliTmpOcTree_init();
-    struct mliCa2Octree tree2 = mliCa2Octree_init();
+    struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
+    struct mliCa2Octree octree = mliCa2Octree_init();
     struct mliIntersection isec;
     size_t num_nodes, num_leafs, num_object_links;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
-    CHECK(mliTmpOcTree_malloc_from_scenery(&octree, &scenery));
+    CHECK(mliTmpOcTree_malloc_from_scenery(&tmp_octree, &scenery));
     fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
 
-    mliTmpNode_set_flat_index(&octree.root);
+    mliTmpNode_set_flat_index(&tmp_octree.root);
     mliTmpNode_num_nodes_leafs_objects(
-        &octree.root,
+        &tmp_octree.root,
         &num_nodes,
         &num_leafs,
         &num_object_links);
 
-    /*mliTmpNode_print(&octree.root, 4u, 0u);*/
+    /*mliTmpNode_print(&tmp_octree.root, 4u, 0u);*/
 
 
-    CHECK(mliCa2Octree_malloc(&tree2, num_nodes, num_leafs, num_object_links));
+    CHECK(mliCa2Octree_malloc(&octree, num_nodes, num_leafs, num_object_links));
 
 
-    mliCa2Octree_set(&tree2, &octree);
+    mliCa2Octree_set(&octree, &tmp_octree);
 
-    /*mliCa2Octree_print(&tree2);*/
+    /*mliCa2Octree_print(&octree);*/
 
     fprintf(
         stderr,
@@ -44,17 +44,17 @@ CASE("init mliCaOctree") {
         num_leafs,
         num_object_links);
 
-    CHECK(mliCa2Octree_equal_payload(&tree2, &octree));
+    CHECK(mliCa2Octree_equal_payload(&octree, &tmp_octree));
 
     mli_ray_octree_traversal(
         &scenery,
-        &tree2,
+        &octree,
         mliRay_set(
             mliVec_set(0.1 ,2.5, 10.),
             mliVec_set(0. ,0., -1.)),
         &isec);
 
-    mliTmpOcTree_free(&octree);
-    mliCa2Octree_free(&tree2);
+    mliTmpOcTree_free(&tmp_octree);
+    mliCa2Octree_free(&octree);
     mliScenery_free(&scenery);
 }

@@ -4,7 +4,6 @@
 
 #include <stdint.h>
 #include "mliOcTree.h"
-#include "mliDynArray_template.h"
 
 struct mliLeafAddress {
         uint32_t first_object_link;
@@ -74,15 +73,15 @@ error:
 #define MLI_OCTREE_TYPE_NODE 1
 #define MLI_OCTREE_TYPE_LEAF 2
 
-struct mliCa2Node {
+struct mliNode {
         uint32_t children[8];
         uint8_t types[8];
 };
 
-struct mliCa2Node mliCa2Node_init()
+struct mliNode mliNode_init()
 {
         size_t c = 0;
-        struct mliCa2Node node;
+        struct mliNode node;
         for (c = 0; c < 8u; c++) {
                 node.children[c] = 0u;
                 node.types[c] = MLI_OCTREE_TYPE_NONE;
@@ -93,7 +92,7 @@ struct mliCa2Node mliCa2Node_init()
 struct mliCa2Octree {
         struct mliCube cube;
         size_t num_nodes;
-        struct mliCa2Node *nodes;
+        struct mliNode *nodes;
         struct mliLeafArray leafs;
         uint8_t root_type;
 };
@@ -126,9 +125,9 @@ int mliCa2Octree_malloc(
         size_t i;
         mliCa2Octree_free(tree);
         tree->num_nodes = num_nodes;
-        mli_malloc(tree->nodes, struct mliCa2Node, tree->num_nodes);
+        mli_malloc(tree->nodes, struct mliNode, tree->num_nodes);
         for (i = 0; i < tree->num_nodes; i++)
-                tree->nodes[i] = mliCa2Node_init();
+                tree->nodes[i] = mliNode_init();
         mli_c(mliLeafArray_malloc(&tree->leafs, num_leafs, num_object_links));
         return 1;
 error:
@@ -369,17 +368,17 @@ error:
 
 int mliCa2Octree_equal_payload(
         const struct mliCa2Octree *tree,
-        const struct mliTmpOcTree *dyntree)
+        const struct mliTmpOcTree *tmp_octree)
 {
         int32_t root_node_idx = 0;
         int32_t root_node_type = MLI_OCTREE_TYPE_NODE;
-        mli_check(mliCube_is_equal(tree->cube, dyntree->cube),
+        mli_check(mliCube_is_equal(tree->cube, tmp_octree->cube),
                 "Cubes are not equal");
         mli_check(_mliCa2Octree_equal_payload(
                 tree,
                 root_node_idx,
                 root_node_type,
-                &dyntree->root),
+                &tmp_octree->root),
                 "Tree is not equal");
         return 1;
 error:
