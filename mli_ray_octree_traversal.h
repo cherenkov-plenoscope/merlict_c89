@@ -191,7 +191,7 @@ void _mli_proc_subtree (
                 cube, ray_octree_support,
                 &txm, &tym, &tzm);
 
-        currNode = _mli_first_node(tx0,ty0,tz0,txm,tym,tzm);
+        currNode = _mli_first_node(tx0, ty0, tz0, txm, tym, tzm);
         do{
                 switch (currNode)
                 {
