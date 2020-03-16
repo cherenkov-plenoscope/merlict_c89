@@ -1,392 +1,465 @@
 /* Copyright 2019 Sebastian Achim Mueller */
-#ifndef MERLICT_MLIOCTTREE_H_
-#define MERLICT_MLIOCTTREE_H_
+#ifndef MERLICT_MLICAOCTTREE_H_
+#define MERLICT_MLICAOCTTREE_H_
 
 #include <stdint.h>
-#include "mliScenery.h"
-#include "mliOBB.h"
-#include "mliCube.h"
-#include "mli_math.h"
-#include "mliOctOverlaps.h"
+#include "mliTmpOcTree.h"
 
-#define MLI_NODE_FLAT_INDEX_NONE -1
-
-struct mliTmpNode {
-        struct mliTmpNode* children[8];
-        uint32_t num_objects;
-        uint32_t *objects;
-
-        int32_t flat_index;
-        int32_t node_index;
-        int32_t leaf_index;
+struct mliLeafAddress {
+        uint32_t first_object_link;
+        uint32_t num_object_links;
 };
 
-struct mliTmpNode mliTmpNode_init()
+struct mliLeafAddress mliLeafAddress_init() {
+        struct mliLeafAddress address;
+        address.first_object_link = 0u;
+        address.num_object_links = 0u;
+        return address;
+}
+
+struct mliLeafArray {
+        size_t num_leafs;
+        struct mliLeafAddress *adresses;
+        size_t num_object_links;
+        uint32_t *object_links;
+};
+
+struct mliLeafArray mliLeafArray_init()
 {
-        struct mliTmpNode n;
-        uint64_t c;
-        for (c = 0; c < 8u; c++) {
-                n.children[c] = NULL;
+        struct mliLeafArray leafs;
+        leafs.num_leafs = 0;
+        leafs.adresses = NULL;
+        leafs.num_object_links = 0u;
+        leafs.object_links = NULL;
+        return leafs;
+}
+
+void mliLeafArray_free(struct mliLeafArray *leafs)
+{
+        free(leafs->object_links);
+        free(leafs->adresses);
+        *leafs = mliLeafArray_init();
+}
+
+int mliLeafArray_malloc(
+        struct mliLeafArray *leafs,
+        const size_t num_leafs,
+        const size_t num_object_links)
+{
+        size_t i;
+        mliLeafArray_free(leafs);
+        leafs->num_leafs = num_leafs;
+        mli_malloc(
+                leafs->adresses,
+                struct mliLeafAddress,
+                leafs->num_leafs);
+        for (i = 0; i < leafs->num_leafs; i++) {
+                leafs->adresses[i] = mliLeafAddress_init();
         }
-        n.num_objects = 0u;
-        n.objects = NULL;
-        n.flat_index = MLI_NODE_FLAT_INDEX_NONE;
-        n.node_index = MLI_NODE_FLAT_INDEX_NONE;
-        n.leaf_index = MLI_NODE_FLAT_INDEX_NONE;
-        return n;
-}
-
-void mliTmpNode_free(struct mliTmpNode *n)
-{
-        uint32_t c;
-        for (c = 0; c < 8u; c++)
-                if (n->children[c] != NULL)
-                        mliTmpNode_free(n->children[c]);
-        free(n->objects);
-}
-
-int mliTmpNode_malloc(struct mliTmpNode *n, const uint32_t num_objects)
-{
-        mliTmpNode_free(n);
-        n->num_objects = num_objects;
-        mli_malloc(n->objects, uint32_t, n->num_objects);
+        leafs->num_object_links = num_object_links;
+        mli_malloc(
+                leafs->object_links,
+                uint32_t,
+                leafs->num_object_links);
+        for (i = 0; i < leafs->num_object_links; i++) {
+                leafs->object_links[i] = 0u;
+        }
         return 1;
 error:
         return 0;
 }
 
-uint32_t mliTmpNode_signs_to_child(
-        const uint32_t sx,
-        const uint32_t sy,
-        const uint32_t sz)
+#define MLI_OCTREE_TYPE_NONE 0
+#define MLI_OCTREE_TYPE_NODE 1
+#define MLI_OCTREE_TYPE_LEAF 2
+
+struct mliNode {
+        uint32_t children[8];
+        uint8_t types[8];
+};
+
+struct mliNode mliNode_init()
 {
-        return 4*sx + 2*sy + 1*sz;
+        size_t c = 0;
+        struct mliNode node;
+        for (c = 0; c < 8u; c++) {
+                node.children[c] = 0u;
+                node.types[c] = MLI_OCTREE_TYPE_NONE;
+        }
+        return node;
 }
 
-int mliTmpNode_add_children(
-        struct mliTmpNode *node,
-        const struct mliScenery *scenery,
-        const struct mliCube cube,
-        const uint64_t depth,
-        const uint64_t max_depth)
+struct mliOcTree {
+        struct mliCube cube;
+        size_t num_nodes;
+        struct mliNode *nodes;
+        struct mliLeafArray leafs;
+        uint8_t root_type;
+};
+
+struct mliOcTree mliOcTree_init()
 {
-        uint32_t c;
-        uint32_t sx, sy, sz, obj;
-        struct mliCube child_cubes[8];
-        struct mliOctOverlap overlap[8];
+        struct mliOcTree tree;
+        tree.cube.lower = mliVec_set(0., 0., 0.);
+        tree.cube.edge_length = 0.;
+        tree.num_nodes = 0u;
+        tree.nodes = NULL;
+        tree.leafs = mliLeafArray_init();
+        tree.root_type = MLI_OCTREE_TYPE_NONE;
+        return tree;
+}
 
-        if (node->num_objects <= 32u) {
-                return 1;
-        }
+void mliOcTree_free(struct mliOcTree* tree)
+{
+        free(tree->nodes);
+        mliLeafArray_free(&tree->leafs);
+        *tree = mliOcTree_init();
+}
 
-        if (depth == max_depth) {
-                return 1;
-        }
+int mliOcTree_malloc(
+        struct mliOcTree* tree,
+        const size_t num_nodes,
+        const size_t num_leafs,
+        const size_t num_object_links)
+{
+        size_t i;
+        mliOcTree_free(tree);
+        tree->num_nodes = num_nodes;
+        mli_malloc(tree->nodes, struct mliNode, tree->num_nodes);
+        for (i = 0; i < tree->num_nodes; i++)
+                tree->nodes[i] = mliNode_init();
+        mli_c(mliLeafArray_malloc(&tree->leafs, num_leafs, num_object_links));
+        return 1;
+error:
+        return 0;
+}
 
-        for (c = 0u; c < 8u; c++) {
-                overlap[c] = mliOctOverlap_init();
-                mli_c(mliOctOverlap_malloc(&overlap[c], node->num_objects));
-        }
-
-        /* sense possible children */
-        for (sx = 0u; sx < 2u; sx++) {
-                for (sy = 0u; sy < 2u; sy++) {
-                        for (sz = 0u; sz < 2u; sz++) {
-                                const uint32_t child =
-                                        mliTmpNode_signs_to_child(
-                                                sx,
-                                                sy,
-                                                sz);
-                                child_cubes[child] = mliCube_octree_child(
-                                        cube,
-                                        sx,
-                                        sy,
-                                        sz);
-                                for (obj = 0u; obj < node->num_objects; obj++) {
-                                        const uint32_t object_idx =
-                                                node->objects[obj];
-                                        if (mliScenery_overlap_obb(
-                                                scenery,
-                                                object_idx,
-                                                mliCube_to_obb(
-                                                        child_cubes[child]))
-                                        ) {
-                                                mli_c(mliOctOverlap_push_back(
-                                                        &overlap[child],
-                                                        object_idx));
-                                        }
-                                }
+void _mliOcTree_set_node(
+        struct mliOcTree* tree,
+        const struct mliTmpNode *dynnode)
+{
+        size_t c;
+        size_t i = dynnode->node_index;
+        assert(i < tree->num_nodes);
+        for (c = 0; c < 8u; c++) {
+                if (dynnode->children[c] != NULL) {
+                        if (dynnode->children[c]->node_index >= 0) {
+                                tree->nodes[i].children[c] =
+                                        dynnode->children[c]->node_index;
+                                tree->nodes[i].types[c] = MLI_OCTREE_TYPE_NODE;
+                        } else if (dynnode->children[c]->leaf_index >= 0) {
+                                tree->nodes[i].children[c] =
+                                        dynnode->children[c]->leaf_index;
+                                tree->nodes[i].types[c] = MLI_OCTREE_TYPE_LEAF;
+                        } else {
+                                tree->nodes[i].children[c] = 0;
+                                tree->nodes[i].types[c] = MLI_OCTREE_TYPE_NONE;
                         }
+                } else {
+                        tree->nodes[i].children[c] = 0;
+                        tree->nodes[i].types[c] = MLI_OCTREE_TYPE_NONE;
                 }
         }
+}
+
+void _mliOcTree_set_leaf(
+        struct mliOcTree* tree,
+        const struct mliTmpNode *dynnode,
+        size_t *object_link_size)
+{
+        size_t o;
+        size_t i = dynnode->leaf_index;
+        assert(i < tree->leafs.num_leafs);
+        tree->leafs.adresses[i].first_object_link = *object_link_size;
+        tree->leafs.adresses[i].num_object_links = dynnode->num_objects;
+        *object_link_size += dynnode->num_objects;
+        for (o = 0; o < dynnode->num_objects; o++) {
+                size_t l = tree->leafs.adresses[i].first_object_link + o;
+                assert(l < tree->leafs.num_object_links);
+                tree->leafs.object_links[l] = dynnode->objects[o];
+        }
+}
+
+void _mliOcTree_set(
+        struct mliOcTree* tree,
+        const struct mliTmpNode *dynnode,
+        size_t *object_link_size)
+{
+        size_t c;
+        if (dynnode->node_index >= 0) {
+                _mliOcTree_set_node(tree, dynnode);
+        } else if (dynnode->leaf_index >= 0) {
+                _mliOcTree_set_leaf(tree, dynnode, object_link_size);
+        }
 
         for (c = 0; c < 8u; c++) {
-                mli_malloc(node->children[c], struct mliTmpNode, 1u);
-                (*node->children[c]) = mliTmpNode_init();
-                mli_c(mliTmpNode_malloc(
-                        node->children[c],
-                        overlap[c].dyn.size));
-                mli_uint32_ncpy(
-                        overlap[c].arr,
-                        node->children[c]->objects,
-                        overlap[c].dyn.size);
+                if (dynnode->children[c] != NULL) {
+                        _mliOcTree_set(
+                                tree,
+                                dynnode->children[c],
+                                object_link_size);
+                }
+        }
+}
+
+void mliOcTree_set(
+        struct mliOcTree* tree,
+        const struct mliTmpOcTree *dyntree)
+{
+        size_t object_link_size = 0u;
+        tree->cube = dyntree->cube;
+        if (mliTmpNode_num_children(&dyntree->root) > 0) {
+                tree->root_type = MLI_OCTREE_TYPE_NODE;
+        } else {
+                tree->root_type = MLI_OCTREE_TYPE_LEAF;
         }
 
-        for (c = 0u; c < 8u; c++) {
-                mliOctOverlap_free(&overlap[c]);
-        }
+        _mliOcTree_set(tree, &dyntree->root, &object_link_size);
+}
 
+size_t mliOcTree_node_num_children(
+        const struct mliOcTree* tree,
+        const size_t node_idx)
+{
+        size_t num = 0u;
+        size_t c;
         for (c = 0; c < 8u; c++) {
-                mliTmpNode_add_children(
-                        node->children[c],
-                        scenery,
-                        child_cubes[c],
-                        depth + 1u,
-                        max_depth);
-        }
-
-        return 1;
-error:
-        return 0;
-}
-
-size_t mli_guess_octree_depth_based_on_num_objects(const size_t num_objects)
-{
-        return 1u + (size_t)ceil(log((double)num_objects)/log(8.0));
-}
-
-int mliTmpNode_malloc_tree_from_scenery(
-        struct mliTmpNode* root_node,
-        const struct mliScenery *scenery,
-        const struct mliCube scenery_cube)
-{
-        uint32_t idx, start_depth, max_depth, num_objects;
-        start_depth = 0u;
-        num_objects = mliScenery_num_objects(scenery);
-        max_depth = mli_guess_octree_depth_based_on_num_objects(num_objects);
-
-        mli_check(mliTmpNode_malloc(root_node, num_objects),
-                "Failed to allocate root-node in dynamic octree.")
-
-        for (idx = 0; idx < root_node->num_objects; idx++) {
-                root_node->objects[idx] = idx;
-        }
-        mliTmpNode_add_children(
-                root_node,
-                scenery,
-                scenery_cube,
-                start_depth,
-                max_depth);
-        return 1;
-error:
-        return 0;
-}
-
-int mliTmpNode_num_children(const struct mliTmpNode *node)
-{
-        uint32_t c, num = 0;
-        for (c = 0u; c < 8u; c++)
-                if (node->children[c] != NULL)
+                if (tree->nodes[node_idx].types[c] > MLI_OCTREE_TYPE_NONE) {
                         num++;
+                }
+        }
         return num;
 }
 
-void mliTmpNode_print(
-        const struct mliTmpNode *node,
+size_t mliOcTree_leaf_num_objects(
+        const struct mliOcTree* tree,
+        const size_t leaf)
+{
+        return tree->leafs.adresses[leaf].num_object_links;
+}
+
+uint32_t mliOcTree_leaf_object_link(
+        const struct mliOcTree* tree,
+        const size_t leaf,
+        const size_t object_link)
+{
+        size_t i = tree->leafs.adresses[leaf].first_object_link + object_link;
+        return tree->leafs.object_links[i];
+}
+
+int mliOcTree_malloc_from_scenery(
+        struct mliOcTree *octree,
+        const struct mliScenery *scenery)
+{
+        size_t num_nodes = 0;
+        size_t num_leafs = 0;
+        size_t num_object_links = 0;
+        struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
+        mli_check(mliTmpOcTree_malloc_from_scenery(&tmp_octree, scenery),
+                "Failed to create dynamic, and temporary TmpOcTree "
+                "from scenery");
+        mliTmpNode_set_flat_index(&tmp_octree.root);
+        mliTmpNode_num_nodes_leafs_objects(
+                &tmp_octree.root,
+                &num_nodes,
+                &num_leafs,
+                &num_object_links);
+
+        mliOcTree_free(octree);
+        mli_check(mliOcTree_malloc(
+                octree,
+                num_nodes,
+                num_leafs,
+                num_object_links),
+                "Failed to allocate cache-aware octree from dynamic octree.");
+        mliOcTree_set(octree, &tmp_octree);
+        mliTmpOcTree_free(&tmp_octree);
+
+        return 1;
+error:
+        return 0;
+}
+
+int _mliOcTree_equal_payload(
+        const struct mliOcTree *tree,
+        const int32_t node_idx,
+        const int32_t node_type,
+        const struct mliTmpNode *dynnode)
+{
+        if (node_type == MLI_OCTREE_TYPE_LEAF) {
+                /* leaf */
+                size_t leaf_idx;
+                size_t obj;
+                mli_check(
+                        mliTmpNode_num_children(dynnode) == 0,
+                        "Expect dynnode to have 0 children when "
+                        "node_type == LEAF.");
+                leaf_idx = node_idx;
+                mli_check(
+                        leaf_idx < tree->leafs.num_leafs,
+                        "The leaf_idx is out of range.");
+                mli_check(
+                        tree->leafs.adresses[leaf_idx].num_object_links ==
+                        dynnode->num_objects,
+                        "Expected leafs to have equal num_object_links.");
+                for (obj = 0; obj < dynnode->num_objects; obj++) {
+                        size_t l = obj +
+                                tree->leafs.adresses[leaf_idx].
+                                        first_object_link;
+                        mli_check(
+                                tree->leafs.object_links[l] ==
+                                dynnode->objects[obj],
+                                "Expected object_links in leaf to be equal.");
+                }
+                mli_check(
+                        tree->leafs.adresses[leaf_idx].num_object_links ==
+                        dynnode->num_objects,
+                        "Expected leafs to have equal num_object_links.");
+        } else if (node_type == MLI_OCTREE_TYPE_NODE) {
+                /* node */
+                size_t c;
+                mli_check(
+                        node_idx >= 0,
+                        "This node_idx is expected to point to a node.");
+                for (c = 0; c < 8u; c++) {
+                        if (dynnode->children[c] == NULL) {
+                                mli_check(
+                                        tree->nodes[node_idx].children[c] == 0,
+                                        "Expected node's child == "
+                                        "0 when dynnode's child == NULL");
+                        } else {
+                                if (dynnode->children[c]->num_objects == 0) {
+                                        mli_check(
+                                                tree->nodes[node_idx].
+                                                        children[c] == 0,
+                                                "Expected node's child != "
+                                                "0 when dynnode's child != "
+                                                "NULL");
+                                }
+                        }
+                }
+
+                for (c = 0; c < 8u; c++) {
+                        if (dynnode->children[c] != NULL) {
+                                size_t child_node_idx =
+                                        tree->nodes[node_idx].children[c];
+                                int32_t child_node_type =
+                                        tree->nodes[node_idx].types[c];
+                                mli_check(
+                                        _mliOcTree_equal_payload(
+                                                tree,
+                                                child_node_idx,
+                                                child_node_type,
+                                                dynnode->children[c]),
+                                        "Expected tree to be euqal further down"
+                                        );
+                        }
+                }
+        } else if (node_type == MLI_OCTREE_TYPE_NONE) {
+
+        } else {
+                mli_sentinel("node_idx must be either node, leaf or none");
+        }
+
+        return 1;
+error:
+        return 0;
+}
+
+int mliOcTree_equal_payload(
+        const struct mliOcTree *tree,
+        const struct mliTmpOcTree *tmp_octree)
+{
+        int32_t root_node_idx = 0;
+        int32_t root_node_type = MLI_OCTREE_TYPE_NODE;
+        mli_check(mliCube_is_equal(tree->cube, tmp_octree->cube),
+                "Cubes are not equal");
+        mli_check(_mliOcTree_equal_payload(
+                tree,
+                root_node_idx,
+                root_node_type,
+                &tmp_octree->root),
+                "Tree is not equal");
+        return 1;
+error:
+        return 0;
+}
+
+void _mliOcTree_print(
+        const struct mliOcTree *tree,
+        const int32_t node_idx,
+        const uint8_t node_type,
         const uint32_t indent,
         const uint32_t child)
 {
         uint32_t i;
         uint32_t c;
-        uint32_t num_children = mliTmpNode_num_children(node);
         for (i = 0u; i < indent; i++) printf(" ");
-        if (num_children == 0) {
+        if (node_type == MLI_OCTREE_TYPE_NONE) {
+                printf(
+                        "|-Leaf[%d, %d] %u: %u []",
+                        -1,
+                        -1,
+                        child,
+                        0);
+        } else if (node_type == MLI_OCTREE_TYPE_LEAF) {
+                int32_t leaf_idx = node_idx;
                 uint32_t j;
+                assert(leaf_idx < (int32_t)tree->leafs.num_leafs);
                 printf(
                         "|-Leaf[%d, %d] %u: %u [",
-                        node->node_index,
-                        node->leaf_index,
-                        child, node->num_objects);
-                for(j = 0; j < node->num_objects; j++) {
-                        printf("%u, ", node->objects[j]);
+                        -1,
+                        leaf_idx,
+                        child,
+                        tree->leafs.adresses[leaf_idx].num_object_links);
+                for(
+                        j = 0;
+                        j < tree->leafs.adresses[leaf_idx].num_object_links;
+                        j++)
+                {
+                        int32_t l = j + tree->leafs.adresses[
+                                                leaf_idx].first_object_link;
+                        printf("%u, ", tree->leafs.object_links[l]);
                 }
                 printf("]");
-        } else {
+        } else if (node_type == MLI_OCTREE_TYPE_NODE) {
                 printf(
                         "Node[%d, %d]: %u",
-                        node->node_index,
-                        node->leaf_index,
+                        node_idx,
+                        -1,
                         child);
         }
         printf("\n");
         for (c = 0u; c < 8u; c++) {
-                if (node->children[c] != NULL) {
-                        mliTmpNode_print(node->children[c], indent + 2, c);
-                }
-        }
-}
-
-/*
- * Assign a flat_index to every node that carries objects.
- * The ordering is:
- *      in tree:
- *                          3
- *                      1--{
- *                     /    4
- *                 0--{
- *                    \    5
- *                     2--{
- *                         6
- *
- *      in flat list:
- *      0, 1, 2, 3, 4, 5, 6, ...
- */
-
-int _mliTmpNode_exists_and_objects(const struct mliTmpNode *node)
-{
-        if (node != NULL) {
-                if (node->num_objects > 0u) {
-                        return 1;
-                }
-        }
-        return 0;
-}
-
-void _mliTmpNode_set_flat_index(
-        struct mliTmpNode *node,
-        int32_t *flat_index,
-        int32_t *node_index,
-        int32_t *leaf_index)
-{
-        size_t c;
-        for (c = 0u; c < 8u; c++) {
-                if(_mliTmpNode_exists_and_objects(node->children[c])) {
-                        (*flat_index)++;
-                        node->children[c]->flat_index = *flat_index;
-
-                        if (mliTmpNode_num_children(node->children[c]) == 0) {
-                                node->children[c]->leaf_index = *leaf_index;
-                                (*leaf_index)++;
-                        } else {
-                                (*node_index)++;
-                                node->children[c]->node_index = *node_index;
+                if (node_type == MLI_OCTREE_TYPE_NODE) {
+                        int32_t child_node_idx;
+                        int32_t child_node_type;
+                        assert(node_idx < (int32_t)tree->num_nodes);
+                        child_node_idx = tree->nodes[node_idx].children[c];
+                        child_node_type = tree->nodes[node_idx].types[c];
+                        if (child_node_type != MLI_OCTREE_TYPE_NONE) {
+                                _mliOcTree_print(
+                                        tree,
+                                        child_node_idx,
+                                        child_node_type,
+                                        indent + 2,
+                                        c);
                         }
                 }
         }
-        for (c = 0u; c < 8u; c++) {
-                if(_mliTmpNode_exists_and_objects(node->children[c])) {
-                        _mliTmpNode_set_flat_index(
-                                node->children[c],
-                                flat_index,
-                                node_index,
-                                leaf_index);
-                }
+}
+
+void mliOcTree_print(const struct mliOcTree *tree)
+{
+        if (tree->num_nodes > 0) {
+                int32_t root_idx = 0;
+                _mliOcTree_print(
+                        tree,
+                        root_idx,
+                        tree->root_type,
+                        0u,
+                        0u);
         }
-}
-
-void mliTmpNode_set_flat_index(struct mliTmpNode *root_node)
-{
-        int32_t flat_index = 0;
-        int32_t node_index = 0;
-        int32_t leaf_index = 0;
-        root_node->flat_index = flat_index;
-
-        if (mliTmpNode_num_children(root_node) == 0) {
-                root_node->leaf_index = leaf_index;
-        } else {
-                root_node->node_index = node_index;
-        }
-
-        _mliTmpNode_set_flat_index(
-                root_node,
-                &flat_index,
-                &node_index,
-                &leaf_index);
-}
-
-/*
- * Find the number of valid nodes in dynamic tree
- */
-
-void _mliTmpNode_num_nodes_leafs_objects(
-        const struct mliTmpNode *node,
-        size_t *num_nodes,
-        size_t *num_leafs,
-        size_t *num_object_links)
-{
-        size_t c;
-        if (node->node_index != MLI_NODE_FLAT_INDEX_NONE) {
-                (*num_nodes)++;
-        }
-        if (node->leaf_index != MLI_NODE_FLAT_INDEX_NONE) {
-                (*num_leafs)++;
-                (*num_object_links) += node->num_objects;
-        }
-        for (c = 0; c < 8u; c++) {
-                if (node->children[c] != NULL) {
-                        _mliTmpNode_num_nodes_leafs_objects(
-                                node->children[c],
-                                num_nodes,
-                                num_leafs,
-                                num_object_links);
-                }
-        }
-}
-
-void mliTmpNode_num_nodes_leafs_objects(
-        const struct mliTmpNode *root_node,
-        size_t *num_nodes,
-        size_t *num_leafs,
-        size_t *num_object_links)
-{
-        *num_nodes = 0;
-        *num_leafs = 0;
-        *num_object_links = 0;
-        _mliTmpNode_num_nodes_leafs_objects(
-                root_node,
-                num_nodes,
-                num_leafs,
-                num_object_links);
-}
-
-/*
- * The dynamic octree
- */
-
-struct mliTmpOcTree {
-        struct mliCube cube;
-        struct mliTmpNode root;
-};
-
-struct mliTmpOcTree mliTmpOcTree_init()
-{
-        struct mliTmpOcTree octree;
-        octree.cube.lower = mliVec_set(0., 0., 0.);
-        octree.cube.edge_length = 0.;
-        octree.root = mliTmpNode_init();
-        return octree;
-}
-
-void mliTmpOcTree_free(struct mliTmpOcTree *octree)
-{
-        mliTmpNode_free(&octree->root);
-}
-
-int mliTmpOcTree_malloc_from_scenery(
-        struct mliTmpOcTree *octree,
-        const struct mliScenery *scenery)
-{
-        mliTmpOcTree_free(octree);
-        octree->cube = mliCube_outermost_cube(
-                mliScenery_outermost_obb(scenery));
-        mli_check(mliTmpNode_malloc_tree_from_scenery(
-                &octree->root,
-                scenery,
-                octree->cube),
-                "Failed to allocate dynamic octree from scenery.");
-        return 1;
-error:
-        return 0;
 }
 
 #endif
