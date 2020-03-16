@@ -18,7 +18,7 @@
 
 int mli_first_casual_intersection(
     const struct mliScenery *scenery,
-    const struct mliTmpOcTree *octree,
+    const struct mliCa2Octree *octree,
     const struct mliRay ray,
     struct mliIntersection *intersection)
 {
@@ -35,7 +35,7 @@ int mli_first_casual_intersection(
 
 struct mliColor mli_trace(
     const struct mliScenery *scenery,
-    const struct mliTmpOcTree *octree,
+    const struct mliCa2Octree *octree,
     const struct mliRay ray)
 {
     struct mliColor color = {128., 128., 128.};

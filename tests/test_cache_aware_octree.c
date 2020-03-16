@@ -48,7 +48,7 @@ CASE("init mliCaOctree") {
 
     mli_ray_octree_traversal(
         &scenery,
-        &octree,
+        &tree2,
         mliRay_set(
             mliVec_set(0.1 ,2.5, 10.),
             mliVec_set(0. ,0., -1.)),

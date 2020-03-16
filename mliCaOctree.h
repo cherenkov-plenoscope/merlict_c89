@@ -218,7 +218,6 @@ void mliCa2Octree_set(
         _mliCa2Octree_set(tree, &dyntree->root, &object_link_size);
 }
 
-
 size_t mliCa2Octree_node_num_children(
         const struct mliCa2Octree* tree,
         const size_t node_idx)
@@ -233,6 +232,58 @@ size_t mliCa2Octree_node_num_children(
         return num;
 }
 
+size_t mliCa2Octree_leaf_num_objects(
+        const struct mliCa2Octree* tree,
+        const size_t leaf)
+{
+        assert(leaf < tree->leafs.num_leafs);
+        return tree->leafs.adresses[leaf].num_object_links;
+}
+
+uint32_t mliCa2Octree_leaf_object_link(
+        const struct mliCa2Octree* tree,
+        const size_t leaf,
+        const size_t object_link)
+{
+        size_t i;
+        assert(leaf < tree->leafs.num_leafs);
+        assert(object_link < mliCa2Octree_leaf_num_objects(tree, leaf));
+        i = tree->leafs.adresses[leaf].first_object_link + object_link;
+        return tree->leafs.object_links[i];
+}
+
+int mliCa2Octree_malloc_from_scenery(
+        struct mliCa2Octree *octree,
+        const struct mliScenery *scenery)
+{
+        size_t num_nodes = 0;
+        size_t num_leafs = 0;
+        size_t num_object_links = 0;
+        struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
+        mli_check(mliTmpOcTree_malloc_from_scenery(&tmp_octree, scenery),
+                "Failed to create dynamic, and temporary TmpOcTree "
+                "from scenery");
+        mliTmpNode_set_flat_index(&tmp_octree.root);
+        mliTmpNode_num_nodes_leafs_objects(
+                &tmp_octree.root,
+                &num_nodes,
+                &num_leafs,
+                &num_object_links);
+
+        mliCa2Octree_free(octree);
+        mli_check(mliCa2Octree_malloc(
+                octree,
+                num_nodes,
+                num_leafs,
+                num_object_links),
+                "Failed to allocate cache-aware octree from dynamic octree.");
+        mliCa2Octree_set(octree, &tmp_octree);
+        mliTmpOcTree_free(&tmp_octree);
+
+        return 1;
+error:
+        return 0;
+}
 
 int _mliCa2Octree_equal_payload(
         const struct mliCa2Octree *tree,

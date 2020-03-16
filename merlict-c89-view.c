@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[]) {
     struct mliScenery scenery = mliScenery_init();
-    struct mliOcTree octree;
+    struct mliCa2Octree octree = mliCa2Octree_init();
 
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <scenery-path>\n", argv[0]);
@@ -25,12 +25,13 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    octree = mliOcTree_from_scenery(&scenery);
+    mli_check(mliCa2Octree_malloc_from_scenery(&octree, &scenery),
+        "Failed to build octree from scenery.");
     mli_check(
         mlivr_run_interactive_viewer(&scenery, &octree, mlivrConfig_default()),
         "Failure in viewer");
 
-    mliOcTree_free(&octree);
+    mliCa2Octree_free(&octree);
     mliScenery_free(&scenery);
     return EXIT_SUCCESS;
 error:
