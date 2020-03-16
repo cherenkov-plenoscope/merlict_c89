@@ -129,11 +129,7 @@ int mliNode_add_children(
         for (c = 0; c < 8u; c++) {
                 mli_malloc(node->children[c], struct mliNode, 1u);
                 (*node->children[c]) = mliNode_init();
-                node->children[c]->num_objects = overlap[c].dyn.size;
-                mli_malloc(
-                        node->children[c]->objects,
-                        uint32_t,
-                        overlap[c].dyn.size);
+                mli_c(mliNode_malloc(node->children[c], overlap[c].dyn.size));
                 mli_uint32_ncpy(
                         overlap[c].arr,
                         node->children[c]->objects,
