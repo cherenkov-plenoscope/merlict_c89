@@ -11,8 +11,8 @@
  *
  *  Profiting from additional comments by Jeroen Baert.
 */
-#ifndef MERLICT_MLIRAYOCTREE_H_
-#define MERLICT_MLIRAYOCTREE_H_
+#ifndef MERLICT_MLI_RAY_OCTREE_TRAVERSAL_H_
+#define MERLICT_MLI_RAY_OCTREE_TRAVERSAL_H_
 #include <stdint.h>
 #include <float.h>
 #include "mliOcTree.h"
