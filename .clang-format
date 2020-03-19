@@ -1,0 +1,16 @@
+BasedOnStyle: LLVM
+ColumnLimit: 80
+IndentWidth: 8
+ContinuationIndentWidth: 8
+UseTab: Never
+BreakBeforeBraces: Linux
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: false
+BinPackArguments: false
+BinPackParameters: false
+AlignAfterOpenBracket: AlwaysBreak
+ExperimentalAutoDetectBinPacking: false
+AllowAllParametersOfDeclarationOnNextLine: false
+PenaltyReturnTypeOnItsOwnLine: 1000
+AlwaysBreakAfterDefinitionReturnType: None
+SortIncludes: false
