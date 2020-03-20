@@ -18,15 +18,15 @@ CASE("scaling")
         CHECK(mliImage_malloc(&src, 4, 4));
         CHECK(mliImage_malloc(&dst, 2, 2));
         /*
-            src:
-                     0    1    2    3  cols
-                 _____________________
-            0   |   10   20   30   40
-            1   |   50   60   70   80
-            2   |   55   34   31   17
-            3   |   98   26   11   23
-           rows
-        */
+         *    src:
+         *             0    1    2    3  cols
+         *         _____________________
+         *    0   |   10   20   30   40
+         *    1   |   50   60   70   80
+         *    2   |   55   34   31   17
+         *    3   |   98   26   11   23
+         *   rows
+         */
         mliImage_set(&src, 0, 0, mliColor_set(0, 0, 10));
         mliImage_set(&src, 0, 1, mliColor_set(0, 0, 20));
         mliImage_set(&src, 0, 2, mliColor_set(0, 0, 30));

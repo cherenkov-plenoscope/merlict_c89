@@ -147,11 +147,11 @@ CASE("mliRotMat_init_tait_bryan")
         CHECK_MARGIN(rot.r21, 0., 1e-9);
         CHECK_MARGIN(rot.r22, 1., 1e-9);
         /*
-            |y       rot z 90deg        |x
-            |           --->            |
-            |                           |
-            --------x            y-------
-        */
+         *   |y       rot z 90deg        |x
+         *   |           --->            |
+         *   |                           |
+         *   --------x            y-------
+         */
 }
 
 CASE("mliRotMat_init_axis")

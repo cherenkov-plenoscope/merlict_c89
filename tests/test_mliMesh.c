@@ -17,7 +17,6 @@ CASE("mliMesh_malloc_from_object_file")
                             m.vertices[m.faces[i].c],
                             &ray_parameter)) {
                         CHECK(i == 1782);
-                        /* printf( "hit in idx %d\n", (int)i); */
                 }
         }
         mliMesh_free(&m);

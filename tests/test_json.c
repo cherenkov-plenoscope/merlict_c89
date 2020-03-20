@@ -47,9 +47,6 @@ CASE("mliJson_as_string")
 {
         struct mliJson json = mliJson_init();
         char json_str[] = "{\"hans\": 1337}";
-        /*             0         1 */
-        /*             01234567890 */
-        /*             hans0       */
         char buff[] = "abcde";
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(mliJson_as_string(&json, 1, buff, 5));

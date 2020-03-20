@@ -43,14 +43,14 @@ CASE("add two childs")
 CASE("add grand childs")
 {
         /*
-                            |--child_00
-                |--child_0--|
-                |           |--child_01
-        mother--|
-                |           |--child_10
-                |--child_1--|
-                            |--child_11
-        */
+         *                      |--child_00
+         *          |--child_0--|
+         *          |           |--child_01
+         *  mother--|
+         *          |           |--child_10
+         *          |--child_1--|
+         *                      |--child_11
+         */
         struct mliFrame *child_0 = NULL;
         struct mliFrame *child_1 = NULL;
         struct mliFrame *child_00 = NULL;

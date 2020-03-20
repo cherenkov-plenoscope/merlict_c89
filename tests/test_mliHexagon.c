@@ -31,16 +31,16 @@ CASE("mliHexagon_intersection")
         CHECK_MARGIN(intersection.distance_of_ray, 1., 1e-6);
 
         /*
-                      /\ y
-                  ____|____
-                 /    |    \
-                /     |     \   <- P is inside
-            __ /______|_____P\___\ x
-               \      |      /   /
-                \     |     /
-                 \____|____/
-                      |
-        */
+         *             /\ y
+         *         ____|____
+         *        /    |    \
+         *       /     |     \   <- P is inside
+         *   __ /______|_____P\___\ x
+         *      \      |      /   /
+         *       \     |     /
+         *        \____|____/
+         *             |
+         */
         CHECK(mliHexagon_intersection(
                 hex,
                 local2root_comp,
@@ -49,16 +49,16 @@ CASE("mliHexagon_intersection")
         CHECK_MARGIN(intersection.distance_of_ray, 1., 1e-6);
 
         /*
-                      /\ y
-                  ____P____ <- P is outside
-                 /    |    \
-                /     |     \
-            __ /______|______\___\ x
-               \      |      /   /
-                \     |     /
-                 \____|____/
-                      |
-        */
+         *             /\ y
+         *         ____P____ <- P is outside
+         *        /    |    \
+         *       /     |     \
+         *   __ /______|______\___\ x
+         *      \      |      /   /
+         *       \     |     /
+         *        \____|____/
+         *             |
+         */
         CHECK(!mliHexagon_intersection(
                 hex,
                 local2root_comp,
@@ -132,99 +132,90 @@ CASE("mliHexagon_has_overlap_obb")
                 mliVec_set(0., 0., 1.), mli_deg2rad(0.));
 
         /*
-            _obb____________________  + 2
-           |                        |
-           |                        |
-           |       _________ + 1    |
-           |      /         \       |
-           |     /           \      |
-           |    /             \     |
-           |    \             /     |
-           |     \           /      |
-           |      \_________/ - 1   |
-           |                        |
-           |                        |
-           |________________________| - 2
-
-            y
-            |__x
-        */
+         *   _obb____________________  + 2
+         *  |                        |
+         *  |                        |
+         *  |       _________ + 1    |
+         *  |      /         \       |
+         *  |     /           \      |
+         *  |    /             \     |
+         *  |    \             /     |
+         *  |     \           /      |
+         *  |      \_________/ - 1   |
+         *  |                        |
+         *  |                        |
+         *  |________________________| - 2
+         *
+         *   y
+         *   |__x
+         */
         obb.lower = mliVec_set(-2., -2., -2.);
         obb.upper = mliVec_set(2., 2., 2.);
         CHECK(mliHexagon_has_overlap_obb(hex, local2root_comp, obb));
 
         /*
-               obb   |                                                         *
-                     |                                                         *
-                   __|______ + 1                                               *
-            _____ /__|      \                                                  *
-                 /           \                                                 *
-                /             \                                                *
-                \             /                                                *
-                 \           /                                                 *
-                  \_________/ - 1                                              *
-                                                                               *
-                                                                               *
-            y
-            |__x
-        */
+         *      obb   |
+         *            |
+         *          __|______ + 1
+         *   _____ /__|      \
+         *        /           \
+         *       /             \
+         *       \             /
+         *        \           /
+         *         \_________/ - 1
+         *
+         *
+         *   y
+         *   |__x
+         */
         obb.lower = mliVec_set(-3., -3., -1.);
         obb.upper = mliVec_set(-0.5, 0.5, 1.);
         CHECK(mliHexagon_has_overlap_obb(hex, local2root_comp, obb));
 
         /*
-                                                                               *
-                                                                               *
-                   _________ + 1                                               *
-                  /  _____  \                                                  *
-                 /  | obb |  \                                                 *
-                /   |     |   \                                                *
-                \   |_____|   /                                                *
-                 \           /                                                 *
-                  \_________/ - 1                                              *
-                                                                               *
-                                                                               *
-            y
-            |__x
-        */
+         *         _________ + 1
+         *        /  _____  \
+         *       /  | obb |  \
+         *      /   |     |   \
+         *      \   |_____|   /
+         *       \           /
+         *        \_________/ - 1
+         *
+         *  y
+         *  |__x
+         */
         obb.lower = mliVec_set(-.5, -.5, -1.);
         obb.upper = mliVec_set(.5, .5, 1.);
         CHECK(mliHexagon_has_overlap_obb(hex, local2root_comp, obb));
 
         /*
-                                                                               *
-                                                                               *
-                   _________ + 1                                               *
-                  /         \         _____                                    *
-                 /           \       | obb |                                   *
-                /             \      |     |                                   *
-                \             /      |_____|                                   *
-                 \           /                                                 *
-                  \_________/ - 1                                              *
-                                                                               *
-                                                                               *
-            y
-            |__x
-        */
+         *          _________ +
+         *         /         \         _____
+         *        /           \       | obb |
+         *       /             \      |     |
+         *       \             /      |_____|
+         *        \           /
+         *         \_________/ - 1
+         *
+         *   y
+         *   |__x
+         */
         obb.lower = mliVec_set(6, -.5, -1.);
         obb.upper = mliVec_set(7, .5, 1.);
         CHECK(!mliHexagon_has_overlap_obb(hex, local2root_comp, obb));
 
         /*
-                                                                               *
-                                                                               *
-                                   _________ + 1                               *
-                                  /  _____  \                                  *
-                                 /  | obb |  \                                 *
-                                /   |     |   \                                *
-                                \   |_____|   /                                *
-                                 \           /                                 *
-                                  \_________/ - 1                              *
-                                                                               *
-                                                                               *
-            y
-            |__x
-        */
+         *                         _________ + 1
+         *                        /  _____  \
+         *                       /  | obb |  \
+         *                      /   |     |   \
+         *                      \   |_____|   /
+         *                       \           /
+         *                        \_________/ - 1
+         *
+         *  y
+         *  |__x
+         */
         local2root_comp.trans = mliVec_set(6.5, 0., 0.);
         obb.lower = mliVec_set(6, -.5, -1.);
         obb.upper = mliVec_set(7, .5, 1.);

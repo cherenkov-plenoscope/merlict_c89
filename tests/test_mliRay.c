@@ -3,7 +3,8 @@
 CASE("ray and orientated bounding box")
 {
         struct mliOBB obb;
-        /*         (-1, -2,  0)                         (-1, -1,  0)
+        /*
+         *         (-1, -2,  0)                         (-1, -1,  0)
          *                     O----------------------O
          *                    /.                     /|
          *                   / .                    / |
@@ -58,7 +59,8 @@ CASE("ray has causal intersection")
         int rc;
         struct mliBoundSurfaceChecklist cl;
 
-        /*       _/_ps
+        /*
+         *       _/_ps
          *      //  \
          *     |/ ms |
          *     /\___/
@@ -73,7 +75,8 @@ CASE("ray has causal intersection")
         CHECK(causal_solution == cl.minus_solution);
         CHECK(rc);
 
-        /*       _/_ps
+        /*
+         *       _/_ps
          *      //  \
          *     |X support
          *  ms /\___/
@@ -88,7 +91,8 @@ CASE("ray has causal intersection")
         CHECK(causal_solution == cl.plus_solution);
         CHECK(rc);
 
-        /*          /
+        /*
+         *          /
          *         X support
          *       _/_ps
          *      //  \

@@ -57,34 +57,34 @@ CASE("rotation matrix z-axis +90deg")
 CASE("sequence of rotations")
 {
         /*
-        __initial__
-
-                    z
-                    |
-                    |
-                    |_____ y
-                   /
-                  /
-                 x
-
-        __axis x, +90deg__
-
-                    y
-                    |
-                    |
-            z ______|
-                   /
-                  /
-                 x
-
-        __axis z, +90deg
-
-                    x
-                    |  y
-                    | /
-            z ______|/
-
-        */
+         *   __initial__
+         *
+         *              z
+         *              |
+         *              |
+         *              |_____ y
+         *             /
+         *            /
+         *           x
+         *
+         *   _axis x, +90deg__
+         *
+         *              y
+         *              |
+         *              |
+         *      z ______|
+         *             /
+         *            /
+         *           x
+         *
+         *   _axis z, +90deg
+         *
+         *              x
+         *              |  y
+         *              | /
+         *      z ______|/
+         *
+         */
         struct mliQuaternion x90 = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(1., 0., 0.), mli_deg2rad(90.));
         struct mliQuaternion z90 = mliQuaternion_set_rotaxis_and_angle(

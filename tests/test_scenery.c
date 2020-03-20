@@ -342,14 +342,6 @@ CASE("mliTmpOcTree_from_scenery")
         mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
 
-        /*mliNode_print(&tree, 0u);*/
-        /*
-        fprintf(stderr ,"num_nodes: %u\n", mliNode_num_nodes(&tree));
-        fprintf(
-            stderr,
-            "capacity_objects: %u\n",
-            mliNode_capacity_objects(&tree));*/
-
         mli_ray_octree_traversal(
                 &scenery,
                 &octree,

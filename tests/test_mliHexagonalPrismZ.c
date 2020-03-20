@@ -3,16 +3,16 @@
 CASE("mliHexagonalPrismZ")
 {
         /*
-                      /\ y
-                  ____|____
-                 /    |    \
-                /     |     \
-            __ /______|______\___\ x
-               \      |      /   /
-                \     |     /
-                 \____|____/
-                      |
-        */
+         *             /\ y
+         *         ____|____
+         *        /    |    \
+         *       /     |     \
+         *   __ /______|______\___\ x
+         *      \      |      /   /
+         *       \     |     /
+         *        \____|____/
+         *             |
+         */
         struct mliVec c;
         double inner_radius = 0.5;
         double outer_radius = inner_radius / cos(MLI_PI / 6.0);
@@ -31,30 +31,30 @@ CASE("mliHexagonalPrismZ")
         }
 
         /*
-                      /\ y
-                  ____|____
-                 /    |    \
-                /     |     \
-            __ /______|_____X\___\ x
-               \      |      /   /
-                \     |     /
-                 \____|____/
-                      |
-        */
+         *            /\ y
+         *        ____|____
+         *       /    |    \
+         *      /     |     \
+         *  __ /______|_____X\___\ x
+         *     \      |      /   /
+         *      \     |     /
+         *       \____|____/
+         *            |
+         */
         CHECK(mli_inside_hexagonal_prism_z(
                 mliVec_set(inner_radius + 1e-6, 0., 0.), inner_radius));
 
         /*
-                      /\ y
-                  ____X____
-                 /    |    \
-                /     |     \
-            __ /______|______\___\ x
-               \      |      /   /
-                \     |     /
-                 \____|____/
-                      |
-        */
+         *            /\ y
+         *        ____X____
+         *       /    |    \
+         *      /     |     \
+         *  __ /______|______\___\ x
+         *     \      |      /   /
+         *      \     |     /
+         *       \____|____/
+         *            |
+         */
         CHECK(!mli_inside_hexagonal_prism_z(
                 mliVec_set(0., inner_radius + 1e-6, 0.), inner_radius));
 }
@@ -62,16 +62,16 @@ CASE("mliHexagonalPrismZ")
 CASE("hexagon corners")
 {
         /*
-                      /\ y
-                2 ____|____ 1
-                 /    |    \
-                /     |     \
-            __ /______|______\_0_\ x
-             3 \      |      /   /
-                \     |     /
-                 \____|____/
-                4     |    5
-        */
+         *             /\ y
+         *       2 ____|____ 1
+         *        /    |    \
+         *       /     |     \
+         *   __ /______|______\_0_\ x
+         *    3 \      |      /   /
+         *       \     |     /
+         *        \____|____/
+         *       4     |    5
+         */
         uint64_t i;
         for (i = 0; i < 20; i++) {
                 struct mliVec corner = mli_hexagon_corner(i);
