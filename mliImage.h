@@ -168,7 +168,7 @@ void mliImage_print_chars(
 {
         uint32_t col, row, sym;
         char symbol;
-        for (row = 0; row < img->num_rows; row = row + 2u) {
+        for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
                         struct mliColor color = mliImage_at(img, col, row);
                         struct mliColor out = mliColor_truncate_to_uint8(color);

@@ -121,8 +121,8 @@ struct mlivrConfig {
 struct mlivrConfig mlivrConfig_default()
 {
         struct mlivrConfig cfg;
-        cfg.preview_num_cols = 128u;
-        cfg.preview_num_rows = 72u;
+        cfg.preview_num_cols = 160u;
+        cfg.preview_num_rows = 90u/2;
 
         cfg.export_num_cols = 1920u;
         cfg.export_num_rows = 1080u;
@@ -140,13 +140,13 @@ struct mlivrConfig mlivrConfig_default()
 void _mlivr_mv_cursor_up(struct mlivrCursor *cursor)
 {
         if (cursor->row != 0)
-                cursor->row -= 2;
+                cursor->row -= 1;
 }
 
 void _mlivr_mv_cursor_down(struct mlivrCursor *cursor)
 {
-        if (cursor->row + 2u < cursor->num_rows)
-                cursor->row += 2;
+        if (cursor->row + 1u < cursor->num_rows)
+                cursor->row += 1;
 }
 
 void _mlivr_mv_cursor_right(struct mlivrCursor *cursor)
@@ -168,10 +168,12 @@ int _mlivr_export_image(
         const struct mliCamera camera,
         const char *path)
 {
+        const double row_over_column_pixel_ratio = 1.0;
         struct mliImage full = mliImage_init();
         mli_check_mem(mliImage_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
-        mliCamera_render_image(&camera, scenery, octree, &full);
+        mliCamera_render_image(
+                &camera, scenery, octree, &full, row_over_column_pixel_ratio);
         mli_check(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
@@ -195,6 +197,7 @@ int mlivr_run_interactive_viewer(
         struct mliCamera camera = config.camera;
         struct mliImage img = mliImage_init();
         struct mliImage img2 = mliImage_init();
+        const double row_over_column_pixel_ratio = 2.0;
         int update_image = 1;
         int print_help = 0;
         struct mliRay probing_ray;
@@ -316,11 +319,19 @@ int mlivr_run_interactive_viewer(
                 if (update_image) {
                         if (super_resolution) {
                                 mliCamera_render_image(
-                                        &camera, scenery, octree, &img2);
+                                        &camera,
+                                        scenery,
+                                        octree,
+                                        &img2,
+                                        row_over_column_pixel_ratio);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
                                 mliCamera_render_image(
-                                        &camera, scenery, octree, &img);
+                                        &camera,
+                                        scenery,
+                                        octree,
+                                        &img,
+                                        row_over_column_pixel_ratio);
                         }
                 }
                 mlivr_clear_screen();
@@ -336,7 +347,11 @@ int mlivr_run_interactive_viewer(
                                 &img, symbols, rows, cols, num_symbols);
                         {
                                 struct mliCameraSensor sensor;
-                                mliCameraSensor_init(&sensor, &camera, &img);
+                                mliCameraSensor_init(
+                                        &sensor,
+                                        &camera,
+                                        &img,
+                                        row_over_column_pixel_ratio);
                                 probing_ray = mliCamera_ray_at_row_col(
                                         &camera,
                                         &sensor,

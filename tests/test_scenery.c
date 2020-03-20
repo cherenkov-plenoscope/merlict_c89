@@ -230,6 +230,7 @@ CASE("mliScenery, render image") {
     struct mliOcTree octree = mliOcTree_init();
     struct mliCamera camera;
     struct mliImage img = mliImage_init();
+    const double row_over_column_pixel_ratio = 1.0;
     mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
     CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
     /* mliNode_print(&octree.root, 0); */
@@ -243,7 +244,8 @@ CASE("mliScenery, render image") {
     camera.field_of_view = mli_deg2rad(80.);
 
     CHECK(mliImage_malloc(&img, 640u, 480u));
-    mliCamera_render_image(&camera, &scenery, &octree, &img);
+    mliCamera_render_image(
+        &camera, &scenery, &octree, &img, row_over_column_pixel_ratio);
     mliImage_write_to_ppm(&img, "tests/resources/scn1.ppm.tmp");
 
     mliImage_free(&img);
@@ -432,6 +434,7 @@ CASE("render image asymetric scenery") {
     struct mliOcTree octree = mliOcTree_init();
     struct mliCamera camera;
     struct mliImage img = mliImage_init();
+    const double row_over_column_pixel_ratio = 1.0;
     mliScenery_read_from_path(&scenery, "tests/resources/scn_asym.mli.tmp");
     CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
     /* mliNode_print(&octree.root, 0); */
@@ -444,7 +447,8 @@ CASE("render image asymetric scenery") {
     camera.field_of_view = mli_deg2rad(80.);
 
     CHECK(mliImage_malloc(&img, 640u, 480u));
-    mliCamera_render_image(&camera, &scenery, &octree, &img);
+    mliCamera_render_image(
+        &camera, &scenery, &octree, &img, row_over_column_pixel_ratio);
     mliImage_write_to_ppm(&img, "tests/resources/scn_asym.ppm.tmp");
 
     mliImage_free(&img);
