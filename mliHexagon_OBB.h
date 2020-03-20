@@ -15,9 +15,9 @@ int mliHexagon_has_overlap_obb(
     const struct mliOBB obb) {
     struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
     /*
-    Either one of the hexagons corners is inside the cube, or one of the cube's
-    edges has to intersect the hexagon.
-    */
+     *  Either one of the hexagons corners is inside the cube, or one of the
+     *  cube's edges has to intersect the hexagon.
+     */
     uint64_t corner_idx;
     uint64_t edge_idx;
     for (corner_idx = 0; corner_idx < 5; corner_idx++) {

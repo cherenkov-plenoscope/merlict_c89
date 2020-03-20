@@ -13,18 +13,18 @@ struct mliVec __mliBiCirclePlane_rectangle_corners(
     const struct mliBiCirclePlane plane,
     const uint64_t corner_idx) {
     /*
-     * c1__height__c0
-     *  |         /|
-     *  |        / |
-     *  |       /  |    |y
-     *  |      /   |    |
-     *  |     /    |    |_____ x
-     *  |    /     |
-     *  |   /      |-width
-     *  |  /       |
-     *  | /        |
-     *  |/_________|
-     * c2          c3
+     *  c1__height__c0
+     *   |         /|
+     *   |        / |
+     *   |       /  |    |y
+     *   |      /   |    |
+     *   |     /    |    |_____ x
+     *   |    /     |
+     *   |   /      |-width
+     *   |  /       |
+     *   | /        |
+     *   |/_________|
+     *  c2          c3
      */
     const double hxh = plane.x_height*.5;
     const double hyw = plane.y_width*.5;

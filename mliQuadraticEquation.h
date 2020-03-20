@@ -10,12 +10,12 @@ int mli_quadratiq_equation(
     double *plus_solution,
     double *minus_solution) {
     /*
-        y = a*x^2 + b*x + c
-        p = b/a
-        q = c/a
-        x_m = -p/2 - sqrt((-p/2)^2 - q)
-        x_p = -p/2 + sqrt((-p/2)^2 - q)
-    */
+     *  y = a*x^2 + b*x + c
+     *  p = b/a
+     *  q = c/a
+     *  x_m = -p/2 - sqrt((-p/2)^2 - q)
+     *  x_p = -p/2 + sqrt((-p/2)^2 - q)
+     */
     const double p_over_2 = 0.5*p;
     const double inner_part_of_squareroot = p_over_2 * p_over_2 - q;
     double squareroot;

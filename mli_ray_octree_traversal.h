@@ -1,5 +1,6 @@
-/* Copyright 2019 Sebastian Achim Mueller
- *
+/* Copyright 2019 Sebastian Achim Mueller                                     */
+
+/*
  *  Based on
  *
  *  @article{revelles2000efficient,
@@ -11,6 +12,7 @@
  *
  *  Profiting from additional comments by Jeroen Baert.
 */
+
 #ifndef MERLICT_MLI_RAY_OCTREE_TRAVERSAL_H_
 #define MERLICT_MLI_RAY_OCTREE_TRAVERSAL_H_
 #include <stdint.h>

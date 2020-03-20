@@ -1,6 +1,10 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-/* Based on Zed Shawn's awesome Debug Macros from his book:                   */
-/* Learn C the hard way                                                       */
+
+/*
+ *  Based on Zed Shawn's awesome Debug Macros from his book:
+ *  Learn C the hard way
+ */
+
 #ifndef MERLICT_MLI_DEBUG_H_
 #define MERLICT_MLI_DEBUG_H_
 

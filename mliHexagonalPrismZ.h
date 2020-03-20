@@ -40,16 +40,16 @@ int mli_inside_hexagonal_prism_z(
 
 struct mliVec mli_hexagon_corner(const uint64_t corner) {
     /*
-                  /\ y
-            2 ____|____ 1
-             /    |    \
-            /     |     \
-        __ /______|______\_0_\ x
-         3 \      |      /   /
-            \     |     /
-             \____|____/
-            4     |    5
-    */
+     *            /\ y
+     *      2 ____|____ 1
+     *       /    |    \
+     *      /     |     \
+     *  __ /______|______\_0_\ x
+     *   3 \      |      /   /
+     *      \     |     /
+     *       \____|____/
+     *      4     |    5
+     */
     const uint64_t corner_mod = corner % 6;
     switch (corner_mod) {
         case 0u:

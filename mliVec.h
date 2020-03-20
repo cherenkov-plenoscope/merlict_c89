@@ -86,7 +86,8 @@ double mliVec_norm_between(const struct mliVec a, const struct mliVec b)
 
 struct mliVec mliVec_mirror(const struct mliVec in, const struct mliVec normal)
 {
-        /*  This is taken from
+        /*
+         *      This is taken from
          *      (OPTI 421/521 – Introductory Optomechanical Engineering)
          *      J.H. Bruge
          *      University of Arizona
@@ -152,7 +153,8 @@ int mliVec_is_equal(const struct mliVec a, const struct mliVec b)
 
 uint32_t mliVec_octant(const struct mliVec a)
 {
-        /*  encodes the octant sectors where the vector is pointing to
+        /*
+         *  encodes the octant sectors where the vector is pointing to
          *      x y z sector
          *      - - -   0
          *      - - +   1

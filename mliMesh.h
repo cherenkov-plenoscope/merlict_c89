@@ -140,7 +140,6 @@ int mli_parse_three_doubles(const char *line, double *a, double* b, double*c) {
                         state = statemachine[state][0];
                 else
                         state = statemachine[state][1];
-                /* printf("state: %d, char: '%c'\n", state, z); */
                 idx++;
 
                 if (state == 1) {

@@ -13,20 +13,15 @@ int mli_cylinder_equation(
     double *plus_solution,
     double *minus_solution) {
     /*
-    Cylinder is centered on the z-axis and is not limited in z.
-
-    ray := s+l*d, s = (sx, sy, sz)^T, d = (dx, dy, dz)^T
-
-    r = sqrt(x^2 + y^2)                                              (1)
-
-    r = sqrt( (sx+l*dy)^2 + (sy+l*dy)^2 )                            (2)
-
-    r = sqrt( l^2*(dx^2 + dy^2) + l*2*(sx*dx + sy*dy) +sx^2 +sy^2)   (3)
-
-    0 = l^2 +
-         l*2*(sxdx + sydy)/(dx^2 + dy^2) +
-         (sx^2 +sy^2 -r^2)/(dx^2 + dy^2)
-    */
+     *  Cylinder is centered on the z-axis and is not limited in z.
+     *  ray := s+l*d, s = (sx, sy, sz)^T, d = (dx, dy, dz)^T
+     *  r = sqrt(x^2 + y^2)                                              (1)
+     *  r = sqrt( (sx+l*dy)^2 + (sy+l*dy)^2 )                            (2)
+     *  r = sqrt( l^2*(dx^2 + dy^2) + l*2*(sx*dx + sy*dy) +sx^2 +sy^2)   (3)
+     *  0 = l^2 +
+     *       l*2*(sxdx + sydy)/(dx^2 + dy^2) +
+     *       (sx^2 +sy^2 -r^2)/(dx^2 + dy^2)
+     */
     const double dx2 = ray.direction.x*ray.direction.x;
     const double dy2 = ray.direction.y*ray.direction.y;
 
@@ -76,167 +71,176 @@ int mliCylinder_intersection(
     const struct mliHomTraComp local2root_comp,
     const struct mliRay ray,
     struct mliIntersection *intersection) {
-    /*                                                                        */
-    /* m > epsilon                                                            */
-    /* p > epsilon                  (always true for causal intersections)    */
-    /* fabs(m) <= epsilon                                                     */
-    /* fabs(p) <= epsilon           (always false for causal intersections)   */
-    /* fabs(m.z) <= length/2                                                  */
-    /* fabs(p.z) <= length/2                                                  */
-    /*                                                                        */
-    /*  bit-mask = [
-            m > epsilon,
-            fabs(m) <= epsilon,
-            fabs(m.z) <= length/2,
-            fabs(p.z) <= length/2
-        ]
-    */
+    /*
+     *  m > epsilon
+     *  p > epsilon                  (always true for causal intersections)
+     *  fabs(m) <= epsilon
+     *  fabs(p) <= epsilon           (always false for causal intersections)
+     *  fabs(m.z) <= length/2
+     *  fabs(p.z) <= length/2
+     *
+     *   bit-mask = [
+     *        m > epsilon,
+     *        fabs(m) <= epsilon,
+     *        fabs(m.z) <= length/2,
+     *        fabs(p.z) <= length/2
+     *    ]
+     */
 
-    /* support infront                                                        */
-    /*                                                             /          */
-    /*                                                            /           */
-    /*                                                           /            */
-    /*                                                          O p           */
-    /*                                                         /              */
-    /*                                       /                /               */
-    /*                                      /                /                */
-    /*      |       |             |       |/            |   /   |             */
-    /*      |       |             |       O p           |  /    |             */
-    /*      |       |             |      /|             | /     |             */
-    /*      |       |  /          |     / |             |/      |             */
-    /*      |       | /           |    /  |             O m     |             */
-    /*      |       |/            |   /   |            /|       |             */
-    /*      |       O p           |  /    |         s X |       |             */
-    /*      |      /|             | /     |          /  |       |             */
-    /*      |     / |             |/      |             |       |             */
-    /*      |    /  |             O m     |             |       |             */
-    /*      |   /   |            /|       |             |       |             */
-    /*         /              s X                                             */
-    /*        /                /                                              */
-    /*       /                                                                */
-    /*      O m                                                               */
-    /*     /                                                                  */
-    /*    X s                                                                 */
-    /*   /                                                                    */
-    /*      [1,0,0,1]              [1,0,1,1]             [1,0,1,0]            */
-    /*      9                      13                    5                    */
+    /*
+     *  support infront
+     *                                                             /
+     *                                                            /
+     *                                                           /
+     *                                                          O p
+     *                                                         /
+     *                                       /                /
+     *                                      /                /
+     *      |       |             |       |/            |   /   |
+     *      |       |             |       O p           |  /    |
+     *      |       |             |      /|             | /     |
+     *      |       |  /          |     / |             |/      |
+     *      |       | /           |    /  |             O m     |
+     *      |       |/            |   /   |            /|       |
+     *      |       O p           |  /    |         s X |       |
+     *      |      /|             | /     |          /  |       |
+     *      |     / |             |/      |             |       |
+     *      |    /  |             O m     |             |       |
+     *      |   /   |            /|       |             |       |
+     *         /              s X
+     *        /                /
+     *       /
+     *      O m
+     *     /
+     *    X s
+     *   /
+     *      [1,0,0,1]              [1,0,1,1]             [1,0,1,0] 
+     *      9                      13                    5
+     */
 
+    /*
+     *  support equals minus-intersection
+     *                                                             /
+     *                                                            /
+     *                                                           /
+     *                                                          O p
+     *                                                         /
+     *                                       /                /
+     *                                      /                /
+     *      |       |             |       |/            |   /   |
+     *      |       |             |       O p           |  /    |
+     *      |       |             |      /|             | /     |
+     *      |       |  /          |     / |             |/      |
+     *      |       | /           |    /  |             X m=s   |
+     *      |       |/            |   /   |            /|       |
+     *      |       O p           |  /    |           / |       |
+     *      |      /|             | /     |          /  |       |
+     *      |     / |             |/      |             |       |
+     *      |    /  |             X m=s   |             |       |
+     *      |   /   |            /|       |             |       |
+     *         /                /
+     *        /                /
+     *       /
+     *      X m=s
+     *     /
+     *    /
+     *   /
+     *
+     *      [0,1,0,1]              [0,1,1,1]            [0,1,1,0]
+     *      10                     14                   6
+     */
 
-    /* support equals minus-intersection                                      */
-    /*                                                             /          */
-    /*                                                            /           */
-    /*                                                           /            */
-    /*                                                          O p           */
-    /*                                                         /              */
-    /*                                       /                /               */
-    /*                                      /                /                */
-    /*      |       |             |       |/            |   /   |             */
-    /*      |       |             |       O p           |  /    |             */
-    /*      |       |             |      /|             | /     |             */
-    /*      |       |  /          |     / |             |/      |             */
-    /*      |       | /           |    /  |             X m=s   |             */
-    /*      |       |/            |   /   |            /|       |             */
-    /*      |       O p           |  /    |           / |       |             */
-    /*      |      /|             | /     |          /  |       |             */
-    /*      |     / |             |/      |             |       |             */
-    /*      |    /  |             X m=s   |             |       |             */
-    /*      |   /   |            /|       |             |       |             */
-    /*         /                /                                             */
-    /*        /                /                                              */
-    /*       /                                                                */
-    /*      X m=s                                                             */
-    /*     /                                                                  */
-    /*    /                                                                   */
-    /*   /                                                                    */
-    /*                                                                        */
-    /*      [0,1,0,1]              [0,1,1,1]            [0,1,1,0]             */
-    /*      10                     14                   6                     */
+    /*
+     *  support inside
+     *                                                             /
+     *                                                            /
+     *                                                           /
+     *                                                          O p
+     *                                                         /
+     *                                       /                /
+     *                                      /                /
+     *      |       |             |       |/            |   X s |
+     *      |       |             |       O p           |  /    |
+     *      |       |             |      /|             | /     |
+     *      |       |  /          |     / |             |/      |
+     *      |       | /           |    /  |             O m     |
+     *      |       |/            |   X s |            /|       |
+     *      |       O p           |  /    |           / |       |
+     *      |      /|             | /     |          /  |       |
+     *      |     / |             |/      |             |       |
+     *      |    /  |             O m     |             |       |
+     *      |   X s |            /|       |             |       |
+     *         /                /
+     *        /                /
+     *       /
+     *      O m
+     *     /
+     *    /
+     *   /
+     *
+     *      [0,0,0,1]              [0,0,1,1]
+     *      8                      12
+     */
 
-    /* support inside                                                         */
-    /*                                                             /          */
-    /*                                                            /           */
-    /*                                                           /            */
-    /*                                                          O p           */
-    /*                                                         /              */
-    /*                                       /                /               */
-    /*                                      /                /                */
-    /*      |       |             |       |/            |   X s |             */
-    /*      |       |             |       O p           |  /    |             */
-    /*      |       |             |      /|             | /     |             */
-    /*      |       |  /          |     / |             |/      |             */
-    /*      |       | /           |    /  |             O m     |             */
-    /*      |       |/            |   X s |            /|       |             */
-    /*      |       O p           |  /    |           / |       |             */
-    /*      |      /|             | /     |          /  |       |             */
-    /*      |     / |             |/      |             |       |             */
-    /*      |    /  |             O m     |             |       |             */
-    /*      |   X s |            /|       |             |       |             */
-    /*         /                /                                             */
-    /*        /                /                                              */
-    /*       /                                                                */
-    /*      O m                                                               */
-    /*     /                                                                  */
-    /*    /                                                                   */
-    /*   /                                                                    */
-    /*                                                                        */
-    /*      [0,0,0,1]              [0,0,1,1]                                  */
-    /*      8                      12                                         */
+    /*
+     *  support equals plus-intersection
+     *                                                             /
+     *                                                            /
+     *                                                           /
+     *                                                          X p=s
+     *                                                         /
+     *                                       /                /
+     *                                      /                /
+     *      |       |             |       |/            |   /   |
+     *      |       |             |       X p=s         |  /    |
+     *      |       |             |      /|             | /     |
+     *      |       |  /          |     / |             |/      |
+     *      |       | /           |    /  |             O m     |
+     *      |       |/            |   /   |            /|       |
+     *      |       X p=s         |  /    |           / |       |
+     *      |      /|             | /     |          /  |       |
+     *      |     / |             |/      |             |       |
+     *      |    /  |             O m     |             |       |
+     *      |   /   |            /|       |             |       |
+     *         /                /
+     *        /                /
+     *       /
+     *      O m
+     *     /
+     *    /
+     *   /
+     *
+     */
 
-    /* support equals plus-intersection                                       */
-    /*                                                             /          */
-    /*                                                            /           */
-    /*                                                           /            */
-    /*                                                          X p=s         */
-    /*                                                         /              */
-    /*                                       /                /               */
-    /*                                      /                /                */
-    /*      |       |             |       |/            |   /   |             */
-    /*      |       |             |       X p=s         |  /    |             */
-    /*      |       |             |      /|             | /     |             */
-    /*      |       |  /          |     / |             |/      |             */
-    /*      |       | /           |    /  |             O m     |             */
-    /*      |       |/            |   /   |            /|       |             */
-    /*      |       X p=s         |  /    |           / |       |             */
-    /*      |      /|             | /     |          /  |       |             */
-    /*      |     / |             |/      |             |       |             */
-    /*      |    /  |             O m     |             |       |             */
-    /*      |   /   |            /|       |             |       |             */
-    /*         /                /                                             */
-    /*        /                /                                              */
-    /*       /                                                                */
-    /*      O m                                                               */
-    /*     /                                                                  */
-    /*    /                                                                   */
-    /*   /                                                                    */
-    /*                                                                        */
-
-    /* support behind                                                         */
-    /*                                                             /          */
-    /*                                                            X s         */
-    /*                                                           /            */
-    /*                                                          O p           */
-    /*                                                         /              */
-    /*                                       /                /               */
-    /*                                      X s              /                */
-    /*      |       |             |       |/            |   /   |             */
-    /*      |       |             |       O p           |  /    |             */
-    /*      |       |             |      /|             | /     |             */
-    /*      |       |  /          |     / |             |/      |             */
-    /*      |       | X s         |    /  |             O m     |             */
-    /*      |       |/            |   /   |            /|       |             */
-    /*      |       O p           |  /    |           / |       |             */
-    /*      |      /|             | /     |          /  |       |             */
-    /*      |     / |             |/      |             |       |             */
-    /*      |    /  |             O m     |             |       |             */
-    /*      |   /   |            /|       |             |       |             */
-    /*         /                /                                             */
-    /*        /                /                                              */
-    /*       /                                                                */
-    /*      O m                                                               */
-    /*     /                                                                  */
-    /*    /                                                                   */
-    /*   /                                                                    */
-    /*                                                                        */
+    /*
+     *  support behind
+     *                                                             /
+     *                                                            X s
+     *                                                           /
+     *                                                          O p
+     *                                                         /
+     *                                       /                /
+     *                                      X s              /
+     *      |       |             |       |/            |   /   |
+     *      |       |             |       O p           |  /    |
+     *      |       |             |      /|             | /     |
+     *      |       |  /          |     / |             |/      |
+     *      |       | X s         |    /  |             O m     |
+     *      |       |/            |   /   |            /|       |
+     *      |       O p           |  /    |           / |       |
+     *      |      /|             | /     |          /  |       |
+     *      |     / |             |/      |             |       |
+     *      |    /  |             O m     |             |       |
+     *      |   /   |            /|       |             |       |
+     *         /                /
+     *        /                /
+     *       /
+     *      O m
+     *     /
+     *    /
+     *   /
+     *
+     */
 
     double plus_solution, minus_solution;
     struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);

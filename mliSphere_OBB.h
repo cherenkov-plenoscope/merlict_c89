@@ -18,7 +18,8 @@ int mliSphere_has_overlap_obb(
     const double radius,
     const struct mliVec translation,
     const struct mliOBB obb) {
-    /* Ben Voigt
+    /*
+     * Ben Voigt
      * https://stackoverflow.com/questions/4578967/cube-sphere-intersection-test
      */
     double dist_squared = radius*radius;

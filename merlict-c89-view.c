@@ -1,6 +1,10 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-/* Compile with:                                                              */
-/* gcc merlict-c89-view.c -o merlict-c89-view -std=c89 -lm -Wall -pedantic    */
+
+/*
+ *  Compile with:
+ *  gcc merlict-c89-view.c -o merlict-c89-view -std=c89 -lm -Wall -pedantic
+ */
+
 #include <stdio.h>
 
 #include "merlict_c89.h"

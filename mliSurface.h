@@ -14,8 +14,10 @@ struct mliSurface {
     uint32_t specular_reflection;
     uint32_t diffuse_reflection;
 
-    /* The color is only relevant for fast rendering of images.
-     * Color will not effect the propagation of photons. */
+    /*
+     *  The color is only relevant for fast rendering of images.
+     *  Color will not effect the propagation of photons.
+     */
     uint32_t color;
 };
 

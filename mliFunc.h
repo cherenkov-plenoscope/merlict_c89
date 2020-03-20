@@ -70,7 +70,7 @@ double mli_linear_interpolate(
      *  m = (y1 - y0)/(x1 - x0)
      *  y0 = m*x0 + b
      *  b = y0 - m*x0
-    */
+     */
     const double m = (y1 - y0)/(x1 - x0);
     const double b = y0 - m*x0;
     return m*xarg + b;}

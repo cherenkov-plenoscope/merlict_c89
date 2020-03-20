@@ -11,12 +11,13 @@
 #include "mliMap.h"
 
 /*
-    A scenery as a user wants to define it.
-    It can grow dynamically.
-    It can represent the geometric hiracrhy between abstract frames.
-    Before ray tracing, this UserScenery will be translated into a Scenery
-    which is optimized for ray tracing.
-*/
+ *  A scenery as a user wants to define it.
+ *  It can grow dynamically.
+ *  It can represent the geometric hiracrhy between abstract frames.
+ *  Before ray tracing, this UserScenery will be translated into a Scenery
+ *  which is optimized for ray tracing.
+ */
+
 struct mliUserScenery {
     struct mliSceneryResources resources;
     struct mliFrame root;
