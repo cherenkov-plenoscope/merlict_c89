@@ -40,7 +40,7 @@ int mliFunc_malloc_from_json_token(
                 point_token += 3;
         }
         return 1;
-    error:
+error:
         mliFunc_free(f);
         return 0;
 }

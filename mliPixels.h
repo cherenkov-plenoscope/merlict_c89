@@ -8,36 +8,38 @@
 #include "mli_debug.h"
 
 struct mliPixel {
-    uint16_t row;
-    uint16_t col;
+        uint16_t row;
+        uint16_t col;
 };
 
 struct mliPixels {
-    uint32_t num_pixels;
-    struct mliPixel *pixels;
+        uint32_t num_pixels;
+        struct mliPixel *pixels;
 };
 
 struct mliPixels mliPixels_init()
 {
-    struct mliPixels pix;
-    pix.num_pixels = 0u;
-    pix.pixels = NULL;
-    return pix;
+        struct mliPixels pix;
+        pix.num_pixels = 0u;
+        pix.pixels = NULL;
+        return pix;
 }
 
 void mliPixels_free(struct mliPixels *pix)
 {
-    free(pix->pixels);
-    *pix = mliPixels_init();
+        free(pix->pixels);
+        *pix = mliPixels_init();
 }
 
-int mliPixels_malloc(struct mliPixels *pix, const uint32_t num_pixels) {
-    mliPixels_free(pix);
-    pix->num_pixels = num_pixels;
-    mli_malloc(pix->pixels, struct mliPixel, pix->num_pixels);
-    return 1;
+int mliPixels_malloc(struct mliPixels *pix, const uint32_t num_pixels)
+{
+        mliPixels_free(pix);
+        pix->num_pixels = num_pixels;
+        mli_malloc(pix->pixels, struct mliPixel, pix->num_pixels);
+        return 1;
 error:
-    mliPixels_free(pix);
-    return 0;}
+        mliPixels_free(pix);
+        return 0;
+}
 
 #endif

@@ -60,11 +60,7 @@ error:
 
 int _mliScenery_write_spheres(const struct mliScenery *scenery, FILE *f)
 {
-        mli_fwrite(
-                scenery->spheres,
-                sizeof(double),
-                scenery->num_spheres,
-                f);
+        mli_fwrite(scenery->spheres, sizeof(double), scenery->num_spheres, f);
         mli_fwrite(
                 scenery->spheres_boundary_layers,
                 sizeof(struct mliBoundaryLayer),
@@ -149,10 +145,7 @@ error:
 int _mliScenery_write_discs(const struct mliScenery *scenery, FILE *f)
 {
         mli_fwrite(
-                scenery->discs,
-                sizeof(struct mliDisc),
-                scenery->num_discs,
-                f);
+                scenery->discs, sizeof(struct mliDisc), scenery->num_discs, f);
         mli_fwrite(
                 scenery->discs_boundary_layers,
                 sizeof(struct mliBoundaryLayer),
@@ -183,9 +176,7 @@ error:
         return 0;
 }
 
-int mliScenery_write_to_path(
-        const struct mliScenery *scenery,
-        const char* path)
+int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
 {
         FILE *f;
         uint64_t magic = MLI_SCENERY_MAGIC;
@@ -195,17 +186,17 @@ int mliScenery_write_to_path(
         /* magic identifier */
         mli_fwrite(&magic, sizeof(uint64_t), 1u, f);
 
-        mli_check(mliScenery_write_capacity_to_file(scenery, f),
+        mli_check(
+                mliScenery_write_capacity_to_file(scenery, f),
                 "Failed to write Scenery's capacity to file.");
 
-        mli_check(mliSceneryResources_write_capacity_to_file(
-                &scenery->resources,
-                f),
+        mli_check(
+                mliSceneryResources_write_capacity_to_file(
+                        &scenery->resources, f),
                 "Failed to write SceneryResources' capacity to file.");
 
-        mli_check(mliSceneryResources_append_to_file(
-                &scenery->resources,
-                f),
+        mli_check(
+                mliSceneryResources_append_to_file(&scenery->resources, f),
                 "Can not write SceneryResources to file.");
 
         mli_c(_mliScenery_write_vertices_and_triangles(scenery, f));
@@ -222,6 +213,7 @@ error:
         if (f != NULL) {
                 fclose(f);
         }
-        return 0;}
+        return 0;
+}
 
 #endif

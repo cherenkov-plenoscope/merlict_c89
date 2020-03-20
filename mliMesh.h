@@ -51,17 +51,18 @@ error:
         return 0;
 }
 
-int mli_parse_three_ints(const char *line, int *a, int* b, int*c) {
+int mli_parse_three_ints(const char *line, int *a, int *b, int *c)
+{
         int state = 0;
         int old_state = state;
         int statemachine[][2] = {
-        /*  ws  print */
-                {0,   1},  /* 0 */
-                {2,   1},  /* 1 first */
-                {2,   3},  /* 2 */
-                {4,   3},  /* 3 second */
-                {4,   5},  /* 4 */
-                {6,   5},  /* 5 third  */
+                /*  ws  print */
+                {0, 1}, /* 0 */
+                {2, 1}, /* 1 first */
+                {2, 3}, /* 2 */
+                {4, 3}, /* 3 second */
+                {4, 5}, /* 4 */
+                {6, 5}, /* 5 third  */
         };
         int idx = 0;
         char aaa[64];
@@ -70,7 +71,7 @@ int mli_parse_three_ints(const char *line, int *a, int* b, int*c) {
         while (1) {
                 if (state == 6)
                         break;
-                 z = line[idx];
+                z = line[idx];
                 if (z == '\0')
                         state = 6;
                 else if (isspace(z))
@@ -113,18 +114,18 @@ int mli_parse_three_ints(const char *line, int *a, int* b, int*c) {
         return state;
 }
 
-
-int mli_parse_three_doubles(const char *line, double *a, double* b, double*c) {
+int mli_parse_three_doubles(const char *line, double *a, double *b, double *c)
+{
         int state = 0;
         int old_state = state;
         int statemachine[][2] = {
-        /*  ws  print  */
-                {0,   1},  /* 0        */
-                {2,   1},  /* 1 first  */
-                {2,   3},  /* 2        */
-                {4,   3},  /* 3 second */
-                {4,   5},  /* 4        */
-                {6,   5},  /* 5 third  */
+                /*  ws  print  */
+                {0, 1}, /* 0        */
+                {2, 1}, /* 1 first  */
+                {2, 3}, /* 2        */
+                {4, 3}, /* 3 second */
+                {4, 5}, /* 4        */
+                {6, 5}, /* 5 third  */
         };
         int idx = 0;
         char aaa[64];
@@ -178,7 +179,7 @@ int mli_parse_three_doubles(const char *line, double *a, double* b, double*c) {
 
 int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
 {
-        FILE * fin;
+        FILE *fin;
         char line[1024];
         int len = 1024;
         int num_vertices = 0;
@@ -205,18 +206,14 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
                 mli_check(
                         fgets(line, len, fin) != NULL,
                         "Can not read vertex line.");
-                if (vertex_idx == m->num_vertices) break;
+                if (vertex_idx == m->num_vertices)
+                        break;
                 if (strlen(line) > 1) {
-                        struct mliVec poi = mliVec_set(
-                                MLI_NAN,
-                                MLI_NAN,
-                                MLI_NAN);
+                        struct mliVec poi =
+                                mliVec_set(MLI_NAN, MLI_NAN, MLI_NAN);
                         mli_check(
                                 mli_parse_three_doubles(
-                                        line,
-                                        &poi.x,
-                                        &poi.y,
-                                        &poi.z),
+                                        line, &poi.x, &poi.y, &poi.z),
                                 "Can not parse vertex.");
                         m->vertices[vertex_idx] = poi;
                         vertex_idx++;
@@ -229,10 +226,7 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
                         struct mliFace fa;
                         mli_check(
                                 mli_parse_three_ints(
-                                        strchr(line, ' '),
-                                        &ia,
-                                        &ib,
-                                        &ic),
+                                        strchr(line, ' '), &ia, &ib, &ic),
                                 "Can not parse face.");
                         fa.a = ia;
                         fa.b = ib;
@@ -240,7 +234,8 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
                         m->faces[face_idx] = fa;
                         face_idx++;
                 }
-                if (face_idx == m->num_faces) break;
+                if (face_idx == m->num_faces)
+                        break;
                 mli_check(
                         fgets(line, len, fin) != NULL,
                         "Can not read face line.");
@@ -254,6 +249,5 @@ error:
         mliMesh_free(m);
         return 0;
 }
-
 
 #endif

@@ -12,7 +12,7 @@
 #define MLI_TMPNODE_FLAT_INDEX_NONE -1
 
 struct mliTmpNode {
-        struct mliTmpNode* children[8];
+        struct mliTmpNode *children[8];
         uint32_t num_objects;
         uint32_t *objects;
 
@@ -60,7 +60,7 @@ uint32_t mliTmpNode_signs_to_child(
         const uint32_t sy,
         const uint32_t sz)
 {
-        return 4*sx + 2*sy + 1*sz;
+        return 4 * sx + 2 * sy + 1 * sz;
 }
 
 int mliTmpNode_add_children(
@@ -93,24 +93,18 @@ int mliTmpNode_add_children(
                 for (sy = 0u; sy < 2u; sy++) {
                         for (sz = 0u; sz < 2u; sz++) {
                                 const uint32_t child =
-                                        mliTmpNode_signs_to_child(
-                                                sx,
-                                                sy,
-                                                sz);
-                                child_cubes[child] = mliCube_octree_child(
-                                        cube,
-                                        sx,
-                                        sy,
-                                        sz);
+                                        mliTmpNode_signs_to_child(sx, sy, sz);
+                                child_cubes[child] =
+                                        mliCube_octree_child(cube, sx, sy, sz);
                                 for (obj = 0u; obj < node->num_objects; obj++) {
                                         const uint32_t object_idx =
                                                 node->objects[obj];
                                         if (mliScenery_overlap_obb(
-                                                scenery,
-                                                object_idx,
-                                                mliCube_to_obb(
-                                                        child_cubes[child]))
-                                        ) {
+                                                    scenery,
+                                                    object_idx,
+                                                    mliCube_to_obb(
+                                                            child_cubes
+                                                                    [child]))) {
                                                 mli_c(mliOctOverlap_push_back(
                                                         &overlap[child],
                                                         object_idx));
@@ -124,8 +118,7 @@ int mliTmpNode_add_children(
                 mli_malloc(node->children[c], struct mliTmpNode, 1u);
                 (*node->children[c]) = mliTmpNode_init();
                 mli_c(mliTmpNode_malloc(
-                        node->children[c],
-                        overlap[c].dyn.size));
+                        node->children[c], overlap[c].dyn.size));
                 mli_uint32_ncpy(
                         overlap[c].arr,
                         node->children[c]->objects,
@@ -152,11 +145,11 @@ error:
 
 size_t mli_guess_octree_depth_based_on_num_objects(const size_t num_objects)
 {
-        return 1u + (size_t)ceil(log((double)num_objects)/log(8.0));
+        return 1u + (size_t)ceil(log((double)num_objects) / log(8.0));
 }
 
 int mliTmpNode_malloc_tree_from_scenery(
-        struct mliTmpNode* root_node,
+        struct mliTmpNode *root_node,
         const struct mliScenery *scenery,
         const struct mliCube scenery_cube)
 {
@@ -165,18 +158,16 @@ int mliTmpNode_malloc_tree_from_scenery(
         num_objects = mliScenery_num_objects(scenery);
         max_depth = mli_guess_octree_depth_based_on_num_objects(num_objects);
 
-        mli_check(mliTmpNode_malloc(root_node, num_objects),
+        mli_check(
+                mliTmpNode_malloc(root_node, num_objects),
                 "Failed to allocate root-node in dynamic octree.")
 
-        for (idx = 0; idx < root_node->num_objects; idx++) {
+                for (idx = 0; idx < root_node->num_objects; idx++)
+        {
                 root_node->objects[idx] = idx;
         }
         mliTmpNode_add_children(
-                root_node,
-                scenery,
-                scenery_cube,
-                start_depth,
-                max_depth);
+                root_node, scenery, scenery_cube, start_depth, max_depth);
         return 1;
 error:
         return 0;
@@ -199,24 +190,24 @@ void mliTmpNode_print(
         uint32_t i;
         uint32_t c;
         uint32_t num_children = mliTmpNode_num_children(node);
-        for (i = 0u; i < indent; i++) printf(" ");
+        for (i = 0u; i < indent; i++)
+                printf(" ");
         if (num_children == 0) {
                 uint32_t j;
-                printf(
-                        "|-Leaf[%d, %d] %u: %u [",
-                        node->node_index,
-                        node->leaf_index,
-                        child, node->num_objects);
-                for(j = 0; j < node->num_objects; j++) {
+                printf("|-Leaf[%d, %d] %u: %u [",
+                       node->node_index,
+                       node->leaf_index,
+                       child,
+                       node->num_objects);
+                for (j = 0; j < node->num_objects; j++) {
                         printf("%u, ", node->objects[j]);
                 }
                 printf("]");
         } else {
-                printf(
-                        "Node[%d, %d]: %u",
-                        node->node_index,
-                        node->leaf_index,
-                        child);
+                printf("Node[%d, %d]: %u",
+                       node->node_index,
+                       node->leaf_index,
+                       child);
         }
         printf("\n");
         for (c = 0u; c < 8u; c++) {
@@ -260,7 +251,7 @@ void _mliTmpNode_set_flat_index(
 {
         size_t c;
         for (c = 0u; c < 8u; c++) {
-                if(_mliTmpNode_exists_and_objects(node->children[c])) {
+                if (_mliTmpNode_exists_and_objects(node->children[c])) {
                         (*flat_index)++;
                         node->children[c]->flat_index = *flat_index;
 
@@ -274,7 +265,7 @@ void _mliTmpNode_set_flat_index(
                 }
         }
         for (c = 0u; c < 8u; c++) {
-                if(_mliTmpNode_exists_and_objects(node->children[c])) {
+                if (_mliTmpNode_exists_and_objects(node->children[c])) {
                         _mliTmpNode_set_flat_index(
                                 node->children[c],
                                 flat_index,
@@ -298,10 +289,7 @@ void mliTmpNode_set_flat_index(struct mliTmpNode *root_node)
         }
 
         _mliTmpNode_set_flat_index(
-                root_node,
-                &flat_index,
-                &node_index,
-                &leaf_index);
+                root_node, &flat_index, &node_index, &leaf_index);
 }
 
 /*
@@ -343,10 +331,7 @@ void mliTmpNode_num_nodes_leafs_objects(
         *num_leafs = 0;
         *num_object_links = 0;
         _mliTmpNode_num_nodes_leafs_objects(
-                root_node,
-                num_nodes,
-                num_leafs,
-                num_object_links);
+                root_node, num_nodes, num_leafs, num_object_links);
 }
 
 /*
@@ -377,12 +362,11 @@ int mliTmpOcTree_malloc_from_scenery(
         const struct mliScenery *scenery)
 {
         mliTmpOcTree_free(octree);
-        octree->cube = mliCube_outermost_cube(
-                mliScenery_outermost_obb(scenery));
-        mli_check(mliTmpNode_malloc_tree_from_scenery(
-                &octree->root,
-                scenery,
-                octree->cube),
+        octree->cube =
+                mliCube_outermost_cube(mliScenery_outermost_obb(scenery));
+        mli_check(
+                mliTmpNode_malloc_tree_from_scenery(
+                        &octree->root, scenery, octree->cube),
                 "Failed to allocate dynamic octree from scenery.");
         return 1;
 error:

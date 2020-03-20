@@ -23,7 +23,7 @@ int mli_photon_source_parallel_towards_z_from_xy_disc(
                 mli_c(mliDynPhoton_push_back(out_photons, ph));
         }
         return 1;
-    error:
+error:
         return 0;
 }
 
@@ -35,18 +35,14 @@ int point_like_towards_z_opening_angle_num_photons(
         struct mliMT19937 *prng)
 {
         uint64_t i;
-        struct mliRandomUniformRange azimuth = mliRandomUniformRange_set(
-            0.0,
-            2.0*MLI_PI);
-        struct mliRandomZenithRange zenith = mliRandomZenithRange_set(
-            0.0,
-            opening_angle);
+        struct mliRandomUniformRange azimuth =
+                mliRandomUniformRange_set(0.0, 2.0 * MLI_PI);
+        struct mliRandomZenithRange zenith =
+                mliRandomZenithRange_set(0.0, opening_angle);
         for (i = 0; i < num_photons; i++) {
                 struct mliVec direction =
                         mli_random_draw_direction_in_zenith_azimuth_range(
-                                zenith,
-                                azimuth,
-                                prng);
+                                zenith, azimuth, prng);
                 struct mliPhoton ph;
                 ph.ray.support = mliVec_set(0., 0., 0.);
                 ph.ray.direction = direction;
@@ -55,7 +51,7 @@ int point_like_towards_z_opening_angle_num_photons(
                 mli_c(mliDynPhoton_push_back(out_photons, ph));
         }
         return 1;
-    error:
+error:
         return 0;
 }
 

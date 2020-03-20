@@ -10,7 +10,7 @@
 
 struct mliJson {
         uint64_t num_chars;
-        char* chars;
+        char *chars;
         uint64_t num_tokens;
         struct jsmntok_t *tokens;
 };
@@ -46,25 +46,21 @@ void _mliJson_set_zero(struct mliJson *json)
         }
 }
 
-int mliJson_malloc(
-        struct mliJson *json,
-        const size_t json_strlen)
+int mliJson_malloc(struct mliJson *json, const size_t json_strlen)
 {
         mliJson_free(json);
-        json->num_chars = json_strlen + 1u;         /* NULL termination. */
-        json->num_tokens = json->num_chars/4;       /* A rather safe guess. */
+        json->num_chars = json_strlen + 1u;     /* NULL termination. */
+        json->num_tokens = json->num_chars / 4; /* A rather safe guess. */
         mli_malloc(json->chars, char, json->num_chars);
         mli_malloc(json->tokens, struct jsmntok_t, json->num_tokens);
         _mliJson_set_zero(json);
         return 1;
-    error:
+error:
         mliJson_free(json);
         return 0;
 }
 
-int mliJson_malloc_from_string(
-        struct mliJson *json,
-        const char *json_str)
+int mliJson_malloc_from_string(struct mliJson *json, const char *json_str)
 {
         int64_t num_tokens_parsed;
         uint64_t json_strlen = strlen(json_str);
@@ -79,26 +75,32 @@ int mliJson_malloc_from_string(
                 json->num_chars,
                 json->tokens,
                 json->num_tokens);
-        mli_check(num_tokens_parsed != JSMN_ERROR_NOMEM,
+        mli_check(
+                num_tokens_parsed != JSMN_ERROR_NOMEM,
                 "Not enough tokens were provided.")
-        mli_check(num_tokens_parsed != JSMN_ERROR_INVAL,
-                "Invalid character inside JSON string.")
-        mli_check(num_tokens_parsed != JSMN_ERROR_PART,
-                "The string is not a full JSON packet, more bytes expected.")
-        mli_check(num_tokens_parsed >= 0, "Can not parse Json-string");
+                mli_check(
+                        num_tokens_parsed != JSMN_ERROR_INVAL,
+                        "Invalid character inside JSON string.")
+                        mli_check(
+                                num_tokens_parsed != JSMN_ERROR_PART,
+                                "The string is not a full JSON packet, more "
+                                "bytes expected.")
+                                mli_check(
+                                        num_tokens_parsed >= 0,
+                                        "Can not parse Json-string");
         json->num_tokens = num_tokens_parsed;
         return 1;
-    error:
+error:
         mliJson_free(json);
         return 0;
 }
 
 int mliJson_malloc_from_file(struct mliJson *json, const char *path)
 {
-        char* json_str = NULL;
+        char *json_str = NULL;
         uint64_t num_chars = 0u;
         uint64_t num_chars_and_null = 0u;
-        FILE * f = fopen(path, "rt");
+        FILE *f = fopen(path, "rt");
         mli_check(f != NULL, "Can not read json from path.");
         fseek(f, 0, SEEK_END);
         num_chars = ftell(f);
@@ -113,7 +115,7 @@ int mliJson_malloc_from_file(struct mliJson *json, const char *path)
                 "Failed to parse json-string read from path.");
         free(json_str);
         return 1;
-    error:
+error:
         free(json_str);
         if (f != NULL)
                 fclose(f);
@@ -132,10 +134,10 @@ int mliJson_as_string(
                 actual_length < return_string_size,
                 "Expected return_string_size to be sufficiently large for "
                 "json-string, but it is not.")
-        memcpy(return_string, json->chars + t.start, actual_length);
+                memcpy(return_string, json->chars + t.start, actual_length);
         return_string[actual_length] = '\0';
         return 1;
-    error:
+error:
         return 0;
 }
 
@@ -148,8 +150,8 @@ int mliJson_as_int64(
         uint64_t buff_size = t.end - t.start + 1u;
         char *buff = NULL;
         mli_check(
-            t.type == JSMN_PRIMITIVE,
-            "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
+                t.type == JSMN_PRIMITIVE,
+                "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
         mli_malloc(buff, char, buff_size);
         mliJson_as_string(json, token_idx, buff, buff_size);
         mli_check(
@@ -157,7 +159,7 @@ int mliJson_as_int64(
                 "Can not parse int.");
         free(buff);
         return 1;
-    error:
+error:
         free(buff);
         return 0;
 }
@@ -176,11 +178,11 @@ int mliJson_as_float64(
         mli_malloc(buff, char, buff_size);
         mliJson_as_string(json, token_idx, buff, buff_size);
         mli_check(
-            mli_string_to_float(return_float64, buff),
-            "Can not parse float.");
+                mli_string_to_float(return_float64, buff),
+                "Can not parse float.");
         free(buff);
         return 1;
-    error:
+error:
         free(buff);
         return 0;
 }
@@ -215,7 +217,7 @@ int mliJson_find_key(
         mli_check(found, "No such key in json-object.");
         free(buff);
         return 1;
-    error:
+error:
         free(buff);
         return 0;
 }
@@ -242,7 +244,7 @@ uint64_t mliJson_array_child_token(
         return idx;
 }
 
-int mliJson_fprint_debug(FILE* f, const struct mliJson *json)
+int mliJson_fprint_debug(FILE *f, const struct mliJson *json)
 {
         uint64_t i;
         char *buff;
@@ -258,20 +260,20 @@ int mliJson_fprint_debug(FILE* f, const struct mliJson *json)
         }
         free(buff);
         return 1;
-    error:
+error:
         free(buff);
         return 0;
 }
 
-int mliJson_write_debug(const struct mliJson *json, const char* path)
+int mliJson_write_debug(const struct mliJson *json, const char *path)
 {
-        FILE* f;
+        FILE *f;
         f = fopen(path, "wt");
         mli_check(f != NULL, "Failed to open file for Json debug output.");
         mli_check(mliJson_fprint_debug(f, json), "Failed to fprint debug.");
         fclose(f);
         return 1;
-    error:
+error:
         fclose(f);
         return 0;
 }

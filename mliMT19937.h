@@ -31,8 +31,7 @@ void _mliMT19937_set_constants(struct mliMT19937 *mt)
          *      Define MT19937 constants (32-bit RNG)
          *      Assumes W = 32 (omitting this)
          */
-        mt->N = 624,
-        mt->M = 397;
+        mt->N = 624, mt->M = 397;
         mt->R = 31;
         mt->A = 0x9908B0DF;
         mt->F = 1812433253;
@@ -71,7 +70,7 @@ void _mliMT19937_twist(struct mliMT19937 *mt)
         uint32_t i, x, xA;
         for (i = 0; i < mt->N; i++) {
                 x = (mt->mt[i] & mt->MASK_UPPER) +
-                        (mt->mt[(i + 1) % mt->N] & mt->MASK_LOWER);
+                    (mt->mt[(i + 1) % mt->N] & mt->MASK_LOWER);
                 xA = x >> 1;
                 if (x & 0x1) {
                         xA ^= mt->A;

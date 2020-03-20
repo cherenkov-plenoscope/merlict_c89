@@ -15,14 +15,18 @@ struct mliBoundaryLayer {
 };
 
 int mliBoundaryLayer_is_equal(
-    const struct mliBoundaryLayer a,
-    const struct mliBoundaryLayer b)
+        const struct mliBoundaryLayer a,
+        const struct mliBoundaryLayer b)
 {
-    if (a.inner.surface != b.inner.surface) return 0;
-    if (a.outer.surface != b.outer.surface) return 0;
-    if (a.inner.medium != b.inner.medium) return 0;
-    if (a.outer.medium != b.outer.medium) return 0;
-    return 1;
+        if (a.inner.surface != b.inner.surface)
+                return 0;
+        if (a.outer.surface != b.outer.surface)
+                return 0;
+        if (a.inner.medium != b.inner.medium)
+                return 0;
+        if (a.outer.medium != b.outer.medium)
+                return 0;
+        return 1;
 }
 
 #endif

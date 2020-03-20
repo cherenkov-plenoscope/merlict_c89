@@ -12,7 +12,6 @@
 #include "mli_cylindrical_prism.h"
 #include "mli_from_outside_to_inside.h"
 
-
 int mliDisc_intersection(
         const struct mliDisc disc,
         const struct mliHomTraComp local2root_comp,
@@ -31,11 +30,9 @@ int mliDisc_intersection(
                                 struct mliVec normal_local =
                                         mli_xyplane_surface_normal();
                                 intersection->position = mliHomTra_pos(
-                                        &local2root,
-                                        position_local);
+                                        &local2root, position_local);
                                 intersection->surface_normal = mliHomTra_dir(
-                                        &local2root,
-                                        normal_local);
+                                        &local2root, normal_local);
                                 intersection->distance_of_ray = solution;
                                 intersection->from_outside_to_inside =
                                         mli_ray_runs_from_outside_to_inside(

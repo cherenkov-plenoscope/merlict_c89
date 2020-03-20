@@ -25,15 +25,14 @@
 
 #define MLI_FRAME_NAME_SIZE 64u
 
-
 struct mliFrame;
 
-MLIDYNARRAY_TEMPLATE(mli, FramePtr, struct mliFrame*)
+MLIDYNARRAY_TEMPLATE(mli, FramePtr, struct mliFrame *)
 
 struct mliFrame {
         char name[MLI_FRAME_NAME_SIZE];
         uint64_t id;
-        struct mliFrame* mother;
+        struct mliFrame *mother;
         struct mliDynFramePtr children;
 
         struct mliHomTraComp frame2mother;
@@ -60,9 +59,8 @@ struct mliFrame mliFrame_init()
         f.children = mliDynFramePtr_init();
         f.mother = NULL;
         f.frame2mother.trans = mliVec_set(0., 0., 0.);
-        f.frame2mother.rot = mliQuaternion_set_rotaxis_and_angle(
-                mliVec_set(0., 0., 0.),
-                0.);
+        f.frame2mother.rot =
+                mliQuaternion_set_rotaxis_and_angle(mliVec_set(0., 0., 0.), 0.);
         f.frame2root = f.frame2mother;
         f.type = MLI_FRAME;
         f.boundary_layer.inner.surface = 0u;
@@ -75,39 +73,39 @@ struct mliFrame mliFrame_init()
 int mliFrame_free(struct mliFrame *f)
 {
         uint64_t c;
-        switch(f->type) {
-                case MLI_FRAME:
-                        for (c = 0; c < f->children.dyn.size; c++) {
-                                struct mliFrame *child = f->children.arr[c];
-                                mliFrame_free(child);
-                        }
-                        mliDynFramePtr_free(&f->children);
-                        break;
-                case MLI_MESH:
-                        mliMesh_free(f->primitive.mesh);
-                        free(f->primitive.mesh);
-                        break;
-                case MLI_SPHERICAL_CAP_HEX:
-                        free(f->primitive.spherical_cap_hex);
-                        break;
-                case MLI_SPHERE:
-                        free(f->primitive.sphere);
-                        break;
-                case MLI_CYLINDER:
-                        free(f->primitive.cylinder);
-                        break;
-                case MLI_HEXAGON:
-                        free(f->primitive.hexagon);
-                        break;
-                case MLI_BICIRCLEPLANE:
-                        free(f->primitive.bicircleplane);
-                        break;
-                case MLI_DISC:
-                        free(f->primitive.disc);
-                        break;
-                default:
-                        mli_sentinel("Can not free unknown type of primitive.");
-                        break;
+        switch (f->type) {
+        case MLI_FRAME:
+                for (c = 0; c < f->children.dyn.size; c++) {
+                        struct mliFrame *child = f->children.arr[c];
+                        mliFrame_free(child);
+                }
+                mliDynFramePtr_free(&f->children);
+                break;
+        case MLI_MESH:
+                mliMesh_free(f->primitive.mesh);
+                free(f->primitive.mesh);
+                break;
+        case MLI_SPHERICAL_CAP_HEX:
+                free(f->primitive.spherical_cap_hex);
+                break;
+        case MLI_SPHERE:
+                free(f->primitive.sphere);
+                break;
+        case MLI_CYLINDER:
+                free(f->primitive.cylinder);
+                break;
+        case MLI_HEXAGON:
+                free(f->primitive.hexagon);
+                break;
+        case MLI_BICIRCLEPLANE:
+                free(f->primitive.bicircleplane);
+                break;
+        case MLI_DISC:
+                free(f->primitive.disc);
+                break;
+        default:
+                mli_sentinel("Can not free unknown type of primitive.");
+                break;
         }
         *f = mliFrame_init();
         return 1;
@@ -119,7 +117,7 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type)
 {
         mli_check(mliFrame_free(f), "Failed to free Frame before malloc.");
         f->type = type;
-        switch(type) {
+        switch (type) {
         case MLI_FRAME:
                 mli_check(
                         mliDynFramePtr_malloc(&f->children, 0u),
@@ -153,7 +151,9 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type)
         case MLI_DISC:
                 mli_malloc(f->primitive.disc, struct mliDisc, 1u);
                 break;
-        default: mli_sentinel("Unknown type of primitive."); break;
+        default:
+                mli_sentinel("Unknown type of primitive.");
+                break;
         }
         return 1;
 error:
@@ -164,9 +164,11 @@ int mliFrame_set_mother_and_child(
         struct mliFrame *mother,
         struct mliFrame *child)
 {
-        mli_check(mother->type == MLI_FRAME,
+        mli_check(
+                mother->type == MLI_FRAME,
                 "Expected mother to be of type FRAME");
-        mli_check(mliDynFramePtr_push_back(&mother->children, child),
+        mli_check(
+                mliDynFramePtr_push_back(&mother->children, child),
                 "Can not push back child-frame.");
 
         child->mother = (struct mliFrame *)mother;
@@ -181,36 +183,56 @@ struct mliFrame *mliFrame_add(struct mliFrame *mother, const uint64_t type)
         mli_malloc(child, struct mliFrame, 1u);
         (*child) = mliFrame_init();
         mli_check(
-                mliFrame_malloc(child, type),
-                "Can not allocate child-frame.");
-        mli_check(mliFrame_set_mother_and_child(mother, child),
+                mliFrame_malloc(child, type), "Can not allocate child-frame.");
+        mli_check(
+                mliFrame_set_mother_and_child(mother, child),
                 "Can not allocate child-pointer.");
         return child;
 error:
         return NULL;
 }
 
-int mli_type_to_string(const uint64_t type, char* s)
+int mli_type_to_string(const uint64_t type, char *s)
 {
         switch (type) {
-        case MLI_TRIANGLE: sprintf(s, "Triangle"); break;
-        case MLI_FRAME: sprintf(s, "Frame"); break;
-        case MLI_MESH: sprintf(s, "Mesh"); break;
-        case MLI_SPHERICAL_CAP_HEX:sprintf(s, "SphericalCapHex"); break;
-        case MLI_SPHERE: sprintf(s, "Sphere"); break;
-        case MLI_CYLINDER: sprintf(s, "Cylinder"); break;
-        case MLI_HEXAGON: sprintf(s, "Hexagon"); break;
-        case MLI_BICIRCLEPLANE: sprintf(s, "BiCirclePlane"); break;
-        case MLI_DISC: sprintf(s, "Disc"); break;
+        case MLI_TRIANGLE:
+                sprintf(s, "Triangle");
+                break;
+        case MLI_FRAME:
+                sprintf(s, "Frame");
+                break;
+        case MLI_MESH:
+                sprintf(s, "Mesh");
+                break;
+        case MLI_SPHERICAL_CAP_HEX:
+                sprintf(s, "SphericalCapHex");
+                break;
+        case MLI_SPHERE:
+                sprintf(s, "Sphere");
+                break;
+        case MLI_CYLINDER:
+                sprintf(s, "Cylinder");
+                break;
+        case MLI_HEXAGON:
+                sprintf(s, "Hexagon");
+                break;
+        case MLI_BICIRCLEPLANE:
+                sprintf(s, "BiCirclePlane");
+                break;
+        case MLI_DISC:
+                sprintf(s, "Disc");
+                break;
         default:
                 fprintf(stderr, "Unknown Type: %ld\n", type);
-                mli_sentinel("Type is unknown."); break;}
+                mli_sentinel("Type is unknown.");
+                break;
+        }
         return 1;
 error:
         return 0;
 }
 
-int mli_string_to_type(const char* s, uint64_t *type)
+int mli_string_to_type(const char *s, uint64_t *type)
 {
         if (strcmp(s, "Frame") == 0) {
                 *type = MLI_FRAME;
@@ -242,31 +264,31 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
         char type_string[1024];
         mli_type_to_string(f->type, type_string);
         printf("%*s", (int)indention, "");
-        printf(" __%s__ id:%lu, at:%p\n", type_string, f->id, (void*)f);
+        printf(" __%s__ id:%lu, at:%p\n", type_string, f->id, (void *)f);
         printf("%*s", (int)indention, "");
         printf("|-mother: id:");
         if (f->mother != NULL) {
                 printf("%lu,", f->mother->id);
         } else {
-                printf("%p,", (void*)f->mother);
+                printf("%p,", (void *)f->mother);
         }
-        printf(" at:%p\n", (void*)f->mother);
+        printf(" at:%p\n", (void *)f->mother);
         printf("%*s", (int)indention, "");
         printf("|-pos: (%0.1f, %0.1f, %0.1f)\n",
-                f->frame2mother.trans.x,
-                f->frame2mother.trans.y,
-                f->frame2mother.trans.z);
+               f->frame2mother.trans.x,
+               f->frame2mother.trans.y,
+               f->frame2mother.trans.z);
         printf("%*s", (int)indention, "");
         printf("|-rot: (%.1f| %.1f, %.1f, %.1f)\n",
-                f->frame2mother.rot.w,
-                f->frame2mother.rot.x,
-                f->frame2mother.rot.y,
-                f->frame2mother.rot.z);
+               f->frame2mother.rot.w,
+               f->frame2mother.rot.x,
+               f->frame2mother.rot.y,
+               f->frame2mother.rot.z);
         if (f->type != MLI_FRAME) {
                 printf("%*s", (int)indention, "");
                 printf("|-boundary_layer (inner: %u, outer: %u)\n",
-                        f->boundary_layer.inner.surface,
-                        f->boundary_layer.outer.surface);
+                       f->boundary_layer.inner.surface,
+                       f->boundary_layer.outer.surface);
         }
         for (c = 0; c < f->children.dyn.size; c++) {
                 const struct mliFrame *child = f->children.arr[c];
@@ -274,10 +296,7 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
         }
 }
 
-void mliFrame_print(struct mliFrame *f)
-{
-        __mliFrame_print(f, 0u);
-}
+void mliFrame_print(struct mliFrame *f) { __mliFrame_print(f, 0u); }
 
 void mliFrame_set_frame2root(struct mliFrame *f)
 {
@@ -285,8 +304,7 @@ void mliFrame_set_frame2root(struct mliFrame *f)
                 f->frame2root = f->frame2mother;
         } else {
                 f->frame2root = mliHomTraComp_sequence(
-                        f->mother->frame2root,
-                        f->frame2mother);
+                        f->mother->frame2root, f->frame2mother);
         }
         if (f->type == MLI_FRAME) {
                 uint64_t c;

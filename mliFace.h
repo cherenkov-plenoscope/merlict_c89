@@ -4,16 +4,13 @@
 
 #include <stdint.h>
 
-struct mliFace{
+struct mliFace {
         uint32_t a;
         uint32_t b;
         uint32_t c;
 };
 
-struct mliFace mliFace_set(
-        const uint32_t a,
-        const uint32_t b,
-        const uint32_t c)
+struct mliFace mliFace_set(const uint32_t a, const uint32_t b, const uint32_t c)
 {
         struct mliFace face;
         face.a = a;
@@ -22,11 +19,14 @@ struct mliFace mliFace_set(
         return face;
 }
 
-int mliFace_is_equal (const struct mliFace a, const struct mliFace b)
+int mliFace_is_equal(const struct mliFace a, const struct mliFace b)
 {
-        if (a.a != b.a) return 0;
-        if (a.b != b.b) return 0;
-        if (a.c != b.c) return 0;
+        if (a.a != b.a)
+                return 0;
+        if (a.b != b.b)
+                return 0;
+        if (a.c != b.c)
+                return 0;
         return 1;
 }
 

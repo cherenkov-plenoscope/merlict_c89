@@ -27,10 +27,10 @@ struct mliMap2 mliMap2_init()
 void mliMap2_free(struct mliMap2 *map)
 {
         if (map->keys != NULL) {
-            size_t i;
-            for (i = 0; i < map->capacity; i++) {
-                free(map->keys[i]);
-            }
+                size_t i;
+                for (i = 0; i < map->capacity; i++) {
+                        free(map->keys[i]);
+                }
         }
         free(map->keys);
         free(map->values);
@@ -60,7 +60,7 @@ int mliMap2_malloc(struct mliMap2 *map, const size_t capacity)
         mli_malloc(map->values, uint32_t, map->capacity);
         _mliMap2_set_zero(map);
         return 1;
-    error:
+error:
         return 0;
 }
 
@@ -86,26 +86,29 @@ int32_t _mliMap2_value_idx(const struct mliMap2 *map, const uint32_t value)
 
 int mliMap2_insert(struct mliMap2 *map, const char *key, const uint32_t value)
 {
-        mli_check(map->size < map->capacity,
-                "Can not insert, reached capacity.");
-        mli_check(strlen(key) < MLI_MAP_KEY_CAPACITY,
+        mli_check(
+                map->size < map->capacity, "Can not insert, reached capacity.");
+        mli_check(
+                strlen(key) < MLI_MAP_KEY_CAPACITY,
                 "Can not insert, key is too long.");
-        mli_check(_mliMap2_key_idx(map, key) < 0,
+        mli_check(
+                _mliMap2_key_idx(map, key) < 0,
                 "Can not insert, key is already in use.");
-        mli_check(_mliMap2_value_idx(map, value) < 0,
+        mli_check(
+                _mliMap2_value_idx(map, value) < 0,
                 "Can not insert, value is already in use.");
         strcpy(map->keys[map->size], key);
         map->values[map->size] = value;
         map->size++;
         return 1;
-    error:
+error:
         return 0;
 }
 
 int mliMap2_get_value(
-    const struct mliMap2 *map,
-    const char *key,
-    uint32_t *value)
+        const struct mliMap2 *map,
+        const char *key,
+        uint32_t *value)
 {
         int32_t idx = _mliMap2_key_idx(map, key);
         if (idx >= 0) {
@@ -116,10 +119,7 @@ int mliMap2_get_value(
         }
 }
 
-int mliMap2_get_key(
-    const struct mliMap2 *map,
-    const uint32_t value,
-    char *key)
+int mliMap2_get_key(const struct mliMap2 *map, const uint32_t value, char *key)
 {
         int32_t idx = _mliMap2_value_idx(map, value);
         if (idx >= 0) {
@@ -140,24 +140,10 @@ int mliMap2_has_value(const struct mliMap2 *map, const uint32_t value)
         return _mliMap2_value_idx(map, value) >= 0 ? 1 : 0;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #include "mli_variable_length_integer.h"
 
 #define MLI_MAP_TYPE_LEAF 1
 #define MLI_MAP_TYPE_NODE 2
-
 
 struct mliMapNode {
         struct mliMapNode *upper;
@@ -212,15 +198,13 @@ int _mliMap_insert(struct mliMapNode **node, struct mliMapNode *leaf)
                 struct mliDynUint8 tmp_sum = mliDynUint8_init();
                 struct mliMapNode *new_node;
 
-                mli_check(!mliDynUint8_equal(&leaf->key, &(*node)->key),
+                mli_check(
+                        !mliDynUint8_equal(&leaf->key, &(*node)->key),
                         "Key already in use");
 
-                mli_c(mliDynUint8_add(
-                        &leaf->key,
-                        &((*node)->key),
-                        &tmp_sum));
-                new_node = (struct mliMapNode *)malloc(
-                        sizeof(struct mliMapNode));
+                mli_c(mliDynUint8_add(&leaf->key, &((*node)->key), &tmp_sum));
+                new_node =
+                        (struct mliMapNode *)malloc(sizeof(struct mliMapNode));
                 mli_check(new_node, "Failed to malloc new node");
                 new_node->type = MLI_MAP_TYPE_NODE;
                 new_node->value = 0;
@@ -240,7 +224,7 @@ int _mliMap_insert(struct mliMapNode **node, struct mliMapNode *leaf)
                 assert(0);
         }
         return 1;
-    error:
+error:
         return 0;
 }
 
@@ -249,8 +233,8 @@ int mliMap_malloc_insert(
         const char *key_str,
         const uint64_t value)
 {
-        struct mliMapNode *leaf = (struct mliMapNode *)malloc(
-                sizeof(struct mliMapNode));
+        struct mliMapNode *leaf =
+                (struct mliMapNode *)malloc(sizeof(struct mliMapNode));
         mli_check(leaf != NULL, "Failed to malloc leaf");
         leaf->type = MLI_MAP_TYPE_LEAF;
         leaf->value = value;
@@ -261,7 +245,7 @@ int mliMap_malloc_insert(
         mli_check(_mliMap_insert(&map->root, leaf), "Failed to insert");
         map->size += 1u;
         return 1;
-    error:
+error:
         return 0;
 }
 
@@ -294,9 +278,7 @@ int mliMap_get(const struct mliMap *map, const char *key_str, uint64_t *out)
         struct mliDynUint8 tmp_key = mliDynUint8_init();
         tmp_key.dyn.size = strlen(key_str) + 1;
         tmp_key.arr = (uint8_t *)key_str;
-        corresponding_node = _mliMap_has(
-                map->root,
-                &tmp_key);
+        corresponding_node = _mliMap_has(map->root, &tmp_key);
         if (corresponding_node == NULL) {
                 return 0;
         } else {
@@ -321,20 +303,15 @@ void _mliMap_print(struct mliMapNode *node, const uint64_t indent)
                 fprintf(stderr, "NULL\n");
         } else if (node->type == MLI_MAP_TYPE_NODE) {
                 fprintf(stderr, "NODE\n");
-                _mliMap_print(node->lower, indent+4);
-                _mliMap_print(node->upper, indent+4);
+                _mliMap_print(node->lower, indent + 4);
+                _mliMap_print(node->upper, indent + 4);
         } else if (node->type == MLI_MAP_TYPE_LEAF) {
-                fprintf(
-                        stderr, "LEAF(%s)\n",
-                        node->key.arr);
+                fprintf(stderr, "LEAF(%s)\n", node->key.arr);
         } else {
-            assert(0);
+                assert(0);
         }
 }
 
-void mliMap_print(struct mliMap *map)
-{
-        _mliMap_print(map->root, 0);
-}
+void mliMap_print(struct mliMap *map) { _mliMap_print(map->root, 0); }
 
 #endif

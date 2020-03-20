@@ -30,7 +30,7 @@ int _mliDynArray_reallocate(
         void **arr,
         uint64_t new_capacity)
 {
-        uint64_t new_capacity_in_bytes = new_capacity*dyn->sizeof_element;
+        uint64_t new_capacity_in_bytes = new_capacity * dyn->sizeof_element;
         (*arr) = realloc((*arr), new_capacity_in_bytes);
         mli_check_mem((*arr));
         dyn->capacity = new_capacity;
@@ -44,7 +44,7 @@ void *_mliDynArray_offset(
         void **arr,
         const uint64_t index)
 {
-        return (uint8_t *)(*arr) + (index*dyn->sizeof_element);
+        return (uint8_t *)(*arr) + (index * dyn->sizeof_element);
 }
 
 void _mliDynArray_assign(
@@ -53,7 +53,7 @@ void _mliDynArray_assign(
         const uint64_t index,
         const void *element)
 {
-        void* offset = _mliDynArray_offset(dyn, arr, index);
+        void *offset = _mliDynArray_offset(dyn, arr, index);
         memcpy(offset, element, dyn->sizeof_element);
 }
 
@@ -68,7 +68,7 @@ void mliDynArray_init_in_host(
         dyn->size = 0u;
         dyn->capacity = 0u;
         dyn->sizeof_element = sizeof_element;
-        (*arr) = NULL ;
+        (*arr) = NULL;
 }
 
 int mliDynArray_malloc_in_host(
@@ -79,7 +79,7 @@ int mliDynArray_malloc_in_host(
         uint64_t new_capacity;
         dyn->size = 0;
         new_capacity = MLI_MAX2(MLI_DYNARRAY_MIN_CAPACITY, capacity);
-        (*arr) = (void **)malloc(new_capacity*dyn->sizeof_element);
+        (*arr) = (void **)malloc(new_capacity * dyn->sizeof_element);
         mli_check_mem((*arr));
         dyn->capacity = new_capacity;
         return 1;
@@ -93,10 +93,11 @@ int mliDynArray_push_back_in_host(
         const void *element)
 {
         if (_mliDynArray_should_grow(dyn)) {
-                mli_check(_mliDynArray_reallocate(
-                        dyn,
-                        arr,
-                        dyn->size*MLI_DYNARRAY_GROWTH_FACTOR),
+                mli_check(
+                        _mliDynArray_reallocate(
+                                dyn,
+                                arr,
+                                dyn->size * MLI_DYNARRAY_GROWTH_FACTOR),
                         "Failed to grow dynamic array");
         }
         _mliDynArray_assign(dyn, arr, dyn->size, element);

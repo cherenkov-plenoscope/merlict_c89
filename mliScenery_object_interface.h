@@ -60,8 +60,7 @@ struct mliIndex _mliScenery_resolve_index(
         const uint64_t idx_start_discs =
                 idx_start_bicircleplanes + scenery->num_bicircleplanes;
 
-        const uint64_t idx_next =
-                idx_start_discs + scenery->num_discs;
+        const uint64_t idx_next = idx_start_discs + scenery->num_discs;
 
         struct mliIndex ri;
         if (idx < scenery->num_triangles) {
@@ -105,53 +104,51 @@ int mliScenery_overlap_obb(
         const struct mliOBB obb)
 {
         struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
-        switch(i.type) {
-                case MLI_TRIANGLE:
-                        return mliTriangle_has_overlap_obb(
-                                scenery->vertices[scenery->triangles[i.idx].a],
-                                scenery->vertices[scenery->triangles[i.idx].b],
-                                scenery->vertices[scenery->triangles[i.idx].c],
-                                obb);
-                        break;
-                case MLI_SPHERICAL_CAP_HEX:
-                        return mliSphericalCapHex_has_overlap_obb(
-                                scenery->spherical_cap_hex[i.idx],
-                                scenery->spherical_cap_hex_T[i.idx],
-                                obb);
-                        break;
-                case MLI_SPHERE:
-                        return mliSphere_has_overlap_obb(
-                                scenery->spheres[i.idx].radius,
-                                scenery->spheres_T[i.idx].trans,
-                                obb);
-                        break;
-                case MLI_CYLINDER:
-                        return mliCylinder_has_overlap_obb(
-                                scenery->cylinders[i.idx],
-                                scenery->cylinders_T[i.idx],
-                                obb);
-                        break;
-                case MLI_HEXAGON:
-                        return mliHexagon_has_overlap_obb(
-                                scenery->hexagons[i.idx],
-                                scenery->hexagons_T[i.idx],
-                                obb);
-                        break;
-                case MLI_BICIRCLEPLANE:
-                        return mliBiCirclePlane_has_overlap_obb(
-                                scenery->bicircleplanes[i.idx],
-                                scenery->bicircleplanes_T[i.idx],
-                                obb);
-                        break;
-                case MLI_DISC:
-                        return mliDisc_has_overlap_obb(
-                                scenery->discs[i.idx],
-                                scenery->discs_T[i.idx],
-                                obb);
-                        break;
-                default:
-                        return 0;
-                        break;
+        switch (i.type) {
+        case MLI_TRIANGLE:
+                return mliTriangle_has_overlap_obb(
+                        scenery->vertices[scenery->triangles[i.idx].a],
+                        scenery->vertices[scenery->triangles[i.idx].b],
+                        scenery->vertices[scenery->triangles[i.idx].c],
+                        obb);
+                break;
+        case MLI_SPHERICAL_CAP_HEX:
+                return mliSphericalCapHex_has_overlap_obb(
+                        scenery->spherical_cap_hex[i.idx],
+                        scenery->spherical_cap_hex_T[i.idx],
+                        obb);
+                break;
+        case MLI_SPHERE:
+                return mliSphere_has_overlap_obb(
+                        scenery->spheres[i.idx].radius,
+                        scenery->spheres_T[i.idx].trans,
+                        obb);
+                break;
+        case MLI_CYLINDER:
+                return mliCylinder_has_overlap_obb(
+                        scenery->cylinders[i.idx],
+                        scenery->cylinders_T[i.idx],
+                        obb);
+                break;
+        case MLI_HEXAGON:
+                return mliHexagon_has_overlap_obb(
+                        scenery->hexagons[i.idx],
+                        scenery->hexagons_T[i.idx],
+                        obb);
+                break;
+        case MLI_BICIRCLEPLANE:
+                return mliBiCirclePlane_has_overlap_obb(
+                        scenery->bicircleplanes[i.idx],
+                        scenery->bicircleplanes_T[i.idx],
+                        obb);
+                break;
+        case MLI_DISC:
+                return mliDisc_has_overlap_obb(
+                        scenery->discs[i.idx], scenery->discs_T[i.idx], obb);
+                break;
+        default:
+                return 0;
+                break;
         }
         return 0;
 }
@@ -162,48 +159,45 @@ struct mliOBB mliScenery_obb(
 {
         struct mliOBB obb;
         struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
-        switch(i.type) {
-                case MLI_TRIANGLE:
-                        return mliTriangle_obb(
-                                scenery->vertices[scenery->triangles[i.idx].a],
-                                scenery->vertices[scenery->triangles[i.idx].b],
-                                scenery->vertices[scenery->triangles[i.idx].c]);
-                        break;
-                case MLI_SPHERICAL_CAP_HEX:
-                        return mliSphericalCapHex_obb(
-                                scenery->spherical_cap_hex[i.idx],
-                                scenery->spherical_cap_hex_T[i.idx]);
-                        break;
-                case MLI_SPHERE:
-                        return mliSphere_obb(
-                                scenery->spheres[i.idx].radius,
-                                scenery->spheres_T[i.idx].trans);
-                        break;
-                case MLI_CYLINDER:
-                        return mliCylinder_obb(
-                                scenery->cylinders[i.idx],
-                                scenery->cylinders_T[i.idx]);
-                        break;
-                case MLI_HEXAGON:
-                        return mliHexagon_obb(
-                                scenery->hexagons[i.idx],
-                                scenery->hexagons_T[i.idx]);
-                        break;
-                case MLI_BICIRCLEPLANE:
-                        return mliBiCirclePlane_obb(
-                                scenery->bicircleplanes[i.idx],
-                                scenery->bicircleplanes_T[i.idx]);
-                        break;
-                case MLI_DISC:
-                        return mliDisc_obb(
-                                scenery->discs[i.idx],
-                                scenery->discs_T[i.idx]);
-                        break;
-                default:
-                        obb.lower = mliVec_set(0., 0., 0);
-                        obb.upper = mliVec_set(0., 0., 0);
-                        return obb;
-                        break;
+        switch (i.type) {
+        case MLI_TRIANGLE:
+                return mliTriangle_obb(
+                        scenery->vertices[scenery->triangles[i.idx].a],
+                        scenery->vertices[scenery->triangles[i.idx].b],
+                        scenery->vertices[scenery->triangles[i.idx].c]);
+                break;
+        case MLI_SPHERICAL_CAP_HEX:
+                return mliSphericalCapHex_obb(
+                        scenery->spherical_cap_hex[i.idx],
+                        scenery->spherical_cap_hex_T[i.idx]);
+                break;
+        case MLI_SPHERE:
+                return mliSphere_obb(
+                        scenery->spheres[i.idx].radius,
+                        scenery->spheres_T[i.idx].trans);
+                break;
+        case MLI_CYLINDER:
+                return mliCylinder_obb(
+                        scenery->cylinders[i.idx], scenery->cylinders_T[i.idx]);
+                break;
+        case MLI_HEXAGON:
+                return mliHexagon_obb(
+                        scenery->hexagons[i.idx], scenery->hexagons_T[i.idx]);
+                break;
+        case MLI_BICIRCLEPLANE:
+                return mliBiCirclePlane_obb(
+                        scenery->bicircleplanes[i.idx],
+                        scenery->bicircleplanes_T[i.idx]);
+                break;
+        case MLI_DISC:
+                return mliDisc_obb(
+                        scenery->discs[i.idx], scenery->discs_T[i.idx]);
+                break;
+        default:
+                obb.lower = mliVec_set(0., 0., 0);
+                obb.upper = mliVec_set(0., 0., 0);
+                return obb;
+                break;
         }
         obb.lower = mliVec_set(0., 0., 0);
         obb.upper = mliVec_set(0., 0., 0);
@@ -233,60 +227,60 @@ int mliScenery_intersection(
 {
         struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
         intersection->object_idx = idx;
-        switch(i.type) {
-                case MLI_TRIANGLE:
-                        return mliTriangle_intersection(
-                                scenery->vertices[scenery->triangles[i.idx].a],
-                                scenery->vertices[scenery->triangles[i.idx].b],
-                                scenery->vertices[scenery->triangles[i.idx].c],
-                                ray,
-                                intersection);
-                        break;
-                case MLI_SPHERICAL_CAP_HEX:
-                        return mliSphericalCapHex_intersection(
-                                scenery->spherical_cap_hex[i.idx],
-                                scenery->spherical_cap_hex_T[i.idx],
-                                ray,
-                                intersection);
-                        break;
-                case MLI_SPHERE:
-                        return mliSphere_intersection(
-                                scenery->spheres[i.idx],
-                                scenery->spheres_T[i.idx],
-                                ray,
-                                intersection);
-                        break;
-                case MLI_CYLINDER:
-                        return mliCylinder_intersection(
-                                scenery->cylinders[i.idx],
-                                scenery->cylinders_T[i.idx],
-                                ray,
-                                intersection);
-                        break;
-                case MLI_HEXAGON:
-                        return mliHexagon_intersection(
-                                scenery->hexagons[i.idx],
-                                scenery->hexagons_T[i.idx],
-                                ray,
-                                intersection);
-                        break;
-                case MLI_BICIRCLEPLANE:
-                        return mliBiCirclePlane_intersection(
-                                scenery->bicircleplanes[i.idx],
-                                scenery->bicircleplanes_T[i.idx],
-                                ray,
-                                intersection);
-                        break;
-                case MLI_DISC:
-                        return mliDisc_intersection(
-                                scenery->discs[i.idx],
-                                scenery->discs_T[i.idx],
-                                ray,
-                                intersection);
-                        break;
-                default:
-                        return 0;
-                        break;
+        switch (i.type) {
+        case MLI_TRIANGLE:
+                return mliTriangle_intersection(
+                        scenery->vertices[scenery->triangles[i.idx].a],
+                        scenery->vertices[scenery->triangles[i.idx].b],
+                        scenery->vertices[scenery->triangles[i.idx].c],
+                        ray,
+                        intersection);
+                break;
+        case MLI_SPHERICAL_CAP_HEX:
+                return mliSphericalCapHex_intersection(
+                        scenery->spherical_cap_hex[i.idx],
+                        scenery->spherical_cap_hex_T[i.idx],
+                        ray,
+                        intersection);
+                break;
+        case MLI_SPHERE:
+                return mliSphere_intersection(
+                        scenery->spheres[i.idx],
+                        scenery->spheres_T[i.idx],
+                        ray,
+                        intersection);
+                break;
+        case MLI_CYLINDER:
+                return mliCylinder_intersection(
+                        scenery->cylinders[i.idx],
+                        scenery->cylinders_T[i.idx],
+                        ray,
+                        intersection);
+                break;
+        case MLI_HEXAGON:
+                return mliHexagon_intersection(
+                        scenery->hexagons[i.idx],
+                        scenery->hexagons_T[i.idx],
+                        ray,
+                        intersection);
+                break;
+        case MLI_BICIRCLEPLANE:
+                return mliBiCirclePlane_intersection(
+                        scenery->bicircleplanes[i.idx],
+                        scenery->bicircleplanes_T[i.idx],
+                        ray,
+                        intersection);
+                break;
+        case MLI_DISC:
+                return mliDisc_intersection(
+                        scenery->discs[i.idx],
+                        scenery->discs_T[i.idx],
+                        ray,
+                        intersection);
+                break;
+        default:
+                return 0;
+                break;
         }
         return 0;
 }
@@ -297,7 +291,7 @@ struct mliBoundaryLayer mliScenery_object_surfaces(
 {
         struct mliBoundaryLayer null_layer;
         struct mliIndex i = _mliScenery_resolve_index(scenery, idx);
-        switch(i.type) {
+        switch (i.type) {
         case MLI_TRIANGLE:
                 return scenery->triangles_boundary_layers[i.idx];
                 break;

@@ -88,7 +88,7 @@ struct mliScenery {
         uint32_t num_bicircleplanes;
         struct mliBiCirclePlane *bicircleplanes;
         struct mliBoundaryLayer *bicircleplanes_boundary_layers;
-        struct mliHomTraComp * bicircleplanes_T;
+        struct mliHomTraComp *bicircleplanes_T;
 
         uint32_t num_discs;
         struct mliDisc *discs;
