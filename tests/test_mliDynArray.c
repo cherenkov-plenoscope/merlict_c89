@@ -1,52 +1,59 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("malloc, and free") {
+CASE("malloc, and free")
+{
         uint64_t i;
         struct mliDynColor vec = mliDynColor_init();
         CHECK(mliDynColor_malloc(&vec, 0u));
         CHECK(vec.dyn.size == 0u);
 
         for (i = 0; i < 100; i++) {
-                struct mliColor color = mliColor_set(i*1., i*2., i*3.);
+                struct mliColor color = mliColor_set(i * 1., i * 2., i * 3.);
                 CHECK(vec.dyn.size == i);
                 CHECK(mliDynColor_push_back(&vec, color));
-                CHECK(vec.dyn.size == i + 1);}
+                CHECK(vec.dyn.size == i + 1);
+        }
 
         for (i = 0; i < vec.dyn.size; i++) {
                 struct mliColor color = vec.arr[i];
-                CHECK_MARGIN(color.r, i*1., 1e-9);
-                CHECK_MARGIN(color.g, i*2., 1e-9);
-                CHECK_MARGIN(color.b, i*3., 1e-9);
-                CHECK(vec.dyn.size == 100);}
+                CHECK_MARGIN(color.r, i * 1., 1e-9);
+                CHECK_MARGIN(color.g, i * 2., 1e-9);
+                CHECK_MARGIN(color.b, i * 3., 1e-9);
+                CHECK(vec.dyn.size == 100);
+        }
 
         mliDynColor_free(&vec);
         CHECK(vec.dyn.size == 0);
         CHECK(vec.dyn.capacity == 0);
 }
 
-CASE("with pointers to mliColor") {
+CASE("with pointers to mliColor")
+{
         uint64_t i;
         struct mliDynColorPtr vec = mliDynColorPtr_init();
         CHECK(mliDynColorPtr_malloc(&vec, 0u));
         CHECK(vec.dyn.size == 0u);
 
         for (i = 0; i < 10; i++) {
-                struct mliColor *ptr_color_in = (struct mliColor*)(i*i);
+                struct mliColor *ptr_color_in = (struct mliColor *)(i * i);
                 CHECK(vec.dyn.size == i);
                 CHECK(mliDynColorPtr_push_back(&vec, ptr_color_in));
-                CHECK(vec.dyn.size == i + 1);}
+                CHECK(vec.dyn.size == i + 1);
+        }
 
         for (i = 0; i < vec.dyn.size; i++) {
                 struct mliColor *ptr_color_out = vec.arr[i];
-                CHECK(ptr_color_out == (struct mliColor*)(i*i));
-                CHECK(vec.dyn.size == 10);}
+                CHECK(ptr_color_out == (struct mliColor *)(i * i));
+                CHECK(vec.dyn.size == 10);
+        }
 
         mliDynColorPtr_free(&vec);
         CHECK(vec.dyn.size == 0);
         CHECK(vec.dyn.capacity == 0);
 }
 
-CASE("DynArray") {
+CASE("DynArray")
+{
         struct mliColor c;
         struct mliDynColor colors = mliDynColor_init();
         CHECK(_mliDynColor_test_after_init(&colors));
@@ -66,7 +73,8 @@ CASE("DynArray") {
         CHECK(_mliDynColor_test_after_free(&colors));
 }
 
-CASE("DynArray malloc 0") {
+CASE("DynArray malloc 0")
+{
         struct mliDynColor colors = mliDynColor_init();
         CHECK(_mliDynColor_test_after_init(&colors));
 
@@ -77,7 +85,8 @@ CASE("DynArray malloc 0") {
         CHECK(_mliDynColor_test_after_free(&colors));
 }
 
-CASE("DynArray push") {
+CASE("DynArray push")
+{
         uint64_t i;
         struct mliDynColor channel = mliDynColor_init();
         CHECK(_mliDynColor_test_after_init(&channel));
@@ -85,21 +94,19 @@ CASE("DynArray push") {
         CHECK(mliDynColor_malloc(&channel, 0));
         CHECK(_mliDynColor_test_after_malloc(&channel, 0));
 
-        for (i = 0; i < 1337*1337; i++) {
+        for (i = 0; i < 1337 * 1337; i++) {
                 struct mliColor c = mliColor_set(
-                        1.*(float)i,
-                        2.*(float)i,
-                        -1.*(float)i);
+                        1. * (float)i, 2. * (float)i, -1. * (float)i);
                 CHECK(mliDynColor_push_back(&channel, c));
         }
-        CHECK(channel.dyn.size == 1337*1337);
+        CHECK(channel.dyn.size == 1337 * 1337);
         CHECK(channel.arr != NULL);
         CHECK(channel.dyn.capacity >= channel.dyn.size);
 
         for (i = 0; i < channel.dyn.size; i++) {
-                CHECK_MARGIN(channel.arr[i].r, 1.*(float)i, 1e-1);
-                CHECK_MARGIN(channel.arr[i].g, 2.*(float)i, 1e-1);
-                CHECK_MARGIN(channel.arr[i].b, -1.*(float)i, 1e-1);
+                CHECK_MARGIN(channel.arr[i].r, 1. * (float)i, 1e-1);
+                CHECK_MARGIN(channel.arr[i].g, 2. * (float)i, 1e-1);
+                CHECK_MARGIN(channel.arr[i].b, -1. * (float)i, 1e-1);
         }
         mliDynColor_free(&channel);
         CHECK(_mliDynColor_test_after_free(&channel));
@@ -110,8 +117,8 @@ CASE("DynArray push") {
         CHECK(_mliDynColor_test_after_free(&channel));
 }
 
-
-CASE("num_pulses ExtractChannels") {
+CASE("num_pulses ExtractChannels")
+{
         uint64_t num_channel_scenarios = 7;
         uint64_t channel_scenarios[7] = {0, 1, 10, 100, 3, 4, 5};
         uint64_t chsc = 0;
@@ -120,28 +127,18 @@ CASE("num_pulses ExtractChannels") {
         uint64_t pulse_scenarios[9] = {0, 1, 10, 50, 0, 3, 64, 12, 1337};
         uint64_t pusc = 0;
 
-        for (
-                chsc = 0;
-                chsc < num_channel_scenarios;
-                chsc++)
-        {
-                for (
-                        pusc = 0;
-                        pusc < num_pulse_scenarios;
-                        pusc++)
-                {
+        for (chsc = 0; chsc < num_channel_scenarios; chsc++) {
+                for (pusc = 0; pusc < num_pulse_scenarios; pusc++) {
                         uint64_t p = 0;
                         uint64_t c = 0;
                         uint64_t expected_num_pulses =
-                                channel_scenarios[chsc]*
-                                pulse_scenarios[pusc];
+                                channel_scenarios[chsc] * pulse_scenarios[pusc];
 
                         struct mliColor ex;
                         struct mliColorChannels phs = mliColorChannels_init();
 
                         CHECK(mliColorChannels_malloc(
-                                &phs,
-                                channel_scenarios[chsc]));
+                                &phs, channel_scenarios[chsc]));
                         CHECK(phs.num_channels == channel_scenarios[chsc]);
 
                         for (c = 0; c < phs.num_channels; c++) {
@@ -150,13 +147,11 @@ CASE("num_pulses ExtractChannels") {
                                         ex.g = p + c;
                                         ex.b = 0;
                                         CHECK(mliDynColor_push_back(
-                                                &phs.channels[c],
-                                                ex));
+                                                &phs.channels[c], ex));
                                 }
                         }
-                        CHECK(
-                                mliColorChannels_total_num(&phs) ==
-                                expected_num_pulses);
+                        CHECK(mliColorChannels_total_num(&phs) ==
+                              expected_num_pulses);
                         mliColorChannels_free(&phs);
                 }
         }

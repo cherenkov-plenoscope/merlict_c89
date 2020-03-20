@@ -1,16 +1,15 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-
-CASE("init mliCaOctree") {
+CASE("init mliCaOctree")
+{
         struct mliOcTree caoctree = mliOcTree_init();
         CHECK(caoctree.cube.lower.x == 0.0);
 }
 
-CASE("sizeof mliNode") {
-        CHECK(sizeof(struct mliNode) == 5*8);
-}
+CASE("sizeof mliNode") { CHECK(sizeof(struct mliNode) == 5 * 8); }
 
-CASE("init mliCaOctree") {
+CASE("init mliCaOctree")
+{
         struct mliScenery scenery = mliScenery_init();
         struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
         struct mliOcTree octree = mliOcTree_init();
@@ -21,16 +20,10 @@ CASE("init mliCaOctree") {
 
         mliTmpNode_set_flat_index(&tmp_octree.root);
         mliTmpNode_num_nodes_leafs_objects(
-                &tmp_octree.root,
-                &num_nodes,
-                &num_leafs,
-                &num_object_links);
+                &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);
 
         CHECK(mliOcTree_malloc(
-            &octree,
-            num_nodes,
-            num_leafs,
-            num_object_links));
+                &octree, num_nodes, num_leafs, num_object_links));
         mliOcTree_set(&octree, &tmp_octree);
 
         CHECK(num_nodes == 49);
@@ -42,9 +35,7 @@ CASE("init mliCaOctree") {
         mli_ray_octree_traversal(
                 &scenery,
                 &octree,
-                mliRay_set(
-                        mliVec_set(0.1 ,2.5, 10.),
-                        mliVec_set(0. ,0., -1.)),
+                mliRay_set(mliVec_set(0.1, 2.5, 10.), mliVec_set(0., 0., -1.)),
                 &isec);
 
         mliTmpOcTree_free(&tmp_octree);

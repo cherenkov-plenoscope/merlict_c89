@@ -1,6 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("map") {
+CASE("map")
+{
         uint64_t ret = 0;
         struct mliMap map = mliMap_init();
         CHECK(mliMap_has(&map, "hans") == 0);
@@ -25,14 +26,15 @@ CASE("map") {
         mliMap_free(&map);
 }
 
-CASE("map2") {
+CASE("map2")
+{
         uint64_t i;
         struct mliMT19937 prng = mliMT19937_init(0);
         struct mliMap map = mliMap_init();
 
         for (i = 0; i < 1000; i++) {
                 char key_str[1024];
-                uint64_t value = (uint64_t)(mli_random_uniform(&prng)*(1000));
+                uint64_t value = (uint64_t)(mli_random_uniform(&prng) * (1000));
                 sprintf(key_str, "%lu", value);
 
                 if (!mliMap_has(&map, key_str)) {
@@ -43,7 +45,8 @@ CASE("map2") {
         mliMap_free(&map);
 }
 
-CASE("empty_map") {
+CASE("empty_map")
+{
         struct mliMap map = mliMap_init();
         CHECK(map.size == 0u);
         mliMap_free(&map);

@@ -1,6 +1,7 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("dynUint8") {
+CASE("dynUint8")
+{
         size_t i;
         struct mliMT19937 prng = mliMT19937_init(0);
         struct mliDynUint8 a = mliDynUint8_init();
@@ -10,10 +11,12 @@ CASE("dynUint8") {
         CHECK(mliDynUint8_malloc(&b, 0));
         CHECK(mliDynUint8_malloc(&r, 0));
 
-        for (i = 0; i<100; i++) {
+        for (i = 0; i < 100; i++) {
                 uint64_t aa, bb, rr;
-                aa = (uint64_t)(mli_random_uniform(&prng)*(1000*1000*1000));
-                bb = (uint64_t)(mli_random_uniform(&prng)*(1000*1000*1000));
+                aa = (uint64_t)(
+                        mli_random_uniform(&prng) * (1000 * 1000 * 1000));
+                bb = (uint64_t)(
+                        mli_random_uniform(&prng) * (1000 * 1000 * 1000));
 
                 CHECK(mli_decimal_to_base255(aa, &a));
                 CHECK(mli_base255_to_decimal(&a) == aa);
@@ -46,7 +49,7 @@ CASE("dynUint8") {
 
                 CHECK(mliDynUint8_divide_two(&a, &r));
                 rr = mli_base255_to_decimal(&r);
-                CHECK(aa/2 == rr);
+                CHECK(aa / 2 == rr);
         }
 
         mliDynUint8_free(&a);
@@ -54,7 +57,8 @@ CASE("dynUint8") {
         mliDynUint8_free(&r);
 }
 
-CASE("dynUint8_from_string") {
+CASE("dynUint8_from_string")
+{
         size_t i;
         struct mliDynUint8 a = mliDynUint8_init();
         char text[6][100] = {
