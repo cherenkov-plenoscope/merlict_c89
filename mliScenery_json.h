@@ -488,13 +488,13 @@ int __mliQuaternion_quaternion_from_json(
                 mliVec_from_json_token(&q, json, token_xyz + 1),
                 "Failed to parse quaternion's 'xyz' from json.");
         /*
-                Recover 4th element: q.w.
-                Expect unit-quaternion:
-                1.0 != q.w**2 + q.x**2 + q.y**2 + q.z**2
-                thus:
-                q.w**2 = 1.0 - q.x**2 - q.y**2 - q.z**2
-                q.w = sqrt(1.0 - q.x**2 - q.y**2 - q.z**2)
-        */
+         *       Recover 4th element: q.w.
+         *       Expect unit-quaternion:
+         *       1.0 != q.w**2 + q.x**2 + q.y**2 + q.z**2
+         *       thus:
+         *       q.w**2 = 1.0 - q.x**2 - q.y**2 - q.z**2
+         *       q.w = sqrt(1.0 - q.x**2 - q.y**2 - q.z**2)
+         */
         w = sqrt(1. - q.x * q.x - q.y * q.y - q.z * q.z);
         *quat = mliQuaternion_set(w, q.x, q.y, q.z);
         mli_check(
