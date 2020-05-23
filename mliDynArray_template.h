@@ -13,7 +13,7 @@
                 PAYLOAD_TYPE *arr;                                             \
         };                                                                     \
                                                                                \
-        struct LIB##Dyn##NAME LIB##Dyn##NAME##_init()                          \
+        struct LIB##Dyn##NAME LIB##Dyn##NAME##_init(void)                      \
         {                                                                      \
                 struct LIB##Dyn##NAME dh;                                      \
                 mliDynArray_init_in_host(                                      \

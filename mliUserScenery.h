@@ -28,7 +28,7 @@ struct mliUserScenery {
         struct mliMap2 surface_names;
 };
 
-struct mliUserScenery mliUserScenery_init()
+struct mliUserScenery mliUserScenery_init(void)
 {
         struct mliUserScenery uscn;
         uscn.resources = mliSceneryResources_init();

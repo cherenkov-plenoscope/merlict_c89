@@ -16,7 +16,7 @@ struct mliImage {
         struct mliColor *raw;
 };
 
-struct mliImage mliImage_init()
+struct mliImage mliImage_init(void)
 {
         struct mliImage img;
         img.num_cols = 0u;

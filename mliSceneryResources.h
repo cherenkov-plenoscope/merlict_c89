@@ -17,7 +17,7 @@ struct mliSceneryResourcesCapacity {
         uint32_t num_media;
 };
 
-struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init()
+struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void)
 {
         struct mliSceneryResourcesCapacity cap;
         cap.num_functions = 0;
@@ -41,7 +41,7 @@ struct mliSceneryResources {
         struct mliMedium *media;
 };
 
-struct mliSceneryResources mliSceneryResources_init()
+struct mliSceneryResources mliSceneryResources_init(void)
 {
         struct mliSceneryResources res;
         res.num_functions = 0u;

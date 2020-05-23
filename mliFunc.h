@@ -13,7 +13,7 @@ struct mliFunc {
         double *y;
 };
 
-struct mliFunc mliFunc_init()
+struct mliFunc mliFunc_init(void)
 {
         struct mliFunc f;
         f.num_points = 0u;

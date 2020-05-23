@@ -19,7 +19,7 @@ struct mliPrimitiveCount {
         uint32_t discs;
 };
 
-struct mliPrimitiveCount mliPrimitiveCount_init()
+struct mliPrimitiveCount mliPrimitiveCount_init(void)
 {
         struct mliPrimitiveCount i;
         i.vertices = 0;

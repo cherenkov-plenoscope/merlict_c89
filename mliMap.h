@@ -14,7 +14,7 @@ struct mliMap2 {
         uint32_t *values;
 };
 
-struct mliMap2 mliMap2_init()
+struct mliMap2 mliMap2_init(void)
 {
         struct mliMap2 map;
         map.capacity = 0u;
@@ -158,7 +158,7 @@ struct mliMap {
         struct mliMapNode *root;
 };
 
-struct mliMap mliMap_init()
+struct mliMap mliMap_init(void)
 {
         struct mliMap map;
         map.size = 0u;

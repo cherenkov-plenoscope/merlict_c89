@@ -21,7 +21,7 @@ struct mliTmpNode {
         int32_t leaf_index;
 };
 
-struct mliTmpNode mliTmpNode_init()
+struct mliTmpNode mliTmpNode_init(void)
 {
         struct mliTmpNode n;
         uint64_t c;
@@ -343,7 +343,7 @@ struct mliTmpOcTree {
         struct mliTmpNode root;
 };
 
-struct mliTmpOcTree mliTmpOcTree_init()
+struct mliTmpOcTree mliTmpOcTree_init(void)
 {
         struct mliTmpOcTree octree;
         octree.cube.lower = mliVec_set(0., 0., 0.);

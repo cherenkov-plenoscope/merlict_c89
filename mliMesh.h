@@ -19,7 +19,7 @@ struct mliMesh {
         struct mliFace *faces;
 };
 
-struct mliMesh mliMesh_init()
+struct mliMesh mliMesh_init(void)
 {
         struct mliMesh m;
         m.num_vertices = 0;

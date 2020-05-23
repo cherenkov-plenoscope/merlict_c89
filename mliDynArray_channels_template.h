@@ -13,7 +13,7 @@
                 struct PAYLOAD_NAME *channels;                                 \
         };                                                                     \
                                                                                \
-        struct LIB##NAME##Channels LIB##NAME##Channels_init()                  \
+        struct LIB##NAME##Channels LIB##NAME##Channels_init(void)              \
         {                                                                      \
                 struct LIB##NAME##Channels phs;                                \
                 phs.num_channels = 0u;                                         \

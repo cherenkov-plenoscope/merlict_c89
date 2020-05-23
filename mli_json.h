@@ -15,7 +15,7 @@ struct mliJson {
         struct jsmntok_t *tokens;
 };
 
-struct mliJson mliJson_init()
+struct mliJson mliJson_init(void)
 {
         struct mliJson j;
         j.num_chars = 0u;

@@ -17,7 +17,7 @@ struct mliPixels {
         struct mliPixel *pixels;
 };
 
-struct mliPixels mliPixels_init()
+struct mliPixels mliPixels_init(void)
 {
         struct mliPixels pix;
         pix.num_pixels = 0u;

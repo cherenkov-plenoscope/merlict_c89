@@ -41,7 +41,7 @@ struct mliSceneryCapacity {
         uint32_t num_discs;
 };
 
-struct mliSceneryCapacity mliSceneryCapacity_init()
+struct mliSceneryCapacity mliSceneryCapacity_init(void)
 {
         struct mliSceneryCapacity cap;
         cap.num_vertices = 0u;
@@ -96,7 +96,7 @@ struct mliScenery {
         struct mliHomTraComp *discs_T;
 };
 
-struct mliScenery mliScenery_init()
+struct mliScenery mliScenery_init(void)
 {
         struct mliScenery s;
         s.resources = mliSceneryResources_init();

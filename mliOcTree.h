@@ -76,7 +76,7 @@ struct mliLeafAddress {
         uint32_t num_object_links;
 };
 
-struct mliLeafAddress mliLeafAddress_init()
+struct mliLeafAddress mliLeafAddress_init(void)
 {
         struct mliLeafAddress address;
         address.first_object_link = 0u;
@@ -91,7 +91,7 @@ struct mliLeafArray {
         uint32_t *object_links;
 };
 
-struct mliLeafArray mliLeafArray_init()
+struct mliLeafArray mliLeafArray_init(void)
 {
         struct mliLeafArray leafs;
         leafs.num_leafs = 0;
@@ -139,7 +139,7 @@ struct mliNode {
         uint8_t types[8];
 };
 
-struct mliNode mliNode_init()
+struct mliNode mliNode_init(void)
 {
         size_t c = 0;
         struct mliNode node;
@@ -158,7 +158,7 @@ struct mliOcTree {
         uint8_t root_type;
 };
 
-struct mliOcTree mliOcTree_init()
+struct mliOcTree mliOcTree_init(void)
 {
         struct mliOcTree tree;
         tree.cube.lower = mliVec_set(0., 0., 0.);

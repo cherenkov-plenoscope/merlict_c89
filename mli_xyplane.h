@@ -30,6 +30,9 @@ int mli_xyplane_equation(const struct mliRay ray, double *solution)
         }
 }
 
-struct mliVec mli_xyplane_surface_normal() { return mliVec_set(0., 0., 1.); }
+struct mliVec mli_xyplane_surface_normal(void)
+{
+        return mliVec_set(0., 0., 1.);
+}
 
 #endif

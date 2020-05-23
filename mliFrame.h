@@ -51,7 +51,7 @@ struct mliFrame {
         struct mliBoundaryLayer boundary_layer;
 };
 
-struct mliFrame mliFrame_init()
+struct mliFrame mliFrame_init(void)
 {
         struct mliFrame f;
         MLI_ZEROS(f.name, MLI_FRAME_NAME_SIZE);
