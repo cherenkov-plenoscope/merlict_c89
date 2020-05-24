@@ -63,6 +63,9 @@
 
 #include "mliTmpOcTree.h"
 #include "mliOcTree.h"
+#include "mliOcTree_write.h"
+#include "mliOcTree_read.h"
+#include "mliOcTree_equal.h"
 #include "mli_ray_octree_traversal.h"
 #include "mli_from_outside_to_inside.h"
 #include "mli_xyplane.h"
