@@ -1,6 +1,7 @@
 ![merlict c89 logo](/readme/merlict_c89_logo_wide_32by9_low.jpg)
 
 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Merlict simulates light. It propagates photons in a scenery, and it can render simple images. Merlict is a header-only-library written in ```c89```. 
 
