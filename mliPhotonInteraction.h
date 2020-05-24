@@ -6,6 +6,9 @@
 #include <stdint.h>
 #include "mliIntersection.h"
 #include "mliVec.h"
+#include "mliPhoton.h"
+
+#define MLI_VACUUM_SPPED_OF_LIGHT 299792458.0
 
 #define MLI_PHOTON_CREATION 101u
 #define MLI_PHOTON_ABSORBTION 102u
@@ -17,18 +20,22 @@
 #define MLI_PHOTON_DIFFUSE_REFLECTION 106u
 
 struct mliPhotonInteraction {
+        int64_t object_idx;
+
         struct mliVec position;
+        struct mliVec position_local;
+        double distance_of_ray;
+
         uint32_t refraction_coming_from;
         uint32_t refraction_going_to;
         uint32_t absorbtion_coming_from;
         uint32_t absorbtion_going_to;
-        double distance_of_ray;
-        int32_t _object_idx;
-        int8_t _from_outside_to_inside;
-        int8_t type;
+
+        int32_t from_outside_to_inside;
+        int32_t type;
 };
 
-int mli_photoninteraction_type_to_string(const int8_t type, char *s)
+int mli_photoninteraction_type_to_string(const int32_t type, char *s)
 {
         switch (type) {
         case MLI_PHOTON_CREATION:
@@ -53,6 +60,28 @@ int mli_photoninteraction_type_to_string(const int8_t type, char *s)
                 mli_sentinel("PhotonInteraction.type is unknown.");
                 break;
         }
+        return 1;
+error:
+        return 0;
+}
+
+int mli_time_of_flight(
+        const struct mliScenery *scenery,
+        const struct mliPhotonInteraction *phisec,
+        const struct mliPhoton *photon,
+        double *time_of_flight)
+{
+        double refractive_index;
+        mli_check(
+                mliFunc_evaluate(
+                        &scenery->resources.functions[
+                                phisec->refraction_coming_from],
+                        photon->wavelength,
+                        &refractive_index),
+                "Failed to eval. refraction for wavelength.");
+
+        (*time_of_flight) = (refractive_index*phisec->distance_of_ray)/
+                MLI_VACUUM_SPPED_OF_LIGHT;
         return 1;
 error:
         return 0;

@@ -59,12 +59,19 @@ CASE("simple propagation")
         creation.absorbtion_going_to = 2u;
         creation.refraction_coming_from = 0u;
         creation.absorbtion_coming_from = 2u;
-        creation._object_idx = -1;
-        creation._from_outside_to_inside = 1;
+        creation.object_idx = -1;
+        creation.from_outside_to_inside = 1;
         CHECK(mliDynPhotonInteraction_push_back(&history, creation));
 
         CHECK(mli_propagate_photon(
-                &scenery, &octree, &history, &photon, &prng, max_interactions));
+                &scenery,
+                &octree,
+                &history,
+                &photon,
+                &prng,
+                max_interactions));
+
+        CHECK(history.dyn.size >= 1);
 
         mliDynPhotonInteraction_print(&history);
 

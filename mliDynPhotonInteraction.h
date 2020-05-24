@@ -33,9 +33,9 @@ void mliDynPhotonInteraction_print(
                 mli_photoninteraction_type_to_string(
                         history->arr[i].type, type_string);
 
-                printf("% 3ld, % 3d, [% -1.1f,% -1.1f,% -1.1f], %-20s, ",
+                printf("% 3ld, % 3ld, [% -1.1f,% -1.1f,% -1.1f], %-20s, ",
                        i,
-                       history->arr[i]._object_idx,
+                       history->arr[i].object_idx,
                        history->arr[i].position.x,
                        history->arr[i].position.y,
                        history->arr[i].position.z,
@@ -53,8 +53,8 @@ void mliDynPhotonInteraction_print(
                         printf(" %1.1f, ", history->arr[i].distance_of_ray);
                 }
 
-                if (history->arr[i]._object_idx >= 0) {
-                        if (history->arr[i]._from_outside_to_inside) {
+                if (history->arr[i].object_idx >= 0) {
+                        if (history->arr[i].from_outside_to_inside) {
                                 printf("%s", out_in);
                         } else {
                                 printf("%s", in_out);

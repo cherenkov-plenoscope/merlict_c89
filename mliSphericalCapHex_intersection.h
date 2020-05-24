@@ -63,6 +63,10 @@ int mliSphericalCapHex_intersection(
                                                 mliHomTra_dir(
                                                         &local2root,
                                                         normal_local);
+                                        intersection->position_local =
+                                                position_local;
+                                        intersection->surface_normal_local =
+                                                normal_local;
                                         intersection->from_outside_to_inside =
                                                 mli_ray_runs_from_outside_to_inside(
                                                         ray_local.direction,

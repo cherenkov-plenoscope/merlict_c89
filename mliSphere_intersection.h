@@ -50,6 +50,8 @@ void mliSphere_set_intersection(
         struct mliVec normal_local = mliVec_normalized(position_local);
         intersection->position = mliHomTra_pos(local2root, position_local);
         intersection->surface_normal = mliHomTra_dir(local2root, normal_local);
+        intersection->position_local = position_local;
+        intersection->surface_normal_local = normal_local;
         intersection->distance_of_ray = ray_solution;
         intersection->from_outside_to_inside =
                 mli_ray_runs_from_outside_to_inside(

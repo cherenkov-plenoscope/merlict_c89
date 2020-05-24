@@ -10,6 +10,8 @@ struct mliIntersection {
         uint64_t object_idx;
         struct mliVec position;
         struct mliVec surface_normal;
+        struct mliVec position_local;
+        struct mliVec surface_normal_local;
         double distance_of_ray;
         int from_outside_to_inside;
 };

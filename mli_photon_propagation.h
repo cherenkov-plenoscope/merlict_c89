@@ -40,13 +40,14 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
 
         phia.type = type;
         phia.position = isec->position;
+        phia.position_local = isec->position_local;
         phia.refraction_coming_from = medi_coming_from.refraction;
         phia.refraction_going_to = medi_going_to.refraction;
         phia.absorbtion_coming_from = medi_coming_from.absorbtion;
         phia.absorbtion_going_to = medi_going_to.absorbtion;
         phia.distance_of_ray = isec->distance_of_ray;
-        phia._object_idx = isec->object_idx;
-        phia._from_outside_to_inside = isec->from_outside_to_inside;
+        phia.object_idx = isec->object_idx;
+        phia.from_outside_to_inside = isec->from_outside_to_inside;
         return phia;
 }
 
@@ -300,6 +301,7 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                 action.type = MLI_PHOTON_ABSORBTION;
                 action.position = mliRay_at(
                         &env->photon->ray, distance_until_next_absorbtion);
+                action.position_local = action.position;
                 action.refraction_coming_from =
                         env->history->arr[last].refraction_coming_from;
                 action.refraction_going_to =
@@ -309,8 +311,8 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                 action.absorbtion_going_to =
                         env->history->arr[last].absorbtion_going_to;
                 action.distance_of_ray = distance_until_next_absorbtion;
-                action._object_idx = -1;
-                action._from_outside_to_inside = 1;
+                action.object_idx = -1;
+                action.from_outside_to_inside = 1;
                 mli_c(mliDynPhotonInteraction_push_back(env->history, action));
                 fprintf(stderr, "%s:%d absorb in void\n", __FILE__, __LINE__);
         }
