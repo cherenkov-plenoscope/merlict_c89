@@ -16,7 +16,8 @@ void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,
         const struct mliScenery *scenery)
 {
-        int64_t i, user_id;
+        uint64_t i;
+        int64_t user_id;
         char type_string[1024];
         char out_in[] = "out->in";
         char in_out[] = "in->out";
