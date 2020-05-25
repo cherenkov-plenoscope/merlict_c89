@@ -26,76 +26,112 @@ struct mliIndex {
         uint32_t idx;
 };
 
+struct mliIndexStarts {
+        uint64_t triangles;
+        uint64_t spherical_cap_hex;
+        uint64_t spheres;
+        uint64_t cylinders;
+        uint64_t hexagons;
+        uint64_t bicircleplanes;
+        uint64_t discs;
+        uint64_t _next;
+};
+
+struct mliIndexStarts mliScenery_index_starts(const struct mliScenery *scenery)
+{
+        struct mliIndexStarts s;
+        s.triangles = 0;
+        s.spherical_cap_hex = scenery->num_triangles;
+        s.spheres = s.spherical_cap_hex + scenery->num_spherical_cap_hex;
+        s.cylinders = s.spheres + scenery->num_spheres;
+        s.hexagons = s.cylinders + scenery->num_cylinders;
+        s.bicircleplanes = s.hexagons + scenery->num_hexagons;
+        s.discs = s.bicircleplanes + scenery->num_bicircleplanes;
+        s._next = s.discs + scenery->num_discs;
+        return s;
+}
+
 uint64_t mliScenery_num_objects(const struct mliScenery *scenery)
 {
-        uint64_t last = 0;
-        last += scenery->num_triangles;
-        last += scenery->num_spherical_cap_hex;
-        last += scenery->num_spheres;
-        last += scenery->num_cylinders;
-        last += scenery->num_hexagons;
-        last += scenery->num_bicircleplanes;
-        last += scenery->num_discs;
-        return last;
+        struct mliIndexStarts starts = mliScenery_index_starts(scenery);
+        return starts._next;
 }
 
 struct mliIndex _mliScenery_resolve_index(
         const struct mliScenery *scenery,
         const uint64_t idx)
 {
-        const uint64_t idx_start_spherical_cap_hex = scenery->num_triangles;
-
-        const uint64_t idx_start_spheres =
-                idx_start_spherical_cap_hex + scenery->num_spherical_cap_hex;
-
-        const uint64_t idx_start_cylinders =
-                idx_start_spheres + scenery->num_spheres;
-
-        const uint64_t idx_start_hexagons =
-                idx_start_cylinders + scenery->num_cylinders;
-
-        const uint64_t idx_start_bicircleplanes =
-                idx_start_hexagons + scenery->num_hexagons;
-
-        const uint64_t idx_start_discs =
-                idx_start_bicircleplanes + scenery->num_bicircleplanes;
-
-        const uint64_t idx_next = idx_start_discs + scenery->num_discs;
+        struct mliIndexStarts starts = mliScenery_index_starts(scenery);
 
         struct mliIndex ri;
         if (idx < scenery->num_triangles) {
                 ri.type = MLI_TRIANGLE;
                 ri.idx = idx;
                 return ri;
-        } else if (idx < idx_start_spheres) {
+        } else if (idx < starts.spheres) {
                 ri.type = MLI_SPHERICAL_CAP_HEX;
-                ri.idx = idx - idx_start_spherical_cap_hex;
+                ri.idx = idx - starts.spherical_cap_hex;
                 return ri;
-        } else if (idx < idx_start_cylinders) {
+        } else if (idx < starts.cylinders) {
                 ri.type = MLI_SPHERE;
-                ri.idx = idx - idx_start_spheres;
+                ri.idx = idx - starts.spheres;
                 return ri;
-        } else if (idx < idx_start_hexagons) {
+        } else if (idx < starts.hexagons) {
                 ri.type = MLI_CYLINDER;
-                ri.idx = idx - idx_start_cylinders;
+                ri.idx = idx - starts.cylinders;
                 return ri;
-        } else if (idx < idx_start_bicircleplanes) {
+        } else if (idx < starts.bicircleplanes) {
                 ri.type = MLI_HEXAGON;
-                ri.idx = idx - idx_start_hexagons;
+                ri.idx = idx - starts.hexagons;
                 return ri;
-        } else if (idx < idx_start_discs) {
+        } else if (idx < starts.discs) {
                 ri.type = MLI_BICIRCLEPLANE;
-                ri.idx = idx - idx_start_bicircleplanes;
+                ri.idx = idx - starts.bicircleplanes;
                 return ri;
-        } else if (idx < idx_next) {
+        } else if (idx < starts._next) {
                 ri.type = MLI_DISC;
-                ri.idx = idx - idx_start_discs;
+                ri.idx = idx - starts.discs;
                 return ri;
         }
         assert(idx < mliScenery_num_objects(scenery) + 1);
         ri.type = 0u;
         ri.idx = 0u;
         return ri;
+}
+
+uint64_t _mliScenery_merge_index(
+        const struct mliScenery *scenery,
+        const uint32_t type,
+        const uint32_t idx)
+{
+        struct mliIndexStarts starts = mliScenery_index_starts(scenery);
+        switch (type) {
+        case MLI_TRIANGLE:
+                return starts.triangles + idx;
+                break;
+        case MLI_SPHERICAL_CAP_HEX:
+                return starts.spherical_cap_hex + idx;
+                break;
+        case MLI_SPHERE:
+                return starts.spheres + idx;
+                break;
+        case MLI_CYLINDER:
+                return starts.cylinders + idx;
+                break;
+        case MLI_HEXAGON:
+                return starts.hexagons + idx;
+                break;
+        case MLI_BICIRCLEPLANE:
+                return starts.bicircleplanes + idx;
+                break;
+        case MLI_DISC:
+                return starts.discs + idx;
+                break;
+        default:
+                return 0;
+                break;
+        }
+        return 0;
 }
 
 int mliScenery_overlap_obb(
