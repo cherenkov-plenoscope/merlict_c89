@@ -314,7 +314,6 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                 action.object_idx = -1;
                 action.from_outside_to_inside = 1;
                 mli_c(mliDynPhotonInteraction_push_back(env->history, action));
-                fprintf(stderr, "%s:%d absorb in void\n", __FILE__, __LINE__);
         }
         return 1;
 error:
