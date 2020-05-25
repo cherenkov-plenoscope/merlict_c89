@@ -6,7 +6,7 @@ CASE("simple propagation")
         struct mliScenery scenery = mliScenery_init();
         struct mliOcTree octree = mliOcTree_init();
         struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
-        struct mliPhotonInteraction creation;
+        /*struct mliPhotonInteraction creation;*/
         struct mliIntersection intersection;
         struct mliSide side_coming_from, side_going_to;
         struct mliSurface surf_coming_from, surf_going_to;
@@ -53,6 +53,7 @@ CASE("simple propagation")
 
         CHECK(mliDynPhotonInteraction_malloc(&history, max_interactions));
 
+        /*
         creation.type = MLI_PHOTON_CREATION;
         creation.position = photon.ray.support;
         creation.refraction_going_to = 0u;
@@ -62,6 +63,7 @@ CASE("simple propagation")
         creation.object_idx = -1;
         creation.from_outside_to_inside = 1;
         CHECK(mliDynPhotonInteraction_push_back(&history, creation));
+        */
 
         CHECK(mli_propagate_photon(
                 &scenery,

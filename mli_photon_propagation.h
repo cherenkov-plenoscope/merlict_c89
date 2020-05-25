@@ -253,18 +253,28 @@ error:
 }
 
 int _mli_distance_until_next_absorbtion(
+        const struct mliIntersection next_isec,
         struct mliEnv *env,
         double *distance_to_next_absorption)
 {
         double one_over_e_way;
-        uint64_t last_interaction;
         struct mliFunc *absorbtion_in_medium_coming_from;
-        assert(env->history->dyn.size > 0u);
-        last_interaction = env->history->dyn.size - 1u;
+        struct mliSide side_coming_from;
+        struct mliMedium medi_coming_from;
+
+        side_coming_from = _mli_side_coming_from(env->scenery, &next_isec);
+        medi_coming_from =
+                env->
+                scenery->
+                resources.
+                media[side_coming_from.medium];
+
         absorbtion_in_medium_coming_from =
-                &env->scenery->resources
-                         .functions[env->history->arr[last_interaction]
-                                            .absorbtion_going_to];
+                &env->
+                scenery->
+                resources.
+                functions[medi_coming_from.absorbtion];
+
         mli_check(
                 mliFunc_evaluate(
                         absorbtion_in_medium_coming_from,
@@ -281,24 +291,57 @@ error:
 
 int _mli_work_on_causal_intersection(struct mliEnv *env)
 {
-        int hit;
-        struct mliIntersection isec;
-        double distance_until_next_absorbtion;
+        int hit = 0;
+        double distance_until_next_absorbtion = 0.0;
+        struct mliIntersection next_isec;
+
         hit = mli_first_casual_intersection(
-                env->scenery, env->octree, env->photon->ray, &isec);
-        mli_check(
-                _mli_distance_until_next_absorbtion(
-                        env, &distance_until_next_absorbtion),
+                env->scenery,
+                env->octree,
+                env->photon->ray,
+                &next_isec);
+
+        mli_check(_mli_distance_until_next_absorbtion(
+                next_isec,
+                env,
+                &distance_until_next_absorbtion),
                 "Failed to estimate photon's probability to pass medium coming "
                 "from.");
-        if (hit && distance_until_next_absorbtion > isec.distance_of_ray) {
+
+        if (env->history->dyn.size == 0) {
+                /* creation */
+                struct mliPhotonInteraction creation;
+                struct mliSide side_coming_from;
+                struct mliMedium medi_coming_from;
+
+                side_coming_from = _mli_side_coming_from(env->scenery, &next_isec);
+                medi_coming_from = env->scenery->resources.media[
+                    side_coming_from.medium];
+
+                creation.type = MLI_PHOTON_CREATION;
+                creation.position = env->photon->ray.support;
+                creation.position_local = creation.position;
+                creation.distance_of_ray = 0.0;
+                creation.object_idx = -1;
+                creation.from_outside_to_inside = 1;
+
+                creation.refraction_coming_from = medi_coming_from.refraction;
+                creation.refraction_going_to = medi_coming_from.refraction;
+                creation.absorbtion_coming_from = medi_coming_from.absorbtion;
+                creation.absorbtion_going_to = medi_coming_from.absorbtion;
+                mli_c(mliDynPhotonInteraction_push_back(
+                    env->history,
+                    creation));
+        }
+
+        if (hit && distance_until_next_absorbtion > next_isec.distance_of_ray) {
                 mli_check(
-                        _mli_interact_with_object(env, &isec),
+                        _mli_interact_with_object(env, &next_isec),
                         "Failed to interact photon with object surface.");
         } else {
                 uint64_t last = env->history->dyn.size - 1;
                 struct mliPhotonInteraction action;
-                action.type = MLI_PHOTON_ABSORBTION;
+                action.type = MLI_PHOTON_ABSORBTION_MEDIUM;
                 action.position = mliRay_at(
                         &env->photon->ray, distance_until_next_absorbtion);
                 action.position_local = action.position;
