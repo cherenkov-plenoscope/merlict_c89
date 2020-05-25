@@ -11,6 +11,7 @@ CASE("simple propagation")
         struct mliSide side_coming_from, side_going_to;
         struct mliSurface surf_coming_from, surf_going_to;
         struct mliMedium medi_coming_from, medi_going_to;
+        struct mliPrimitiveIdMap primitive_ids = mliPrimitiveIdMap_init();
         size_t max_interactions = 16;
 
         struct mliPhoton photon;
@@ -19,7 +20,9 @@ CASE("simple propagation")
         photon.simulation_truth_id = 0;
 
         CHECK(mliScenery_malloc_from_json_path(
-                &scenery, "tests/resources/glass_cylinder_in_air.json"));
+                &scenery,
+                &primitive_ids,
+                "tests/resources/glass_cylinder_in_air.json"));
         CHECK(scenery.default_medium == 0u);
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
 
@@ -79,6 +82,7 @@ CASE("simple propagation")
         mliDynPhotonInteraction_print(&history);
 
         mliScenery_free(&scenery);
+        mliPrimitiveIdMap_free(&primitive_ids);
         mliOcTree_free(&octree);
         mliDynPhotonInteraction_free(&history);
 }

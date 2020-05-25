@@ -14,7 +14,7 @@ CASE("mliScenery object interface, init")
         scenery.num_bicircleplanes = 50;
         scenery.num_discs = 60;
 
-        num_primitives = mliScenery_num_objects(&scenery);
+        num_primitives = mliScenery_num_primitives(&scenery);
 
         CHECK(num_primitives == 100+10+20+30+40+50+60);
 

@@ -51,7 +51,7 @@ struct mliIndexStarts mliScenery_index_starts(const struct mliScenery *scenery)
         return s;
 }
 
-uint64_t mliScenery_num_objects(const struct mliScenery *scenery)
+uint64_t mliScenery_num_primitives(const struct mliScenery *scenery)
 {
         struct mliIndexStarts starts = mliScenery_index_starts(scenery);
         return starts._next;
@@ -93,7 +93,7 @@ struct mliIndex _mliScenery_resolve_index(
                 ri.idx = idx - starts.discs;
                 return ri;
         }
-        assert(idx < mliScenery_num_objects(scenery) + 1);
+        assert(idx < mliScenery_num_primitives(scenery) + 1);
         ri.type = 0u;
         ri.idx = 0u;
         return ri;
@@ -243,12 +243,12 @@ struct mliOBB mliScenery_obb(
 struct mliOBB mliScenery_outermost_obb(const struct mliScenery *scenery)
 {
         uint64_t i;
-        uint64_t num_objects;
+        uint64_t num_primitives;
         struct mliOBB obb;
         obb.lower = mliVec_set(0., 0., 0.);
         obb.upper = mliVec_set(0., 0., 0.);
-        num_objects = mliScenery_num_objects(scenery);
-        for (i = 0; i < num_objects; i++) {
+        num_primitives = mliScenery_num_primitives(scenery);
+        for (i = 0; i < num_primitives; i++) {
                 struct mliOBB obj_obb = mliScenery_obb(scenery, i);
                 obb = mliOBB_outermost(obb, obj_obb);
         }

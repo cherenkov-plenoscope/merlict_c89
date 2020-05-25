@@ -7,6 +7,7 @@
 #include "mli_debug.h"
 #include "mliScenery.h"
 #include "mliUserScenery.h"
+#include "mliPrimitiveIdMap.h"
 
 struct mliPrimitiveCount {
         uint32_t vertices;
@@ -80,9 +81,10 @@ error:
 int __mliScenery_set_primitive(
         struct mliScenery *scenery,
         const struct mliFrame *frame,
-        struct mliPrimitiveCount *count)
+        struct mliPrimitiveCount *count,
+        struct mliPrimitiveIdMap *idmap)
 {
-        uint64_t i, vertex_offset;
+        uint64_t i, vertex_offset, primitive_idx;
         struct mliFrame *child;
         struct mliVec vertex_in_root;
         struct mliVec vertex;
@@ -92,7 +94,11 @@ int __mliScenery_set_primitive(
         case MLI_FRAME:
                 for (i = 0; i < frame->children.dyn.size; i++) {
                         child = frame->children.arr[i];
-                        __mliScenery_set_primitive(scenery, child, count);
+                        __mliScenery_set_primitive(
+                                scenery,
+                                child,
+                                count,
+                                idmap);
                 }
                 break;
         case MLI_MESH:
@@ -105,6 +111,12 @@ int __mliScenery_set_primitive(
                         count->vertices += 1;
                 }
                 for (i = 0; i < frame->primitive.mesh->num_faces; i++) {
+                        primitive_idx = _mliScenery_merge_index(
+                                scenery,
+                                MLI_TRIANGLE,
+                                count->triangles);
+                        idmap->user_ids[primitive_idx] = frame->id;
+
                         triangle = frame->primitive.mesh->faces[i];
                         triangle.a += vertex_offset;
                         triangle.b += vertex_offset;
@@ -116,6 +128,12 @@ int __mliScenery_set_primitive(
                 }
                 break;
         case MLI_SPHERICAL_CAP_HEX:
+                primitive_idx = _mliScenery_merge_index(
+                        scenery,
+                        MLI_SPHERICAL_CAP_HEX,
+                        count->spherical_cap_hex);
+                idmap->user_ids[primitive_idx] = frame->id;
+
                 i = count->spherical_cap_hex;
                 scenery->spherical_cap_hex[i] =
                         *frame->primitive.spherical_cap_hex;
@@ -125,6 +143,12 @@ int __mliScenery_set_primitive(
                 count->spherical_cap_hex += 1;
                 break;
         case MLI_SPHERE:
+                primitive_idx = _mliScenery_merge_index(
+                        scenery,
+                        MLI_SPHERE,
+                        count->spheres);
+                idmap->user_ids[primitive_idx] = frame->id;
+
                 i = count->spheres;
                 scenery->spheres[i] = *frame->primitive.sphere;
                 scenery->spheres_boundary_layers[i] = frame->boundary_layer;
@@ -132,6 +156,12 @@ int __mliScenery_set_primitive(
                 count->spheres += 1;
                 break;
         case MLI_CYLINDER:
+                primitive_idx = _mliScenery_merge_index(
+                        scenery,
+                        MLI_CYLINDER,
+                        count->cylinders);
+                idmap->user_ids[primitive_idx] = frame->id;
+
                 i = count->cylinders;
                 scenery->cylinders[i] = *frame->primitive.cylinder;
                 scenery->cylinders_boundary_layers[i] = frame->boundary_layer;
@@ -139,6 +169,12 @@ int __mliScenery_set_primitive(
                 count->cylinders += 1;
                 break;
         case MLI_HEXAGON:
+                primitive_idx = _mliScenery_merge_index(
+                        scenery,
+                        MLI_HEXAGON,
+                        count->hexagons);
+                idmap->user_ids[primitive_idx] = frame->id;
+
                 i = count->hexagons;
                 scenery->hexagons[i] = *frame->primitive.hexagon;
                 scenery->hexagons_boundary_layers[i] = frame->boundary_layer;
@@ -146,6 +182,12 @@ int __mliScenery_set_primitive(
                 count->hexagons += 1;
                 break;
         case MLI_BICIRCLEPLANE:
+                primitive_idx = _mliScenery_merge_index(
+                        scenery,
+                        MLI_BICIRCLEPLANE,
+                        count->bicircleplanes);
+                idmap->user_ids[primitive_idx] = frame->id;
+
                 i = count->bicircleplanes;
                 scenery->bicircleplanes[i] = *frame->primitive.bicircleplane;
                 scenery->bicircleplanes_boundary_layers[i] =
@@ -154,6 +196,12 @@ int __mliScenery_set_primitive(
                 count->bicircleplanes += 1;
                 break;
         case MLI_DISC:
+                primitive_idx = _mliScenery_merge_index(
+                        scenery,
+                        MLI_DISC,
+                        count->discs);
+                idmap->user_ids[primitive_idx] = frame->id;
+
                 i = count->discs;
                 scenery->discs[i] = *frame->primitive.disc;
                 scenery->discs_boundary_layers[i] = frame->boundary_layer;
@@ -171,6 +219,7 @@ error:
 
 int mliScenery_malloc_from_mliUserScenery(
         struct mliScenery *scenery,
+        struct mliPrimitiveIdMap *idmap,
         struct mliUserScenery *uscn)
 {
         uint64_t i;
@@ -204,6 +253,12 @@ int mliScenery_malloc_from_mliUserScenery(
                         &scenery->resources, resource_capacity),
                 "Can not allocate scenery.");
 
+        mli_check(
+                mliPrimitiveIdMap_malloc(
+                        idmap,
+                        mliScenery_num_primitives(scenery)),
+                "Can not allocate primitive user-id-map.");
+
         /* default_medium */
         scenery->default_medium = uscn->default_medium;
 
@@ -231,7 +286,11 @@ int mliScenery_malloc_from_mliUserScenery(
         }
 
         mli_check(
-                __mliScenery_set_primitive(scenery, &uscn->root, &count),
+                __mliScenery_set_primitive(
+                        scenery,
+                        &uscn->root,
+                        &count,
+                        idmap),
                 "Cen not set primitives");
 
         return 1;
@@ -241,6 +300,7 @@ error:
 
 int mliScenery_malloc_from_json_path(
         struct mliScenery *scenery,
+        struct mliPrimitiveIdMap *user_id_map,
         const char *path)
 {
         struct mliJson json = mliJson_init();
@@ -252,7 +312,10 @@ int mliScenery_malloc_from_json_path(
                 mliUserScenery_malloc_from_json(&uscn, &json),
                 "Failed to parse json-scenery.");
         mli_check(
-                mliScenery_malloc_from_mliUserScenery(scenery, &uscn),
+                mliScenery_malloc_from_mliUserScenery(
+                        scenery,
+                        user_id_map,
+                        &uscn),
                 "Failed to translate struct mliUserScenery to mliScenery.")
                 mliJson_free(&json);
         mliUserScenery_free(&uscn);

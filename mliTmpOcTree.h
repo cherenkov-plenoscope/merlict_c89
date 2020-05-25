@@ -155,7 +155,7 @@ int mliTmpNode_malloc_tree_from_scenery(
 {
         uint32_t idx, start_depth, max_depth, num_objects;
         start_depth = 0u;
-        num_objects = mliScenery_num_objects(scenery);
+        num_objects = mliScenery_num_primitives(scenery);
         max_depth = mli_guess_octree_depth_based_on_num_objects(num_objects);
 
         mli_check(
