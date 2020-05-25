@@ -45,6 +45,9 @@ int mli_photoninteraction_type_to_string(const int32_t type, char *s)
         case MLI_PHOTON_ABSORBTION:
                 sprintf(s, "absorbtion");
                 break;
+        case MLI_PHOTON_ABSORBTION_MEDIUM:
+                sprintf(s, "absorbtion in medium");
+                break;
         case MLI_PHOTON_FRESNEL_REFLECTION:
                 sprintf(s, "Fresnel reflection");
                 break;
