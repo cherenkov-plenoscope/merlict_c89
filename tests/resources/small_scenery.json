@@ -33,6 +33,7 @@
       "absorbtion": "zero"
     },
   ],
+  "default_medium": "vacuum",
   "surfaces": [
     {
       "name": "grass",

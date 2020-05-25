@@ -167,6 +167,8 @@ int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
 {
         if (!mliSceneryResources_equal(&a->resources, &b->resources))
                 return 0;
+        if (a->default_medium != b->default_medium)
+                return 0;
         if (!_mliScenery_triangles_equal(a, b))
                 return 0;
         if (!_mliScenery_spherical_cap_hex_equal(a, b))

@@ -117,6 +117,8 @@ int mliScenery_valid(const struct mliScenery *scenery)
 {
         if (!mliSceneryResources_valid(&scenery->resources))
                 return 0;
+        if (scenery->default_medium >= scenery->resources.num_media)
+                return 0;
         if (!_mliScenery_valid_triangles(scenery))
                 return 0;
         if (!_mliScenery_valid_spherical_cap_hex(scenery))

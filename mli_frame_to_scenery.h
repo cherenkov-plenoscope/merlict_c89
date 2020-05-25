@@ -204,6 +204,9 @@ int mliScenery_malloc_from_mliUserScenery(
                         &scenery->resources, resource_capacity),
                 "Can not allocate scenery.");
 
+        /* default_medium */
+        scenery->default_medium = uscn->default_medium;
+
         /* copy surfaces */
         for (i = 0; i < scenery->resources.num_functions; i++) {
                 mli_check(

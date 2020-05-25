@@ -199,6 +199,8 @@ int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
                 mliSceneryResources_append_to_file(&scenery->resources, f),
                 "Can not write SceneryResources to file.");
 
+        mli_fwrite(&scenery->default_medium, sizeof(uint32_t), 1u, f);
+
         mli_c(_mliScenery_write_vertices_and_triangles(scenery, f));
         mli_c(_mliScenery_write_spherical_cap_hex(scenery, f));
         mli_c(_mliScenery_write_spheres(scenery, f));

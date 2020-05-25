@@ -47,6 +47,7 @@
       "absorbtion": "+infinity",
     }
   ],
+  "default_medium": "vacuum",
   "surfaces": [
     {
       "name": "glass_blue",

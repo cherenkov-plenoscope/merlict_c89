@@ -1065,6 +1065,17 @@ int mliUserScenery_malloc_from_json(
                 "Could not copy surfaces from json.");
 
         mli_check(
+                mliJson_find_key(json, 0, "default_medium", &token),
+                "Expected scenery-json to have key 'default_medium'.");
+        mli_check(
+                _mliMap2_get_value_for_string_from_json(
+                        &uscn->medium_names,
+                        json,
+                        token,
+                        &uscn->default_medium),
+                "Could not assign the 'default_medium'.");
+
+        mli_check(
                 mliJson_find_key(json, 0, "children", &token),
                 "Expected scenery-json to have key 'children'.");
         mli_check(

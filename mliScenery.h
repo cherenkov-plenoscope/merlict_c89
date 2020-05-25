@@ -57,6 +57,7 @@ struct mliSceneryCapacity mliSceneryCapacity_init(void)
 
 struct mliScenery {
         struct mliSceneryResources resources;
+        uint32_t default_medium;
 
         uint32_t num_vertices;
         struct mliVec *vertices;
@@ -100,6 +101,7 @@ struct mliScenery mliScenery_init(void)
 {
         struct mliScenery s;
         s.resources = mliSceneryResources_init();
+        s.default_medium = 0u;
 
         s.num_vertices = 0u;
         s.vertices = NULL;

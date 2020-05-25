@@ -20,6 +20,7 @@ CASE("simple propagation")
 
         CHECK(mliScenery_malloc_from_json_path(
                 &scenery, "tests/resources/glass_cylinder_in_air.json"));
+        CHECK(scenery.default_medium == 0u);
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
 
         mli_ray_octree_traversal(&scenery, &octree, photon.ray, &intersection);

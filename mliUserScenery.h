@@ -21,6 +21,7 @@
 struct mliUserScenery {
         struct mliSceneryResources resources;
         struct mliFrame root;
+        uint32_t default_medium;
 
         struct mliMap2 function_names;
         struct mliMap2 color_names;
@@ -38,6 +39,7 @@ struct mliUserScenery mliUserScenery_init(void)
         uscn.color_names = mliMap2_init();
         uscn.medium_names = mliMap2_init();
         uscn.surface_names = mliMap2_init();
+        uscn.default_medium = 0;
         return uscn;
 }
 

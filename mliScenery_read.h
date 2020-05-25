@@ -199,6 +199,8 @@ int mliScenery_read_from_path(struct mliScenery *scenery, const char *path)
                 mliSceneryResources_read_from_file(&scenery->resources, f),
                 "Failed to read resources from file.");
 
+        mli_fread(&scenery->default_medium, sizeof(uint32_t), 1u, f);
+
         mli_c(_mliScenery_read_vertices_and_triangles(scenery, f));
         mli_c(_mliScenery_read_spherical_cap_hex(scenery, f));
         mli_c(_mliScenery_read_spheres(scenery, f));

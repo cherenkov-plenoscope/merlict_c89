@@ -263,6 +263,7 @@ CASE("parse mliUserScenery")
         struct mliFrame *f;
         struct mliSurface *uscn_srfs;
         struct mliMedium *uscn_medi;
+        uint32_t default_medium_idx;
         CHECK(mliJson_malloc_from_file(
                 &json, "tests/resources/small_scenery.json"));
         CHECK(mliJson_write_debug(
@@ -281,6 +282,12 @@ CASE("parse mliUserScenery")
         CHECK_MARGIN(uscn.resources.functions[1].y[0], 1.49, 1e-9);
         CHECK_MARGIN(uscn.resources.functions[1].x[1], 1200e-9, 1e-9);
         CHECK_MARGIN(uscn.resources.functions[1].y[1], 1.49, 1e-9);
+        /* default_medium */
+        CHECK(mliMap2_get_value(
+                &uscn.medium_names,
+                "vacuum",
+                &default_medium_idx));
+        CHECK(uscn.default_medium == default_medium_idx);
         /* colors */
         CHECK(uscn.resources.num_colors == 4u);
         CHECK(mliColor_is_equal(
