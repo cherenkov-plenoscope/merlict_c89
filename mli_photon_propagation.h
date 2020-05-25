@@ -252,38 +252,21 @@ error:
         return 0;
 }
 
-int _mli_distance_until_next_absorbtion(
-        const struct mliIntersection next_isec,
-        struct mliEnv *env,
-        double *distance_to_next_absorption)
+int _mli_distance_until_absorbtion(
+        const struct mliFunc *absorbtion_in_medium_passing_through,
+        const double wavelength,
+        struct mliMT19937 *prng,
+        double *distance_until_absorbtion)
 {
         double one_over_e_way;
-        struct mliFunc *absorbtion_in_medium_coming_from;
-        struct mliSide side_coming_from;
-        struct mliMedium medi_coming_from;
-
-        side_coming_from = _mli_side_coming_from(env->scenery, &next_isec);
-        medi_coming_from =
-                env->
-                scenery->
-                resources.
-                media[side_coming_from.medium];
-
-        absorbtion_in_medium_coming_from =
-                &env->
-                scenery->
-                resources.
-                functions[medi_coming_from.absorbtion];
-
-        mli_check(
-                mliFunc_evaluate(
-                        absorbtion_in_medium_coming_from,
-                        env->photon->wavelength,
-                        &one_over_e_way),
-                "Failed to eval. absorbtion in medium coming from for "
-                "wavelength.");
-        (*distance_to_next_absorption) =
-                mli_random_expovariate(env->prng, 1. / one_over_e_way);
+        mli_check(mliFunc_evaluate(
+                absorbtion_in_medium_passing_through,
+                wavelength,
+                &one_over_e_way),
+                "Failed to eval. absorbtion for wavelength.");
+        (*distance_until_absorbtion) = mli_random_expovariate(
+                prng,
+                1./one_over_e_way);
         return 1;
 error:
         return 0;
@@ -291,73 +274,139 @@ error:
 
 int _mli_work_on_causal_intersection(struct mliEnv *env)
 {
-        int hit = 0;
-        double distance_until_next_absorbtion = 0.0;
-        struct mliIntersection next_isec;
+        int ray_does_intersect_surface = 0;
+        double distance_until_absorbtion = 0.0;
+        struct mliIntersection next_intersection;
+        struct mliMedium medium_passing_through;
+        struct mliFunc *absorbtion_in_medium_passing_through;
+        struct mliPhotonInteraction phia;
 
-        hit = mli_first_casual_intersection(
+        ray_does_intersect_surface = mli_first_casual_intersection(
                 env->scenery,
                 env->octree,
                 env->photon->ray,
-                &next_isec);
+                &next_intersection);
 
-        mli_check(_mli_distance_until_next_absorbtion(
-                next_isec,
-                env,
-                &distance_until_next_absorbtion),
-                "Failed to estimate photon's probability to pass medium coming "
-                "from.");
-
-        if (env->history->dyn.size == 0) {
-                /* creation */
-                struct mliPhotonInteraction creation;
+        if (ray_does_intersect_surface) {
+                int photon_is_absorbed_before_reaching_surface;
                 struct mliSide side_coming_from;
-                struct mliMedium medi_coming_from;
 
-                side_coming_from = _mli_side_coming_from(env->scenery, &next_isec);
-                medi_coming_from = env->scenery->resources.media[
-                    side_coming_from.medium];
+                side_coming_from = _mli_side_coming_from(
+                        env->scenery,
+                        &next_intersection);
+                medium_passing_through =
+                        env->
+                        scenery->
+                        resources.
+                        media[side_coming_from.medium];
+                absorbtion_in_medium_passing_through =
+                        &env->
+                        scenery->
+                        resources.
+                        functions[medium_passing_through.absorbtion];
+                mli_c(_mli_distance_until_absorbtion(
+                        absorbtion_in_medium_passing_through,
+                        env->photon->wavelength,
+                        env->prng,
+                        &distance_until_absorbtion));
 
-                creation.type = MLI_PHOTON_CREATION;
-                creation.position = env->photon->ray.support;
-                creation.position_local = creation.position;
-                creation.distance_of_ray = 0.0;
-                creation.object_idx = -1;
-                creation.from_outside_to_inside = 1;
+                photon_is_absorbed_before_reaching_surface =
+                        distance_until_absorbtion <
+                        next_intersection.distance_of_ray;
 
-                creation.refraction_coming_from = medi_coming_from.refraction;
-                creation.refraction_going_to = medi_coming_from.refraction;
-                creation.absorbtion_coming_from = medi_coming_from.absorbtion;
-                creation.absorbtion_going_to = medi_coming_from.absorbtion;
-                mli_c(mliDynPhotonInteraction_push_back(
-                    env->history,
-                    creation));
-        }
+                if (env->history->dyn.size == 0) {
+                        /* creation */
+                        phia.type = MLI_PHOTON_CREATION;
+                        phia.position = env->photon->ray.support;
+                        phia.position_local = phia.position;
+                        phia.distance_of_ray = 0.0;
+                        phia.object_idx = -1;
+                        phia.from_outside_to_inside = 1;
 
-        if (hit && distance_until_next_absorbtion > next_isec.distance_of_ray) {
-                mli_check(
-                        _mli_interact_with_object(env, &next_isec),
-                        "Failed to interact photon with object surface.");
+                        phia.refraction_coming_from = medium_passing_through.refraction;
+                        phia.refraction_going_to = medium_passing_through.refraction;
+                        phia.absorbtion_coming_from = medium_passing_through.absorbtion;
+                        phia.absorbtion_going_to = medium_passing_through.absorbtion;
+                        mli_c(mliDynPhotonInteraction_push_back(
+                                env->history,
+                                phia));
+                }
+
+                if (photon_is_absorbed_before_reaching_surface) {
+                        /* absorbtion in medium */
+                        phia.type = MLI_PHOTON_ABSORBTION_MEDIUM;
+                        phia.position = mliRay_at(&env->photon->ray, distance_until_absorbtion);;
+                        phia.position_local = phia.position;
+                        phia.distance_of_ray = distance_until_absorbtion;
+                        phia.object_idx = -1;
+                        phia.from_outside_to_inside = 1;
+
+                        phia.refraction_coming_from = medium_passing_through.refraction;
+                        phia.refraction_going_to = medium_passing_through.refraction;
+                        phia.absorbtion_coming_from = medium_passing_through.absorbtion;
+                        phia.absorbtion_going_to = medium_passing_through.absorbtion;
+                        mli_c(mliDynPhotonInteraction_push_back(
+                                env->history,
+                                phia));
+                } else {
+                        mli_check(_mli_interact_with_object(
+                                env,
+                                &next_intersection),
+                                "Failed to interact photon with object surface."
+                        );
+                }
         } else {
-                uint64_t last = env->history->dyn.size - 1;
-                struct mliPhotonInteraction action;
-                action.type = MLI_PHOTON_ABSORBTION_MEDIUM;
-                action.position = mliRay_at(
-                        &env->photon->ray, distance_until_next_absorbtion);
-                action.position_local = action.position;
-                action.refraction_coming_from =
-                        env->history->arr[last].refraction_coming_from;
-                action.refraction_going_to =
-                        env->history->arr[last].refraction_going_to;
-                action.absorbtion_coming_from =
-                        env->history->arr[last].absorbtion_coming_from;
-                action.absorbtion_going_to =
-                        env->history->arr[last].absorbtion_going_to;
-                action.distance_of_ray = distance_until_next_absorbtion;
-                action.object_idx = -1;
-                action.from_outside_to_inside = 1;
-                mli_c(mliDynPhotonInteraction_push_back(env->history, action));
+                medium_passing_through =
+                        env->
+                        scenery->
+                        resources.
+                        media[env->scenery->default_medium];
+                absorbtion_in_medium_passing_through =
+                        &env->
+                        scenery->
+                        resources.
+                        functions[medium_passing_through.absorbtion];
+                mli_c(_mli_distance_until_absorbtion(
+                        absorbtion_in_medium_passing_through,
+                        env->photon->wavelength,
+                        env->prng,
+                        &distance_until_absorbtion));
+
+                if (env->history->dyn.size == 0) {
+                        /* creation */
+                        phia.type = MLI_PHOTON_CREATION;
+                        phia.position = env->photon->ray.support;
+                        phia.position_local = phia.position;
+                        phia.distance_of_ray = 0.0;
+                        phia.object_idx = -1;
+                        phia.from_outside_to_inside = 1;
+
+                        phia.refraction_coming_from = medium_passing_through.refraction;
+                        phia.refraction_going_to = medium_passing_through.refraction;
+                        phia.absorbtion_coming_from = medium_passing_through.absorbtion;
+                        phia.absorbtion_going_to = medium_passing_through.absorbtion;
+                        mli_c(mliDynPhotonInteraction_push_back(
+                                env->history,
+                                phia));
+                }
+
+                /* absorbtion in medium */
+                phia.type = MLI_PHOTON_ABSORBTION_MEDIUM;
+                phia.position = mliRay_at(&env->photon->ray, distance_until_absorbtion);
+                phia.position_local = phia.position;
+                phia.distance_of_ray = distance_until_absorbtion;
+                phia.object_idx = -1;
+                phia.from_outside_to_inside = 1;
+
+                phia.refraction_coming_from = medium_passing_through.refraction;
+                phia.refraction_going_to = medium_passing_through.refraction;
+                phia.absorbtion_coming_from = medium_passing_through.absorbtion;
+                phia.absorbtion_going_to = medium_passing_through.absorbtion;
+                mli_c(mliDynPhotonInteraction_push_back(
+                        env->history,
+                        phia));
         }
+
         return 1;
 error:
         return 0;
