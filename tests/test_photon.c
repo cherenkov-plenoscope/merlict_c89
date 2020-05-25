@@ -10,7 +10,6 @@ CASE("simple propagation")
         struct mliSide side_coming_from, side_going_to;
         struct mliSurface surf_coming_from, surf_going_to;
         struct mliMedium medi_coming_from, medi_going_to;
-        uint64_t i;
         size_t max_interactions = 16;
 
         struct mliPhoton photon;
@@ -65,11 +64,7 @@ CASE("simple propagation")
 
         CHECK(history.dyn.size >= 1);
 
-        for (i = 0; i < scenery.num_primitives; i++) {
-                fprintf(stderr, "%ld %d\n", i, scenery.user_ids[i]);
-        }
-
-        mliDynPhotonInteraction_print(&history);
+        mliDynPhotonInteraction_print(&history, &scenery);
 
         mliScenery_free(&scenery);
         mliOcTree_free(&octree);

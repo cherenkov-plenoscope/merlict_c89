@@ -8,13 +8,15 @@
 #include <stdio.h>
 #include "mli_debug.h"
 #include "mliPhotonInteraction.h"
+#include "mliScenery.h"
 
 MLIDYNARRAY_TEMPLATE(mli, PhotonInteraction, struct mliPhotonInteraction)
 
 void mliDynPhotonInteraction_print(
-        const struct mliDynPhotonInteraction *history)
+        const struct mliDynPhotonInteraction *history,
+        const struct mliScenery *scenery)
 {
-        uint64_t i;
+        int64_t i, user_id;
         char type_string[1024];
         char out_in[] = "out->in";
         char in_out[] = "in->out";
@@ -23,7 +25,7 @@ void mliDynPhotonInteraction_print(
                history->dyn.capacity);
         printf("==================\n");
 
-        printf("idx, obj, [   x,   y,   z], type                "
+        printf("idx, obj, ids, [   x,   y,   z], type                "
                ", refr.  , abs.   , dist,\n");
         printf("------------------------------------------------"
                "-------------------------\n");
@@ -32,10 +34,16 @@ void mliDynPhotonInteraction_print(
 
                 mli_photoninteraction_type_to_string(
                         history->arr[i].type, type_string);
-
-                printf("% 3ld, % 3ld, [% -1.1f,% -1.1f,% -1.1f], %-20s, ",
+                if (history->arr[i].object_idx >= 0) {
+                        user_id = scenery->user_ids[history->arr[i].object_idx];
+                } else {
+                        user_id = -1;
+                }
+                printf( "% 3ld, % 3ld, % 3ld, "
+                        "[% -1.1f,% -1.1f,% -1.1f], %-20s, ",
                        i,
                        history->arr[i].object_idx,
+                       user_id,
                        history->arr[i].position.x,
                        history->arr[i].position.y,
                        history->arr[i].position.z,

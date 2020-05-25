@@ -77,12 +77,25 @@ error:
         return 0;
 }
 
+void _mli_set_user_id(
+        struct mliScenery *scenery,
+        const uint64_t primitive_type,
+        const uint64_t primitive_count,
+        const uint64_t user_id)
+{
+        uint64_t primitive_idx = _mliScenery_merge_index(
+                scenery,
+                primitive_type,
+                primitive_count);
+        scenery->user_ids[primitive_idx] = user_id;
+}
+
 int __mliScenery_set_primitive(
         struct mliScenery *scenery,
         const struct mliFrame *frame,
         struct mliPrimitiveCount *count)
 {
-        uint64_t i, vertex_offset, primitive_idx;
+        uint64_t i, vertex_offset;
         struct mliFrame *child;
         struct mliVec vertex_in_root;
         struct mliVec vertex;
@@ -108,12 +121,11 @@ int __mliScenery_set_primitive(
                         count->vertices += 1;
                 }
                 for (i = 0; i < frame->primitive.mesh->num_faces; i++) {
-                        primitive_idx = _mliScenery_merge_index(
+                        _mli_set_user_id(
                                 scenery,
                                 MLI_TRIANGLE,
-                                count->triangles);
-                        scenery->user_ids[primitive_idx] = frame->id;
-
+                                count->triangles,
+                                frame->id);
                         triangle = frame->primitive.mesh->faces[i];
                         triangle.a += vertex_offset;
                         triangle.b += vertex_offset;
@@ -125,12 +137,11 @@ int __mliScenery_set_primitive(
                 }
                 break;
         case MLI_SPHERICAL_CAP_HEX:
-                primitive_idx = _mliScenery_merge_index(
+                _mli_set_user_id(
                         scenery,
                         MLI_SPHERICAL_CAP_HEX,
-                        count->spherical_cap_hex);
-                scenery->user_ids[primitive_idx] = frame->id;
-
+                        count->spherical_cap_hex,
+                        frame->id);
                 i = count->spherical_cap_hex;
                 scenery->spherical_cap_hex[i] =
                         *frame->primitive.spherical_cap_hex;
@@ -140,12 +151,11 @@ int __mliScenery_set_primitive(
                 count->spherical_cap_hex += 1;
                 break;
         case MLI_SPHERE:
-                primitive_idx = _mliScenery_merge_index(
+                _mli_set_user_id(
                         scenery,
                         MLI_SPHERE,
-                        count->spheres);
-                scenery->user_ids[primitive_idx] = frame->id;
-
+                        count->spheres,
+                        frame->id);
                 i = count->spheres;
                 scenery->spheres[i] = *frame->primitive.sphere;
                 scenery->spheres_boundary_layers[i] = frame->boundary_layer;
@@ -153,12 +163,11 @@ int __mliScenery_set_primitive(
                 count->spheres += 1;
                 break;
         case MLI_CYLINDER:
-                primitive_idx = _mliScenery_merge_index(
+                _mli_set_user_id(
                         scenery,
                         MLI_CYLINDER,
-                        count->cylinders);
-                scenery->user_ids[primitive_idx] = frame->id;
-
+                        count->cylinders,
+                        frame->id);
                 i = count->cylinders;
                 scenery->cylinders[i] = *frame->primitive.cylinder;
                 scenery->cylinders_boundary_layers[i] = frame->boundary_layer;
@@ -166,12 +175,11 @@ int __mliScenery_set_primitive(
                 count->cylinders += 1;
                 break;
         case MLI_HEXAGON:
-                primitive_idx = _mliScenery_merge_index(
+                _mli_set_user_id(
                         scenery,
                         MLI_HEXAGON,
-                        count->hexagons);
-                scenery->user_ids[primitive_idx] = frame->id;
-
+                        count->hexagons,
+                        frame->id);
                 i = count->hexagons;
                 scenery->hexagons[i] = *frame->primitive.hexagon;
                 scenery->hexagons_boundary_layers[i] = frame->boundary_layer;
@@ -179,12 +187,11 @@ int __mliScenery_set_primitive(
                 count->hexagons += 1;
                 break;
         case MLI_BICIRCLEPLANE:
-                primitive_idx = _mliScenery_merge_index(
+                _mli_set_user_id(
                         scenery,
                         MLI_BICIRCLEPLANE,
-                        count->bicircleplanes);
-                scenery->user_ids[primitive_idx] = frame->id;
-
+                        count->bicircleplanes,
+                        frame->id);
                 i = count->bicircleplanes;
                 scenery->bicircleplanes[i] = *frame->primitive.bicircleplane;
                 scenery->bicircleplanes_boundary_layers[i] =
@@ -193,12 +200,11 @@ int __mliScenery_set_primitive(
                 count->bicircleplanes += 1;
                 break;
         case MLI_DISC:
-                primitive_idx = _mliScenery_merge_index(
+                _mli_set_user_id(
                         scenery,
                         MLI_DISC,
-                        count->discs);
-                scenery->user_ids[primitive_idx] = frame->id;
-
+                        count->discs,
+                        frame->id);
                 i = count->discs;
                 scenery->discs[i] = *frame->primitive.disc;
                 scenery->discs_boundary_layers[i] = frame->boundary_layer;
