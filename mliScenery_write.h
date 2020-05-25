@@ -176,6 +176,18 @@ error:
         return 0;
 }
 
+int _mliScenery_write_user_ids(const struct mliScenery *scenery, FILE *f)
+{
+        mli_fwrite(
+                scenery->user_ids,
+                sizeof(uint32_t),
+                scenery->num_primitives,
+                f);
+        return 1;
+error:
+        return 0;
+}
+
 int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
 {
         FILE *f;
@@ -209,6 +221,7 @@ int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
         mli_c(_mliScenery_write_bicircleplanes(scenery, f));
         mli_c(_mliScenery_write_discs(scenery, f));
 
+        mli_c(_mliScenery_write_user_ids(scenery, f));
         fclose(f);
         return 1;
 error:

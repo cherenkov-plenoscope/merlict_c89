@@ -6,12 +6,11 @@ CASE("simple propagation")
         struct mliScenery scenery = mliScenery_init();
         struct mliOcTree octree = mliOcTree_init();
         struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
-        /*struct mliPhotonInteraction creation;*/
         struct mliIntersection intersection;
         struct mliSide side_coming_from, side_going_to;
         struct mliSurface surf_coming_from, surf_going_to;
         struct mliMedium medi_coming_from, medi_going_to;
-        struct mliPrimitiveIdMap primitive_ids = mliPrimitiveIdMap_init();
+        uint64_t i;
         size_t max_interactions = 16;
 
         struct mliPhoton photon;
@@ -21,7 +20,6 @@ CASE("simple propagation")
 
         CHECK(mliScenery_malloc_from_json_path(
                 &scenery,
-                &primitive_ids,
                 "tests/resources/glass_cylinder_in_air.json"));
         CHECK(scenery.default_medium == 0u);
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
@@ -57,18 +55,6 @@ CASE("simple propagation")
 
         CHECK(mliDynPhotonInteraction_malloc(&history, max_interactions));
 
-        /*
-        creation.type = MLI_PHOTON_CREATION;
-        creation.position = photon.ray.support;
-        creation.refraction_going_to = 0u;
-        creation.absorbtion_going_to = 2u;
-        creation.refraction_coming_from = 0u;
-        creation.absorbtion_coming_from = 2u;
-        creation.object_idx = -1;
-        creation.from_outside_to_inside = 1;
-        CHECK(mliDynPhotonInteraction_push_back(&history, creation));
-        */
-
         CHECK(mli_propagate_photon(
                 &scenery,
                 &octree,
@@ -79,10 +65,13 @@ CASE("simple propagation")
 
         CHECK(history.dyn.size >= 1);
 
+        for (i = 0; i < scenery.num_primitives; i++) {
+                fprintf(stderr, "%ld %d\n", i, scenery.user_ids[i]);
+        }
+
         mliDynPhotonInteraction_print(&history);
 
         mliScenery_free(&scenery);
-        mliPrimitiveIdMap_free(&primitive_ids);
         mliOcTree_free(&octree);
         mliDynPhotonInteraction_free(&history);
 }

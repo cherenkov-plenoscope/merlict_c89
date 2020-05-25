@@ -156,6 +156,18 @@ error:
         return 0;
 }
 
+int _mliScenery_read_user_ids(struct mliScenery *scenery, FILE *f)
+{
+        mli_fread(
+                scenery->user_ids,
+                sizeof(uint32_t),
+                scenery->num_primitives,
+                f);
+        return 1;
+error:
+        return 0;
+}
+
 int mliScenery_read_capacity_from_file(struct mliSceneryCapacity *cap, FILE *f)
 {
         mli_fread(&cap->num_vertices, sizeof(uint32_t), 1u, f);
@@ -208,6 +220,8 @@ int mliScenery_read_from_path(struct mliScenery *scenery, const char *path)
         mli_c(_mliScenery_read_hexagons(scenery, f));
         mli_c(_mliScenery_read_bicircleplanes(scenery, f));
         mli_c(_mliScenery_read_discs(scenery, f));
+
+        mli_c(_mliScenery_read_user_ids(scenery, f));
 
         fclose(f);
         return 1;

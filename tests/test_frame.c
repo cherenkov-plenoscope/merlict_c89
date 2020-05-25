@@ -204,16 +204,13 @@ CASE("mliUserScenery_malloc, free")
 CASE("mli_frame_to_scenery")
 {
         struct mliUserScenery uscn = mliUserScenery_init();
-        struct mliPrimitiveIdMap primitive_ids = mliPrimitiveIdMap_init();
         struct mliScenery scenery = mliScenery_init();
         CHECK(mliUserScenery_malloc(&uscn));
 
         CHECK(mliScenery_malloc_from_mliUserScenery(
             &scenery,
-            &primitive_ids,
             &uscn));
 
         mliScenery_free(&scenery);
-        mliPrimitiveIdMap_free(&primitive_ids);
         mliUserScenery_free(&uscn);
 }

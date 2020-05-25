@@ -30,6 +30,17 @@
 #define MLI_BICIRCLEPLANE 5u
 #define MLI_DISC 6u
 
+struct mliIndexStarts {
+        uint64_t triangles;
+        uint64_t spherical_cap_hex;
+        uint64_t spheres;
+        uint64_t cylinders;
+        uint64_t hexagons;
+        uint64_t bicircleplanes;
+        uint64_t discs;
+        uint64_t _next;
+};
+
 struct mliSceneryCapacity {
         uint32_t num_vertices;
         uint32_t num_triangles;
@@ -95,7 +106,30 @@ struct mliScenery {
         struct mliDisc *discs;
         struct mliBoundaryLayer *discs_boundary_layers;
         struct mliHomTraComp *discs_T;
+
+        uint64_t num_primitives;
+        uint32_t *user_ids;
 };
+
+struct mliIndexStarts mliScenery_index_starts(const struct mliScenery *scenery)
+{
+        struct mliIndexStarts s;
+        s.triangles = 0;
+        s.spherical_cap_hex = scenery->num_triangles;
+        s.spheres = s.spherical_cap_hex + scenery->num_spherical_cap_hex;
+        s.cylinders = s.spheres + scenery->num_spheres;
+        s.hexagons = s.cylinders + scenery->num_cylinders;
+        s.bicircleplanes = s.hexagons + scenery->num_hexagons;
+        s.discs = s.bicircleplanes + scenery->num_bicircleplanes;
+        s._next = s.discs + scenery->num_discs;
+        return s;
+}
+
+uint64_t mliScenery_num_primitives(const struct mliScenery *scenery)
+{
+        struct mliIndexStarts starts = mliScenery_index_starts(scenery);
+        return starts._next;
+}
 
 struct mliScenery mliScenery_init(void)
 {
@@ -139,6 +173,9 @@ struct mliScenery mliScenery_init(void)
         s.discs = NULL;
         s.discs_boundary_layers = NULL;
         s.discs_T = NULL;
+
+        s.num_primitives = 0;
+        s.user_ids = NULL;
         return s;
 }
 
@@ -191,6 +228,11 @@ void _mliScenery_free_discs(struct mliScenery *scenery)
         free(scenery->discs_T);
 }
 
+void _mliScenery_free_user_ids(struct mliScenery *scenery)
+{
+        free(scenery->user_ids);
+}
+
 void mliScenery_free(struct mliScenery *scenery)
 {
         mliSceneryResources_free(&scenery->resources);
@@ -201,6 +243,8 @@ void mliScenery_free(struct mliScenery *scenery)
         _mliScenery_free_hexagons(scenery);
         _mliScenery_free_bicircleplanes(scenery);
         _mliScenery_free_discs(scenery);
+
+        _mliScenery_free_user_ids(scenery);
         (*scenery) = mliScenery_init();
 }
 
@@ -307,6 +351,18 @@ error:
         return 0;
 }
 
+int _mliScenery_malloc_user_ids(struct mliScenery *s)
+{
+        uint64_t i;
+        mli_malloc(s->user_ids, uint32_t, s->num_primitives);
+        for (i = 0; i < s->num_primitives; i++) {
+                s->user_ids[i] = 0u;
+        }
+        return 1;
+error:
+        return 0;
+}
+
 int mliScenery_malloc(struct mliScenery *s, const struct mliSceneryCapacity c)
 {
         mliScenery_free(s);
@@ -318,6 +374,8 @@ int mliScenery_malloc(struct mliScenery *s, const struct mliSceneryCapacity c)
         s->num_hexagons = c.num_hexagons;
         s->num_bicircleplanes = c.num_bicircleplanes;
         s->num_discs = c.num_discs;
+
+        s->num_primitives = mliScenery_num_primitives(s);
         mli_check_mem(_mliScenery_malloc_vertices_and_triangles(s));
         mli_check_mem(_mliScenery_malloc_spherical_cap_hex(s));
         mli_check_mem(_mliScenery_malloc_spheres(s));
@@ -325,6 +383,7 @@ int mliScenery_malloc(struct mliScenery *s, const struct mliSceneryCapacity c)
         mli_check_mem(_mliScenery_malloc_hexagons(s));
         mli_check_mem(_mliScenery_malloc_bicircleplane(s));
         mli_check_mem(_mliScenery_malloc_discs(s));
+        mli_check_mem(_mliScenery_malloc_user_ids(s));
         return 1;
 error:
         mliScenery_free(s);

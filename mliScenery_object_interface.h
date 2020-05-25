@@ -26,37 +26,6 @@ struct mliIndex {
         uint32_t idx;
 };
 
-struct mliIndexStarts {
-        uint64_t triangles;
-        uint64_t spherical_cap_hex;
-        uint64_t spheres;
-        uint64_t cylinders;
-        uint64_t hexagons;
-        uint64_t bicircleplanes;
-        uint64_t discs;
-        uint64_t _next;
-};
-
-struct mliIndexStarts mliScenery_index_starts(const struct mliScenery *scenery)
-{
-        struct mliIndexStarts s;
-        s.triangles = 0;
-        s.spherical_cap_hex = scenery->num_triangles;
-        s.spheres = s.spherical_cap_hex + scenery->num_spherical_cap_hex;
-        s.cylinders = s.spheres + scenery->num_spheres;
-        s.hexagons = s.cylinders + scenery->num_cylinders;
-        s.bicircleplanes = s.hexagons + scenery->num_hexagons;
-        s.discs = s.bicircleplanes + scenery->num_bicircleplanes;
-        s._next = s.discs + scenery->num_discs;
-        return s;
-}
-
-uint64_t mliScenery_num_primitives(const struct mliScenery *scenery)
-{
-        struct mliIndexStarts starts = mliScenery_index_starts(scenery);
-        return starts._next;
-}
-
 struct mliIndex _mliScenery_resolve_index(
         const struct mliScenery *scenery,
         const uint64_t idx)

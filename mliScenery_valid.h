@@ -113,6 +113,13 @@ int _mliScenery_valid_disc(const struct mliScenery *scenery)
         return 1;
 }
 
+int _mliScenery_valid_user_ids(const struct mliScenery *scenery)
+{
+        if (scenery->num_primitives != mliScenery_num_primitives(scenery))
+                return 0;
+        return 1;
+}
+
 int mliScenery_valid(const struct mliScenery *scenery)
 {
         if (!mliSceneryResources_valid(&scenery->resources))
@@ -132,6 +139,8 @@ int mliScenery_valid(const struct mliScenery *scenery)
         if (!_mliScenery_valid_bicircleplanes(scenery))
                 return 0;
         if (!_mliScenery_valid_disc(scenery))
+                return 0;
+        if (!_mliScenery_valid_user_ids(scenery))
                 return 0;
         return 1;
 }

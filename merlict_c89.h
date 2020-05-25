@@ -79,7 +79,6 @@
 #include "mliMap.h"
 #include "mliFrame.h"
 #include "mliUserScenery.h"
-#include "mliPrimitiveIdMap.h"
 #include "mli_frame_to_scenery.h"
 
 #include "mli_lambertian_cosine_law.h"

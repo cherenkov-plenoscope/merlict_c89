@@ -163,6 +163,20 @@ int _mliScenery_discs_equal(
         return 1;
 }
 
+int _mliScenery_user_ids_equal(
+        const struct mliScenery *a,
+        const struct mliScenery *b)
+{
+        uint64_t i;
+        if (a->num_primitives != b->num_primitives)
+                return 0;
+        for (i = 0; i < a->num_primitives; i++) {
+                if (a->user_ids[i] != b->user_ids[i])
+                        return 0;
+        }
+        return 1;
+}
+
 int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
 {
         if (!mliSceneryResources_equal(&a->resources, &b->resources))
@@ -182,6 +196,8 @@ int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
         if (!_mliScenery_bicircleplanes_equal(a, b))
                 return 0;
         if (!_mliScenery_discs_equal(a, b))
+                return 0;
+        if (!_mliScenery_user_ids_equal(a, b))
                 return 0;
         return 1;
 }
