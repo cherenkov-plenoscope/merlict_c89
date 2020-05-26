@@ -3,16 +3,20 @@
 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Merlict simulates light. It propagates photons in a scenery, and it can render simple images. Merlict is a header-only-library written in ```c89```. 
+Merlict simulates light. It propagates photons in a scenery, and it can render simple images. Merlict is a ```C```-library written in ```c89```. 
 
-## Library Goals
-- Wide compatibility. ```c89```.
-- Easy to use. Header only library.
-- Independent. Only c-standard-library.
-- Unit tests
-
-## Science Goals
+## Science
 - Accurate propagation of photons in complex sceneries.
+- Support for basic primitives common in science such as spheres, lenses, parabolic dishes, cylinders.
+- Support for large triangle meshes from e.g. CAD-files.
+- SI-units
+
+## Library
+- Wide compatibility with ```c89```.
+- No need for build-system.
+- Unit tests.
+- Style according to ```.clang-format```.
+- Minimize warnings when compiled with ```gcc``` and ```clang```.
 
 ## Tests
 #### Compile
