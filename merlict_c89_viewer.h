@@ -54,7 +54,7 @@ void mlivr_print_info_line(
         const struct mlivrCursor cursor)
 {
         printf("Press 'h' for help. "
-               "Pos.: [ % -.1f, % -.1f, % -.1f]m, "
+               "Pos.: [ % -.2e, % -.2e, % -.2e]m, "
                "Rot.: [ % -.1f, % -.1f, % -.1f]deg, "
                "FoV.: %.2fdeg",
                camera.position.x,
@@ -398,7 +398,7 @@ int mlivr_run_interactive_viewer(
                                         object_index.type, type_string));
                                 printf("Obj % 6ld, %-16s, "
                                        "dist % 6.1fm, "
-                                       "pos [% -.2f,% -.2f,% -.2f], "
+                                       "pos [% -.2e,% -.2e,% -.2e], "
                                        "normal [% -.2f,% -.2f,% -.2f], "
                                        "surf %d.\n",
                                        probing_intersection.object_idx,
