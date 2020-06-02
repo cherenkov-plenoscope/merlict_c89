@@ -14,9 +14,9 @@
 #define MLIVR_ESCAPE_KEY 27
 #define MLIVR_SPACE_KEY 32
 
-void mlivr_clear_screen() { printf("\033[2J\n"); }
+void mlivr_clear_screen(void) { printf("\033[2J\n"); }
 
-void mlivr_print_help()
+void mlivr_print_help(void)
 {
         mlivr_clear_screen();
         printf("merlict-c89\n-----------\n\n");
@@ -86,7 +86,7 @@ void mlivr_timestamp_now_19chars(char *buffer)
 }
 
 /* Thanks to Edwin Buck */
-struct termios mlivr_disable_stdin_buffer()
+struct termios mlivr_disable_stdin_buffer(void)
 {
         struct termios old_terminal;
         struct termios new_terminal;
@@ -119,7 +119,7 @@ struct mlivrConfig {
         struct mliCamera camera;
 };
 
-struct mlivrConfig mlivrConfig_default()
+struct mlivrConfig mlivrConfig_default(void)
 {
         struct mlivrConfig cfg;
         cfg.preview_num_cols = 160u;
