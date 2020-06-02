@@ -14,20 +14,35 @@ int main(int argc, char *argv[])
 {
         struct mliScenery scenery = mliScenery_init();
         struct mliOcTree octree = mliOcTree_init();
+        struct mlivrConfig config = mlivrConfig_default();
 
-        if (argc != 2) {
-                fprintf(stderr, "Usage: %s <scenery-path>\n", argv[0]);
-                goto error;
-        }
-        if (mli_string_ends_with(argv[1], ".json")) {
-                mli_check(
-                        mliScenery_malloc_from_json_path(&scenery, argv[1]),
-                        "Can not read scenery from json.");
-        } else {
-                if (!mliScenery_read_from_path(&scenery, argv[1])) {
-                        fprintf(stderr, "Can not open '%s'\n", argv[1]);
-                        goto error;
+        if (argc >= 2) {
+                if (mli_string_ends_with(argv[1], ".json")) {
+                        mli_check(
+                                mliScenery_malloc_from_json_path(
+                                        &scenery,
+                                        argv[1]),
+                                "Can not read scenery from json.");
+                } else {
+                        if (!mliScenery_read_from_path(&scenery, argv[1])) {
+                                fprintf(stderr, "Can not open '%s'\n", argv[1]);
+                                goto error;
+                        }
                 }
+        }
+
+        if (argc == 3) {
+                mli_check(
+                        mli_string_to_float(&config.step_length, argv[2]),
+                        "Can not parse step_length from argv[2].");
+        }
+
+        if (argc < 2 || argc > 3) {
+                fprintf(
+                        stderr,
+                        "Usage: %s <scenery-path> [step_length]\n",
+                        argv[0]);
+                goto error;
         }
 
         mli_check(
@@ -35,7 +50,9 @@ int main(int argc, char *argv[])
                 "Failed to build octree from scenery.");
         mli_check(
                 mlivr_run_interactive_viewer(
-                        &scenery, &octree, mlivrConfig_default()),
+                        &scenery,
+                        &octree,
+                        config),
                 "Failure in viewer");
 
         mliOcTree_free(&octree);

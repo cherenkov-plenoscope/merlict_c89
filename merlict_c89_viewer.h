@@ -115,6 +115,7 @@ struct mlivrConfig {
         uint64_t preview_num_rows;
         uint64_t export_num_cols;
         uint64_t export_num_rows;
+        double step_length;
         struct mliCamera camera;
 };
 
@@ -127,12 +128,16 @@ struct mlivrConfig mlivrConfig_default()
         cfg.export_num_cols = 1920u;
         cfg.export_num_rows = 1080u;
 
-        cfg.camera.position.x = -20.;
+        cfg.step_length = 1.0;
+
+        cfg.camera.position.x = 0.;
         cfg.camera.position.y = 0.;
         cfg.camera.position.z = 0.;
+
         cfg.camera.rotation.x = 0.;
         cfg.camera.rotation.y = -mli_deg2rad(90.);
         cfg.camera.rotation.z = 0.;
+
         cfg.camera.field_of_view = mli_deg2rad(80.);
         return cfg;
 }
@@ -251,22 +256,34 @@ int mlivr_run_interactive_viewer(
                 } else {
                         switch (key) {
                         case 'w':
-                                camera = mliCamera_move_forward(camera, 1);
+                                camera = mliCamera_move_forward(
+                                        camera,
+                                        config.step_length);
                                 break;
                         case 's':
-                                camera = mliCamera_move_forward(camera, -1);
+                                camera = mliCamera_move_forward(
+                                        camera,
+                                        -config.step_length);
                                 break;
                         case 'a':
-                                camera = mliCamera_move_right(camera, -1.);
+                                camera = mliCamera_move_right(
+                                        camera,
+                                        -config.step_length);
                                 break;
                         case 'd':
-                                camera = mliCamera_move_right(camera, 1.);
+                                camera = mliCamera_move_right(
+                                        camera,
+                                        config.step_length);
                                 break;
                         case 'q':
-                                camera = mliCamera_move_up(camera, 1.);
+                                camera = mliCamera_move_up(
+                                        camera,
+                                        config.step_length);
                                 break;
                         case 'e':
-                                camera = mliCamera_move_up(camera, -1.);
+                                camera = mliCamera_move_up(
+                                        camera,
+                                        -config.step_length);
                                 break;
                         case 'i':
                                 camera = mliCamera_look_up_when_possible(
