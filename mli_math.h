@@ -12,7 +12,7 @@
 #define MLI_2_OVER_SQRT3 1.1547005383792517
 #define MLI_SQRT3_OVER_2 0.8660254037844386
 
-#define MLI_EPSILON 1e-4
+#define MLI_EPSILON 1e-9
 
 double mli_rad2deg(const double angle_in_rad)
 {
