@@ -102,10 +102,10 @@ int mliJson_malloc_from_file(struct mliJson *json, const char *path)
         uint64_t num_chars_and_null = 0u;
         FILE *f = fopen(path, "rt");
         mli_check(f != NULL, "Can not read json from path.");
-        fseek(f, 0, SEEK_END);
+        mli_check(fseek(f, 0, SEEK_END) == 0, "Can not seek to end of file.");
         num_chars = ftell(f);
         num_chars_and_null = num_chars + 1u;
-        fseek(f, 0, SEEK_SET);
+        mli_check(fseek(f, 0, SEEK_SET) == 0, "Can not seek to begin of file");
         mli_malloc(json_str, char, num_chars_and_null);
         mli_fread(json_str, sizeof(char), num_chars, f);
         json_str[num_chars] = '\0';
