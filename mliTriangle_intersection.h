@@ -57,7 +57,8 @@ struct mliVec mli_triangle_surface_normal(
 {
         struct mliVec edge1 = mliVec_substract(vertex1, vertex0);
         struct mliVec edge2 = mliVec_substract(vertex2, vertex0);
-        return mliVec_cross(edge1, edge2);
+        struct mliVec normal = mliVec_cross(edge1, edge2);
+        return mliVec_normalized(normal);
 }
 
 int mliTriangle_intersection(

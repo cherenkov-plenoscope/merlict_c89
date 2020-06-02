@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
 #include "tests/test_variable_length_integer.c"
 #include "tests/test_map.c"
 #include "tests/test_cache_aware_octree.c"
+#include "tests/test_triangle.c"
 
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;
