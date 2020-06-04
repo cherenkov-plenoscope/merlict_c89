@@ -47,7 +47,8 @@
 
 #define mli_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                                  \
         {                                                                      \
-                const uint64_t num_written = fwrite(PTR, SIZE_OF_TYPE, NUM, F);\
+                const uint64_t num_written =                                   \
+                        fwrite(PTR, SIZE_OF_TYPE, NUM, F);                     \
                 mli_check(num_written == NUM, "Can not write to file.");       \
         }
 
