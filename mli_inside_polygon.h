@@ -7,7 +7,7 @@
 #include "mliFunc.h"
 
 int mli_inside_polygon(
-        const struct mliFunc* polygon,
+        const struct mliFunc *polygon,
         const double x,
         const double y)
 {
@@ -44,26 +44,12 @@ int mli_inside_polygon(
         uint64_t i = 0u;
         uint64_t j = 0u;
         uint64_t c = 0u;
-        for (
-                i = 0, j = polygon->num_points-1;
-                i < polygon->num_points;
-                j = i++
-        ) {
-                if (
-                        (
-                                (polygon->y[i] > y) != (polygon->y[j] > y)
-                        )
-                                &&
-                        (
-                                x < (polygon->x[j] - polygon->x[i])
-                                *
-                                (y - polygon->y[i])
-                                /
-                                (polygon->y[j] - polygon->y[i])
-                                +
-                                polygon->x[i]
-                        )
-                ) {
+        for (i = 0, j = polygon->num_points - 1; i < polygon->num_points;
+             j = i++) {
+                if (((polygon->y[i] > y) != (polygon->y[j] > y)) &&
+                    (x < (polygon->x[j] - polygon->x[i]) * (y - polygon->y[i]) /
+                                         (polygon->y[j] - polygon->y[i]) +
+                                 polygon->x[i])) {
                         c = !c;
                 }
         }

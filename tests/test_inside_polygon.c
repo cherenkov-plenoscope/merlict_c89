@@ -7,17 +7,16 @@ CASE("is point in polygon")
         const uint64_t num_cols = 100;
         double actual_area_hexagon = 0;
         double hexagon_radius = 30;
-        double expected_area_hexagon = (
-                (3.0/2.0)*sqrt(3.0)*hexagon_radius*hexagon_radius
-        );
+        double expected_area_hexagon =
+                ((3.0 / 2.0) * sqrt(3.0) * hexagon_radius * hexagon_radius);
 
         struct mliFunc polygon = mliFunc_init();
         CHECK(mliFunc_malloc(&polygon, 6));
 
         for (i = 0; i < 6; i++) {
-                double phi = MLI_2PI*((double)i/6);
-                polygon.x[i] = hexagon_radius*cos(phi) + 50;
-                polygon.y[i] = hexagon_radius*sin(phi) + 50;
+                double phi = MLI_2PI * ((double)i / 6);
+                polygon.x[i] = hexagon_radius * cos(phi) + 50;
+                polygon.y[i] = hexagon_radius * sin(phi) + 50;
         }
 
         for (row = 0; row < num_rows; row++) {
