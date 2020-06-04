@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 #include "tests/test_map.c"
 #include "tests/test_cache_aware_octree.c"
 #include "tests/test_triangle.c"
+#include "tests/test_inside_polygon.c"
 
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;

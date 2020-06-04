@@ -45,6 +45,8 @@
 
 #include "mli_intersection_and_scenery.h"
 
+#include "mli_inside_polygon.h"
+
 #include "mliCylinder.h"
 #include "mliCylinder_OBB.h"
 #include "mliCylinder_intersection.h"
