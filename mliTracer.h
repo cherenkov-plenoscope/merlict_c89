@@ -29,6 +29,11 @@ int mli_first_casual_intersection(
                 return 0;
 }
 
+struct mliPathTrace {
+        struct mliRay ray;
+        struct mliColor weight;
+};
+
 struct mliColor mli_trace(
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
