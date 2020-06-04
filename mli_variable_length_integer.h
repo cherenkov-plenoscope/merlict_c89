@@ -52,7 +52,7 @@ int mliDynUint8_equal(const struct mliDynUint8 *a, const struct mliDynUint8 *b)
         if (a->dyn.size > b->dyn.size) {
                 return 0;
         } else if (a->dyn.size == b->dyn.size) {
-                size_t i;
+                uint64_t i;
                 for (i = 0; i < a->dyn.size; i++) {
                         if (a->arr[i] != b->arr[i]) {
                                 return 0;
@@ -90,7 +90,7 @@ int mliDynUint8_add(
         const struct mliDynUint8 *b,
         struct mliDynUint8 *o)
 {
-        size_t i, max_size;
+        uint64_t i, max_size;
         uint16_t aa, bb, sum, carry, sum8, tmp_o;
         max_size = MLI_MAX2(a->dyn.size, b->dyn.size);
         mli_c(mliDynUint8_malloc(o, max_size + 1));
@@ -150,7 +150,7 @@ error:
 
 int mliDynUint8_malloc_char(struct mliDynUint8 *o, const char *str)
 {
-        size_t i, capacity, length;
+        uint64_t i, capacity, length;
         const uint8_t *ptr;
         length = strlen(str);
         capacity = length + 1;

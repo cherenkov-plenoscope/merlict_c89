@@ -24,7 +24,7 @@ int mliSceneryResources_append_to_file(
         const struct mliSceneryResources *res,
         FILE *f)
 {
-        size_t i;
+        uint64_t i;
         for (i = 0; i < res->num_functions; i++) {
                 mliFunc_fwrite(&res->functions[i], f);
         }

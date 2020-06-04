@@ -34,7 +34,7 @@ void mliJson_free(struct mliJson *json)
 
 void _mliJson_set_zero(struct mliJson *json)
 {
-        size_t i;
+        uint64_t i;
         for (i = 0; i < json->num_chars; i++) {
                 json->chars[i] = '\0';
         }
@@ -46,7 +46,7 @@ void _mliJson_set_zero(struct mliJson *json)
         }
 }
 
-int mliJson_malloc(struct mliJson *json, const size_t json_strlen)
+int mliJson_malloc(struct mliJson *json, const uint64_t json_strlen)
 {
         mliJson_free(json);
         json->num_chars = json_strlen + 1u;     /* NULL termination. */

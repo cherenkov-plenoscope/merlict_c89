@@ -47,20 +47,20 @@
 
 #define mli_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                                  \
         {                                                                      \
-                const size_t num_written = fwrite(PTR, SIZE_OF_TYPE, NUM, F);  \
+                const uint64_t num_written = fwrite(PTR, SIZE_OF_TYPE, NUM, F);\
                 mli_check(num_written == NUM, "Can not write to file.");       \
         }
 
 #define mli_fread(PTR, SIZE_OF_TYPE, NUM, F)                                   \
         {                                                                      \
-                const size_t num_read = fread(PTR, SIZE_OF_TYPE, NUM, F);      \
+                const uint64_t num_read = fread(PTR, SIZE_OF_TYPE, NUM, F);    \
                 mli_check(num_read == NUM, "Can not read from file.");         \
         }
 
 #define mli_write_type(TYPE, VALUE, F)                                         \
         {                                                                      \
                 TYPE __temp_value = (TYPE)VALUE;                               \
-                const size_t __num_written =                                   \
+                const uint64_t __num_written =                                 \
                         fwrite(&__temp_value, sizeof(TYPE), 1, F);             \
                 mli_check(__num_written == 1, "Can not write type to file.");  \
         }

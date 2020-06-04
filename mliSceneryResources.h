@@ -60,7 +60,7 @@ struct mliSceneryResources mliSceneryResources_init(void)
 
 void mliSceneryResources_free(struct mliSceneryResources *res)
 {
-        size_t i;
+        uint64_t i;
         for (i = 0; i < res->num_functions; i++) {
                 mliFunc_free(&(res->functions[i]));
         }
@@ -75,7 +75,7 @@ int mliSceneryResources_malloc(
         struct mliSceneryResources *res,
         const struct mliSceneryResourcesCapacity capacity)
 {
-        size_t i;
+        uint64_t i;
         mliSceneryResources_free(res);
         res->num_functions = capacity.num_functions;
         res->num_colors = capacity.num_colors;

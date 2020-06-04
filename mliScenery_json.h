@@ -58,7 +58,7 @@ int _mliMap2_key_from_json(
         const uint64_t value)
 {
         char *name_str = NULL;
-        size_t name_str_capacity =
+        uint64_t name_str_capacity =
                 (json->tokens[token_name + 1].end -
                  json->tokens[token_name + 1].start + 1u);
         mli_check(
@@ -85,7 +85,7 @@ int _mliMap2_get_value_for_string_from_json(
         uint32_t *out_value)
 {
         char *name_str = NULL;
-        size_t name_str_capacity =
+        uint64_t name_str_capacity =
                 (json->tokens[token_name + 1].end -
                  json->tokens[token_name + 1].start + 1u);
         mli_check(

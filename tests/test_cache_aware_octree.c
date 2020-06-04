@@ -14,7 +14,7 @@ CASE("init mliCaOctree")
         struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
         struct mliOcTree octree = mliOcTree_init();
         struct mliIntersection isec;
-        size_t num_nodes, num_leafs, num_object_links;
+        uint64_t num_nodes, num_leafs, num_object_links;
         mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
         CHECK(mliTmpOcTree_malloc_from_scenery(&tmp_octree, &scenery));
 

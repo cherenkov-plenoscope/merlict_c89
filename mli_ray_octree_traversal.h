@@ -162,7 +162,7 @@ void _mli_proc_subtree(
 
         if (octree_type == MLI_OCTREE_TYPE_LEAF) {
                 struct mliIntersection tmp_isec;
-                size_t o;
+                uint64_t o;
                 for (o = 0; o < mliOcTree_leaf_num_objects(octree, octree_node);
                      o++) {
                         uint32_t object_idx = mliOcTree_leaf_object_link(

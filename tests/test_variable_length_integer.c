@@ -2,7 +2,7 @@
 
 CASE("dynUint8")
 {
-        size_t i;
+        uint64_t i;
         struct mliMT19937 prng = mliMT19937_init(0);
         struct mliDynUint8 a = mliDynUint8_init();
         struct mliDynUint8 b = mliDynUint8_init();
@@ -59,7 +59,7 @@ CASE("dynUint8")
 
 CASE("dynUint8_from_string")
 {
-        size_t i;
+        uint64_t i;
         struct mliDynUint8 a = mliDynUint8_init();
         char text[6][100] = {
                 "peter",

@@ -143,9 +143,9 @@ error:
         return 0;
 }
 
-size_t mli_guess_octree_depth_based_on_num_objects(const size_t num_objects)
+uint64_t mli_guess_octree_depth_based_on_num_objects(const uint64_t num_objects)
 {
-        return 1u + (size_t)ceil(log((double)num_objects) / log(8.0));
+        return 1u + (uint64_t)ceil(log((double)num_objects) / log(8.0));
 }
 
 int mliTmpNode_malloc_tree_from_scenery(
@@ -249,7 +249,7 @@ void _mliTmpNode_set_flat_index(
         int32_t *node_index,
         int32_t *leaf_index)
 {
-        size_t c;
+        uint64_t c;
         for (c = 0u; c < 8u; c++) {
                 if (_mliTmpNode_exists_and_objects(node->children[c])) {
                         (*flat_index)++;
@@ -298,11 +298,11 @@ void mliTmpNode_set_flat_index(struct mliTmpNode *root_node)
 
 void _mliTmpNode_num_nodes_leafs_objects(
         const struct mliTmpNode *node,
-        size_t *num_nodes,
-        size_t *num_leafs,
-        size_t *num_object_links)
+        uint64_t *num_nodes,
+        uint64_t *num_leafs,
+        uint64_t *num_object_links)
 {
-        size_t c;
+        uint64_t c;
         if (node->node_index != MLI_TMPNODE_FLAT_INDEX_NONE) {
                 (*num_nodes)++;
         }
@@ -323,9 +323,9 @@ void _mliTmpNode_num_nodes_leafs_objects(
 
 void mliTmpNode_num_nodes_leafs_objects(
         const struct mliTmpNode *root_node,
-        size_t *num_nodes,
-        size_t *num_leafs,
-        size_t *num_object_links)
+        uint64_t *num_nodes,
+        uint64_t *num_leafs,
+        uint64_t *num_object_links)
 {
         *num_nodes = 0;
         *num_leafs = 0;

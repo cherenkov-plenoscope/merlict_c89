@@ -10,7 +10,7 @@ CASE("simple propagation")
         struct mliSide side_coming_from, side_going_to;
         struct mliSurface surf_coming_from, surf_going_to;
         struct mliMedium medi_coming_from, medi_going_to;
-        size_t max_interactions = 16;
+        uint64_t max_interactions = 16;
 
         struct mliPhoton photon;
         photon.ray = mliRay_set(mliVec_set(0, 0, -3), mliVec_set(0, 0, 1));

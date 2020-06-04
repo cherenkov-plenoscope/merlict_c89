@@ -17,7 +17,7 @@ struct mliEnv {
         struct mliDynPhotonInteraction *history;
         struct mliPhoton *photon;
         struct mliMT19937 *prng;
-        size_t max_interactions;
+        uint64_t max_interactions;
 };
 
 int _mli_propagate_photon(struct mliEnv *env);
@@ -430,7 +430,7 @@ int mli_propagate_photon(
         struct mliDynPhotonInteraction *history,
         struct mliPhoton *photon,
         struct mliMT19937 *prng,
-        const size_t max_interactions)
+        const uint64_t max_interactions)
 {
         struct mliEnv env;
         env.scenery = scenery;

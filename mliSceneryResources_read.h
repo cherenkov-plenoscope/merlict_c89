@@ -22,7 +22,7 @@ error:
 
 int mliSceneryResources_read_from_file(struct mliSceneryResources *res, FILE *f)
 {
-        size_t i;
+        uint64_t i;
         for (i = 0; i < res->num_functions; i++) {
                 mli_c(mliFunc_malloc_from_file(&res->functions[i], f));
         }

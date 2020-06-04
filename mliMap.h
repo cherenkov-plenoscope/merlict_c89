@@ -8,8 +8,8 @@
 #define MLI_MAP_KEY_CAPACITY 128
 
 struct mliMap2 {
-        size_t capacity;
-        size_t size;
+        uint64_t capacity;
+        uint64_t size;
         char **keys;
         uint32_t *values;
 };
@@ -27,7 +27,7 @@ struct mliMap2 mliMap2_init(void)
 void mliMap2_free(struct mliMap2 *map)
 {
         if (map->keys != NULL) {
-                size_t i;
+                uint64_t i;
                 for (i = 0; i < map->capacity; i++) {
                         free(map->keys[i]);
                 }
@@ -39,7 +39,7 @@ void mliMap2_free(struct mliMap2 *map)
 
 void _mliMap2_set_zero(struct mliMap2 *map)
 {
-        size_t i, j;
+        uint64_t i, j;
         for (i = 0u; i < map->capacity; i++) {
                 for (j = 0u; j < MLI_MAP_KEY_CAPACITY; j++) {
                         map->keys[i][j] = '\0';
@@ -48,9 +48,9 @@ void _mliMap2_set_zero(struct mliMap2 *map)
         }
 }
 
-int mliMap2_malloc(struct mliMap2 *map, const size_t capacity)
+int mliMap2_malloc(struct mliMap2 *map, const uint64_t capacity)
 {
-        size_t i;
+        uint64_t i;
         mliMap2_free(map);
         map->capacity = capacity;
         mli_malloc(map->keys, char *, map->capacity);
