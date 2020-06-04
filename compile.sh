@@ -9,6 +9,7 @@ gcc merlict-c89-test.c\
         -lm\
         -Wall\
         -pedantic\
+        -Wextra\
         -Wstrict-prototypes
 
 ./test_gcc_c89  > test_gcc_c89.o 2> test_gcc_c89.e
@@ -21,6 +22,7 @@ gcc merlict-c89-test.c\
         -lm\
         -Wall\
         -pedantic\
+        -Wextra\
         -Wstrict-prototypes
 
 ./test_gcc > test_gcc.o 2> test_gcc.e
@@ -32,7 +34,8 @@ g++ merlict-c89-test.c\
         -o test_g++\
         -lm\
         -Wall\
-        -pedantic
+        -pedantic\
+        -Wextra
 
 ./test_g++ > test_g++.o 2> test_g++.e
 
@@ -45,6 +48,7 @@ clang merlict-c89-test.c\
         -lm\
         -Wall\
         -pedantic\
+        -Wextra\
         -Wstrict-prototypes
 
 ./test_clang_c89 > test_clang_c89.o 2> test_clang_c89.e
@@ -56,7 +60,8 @@ clang merlict-c89-test.c\
         -o test_clang\
         -lm\
         -Wall\
-        -pedantic
+        -pedantic\
+        -Wextra
 
 ./test_clang > test_clang.o 2> test_clang.e
 

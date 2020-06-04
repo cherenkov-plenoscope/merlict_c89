@@ -82,7 +82,7 @@ CASE("Do not leak out of closed box")
         const float opening_angle = mli_deg2rad(180.0);
         const uint64_t num_photons = 100u;
         const uint64_t max_interactions = 100u;
-        const uint64_t sensor_id = 3u;
+        const int64_t sensor_id = 3;
         const struct mliVec center_of_crystal = mliVec_set(5e-3, 5e-3, 5e-3);
         uint64_t i;
 

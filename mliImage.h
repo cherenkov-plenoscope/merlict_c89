@@ -339,7 +339,7 @@ void mliImage_luminance_threshold_dilatation(
                                                     row + orow < rows &&
                                                     col + ocol < cols) {
                                                         mliImage_set(
-                                                                image,
+                                                                out,
                                                                 col + ocol,
                                                                 row + orow,
                                                                 color_max);

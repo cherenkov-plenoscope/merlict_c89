@@ -12,7 +12,7 @@
 #include <assert.h>
 #include "merlict_c89.h"
 
-int main(int argc, char *argv[])
+int main(void)
 {
 #include "tests/test_frame.c"
 #include "tests/test_upper_bound.c"
