@@ -78,14 +78,14 @@ int mli_time_of_flight(
         double refractive_index;
         mli_check(
                 mliFunc_evaluate(
-                        &scenery->resources.functions[
-                                phisec->refraction_coming_from],
+                        &scenery->resources
+                                 .functions[phisec->refraction_coming_from],
                         photon->wavelength,
                         &refractive_index),
                 "Failed to eval. refraction for wavelength.");
 
-        (*time_of_flight) = (refractive_index*phisec->distance_of_ray)/
-                MLI_VACUUM_SPPED_OF_LIGHT;
+        (*time_of_flight) = (refractive_index * phisec->distance_of_ray) /
+                            MLI_VACUUM_SPPED_OF_LIGHT;
         return 1;
 error:
         return 0;

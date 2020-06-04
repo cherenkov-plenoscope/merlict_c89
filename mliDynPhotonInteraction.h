@@ -40,8 +40,8 @@ void mliDynPhotonInteraction_print(
                 } else {
                         user_id = -1;
                 }
-                printf( "% 3ld, % 3ld, % 3ld, "
-                        "[% -.3e,% -.3e,% -.3e], %-20s, ",
+                printf("% 3ld, % 3ld, % 3ld, "
+                       "[% -.3e,% -.3e,% -.3e], %-20s, ",
                        i,
                        history->arr[i].object_idx,
                        user_id,

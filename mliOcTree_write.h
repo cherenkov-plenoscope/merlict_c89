@@ -7,10 +7,9 @@
 #include "mli_debug.h"
 #include "mliOcTree.h"
 
-
 int mliOcTree_write_to_file(struct mliOcTree *octree, FILE *f)
 {
-         /* identifier */
+        /* identifier */
         mli_c(fprintf(f, "merlict_c89\n"));
         mli_c(fprintf(f, "octree\n"));
 
@@ -20,11 +19,7 @@ int mliOcTree_write_to_file(struct mliOcTree *octree, FILE *f)
         mli_fwrite(&octree->leafs.num_object_links, sizeof(uint64_t), 1u, f);
 
         /* nodes */
-        mli_fwrite(
-                octree->nodes,
-                sizeof(struct mliNode),
-                octree->num_nodes,
-                f);
+        mli_fwrite(octree->nodes, sizeof(struct mliNode), octree->num_nodes, f);
 
         /* leaf addresses */
         mli_fwrite(

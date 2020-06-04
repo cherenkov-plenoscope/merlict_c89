@@ -6,13 +6,10 @@
 #include "mli_debug.h"
 #include "mliOcTree.h"
 
-
 int mliOcTree_is_equal(struct mliOcTree *a, struct mliOcTree *b)
 {
         uint64_t i, j;
-        mli_check(
-                a->num_nodes == b->num_nodes,
-                "num_nodes not equal.");
+        mli_check(a->num_nodes == b->num_nodes, "num_nodes not equal.");
         mli_check(
                 a->leafs.num_leafs == b->leafs.num_leafs,
                 "leafs.num_leafs not equal.");
@@ -33,11 +30,10 @@ int mliOcTree_is_equal(struct mliOcTree *a, struct mliOcTree *b)
                 for (j = 0; j < 8; j++) {
                         mli_check(
                                 a->nodes[i].children[j] ==
-                                b->nodes[i].children[j],
+                                        b->nodes[i].children[j],
                                 "octree.nodes[i].children[j] not equal");
                         mli_check(
-                                a->nodes[i].types[j] ==
-                                b->nodes[i].types[j],
+                                a->nodes[i].types[j] == b->nodes[i].types[j],
                                 "octree.nodes[i].types[j] not equal");
                 }
         }
@@ -45,17 +41,16 @@ int mliOcTree_is_equal(struct mliOcTree *a, struct mliOcTree *b)
         for (i = 0; i < a->leafs.num_leafs; i++) {
                 mli_check(
                         a->leafs.adresses[i].first_object_link ==
-                        b->leafs.adresses[i].first_object_link,
+                                b->leafs.adresses[i].first_object_link,
                         "octree.leafs.adresses[i].first_object_link not equal");
                 mli_check(
                         a->leafs.adresses[i].num_object_links ==
-                        b->leafs.adresses[i].num_object_links,
+                                b->leafs.adresses[i].num_object_links,
                         "octree.leafs.adresses[i].num_object_links not equal");
         }
         for (i = 0; i < a->leafs.num_object_links; i++) {
                 mli_check(
-                        a->leafs.object_links[i] ==
-                        b->leafs.object_links[i],
+                        a->leafs.object_links[i] == b->leafs.object_links[i],
                         "octree.leafs.object_links[i] not equal");
         }
 

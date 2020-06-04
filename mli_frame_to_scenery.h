@@ -84,9 +84,7 @@ void _mli_set_user_id(
         const uint64_t user_id)
 {
         uint64_t primitive_idx = _mliScenery_merge_index(
-                scenery,
-                primitive_type,
-                primitive_count);
+                scenery, primitive_type, primitive_count);
         scenery->user_ids[primitive_idx] = user_id;
 }
 
@@ -105,10 +103,7 @@ int __mliScenery_set_primitive(
         case MLI_FRAME:
                 for (i = 0; i < frame->children.dyn.size; i++) {
                         child = frame->children.arr[i];
-                        __mliScenery_set_primitive(
-                                scenery,
-                                child,
-                                count);
+                        __mliScenery_set_primitive(scenery, child, count);
                 }
                 break;
         case MLI_MESH:
@@ -152,10 +147,7 @@ int __mliScenery_set_primitive(
                 break;
         case MLI_SPHERE:
                 _mli_set_user_id(
-                        scenery,
-                        MLI_SPHERE,
-                        count->spheres,
-                        frame->id);
+                        scenery, MLI_SPHERE, count->spheres, frame->id);
                 i = count->spheres;
                 scenery->spheres[i] = *frame->primitive.sphere;
                 scenery->spheres_boundary_layers[i] = frame->boundary_layer;
@@ -164,10 +156,7 @@ int __mliScenery_set_primitive(
                 break;
         case MLI_CYLINDER:
                 _mli_set_user_id(
-                        scenery,
-                        MLI_CYLINDER,
-                        count->cylinders,
-                        frame->id);
+                        scenery, MLI_CYLINDER, count->cylinders, frame->id);
                 i = count->cylinders;
                 scenery->cylinders[i] = *frame->primitive.cylinder;
                 scenery->cylinders_boundary_layers[i] = frame->boundary_layer;
@@ -176,10 +165,7 @@ int __mliScenery_set_primitive(
                 break;
         case MLI_HEXAGON:
                 _mli_set_user_id(
-                        scenery,
-                        MLI_HEXAGON,
-                        count->hexagons,
-                        frame->id);
+                        scenery, MLI_HEXAGON, count->hexagons, frame->id);
                 i = count->hexagons;
                 scenery->hexagons[i] = *frame->primitive.hexagon;
                 scenery->hexagons_boundary_layers[i] = frame->boundary_layer;
@@ -200,11 +186,7 @@ int __mliScenery_set_primitive(
                 count->bicircleplanes += 1;
                 break;
         case MLI_DISC:
-                _mli_set_user_id(
-                        scenery,
-                        MLI_DISC,
-                        count->discs,
-                        frame->id);
+                _mli_set_user_id(scenery, MLI_DISC, count->discs, frame->id);
                 i = count->discs;
                 scenery->discs[i] = *frame->primitive.disc;
                 scenery->discs_boundary_layers[i] = frame->boundary_layer;
@@ -282,10 +264,7 @@ int mliScenery_malloc_from_mliUserScenery(
         }
 
         mli_check(
-                __mliScenery_set_primitive(
-                        scenery,
-                        &uscn->root,
-                        &count),
+                __mliScenery_set_primitive(scenery, &uscn->root, &count),
                 "Cen not set primitives");
 
         return 1;
@@ -306,9 +285,7 @@ int mliScenery_malloc_from_json_path(
                 mliUserScenery_malloc_from_json(&uscn, &json),
                 "Failed to parse json-scenery.");
         mli_check(
-                mliScenery_malloc_from_mliUserScenery(
-                        scenery,
-                        &uscn),
+                mliScenery_malloc_from_mliUserScenery(scenery, &uscn),
                 "Failed to translate struct mliUserScenery to mliScenery.")
                 mliJson_free(&json);
         mliUserScenery_free(&uscn);

@@ -7,7 +7,6 @@
 #include "mli_debug.h"
 #include "mliOcTree.h"
 
-
 int mliOcTree_read_and_malloc_from_file(struct mliOcTree *octree, FILE *f)
 {
         char line[1024];
@@ -16,18 +15,14 @@ int mliOcTree_read_and_malloc_from_file(struct mliOcTree *octree, FILE *f)
         uint64_t num_object_links;
 
         /* identifier */
-        mli_check(
-                fgets(line, 1024, f),
-                "Can not read identifier 1st line.")
-        mli_check(
-                strcmp(line, "merlict_c89\n") == 0,
-                "Expected starts with 'merlict_c89\\n'.");
-        mli_check(
-                fgets(line, 1024, f),
-                "Can not read identifier 2nd line.")
-        mli_check(
-                strcmp(line, "octree\n") == 0,
-                "Expected starts with 'octree\\n'.");
+        mli_check(fgets(line, 1024, f), "Can not read identifier 1st line.")
+                mli_check(
+                        strcmp(line, "merlict_c89\n") == 0,
+                        "Expected starts with 'merlict_c89\\n'.");
+        mli_check(fgets(line, 1024, f), "Can not read identifier 2nd line.")
+                mli_check(
+                        strcmp(line, "octree\n") == 0,
+                        "Expected starts with 'octree\\n'.");
 
         /* capacity */
         mli_fread(&num_nodes, sizeof(uint64_t), 1u, f);
@@ -36,17 +31,10 @@ int mliOcTree_read_and_malloc_from_file(struct mliOcTree *octree, FILE *f)
 
         mli_check(
                 mliOcTree_malloc(
-                        octree,
-                        num_nodes,
-                        num_leafs,
-                        num_object_links),
+                        octree, num_nodes, num_leafs, num_object_links),
                 "Can not malloc octree from file.");
 
-        mli_fread(
-                octree->nodes,
-                sizeof(struct mliNode),
-                octree->num_nodes,
-                f);
+        mli_fread(octree->nodes, sizeof(struct mliNode), octree->num_nodes, f);
         mli_fread(
                 octree->leafs.adresses,
                 sizeof(struct mliLeafAddress),
@@ -66,7 +54,6 @@ int mliOcTree_read_and_malloc_from_file(struct mliOcTree *octree, FILE *f)
 
         /* root type */
         mli_fread(&octree->root_type, sizeof(uint8_t), 1u, f);
-
 
         return 1;
 error:

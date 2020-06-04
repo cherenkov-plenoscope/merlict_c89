@@ -123,7 +123,7 @@ struct mlivrConfig mlivrConfig_default(void)
 {
         struct mlivrConfig cfg;
         cfg.preview_num_cols = 160u;
-        cfg.preview_num_rows = 90u/2;
+        cfg.preview_num_rows = 90u / 2;
 
         cfg.export_num_cols = 1920u;
         cfg.export_num_rows = 1080u;
@@ -257,33 +257,27 @@ int mlivr_run_interactive_viewer(
                         switch (key) {
                         case 'w':
                                 camera = mliCamera_move_forward(
-                                        camera,
-                                        config.step_length);
+                                        camera, config.step_length);
                                 break;
                         case 's':
                                 camera = mliCamera_move_forward(
-                                        camera,
-                                        -config.step_length);
+                                        camera, -config.step_length);
                                 break;
                         case 'a':
                                 camera = mliCamera_move_right(
-                                        camera,
-                                        -config.step_length);
+                                        camera, -config.step_length);
                                 break;
                         case 'd':
                                 camera = mliCamera_move_right(
-                                        camera,
-                                        config.step_length);
+                                        camera, config.step_length);
                                 break;
                         case 'q':
                                 camera = mliCamera_move_up(
-                                        camera,
-                                        config.step_length);
+                                        camera, config.step_length);
                                 break;
                         case 'e':
                                 camera = mliCamera_move_up(
-                                        camera,
-                                        -config.step_length);
+                                        camera, -config.step_length);
                                 break;
                         case 'i':
                                 camera = mliCamera_look_up_when_possible(

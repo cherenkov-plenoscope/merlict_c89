@@ -357,7 +357,7 @@ int _mliOcTree_equal_payload(
                         "Expected leafs to have equal num_object_links.");
                 for (obj = 0; obj < tmp_node->num_objects; obj++) {
                         uint64_t l = obj + tree->leafs.adresses[leaf_idx]
-                                                 .first_object_link;
+                                                   .first_object_link;
                         mli_check(
                                 tree->leafs.object_links[l] ==
                                         tmp_node->objects[obj],

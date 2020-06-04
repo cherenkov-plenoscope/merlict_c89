@@ -163,8 +163,8 @@ void mliCameraSensor_init(
         sensor->optical_axis = mli_transform_orientation(&rot, unit_z);
         sensor->col_axis = mli_transform_orientation(&rot, unit_y);
         sensor->row_axis = mli_transform_orientation(&rot, unit_x);
-        sensor->row_axis = mliVec_multiply(
-                sensor->row_axis, row_over_column_pixel_ratio);
+        sensor->row_axis =
+                mliVec_multiply(sensor->row_axis, row_over_column_pixel_ratio);
         sensor->distance_to_principal_point =
                 ((.5 * image->num_cols) / tan(.5 * camera->field_of_view));
         sensor->principal_point = mliVec_multiply(
