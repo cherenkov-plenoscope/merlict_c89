@@ -77,17 +77,15 @@ int mliJson_malloc_from_string(struct mliJson *json, const char *json_str)
                 json->num_tokens);
         mli_check(
                 num_tokens_parsed != JSMN_ERROR_NOMEM,
-                "Not enough tokens were provided.")
-                mli_check(
-                        num_tokens_parsed != JSMN_ERROR_INVAL,
-                        "Invalid character inside JSON string.")
-                        mli_check(
-                                num_tokens_parsed != JSMN_ERROR_PART,
-                                "The string is not a full JSON packet, more "
-                                "bytes expected.")
-                                mli_check(
-                                        num_tokens_parsed >= 0,
-                                        "Can not parse Json-string");
+                "Not enough tokens were provided.");
+        mli_check(
+                num_tokens_parsed != JSMN_ERROR_INVAL,
+                "Invalid character inside JSON string.");
+        mli_check(
+                num_tokens_parsed != JSMN_ERROR_PART,
+                "The string is not a full JSON packet, more "
+                "bytes expected.");
+        mli_check(num_tokens_parsed >= 0, "Can not parse Json-string");
         json->num_tokens = num_tokens_parsed;
         return 1;
 error:
