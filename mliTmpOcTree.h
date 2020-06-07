@@ -145,7 +145,7 @@ error:
 
 uint64_t mli_guess_octree_depth_based_on_num_objects(const uint64_t num_objects)
 {
-        return 1u + (uint64_t)ceil(log((double)num_objects) / log(8.0));
+        return 3u + (uint64_t)ceil(log((double)num_objects) / log(8.0));
 }
 
 int mliTmpNode_malloc_tree_from_scenery(
