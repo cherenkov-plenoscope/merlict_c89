@@ -11,6 +11,10 @@ int mliOcTree_write_to_file(struct mliOcTree *octree, FILE *f)
 {
         /* identifier */
         mli_c(fprintf(f, "merlict_c89\n"));
+        mli_c(fprintf(f, "MLI_VERSION %d.%d.%d\n",
+                MLI_VERSION_MAYOR,
+                MLI_VERSION_MINOR,
+                MLI_VERSION_PATCH));
         mli_c(fprintf(f, "octree\n"));
 
         /* capacity */

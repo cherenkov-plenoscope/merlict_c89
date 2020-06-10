@@ -134,7 +134,11 @@ int mliImage_write_to_ppm(const struct mliImage *img, const char *path)
         fout = fopen(path, "w");
         mli_check(fout, "Can not open ppm-image for writing.");
         fprintf(fout, "P6\n");
-        fprintf(fout, "# CREATOR: merlict_c89\n");
+        fprintf(fout, "# merlict_c89\n");
+        fprintf(fout, "# MLI_VERSION %d.%d.%d\n",
+                MLI_VERSION_MAYOR,
+                MLI_VERSION_MINOR,
+                MLI_VERSION_PATCH);
         fprintf(fout, "%d\n", img->num_cols);
         fprintf(fout, "%d\n", img->num_rows);
         fprintf(fout, "255\n");

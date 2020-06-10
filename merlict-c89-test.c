@@ -14,6 +14,11 @@
 
 int main(void)
 {
+        printf("MLI_VERSION %d.%d.%d\n",
+               MLI_VERSION_MAYOR,
+               MLI_VERSION_MINOR,
+               MLI_VERSION_PATCH);
+
 #include "tests/test_frame.c"
 #include "tests/test_upper_bound.c"
 #include "tests/test_histogram.c"

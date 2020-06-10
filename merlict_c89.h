@@ -2,6 +2,8 @@
 #ifndef MERLICT_MERLICT_C89_H_
 #define MERLICT_MERLICT_C89_H_
 
+#include "mli_version.h"
+
 #include "mli_testing.h"
 #include "mli_debug.h"
 #include "mli_math.h"

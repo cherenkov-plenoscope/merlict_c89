@@ -11,6 +11,10 @@
 #include "mliScenery.h"
 #include "mliOcTree.h"
 
+#define MLIVR_VERSION_MAYOR 0
+#define MLIVR_VERSION_MINOR 0
+#define MLIVR_VERSION_PATCH 0
+
 #define MLIVR_ESCAPE_KEY 27
 #define MLIVR_SPACE_KEY 32
 
@@ -39,6 +43,15 @@ void mlivr_print_help(void)
         printf(" exit ...............[ESC]\n");
         printf("\n");
         printf("[  space key  ] full resolution.\n");
+        printf("\n");
+        printf("MLI_VERSION %d.%d.%d\n",
+               MLI_VERSION_MAYOR,
+               MLI_VERSION_MINOR,
+               MLI_VERSION_PATCH);
+        printf("MLIVR_VERSION %d.%d.%d\n",
+               MLIVR_VERSION_MAYOR,
+               MLIVR_VERSION_MINOR,
+               MLIVR_VERSION_PATCH);
 }
 
 struct mlivrCursor {

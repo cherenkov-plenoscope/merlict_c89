@@ -8,8 +8,6 @@
 #include "mliScenery.h"
 #include "mliSceneryResources_write.h"
 
-#define MLI_SCENERY_MAGIC 43180u
-
 int _mliScenery_write_vertices_and_triangles(
         const struct mliScenery *scenery,
         FILE *f)
@@ -191,12 +189,16 @@ error:
 int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
 {
         FILE *f;
-        uint64_t magic = MLI_SCENERY_MAGIC;
         f = fopen(path, "w");
         mli_check(f != NULL, "Can not open Scenery-file for writing.");
 
-        /* magic identifier */
-        mli_fwrite(&magic, sizeof(uint64_t), 1u, f);
+        /* identifier */
+        mli_c(fprintf(f, "merlict_c89\n"));
+        mli_c(fprintf(f, "MLI_VERSION %d.%d.%d\n",
+                MLI_VERSION_MAYOR,
+                MLI_VERSION_MINOR,
+                MLI_VERSION_PATCH));
+        mli_c(fprintf(f, "scenery\n"));
 
         mli_check(
                 mliScenery_write_capacity_to_file(scenery, f),

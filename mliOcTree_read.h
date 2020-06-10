@@ -15,14 +15,15 @@ int mliOcTree_read_and_malloc_from_file(struct mliOcTree *octree, FILE *f)
         uint64_t num_object_links;
 
         /* identifier */
-        mli_check(fgets(line, 1024, f), "Can not read identifier 1st line.")
-                mli_check(
-                        strcmp(line, "merlict_c89\n") == 0,
-                        "Expected starts with 'merlict_c89\\n'.");
-        mli_check(fgets(line, 1024, f), "Can not read identifier 2nd line.")
-                mli_check(
-                        strcmp(line, "octree\n") == 0,
-                        "Expected starts with 'octree\\n'.");
+        mli_check(fgets(line, 1024, f), "Can not read identifier 1st line.");
+        mli_check(strcmp(line, "merlict_c89\n") == 0,
+                "Expected starts with 'merlict_c89\\n'.");
+        mli_check(fgets(line, 1024, f), "Can not read identifier 2nd line.");
+        mli_check(strncmp(line, "MLI_VERSION", 11) == 0,
+                "Expected starts with 'MLI_VERSION'.");
+        mli_check(fgets(line, 1024, f), "Can not read identifier 3rd line.");
+        mli_check(strcmp(line, "octree\n") == 0,
+                "Expected starts with 'octree\\n'.");
 
         /* capacity */
         mli_fread(&num_nodes, sizeof(uint64_t), 1u, f);

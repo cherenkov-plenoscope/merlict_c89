@@ -185,15 +185,24 @@ error:
 
 int mliScenery_read_from_path(struct mliScenery *scenery, const char *path)
 {
+        char line[1024];
         struct mliSceneryCapacity scenery_capacity = mliSceneryCapacity_init();
         struct mliSceneryResourcesCapacity resource_capacity =
                 mliSceneryResourcesCapacity_init();
         FILE *f;
-        uint64_t magic = 0u;
         f = fopen(path, "r");
-        mli_check(f != NULL, "Can not open Scenery-file for reading.")
-                mli_fread(&magic, sizeof(uint64_t), 1u, f);
-        mli_check(magic == MLI_SCENERY_MAGIC, "Expected magic identifier.'");
+        mli_check(f != NULL, "Can not open Scenery-file for reading.");
+
+        /* identifier */
+        mli_check(fgets(line, 1024, f), "Can not read identifier 1st line.");
+        mli_check(strcmp(line, "merlict_c89\n") == 0,
+                "Expected starts with 'merlict_c89\\n'.");
+        mli_check(fgets(line, 1024, f), "Can not read identifier 2nd line.");
+        mli_check(strncmp(line, "MLI_VERSION", 11) == 0,
+                "Expected starts with 'MLI_VERSION'.");
+        mli_check(fgets(line, 1024, f), "Can not read identifier 3rd line.");
+        mli_check(strcmp(line, "scenery\n") == 0,
+                "Expected starts with 'scenery\\n'.");
 
         mli_check(
                 mliScenery_read_capacity_from_file(&scenery_capacity, f),

@@ -20,8 +20,7 @@ int main(int argc, char *argv[])
                 if (mli_string_ends_with(argv[1], ".json")) {
                         mli_check(
                                 mliScenery_malloc_from_json_path(
-                                        &scenery,
-                                        argv[1]),
+                                        &scenery, argv[1]),
                                 "Can not read scenery from json.");
                 } else {
                         if (!mliScenery_read_from_path(&scenery, argv[1])) {
@@ -38,8 +37,7 @@ int main(int argc, char *argv[])
         }
 
         if (argc < 2 || argc > 3) {
-                fprintf(
-                        stderr,
+                fprintf(stderr,
                         "Usage: %s <scenery-path> [step_length]\n",
                         argv[0]);
                 goto error;
@@ -49,10 +47,7 @@ int main(int argc, char *argv[])
                 mliOcTree_malloc_from_scenery(&octree, &scenery),
                 "Failed to build octree from scenery.");
         mli_check(
-                mlivr_run_interactive_viewer(
-                        &scenery,
-                        &octree,
-                        config),
+                mlivr_run_interactive_viewer(&scenery, &octree, config),
                 "Failure in viewer");
 
         mliOcTree_free(&octree);
