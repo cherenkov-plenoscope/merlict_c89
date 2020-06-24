@@ -22,11 +22,10 @@
  * SOFTWARE.
  *
  * - removed JSMN_PARENT_LINKS
+ * - always JSMN_STRICT
  */
 #ifndef JSMN_H
 #define JSMN_H
-
-#define JSMN_STRICT 1
 
 #include <stddef.h>
 
@@ -129,10 +128,6 @@ static int jsmn_parse_primitive(struct jsmn_parser *parser, const char *js,
 
   for (; parser->pos < len && js[parser->pos] != '\0'; parser->pos++) {
     switch (js[parser->pos]) {
-#ifndef JSMN_STRICT
-    /* In strict mode primitive must be followed by "," or "}" or "]" */
-    case ':':
-#endif
     case '\t':
     case '\r':
     case '\n':
@@ -147,11 +142,10 @@ static int jsmn_parse_primitive(struct jsmn_parser *parser, const char *js,
       return JSMN_ERROR_INVAL;
     }
   }
-#ifdef JSMN_STRICT
+
   /* In strict mode primitive must be followed by a comma/object/array */
   parser->pos = start;
   return JSMN_ERROR_PART;
-#endif
 
 found:
   if (tokens == NULL) {
@@ -268,12 +262,12 @@ int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t len,
       }
       if (parser->toksuper != -1) {
         struct jsmntok_t *t = &tokens[parser->toksuper];
-#ifdef JSMN_STRICT
+
         /* In strict mode an object or array can't become a key */
         if (t->type == JSMN_OBJECT) {
           return JSMN_ERROR_INVAL;
         }
-#endif
+
         t->size++;
       }
       token->type = (c == '{' ? JSMN_OBJECT : JSMN_ARRAY);
@@ -341,7 +335,7 @@ int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t len,
         }
       }
       break;
-#ifdef JSMN_STRICT
+
     /* In strict mode primitives are: numbers and booleans */
     case '-':
     case '0':
@@ -365,10 +359,7 @@ int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t len,
           return JSMN_ERROR_INVAL;
         }
       }
-#else
-    /* In non-strict mode every unquoted value is a primitive */
-    default:
-#endif
+
       r = jsmn_parse_primitive(parser, js, len, tokens, num_tokens);
       if (r < 0) {
         return r;
@@ -379,11 +370,10 @@ int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t len,
       }
       break;
 
-#ifdef JSMN_STRICT
     /* Unexpected char in strict mode */
     default:
       return JSMN_ERROR_INVAL;
-#endif
+
     }
   }
 
