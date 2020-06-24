@@ -90,7 +90,6 @@ void jsmn_init(struct jsmn_parser *parser);
 int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t len,
                         struct jsmntok_t *tokens, const unsigned int num_tokens);
 
-#ifndef JSMN_HEADER
 /**
  * Allocates a fresh unused token from the token pool.
  */
@@ -409,7 +408,5 @@ void jsmn_init(struct jsmn_parser *parser) {
   parser->toknext = 0;
   parser->toksuper = -1;
 }
-
-#endif /* JSMN_HEADER */
 
 #endif /* JSMN_H */
