@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdint.h>
 #include "mli_debug.h"
+#include "mli_primitive_codes.h"
 #include "mliVec.h"
 #include "mliHomTra.h"
 #include "mliColor.h"

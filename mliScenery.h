@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "mli_debug.h"
 #include "mliVec.h"
+#include "mli_primitive_codes.h"
 #include "mliHomTra.h"
 #include "mliColor.h"
 #include "mliFunc.h"
@@ -21,14 +22,6 @@
 #include "mliBoundaryLayer.h"
 
 #include "mliSceneryResources.h"
-
-#define MLI_TRIANGLE 0u
-#define MLI_SPHERICAL_CAP_HEX 1u
-#define MLI_SPHERE 2u
-#define MLI_CYLINDER 3u
-#define MLI_HEXAGON 4u
-#define MLI_BICIRCLEPLANE 5u
-#define MLI_DISC 6u
 
 struct mliIndexStarts {
         uint64_t triangles;
