@@ -27,17 +27,17 @@ int mliSphere_has_overlap_obb(
          */
         double dist_squared = radius * radius;
         if (translation.x < obb.lower.x)
-                dist_squared -= mli_squared(translation.x - obb.lower.x);
+                dist_squared -= mli_square(translation.x - obb.lower.x);
         else if (translation.x > obb.upper.x)
-                dist_squared -= mli_squared(translation.x - obb.upper.x);
+                dist_squared -= mli_square(translation.x - obb.upper.x);
         if (translation.y < obb.lower.y)
-                dist_squared -= mli_squared(translation.y - obb.lower.y);
+                dist_squared -= mli_square(translation.y - obb.lower.y);
         else if (translation.y > obb.upper.y)
-                dist_squared -= mli_squared(translation.y - obb.upper.y);
+                dist_squared -= mli_square(translation.y - obb.upper.y);
         if (translation.z < obb.lower.z)
-                dist_squared -= mli_squared(translation.z - obb.lower.z);
+                dist_squared -= mli_square(translation.z - obb.lower.z);
         else if (translation.z > obb.upper.z)
-                dist_squared -= mli_squared(translation.z - obb.upper.z);
+                dist_squared -= mli_square(translation.z - obb.upper.z);
         return dist_squared > 0;
 }
 

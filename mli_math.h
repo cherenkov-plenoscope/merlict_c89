@@ -33,7 +33,7 @@ double mli_z_sphere(double x, double curvature_radius)
                sqrt(half_curvature_radius * half_curvature_radius - x * x);
 }
 
-double mli_squared(const double a) { return a * a; }
+double mli_square(const double a) { return a * a; }
 
 void mli_uint32_ncpy(const uint32_t *src, uint32_t *dst, const uint64_t num)
 {
