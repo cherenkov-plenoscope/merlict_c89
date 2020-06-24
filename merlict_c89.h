@@ -4,13 +4,14 @@
 
 #include "mli_version.h"
 
-#include "mli_testing.h"
 #include "mli_debug.h"
 #include "mli_math.h"
 #include "mli_dual_circle_prism.h"
 #include "mliMT19937.h"
 #include "mli_random.h"
 #include "mliVec.h"
+#include "mliCube.h"
+#include "mliOBB.h"
 #include "mliIntersection.h"
 #include "mliRotMat.h"
 #include "mliQuaternion.h"
@@ -27,6 +28,7 @@
 #include "mliCamera.h"
 #include "mliBoundaryLayer.h"
 
+#include "mliSceneryResources.h"
 #include "mliScenery.h"
 #include "mliScenery_write.h"
 #include "mliScenery_read.h"
@@ -37,7 +39,6 @@
 #include "mliTracer.h"
 #include "mliRay_OBB.h"
 #include "mliHexagonalPrismZ.h"
-#include "mliSphericalCapHex.h"
 #include "mliOuterPrismBound.h"
 #include "mliDynArray.h"
 #include "mliDynArray_template.h"
@@ -48,6 +49,10 @@
 #include "mli_intersection_and_scenery.h"
 
 #include "mli_inside_polygon.h"
+
+#include "mliSphericalCapHex.h"
+#include "mliSphericalCapHex_OBB.h"
+#include "mliSphericalCapHex_intersection.h"
 
 #include "mliCylinder.h"
 #include "mliCylinder_OBB.h"
