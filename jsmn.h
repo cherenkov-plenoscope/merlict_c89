@@ -34,12 +34,6 @@
 extern "C" {
 #endif
 
-#ifdef JSMN_STATIC
-#define JSMN_API static
-#else
-#define JSMN_API extern
-#endif
-
 /**
  * JSON type identifier. Basic types are:
  * 	o Object
@@ -90,14 +84,14 @@ struct jsmn_parser {
 /**
  * Create JSON parser over an array of tokens
  */
-JSMN_API void jsmn_init(struct jsmn_parser *parser);
+void jsmn_init(struct jsmn_parser *parser);
 
 /**
  * Run JSON parser. It parses a JSON data string into and array of tokens, each
  * describing
  * a single JSON object.
  */
-JSMN_API int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t len,
+int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t len,
                         struct jsmntok_t *tokens, const unsigned int num_tokens);
 
 #ifndef JSMN_HEADER
@@ -254,7 +248,7 @@ static int jsmn_parse_string(struct jsmn_parser *parser, const char *js,
 /**
  * Parse JSON string and fill tokens.
  */
-JSMN_API int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t len,
+int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t len,
                         struct jsmntok_t *tokens, const unsigned int num_tokens) {
   int r;
   int i;
@@ -414,7 +408,7 @@ JSMN_API int jsmn_parse(struct jsmn_parser *parser, const char *js, const size_t
  * Creates a new parser based over a given buffer with an array of tokens
  * available.
  */
-JSMN_API void jsmn_init(struct jsmn_parser *parser) {
+void jsmn_init(struct jsmn_parser *parser) {
   parser->pos = 0;
   parser->toknext = 0;
   parser->toksuper = -1;
