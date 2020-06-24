@@ -10,7 +10,8 @@
 #include "mliPhotonInteraction.h"
 #include "mliScenery.h"
 
-MLIDYNARRAY_TEMPLATE(mli, PhotonInteraction, struct mliPhotonInteraction)
+MLIDYNARRAY_DEFINITON(mli, PhotonInteraction, struct mliPhotonInteraction)
+MLIDYNARRAY_IMPLEMENTATION(mli, PhotonInteraction, struct mliPhotonInteraction)
 
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,

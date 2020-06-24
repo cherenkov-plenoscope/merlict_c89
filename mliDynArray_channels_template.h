@@ -6,12 +6,24 @@
 #include "mliDynArray_template.h"
 #include "mliColor.h"
 
-#define MLIDYNARRAY_2D_TEMPLATE(LIB, NAME, PAYLOAD_NAME)                       \
+#define MLIDYNARRAY_2D_DEFINITON(LIB, NAME, PAYLOAD_NAME)                      \
                                                                                \
         struct LIB##NAME##Channels {                                           \
                 uint64_t num_channels;                                         \
                 struct PAYLOAD_NAME *channels;                                 \
         };                                                                     \
+                                                                               \
+        struct LIB##NAME##Channels LIB##NAME##Channels_init(void);             \
+                                                                               \
+        void LIB##NAME##Channels_free(struct LIB##NAME##Channels *phs);        \
+                                                                               \
+        int LIB##NAME##Channels_malloc(                                        \
+                struct LIB##NAME##Channels *phs, const uint64_t num_channels); \
+                                                                               \
+        uint64_t LIB##NAME##Channels_total_num(                                \
+                const struct LIB##NAME##Channels *phs);
+
+#define MLIDYNARRAY_2D_IMPLEMENTATION(LIB, NAME, PAYLOAD_NAME)                 \
                                                                                \
         struct LIB##NAME##Channels LIB##NAME##Channels_init(void)              \
         {                                                                      \
@@ -64,6 +76,6 @@
                 return num_pulses;                                             \
         }
 
-MLIDYNARRAY_2D_TEMPLATE(mli, Color, mliDynColor)
-
+MLIDYNARRAY_2D_DEFINITON(mli, Color, mliDynColor)
+MLIDYNARRAY_2D_IMPLEMENTATION(mli, Color, mliDynColor)
 #endif

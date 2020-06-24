@@ -28,7 +28,8 @@
 
 struct mliFrame;
 
-MLIDYNARRAY_TEMPLATE(mli, FramePtr, struct mliFrame *)
+MLIDYNARRAY_DEFINITON(mli, FramePtr, struct mliFrame *)
+MLIDYNARRAY_IMPLEMENTATION(mli, FramePtr, struct mliFrame *)
 
 struct mliFrame {
         char name[MLI_FRAME_NAME_SIZE];

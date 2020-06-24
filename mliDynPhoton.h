@@ -5,6 +5,7 @@
 #include "mliDynArray.h"
 #include "mliPhoton.h"
 
-MLIDYNARRAY_TEMPLATE(mli, Photon, struct mliPhoton)
+MLIDYNARRAY_DEFINITON(mli, Photon, struct mliPhoton)
+MLIDYNARRAY_IMPLEMENTATION(mli, Photon, struct mliPhoton)
 
 #endif

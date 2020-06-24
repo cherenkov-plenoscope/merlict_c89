@@ -6,12 +6,34 @@
 #include "mliColor.h"
 #include "mliVec.h"
 
-#define MLIDYNARRAY_TEMPLATE(LIB, NAME, PAYLOAD_TYPE)                          \
+#define MLIDYNARRAY_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                         \
                                                                                \
         struct LIB##Dyn##NAME {                                                \
                 struct mliDynArray dyn;                                        \
                 PAYLOAD_TYPE *arr;                                             \
         };                                                                     \
+                                                                               \
+        struct LIB##Dyn##NAME LIB##Dyn##NAME##_init(void);                     \
+                                                                               \
+        void LIB##Dyn##NAME##_free(struct LIB##Dyn##NAME *dh);                 \
+                                                                               \
+        int LIB##Dyn##NAME##_malloc(                                           \
+                struct LIB##Dyn##NAME *dh, const uint64_t cap);                \
+                                                                               \
+        int LIB##Dyn##NAME##_push_back(                                        \
+                struct LIB##Dyn##NAME *dh, const PAYLOAD_TYPE pl);             \
+                                                                               \
+        int _##LIB##Dyn##NAME##_test_after_init(                               \
+                const struct LIB##Dyn##NAME *dh);                              \
+                                                                               \
+        int _##LIB##Dyn##NAME##_test_after_free(                               \
+                const struct LIB##Dyn##NAME *dh);                              \
+                                                                               \
+        int _##LIB##Dyn##NAME##_test_after_malloc(                             \
+                const struct LIB##Dyn##NAME *dh, uint64_t cap);
+
+
+#define MLIDYNARRAY_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                    \
                                                                                \
         struct LIB##Dyn##NAME LIB##Dyn##NAME##_init(void)                      \
         {                                                                      \
@@ -64,20 +86,28 @@
                         cap);                                                  \
         }
 
-MLIDYNARRAY_TEMPLATE(mli, Double, double)
+MLIDYNARRAY_DEFINITON(mli, Double, double)
+MLIDYNARRAY_IMPLEMENTATION(mli, Double, double)
 
-MLIDYNARRAY_TEMPLATE(mli, Vec, struct mliVec)
+MLIDYNARRAY_DEFINITON(mli, Vec, struct mliVec)
+MLIDYNARRAY_IMPLEMENTATION(mli, Vec, struct mliVec)
 
-MLIDYNARRAY_TEMPLATE(mli, Color, struct mliColor)
+MLIDYNARRAY_DEFINITON(mli, Color, struct mliColor)
+MLIDYNARRAY_IMPLEMENTATION(mli, Color, struct mliColor)
 
-MLIDYNARRAY_TEMPLATE(mli, ColorPtr, struct mliColor *)
+MLIDYNARRAY_DEFINITON(mli, ColorPtr, struct mliColor *)
+MLIDYNARRAY_IMPLEMENTATION(mli, ColorPtr, struct mliColor *)
 
-MLIDYNARRAY_TEMPLATE(mli, Int64, int64_t)
+MLIDYNARRAY_DEFINITON(mli, Int64, int64_t)
+MLIDYNARRAY_IMPLEMENTATION(mli, Int64, int64_t)
 
-MLIDYNARRAY_TEMPLATE(mli, Char, char)
+MLIDYNARRAY_DEFINITON(mli, Char, char)
+MLIDYNARRAY_IMPLEMENTATION(mli, Char, char)
 
-MLIDYNARRAY_TEMPLATE(mli, Uint8, uint8_t)
+MLIDYNARRAY_DEFINITON(mli, Uint8, uint8_t)
+MLIDYNARRAY_IMPLEMENTATION(mli, Uint8, uint8_t)
 
-MLIDYNARRAY_TEMPLATE(mli, Uint32, uint32_t)
+MLIDYNARRAY_DEFINITON(mli, Uint32, uint32_t)
+MLIDYNARRAY_IMPLEMENTATION(mli, Uint32, uint32_t)
 
 #endif
