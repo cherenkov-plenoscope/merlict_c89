@@ -30,10 +30,6 @@
 
 #include <stddef.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /**
  * JSON type identifier. Basic types are:
  * 	o Object
@@ -415,9 +411,5 @@ void jsmn_init(struct jsmn_parser *parser) {
 }
 
 #endif /* JSMN_HEADER */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* JSMN_H */
