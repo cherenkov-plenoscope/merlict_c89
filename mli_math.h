@@ -51,6 +51,7 @@ void mli_uint32_ncpy(const uint32_t *src, uint32_t *dst, const uint64_t num)
 
 #define MLI_MIN3(a, b, c)                                                      \
         ((((a) < (b)) && ((a) < (c))) ? (a) : (((b) < (c)) ? (b) : (c)))
+
 #define MLI_MAX3(a, b, c)                                                      \
         ((((a) > (b)) && ((a) > (c))) ? (a) : (((b) > (c)) ? (b) : (c)))
 
