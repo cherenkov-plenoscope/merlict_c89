@@ -1,9 +1,8 @@
-#include "jsmn.h"
-
 /*
  * MIT License
  *
  * Copyright (c) 2010 Serge Zaitsev
+ *               2018-2020 Sebastian Achim Mueller
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,27 +26,8 @@
  * - always JSMN_STRICT
  */
 
-/**
- * JSON type identifier. Basic types are:
- * 	o Object
- * 	o Array
- * 	o String
- * 	o Other primitive: number, boolean (true/false) or null
- */
+#include "jsmn.h"
 
-/**
- * JSON token description.
- * type		type (object, array, string etc.)
- * start	start position in JSON data string
- * end		end position in JSON data string
- */
-/**
- * JSON parser. Contains an array of token blocks available. Also stores
- * the string being parsed now and current position in that string.
- */
-/**
- * Create JSON parser over an array of tokens
- */
 void jsmn_init(struct jsmn_parser *parser);
 
 /**
