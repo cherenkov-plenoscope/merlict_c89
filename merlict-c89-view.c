@@ -7,8 +7,10 @@
 
 #include <stdio.h>
 
-#include "merlict_c89.h"
-#include "merlict_c89_viewer.h"
+#include "merlict_c89/merlict_c89.h"
+#include "merlict_c89/merlict_c89.c"
+#include "merlict_c89_viewer/merlict_c89_viewer.h"
+#include "merlict_c89_viewer/merlict_c89_viewer.c"
 
 int main(int argc, char *argv[])
 {

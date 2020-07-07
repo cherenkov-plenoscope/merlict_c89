@@ -1,0 +1,24 @@
+/* Copyright 2018-2020 Sebastian Achim Mueller */
+#ifndef MERLICT_C89_MLIPIXELS_H_
+#define MERLICT_C89_MLIPIXELS_H_
+
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#include "mli_debug.h"
+
+struct mliPixel {
+        uint16_t row;
+        uint16_t col;
+};
+
+struct mliPixels {
+        uint32_t num_pixels;
+        struct mliPixel *pixels;
+};
+
+int mliPixels_malloc(struct mliPixels *pix, const uint32_t num_pixels);
+void mliPixels_free(struct mliPixels *pix);
+struct mliPixels mliPixels_init(void);
+#endif
