@@ -21,7 +21,7 @@ Merlict simulates light. It propagates photons in a scenery, and it can render s
 ## Tests
 #### Compile
 ```
-gcc merlict-c89-test.c -o merlict-c89-test -std=c89 -lm -Wall -pedantic
+gcc merlict-c89-test.c -o merlict-c89-test -lm
 ```
 
 #### Run
@@ -33,7 +33,7 @@ gcc merlict-c89-test.c -o merlict-c89-test -std=c89 -lm -Wall -pedantic
 A terminal-viewer using ANSI-escape-sequences.
 #### Compile
 ```
-gcc merlict-c89-view.c -o merlict-c89-view -std=c89 -lm -Wall -pedantic
+gcc merlict-c89-view.c -o merlict-c89-view -lm
 ```
 
 #### Run
