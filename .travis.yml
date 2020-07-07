@@ -2,4 +2,4 @@ compiler: gcc
 dist: xenial
 
 script:
-    - compile_and_test.sh
+    - ./compile_and_test.sh
