@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliRay.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliRay mliRay_set(
         const struct mliVec support,
         const struct mliVec direction)

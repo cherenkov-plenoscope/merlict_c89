@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_ray_octree_traversal.h"
 
-/* Copyright 2019 Sebastian Achim Mueller                                     */
-
 /*
  *  Based on
  *

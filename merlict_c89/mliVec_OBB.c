@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliVec_OBB.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
 
 int mliVec_overlap_obb(
         const struct mliVec a,

@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSceneryResources_read.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliSceneryResources_read_capacity_from_file(
         struct mliSceneryResourcesCapacity *capacity,
         FILE *f)

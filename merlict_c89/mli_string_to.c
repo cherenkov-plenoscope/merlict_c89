@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_string_to.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mli_string_to_int(int64_t *out, char *s, uint64_t base)
 {
         char *end;

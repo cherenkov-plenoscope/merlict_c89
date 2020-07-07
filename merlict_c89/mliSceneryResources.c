@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSceneryResources.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void)
 {
         struct mliSceneryResourcesCapacity cap;

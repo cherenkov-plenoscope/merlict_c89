@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFunc.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliFunc mliFunc_init(void)
 {
         struct mliFunc f;

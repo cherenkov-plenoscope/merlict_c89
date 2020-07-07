@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_valid.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int _mliScenery_valid_triangles(const struct mliScenery *scenery)
 {
         uint64_t i;

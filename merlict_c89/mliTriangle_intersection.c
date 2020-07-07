@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTriangle_intersection.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliRay_intersects_triangle(
         const struct mliVec support,
         const struct mliVec direction,

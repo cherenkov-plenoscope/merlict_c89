@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliVec_from_json_token.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
 
 int mliVec_from_json_token(
         struct mliVec *v,

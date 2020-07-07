@@ -6,6 +6,11 @@
 #include <errno.h>
 #include <string.h>
 
+/*
+ *  Based on Zed Shawn's awesome Debug Macros from his book:
+ *  Learn C the hard way
+ */
+
 #define mli_clean_errno() (errno == 0 ? "None" : strerror(errno))
 #define mli_c(A) mli_check(A, "Not expected.")
 #define mli_check_mem(A) mli_check((A), "Out of memory.")

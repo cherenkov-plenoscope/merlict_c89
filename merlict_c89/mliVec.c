@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliVec.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
 
 struct mliVec mliVec_set(const double x, const double y, const double z)
 {

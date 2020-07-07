@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFunc_malloc_from_json_token.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliFunc_malloc_from_json_token(
         struct mliFunc *f,
         const struct mliJson *json,

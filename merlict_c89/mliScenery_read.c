@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_read.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int _mliScenery_read_vertices_and_triangles(struct mliScenery *scenery, FILE *f)
 {
         mli_fread(

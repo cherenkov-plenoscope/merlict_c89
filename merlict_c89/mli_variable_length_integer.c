@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_variable_length_integer.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 uint64_t mli_base255_to_decimal(const struct mliDynUint8 *a)
 {
         uint64_t i;

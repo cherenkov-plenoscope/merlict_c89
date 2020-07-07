@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOuterPrismBound.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mli_outer_bound_surface_causal_intersection(
         const struct mliBoundSurfaceChecklist cl,
         double *causal_solution)

@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliUserScenery.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 /*
  *  A scenery as a user wants to define it.
  *  It can grow dynamically.

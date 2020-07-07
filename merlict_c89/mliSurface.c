@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSurface.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliSurface_is_equal(const struct mliSurface a, const struct mliSurface b)
 {
         if (a.material != b.material)

@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_intersection_and_scenery.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliSide _mli_side_coming_from(
         const struct mliScenery *scenery,
         const struct mliIntersection *isec)

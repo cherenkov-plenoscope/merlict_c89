@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_object_interface.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliIndex _mliScenery_resolve_index(
         const struct mliScenery *scenery,
         const uint64_t idx)

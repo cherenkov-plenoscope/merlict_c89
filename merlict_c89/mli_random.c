@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_random.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 double mli_random_uniform(struct mliMT19937 *prng)
 {
         uint32_t rn_int = mliMT19937_uint32(prng);

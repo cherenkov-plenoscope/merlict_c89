@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_dual_circle_prism.h"
 
-/* Copyright 2019 Sebastian A. Mueller */
-
 int mli_is_inside_dual_circle_prism(
         const double x,
         const double y,

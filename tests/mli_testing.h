@@ -1,4 +1,4 @@
-/* Copyright 2019 Sebastian Achim Mueller */
+/* Copyright 2018-2020 Sebastian Achim Mueller */
 #ifndef MERLICT_TESTING_H_
 #define MERLICT_TESTING_H_
 

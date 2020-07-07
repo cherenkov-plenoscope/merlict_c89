@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliQuadraticEquation.h"
 
-/* Copyright 2019 Sebastian A. Mueller */
-
 int mli_quadratiq_equation(
         const double p,
         const double q,

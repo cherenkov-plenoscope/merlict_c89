@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_json.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliJson mliJson_init(void)
 {
         struct mliJson j;

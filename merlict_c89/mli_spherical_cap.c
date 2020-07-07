@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_spherical_cap.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mli_spherical_cap_equation(
         const struct mliRay ray,
         const double radius,

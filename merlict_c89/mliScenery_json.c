@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_json.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int __mliScenery_surface_capacity_from_json(
         struct mliSceneryResourcesCapacity *res_cap,
         const struct mliJson *json)

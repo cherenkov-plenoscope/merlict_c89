@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_lens_maker.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 double _mli_focal_length_for_curvature_thickness_refraction(
         const double R,
         const double t,

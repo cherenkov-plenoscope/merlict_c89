@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliCylinder_OBB.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliVec mliCylinder_start_local(const struct mliCylinder cylinder)
 {
         return mliVec_set(0., 0., -cylinder.length * .5);

@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSphericalCapHex.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliSphericalCapHex_is_equal(
         const struct mliSphericalCapHex a,
         const struct mliSphericalCapHex b)

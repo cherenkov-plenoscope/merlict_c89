@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliBoundaryLayer.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliBoundaryLayer_is_equal(
         const struct mliBoundaryLayer a,
         const struct mliBoundaryLayer b)

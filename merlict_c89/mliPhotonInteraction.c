@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliPhotonInteraction.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mli_photoninteraction_type_to_string(const int32_t type, char *s)
 {
         switch (type) {

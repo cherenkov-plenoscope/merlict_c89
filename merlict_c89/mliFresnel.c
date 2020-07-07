@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFresnel.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliFresnel mliFresnel_init(
         const struct mliVec incident,
         const struct mliVec normal,

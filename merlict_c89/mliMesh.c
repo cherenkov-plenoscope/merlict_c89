@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMesh.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliMesh mliMesh_init(void)
 {
         struct mliMesh m;

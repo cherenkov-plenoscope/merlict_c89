@@ -2,5 +2,3 @@
 #include "mliDynPhoton.h"
 
 MLIDYNARRAY_IMPLEMENTATION(mli, Photon, struct mliPhoton)
-
-/* Copyright 2019 Sebastian Achim Mueller */

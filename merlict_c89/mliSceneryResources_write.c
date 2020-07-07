@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSceneryResources_write.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliSceneryResources_write_capacity_to_file(
         const struct mliSceneryResources *res,
         FILE *f)

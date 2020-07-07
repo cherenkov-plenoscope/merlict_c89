@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliQuaternion.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliQuaternion mliQuaternion_set(
         const double w,
         const double x,

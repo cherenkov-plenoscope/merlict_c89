@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTriangle_OBB.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 /* Voorhies, Douglas,
  * Triangle-Cube Intersection,
  * Graphics Gems III, p. 236-239, code: p. 521-526 */

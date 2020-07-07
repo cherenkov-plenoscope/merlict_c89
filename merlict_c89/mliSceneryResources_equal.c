@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSceneryResources_equal.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int _mliSceneryResources_functions_equal(
         const struct mliSceneryResources *a,
         const struct mliSceneryResources *b)

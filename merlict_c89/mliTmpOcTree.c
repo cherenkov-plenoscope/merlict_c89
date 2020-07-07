@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTmpOcTree.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliTmpNode mliTmpNode_init(void)
 {
         struct mliTmpNode n;

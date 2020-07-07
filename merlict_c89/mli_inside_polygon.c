@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_inside_polygon.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mli_inside_polygon(
         const struct mliFunc *polygon,
         const double x,

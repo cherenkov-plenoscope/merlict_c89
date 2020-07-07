@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSphere_intersection.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mli_sphere_intersection_equation(
         const double radius,
         const struct mliRay ray,

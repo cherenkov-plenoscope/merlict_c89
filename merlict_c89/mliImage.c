@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliImage.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliImage mliImage_init(void)
 {
         struct mliImage img;

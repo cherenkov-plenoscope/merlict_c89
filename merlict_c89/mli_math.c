@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_math.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 double mli_rad2deg(const double angle_in_rad)
 {
         return 180. * angle_in_rad / MLI_PI;

@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_write.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int _mliScenery_write_vertices_and_triangles(
         const struct mliScenery *scenery,
         FILE *f)

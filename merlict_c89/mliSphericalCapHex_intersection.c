@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSphericalCapHex_intersection.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliSphericalCapHex_intersection(
         const struct mliSphericalCapHex cap,
         const struct mliHomTraComp local2root_comp,

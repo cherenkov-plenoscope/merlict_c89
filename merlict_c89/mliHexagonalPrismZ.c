@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliHexagonalPrismZ.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mli_inside_hexagonal_prism_z(
         const struct mliVec v,
         const double inner_radius)

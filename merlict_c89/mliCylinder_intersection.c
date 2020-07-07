@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliCylinder_intersection.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mli_cylinder_equation(
         const double radius,
         const struct mliRay ray,

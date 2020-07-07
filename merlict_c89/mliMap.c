@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMap.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliMap2 mliMap2_init(void)
 {
         struct mliMap2 map;

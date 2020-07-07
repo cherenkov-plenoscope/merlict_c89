@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSphere_OBB.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliOBB mliSphere_obb(
         const double radius,
         const struct mliVec translation)

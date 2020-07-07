@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_xyplane.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mli_xyplane_equation(const struct mliRay ray, double *solution)
 {
         /*

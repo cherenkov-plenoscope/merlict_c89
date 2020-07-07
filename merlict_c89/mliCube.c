@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliCube.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliVec mliCube_upper(const struct mliCube a)
 {
         return mliVec_add(

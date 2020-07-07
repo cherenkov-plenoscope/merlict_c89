@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliDynArray.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 /* internal implementation */
 /* ----------------------- */
 

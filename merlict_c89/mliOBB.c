@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOBB.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b)
 {
         struct mliOBB obb;

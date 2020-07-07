@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree_read.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliOcTree_read_and_malloc_from_file(struct mliOcTree *octree, FILE *f)
 {
         char line[1024];

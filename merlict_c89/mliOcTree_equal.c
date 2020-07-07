@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree_equal.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliOcTree_is_equal(struct mliOcTree *a, struct mliOcTree *b)
 {
         uint64_t i, j;

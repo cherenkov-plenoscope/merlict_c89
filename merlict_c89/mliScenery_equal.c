@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_equal.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int _mliScenery_vertices_equal(
         const struct mliScenery *a,
         const struct mliScenery *b)

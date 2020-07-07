@@ -3,8 +3,6 @@
 
 MLIDYNARRAY_IMPLEMENTATION(mli, PhotonInteraction, struct mliPhotonInteraction)
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,
         const struct mliScenery *scenery)

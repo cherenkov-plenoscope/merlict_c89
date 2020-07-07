@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliBiCirclePlane_intersection.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
 
 int mliBiCirclePlane_intersection(
         const struct mliBiCirclePlane plane,

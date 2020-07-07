@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliHexagon_intersection.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliHexagon_intersection(
         const struct mliHexagon hex,
         const struct mliHomTraComp local2root_comp,

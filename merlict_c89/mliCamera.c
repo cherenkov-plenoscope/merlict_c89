@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliCamera.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliVec mliCamera_optical_axis(const struct mliCamera cam)
 {
         struct mliRotMat rot = mliRotMat_init_tait_bryan(

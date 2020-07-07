@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliBiCirclePlane_OBB.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliVec __mliBiCirclePlane_rectangle_corners(
         const struct mliBiCirclePlane plane,
         const uint64_t corner_idx)

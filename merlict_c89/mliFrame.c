@@ -3,8 +3,6 @@
 
 MLIDYNARRAY_IMPLEMENTATION(mli, FramePtr, struct mliFrame *)
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliFrame;
 
 struct mliFrame mliFrame_init(void)

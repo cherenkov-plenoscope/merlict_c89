@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliHomTra.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo)
 {
         struct mliHomTra t;

@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliDisc_intersection.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliDisc_intersection(
         const struct mliDisc disc,
         const struct mliHomTraComp local2root_comp,

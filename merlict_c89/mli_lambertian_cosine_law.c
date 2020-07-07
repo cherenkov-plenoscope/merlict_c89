@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_lambertian_cosine_law.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliMT19937 *prng)
 {
         double azimuth;

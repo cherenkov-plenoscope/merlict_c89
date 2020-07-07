@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_photon_propagation.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int _mli_propagate_photon(struct mliEnv *env);
 
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(

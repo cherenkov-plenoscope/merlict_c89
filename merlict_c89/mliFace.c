@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFace.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliFace mliFace_set(const uint32_t a, const uint32_t b, const uint32_t c)
 {
         struct mliFace face;

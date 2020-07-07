@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_frame_to_scenery.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 struct mliPrimitiveCount mliPrimitiveCount_init(void)
 {
         struct mliPrimitiveCount i;

@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliBiCirclePlane.h"
 
-/* Copyright 2019 Sebastian Achim Mueller */
-
 int mliBiCirclePlane_is_equal(
         const struct mliBiCirclePlane a,
         const struct mliBiCirclePlane b)
