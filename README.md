@@ -38,10 +38,8 @@ gcc merlict-c89-view.c -o merlict-c89-view -std=c89 -lm -Wall -pedantic
 
 #### Run
 ```
-./merlict-c89-view my_scenery.mli.tmp
+./merlict-c89-view tests/resources/small_scenery.json
 ```
-Here ``` my_scenery.mli.tmp``` is scenery for testing created by ```./merlict-c89-test```.
-
 
 ### Why
 Exploring the merlict raytracing-project rewritten in C89 aka. C90, aka. ANSI-C.
