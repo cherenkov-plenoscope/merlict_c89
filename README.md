@@ -5,49 +5,54 @@
 
 Merlict simulates light. It propagates photons in a scenery, and it can render simple images. Merlict is a ```C```-library written in ```c89```. 
 
-## Science
-- Accurate propagation of photons in complex sceneries.
-- Support for basic primitives common in science such as spheres, lenses, parabolic dishes, cylinders.
-- Support for large triangle meshes from e.g. CAD-files.
-- SI-units
+# Abstract
+Merlict propagates photons in a scenery. You can define your scenery with a basic set of primitives, or with meshes of triangles from e.g. CAD-files. You define the physical properties of the surfaces in your scenery. You can also query the first intersection along a three-dimensional ray with the surfaces of your scenery. You can describe your scenery in a ```json```-file. Merlict takes your scenery and reorganizes it with space-partitioning to allow efficient queries for raytracing. A minimal viewer allows you to explore your scenery.
 
-## Library
-- Wide compatibility with ```c89```.
-- No need for build-system.
-- Unit tests.
-- Style according to ```.clang-format```.
-- Minimize warnings when compiled with ```gcc``` and ```clang```.
+# Interface
 
-## Tests
-#### Compile
+## Scenery
+
+### Writing a json-file
+
+```json-file``` -> ```mliUserScenery``` -> ```mliScenery``` -> ```mliOctree``` 
+
+### Setting the 
+
+```mliScenery``` -> ```mliOctree``` 
+
+## Photons
+
+## Rays
+
+
+
+# Tests
+#### compile
 ```
 gcc merlict-c89-test.c -o merlict-c89-test -lm
 ```
 
-#### Run
+#### run
 ```
 ./merlict-c89-test
 ```
 
-## Viewer
-A terminal-viewer using ANSI-escape-sequences.
-#### Compile
+# Viewer
+A minimal viewer for your command-line.
+
+#### compile
 ```
 gcc merlict-c89-view.c -o merlict-c89-view -lm
 ```
 
-#### Run
+#### run
 ```
 ./merlict-c89-view tests/resources/small_scenery.json
 ```
 
-### Why
-Exploring the merlict raytracing-project rewritten in C89 aka. C90, aka. ANSI-C.
-This project might never be finished. It is just an exploration to find out what it feels like to rewrite the merlict raytracing-project in ANSI-C aka. C89.
-Reasons in no particular order:
+## Code and library
+- Follow the ```std=c89``` standard.
+- Do not allow warnings in ```gcc``` and ```clang``` compilers.
+- Write unit-tests.
+- Format according to ```.clang-format```.
 
-- Better compatibility compared to C++11
-- Hopefully better wrappable with python using e.g. SWIG
-- Learning new (oldschool) concepts beside todays widespread classes
-
-I have the feeling that esspecially classes and inheritance cause most of the current issues in the merlict raytracer which make e.g. python wrapping very difficult. 
