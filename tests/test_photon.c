@@ -106,7 +106,7 @@ CASE("Do not leak out of closed box")
         }
 
         for (i = 0; i < photons.dyn.size; i++) {
-                struct mliPhotonInteraction final;
+                struct mliPhotonInteraction final_interaction;
                 struct mliPhoton photon = photons.arr[i];
 
                 CHECK(mliDynPhotonInteraction_malloc(
@@ -124,12 +124,14 @@ CASE("Do not leak out of closed box")
                 mliDynPhotonInteraction_print(&history, &scenery);
                 */
 
-                final = history.arr[history.dyn.size - 1];
-                if (final.object_idx >= 0) {
-                        int64_t id_primitive = scenery.user_ids[final.object_idx];
+                final_interaction = history.arr[history.dyn.size - 1];
+                if (final_interaction.object_idx >= 0) {
+                        int64_t id_primitive = scenery.user_ids[
+                                final_interaction.object_idx
+                        ];
                         if (id_primitive == sensor_id) {
                                 struct mliVec point;
-                                point = final.position;
+                                point = final_interaction.position;
 
                                 CHECK(point.x >= 0.0);
                                 CHECK(point.x <= 1e-2);
