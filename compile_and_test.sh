@@ -80,4 +80,6 @@ if      [ "$gcc_c89_rc" -ne 0 ] ||\
         [ "$clang_test_rc" -ne 0 ]
 then
         exit 1
+else
+        exit 0
 fi
