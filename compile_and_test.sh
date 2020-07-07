@@ -1,6 +1,5 @@
 #!/bin/bash
 # Build merlict with gcc and clang, look for warnings early.
-# At some point this should go to .travis.yml
 
 echo "__gcc_c89__"
 gcc merlict-c89-test.c\
