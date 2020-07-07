@@ -1,5 +1,0 @@
-#include "merlict_c89_viewer/mlivr_version.h"
-#include "merlict_c89_viewer/mlivr_toggle_stdin.h"
-#include "merlict_c89_viewer/mlivr_viewer.h"
-#include "merlict_c89_viewer/mlivrCursor.h"
-#include "merlict_c89_viewer/mlivrConfig.h"

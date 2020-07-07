@@ -10,8 +10,8 @@
 
 #include <math.h>
 #include <assert.h>
-#include "merlict_c89.h"
-#include "merlict_c89.c"
+#include "merlict_c89/merlict_c89.h"
+#include "merlict_c89/merlict_c89.c"
 #include "tests/mli_testing.h"
 
 int main(void)
