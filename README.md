@@ -10,10 +10,24 @@ Merlict propagates photons in a scenery. You can define your scenery with a basi
 
 # Interface
 
+## Primitives
+
+### Triangle (mesh)
+
+### Cap, spherical, hexagonal
+
+### Sphere
+
+### Cylinder
+
+### Disc, flat, hexagonal
+
+### Disc, flat, bi-circular
+
+### Disc, flat, round
+
 ## Scenery
-Your scenery might just be a draft in your thoughts, or it might be a detailed structure in one of your other tools.
-We call this the user-scenery. It represents your objects with the hirachy that is relevant to you.
-In code, you define this using the ```mliUserScenery```. Or, you write a ```json```-file which merict can read and load into the ```mliUserScenery```. Next, merlict will flatten all your hirachy, and copy your scenery into a dedicated raytracin-scenery named ```mliScenery```. The ```mliScenery``` is written to minimize, and to compress the memory footprint. Finally, merlict will grow an octree ```mliOctree``` for space-partitioning.
+
 
 ### Writing the user-scenery in a json-file
 
