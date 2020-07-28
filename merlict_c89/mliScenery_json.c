@@ -882,7 +882,7 @@ int __mliFrame_set_Mesh(
 {
         uint64_t token_vertices, token_surfaces;
         uint64_t v, f, s;
-        uint32_t num_vertices, num_surfaces, total_num_faces,
+        uint32_t num_vertices, num_surfaces, num_faces_in_all_surfaces,
                 num_faces_in_surface, face_idx;
         /* vertices */
         mli_check(
@@ -897,7 +897,7 @@ int __mliFrame_set_Mesh(
         num_surfaces = json->tokens[token_surfaces + 1].size;
 
         /* find total num faces */
-        total_num_faces = 0;
+        num_faces_in_all_surfaces = 0;
         for (s = 0; s < num_surfaces; s++) {
                 uint64_t token_faces;
                 uint64_t token_surface =
@@ -906,13 +906,15 @@ int __mliFrame_set_Mesh(
                         mliJson_find_key(
                                 json, token_surface, "faces", &token_faces),
                         "Expected json-Mesh-surface to have key 'faces'.");
-                total_num_faces += json->tokens[token_faces + 1].size;
+                num_faces_in_all_surfaces += json->tokens[token_faces + 1].size;
         }
 
         /* malloc */
         mli_check(
                 mliMesh_malloc(
-                        frame->primitive.mesh, num_vertices, total_num_faces),
+                        frame->primitive.mesh,
+                        num_vertices,
+                        num_faces_in_all_surfaces),
                 "Failed to allocate mesh from json.");
 
         /* set vertices */
@@ -978,7 +980,7 @@ int __mliFrame_set_Mesh(
         }
 
         mli_check(
-                face_idx == total_num_faces,
+                face_idx == num_faces_in_all_surfaces,
                 "Expected to set all faces in Mesh");
 
         return 1;
