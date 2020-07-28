@@ -34,4 +34,5 @@ int mliMesh_malloc(
         const uint32_t num_faces);
 void mliMesh_free(struct mliMesh *m);
 struct mliMesh mliMesh_init(void);
+int mliMesh_has_valid_faces(const struct mliMesh *m);
 #endif

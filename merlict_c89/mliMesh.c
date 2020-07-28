@@ -39,6 +39,22 @@ error:
         return 0;
 }
 
+int mliMesh_assert_valid_faces(const struct mliMesh *m)
+{
+        uint64_t i;
+        for (i = 0; i < m->num_faces; i++) {
+                mli_check(m->faces[i].a <= m->num_vertices,
+                        "Expected face.a <= num_vertices");
+                mli_check(m->faces[i].b <= m->num_vertices,
+                        "Expected face.b <= num_vertices");
+                mli_check(m->faces[i].c <= m->num_vertices,
+                        "Expected face.c <= num_vertices");
+        }
+        return 1;
+error:
+        return 0;
+}
+
 int mli_parse_three_ints(const char *line, int *a, int *b, int *c)
 {
         int state = 0;
@@ -234,6 +250,11 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
                         "Can not read face line.");
         }
         mli_check(fclose(fin) == 0, "Can not close object-file.");
+
+        mli_check(
+                mliMesh_assert_valid_faces(m),
+                "Expected Mesh faces to have valid vertex indices.");
+
         return 1;
 error:
         if (fin != NULL) {

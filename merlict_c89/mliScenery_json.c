@@ -983,6 +983,9 @@ int __mliFrame_set_Mesh(
         mli_check(
                 face_idx == num_faces_in_all_surfaces,
                 "Expected to set all faces in Mesh");
+        mli_check(
+                mliMesh_assert_valid_faces(frame->primitive.mesh),
+                "Expected Mesh faces to have valid vertex indices.");
 
         return 1;
 error:
