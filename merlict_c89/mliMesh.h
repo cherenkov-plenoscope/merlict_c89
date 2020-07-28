@@ -18,6 +18,8 @@ struct mliMesh {
         struct mliVec *vertices;
         uint32_t num_faces;
         struct mliFace *faces;
+
+        struct mliBoundaryLayer *boundary_layers;
 };
 
 int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m);
