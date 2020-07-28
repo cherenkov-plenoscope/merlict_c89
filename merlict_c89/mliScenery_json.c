@@ -137,7 +137,7 @@ int __mliScenery_malloc_functions_from_json(
                                 &resources->functions[f],
                                 json,
                                 token_f_val + 1),
-                        "Could not malloc mliFunc in mliScenery from json.");
+                        "Failed to malloc mliFunc in mliScenery from json.");
                 mli_check(
                         _mliMap2_key_from_json(
                                 function_names, json, token_f_name, f),
@@ -185,7 +185,7 @@ int __mliScenery_assign_colors_from_json(
                 mli_check(
                         mliColor_from_json_token(
                                 &resources->colors[c], json, token_c_rgb + 1),
-                        "Could not assign color from json to mliScenery.");
+                        "Failed to assign color from json.");
                 mli_check(
                         _mliMap2_key_from_json(
                                 color_names, json, token_c_name, c),
@@ -205,7 +205,7 @@ int __mliMedium_from_json(
         uint64_t token_refr, token_abso;
         mli_check(
                 mliJson_find_key(json, token_s, "refraction", &token_refr),
-                "Expected json-surface-item to contain key 'refraction'.");
+                "Expected surface-item to contain key 'refraction'.");
         mli_check(
                 _mliMap2_get_value_for_string_from_json(
                         function_names, json, token_refr, &medium->refraction),
@@ -213,7 +213,7 @@ int __mliMedium_from_json(
 
         mli_check(
                 mliJson_find_key(json, token_s, "absorbtion", &token_abso),
-                "Expected json-surface-item to contain key 'absorbtion'.");
+                "Expected surface-item to contain key 'absorbtion'.");
         mli_check(
                 _mliMap2_get_value_for_string_from_json(
                         function_names, json, token_abso, &medium->absorbtion),
@@ -261,7 +261,7 @@ int __mliScenery_assign_media_from_json(
                                 function_names,
                                 json,
                                 token_m),
-                        "Could not copy medium from json.");
+                        "Failed to copy medium from json.");
                 mli_check(
                         _mliMap2_key_from_json(
                                 medium_names, json, token_m_name, m),
@@ -386,7 +386,7 @@ int __mliScenery_assign_surfaces_from_json(
                                 material_names,
                                 json,
                                 token_s),
-                        "Could not copy surface from json.");
+                        "Failed to copy surface from json.");
         }
         return 1;
 error:
@@ -403,7 +403,7 @@ int __mliFrame_type_from_json(
         uint64_t num_chars_for_type;
         mli_check(
                 mliJson_find_key(json, token_child, "type", &token_type),
-                "Expected json-frame to have key 'type'.");
+                "Expected Frame to have key 'type'.");
         num_chars_for_type =
                 (json->tokens[token_type + 1].end -
                  json->tokens[token_type + 1].start + 1u);
@@ -412,7 +412,7 @@ int __mliFrame_type_from_json(
                 json, token_type + 1, type_string, num_chars_for_type);
         mli_check(
                 mli_string_to_type(type_string, type),
-                "Expected frame-type to be known.");
+                "Expected Frame's type to be known.");
         free(type_string);
         return 1;
 error:
@@ -542,11 +542,11 @@ int __mliFrame_set_id(
         int64_t _id;
         mli_check(
                 mliJson_find_key(json, token, "id", &token_id),
-                "Expected json-frame to have key 'id'.");
+                "Expected Frame to have key 'id'.");
         mli_check(
                 mliJson_as_int64(json, token_id + 1, &_id),
-                "Failed parsing frame-id.");
-        mli_check(_id >= 0, "Expected frame-id >= 0.");
+                "Failed to parse Frame's id.");
+        mli_check(_id >= 0, "Expected Frame's id >= 0.");
         (*id) = _id;
 
         return 1;
@@ -563,20 +563,20 @@ int __mliFrame_set_pos_rot(
         /* pos */
         mli_check(
                 mliJson_find_key(json, token, "pos", &token_pos),
-                "Expected json-frame to have key 'pos'.");
+                "Expected Frame to have key 'pos'.");
         mli_check(
                 mliVec_from_json_token(
                         &frame->frame2mother.trans, json, token_pos + 1),
-                "Failed to parse frame's 'pos' from json.");
+                "Failed to parse Frame's 'pos' from json.");
 
         /* rot */
         mli_check(
                 mliJson_find_key(json, token, "rot", &token_rot),
-                "Expected json-frame to have key 'rot'.");
+                "Expected Frame to have key 'rot'.");
         mli_check(
                 __mliQuaternion_from_json(
                         &frame->frame2mother.rot, json, token_rot + 1),
-                "Failed to parse frame's 'rot' from json.");
+                "Failed to parse Frame's 'rot' from json.");
         return 1;
 error:
         return 0;
@@ -661,7 +661,7 @@ int __mliFrame_set_surface_idx(
         uint64_t token_surface, token_surface_key;
         mli_check(
                 mliJson_find_key(json, token, "surface", &token_surface_key),
-                "Expected primitive (except for Frame) to have key 'surface'.");
+                "Expected primitive to have key 'surface'.");
 
         token_surface = token_surface_key + 1;
         mli_check(
@@ -685,13 +685,13 @@ int __mliFrame_set_Sphere(
         uint64_t token_radius;
         mli_check(
                 mliJson_find_key(json, token, "radius", &token_radius),
-                "Expected json-Sphere to have key 'radius'.");
+                "Expected Sphere to have key 'radius'.");
         mli_check(
                 mliJson_as_float64(
                         json,
                         token_radius + 1,
                         &frame->primitive.sphere->radius),
-                "Failed parsing Sphere's radius from json.");
+                "Failed to parse Sphere's radius from json.");
         return 1;
 error:
         return 0;
@@ -707,24 +707,24 @@ int __mliFrame_set_Cylinder(
         /* radius */
         mli_check(
                 mliJson_find_key(json, token, "radius", &token_radius),
-                "Expected json-Cylinder to have key 'radius'.");
+                "Expected Cylinder to have key 'radius'.");
         mli_check(
                 mliJson_as_float64(
                         json,
                         token_radius + 1,
                         &frame->primitive.cylinder->radius),
-                "Failed parsing Cylinder's radius from json.");
+                "Failed to parse Cylinder's radius from json.");
 
         /* length */
         mli_check(
                 mliJson_find_key(json, token, "length", &token_length),
-                "Expected json-Cylinder to have key 'length'.");
+                "Expected Cylinder to have key 'length'.");
         mli_check(
                 mliJson_as_float64(
                         json,
                         token_length + 1,
                         &frame->primitive.cylinder->length),
-                "Failed parsing Cylinder's length from json.");
+                "Failed to parse Cylinder's length from json.");
         return 1;
 error:
         return 0;
@@ -743,13 +743,13 @@ int __mliFrame_set_SphericalCapHex(
                         token,
                         "curvature_radius",
                         &token_curvature_radius),
-                "Expected 'curvature_radius' in json-SphericalCapHex.");
+                "Expected 'curvature_radius' in SphericalCapHex.");
         mli_check(
                 mliJson_as_float64(
                         json,
                         token_curvature_radius + 1,
                         &frame->primitive.spherical_cap_hex->curvature_radius),
-                "Failed parsing SphericalCapHex's radius from json.");
+                "Failed to parse SphericalCapHex's radius from json.");
 
         mli_check(
                 mliJson_find_key(
@@ -763,7 +763,8 @@ int __mliFrame_set_SphericalCapHex(
                         json,
                         token_inner_hex_radius + 1,
                         &frame->primitive.spherical_cap_hex->inner_hex_radius),
-                "Failed parsing SphericalCapHex's inner_hex_radius from json.");
+                "Failed to parse SphericalCapHex's "
+                "inner_hex_radius from json.");
         return 1;
 error:
         return 0;
@@ -778,13 +779,13 @@ int __mliFrame_set_Hexagon(
         mli_check(
                 mliJson_find_key(
                         json, token, "inner_radius", &token_inner_radius),
-                "Expected json-Hexagon to have key 'inner_radius'.");
+                "Expected Hexagon to have key 'inner_radius'.");
         mli_check(
                 mliJson_as_float64(
                         json,
                         token_inner_radius + 1,
                         &frame->primitive.hexagon->inner_radius),
-                "Failed parsing Hexagon's inner_radius from json.");
+                "Failed to parse Hexagon's inner_radius from json.");
         return 1;
 error:
         return 0;
@@ -800,24 +801,24 @@ int __mliFrame_set_BiCirclePlane(
         /* x_height */
         mli_check(
                 mliJson_find_key(json, token, "x_height", &token_x_height),
-                "Expected json-BiCirclePlane to have key 'x_height'.");
+                "Expected BiCirclePlane to have key 'x_height'.");
         mli_check(
                 mliJson_as_float64(
                         json,
                         token_x_height + 1,
                         &frame->primitive.bicircleplane->x_height),
-                "Failed parsing BiCirclePlane's radius from json.");
+                "Failed to parse BiCirclePlane's radius from json.");
 
         /* y_width */
         mli_check(
                 mliJson_find_key(json, token, "y_width", &token_y_width),
-                "Expected json-BiCirclePlane to have key 'y_width'.");
+                "Expected BiCirclePlane to have key 'y_width'.");
         mli_check(
                 mliJson_as_float64(
                         json,
                         token_y_width + 1,
                         &frame->primitive.bicircleplane->y_width),
-                "Failed parsing BiCirclePlane's y_width from json.");
+                "Failed to parse BiCirclePlane's y_width from json.");
         return 1;
 error:
         return 0;
@@ -835,7 +836,7 @@ int __mliFrame_set_Disc(
         mli_check(
                 mliJson_as_float64(
                         json, token_radius + 1, &frame->primitive.disc->radius),
-                "Failed parsing Disc's radius from json.");
+                "Failed to parse Disc's radius from json.");
         return 1;
 error:
         return 0;
@@ -855,17 +856,17 @@ int mliFace_from_json_token(
                 "Expected face-token to contain exactly 3 tokens [a,b,c].");
         mli_check(
                 mliJson_as_int64(json, token + 1, &tmp),
-                "Failed parsing mliFace's 1st-value.");
+                "Failed to parse mliFace's 1st-value.");
         mli_check(tmp >= 0, "Expected struct mliMesh index 'a' >= 0.");
         f->a = tmp;
         mli_check(
                 mliJson_as_int64(json, token + 2, &tmp),
-                "Failed parsing mliFace's 2nd-value.");
+                "Failed to  parse mliFace's 2nd-value.");
         mli_check(tmp >= 0, "Expected struct mliMesh index 'b' >= 0.");
         f->b = tmp;
         mli_check(
                 mliJson_as_int64(json, token + 3, &tmp),
-                "Failed parsing mliFace's 3rd-value.");
+                "Failed to parse mliFace's 3rd-value.");
         mli_check(tmp >= 0, "Expected struct mliMesh index 'c' >= 0.");
         f->c = tmp;
         return 1;
@@ -887,13 +888,13 @@ int __mliFrame_set_Mesh(
         /* vertices */
         mli_check(
                 mliJson_find_key(json, token, "vertices", &token_vertices),
-                "Expected json-Mesh to have key 'vertices'.");
+                "Expected Mesh to have key 'vertices'.");
         num_vertices = json->tokens[token_vertices + 1].size;
 
         /* surfaces */
         mli_check(
                 mliJson_find_key(json, token, "surfaces", &token_surfaces),
-                "Expected json-Mesh to have key 'surfaces'.");
+                "Expected Mesh to have key 'surfaces'.");
         num_surfaces = json->tokens[token_surfaces + 1].size;
 
         /* find total num faces */
@@ -905,7 +906,7 @@ int __mliFrame_set_Mesh(
                 mli_check(
                         mliJson_find_key(
                                 json, token_surface, "faces", &token_faces),
-                        "Expected json-Mesh-surface to have key 'faces'.");
+                        "Expected Mesh's surface to have key 'faces'.");
                 num_faces_in_all_surfaces += json->tokens[token_faces + 1].size;
         }
 
@@ -915,7 +916,7 @@ int __mliFrame_set_Mesh(
                         frame->primitive.mesh,
                         num_vertices,
                         num_faces_in_all_surfaces),
-                "Failed to allocate mesh from json.");
+                "Failed to allocate Mesh from json.");
 
         /* set vertices */
         for (v = 0; v < frame->primitive.mesh->num_vertices; v++) {
@@ -926,7 +927,7 @@ int __mliFrame_set_Mesh(
                                 &frame->primitive.mesh->vertices[v],
                                 json,
                                 token_vertex),
-                        "Failed to parse Mesh's vertex from json.");
+                        "Failed to read Mesh's vertices from json.");
         }
 
         /* set surfaces */
@@ -942,7 +943,7 @@ int __mliFrame_set_Mesh(
                 mli_check(
                         mliJson_find_key(
                                 json, token_surface, "faces", &token_faces),
-                        "Expected json-Mesh-surface to have key 'faces'.");
+                        "Expected Mesh-surface to have key 'faces'.");
                 num_faces_in_surface = json->tokens[token_faces + 1].size;
 
                 /* find boundary-layer of this surface */
@@ -953,13 +954,13 @@ int __mliFrame_set_Mesh(
                                 medium_names,
                                 json,
                                 token_surface),
-                        "Can not set surface-properties of surface in Mesh.");
+                        "Failed to set surface-properties of Mesh's surface.");
 
                 /* find user_id of this surface */
                 mli_check(
                         __mliFrame_set_id(
                                 &user_id_of_surface, json, token_surface),
-                        "Can not set id of surface in Mesh.");
+                        "Failed to set id of surface in Mesh.");
 
                 /* set faces in this surface */
                 for (f = 0; f < num_faces_in_surface; f++) {
@@ -999,7 +1000,7 @@ int __mliFrame_from_json(
         uint64_t c;
         mli_check(
                 json->tokens[token_children].type == JSMN_ARRAY,
-                "Expected frame-children to be a json-array '[]'.");
+                "Expected Frame's children to be a json-array '[]'.");
         num_children = json->tokens[token_children].size;
         for (c = 0; c < num_children; c++) {
                 uint64_t token_child =
@@ -1009,16 +1010,16 @@ int __mliFrame_from_json(
                 uint64_t token_grandchildren;
                 mli_check(
                         __mliFrame_type_from_json(&type, json, token_child),
-                        "Failed reading type of frame.");
+                        "Failed to read type of Frame.");
                 child = mliFrame_add(mother, type);
                 mli_check(
                         __mliFrame_set_pos_rot(child, json, token_child),
-                        "Failed to set pos, and rot of frame from json.");
+                        "Failed to set pos, and rot of Frame from json.");
                 if (type != MLI_MESH) {
                         mli_check(
                                 __mliFrame_set_id(
                                         &child->id, json, token_child),
-                                "Failed to set id of frame from json.");
+                                "Failed to set id of Frame from json.");
                 }
                 if (type != MLI_FRAME && type != MLI_MESH) {
                         mli_check(
@@ -1028,7 +1029,7 @@ int __mliFrame_from_json(
                                         medium_names,
                                         json,
                                         token_child),
-                                "Failed parsing mliFrame's surface-index "
+                                "Failed to parse Frame's surface "
                                 "from json.");
                 }
                 switch (type) {
@@ -1048,8 +1049,8 @@ int __mliFrame_from_json(
                                         token_grandchildren + 1,
                                         surface_names,
                                         medium_names),
-                                "Could not populate grandchildren "
-                                "mliFrames from json.");
+                                "Failed to populate grandchildren "
+                                "Frames from json.");
                         break;
                 case MLI_MESH:
                         mli_check(
@@ -1059,41 +1060,41 @@ int __mliFrame_from_json(
                                         medium_names,
                                         json,
                                         token_child),
-                                "Failed setting Mesh from json.");
+                                "Failed to set Mesh from json.");
                         break;
                 case MLI_SPHERICAL_CAP_HEX:
                         mli_check(
                                 __mliFrame_set_SphericalCapHex(
                                         child, json, token_child),
-                                "Failed setting SphericalCapHex from json.");
+                                "Failed to set SphericalCapHex from json.");
                         break;
                 case MLI_SPHERE:
                         mli_check(
                                 __mliFrame_set_Sphere(child, json, token_child),
-                                "Failed setting Sphere from json.");
+                                "Failed to set Sphere from json.");
                         break;
                 case MLI_CYLINDER:
                         mli_check(
                                 __mliFrame_set_Cylinder(
                                         child, json, token_child),
-                                "Failed setting Cylinder from json.");
+                                "Failed to set Cylinder from json.");
                         break;
                 case MLI_HEXAGON:
                         mli_check(
                                 __mliFrame_set_Hexagon(
                                         child, json, token_child),
-                                "Failed setting Hexagon from json.");
+                                "Failed to set Hexagon from json.");
                         break;
                 case MLI_BICIRCLEPLANE:
                         mli_check(
                                 __mliFrame_set_BiCirclePlane(
                                         child, json, token_child),
-                                "Failed setting BiCirclePlane from json.");
+                                "Failed to set BiCirclePlane from json.");
                         break;
                 case MLI_DISC:
                         mli_check(
                                 __mliFrame_set_Disc(child, json, token_child),
-                                "Failed setting Disc from json.");
+                                "Failed to set Disc from json.");
                         break;
                 default:
                         mli_sentinel("Unknown type of frame.");
@@ -1144,18 +1145,18 @@ int mliUserScenery_malloc_from_json(
         mli_check(
                 __mliScenery_malloc_functions_from_json(
                         &uscn->resources, &uscn->function_names, json),
-                "Could not copy functions from json.");
+                "Failed to copy functions from json.");
         mli_check(
                 __mliScenery_assign_colors_from_json(
                         &uscn->resources, &uscn->color_names, json),
-                "Could not copy colors from json.");
+                "Failed to copy colors from json.");
         mli_check(
                 __mliScenery_assign_media_from_json(
                         &uscn->resources,
                         &uscn->medium_names,
                         &uscn->function_names,
                         json),
-                "Could not copy media from json.");
+                "Failed to copy media from json.");
         mli_check(
                 __mliScenery_assign_surfaces_from_json(
                         &uscn->resources,
@@ -1164,7 +1165,7 @@ int mliUserScenery_malloc_from_json(
                         &uscn->color_names,
                         &material_names,
                         json),
-                "Could not copy surfaces from json.");
+                "Failed to copy surfaces from json.");
 
         mli_check(
                 mliJson_find_key(json, 0, "default_medium", &token),
@@ -1175,7 +1176,7 @@ int mliUserScenery_malloc_from_json(
                         json,
                         token,
                         &uscn->default_medium),
-                "Could not assign the 'default_medium'.");
+                "Failed to assign the 'default_medium'.");
 
         mli_check(
                 mliJson_find_key(json, 0, "children", &token),
@@ -1187,7 +1188,7 @@ int mliUserScenery_malloc_from_json(
                         token + 1,
                         &uscn->surface_names,
                         &uscn->medium_names),
-                "Could not populate tree of mliFrames from json.");
+                "Failed to populate tree of Frames from json.");
 
         mliMap2_free(&material_names);
         return 1;
