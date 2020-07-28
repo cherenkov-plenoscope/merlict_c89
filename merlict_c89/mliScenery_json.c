@@ -533,7 +533,6 @@ error:
         return 0;
 }
 
-
 int __mliFrame_set_id(
         uint32_t *id,
         const struct mliJson *json,
@@ -619,7 +618,8 @@ int __mliFrame_set_boundary_layer(
         const struct mliMap2 *surface_names,
         const struct mliMap2 *medium_names,
         const struct mliJson *json,
-        const uint64_t token_surface) {
+        const uint64_t token_surface)
+{
         uint64_t token_inner_side, token_outer_side;
         mli_check(
                 mliJson_find_key(
@@ -882,13 +882,13 @@ int __mliFrame_set_Mesh(
 {
         uint64_t token_vertices, token_surfaces;
         uint64_t v, f, s;
-        uint32_t num_vertices, num_surfaces, total_num_faces, num_faces_in_surface, face_idx;
+        uint32_t num_vertices, num_surfaces, total_num_faces,
+                num_faces_in_surface, face_idx;
         /* vertices */
         mli_check(
                 mliJson_find_key(json, token, "vertices", &token_vertices),
                 "Expected json-Mesh to have key 'vertices'.");
         num_vertices = json->tokens[token_vertices + 1].size;
-
 
         /* surfaces */
         mli_check(
@@ -904,10 +904,7 @@ int __mliFrame_set_Mesh(
                         mliJson_array_child_token(json, token_surfaces + 1, s);
                 mli_check(
                         mliJson_find_key(
-                                json,
-                                token_surface,
-                                "faces",
-                                &token_faces),
+                                json, token_surface, "faces", &token_faces),
                         "Expected json-Mesh-surface to have key 'faces'.");
                 total_num_faces += json->tokens[token_faces + 1].size;
         }
@@ -915,9 +912,7 @@ int __mliFrame_set_Mesh(
         /* malloc */
         mli_check(
                 mliMesh_malloc(
-                        frame->primitive.mesh,
-                        num_vertices,
-                        total_num_faces),
+                        frame->primitive.mesh, num_vertices, total_num_faces),
                 "Failed to allocate mesh from json.");
 
         /* set vertices */
@@ -944,42 +939,34 @@ int __mliFrame_set_Mesh(
                 /* find num faces of this surface */
                 mli_check(
                         mliJson_find_key(
-                                json,
-                                token_surface,
-                                "faces",
-                                &token_faces),
+                                json, token_surface, "faces", &token_faces),
                         "Expected json-Mesh-surface to have key 'faces'.");
                 num_faces_in_surface = json->tokens[token_faces + 1].size;
 
                 /* find boundary-layer of this surface */
-                mli_check( __mliFrame_set_boundary_layer(
-                        &boundary_layer_of_surface,
-                        surface_names,
-                        medium_names,
-                        json,
-                        token_surface),
+                mli_check(
+                        __mliFrame_set_boundary_layer(
+                                &boundary_layer_of_surface,
+                                surface_names,
+                                medium_names,
+                                json,
+                                token_surface),
                         "Can not set surface-properties of surface in Mesh.");
 
                 /* find user_id of this surface */
                 mli_check(
                         __mliFrame_set_id(
-                                &user_id_of_surface,
-                                json,
-                                token_surface),
+                                &user_id_of_surface, json, token_surface),
                         "Can not set id of surface in Mesh.");
 
                 /* set faces in this surface */
                 for (f = 0; f < num_faces_in_surface; f++) {
                         uint64_t token_face = mliJson_array_child_token(
-                                json,
-                                token_faces + 1,
-                                f);
+                                json, token_faces + 1, f);
                         struct mliFace face;
                         mli_check(
                                 mliFace_from_json_token(
-                                        &face,
-                                        json,
-                                        token_face),
+                                        &face, json, token_face),
                                 "Failed to parse Mesh's face from json.");
                         frame->primitive.mesh->faces[face_idx] = face;
                         frame->primitive.mesh->boundary_layers[face_idx] =
@@ -1028,9 +1015,7 @@ int __mliFrame_from_json(
                 if (type != MLI_MESH) {
                         mli_check(
                                 __mliFrame_set_id(
-                                        &child->id,
-                                        json,
-                                        token_child),
+                                        &child->id, json, token_child),
                                 "Failed to set id of frame from json.");
                 }
                 if (type != MLI_FRAME && type != MLI_MESH) {
