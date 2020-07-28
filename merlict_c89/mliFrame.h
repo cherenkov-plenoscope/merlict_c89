@@ -30,7 +30,7 @@ MLIDYNARRAY_DEFINITON(mli, FramePtr, struct mliFrame *)
 
 struct mliFrame {
         char name[MLI_FRAME_NAME_SIZE];
-        uint64_t id;
+        uint32_t id;
         struct mliFrame *mother;
         struct mliDynFramePtr children;
 

@@ -218,11 +218,11 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
         char type_string[1024];
         mli_type_to_string(f->type, type_string);
         printf("%*s", (int)indention, "");
-        printf(" __%s__ id:%lu, at:%p\n", type_string, f->id, (void *)f);
+        printf(" __%s__ id:%u, at:%p\n", type_string, f->id, (void *)f);
         printf("%*s", (int)indention, "");
         printf("|-mother: id:");
         if (f->mother != NULL) {
-                printf("%lu,", f->mother->id);
+                printf("%u,", f->mother->id);
         } else {
                 printf("%p,", (void *)f->mother);
         }

@@ -20,6 +20,7 @@ struct mliMesh {
         struct mliFace *faces;
 
         struct mliBoundaryLayer *boundary_layers;
+        uint32_t* user_ids;
 };
 
 int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m);
