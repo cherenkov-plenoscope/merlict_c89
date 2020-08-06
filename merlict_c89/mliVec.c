@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliVec.h"
 
-
 struct mliVec mliVec_set(const double x, const double y, const double z)
 {
         struct mliVec out;

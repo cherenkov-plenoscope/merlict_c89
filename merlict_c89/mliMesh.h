@@ -14,10 +14,15 @@
 #include "mliVec.h"
 
 struct mliMesh {
+        /* geometry */
         uint32_t num_vertices;
         struct mliVec *vertices;
         uint32_t num_faces;
         struct mliFace *faces;
+
+        /* surface references */
+        struct mliBoundaryLayer *boundary_layers;
+        uint32_t *user_ids;
 };
 
 int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m);
@@ -29,4 +34,5 @@ int mliMesh_malloc(
         const uint32_t num_faces);
 void mliMesh_free(struct mliMesh *m);
 struct mliMesh mliMesh_init(void);
+int mliMesh_has_valid_faces(const struct mliMesh *m);
 #endif

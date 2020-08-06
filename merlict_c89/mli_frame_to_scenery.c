@@ -102,14 +102,14 @@ int __mliScenery_set_primitive(
                                 scenery,
                                 MLI_TRIANGLE,
                                 count->triangles,
-                                frame->id);
+                                frame->primitive.mesh->user_ids[i]);
                         triangle = frame->primitive.mesh->faces[i];
                         triangle.a += vertex_offset;
                         triangle.b += vertex_offset;
                         triangle.c += vertex_offset;
                         scenery->triangles[count->triangles] = triangle;
                         scenery->triangles_boundary_layers[count->triangles] =
-                                frame->boundary_layer;
+                                frame->primitive.mesh->boundary_layers[i];
                         count->triangles += 1;
                 }
                 break;

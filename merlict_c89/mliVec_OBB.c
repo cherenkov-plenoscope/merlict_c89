@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliVec_OBB.h"
 
-
 int mliVec_overlap_obb(
         const struct mliVec a,
         const struct mliVec obb_lower,

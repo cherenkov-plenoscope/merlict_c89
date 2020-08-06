@@ -22,6 +22,8 @@ int __mliFrame_from_json(
         const struct mliMap2 *medium_names);
 int __mliFrame_set_Mesh(
         struct mliFrame *frame,
+        const struct mliMap2 *surface_names,
+        const struct mliMap2 *medium_names,
         const struct mliJson *json,
         const uint64_t token);
 int mliFace_from_json_token(
@@ -53,7 +55,7 @@ int __mliFrame_set_Sphere(
         const struct mliJson *json,
         const uint64_t token);
 int __mliFrame_set_surface_idx(
-        struct mliFrame *frame,
+        struct mliBoundaryLayer *boundary_layer,
         const struct mliMap2 *surface_names,
         const struct mliMap2 *medium_names,
         const struct mliJson *json,
@@ -64,7 +66,11 @@ int __mliSide_set(
         const struct mliMap2 *medium_names,
         const struct mliJson *json,
         const uint64_t side_token);
-int __mliFrame_set_id_pos_rot(
+int __mliFrame_set_id(
+        uint32_t *id,
+        const struct mliJson *json,
+        const uint64_t token);
+int __mliFrame_set_pos_rot(
         struct mliFrame *frame,
         const struct mliJson *json,
         const uint64_t token);

@@ -8,6 +8,8 @@ struct mliMesh mliMesh_init(void)
         m.vertices = NULL;
         m.num_faces = 0;
         m.faces = NULL;
+        m.boundary_layers = NULL;
+        m.user_ids = NULL;
         return m;
 }
 
@@ -15,6 +17,8 @@ void mliMesh_free(struct mliMesh *m)
 {
         free(m->vertices);
         free(m->faces);
+        free(m->boundary_layers);
+        free(m->user_ids);
         *m = mliMesh_init();
 }
 
@@ -28,6 +32,24 @@ int mliMesh_malloc(
         m->num_faces = num_faces;
         mli_malloc(m->vertices, struct mliVec, m->num_vertices);
         mli_malloc(m->faces, struct mliFace, m->num_faces);
+        mli_malloc(m->boundary_layers, struct mliBoundaryLayer, m->num_faces);
+        mli_malloc(m->user_ids, uint32_t, m->num_faces);
+        return 1;
+error:
+        return 0;
+}
+
+int mliMesh_assert_valid_faces(const struct mliMesh *m)
+{
+        uint64_t i;
+        for (i = 0; i < m->num_faces; i++) {
+                mli_check(m->faces[i].a <= m->num_vertices,
+                        "Expected face.a <= num_vertices");
+                mli_check(m->faces[i].b <= m->num_vertices,
+                        "Expected face.b <= num_vertices");
+                mli_check(m->faces[i].c <= m->num_vertices,
+                        "Expected face.c <= num_vertices");
+        }
         return 1;
 error:
         return 0;
@@ -214,6 +236,11 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
                         fa.b = ib;
                         fa.c = ic;
                         m->faces[face_idx] = fa;
+                        m->boundary_layers[face_idx].inner.surface = 0;
+                        m->boundary_layers[face_idx].inner.medium = 0;
+                        m->boundary_layers[face_idx].outer.surface = 0;
+                        m->boundary_layers[face_idx].outer.medium = 0;
+                        m->user_ids[face_idx] = 0;
                         face_idx++;
                 }
                 if (face_idx == m->num_faces)
@@ -223,6 +250,11 @@ int mliMesh_malloc_from_object_file(const char *path, struct mliMesh *m)
                         "Can not read face line.");
         }
         mli_check(fclose(fin) == 0, "Can not close object-file.");
+
+        mli_check(
+                mliMesh_assert_valid_faces(m),
+                "Expected Mesh faces to have valid vertex indices.");
+
         return 1;
 error:
         if (fin != NULL) {

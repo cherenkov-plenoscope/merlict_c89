@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliBiCirclePlane_intersection.h"
 
-
 int mliBiCirclePlane_intersection(
         const struct mliBiCirclePlane plane,
         const struct mliHomTraComp local2root_comp,

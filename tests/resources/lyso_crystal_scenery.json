@@ -3,110 +3,45 @@
         {
             "name": "unity",
             "values": [
-                [
-                    2e-7,
-                    1
-                ],
-                [
-                    0.0000012,
-                    1
-                ]
+                [2e-7, 1],
+                [0.0000012, 1]
             ]
         },
         {
             "name": "refraction_lyso",
             "values": [
-                [
-                    2e-7,
-                    1.81
-                ],
-                [
-                    0.0000012,
-                    1.81
-                ]
+                [2e-7, 1.81],
+                [0.0000012, 1.81]
             ]
         },
         {
             "name": "refraction_light_guide",
             "values": [
-                [
-                    2e-7,
-                    1.49
-                ],
-                [
-                    0.0000012,
-                    1.49
-                ]
+                [2e-7, 1.49],
+                [0.0000012, 1.49]
             ]
         },
         {
             "name": "+infinity",
             "values": [
-                [
-                    2e-7,
-                    9000
-                ],
-                [
-                    0.0000012,
-                    9000
-                ]
+                [2e-7, 9000],
+                [0.0000012, 9000]
             ]
         },
         {
             "name": "zero",
             "values": [
-                [
-                    2e-7,
-                    0
-                ],
-                [
-                    0.0000012,
-                    0
-                ]
+                [2e-7, 0],
+                [0.0000012, 0]
             ]
         }
     ],
     "colors": [
-        {
-            "rgb": [
-                22,
-                9,
-                255
-            ],
-            "name": "blue"
-        },
-        {
-            "rgb": [
-                255,
-                255,
-                0
-            ],
-            "name": "yellow"
-        },
-        {
-            "rgb": [
-                255,
-                91,
-                49
-            ],
-            "name": "red"
-        },
-        {
-            "rgb": [
-                16,
-                255,
-                0
-            ],
-            "name": "green"
-        },
-        {
-            "rgb": [
-                23,
-                23,
-                23
-            ],
-            "name": "grey"
-        }
+        {"rgb": [22, 9, 255], "name": "blue"},
+        {"rgb": [255, 255, 0], "name": "yellow"},
+        {"rgb": [255, 91, 49], "name": "red"},
+        {"rgb": [16, 255, 0], "name": "green"},
+        {"rgb": [23, 23, 23], "name": "grey"}
     ],
     "media": [
         {
@@ -161,13 +96,8 @@
     "children": [
         {
             "type": "Mesh",
-            "id": 1,
             "pos": [0, 0, 0],
             "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-            "surface": {
-              "inner": {"medium": "lyso", "surface": "esr_inside"},
-              "outer": {"medium": "light_guide", "surface": "esr_outside"}
-            },
             "vertices": [
                 [0, 0, 0],
                 [0.01, 0, 0],
@@ -178,38 +108,34 @@
                 [0, 0.01, 0.01],
                 [0.01, 0.01, 0.01]
             ],
-            "faces": [
-              [0,5,4],
-              [0,1,5],
-              [1,7,5],
-              [1,3,7],
-              [3,6,7],
-              [3,2,6],
-              [2,4,6],
-              [2,0,4],
-              [4,7,6],
-              [4,5,7]
-            ]
-        },
-        {
-            "type": "Mesh",
-            "id": 2,
-            "pos": [0, 0, 0],
-            "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-            "surface": {
-              "inner": {"medium": "lyso", "surface": "lyso_face_inside"},
-              "outer": {"medium": "light_guide", "surface": "lyso_face_outside"}
-            },
-            "vertices": [
-                [0, 0, 0],
-                [0.01, 0, 0],
-                [0, 0.01, 0],
-                [0.01, 0.01, 0]
+            "surfaces": [
+                {
+                    "id": 1,
+                    "faces": [
+                      [0,5,4],
+                      [0,1,5],
+                      [1,7,5],
+                      [1,3,7],
+                      [3,6,7],
+                      [3,2,6],
+                      [2,4,6],
+                      [2,0,4],
+                      [4,7,6],
+                      [4,5,7]
+                    ],
+                    "inner": {"medium": "lyso", "surface": "esr_inside"},
+                    "outer": {"medium": "light_guide", "surface": "esr_outside"}
+                },
+                {
+                    "id": 2,
+                    "faces": [
+                      [1,0,2],
+                      [1,2,3]
+                    ],
+                    "inner": {"medium": "lyso", "surface": "lyso_face_inside"},
+                    "outer": {"medium": "light_guide", "surface": "lyso_face_outside"}
+                }
             ],
-            "faces": [
-              [1,0,2],
-              [1,2,3]
-            ]
         },
         {
             "type": "Disc",
