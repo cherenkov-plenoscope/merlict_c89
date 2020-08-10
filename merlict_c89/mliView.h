@@ -29,9 +29,7 @@ struct mliView mliView_look_down_when_possible(
 struct mliView mliView_look_right(
         const struct mliView camin,
         const double rate);
-struct mliView mliView_move_up(
-        const struct mliView camin,
-        const double rate);
+struct mliView mliView_move_up(const struct mliView camin, const double rate);
 struct mliView mliView_move_right(
         const struct mliView camin,
         const double rate);

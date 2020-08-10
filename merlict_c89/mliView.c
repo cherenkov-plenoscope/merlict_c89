@@ -33,9 +33,7 @@ struct mliView mliView_move_forward(
         return camout;
 }
 
-struct mliView mliView_move_right(
-        const struct mliView camin,
-        const double rate)
+struct mliView mliView_move_right(const struct mliView camin, const double rate)
 {
         struct mliView camout = camin;
         struct mliVec direction_right = mliView_direction_right(camout);
@@ -44,18 +42,14 @@ struct mliView mliView_move_right(
         return camout;
 }
 
-struct mliView mliView_move_up(
-        const struct mliView camin,
-        const double rate)
+struct mliView mliView_move_up(const struct mliView camin, const double rate)
 {
         struct mliView camout = camin;
         camout.position.z += rate;
         return camout;
 }
 
-struct mliView mliView_look_right(
-        const struct mliView camin,
-        const double rate)
+struct mliView mliView_look_right(const struct mliView camin, const double rate)
 {
         struct mliView camout = camin;
         const double diff = camin.field_of_view * rate;
@@ -110,7 +104,7 @@ struct mliView mliView_look_up_when_possible(
         const double rate)
 {
         struct mliView camout = camin;
-        const double diff = -1.0*camin.field_of_view * rate;
+        const double diff = -1.0 * camin.field_of_view * rate;
         const double next_rotation_x = camout.rotation.x + diff;
         const int fals_backwards_over = next_rotation_x < 0.0;
         if (fals_backwards_over) {
@@ -126,8 +120,6 @@ struct mliHomTraComp mliView_to_HomTraComp(const struct mliView view)
         struct mliHomTraComp view2root_comp;
         view2root_comp.trans = view.position;
         view2root_comp.rot = mliQuaternion_set_tait_bryan(
-                view.rotation.x,
-                view.rotation.y,
-                view.rotation.z);
+                view.rotation.x, view.rotation.y, view.rotation.z);
         return view2root_comp;
 }

@@ -10,7 +10,6 @@
 #include "mliVec.h"
 #include "mliHomTra.h"
 
-
 /*
 principal-rays of the thin-lens
 ===============================
@@ -83,8 +82,6 @@ principal-rays of the thin-lens
 4)      Trace ray(P - W) and assign to pixel (row, column).
 
 */
-
-
 
 struct mliVec mliApCam_get_pixel_center_on_image_sensor_plane(
         const double image_sensor_width_x,

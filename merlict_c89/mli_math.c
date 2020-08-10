@@ -117,6 +117,6 @@ double mli_bin_center_in_linear_space(
         const uint64_t bin)
 {
         const double width = stop - start;
-        const double bin_width = width/(double)num_bins;
-        return start + bin*bin_width + 0.5*bin_width;
+        const double bin_width = width / (double)num_bins;
+        return start + bin * bin_width + 0.5 * bin_width;
 }
