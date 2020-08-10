@@ -4,6 +4,8 @@
 struct mlivrConfig mlivrConfig_default(void)
 {
         struct mlivrConfig cfg;
+        cfg.random_seed = 0u;
+
         cfg.preview_num_cols = 160u;
         cfg.preview_num_rows = 90u / 2;
 

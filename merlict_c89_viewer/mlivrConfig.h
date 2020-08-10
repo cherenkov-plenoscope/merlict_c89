@@ -3,6 +3,7 @@
 #define MERLICT_C89_VIWER_MLIVR_CONFIG_H_
 
 struct mlivrConfig {
+        uint32_t random_seed;
         uint64_t preview_num_cols;
         uint64_t preview_num_rows;
         uint64_t export_num_cols;

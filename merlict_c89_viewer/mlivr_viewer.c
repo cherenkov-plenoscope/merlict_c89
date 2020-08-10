@@ -89,7 +89,7 @@ int _mlivr_export_image(
         const struct mliCamera camera,
         const char *path)
 {
-        struct mliMT19937 prng = mliMT19937_init(0);
+        struct mliMT19937 prng = mliMT19937_init(config.random_seed);
         const double row_over_column_pixel_ratio = 1.0;
         struct mliImage full = mliImage_init();
 
