@@ -20,13 +20,13 @@ struct mliPinHoleCameraImageSensor {
         double distance_to_principal_point;
 };
 
-void mliCamera_render_image(
+void mli_pin_hole_camera_render_image(
         const struct mliView view,
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
         struct mliImage *image,
         const double row_over_column_pixel_ratio);
-struct mliRay mliCamera_ray_at_row_col(
+struct mliRay mli_pin_hole_camera_ray_at_row_col(
         const struct mliView view,
         const struct mliPinHoleCameraImageSensor *sensor,
         const struct mliImage *image,

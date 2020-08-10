@@ -25,7 +25,7 @@ struct mliPinHoleCameraImageSensor mliPinHoleCameraImageSensor_init(
         return sensor;
 }
 
-struct mliRay mliCamera_ray_at_row_col(
+struct mliRay mli_pin_hole_camera_ray_at_row_col(
         const struct mliView view,
         const struct mliPinHoleCameraImageSensor *sensor,
         const struct mliImage *image,
@@ -44,7 +44,7 @@ struct mliRay mliCamera_ray_at_row_col(
         return mliRay_set(view.position, sensor_intersection);
 }
 
-void mliCamera_render_image(
+void mli_pin_hole_camera_render_image(
         const struct mliView view,
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
@@ -59,7 +59,7 @@ void mliCamera_render_image(
         assert(view.field_of_view < mli_deg2rad(180.));
         for (row = 0; row < image->num_rows; row++) {
                 for (col = 0; col < image->num_cols; col++) {
-                        struct mliRay ray = mliCamera_ray_at_row_col(
+                        struct mliRay ray = mli_pin_hole_camera_ray_at_row_col(
                                 view, &sensor, image, row, col);
                         struct mliColor color = mli_trace(scenery, octree, ray);
                         mliImage_set(image, col, row, color);

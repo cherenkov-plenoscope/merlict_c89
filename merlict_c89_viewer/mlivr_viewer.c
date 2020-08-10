@@ -280,7 +280,7 @@ int mlivr_run_interactive_viewer(
         show_image:
                 if (update_image) {
                         if (super_resolution) {
-                                mliCamera_render_image(
+                                mli_pin_hole_camera_render_image(
                                         view,
                                         scenery,
                                         octree,
@@ -288,7 +288,7 @@ int mlivr_run_interactive_viewer(
                                         row_over_column_pixel_ratio);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
-                                mliCamera_render_image(
+                                mli_pin_hole_camera_render_image(
                                         view,
                                         scenery,
                                         octree,
@@ -308,12 +308,12 @@ int mlivr_run_interactive_viewer(
                         mliImage_print_chars(
                                 &img, symbols, rows, cols, num_symbols);
                         {
-                                struct mliPinHoleCameraImageSensor sensor = 
+                                struct mliPinHoleCameraImageSensor sensor =
                                         mliPinHoleCameraImageSensor_init(
                                                 view,
                                                 &img,
                                                 row_over_column_pixel_ratio);
-                                probing_ray = mliCamera_ray_at_row_col(
+                                probing_ray = mli_pin_hole_camera_ray_at_row_col(
                                         view,
                                         &sensor,
                                         &img,
