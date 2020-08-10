@@ -113,6 +113,14 @@ double mli_object_given_focal_and_image(
         const double focal_length,
         const double image_distance);
 
+double mli_image_given_focal_and_object(
+        const double focal_length,
+        const double object_distance);
+
+double mliApCam_focal_length_given_field_of_view_and_sensor_width(
+        const double field_of_view,
+        const double image_sensor_width);
+
 struct mliVec mliApCam_ray_support_on_aperture(
         const double aperture_radius,
         struct mliMT19937 *prng);

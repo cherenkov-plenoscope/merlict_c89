@@ -102,6 +102,14 @@ double mli_image_given_focal_and_object(
         return 1.0/(1.0/focal_length - 1.0/object_distance);
 }
 
+double mliApCam_focal_length_given_field_of_view_and_sensor_width(
+        const double field_of_view,
+        const double image_sensor_width)
+{
+        const double image_sensor_radius = 0.5*image_sensor_width;
+        const double fov_opening_angle = 0.5*field_of_view;
+        return image_sensor_radius/tan(fov_opening_angle);
+}
 
 struct mliRay mliApCam_get_ray_for_pixel(
         const double focal_length,
