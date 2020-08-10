@@ -48,6 +48,18 @@ void mliImage_set(
         img->raw[mliImage_idx(img, col, row)] = color;
 }
 
+void mliImage_set_all_pixel(
+        const struct mliImage *img,
+        const struct mliColor color)
+{
+        uint64_t row, col;
+        for (row = 0; row < img->num_rows; row++) {
+                for (col = 0; col < img->num_cols; col++) {
+                        img->raw[mliImage_idx(img, col, row)] = color;
+                }
+        }
+}
+
 struct mliColor mliImage_at(
         const struct mliImage *img,
         const uint32_t col,

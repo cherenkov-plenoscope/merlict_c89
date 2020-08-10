@@ -59,6 +59,9 @@ void mliImage_set(
         const uint32_t col,
         const uint32_t row,
         const struct mliColor color);
+void mliImage_set_all_pixel(
+        const struct mliImage *img,
+        const struct mliColor color);
 uint32_t mliImage_idx(
         const struct mliImage *img,
         const uint32_t col,
