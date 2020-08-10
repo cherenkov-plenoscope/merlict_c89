@@ -366,57 +366,43 @@ void mliImage_from_sum_and_exposure(
         }
 }
 
-int mliPixels_malloc_and_set_from_image(
+void mliPixels_set_all_from_image(
         struct mliPixels *pixels,
         const struct mliImage *image)
 {
         uint64_t i, r, c;
-        uint32_t num_pixels = image->num_cols * image->num_rows;
-        mli_check_mem(mliPixels_malloc(pixels, num_pixels));
+        assert(image->num_cols * image->num_rows == pixels->num_pixels);
         i = 0u;
-        for (r = 0u; r < image->num_rows; r++) {
-                for (c = 0u; c < image->num_cols; c++) {
+        for (c = 0u; c < image->num_cols; c++) {
+                for (r = 0u; r < image->num_rows; r++) {
                         pixels->pixels[i].row = r;
                         pixels->pixels[i].col = c;
                         i++;
                 }
         }
-        return 1;
-error:
-        return 0;
 }
 
-int mliPixels_malloc_from_image_above_threshold(
-        struct mliPixels *pixels,
-        const struct mliImage *image,
-        const float threshold)
+void mliPixels_above_threshold(
+        const struct mliImage *to_do_image,
+        const float threshold,
+        struct mliPixels *pixels)
 {
-        uint64_t i, r, c;
-        uint32_t num_pixels = 0;
-        for (r = 0u; r < image->num_rows; r++) {
-                for (c = 0u; c < image->num_cols; c++) {
-                        struct mliColor col = mliImage_at(image, c, r);
-                        if (col.r + col.g + col.b > threshold) {
-                                num_pixels++;
+        uint64_t row, col;
+        pixels->num_pixels_to_do = 0;
+        for (row = 0; row < to_do_image->num_rows; row++) {
+                for (col = 0; col < to_do_image->num_cols; col++) {
+                        double lum = 0.0;
+                        struct mliColor c = mliImage_at(to_do_image, col, row);
+                        lum = c.r + c.g + c.b;
+                        if (lum > threshold) {
+                                pixels->pixels[pixels->num_pixels_to_do].row = row;
+                                pixels->pixels[pixels->num_pixels_to_do].col = col;
+                                pixels->num_pixels_to_do += 1;
                         }
                 }
         }
-        mli_check_mem(mliPixels_malloc(pixels, num_pixels));
-        i = 0u;
-        for (r = 0u; r < image->num_rows; r++) {
-                for (c = 0u; c < image->num_cols; c++) {
-                        struct mliColor col = mliImage_at(image, c, r);
-                        if (col.r + col.g + col.b > threshold) {
-                                pixels->pixels[i].row = r;
-                                pixels->pixels[i].col = c;
-                                i++;
-                        }
-                }
-        }
-        return 1;
-error:
-        return 0;
 }
+
 
 void mliImage_assign_pixel_colors_to_sum_and_exposure_image(
         const struct mliPixels *pixels,
@@ -436,5 +422,32 @@ void mliImage_assign_pixel_colors_to_sum_and_exposure_image(
                 exposure_image->raw[idx].r += 1.;
                 exposure_image->raw[idx].g += 1.;
                 exposure_image->raw[idx].b += 1.;
+        }
+}
+
+void mliImage_copy(const struct mliImage *source, struct mliImage *destination)
+{
+        uint64_t pix;
+        assert(source->num_rows == destination->num_rows);
+        assert(source->num_cols == destination->num_cols);
+        for (pix = 0u; pix < source->num_rows*source->num_cols; pix++) {
+                destination->raw[pix] = source->raw[pix];
+        }
+}
+
+void mliImage_fabs_difference(
+        const struct mliImage *a,
+        const struct mliImage *b,
+        struct mliImage *out)
+{
+        uint64_t pix;
+        assert(a->num_cols == b->num_cols);
+        assert(a->num_rows == b->num_rows);
+        assert(a->num_cols == out->num_cols);
+        assert(a->num_rows == out->num_rows);
+        for (pix = 0; pix < out->num_cols * out->num_rows; pix++) {
+                out->raw[pix].r = fabs(a->raw[pix].r - b->raw[pix].r);
+                out->raw[pix].g = fabs(a->raw[pix].g - b->raw[pix].g);
+                out->raw[pix].b = fabs(a->raw[pix].b - b->raw[pix].b);
         }
 }

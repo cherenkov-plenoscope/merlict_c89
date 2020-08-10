@@ -145,7 +145,84 @@ struct mliRay mliApCam_get_ray_for_pixel(
         return mliRay_set(aperture_support, direction);
 }
 
-void mliApertureCamera_render_image(
+void _mliApCam_aquire_pixels(
+        struct mliMT19937 *prng,
+        const struct mliApertureCamera camera,
+        const struct mliImage *image,
+        const struct mliHomTraComp camera2root_comp,
+        const struct mliScenery *scenery,
+        const struct mliOcTree *octree,
+        const struct mliPixels *pixels_to_do,
+        struct mliImage *colors)
+{
+        uint64_t i;
+        struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
+        for (i = 0; i < pixels_to_do->num_pixels_to_do; i++) {
+                struct mliRay ray_wrt_camera =
+                        mliApCam_get_ray_for_pixel(
+                                camera.focal_length,
+                                camera.aperture_radius,
+                                camera.image_sensor_distance,
+                                camera.image_sensor_width_x,
+                                camera.image_sensor_width_y,
+                                image->num_cols,
+                                image->num_rows,
+                                pixels_to_do->pixels[i].col,
+                                pixels_to_do->pixels[i].row,
+                                prng);
+
+                struct mliRay ray_wrt_root = mliHomTra_ray(
+                        &camera2root, ray_wrt_camera);
+
+                struct mliColor set_color = mli_trace(
+                        scenery, octree, ray_wrt_root);
+
+                mliImage_set(colors, i, 0u, set_color);
+        }
+
+        return;
+}
+
+
+void _mliApCam_assign_pixel_colors_to_sum_and_exposure_image(
+        const struct mliPixels *pixels,
+        const struct mliImage *colors,
+        struct mliImage *sum_image,
+        struct mliImage *exposure_image)
+{
+        uint64_t pix;
+        for (pix = 0; pix < pixels->num_pixels_to_do; pix++) {
+                const uint64_t idx = mliImage_idx(
+                        sum_image,
+                        pixels->pixels[pix].col,
+                        pixels->pixels[pix].row);
+                sum_image->raw[idx].r += colors->raw[pix].r;
+                sum_image->raw[idx].g += colors->raw[pix].g;
+                sum_image->raw[idx].b += colors->raw[pix].b;
+
+                exposure_image->raw[idx].r += 1.;
+                exposure_image->raw[idx].g += 1.;
+                exposure_image->raw[idx].b += 1.;
+        }
+}
+
+void _mliApCam_image_from_sum_and_exposure(
+        const struct mliImage *sum_image,
+        const struct mliImage *exposure_image,
+        struct mliImage *out)
+{
+        uint64_t pix;
+        for (pix = 0; pix < out->num_rows*out->num_cols; pix++) {
+                out->raw[pix].r = sum_image->raw[pix].r/
+                        exposure_image->raw[pix].r;
+                out->raw[pix].g = sum_image->raw[pix].g/
+                        exposure_image->raw[pix].g;
+                out->raw[pix].b = sum_image->raw[pix].b/
+                        exposure_image->raw[pix].b;
+        }
+}
+
+int mliApertureCamera_render_image(
         struct mliMT19937 *prng,
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
@@ -153,48 +230,167 @@ void mliApertureCamera_render_image(
         const struct mliOcTree *octree,
         struct mliImage *image)
 {
-        struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
-        const uint64_t num_rays_per_pixel = 1;
-        const double w = 1.0 / (double)num_rays_per_pixel;
+        float noise_threshold = 0.05*255.0;
+        uint64_t MAX_ITERATIONS = 128;
+        uint64_t iteration = 0;
 
-        uint64_t row_y, col_x, pi;
+        struct mliColor zero_color = mliColor_set(0.0, 0.0, 0.0);
+        struct mliImage sum_image = mliImage_init();
+        struct mliImage exposure_image = mliImage_init();
+        struct mliImage to_do_image = mliImage_init();
+        struct mliImage sobel_image = mliImage_init();
+        struct mliImage previous_sobel_image = mliImage_init();
+        struct mliImage diff_image = mliImage_init();
+        struct mliImage colors = mliImage_init();
+        struct mliPixels pixels_to_do = mliPixels_init();
 
-        mliImage_set_all_pixel(image, mliColor_set(0.0, 0.0, 0.0));
+        mli_check(mliImage_malloc(
+                &sum_image, image->num_cols, image->num_rows),
+                "Failed to malloc sum_image.");
+        mli_check(mliImage_malloc(
+                &exposure_image, image->num_cols, image->num_rows),
+                "Failed to malloc exposure_image.");
+        mli_check(mliImage_malloc(
+                &to_do_image, image->num_cols, image->num_rows),
+                "Failed to malloc to_do_image.");
+        mli_check(mliImage_malloc(
+                &sobel_image, image->num_cols, image->num_rows),
+                "Failed to malloc sobel_image.");
+        mli_check(mliImage_malloc(
+                &previous_sobel_image, image->num_cols, image->num_rows),
+                "Failed to malloc previous_sobel_image.");
+        mli_check(mliImage_malloc(
+                &diff_image, image->num_cols, image->num_rows),
+                "Failed to malloc diff_image.");
+        mli_check(mliImage_malloc(
+                &colors, image->num_cols*image->num_rows, 1),
+                "Failed to malloc colors.");
 
-        for (row_y = 0; row_y < image->num_rows; row_y++) {
-                fprintf(stderr, "row: %ld of %d\n", row_y + 1, image->num_rows);
-                for (col_x = 0; col_x < image->num_cols; col_x++) {
-                        for (pi = 0; pi < num_rays_per_pixel; pi++) {
+        mliImage_set_all_pixel(image, zero_color);
+        mliImage_set_all_pixel(&sum_image, zero_color);
+        mliImage_set_all_pixel(&exposure_image, zero_color);
+        mliImage_set_all_pixel(&to_do_image, zero_color);
+        mliImage_set_all_pixel(&sobel_image, zero_color);
+        mliImage_set_all_pixel(&previous_sobel_image, zero_color);
+        mliImage_set_all_pixel(&colors, zero_color);
 
-                                struct mliRay ray_wrt_camera =
-                                        mliApCam_get_ray_for_pixel(
-                                                camera.focal_length,
-                                                camera.aperture_radius,
-                                                camera.image_sensor_distance,
-                                                camera.image_sensor_width_x,
-                                                camera.image_sensor_width_y,
-                                                image->num_cols,
-                                                image->num_rows,
-                                                col_x,
-                                                row_y,
-                                                prng);
+        mli_check(mliPixels_malloc(
+                &pixels_to_do, image->num_cols*image->num_rows),
+                "Failed to malloc pixels_to_do.");
 
-                                struct mliRay ray_wrt_root = mliHomTra_ray(
-                                        &camera2root, ray_wrt_camera);
+        /*
+        initial image
+        =============
+        */
+        mliPixels_set_all_from_image(&pixels_to_do, image);
+        pixels_to_do.num_pixels_to_do = image->num_cols*image->num_rows;
 
-                                struct mliColor additional_color = mli_trace(
-                                        scenery, octree, ray_wrt_root);
+        _mliApCam_aquire_pixels(
+                prng,
+                camera,
+                image,
+                camera2root_comp,
+                scenery,
+                octree,
+                &pixels_to_do,
+                &colors);
 
-                                struct mliColor old_color =
-                                        mliImage_at(image, col_x, row_y);
+        _mliApCam_assign_pixel_colors_to_sum_and_exposure_image(
+                &pixels_to_do,
+                &colors,
+                &sum_image,
+                &exposure_image);
 
-                                struct mliColor set_color = mliColor_set(
-                                        old_color.r + w * additional_color.r,
-                                        old_color.g + w * additional_color.g,
-                                        old_color.b + w * additional_color.b);
+        _mliApCam_image_from_sum_and_exposure(
+                &sum_image,
+                &exposure_image,
+                image);
 
-                                mliImage_set(image, col_x, row_y, set_color);
-                        }
-                }
+        mliImage_sobel(image, &sobel_image);
+
+        mliImage_luminance_threshold_dilatation(
+                &sobel_image,
+                128.0,
+                &to_do_image);
+
+        printf("\n");
+        while (1) {
+                if (iteration >= MAX_ITERATIONS)
+                        break;
+
+                mliPixels_above_threshold(
+                        &to_do_image,
+                        0.5,
+                        &pixels_to_do);
+
+                if (
+                        pixels_to_do.num_pixels_to_do <
+                        image->num_rows*image->num_cols/100.0
+                )
+                        break;
+
+                printf(
+                        "loop %3ld / %3ld, %d,%03d pixel left\n",
+                        iteration+1,
+                        MAX_ITERATIONS,
+                        pixels_to_do.num_pixels_to_do/1000,
+                        pixels_to_do.num_pixels_to_do%1000);
+                _mliApCam_aquire_pixels(
+                        prng,
+                        camera,
+                        image,
+                        camera2root_comp,
+                        scenery,
+                        octree,
+                        &pixels_to_do,
+                        &colors);
+
+                _mliApCam_assign_pixel_colors_to_sum_and_exposure_image(
+                        &pixels_to_do,
+                        &colors,
+                        &sum_image,
+                        &exposure_image);
+
+                _mliApCam_image_from_sum_and_exposure(
+                        &sum_image,
+                        &exposure_image,
+                        image);
+
+                mliImage_copy(&sobel_image, &previous_sobel_image);
+
+                mliImage_sobel(image, &sobel_image);
+                mliImage_fabs_difference(
+                        &previous_sobel_image,
+                        &sobel_image,
+                        &diff_image);
+
+                mliImage_set_all_pixel(&to_do_image, zero_color);
+
+                mliImage_luminance_threshold_dilatation(
+                        &diff_image,
+                        noise_threshold,
+                        &to_do_image);
+
+                iteration += 1;
         }
+
+        mliImage_free(&sum_image);
+        mliImage_free(&exposure_image);
+        mliImage_free(&to_do_image);
+        mliImage_free(&sobel_image);
+        mliImage_free(&previous_sobel_image);
+        mliImage_free(&diff_image);
+        mliImage_free(&colors);
+        mliPixels_free(&pixels_to_do);
+        return 1;
+error:
+        mliImage_free(&sum_image);
+        mliImage_free(&exposure_image);
+        mliImage_free(&to_do_image);
+        mliImage_free(&sobel_image);
+        mliImage_free(&previous_sobel_image);
+        mliImage_free(&diff_image);
+        mliImage_free(&colors);
+        mliPixels_free(&pixels_to_do);
+        return 0;
 }

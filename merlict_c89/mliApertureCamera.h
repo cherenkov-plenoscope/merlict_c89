@@ -142,7 +142,7 @@ struct mliApertureCamera {
         double image_sensor_width_y;
 };
 
-void mliApertureCamera_render_image(
+int mliApertureCamera_render_image(
         struct mliMT19937 *prng,
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
