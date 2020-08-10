@@ -32,8 +32,7 @@ struct mliRay mliCamera_ray_at_row_col(
         const struct mliImage *image,
         const uint32_t row,
         const uint32_t col);
-void mliPinHoleCameraImageSensor_init(
-        struct mliPinHoleCameraImageSensor *sensor,
+struct mliPinHoleCameraImageSensor mliPinHoleCameraImageSensor_init(
         const struct mliView view,
         const struct mliImage *image,
         const double row_over_column_pixel_ratio);

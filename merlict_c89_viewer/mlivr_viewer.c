@@ -308,12 +308,11 @@ int mlivr_run_interactive_viewer(
                         mliImage_print_chars(
                                 &img, symbols, rows, cols, num_symbols);
                         {
-                                struct mliPinHoleCameraImageSensor sensor;
-                                mliPinHoleCameraImageSensor_init(
-                                        &sensor,
-                                        view,
-                                        &img,
-                                        row_over_column_pixel_ratio);
+                                struct mliPinHoleCameraImageSensor sensor = 
+                                        mliPinHoleCameraImageSensor_init(
+                                                view,
+                                                &img,
+                                                row_over_column_pixel_ratio);
                                 probing_ray = mliCamera_ray_at_row_col(
                                         view,
                                         &sensor,
