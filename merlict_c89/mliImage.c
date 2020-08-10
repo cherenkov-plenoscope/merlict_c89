@@ -395,14 +395,15 @@ void mliPixels_above_threshold(
                         struct mliColor c = mliImage_at(to_do_image, col, row);
                         lum = c.r + c.g + c.b;
                         if (lum > threshold) {
-                                pixels->pixels[pixels->num_pixels_to_do].row = row;
-                                pixels->pixels[pixels->num_pixels_to_do].col = col;
+                                pixels->pixels[pixels->num_pixels_to_do].row =
+                                        row;
+                                pixels->pixels[pixels->num_pixels_to_do].col =
+                                        col;
                                 pixels->num_pixels_to_do += 1;
                         }
                 }
         }
 }
-
 
 void mliImage_assign_pixel_colors_to_sum_and_exposure_image(
         const struct mliPixels *pixels,
@@ -430,7 +431,7 @@ void mliImage_copy(const struct mliImage *source, struct mliImage *destination)
         uint64_t pix;
         assert(source->num_rows == destination->num_rows);
         assert(source->num_cols == destination->num_cols);
-        for (pix = 0u; pix < source->num_rows*source->num_cols; pix++) {
+        for (pix = 0u; pix < source->num_rows * source->num_cols; pix++) {
                 destination->raw[pix] = source->raw[pix];
         }
 }

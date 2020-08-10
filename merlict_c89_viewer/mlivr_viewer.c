@@ -96,10 +96,9 @@ int _mlivr_export_image(
         struct mliHomTraComp camera2root_comp;
         struct mliApertureCamera apcam;
 
-        const double image_ratio = (
-                (double)config.export_num_cols/
-                (double)config.export_num_rows
-        );
+        const double image_ratio =
+                ((double)config.export_num_cols /
+                 (double)config.export_num_rows);
         mli_check_mem(mliImage_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
         camera2root_comp = mliView_to_HomTraComp(view);
@@ -107,20 +106,14 @@ int _mlivr_export_image(
                 mliApCam_focal_length_given_field_of_view_and_sensor_width(
                         view.field_of_view,
                         config.aperture_camera_image_sensor_width);
-        apcam.aperture_radius = 0.5*(apcam.focal_length/config.aperture_camera_f_stop_ratio);
+        apcam.aperture_radius = 0.5 * (apcam.focal_length /
+                                       config.aperture_camera_f_stop_ratio);
         apcam.image_sensor_distance = mli_image_given_focal_and_object(
-                apcam.focal_length,
-                object_distance
-        );
+                apcam.focal_length, object_distance);
         apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
-        apcam.image_sensor_width_y = apcam.image_sensor_width_x/image_ratio;
+        apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
-                &prng,
-                apcam,
-                camera2root_comp,
-                scenery,
-                octree,
-                &full);
+                &prng, apcam, camera2root_comp, scenery, octree, &full);
         mli_check(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
@@ -236,8 +229,7 @@ int mlivr_run_interactive_viewer(
                                         view, -config.step_length);
                                 break;
                         case 'i':
-                                view = mliView_look_up_when_possible(
-                                        view, .05);
+                                view = mliView_look_up_when_possible(view, .05);
                                 break;
                         case 'k':
                                 view = mliView_look_down_when_possible(
@@ -327,8 +319,7 @@ int mlivr_run_interactive_viewer(
                                                 cursor.row,
                                                 cursor.col);
                                 probing_ray_wrt_root = mliHomTra_ray(
-                                                &camera2root,
-                                                probing_ray_wrt_camera);
+                                        &camera2root, probing_ray_wrt_camera);
                                 has_probing_intersection =
                                         mli_first_casual_intersection(
                                                 scenery,
