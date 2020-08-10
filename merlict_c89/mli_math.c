@@ -109,3 +109,14 @@ double mli_std(const double vals[], const uint64_t size, const double vals_mean)
         }
         return sqrt(s / (double)size);
 }
+
+double mli_bin_center_in_linear_space(
+        const double start,
+        const double stop,
+        const uint64_t num_bins,
+        const uint64_t bin)
+{
+        const double width = stop - start;
+        const double bin_width = width/(double)num_bins;
+        return start + bin*bin_width + 0.5*bin_width;
+}

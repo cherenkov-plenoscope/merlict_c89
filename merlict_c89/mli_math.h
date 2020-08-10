@@ -86,4 +86,9 @@ double mli_z_sphere(double x, double curvature_radius);
 double mli_hypot(const double a, const double b);
 double mli_deg2rad(const double angle_in_deg);
 double mli_rad2deg(const double angle_in_rad);
+double mli_bin_center_in_linear_space(
+        const double start,
+        const double stop,
+        const uint64_t num_bins,
+        const uint64_t bin);
 #endif
