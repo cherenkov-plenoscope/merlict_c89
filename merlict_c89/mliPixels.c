@@ -4,6 +4,7 @@
 struct mliPixels mliPixels_init(void)
 {
         struct mliPixels pix;
+        pix.num_pixels_to_do = 0u;
         pix.num_pixels = 0u;
         pix.pixels = NULL;
         return pix;
