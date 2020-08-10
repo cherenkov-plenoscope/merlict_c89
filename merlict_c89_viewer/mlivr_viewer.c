@@ -10,6 +10,9 @@ void mlivr_print_help(void)
         printf("merlict-c89\n-----------\n\n");
         printf("Copyright 2019 Sebastian Achim Mueller\n");
         printf("\n");
+        printf(" print help..........[ h ]\n");
+        printf(" exit ...............[ESC]\n");
+        printf("\n");
         printf("_Position__________________   _Orientation_______________\n");
         printf(" move forward........[ w ]     look up.............[ i ]\n");
         printf(" move backward.......[ s ]     look down...........[ k ]\n");
@@ -22,11 +25,9 @@ void mlivr_print_help(void)
         printf(" increace............[ n ]\n");
         printf(" decreace............[ m ]\n");
         printf("\n");
-        printf(" Cursor..............[ c ]\n");
-        printf(" print help..........[ h ]\n");
-        printf(" exit ...............[ESC]\n");
-        printf("\n");
-        printf("[  space key  ] full resolution.\n");
+        printf("_Take_picture_with_depth__\n");
+        printf(" focus-finder........[ c ]\n");
+        printf(" take picture....[ space ]\n");
         printf("\n");
         printf("MLI_VERSION %d.%d.%d\n",
                MLI_VERSION_MAYOR,
@@ -87,6 +88,7 @@ int _mlivr_export_image(
         const struct mliOcTree *octree,
         const struct mlivrConfig config,
         const struct mliView view,
+        const double object_distance,
         const char *path)
 {
         struct mliMT19937 prng = mliMT19937_init(config.random_seed);
@@ -94,7 +96,6 @@ int _mlivr_export_image(
         struct mliHomTraComp camera2root_comp;
         struct mliApertureCamera apcam;
 
-        const double object_distance = 28.5;
         const double image_ratio = (
                 (double)config.export_num_cols/
                 (double)config.export_num_rows
@@ -189,6 +190,21 @@ int mlivr_run_interactive_viewer(
                         case 'h':
                                 print_help = 1;
                                 break;
+                        case MLIVR_SPACE_KEY:
+                                sprintf(path,
+                                        "%s_%06lu.ppm",
+                                        timestamp,
+                                        num_screenshots);
+                                num_screenshots++;
+                                mli_c(_mlivr_export_image(
+                                        scenery,
+                                        octree,
+                                        config,
+                                        view,
+                                        probing_intersection.distance_of_ray,
+                                        path));
+                                update_image = 0;
+                                break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
                                 break;
@@ -251,14 +267,7 @@ int mlivr_run_interactive_viewer(
                                 update_image = 0;
                                 break;
                         case MLIVR_SPACE_KEY:
-                                sprintf(path,
-                                        "%s_%06lu.ppm",
-                                        timestamp,
-                                        num_screenshots);
-                                num_screenshots++;
-                                mli_c(_mlivr_export_image(
-                                        scenery, octree, config, view, path));
-                                update_image = 0;
+                                printf("Go into cursor-mode first.\n");
                                 break;
                         default:
                                 printf("Key Press unknown: %d\n", key);

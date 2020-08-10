@@ -24,7 +24,7 @@ struct mlivrConfig mlivrConfig_default(void)
 
         cfg.view.field_of_view = mli_deg2rad(80.);
 
-        cfg.aperture_camera_f_stop_ratio = 2.0;
+        cfg.aperture_camera_f_stop_ratio = 0.95;
         cfg.aperture_camera_image_sensor_width = 64e-3;
         return cfg;
 }

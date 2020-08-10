@@ -34,6 +34,7 @@ int _mlivr_export_image(
         const struct mliOcTree *octree,
         const struct mlivrConfig config,
         const struct mliView view,
+        const double object_distance,
         const char *path);
 
 int mlivr_run_interactive_viewer(

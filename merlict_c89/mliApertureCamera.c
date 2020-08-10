@@ -154,7 +154,7 @@ void mliApertureCamera_render_image(
         struct mliImage *image)
 {
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
-        const uint64_t num_rays_per_pixel = 10;
+        const uint64_t num_rays_per_pixel = 1;
         const double w = 1.0 / (double)num_rays_per_pixel;
 
         uint64_t row_y, col_x, pi;
