@@ -81,6 +81,7 @@
 #include "mli_from_outside_to_inside.c"
 #include "mli_xyplane.c"
 #include "mliTracer.c"
+#include "mliView.c"
 #include "mliCamera.c"
 #include "mliApertureCamera.c"
 #include "mli_string_to.c"

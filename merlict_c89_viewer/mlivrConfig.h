@@ -9,7 +9,7 @@ struct mlivrConfig {
         uint64_t export_num_cols;
         uint64_t export_num_rows;
         double step_length;
-        struct mliCamera camera;
+        struct mliView view;
 };
 
 struct mlivrConfig mlivrConfig_default(void);

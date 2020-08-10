@@ -39,20 +39,20 @@ void mlivr_print_help(void)
 }
 
 void mlivr_print_info_line(
-        const struct mliCamera camera,
+        const struct mliView view,
         const struct mlivrCursor cursor)
 {
         printf("Press 'h' for help. "
                "Pos.: [ % -.2e, % -.2e, % -.2e]m, "
                "Rot.: [ % -.1f, % -.1f, % -.1f]deg, "
                "FoV.: %.2fdeg",
-               camera.position.x,
-               camera.position.y,
-               camera.position.z,
-               mli_rad2deg(camera.rotation.x),
-               mli_rad2deg(camera.rotation.y),
-               mli_rad2deg(camera.rotation.z),
-               mli_rad2deg(camera.field_of_view));
+               view.position.x,
+               view.position.y,
+               view.position.z,
+               mli_rad2deg(view.rotation.x),
+               mli_rad2deg(view.rotation.y),
+               mli_rad2deg(view.rotation.z),
+               mli_rad2deg(view.field_of_view));
         if (cursor.active) {
                 printf(", Cursor [% 2ld,% 2ld]pix", cursor.col, cursor.row);
         }
@@ -86,22 +86,21 @@ int _mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
         const struct mlivrConfig config,
-        const struct mliCamera camera,
+        const struct mliView view,
         const char *path)
 {
         struct mliMT19937 prng = mliMT19937_init(config.random_seed);
-        const double row_over_column_pixel_ratio = 1.0;
         struct mliImage full = mliImage_init();
 
         mli_check_mem(mliImage_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
 
         struct mliHomTraComp camera2root_comp;
-        camera2root_comp.trans = camera.position;
+        camera2root_comp.trans = view.position;
         camera2root_comp.rot = mliQuaternion_set_tait_bryan(
-                camera.rotation.x,
-                camera.rotation.y,
-                camera.rotation.z);
+                view.rotation.x,
+                view.rotation.y,
+                view.rotation.z);
 
         const double f_stop_ratio = 0.95;
         const double image_sensor_width_x = 256e-2;
@@ -110,7 +109,7 @@ int _mlivr_export_image(
                 (double)config.export_num_cols/
                 (double)config.export_num_rows
         );
-        const double fov_opening_angle = 0.5*camera.field_of_view;
+        const double fov_opening_angle = 0.5*view.field_of_view;
         const double image_sensor_radius_x = 0.5*image_sensor_width_x;
 
         struct mliApertureCamera apcam;
@@ -151,7 +150,7 @@ int mlivr_run_interactive_viewer(
         struct mlivrCursor cursor;
         uint64_t num_screenshots = 0;
         char timestamp[20];
-        struct mliCamera camera = config.camera;
+        struct mliView view = config.view;
         struct mliImage img = mliImage_init();
         struct mliImage img2 = mliImage_init();
         const double row_over_column_pixel_ratio = 2.0;
@@ -208,48 +207,48 @@ int mlivr_run_interactive_viewer(
                 } else {
                         switch (key) {
                         case 'w':
-                                camera = mliCamera_move_forward(
-                                        camera, config.step_length);
+                                view = mliView_move_forward(
+                                        view, config.step_length);
                                 break;
                         case 's':
-                                camera = mliCamera_move_forward(
-                                        camera, -config.step_length);
+                                view = mliView_move_forward(
+                                        view, -config.step_length);
                                 break;
                         case 'a':
-                                camera = mliCamera_move_right(
-                                        camera, -config.step_length);
+                                view = mliView_move_right(
+                                        view, -config.step_length);
                                 break;
                         case 'd':
-                                camera = mliCamera_move_right(
-                                        camera, config.step_length);
+                                view = mliView_move_right(
+                                        view, config.step_length);
                                 break;
                         case 'q':
-                                camera = mliCamera_move_up(
-                                        camera, config.step_length);
+                                view = mliView_move_up(
+                                        view, config.step_length);
                                 break;
                         case 'e':
-                                camera = mliCamera_move_up(
-                                        camera, -config.step_length);
+                                view = mliView_move_up(
+                                        view, -config.step_length);
                                 break;
                         case 'i':
-                                camera = mliCamera_look_up_when_possible(
-                                        camera, .05);
+                                view = mliView_look_up_when_possible(
+                                        view, .05);
                                 break;
                         case 'k':
-                                camera = mliCamera_look_down_when_possible(
-                                        camera, .05);
+                                view = mliView_look_down_when_possible(
+                                        view, .05);
                                 break;
                         case 'l':
-                                camera = mliCamera_look_right(camera, -.05);
+                                view = mliView_look_right(view, -.05);
                                 break;
                         case 'j':
-                                camera = mliCamera_look_right(camera, .05);
+                                view = mliView_look_right(view, .05);
                                 break;
                         case 'n':
-                                camera = mliCamera_decrease_fov(camera, 1.05);
+                                view = mliView_decrease_fov(view, 1.05);
                                 break;
                         case 'm':
-                                camera = mliCamera_increase_fov(camera, 1.05);
+                                view = mliView_increase_fov(view, 1.05);
                                 break;
                         case 'h':
                                 print_help = 1;
@@ -269,7 +268,7 @@ int mlivr_run_interactive_viewer(
                                         num_screenshots);
                                 num_screenshots++;
                                 mli_c(_mlivr_export_image(
-                                        scenery, octree, config, camera, path));
+                                        scenery, octree, config, view, path));
                                 update_image = 0;
                                 break;
                         default:
@@ -282,7 +281,7 @@ int mlivr_run_interactive_viewer(
                 if (update_image) {
                         if (super_resolution) {
                                 mliCamera_render_image(
-                                        &camera,
+                                        view,
                                         scenery,
                                         octree,
                                         &img2,
@@ -290,7 +289,7 @@ int mlivr_run_interactive_viewer(
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
                                 mliCamera_render_image(
-                                        &camera,
+                                        view,
                                         scenery,
                                         octree,
                                         &img,
@@ -312,11 +311,11 @@ int mlivr_run_interactive_viewer(
                                 struct mliCameraSensor sensor;
                                 mliCameraSensor_init(
                                         &sensor,
-                                        &camera,
+                                        view,
                                         &img,
                                         row_over_column_pixel_ratio);
                                 probing_ray = mliCamera_ray_at_row_col(
-                                        &camera,
+                                        view,
                                         &sensor,
                                         &img,
                                         cursor.row,
@@ -331,7 +330,7 @@ int mlivr_run_interactive_viewer(
                 } else {
                         mliImage_print(&img);
                 }
-                mlivr_print_info_line(camera, cursor);
+                mlivr_print_info_line(view, cursor);
                 if (cursor.active) {
                         if (has_probing_intersection) {
                                 char type_string[1024];

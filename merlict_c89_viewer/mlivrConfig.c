@@ -14,14 +14,14 @@ struct mlivrConfig mlivrConfig_default(void)
 
         cfg.step_length = 1.0;
 
-        cfg.camera.position.x = 0.;
-        cfg.camera.position.y = 0.;
-        cfg.camera.position.z = 0.;
+        cfg.view.position.x = 0.;
+        cfg.view.position.y = 0.;
+        cfg.view.position.z = 0.;
 
-        cfg.camera.rotation.x = mli_deg2rad(90.);
-        cfg.camera.rotation.y = 0.;
-        cfg.camera.rotation.z = 0.;
+        cfg.view.rotation.x = mli_deg2rad(90.);
+        cfg.view.rotation.y = 0.;
+        cfg.view.rotation.z = 0.;
 
-        cfg.camera.field_of_view = mli_deg2rad(80.);
+        cfg.view.field_of_view = mli_deg2rad(80.);
         return cfg;
 }
