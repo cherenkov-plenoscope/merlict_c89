@@ -308,8 +308,8 @@ int mlivr_run_interactive_viewer(
                         mliImage_print_chars(
                                 &img, symbols, rows, cols, num_symbols);
                         {
-                                struct mliCameraSensor sensor;
-                                mliCameraSensor_init(
+                                struct mliPinHoleCameraImageSensor sensor;
+                                mliPinHoleCameraImageSensor_init(
                                         &sensor,
                                         view,
                                         &img,

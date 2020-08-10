@@ -82,7 +82,7 @@
 #include "mli_xyplane.c"
 #include "mliTracer.c"
 #include "mliView.c"
-#include "mliCamera.c"
+#include "mli_pin_hole_camera.c"
 #include "mliApertureCamera.c"
 #include "mli_string_to.c"
 #include "jsmn.c"

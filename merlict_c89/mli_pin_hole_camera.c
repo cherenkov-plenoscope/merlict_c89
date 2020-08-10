@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliCamera.h"
+#include "mli_pin_hole_camera.h"
 
-void mliCameraSensor_init(
-        struct mliCameraSensor *sensor,
+void mliPinHoleCameraImageSensor_init(
+        struct mliPinHoleCameraImageSensor *sensor,
         const struct mliView view,
         const struct mliImage *image,
         const double row_over_column_pixel_ratio)
@@ -26,7 +26,7 @@ void mliCameraSensor_init(
 
 struct mliRay mliCamera_ray_at_row_col(
         const struct mliView view,
-        const struct mliCameraSensor *sensor,
+        const struct mliPinHoleCameraImageSensor *sensor,
         const struct mliImage *image,
         const uint32_t row,
         const uint32_t col)
@@ -51,10 +51,10 @@ void mliCamera_render_image(
         const double row_over_column_pixel_ratio)
 {
         uint32_t row, col;
-        struct mliCameraSensor sensor;
+        struct mliPinHoleCameraImageSensor sensor;
         assert(view.field_of_view > 0.);
         assert(view.field_of_view < mli_deg2rad(180.));
-        mliCameraSensor_init(
+        mliPinHoleCameraImageSensor_init(
                 &sensor, view, image, row_over_column_pixel_ratio);
         for (row = 0; row < image->num_rows; row++) {
                 for (col = 0; col < image->num_cols; col++) {
