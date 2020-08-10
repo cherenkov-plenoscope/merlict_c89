@@ -101,12 +101,7 @@ int _mlivr_export_image(
         );
         mli_check_mem(mliImage_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
-
-        camera2root_comp.trans = view.position;
-        camera2root_comp.rot = mliQuaternion_set_tait_bryan(
-                view.rotation.x,
-                view.rotation.y,
-                view.rotation.z);
+        camera2root_comp = mliView_to_HomTraComp(view);
         apcam.focal_length =
                 mliApCam_focal_length_given_field_of_view_and_sensor_width(
                         view.field_of_view,
@@ -151,7 +146,6 @@ int mlivr_run_interactive_viewer(
         const double row_over_column_pixel_ratio = 2.0;
         int update_image = 1;
         int print_help = 0;
-        struct mliRay probing_ray;
         int has_probing_intersection;
         struct mliIntersection probing_intersection;
 
@@ -275,7 +269,7 @@ int mlivr_run_interactive_viewer(
         show_image:
                 if (update_image) {
                         if (super_resolution) {
-                                mli_pin_hole_camera_render_image(
+                                mli_pin_hole_camera_render_image_with_view(
                                         view,
                                         scenery,
                                         octree,
@@ -283,7 +277,7 @@ int mlivr_run_interactive_viewer(
                                         row_over_column_pixel_ratio);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
-                                mli_pin_hole_camera_render_image(
+                                mli_pin_hole_camera_render_image_with_view(
                                         view,
                                         scenery,
                                         octree,
@@ -303,22 +297,34 @@ int mlivr_run_interactive_viewer(
                         mliImage_print_chars(
                                 &img, symbols, rows, cols, num_symbols);
                         {
-                                struct mliPinHoleCameraImageSensor sensor =
-                                        mliPinHoleCameraImageSensor_init(
-                                                view,
+                                struct mliPinHoleCamera pin_hole_camera =
+                                        mliPinHoleCamera_init(
+                                                view.field_of_view,
                                                 &img,
                                                 row_over_column_pixel_ratio);
-                                probing_ray = mli_pin_hole_camera_ray_at_row_col(
-                                        view,
-                                        &sensor,
-                                        &img,
-                                        cursor.row,
-                                        cursor.col);
+
+                                struct mliHomTraComp camera2root_comp =
+                                        mliView_to_HomTraComp(view);
+                                struct mliHomTra camera2root =
+                                        mliHomTra_from_compact(
+                                                camera2root_comp);
+                                struct mliRay probing_ray_wrt_camera;
+                                struct mliRay probing_ray_wrt_root;
+
+                                probing_ray_wrt_camera =
+                                        mli_pin_hole_camera_ray_at_row_col(
+                                                &pin_hole_camera,
+                                                &img,
+                                                cursor.row,
+                                                cursor.col);
+                                probing_ray_wrt_root = mliHomTra_ray(
+                                                &camera2root,
+                                                probing_ray_wrt_camera);
                                 has_probing_intersection =
                                         mli_first_casual_intersection(
                                                 scenery,
                                                 octree,
-                                                probing_ray,
+                                                probing_ray_wrt_root,
                                                 &probing_intersection);
                         }
                 } else {

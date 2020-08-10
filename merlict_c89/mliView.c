@@ -120,3 +120,14 @@ struct mliView mliView_look_up_when_possible(
         }
         return camout;
 }
+
+struct mliHomTraComp mliView_to_HomTraComp(const struct mliView view)
+{
+        struct mliHomTraComp view2root_comp;
+        view2root_comp.trans = view.position;
+        view2root_comp.rot = mliQuaternion_set_tait_bryan(
+                view.rotation.x,
+                view.rotation.y,
+                view.rotation.z);
+        return view2root_comp;
+}

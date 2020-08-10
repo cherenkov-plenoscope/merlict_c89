@@ -12,28 +12,31 @@
 #include "mliOcTree.h"
 #include "mliView.h"
 
-struct mliPinHoleCameraImageSensor {
+struct mliPinHoleCamera {
         struct mliVec optical_axis;
         struct mliVec col_axis;
         struct mliVec row_axis;
         struct mliVec principal_point;
         double distance_to_principal_point;
+        double row_over_column_pixel_ratio;
 };
 
+struct mliPinHoleCamera mliPinHoleCamera_init(
+        const double field_of_view,
+        const struct mliImage *image,
+        const double row_over_column_pixel_ratio);
+
 void mli_pin_hole_camera_render_image(
-        const struct mliView view,
+        struct mliPinHoleCamera camera,
+        const struct mliHomTraComp camera2root_comp,
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
-        struct mliImage *image,
-        const double row_over_column_pixel_ratio);
+        struct mliImage *image);
+
 struct mliRay mli_pin_hole_camera_ray_at_row_col(
-        const struct mliView view,
-        const struct mliPinHoleCameraImageSensor *sensor,
+        const struct mliPinHoleCamera *camera,
         const struct mliImage *image,
         const uint32_t row,
         const uint32_t col);
-struct mliPinHoleCameraImageSensor mliPinHoleCameraImageSensor_init(
-        const struct mliView view,
-        const struct mliImage *image,
-        const double row_over_column_pixel_ratio);
+
 #endif
