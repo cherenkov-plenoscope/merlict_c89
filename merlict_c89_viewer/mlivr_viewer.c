@@ -91,36 +91,35 @@ int _mlivr_export_image(
 {
         struct mliMT19937 prng = mliMT19937_init(config.random_seed);
         struct mliImage full = mliImage_init();
-
-        mli_check_mem(mliImage_malloc(
-                &full, config.export_num_cols, config.export_num_rows));
-
         struct mliHomTraComp camera2root_comp;
-        camera2root_comp.trans = view.position;
-        camera2root_comp.rot = mliQuaternion_set_tait_bryan(
-                view.rotation.x,
-                view.rotation.y,
-                view.rotation.z);
+        struct mliApertureCamera apcam;
 
-        const double f_stop_ratio = 0.95;
-        const double image_sensor_width_x = 256e-2;
         const double object_distance = 28.5;
         const double image_ratio = (
                 (double)config.export_num_cols/
                 (double)config.export_num_rows
         );
         const double fov_opening_angle = 0.5*view.field_of_view;
-        const double image_sensor_radius_x = 0.5*image_sensor_width_x;
+        const double image_sensor_radius_x = 0.5*config.aperture_camera_image_sensor_width;
 
-        struct mliApertureCamera apcam;
+        mli_check_mem(mliImage_malloc(
+                &full, config.export_num_cols, config.export_num_rows));
+
+
+        camera2root_comp.trans = view.position;
+        camera2root_comp.rot = mliQuaternion_set_tait_bryan(
+                view.rotation.x,
+                view.rotation.y,
+                view.rotation.z);
+
         apcam.focal_length = image_sensor_radius_x/tan(fov_opening_angle);
-        apcam.aperture_radius = 0.5*(apcam.focal_length/f_stop_ratio);
+        apcam.aperture_radius = 0.5*(apcam.focal_length/config.aperture_camera_f_stop_ratio);
         apcam.image_sensor_distance = mli_image_given_focal_and_object(
                 apcam.focal_length,
                 object_distance
         );
-        apcam.image_sensor_width_x = image_sensor_width_x;
-        apcam.image_sensor_width_y = image_sensor_width_x/image_ratio;
+        apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
+        apcam.image_sensor_width_y = apcam.image_sensor_width_x/image_ratio;
 
         mliApertureCamera_render_image(
                 &prng,

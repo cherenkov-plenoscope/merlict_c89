@@ -10,6 +10,9 @@ struct mlivrConfig {
         uint64_t export_num_rows;
         double step_length;
         struct mliView view;
+
+        double aperture_camera_f_stop_ratio;
+        double aperture_camera_image_sensor_width;
 };
 
 struct mlivrConfig mlivrConfig_default(void);

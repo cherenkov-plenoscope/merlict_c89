@@ -9,8 +9,8 @@ struct mlivrConfig mlivrConfig_default(void)
         cfg.preview_num_cols = 160u;
         cfg.preview_num_rows = 90u / 2;
 
-        cfg.export_num_cols = 512u;
-        cfg.export_num_rows = 288u;
+        cfg.export_num_cols = 1280u;
+        cfg.export_num_rows = 720u;
 
         cfg.step_length = 1.0;
 
@@ -23,5 +23,8 @@ struct mlivrConfig mlivrConfig_default(void)
         cfg.view.rotation.z = 0.;
 
         cfg.view.field_of_view = mli_deg2rad(80.);
+
+        cfg.aperture_camera_f_stop_ratio = 2.0;
+        cfg.aperture_camera_image_sensor_width = 64e-3;
         return cfg;
 }
