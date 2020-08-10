@@ -89,12 +89,48 @@ int _mlivr_export_image(
         const struct mliCamera camera,
         const char *path)
 {
+        struct mliMT19937 prng = mliMT19937_init(0);
         const double row_over_column_pixel_ratio = 1.0;
         struct mliImage full = mliImage_init();
+
         mli_check_mem(mliImage_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
-        mliCamera_render_image(
-                &camera, scenery, octree, &full, row_over_column_pixel_ratio);
+
+        struct mliHomTraComp camera2root_comp;
+        camera2root_comp.trans = camera.position;
+        camera2root_comp.rot = mliQuaternion_set_tait_bryan(
+                camera.rotation.x,
+                camera.rotation.y,
+                camera.rotation.z);
+
+        const double f_stop_ratio = 0.95;
+        const double image_sensor_width_x = 256e-2;
+        const double object_distance = 28.5;
+        const double image_ratio = (
+                (double)config.export_num_cols/
+                (double)config.export_num_rows
+        );
+        const double fov_opening_angle = 0.5*camera.field_of_view;
+        const double image_sensor_radius_x = 0.5*image_sensor_width_x;
+
+        struct mliApertureCamera apcam;
+        apcam.focal_length = image_sensor_radius_x/tan(fov_opening_angle);
+        apcam.aperture_radius = 0.5*(apcam.focal_length/f_stop_ratio);
+        apcam.image_sensor_distance = mli_image_given_focal_and_object(
+                apcam.focal_length,
+                object_distance
+        );
+        apcam.image_sensor_width_x = image_sensor_width_x;
+        apcam.image_sensor_width_y = image_sensor_width_x/image_ratio;
+
+        mliApertureCamera_render_image(
+                &prng,
+                apcam,
+                camera2root_comp,
+                scenery,
+                octree,
+                &full);
+
         mli_check(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;

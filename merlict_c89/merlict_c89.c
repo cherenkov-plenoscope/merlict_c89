@@ -82,6 +82,7 @@
 #include "mli_xyplane.c"
 #include "mliTracer.c"
 #include "mliCamera.c"
+#include "mliApertureCamera.c"
 #include "mli_string_to.c"
 #include "jsmn.c"
 #include "mli_json.c"
