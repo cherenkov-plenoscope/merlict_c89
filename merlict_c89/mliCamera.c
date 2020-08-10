@@ -12,14 +12,14 @@ struct mliVec mliCamera_direction_right(const struct mliCamera cam)
 {
         struct mliRotMat rot = mliRotMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rot, mliVec_set(0., 1., 0.));
+        return mli_transform_orientation(&rot, mliVec_set(1., 0., 0.));
 }
 
 struct mliVec mliCamera_direction_up(const struct mliCamera cam)
 {
         struct mliRotMat rot = mliRotMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rot, mliVec_set(1., 0., 0.));
+        return mli_transform_orientation(&rot, mliVec_set(0., 1., 0.));
 }
 
 struct mliCamera mliCamera_move_forward(
@@ -59,7 +59,7 @@ struct mliCamera mliCamera_look_right(
 {
         struct mliCamera camout = camin;
         const double diff = camin.field_of_view * rate;
-        camout.rotation.z = fmod(camout.rotation.z + diff, (2. * MLI_PI));
+        camout.rotation.z = fmod(camout.rotation.z - diff, (2. * MLI_PI));
         return camout;
 }
 
@@ -67,13 +67,14 @@ struct mliCamera mliCamera_look_down_when_possible(
         const struct mliCamera camin,
         const double rate)
 {
-        const double diff = camin.field_of_view * rate;
         struct mliCamera camout = camin;
-        const int fals_forward_over = camin.rotation.y < -MLI_PI + diff;
+        const double diff = camin.field_of_view * rate;
+        const double next_rotation_x = camout.rotation.x + diff;
+        const int fals_forward_over = next_rotation_x > MLI_PI;
         if (fals_forward_over) {
-                camout.rotation.y = -MLI_PI;
+                camout.rotation.x = MLI_PI;
         } else {
-                camout.rotation.y = camout.rotation.y - diff;
+                camout.rotation.x = next_rotation_x;
         }
         return camout;
 }
@@ -108,13 +109,14 @@ struct mliCamera mliCamera_look_up_when_possible(
         const struct mliCamera camin,
         const double rate)
 {
-        const double diff = camin.field_of_view * rate;
         struct mliCamera camout = camin;
-        const int fals_backwards_over = camin.rotation.y > diff;
+        const double diff = -1.0*camin.field_of_view * rate;
+        const double next_rotation_x = camout.rotation.x + diff;
+        const int fals_backwards_over = next_rotation_x < 0.0;
         if (fals_backwards_over) {
-                camout.rotation.y = 0.;
+                camout.rotation.x = 0.0;
         } else {
-                camout.rotation.y = camout.rotation.y + diff;
+                camout.rotation.x = next_rotation_x;
         }
         return camout;
 }
@@ -132,8 +134,8 @@ void mliCameraSensor_init(
         rot = mliRotMat_init_tait_bryan(
                 camera->rotation.x, camera->rotation.y, camera->rotation.z);
         sensor->optical_axis = mli_transform_orientation(&rot, unit_z);
-        sensor->col_axis = mli_transform_orientation(&rot, unit_y);
-        sensor->row_axis = mli_transform_orientation(&rot, unit_x);
+        sensor->col_axis = mli_transform_orientation(&rot, unit_x);
+        sensor->row_axis = mli_transform_orientation(&rot, unit_y);
         sensor->row_axis =
                 mliVec_multiply(sensor->row_axis, row_over_column_pixel_ratio);
         sensor->distance_to_principal_point =
