@@ -21,8 +21,8 @@ CASE("pixel-center on image-sensor-plane")
                 num_pixel_y,
                 pixel_x,
                 pixel_y);
-        CHECK_MARGIN(c.x, -0.5*image_sensor_width_x + 0.5*pixel_width_x, 1e-6);
-        CHECK_MARGIN(c.y, -0.5*image_sensor_width_y + 0.5*pixel_width_y, 1e-6);
+        CHECK_MARGIN(c.x, +0.5*image_sensor_width_x - 0.5*pixel_width_x, 1e-6);
+        CHECK_MARGIN(c.y, +0.5*image_sensor_width_y - 0.5*pixel_width_y, 1e-6);
         CHECK_MARGIN(c.z, -image_sensor_distance, 1e-6);
 
         pixel_x = 6;
@@ -38,14 +38,14 @@ CASE("pixel-center on image-sensor-plane")
         CHECK_MARGIN(
                 c.x,
                 (
-                        -0.5*image_sensor_width_x +
+                        0.5*image_sensor_width_x -
                         (0.5 + (double)pixel_x)*pixel_width_x
                 ),
                 1e-6);
         CHECK_MARGIN(
                 c.y,
                 (
-                        -0.5*image_sensor_width_y +
+                        0.5*image_sensor_width_y -
                         (0.5 + (double)pixel_y)*pixel_width_y
                 ),
                 1e-6);
