@@ -10,6 +10,9 @@ void mlivr_print_help(void)
         printf("merlict-c89\n-----------\n\n");
         printf("Copyright 2019 Sebastian Achim Mueller\n");
         printf("\n");
+        printf(" print help..........[ h ]\n");
+        printf(" exit ...............[ESC]\n");
+        printf("\n");
         printf("_Position__________________   _Orientation_______________\n");
         printf(" move forward........[ w ]     look up.............[ i ]\n");
         printf(" move backward.......[ s ]     look down...........[ k ]\n");
@@ -22,11 +25,9 @@ void mlivr_print_help(void)
         printf(" increace............[ n ]\n");
         printf(" decreace............[ m ]\n");
         printf("\n");
-        printf(" Cursor..............[ c ]\n");
-        printf(" print help..........[ h ]\n");
-        printf(" exit ...............[ESC]\n");
-        printf("\n");
-        printf("[  space key  ] full resolution.\n");
+        printf("_Take_picture_with_depth__\n");
+        printf(" focus-finder........[ c ]\n");
+        printf(" take picture....[ space ]\n");
         printf("\n");
         printf("MLI_VERSION %d.%d.%d\n",
                MLI_VERSION_MAYOR,
@@ -39,20 +40,20 @@ void mlivr_print_help(void)
 }
 
 void mlivr_print_info_line(
-        const struct mliCamera camera,
+        const struct mliView view,
         const struct mlivrCursor cursor)
 {
         printf("Press 'h' for help. "
                "Pos.: [ % -.2e, % -.2e, % -.2e]m, "
                "Rot.: [ % -.1f, % -.1f, % -.1f]deg, "
                "FoV.: %.2fdeg",
-               camera.position.x,
-               camera.position.y,
-               camera.position.z,
-               mli_rad2deg(camera.rotation.x),
-               mli_rad2deg(camera.rotation.y),
-               mli_rad2deg(camera.rotation.z),
-               mli_rad2deg(camera.field_of_view));
+               view.position.x,
+               view.position.y,
+               view.position.z,
+               mli_rad2deg(view.rotation.x),
+               mli_rad2deg(view.rotation.y),
+               mli_rad2deg(view.rotation.z),
+               mli_rad2deg(view.field_of_view));
         if (cursor.active) {
                 printf(", Cursor [% 2ld,% 2ld]pix", cursor.col, cursor.row);
         }
@@ -86,15 +87,33 @@ int _mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
         const struct mlivrConfig config,
-        const struct mliCamera camera,
+        const struct mliView view,
+        const double object_distance,
         const char *path)
 {
-        const double row_over_column_pixel_ratio = 1.0;
+        struct mliMT19937 prng = mliMT19937_init(config.random_seed);
         struct mliImage full = mliImage_init();
+        struct mliHomTraComp camera2root_comp;
+        struct mliApertureCamera apcam;
+
+        const double image_ratio =
+                ((double)config.export_num_cols /
+                 (double)config.export_num_rows);
         mli_check_mem(mliImage_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
-        mliCamera_render_image(
-                &camera, scenery, octree, &full, row_over_column_pixel_ratio);
+        camera2root_comp = mliView_to_HomTraComp(view);
+        apcam.focal_length =
+                mliApCam_focal_length_given_field_of_view_and_sensor_width(
+                        view.field_of_view,
+                        config.aperture_camera_image_sensor_width);
+        apcam.aperture_radius = 0.5 * (apcam.focal_length /
+                                       config.aperture_camera_f_stop_ratio);
+        apcam.image_sensor_distance = mli_image_given_focal_and_object(
+                apcam.focal_length, object_distance);
+        apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
+        apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
+        mliApertureCamera_render_image(
+                &prng, apcam, camera2root_comp, scenery, octree, &full);
         mli_check(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
@@ -115,13 +134,12 @@ int mlivr_run_interactive_viewer(
         struct mlivrCursor cursor;
         uint64_t num_screenshots = 0;
         char timestamp[20];
-        struct mliCamera camera = config.camera;
+        struct mliView view = config.view;
         struct mliImage img = mliImage_init();
         struct mliImage img2 = mliImage_init();
         const double row_over_column_pixel_ratio = 2.0;
         int update_image = 1;
         int print_help = 0;
-        struct mliRay probing_ray;
         int has_probing_intersection;
         struct mliIntersection probing_intersection;
 
@@ -165,6 +183,21 @@ int mlivr_run_interactive_viewer(
                         case 'h':
                                 print_help = 1;
                                 break;
+                        case MLIVR_SPACE_KEY:
+                                sprintf(path,
+                                        "%s_%06lu.ppm",
+                                        timestamp,
+                                        num_screenshots);
+                                num_screenshots++;
+                                mli_c(_mlivr_export_image(
+                                        scenery,
+                                        octree,
+                                        config,
+                                        view,
+                                        probing_intersection.distance_of_ray,
+                                        path));
+                                update_image = 0;
+                                break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
                                 break;
@@ -172,48 +205,47 @@ int mlivr_run_interactive_viewer(
                 } else {
                         switch (key) {
                         case 'w':
-                                camera = mliCamera_move_forward(
-                                        camera, config.step_length);
+                                view = mliView_move_forward(
+                                        view, config.step_length);
                                 break;
                         case 's':
-                                camera = mliCamera_move_forward(
-                                        camera, -config.step_length);
+                                view = mliView_move_forward(
+                                        view, -config.step_length);
                                 break;
                         case 'a':
-                                camera = mliCamera_move_right(
-                                        camera, -config.step_length);
+                                view = mliView_move_right(
+                                        view, -config.step_length);
                                 break;
                         case 'd':
-                                camera = mliCamera_move_right(
-                                        camera, config.step_length);
+                                view = mliView_move_right(
+                                        view, config.step_length);
                                 break;
                         case 'q':
-                                camera = mliCamera_move_up(
-                                        camera, config.step_length);
+                                view = mliView_move_up(
+                                        view, config.step_length);
                                 break;
                         case 'e':
-                                camera = mliCamera_move_up(
-                                        camera, -config.step_length);
+                                view = mliView_move_up(
+                                        view, -config.step_length);
                                 break;
                         case 'i':
-                                camera = mliCamera_look_up_when_possible(
-                                        camera, .05);
+                                view = mliView_look_up_when_possible(view, .05);
                                 break;
                         case 'k':
-                                camera = mliCamera_look_down_when_possible(
-                                        camera, .05);
+                                view = mliView_look_down_when_possible(
+                                        view, .05);
                                 break;
                         case 'l':
-                                camera = mliCamera_look_right(camera, -.05);
+                                view = mliView_look_right(view, -.05);
                                 break;
                         case 'j':
-                                camera = mliCamera_look_right(camera, .05);
+                                view = mliView_look_right(view, .05);
                                 break;
                         case 'n':
-                                camera = mliCamera_decrease_fov(camera, 1.05);
+                                view = mliView_decrease_fov(view, 1.05);
                                 break;
                         case 'm':
-                                camera = mliCamera_increase_fov(camera, 1.05);
+                                view = mliView_increase_fov(view, 1.05);
                                 break;
                         case 'h':
                                 print_help = 1;
@@ -227,14 +259,7 @@ int mlivr_run_interactive_viewer(
                                 update_image = 0;
                                 break;
                         case MLIVR_SPACE_KEY:
-                                sprintf(path,
-                                        "%s_%06lu.ppm",
-                                        timestamp,
-                                        num_screenshots);
-                                num_screenshots++;
-                                mli_c(_mlivr_export_image(
-                                        scenery, octree, config, camera, path));
-                                update_image = 0;
+                                printf("Go into cursor-mode first.\n");
                                 break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
@@ -245,16 +270,16 @@ int mlivr_run_interactive_viewer(
         show_image:
                 if (update_image) {
                         if (super_resolution) {
-                                mliCamera_render_image(
-                                        &camera,
+                                mli_pin_hole_camera_render_image_with_view(
+                                        view,
                                         scenery,
                                         octree,
                                         &img2,
                                         row_over_column_pixel_ratio);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
-                                mliCamera_render_image(
-                                        &camera,
+                                mli_pin_hole_camera_render_image_with_view(
+                                        view,
                                         scenery,
                                         octree,
                                         &img,
@@ -273,29 +298,39 @@ int mlivr_run_interactive_viewer(
                         mliImage_print_chars(
                                 &img, symbols, rows, cols, num_symbols);
                         {
-                                struct mliCameraSensor sensor;
-                                mliCameraSensor_init(
-                                        &sensor,
-                                        &camera,
-                                        &img,
-                                        row_over_column_pixel_ratio);
-                                probing_ray = mliCamera_ray_at_row_col(
-                                        &camera,
-                                        &sensor,
-                                        &img,
-                                        cursor.row,
-                                        cursor.col);
+                                struct mliPinHoleCamera pin_hole_camera =
+                                        mliPinHoleCamera_init(
+                                                view.field_of_view,
+                                                &img,
+                                                row_over_column_pixel_ratio);
+
+                                struct mliHomTraComp camera2root_comp =
+                                        mliView_to_HomTraComp(view);
+                                struct mliHomTra camera2root =
+                                        mliHomTra_from_compact(
+                                                camera2root_comp);
+                                struct mliRay probing_ray_wrt_camera;
+                                struct mliRay probing_ray_wrt_root;
+
+                                probing_ray_wrt_camera =
+                                        mli_pin_hole_camera_ray_at_row_col(
+                                                &pin_hole_camera,
+                                                &img,
+                                                cursor.row,
+                                                cursor.col);
+                                probing_ray_wrt_root = mliHomTra_ray(
+                                        &camera2root, probing_ray_wrt_camera);
                                 has_probing_intersection =
                                         mli_first_casual_intersection(
                                                 scenery,
                                                 octree,
-                                                probing_ray,
+                                                probing_ray_wrt_root,
                                                 &probing_intersection);
                         }
                 } else {
                         mliImage_print(&img);
                 }
-                mlivr_print_info_line(camera, cursor);
+                mlivr_print_info_line(view, cursor);
                 if (cursor.active) {
                         if (has_probing_intersection) {
                                 char type_string[1024];

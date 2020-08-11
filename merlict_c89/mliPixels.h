@@ -14,6 +14,7 @@ struct mliPixel {
 };
 
 struct mliPixels {
+        uint32_t num_pixels_to_do;
         uint32_t num_pixels;
         struct mliPixel *pixels;
 };

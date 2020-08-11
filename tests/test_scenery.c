@@ -222,24 +222,24 @@ CASE("mliScenery, render image")
 {
         struct mliScenery scenery = mliScenery_init();
         struct mliOcTree octree = mliOcTree_init();
-        struct mliCamera camera;
+        struct mliView view;
         struct mliImage img = mliImage_init();
         const double row_over_column_pixel_ratio = 1.0;
         mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
         /* mliNode_print(&octree.root, 0); */
 
-        camera.position.x = 0.;
-        camera.position.y = 0.;
-        camera.position.z = -20.;
-        camera.rotation.x = 0.;
-        camera.rotation.y = 0.;
-        camera.rotation.z = 0.;
-        camera.field_of_view = mli_deg2rad(80.);
+        view.position.x = 0.;
+        view.position.y = 0.;
+        view.position.z = -20.;
+        view.rotation.x = 0.;
+        view.rotation.y = 0.;
+        view.rotation.z = 0.;
+        view.field_of_view = mli_deg2rad(80.);
 
         CHECK(mliImage_malloc(&img, 640u, 480u));
-        mliCamera_render_image(
-                &camera, &scenery, &octree, &img, row_over_column_pixel_ratio);
+        mli_pin_hole_camera_render_image_with_view(
+                view, &scenery, &octree, &img, row_over_column_pixel_ratio);
         mliImage_write_to_ppm(&img, "tests/resources/scn1.ppm.tmp");
 
         mliImage_free(&img);
@@ -411,23 +411,23 @@ CASE("render image asymetric scenery")
 {
         struct mliScenery scenery = mliScenery_init();
         struct mliOcTree octree = mliOcTree_init();
-        struct mliCamera camera;
+        struct mliView view;
         struct mliImage img = mliImage_init();
         const double row_over_column_pixel_ratio = 1.0;
         mliScenery_read_from_path(&scenery, "tests/resources/scn_asym.mli.tmp");
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
         /* mliNode_print(&octree.root, 0); */
-        camera.position.x = 0.;
-        camera.position.y = 0.;
-        camera.position.z = -20.;
-        camera.rotation.x = 0.;
-        camera.rotation.y = 0.;
-        camera.rotation.z = 0.;
-        camera.field_of_view = mli_deg2rad(80.);
+        view.position.x = 0.;
+        view.position.y = 0.;
+        view.position.z = -20.;
+        view.rotation.x = 0.;
+        view.rotation.y = 0.;
+        view.rotation.z = 0.;
+        view.field_of_view = mli_deg2rad(80.);
 
         CHECK(mliImage_malloc(&img, 640u, 480u));
-        mliCamera_render_image(
-                &camera, &scenery, &octree, &img, row_over_column_pixel_ratio);
+        mli_pin_hole_camera_render_image_with_view(
+                view, &scenery, &octree, &img, row_over_column_pixel_ratio);
         mliImage_write_to_ppm(&img, "tests/resources/scn_asym.ppm.tmp");
 
         mliImage_free(&img);

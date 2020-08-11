@@ -43,11 +43,14 @@ int mliMesh_assert_valid_faces(const struct mliMesh *m)
 {
         uint64_t i;
         for (i = 0; i < m->num_faces; i++) {
-                mli_check(m->faces[i].a <= m->num_vertices,
+                mli_check(
+                        m->faces[i].a <= m->num_vertices,
                         "Expected face.a <= num_vertices");
-                mli_check(m->faces[i].b <= m->num_vertices,
+                mli_check(
+                        m->faces[i].b <= m->num_vertices,
                         "Expected face.b <= num_vertices");
-                mli_check(m->faces[i].c <= m->num_vertices,
+                mli_check(
+                        m->faces[i].c <= m->num_vertices,
                         "Expected face.c <= num_vertices");
         }
         return 1;

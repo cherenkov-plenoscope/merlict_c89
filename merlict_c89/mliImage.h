@@ -26,9 +26,10 @@ int mliPixels_malloc_from_image_above_threshold(
         struct mliPixels *pixels,
         const struct mliImage *image,
         const float threshold);
-int mliPixels_malloc_and_set_from_image(
-        struct mliPixels *pixels,
-        const struct mliImage *image);
+void mliPixels_above_threshold(
+        const struct mliImage *to_do_image,
+        const float threshold,
+        struct mliPixels *pixels);
 void mliImage_from_sum_and_exposure(
         const struct mliImage *sum,
         const struct mliImage *exposure,
@@ -59,6 +60,9 @@ void mliImage_set(
         const uint32_t col,
         const uint32_t row,
         const struct mliColor color);
+void mliPixels_set_all_from_image(
+        struct mliPixels *pixels,
+        const struct mliImage *image);
 uint32_t mliImage_idx(
         const struct mliImage *img,
         const uint32_t col,
@@ -68,5 +72,11 @@ int mliImage_malloc(
         const uint32_t num_cols,
         const uint32_t num_rows);
 void mliImage_free(struct mliImage *img);
+
+void mliImage_copy(const struct mliImage *source, struct mliImage *destination);
+void mliImage_fabs_difference(
+        const struct mliImage *a,
+        const struct mliImage *b,
+        struct mliImage *out);
 struct mliImage mliImage_init(void);
 #endif

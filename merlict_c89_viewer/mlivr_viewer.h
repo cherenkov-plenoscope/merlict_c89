@@ -5,7 +5,7 @@
 #include <time.h>
 
 #include "../merlict_c89/mliImage.h"
-#include "../merlict_c89/mliCamera.h"
+#include "../merlict_c89/mliView.h"
 #include "../merlict_c89/mliScenery.h"
 #include "../merlict_c89/mliOcTree.h"
 
@@ -20,7 +20,7 @@ void mlivr_clear_screen(void);
 void mlivr_print_help(void);
 
 void mlivr_print_info_line(
-        const struct mliCamera camera,
+        const struct mliView view,
         const struct mlivrCursor cursor);
 
 void mlivr_timestamp_now_19chars(char *buffer);
@@ -33,7 +33,8 @@ int _mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
         const struct mlivrConfig config,
-        const struct mliCamera camera,
+        const struct mliView view,
+        const double object_distance,
         const char *path);
 
 int mlivr_run_interactive_viewer(

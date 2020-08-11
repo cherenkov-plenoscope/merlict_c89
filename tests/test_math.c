@@ -106,3 +106,27 @@ CASE("round to int")
         f = -0.4;
         CHECK(mli_near_int(f) == 0);
 }
+
+CASE("bin centers in linear space")
+{
+        double c;
+        c = mli_bin_center_in_linear_space(0.0, 1.0, 10, 0);
+        CHECK(c == 0.05);
+
+        /*
+
+        0.0       0.25      0.5       0.75      1.0
+        |----0----|----1----|----2----|----3----|
+             |         |         |         |
+           0.125       0.275     0.625     0.875
+
+        */
+        c = mli_bin_center_in_linear_space(0.0, 1.0, 4, 0);
+        CHECK_MARGIN(c, 0.125, 1e-6);
+        c = mli_bin_center_in_linear_space(0.0, 1.0, 4, 1);
+        CHECK_MARGIN(c, 0.375, 1e-6);
+        c = mli_bin_center_in_linear_space(0.0, 1.0, 4, 2);
+        CHECK_MARGIN(c, 0.625, 1e-6);
+        c = mli_bin_center_in_linear_space(0.0, 1.0, 4, 3);
+        CHECK_MARGIN(c, 0.875, 1e-6);
+}
