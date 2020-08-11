@@ -266,7 +266,8 @@ int mlivr_run_interactive_viewer(
                         case 'g':
                                 if (print_mode == MLI_ASCII_MONOCHROME) {
                                         print_mode = MLI_ANSI_ESCAPE_COLOR;
-                                } else if (print_mode == MLI_ANSI_ESCAPE_COLOR) {
+                                } else if (
+                                        print_mode == MLI_ANSI_ESCAPE_COLOR) {
                                         print_mode = MLI_ASCII_MONOCHROME;
                                 } else {
                                         print_mode = MLI_ASCII_MONOCHROME;
@@ -307,7 +308,12 @@ int mlivr_run_interactive_viewer(
                         rows[0] = cursor.row;
                         cols[0] = cursor.col;
                         mliImage_print_chars(
-                                &img, symbols, rows, cols, num_symbols, print_mode);
+                                &img,
+                                symbols,
+                                rows,
+                                cols,
+                                num_symbols,
+                                print_mode);
                         {
                                 struct mliPinHoleCamera pin_hole_camera =
                                         mliPinHoleCamera_init(
