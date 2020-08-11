@@ -42,13 +42,6 @@ void mliImage_sobel(const struct mliImage *image, struct mliImage *out);
 int mliImage_scale_down_twice(
         const struct mliImage *source,
         struct mliImage *destination);
-void mliImage_print(const struct mliImage *img);
-void mliImage_print_chars(
-        const struct mliImage *img,
-        const char *symbols,
-        const uint64_t *rows,
-        const uint64_t *cols,
-        const uint64_t num_symbols);
 int mliImage_write_to_ppm(const struct mliImage *img, const char *path);
 int mliImage_malloc_from_ppm(struct mliImage *img, const char *path);
 struct mliColor mliImage_at(

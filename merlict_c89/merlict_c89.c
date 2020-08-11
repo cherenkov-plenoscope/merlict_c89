@@ -21,6 +21,7 @@
 #include "mliColor.c"
 #include "mliPixels.c"
 #include "mliImage.c"
+#include "mliImage_print.c"
 #include "mliQuadraticEquation.c"
 #include "mliDynArray.c"
 #include "mliDynArray_template.c"

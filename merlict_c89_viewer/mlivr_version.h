@@ -4,6 +4,6 @@
 
 #define MLIVR_VERSION_MAYOR 0
 #define MLIVR_VERSION_MINOR 0
-#define MLIVR_VERSION_PATCH 1
+#define MLIVR_VERSION_PATCH 2
 
 #endif

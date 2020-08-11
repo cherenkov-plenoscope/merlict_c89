@@ -161,41 +161,6 @@ error:
         return 0;
 }
 
-void mliImage_print_chars(
-        const struct mliImage *img,
-        const char *symbols,
-        const uint64_t *rows,
-        const uint64_t *cols,
-        const uint64_t num_symbols)
-{
-        uint32_t col, row, sym;
-        char symbol;
-        for (row = 0; row < img->num_rows; row++) {
-                for (col = 0; col < img->num_cols; col++) {
-                        struct mliColor color = mliImage_at(img, col, row);
-                        struct mliColor out = mliColor_truncate_to_uint8(color);
-                        uint8_t r = (uint8_t)out.r;
-                        uint8_t g = (uint8_t)out.g;
-                        uint8_t b = (uint8_t)out.b;
-                        symbol = ' ';
-                        for (sym = 0; sym < num_symbols; sym++) {
-                                if (rows[sym] == row && cols[sym] == col) {
-                                        symbol = symbols[sym];
-                                        break;
-                                }
-                        }
-                        printf("\033[48;2;%u;%u;%um%c\033[0m", r, g, b, symbol);
-                }
-                printf("\n");
-        }
-}
-
-void mliImage_print(const struct mliImage *img)
-{
-        const uint64_t num_symbols = 0;
-        mliImage_print_chars(img, NULL, NULL, NULL, num_symbols);
-}
-
 int mliImage_scale_down_twice(
         const struct mliImage *source,
         struct mliImage *destination)

@@ -21,6 +21,7 @@ void mlivr_print_help(void)
         printf(" move up.............[ q ]\n");
         printf(" move down...........[ e ]    _Quality___________________\n");
         printf("                               super resolution....[ b ]\n");
+        printf("                               color/monochrome....[ g ]\n");
         printf("_Field_of_View_____________\n");
         printf(" increace............[ n ]\n");
         printf(" decreace............[ m ]\n");
@@ -133,6 +134,7 @@ int mlivr_run_interactive_viewer(
         int super_resolution = 0;
         struct mlivrCursor cursor;
         uint64_t num_screenshots = 0;
+        uint64_t print_mode = MLI_ASCII_MONOCHROME;
         char timestamp[20];
         struct mliView view = config.view;
         struct mliImage img = mliImage_init();
@@ -261,6 +263,15 @@ int mlivr_run_interactive_viewer(
                         case MLIVR_SPACE_KEY:
                                 printf("Go into cursor-mode first.\n");
                                 break;
+                        case 'g':
+                                if (print_mode == MLI_ASCII_MONOCHROME) {
+                                        print_mode = MLI_ANSI_ESCAPE_COLOR;
+                                } else if (print_mode == MLI_ANSI_ESCAPE_COLOR) {
+                                        print_mode = MLI_ASCII_MONOCHROME;
+                                } else {
+                                        print_mode = MLI_ASCII_MONOCHROME;
+                                }
+                                break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
                                 update_image = 0;
@@ -296,7 +307,7 @@ int mlivr_run_interactive_viewer(
                         rows[0] = cursor.row;
                         cols[0] = cursor.col;
                         mliImage_print_chars(
-                                &img, symbols, rows, cols, num_symbols);
+                                &img, symbols, rows, cols, num_symbols, print_mode);
                         {
                                 struct mliPinHoleCamera pin_hole_camera =
                                         mliPinHoleCamera_init(
@@ -328,7 +339,7 @@ int mlivr_run_interactive_viewer(
                                                 &probing_intersection);
                         }
                 } else {
-                        mliImage_print(&img);
+                        mliImage_print(&img, print_mode);
                 }
                 mlivr_print_info_line(view, cursor);
                 if (cursor.active) {
