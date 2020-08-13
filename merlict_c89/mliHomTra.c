@@ -21,65 +21,92 @@ struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo)
 
 struct mliVec mli_transform_orientation(
         const struct mliRotMat *rotation,
-        const struct mliVec in)
+        const struct mliVec ori)
 {
         struct mliVec out;
-        out.x = in.x * rotation->r00 + in.y * rotation->r01 +
-                in.z * rotation->r02;
-        out.y = in.x * rotation->r10 + in.y * rotation->r11 +
-                in.z * rotation->r12;
-        out.z = in.x * rotation->r20 + in.y * rotation->r21 +
-                in.z * rotation->r22;
+        out.x = (
+                ori.x * rotation->r00 +
+                ori.y * rotation->r01 +
+                ori.z * rotation->r02);
+        out.y = (
+                ori.x * rotation->r10 +
+                ori.y * rotation->r11 +
+                ori.z * rotation->r12);
+        out.z = (
+                ori.x * rotation->r20 +
+                ori.y * rotation->r21 +
+                ori.z * rotation->r22);
         return out;
 }
 
 struct mliVec mli_transform_orientation_inverse(
         const struct mliRotMat *rotation,
-        const struct mliVec in)
+        const struct mliVec ori)
 {
         struct mliVec out;
-        out.x = in.x * rotation->r00 + in.y * rotation->r10 +
-                in.z * rotation->r20;
-        out.y = in.x * rotation->r01 + in.y * rotation->r11 +
-                in.z * rotation->r21;
-        out.z = in.x * rotation->r02 + in.y * rotation->r12 +
-                in.z * rotation->r22;
+        out.x = (
+                ori.x * rotation->r00 +
+                ori.y * rotation->r10 +
+                ori.z * rotation->r20);
+        out.y = (
+                ori.x * rotation->r01 +
+                ori.y * rotation->r11 +
+                ori.z * rotation->r21);
+        out.z = (
+                ori.x * rotation->r02 +
+                ori.y * rotation->r12 +
+                ori.z * rotation->r22);
         return out;
 }
 
 struct mliVec mli_transform_position(
         const struct mliRotMat *rotation,
         const struct mliVec translation,
-        const struct mliVec in)
+        const struct mliVec pos)
 {
         struct mliVec out;
-        out.x = in.x * rotation->r00 + in.y * rotation->r01 +
-                in.z * rotation->r02 + translation.x;
-        out.y = in.x * rotation->r10 + in.y * rotation->r11 +
-                in.z * rotation->r12 + translation.y;
-        out.z = in.x * rotation->r20 + in.y * rotation->r21 +
-                in.z * rotation->r22 + translation.z;
+        out.x = (
+                pos.x * rotation->r00 +
+                pos.y * rotation->r01 +
+                pos.z * rotation->r02) + translation.x;
+        out.y = (
+                pos.x * rotation->r10 +
+                pos.y * rotation->r11 +
+                pos.z * rotation->r12) + translation.y;
+        out.z = (
+                pos.x * rotation->r20 +
+                pos.y * rotation->r21 +
+                pos.z * rotation->r22) + translation.z;
         return out;
 }
 
 struct mliVec mli_transform_position_inverse(
         const struct mliRotMat *rotation,
         const struct mliVec translation,
-        const struct mliVec in)
+        const struct mliVec pos)
 {
         struct mliVec out;
-        out.x = in.x * rotation->r00 + in.y * rotation->r10 +
-                in.z * rotation->r20 -
-                (rotation->r00 * translation.x + rotation->r10 * translation.y +
-                 rotation->r20 * translation.z);
-        out.y = in.x * rotation->r01 + in.y * rotation->r11 +
-                in.z * rotation->r21 -
-                (rotation->r01 * translation.x + rotation->r11 * translation.y +
-                 rotation->r21 * translation.z);
-        out.z = in.x * rotation->r02 + in.y * rotation->r12 +
-                in.z * rotation->r22 -
-                (rotation->r02 * translation.x + rotation->r12 * translation.y +
-                 rotation->r22 * translation.z);
+        out.x = (
+                pos.x * rotation->r00 +
+                pos.y * rotation->r10 +
+                pos.z * rotation->r20) - (
+                rotation->r00 * translation.x +
+                rotation->r10 * translation.y +
+                rotation->r20 * translation.z);
+        out.y = (
+                pos.x * rotation->r01 +
+                pos.y * rotation->r11 +
+                pos.z * rotation->r21) - (
+                rotation->r01 * translation.x +
+                rotation->r11 * translation.y +
+                rotation->r21 * translation.z);
+        out.z = (
+                pos.x * rotation->r02 +
+                pos.y * rotation->r12 +
+                pos.z * rotation->r22) - (
+                rotation->r02 * translation.x +
+                rotation->r12 * translation.y +
+                rotation->r22 * translation.z);
         return out;
 }
 
@@ -158,10 +185,10 @@ struct mliHomTraComp mliHomTraComp_sequence(
         const struct mliHomTraComp a,
         const struct mliHomTraComp b)
 {
+        struct mliHomTra b_;
         struct mliHomTraComp s;
-        struct mliRotMat rot_a = mliQuaternion_to_matrix(a.rotation);
-        s.translation = mli_transform_orientation(&rot_a, a.translation);
-        s.translation = mliVec_add(s.translation, b.translation);
-        s.rotation = mliQuaternion_product(a.rotation, b.rotation);
+        b_ = mliHomTra_from_compact(b);
+        s.translation = mliHomTra_pos(&b_, a.translation);
+        s.rotation = mliQuaternion_product(b.rotation, a.rotation);
         return s;
 }
