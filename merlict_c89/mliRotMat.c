@@ -48,13 +48,6 @@ struct mliRotMat mliRotMat_init_axis(
         return rot;
 }
 
-void mliRotMat_print(const struct mliRotMat rot)
-{
-        printf("[%.2f, %.2f, %.2f]\n", rot.r00, rot.r01, rot.r02);
-        printf("[%.2f, %.2f, %.2f]\n", rot.r10, rot.r11, rot.r12);
-        printf("[%.2f, %.2f, %.2f]", rot.r20, rot.r21, rot.r22);
-}
-
 int mliRotMat_equal_margin(
         const struct mliRotMat a,
         const struct mliRotMat b,

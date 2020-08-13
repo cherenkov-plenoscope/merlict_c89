@@ -470,7 +470,6 @@ int __mliQuaternion_quaternion_from_json(
         const uint64_t token)
 {
         uint64_t token_xyz;
-        double w;
         struct mliVec q;
         mli_check(
                 mliJson_find_key(json, token, "xyz", &token_xyz),
@@ -478,16 +477,7 @@ int __mliQuaternion_quaternion_from_json(
         mli_check(
                 mliVec_from_json_token(&q, json, token_xyz + 1),
                 "Failed to parse quaternion's 'xyz' from json.");
-        /*
-         *       Recover 4th element: q.w.
-         *       Expect unit-quaternion:
-         *       1.0 != q.w**2 + q.x**2 + q.y**2 + q.z**2
-         *       thus:
-         *       q.w**2 = 1.0 - q.x**2 - q.y**2 - q.z**2
-         *       q.w = sqrt(1.0 - q.x**2 - q.y**2 - q.z**2)
-         */
-        w = sqrt(1. - q.x * q.x - q.y * q.y - q.z * q.z);
-        *quat = mliQuaternion_set(w, q.x, q.y, q.z);
+        *quat = mliQuaternion_set_unit_xyz(q.x, q.y, q.z);
         mli_check(
                 fabs(mliQuaternion_norm(*quat) - 1.) < 1e-6,
                 "Expected norm(quaternion) < 1e-6. Expected unit-quaternion.");

@@ -170,8 +170,3 @@ void mliVec_ncpy(
                 to[i] = from[i];
         }
 }
-
-void mliVec_print(const struct mliVec v)
-{
-        printf("[%.2f, %.2f, %.2f]", v.x, v.y, v.z);
-}

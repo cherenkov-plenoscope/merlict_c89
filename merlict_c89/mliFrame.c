@@ -13,8 +13,7 @@ struct mliFrame mliFrame_init(void)
         f.children = mliDynFramePtr_init();
         f.mother = NULL;
         f.frame2mother.trans = mliVec_set(0., 0., 0.);
-        f.frame2mother.rot =
-                mliQuaternion_set_rotaxis_and_angle(mliVec_set(0., 0., 0.), 0.);
+        f.frame2mother.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
         f.frame2root = f.frame2mother;
         f.type = MLI_FRAME;
         f.boundary_layer.inner.surface = 0u;

@@ -3,6 +3,7 @@
 #define MERLICT_C89_MLIRAY_H_
 
 #include <stdio.h>
+#include "mliVec.h"
 
 struct mliRay {
         struct mliVec support;

@@ -6,6 +6,7 @@
 #include <stdint.h>
 
 #include "mliVec.h"
+#include "mliRay.h"
 #include "mliRotMat.h"
 #include "mliQuaternion.h"
 
@@ -20,6 +21,9 @@ struct mliHomTra {
 };
 
 void mliHomTra_print(const struct mliHomTra h);
+struct mliHomTraComp mliHomTraComp_set(
+        const struct mliVec trans,
+        const struct mliQuaternion rot);
 struct mliHomTraComp mliHomTraComp_sequence(
         const struct mliHomTraComp a,
         const struct mliHomTraComp b);

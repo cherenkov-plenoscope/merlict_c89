@@ -4,6 +4,6 @@
 
 #define MLI_VERSION_MAYOR 0
 #define MLI_VERSION_MINOR 1
-#define MLI_VERSION_PATCH 6
+#define MLI_VERSION_PATCH 7
 
 #endif

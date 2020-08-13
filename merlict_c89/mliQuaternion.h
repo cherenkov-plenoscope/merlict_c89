@@ -7,6 +7,7 @@
 #include <stdint.h>
 
 #include "mliVec.h"
+#include "mliRotMat.h"
 
 struct mliQuaternion {
         double w;
@@ -40,6 +41,10 @@ int mliQuaternion_is_equal(
         const struct mliQuaternion b);
 struct mliQuaternion mliQuaternion_set(
         const double w,
+        const double x,
+        const double y,
+        const double z);
+struct mliQuaternion mliQuaternion_set_unit_xyz(
         const double x,
         const double y,
         const double z);

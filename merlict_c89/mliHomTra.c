@@ -1,6 +1,16 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliHomTra.h"
 
+struct mliHomTraComp mliHomTraComp_set(
+        const struct mliVec trans,
+        const struct mliQuaternion rot)
+{
+        struct mliHomTraComp comp;
+        comp.trans = trans;
+        comp.rot = rot;
+        return comp;
+}
+
 struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo)
 {
         struct mliHomTra t;
@@ -137,24 +147,4 @@ struct mliHomTraComp mliHomTraComp_sequence(
         s.trans = mliVec_add(s.trans, b.trans);
         s.rot = mliQuaternion_product(a.rot, b.rot);
         return s;
-}
-
-void mliHomTra_print(const struct mliHomTra h)
-{
-        printf("[%.1f, %.1f, %.1f | %.1f]\n",
-               h.rot.r00,
-               h.rot.r01,
-               h.rot.r02,
-               h.trans.x);
-        printf("[%.1f, %.1f, %.1f | %.1f]\n",
-               h.rot.r10,
-               h.rot.r11,
-               h.rot.r12,
-               h.trans.y);
-        printf("[%.1f, %.1f, %.1f | %.1f]\n",
-               h.rot.r20,
-               h.rot.r21,
-               h.rot.r22,
-               h.trans.z);
-        printf("[  0,   0,   0 |   1]\n");
 }

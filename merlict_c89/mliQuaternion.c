@@ -15,6 +15,23 @@ struct mliQuaternion mliQuaternion_set(
         return o;
 }
 
+struct mliQuaternion mliQuaternion_set_unit_xyz(
+        const double x,
+        const double y,
+        const double z)
+{
+        /*
+         *       Recover 4th element: q.w.
+         *       Expect unit-quaternion:
+         *       1.0 != q.w**2 + q.x**2 + q.y**2 + q.z**2
+         *       thus:
+         *       q.w**2 = 1.0 - q.x**2 - q.y**2 - q.z**2
+         *       q.w = sqrt(1.0 - q.x**2 - q.y**2 - q.z**2)
+         */
+        const double w = sqrt(1.0 - x * x - y * y - z * z);
+        return mliQuaternion_set(w, x, y, z);
+}
+
 int mliQuaternion_is_equal(
         const struct mliQuaternion a,
         const struct mliQuaternion b)
@@ -90,13 +107,14 @@ struct mliQuaternion mliQuaternion_set_rotaxis_and_angle(
         const struct mliVec rot_axis,
         const double angle)
 {
+        const struct mliVec normed_rot_axis = mliVec_normalized(rot_axis);
         struct mliQuaternion quat;
         const double angle_half = .5 * angle;
         const double sin_angle_half = sin(angle_half);
         quat.w = cos(angle_half);
-        quat.x = rot_axis.x * sin_angle_half;
-        quat.y = rot_axis.y * sin_angle_half;
-        quat.z = rot_axis.z * sin_angle_half;
+        quat.x = normed_rot_axis.x * sin_angle_half;
+        quat.y = normed_rot_axis.y * sin_angle_half;
+        quat.z = normed_rot_axis.z * sin_angle_half;
         return quat;
 }
 
@@ -141,9 +159,4 @@ struct mliQuaternion mliQuaternion_set_tait_bryan(
                 mliQuaternion_set_rotaxis_and_angle(mliVec_set(1, 0, 0), -rx);
         const struct mliQuaternion qz_qy = mliQuaternion_product(qz, qy);
         return mliQuaternion_product(qz_qy, qx);
-}
-
-void mliQuaternion_print(const struct mliQuaternion q)
-{
-        printf("(w:%f, [%f, %f, %f])", q.w, q.x, q.y, q.z);
 }

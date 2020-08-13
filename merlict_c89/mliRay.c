@@ -19,14 +19,3 @@ struct mliVec mliRay_at(const struct mliRay *ray, const double t)
         out.z = ray->support.z + t * ray->direction.z;
         return out;
 }
-
-void mliRay_print(const struct mliRay ray)
-{
-        printf("[%f, %f, %f] [%f, %f, %f]",
-               ray.support.x,
-               ray.support.y,
-               ray.support.z,
-               ray.direction.x,
-               ray.direction.y,
-               ray.direction.z);
-}

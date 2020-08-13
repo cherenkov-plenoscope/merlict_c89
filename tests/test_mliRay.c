@@ -149,8 +149,7 @@ CASE("unity transformation must not change ray")
         struct mliHomTraComp Tcomp;
         struct mliHomTra T;
         Tcomp.trans = mliVec_set(0., 0., 0.);
-        Tcomp.rot =
-                mliQuaternion_set_rotaxis_and_angle(mliVec_set(0., 0., 0.), 0.);
+        Tcomp.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
         T = mliHomTra_from_compact(Tcomp);
         ray2 = mliHomTra_ray(&T, ray);
         CHECK(mliVec_equal_margin(ray2.support, ray.support, 1e-6));
