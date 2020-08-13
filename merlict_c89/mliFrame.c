@@ -12,7 +12,7 @@ struct mliFrame mliFrame_init(void)
         f.id = 0u;
         f.children = mliDynFramePtr_init();
         f.mother = NULL;
-        f.frame2mother.trans = mliVec_set(0., 0., 0.);
+        f.frame2mother.translation = mliVec_set(0., 0., 0.);
         f.frame2mother.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
         f.frame2root = f.frame2mother;
         f.type = MLI_FRAME;
@@ -228,9 +228,9 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
         printf(" at:%p\n", (void *)f->mother);
         printf("%*s", (int)indention, "");
         printf("|-pos: (%0.1f, %0.1f, %0.1f)\n",
-               f->frame2mother.trans.x,
-               f->frame2mother.trans.y,
-               f->frame2mother.trans.z);
+               f->frame2mother.translation.x,
+               f->frame2mother.translation.y,
+               f->frame2mother.translation.z);
         printf("%*s", (int)indention, "");
         printf("|-rot: (%.1f| %.1f, %.1f, %.1f)\n",
                f->frame2mother.rot.w,

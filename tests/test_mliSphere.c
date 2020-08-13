@@ -6,7 +6,7 @@ CASE("mliSphere_intersection")
         struct mliIntersection intersection;
         struct mliHomTraComp local2root_comp;
         sphere.radius = 1.;
-        local2root_comp.trans = mliVec_set(0., 0., 0.);
+        local2root_comp.translation = mliVec_set(0., 0., 0.);
         local2root_comp.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
 
         CHECK(!mliSphere_intersection(

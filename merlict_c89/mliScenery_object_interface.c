@@ -101,7 +101,7 @@ int mliScenery_overlap_obb(
         case MLI_SPHERE:
                 return mliSphere_has_overlap_obb(
                         scenery->spheres[i.idx].radius,
-                        scenery->spheres_T[i.idx].trans,
+                        scenery->spheres_T[i.idx].translation,
                         obb);
                 break;
         case MLI_CYLINDER:
@@ -154,7 +154,7 @@ struct mliOBB mliScenery_obb(
         case MLI_SPHERE:
                 return mliSphere_obb(
                         scenery->spheres[i.idx].radius,
-                        scenery->spheres_T[i.idx].trans);
+                        scenery->spheres_T[i.idx].translation);
                 break;
         case MLI_CYLINDER:
                 return mliCylinder_obb(

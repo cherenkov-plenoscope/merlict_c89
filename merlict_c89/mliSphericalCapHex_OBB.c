@@ -8,7 +8,7 @@ int mliSphericalCapHex_has_overlap_obb(
 {
         /* For now, we use a bounding sphere */
         const double bounding_radius = mliSphericalCapHex_bounding_radius(cap);
-        return mliSphere_has_overlap_obb(bounding_radius, trafo.trans, obb);
+        return mliSphere_has_overlap_obb(bounding_radius, trafo.translation, obb);
 }
 
 struct mliOBB mliSphericalCapHex_obb(
@@ -17,5 +17,5 @@ struct mliOBB mliSphericalCapHex_obb(
 {
         /* For now, we use a sphere to enclose the spherical cap. */
         const double bounding_radius = mliSphericalCapHex_bounding_radius(cap);
-        return mliSphere_obb(bounding_radius, trafo.trans);
+        return mliSphere_obb(bounding_radius, trafo.translation);
 }

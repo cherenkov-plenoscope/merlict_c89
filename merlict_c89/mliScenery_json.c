@@ -556,7 +556,7 @@ int __mliFrame_set_pos_rot(
                 "Expected Frame to have key 'pos'.");
         mli_check(
                 mliVec_from_json_token(
-                        &frame->frame2mother.trans, json, token_pos + 1),
+                        &frame->frame2mother.translation, json, token_pos + 1),
                 "Failed to parse Frame's 'pos' from json.");
 
         /* rot */

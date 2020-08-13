@@ -142,7 +142,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file")
         /* spherical_cap_hex */
         scenery.spherical_cap_hex[0].curvature_radius = 10 * 2.;
         scenery.spherical_cap_hex[0].inner_hex_radius = 3.3;
-        scenery.spherical_cap_hex_T[0].trans = mliVec_set(0., -2, 0);
+        scenery.spherical_cap_hex_T[0].translation = mliVec_set(0., -2, 0);
         scenery.spherical_cap_hex_T[0].rot = mliQuaternion_set_tait_bryan(
             0., 0., 0.);
         scenery.spherical_cap_hex_boundary_layers[0].outer.surface = 2u;
@@ -156,7 +156,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file")
         scenery.spheres_boundary_layers[0].inner.surface = 1u;
         scenery.spheres_boundary_layers[0].outer.medium = 0u;
         scenery.spheres_boundary_layers[0].inner.medium = 0u;
-        scenery.spheres_T[0].trans = mliVec_set(0., 0., 0.);
+        scenery.spheres_T[0].translation = mliVec_set(0., 0., 0.);
         scenery.spheres_T[0].rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
 
         /* cylinders */
@@ -166,7 +166,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file")
         scenery.cylinders_boundary_layers[0].inner.surface = 3u;
         scenery.cylinders_boundary_layers[0].outer.medium = 0u;
         scenery.cylinders_boundary_layers[0].inner.medium = 0u;
-        scenery.cylinders_T[0].trans = mliVec_set(0., 3., 0.);
+        scenery.cylinders_T[0].translation = mliVec_set(0., 3., 0.);
         scenery.cylinders_T[0].rot = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 1., 0.), mli_deg2rad(30));
 
@@ -176,7 +176,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file")
         scenery.hexagons_boundary_layers[0].inner.surface = 0u;
         scenery.hexagons_boundary_layers[0].outer.medium = 0u;
         scenery.hexagons_boundary_layers[0].inner.medium = 0u;
-        scenery.hexagons_T[0].trans = mliVec_set(2., 3., 0.);
+        scenery.hexagons_T[0].translation = mliVec_set(2., 3., 0.);
         scenery.hexagons_T[0].rot = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 1., 0.), mli_deg2rad(-30));
 
@@ -187,7 +187,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file")
         scenery.bicircleplanes_boundary_layers[0].inner.surface = 0u;
         scenery.bicircleplanes_boundary_layers[0].outer.medium = 0u;
         scenery.bicircleplanes_boundary_layers[0].inner.medium = 0u;
-        scenery.bicircleplanes_T[0].trans = mliVec_set(0., 2., 5.);
+        scenery.bicircleplanes_T[0].translation = mliVec_set(0., 2., 5.);
         scenery.bicircleplanes_T[0].rot = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 1., 0.), mli_deg2rad(0.));
 
@@ -197,7 +197,7 @@ CASE("mliScenery, mliMesh_malloc_from_object_file")
         scenery.discs_boundary_layers[0].inner.surface = 1u;
         scenery.discs_boundary_layers[0].outer.medium = 0u;
         scenery.discs_boundary_layers[0].inner.medium = 0u;
-        scenery.discs_T[0].trans = mliVec_set(0., -2., -5.);
+        scenery.discs_T[0].translation = mliVec_set(0., -2., -5.);
         scenery.discs_T[0].rot = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 1., 0.), mli_deg2rad(0.));
 
@@ -395,7 +395,7 @@ CASE("struct mliScenery asymetric")
                 scenery.spheres[i].radius = 0.1;
                 scenery.spheres_boundary_layers[i].outer.surface = 0u;
                 scenery.spheres_boundary_layers[i].inner.surface = 0u;
-                scenery.spheres_T[i].trans = mliVec_set(
+                scenery.spheres_T[i].translation = mliVec_set(
                         5 * cos(phi) + offset.x,
                         -5 * sin(phi) + offset.y,
                         5 * zoff + offset.z);
