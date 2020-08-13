@@ -1,158 +1,158 @@
 {
-  "functions": [
-    {
-      "name": "unity",
-      "values": [
-          [200e-9, 1.0],
-          [1200e-9, 1.0]
-        ]
-    },
-    {
-      "name": "refraction_glass",
-      "values": [
-          [200e-9, 1.49],
-          [1200e-9, 1.49]
-        ]
-    },
-    {
-      "name": "+infinity",
-      "values": [
-          [200e-9, 9e99],
-          [1200e-9, 9e99]
-        ]
-    },
-    {
-      "name": "zero",
-      "values": [
-          [200e-9, 0.0],
-          [1200e-9, 0.0]
-        ]
-    }
-  ],
-  "colors": [
-    {"rgb": [22, 9, 255], "name": "blue"},
-    {"rgb": [255, 91, 49], "name": "red"},
-    {"rgb": [16, 255, 0], "name": "green"},
-    {"rgb": [23, 23, 23], "name": "grey"}
-  ],
-  "media": [
-    {
-      "name": "vacuum",
-      "refraction": "unity",
-      "absorbtion": "+infinity"
-    },
-    {
-      "name": "glass",
-      "refraction": "refraction_glass",
-      "absorbtion": "+infinity",
-    }
-  ],
-  "default_medium": "vacuum",
-  "surfaces": [
-    {
-      "name": "glass_blue",
-      "material": "Transparent",
-      "specular_reflection": "unity",
-      "diffuse_reflection": "unity",
-      "color": "blue"
-    },
-    {
-      "name": "glass_red",
-      "material": "Transparent",
-      "specular_reflection": "unity",
-      "diffuse_reflection": "unity",
-      "color": "red"
-    },
-    {
-      "name": "specular_mirror",
-      "material": "Phong",
-      "specular_reflection": "unity",
-      "diffuse_reflection": "zero",
-      "color": "green"
-    },
-    {
-      "name": "perfect_absorber",
-      "material": "Phong",
-      "specular_reflection": "zero",
-      "diffuse_reflection": "zero",
-      "color": "grey"
-    }
-  ],
-  "children": [
-    {
-      "type": "Frame",
-      "id": 42,
-      "pos": [0, 0, 1],
-      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-      "children": [
+    "functions": [
         {
-          "type": "Disc",
-          "id": 1,
-          "pos": [0, 0, -1],
-          "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-          "radius": 1.0,
-          "surface": {
-            "inner": {"medium": "vacuum", "surface": "glass_blue"},
-            "outer": {"medium": "glass", "surface": "glass_red"}
-          }
+            "name": "unity",
+            "values": [
+                    [200e-9, 1.0],
+                    [1200e-9, 1.0]
+                ]
         },
         {
-          "type": "Cylinder",
-          "id": 3,
-          "pos": [0, 0, 0],
-          "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-          "radius": 1.0,
-          "length": 2.0,
-          "surface": {
-            "inner": {"medium": "glass", "surface": "glass_red"},
-            "outer": {"medium": "vacuum", "surface": "glass_blue"}
-          }
+            "name": "refraction_glass",
+            "values": [
+                    [200e-9, 1.49],
+                    [1200e-9, 1.49]
+                ]
         },
         {
-          "type": "Disc",
-          "id": 2,
-          "pos": [0, 0, 1],
-          "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-          "radius": 1.0,
-          "surface": {
-            "inner": {"medium": "vacuum", "surface": "glass_red"},
-            "outer": {"medium": "glass", "surface": "glass_blue"}
-          }
+            "name": "+infinity",
+            "values": [
+                    [200e-9, 9e99],
+                    [1200e-9, 9e99]
+                ]
+        },
+        {
+            "name": "zero",
+            "values": [
+                    [200e-9, 0.0],
+                    [1200e-9, 0.0]
+                ]
         }
-      ]
-    },
-    {
-      "type": "Disc",
-      "id": 37,
-      "pos": [0, 0, 5],
-      "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-      "radius": 1.0,
-      "surface": {
-        "inner": {"medium": "vacuum", "surface": "specular_mirror"},
-        "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
-      }
-    },
-    {
-      "type": "Disc",
-      "id": 47,
-      "pos": [0, 0, -5],
-      "rot": {"repr": "tait_bryan", "xyz": [0, 0.785, 0]},
-      "radius": 1.0,
-      "surface": {
-        "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
-        "outer": {"medium": "vacuum", "surface": "specular_mirror"}
-      }
-    },
-    {
-      "type": "Sphere",
-      "id": 12,
-      "pos": [-5, 0, -5],
-      "rot": {"repr": "tait_bryan", "xyz": [0, 0.785, 0]},
-      "radius": 1.0,
-      "surface": {
-        "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
-        "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
-      }
-    }
-  ]
+    ],
+    "colors": [
+        {"rgb": [22, 9, 255], "name": "blue"},
+        {"rgb": [255, 91, 49], "name": "red"},
+        {"rgb": [16, 255, 0], "name": "green"},
+        {"rgb": [23, 23, 23], "name": "grey"}
+    ],
+    "media": [
+        {
+            "name": "vacuum",
+            "refraction": "unity",
+            "absorbtion": "+infinity"
+        },
+        {
+            "name": "glass",
+            "refraction": "refraction_glass",
+            "absorbtion": "+infinity",
+        }
+    ],
+    "default_medium": "vacuum",
+    "surfaces": [
+        {
+            "name": "glass_blue",
+            "material": "Transparent",
+            "specular_reflection": "unity",
+            "diffuse_reflection": "unity",
+            "color": "blue"
+        },
+        {
+            "name": "glass_red",
+            "material": "Transparent",
+            "specular_reflection": "unity",
+            "diffuse_reflection": "unity",
+            "color": "red"
+        },
+        {
+            "name": "specular_mirror",
+            "material": "Phong",
+            "specular_reflection": "unity",
+            "diffuse_reflection": "zero",
+            "color": "green"
+        },
+        {
+            "name": "perfect_absorber",
+            "material": "Phong",
+            "specular_reflection": "zero",
+            "diffuse_reflection": "zero",
+            "color": "grey"
+        }
+    ],
+    "children": [
+        {
+            "type": "Frame",
+            "id": 42,
+            "pos": [0, 0, 1],
+            "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+            "children": [
+                {
+                    "type": "Disc",
+                    "id": 1,
+                    "pos": [0, 0, -1],
+                    "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+                    "radius": 1.0,
+                    "surface": {
+                        "inner": {"medium": "vacuum", "surface": "glass_blue"},
+                        "outer": {"medium": "glass", "surface": "glass_red"}
+                    }
+                },
+                {
+                    "type": "Cylinder",
+                    "id": 3,
+                    "pos": [0, 0, 0],
+                    "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+                    "radius": 1.0,
+                    "length": 2.0,
+                    "surface": {
+                        "inner": {"medium": "glass", "surface": "glass_red"},
+                        "outer": {"medium": "vacuum", "surface": "glass_blue"}
+                    }
+                },
+                {
+                    "type": "Disc",
+                    "id": 2,
+                    "pos": [0, 0, 1],
+                    "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+                    "radius": 1.0,
+                    "surface": {
+                        "inner": {"medium": "vacuum", "surface": "glass_red"},
+                        "outer": {"medium": "glass", "surface": "glass_blue"}
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Disc",
+            "id": 37,
+            "pos": [0, 0, 5],
+            "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+            "radius": 1.0,
+            "surface": {
+                "inner": {"medium": "vacuum", "surface": "specular_mirror"},
+                "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+            }
+        },
+        {
+            "type": "Disc",
+            "id": 47,
+            "pos": [0, 0, -5],
+            "rot": {"repr": "tait_bryan", "xyz": [0, 0.785, 0]},
+            "radius": 1.0,
+            "surface": {
+                "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+                "outer": {"medium": "vacuum", "surface": "specular_mirror"}
+            }
+        },
+        {
+            "type": "Sphere",
+            "id": 12,
+            "pos": [-5, 0, -5],
+            "rot": {"repr": "tait_bryan", "xyz": [0, 0.785, 0]},
+            "radius": 1.0,
+            "surface": {
+                "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+                "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+            }
+        }
+    ]
 }
