@@ -64,8 +64,8 @@ CASE("sequence, cancelation")
         a.rotation = mliQuaternion_set_tait_bryan(0., 0., -mli_deg2rad(90.));
 
         a_inverse.translation = mliVec_set(0., 0., -1.);
-        a_inverse.rotation = mliQuaternion_set_tait_bryan(
-                0., 0., mli_deg2rad(90.));
+        a_inverse.rotation =
+                mliQuaternion_set_tait_bryan(0., 0., mli_deg2rad(90.));
 
         a_a_inverse = mliHomTraComp_sequence(a, a_inverse);
         a_a_inverse_ = mliHomTra_from_compact(a_a_inverse);
@@ -133,7 +133,6 @@ CASE("only rotation")
         CHECK_MARGIN(dB.z, 0.0, 1e-9);
 }
 
-
 CASE("complex sequence rotations only")
 {
         struct mliHomTraComp _AB, _BC, _AC;
@@ -143,7 +142,7 @@ CASE("complex sequence rotations only")
         pos_A = mliVec_set(1.0, 0.0, 0.0);
 
         _AB.translation = mliVec_set(1.0, 0.1, 0.0);
-        _AB.rotation = mliQuaternion_set_tait_bryan(MLI_PI/2.0, 0.042, 0.0);
+        _AB.rotation = mliQuaternion_set_tait_bryan(MLI_PI / 2.0, 0.042, 0.0);
         AB = mliHomTra_from_compact(_AB);
 
         pos_B = mliHomTra_pos_inverse(&AB, pos_A);
@@ -162,7 +161,6 @@ CASE("complex sequence rotations only")
         CHECK_MARGIN(pos_C_direct.y, pos_C.y, 1e-9);
         CHECK_MARGIN(pos_C_direct.z, pos_C.z, 1e-9);
 }
-
 
 CASE("mliRotMat_init_tait_bryan")
 {
