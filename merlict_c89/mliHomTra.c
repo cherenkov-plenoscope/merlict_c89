@@ -24,9 +24,12 @@ struct mliVec mli_transform_orientation(
         const struct mliVec in)
 {
         struct mliVec out;
-        out.x = in.x * rotation->r00 + in.y * rotation->r01 + in.z * rotation->r02;
-        out.y = in.x * rotation->r10 + in.y * rotation->r11 + in.z * rotation->r12;
-        out.z = in.x * rotation->r20 + in.y * rotation->r21 + in.z * rotation->r22;
+        out.x = in.x * rotation->r00 + in.y * rotation->r01 +
+                in.z * rotation->r02;
+        out.y = in.x * rotation->r10 + in.y * rotation->r11 +
+                in.z * rotation->r12;
+        out.z = in.x * rotation->r20 + in.y * rotation->r21 +
+                in.z * rotation->r22;
         return out;
 }
 
@@ -35,9 +38,12 @@ struct mliVec mli_transform_orientation_inverse(
         const struct mliVec in)
 {
         struct mliVec out;
-        out.x = in.x * rotation->r00 + in.y * rotation->r10 + in.z * rotation->r20;
-        out.y = in.x * rotation->r01 + in.y * rotation->r11 + in.z * rotation->r21;
-        out.z = in.x * rotation->r02 + in.y * rotation->r12 + in.z * rotation->r22;
+        out.x = in.x * rotation->r00 + in.y * rotation->r10 +
+                in.z * rotation->r20;
+        out.y = in.x * rotation->r01 + in.y * rotation->r11 +
+                in.z * rotation->r21;
+        out.z = in.x * rotation->r02 + in.y * rotation->r12 +
+                in.z * rotation->r22;
         return out;
 }
 
@@ -47,9 +53,12 @@ struct mliVec mli_transform_position(
         const struct mliVec in)
 {
         struct mliVec out;
-        out.x = in.x * rotation->r00 + in.y * rotation->r01 + in.z * rotation->r02 + translation.x;
-        out.y = in.x * rotation->r10 + in.y * rotation->r11 + in.z * rotation->r12 + translation.y;
-        out.z = in.x * rotation->r20 + in.y * rotation->r21 + in.z * rotation->r22 + translation.z;
+        out.x = in.x * rotation->r00 + in.y * rotation->r01 +
+                in.z * rotation->r02 + translation.x;
+        out.y = in.x * rotation->r10 + in.y * rotation->r11 +
+                in.z * rotation->r12 + translation.y;
+        out.z = in.x * rotation->r20 + in.y * rotation->r21 +
+                in.z * rotation->r22 + translation.z;
         return out;
 }
 
@@ -59,12 +68,18 @@ struct mliVec mli_transform_position_inverse(
         const struct mliVec in)
 {
         struct mliVec out;
-        out.x = in.x * rotation->r00 + in.y * rotation->r10 + in.z * rotation->r20 -
-                (rotation->r00 * translation.x + rotation->r10 * translation.y + rotation->r20 * translation.z);
-        out.y = in.x * rotation->r01 + in.y * rotation->r11 + in.z * rotation->r21 -
-                (rotation->r01 * translation.x + rotation->r11 * translation.y + rotation->r21 * translation.z);
-        out.z = in.x * rotation->r02 + in.y * rotation->r12 + in.z * rotation->r22 -
-                (rotation->r02 * translation.x + rotation->r12 * translation.y + rotation->r22 * translation.z);
+        out.x = in.x * rotation->r00 + in.y * rotation->r10 +
+                in.z * rotation->r20 -
+                (rotation->r00 * translation.x + rotation->r10 * translation.y +
+                 rotation->r20 * translation.z);
+        out.y = in.x * rotation->r01 + in.y * rotation->r11 +
+                in.z * rotation->r21 -
+                (rotation->r01 * translation.x + rotation->r11 * translation.y +
+                 rotation->r21 * translation.z);
+        out.z = in.x * rotation->r02 + in.y * rotation->r12 +
+                in.z * rotation->r22 -
+                (rotation->r02 * translation.x + rotation->r12 * translation.y +
+                 rotation->r22 * translation.z);
         return out;
 }
 
@@ -85,8 +100,10 @@ struct mliRay mli_transform_ray_inverse(
         const struct mliRay in)
 {
         struct mliRay out;
-        out.support = mli_transform_position_inverse(rotation, translation, in.support);
-        out.direction = mli_transform_orientation_inverse(rotation, in.direction);
+        out.support = mli_transform_position_inverse(
+                rotation, translation, in.support);
+        out.direction =
+                mli_transform_orientation_inverse(rotation, in.direction);
         return out;
 }
 

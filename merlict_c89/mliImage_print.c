@@ -69,21 +69,21 @@ void _mliImage_print_ascii_chars(
         uint32_t col, row, sym;
         char symbol;
         char chars_with_ascending_fill[16] = {' ',
-                         '.',
-                         ',',
-                         '-',
-                         '~',
-                         '^',
-                         '+',
-                         '=',
-                         'i',
-                         'j',
-                         '$',
-                         'l',
-                         'L',
-                         'Y',
-                         '8',
-                         '#'};
+                                              '.',
+                                              ',',
+                                              '-',
+                                              '~',
+                                              '^',
+                                              '+',
+                                              '=',
+                                              'i',
+                                              'j',
+                                              '$',
+                                              'l',
+                                              'L',
+                                              'Y',
+                                              '8',
+                                              '#'};
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
                         struct mliColor color = mliImage_at(img, col, row);
