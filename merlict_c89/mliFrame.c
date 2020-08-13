@@ -13,7 +13,7 @@ struct mliFrame mliFrame_init(void)
         f.children = mliDynFramePtr_init();
         f.mother = NULL;
         f.frame2mother.translation = mliVec_set(0., 0., 0.);
-        f.frame2mother.rot = mliQuaternion_set_tait_bryan(0., 0., 0.);
+        f.frame2mother.rotation = mliQuaternion_set_tait_bryan(0., 0., 0.);
         f.frame2root = f.frame2mother;
         f.type = MLI_FRAME;
         f.boundary_layer.inner.surface = 0u;
@@ -232,11 +232,11 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
                f->frame2mother.translation.y,
                f->frame2mother.translation.z);
         printf("%*s", (int)indention, "");
-        printf("|-rot: (%.1f| %.1f, %.1f, %.1f)\n",
-               f->frame2mother.rot.w,
-               f->frame2mother.rot.x,
-               f->frame2mother.rot.y,
-               f->frame2mother.rot.z);
+        printf("|-rotation: (%.1f| %.1f, %.1f, %.1f)\n",
+               f->frame2mother.rotation.w,
+               f->frame2mother.rotation.x,
+               f->frame2mother.rotation.y,
+               f->frame2mother.rotation.z);
         if (f->type != MLI_FRAME) {
                 printf("%*s", (int)indention, "");
                 printf("|-boundary_layer (inner: %u, outer: %u)\n",

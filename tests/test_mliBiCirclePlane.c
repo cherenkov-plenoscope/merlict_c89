@@ -9,7 +9,7 @@ CASE("mliBiCirclePlane_obb")
         plane.y_width = 2.;
 
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 1.), mli_deg2rad(0.));
         obb = mliBiCirclePlane_obb(plane, local2root_comp);
         CHECK_MARGIN(obb.lower.x, -.5, 1e-6);
@@ -20,7 +20,7 @@ CASE("mliBiCirclePlane_obb")
         CHECK_MARGIN(obb.upper.z, 0., 1e-6);
 
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 1.), mli_deg2rad(90.)); /* <-- rotation */
         obb = mliBiCirclePlane_obb(plane, local2root_comp);
         CHECK_MARGIN(obb.lower.x, -1., 1e-6);
@@ -31,7 +31,7 @@ CASE("mliBiCirclePlane_obb")
         CHECK_MARGIN(obb.upper.z, 0., 1e-6);
 
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(1., 0., 0.), mli_deg2rad(45.));
         obb = mliBiCirclePlane_obb(plane, local2root_comp);
         CHECK_MARGIN(obb.lower.x, -.5, 1e-6);
@@ -42,7 +42,7 @@ CASE("mliBiCirclePlane_obb")
         CHECK_MARGIN(obb.upper.z, sqrt(2.) / 2, 1e-6);
 
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 1., 0.), mli_deg2rad(45.));
         obb = mliBiCirclePlane_obb(plane, local2root_comp);
         CHECK_MARGIN(obb.lower.x, -sqrt(2.) / 4, 1e-6);
@@ -61,7 +61,7 @@ CASE("mliBiCirclePlane_has_overlap_obb")
         plane.x_height = 1.;
         plane.y_width = 2.;
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 1.), mli_deg2rad(0.));
 
         obb.lower = mliVec_set(-1., -1., -1.);
@@ -98,7 +98,7 @@ CASE("mliBiCirclePlane_intersection")
         plane.x_height = 1.;
         plane.y_width = 2.;
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 1.), mli_deg2rad(0.));
 
         CHECK(mliBiCirclePlane_intersection(

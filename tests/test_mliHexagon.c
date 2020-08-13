@@ -20,7 +20,7 @@ CASE("mliHexagon_intersection")
         struct mliIntersection intersection;
         hex.inner_radius = 1.;
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 1.), mli_deg2rad(0.));
 
         CHECK(mliHexagon_intersection(
@@ -74,7 +74,7 @@ CASE("struct mliHexagon transformation")
         hex.inner_radius = 1.;
 
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 1.), mli_deg2rad(0.));
         obb = mliHexagon_obb(hex, local2root_comp);
         CHECK_MARGIN(obb.lower.x, -MLI_2_OVER_SQRT3, 1e-6);
@@ -86,7 +86,7 @@ CASE("struct mliHexagon transformation")
 
         /* translation */
         local2root_comp.translation = mliVec_set(1., 2., 3.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 1.), mli_deg2rad(0.));
         obb = mliHexagon_obb(hex, local2root_comp);
         CHECK_MARGIN(obb.lower.x, -MLI_2_OVER_SQRT3 + 1., 1e-6);
@@ -98,7 +98,7 @@ CASE("struct mliHexagon transformation")
 
         /* rotation y-axis 90deg*/
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 1., 0.), mli_deg2rad(90.));
         obb = mliHexagon_obb(hex, local2root_comp);
         CHECK_MARGIN(obb.lower.x, 0., 1e-6);
@@ -110,7 +110,7 @@ CASE("struct mliHexagon transformation")
 
         /* rotation y-axis 45deg */
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 1., 0.), mli_deg2rad(45.));
         obb = mliHexagon_obb(hex, local2root_comp);
         CHECK_MARGIN(obb.lower.x, -MLI_2_OVER_SQRT3 / sqrt(2), 1e-6);
@@ -128,7 +128,7 @@ CASE("mliHexagon_has_overlap_obb")
         struct mliOBB obb;
         hex.inner_radius = 1.;
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 1.), mli_deg2rad(0.));
 
         /*

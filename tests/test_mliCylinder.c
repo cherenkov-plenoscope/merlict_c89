@@ -37,7 +37,7 @@ CASE("slim cylinder obb")
         a.radius = .5;
         a.length = 12.;
         trafo.translation = mliVec_set(0., 0., 0.);
-        trafo.rot =
+        trafo.rotation =
                 mliQuaternion_set_rotaxis_and_angle(mliVec_set(0., 0., 1.), 0.);
         obb = mliCylinder_obb(a, trafo);
         CHECK_MARGIN(obb.lower.x, -.5, 1e-6);
@@ -56,7 +56,7 @@ CASE("fat cylinder obb")
         a.radius = 5;
         a.length = 1.;
         trafo.translation = mliVec_set(0., 0., 0.);
-        trafo.rot =
+        trafo.rotation =
                 mliQuaternion_set_rotaxis_and_angle(mliVec_set(0., 0., 1.), 0.);
         obb = mliCylinder_obb(a, trafo);
         CHECK_MARGIN(obb.lower.x, -5., 1e-6);
@@ -75,7 +75,7 @@ CASE("slim cylinder obb transformed")
         a.radius = .5;
         a.length = 12.;
         trafo.translation = mliVec_set(0., 0., 1.);
-        trafo.rot = mliQuaternion_set_rotaxis_and_angle(
+        trafo.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(1., 0., 0.), mli_deg2rad(90));
         obb = mliCylinder_obb(a, trafo);
         CHECK_MARGIN(obb.lower.x, -.5, 1e-6);
@@ -94,7 +94,7 @@ CASE("cylinder overlap with its own obb")
         a.radius = .5;
         a.length = 12.;
         local2root_comp.translation = mliVec_set(0., 0., 1.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(1., 0., 0.), mli_deg2rad(90));
         obb = mliCylinder_obb(a, local2root_comp);
         CHECK(mliCylinder_has_overlap_obb(a, local2root_comp, obb));
@@ -108,7 +108,7 @@ CASE("cylinder overlap with its own obb, 2")
         a.radius = .5;
         a.length = 12.;
         local2root_comp.translation = mliVec_set(0., 0., 1.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(1., 0., 0.), mli_deg2rad(90));
 
         /* lower x */
@@ -205,7 +205,7 @@ CASE("cylinder intersection, 2")
         struct mliHomTraComp local2root_comp;
         struct mliIntersection intersection;
         local2root_comp.translation = mliVec_set(0., 0., 0.);
-        local2root_comp.rot = mliQuaternion_set_rotaxis_and_angle(
+        local2root_comp.rotation = mliQuaternion_set_rotaxis_and_angle(
                 mliVec_set(0., 0., 1.), mli_deg2rad(0.));
 
         cylinder.radius = 1.;

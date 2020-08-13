@@ -3,23 +3,23 @@
 
 struct mliVec mliView_optical_axis(const struct mliView cam)
 {
-        struct mliRotMat rot = mliRotMat_init_tait_bryan(
+        struct mliRotMat rotation = mliRotMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rot, mliVec_set(0., 0., 1.));
+        return mli_transform_orientation(&rotation, mliVec_set(0., 0., 1.));
 }
 
 struct mliVec mliView_direction_right(const struct mliView cam)
 {
-        struct mliRotMat rot = mliRotMat_init_tait_bryan(
+        struct mliRotMat rotation = mliRotMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rot, mliVec_set(1., 0., 0.));
+        return mli_transform_orientation(&rotation, mliVec_set(1., 0., 0.));
 }
 
 struct mliVec mliView_direction_up(const struct mliView cam)
 {
-        struct mliRotMat rot = mliRotMat_init_tait_bryan(
+        struct mliRotMat rotation = mliRotMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rot, mliVec_set(0., 1., 0.));
+        return mli_transform_orientation(&rotation, mliVec_set(0., 1., 0.));
 }
 
 struct mliView mliView_move_forward(
@@ -119,7 +119,7 @@ struct mliHomTraComp mliView_to_HomTraComp(const struct mliView view)
 {
         struct mliHomTraComp view2root_comp;
         view2root_comp.translation = view.position;
-        view2root_comp.rot = mliQuaternion_set_tait_bryan(
+        view2root_comp.rotation = mliQuaternion_set_tait_bryan(
                 view.rotation.x, view.rotation.y, view.rotation.z);
         return view2root_comp;
 }
