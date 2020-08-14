@@ -133,33 +133,61 @@ CASE("only rotation")
         CHECK_MARGIN(dB.z, 0.0, 1e-9);
 }
 
-CASE("complex sequence rotations only")
+CASE("complex sequence")
 {
-        struct mliHomTraComp _AB, _BC, _AC;
-        struct mliHomTra AB, BC, AC;
-        struct mliVec pos_B, pos_A, pos_C, pos_C_direct;
+        uint64_t i;
+        const uint64_t num_combinations = 100;
+        struct mliMT19937 prng = mliMT19937_init(1337);
 
-        pos_A = mliVec_set(1.0, 0.0, 0.0);
+        struct mliRandomUniformRange trans_range;
+        struct mliRandomUniformRange angle_range;
+        trans_range.start = -10.0;
+        trans_range.range = 20.0;
+        angle_range.start = -MLI_PI;
+        angle_range.range = 2.0*MLI_PI;
 
-        _AB.translation = mliVec_set(1.0, 0.1, 0.0);
-        _AB.rotation = mliQuaternion_set_tait_bryan(MLI_PI / 2.0, 0.042, 0.0);
-        AB = mliHomTra_from_compact(_AB);
+        for (i = 0; i < num_combinations; i++) {
+                struct mliHomTraComp _AB, _BC, _AC;
+                struct mliHomTra AB, BC, AC;
+                struct mliVec pos_B, pos_A, pos_C_via_B, pos_C_direct;
 
-        pos_B = mliHomTra_pos_inverse(&AB, pos_A);
+                pos_A = mliVec_set(
+                        mli_random_draw_uniform(trans_range, &prng),
+                        mli_random_draw_uniform(trans_range, &prng),
+                        mli_random_draw_uniform(trans_range, &prng));
 
-        _BC.translation = mliVec_set(1.0, 0.0, 1.0);
-        _BC.rotation = mliQuaternion_set_tait_bryan(0.1, 0.0, MLI_PI);
-        BC = mliHomTra_from_compact(_BC);
+                _AB.translation = mliVec_set(
+                        mli_random_draw_uniform(trans_range, &prng),
+                        mli_random_draw_uniform(trans_range, &prng),
+                        mli_random_draw_uniform(trans_range, &prng));
+                _AB.rotation = mliQuaternion_set_tait_bryan(
+                        mli_random_draw_uniform(angle_range, &prng),
+                        mli_random_draw_uniform(angle_range, &prng),
+                        mli_random_draw_uniform(angle_range, &prng));
+                AB = mliHomTra_from_compact(_AB);
 
-        pos_C = mliHomTra_pos_inverse(&BC, pos_B);
+                pos_B = mliHomTra_pos_inverse(&AB, pos_A);
 
-        _AC = mliHomTraComp_sequence(_BC, _AB);
-        AC = mliHomTra_from_compact(_AC);
+                _BC.translation = mliVec_set(
+                        mli_random_draw_uniform(trans_range, &prng),
+                        mli_random_draw_uniform(trans_range, &prng),
+                        mli_random_draw_uniform(trans_range, &prng));
+                _BC.rotation = mliQuaternion_set_tait_bryan(
+                        mli_random_draw_uniform(angle_range, &prng),
+                        mli_random_draw_uniform(angle_range, &prng),
+                        mli_random_draw_uniform(angle_range, &prng));
+                BC = mliHomTra_from_compact(_BC);
 
-        pos_C_direct = mliHomTra_pos_inverse(&AC, pos_A);
-        CHECK_MARGIN(pos_C_direct.x, pos_C.x, 1e-9);
-        CHECK_MARGIN(pos_C_direct.y, pos_C.y, 1e-9);
-        CHECK_MARGIN(pos_C_direct.z, pos_C.z, 1e-9);
+                pos_C_via_B = mliHomTra_pos_inverse(&BC, pos_B);
+
+                _AC = mliHomTraComp_sequence(_BC, _AB);
+                AC = mliHomTra_from_compact(_AC);
+
+                pos_C_direct = mliHomTra_pos_inverse(&AC, pos_A);
+                CHECK_MARGIN(pos_C_direct.x, pos_C_via_B.x, 1e-9);
+                CHECK_MARGIN(pos_C_direct.y, pos_C_via_B.y, 1e-9);
+                CHECK_MARGIN(pos_C_direct.z, pos_C_via_B.z, 1e-9);
+        }
 }
 
 CASE("mliRotMat_init_tait_bryan")
