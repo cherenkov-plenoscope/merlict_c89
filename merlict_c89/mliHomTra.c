@@ -24,18 +24,15 @@ struct mliVec mli_transform_orientation(
         const struct mliVec ori)
 {
         struct mliVec out;
-        out.x = (
-                ori.x * rotation->r00 +
-                ori.y * rotation->r01 +
-                ori.z * rotation->r02);
-        out.y = (
-                ori.x * rotation->r10 +
-                ori.y * rotation->r11 +
-                ori.z * rotation->r12);
-        out.z = (
-                ori.x * rotation->r20 +
-                ori.y * rotation->r21 +
-                ori.z * rotation->r22);
+        out.x =
+                (ori.x * rotation->r00 + ori.y * rotation->r01 +
+                 ori.z * rotation->r02);
+        out.y =
+                (ori.x * rotation->r10 + ori.y * rotation->r11 +
+                 ori.z * rotation->r12);
+        out.z =
+                (ori.x * rotation->r20 + ori.y * rotation->r21 +
+                 ori.z * rotation->r22);
         return out;
 }
 
@@ -44,18 +41,15 @@ struct mliVec mli_transform_orientation_inverse(
         const struct mliVec ori)
 {
         struct mliVec out;
-        out.x = (
-                ori.x * rotation->r00 +
-                ori.y * rotation->r10 +
-                ori.z * rotation->r20);
-        out.y = (
-                ori.x * rotation->r01 +
-                ori.y * rotation->r11 +
-                ori.z * rotation->r21);
-        out.z = (
-                ori.x * rotation->r02 +
-                ori.y * rotation->r12 +
-                ori.z * rotation->r22);
+        out.x =
+                (ori.x * rotation->r00 + ori.y * rotation->r10 +
+                 ori.z * rotation->r20);
+        out.y =
+                (ori.x * rotation->r01 + ori.y * rotation->r11 +
+                 ori.z * rotation->r21);
+        out.z =
+                (ori.x * rotation->r02 + ori.y * rotation->r12 +
+                 ori.z * rotation->r22);
         return out;
 }
 
@@ -65,18 +59,15 @@ struct mliVec mli_transform_position(
         const struct mliVec pos)
 {
         struct mliVec out;
-        out.x = (
-                pos.x * rotation->r00 +
-                pos.y * rotation->r01 +
-                pos.z * rotation->r02) + translation.x;
-        out.y = (
-                pos.x * rotation->r10 +
-                pos.y * rotation->r11 +
-                pos.z * rotation->r12) + translation.y;
-        out.z = (
-                pos.x * rotation->r20 +
-                pos.y * rotation->r21 +
-                pos.z * rotation->r22) + translation.z;
+        out.x = (pos.x * rotation->r00 + pos.y * rotation->r01 +
+                 pos.z * rotation->r02) +
+                translation.x;
+        out.y = (pos.x * rotation->r10 + pos.y * rotation->r11 +
+                 pos.z * rotation->r12) +
+                translation.y;
+        out.z = (pos.x * rotation->r20 + pos.y * rotation->r21 +
+                 pos.z * rotation->r22) +
+                translation.z;
         return out;
 }
 
@@ -86,27 +77,18 @@ struct mliVec mli_transform_position_inverse(
         const struct mliVec pos)
 {
         struct mliVec out;
-        out.x = (
-                pos.x * rotation->r00 +
-                pos.y * rotation->r10 +
-                pos.z * rotation->r20) - (
-                rotation->r00 * translation.x +
-                rotation->r10 * translation.y +
-                rotation->r20 * translation.z);
-        out.y = (
-                pos.x * rotation->r01 +
-                pos.y * rotation->r11 +
-                pos.z * rotation->r21) - (
-                rotation->r01 * translation.x +
-                rotation->r11 * translation.y +
-                rotation->r21 * translation.z);
-        out.z = (
-                pos.x * rotation->r02 +
-                pos.y * rotation->r12 +
-                pos.z * rotation->r22) - (
-                rotation->r02 * translation.x +
-                rotation->r12 * translation.y +
-                rotation->r22 * translation.z);
+        out.x = (pos.x * rotation->r00 + pos.y * rotation->r10 +
+                 pos.z * rotation->r20) -
+                (rotation->r00 * translation.x + rotation->r10 * translation.y +
+                 rotation->r20 * translation.z);
+        out.y = (pos.x * rotation->r01 + pos.y * rotation->r11 +
+                 pos.z * rotation->r21) -
+                (rotation->r01 * translation.x + rotation->r11 * translation.y +
+                 rotation->r21 * translation.z);
+        out.z = (pos.x * rotation->r02 + pos.y * rotation->r12 +
+                 pos.z * rotation->r22) -
+                (rotation->r02 * translation.x + rotation->r12 * translation.y +
+                 rotation->r22 * translation.z);
         return out;
 }
 
