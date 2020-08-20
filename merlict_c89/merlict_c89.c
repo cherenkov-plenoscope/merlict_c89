@@ -16,6 +16,7 @@
 #include "mliCube.c"
 #include "mliIntersection.c"
 #include "mliFace.c"
+#include "mli_barycentric.c"
 #include "mliMesh.c"
 #include "mliTriangle_intersection.c"
 #include "mliColor.c"
