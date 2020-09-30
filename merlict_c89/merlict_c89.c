@@ -18,6 +18,7 @@
 #include "mliFace.c"
 #include "mli_barycentric.c"
 #include "mliMesh.c"
+#include "mliObject.c"
 #include "mliTriangle_intersection.c"
 #include "mliColor.c"
 #include "mliPixels.c"
