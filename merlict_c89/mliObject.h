@@ -33,4 +33,7 @@ int _mliObject_parse_face_line(
         struct mliFace *faces_texture_points,
         struct mliFace *faces_vertex_normals,
         int *line_mode);
+int _mliObject_parse_three_float_line(
+        const char *line,
+        struct mliVec *v);
 #endif

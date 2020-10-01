@@ -264,3 +264,82 @@ CASE("mliObject, parse bad obj face lines")
                 &line_mode));
         CHECK(line_mode == -1);
 }
+
+
+CASE("mliObject, parse valid obj-float-lines")
+{
+        struct mliVec v;
+        char line[128];
+
+        strcpy(line, " 0 0 0");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(v.x == 0.0);
+        CHECK(v.y == 0.0);
+        CHECK(v.z == 0.0);
+
+        strcpy(line, " 0.0 0.0 0.0");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(v.x == 0.0);
+        CHECK(v.y == 0.0);
+        CHECK(v.z == 0.0);
+
+        strcpy(line, " 0.0   0.0    0.0   whatever");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(v.x == 0.0);
+        CHECK(v.y == 0.0);
+        CHECK(v.z == 0.0);
+
+        strcpy(line, "     0 0 0");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(v.x == 0.0);
+        CHECK(v.y == 0.0);
+        CHECK(v.z == 0.0);
+
+        strcpy(line, " 1 2 3");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(v.x == 1.0);
+        CHECK(v.y == 2.0);
+        CHECK(v.z == 3.0);
+
+        strcpy(line, " 1.4 2.5 3.6");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK_MARGIN(v.x, 1.4, 1e-9);
+        CHECK_MARGIN(v.y, 2.5, 1e-9);
+        CHECK_MARGIN(v.z, 3.6, 1e-9);
+
+        strcpy(line, " 1.4e0 2.5e1 3.6e2");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK_MARGIN(v.x, 1.4e0, 1e-9);
+        CHECK_MARGIN(v.y, 2.5e1, 1e-9);
+        CHECK_MARGIN(v.z, 3.6e2, 1e-9);
+
+        strcpy(line, " 1.4e-0 2.5e-1 3.6e2 ");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK_MARGIN(v.x, 1.4e0, 1e-9);
+        CHECK_MARGIN(v.y, 2.5e-1, 1e-9);
+        CHECK_MARGIN(v.z, 3.6e2, 1e-9);
+
+        strcpy(line, " 1.4e-0       2.5e-1     3.6e2  do not care");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK_MARGIN(v.x, 1.4e0, 1e-9);
+        CHECK_MARGIN(v.y, 2.5e-1, 1e-9);
+        CHECK_MARGIN(v.z, 3.6e2, 1e-9);
+}
+
+CASE("mliObject, parse bad obj-float-lines")
+{
+        struct mliVec v;
+        char line[128];
+
+        strcpy(line, "");
+        CHECK(!_mliObject_parse_three_float_line(line, &v));
+
+        strcpy(line, " ");
+        CHECK(!_mliObject_parse_three_float_line(line, &v));
+
+        strcpy(line, "0 0 0");
+        CHECK(!_mliObject_parse_three_float_line(line, &v));
+
+        strcpy(line, "abc");
+        CHECK(!_mliObject_parse_three_float_line(line, &v));
+}

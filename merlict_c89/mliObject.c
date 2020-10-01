@@ -111,7 +111,7 @@ struct _mliBuff _mliBuff_init(void)
         return bb;
 }
 
-int _mli_fill_buff(
+int mliBuff_to_uint(
         const char c,
         struct _mliBuff *buff,
         const int toggle_State,
@@ -135,7 +135,38 @@ int _mli_fill_buff(
                 mli_check(
                         mli_string_to_int(&tmp, buff->buff, 10),
                         "Can not parse face index");
-                mli_check(tmp > 0, "Expected object's index > 0.") *out = tmp;
+                mli_check(tmp > 0, "Expected object's index > 0.");
+                *out = tmp;
+        }
+
+        return 1;
+error:
+        return 0;
+}
+
+int mliBuff_to_double(
+        const char c,
+        struct _mliBuff *buff,
+        const int toggle_State,
+        const int state,
+        const int old_state,
+        double *out)
+{
+        mli_check(
+                buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
+                "Integer-buff is full.");
+        if (state == toggle_State) {
+                buff->buff[buff->b] = c;
+                buff->b++;
+        }
+        if (old_state == toggle_State && state != toggle_State) {
+                for (; buff->b < buff->length; buff->b++) {
+                        buff->buff[buff->b] = '\0';
+                }
+                buff->b = 0;
+                mli_check(
+                        mli_string_to_float(out, buff->buff),
+                        "Can not parse face index");
         }
 
         return 1;
@@ -338,34 +369,125 @@ int _mliObject_parse_face_line(
                 }
                 /* mode MLI_WAVEFRONT_FACE_LINE_V */
 
-                mli_c(_mli_fill_buff(c, &buff, 3, state, old_state, &v->a));
-                mli_c(_mli_fill_buff(c, &buff, 5, state, old_state, &v->b));
-                mli_c(_mli_fill_buff(c, &buff, 7, state, old_state, &v->c));
+                mli_c(mliBuff_to_uint(c, &buff, 3, state, old_state, &v->a));
+                mli_c(mliBuff_to_uint(c, &buff, 5, state, old_state, &v->b));
+                mli_c(mliBuff_to_uint(c, &buff, 7, state, old_state, &v->c));
 
                 /* mode MLI_WAVEFRONT_FACE_LINE_V_VN */
 
-                /*mli_c(_mli_fill_buff(c, &buff, 3, state, old_state, &v->a));*/
-                mli_c(_mli_fill_buff(c, &buff, 27, state, old_state, &vn->a));
+                /*mli_c(mliBuff_to_uint(c, &buff, 3, state, old_state, &v->a));*/
+                mli_c(mliBuff_to_uint(c, &buff, 27, state, old_state, &vn->a));
 
-                mli_c(_mli_fill_buff(c, &buff, 29, state, old_state, &v->b));
-                mli_c(_mli_fill_buff(c, &buff, 32, state, old_state, &vn->b));
+                mli_c(mliBuff_to_uint(c, &buff, 29, state, old_state, &v->b));
+                mli_c(mliBuff_to_uint(c, &buff, 32, state, old_state, &vn->b));
 
-                mli_c(_mli_fill_buff(c, &buff, 34, state, old_state, &v->c));
-                mli_c(_mli_fill_buff(c, &buff, 37, state, old_state, &vn->c));
+                mli_c(mliBuff_to_uint(c, &buff, 34, state, old_state, &v->c));
+                mli_c(mliBuff_to_uint(c, &buff, 37, state, old_state, &vn->c));
 
                 /* mode MLI_WAVEFRONT_FACE_LINE_V_VT_VN */
 
-                /*mli_c(_mli_fill_buff(c, &buff, 3, state, old_state, &v->a));*/
-                mli_c(_mli_fill_buff(c, &buff, 11, state, old_state, &vt->a));
-                mli_c(_mli_fill_buff(c, &buff, 13, state, old_state, &vn->a));
+                /*mli_c(mliBuff_to_uint(c, &buff, 3, state, old_state, &v->a));*/
+                mli_c(mliBuff_to_uint(c, &buff, 11, state, old_state, &vt->a));
+                mli_c(mliBuff_to_uint(c, &buff, 13, state, old_state, &vn->a));
 
-                mli_c(_mli_fill_buff(c, &buff, 15, state, old_state, &v->b));
-                mli_c(_mli_fill_buff(c, &buff, 17, state, old_state, &vt->b));
-                mli_c(_mli_fill_buff(c, &buff, 19, state, old_state, &vn->b));
+                mli_c(mliBuff_to_uint(c, &buff, 15, state, old_state, &v->b));
+                mli_c(mliBuff_to_uint(c, &buff, 17, state, old_state, &vt->b));
+                mli_c(mliBuff_to_uint(c, &buff, 19, state, old_state, &vn->b));
 
-                mli_c(_mli_fill_buff(c, &buff, 21, state, old_state, &v->c));
-                mli_c(_mli_fill_buff(c, &buff, 23, state, old_state, &vt->c));
-                mli_c(_mli_fill_buff(c, &buff, 25, state, old_state, &vn->c));
+                mli_c(mliBuff_to_uint(c, &buff, 21, state, old_state, &v->c));
+                mli_c(mliBuff_to_uint(c, &buff, 23, state, old_state, &vt->c));
+                mli_c(mliBuff_to_uint(c, &buff, 25, state, old_state, &vn->c));
+
+                old_state = state;
+                i++;
+        }
+        return 1;
+error:
+        return 0;
+}
+
+
+int _mliObject_parse_three_float_line(const char *line, struct mliVec *v)
+{
+        /*
+        statemachine
+        ============
+
+        ( 0)
+         |
+         | ws
+         V  ___
+        ( 1)<__] ws
+         |
+         | print
+         V  ___
+        ( 2)<__] print
+         |
+         | ws
+         V  ___
+        ( 3)<__] ws
+         |
+         | print
+         V  ___
+        ( 4)<__] print
+         |
+         | ws
+         V  ___
+        ( 5)<__] ws
+         |
+         | print
+         V  ___
+        ( 6)<__] print
+         |
+         | ws OR eol
+         V
+        (END)
+
+        */
+        const int final_state = 99;
+        const int error_state = -1;
+        int statemachine[][3] = {
+                /* ws print eol */
+                {01, -1, -1}, /* 0 */
+                {01, 02, -1}, /* 1 */
+                {03, 02, -1}, /* 2 */
+                {03, 04, -1}, /* 3 */
+                {05, 04, -1}, /* 4 */
+                {05, 06, -1}, /* 5 */
+                {99, 06, 99}, /* 6 */
+        };
+
+        int state = 0;
+        int old_state = state;
+        const int MAX_NUM_CHARS = 256;
+        int i = 0;
+        char c;
+
+        struct _mliBuff buff = _mliBuff_init();
+
+        while (state != final_state) {
+                mli_check(i <= MAX_NUM_CHARS, "Expected less chars in line.");
+                c = line[i];
+
+                mli_check(
+                        state != error_state,
+                        "Can not parse three float line.");
+
+                /* next state */
+                /* ========== */
+                if (c == ' ') {
+                        state = statemachine[state][0];
+                } else if (isprint(c)) {
+                        state = statemachine[state][1];
+                } else if (c == '\0') {
+                        state = statemachine[state][2];
+                } else {
+                        state = error_state;
+                }
+
+                mli_c(mliBuff_to_double(c, &buff, 2, state, old_state, &v->x));
+                mli_c(mliBuff_to_double(c, &buff, 4, state, old_state, &v->y));
+                mli_c(mliBuff_to_double(c, &buff, 6, state, old_state, &v->z));
 
                 old_state = state;
                 i++;
