@@ -83,18 +83,18 @@ error:
 #define MLI_WAVEFRONT_FACE_LINE_V_VN 37
 #define MLI_WAVEFRONT_FACE_LINE_V_VT_VN 25
 
-#define _MLI_BUFF_LENGTH 64
+#define MLI_WAVEFRONT_LINE_BUFF_LENGTH 64
 
 struct _mliBuff {
         int length;
         int b;
-        char buff[_MLI_BUFF_LENGTH];
+        char buff[MLI_WAVEFRONT_LINE_BUFF_LENGTH];
 };
 
 struct _mliBuff _mliBuff_init(void) {
         int i = 0;
         struct _mliBuff bb;
-        bb.length = _MLI_BUFF_LENGTH;
+        bb.length = MLI_WAVEFRONT_LINE_BUFF_LENGTH;
         bb.b = 0;
         for (i = 0; i < bb.length; i++) {
                 bb.buff[i] = '\0';
@@ -112,7 +112,9 @@ int _mli_fill_buff(
         uint32_t *out)
 {
         int64_t tmp = -1;
-        mli_check(buff->b < _MLI_BUFF_LENGTH, "Integer-buff is full.");
+        mli_check(
+                buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
+                "Integer-buff is full.");
         if (state == toggle_State) {
                 buff->buff[buff->b] = c;
                 buff->b++;
@@ -144,6 +146,8 @@ int _mliObject_parse_face_line(
         int *line_mode)
 {
         /*
+        statemachine
+        ============
 
         ( 0)
          |
@@ -179,7 +183,7 @@ int _mliObject_parse_face_line(
          V                         V  ___                       V  ___
         (END)                     (14)<__] ws                  (29)<__] dig
                                    |                            |
-                                   | dig                        | '/'
+        f v v v                    | dig                        | '/'
                                    V  ___                       V
                                   (15)<__] dig                 (30)
                                    |                            |
@@ -215,7 +219,7 @@ int _mliObject_parse_face_line(
                                    V  ___                       V
                                   (23)<__] dig                 (END)
                                    |
-                                   | '/'
+                                   | '/'                 f v//vn v//vn v//vn
                                    V
                                   (24)
                                    |
@@ -227,8 +231,11 @@ int _mliObject_parse_face_line(
                                    V
                                   (END)
 
+                                f v/vt/vn v/vt/vn v/vt/vn
+
         */
-        const int FI = 99;
+        const int final_state = 99;
+        const int error_state = -1;
         int statemachine[][5] = {
         /*       'f'  ws  dig !dig '/' */
                 { 01, -1, -1, -1, -1}, /* 00 */
@@ -283,17 +290,13 @@ int _mliObject_parse_face_line(
 
         struct _mliBuff buff = _mliBuff_init();
 
-        while (1) {
+        while (state != final_state) {
                 mli_check(i <= MAX_NUM_CHARS, "Expected less chars in line.");
                 c = line[i];
 
                 /* printf("i: %d, c:%c state: %d \n", i, c, state); */
 
-                if (state == FI) {
-                        goto complete;
-                }
-
-                if (state == -1) {
+                if (state == error_state) {
                         *line_mode = -1;
                         mli_sentinel("Can not parse line.");
                 }
@@ -311,7 +314,7 @@ int _mliObject_parse_face_line(
                 } else if (!isdigit(c)) {
                         state = statemachine[state][3];
                 } else {
-                        state = -1;
+                        state = error_state;
                 }
 
                 /* line mode */
@@ -360,7 +363,6 @@ int _mliObject_parse_face_line(
                 old_state = state;
                 i ++;
         }
-complete:
         return 1;
 error:
         return 0;
