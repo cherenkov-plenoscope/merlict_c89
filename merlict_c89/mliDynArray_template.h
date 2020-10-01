@@ -5,6 +5,7 @@
 #include "mliDynArray.h"
 #include "mliColor.h"
 #include "mliVec.h"
+#include "mliFace.h"
 
 #define MLIDYNARRAY_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                         \
                                                                                \
@@ -87,6 +88,7 @@
 
 MLIDYNARRAY_DEFINITON(mli, Double, double)
 MLIDYNARRAY_DEFINITON(mli, Vec, struct mliVec)
+MLIDYNARRAY_DEFINITON(mli, Face, struct mliFace)
 MLIDYNARRAY_DEFINITON(mli, Color, struct mliColor)
 MLIDYNARRAY_DEFINITON(mli, ColorPtr, struct mliColor *)
 MLIDYNARRAY_DEFINITON(mli, Int64, int64_t)

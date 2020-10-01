@@ -301,6 +301,12 @@ CASE("mliObject, parse valid obj-float-lines")
         CHECK(v.y == 2.0);
         CHECK(v.z == 3.0);
 
+        strcpy(line, " 1 -2 3");
+        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(v.x == 1.0);
+        CHECK(v.y == -2.0);
+        CHECK(v.z == 3.0);
+
         strcpy(line, " 1.4 2.5 3.6");
         CHECK(_mliObject_parse_three_float_line(line, &v));
         CHECK_MARGIN(v.x, 1.4, 1e-9);
@@ -342,4 +348,20 @@ CASE("mliObject, parse bad obj-float-lines")
 
         strcpy(line, "abc");
         CHECK(!_mliObject_parse_three_float_line(line, &v));
+}
+
+CASE("mliObject, read wavefront file")
+{
+        struct mliObject obj = mliObject_init();
+
+        FILE *f = fopen("tests/resources/hexagonal_mirror_facet.obj", "r");
+        CHECK(f != NULL);
+        mliObject_malloc_from_file(&obj, f);
+        fclose(f);
+
+        CHECK(obj.num_faces == 600);
+        CHECK(obj.num_vertices == 331);
+        CHECK(obj.num_vertex_normals == 331);
+
+        mliObject_free(&obj);
 }

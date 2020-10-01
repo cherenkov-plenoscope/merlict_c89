@@ -19,6 +19,7 @@
 #include "mli_barycentric.h"
 #include "mliMesh.h"
 #include "mliObject.h"
+#include "mliObject_wavefront.h"
 #include "mliTriangle_intersection.h"
 #include "mliColor.h"
 #include "mliPixels.h"

@@ -3,6 +3,7 @@
 
 MLIDYNARRAY_IMPLEMENTATION(mli, Double, double)
 MLIDYNARRAY_IMPLEMENTATION(mli, Vec, struct mliVec)
+MLIDYNARRAY_IMPLEMENTATION(mli, Face, struct mliFace)
 MLIDYNARRAY_IMPLEMENTATION(mli, Color, struct mliColor)
 MLIDYNARRAY_IMPLEMENTATION(mli, ColorPtr, struct mliColor *)
 MLIDYNARRAY_IMPLEMENTATION(mli, Int64, int64_t)
