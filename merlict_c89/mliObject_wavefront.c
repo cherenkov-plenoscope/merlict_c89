@@ -498,7 +498,7 @@ int mliObject_malloc_from_file(
                         mli_check(
                                 line_mode == MLI_WAVEFRONT_FACE_LINE_V_VT_VN ||
                                 line_mode == MLI_WAVEFRONT_FACE_LINE_V_VN,
-                                "Expected faces with vertex-normals."
+                                "Expected faces to have vertex-normals."
                         )
                 }
         }
