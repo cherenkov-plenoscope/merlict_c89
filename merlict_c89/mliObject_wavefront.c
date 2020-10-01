@@ -479,6 +479,20 @@ int mliObject_malloc_from_file(
                                         &line_mode),
                                 "Can not parse face-line."
                         );
+                        mli_check(tmp_fv.a >= 1, "Expected fv.a >= 1");
+                        mli_check(tmp_fv.b >= 1, "Expected fv.b >= 1");
+                        mli_check(tmp_fv.c >= 1, "Expected fv.c >= 1");
+                        tmp_fv.a -= 1;
+                        tmp_fv.b -= 1;
+                        tmp_fv.c -= 1;
+
+                        mli_check(tmp_fvn.a >= 1, "Expected fvn.a >= 1");
+                        mli_check(tmp_fvn.b >= 1, "Expected fvn.b >= 1");
+                        mli_check(tmp_fvn.c >= 1, "Expected fvn.c >= 1");
+                        tmp_fvn.a -= 1;
+                        tmp_fvn.b -= 1;
+                        tmp_fvn.c -= 1;
+
                         mli_c(mliDynFace_push_back(&fv, tmp_fv));
                         mli_c(mliDynFace_push_back(&fvn, tmp_fvn));
                         mli_check(
