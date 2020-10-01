@@ -18,7 +18,6 @@ struct mliObject {
         struct mliFace *faces_vertex_normals;
 };
 
-
 int mliObject_malloc(
         struct mliObject *obj,
         const uint64_t num_vertices,

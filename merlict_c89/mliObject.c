@@ -34,7 +34,9 @@ int mliObject_malloc(
         const uint64_t num_faces)
 {
         mli_check(num_vertices < UINT32_MAX, "Expected num_vertices < uint32");
-        mli_check(num_vertex_normals < UINT32_MAX, "Expected num_vertices < uint32");
+        mli_check(
+                num_vertex_normals < UINT32_MAX,
+                "Expected num_vertices < uint32");
         mli_check(num_faces < UINT32_MAX, "Expected num_vertices < uint32");
 
         mliObject_free(obj);
@@ -65,14 +67,20 @@ int mliObject_assert_valid_faces(const struct mliObject *obj)
                         "Expected face.c <= num_vertices");
 
                 mli_check(
-                        obj->faces_vertex_normals[i].a <= obj->num_vertex_normals,
-                        "Expected faces_vertex_normals.a <= num_vertex_normals");
+                        obj->faces_vertex_normals[i].a <=
+                                obj->num_vertex_normals,
+                        "Expected faces_vertex_normals.a <= "
+                        "num_vertex_normals");
                 mli_check(
-                        obj->faces_vertex_normals[i].b <= obj->num_vertex_normals,
-                        "Expected faces_vertex_normals.b <= num_vertex_normals");
+                        obj->faces_vertex_normals[i].b <=
+                                obj->num_vertex_normals,
+                        "Expected faces_vertex_normals.b <= "
+                        "num_vertex_normals");
                 mli_check(
-                        obj->faces_vertex_normals[i].c <= obj->num_vertex_normals,
-                        "Expected faces_vertex_normals.c <= num_vertex_normals");
+                        obj->faces_vertex_normals[i].c <=
+                                obj->num_vertex_normals,
+                        "Expected faces_vertex_normals.c <= "
+                        "num_vertex_normals");
         }
         return 1;
 error:
@@ -91,7 +99,8 @@ struct _mliBuff {
         char buff[MLI_WAVEFRONT_LINE_BUFF_LENGTH];
 };
 
-struct _mliBuff _mliBuff_init(void) {
+struct _mliBuff _mliBuff_init(void)
+{
         int i = 0;
         struct _mliBuff bb;
         bb.length = MLI_WAVEFRONT_LINE_BUFF_LENGTH;
@@ -101,7 +110,6 @@ struct _mliBuff _mliBuff_init(void) {
         }
         return bb;
 }
-
 
 int _mli_fill_buff(
         const char c,
@@ -126,17 +134,14 @@ int _mli_fill_buff(
                 buff->b = 0;
                 mli_check(
                         mli_string_to_int(&tmp, buff->buff, 10),
-                        "Can not parse face index"
-                );
-                mli_check(tmp > 0, "Expected object's index > 0.")
-                *out = tmp;
+                        "Can not parse face index");
+                mli_check(tmp > 0, "Expected object's index > 0.") *out = tmp;
         }
 
         return 1;
 error:
         return 0;
 }
-
 
 int _mliObject_parse_face_line(
         const char *line,
@@ -145,6 +150,9 @@ int _mliObject_parse_face_line(
         struct mliFace *faces_vertex_normals,
         int *line_mode)
 {
+        struct mliFace *v = faces_vertices;
+        struct mliFace *vt = faces_texture_points;
+        struct mliFace *vn = faces_vertex_normals;
         /*
         statemachine
         ============
@@ -237,49 +245,49 @@ int _mliObject_parse_face_line(
         const int final_state = 99;
         const int error_state = -1;
         int statemachine[][5] = {
-        /*       'f'  ws  dig !dig '/' */
-                { 01, -1, -1, -1, -1}, /* 00 */
+                /*       'f'  ws  dig !dig '/' */
+                {01, -1, -1, -1, -1}, /* 00 */
 
-                { -1, 02, -1, -1, -1}, /* 01 */
-                { -1, 02, 03, -1, -1}, /* 02 */
-                { -1, 04, 03, -1, 10}, /* 03 */
-                { -1, 04, 05, -1, -1}, /* 04 */
-                { -1, 06, 05, -1, -1}, /* 05 */
-                { -1, 06, 07, -1, -1}, /* 06 */
-                { -1, 99, 07, 99, -1}, /* 07 */
+                {-1, 02, -1, -1, -1}, /* 01 */
+                {-1, 02, 03, -1, -1}, /* 02 */
+                {-1, 04, 03, -1, 10}, /* 03 */
+                {-1, 04, 05, -1, -1}, /* 04 */
+                {-1, 06, 05, -1, -1}, /* 05 */
+                {-1, 06, 07, -1, -1}, /* 06 */
+                {-1, 99, 07, 99, -1}, /* 07 */
 
-                { -1, -1, -1, -1, -1}, /* 08 */
-                { -1, -1, -1, -1, -1}, /* 09 */
+                {-1, -1, -1, -1, -1}, /* 08 */
+                {-1, -1, -1, -1, -1}, /* 09 */
 
-                { -1, -1, 11, -1, 26}, /* 10 */
-                { -1, -1, 11, -1, 12}, /* 11 */
-                { -1, -1, 13, -1, -1}, /* 12 */
-                { -1, 14, 13, -1, -1}, /* 13 */
-                { -1, 14, 15, -1, -1}, /* 14 */
-                { -1, -1, 15, -1, 16}, /* 15 */
-                { -1, -1, 17, -1, -1}, /* 16 */
-                { -1, -1, 17, -1, 18}, /* 17 */
-                { -1, -1, 19, -1, -1}, /* 18 */
-                { -1, 20, 19, -1, -1}, /* 19 */
-                { -1, 20, 21, -1, -1}, /* 20 */
-                { -1, -1, 21, -1, 22}, /* 21 */
-                { -1, -1, 23, -1, -1}, /* 22 */
-                { -1, -1, 23, -1, 24}, /* 23 */
-                { -1, -1, 25, -1, -1}, /* 24 */
-                { -1, 99, 25, 99, -1}, /* 25 */
+                {-1, -1, 11, -1, 26}, /* 10 */
+                {-1, -1, 11, -1, 12}, /* 11 */
+                {-1, -1, 13, -1, -1}, /* 12 */
+                {-1, 14, 13, -1, -1}, /* 13 */
+                {-1, 14, 15, -1, -1}, /* 14 */
+                {-1, -1, 15, -1, 16}, /* 15 */
+                {-1, -1, 17, -1, -1}, /* 16 */
+                {-1, -1, 17, -1, 18}, /* 17 */
+                {-1, -1, 19, -1, -1}, /* 18 */
+                {-1, 20, 19, -1, -1}, /* 19 */
+                {-1, 20, 21, -1, -1}, /* 20 */
+                {-1, -1, 21, -1, 22}, /* 21 */
+                {-1, -1, 23, -1, -1}, /* 22 */
+                {-1, -1, 23, -1, 24}, /* 23 */
+                {-1, -1, 25, -1, -1}, /* 24 */
+                {-1, 99, 25, 99, -1}, /* 25 */
 
-                { -1, -1, 27, -1, -1}, /* 26 */
-                { -1, 28, 27, -1, -1}, /* 27 */
-                { -1, 28, 29, -1, -1}, /* 28 */
-                { -1, -1, 29, -1, 30}, /* 29 */
-                { -1, -1, -1, -1, 31}, /* 30 */
-                { -1, -1, 32, -1, -1}, /* 31 */
-                { -1, 33, 32, -1, -1}, /* 32 */
-                { -1, 33, 34, -1, -1}, /* 33 */
-                { -1, -1, 34, -1, 35}, /* 34 */
-                { -1, -1, -1, -1, 36}, /* 35 */
-                { -1, -1, 37, -1, -1}, /* 36 */
-                { -1, 99, 37, 99, -1}, /* 37 */
+                {-1, -1, 27, -1, -1}, /* 26 */
+                {-1, 28, 27, -1, -1}, /* 27 */
+                {-1, 28, 29, -1, -1}, /* 28 */
+                {-1, -1, 29, -1, 30}, /* 29 */
+                {-1, -1, -1, -1, 31}, /* 30 */
+                {-1, -1, 32, -1, -1}, /* 31 */
+                {-1, 33, 32, -1, -1}, /* 32 */
+                {-1, 33, 34, -1, -1}, /* 33 */
+                {-1, -1, 34, -1, 35}, /* 34 */
+                {-1, -1, -1, -1, 36}, /* 35 */
+                {-1, -1, 37, -1, -1}, /* 36 */
+                {-1, 99, 37, 99, -1}, /* 37 */
         };
 
         int state = 0;
@@ -330,38 +338,37 @@ int _mliObject_parse_face_line(
                 }
                 /* mode MLI_WAVEFRONT_FACE_LINE_V */
 
-                mli_c(_mli_fill_buff(c, &buff, 3, state, old_state, &faces_vertices->a));
-                mli_c(_mli_fill_buff(c, &buff, 5, state, old_state, &faces_vertices->b));
-                mli_c(_mli_fill_buff(c, &buff, 7, state, old_state, &faces_vertices->c));
+                mli_c(_mli_fill_buff(c, &buff, 3, state, old_state, &v->a));
+                mli_c(_mli_fill_buff(c, &buff, 5, state, old_state, &v->b));
+                mli_c(_mli_fill_buff(c, &buff, 7, state, old_state, &v->c));
 
                 /* mode MLI_WAVEFRONT_FACE_LINE_V_VN */
 
-                /*mli_c(_mli_fill_buff(c, &buff, 3, state, old_state, &faces_vertices->a));*/
-                mli_c(_mli_fill_buff(c, &buff, 27, state, old_state, &faces_vertex_normals->a));
+                /*mli_c(_mli_fill_buff(c, &buff, 3, state, old_state, &v->a));*/
+                mli_c(_mli_fill_buff(c, &buff, 27, state, old_state, &vn->a));
 
-                mli_c(_mli_fill_buff(c, &buff, 29, state, old_state, &faces_vertices->b));
-                mli_c(_mli_fill_buff(c, &buff, 32, state, old_state, &faces_vertex_normals->b));
+                mli_c(_mli_fill_buff(c, &buff, 29, state, old_state, &v->b));
+                mli_c(_mli_fill_buff(c, &buff, 32, state, old_state, &vn->b));
 
-                mli_c(_mli_fill_buff(c, &buff, 34, state, old_state, &faces_vertices->c));
-                mli_c(_mli_fill_buff(c, &buff, 37, state, old_state, &faces_vertex_normals->c));
+                mli_c(_mli_fill_buff(c, &buff, 34, state, old_state, &v->c));
+                mli_c(_mli_fill_buff(c, &buff, 37, state, old_state, &vn->c));
 
                 /* mode MLI_WAVEFRONT_FACE_LINE_V_VT_VN */
 
-                /*mli_c(_mli_fill_buff(c, &buff, 3, state, old_state, &faces_vertices->a));*/
-                mli_c(_mli_fill_buff(c, &buff, 11, state, old_state, &faces_texture_points->a));
-                mli_c(_mli_fill_buff(c, &buff, 13, state, old_state, &faces_vertex_normals->a));
+                /*mli_c(_mli_fill_buff(c, &buff, 3, state, old_state, &v->a));*/
+                mli_c(_mli_fill_buff(c, &buff, 11, state, old_state, &vt->a));
+                mli_c(_mli_fill_buff(c, &buff, 13, state, old_state, &vn->a));
 
-                mli_c(_mli_fill_buff(c, &buff, 15, state, old_state, &faces_vertices->b));
-                mli_c(_mli_fill_buff(c, &buff, 17, state, old_state, &faces_texture_points->b));
-                mli_c(_mli_fill_buff(c, &buff, 19, state, old_state, &faces_vertex_normals->b));
+                mli_c(_mli_fill_buff(c, &buff, 15, state, old_state, &v->b));
+                mli_c(_mli_fill_buff(c, &buff, 17, state, old_state, &vt->b));
+                mli_c(_mli_fill_buff(c, &buff, 19, state, old_state, &vn->b));
 
-                mli_c(_mli_fill_buff(c, &buff, 21, state, old_state, &faces_vertices->c));
-                mli_c(_mli_fill_buff(c, &buff, 23, state, old_state, &faces_texture_points->c));
-                mli_c(_mli_fill_buff(c, &buff, 25, state, old_state, &faces_vertex_normals->c));
-
+                mli_c(_mli_fill_buff(c, &buff, 21, state, old_state, &v->c));
+                mli_c(_mli_fill_buff(c, &buff, 23, state, old_state, &vt->c));
+                mli_c(_mli_fill_buff(c, &buff, 25, state, old_state, &vn->c));
 
                 old_state = state;
-                i ++;
+                i++;
         }
         return 1;
 error:
