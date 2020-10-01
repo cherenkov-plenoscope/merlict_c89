@@ -363,5 +363,7 @@ CASE("mliObject, read wavefront file")
         CHECK(obj.num_vertices == 331);
         CHECK(obj.num_vertex_normals == 331);
 
+        CHECK(mliObject_assert_valid_faces(&obj));
+
         mliObject_free(&obj);
 }

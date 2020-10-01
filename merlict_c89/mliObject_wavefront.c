@@ -506,8 +506,11 @@ int mliObject_malloc_from_file(
         /* copy dyn into static mliObject */
         mli_check(
                 fv.dyn.size == fvn.dyn.size,
-                "Expected same number of vertices and vertex-normals");
-        mli_c(mliObject_malloc(obj, v.dyn.size, vn.dyn.size, fv.dyn.size));
+                "Expected num. vertex-indices == num. vertex-normal-indices.");
+        mli_check(
+                mliObject_malloc(obj, v.dyn.size, vn.dyn.size, fv.dyn.size),
+                "Failed to malloc mliObject from file."
+        );
 
         for (i = 0; i < v.dyn.size; i ++) {
                 obj->vertices[i] = v.arr[i];
@@ -521,6 +524,12 @@ int mliObject_malloc_from_file(
         for (i = 0; i < fvn.dyn.size; i ++) {
                 obj->faces_vertex_normals[i] = fvn.arr[i];
         }
+
+        mli_check(
+                mliObject_assert_valid_faces(obj),
+                "Expected the vertex-indices and vertex-normal-indices "
+                "referenced by the faces to be contained by the mliObject."
+        );
 
         /* free dyn */
         mliDynVec_free(&v);
