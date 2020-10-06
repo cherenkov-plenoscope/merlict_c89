@@ -531,6 +531,11 @@ int mliObject_malloc_from_file(
                 "referenced by the faces to be contained by the mliObject."
         );
 
+        mli_check(
+                mliObject_assert_normals(obj, 1e-6),
+                "Expected vertex-normals to be normalized to at least 1e-6."
+        );
+
         /* free dyn */
         mliDynVec_free(&v);
         mliDynVec_free(&vn);
