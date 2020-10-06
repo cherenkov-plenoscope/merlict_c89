@@ -14,7 +14,7 @@ struct mliObject mliObject_init(void)
         obj.num_faces = 0;
         obj.faces_vertices = NULL;
         obj.faces_vertex_normals = NULL;
-
+        obj.faces_boundary_layers = NULL;
         return obj;
 }
 
@@ -24,6 +24,7 @@ void mliObject_free(struct mliObject *obj)
         free(obj->vertex_normals);
         free(obj->faces_vertices);
         free(obj->faces_vertex_normals);
+        free(obj->faces_boundary_layers);
         *obj = mliObject_init();
 }
 
@@ -47,6 +48,7 @@ int mliObject_malloc(
         mli_malloc(obj->vertex_normals, struct mliVec, obj->num_vertex_normals);
         mli_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
         mli_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
+        mli_malloc(obj->faces_boundary_layers, uint32_t, obj->num_faces);
         return 1;
 error:
         return 0;
@@ -81,6 +83,21 @@ int mliObject_assert_valid_faces(const struct mliObject *obj)
                                 obj->num_vertex_normals,
                         "Expected faces_vertex_normals.c <= "
                         "num_vertex_normals");
+        }
+        return 1;
+error:
+        return 0;
+}
+
+int mliObject_assert_normals(const struct mliObject *obj, const double epsilon)
+{
+        uint64_t i;
+        for (i = 0; i < obj->num_vertex_normals; i++) {
+                const double norm = mliVec_norm(obj->vertex_normals[i]);
+                mli_check(
+                        fabs(norm - 1.0) <= epsilon,
+                        "Expected vertex_normals to be normalized."
+                );
         }
         return 1;
 error:
