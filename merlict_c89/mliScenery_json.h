@@ -30,30 +30,6 @@ int mliFace_from_json_token(
         struct mliFace *f,
         const struct mliJson *json,
         const uint64_t token);
-int __mliFrame_set_Disc(
-        struct mliFrame *frame,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliFrame_set_BiCirclePlane(
-        struct mliFrame *frame,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliFrame_set_Hexagon(
-        struct mliFrame *frame,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliFrame_set_SphericalCapHex(
-        struct mliFrame *frame,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliFrame_set_Cylinder(
-        struct mliFrame *frame,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliFrame_set_Sphere(
-        struct mliFrame *frame,
-        const struct mliJson *json,
-        const uint64_t token);
 int __mliFrame_set_surface_idx(
         struct mliBoundaryLayer *boundary_layer,
         const struct mliMap2 *surface_names,
