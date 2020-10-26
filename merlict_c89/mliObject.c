@@ -14,7 +14,6 @@ struct mliObject mliObject_init(void)
         obj.num_faces = 0;
         obj.faces_vertices = NULL;
         obj.faces_vertex_normals = NULL;
-        obj.faces_boundary_layers = NULL;
         return obj;
 }
 
@@ -24,7 +23,6 @@ void mliObject_free(struct mliObject *obj)
         free(obj->vertex_normals);
         free(obj->faces_vertices);
         free(obj->faces_vertex_normals);
-        free(obj->faces_boundary_layers);
         *obj = mliObject_init();
 }
 
@@ -48,7 +46,6 @@ int mliObject_malloc(
         mli_malloc(obj->vertex_normals, struct mliVec, obj->num_vertex_normals);
         mli_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
         mli_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
-        mli_malloc(obj->faces_boundary_layers, uint32_t, obj->num_faces);
         return 1;
 error:
         return 0;

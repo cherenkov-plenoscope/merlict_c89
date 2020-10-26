@@ -16,7 +16,6 @@ struct mliObject {
         uint32_t num_faces;
         struct mliFace *faces_vertices;
         struct mliFace *faces_vertex_normals;
-        uint32_t *faces_boundary_layers;
 };
 
 int mliObject_malloc(
