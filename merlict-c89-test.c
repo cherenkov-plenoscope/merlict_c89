@@ -22,6 +22,7 @@ int main(void)
                MLI_VERSION_PATCH);
 
 /*#include "tests/test_frame.c"*/
+#include "tests/test_tape_archive.c"
 #include "tests/test_upper_bound.c"
 #include "tests/test_histogram.c"
 #include "tests/test_pseudo_random_number_generator.c"

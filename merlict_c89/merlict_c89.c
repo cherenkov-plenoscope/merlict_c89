@@ -76,6 +76,8 @@
 #include "mli_string_to.c"
 #include "jsmn.c"
 #include "mli_json.c"
+/*#include "mliTapeArchive.c"*/
+#include "mliTar.c"
 #include "mliQuaternion_json.c"
 /*#include "mliScenery_json.c"*/
 #include "mliFunc_malloc_from_json_token.c"
