@@ -35,6 +35,7 @@
 #include "mliMedium.c"
 #include "mliSurface.c"
 #include "mli_primitive_codes.c"
+/*
 #include "mliFrame.c"
 #include "mliSceneryResources.c"
 #include "mliSceneryResources_write.c"
@@ -48,38 +49,44 @@
 #include "mliScenery_equal.c"
 #include "mliScenery_valid.c"
 #include "mliScenery_object_interface.c"
+*/
 #include "mliRay_OBB.c"
 #include "mliOuterPrismBound.c"
 #include "mliVec_OBB.c"
 #include "mliTriangle_OBB.c"
 #include "mli_inside_polygon.c"
-#include "mli_intersection_and_scenery.c"
+/*#include "mli_intersection_and_scenery.c"*/
 #include "mliOctOverlaps.c"
+/*
 #include "mliTmpOcTree.c"
 #include "mliOcTree.c"
 #include "mliOcTree_write.c"
 #include "mliOcTree_read.c"
 #include "mliOcTree_equal.c"
 #include "mli_ray_octree_traversal.c"
+*/
 #include "mli_from_outside_to_inside.c"
 #include "mli_xyplane.c"
-#include "mliTracer.c"
+/*#include "mliTracer.c"*/
 #include "mliView.c"
+/*
 #include "mli_pin_hole_camera.c"
 #include "mliApertureCamera.c"
+*/
 #include "mli_string_to.c"
 #include "jsmn.c"
 #include "mli_json.c"
-#include "mliScenery_json.c"
+#include "mliQuaternion_json.c"
+/*#include "mliScenery_json.c"*/
 #include "mliFunc_malloc_from_json_token.c"
 #include "mliVec_from_json_token.c"
-#include "mli_frame_to_scenery.c"
+/*#include "mli_frame_to_scenery.c"*/
 #include "mliPhoton.c"
-#include "mliPhotonInteraction.c"
+/*#include "mliPhotonInteraction.c"*/
 #include "mliDynPhoton.c"
-#include "mliDynPhotonInteraction.c"
+/*#include "mliDynPhotonInteraction.c"*/
 #include "mli_lambertian_cosine_law.c"
 #include "mliFresnel.c"
 #include "mli_photon_sources.c"
-#include "mli_photon_propagation.c"
+/*#include "mli_photon_propagation.c"*/
 #include "mli_lens_maker.c"

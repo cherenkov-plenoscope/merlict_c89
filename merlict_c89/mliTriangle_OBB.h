@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <math.h>
 
-#include "mliScenery.h"
 #include "mliVec.h"
 #include "mli_math.h"
 #include "mliOBB.h"

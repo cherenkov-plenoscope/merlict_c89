@@ -256,6 +256,7 @@ CASE("rotation representations")
         CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
 }
 
+/*
 CASE("parse mliUserScenery")
 {
         struct mliJson json = mliJson_init();
@@ -270,7 +271,6 @@ CASE("parse mliUserScenery")
                 &json, "tests/resources/small_scenery.debug.tmp"));
         CHECK(mliUserScenery_malloc_from_json(&uscn, &json));
 
-        /* functions */
         CHECK(uscn.resources.num_functions == 2u);
         CHECK(uscn.resources.functions[0].num_points == 2u);
         CHECK_MARGIN(uscn.resources.functions[0].x[0], 200e-9, 1e-9);
@@ -282,13 +282,13 @@ CASE("parse mliUserScenery")
         CHECK_MARGIN(uscn.resources.functions[1].y[0], 1.49, 1e-9);
         CHECK_MARGIN(uscn.resources.functions[1].x[1], 1200e-9, 1e-9);
         CHECK_MARGIN(uscn.resources.functions[1].y[1], 1.49, 1e-9);
-        /* default_medium */
+
         CHECK(mliMap2_get_value(
                 &uscn.medium_names,
                 "vacuum",
                 &default_medium_idx));
         CHECK(uscn.default_medium == default_medium_idx);
-        /* colors */
+
         CHECK(uscn.resources.num_colors == 4u);
         CHECK(mliColor_is_equal(
                 uscn.resources.colors[0], mliColor_set(22, 91, 49)));
@@ -298,7 +298,7 @@ CASE("parse mliUserScenery")
                 uscn.resources.colors[2], mliColor_set(22, 191, 49)));
         CHECK(mliColor_is_equal(
                 uscn.resources.colors[3], mliColor_set(22, 91, 149)));
-        /* surfaces */
+
         CHECK(uscn.resources.num_surfaces == 4u);
         uscn_srfs = uscn.resources.surfaces;
         uscn_medi = uscn.resources.media;
@@ -329,7 +329,7 @@ CASE("parse mliUserScenery")
         CHECK(uscn_srfs[3].material == MLI_MATERIAL_PHONG);
         CHECK(uscn_srfs[3].specular_reflection == 0u);
         CHECK(uscn_srfs[3].diffuse_reflection == 0u);
-        /* frames */
+
         CHECK(uscn.root.children.dyn.size == 4u);
         f = uscn.root.children.arr[0];
         CHECK(f->type == MLI_DISC);
@@ -356,3 +356,4 @@ CASE("parse mliUserScenery")
         mliUserScenery_free(&uscn);
         mliJson_free(&json);
 }
+*/

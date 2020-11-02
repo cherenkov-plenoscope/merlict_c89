@@ -109,17 +109,6 @@ CASE("ray has causal intersection")
         CHECK(!rc);
 }
 
-CASE("mliSphericalCapHex, bounding radius")
-{
-        struct mliSphericalCapHex cap;
-        double bounding_radius;
-        cap.curvature_radius = 1.0;
-        cap.inner_hex_radius = .1;
-        bounding_radius = mliSphericalCapHex_bounding_radius(cap);
-        CHECK(bounding_radius > cap.inner_hex_radius * MLI_2_OVER_SQRT3);
-        CHECK(bounding_radius < 1.1 * cap.inner_hex_radius * MLI_2_OVER_SQRT3);
-}
-
 CASE("mliHomTraComp, transform direction")
 {
         struct mliHomTraComp Tcomp;
