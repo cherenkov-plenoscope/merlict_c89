@@ -29,7 +29,6 @@ int main(void)
 #include "tests/test_orientated_bounding_box.c"
 #include "tests/test_sphere_intersection_equation.c"
 #include "tests/test_scenery.c"
-#include "tests/test_mliScenery_index.c"
 #include "tests/test_mliDynArray.c"
 #include "tests/test_mliQuaternion.c"
 #include "tests/test_homogeneous_transformation.c"
