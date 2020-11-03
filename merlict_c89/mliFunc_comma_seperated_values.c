@@ -4,21 +4,21 @@
 
 
 int mli_string_split(
-        const char *stream,
-        char *line,
+        const char *str,
         const char delimeter,
+        char *line,
         const uint64_t line_length)
 {
         uint64_t i = 0;
         memset(line, '\0', line_length);
         for (i = 0; i < line_length; i++) {
-                if (stream[i] == delimeter) {
+                if (str[i] == delimeter) {
                         i ++;
                         break;
-                } else if (stream[i] == '\0') {
+                } else if (str[i] == '\0') {
                         break;
                 } else {
-                        line[i] = stream[i];
+                        line[i] = str[i];
                 }
         }
         return i;
@@ -52,8 +52,8 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *text)
         while (1) {
                 line_length = mli_string_split(
                         &text[tpos],
-                        line,
                         line_delimiter,
+                        line,
                         nbuff
                 );
                 mli_check(line_length < nbuff, "Line too long.");
@@ -72,8 +72,8 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *text)
                 while (1) {
                         token_length = mli_string_split(
                                 &line[lpos],
-                                token,
                                 token_delimiter,
+                                token,
                                 nbuff
                         );
                         mli_check(token_length < nbuff, "Token too long.");
