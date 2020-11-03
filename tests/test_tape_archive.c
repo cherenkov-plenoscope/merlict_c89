@@ -2,46 +2,41 @@
 
 CASE("Read archive")
 {
-        uint64_t  i = 0;
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
-        char payload[1024];
+        char payload[128];
 
         CHECK(tar.pos == 0u);
         CHECK(tar.remaining_data == 0u);
 
         CHECK(mliTar_open(&tar, "tests/resources/minimal.tar", "r"));
         CHECK(mliTar_read_header(&tar, &tarh));
-        fprintf(stderr, "tarh.name: '%s'\n", tarh.name);
-        fprintf(stderr, "tarh.linkname: '%s'\n", tarh.linkname);
-        fprintf(stderr, "tarh.size: '%ld'\n", tarh.size);
-        for (i = 0; i < 1024; i++) {payload[i] = '\0';}
+        CHECK(0 == strcmp("function.csv", tarh.name));
+        CHECK(79 == tarh.size);
+
+        memset(payload, '\0', sizeof(payload));
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
-        fprintf(stderr, "payload:\n%s", payload);
 
         CHECK(mliTar_read_header(&tar, &tarh));
-        fprintf(stderr, "tarh.name: '%s'\n", tarh.name);
-        fprintf(stderr, "tarh.linkname: '%s'\n", tarh.linkname);
-        fprintf(stderr, "tarh.size: '%ld'\n", tarh.size);
-        for (i = 0; i < 1024; i++) {payload[i] = '\0';}
+        CHECK(0 == strcmp("README.md", tarh.name));
+        CHECK(75 == tarh.size);
+
+        memset(payload, '\0', sizeof(payload));
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
-        fprintf(stderr, "payload:\n%s", payload);
 
         CHECK(mliTar_read_header(&tar, &tarh));
-        fprintf(stderr, "tarh.name: '%s'\n", tarh.name);
-        fprintf(stderr, "tarh.linkname: '%s'\n", tarh.linkname);
-        fprintf(stderr, "tarh.size: '%ld'\n", tarh.size);
-        for (i = 0; i < 1024; i++) {payload[i] = '\0';}
+        CHECK(0 == strcmp("scenery.json", tarh.name));
+        CHECK(24 == tarh.size);
+
+        memset(payload, '\0', sizeof(payload));
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
-        fprintf(stderr, "payload:\n%s", payload);
 
         CHECK(mliTar_read_header(&tar, &tarh));
-        fprintf(stderr, "tarh.name: '%s'\n", tarh.name);
-        fprintf(stderr, "tarh.linkname: '%s'\n", tarh.linkname);
-        fprintf(stderr, "tarh.size: '%ld'\n", tarh.size);
-        for (i = 0; i < 1024; i++) {payload[i] = '\0';}
+        CHECK(0 == strcmp("triangle.obj", tarh.name));
+        CHECK(90 == tarh.size);
+
+        memset(payload, '\0', sizeof(payload));
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
-        fprintf(stderr, "payload:\n%s", payload);
 
         CHECK(mliTar_close(&tar));
 }
