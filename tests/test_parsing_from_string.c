@@ -118,3 +118,53 @@ CASE("mli_string_ends_with")
         CHECK(mli_string_ends_with("my_file.json", ".json"));
         CHECK(!mli_string_ends_with("my_file.json.stuff", ".json"));
 }
+
+CASE("mli_string_split_valid")
+{
+        char token[128];
+        char str[128];
+        char delimiter = '\n';
+        int token_size;
+        int p = 0;
+
+        sprintf(str, "first\nsecond\n\nthird");
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 6);
+        CHECK(0 == strcmp(token, "first"));
+        p += token_size;
+
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 7);
+        CHECK(0 == strcmp(token, "second"));
+        p += token_size;
+
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 1);
+        CHECK(0 == strcmp(token, ""));
+        p += token_size;
+
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 5);
+        CHECK(0 == strcmp(token, "third"));
+        p += token_size;
+
+        CHECK(str[p] == '\0');
+
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 0);
+        CHECK(token[0] == '\0');
+}
+
+CASE("mli_string_split_empty")
+{
+        char token[128];
+        char str[128];
+        char delimiter = '\n';
+        int token_size;
+        int p = 0;
+
+        memset(str, '\0', 128);
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 0);
+        CHECK(token[0] == '\0');
+}
