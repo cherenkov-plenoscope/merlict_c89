@@ -5,14 +5,14 @@
 
 int mli_string_split(
         const char *str,
-        const char delimeter,
+        const char delimiter,
         char *line,
         const uint64_t line_length)
 {
         uint64_t i = 0;
         memset(line, '\0', line_length);
         for (i = 0; i < line_length; i++) {
-                if (str[i] == delimeter) {
+                if (str[i] == delimiter) {
                         i ++;
                         break;
                 } else if (str[i] == '\0') {
