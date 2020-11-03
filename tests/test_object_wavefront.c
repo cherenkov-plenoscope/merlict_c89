@@ -352,18 +352,21 @@ CASE("mliObject, parse bad obj-float-lines")
 
 CASE("mliObject, read wavefront file")
 {
+        struct mliString str = mliString_init();
         struct mliObject obj = mliObject_init();
-
-        FILE *f = fopen("tests/resources/hexagonal_mirror_facet.obj", "r");
-        CHECK(f != NULL);
-        mliObject_malloc_from_file(&obj, f);
-        fclose(f);
+        CHECK(
+                mliString_malloc_from_file(
+                        &str,
+                        "tests/resources/hexagonal_mirror_facet.obj"
+                )
+        );
+        CHECK(mliObject_malloc_from_string(&obj, str.c_str));
+        CHECK(strlen(str.c_str) == str.capacity - 1);
+        mliString_free(&str);
 
         CHECK(obj.num_faces == 600);
         CHECK(obj.num_vertices == 331);
         CHECK(obj.num_vertex_normals == 331);
-
         CHECK(mliObject_assert_valid_faces(&obj));
-
         mliObject_free(&obj);
 }

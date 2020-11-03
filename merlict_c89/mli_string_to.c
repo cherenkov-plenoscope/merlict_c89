@@ -74,3 +74,51 @@ int mli_string_split(
         }
         return i;
 }
+
+struct mliString mliString_init(void)
+{
+        struct mliString str;
+        str.c_str = NULL;
+        str.capacity = 0u;
+        return str;
+}
+
+int mliString_malloc(struct mliString *str, const uint64_t strlen)
+{
+        mliString_free(str);
+        str->capacity = strlen + 1;
+        mli_malloc(str->c_str, char, str->capacity);
+        memset(str->c_str, '\0', str->capacity);
+        return 1;
+error:
+        mliString_free(str);
+        return 0;
+}
+
+void mliString_free(struct mliString *str)
+{
+        free(str->c_str);
+        (*str) = mliString_init();
+}
+
+int mliString_malloc_from_file(struct mliString *str, const char *path)
+{
+        uint64_t str_length = 0u;
+        FILE *f = fopen(path, "rt");
+        mli_check(f != NULL, "Can not read string from path.");
+        mli_check(fseek(f, 0, SEEK_END) == 0, "Can not seek to end of file.");
+        str_length = ftell(f);
+        mli_check(fseek(f, 0, SEEK_SET) == 0, "Can not seek to begin of file");
+        mli_check(
+                mliString_malloc(str, str_length),
+                "Can not malloc string."
+        );
+        mli_fread(str->c_str, sizeof(char), str_length, f);
+        fclose(f);
+        return 1;
+error:
+        if (f != NULL)
+                fclose(f);
+        mliString_free(str);
+        return 0;
+}

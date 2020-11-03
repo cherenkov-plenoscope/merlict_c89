@@ -16,4 +16,16 @@ int mli_string_split(
         const char delimiter,
         char *token,
         const uint64_t token_length);
+
+struct mliString {
+        char *c_str;
+        uint64_t capacity;
+};
+
+struct mliString mliString_init(void);
+int mliString_malloc(struct mliString *str, const uint64_t strlen);
+void mliString_free(struct mliString *str);
+int mliString_malloc_from_file(struct mliString *str, const char *path);
+
+
 #endif

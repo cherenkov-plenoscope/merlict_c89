@@ -15,8 +15,6 @@ int _mliObject_parse_three_float_line(
         const char *line,
         struct mliVec *v);
 
-int mliObject_malloc_from_file(
-        struct mliObject *obj,
-        FILE *f);
+int mliObject_malloc_from_file(struct mliObject *obj, const char *str);
 
 #endif

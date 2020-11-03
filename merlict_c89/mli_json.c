@@ -81,28 +81,19 @@ error:
 
 int mliJson_malloc_from_file(struct mliJson *json, const char *path)
 {
-        char *json_str = NULL;
-        uint64_t num_chars = 0u;
-        uint64_t num_chars_and_null = 0u;
-        FILE *f = fopen(path, "rt");
-        mli_check(f != NULL, "Can not read json from path.");
-        mli_check(fseek(f, 0, SEEK_END) == 0, "Can not seek to end of file.");
-        num_chars = ftell(f);
-        num_chars_and_null = num_chars + 1u;
-        mli_check(fseek(f, 0, SEEK_SET) == 0, "Can not seek to begin of file");
-        mli_malloc(json_str, char, num_chars_and_null);
-        mli_fread(json_str, sizeof(char), num_chars, f);
-        json_str[num_chars] = '\0';
-        fclose(f);
+        struct mliString str = mliString_init();
         mli_check(
-                mliJson_malloc_from_string(json, json_str),
-                "Failed to parse json-string read from path.");
-        free(json_str);
+                mliString_malloc_from_file(&str, path),
+                "Failed to read file into string."
+        );
+        mli_check(
+                mliJson_malloc_from_string(json, str.c_str),
+                "Failed to parse json-string read from path."
+        );
+        mliString_free(&str);
         return 1;
 error:
-        free(json_str);
-        if (f != NULL)
-                fclose(f);
+        mliJson_free(json);
         return 0;
 }
 

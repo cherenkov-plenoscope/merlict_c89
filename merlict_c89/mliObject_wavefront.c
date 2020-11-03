@@ -413,12 +413,12 @@ error:
         return 0;
 }
 
-int mliObject_malloc_from_file(
-        struct mliObject *obj,
-        FILE *f)
+int mliObject_malloc_from_string(struct mliObject *obj, const char* str)
 {
         uint64_t i;
+        uint64_t p = 0;
         char line[1024];
+        uint64_t line_length;
 
         /* init dyn */
         struct mliDynVec v = mliDynVec_init();
@@ -435,8 +435,12 @@ int mliObject_malloc_from_file(
         mli_c(mliDynFace_malloc(&fvn, 0u));
 
         /* parse wavefront into dyn */
-        while (fgets(line, sizeof(line), f) != NULL) {
-                line[strcspn(line, "\n")] = '\0';
+        while (1) {
+                line_length = mli_string_split(&str[p], '\n', line, 1024);
+                if (line_length == 0) {
+                    break;
+                }
+                p += line_length;
 
                 /* fprintf(stderr, "> %s\n", line); */
 
