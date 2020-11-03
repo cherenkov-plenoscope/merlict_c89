@@ -2,7 +2,7 @@
 #include "mliFunc_comma_seperated_values.h"
 #include "mliDynArray_template.h"
 
-int mliFunc_malloc_from_csv(struct mliFunc *func, const char *text)
+int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
 {
         char line_delimiter = '\n';
         char token_delimiter = ',';

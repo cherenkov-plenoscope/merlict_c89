@@ -4,5 +4,5 @@
 
 #include "mliFunc.h"
 
-int mliFunc_malloc_from_csv(struct mliFunc *func, const char *text);
+int mliFunc_malloc_from_string(struct mliFunc *func, const char *text);
 #endif
