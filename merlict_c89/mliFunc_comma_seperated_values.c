@@ -2,29 +2,6 @@
 #include "mliFunc_comma_seperated_values.h"
 #include "mliDynArray_template.h"
 
-
-int mli_string_split(
-        const char *str,
-        const char delimiter,
-        char *line,
-        const uint64_t line_length)
-{
-        uint64_t i = 0;
-        memset(line, '\0', line_length);
-        for (i = 0; i < line_length; i++) {
-                if (str[i] == delimiter) {
-                        i ++;
-                        break;
-                } else if (str[i] == '\0') {
-                        break;
-                } else {
-                        line[i] = str[i];
-                }
-        }
-        return i;
-}
-
-
 int mliFunc_malloc_from_csv(struct mliFunc *func, const char *text)
 {
         char line_delimiter = '\n';

@@ -53,3 +53,24 @@ int mli_string_ends_with(const char *str, const char *suffix)
         }
         return strncmp(str + len_str - len_suffix, suffix, len_suffix) == 0;
 }
+
+int mli_string_split(
+        const char *str,
+        const char delimiter,
+        char *line,
+        const uint64_t line_length)
+{
+        uint64_t i = 0;
+        memset(line, '\0', line_length);
+        for (i = 0; i < line_length; i++) {
+                if (str[i] == delimiter) {
+                        i ++;
+                        break;
+                } else if (str[i] == '\0') {
+                        break;
+                } else {
+                        line[i] = str[i];
+                }
+        }
+        return i;
+}
