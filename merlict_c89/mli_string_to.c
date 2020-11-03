@@ -57,19 +57,19 @@ int mli_string_ends_with(const char *str, const char *suffix)
 int mli_string_split(
         const char *str,
         const char delimiter,
-        char *line,
-        const uint64_t line_length)
+        char *token,
+        const uint64_t token_length)
 {
         uint64_t i = 0;
-        memset(line, '\0', line_length);
-        for (i = 0; i < line_length; i++) {
+        memset(token, '\0', token_length);
+        for (i = 0; i < token_length; i++) {
                 if (str[i] == delimiter) {
                         i ++;
                         break;
                 } else if (str[i] == '\0') {
                         break;
                 } else {
-                        line[i] = str[i];
+                        token[i] = str[i];
                 }
         }
         return i;
