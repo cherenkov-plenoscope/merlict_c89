@@ -76,7 +76,7 @@
 #include "mli_string_to.h"
 #include "jsmn.h"
 #include "mli_json.h"
-/*#include "mliTapeArchive.h"*/
+#include "mliArchive.h"
 #include "mliTar.h"
 #include "mliFunc_comma_seperated_values.h"
 #include "mliQuaternion_json.h"
