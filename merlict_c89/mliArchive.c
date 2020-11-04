@@ -82,7 +82,16 @@ struct mliArc mliArc_init(void)
 
 void mliArc_free(struct mliArc *arc)
 {
-        mliDynMapItem_free(&arc->objects);
+        uint64_t i;
+        for (i = 0; i < arc->objects.dyn.size; i++) {
+                mliObject_free(arc->objects.arr[i].value);
+                free(arc->objects.arr[i].value);
+        }
+        mliDynMapItem_free(&arc->functions);
+        for (i = 0; i < arc->functions.dyn.size; i++) {
+                mliFunc_free(arc->functions.arr[i].value);
+                free(arc->functions.arr[i].value);
+        }
         mliDynMapItem_free(&arc->functions);
         (*arc) = mliArc_init();
 }
