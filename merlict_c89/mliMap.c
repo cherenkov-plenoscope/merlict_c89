@@ -1,16 +1,16 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMap.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, Map3, struct mliMap3Item)
-struct mliMap3Item mliMap3Item_init(void)
+MLIDYNARRAY_IMPLEMENTATION(mli, Map, struct _mliMapItem)
+struct _mliMapItem _mliMapItem_init(void)
 {
-        struct mliMap3Item item;
+        struct _mliMapItem item;
         memset(item.key, '\0', MLI_MAP_KEY_CAPACITY);
         item.value = 0u;
         return item;
 }
-int mliDynMap3_find(
-        const struct mliDynMap3 *map,
+int mliDynMap_find(
+        const struct mliDynMap *map,
         const char *key,
         uint64_t *idx)
 {
@@ -23,28 +23,28 @@ int mliDynMap3_find(
         }
         return 0;
 }
-int mliDynMap3_has(const struct mliDynMap3 *map, const char *key)
+int mliDynMap_has(const struct mliDynMap *map, const char *key)
 {
         uint64_t idx;
-        return mliDynMap3_find(map, key, &idx);
+        return mliDynMap_find(map, key, &idx);
 }
-int mliDynMap3_insert(struct mliDynMap3 *map, const char *key, uint64_t v)
+int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t v)
 {
-        struct mliMap3Item item;
+        struct _mliMapItem item;
         mli_check(strlen(key) < MLI_MAP_KEY_CAPACITY, "Key too long.");
-        mli_check(0 == mliDynMap3_has(map, key), "Key already in use.");
-        item = mliMap3Item_init();
+        mli_check(0 == mliDynMap_has(map, key), "Key already in use.");
+        item = _mliMapItem_init();
         strcpy(item.key, key);
         item.value = v;
-        mli_check(mliDynMap3_push_back(map, item), "Failed to mmaloc item.");
+        mli_check(mliDynMap_push_back(map, item), "Failed to mmaloc item.");
         return 1;
 error:
         return 0;
 }
-int mliDynMap3_get(const struct mliDynMap3 *map, const char *key, uint64_t *v)
+int mliDynMap_get(const struct mliDynMap *map, const char *key, uint64_t *v)
 {
         uint64_t idx;
-        mli_check(mliDynMap3_find(map, key, &idx), "Key does not exist.");
+        mli_check(mliDynMap_find(map, key, &idx), "Key does not exist.");
         (*v) = map->arr[idx].value;
         return 1;
 error:

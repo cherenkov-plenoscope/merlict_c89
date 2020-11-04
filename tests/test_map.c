@@ -61,27 +61,27 @@ CASE("vmap")
 CASE("map3")
 {
         uint64_t ret = 0;
-        struct mliDynMap3 map = mliDynMap3_init();
-        CHECK(mliDynMap3_malloc(&map, 0u));
+        struct mliDynMap map = mliDynMap_init();
+        CHECK(mliDynMap_malloc(&map, 0u));
 
-        CHECK(mliDynMap3_has(&map, "hans") == 0);
-        CHECK(mliDynMap3_insert(&map, "hans", 1337));
-        CHECK(mliDynMap3_has(&map, "hans"));
-        CHECK(mliDynMap3_get(&map, "hans", &ret));
+        CHECK(mliDynMap_has(&map, "hans") == 0);
+        CHECK(mliDynMap_insert(&map, "hans", 1337));
+        CHECK(mliDynMap_has(&map, "hans"));
+        CHECK(mliDynMap_get(&map, "hans", &ret));
         CHECK(ret == 1337);
 
-        CHECK(mliDynMap3_insert(&map, "peter", 42));
-        CHECK(mliDynMap3_has(&map, "peter"));
-        CHECK(mliDynMap3_get(&map, "peter", &ret));
+        CHECK(mliDynMap_insert(&map, "peter", 42));
+        CHECK(mliDynMap_has(&map, "peter"));
+        CHECK(mliDynMap_get(&map, "peter", &ret));
         CHECK(ret == 42);
 
-        CHECK(mliDynMap3_insert(&map, "karl", 37));
-        CHECK(mliDynMap3_has(&map, "karl"));
-        CHECK(mliDynMap3_get(&map, "karl", &ret));
+        CHECK(mliDynMap_insert(&map, "karl", 37));
+        CHECK(mliDynMap_has(&map, "karl"));
+        CHECK(mliDynMap_get(&map, "karl", &ret));
         CHECK(ret == 37);
 
-        CHECK(!mliDynMap3_insert(&map, "karl", 37));
+        CHECK(!mliDynMap_insert(&map, "karl", 37));
 
         CHECK(map.dyn.size == 3u);
-        mliDynMap3_free(&map);
+        mliDynMap_free(&map);
 }

@@ -7,14 +7,13 @@
 
 #define MLI_MAP_KEY_CAPACITY 128
 
-struct mliMap3Item {
+struct _mliMapItem {
         char key[MLI_MAP_KEY_CAPACITY];
         uint64_t value;
 };
-MLIDYNARRAY_DEFINITON(mli, Map3, struct mliMap3Item)
-struct mliMap3Item mliMap3Item_init(void);
-int mliDynMap3_has(const struct mliDynMap3 *map, const char *key);
-int mliDynMap3_insert(struct mliDynMap3 *map, const char *key, uint64_t v);
-int mliDynMap3_get(const struct mliDynMap3 *map, const char *key, uint64_t *v);
+MLIDYNARRAY_DEFINITON(mli, Map, struct _mliMapItem)
+int mliDynMap_has(const struct mliDynMap *map, const char *key);
+int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t v);
+int mliDynMap_get(const struct mliDynMap *map, const char *key, uint64_t *v);
 
 #endif
