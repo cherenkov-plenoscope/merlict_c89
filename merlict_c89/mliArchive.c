@@ -84,6 +84,7 @@ void mliArc_free(struct mliArc *arc)
 {
         mliDynMapItem_free(&arc->objects);
         mliDynMapItem_free(&arc->functions);
+        (*arc) = mliArc_init();
 }
 
 int mliArc_malloc_from_tar(struct mliArc *arc, const char *path)
@@ -104,7 +105,6 @@ int mliArc_malloc_from_tar(struct mliArc *arc, const char *path)
                         mliString_malloc(&string_buffer, tarh.size),
                         "Can not allocate string-buffer."
                 );
-
                 mli_check(
                         mliTar_read_data(
                                 &tar,
@@ -149,7 +149,7 @@ int mliArc_malloc_from_tar(struct mliArc *arc, const char *path)
                                 ),
                                 "Failed to malloc CSV function from '.csv'"
                                 "-string from tar."
-);
+                        );
                         mli_check(
                                 mliDynMapItem_malloc_insert(
                                         &arc->functions,
