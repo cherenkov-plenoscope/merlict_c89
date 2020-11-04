@@ -519,7 +519,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char* str)
                 obj->vertices[i] = v.arr[i];
         }
         for (i = 0; i < vn.dyn.size; i ++) {
-                obj->vertex_normals[i] = vn.arr[i];
+                obj->vertex_normals[i] = mliVec_normalized(vn.arr[i]);
         }
         for (i = 0; i < fv.dyn.size; i ++) {
                 obj->faces_vertices[i] = fv.arr[i];
