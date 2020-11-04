@@ -189,7 +189,6 @@ int mliTar_open(struct mliTar *tar, const char *filename, const char *mode)
 
         return 1;
 error:
-        mliTar_close(tar);
         return 0;
 }
 
