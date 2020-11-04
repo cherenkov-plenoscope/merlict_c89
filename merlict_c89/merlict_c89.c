@@ -29,7 +29,6 @@
 #include "mliDynArray.c"
 #include "mliDynArray_template.c"
 #include "mliDynArray_channels_template.c"
-#include "mli_variable_length_integer.c"
 #include "mliMap.c"
 #include "mliBoundaryLayer.c"
 #include "mliMedium.c"

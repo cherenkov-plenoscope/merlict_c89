@@ -8,7 +8,7 @@
 #define MLI_MAP_KEY_CAPACITY 128
 
 struct mliMap3Item {
-        char key[128];
+        char key[MLI_MAP_KEY_CAPACITY];
         uint64_t value;
 };
 MLIDYNARRAY_DEFINITON(mli, Map3, struct mliMap3Item)
