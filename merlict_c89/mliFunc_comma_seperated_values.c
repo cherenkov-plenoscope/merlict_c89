@@ -2,14 +2,15 @@
 #include "mliFunc_comma_seperated_values.h"
 #include "mliDynArray_template.h"
 
+#define MLI_CSV_BUFF_CAPACITY 128
+
 int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
 {
         char line_delimiter = '\n';
         char token_delimiter = ',';
-        const int nbuff = 128;
-        char *line = NULL;
+        char line[MLI_CSV_BUFF_CAPACITY];
         int line_length = 1;
-        char *token = NULL;
+        char token[MLI_CSV_BUFF_CAPACITY];
         int token_length = 1;
         int lpos = 0;
         int tpos = 0;
@@ -23,17 +24,18 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
         struct mliDynDouble ys = mliDynDouble_init();
         mli_check(mliDynDouble_malloc(&xs, 0u), "Failed to malloc xs.");
         mli_check(mliDynDouble_malloc(&ys, 0u), "Failed to malloc ys.");
-        mli_malloc(line, char, nbuff);
-        mli_malloc(token, char, nbuff);
 
         while (1) {
                 line_length = mli_string_split(
                         &text[tpos],
                         line_delimiter,
                         line,
-                        nbuff
+                        MLI_CSV_BUFF_CAPACITY
                 );
-                mli_check(line_length < nbuff, "Line too long.");
+                mli_check(
+                        line_length < MLI_CSV_BUFF_CAPACITY,
+                        "Line too long."
+                );
                 if (line_length == 0) {
                         break;
                 }
@@ -51,9 +53,12 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
                                 &line[lpos],
                                 token_delimiter,
                                 token,
-                                nbuff
+                                MLI_CSV_BUFF_CAPACITY
                         );
-                        mli_check(token_length < nbuff, "Token too long.");
+                        mli_check(
+                                token_length < MLI_CSV_BUFF_CAPACITY,
+                                "Token too long."
+                        );
                         if (token_length == 0) {
                                 break;
                         }
@@ -92,14 +97,10 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
 
         mliDynDouble_free(&ys);
         mliDynDouble_free(&xs);
-        free(line);
-        free(token);
         return 1;
 error:
         mliDynDouble_free(&ys);
         mliDynDouble_free(&xs);
-        free(line);
-        free(token);
         mliFunc_free(func);
         return 0;
 }
