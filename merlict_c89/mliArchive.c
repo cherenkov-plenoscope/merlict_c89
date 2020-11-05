@@ -1,82 +1,11 @@
 #include "mliArchive.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, MapItem, struct mliMapItem)
-
-struct mliMapItem mliMapItem_init(void)
-{
-        struct mliMapItem item;
-        memset(item.key, '\0', 128);
-        item.value = NULL;
-        return item;
-}
-
-int mliDynMapItem_find_key(
-        const struct mliDynMapItem *map,
-        const char *key,
-        uint64_t *idx)
-{
-        uint64_t i;
-        for (i = 0; i < map->dyn.size; i++) {
-                if (strcmp(map->arr[i].key, key) == 0) {
-                        (*idx) = i;
-                        return 1;
-                }
-        }
-        return 0;
-}
-
-int mliDynMapItem_has(const struct mliDynMapItem *map, const char *key)
-{
-        uint64_t idx;
-        return mliDynMapItem_find_key(map, key, &idx);
-}
-
-int mliDynMapItem_malloc_insert(
-        struct mliDynMapItem *map,
-        const char *key,
-        void *value)
-{
-        struct mliMapItem item;
-        mli_check(strlen(key) < 128, "Key too long.");
-        mli_check(0 == mliDynMapItem_has(map, key), "Key already in use.");
-        item = mliMapItem_init();
-        strcpy(item.key, key);
-        item.value = value;
-        mli_check(mliDynMapItem_push_back(map, item), "Failed to mmaloc item.");
-        return 1;
-error:
-        return 0;
-}
-
-int mliDynMapItem_get(
-        const struct mliDynMapItem *map,
-        const char *key,
-        void **value)
-{
-        uint64_t idx;
-        mli_check(
-                mliDynMapItem_find_key(map, key, &idx),
-                "Key does not exist."
-        );
-        (*value) = map->arr[idx].value;
-        return 1;
-error:
-        return 0;
-}
-
-
-
-
-
-
-
-
 
 struct mliArc mliArc_init(void)
 {
         struct mliArc arc;
-        arc.objects = mliDynMapItem_init();
-        arc.functions = mliDynMapItem_init();
+        arc.objects = mliDynMap_init();
+        arc.functions = mliDynMap_init();
         return arc;
 }
 
@@ -87,12 +16,12 @@ void mliArc_free(struct mliArc *arc)
                 mliObject_free(arc->objects.arr[i].value);
                 free(arc->objects.arr[i].value);
         }
-        mliDynMapItem_free(&arc->functions);
+        mliDynMap_free(&arc->functions);
         for (i = 0; i < arc->functions.dyn.size; i++) {
                 mliFunc_free(arc->functions.arr[i].value);
                 free(arc->functions.arr[i].value);
         }
-        mliDynMapItem_free(&arc->functions);
+        mliDynMap_free(&arc->functions);
         (*arc) = mliArc_init();
 }
 
@@ -102,9 +31,6 @@ int mliArc_malloc_from_tar(struct mliArc *arc, const char *path)
         struct mliTarHeader tarh = mliTarHeader_init();
         struct mliString string_buffer = mliString_init();
         mliArc_free(arc);
-
-        mli_c(mliDynMapItem_malloc(&arc->objects, 0u));
-        mli_c(mliDynMapItem_malloc(&arc->functions, 0u));
 
         mli_check(mliTar_open(&tar, path, "r"), "Cant open Tar.");
 
@@ -137,7 +63,7 @@ int mliArc_malloc_from_tar(struct mliArc *arc, const char *path)
                                 "-string from tar."
                         );
                         mli_check(
-                                mliDynMapItem_malloc_insert(
+                                mliDynMap_insert(
                                         &arc->objects,
                                         tarh.name,
                                         (void *)obj
@@ -160,12 +86,12 @@ int mliArc_malloc_from_tar(struct mliArc *arc, const char *path)
                                 "-string from tar."
                         );
                         mli_check(
-                                mliDynMapItem_malloc_insert(
+                                mliDynMap_insert(
                                         &arc->functions,
                                         tarh.name,
                                         (void *)func
                                 ),
-                                "Failed to insert Object into map."
+                                "Failed to insert 1D-Func into map."
                         );
                 }
         }

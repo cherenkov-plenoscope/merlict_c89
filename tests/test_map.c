@@ -11,11 +11,11 @@ CASE("arc")
                 )
         );
 
-        CHECK(mliDynMapItem_has(&arc.objects, "teapot2.obj"));
-        CHECK(mliDynMapItem_has(&arc.functions, "refractive_index_water.csv"));
+        CHECK(mliDynMap_has(&arc.objects, "teapot2.obj"));
+        CHECK(mliDynMap_has(&arc.functions, "refractive_index_water.csv"));
 
         CHECK(
-                mliDynMapItem_get(
+                mliDynMap_get(
                         &arc.objects,
                         "hexagonal_mirror_facet.obj",
                         (void *)&obj
@@ -33,55 +33,27 @@ CASE("vmap")
 {
         void *ptr;
         void *ptr_back;
-        struct mliDynMapItem map = mliDynMapItem_init();
-        CHECK(mliDynMapItem_malloc(&map, 0u));
-
-        CHECK(mliDynMapItem_has(&map, "hans") == 0);
-        ptr = (void *)1337;
-        CHECK(mliDynMapItem_malloc_insert(&map, "hans", ptr));
-        CHECK(mliDynMapItem_has(&map, "hans"));
-        CHECK(mliDynMapItem_get(&map, "hans", &ptr_back));
-        CHECK(ptr_back == (void *)1337);
-
-        ptr = (void *)42;
-        CHECK(mliDynMapItem_malloc_insert(&map, "peter", ptr));
-        CHECK(mliDynMapItem_has(&map, "peter"));
-        CHECK(mliDynMapItem_get(&map, "peter", &ptr_back));
-        CHECK(ptr_back == (void *)42);
-
-        ptr = (void *)37;
-        CHECK(mliDynMapItem_malloc_insert(&map, "karl", ptr));
-        CHECK(mliDynMapItem_has(&map, "karl"));
-        CHECK(mliDynMapItem_get(&map, "karl", &ptr_back));
-        CHECK(ptr_back == (void *)37);
-
-        mliDynMapItem_free(&map);
-}
-
-CASE("map3")
-{
-        uint64_t ret = 0;
         struct mliDynMap map = mliDynMap_init();
         CHECK(mliDynMap_malloc(&map, 0u));
 
         CHECK(mliDynMap_has(&map, "hans") == 0);
-        CHECK(mliDynMap_insert(&map, "hans", 1337));
+        ptr = (void *)1337;
+        CHECK(mliDynMap_insert(&map, "hans", ptr));
         CHECK(mliDynMap_has(&map, "hans"));
-        CHECK(mliDynMap_get(&map, "hans", &ret));
-        CHECK(ret == 1337);
+        CHECK(mliDynMap_get(&map, "hans", &ptr_back));
+        CHECK(ptr_back == (void *)1337);
 
-        CHECK(mliDynMap_insert(&map, "peter", 42));
+        ptr = (void *)42;
+        CHECK(mliDynMap_insert(&map, "peter", ptr));
         CHECK(mliDynMap_has(&map, "peter"));
-        CHECK(mliDynMap_get(&map, "peter", &ret));
-        CHECK(ret == 42);
+        CHECK(mliDynMap_get(&map, "peter", &ptr_back));
+        CHECK(ptr_back == (void *)42);
 
-        CHECK(mliDynMap_insert(&map, "karl", 37));
+        ptr = (void *)37;
+        CHECK(mliDynMap_insert(&map, "karl", ptr));
         CHECK(mliDynMap_has(&map, "karl"));
-        CHECK(mliDynMap_get(&map, "karl", &ret));
-        CHECK(ret == 37);
+        CHECK(mliDynMap_get(&map, "karl", &ptr_back));
+        CHECK(ptr_back == (void *)37);
 
-        CHECK(!mliDynMap_insert(&map, "karl", 37));
-
-        CHECK(map.dyn.size == 3u);
         mliDynMap_free(&map);
 }
