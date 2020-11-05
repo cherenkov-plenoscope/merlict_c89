@@ -18,7 +18,7 @@ CASE("arc")
                 mliDynMap_get(
                         &arc.objects,
                         "hexagonal_mirror_facet.obj",
-                        (void *)&obj
+                        (void **)&obj
                 )
         );
 

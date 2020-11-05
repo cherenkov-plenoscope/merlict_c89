@@ -2,8 +2,10 @@
 
 CASE("parse_correct_csv")
 {
-        char *text = "#comment\n#units\n0.0,1.0\n1.0,2.0\n";
+        char text[128];
         struct mliFunc func = mliFunc_init();
+
+        sprintf(text, "#comment\n#units\n0.0,1.0\n1.0,2.0\n");
         CHECK(mliFunc_malloc_from_string(&func, text));
 
         CHECK(func.num_points == 2);
@@ -18,8 +20,10 @@ CASE("parse_correct_csv")
 
 CASE("parse_empty_text")
 {
-        char *text = "";
+        char text[128];
         struct mliFunc func = mliFunc_init();
+
+        memset(text, '\0', 128);
         CHECK(mliFunc_malloc_from_string(&func, text));
         CHECK(func.num_points == 0);
         mliFunc_free(&func);
@@ -27,8 +31,10 @@ CASE("parse_empty_text")
 
 CASE("parse_empty_csv")
 {
-        char *text = "# only a comment line\n";
+        char text[128];
         struct mliFunc func = mliFunc_init();
+
+        sprintf(text, "# only a comment line\n");
         CHECK(mliFunc_malloc_from_string(&func, text));
         CHECK(func.num_points == 0);
         mliFunc_free(&func);
@@ -36,8 +42,10 @@ CASE("parse_empty_csv")
 
 CASE("parse_empty_csv_no_newline")
 {
-        char *text = "# only a comment line";
+        char text[128];
         struct mliFunc func = mliFunc_init();
+
+        sprintf(text, "# only a comment line");
         CHECK(mliFunc_malloc_from_string(&func, text));
         CHECK(func.num_points == 0);
         mliFunc_free(&func);
@@ -45,8 +53,10 @@ CASE("parse_empty_csv_no_newline")
 
 CASE("some_comments")
 {
-        char *text = "0.0,1.0\n# inline comment\n1.0,2.0\n# end comment";
+        char text[128];
         struct mliFunc func = mliFunc_init();
+
+        sprintf(text, "0.0,1.0\n# inline comment\n1.0,2.0\n# end comment");
         CHECK(mliFunc_malloc_from_string(&func, text));
 
         CHECK(func.num_points == 2);
@@ -61,20 +71,24 @@ CASE("some_comments")
 
 CASE("exceed_buffer")
 {
-        char *text = "0.0000000000000000000000000000000000000000000"
-        "000000000000000000000000000000000000000000000000000000000,"
-        "1.00000000000000000000000000000000000000000000000000000000"
-        "0000000000000000000000000000000000000000000000000000000000";
+        char text[1024];
         struct mliFunc func = mliFunc_init();
-        CHECK(0 == mliFunc_malloc_from_string(&func, text));
 
+        sprintf(
+                text,
+                "0.0000000000000000000000000000000000000000000"
+                "000000000000000000000000000000000000000000000000000000000,"
+                "1.00000000000000000000000000000000000000000000000000000000"
+                "0000000000000000000000000000000000000000000000000000000000"
+        );
+        CHECK(0 == mliFunc_malloc_from_string(&func, text));
         mliFunc_free(&func);
 }
 
 CASE("do_not_tolerate_whitespaces")
 {
-        struct mliFunc func = mliFunc_init();
         char text[128];
+        struct mliFunc func = mliFunc_init();
 
         sprintf(text, " 0.0,1.0\n");
         CHECK(0 == mliFunc_malloc_from_string(&func, text));

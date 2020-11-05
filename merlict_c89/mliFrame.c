@@ -8,14 +8,16 @@ struct mliFrame;
 struct mliFrame mliFrame_init(void)
 {
         struct mliFrame f;
-        MLI_ZEROS(f.name, MLI_FRAME_NAME_SIZE);
+        f.type = MLI_FRAME;
         f.id = 0u;
-        f.children = mliDynFramePtr_init();
-        f.mother = NULL;
+        memset(f.name, '\0', MLI_FRAME_NAME_CAPACITY);
         f.frame2mother.translation = mliVec_set(0., 0., 0.);
         f.frame2mother.rotation = mliQuaternion_set_tait_bryan(0., 0., 0.);
         f.frame2root = f.frame2mother;
-        f.type = MLI_FRAME;
+        f.mother = NULL;
+        f.children = mliDynFramePtr_init();
+        f.object = 0u;
+
         f.boundary_layer.inner.surface = 0u;
         f.boundary_layer.outer.surface = 0u;
         f.boundary_layer.inner.medium = 0u;
@@ -23,90 +25,28 @@ struct mliFrame mliFrame_init(void)
         return f;
 }
 
-int mliFrame_free(struct mliFrame *f)
+void mliFrame_free(struct mliFrame *f)
 {
         uint64_t c;
-        switch (f->type) {
-        case MLI_FRAME:
+        if (f->type == MLI_FRAME) {
                 for (c = 0; c < f->children.dyn.size; c++) {
                         struct mliFrame *child = f->children.arr[c];
                         mliFrame_free(child);
                 }
                 mliDynFramePtr_free(&f->children);
-                break;
-        case MLI_MESH:
-                mliMesh_free(f->primitive.mesh);
-                free(f->primitive.mesh);
-                break;
-        case MLI_SPHERICAL_CAP_HEX:
-                free(f->primitive.spherical_cap_hex);
-                break;
-        case MLI_SPHERE:
-                free(f->primitive.sphere);
-                break;
-        case MLI_CYLINDER:
-                free(f->primitive.cylinder);
-                break;
-        case MLI_HEXAGON:
-                free(f->primitive.hexagon);
-                break;
-        case MLI_BICIRCLEPLANE:
-                free(f->primitive.bicircleplane);
-                break;
-        case MLI_DISC:
-                free(f->primitive.disc);
-                break;
-        default:
-                mli_sentinel("Can not free unknown type of primitive.");
-                break;
         }
-        *f = mliFrame_init();
-        return 1;
-error:
-        return 0;
+        (*f) = mliFrame_init();
 }
 
 int mliFrame_malloc(struct mliFrame *f, const uint64_t type)
 {
-        mli_check(mliFrame_free(f), "Failed to free Frame before malloc.");
+        mliFrame_free(f);
         f->type = type;
-        switch (type) {
-        case MLI_FRAME:
+        if (type == MLI_FRAME) {
                 mli_check(
                         mliDynFramePtr_malloc(&f->children, 0u),
-                        "Can not allocate children of frame.");
-                break;
-        case MLI_MESH:
-                mli_malloc(f->primitive.mesh, struct mliMesh, 1u);
-                *f->primitive.mesh = mliMesh_init();
-                break;
-        case MLI_SPHERICAL_CAP_HEX:
-                mli_malloc(
-                        f->primitive.spherical_cap_hex,
-                        struct mliSphericalCapHex,
-                        1u);
-                break;
-        case MLI_SPHERE:
-                mli_malloc(f->primitive.sphere, struct mliSphere, 1u);
-                break;
-        case MLI_CYLINDER:
-                mli_malloc(f->primitive.cylinder, struct mliCylinder, 1u);
-                break;
-        case MLI_HEXAGON:
-                mli_malloc(f->primitive.hexagon, struct mliHexagon, 1u);
-                break;
-        case MLI_BICIRCLEPLANE:
-                mli_malloc(
-                        f->primitive.bicircleplane,
-                        struct mliBiCirclePlane,
-                        1u);
-                break;
-        case MLI_DISC:
-                mli_malloc(f->primitive.disc, struct mliDisc, 1u);
-                break;
-        default:
-                mli_sentinel("Unknown type of primitive.");
-                break;
+                        "Can not allocate children of frame."
+                );
         }
         return 1;
 error:
@@ -134,7 +74,6 @@ struct mliFrame *mliFrame_add(struct mliFrame *mother, const uint64_t type)
 {
         struct mliFrame *child = NULL;
         mli_malloc(child, struct mliFrame, 1u);
-        (*child) = mliFrame_init();
         mli_check(
                 mliFrame_malloc(child, type), "Can not allocate child-frame.");
         mli_check(
@@ -148,35 +87,13 @@ error:
 int mli_type_to_string(const uint64_t type, char *s)
 {
         switch (type) {
-        case MLI_TRIANGLE:
-                sprintf(s, "Triangle");
-                break;
         case MLI_FRAME:
                 sprintf(s, "Frame");
                 break;
-        case MLI_MESH:
-                sprintf(s, "Mesh");
-                break;
-        case MLI_SPHERICAL_CAP_HEX:
-                sprintf(s, "SphericalCapHex");
-                break;
-        case MLI_SPHERE:
-                sprintf(s, "Sphere");
-                break;
-        case MLI_CYLINDER:
-                sprintf(s, "Cylinder");
-                break;
-        case MLI_HEXAGON:
-                sprintf(s, "Hexagon");
-                break;
-        case MLI_BICIRCLEPLANE:
-                sprintf(s, "BiCirclePlane");
-                break;
-        case MLI_DISC:
-                sprintf(s, "Disc");
+        case MLI_OBJECT:
+                sprintf(s, "Object");
                 break;
         default:
-                fprintf(stderr, "Unknown Type: %ld\n", type);
                 mli_sentinel("Type is unknown.");
                 break;
         }
@@ -189,20 +106,8 @@ int mli_string_to_type(const char *s, uint64_t *type)
 {
         if (strcmp(s, "Frame") == 0) {
                 *type = MLI_FRAME;
-        } else if (strcmp(s, "Mesh") == 0) {
-                *type = MLI_MESH;
-        } else if (strcmp(s, "SphericalCapHex") == 0) {
-                *type = MLI_SPHERICAL_CAP_HEX;
-        } else if (strcmp(s, "Sphere") == 0) {
-                *type = MLI_SPHERE;
-        } else if (strcmp(s, "Cylinder") == 0) {
-                *type = MLI_CYLINDER;
-        } else if (strcmp(s, "Hexagon") == 0) {
-                *type = MLI_HEXAGON;
-        } else if (strcmp(s, "BiCirclePlane") == 0) {
-                *type = MLI_BICIRCLEPLANE;
-        } else if (strcmp(s, "Disc") == 0) {
-                *type = MLI_DISC;
+        } else if (strcmp(s, "Object") == 0) {
+                *type = MLI_OBJECT;
         } else {
                 mli_sentinel("Type is unknown.");
         }

@@ -28,10 +28,12 @@ CASE("add two childs")
 
         child1 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child1);
+        CHECK(child1->type == MLI_FRAME);
         child1->id = 41;
 
         child2 = mliFrame_add(&mother, MLI_FRAME);
         CHECK(child2);
+        CHECK(child2->type == MLI_FRAME);
         child2->id = 42;
 
         CHECK(mother.children.dyn.size == 2);
@@ -96,70 +98,44 @@ CASE("add grand childs")
         mliFrame_free(&mother);
 }
 
-CASE("basic mesh allocation and initialization")
+CASE("basic object allocation and initialization")
 {
         struct mliFrame *child = NULL;
         struct mliFrame mother = mliFrame_init();
         CHECK(mliFrame_malloc(&mother, MLI_FRAME));
         mother.id = 1337;
 
-        child = mliFrame_add(&mother, MLI_MESH);
+        child = mliFrame_add(&mother, MLI_OBJECT);
         CHECK(child);
-        CHECK(child->type == MLI_MESH);
+        CHECK(child->type == MLI_OBJECT);
         child->id = 42;
-        mliMesh_malloc(child->primitive.mesh, 3, 1);
-        CHECK(child->primitive.mesh->num_vertices == 3);
-        CHECK(child->primitive.mesh->num_faces == 1);
-        child->primitive.mesh->vertices[0] = mliVec_set(1., 0., 0.);
-        child->primitive.mesh->vertices[0] = mliVec_set(0., 1., 0.);
-        child->primitive.mesh->vertices[0] = mliVec_set(0., 0., 1.);
-        child->primitive.mesh->faces[0] = mliFace_set(0, 1, 2);
+        child->object = 13;
         mliFrame_free(&mother);
 }
 
-CASE("basic sphere")
-{
-        struct mliFrame *child = NULL;
-        struct mliFrame mother = mliFrame_init();
-        CHECK(mliFrame_malloc(&mother, MLI_FRAME));
-        mother.id = 1337;
-
-        child = mliFrame_add(&mother, MLI_SPHERE);
-        CHECK(child);
-        CHECK(child->type == MLI_SPHERE);
-        child->id = 33;
-        child->primitive.sphere->radius = 1.;
-        mliFrame_free(&mother);
-}
-
+/*
 CASE("estimate capacity")
 {
         struct mliFrame root = mliFrame_init();
-        struct mliFrame *sphere = NULL;
+        struct mliFrame *obj = NULL;
         struct mliSceneryCapacity scn_cap = mliSceneryCapacity_init();
         CHECK(mliFrame_malloc(&root, MLI_FRAME));
-        sphere = mliFrame_add(&root, MLI_SPHERE);
-        CHECK(sphere);
+        obj = mliFrame_add(&root, MLI_OBJECT);
+        CHECK(obj);
         CHECK(__mliScenery_set_primitive_capacity(&scn_cap, &root));
-        CHECK(scn_cap.num_spheres == 1u);
+        CHECK(scn_cap.num_object_references == 1u);
         mliFrame_free(&root);
 }
+*/
 
 CASE("mapping frame-type-string to uint64")
 {
         uint64_t i;
-        uint64_t types[8] = {MLI_FRAME,
-                             MLI_MESH,
-                             MLI_SPHERICAL_CAP_HEX,
-                             MLI_SPHERE,
-                             MLI_CYLINDER,
-                             MLI_HEXAGON,
-                             MLI_BICIRCLEPLANE,
-                             MLI_DISC};
+        uint64_t types[2] = {MLI_FRAME, MLI_OBJECT};
         uint64_t type;
         char type_string[1024];
         CHECK(!mli_string_to_type("Wtf?", &type));
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < 2; i++) {
                 mli_type_to_string(types[i], type_string);
                 CHECK(mli_string_to_type(type_string, &type));
                 CHECK(type == types[i]);
@@ -194,6 +170,7 @@ CASE("mliFrame_set_frame2root, only translation z-component")
         CHECK_MARGIN(c1_c1->frame2root.translation.z, 2., 1e-9);
 }
 
+/*
 CASE("mliUserScenery_malloc, free")
 {
         struct mliUserScenery uscn = mliUserScenery_init();
@@ -214,3 +191,4 @@ CASE("mli_frame_to_scenery")
         mliScenery_free(&scenery);
         mliUserScenery_free(&uscn);
 }
+*/

@@ -13,12 +13,12 @@ void mliArc_free(struct mliArc *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->objects.dyn.size; i++) {
-                mliObject_free(arc->objects.arr[i].value);
+                mliObject_free((struct mliObject *)arc->objects.arr[i].value);
                 free(arc->objects.arr[i].value);
         }
         mliDynMap_free(&arc->functions);
         for (i = 0; i < arc->functions.dyn.size; i++) {
-                mliFunc_free(arc->functions.arr[i].value);
+                mliFunc_free((struct mliFunc *)arc->functions.arr[i].value);
                 free(arc->functions.arr[i].value);
         }
         mliDynMap_free(&arc->functions);

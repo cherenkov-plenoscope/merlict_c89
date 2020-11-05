@@ -7,9 +7,9 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
         char line_delimiter = '\n';
         char token_delimiter = ',';
         const int nbuff = 128;
-        char *line;
+        char *line = NULL;
         int line_length = 1;
-        char *token;
+        char *token = NULL;
         int token_length = 1;
         int lpos = 0;
         int tpos = 0;
