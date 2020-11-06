@@ -8,19 +8,19 @@
 
 MLIDYNARRAY_DEFINITON(mli, String, struct mliString)
 
-struct mliArc {
+struct mliArchive {
         struct mliDynString strings;
         struct mliDynMap filenames;
 };
 
-struct mliArc mliArc_init(void);
+struct mliArchive mliArchive_init(void);
 
-void mliArc_free(struct mliArc *arc);
-int mliArc_malloc_from_tar(struct mliArc *arc, const char *path);
+void mliArchive_free(struct mliArchive *arc);
+int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path);
 
-int mliArc_has(const struct mliArc *arc, const char *filename);
-int mliArc_get(struct mliArc *arc, const char *filename, struct mliString **str);
-uint64_t mliArc_num(const struct mliArc *arc);
-void mliArc_print(struct mliArc *arc);
+int mliArchive_has(const struct mliArchive *arc, const char *filename);
+int mliArchive_get(struct mliArchive *arc, const char *filename, struct mliString **str);
+uint64_t mliArchive_num(const struct mliArchive *arc);
+void mliArchive_print(struct mliArchive *arc);
 
 #endif

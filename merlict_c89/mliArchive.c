@@ -2,15 +2,15 @@
 
 MLIDYNARRAY_IMPLEMENTATION(mli, String, struct mliString)
 
-struct mliArc mliArc_init(void)
+struct mliArchive mliArchive_init(void)
 {
-        struct mliArc arc;
+        struct mliArchive arc;
         arc.strings = mliDynString_init();
         arc.filenames = mliDynMap_init();
         return arc;
 }
 
-void mliArc_free(struct mliArc *arc)
+void mliArchive_free(struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->strings.dyn.size; i++) {
@@ -18,15 +18,15 @@ void mliArc_free(struct mliArc *arc)
         }
         mliDynString_free(&arc->strings);
         mliDynMap_free(&arc->filenames);
-        (*arc) = mliArc_init();
+        (*arc) = mliArchive_init();
 }
 
-int mliArc_malloc_from_tar(struct mliArc *arc, const char *path)
+int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
 
-        mliArc_free(arc);
+        mliArchive_free(arc);
         mliDynString_malloc(&arc->strings, 0u);
 
         mli_check(mliTar_open(&tar, path, "r"), "Cant open Tar.");
@@ -64,19 +64,19 @@ int mliArc_malloc_from_tar(struct mliArc *arc, const char *path)
         mliTar_close(&tar);
         return 1;
 error:
-        mliArc_free(arc);
+        mliArchive_free(arc);
         if (tar.stream) {
                 mliTar_close(&tar);
         }
         return 0;
 }
 
-int mliArc_has(const struct mliArc *arc, const char *filename)
+int mliArchive_has(const struct mliArchive *arc, const char *filename)
 {
         return mliDynMap_has(&arc->filenames, filename);
 }
 
-int mliArc_get(struct mliArc *arc, const char *filename, struct mliString **str)
+int mliArchive_get(struct mliArchive *arc, const char *filename, struct mliString **str)
 {
         uint64_t idx;
         mli_c(mliDynMap_find(&arc->filenames, filename, &idx));
@@ -86,12 +86,12 @@ error:
         return 0;
 }
 
-uint64_t mliArc_num(const struct mliArc *arc)
+uint64_t mliArchive_num(const struct mliArchive *arc)
 {
         return arc->filenames.dyn.size;
 }
 
-void mliArc_print(struct mliArc *arc)
+void mliArchive_print(struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->strings.dyn.size; i++) {
