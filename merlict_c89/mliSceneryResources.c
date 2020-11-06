@@ -15,6 +15,8 @@ struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void)
 struct mliSceneryResources mliSceneryResources_init(void)
 {
         struct mliSceneryResources res;
+        res.default_medium = 0u;
+
         res.num_objects = 0u;
         res.objects = NULL;
 

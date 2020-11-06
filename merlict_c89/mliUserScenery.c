@@ -20,7 +20,6 @@ struct mliUserScenery mliUserScenery_init(void)
         uscn.color_names = mliDynMap_init();
         uscn.medium_names = mliDynMap_init();
         uscn.surface_names = mliDynMap_init();
-        uscn.default_medium = 0;
         return uscn;
 }
 

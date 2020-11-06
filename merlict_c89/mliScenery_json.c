@@ -750,7 +750,7 @@ int mliUserScenery_malloc_from_json(
                         &uscn->medium_names,
                         json,
                         token,
-                        &uscn->default_medium),
+                        &uscn->resources.default_medium),
                 "Failed to assign the 'default_medium'.");
 
         mli_check(

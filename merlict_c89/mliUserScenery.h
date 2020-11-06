@@ -13,7 +13,6 @@
 struct mliUserScenery {
         struct mliSceneryResources resources;
         struct mliFrame root;
-        uint32_t default_medium;
 
         struct mliDynMap object_names;
         struct mliDynMap function_names;
