@@ -8,7 +8,7 @@
 #include "mli_debug.h"
 #include "mliSceneryResources.h"
 #include "mliFrame.h"
-#include "mliMap.h"
+#include "mliDynMap.h"
 
 struct mliUserScenery {
         struct mliSceneryResources resources;

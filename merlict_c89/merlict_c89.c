@@ -29,7 +29,7 @@
 #include "mliDynArray.c"
 #include "mliDynArray_template.c"
 #include "mliDynArray_channels_template.c"
-#include "mliMap.c"
+#include "mliDynMap.c"
 #include "mliBoundaryLayer.c"
 #include "mliMedium.c"
 #include "mliSurface.c"
