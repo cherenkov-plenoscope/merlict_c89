@@ -4,24 +4,19 @@
 
 #include "mli_debug.h"
 #include "mliTar.h"
-#include "mli_json.h"
-#include "mliObject_wavefront.h"
-#include "mliFunc_comma_seperated_values.h"
-#include "mliDynMap.h"
 #include "mli_string_to.h"
 
+MLIDYNARRAY_DEFINITON(mli, String, struct mliString)
 
 struct mliArc {
-        struct mliJson geometry;
-        struct mliJson materials;
-
-        struct mliDynMap objects;
-        struct mliDynMap functions;
+        struct mliDynString strings;
+        struct mliDynMap filenames;
 };
 
 struct mliArc mliArc_init(void);
 
 void mliArc_free(struct mliArc *arc);
 int mliArc_malloc_from_tar(struct mliArc *arc, const char *path);
+void mliArc_print(struct mliArc *arc);
 
 #endif

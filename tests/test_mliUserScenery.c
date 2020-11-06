@@ -43,3 +43,15 @@ CASE("mliUserScenery, from json")
 
         mliJson_free(&json);
 }
+
+CASE("mliArc, tar")
+{
+        struct mliArc arc = mliArc_init();
+        CHECK(mliArc_malloc_from_tar(&arc, "tests/resources/minimal.tar"));
+        CHECK(mliDynMap_has(&arc.filenames, "function.csv"));
+        CHECK(mliDynMap_has(&arc.filenames, "README.md"));
+        CHECK(mliDynMap_has(&arc.filenames, "scenery.json"));
+        CHECK(mliDynMap_has(&arc.filenames, "triangle.obj"));
+        CHECK(!mliDynMap_has(&arc.filenames, "does-not-exist"));
+        mliArc_free(&arc);
+}
