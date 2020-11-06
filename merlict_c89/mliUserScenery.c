@@ -41,7 +41,8 @@ int mliUserScenery_malloc(struct mliUserScenery *uscn)
         mliUserScenery_free(uscn);
         mli_check(
                 mliFrame_malloc(&uscn->root, MLI_FRAME),
-                "Can not allocate root-frame in UserScenery.") return 1;
+                "Can not allocate root-frame in UserScenery.");
+        return 1;
 error:
         return 0;
 }
