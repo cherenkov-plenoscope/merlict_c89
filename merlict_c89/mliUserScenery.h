@@ -6,7 +6,6 @@
 #include <stdint.h>
 
 #include "mli_debug.h"
-#include "mliScenery.h"
 #include "mliSceneryResources.h"
 #include "mliFrame.h"
 #include "mliMap.h"
@@ -16,10 +15,11 @@ struct mliUserScenery {
         struct mliFrame root;
         uint32_t default_medium;
 
-        struct mliMap2 function_names;
-        struct mliMap2 color_names;
-        struct mliMap2 medium_names;
-        struct mliMap2 surface_names;
+        struct mliDynMap object_names;
+        struct mliDynMap function_names;
+        struct mliDynMap color_names;
+        struct mliDynMap medium_names;
+        struct mliDynMap surface_names;
 };
 
 int mliUserScenery_malloc(struct mliUserScenery *uscn);

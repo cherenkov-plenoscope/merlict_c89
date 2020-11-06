@@ -40,8 +40,8 @@
 #include "mliSceneryResources_read.h"
 #include "mliSceneryResources_equal.h"
 #include "mliSceneryResources_valid.h"
-/*
 #include "mliUserScenery.h"
+/*
 #include "mliScenery.h"
 #include "mliScenery_write.h"
 #include "mliScenery_read.h"

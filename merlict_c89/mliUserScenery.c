@@ -15,10 +15,11 @@ struct mliUserScenery mliUserScenery_init(void)
         uscn.resources = mliSceneryResources_init();
         uscn.root = mliFrame_init();
 
-        uscn.function_names = mliMap2_init();
-        uscn.color_names = mliMap2_init();
-        uscn.medium_names = mliMap2_init();
-        uscn.surface_names = mliMap2_init();
+        uscn.object_names = mliDynMap_init();
+        uscn.function_names = mliDynMap_init();
+        uscn.color_names = mliDynMap_init();
+        uscn.medium_names = mliDynMap_init();
+        uscn.surface_names = mliDynMap_init();
         uscn.default_medium = 0;
         return uscn;
 }
@@ -28,10 +29,11 @@ void mliUserScenery_free(struct mliUserScenery *uscn)
         mliSceneryResources_free(&uscn->resources);
         mliFrame_free(&uscn->root);
 
-        mliMap2_free(&uscn->function_names);
-        mliMap2_free(&uscn->color_names);
-        mliMap2_free(&uscn->medium_names);
-        mliMap2_free(&uscn->surface_names);
+        mliDynMap_free(&uscn->object_names);
+        mliDynMap_free(&uscn->function_names);
+        mliDynMap_free(&uscn->color_names);
+        mliDynMap_free(&uscn->medium_names);
+        mliDynMap_free(&uscn->surface_names);
 }
 
 int mliUserScenery_malloc(struct mliUserScenery *uscn)
