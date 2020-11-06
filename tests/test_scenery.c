@@ -3,6 +3,8 @@
 CASE("mliSceneryResources, init")
 {
         struct mliSceneryResources resources = mliSceneryResources_init();
+        CHECK(resources.num_objects == 0u);
+        CHECK(resources.objects == NULL);
         CHECK(resources.num_functions == 0u);
         CHECK(resources.functions == NULL);
         CHECK(resources.num_colors == 0u);
