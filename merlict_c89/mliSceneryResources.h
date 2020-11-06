@@ -6,12 +6,14 @@
 #include <stdint.h>
 
 #include "mli_debug.h"
+#include "mliObject.h"
 #include "mliColor.h"
 #include "mliFunc.h"
 #include "mliSurface.h"
 #include "mliMedium.h"
 
 struct mliSceneryResourcesCapacity {
+        uint32_t num_objects;
         uint32_t num_functions;
         uint32_t num_colors;
         uint32_t num_surfaces;
@@ -19,6 +21,9 @@ struct mliSceneryResourcesCapacity {
 };
 
 struct mliSceneryResources {
+        uint32_t num_objects;
+        struct mliObject *objects;
+
         uint32_t num_functions;
         struct mliFunc *functions;
 

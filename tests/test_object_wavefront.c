@@ -370,3 +370,55 @@ CASE("mliObject, read wavefront file")
         CHECK(mliObject_assert_valid_faces(&obj));
         mliObject_free(&obj);
 }
+
+CASE("mliObject, write and read binary-string")
+{
+        uint64_t i;
+        struct mliString str = mliString_init();
+        struct mliObject obj = mliObject_init();
+        struct mliObject obj_back = mliObject_init();
+        FILE *f;
+        CHECK(
+                mliString_malloc_from_file(
+                        &str,
+                        "tests/resources/hexagonal_mirror_facet.obj"
+                )
+        );
+        CHECK(mliObject_malloc_from_string(&obj, str.c_str));
+        mliString_free(&str);
+
+        f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "w");
+        CHECK(f != NULL);
+        mliObject_fwrite(&obj, f);
+        fclose(f);
+
+        f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "r");
+        CHECK(f != NULL);
+        mliObject_malloc_from_file(&obj_back, f);
+        fclose(f);
+
+        CHECK(obj.num_vertices == obj_back.num_vertices);
+        CHECK(obj.num_vertex_normals == obj_back.num_vertex_normals);
+        CHECK(obj.num_faces == obj_back.num_faces);
+
+        for (i = 0; i < obj.num_vertices; i++) {
+                CHECK(mliVec_is_equal(
+                        obj.vertices[i],
+                        obj_back.vertices[i]));
+        }
+        for (i = 0; i < obj.num_vertex_normals; i++) {
+                CHECK(mliVec_is_equal(
+                        obj.vertex_normals[i],
+                        obj_back.vertex_normals[i]));
+        }
+        for (i = 0; i < obj.num_faces; i++) {
+                CHECK(mliFace_is_equal(
+                        obj.faces_vertices[i],
+                        obj_back.faces_vertices[i]));
+                CHECK(mliFace_is_equal(
+                        obj.faces_vertex_normals[i],
+                        obj_back.faces_vertex_normals[i]));
+        }
+        mliObject_free(&obj);
+        mliObject_free(&obj_back);
+}

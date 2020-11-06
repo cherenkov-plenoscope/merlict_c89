@@ -28,4 +28,7 @@ struct mliObject mliObject_init(void);
 int mliObject_assert_valid_faces(const struct mliObject *obj);
 int mliObject_assert_normals(const struct mliObject *obj, const double epsilon);
 
+int mliObject_fwrite(const struct mliObject *obj, FILE *f);
+int mliObject_malloc_from_file(struct mliObject *obj, FILE *f);
+
 #endif

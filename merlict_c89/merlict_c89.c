@@ -35,12 +35,12 @@
 #include "mliSurface.c"
 #include "mli_primitive_codes.c"
 #include "mliFrame.c"
-/*
 #include "mliSceneryResources.c"
 #include "mliSceneryResources_write.c"
 #include "mliSceneryResources_read.c"
 #include "mliSceneryResources_equal.c"
 #include "mliSceneryResources_valid.c"
+/*
 #include "mliUserScenery.c"
 #include "mliScenery.c"
 #include "mliScenery_write.c"

@@ -5,6 +5,7 @@ int mliSceneryResources_write_capacity_to_file(
         const struct mliSceneryResources *res,
         FILE *f)
 {
+        mli_fwrite(&res->num_objects, sizeof(uint32_t), 1u, f);
         mli_fwrite(&res->num_functions, sizeof(uint32_t), 1u, f);
         mli_fwrite(&res->num_colors, sizeof(uint32_t), 1u, f);
         mli_fwrite(&res->num_media, sizeof(uint32_t), 1u, f);
@@ -19,6 +20,11 @@ int mliSceneryResources_append_to_file(
         FILE *f)
 {
         uint64_t i;
+
+        for (i = 0; i < res->num_objects; i++) {
+                mliObject_fwrite(&res->objects[i], f);
+        }
+
         for (i = 0; i < res->num_functions; i++) {
                 mliFunc_fwrite(&res->functions[i], f);
         }

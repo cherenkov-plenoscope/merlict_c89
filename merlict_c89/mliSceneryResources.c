@@ -4,6 +4,7 @@
 struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void)
 {
         struct mliSceneryResourcesCapacity cap;
+        cap.num_objects = 0;
         cap.num_functions = 0;
         cap.num_colors = 0;
         cap.num_surfaces = 0;
@@ -14,6 +15,9 @@ struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void)
 struct mliSceneryResources mliSceneryResources_init(void)
 {
         struct mliSceneryResources res;
+        res.num_objects = 0u;
+        res.objects = NULL;
+
         res.num_functions = 0u;
         res.functions = NULL;
 
@@ -31,10 +35,17 @@ struct mliSceneryResources mliSceneryResources_init(void)
 void mliSceneryResources_free(struct mliSceneryResources *res)
 {
         uint64_t i;
+
+        for (i = 0; i < res->num_objects; i++) {
+                mliObject_free(&(res->objects[i]));
+        }
+        free(res->objects);
+
         for (i = 0; i < res->num_functions; i++) {
                 mliFunc_free(&(res->functions[i]));
         }
         free(res->functions);
+
         free(res->colors);
         free(res->media);
         free(res->surfaces);
@@ -47,11 +58,16 @@ int mliSceneryResources_malloc(
 {
         uint64_t i;
         mliSceneryResources_free(res);
+        res->num_objects = capacity.num_objects;
         res->num_functions = capacity.num_functions;
         res->num_colors = capacity.num_colors;
         res->num_surfaces = capacity.num_surfaces;
         res->num_media = capacity.num_media;
 
+        mli_malloc(res->objects, struct mliObject, res->num_objects);
+        for (i = 0; i < res->num_objects; i++) {
+                res->objects[i] = mliObject_init();
+        }
         mli_malloc(res->functions, struct mliFunc, res->num_functions);
         for (i = 0; i < res->num_functions; i++) {
                 res->functions[i] = mliFunc_init();
