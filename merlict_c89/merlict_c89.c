@@ -40,8 +40,8 @@
 #include "mliSceneryResources_read.c"
 #include "mliSceneryResources_equal.c"
 #include "mliSceneryResources_valid.c"
-/*
 #include "mliUserScenery.c"
+/*
 #include "mliScenery.c"
 #include "mliScenery_write.c"
 #include "mliScenery_read.c"
@@ -75,11 +75,11 @@
 #include "mli_string_to.c"
 #include "jsmn.c"
 #include "mli_json.c"
-#include "mliArchive.c"
+/*#include "mliArchive.c"*/
 #include "mliTar.c"
 #include "mliFunc_comma_seperated_values.c"
 #include "mliQuaternion_json.c"
-/*#include "mliScenery_json.c"*/
+#include "mliScenery_json.c"
 #include "mliFunc_malloc_from_json_token.c"
 #include "mliVec_from_json_token.c"
 /*#include "mli_frame_to_scenery.c"*/

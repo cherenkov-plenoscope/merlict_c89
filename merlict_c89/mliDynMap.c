@@ -21,7 +21,7 @@ int mliDynMap_has(const struct mliDynMap *map, const char *key)
         return mliDynMap_find(map, key, &idx);
 }
 
-int mliDynMap_insert(struct mliDynMap *map, const char *key, void *value)
+int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value)
 {
         struct _mliMapItem item;
         if (map->dyn.size == 0u) {
@@ -41,7 +41,7 @@ error:
         return 0;
 }
 
-int mliDynMap_get(const struct mliDynMap *map, const char *key, void **value)
+int mliDynMap_get(const struct mliDynMap *map, const char *key, uint64_t *value)
 {
         uint64_t idx;
         mli_check(mliDynMap_find(map, key, &idx), "Key does not exist.");

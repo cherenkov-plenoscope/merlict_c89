@@ -9,12 +9,12 @@
 
 struct _mliMapItem {
         char key[MLI_MAP_KEY_CAPACITY];
-        void *value;
+        uint64_t value;
 };
 MLIDYNARRAY_DEFINITON(mli, Map, struct _mliMapItem)
 int mliDynMap_has(const struct mliDynMap *map, const char *key);
-int mliDynMap_insert(struct mliDynMap *map,const char *key, void *value);
+int mliDynMap_insert(struct mliDynMap *map,const char *key, uint64_t value);
 int mliDynMap_find(const struct mliDynMap *map, const char *key, uint64_t *idx);
-int mliDynMap_get(const struct mliDynMap *map, const char *key, void **value);
+int mliDynMap_get(const struct mliDynMap *map, const char *key, uint64_t *value);
 
 #endif
