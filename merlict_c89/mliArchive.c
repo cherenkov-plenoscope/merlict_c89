@@ -71,6 +71,26 @@ error:
         return 0;
 }
 
+int mliArc_has(const struct mliArc *arc, const char *filename)
+{
+        return mliDynMap_has(&arc->filenames, filename);
+}
+
+int mliArc_get(struct mliArc *arc, const char *filename, struct mliString **str)
+{
+        uint64_t idx;
+        mli_c(mliDynMap_find(&arc->filenames, filename, &idx));
+        (*str) = &arc->strings.arr[idx];
+        return 1;
+error:
+        return 0;
+}
+
+uint64_t mliArc_num(const struct mliArc *arc)
+{
+        return arc->filenames.dyn.size;
+}
+
 void mliArc_print(struct mliArc *arc)
 {
         uint64_t i;

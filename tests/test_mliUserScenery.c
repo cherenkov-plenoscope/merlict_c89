@@ -47,11 +47,26 @@ CASE("mliUserScenery, from json")
 CASE("mliArc, tar")
 {
         struct mliArc arc = mliArc_init();
+        struct mliString *f = NULL;
+        struct mliObject triangle = mliObject_init();
+
         CHECK(mliArc_malloc_from_tar(&arc, "tests/resources/minimal.tar"));
-        CHECK(mliDynMap_has(&arc.filenames, "function.csv"));
-        CHECK(mliDynMap_has(&arc.filenames, "README.md"));
-        CHECK(mliDynMap_has(&arc.filenames, "scenery.json"));
-        CHECK(mliDynMap_has(&arc.filenames, "triangle.obj"));
-        CHECK(!mliDynMap_has(&arc.filenames, "does-not-exist"));
+        CHECK(mliArc_num(&arc) == 4);
+
+        CHECK(mliArc_has(&arc, "function.csv"));
+        CHECK(mliArc_has(&arc, "README.md"));
+        CHECK(mliArc_has(&arc, "scenery.json"));
+        CHECK(mliArc_has(&arc, "triangle.obj"));
+
+        CHECK(mliArc_get(&arc, "triangle.obj", &f));
+        CHECK(f->capacity == 91);
+
+        CHECK(mliObject_malloc_from_string(&triangle, f->c_str));
+        CHECK(triangle.num_faces == 1u);
+        CHECK(triangle.num_vertices == 3u);
+        CHECK(triangle.num_vertex_normals == 1u);
+
+        CHECK(!mliArc_has(&arc, "does-not-exist"));
         mliArc_free(&arc);
+        mliObject_free(&triangle);
 }

@@ -34,6 +34,7 @@ void mliUserScenery_free(struct mliUserScenery *uscn)
         mliDynMap_free(&uscn->color_names);
         mliDynMap_free(&uscn->medium_names);
         mliDynMap_free(&uscn->surface_names);
+        (*uscn) = mliUserScenery_init();
 }
 
 int mliUserScenery_malloc(struct mliUserScenery *uscn)

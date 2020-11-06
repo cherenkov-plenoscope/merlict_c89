@@ -17,6 +17,10 @@ struct mliArc mliArc_init(void);
 
 void mliArc_free(struct mliArc *arc);
 int mliArc_malloc_from_tar(struct mliArc *arc, const char *path);
+
+int mliArc_has(const struct mliArc *arc, const char *filename);
+int mliArc_get(struct mliArc *arc, const char *filename, struct mliString **str);
+uint64_t mliArc_num(const struct mliArc *arc);
 void mliArc_print(struct mliArc *arc);
 
 #endif
