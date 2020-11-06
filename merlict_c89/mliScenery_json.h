@@ -50,22 +50,6 @@ int __mliFrame_set_pos_rot(
         struct mliFrame *frame,
         const struct mliJson *json,
         const uint64_t token);
-int __mliQuaternion_from_json(
-        struct mliQuaternion *quat,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliQuaternion_quaternion_from_json(
-        struct mliQuaternion *quat,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliQuaternion_axis_angle_from_json(
-        struct mliQuaternion *quat,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliQuaternion_tait_bryan_from_json(
-        struct mliQuaternion *quat,
-        const struct mliJson *json,
-        const uint64_t token);
 int __mliFrame_type_from_json(
         uint64_t *type,
         const struct mliJson *json,
