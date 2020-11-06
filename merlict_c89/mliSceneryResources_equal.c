@@ -1,6 +1,22 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSceneryResources_equal.h"
 
+int _mliSceneryResources_objects_equal(
+        const struct mliSceneryResources *a,
+        const struct mliSceneryResources *b)
+{
+        uint64_t i;
+        if (a->num_objects != b->num_objects) {
+                return 0;
+        }
+        for (i = 0; i < a->num_objects; i++) {
+                if (!mliObject_is_equal(&a->objects[i], &b->objects[i])) {
+                        return 0;
+                }
+        }
+        return 1;
+}
+
 int _mliSceneryResources_functions_equal(
         const struct mliSceneryResources *a,
         const struct mliSceneryResources *b)
@@ -61,6 +77,8 @@ int mliSceneryResources_equal(
         const struct mliSceneryResources *a,
         const struct mliSceneryResources *b)
 {
+        if (!_mliSceneryResources_objects_equal(a, b))
+                return 0;
         if (!_mliSceneryResources_functions_equal(a, b))
                 return 0;
         if (!_mliSceneryResources_colors_equal(a, b))

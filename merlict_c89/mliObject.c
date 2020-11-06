@@ -162,3 +162,40 @@ error:
         mliObject_free(obj);
         return 0;
 }
+
+int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
+{
+        uint64_t i;
+        if (a->num_vertices != b->num_vertices) {
+                return 0;
+        }
+        if (a->num_vertex_normals != b->num_vertex_normals) {
+                return 0;
+        }
+        if (a->num_faces != b->num_faces) {
+                return 0;
+        }
+        for (i = 0; i < a->num_vertices; i++) {
+                if (!mliVec_is_equal(a->vertices[i], b->vertices[i])) {
+                        return 0;
+                }
+        }
+        for (i = 0; i < a->num_vertex_normals; i++) {
+                if (!mliVec_is_equal(
+                            a->vertex_normals[i], b->vertex_normals[i])) {
+                        return 0;
+                }
+        }
+        for (i = 0; i < a->num_faces; i++) {
+                if (!mliFace_is_equal(
+                            a->faces_vertices[i], b->faces_vertices[i])) {
+                        return 0;
+                }
+                if (!mliFace_is_equal(
+                            a->faces_vertex_normals[i],
+                            b->faces_vertex_normals[i])) {
+                        return 0;
+                }
+        }
+        return 1;
+}

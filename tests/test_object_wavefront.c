@@ -419,6 +419,9 @@ CASE("mliObject, write and read binary-string")
                         obj.faces_vertex_normals[i],
                         obj_back.faces_vertex_normals[i]));
         }
+
+        CHECK(mliObject_is_equal(&obj, &obj_back));
+
         mliObject_free(&obj);
         mliObject_free(&obj_back);
 }

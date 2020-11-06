@@ -5,6 +5,7 @@ int mliSceneryResources_read_capacity_from_file(
         struct mliSceneryResourcesCapacity *capacity,
         FILE *f)
 {
+        mli_fread(&capacity->num_objects, sizeof(uint32_t), 1u, f);
         mli_fread(&capacity->num_functions, sizeof(uint32_t), 1u, f);
         mli_fread(&capacity->num_colors, sizeof(uint32_t), 1u, f);
         mli_fread(&capacity->num_media, sizeof(uint32_t), 1u, f);
@@ -17,6 +18,9 @@ error:
 int mliSceneryResources_read_from_file(struct mliSceneryResources *res, FILE *f)
 {
         uint64_t i;
+        for (i = 0; i < res->num_objects; i++) {
+                mli_c(mliObject_malloc_from_file(&res->objects[i], f));
+        }
         for (i = 0; i < res->num_functions; i++) {
                 mli_c(mliFunc_malloc_from_file(&res->functions[i], f));
         }
