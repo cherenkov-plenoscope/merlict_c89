@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_json.h"
 
-int __mliScenery_surface_capacity_from_json(
+int __mliSceneryResourcesCapacity_from_json(
         struct mliSceneryResourcesCapacity *res_cap,
         const struct mliJson *json)
 {
@@ -696,7 +696,7 @@ int mliUserScenery_malloc_from_json(
                 mliSceneryResourcesCapacity_init();
 
         mli_check(
-                __mliScenery_surface_capacity_from_json(
+                __mliSceneryResourcesCapacity_from_json(
                         &resources_capacity, json),
                 "Failed to estimate capacity for surface_resources.");
 

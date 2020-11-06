@@ -85,7 +85,7 @@ int _mliDynMap_key_from_json(
         const struct mliJson *json,
         const uint64_t token_name,
         const uint64_t value);
-int __mliScenery_surface_capacity_from_json(
+int __mliSceneryResourcesCapacity_from_json(
         struct mliSceneryResourcesCapacity *res_cap,
         const struct mliJson *json);
 #endif

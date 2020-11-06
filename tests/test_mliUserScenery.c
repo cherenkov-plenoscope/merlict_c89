@@ -33,7 +33,7 @@ CASE("mliUserScenery, from json")
                 "\n}"
         );
         CHECK(mliJson_malloc_from_string(&json, json_str));
-        CHECK(__mliScenery_surface_capacity_from_json(&uscncap, &json));
+        CHECK(__mliSceneryResourcesCapacity_from_json(&uscncap, &json));
 
         CHECK(uscncap.num_objects == 5);
         CHECK(uscncap.num_functions == 3);
