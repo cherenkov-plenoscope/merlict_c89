@@ -12,6 +12,9 @@
 
 
 struct mliArc {
+        struct mliJson geometry;
+        struct mliJson materials;
+
         struct mliDynMap objects;
         struct mliDynMap functions;
 };

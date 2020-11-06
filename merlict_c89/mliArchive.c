@@ -4,6 +4,9 @@
 struct mliArc mliArc_init(void)
 {
         struct mliArc arc;
+        arc.geometry = mliJson_init();
+        arc.materials = mliJson_init();
+
         arc.objects = mliDynMap_init();
         arc.functions = mliDynMap_init();
         return arc;
@@ -12,6 +15,9 @@ struct mliArc mliArc_init(void)
 void mliArc_free(struct mliArc *arc)
 {
         uint64_t i;
+        mliJson_free(&arc->geometry);
+        mliJson_free(&arc->materials);
+
         for (i = 0; i < arc->objects.dyn.size; i++) {
                 mliObject_free((struct mliObject *)arc->objects.arr[i].value);
                 free(arc->objects.arr[i].value);
@@ -92,6 +98,26 @@ int mliArc_malloc_from_tar(struct mliArc *arc, const char *path)
                                         (void *)func
                                 ),
                                 "Failed to insert 1D-Func into map."
+                        );
+                }
+
+                if (0 == strcmp(tarh.name, "geometry.json")) {
+                        mli_check(
+                                mliJson_malloc_from_string(
+                                        &arc->geometry,
+                                        string_buffer.c_str
+                                ),
+                                "Failed to malloc geometry-json."
+                        );
+                }
+
+                if (0 == strcmp(tarh.name, "materials.json")) {
+                        mli_check(
+                                mliJson_malloc_from_string(
+                                        &arc->materials,
+                                        string_buffer.c_str
+                                ),
+                                "Failed to malloc materials-json."
                         );
                 }
         }
