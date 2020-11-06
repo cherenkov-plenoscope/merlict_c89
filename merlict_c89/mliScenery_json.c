@@ -42,6 +42,33 @@ error:
         return 0;
 }
 
+int __mli_material_type_from_name_token(
+        const struct mliJson *json,
+        const uint64_t token_name,
+        uint32_t *out_material_type)
+{
+        char *name_str = NULL;
+        uint64_t name_str_capacity =
+                (json->tokens[token_name + 1].end -
+                 json->tokens[token_name + 1].start + 1u);
+        mli_check(
+                json->tokens[token_name + 1].type == JSMN_STRING,
+                "Expected 'name' to be of type string.");
+        mli_malloc(name_str, char, name_str_capacity);
+        mli_check(
+                mliJson_as_string(
+                        json, token_name + 1, name_str, name_str_capacity),
+                "Failed to extract string from json.");
+        mli_check(
+                mli_material_type_from_string(name_str, out_material_type),
+                "Failed to parse material type from json-string.");
+        free(name_str);
+        return 1;
+error:
+        free(name_str);
+        return 0;
+}
+
 int _mliDynMap_key_from_json(
         struct mliDynMap *map,
         const struct mliJson *json,
@@ -62,7 +89,8 @@ int _mliDynMap_key_from_json(
                 "Failed to extract string from json.");
         mli_check(
                 mliDynMap_insert(map, name_str, value),
-                "Failed to insert name and value into map.") free(name_str);
+                "Failed to insert name and value into map.");
+        free(name_str);
         return 1;
 error:
         free(name_str);
@@ -276,7 +304,6 @@ int __mliSurface_from_json(
         struct mliSurface *surface,
         const struct mliDynMap *function_names,
         const struct mliDynMap *color_names,
-        const struct mliDynMap *material_names,
         const struct mliJson *json,
         const uint64_t token_s)
 {
@@ -289,8 +316,11 @@ int __mliSurface_from_json(
                 json->tokens[token_mate].type == JSMN_STRING,
                 "Expected medium's material to be of type string.");
         mli_check(
-                _mliDynMap_get_value_for_string_from_json(
-                        material_names, json, token_mate, &surface->material),
+                __mli_material_type_from_name_token(
+                    json,
+                    token_mate,
+                    &surface->material
+                ),
                 "Failed to get material-idx from map for string from json");
 
         mli_check(
@@ -346,7 +376,6 @@ int __mliScenery_assign_surfaces_from_json(
         struct mliDynMap *surface_names,
         const struct mliDynMap *function_names,
         const struct mliDynMap *color_names,
-        const struct mliDynMap *material_names,
         const struct mliJson *json)
 {
         uint64_t token;
@@ -383,7 +412,6 @@ int __mliScenery_assign_surfaces_from_json(
                                 &resources->surfaces[s],
                                 function_names,
                                 color_names,
-                                material_names,
                                 json,
                                 token_s),
                         "Failed to copy surface from json.");
@@ -655,7 +683,6 @@ int mliUserScenery_malloc_from_json(
         struct mliUserScenery *uscn,
         const struct mliJson *json)
 {
-        struct mliDynMap material_names = mliDynMap_init();
         uint64_t token;
         struct mliSceneryResourcesCapacity resources_capacity =
                 mliSceneryResourcesCapacity_init();
@@ -683,10 +710,6 @@ int mliUserScenery_malloc_from_json(
         mli_c(mliDynMap_malloc(
                 &uscn->surface_names, resources_capacity.num_surfaces));
 
-        mli_c(mliDynMap_malloc(&material_names, 2));
-        mli_c(mliDynMap_insert(&material_names, "Phong", MLI_MATERIAL_PHONG));
-        mli_c(mliDynMap_insert(
-                &material_names, "Transparent", MLI_MATERIAL_TRANSPARENT));
         mli_check(
                 __mliScenery_malloc_functions_from_json(
                         &uscn->resources, &uscn->function_names, json),
@@ -708,7 +731,6 @@ int mliUserScenery_malloc_from_json(
                         &uscn->surface_names,
                         &uscn->function_names,
                         &uscn->color_names,
-                        &material_names,
                         json),
                 "Failed to copy surfaces from json.");
 
@@ -735,8 +757,6 @@ int mliUserScenery_malloc_from_json(
                         &uscn->surface_names,
                         &uscn->medium_names),
                 "Failed to populate tree of Frames from json.");
-
-        mliDynMap_free(&material_names);
         return 1;
 error:
         return 0;

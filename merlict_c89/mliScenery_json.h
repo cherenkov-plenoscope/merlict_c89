@@ -50,13 +50,11 @@ int __mliScenery_assign_surfaces_from_json(
         struct mliDynMap *surface_names,
         const struct mliDynMap *function_names,
         const struct mliDynMap *color_names,
-        const struct mliDynMap *material_names,
         const struct mliJson *json);
 int __mliSurface_from_json(
         struct mliSurface *surface,
         const struct mliDynMap *function_names,
         const struct mliDynMap *color_names,
-        const struct mliDynMap *material_names,
         const struct mliJson *json,
         const uint64_t token_s);
 int __mliScenery_assign_media_from_json(
