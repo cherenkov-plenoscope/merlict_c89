@@ -30,7 +30,7 @@ CASE("mliUserScenery, from json")
                 "    \"colors\": [1, 2],\n"
                 "    \"surfaces\": [1, 2, 3, 4, 5, 6, 7, 8]\n"
                 "    \"media\": [1],\n"
-                "\n}"
+                "}\n"
         );
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(__mliSceneryResourcesCapacity_from_json(&uscncap, &json));
