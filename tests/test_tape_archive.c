@@ -4,41 +4,70 @@ CASE("Read archive")
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
-        char payload[128];
+        char *payload = NULL;
+        const uint64_t payload_capacity = 1000*1000;
+
+        payload = (char *)malloc(sizeof(char) * payload_capacity);
+        CHECK(payload != NULL);
 
         CHECK(tar.pos == 0u);
         CHECK(tar.remaining_data == 0u);
 
-        CHECK(mliTar_open(&tar, "tests/resources/minimal.tar", "r"));
-        CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("function.csv", tarh.name));
-        CHECK(79 == tarh.size);
+        CHECK(mliTar_open(
+                &tar,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001.tar",
+                "r"
+        ));
 
-        memset(payload, '\0', sizeof(payload));
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("functions/", tarh.name));
+        CHECK(MLITAR_TDIR == tarh.type);
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("functions/refractive_index_water.csv", tarh.name));
+        CHECK(95 == tarh.size);
+        memset(payload, '\0', payload_capacity);
+        CHECK(mliTar_read_data(&tar, payload, tarh.size));
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("functions/zero.csv", tarh.name));
+        CHECK(61 == tarh.size);
+        memset(payload, '\0', payload_capacity);
+        CHECK(mliTar_read_data(&tar, payload, tarh.size));
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("objects/", tarh.name));
+        CHECK(MLITAR_TDIR == tarh.type);
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("objects/hexagonal_mirror_facet.obj", tarh.name));
+        CHECK(36527 == tarh.size);
+        memset(payload, '\0', payload_capacity);
+        CHECK(mliTar_read_data(&tar, payload, tarh.size));
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("objects/teapot.obj", tarh.name));
+        CHECK(140243 == tarh.size);
+        memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("README.md", tarh.name));
-        CHECK(75 == tarh.size);
-
-        memset(payload, '\0', sizeof(payload));
+        CHECK(52 == tarh.size);
+        memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("scenery.json", tarh.name));
-        CHECK(24 == tarh.size);
-
-        memset(payload, '\0', sizeof(payload));
-        CHECK(mliTar_read_data(&tar, payload, tarh.size));
-
-        CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("triangle.obj", tarh.name));
-        CHECK(90 == tarh.size);
-
-        memset(payload, '\0', sizeof(payload));
+        CHECK(2861 == tarh.size);
+        memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
 
         CHECK(mliTar_close(&tar));
+        free(payload);
 }
 
 

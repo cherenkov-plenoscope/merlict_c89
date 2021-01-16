@@ -3,26 +3,39 @@
 CASE("mliArchive, read tar")
 {
         struct mliArchive arc = mliArchive_init();
-        struct mliString *f = NULL;
-        struct mliObject triangle = mliObject_init();
+        struct mliString *data = NULL;
+        struct mliObject hexagonal_mirror_facet = mliObject_init();
 
-        CHECK(mliArchive_malloc_from_tar(&arc, "tests/resources/minimal.tar"));
-        CHECK(mliArchive_num(&arc) == 4);
+        CHECK(
+                mliArchive_malloc_from_tar(
+                        &arc,
+                        "tests/"
+                        "resources/"
+                        "sceneries/"
+                        "001.tar"
+                )
+        );
+        CHECK(mliArchive_num(&arc) == 8);
 
-        CHECK(mliArchive_has(&arc, "function.csv"));
         CHECK(mliArchive_has(&arc, "README.md"));
-        CHECK(mliArchive_has(&arc, "scenery.json"));
-        CHECK(mliArchive_has(&arc, "triangle.obj"));
 
-        CHECK(mliArchive_get(&arc, "triangle.obj", &f));
-        CHECK(f->capacity == 91);
+        CHECK(mliArchive_has(&arc, "functions/"));
+        CHECK(mliArchive_has(&arc, "functions/refractive_index_water.csv"));
+        CHECK(mliArchive_has(&arc, "functions/zero.csv"));
 
-        CHECK(mliObject_malloc_from_string(&triangle, f->c_str));
-        CHECK(triangle.num_faces == 1u);
-        CHECK(triangle.num_vertices == 3u);
-        CHECK(triangle.num_vertex_normals == 1u);
+        CHECK(mliArchive_has(&arc, "objects/"));
+        CHECK(mliArchive_has(&arc, "objects/teapot.obj"));
+        CHECK(mliArchive_has(&arc, "objects/hexagonal_mirror_facet.obj"));
+        CHECK(mliArchive_get(&arc, "objects/hexagonal_mirror_facet.obj", &data));
+        CHECK(data->capacity == 36527 + 1);
+
+        CHECK(mliObject_malloc_from_string(&hexagonal_mirror_facet, data->c_str));
+        CHECK(hexagonal_mirror_facet.num_vertices == 331u);
+        CHECK(hexagonal_mirror_facet.num_vertex_normals == 331u);
+        CHECK(hexagonal_mirror_facet.num_faces == 600);
 
         CHECK(!mliArchive_has(&arc, "does-not-exist"));
+
         mliArchive_free(&arc);
-        mliObject_free(&triangle);
+        mliObject_free(&hexagonal_mirror_facet);
 }

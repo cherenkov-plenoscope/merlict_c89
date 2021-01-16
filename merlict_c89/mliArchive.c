@@ -76,7 +76,10 @@ int mliArchive_has(const struct mliArchive *arc, const char *filename)
         return mliDynMap_has(&arc->filenames, filename);
 }
 
-int mliArchive_get(struct mliArchive *arc, const char *filename, struct mliString **str)
+int mliArchive_get(
+        struct mliArchive *arc,
+        const char *filename,
+        struct mliString **str)
 {
         uint64_t idx;
         mli_c(mliDynMap_find(&arc->filenames, filename, &idx));
