@@ -58,6 +58,7 @@ int main(void)
 #include "tests/test_inside_polygon.c"
 #include "tests/test_barycentric_coordinates.c"
 #include "tests/test_object_wavefront.c"
+#include "tests/test_mliArchive.c"
 
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;

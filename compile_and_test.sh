@@ -1,6 +1,9 @@
 #!/bin/bash
 # Build merlict with gcc and clang, look for warnings early.
 
+echo "__prepare test-resources__"
+(cd tests/resources/sceneries && exec ./prepare_tape_archives.sh)
+
 echo "__gcc_c89__"
 gcc merlict-c89-test.c\
         -o build/test_gcc_c89\
