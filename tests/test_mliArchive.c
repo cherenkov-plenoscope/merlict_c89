@@ -17,6 +17,21 @@ CASE("mliArchive, read tar")
         );
         CHECK(mliArchive_num(&arc) == 8);
 
+        CHECK(
+                2 == mliArchive_num_filename_prefix_sufix(
+                        &arc, "functions/", ".csv")
+        );
+
+        CHECK(
+                2 == mliArchive_num_filename_prefix_sufix(
+                        &arc, "objects/", ".obj")
+        );
+
+        CHECK(
+                1 == mliArchive_num_filename_prefix_sufix(
+                        &arc, NULL, ".md")
+        );
+
         CHECK(mliArchive_has(&arc, "README.md"));
 
         CHECK(mliArchive_has(&arc, "functions/"));

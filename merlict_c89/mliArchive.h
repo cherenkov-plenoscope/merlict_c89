@@ -30,5 +30,9 @@ void mliArchive_make_mask_from_template_filename(
     uint64_t *mask,
     const char *prefix,
     const char *suffix);
+uint64_t mliArchive_num_filename_prefix_sufix(
+    struct mliArchive *arc,
+    const char *prefix,
+    const char *sufix);
 
 #endif
