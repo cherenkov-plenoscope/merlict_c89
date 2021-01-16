@@ -357,7 +357,12 @@ CASE("mliObject, read wavefront file")
         CHECK(
                 mliString_malloc_from_file(
                         &str,
-                        "tests/resources/hexagonal_mirror_facet.obj"
+                        "tests/"\
+                        "resources/"\
+                        "sceneries/"\
+                        "001/"\
+                        "objects/"\
+                        "hexagonal_mirror_facet.obj"
                 )
         );
         CHECK(mliObject_malloc_from_string(&obj, str.c_str));
@@ -381,7 +386,12 @@ CASE("mliObject, write and read binary-string")
         CHECK(
                 mliString_malloc_from_file(
                         &str,
-                        "tests/resources/hexagonal_mirror_facet.obj"
+                        "tests/"\
+                        "resources/"\
+                        "sceneries/"\
+                        "001/"\
+                        "objects/"\
+                        "hexagonal_mirror_facet.obj"
                 )
         );
         CHECK(mliObject_malloc_from_string(&obj, str.c_str));
