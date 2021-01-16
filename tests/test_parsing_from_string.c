@@ -119,6 +119,27 @@ CASE("mli_string_ends_with")
         CHECK(!mli_string_ends_with("my_file.json.stuff", ".json"));
 }
 
+CASE("mli_string_starts_with")
+{
+        CHECK(mli_string_starts_with("123", ""));
+        CHECK(mli_string_starts_with("", ""));
+        CHECK(!mli_string_starts_with("", "123"));
+        CHECK(mli_string_starts_with("123", "123"));
+        CHECK(mli_string_starts_with("my_file.json", "my_file"));
+        CHECK(mli_string_starts_with("my_file.json.stuff", "my_file.json"));
+        CHECK(mli_string_starts_with("functions/hans.csv", "functions/"));
+}
+
+CASE("mli_string_has_prefix_suffix")
+{
+        CHECK(mli_string_has_prefix_suffix("", "", ""));
+        CHECK(mli_string_has_prefix_suffix("", NULL, NULL));
+        CHECK(mli_string_has_prefix_suffix("abc", NULL, NULL));
+        CHECK(mli_string_has_prefix_suffix("abc", "a", "c"));
+        CHECK(!mli_string_has_prefix_suffix("abc", "a", "d"));
+        CHECK(!mli_string_has_prefix_suffix("_abc", "a", "c"));
+}
+
 CASE("mli_string_split_valid")
 {
         char token[128];

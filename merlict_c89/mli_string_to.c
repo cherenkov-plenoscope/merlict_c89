@@ -40,18 +40,54 @@ error:
         return 0;
 }
 
-int mli_string_ends_with(const char *str, const char *suffix)
+int mli_string_ends_with(const char *str, const char *sufix)
 {
-        uint64_t len_str, len_suffix;
-        if (!str || !suffix) {
+        uint64_t len_str, len_sufix;
+        if (!str || !sufix) {
                 return 0;
         }
         len_str = strlen(str);
-        len_suffix = strlen(suffix);
-        if (len_suffix > len_str) {
+        len_sufix = strlen(sufix);
+        if (len_sufix > len_str) {
                 return 0;
         }
-        return strncmp(str + len_str - len_suffix, suffix, len_suffix) == 0;
+        return strncmp(str + len_str - len_sufix, sufix, len_sufix) == 0;
+}
+
+int mli_string_starts_with(const char *str, const char *prefix)
+{
+        uint64_t len_str, len_prefix;
+        if (!str || !prefix) {
+                return 0;
+        }
+        len_str = strlen(str);
+        len_prefix = strlen(prefix);
+        if (len_prefix > len_str) {
+                return 0;
+        }
+        return strncmp(str, prefix, len_prefix) == 0;
+}
+
+int mli_string_has_prefix_suffix(
+        const char *str,
+        const char *prefix,
+        const char *sufix)
+{
+        uint64_t has_pre = 1;
+        uint64_t has_suf = 1;
+        if(prefix != NULL) {
+                has_pre = mli_string_starts_with(str, prefix);
+        }
+
+        if(sufix != NULL) {
+                has_suf = mli_string_ends_with(str, sufix);
+        }
+
+        if (has_pre == 1 && has_suf == 1) {
+                return 1;
+        } else {
+                return 0;
+        }
 }
 
 int mli_string_split(

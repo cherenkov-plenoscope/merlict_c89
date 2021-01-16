@@ -8,7 +8,12 @@
 
 #include "mli_debug.h"
 
-int mli_string_ends_with(const char *str, const char *suffix);
+int mli_string_ends_with(const char *str, const char *sufix);
+int mli_string_starts_with(const char *str, const char *prefix);
+int mli_string_has_prefix_suffix(
+        const char *str,
+        const char *prefix,
+        const char *sufix);
 int mli_string_to_float(double *out, char *s);
 int mli_string_to_int(int64_t *out, char *s, uint64_t base);
 int mli_string_split(
