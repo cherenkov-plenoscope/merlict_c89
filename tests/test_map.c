@@ -1,36 +1,5 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-/*
-CASE("arc")
-{
-        struct mliArc arc = mliArc_init();
-        struct mliObject *obj = NULL;
-        CHECK(
-                mliArc_malloc_from_tar(
-                        &arc,
-                        "tests/resources/minimal_scenery.tar"
-                )
-        );
-
-        CHECK(mliDynMap_has(&arc.objects, "teapot2.obj"));
-        CHECK(mliDynMap_has(&arc.functions, "refractive_index_water.csv"));
-
-        CHECK(
-                mliDynMap_get(
-                        &arc.objects,
-                        "hexagonal_mirror_facet.obj",
-                        (void **)&obj
-                )
-        );
-
-        CHECK(obj->num_faces == 600);
-        CHECK(obj->num_vertices == 331);
-        CHECK(obj->num_vertex_normals == 331);
-
-        mliArc_free(&arc);
-}
-*/
-
 CASE("vmap")
 {
         uint64_t ptr;
