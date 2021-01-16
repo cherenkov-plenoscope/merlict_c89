@@ -2,6 +2,7 @@
 #include "mliObject_wavefront.h"
 #include "mli_debug.h"
 #include "mliDynArray_template.h"
+#include <ctype.h>
 
 #define MLI_WAVEFRONT_FACE_LINE_V 7
 #define MLI_WAVEFRONT_FACE_LINE_V_VN 37

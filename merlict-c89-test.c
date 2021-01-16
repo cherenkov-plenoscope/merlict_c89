@@ -43,7 +43,6 @@ int main(void)
 #include "tests/test_mliVec.c"
 #include "tests/test_linear_interpolation.c"
 #include "tests/test_mliFunc.c"
-#include "tests/test_mliMesh.c"
 #include "tests/test_mliRay.c"
 #include "tests/test_parsing_from_string.c"
 #include "tests/test_json.c"

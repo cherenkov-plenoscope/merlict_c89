@@ -17,7 +17,6 @@
 #include "mliIntersection.c"
 #include "mliFace.c"
 #include "mli_barycentric.c"
-#include "mliMesh.c"
 #include "mliObject.c"
 #include "mliObject_wavefront.c"
 #include "mliTriangle_intersection.c"
