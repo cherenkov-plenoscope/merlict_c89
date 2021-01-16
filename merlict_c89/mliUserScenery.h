@@ -9,6 +9,7 @@
 #include "mliSceneryResources.h"
 #include "mliFrame.h"
 #include "mliDynMap.h"
+#include "mliArchive.h"
 
 struct mliUserScenery {
         struct mliSceneryResources resources;
@@ -24,4 +25,8 @@ struct mliUserScenery {
 int mliUserScenery_malloc(struct mliUserScenery *uscn);
 void mliUserScenery_free(struct mliUserScenery *uscn);
 struct mliUserScenery mliUserScenery_init(void);
+int mliUserScenery_malloc_from_Archive(
+        struct mliUserScenery *uscn,
+        const struct mliArchive *arc);
+
 #endif

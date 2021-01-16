@@ -46,3 +46,35 @@ int mliUserScenery_malloc(struct mliUserScenery *uscn)
 error:
         return 0;
 }
+
+int mliUserScenery_malloc_from_Archive(
+        struct mliUserScenery *uscn,
+        const struct mliArchive *arc)
+{
+        uint64_t i = 0;
+        struct mliSceneryResourcesCapacity capacity =
+                mliSceneryResourcesCapacity_init();
+
+        for (i = 0; i < arc->filenames.dyn.size; i++) {
+                const char *filename = arc->filenames.arr[i].key;
+                if (mli_string_ends_with(filename, ".obj")) {
+                        capacity.num_objects += 1;
+                }
+                if (mli_string_ends_with(filename, ".csv")) {
+                        capacity.num_functions += 1;
+                }
+        }
+        mli_check(capacity.num_functions >= 1, "Expected num_functions >= 1");
+
+        mli_check(
+                mliSceneryResources_malloc(
+                        &uscn->resources,
+                        capacity
+                ),
+                ""
+        );
+
+        return 1;
+error:
+        return 0;
+}
