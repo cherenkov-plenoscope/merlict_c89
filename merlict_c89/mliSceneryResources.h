@@ -21,8 +21,6 @@ struct mliSceneryResourcesCapacity {
 };
 
 struct mliSceneryResources {
-        uint32_t default_medium;
-
         uint32_t num_objects;
         struct mliObject *objects;
 
@@ -37,6 +35,8 @@ struct mliSceneryResources {
 
         uint32_t num_media;
         struct mliMedium *media;
+
+        uint32_t default_medium;
 };
 
 int mliSceneryResources_malloc(

@@ -70,7 +70,7 @@ int mliArchive_has(const struct mliArchive *arc, const char *filename)
 }
 
 int mliArchive_get(
-        struct mliArchive *arc,
+        const struct mliArchive *arc,
         const char *filename,
         struct mliString **str)
 {
@@ -82,12 +82,30 @@ error:
         return 0;
 }
 
+int mliArchive_get_malloc_json(
+        const struct mliArchive *arc,
+        const char *filename,
+        struct mliJson *json)
+{
+        struct mliString *text = NULL;
+
+        mli_check(mliArchive_get(arc, filename, &text),
+                "Can not find requested file in archive.");
+
+        mli_check(mliJson_malloc_from_string(json, text->c_str),
+                "Can not parse requested json.");
+
+        return 1;
+error:
+        return 0;
+}
+
 uint64_t mliArchive_num(const struct mliArchive *arc)
 {
         return arc->filenames.dyn.size;
 }
 
-void mliArchive_print(struct mliArchive *arc)
+void mliArchive_print(const struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->strings.dyn.size; i++) {
@@ -101,7 +119,7 @@ void mliArchive_print(struct mliArchive *arc)
 }
 
 void mliArchive_make_mask_filename_prefix_sufix(
-        struct mliArchive *arc,
+        const struct mliArchive *arc,
         uint64_t *mask,
         const char *prefix,
         const char *sufix)
@@ -123,7 +141,7 @@ void mliArchive_make_mask_filename_prefix_sufix(
 }
 
 uint64_t mliArchive_num_filename_prefix_sufix(
-        struct mliArchive *arc,
+        const struct mliArchive *arc,
         const char *prefix,
         const char *sufix)
 {

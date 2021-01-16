@@ -43,3 +43,24 @@ CASE("mliUserScenery, from json")
 
         mliJson_free(&json);
 }
+
+CASE("mliUserScenery, malloc from archive")
+{
+        struct mliUserScenery uscn = mliUserScenery_init();
+
+        CHECK(mliUserScenery_malloc_from_tape_archive(
+                &uscn,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001.tar"
+        ));
+
+        CHECK(2 == uscn.resources.num_objects);
+        CHECK(2 == uscn.resources.num_functions);
+        CHECK(4 == uscn.resources.num_colors);
+        CHECK(4 == uscn.resources.num_surfaces);
+        CHECK(2 == uscn.resources.num_media);
+
+        mliUserScenery_free(&uscn);
+}

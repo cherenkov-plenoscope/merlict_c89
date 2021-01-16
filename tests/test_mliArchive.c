@@ -15,7 +15,7 @@ CASE("mliArchive, read tar")
                         "001.tar"
                 )
         );
-        CHECK(mliArchive_num(&arc) == 8);
+        CHECK(mliArchive_num(&arc) == 9);
 
         CHECK(
                 2 == mliArchive_num_filename_prefix_sufix(

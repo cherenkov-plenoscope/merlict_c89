@@ -38,6 +38,13 @@ CASE("Read archive")
         memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
 
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("materials.json", tarh.name));
+        memset(payload, '\0', payload_capacity);
+        CHECK(mliTar_read_data(&tar, payload, tarh.size));
+
+
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("objects/", tarh.name));
         CHECK(MLITAR_TDIR == tarh.type);

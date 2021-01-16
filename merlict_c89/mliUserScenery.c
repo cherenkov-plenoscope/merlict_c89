@@ -47,27 +47,121 @@ error:
         return 0;
 }
 
+int mliUserScenery_malloc_from_tape_archive(
+        struct mliUserScenery *uscn,
+        const char *path)
+{
+        struct mliArchive arc = mliArchive_init();
+
+        mli_check(
+                mliArchive_malloc_from_tar(&arc, path),
+                "Can not read tape-archive to malloc mliUserScenery."
+        );
+
+        mli_check(
+                mliUserScenery_malloc_from_Archive(uscn, &arc),
+                "Can not malloc mliUserScenery from archive."
+        );
+
+        mliArchive_free(&arc);
+
+        return 1;
+error:
+        return 0;
+}
+
 int mliUserScenery_malloc_from_Archive(
         struct mliUserScenery *uscn,
         const struct mliArchive *arc)
 {
-        uint64_t i = 0;
-        struct mliSceneryResourcesCapacity capacity =
+        struct mliJson materials_json = mliJson_init();
+        struct mliJson scenery_json = mliJson_init();
+
+        struct mliSceneryResourcesCapacity rescap =
                 mliSceneryResourcesCapacity_init();
 
-        for (i = 0; i < arc->filenames.dyn.size; i++) {
-                const char *filename = arc->filenames.arr[i].key;
-                if (mli_string_ends_with(filename, ".obj")) {
-                        capacity.num_objects += 1;
-                }
-                if (mli_string_ends_with(filename, ".csv")) {
-                        capacity.num_functions += 1;
-                }
-        }
-        mli_check(capacity.num_functions >= 1, "Expected num_functions >= 1");
+        mli_check(mliArchive_get_malloc_json(
+                arc,
+                "materials.json",
+                &materials_json),
+                "Can not parse materials.json.");
 
-        mli_check(mliSceneryResources_malloc(&uscn->resources, capacity), "");
+        mli_check(mliArchive_get_malloc_json(
+                arc,
+                "scenery.json",
+                &scenery_json),
+                "Can not parse scenery.json.");
 
+        mli_check(mliSceneryResourcesCapacity_estimate(
+                &rescap,
+                arc,
+                &materials_json),
+                "Can not estimate capacity of archive.");
+
+        mli_check(mliUserScenery_malloc(uscn), "Can not malloc mliUserScenery");
+
+        mli_check(mliSceneryResources_malloc(&uscn->resources, rescap),
+                "Can not malloc resources in mliUserScenery.");
+
+        mliJson_free(&scenery_json);
+        mliJson_free(&materials_json);
+
+        return 1;
+error:
+        return 0;
+}
+
+
+int mliSceneryResourcesCapacity_estimate(
+        struct mliSceneryResourcesCapacity *rescap,
+        const struct mliArchive *arc,
+        const struct mliJson *materials_json)
+{
+        rescap->num_objects = mliArchive_num_filename_prefix_sufix(
+                arc, "objects/", ".obj");
+
+        rescap->num_functions = mliArchive_num_filename_prefix_sufix(
+                arc, "functions/", ".csv");
+
+        mli_check(__mliSceneryResourcesCapacity_from_materials_json(
+                rescap,
+                materials_json),
+                "Can not estimate capacity from materials-json.");
+
+        return 1;
+error:
+        return 0;
+}
+
+
+int __mliSceneryResourcesCapacity_from_materials_json(
+        struct mliSceneryResourcesCapacity *rescap,
+        const struct mliJson *json)
+{
+        uint64_t token;
+        mli_check(
+                mliJson_find_key(json, 0, "colors", &token),
+                "Expected materials-json to have key 'colors'.");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_ARRAY,
+                "Expected key 'colors' to point to a json-array.");
+        rescap->num_colors = json->tokens[token + 1].size;
+
+        mli_check(
+                mliJson_find_key(json, 0, "media", &token),
+                "Expected materials-json to have key 'media'.");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_ARRAY,
+                "Expected key 'media' to point to a json-array.");
+        rescap->num_media = json->tokens[token + 1].size;
+
+        mli_check(
+                mliJson_find_key(json, 0, "surfaces", &token),
+                "Expected materials-json to have key 'surfaces'.");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_ARRAY,
+                "Expected key 'surfaces' to point to a json-array.");
+        rescap->num_surfaces = json->tokens[token + 1].size;
         return 1;
 error:
         return 0;

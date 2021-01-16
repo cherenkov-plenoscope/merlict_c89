@@ -8,6 +8,7 @@
 #include "mli_debug.h"
 #include "mliSceneryResources.h"
 #include "mliFrame.h"
+#include "mli_json.h"
 #include "mliDynMap.h"
 #include "mliArchive.h"
 
@@ -28,5 +29,17 @@ struct mliUserScenery mliUserScenery_init(void);
 int mliUserScenery_malloc_from_Archive(
         struct mliUserScenery *uscn,
         const struct mliArchive *arc);
+int mliUserScenery_malloc_from_tape_archive(
+        struct mliUserScenery *uscn,
+        const char *path);
+
+int mliSceneryResourcesCapacity_estimate(
+        struct mliSceneryResourcesCapacity *capacity,
+        const struct mliArchive *arc,
+        const struct mliJson *materials_json);
+
+int __mliSceneryResourcesCapacity_from_materials_json(
+        struct mliSceneryResourcesCapacity *rescap,
+        const struct mliJson *json);
 
 #endif
