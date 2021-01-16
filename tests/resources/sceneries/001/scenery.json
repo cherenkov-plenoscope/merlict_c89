@@ -1,0 +1,95 @@
+{
+    "colors": [
+        {"rgb": [22, 91, 49], "name": "grass_green"},
+        {"rgb": [122, 91, 49], "name": "brown"},
+        {"rgb": [22, 191, 49], "name": "green"},
+        {"rgb": [22, 91, 149], "name": "blue"}
+    ],
+    "media": [
+        {
+            "name": "vacuum",
+            "refraction": "zero",
+            "absorbtion": "zero"
+        },
+        {
+            "name": "water",
+            "refraction": "refraction_water",
+            "absorbtion": "zero"
+        }
+    ],
+    "default_medium": "vacuum",
+    "surfaces": [
+        {
+            "name": "grass",
+            "material": "Phong",
+            "specular_reflection": "zero",
+            "diffuse_reflection": "zero",
+            "color": "grass_green"
+        },
+        {
+            "name": "wood",
+            "material": "Phong",
+            "specular_reflection": "zero",
+            "diffuse_reflection": "zero",
+            "color": "brown"
+        },
+        {
+            "name": "leafs",
+            "material": "Phong",
+            "specular_reflection": "zero",
+            "diffuse_reflection": "zero",
+            "color": "green"
+        },
+        {
+            "name": "blue_glass",
+            "material": "Phong",
+            "specular_reflection": "zero",
+            "diffuse_reflection": "zero",
+            "color": "blue"
+        }
+    ],
+    "children": [
+        {
+            "type": "Object",
+            "id": 1,
+            "pos": [0, 0, -2],
+            "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+            "name": "teapot2",
+            "layer": {
+                "inner": {"medium": "vacuum", "surface": "grass"},
+                "outer": {"medium": "vacuum", "surface": "grass"}
+            }
+        },
+        {
+            "type": "Frame",
+            "id": 2,
+            "pos": [5, 5, -2],
+            "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+            "children": [
+                {
+                    "type": "Object",
+                    "id": 3,
+                    "pos": [0, 0, 3],
+                    "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+                    "name": "hexagonal_mirror",
+                    "layer": {
+                        "inner": {"medium": "vacuum", "surface": "leafs"},
+                        "outer": {"medium": "vacuum", "surface": "leafs"}
+                    }
+                },
+                {
+                    "type": "Object",
+                    "id": 4,
+                    "pos": [0, 0, 0.75],
+                    "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+                    "name": "hexagonal_mirror",
+                    "layer": {
+                        "inner": {"medium": "vacuum", "surface": "wood"},
+                        "outer": {"medium": "vacuum", "surface": "wood"}
+                    }
+                }
+            ]
+        }
+    ]
+}
+
