@@ -75,11 +75,11 @@ int mli_string_has_prefix_suffix(
 {
         uint64_t has_pre = 1;
         uint64_t has_suf = 1;
-        if(prefix != NULL) {
+        if (prefix != NULL) {
                 has_pre = mli_string_starts_with(str, prefix);
         }
 
-        if(sufix != NULL) {
+        if (sufix != NULL) {
                 has_suf = mli_string_ends_with(str, sufix);
         }
 

@@ -26,13 +26,13 @@ int mliArchive_get(
 uint64_t mliArchive_num(const struct mliArchive *arc);
 void mliArchive_print(struct mliArchive *arc);
 void mliArchive_make_mask_from_template_filename(
-    struct mliArchive *arc,
-    uint64_t *mask,
-    const char *prefix,
-    const char *suffix);
+        struct mliArchive *arc,
+        uint64_t *mask,
+        const char *prefix,
+        const char *suffix);
 uint64_t mliArchive_num_filename_prefix_sufix(
-    struct mliArchive *arc,
-    const char *prefix,
-    const char *sufix);
+        struct mliArchive *arc,
+        const char *prefix,
+        const char *sufix);
 
 #endif
