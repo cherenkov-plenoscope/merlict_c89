@@ -6,7 +6,6 @@
 
 #include "mliTar.h"
 
-
 struct _mliTarRawHeader {
         char name[100];
         char mode[8];
@@ -20,14 +19,16 @@ struct _mliTarRawHeader {
         char _padding[255];
 };
 
-struct mliTar mliTar_init(void) {
+struct mliTar mliTar_init(void)
+{
         struct mliTar out;
         out.pos = 0u;
         out.remaining_data = 0u;
         return out;
 }
 
-struct mliTarHeader mliTarHeader_init(void) {
+struct mliTarHeader mliTarHeader_init(void)
+{
         uint64_t i;
         struct mliTarHeader h;
         h.mode = 0;
@@ -81,7 +82,8 @@ error:
 
 /* close */
 
-int mliTar_close(struct mliTar *tar) {
+int mliTar_close(struct mliTar *tar)
+{
         fclose(tar->stream);
         return 1;
 }
@@ -112,9 +114,7 @@ int _mliTar_write_null_bytes(struct mliTar *tar, uint64_t n)
         char nul = '\0';
         for (i = 0; i < n; i++) {
                 mli_check(
-                        _mliTar_twrite(tar, &nul, 1),
-                        "Failed to write nulls"
-                );
+                        _mliTar_twrite(tar, &nul, 1), "Failed to write nulls");
         }
         return 1;
 error:
@@ -127,12 +127,12 @@ int _mliTar_raw_to_header(
 {
         uint64_t chksum1, chksum2;
 
-        mli_check(*rh->checksum != '\0', "Record is null.")
+        mli_check(*rh->checksum != '\0', "Record is null.");
 
         /* Build and compare checksum */
         chksum1 = _mliTar_checksum(rh);
         sscanf(rh->checksum, "%lo", &chksum2);
-        mli_check(chksum1 == chksum2, "Bad checksum.")
+        mli_check(chksum1 == chksum2, "Bad checksum.");
 
         /* Load raw header into header */
         sscanf(rh->mode, "%lo", &h->mode);
@@ -197,13 +197,9 @@ int mliTar_read_header(struct mliTar *tar, struct mliTarHeader *h)
         struct _mliTarRawHeader rh;
         mli_check(
                 _mliTar_tread(tar, &rh, sizeof(rh)),
-                "Failed to read raw header"
-        );
+                "Failed to read raw header");
 
-        mli_check(
-                _mliTar_raw_to_header(h, &rh),
-                "Failed to parse raw header."
-        )
+        mli_check(_mliTar_raw_to_header(h, &rh), "Failed to parse raw header.");
         tar->remaining_data = h->size;
         return 1;
 error:
@@ -214,12 +210,9 @@ int mliTar_read_data(struct mliTar *tar, void *ptr, uint64_t size)
 {
         mli_check(
                 tar->remaining_data >= size,
-                "Expect size to be read >= remaining_data"
-        );
+                "Expect size to be read >= remaining_data");
         mli_check(
-                _mliTar_tread(tar, ptr, size),
-                "Failed to read payload-data."
-        );
+                _mliTar_tread(tar, ptr, size), "Failed to read payload-data.");
         tar->remaining_data -= size;
 
         if (tar->remaining_data == 0) {
@@ -228,8 +221,7 @@ int mliTar_read_data(struct mliTar *tar, void *ptr, uint64_t size)
 
                 mli_check(
                         _mliTar_seek(tar, padding_size),
-                        "Failed to read padding block to reach nect record."
-                );
+                        "Failed to read padding block to reach nect record.");
         }
 
         return 1;
@@ -244,8 +236,7 @@ int mliTar_write_header(struct mliTar *tar, const struct mliTarHeader *h)
         tar->remaining_data = h->size;
         mli_check(
                 _mliTar_twrite(tar, &rh, sizeof(rh)),
-                "Failed to write header."
-        );
+                "Failed to write header.");
         return 1;
 error:
         return 0;
@@ -262,10 +253,7 @@ int mliTar_write_file_header(
         h.type = MLITAR_TREG;
         h.mode = 0664;
         /* Write header */
-        mli_check(
-                mliTar_write_header(tar, &h),
-                "Failed to write file-header."
-        );
+        mli_check(mliTar_write_header(tar, &h), "Failed to write file-header.");
         return 1;
 error:
         return 0;
@@ -277,10 +265,7 @@ int mliTar_write_dir_header(struct mliTar *tar, const char *name)
         sprintf(h.name, "%s", name);
         h.type = MLITAR_TDIR;
         h.mode = 0775;
-        mli_check(
-                mliTar_write_header(tar, &h),
-                "Failed to write dir-header."
-        );
+        mli_check(mliTar_write_header(tar, &h), "Failed to write dir-header.");
         return 1;
 error:
         return 0;
@@ -290,12 +275,10 @@ int mliTar_write_data(struct mliTar *tar, const void *data, uint64_t size)
 {
         mli_check(
                 tar->remaining_data >= size,
-                "Expect tar->remaining_data >= size to be written."
-        );
+                "Expect tar->remaining_data >= size to be written.");
         mli_check(
                 _mliTar_twrite(tar, data, size),
-                "Failed to write payload-data."
-        );
+                "Failed to write payload-data.");
         tar->remaining_data -= size;
 
         if (tar->remaining_data == 0) {
@@ -303,8 +286,7 @@ int mliTar_write_data(struct mliTar *tar, const void *data, uint64_t size)
                 const uint64_t padding_size = next_record - tar->pos;
                 mli_check(
                         _mliTar_write_null_bytes(tar, padding_size),
-                        "Failed to write padding zeros."
-                );
+                        "Failed to write padding zeros.");
         }
         return 1;
 error:
@@ -315,11 +297,8 @@ int mliTar_finalize(struct mliTar *tar)
 {
         mli_check(
                 _mliTar_write_null_bytes(
-                        tar,
-                        sizeof(struct _mliTarRawHeader) * 2
-                ),
-                "Failed to write two final null records."
-        );
+                        tar, sizeof(struct _mliTarRawHeader) * 2),
+                "Failed to write two final null records.");
         return 1;
 error:
         return 0;

@@ -66,13 +66,7 @@ int mliUserScenery_malloc_from_Archive(
         }
         mli_check(capacity.num_functions >= 1, "Expected num_functions >= 1");
 
-        mli_check(
-                mliSceneryResources_malloc(
-                        &uscn->resources,
-                        capacity
-                ),
-                ""
-        );
+        mli_check(mliSceneryResources_malloc(&uscn->resources, capacity), "");
 
         return 1;
 error:

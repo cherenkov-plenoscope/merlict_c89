@@ -64,7 +64,7 @@ int mli_string_split(
         memset(token, '\0', token_length);
         for (i = 0; i < token_length; i++) {
                 if (str[i] == delimiter) {
-                        i ++;
+                        i++;
                         break;
                 } else if (str[i] == '\0') {
                         break;
@@ -109,10 +109,7 @@ int mliString_malloc_from_file(struct mliString *str, const char *path)
         mli_check(fseek(f, 0, SEEK_END) == 0, "Can not seek to end of file.");
         str_length = ftell(f);
         mli_check(fseek(f, 0, SEEK_SET) == 0, "Can not seek to begin of file");
-        mli_check(
-                mliString_malloc(str, str_length),
-                "Can not malloc string."
-        );
+        mli_check(mliString_malloc(str, str_length), "Can not malloc string.");
         mli_fread(str->c_str, sizeof(char), str_length, f);
         fclose(f);
         return 1;

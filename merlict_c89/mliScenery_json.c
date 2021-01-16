@@ -325,10 +325,7 @@ int __mliSurface_from_json(
                 "Expected medium's material to be of type string.");
         mli_check(
                 __mli_material_type_from_name_token(
-                    json,
-                    token_mate,
-                    &surface->material
-                ),
+                        json, token_mate, &surface->material),
                 "Failed to get material-idx from map for string from json");
 
         mli_check(
@@ -614,18 +611,15 @@ int __mliFrame_from_json(
                 "Expected Frame's children to be a json-array '[]'.");
         num_children = json->tokens[token_children].size;
         for (c = 0; c < num_children; c++) {
-                uint64_t token_child = mliJson_array_child_token(
-                    json,
-                    token_children,
-                    c);
+                uint64_t token_child =
+                        mliJson_array_child_token(json, token_children, c);
                 struct mliFrame *child = NULL;
                 uint64_t type;
                 uint64_t token_grandchildren;
 
                 mli_check(
                         __mliFrame_type_from_json(&type, json, token_child),
-                        "Failed to read type of Frame."
-                );
+                        "Failed to read type of Frame.");
 
                 child = mliFrame_add(mother, type);
                 mli_check(child, "Failed to add child to frame.");
@@ -636,8 +630,7 @@ int __mliFrame_from_json(
 
                 mli_check(
                         __mliFrame_set_id(&child->id, json, token_child),
-                        "Failed to set id of Frame from json."
-                );
+                        "Failed to set id of Frame from json.");
 
                 switch (type) {
                 case MLI_FRAME:
@@ -646,11 +639,9 @@ int __mliFrame_from_json(
                                         json,
                                         token_child,
                                         "children",
-                                        &token_grandchildren
-                                ),
+                                        &token_grandchildren),
                                 "Expected child of type Frame to have "
-                                "key 'children'."
-                        );
+                                "key 'children'.");
                         mli_check(
                                 __mliFrame_from_json(
                                         child,
@@ -658,11 +649,9 @@ int __mliFrame_from_json(
                                         token_grandchildren + 1,
                                         object_names,
                                         surface_names,
-                                        medium_names
-                                ),
+                                        medium_names),
                                 "Failed to populate grandchildren "
-                                "Frames from json."
-                        );
+                                "Frames from json.");
                         break;
                 case MLI_OBJECT:
                         mli_check(
@@ -671,11 +660,9 @@ int __mliFrame_from_json(
                                         surface_names,
                                         medium_names,
                                         json,
-                                        token_child
-                                ),
+                                        token_child),
                                 "Failed to parse Frame's surface "
-                                "from json."
-                        );
+                                "from json.");
                         break;
                 default:
                         mli_sentinel("Unknown type of frame.");

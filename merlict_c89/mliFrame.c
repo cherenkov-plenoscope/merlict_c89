@@ -45,8 +45,7 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type)
         if (type == MLI_FRAME) {
                 mli_check(
                         mliDynFramePtr_malloc(&f->children, 0u),
-                        "Can not allocate children of frame."
-                );
+                        "Can not allocate children of frame.");
         }
         return 1;
 error:

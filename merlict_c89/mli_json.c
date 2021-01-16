@@ -84,12 +84,10 @@ int mliJson_malloc_from_file(struct mliJson *json, const char *path)
         struct mliString str = mliString_init();
         mli_check(
                 mliString_malloc_from_file(&str, path),
-                "Failed to read file into string."
-        );
+                "Failed to read file into string.");
         mli_check(
                 mliJson_malloc_from_string(json, str.c_str),
-                "Failed to parse json-string read from path."
-        );
+                "Failed to parse json-string read from path.");
         mliString_free(&str);
         return 1;
 error:

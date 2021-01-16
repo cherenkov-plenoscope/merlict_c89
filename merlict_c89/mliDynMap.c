@@ -27,8 +27,7 @@ int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value)
         if (map->dyn.size == 0u) {
                 mli_check(
                         mliDynMap_malloc(map, 0u),
-                        "Failed to initially malloc dyn-map."
-                );
+                        "Failed to initially malloc dyn-map.");
         }
         mli_check(strlen(key) < MLI_MAP_KEY_CAPACITY, "Key too long.");
         mli_check(0 == mliDynMap_has(map, key), "Key already in use.");

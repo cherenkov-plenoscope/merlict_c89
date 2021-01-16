@@ -19,7 +19,10 @@ void mliArchive_free(struct mliArchive *arc);
 int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path);
 
 int mliArchive_has(const struct mliArchive *arc, const char *filename);
-int mliArchive_get(struct mliArchive *arc, const char *filename, struct mliString **str);
+int mliArchive_get(
+        struct mliArchive *arc,
+        const char *filename,
+        struct mliString **str);
 uint64_t mliArchive_num(const struct mliArchive *arc);
 void mliArchive_print(struct mliArchive *arc);
 

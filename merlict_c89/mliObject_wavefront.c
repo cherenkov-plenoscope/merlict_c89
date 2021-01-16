@@ -292,7 +292,8 @@ int _mliObject_parse_face_line(
 
                 /* mode MLI_WAVEFRONT_FACE_LINE_V_VN */
 
-                /*mli_c(mliBuff_to_uint(c, &buff, 3, state, old_state, &v->a));*/
+                /*mli_c(mliBuff_to_uint(c, &buff, 3, state, old_state,
+                 * &v->a));*/
                 mli_c(mliBuff_to_uint(c, &buff, 27, state, old_state, &vn->a));
 
                 mli_c(mliBuff_to_uint(c, &buff, 29, state, old_state, &v->b));
@@ -303,7 +304,8 @@ int _mliObject_parse_face_line(
 
                 /* mode MLI_WAVEFRONT_FACE_LINE_V_VT_VN */
 
-                /*mli_c(mliBuff_to_uint(c, &buff, 3, state, old_state, &v->a));*/
+                /*mli_c(mliBuff_to_uint(c, &buff, 3, state, old_state,
+                 * &v->a));*/
                 mli_c(mliBuff_to_uint(c, &buff, 11, state, old_state, &vt->a));
                 mli_c(mliBuff_to_uint(c, &buff, 13, state, old_state, &vn->a));
 
@@ -322,7 +324,6 @@ int _mliObject_parse_face_line(
 error:
         return 0;
 }
-
 
 int _mliObject_parse_three_float_line(const char *line, struct mliVec *v)
 {
@@ -414,7 +415,7 @@ error:
         return 0;
 }
 
-int mliObject_malloc_from_string(struct mliObject *obj, const char* str)
+int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
 {
         uint64_t i;
         uint64_t p = 0;
@@ -439,7 +440,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char* str)
         while (1) {
                 line_length = mli_string_split(&str[p], '\n', line, 1024);
                 if (line_length == 0) {
-                    break;
+                        break;
                 }
                 mli_check(line_length < 1024, "Line is too long.");
                 p += line_length;
@@ -449,25 +450,17 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char* str)
                         struct mliVec tmp_vn;
                         mli_check(
                                 _mliObject_parse_three_float_line(
-                                        &line[2],
-                                        &tmp_vn),
-                                "Can not parse vertex-normal-line."
-                        );
-                        mli_c(
-                                mliDynVec_push_back(&vn, tmp_vn)
-                        );
+                                        &line[2], &tmp_vn),
+                                "Can not parse vertex-normal-line.");
+                        mli_c(mliDynVec_push_back(&vn, tmp_vn));
                 } else if (line[0] == 'v') {
                         /* vertex line */
                         struct mliVec tmp_v;
                         mli_check(
                                 _mliObject_parse_three_float_line(
-                                        &line[1],
-                                        &tmp_v),
-                                "Can not parse vertex-line."
-                        );
-                        mli_c(
-                                mliDynVec_push_back(&v, tmp_v)
-                        );
+                                        &line[1], &tmp_v),
+                                "Can not parse vertex-line.");
+                        mli_c(mliDynVec_push_back(&v, tmp_v));
                 } else if (line[0] == 'f') {
                         /* face-line */
                         int line_mode;
@@ -481,8 +474,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char* str)
                                         &tmp_fvt,
                                         &tmp_fvn,
                                         &line_mode),
-                                "Can not parse face-line."
-                        );
+                                "Can not parse face-line.");
                         mli_check(tmp_fv.a >= 1, "Expected fv.a >= 1");
                         mli_check(tmp_fv.b >= 1, "Expected fv.b >= 1");
                         mli_check(tmp_fv.c >= 1, "Expected fv.c >= 1");
@@ -501,9 +493,9 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char* str)
                         mli_c(mliDynFace_push_back(&fvn, tmp_fvn));
                         mli_check(
                                 line_mode == MLI_WAVEFRONT_FACE_LINE_V_VT_VN ||
-                                line_mode == MLI_WAVEFRONT_FACE_LINE_V_VN,
-                                "Expected faces to have vertex-normals."
-                        )
+                                        line_mode ==
+                                                MLI_WAVEFRONT_FACE_LINE_V_VN,
+                                "Expected faces to have vertex-normals.")
                 }
         }
 
@@ -513,32 +505,29 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char* str)
                 "Expected num. vertex-indices == num. vertex-normal-indices.");
         mli_check(
                 mliObject_malloc(obj, v.dyn.size, vn.dyn.size, fv.dyn.size),
-                "Failed to malloc mliObject from file."
-        );
+                "Failed to malloc mliObject from file.");
 
-        for (i = 0; i < v.dyn.size; i ++) {
+        for (i = 0; i < v.dyn.size; i++) {
                 obj->vertices[i] = v.arr[i];
         }
-        for (i = 0; i < vn.dyn.size; i ++) {
+        for (i = 0; i < vn.dyn.size; i++) {
                 obj->vertex_normals[i] = mliVec_normalized(vn.arr[i]);
         }
-        for (i = 0; i < fv.dyn.size; i ++) {
+        for (i = 0; i < fv.dyn.size; i++) {
                 obj->faces_vertices[i] = fv.arr[i];
         }
-        for (i = 0; i < fvn.dyn.size; i ++) {
+        for (i = 0; i < fvn.dyn.size; i++) {
                 obj->faces_vertex_normals[i] = fvn.arr[i];
         }
 
         mli_check(
                 mliObject_assert_valid_faces(obj),
                 "Expected the vertex-indices and vertex-normal-indices "
-                "referenced by the faces to be contained by the mliObject."
-        );
+                "referenced by the faces to be contained by the mliObject.");
 
         mli_check(
                 mliObject_assert_normals(obj, 1e-6),
-                "Expected vertex-normals to be normalized to at least 1e-6."
-        );
+                "Expected vertex-normals to be normalized to at least 1e-6.");
 
         /* free dyn */
         mliDynVec_free(&v);

@@ -30,12 +30,9 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
                         &text[tpos],
                         line_delimiter,
                         line,
-                        MLI_CSV_BUFF_CAPACITY
-                );
+                        MLI_CSV_BUFF_CAPACITY);
                 mli_check(
-                        line_length < MLI_CSV_BUFF_CAPACITY,
-                        "Line too long."
-                );
+                        line_length < MLI_CSV_BUFF_CAPACITY, "Line too long.");
                 if (line_length == 0) {
                         break;
                 }
@@ -53,35 +50,29 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
                                 &line[lpos],
                                 token_delimiter,
                                 token,
-                                MLI_CSV_BUFF_CAPACITY
-                        );
+                                MLI_CSV_BUFF_CAPACITY);
                         mli_check(
                                 token_length < MLI_CSV_BUFF_CAPACITY,
-                                "Token too long."
-                        );
+                                "Token too long.");
                         if (token_length == 0) {
                                 break;
                         }
                         lpos = lpos + token_length;
-                        num_tokens ++;
+                        num_tokens++;
 
                         mli_check(
                                 num_tokens <= 2,
-                                "Expected only two tokens per line."
-                        );
+                                "Expected only two tokens per line.");
                         if (num_tokens == 1) {
                                 mli_check(
                                         mli_string_to_float(&_x, token),
-                                        "Failed to parse x-value."
-                                );
+                                        "Failed to parse x-value.");
                         } else if (num_tokens == 2) {
                                 mli_check(
                                         mli_string_to_float(&_y, token),
-                                        "Failed to parse y-value."
-                                );
+                                        "Failed to parse y-value.");
                                 break;
                         }
-
                 }
                 mli_check(num_tokens == 2, "Expected two tokens per line.");
 
@@ -90,7 +81,7 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
         }
 
         mli_check(mliFunc_malloc(func, xs.dyn.size), "Failed to malloc func.");
-        for (i = 0; i < xs.dyn.size; i ++) {
+        for (i = 0; i < xs.dyn.size; i++) {
                 func->x[i] = xs.arr[i];
                 func->y[i] = ys.arr[i];
         }

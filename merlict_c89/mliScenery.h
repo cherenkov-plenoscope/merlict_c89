@@ -22,10 +22,10 @@ struct mliScenery {
         uint32_t default_medium;
 
         uint32_t num_objects;
-        struct mliObject* objects;
+        struct mliObject *objects;
 
         uint32_t num_robjects;
-        uint32_t* robjects;
+        uint32_t *robjects;
         struct mliBoundaryLayer *robject_boundary_layers;
         struct mliHomTraComp *robject_T;
         uint32_t *user_ids;

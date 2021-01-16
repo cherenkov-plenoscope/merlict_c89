@@ -37,28 +37,21 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 
                 mli_check(
                         mliDynMap_insert(&arc->filenames, tarh.name, next),
-                        "Can not insert key."
-                );
+                        "Can not insert key.");
 
                 mli_check(
                         mliDynString_push_back(&arc->strings, mliString_init()),
-                        "Can not push back mliString."
-                );
+                        "Can not push back mliString.");
                 payload = &arc->strings.arr[next];
 
                 mli_check(
                         mliString_malloc(payload, tarh.size),
-                        "Can not allocate string-buffer."
-                );
+                        "Can not allocate string-buffer.");
 
                 mli_check(
                         mliTar_read_data(
-                                &tar,
-                                (void *)payload->c_str,
-                                tarh.size
-                        ),
-                        "Failed to read payload from tar into string-buffer."
-                );
+                                &tar, (void *)payload->c_str, tarh.size),
+                        "Failed to read payload from tar into string-buffer.");
         }
 
         mliTar_close(&tar);
@@ -99,12 +92,10 @@ void mliArchive_print(struct mliArchive *arc)
         uint64_t i;
         for (i = 0; i < arc->strings.dyn.size; i++) {
                 struct _mliMapItem *map_item = &arc->filenames.arr[i];
-                fprintf(
-                        stderr,
+                fprintf(stderr,
                         "%ld: %s, %ld\n",
                         i,
                         map_item->key,
-                        arc->strings.arr[i].capacity
-                );
+                        arc->strings.arr[i].capacity);
         }
 }
