@@ -30,7 +30,7 @@ int mliArchive_get_malloc_json(
         struct mliJson *json);
 uint64_t mliArchive_num(const struct mliArchive *arc);
 void mliArchive_print(const struct mliArchive *arc);
-void mliArchive_make_mask_from_template_filename(
+void mliArchive_mask_filename_prefix_sufix(
         const struct mliArchive *arc,
         uint64_t *mask,
         const char *prefix,

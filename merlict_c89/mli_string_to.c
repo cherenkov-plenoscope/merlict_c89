@@ -100,7 +100,6 @@ int mli_string_split(
         memset(token, '\0', token_length);
         for (i = 0; i < token_length; i++) {
                 if (str[i] == delimiter) {
-                        i++;
                         break;
                 } else if (str[i] == '\0') {
                         break;

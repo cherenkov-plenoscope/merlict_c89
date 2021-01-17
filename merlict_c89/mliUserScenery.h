@@ -23,7 +23,6 @@ struct mliUserScenery {
         struct mliDynMap surface_names;
 };
 
-int mliUserScenery_malloc(struct mliUserScenery *uscn);
 void mliUserScenery_free(struct mliUserScenery *uscn);
 struct mliUserScenery mliUserScenery_init(void);
 int mliUserScenery_malloc_from_Archive(
@@ -32,11 +31,6 @@ int mliUserScenery_malloc_from_Archive(
 int mliUserScenery_malloc_from_tape_archive(
         struct mliUserScenery *uscn,
         const char *path);
-
-int mliSceneryResourcesCapacity_estimate(
-        struct mliSceneryResourcesCapacity *capacity,
-        const struct mliArchive *arc,
-        const struct mliJson *materials_json);
 
 int __mliSceneryResourcesCapacity_from_materials_json(
         struct mliSceneryResourcesCapacity *rescap,

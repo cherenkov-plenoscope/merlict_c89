@@ -443,7 +443,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                         break;
                 }
                 mli_check(line_length < 1024, "Line is too long.");
-                p += line_length;
+                p += line_length + 1;
 
                 if (line[0] == 'v' && line[1] == 'n') {
                         /* vertex-normal-line*/

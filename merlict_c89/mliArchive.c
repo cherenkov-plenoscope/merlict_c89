@@ -118,14 +118,14 @@ void mliArchive_print(const struct mliArchive *arc)
         }
 }
 
-void mliArchive_make_mask_filename_prefix_sufix(
+void mliArchive_mask_filename_prefix_sufix(
         const struct mliArchive *arc,
         uint64_t *mask,
         const char *prefix,
         const char *sufix)
 {
-        uint64_t i;
-        uint64_t match;
+        uint64_t i = 0u;
+        uint64_t match = 0u;
         for (i = 0; i < arc->strings.dyn.size; i++) {
                 struct _mliMapItem *map_item = &arc->filenames.arr[i];
 
@@ -133,9 +133,9 @@ void mliArchive_make_mask_filename_prefix_sufix(
                         map_item->key, prefix, sufix);
 
                 if (match) {
-                        mask[i] = 0;
-                } else {
                         mask[i] = 1;
+                } else {
+                        mask[i] = 0;
                 }
         }
 }

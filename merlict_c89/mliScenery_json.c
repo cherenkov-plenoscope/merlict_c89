@@ -673,7 +673,7 @@ int __mliFrame_from_json(
 error:
         return 0;
 }
-
+/*
 int mliUserScenery_malloc_from_json(
         struct mliUserScenery *uscn,
         const struct mliJson *json)
@@ -756,3 +756,4 @@ int mliUserScenery_malloc_from_json(
 error:
         return 0;
 }
+*/

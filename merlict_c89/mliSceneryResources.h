@@ -20,6 +20,8 @@ struct mliSceneryResourcesCapacity {
         uint32_t num_media;
 };
 
+struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void);
+
 struct mliSceneryResources {
         uint32_t num_objects;
         struct mliObject *objects;
@@ -41,8 +43,7 @@ struct mliSceneryResources {
 
 int mliSceneryResources_malloc(
         struct mliSceneryResources *res,
-        const struct mliSceneryResourcesCapacity capacity);
+        const struct mliSceneryResourcesCapacity rescap);
 void mliSceneryResources_free(struct mliSceneryResources *res);
 struct mliSceneryResources mliSceneryResources_init(void);
-struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void);
 #endif

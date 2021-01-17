@@ -150,30 +150,24 @@ CASE("mli_string_split_valid")
 
         sprintf(str, "first\nsecond\n\nthird");
         token_size = mli_string_split(&str[p], delimiter, token, 128);
-        CHECK(token_size == 6);
+        CHECK(token_size == 5);
         CHECK(0 == strcmp(token, "first"));
-        p += token_size;
+        p += token_size + 1;
 
         token_size = mli_string_split(&str[p], delimiter, token, 128);
-        CHECK(token_size == 7);
+        CHECK(token_size == 6);
         CHECK(0 == strcmp(token, "second"));
-        p += token_size;
+        p += token_size + 1;
 
         token_size = mli_string_split(&str[p], delimiter, token, 128);
-        CHECK(token_size == 1);
+        CHECK(token_size == 0);
         CHECK(0 == strcmp(token, ""));
-        p += token_size;
+        p += token_size + 1;
 
         token_size = mli_string_split(&str[p], delimiter, token, 128);
         CHECK(token_size == 5);
         CHECK(0 == strcmp(token, "third"));
-        p += token_size;
-
-        CHECK(str[p] == '\0');
-
-        token_size = mli_string_split(&str[p], delimiter, token, 128);
-        CHECK(token_size == 0);
-        CHECK(token[0] == '\0');
+        CHECK(str[p + token_size] == '\0');
 }
 
 CASE("mli_string_split_empty")

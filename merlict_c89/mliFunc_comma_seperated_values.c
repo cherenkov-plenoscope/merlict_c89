@@ -33,10 +33,11 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
                         MLI_CSV_BUFF_CAPACITY);
                 mli_check(
                         line_length < MLI_CSV_BUFF_CAPACITY, "Line too long.");
+
                 if (line_length == 0) {
                         break;
                 }
-                tpos = tpos + line_length;
+                tpos = tpos + line_length + 1;
 
                 if (line[0] == '#') {
                         continue;
@@ -57,7 +58,7 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
                         if (token_length == 0) {
                                 break;
                         }
-                        lpos = lpos + token_length;
+                        lpos = lpos + token_length + 1;
                         num_tokens++;
 
                         mli_check(

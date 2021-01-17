@@ -47,6 +47,8 @@ CASE("mliUserScenery, from json")
 CASE("mliUserScenery, malloc from archive")
 {
         struct mliUserScenery uscn = mliUserScenery_init();
+        uint64_t obj_idx;
+        uint64_t fcn_idx;
 
         CHECK(mliUserScenery_malloc_from_tape_archive(
                 &uscn,
@@ -57,7 +59,34 @@ CASE("mliUserScenery, malloc from archive")
         ));
 
         CHECK(2 == uscn.resources.num_objects);
+
+        CHECK(mliDynMap_get(
+                &uscn.object_names,
+                "objects/hexagonal_mirror_facet.obj",
+                &obj_idx));
+        CHECK(600 == uscn.resources.objects[obj_idx].num_faces);
+        CHECK(331 == uscn.resources.objects[obj_idx].num_vertices);
+        CHECK(331 == uscn.resources.objects[obj_idx].num_vertex_normals);
+
+        CHECK(mliDynMap_get(
+                &uscn.object_names,
+                "objects/teapot.obj",
+                &obj_idx));
+        CHECK(2256 == uscn.resources.objects[obj_idx].num_faces);
+        CHECK(1202 == uscn.resources.objects[obj_idx].num_vertices);
+        CHECK(1202 == uscn.resources.objects[obj_idx].num_vertex_normals);
+
         CHECK(2 == uscn.resources.num_functions);
+
+        CHECK(mliDynMap_get(
+                &uscn.function_names,
+                "functions/refractive_index_water.csv",
+                &fcn_idx));
+        CHECK(mliDynMap_get(
+                &uscn.function_names,
+                "functions/zero.csv",
+                &fcn_idx));
+
         CHECK(4 == uscn.resources.num_colors);
         CHECK(4 == uscn.resources.num_surfaces);
         CHECK(2 == uscn.resources.num_media);

@@ -56,15 +56,15 @@ void mliSceneryResources_free(struct mliSceneryResources *res)
 
 int mliSceneryResources_malloc(
         struct mliSceneryResources *res,
-        const struct mliSceneryResourcesCapacity capacity)
+        const struct mliSceneryResourcesCapacity rescap)
 {
         uint64_t i;
         mliSceneryResources_free(res);
-        res->num_objects = capacity.num_objects;
-        res->num_functions = capacity.num_functions;
-        res->num_colors = capacity.num_colors;
-        res->num_surfaces = capacity.num_surfaces;
-        res->num_media = capacity.num_media;
+        res->num_objects = rescap.num_objects;
+        res->num_functions = rescap.num_functions;
+        res->num_colors = rescap.num_colors;
+        res->num_surfaces = rescap.num_surfaces;
+        res->num_media = rescap.num_media;
 
         mli_malloc(res->objects, struct mliObject, res->num_objects);
         for (i = 0; i < res->num_objects; i++) {
