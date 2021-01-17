@@ -73,6 +73,8 @@ int mliUserScenery_malloc_from_Archive(
         uint64_t arc_idx = 0u;
         uint64_t obj_idx = 0u;
         uint64_t fnc_idx = 0u;
+        uint64_t token = 0u;
+        char key[128];
 
         /* free everything */
         /* --------------- */
@@ -155,7 +157,7 @@ int mliUserScenery_malloc_from_Archive(
 
                         mli_check(
                                 obj_idx < uscn->resources.num_objects,
-                                "Did not expect this many objects in archive.");
+                                "Expected less objects in archive.");
 
                         mli_check(
                                 mliObject_malloc_from_string(
@@ -165,9 +167,13 @@ int mliUserScenery_malloc_from_Archive(
                                 "Failed to parse wave-front-object from file."
                         );
 
+                        memset(key, '\0', sizeof(key));
+                        __mli_strip_key(arc->filenames.arr[arc_idx].key, key);
+                        fprintf(stderr, "KEY '%s'\n", key);
+
                         mli_check(mliDynMap_insert(
                                 &uscn->object_names,
-                                arc->filenames.arr[arc_idx].key,
+                                key,
                                 obj_idx),
                                 "Failed to insert object-filename into map.");
 
@@ -188,7 +194,7 @@ int mliUserScenery_malloc_from_Archive(
 
                         mli_check(
                                 fnc_idx < uscn->resources.num_functions,
-                                "Did not expect this many functions in archive.");
+                                "Expected less functions in archive.");
 
                         mli_check(
                                 mliFunc_malloc_from_string(
@@ -199,9 +205,13 @@ int mliUserScenery_malloc_from_Archive(
                                 "file."
                         );
 
+                        memset(key, '\0', sizeof(key));
+                        __mli_strip_key(arc->filenames.arr[arc_idx].key, key);
+                        fprintf(stderr, "KEY '%s'\n", key);
+
                         mli_check(mliDynMap_insert(
                                 &uscn->function_names,
-                                arc->filenames.arr[arc_idx].key,
+                                key,
                                 fnc_idx),
                                 "Failed to insert function-filename into map.");
 
@@ -212,15 +222,64 @@ int mliUserScenery_malloc_from_Archive(
         free(arc_mask);
         arc_mask = NULL;
 
+        /* colors */
+
+        mli_check(
+                __mliScenery_assign_colors_from_json(
+                        &uscn->resources, &uscn->color_names, &materials_json),
+                "Failed to copy colors from materials.json.");
+
+        /* media */
+
+        mli_check(
+                __mliScenery_assign_media_from_json(
+                        &uscn->resources,
+                        &uscn->medium_names,
+                        &uscn->function_names,
+                        &materials_json),
+                "Failed to copy media from materials.json.");
+
+        /* surfaces */
+
+        mli_check(
+                __mliScenery_assign_surfaces_from_json(
+                        &uscn->resources,
+                        &uscn->surface_names,
+                        &uscn->function_names,
+                        &uscn->color_names,
+                        &materials_json),
+                "Failed to copy surfaces from materials.json.");
+
+        /* default medium */
+
+        mli_check(
+                mliJson_find_key(&materials_json, 0, "default_medium", &token),
+                "Expected materials.json to have key 'default_medium'.");
+        mli_check(
+                _mliDynMap_get_value_for_string_from_json(
+                        &uscn->medium_names,
+                        &materials_json,
+                        token,
+                        &uscn->resources.default_medium),
+                "Failed to assign the 'default_medium'.");
+
+        mliJson_free(&materials_json);
+
+        /* frames */
+
 
         mliJson_free(&scenery_json);
-        mliJson_free(&materials_json);
 
         return 1;
 error:
+        mliJson_free(&materials_json);
+        mliJson_free(&scenery_json);
+        free(arc_mask);
+
         mliUserScenery_free(uscn);
         return 0;
 }
+
 
 int __mliSceneryResourcesCapacity_from_materials_json(
         struct mliSceneryResourcesCapacity *rescap,
@@ -253,4 +312,37 @@ int __mliSceneryResourcesCapacity_from_materials_json(
         return 1;
 error:
         return 0;
+}
+
+
+void __mli_strip_key(const char *filename, char *key)
+{
+        uint64_t i = 0u;
+        uint64_t o = 0u;
+        while (1) {
+                if (filename[i] == '\0') {
+                        goto finalize;
+                }
+                if (filename[i] == '/') {
+                        i += 1;
+                        break;
+                }
+                i += 1;
+        }
+
+        while (1) {
+                if (filename[i] == '\0') {
+                        goto finalize;
+                }
+                if (filename[i] == '.') {
+                        i += 1;
+                        break;
+                }
+                key[o] = filename[i];
+                i += 1;
+                o += 1;
+        }
+
+finalize:
+        key[o] = '\0';
 }

@@ -62,7 +62,7 @@ CASE("mliUserScenery, malloc from archive")
 
         CHECK(mliDynMap_get(
                 &uscn.object_names,
-                "objects/hexagonal_mirror_facet.obj",
+                "hexagonal_mirror_facet",
                 &obj_idx));
         CHECK(600 == uscn.resources.objects[obj_idx].num_faces);
         CHECK(331 == uscn.resources.objects[obj_idx].num_vertices);
@@ -70,7 +70,7 @@ CASE("mliUserScenery, malloc from archive")
 
         CHECK(mliDynMap_get(
                 &uscn.object_names,
-                "objects/teapot.obj",
+                "teapot",
                 &obj_idx));
         CHECK(2256 == uscn.resources.objects[obj_idx].num_faces);
         CHECK(1202 == uscn.resources.objects[obj_idx].num_vertices);
@@ -80,11 +80,11 @@ CASE("mliUserScenery, malloc from archive")
 
         CHECK(mliDynMap_get(
                 &uscn.function_names,
-                "functions/refractive_index_water.csv",
+                "refractive_index_water",
                 &fcn_idx));
         CHECK(mliDynMap_get(
                 &uscn.function_names,
-                "functions/zero.csv",
+                "zero",
                 &fcn_idx));
 
         CHECK(4 == uscn.resources.num_colors);

@@ -35,5 +35,6 @@ int mliUserScenery_malloc_from_tape_archive(
 int __mliSceneryResourcesCapacity_from_materials_json(
         struct mliSceneryResourcesCapacity *rescap,
         const struct mliJson *json);
+void __mli_strip_key(const char *filename, char *key);
 
 #endif

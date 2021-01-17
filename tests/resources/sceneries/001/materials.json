@@ -13,7 +13,7 @@
         },
         {
             "name": "water",
-            "refraction": "refraction_water",
+            "refraction": "refractive_index_water",
             "absorbtion": "zero"
         }
     ],
