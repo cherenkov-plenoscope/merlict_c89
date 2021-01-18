@@ -166,38 +166,28 @@ error:
 int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
 {
         uint64_t i;
-        if (a->num_vertices != b->num_vertices) {
-                return 0;
-        }
-        if (a->num_vertex_normals != b->num_vertex_normals) {
-                return 0;
-        }
-        if (a->num_faces != b->num_faces) {
-                return 0;
-        }
+        mli_c(a->num_vertices == b->num_vertices);
+        mli_c(a->num_vertex_normals == b->num_vertex_normals);
+        mli_c(a->num_faces == b->num_faces);
+
         for (i = 0; i < a->num_vertices; i++) {
-                if (!mliVec_is_equal(a->vertices[i], b->vertices[i])) {
-                        return 0;
-                }
+                mli_c(mliVec_is_equal(a->vertices[i], b->vertices[i]));
         }
         for (i = 0; i < a->num_vertex_normals; i++) {
-                if (!mliVec_is_equal(
-                            a->vertex_normals[i], b->vertex_normals[i])) {
-                        return 0;
-                }
+                mli_c(mliVec_is_equal(
+                            a->vertex_normals[i], b->vertex_normals[i]));
         }
         for (i = 0; i < a->num_faces; i++) {
-                if (!mliFace_is_equal(
-                            a->faces_vertices[i], b->faces_vertices[i])) {
-                        return 0;
-                }
-                if (!mliFace_is_equal(
+                mli_c(mliFace_is_equal(
+                            a->faces_vertices[i],
+                            b->faces_vertices[i]));
+                mli_c(mliFace_is_equal(
                             a->faces_vertex_normals[i],
-                            b->faces_vertex_normals[i])) {
-                        return 0;
-                }
+                            b->faces_vertex_normals[i]));
         }
         return 1;
+error:
+        return 0;
 }
 
 int mliObject_cpy(struct mliObject *destination, struct mliObject *source)
@@ -225,6 +215,7 @@ int mliObject_cpy(struct mliObject *destination, struct mliObject *source)
                 "num_faces.");
         for (p = 0; p < destination->num_faces; p++) {
                 destination->faces_vertices[p] = source->faces_vertices[p];
+                destination->faces_vertex_normals[p] = source->faces_vertex_normals[p];
         }
 
         return 1;

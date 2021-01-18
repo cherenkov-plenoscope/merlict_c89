@@ -15,7 +15,7 @@ int __mliScenery_estimate_num_robjects_in_frames(
                 }
                 break;
         case MLI_OBJECT:
-                num_robjects += 1;
+                (*num_robjects) += 1;
                 break;
         default:
                 mli_sentinel("Expected either type 'Frame' or 'Object'.");

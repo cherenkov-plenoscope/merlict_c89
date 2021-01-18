@@ -6,15 +6,14 @@ int _mliSceneryResources_objects_equal(
         const struct mliSceneryResources *b)
 {
         uint64_t i;
-        if (a->num_objects != b->num_objects) {
-                return 0;
-        }
+        mli_c(a->num_objects == b->num_objects)
+
         for (i = 0; i < a->num_objects; i++) {
-                if (!mliObject_is_equal(&a->objects[i], &b->objects[i])) {
-                        return 0;
-                }
+                mli_c(mliObject_is_equal(&a->objects[i], &b->objects[i]));
         }
         return 1;
+error:
+        return 0;
 }
 
 int _mliSceneryResources_functions_equal(
@@ -77,17 +76,13 @@ int mliSceneryResources_equal(
         const struct mliSceneryResources *a,
         const struct mliSceneryResources *b)
 {
-        if (a->default_medium != b->default_medium)
-                return 0;
-        if (!_mliSceneryResources_objects_equal(a, b))
-                return 0;
-        if (!_mliSceneryResources_functions_equal(a, b))
-                return 0;
-        if (!_mliSceneryResources_colors_equal(a, b))
-                return 0;
-        if (!_mliSceneryResources_media_equal(a, b))
-                return 0;
-        if (!_mliSceneryResources_surfaces_equal(a, b))
-                return 0;
+        mli_c(a->default_medium == b->default_medium);
+        mli_c(_mliSceneryResources_objects_equal(a, b));
+        mli_c(_mliSceneryResources_functions_equal(a, b));
+        mli_c(_mliSceneryResources_colors_equal(a, b));
+        mli_c(_mliSceneryResources_media_equal(a, b));
+        mli_c(_mliSceneryResources_surfaces_equal(a, b));
         return 1;
+error:
+        return 0;
 }
