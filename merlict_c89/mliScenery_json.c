@@ -445,7 +445,7 @@ int __mliFrame_type_from_json(
                 json, token_type + 1, type_string, num_chars_for_type);
         mli_check(
                 mli_string_to_type(type_string, type),
-                "Expected Frame's type to be known.");
+                "Expected Frame's type to be either 'Frame' or 'Object'.");
         free(type_string);
         return 1;
 error:
