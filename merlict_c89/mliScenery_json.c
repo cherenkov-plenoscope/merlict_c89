@@ -596,6 +596,25 @@ error:
         return 0;
 }
 
+int __mliFrame_set_object_reference(
+        uint32_t *object_reference,
+        const struct mliJson *json,
+        const uint64_t token,
+        const struct mliDynMap *object_names)
+{
+        uint64_t token_obj_key;
+        mli_check(
+                mliJson_find_key(json, token, "obj", &token_obj_key),
+                "Expected Object to have key 'obj'.");
+        mli_check(
+                _mliDynMap_get_value_for_string_from_json(
+                        object_names, json, token_obj_key, object_reference),
+                "Failed to get object-reference from map");
+        return 1;
+error:
+        return 0;
+}
+
 int __mliFrame_from_json(
         struct mliFrame *mother,
         const struct mliJson *json,
@@ -661,7 +680,15 @@ int __mliFrame_from_json(
                                         medium_names,
                                         json,
                                         token_child),
-                                "Failed to parse Frame's surface "
+                                "Failed to parse Objects's surface "
+                                "from json.");
+                        mli_check(
+                                __mliFrame_set_object_reference(
+                                        &child->object,
+                                        json,
+                                        token_child,
+                                        object_names),
+                                "Failed to parse Object reference "
                                 "from json.");
                         break;
                 default:

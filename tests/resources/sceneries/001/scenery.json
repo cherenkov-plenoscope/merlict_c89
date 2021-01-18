@@ -5,7 +5,7 @@
             "id": 1,
             "pos": [0, 0, -2],
             "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-            "name": "teapot2",
+            "obj": "teapot",
             "layer": {
                 "inner": {"medium": "vacuum", "surface": "grass"},
                 "outer": {"medium": "vacuum", "surface": "grass"}
@@ -22,7 +22,7 @@
                     "id": 3,
                     "pos": [0, 0, 3],
                     "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-                    "name": "hexagonal_mirror",
+                    "obj": "hexagonal_mirror_facet",
                     "layer": {
                         "inner": {"medium": "vacuum", "surface": "leafs"},
                         "outer": {"medium": "vacuum", "surface": "leafs"}
@@ -33,7 +33,7 @@
                     "id": 4,
                     "pos": [0, 0, 0.75],
                     "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-                    "name": "hexagonal_mirror",
+                    "obj": "hexagonal_mirror_facet",
                     "layer": {
                         "inner": {"medium": "vacuum", "surface": "wood"},
                         "outer": {"medium": "vacuum", "surface": "wood"}

@@ -11,7 +11,7 @@
                     "id": 3,
                     "pos": [0, 0, 3],
                     "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
-                    "name": "triangle",
+                    "obj": "triangle",
                     "layer": {
                         "inner": {"medium": "vacuum", "surface": "grass"},
                         "outer": {"medium": "vacuum", "surface": "grass"}

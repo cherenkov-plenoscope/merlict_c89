@@ -91,5 +91,23 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(4 == uscn.resources.num_surfaces);
         CHECK(2 == uscn.resources.num_media);
 
+        /* frames */
+
+        CHECK(0 == uscn.root.id);
+        CHECK(MLI_FRAME == uscn.root.type);
+        CHECK(2 == uscn.root.children.dyn.size);
+
+        CHECK(MLI_OBJECT == uscn.root.children.arr[0]->type);
+        CHECK(1 == uscn.root.children.arr[0]->id);
+
+        CHECK(mliDynMap_get(
+                &uscn.object_names,
+                "teapot",
+                &obj_idx));
+        CHECK(obj_idx == uscn.root.children.arr[0]->object);
+
+        CHECK(MLI_FRAME == uscn.root.children.arr[1]->type);
+        CHECK(2 == uscn.root.children.arr[1]->id);
+
         mliUserScenery_free(&uscn);
 }
