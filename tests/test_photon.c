@@ -18,8 +18,7 @@ CASE("simple propagation")
         photon.simulation_truth_id = 0;
 
         CHECK(mliScenery_malloc_from_json_path(
-                &scenery,
-                "tests/resources/glass_cylinder_in_air.json"));
+                &scenery, "tests/resources/glass_cylinder_in_air.json"));
         CHECK(scenery.default_medium == 0u);
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
 
@@ -55,12 +54,7 @@ CASE("simple propagation")
         CHECK(mliDynPhotonInteraction_malloc(&history, max_interactions));
 
         CHECK(mli_propagate_photon(
-                &scenery,
-                &octree,
-                &history,
-                &photon,
-                &prng,
-                max_interactions));
+                &scenery, &octree, &history, &photon, &prng, max_interactions));
 
         CHECK(history.dyn.size >= 1);
 
@@ -87,19 +81,14 @@ CASE("Do not leak out of closed box")
         uint64_t i;
 
         CHECK(mliScenery_malloc_from_json_path(
-                &scenery,
-                "tests/resources/lyso_crystal_scenery.json"));
+                &scenery, "tests/resources/lyso_crystal_scenery.json"));
 
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
 
         CHECK(mliDynPhoton_malloc(&photons, 0u));
         CHECK(photons.dyn.size == 0);
         CHECK(point_like_towards_z_opening_angle_num_photons(
-                &photons,
-                wavelength,
-                opening_angle,
-                num_photons,
-                &prng));
+                &photons, wavelength, opening_angle, num_photons, &prng));
         CHECK(photons.dyn.size == num_photons);
         for (i = 0; i < photons.dyn.size; i++) {
                 photons.arr[i].ray.support = center_of_crystal;
@@ -110,8 +99,7 @@ CASE("Do not leak out of closed box")
                 struct mliPhoton photon = photons.arr[i];
 
                 CHECK(mliDynPhotonInteraction_malloc(
-                        &history,
-                        max_interactions));
+                        &history, max_interactions));
 
                 CHECK(mli_propagate_photon(
                         &scenery,
@@ -126,9 +114,8 @@ CASE("Do not leak out of closed box")
 
                 final_interaction = history.arr[history.dyn.size - 1];
                 if (final_interaction.object_idx >= 0) {
-                        int64_t id_primitive = scenery.user_ids[
-                                final_interaction.object_idx
-                        ];
+                        int64_t id_primitive =
+                                scenery.user_ids[final_interaction.object_idx];
                         if (id_primitive == sensor_id) {
                                 struct mliVec point;
                                 point = final_interaction.position;

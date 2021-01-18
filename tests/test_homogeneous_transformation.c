@@ -144,7 +144,7 @@ CASE("complex sequence")
         trans_range.start = -10.0;
         trans_range.range = 20.0;
         angle_range.start = -MLI_PI;
-        angle_range.range = 2.0*MLI_PI;
+        angle_range.range = 2.0 * MLI_PI;
 
         for (i = 0; i < num_combinations; i++) {
                 struct mliHomTraComp _AB, _BC, _AC;

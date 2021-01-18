@@ -57,20 +57,15 @@ CASE("init mliOctree write and read")
         struct mliOcTree octree_b = mliOcTree_init();
 
         CHECK(mliScenery_read_from_path(
-                &scenery,
-                "tests/resources/scn1.mli.tmp"));
+                &scenery, "tests/resources/scn1.mli.tmp"));
 
-        CHECK(mliOcTree_malloc_from_scenery(
-                &octree,
-                &scenery));
+        CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
 
         CHECK(mliOcTree_write_to_path(
-                &octree,
-                "tests/resources/scn1.mli.octree.tmp"));
+                &octree, "tests/resources/scn1.mli.octree.tmp"));
 
         CHECK(mliOcTree_read_and_malloc_from_path(
-                &octree_b,
-                "tests/resources/scn1.mli.octree.tmp"));
+                &octree_b, "tests/resources/scn1.mli.octree.tmp"));
 
         CHECK(mliOcTree_is_equal(&octree, &octree_b));
 

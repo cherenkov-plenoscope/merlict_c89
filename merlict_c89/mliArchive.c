@@ -89,10 +89,12 @@ int mliArchive_get_malloc_json(
 {
         struct mliString *text = NULL;
 
-        mli_check(mliArchive_get(arc, filename, &text),
+        mli_check(
+                mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
 
-        mli_check(mliJson_malloc_from_string(json, text->c_str),
+        mli_check(
+                mliJson_malloc_from_string(json, text->c_str),
                 "Can not parse requested json.");
 
         return 1;

@@ -44,13 +44,11 @@ int mliUserScenery_malloc_from_tape_archive(
 
         mli_check(
                 mliArchive_malloc_from_tar(&arc, path),
-                "Can not read tape-archive to malloc mliUserScenery."
-        );
+                "Can not read tape-archive to malloc mliUserScenery.");
 
         mli_check(
                 mliUserScenery_malloc_from_Archive(uscn, &arc),
-                "Can not malloc mliUserScenery from archive."
-        );
+                "Can not malloc mliUserScenery from archive.");
 
         mliArchive_free(&arc);
 
@@ -84,59 +82,63 @@ int mliUserScenery_malloc_from_Archive(
         /* parse json files  */
         /*------------------ */
 
-        mli_check(mliArchive_get_malloc_json(
-                arc,
-                "materials.json",
-                &materials_json),
+        mli_check(
+                mliArchive_get_malloc_json(
+                        arc, "materials.json", &materials_json),
                 "Failed to parse 'materials.json'.");
 
-        mli_check(mliArchive_get_malloc_json(
-                arc,
-                "scenery.json",
-                &scenery_json),
+        mli_check(
+                mliArchive_get_malloc_json(arc, "scenery.json", &scenery_json),
                 "Failed to parse 'scenery.json'.");
 
         /* estimate required capacity */
         /*--------------------------- */
 
-        rescap.num_objects = mliArchive_num_filename_prefix_sufix(
-                arc, "objects/", ".obj");
+        rescap.num_objects =
+                mliArchive_num_filename_prefix_sufix(arc, "objects/", ".obj");
 
-        rescap.num_functions = mliArchive_num_filename_prefix_sufix(
-                arc, "functions/", ".csv");
+        rescap.num_functions =
+                mliArchive_num_filename_prefix_sufix(arc, "functions/", ".csv");
 
-        mli_check(__mliSceneryResourcesCapacity_from_materials_json(
-                &rescap,
-                &materials_json),
+        mli_check(
+                __mliSceneryResourcesCapacity_from_materials_json(
+                        &rescap, &materials_json),
                 "Can not estimate capacity from materials-json.");
 
         /* malloc fields */
         /*-------------- */
 
-        mli_check(mliSceneryResources_malloc(&uscn->resources, rescap),
+        mli_check(
+                mliSceneryResources_malloc(&uscn->resources, rescap),
                 "Can not malloc resources in mliUserScenery.");
 
-        mli_check(mliFrame_malloc(&uscn->root, MLI_FRAME),
+        mli_check(
+                mliFrame_malloc(&uscn->root, MLI_FRAME),
                 "Can not allocate root-frame in UserScenery.");
 
-        mli_check(mliDynMap_malloc(
-                &uscn->object_names, uscn->resources.num_objects),
+        mli_check(
+                mliDynMap_malloc(
+                        &uscn->object_names, uscn->resources.num_objects),
                 "Failed to malloc object-name-map.");
 
-        mli_check(mliDynMap_malloc(
-                &uscn->function_names, uscn->resources.num_functions),
+        mli_check(
+                mliDynMap_malloc(
+                        &uscn->function_names, uscn->resources.num_functions),
                 "Failed to malloc function-name-map.");
 
-        mli_check(mliDynMap_malloc(
-                &uscn->color_names, uscn->resources.num_colors),
+        mli_check(
+                mliDynMap_malloc(
+                        &uscn->color_names, uscn->resources.num_colors),
                 "Failed to malloc color-name-map.");
 
-        mli_check(mliDynMap_malloc(
-                &uscn->medium_names, uscn->resources.num_media),
+        mli_check(
+                mliDynMap_malloc(
+                        &uscn->medium_names, uscn->resources.num_media),
                 "Failed to malloc media-name-map.");
 
-        mli_check(mliDynMap_malloc(
-                &uscn->surface_names, uscn->resources.num_surfaces),
+        mli_check(
+                mliDynMap_malloc(
+                        &uscn->surface_names, uscn->resources.num_surfaces),
                 "Failed to malloc surface-name-map.");
 
         /* set fields */
@@ -146,13 +148,10 @@ int mliUserScenery_malloc_from_Archive(
         mli_malloc(arc_mask, uint64_t, mliArchive_num(arc));
 
         mliArchive_mask_filename_prefix_sufix(
-                arc,
-                arc_mask,
-                "objects/",
-                ".obj");
+                arc, arc_mask, "objects/", ".obj");
 
         obj_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_num(arc); arc_idx ++) {
+        for (arc_idx = 0u; arc_idx < mliArchive_num(arc); arc_idx++) {
                 if (arc_mask[arc_idx]) {
 
                         mli_check(
@@ -162,18 +161,15 @@ int mliUserScenery_malloc_from_Archive(
                         mli_check(
                                 mliObject_malloc_from_string(
                                         &uscn->resources.objects[obj_idx],
-                                        arc->strings.arr[arc_idx].c_str
-                                ),
-                                "Failed to parse wave-front-object from file."
-                        );
+                                        arc->strings.arr[arc_idx].c_str),
+                                "Failed to parse wave-front-object from file.");
 
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(arc->filenames.arr[arc_idx].key, key);
 
-                        mli_check(mliDynMap_insert(
-                                &uscn->object_names,
-                                key,
-                                obj_idx),
+                        mli_check(
+                                mliDynMap_insert(
+                                        &uscn->object_names, key, obj_idx),
                                 "Failed to insert object-filename into map.");
 
                         obj_idx += 1u;
@@ -182,13 +178,10 @@ int mliUserScenery_malloc_from_Archive(
 
         /* functions */
         mliArchive_mask_filename_prefix_sufix(
-                arc,
-                arc_mask,
-                "functions/",
-                ".csv");
+                arc, arc_mask, "functions/", ".csv");
 
         fnc_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_num(arc); arc_idx ++) {
+        for (arc_idx = 0u; arc_idx < mliArchive_num(arc); arc_idx++) {
                 if (arc_mask[arc_idx]) {
 
                         mli_check(
@@ -198,19 +191,16 @@ int mliUserScenery_malloc_from_Archive(
                         mli_check(
                                 mliFunc_malloc_from_string(
                                         &uscn->resources.functions[fnc_idx],
-                                        arc->strings.arr[arc_idx].c_str
-                                ),
+                                        arc->strings.arr[arc_idx].c_str),
                                 "Failed to parse comma-separated-values from "
-                                "file."
-                        );
+                                "file.");
 
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(arc->filenames.arr[arc_idx].key, key);
 
-                        mli_check(mliDynMap_insert(
-                                &uscn->function_names,
-                                key,
-                                fnc_idx),
+                        mli_check(
+                                mliDynMap_insert(
+                                        &uscn->function_names, key, fnc_idx),
                                 "Failed to insert function-filename into map.");
 
                         fnc_idx += 1u;
@@ -290,7 +280,6 @@ error:
         return 0;
 }
 
-
 int __mliSceneryResourcesCapacity_from_materials_json(
         struct mliSceneryResourcesCapacity *rescap,
         const struct mliJson *json)
@@ -323,7 +312,6 @@ int __mliSceneryResourcesCapacity_from_materials_json(
 error:
         return 0;
 }
-
 
 void __mli_strip_key(const char *filename, char *key)
 {

@@ -6,31 +6,21 @@ CASE("mliArchive, read tar")
         struct mliString *data = NULL;
         struct mliObject triangle = mliObject_init();
 
-        CHECK(
-                mliArchive_malloc_from_tar(
-                        &arc,
-                        "tests/"
-                        "resources/"
-                        "sceneries/"
-                        "000.tar"
-                )
-        );
+        CHECK(mliArchive_malloc_from_tar(
+                &arc,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "000.tar"));
         CHECK(mliArchive_num(&arc) == 7);
 
-        CHECK(
-                1 == mliArchive_num_filename_prefix_sufix(
-                        &arc, "functions/", ".csv")
-        );
+        CHECK(1 ==
+              mliArchive_num_filename_prefix_sufix(&arc, "functions/", ".csv"));
 
-        CHECK(
-                1 == mliArchive_num_filename_prefix_sufix(
-                        &arc, "objects/", ".obj")
-        );
+        CHECK(1 ==
+              mliArchive_num_filename_prefix_sufix(&arc, "objects/", ".obj"));
 
-        CHECK(
-                1 == mliArchive_num_filename_prefix_sufix(
-                        &arc, NULL, ".md")
-        );
+        CHECK(1 == mliArchive_num_filename_prefix_sufix(&arc, NULL, ".md"));
 
         CHECK(mliArchive_has(&arc, "README.md"));
 

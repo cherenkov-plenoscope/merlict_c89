@@ -22,16 +22,14 @@ CASE("mliUserScenery, from json")
         struct mliSceneryResourcesCapacity uscncap =
                 mliSceneryResourcesCapacity_init();
 
-        sprintf(
-                json_str,
+        sprintf(json_str,
                 "{\n"
                 "    \"objects\": [1, 2, 3, 4, 5],\n"
                 "    \"functions\": [1, 2, 3],\n"
                 "    \"colors\": [1, 2],\n"
                 "    \"surfaces\": [1, 2, 3, 4, 5, 6, 7, 8]\n"
                 "    \"media\": [1],\n"
-                "}\n"
-        );
+                "}\n");
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(__mliSceneryResourcesCapacity_from_json(&uscncap, &json));
 
@@ -55,23 +53,17 @@ CASE("mliUserScenery, malloc from archive")
                 "tests/"
                 "resources/"
                 "sceneries/"
-                "001.tar"
-        ));
+                "001.tar"));
 
         CHECK(2 == uscn.resources.num_objects);
 
         CHECK(mliDynMap_get(
-                &uscn.object_names,
-                "hexagonal_mirror_facet",
-                &obj_idx));
+                &uscn.object_names, "hexagonal_mirror_facet", &obj_idx));
         CHECK(600 == uscn.resources.objects[obj_idx].num_faces);
         CHECK(331 == uscn.resources.objects[obj_idx].num_vertices);
         CHECK(331 == uscn.resources.objects[obj_idx].num_vertex_normals);
 
-        CHECK(mliDynMap_get(
-                &uscn.object_names,
-                "teapot",
-                &obj_idx));
+        CHECK(mliDynMap_get(&uscn.object_names, "teapot", &obj_idx));
         CHECK(2256 == uscn.resources.objects[obj_idx].num_faces);
         CHECK(1202 == uscn.resources.objects[obj_idx].num_vertices);
         CHECK(1202 == uscn.resources.objects[obj_idx].num_vertex_normals);
@@ -79,13 +71,8 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(2 == uscn.resources.num_functions);
 
         CHECK(mliDynMap_get(
-                &uscn.function_names,
-                "refractive_index_water",
-                &fcn_idx));
-        CHECK(mliDynMap_get(
-                &uscn.function_names,
-                "zero",
-                &fcn_idx));
+                &uscn.function_names, "refractive_index_water", &fcn_idx));
+        CHECK(mliDynMap_get(&uscn.function_names, "zero", &fcn_idx));
 
         CHECK(4 == uscn.resources.num_colors);
         CHECK(4 == uscn.resources.num_surfaces);
@@ -100,10 +87,7 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(MLI_OBJECT == uscn.root.children.arr[0]->type);
         CHECK(1 == uscn.root.children.arr[0]->id);
 
-        CHECK(mliDynMap_get(
-                &uscn.object_names,
-                "teapot",
-                &obj_idx));
+        CHECK(mliDynMap_get(&uscn.object_names, "teapot", &obj_idx));
         CHECK(obj_idx == uscn.root.children.arr[0]->object);
 
         CHECK(MLI_FRAME == uscn.root.children.arr[1]->type);

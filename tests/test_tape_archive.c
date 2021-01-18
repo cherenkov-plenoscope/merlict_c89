@@ -5,7 +5,7 @@ CASE("Read archive")
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
         char *payload = NULL;
-        const uint64_t payload_capacity = 1000*1000;
+        const uint64_t payload_capacity = 1000 * 1000;
 
         payload = (char *)malloc(sizeof(char) * payload_capacity);
         CHECK(payload != NULL);
@@ -19,8 +19,7 @@ CASE("Read archive")
                 "resources/"
                 "sceneries/"
                 "000.tar",
-                "r"
-        ));
+                "r"));
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("functions/", tarh.name));
@@ -63,10 +62,9 @@ CASE("Read archive")
         free(payload);
 }
 
-
 CASE("Write and read tape-archive")
 {
-        uint64_t  i = 0;
+        uint64_t i = 0;
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
         char payload[1024];
@@ -76,14 +74,14 @@ CASE("Write and read tape-archive")
         CHECK(mliTar_open(&tar, "tests/resources/123.tar.tmp", "w"));
         CHECK(mliTar_write_dir_header(&tar, "resources"));
         CHECK(mliTar_write_file_header(
-                &tar, "resources/hans.txt",
-                strlen(payload))
-        );
+                &tar, "resources/hans.txt", strlen(payload)));
         CHECK(mliTar_write_data(&tar, payload, strlen(payload)));
         CHECK(mliTar_finalize(&tar));
         CHECK(mliTar_close(&tar));
 
-        for (i = 0; i < 1024; i++) {payload[i] = '\0';}
+        for (i = 0; i < 1024; i++) {
+                payload[i] = '\0';
+        }
 
         CHECK(mliTar_open(&tar, "tests/resources/123.tar.tmp", "r"));
 
