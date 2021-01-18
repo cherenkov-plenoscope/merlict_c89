@@ -167,3 +167,37 @@ CASE("mliUserScenery, malloc from archive")
 
         mliUserScenery_free(&uscn);
 }
+
+CASE("mliUserScenery, read, write mliSceneryResources")
+{
+        struct mliUserScenery uscn = mliUserScenery_init();
+        struct mliSceneryResourcesCapacity rescap =
+                mliSceneryResourcesCapacity_init();
+        struct mliSceneryResources resources = mliSceneryResources_init();
+        FILE *f = NULL;
+
+        CHECK(mliUserScenery_malloc_from_tape_archive(
+                &uscn,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001.tar"
+        ));
+
+        f = fopen("tests/resources/sceneryresources.bin.tmp", "w");
+        CHECK(f != NULL);
+        CHECK(mliSceneryResources_write_capacity_to_file(&uscn.resources, f));
+        CHECK(mliSceneryResources_append_to_file(&uscn.resources, f));
+        fclose(f);
+
+        f = fopen("tests/resources/sceneryresources.bin.tmp", "r");
+        CHECK(f != NULL);
+        CHECK(mliSceneryResources_read_capacity_from_file(&rescap, f));
+        CHECK(mliSceneryResources_malloc(&resources, rescap));
+        CHECK(mliSceneryResources_read_from_file(&resources, f));
+        fclose(f);
+
+        CHECK(mliSceneryResources_equal(&resources, &uscn.resources));
+
+        mliUserScenery_free(&uscn);
+}

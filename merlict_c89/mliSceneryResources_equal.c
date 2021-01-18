@@ -77,6 +77,8 @@ int mliSceneryResources_equal(
         const struct mliSceneryResources *a,
         const struct mliSceneryResources *b)
 {
+        if (a->default_medium != b->default_medium)
+                return 0;
         if (!_mliSceneryResources_objects_equal(a, b))
                 return 0;
         if (!_mliSceneryResources_functions_equal(a, b))
