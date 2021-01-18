@@ -61,7 +61,6 @@
 #include "mli_ray_octree_traversal.h"
 */
 #include "mli_from_outside_to_inside.h"
-#include "mli_xyplane.h"
 /*#include "mliTracer.h"*/
 #include "mliView.h"
 /*

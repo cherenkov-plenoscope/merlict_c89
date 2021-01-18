@@ -211,21 +211,3 @@ CASE("translation and rotation")
         CHECK_MARGIN(ray3.direction.y, ray.direction.y, 1e-6);
         CHECK_MARGIN(ray3.direction.z, ray.direction.z, 1e-6);
 }
-
-CASE("mli_xyplane_equation")
-{
-        double solution;
-        CHECK(mli_xyplane_equation(
-                mliRay_set(mliVec_set(0., 0., 1.), mliVec_set(0., 0., -1.)),
-                &solution));
-        CHECK_MARGIN(solution, 1., 1e-6);
-
-        CHECK(mli_xyplane_equation(
-                mliRay_set(mliVec_set(0., 0., 1.), mliVec_set(0., 1., -1.)),
-                &solution));
-        CHECK_MARGIN(solution, sqrt(2.), 1e-6);
-
-        CHECK(!mli_xyplane_equation(
-                mliRay_set(mliVec_set(0., 0., 1.), mliVec_set(0., 1., 0.)),
-                &solution));
-}
