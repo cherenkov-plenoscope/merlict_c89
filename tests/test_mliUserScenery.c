@@ -18,30 +18,28 @@ CASE("mliUserScenery, init")
 CASE("mliUserScenery, from json")
 {
         char json_str[256];
-        struct mliJson json = mliJson_init();
-        struct mliSceneryResourcesCapacity uscncap =
+        struct mliJson material_json = mliJson_init();
+        struct mliSceneryResourcesCapacity rescap =
                 mliSceneryResourcesCapacity_init();
 
         sprintf(
                 json_str,
                 "{\n"
-                "    \"objects\": [1, 2, 3, 4, 5],\n"
-                "    \"functions\": [1, 2, 3],\n"
                 "    \"colors\": [1, 2],\n"
                 "    \"surfaces\": [1, 2, 3, 4, 5, 6, 7, 8]\n"
                 "    \"media\": [1],\n"
                 "}\n"
         );
-        CHECK(mliJson_malloc_from_string(&json, json_str));
-        CHECK(__mliSceneryResourcesCapacity_from_json(&uscncap, &json));
+        CHECK(mliJson_malloc_from_string(&material_json, json_str));
+        CHECK(__mliSceneryResourcesCapacity_from_materials_json(
+                &rescap,
+                &material_json));
 
-        CHECK(uscncap.num_objects == 5);
-        CHECK(uscncap.num_functions == 3);
-        CHECK(uscncap.num_colors == 2);
-        CHECK(uscncap.num_surfaces == 8);
-        CHECK(uscncap.num_media == 1);
+        CHECK(rescap.num_colors == 2);
+        CHECK(rescap.num_surfaces == 8);
+        CHECK(rescap.num_media == 1);
 
-        mliJson_free(&json);
+        mliJson_free(&material_json);
 }
 
 CASE("mliUserScenery, malloc from archive")

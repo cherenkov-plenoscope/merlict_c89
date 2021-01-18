@@ -1,55 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_json.h"
 
-int __mliSceneryResourcesCapacity_from_json(
-        struct mliSceneryResourcesCapacity *res_cap,
-        const struct mliJson *json)
-{
-        uint64_t token;
-        mli_check(
-                mliJson_find_key(json, 0, "objects", &token),
-                "Expected scenery-json to have key 'objects'.");
-        mli_check(
-                json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'objects' to point to a json-array.");
-        res_cap->num_objects = json->tokens[token + 1].size;
-
-        mli_check(
-                mliJson_find_key(json, 0, "functions", &token),
-                "Expected scenery-json to have key 'functions'.");
-        mli_check(
-                json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'functions' to point to a json-array.");
-        res_cap->num_functions = json->tokens[token + 1].size;
-
-        mli_check(
-                mliJson_find_key(json, 0, "colors", &token),
-                "Expected scenery-json to have key 'colors'.");
-        mli_check(
-                json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'colors' to point to a json-array.");
-        res_cap->num_colors = json->tokens[token + 1].size;
-
-        mli_check(
-                mliJson_find_key(json, 0, "media", &token),
-                "Expected scenery-json to have key 'media'.");
-        mli_check(
-                json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'media' to point to a json-array.");
-        res_cap->num_media = json->tokens[token + 1].size;
-
-        mli_check(
-                mliJson_find_key(json, 0, "surfaces", &token),
-                "Expected scenery-json to have key 'surfaces'.");
-        mli_check(
-                json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'surfaces' to point to a json-array.");
-        res_cap->num_surfaces = json->tokens[token + 1].size;
-        return 1;
-error:
-        return 0;
-}
-
 int __mli_material_type_from_name_token(
         const struct mliJson *json,
         const uint64_t token_name,
