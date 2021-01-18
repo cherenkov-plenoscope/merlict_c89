@@ -16,14 +16,12 @@
 
 #define MLI_FRAME 1000u
 #define MLI_OBJECT 1001u
-#define MLI_FRAME_NAME_CAPACITY 128u
 
 MLIDYNARRAY_DEFINITON(mli, FramePtr, struct mliFrame *)
 
 struct mliFrame {
         uint32_t type;
         uint32_t id;
-        char name[MLI_FRAME_NAME_CAPACITY];
         struct mliHomTraComp frame2mother;
         struct mliHomTraComp frame2root;
         struct mliFrame *mother;
