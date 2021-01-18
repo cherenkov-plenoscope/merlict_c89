@@ -22,16 +22,12 @@ struct mliScenery {
 
         uint32_t num_robjects;
         uint32_t *robjects;
-
+        uint32_t *robject_user_ids;
         struct mliBoundaryLayer *robject_boundary_layers;
-        struct mliHomTraComp *robject_T;
-        uint32_t *user_ids;
+        struct mliHomTraComp *robject2root;
 };
 
-int mliScenery_malloc(struct mliScenery *s, const struct mliSceneryCapacity c);
-int _mliScenery_malloc_user_ids(struct mliScenery *s);
+int mliScenery_malloc(struct mliScenery *scenery, const uint32_t num_robjects);
 void mliScenery_free(struct mliScenery *scenery);
-void _mliScenery_free_user_ids(struct mliScenery *scenery);
 struct mliScenery mliScenery_init(void);
-struct mliSceneryCapacity mliSceneryCapacity_init(void);
 #endif

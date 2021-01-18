@@ -40,8 +40,9 @@
 #include "mliSceneryResources_equal.c"
 #include "mliSceneryResources_valid.c"
 #include "mliUserScenery.c"
-/*
+
 #include "mliScenery.c"
+/*
 #include "mliScenery_write.c"
 #include "mliScenery_read.c"
 #include "mliScenery_equal.c"
