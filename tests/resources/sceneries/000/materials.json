@@ -1,0 +1,22 @@
+{
+    "colors": [
+        {"rgb": [22, 91, 149], "name": "blue"}
+    ],
+    "media": [
+        {
+            "name": "vacuum",
+            "refraction": "zero",
+            "absorbtion": "zero"
+        }
+    ],
+    "default_medium": "vacuum",
+    "surfaces": [
+        {
+            "name": "grass",
+            "material": "Phong",
+            "specular_reflection": "zero",
+            "diffuse_reflection": "zero",
+            "color": "grass_green"
+        }
+    ]
+}
