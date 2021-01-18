@@ -22,7 +22,7 @@ struct mliScenery {
 
         uint32_t num_robjects;
         uint32_t *robjects;
-        uint32_t *robject_user_ids;
+        uint32_t *robject_ids;
         struct mliBoundaryLayer *robject_boundary_layers;
         struct mliHomTraComp *robject2root;
 };

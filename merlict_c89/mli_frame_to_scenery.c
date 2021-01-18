@@ -44,7 +44,7 @@ int __mliScenery_set_robjects(
                 i = (*robject_counter);
                 scenery->robject_boundary_layers[i] = frame->boundary_layer;
                 scenery->robject2root[i] = frame->frame2root;
-                scenery->robject_user_ids[i] = frame->id;
+                scenery->robject_ids[i] = frame->id;
                 (*robject_counter) += 1;
                 break;
         default:

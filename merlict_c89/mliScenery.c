@@ -8,7 +8,7 @@ struct mliScenery mliScenery_init(void)
 
         scn.num_robjects = 0u;
         scn.robjects = NULL;
-        scn.robject_user_ids = NULL;
+        scn.robject_ids = NULL;
 
         scn.robject_boundary_layers = NULL;
         scn.robject2root = NULL;
@@ -20,7 +20,7 @@ void mliScenery_free(struct mliScenery *scenery)
         mliSceneryResources_free(&scenery->resources);
 
         free(scenery->robjects);
-        free(scenery->robject_user_ids);
+        free(scenery->robject_ids);
         free(scenery->robject_boundary_layers);
         free(scenery->robject2root);
 
@@ -34,7 +34,7 @@ int mliScenery_malloc(struct mliScenery *scn, const uint32_t num_robjects)
         scn->num_robjects = num_robjects;
 
         mli_malloc(scn->robjects, uint32_t, scn->num_robjects);
-        mli_malloc(scn->robject_user_ids, uint32_t, scn->num_robjects);
+        mli_malloc(scn->robject_ids, uint32_t, scn->num_robjects);
         mli_malloc(
                 scn->robject_boundary_layers,
                 struct mliBoundaryLayer,
