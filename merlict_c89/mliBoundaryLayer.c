@@ -18,12 +18,10 @@ int mliBoundaryLayer_is_equal(
 
 void mliBoundaryLayer_print(const struct mliBoundaryLayer a)
 {
-        fprintf(
-                stderr,
+        fprintf(stderr,
                 "inner %d srf / %d med\nouter %d srf / %d med\n",
                 a.inner.surface,
                 a.inner.medium,
                 a.outer.surface,
-                a.outer.medium
-        );
+                a.outer.medium);
 }

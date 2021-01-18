@@ -150,7 +150,6 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(_obj3->type == MLI_OBJECT);
         CHECK(_obj3->id == 3);
         CHECK(_obj3->object == obj_hex_idx);
-
         CHECK(_obj3->boundary_layer.inner.surface == srf_leafs);
         CHECK(_obj3->boundary_layer.outer.surface == srf_leafs);
         CHECK(_obj3->boundary_layer.inner.medium == med_vacuum);
