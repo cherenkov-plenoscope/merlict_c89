@@ -86,4 +86,3 @@
 #include "mliFresnel.c"
 #include "mli_photon_sources.c"
 /*#include "mli_photon_propagation.c"*/
-#include "mli_lens_maker.c"
