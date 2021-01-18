@@ -579,8 +579,8 @@ int __mliFrame_set_surface_idx(
 {
         uint64_t token_surface, token_surface_key;
         mli_check(
-                mliJson_find_key(json, token, "surface", &token_surface_key),
-                "Expected primitive to have key 'surface'.");
+                mliJson_find_key(json, token, "layer", &token_surface_key),
+                "Expected primitive to have key 'layer'.");
 
         token_surface = token_surface_key + 1;
         mli_check(

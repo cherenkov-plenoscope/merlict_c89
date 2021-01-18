@@ -169,7 +169,6 @@ int mliUserScenery_malloc_from_Archive(
 
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(arc->filenames.arr[arc_idx].key, key);
-                        fprintf(stderr, "KEY '%s'\n", key);
 
                         mli_check(mliDynMap_insert(
                                 &uscn->object_names,
@@ -207,7 +206,6 @@ int mliUserScenery_malloc_from_Archive(
 
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(arc->filenames.arr[arc_idx].key, key);
-                        fprintf(stderr, "KEY '%s'\n", key);
 
                         mli_check(mliDynMap_insert(
                                 &uscn->function_names,
@@ -267,6 +265,18 @@ int mliUserScenery_malloc_from_Archive(
 
         /* frames */
 
+        mli_check(
+                mliJson_find_key(&scenery_json, 0, "children", &token),
+                "Expected scenery-json to have key 'children'.");
+        mli_check(
+                __mliFrame_from_json(
+                        &uscn->root,
+                        &scenery_json,
+                        token + 1,
+                        &uscn->object_names,
+                        &uscn->surface_names,
+                        &uscn->medium_names),
+                "Failed to populate tree of Frames from scenery-json.");
 
         mliJson_free(&scenery_json);
 

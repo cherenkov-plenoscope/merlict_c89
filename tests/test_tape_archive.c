@@ -18,7 +18,7 @@ CASE("Read archive")
                 "tests/"
                 "resources/"
                 "sceneries/"
-                "001.tar",
+                "000.tar",
                 "r"
         ));
 
@@ -27,49 +27,35 @@ CASE("Read archive")
         CHECK(MLITAR_TDIR == tarh.type);
 
         CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("functions/refractive_index_water.csv", tarh.name));
-        CHECK(95 == tarh.size);
-        memset(payload, '\0', payload_capacity);
-        CHECK(mliTar_read_data(&tar, payload, tarh.size));
-
-        CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("functions/zero.csv", tarh.name));
-        CHECK(61 == tarh.size);
+        CHECK(41 == tarh.size);
         memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
-
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("materials.json", tarh.name));
         memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
 
-
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("objects/", tarh.name));
         CHECK(MLITAR_TDIR == tarh.type);
 
         CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("objects/hexagonal_mirror_facet.obj", tarh.name));
-        CHECK(36527 == tarh.size);
-        memset(payload, '\0', payload_capacity);
-        CHECK(mliTar_read_data(&tar, payload, tarh.size));
-
-        CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("objects/teapot.obj", tarh.name));
-        CHECK(140243 == tarh.size);
+        CHECK(0 == strcmp("objects/triangle.obj", tarh.name));
+        CHECK(110 == tarh.size);
         memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("README.md", tarh.name));
-        CHECK(52 == tarh.size);
+        CHECK(61 == tarh.size);
         memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("scenery.json", tarh.name));
-        CHECK(2861 == tarh.size);
+        CHECK(683 == tarh.size);
         memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
 
