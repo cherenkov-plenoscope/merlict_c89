@@ -140,11 +140,19 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
                f->frame2mother.rotation.x,
                f->frame2mother.rotation.y,
                f->frame2mother.rotation.z);
-        if (f->type != MLI_FRAME) {
+        if (f->type == MLI_OBJECT) {
                 printf("%*s", (int)indention, "");
-                printf("|-boundary_layer (inner: %u, outer: %u)\n",
+                printf("|-inner (surf: %u, med: %u)\n",
                        f->boundary_layer.inner.surface,
-                       f->boundary_layer.outer.surface);
+                       f->boundary_layer.inner.medium);
+
+                printf("%*s", (int)indention, "");
+                printf("|-outer (surf: %u, med: %u)\n",
+                       f->boundary_layer.outer.surface,
+                       f->boundary_layer.outer.medium);
+
+                printf("%*s", (int)indention, "");
+                printf("|-obj [%u]\n", f->object);
         }
         for (c = 0; c < f->children.dyn.size; c++) {
                 const struct mliFrame *child = f->children.arr[c];

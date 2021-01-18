@@ -22,14 +22,16 @@ CASE("mliUserScenery, from json")
         struct mliSceneryResourcesCapacity uscncap =
                 mliSceneryResourcesCapacity_init();
 
-        sprintf(json_str,
+        sprintf(
+                json_str,
                 "{\n"
                 "    \"objects\": [1, 2, 3, 4, 5],\n"
                 "    \"functions\": [1, 2, 3],\n"
                 "    \"colors\": [1, 2],\n"
                 "    \"surfaces\": [1, 2, 3, 4, 5, 6, 7, 8]\n"
                 "    \"media\": [1],\n"
-                "}\n");
+                "}\n"
+        );
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(__mliSceneryResourcesCapacity_from_json(&uscncap, &json));
 
@@ -45,7 +47,11 @@ CASE("mliUserScenery, from json")
 CASE("mliUserScenery, malloc from archive")
 {
         struct mliUserScenery uscn = mliUserScenery_init();
-        uint64_t obj_idx;
+        struct mliFrame *_root, *_obj1, *_frame2, *_obj3, *_obj4 = NULL;
+
+        uint64_t obj_idx, obj_teapot_idx, obj_hex_idx;
+        uint64_t srf_grass, srf_wood, srf_leafs, srf_blue_glass;
+        uint64_t med_vacuum;
         uint64_t fcn_idx;
 
         CHECK(mliUserScenery_malloc_from_tape_archive(
@@ -53,17 +59,23 @@ CASE("mliUserScenery, malloc from archive")
                 "tests/"
                 "resources/"
                 "sceneries/"
-                "001.tar"));
+                "001.tar"
+        ));
 
         CHECK(2 == uscn.resources.num_objects);
 
         CHECK(mliDynMap_get(
-                &uscn.object_names, "hexagonal_mirror_facet", &obj_idx));
+                &uscn.object_names,
+                "hexagonal_mirror_facet",
+                &obj_idx));
         CHECK(600 == uscn.resources.objects[obj_idx].num_faces);
         CHECK(331 == uscn.resources.objects[obj_idx].num_vertices);
         CHECK(331 == uscn.resources.objects[obj_idx].num_vertex_normals);
 
-        CHECK(mliDynMap_get(&uscn.object_names, "teapot", &obj_idx));
+        CHECK(mliDynMap_get(
+                &uscn.object_names,
+                "teapot",
+                &obj_idx));
         CHECK(2256 == uscn.resources.objects[obj_idx].num_faces);
         CHECK(1202 == uscn.resources.objects[obj_idx].num_vertices);
         CHECK(1202 == uscn.resources.objects[obj_idx].num_vertex_normals);
@@ -71,27 +83,88 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(2 == uscn.resources.num_functions);
 
         CHECK(mliDynMap_get(
-                &uscn.function_names, "refractive_index_water", &fcn_idx));
-        CHECK(mliDynMap_get(&uscn.function_names, "zero", &fcn_idx));
+                &uscn.function_names,
+                "refractive_index_water",
+                &fcn_idx));
+        CHECK(mliDynMap_get(
+                &uscn.function_names,
+                "zero",
+                &fcn_idx));
 
         CHECK(4 == uscn.resources.num_colors);
         CHECK(4 == uscn.resources.num_surfaces);
         CHECK(2 == uscn.resources.num_media);
 
         /* frames */
+        /* ------ */
+        /*
+                root
+                |______ obj1 (teapot)
+                |
+                |______ frame2
+                        |_____ obj3 (hex)
+                        |
+                        |_____ obj4 (hex)
+        */
 
-        CHECK(0 == uscn.root.id);
-        CHECK(MLI_FRAME == uscn.root.type);
-        CHECK(2 == uscn.root.children.dyn.size);
+        CHECK(mliDynMap_get(
+                &uscn.object_names,
+                "teapot",
+                &obj_teapot_idx));
 
-        CHECK(MLI_OBJECT == uscn.root.children.arr[0]->type);
-        CHECK(1 == uscn.root.children.arr[0]->id);
+        CHECK(mliDynMap_get(
+                &uscn.object_names,
+                "hexagonal_mirror_facet",
+                &obj_hex_idx));
 
-        CHECK(mliDynMap_get(&uscn.object_names, "teapot", &obj_idx));
-        CHECK(obj_idx == uscn.root.children.arr[0]->object);
+        CHECK(mliDynMap_get(&uscn.surface_names, "grass", &srf_grass));
+        CHECK(mliDynMap_get(&uscn.surface_names, "wood", &srf_wood));
+        CHECK(mliDynMap_get(&uscn.surface_names, "leafs", &srf_leafs));
+        CHECK(mliDynMap_get(&uscn.surface_names, "blue_glass", &srf_blue_glass));
+        CHECK(mliDynMap_get(&uscn.medium_names, "vacuum", &med_vacuum));
 
-        CHECK(MLI_FRAME == uscn.root.children.arr[1]->type);
-        CHECK(2 == uscn.root.children.arr[1]->id);
+        /* root */
+        _root = &uscn.root;
+        CHECK(_root->id == 0);
+        CHECK(_root->type == MLI_FRAME);
+        CHECK(_root->children.dyn.size == 2);
+
+        /* obj1 */
+        _obj1 = _root->children.arr[0];
+        CHECK(_obj1->type == MLI_OBJECT);
+        CHECK(_obj1->id == 1);
+        CHECK(_obj1->object == obj_teapot_idx);
+        CHECK(_obj1->boundary_layer.inner.surface == srf_grass);
+        CHECK(_obj1->boundary_layer.outer.surface == srf_grass);
+        CHECK(_obj1->boundary_layer.inner.medium == med_vacuum);
+        CHECK(_obj1->boundary_layer.outer.medium == med_vacuum);
+
+        /* frame2 */
+        _frame2 = _root->children.arr[1];
+        CHECK(_frame2->type == MLI_FRAME);
+        CHECK(_frame2->id == 2);
+        CHECK(_frame2->children.dyn.size == 2);
+
+        /* obj3 */
+        _obj3 = _frame2->children.arr[0];
+        CHECK(_obj3->type == MLI_OBJECT);
+        CHECK(_obj3->id == 3);
+        CHECK(_obj3->object == obj_hex_idx);
+
+        CHECK(_obj3->boundary_layer.inner.surface == srf_leafs);
+        CHECK(_obj3->boundary_layer.outer.surface == srf_leafs);
+        CHECK(_obj3->boundary_layer.inner.medium == med_vacuum);
+        CHECK(_obj3->boundary_layer.outer.medium == med_vacuum);
+
+        /* obj4 */
+        _obj4 = _frame2->children.arr[1];
+        CHECK(_obj4->type == MLI_OBJECT);
+        CHECK(_obj4->id == 4);
+        CHECK(_obj4->object == obj_hex_idx);
+        CHECK(_obj4->boundary_layer.inner.surface == srf_wood);
+        CHECK(_obj4->boundary_layer.outer.surface == srf_wood);
+        CHECK(_obj4->boundary_layer.inner.medium == med_vacuum);
+        CHECK(_obj4->boundary_layer.outer.medium == med_vacuum);
 
         mliUserScenery_free(&uscn);
 }

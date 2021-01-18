@@ -112,6 +112,7 @@ int _mliDynMap_get_value_for_string_from_json(
         uint32_t *out_value)
 {
         char *name_str = NULL;
+        uint64_t value;
         uint64_t name_str_capacity =
                 (json->tokens[token_name + 1].end -
                  json->tokens[token_name + 1].start + 1u);
@@ -124,8 +125,11 @@ int _mliDynMap_get_value_for_string_from_json(
                         json, token_name + 1, name_str, name_str_capacity),
                 "Failed to extract string from json.");
         mli_check(
-                mliDynMap_get(map, name_str, (uint64_t *)out_value),
+                mliDynMap_get(map, name_str, &value),
                 "Failed to get value for json-string-key from map.");
+
+        (*out_value) = (uint32_t)value;
+
         free(name_str);
         return 1;
 error:
