@@ -46,4 +46,7 @@ int mliSceneryResources_malloc(
         const struct mliSceneryResourcesCapacity rescap);
 void mliSceneryResources_free(struct mliSceneryResources *res);
 struct mliSceneryResources mliSceneryResources_init(void);
+int mliSceneryResources_cpy(
+        struct mliSceneryResources *destination,
+        const struct mliSceneryResources *source);
 #endif

@@ -31,5 +31,6 @@ int mliObject_assert_normals(const struct mliObject *obj, const double epsilon);
 int mliObject_fwrite(const struct mliObject *obj, FILE *f);
 int mliObject_malloc_from_file(struct mliObject *obj, FILE *f);
 int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b);
+int mliObject_cpy(struct mliObject *destination, struct mliObject *source);
 
 #endif

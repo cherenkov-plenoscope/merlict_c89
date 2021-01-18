@@ -270,6 +270,9 @@ int mliUserScenery_malloc_from_Archive(
 
         mliJson_free(&scenery_json);
 
+        /* transformations */
+        mliFrame_set_frame2root(&uscn->root);
+
         return 1;
 error:
         mliJson_free(&materials_json);

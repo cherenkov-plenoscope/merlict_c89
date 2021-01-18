@@ -82,3 +82,76 @@ error:
         mliSceneryResources_free(res);
         return 0;
 }
+
+int mliSceneryResources_cpy(
+        struct mliSceneryResources *destination,
+        const struct mliSceneryResources *source)
+{
+        uint64_t i;
+        mli_check(
+                destination->num_objects == source->num_objects,
+                "Expected source and destination to have same "
+                "num_objects.");
+        mli_check(
+                destination->num_functions == source->num_functions,
+                "Expected source and destination to have same "
+                "num_functions.");
+        mli_check(
+                destination->num_colors == source->num_colors,
+                "Expected source and destination to have same "
+                "num_colors.");
+        mli_check(
+                destination->num_surfaces == source->num_surfaces,
+                "Expected source and destination to have same "
+                "num_surfaces.");
+        mli_check(
+                destination->num_media == source->num_media,
+                "Expected source and destination to have same "
+                "num_media.");
+
+        /* default_medium */
+        destination->default_medium = source->default_medium;
+
+        /* copy objects */
+        for (i = 0; i < source->num_functions; i++) {
+                mli_check(
+                        mliObject_malloc(
+                                &destination->objects[i],
+                                source->objects[i].num_vertices,
+                                source->objects[i].num_vertex_normals,
+                                source->objects[i].num_faces),
+                        "Failed to allocate struct mliObject in Resources.");
+                mli_check(
+                        mliObject_cpy(
+                                &destination->objects[i],
+                                &source->objects[i]),
+                        "Failed to copy Object to Resources.");
+        }
+
+        /* copy surfaces */
+        for (i = 0; i < source->num_functions; i++) {
+                mli_check(
+                        mliFunc_malloc(
+                                &destination->functions[i],
+                                source->functions[i].num_points),
+                        "Failed to allocate struct mliFunc in Resources.");
+                mli_check(
+                        mliFunc_cpy(
+                                &destination->functions[i],
+                                &source->functions[i]),
+                        "Failed to copy function to Resources.");
+        }
+        for (i = 0; i < source->num_colors; i++) {
+                destination->colors[i] = source->colors[i];
+        }
+        for (i = 0; i < source->num_media; i++) {
+                destination->media[i] = source->media[i];
+        }
+        for (i = 0; i < source->num_surfaces; i++) {
+                destination->surfaces[i] = source->surfaces[i];
+        }
+
+        return 1;
+error:
+        return 0;
+}
