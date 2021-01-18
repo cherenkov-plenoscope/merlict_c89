@@ -32,7 +32,6 @@
 #include "mliBoundaryLayer.c"
 #include "mliMedium.c"
 #include "mliSurface.c"
-#include "mli_primitive_codes.c"
 #include "mliFrame.c"
 #include "mliSceneryResources.c"
 #include "mliSceneryResources_write.c"

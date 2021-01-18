@@ -7,7 +7,6 @@
 
 #include "mli_debug.h"
 #include "mliVec.h"
-#include "mli_primitive_codes.h"
 #include "mliHomTra.h"
 #include "mliColor.h"
 #include "mliFunc.h"
