@@ -449,6 +449,7 @@ int __mliFrame_type_from_json(
         free(type_string);
         return 1;
 error:
+        free(type_string);
         return 0;
 }
 
