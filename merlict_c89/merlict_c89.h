@@ -3,7 +3,6 @@
 #include "mli_debug.h"
 #include "mli_math.h"
 #include "mliFunc.h"
-#include "mli_dual_circle_prism.h"
 #include "mliMT19937.h"
 #include "mli_random.h"
 #include "mliVec.h"
@@ -51,7 +50,6 @@
 #include "mliOuterPrismBound.h"
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"
-#include "mli_inside_polygon.h"
 /*#include "mli_intersection_and_scenery.h"*/
 #include "mliOctOverlaps.h"
 /*
