@@ -39,10 +39,10 @@
 #include "mliSceneryResources_valid.h"
 #include "mliUserScenery.h"
 #include "mliScenery.h"
+#include "mliScenery_equal.h"
 /*
 #include "mliScenery_write.h"
 #include "mliScenery_read.h"
-#include "mliScenery_equal.h"
 #include "mliScenery_valid.h"
 #include "mliScenery_object_interface.h"
 */
