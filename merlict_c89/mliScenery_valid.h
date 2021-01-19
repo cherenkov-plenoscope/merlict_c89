@@ -6,12 +6,5 @@
 #include "mliSceneryResources_valid.h"
 
 int mliScenery_valid(const struct mliScenery *scenery);
-int _mliScenery_valid_user_ids(const struct mliScenery *scenery);
-int _mliScenery_valid_disc(const struct mliScenery *scenery);
-int _mliScenery_valid_bicircleplanes(const struct mliScenery *scenery);
-int _mliScenery_valid_hexagons(const struct mliScenery *scenery);
-int _mliScenery_valid_cylinders(const struct mliScenery *scenery);
-int _mliScenery_valid_spheres(const struct mliScenery *scenery);
-int _mliScenery_valid_spherical_cap_hex(const struct mliScenery *scenery);
-int _mliScenery_valid_triangles(const struct mliScenery *scenery);
+
 #endif

@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSceneryResources_valid.h"
+#include "mliObject.h"
 
 int _mliSceneryResources_valid_media(const struct mliSceneryResources *res)
 {
@@ -36,11 +37,34 @@ int _mliSceneryResources_valid_surfaces(const struct mliSceneryResources *res)
         return 1;
 }
 
+int _mliSceneryResources_valid_objects(const struct mliSceneryResources *res)
+{
+        uint64_t i;
+        for (i = 0; i < res->num_objects; i++) {
+                if (!mliObject_assert_valid_faces(&res->objects[i]))
+                        return 0;
+        }
+        return 1;
+}
+
 int mliSceneryResources_valid(const struct mliSceneryResources *res)
 {
-        if (!_mliSceneryResources_valid_media(res))
-                return 0;
-        if (!_mliSceneryResources_valid_surfaces(res))
-                return 0;
+        mli_check(res->default_medium <= res->num_media,
+                "Expected default-medium to reference a valid medium.");
+
+        mli_check(
+                _mliSceneryResources_valid_objects(res),
+                "Expected objects to be valid.")
+
+        mli_check(
+                _mliSceneryResources_valid_media(res),
+                "Expected media to be valid.");
+
+        mli_check(
+                _mliSceneryResources_valid_surfaces(res),
+                "Expected surfaces to be valid.");
+
         return 1;
+error:
+        return 0;
 }

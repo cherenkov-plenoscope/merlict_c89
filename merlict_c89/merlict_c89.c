@@ -40,10 +40,10 @@
 #include "mliUserScenery.c"
 #include "mliScenery.c"
 #include "mliScenery_equal.c"
+#include "mliScenery_valid.c"
 /*
 #include "mliScenery_write.c"
 #include "mliScenery_read.c"
-#include "mliScenery_valid.c"
 #include "mliScenery_object_interface.c"
 */
 #include "mliRay_OBB.c"
