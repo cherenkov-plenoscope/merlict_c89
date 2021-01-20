@@ -20,6 +20,11 @@ int mliObject_face_in_local_frame_has_overlap_obb(
         const uint64_t face_idx,
         const struct mliOBB obb);
 
+int _mliObject_face_in_local_frame_has_overlap_obb(
+        const void *obj,
+        const uint32_t face_idx,
+        const struct mliOBB obb);
+
 struct mliOBB mliObject_obb_lin_local_frame(const struct mliObject *obj);
 
 #endif

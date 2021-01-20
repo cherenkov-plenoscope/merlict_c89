@@ -59,10 +59,18 @@ int mliTmpNode_num_children(const struct mliTmpNode *node);
 int mliTmpNode_malloc_tree_from_bundle(
         struct mliTmpNode *root_node,
         const struct mliObject *bundle,
+        int(*item_in_bundle_has_overlap_obb)(
+                const void *,
+                const uint32_t,
+                const struct mliOBB),
         const struct mliCube scenery_cube);
 int mliTmpNode_add_children(
         struct mliTmpNode *node,
-        const struct mliObject *bundle,
+        const void *bundle,
+        int(*item_in_bundle_has_overlap_obb)(
+                const void *,
+                const uint32_t,
+                const struct mliOBB),
         const struct mliCube cube,
         const uint64_t depth,
         const uint64_t max_depth);
@@ -83,7 +91,13 @@ struct mliTmpOcTree {
 
 int mliTmpOcTree_malloc_from_bundle(
         struct mliTmpOcTree *octree,
-        const struct mliObject *bundle);
+        const void *bundle,
+        int(*item_in_bundle_has_overlap_obb)(
+                const void *,
+                const uint32_t,
+                const struct mliOBB),
+        struct mliOBB bundle_obb);
+
 void mliTmpOcTree_free(struct mliTmpOcTree *octree);
 struct mliTmpOcTree mliTmpOcTree_init(void);
 void mliTmpOcTree_print(const struct mliTmpOcTree *octree);

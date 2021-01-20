@@ -56,6 +56,17 @@ int mliObject_has_overlap_obb(
         return 0;
 }
 
+int _mliObject_face_in_local_frame_has_overlap_obb(
+        const void *obj,
+        const uint32_t face_idx,
+        const struct mliOBB obb)
+{
+        return mliObject_face_in_local_frame_has_overlap_obb(
+                (const struct mliObject *)obj,
+                (uint64_t)face_idx,
+                obb);
+}
+
 struct mliOBB mliObject_obb(
         const struct mliObject *obj,
         const struct mliHomTraComp local2root_comp)
