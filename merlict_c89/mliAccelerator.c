@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator.h"
 #include "mliObject_OBB.h"
+#include "mliCombine.h"
 
 struct mliAccelerator mliAccelerator_init(void)
 {
@@ -100,11 +101,14 @@ error:
         return 0;
 }
 
-
 int mliAccelerator_malloc_from_scenery(
         struct mliAccelerator *accel,
         const struct mliScenery *scenery)
 {
+        struct mliCombine combine;
+        combine.scenery = scenery;
+        combine.accelerator = accel;
+
         mli_check(
                 mliAccelerator_malloc(
                         accel,
@@ -120,6 +124,12 @@ int mliAccelerator_malloc_from_scenery(
         mli_check(
                 _mliAccelerator_set_object_octrees(accel, scenery),
                 "Failed to setup object octrees.");
+
+        mli_check(
+                mliOcTree_malloc_from_combine(
+                        &accel->scenery_octree,
+                        &combine),
+                "Failed to set up octree across all robjects in scenery.");
 
         return 1;
 error:

@@ -42,11 +42,6 @@ int _mliAccelerator_set_object_octrees(
 
 void mliAccelerator_fprint(FILE *f, const struct mliAccelerator *accel);
 
-/*
-int mliAccelerator_robject_has_overlap_obb(
-        const struct mliAccelerator *accel,
-        const uint64_t robject_idx,
-        const struct mliOBB obb);
-*/
+struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel);
 
 #endif

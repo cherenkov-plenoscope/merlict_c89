@@ -25,7 +25,7 @@ CASE("mliAccelerator, init")
 
         mliAccelerator_fprint(stderr, &accel);
 
-        mliOcTree_print(&accel.object_octrees[1]);
+        mliOcTree_print(&accel.scenery_octree);
 
         mliScenery_free(&scenery);
         mliAccelerator_free(&accel);
