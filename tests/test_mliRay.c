@@ -53,62 +53,6 @@ CASE("ray and orientated bounding box")
                 &ray_parameter));
 }
 
-CASE("ray has causal intersection")
-{
-        double causal_solution;
-        int rc;
-        struct mliBoundSurfaceChecklist cl;
-
-        /*
-         *       _/_ps
-         *      //  \
-         *     |/ ms |
-         *     /\___/
-         *    /
-         *   X support
-         */
-        cl.plus_solution = 2.0;
-        cl.minus_solution = 1.0;
-        cl.plus_is_inside = 1;
-        cl.minus_is_inside = 1;
-        rc = mli_outer_bound_surface_causal_intersection(cl, &causal_solution);
-        CHECK(causal_solution == cl.minus_solution);
-        CHECK(rc);
-
-        /*
-         *       _/_ps
-         *      //  \
-         *     |X support
-         *  ms /\___/
-         *    /
-         *
-         */
-        cl.plus_solution = 1.0;
-        cl.minus_solution = -1.0;
-        cl.plus_is_inside = 1;
-        cl.minus_is_inside = 1;
-        rc = mli_outer_bound_surface_causal_intersection(cl, &causal_solution);
-        CHECK(causal_solution == cl.plus_solution);
-        CHECK(rc);
-
-        /*
-         *          /
-         *         X support
-         *       _/_ps
-         *      //  \
-         *     |/    |
-         *  ms /\___/
-         *    /
-         *
-         */
-        cl.plus_solution = -1.0;
-        cl.minus_solution = -2.0;
-        cl.plus_is_inside = 1;
-        cl.minus_is_inside = 1;
-        rc = mli_outer_bound_surface_causal_intersection(cl, &causal_solution);
-        CHECK(!rc);
-}
-
 CASE("mliHomTraComp, transform direction")
 {
         struct mliHomTraComp Tcomp;
