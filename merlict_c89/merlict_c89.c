@@ -17,6 +17,7 @@
 #include "mliFace.c"
 #include "mli_barycentric.c"
 #include "mliObject.c"
+#include "mliObject_OBB.c"
 #include "mliObject_wavefront.c"
 #include "mliTriangle_intersection.c"
 #include "mliColor.c"
@@ -44,9 +45,7 @@
 #include "mliScenery_write.c"
 #include "mliScenery_read.c"
 #include "mliAccelerator.c"
-/*
-#include "mliScenery_object_interface.c"
-*/
+/*#include "mliScenery_object_interface.c"*/
 #include "mliRay_OBB.c"
 #include "mliVec_OBB.c"
 #include "mliTriangle_OBB.c"
@@ -55,6 +54,8 @@
 /*
 #include "mliTmpOcTree.c"
 #include "mliOcTree.c"
+*/
+/*
 #include "mliOcTree_write.c"
 #include "mliOcTree_read.c"
 #include "mliOcTree_equal.c"

@@ -19,8 +19,11 @@ CASE("mliAccelerator, init")
                 "001.tar"
         ));
 
-        CHECK(mliAccelerator_malloc(&accel, scenery.num_robjects));
-        CHECK(mliAccelerator_set_obbs(&accel, &scenery));
+        mliScenery_fprint(stderr, &scenery);
+
+        CHECK(mliAccelerator_malloc_from_scenery(&accel, &scenery));
+
+        mliAccelerator_fprint(stderr, &accel);
 
         mliScenery_free(&scenery);
         mliAccelerator_free(&accel);

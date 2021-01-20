@@ -31,21 +31,23 @@ int __mliScenery_set_robjects(
         const struct mliFrame *frame,
         uint64_t *robject_counter)
 {
-        uint64_t i;
+        uint64_t c;
+        uint64_t rob;
         struct mliFrame *child;
         switch (frame->type) {
         case MLI_FRAME:
-                for (i = 0; i < frame->children.dyn.size; i++) {
-                        child = frame->children.arr[i];
+                for (c = 0; c < frame->children.dyn.size; c++) {
+                        child = frame->children.arr[c];
                         __mliScenery_set_robjects(
                                 scenery, child, robject_counter);
                 }
                 break;
         case MLI_OBJECT:
-                i = (*robject_counter);
-                scenery->robject_boundary_layers[i] = frame->boundary_layer;
-                scenery->robject2root[i] = frame->frame2root;
-                scenery->robject_ids[i] = frame->id;
+                rob = (*robject_counter);
+                scenery->robjects[rob] = frame->object;
+                scenery->robject_boundary_layers[rob] = frame->boundary_layer;
+                scenery->robject2root[rob] = frame->frame2root;
+                scenery->robject_ids[rob] = frame->id;
                 (*robject_counter) += 1;
                 break;
         default:

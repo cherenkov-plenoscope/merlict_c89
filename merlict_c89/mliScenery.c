@@ -46,3 +46,14 @@ error:
         mliScenery_free(scn);
         return 0;
 }
+
+void mliScenery_fprint(FILE *f, const struct mliScenery *scenery)
+{
+        uint32_t rob;
+        fprintf(f, "__mliScenery__\n");
+        fprintf(f, " rob | obj |\n");
+        fprintf(f, "-----|-----|\n");
+        for (rob = 0; rob < scenery->num_robjects; rob++) {
+                fprintf(f, "% 4d |% 4d \n", rob, scenery->robjects[rob]);
+        }
+}

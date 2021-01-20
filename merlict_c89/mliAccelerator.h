@@ -7,6 +7,7 @@
 
 #include "mli_debug.h"
 #include "mliScenery.h"
+#include "mliOcTree.h"
 
 struct mliAccelerator {
         uint32_t num_robjects;
@@ -21,8 +22,14 @@ int mliAccelerator_malloc(
         struct mliAccelerator *accel,
         const uint32_t num_robjects);
 
-int mliAccelerator_set_obbs(
+int mliAccelerator_malloc_from_scenery(
         struct mliAccelerator *accel,
         const struct mliScenery *scenery);
+
+int _mliAccelerator_set_obbs(
+        struct mliAccelerator *accel,
+        const struct mliScenery *scenery);
+
+void mliAccelerator_fprint(FILE *f, const struct mliAccelerator *accel);
 
 #endif

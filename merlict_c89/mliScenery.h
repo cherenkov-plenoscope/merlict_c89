@@ -29,4 +29,5 @@ struct mliScenery {
 int mliScenery_malloc(struct mliScenery *scenery, const uint32_t num_robjects);
 void mliScenery_free(struct mliScenery *scenery);
 struct mliScenery mliScenery_init(void);
+void mliScenery_fprint(FILE *f, const struct mliScenery *scenery);
 #endif
