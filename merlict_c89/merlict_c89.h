@@ -43,6 +43,7 @@
 #include "mliScenery_valid.h"
 #include "mliScenery_write.h"
 #include "mliScenery_read.h"
+#include "mliAccelerator.h"
 /*
 #include "mliScenery_object_interface.h"
 */

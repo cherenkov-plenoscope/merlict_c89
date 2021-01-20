@@ -47,6 +47,7 @@ int main(void)
 #include "tests/test_parsing_from_string.c"
 #include "tests/test_json.c"
 #include "tests/test_mliFresnel.c"
+#include "tests/test_mliAccelerator.c"
 /*#include "tests/test_mliApertureCamera.c"*/
 /*#include "tests/test_photon.c"*/
 #include "tests/test_photon_sources.c"
