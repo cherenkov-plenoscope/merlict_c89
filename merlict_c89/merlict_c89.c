@@ -45,7 +45,6 @@
 #include "mliScenery_write.c"
 #include "mliScenery_read.c"
 #include "mliAccelerator.c"
-/*#include "mliScenery_object_interface.c"*/
 #include "mliRay_OBB.c"
 #include "mliVec_OBB.c"
 #include "mliTriangle_OBB.c"
