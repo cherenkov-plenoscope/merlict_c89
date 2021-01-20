@@ -12,10 +12,10 @@ int mliObject_face_in_local_frame_has_overlap_obb(
         }
         face = obj->faces_vertices[face_idx];
         if (mliTriangle_has_overlap_obb(
-                obj->vertices[face.a],
-                obj->vertices[face.b],
-                obj->vertices[face.c],
-                obb)) {
+                    obj->vertices[face.a],
+                    obj->vertices[face.b],
+                    obj->vertices[face.c],
+                    obb)) {
                 return 1;
         }
         return 0;
@@ -36,18 +36,12 @@ int mliObject_has_overlap_obb(
                 const struct mliVec b_local = obj->vertices[face.b];
                 const struct mliVec c_local = obj->vertices[face.c];
 
-                const struct mliVec a_root = mliHomTra_pos(
-                        &local2root,
-                        a_local
-                );
-                const struct mliVec b_root = mliHomTra_pos(
-                        &local2root,
-                        b_local
-                );
-                const struct mliVec c_root = mliHomTra_pos(
-                        &local2root,
-                        c_local
-                );
+                const struct mliVec a_root =
+                        mliHomTra_pos(&local2root, a_local);
+                const struct mliVec b_root =
+                        mliHomTra_pos(&local2root, b_local);
+                const struct mliVec c_root =
+                        mliHomTra_pos(&local2root, c_local);
 
                 if (mliTriangle_has_overlap_obb(a_root, b_root, c_root, obb)) {
                         return 1;
@@ -62,9 +56,7 @@ int _mliObject_face_in_local_frame_has_overlap_obb(
         const struct mliOBB obb)
 {
         return mliObject_face_in_local_frame_has_overlap_obb(
-                (const struct mliObject *)obj,
-                (uint64_t)face_idx,
-                obb);
+                (const struct mliObject *)obj, (uint64_t)face_idx, obb);
 }
 
 struct mliOBB mliObject_obb(
@@ -96,18 +88,12 @@ struct mliOBB mliObject_obb(
                 const struct mliVec a_local = obj->vertices[face.a];
                 const struct mliVec b_local = obj->vertices[face.b];
                 const struct mliVec c_local = obj->vertices[face.c];
-                const struct mliVec a_root = mliHomTra_pos(
-                        &local2root,
-                        a_local
-                );
-                const struct mliVec b_root = mliHomTra_pos(
-                        &local2root,
-                        b_local
-                );
-                const struct mliVec c_root = mliHomTra_pos(
-                        &local2root,
-                        c_local
-                );
+                const struct mliVec a_root =
+                        mliHomTra_pos(&local2root, a_local);
+                const struct mliVec b_root =
+                        mliHomTra_pos(&local2root, b_local);
+                const struct mliVec c_root =
+                        mliHomTra_pos(&local2root, c_local);
 
                 obb.lower.x = MLI_MIN2(obb.lower.x, a_root.x);
                 obb.lower.y = MLI_MIN2(obb.lower.y, a_root.y);

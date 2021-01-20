@@ -9,7 +9,6 @@ struct mliOBB mliOBB_set(const struct mliVec lower, const struct mliVec upper)
         return obb;
 }
 
-
 struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b)
 {
         struct mliOBB obb;

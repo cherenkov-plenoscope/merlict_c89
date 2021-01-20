@@ -56,7 +56,7 @@ uint32_t mliTmpNode_signs_to_child(
 int mliTmpNode_add_children(
         struct mliTmpNode *node,
         const void *bundle,
-        int(*item_in_bundle_has_overlap_obb)(
+        int (*item_in_bundle_has_overlap_obb)(
                 const void *,
                 const uint32_t,
                 const struct mliOBB),
@@ -142,7 +142,7 @@ int mliTmpNode_malloc_tree_from_bundle(
         struct mliTmpNode *root_node,
         const void *bundle,
         const uint32_t num_items_in_bundle,
-        int(*item_in_bundle_has_overlap_obb)(
+        int (*item_in_bundle_has_overlap_obb)(
                 const void *,
                 const uint32_t,
                 const struct mliOBB),
@@ -356,7 +356,7 @@ int mliTmpOcTree_malloc_from_bundle(
         struct mliTmpOcTree *octree,
         const void *bundle,
         const uint32_t num_items_in_bundle,
-        int(*item_in_bundle_has_overlap_obb)(
+        int (*item_in_bundle_has_overlap_obb)(
                 const void *,
                 const uint32_t,
                 const struct mliOBB),

@@ -51,8 +51,7 @@ int mliAccelerator_malloc(
         mli_malloc(accel->robject_obbs, struct mliOBB, accel->num_robjects);
         for (rob = 0; rob < accel->num_robjects; rob++) {
                 accel->robject_obbs[rob] = mliOBB_set(
-                        mliVec_set(0.0, 0.0, 0.0),
-                        mliVec_set(0.0, 0.0, 0.0));
+                        mliVec_set(0.0, 0.0, 0.0), mliVec_set(0.0, 0.0, 0.0));
         }
 
         return 1;
@@ -65,7 +64,8 @@ int _mliAccelerator_set_robject_obbs(
         const struct mliScenery *scenery)
 {
         uint32_t rob;
-        mli_check(accel->num_robjects == scenery->num_robjects,
+        mli_check(
+                accel->num_robjects == scenery->num_robjects,
                 "Expected num_robjects to be equal, but its not.");
 
         for (rob = 0; rob < accel->num_robjects; rob++) {
@@ -85,7 +85,8 @@ int _mliAccelerator_set_object_octrees(
         const struct mliScenery *scenery)
 {
         uint32_t obj;
-        mli_check(accel->num_objects == scenery->resources.num_objects,
+        mli_check(
+                accel->num_objects == scenery->resources.num_objects,
                 "Expected num_objects to be equal, but its not.");
 
         for (obj = 0; obj < accel->num_objects; obj++) {
@@ -126,9 +127,7 @@ int mliAccelerator_malloc_from_scenery(
                 "Failed to setup object octrees.");
 
         mli_check(
-                mliOcTree_malloc_from_combine(
-                        &accel->scenery_octree,
-                        &combine),
+                mliOcTree_malloc_from_combine(&accel->scenery_octree, &combine),
                 "Failed to set up octree across all robjects in scenery.");
 
         return 1;
@@ -143,8 +142,7 @@ void mliAccelerator_fprint(FILE *f, const struct mliAccelerator *accel)
         fprintf(f, " rob|  lx|  ly|  lz|  ux|  uy|  uz|\n");
         fprintf(f, "----|----|----|----|----|----|----|\n");
         for (rob = 0; rob < accel->num_robjects; rob++) {
-                fprintf(
-                        f,
+                fprintf(f,
                         "% 4d|"
                         "% .1f|"
                         "% .1f|"

@@ -433,7 +433,10 @@ void mliOcTree_print(const struct mliOcTree *tree)
         printf("- num_nodes %ld\n", tree->num_nodes);
         printf("- num_leafs %ld\n", tree->leafs.num_leafs);
         printf("- root_type %d\n", tree->root_type);
-        printf("- cube.lower %.1f, %.1f, %.1f\n", tree->cube.lower.x, tree->cube.lower.y, tree->cube.lower.z);
+        printf("- cube.lower %.1f, %.1f, %.1f\n",
+               tree->cube.lower.x,
+               tree->cube.lower.y,
+               tree->cube.lower.z);
         printf("- cube.edge_length %.1f\n", tree->cube.edge_length);
         if (tree->num_nodes > 0) {
                 int32_t root_idx = 0;
@@ -455,8 +458,7 @@ int mliOcTree_malloc_from_object_wavefront(
                         (const void *)object_wavefront,
                         object_wavefront->num_faces,
                         _mliObject_face_in_local_frame_has_overlap_obb,
-                        mliObject_obb_in_local_frame(object_wavefront)
-                ),
+                        mliObject_obb_in_local_frame(object_wavefront)),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from mliObject");
         mliTmpNode_set_flat_index(&tmp_octree.root);
@@ -490,8 +492,7 @@ int mliOcTree_malloc_from_combine(
                         (const void *)combine,
                         combine->scenery->num_robjects,
                         _mliCombine_robject_has_overlap_obb,
-                        mliAccelerator_outermost_obb(combine->accelerator)
-                ),
+                        mliAccelerator_outermost_obb(combine->accelerator)),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from combine(Scenery, Accelerator)");
         mliTmpNode_set_flat_index(&tmp_octree.root);
