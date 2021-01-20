@@ -12,19 +12,8 @@
 int mliScenery_write_to_path(
         const struct mliScenery *scenery,
         const char *path);
-int _mliScenery_write_user_ids(const struct mliScenery *scenery, FILE *f);
-int mliScenery_write_capacity_to_file(
+int mliScenery_write_to_file(
         const struct mliScenery *scenery,
         FILE *f);
-int _mliScenery_write_discs(const struct mliScenery *scenery, FILE *f);
-int _mliScenery_write_bicircleplanes(const struct mliScenery *scenery, FILE *f);
-int _mliScenery_write_hexagons(const struct mliScenery *scenery, FILE *f);
-int _mliScenery_write_cylinders(const struct mliScenery *scenery, FILE *f);
-int _mliScenery_write_spheres(const struct mliScenery *scenery, FILE *f);
-int _mliScenery_write_spherical_cap_hex(
-        const struct mliScenery *scenery,
-        FILE *f);
-int _mliScenery_write_vertices_and_triangles(
-        const struct mliScenery *scenery,
-        FILE *f);
+
 #endif

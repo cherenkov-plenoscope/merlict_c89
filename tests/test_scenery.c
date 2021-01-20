@@ -30,6 +30,7 @@ CASE("mliScenery, init")
 CASE("mliScenery, malloc from mliUserScenery")
 {
         struct mliScenery scn = mliScenery_init();
+        struct mliScenery scn_back = mliScenery_init();
         struct mliUserScenery uscn = mliUserScenery_init();
 
         CHECK(mliUserScenery_malloc_from_tape_archive(
@@ -43,9 +44,28 @@ CASE("mliScenery, malloc from mliUserScenery")
         CHECK(mliScenery_malloc_from_mliUserScenery(&scn, &uscn));
 
         CHECK(mliSceneryResources_equal(&scn.resources, &uscn.resources));
+        mliUserScenery_free(&uscn);
 
         CHECK(mliScenery_is_equal(&scn, &scn));
 
-        mliUserScenery_free(&uscn);
+        CHECK(mliScenery_write_to_path(
+                &scn,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001.mli.tmp"
+        ));
+
+        CHECK(mliScenery_malloc_from_path(
+                &scn_back,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001.mli.tmp"
+        ));
+
+        CHECK(mliScenery_is_equal(&scn, &scn_back));
+
         mliScenery_free(&scn);
+        mliScenery_free(&scn_back);
 }
