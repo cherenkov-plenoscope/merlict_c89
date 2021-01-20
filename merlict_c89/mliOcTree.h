@@ -53,6 +53,9 @@ int _mliOcTree_equal_payload(
 int mliOcTree_malloc_from_scenery(
         struct mliOcTree *octree,
         const struct mliScenery *scenery);
+int mliOcTree_malloc_from_object_wavefront(
+        struct mliOcTree *octree,
+        const struct mliObject *object_wavefront);
 uint32_t mliOcTree_leaf_object_link(
         const struct mliOcTree *tree,
         const uint64_t leaf,

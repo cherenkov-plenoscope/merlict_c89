@@ -140,31 +140,31 @@ error:
 
 int mliTmpNode_malloc_tree_from_bundle(
         struct mliTmpNode *root_node,
-        const struct mliObject *bundle,
+        const void *bundle,
+        const uint32_t num_items_in_bundle,
         int(*item_in_bundle_has_overlap_obb)(
                 const void *,
                 const uint32_t,
                 const struct mliOBB),
-        const struct mliCube scenery_cube)
+        const struct mliCube bundle_cube)
 {
-        uint32_t idx, start_depth, max_depth, num_objects;
+        uint32_t idx, start_depth, max_depth;
         start_depth = 0u;
-        num_objects = bundle->num_faces;
-        max_depth = mli_guess_octree_depth_based_on_num_objects(num_objects);
+        max_depth = mli_guess_octree_depth_based_on_num_objects(
+                num_items_in_bundle);
 
         mli_check(
-                mliTmpNode_malloc(root_node, num_objects),
-                "Failed to allocate root-node in dynamic octree.")
+                mliTmpNode_malloc(root_node, num_items_in_bundle),
+                "Failed to allocate root-node in dynamic octree.");
 
-                for (idx = 0; idx < root_node->num_objects; idx++)
-        {
+        for (idx = 0; idx < root_node->num_objects; idx++) {
                 root_node->objects[idx] = idx;
         }
         mliTmpNode_add_children(
                 root_node,
                 bundle,
                 item_in_bundle_has_overlap_obb,
-                scenery_cube,
+                bundle_cube,
                 start_depth,
                 max_depth);
         return 1;
@@ -355,6 +355,7 @@ void mliTmpOcTree_free(struct mliTmpOcTree *octree)
 int mliTmpOcTree_malloc_from_bundle(
         struct mliTmpOcTree *octree,
         const void *bundle,
+        const uint32_t num_items_in_bundle,
         int(*item_in_bundle_has_overlap_obb)(
                 const void *,
                 const uint32_t,
@@ -367,6 +368,7 @@ int mliTmpOcTree_malloc_from_bundle(
                 mliTmpNode_malloc_tree_from_bundle(
                         &octree->root,
                         bundle,
+                        num_items_in_bundle,
                         item_in_bundle_has_overlap_obb,
                         octree->cube),
                 "Failed to allocate dynamic octree from bundle.");

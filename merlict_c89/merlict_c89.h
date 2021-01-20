@@ -51,9 +51,7 @@
 /*#include "mli_intersection_and_scenery.h"*/
 #include "mliOctOverlaps.h"
 #include "mliTmpOcTree.h"
-/*
 #include "mliOcTree.h"
-*/
 /*
 #include "mliOcTree_write.h"
 #include "mliOcTree_read.h"
