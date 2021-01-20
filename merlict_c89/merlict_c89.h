@@ -50,7 +50,7 @@
 #include "mliTriangle_OBB.h"
 /*#include "mli_intersection_and_scenery.h"*/
 #include "mliOctOverlaps.h"
-/*#include "mliTmpOcTree.h"*/
+#include "mliTmpOcTree.h"
 /*
 #include "mliOcTree.h"
 */

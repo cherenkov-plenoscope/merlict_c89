@@ -1,6 +1,16 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTmpOcTree.h"
 
+uint64_t mli_guess_octree_depth_based_on_num_objects(const uint64_t num_objects)
+{
+        return 3u + (uint64_t)ceil(log((double)num_objects) / log(8.0));
+}
+
+/*
+ * The dynamic node
+ * ================
+ */
+
 struct mliTmpNode mliTmpNode_init(void)
 {
         struct mliTmpNode n;
@@ -45,7 +55,7 @@ uint32_t mliTmpNode_signs_to_child(
 
 int mliTmpNode_add_children(
         struct mliTmpNode *node,
-        const struct mliScenery *scenery,
+        const struct mliObject *bundle,
         const struct mliCube cube,
         const uint64_t depth,
         const uint64_t max_depth)
@@ -79,8 +89,8 @@ int mliTmpNode_add_children(
                                 for (obj = 0u; obj < node->num_objects; obj++) {
                                         const uint32_t object_idx =
                                                 node->objects[obj];
-                                        if (mliScenery_overlap_obb(
-                                                    scenery,
+                                        if (mliObject_face_in_local_frame_has_overlap_obb(
+                                                    bundle,
                                                     object_idx,
                                                     mliCube_to_obb(
                                                             child_cubes
@@ -112,7 +122,7 @@ int mliTmpNode_add_children(
         for (c = 0; c < 8u; c++) {
                 mliTmpNode_add_children(
                         node->children[c],
-                        scenery,
+                        bundle,
                         child_cubes[c],
                         depth + 1u,
                         max_depth);
@@ -123,19 +133,14 @@ error:
         return 0;
 }
 
-uint64_t mli_guess_octree_depth_based_on_num_objects(const uint64_t num_objects)
-{
-        return 3u + (uint64_t)ceil(log((double)num_objects) / log(8.0));
-}
-
-int mliTmpNode_malloc_tree_from_scenery(
+int mliTmpNode_malloc_tree_from_bundle(
         struct mliTmpNode *root_node,
-        const struct mliScenery *scenery,
+        const struct mliObject *bundle,
         const struct mliCube scenery_cube)
 {
         uint32_t idx, start_depth, max_depth, num_objects;
         start_depth = 0u;
-        num_objects = mliScenery_num_primitives(scenery);
+        num_objects = bundle->num_faces;
         max_depth = mli_guess_octree_depth_based_on_num_objects(num_objects);
 
         mli_check(
@@ -147,7 +152,7 @@ int mliTmpNode_malloc_tree_from_scenery(
                 root_node->objects[idx] = idx;
         }
         mliTmpNode_add_children(
-                root_node, scenery, scenery_cube, start_depth, max_depth);
+                root_node, bundle, scenery_cube, start_depth, max_depth);
         return 1;
 error:
         return 0;
@@ -316,6 +321,7 @@ void mliTmpNode_num_nodes_leafs_objects(
 
 /*
  * The dynamic octree
+ * ==================
  */
 
 struct mliTmpOcTree mliTmpOcTree_init(void)
@@ -332,18 +338,23 @@ void mliTmpOcTree_free(struct mliTmpOcTree *octree)
         mliTmpNode_free(&octree->root);
 }
 
-int mliTmpOcTree_malloc_from_scenery(
+int mliTmpOcTree_malloc_from_bundle(
         struct mliTmpOcTree *octree,
-        const struct mliScenery *scenery)
+        const struct mliObject *bundle)
 {
         mliTmpOcTree_free(octree);
         octree->cube =
-                mliCube_outermost_cube(mliScenery_outermost_obb(scenery));
+                mliCube_outermost_cube(mliObject_obb_in_local_frame(bundle));
         mli_check(
-                mliTmpNode_malloc_tree_from_scenery(
-                        &octree->root, scenery, octree->cube),
-                "Failed to allocate dynamic octree from scenery.");
+                mliTmpNode_malloc_tree_from_bundle(
+                        &octree->root, bundle, octree->cube),
+                "Failed to allocate dynamic octree from bundle.");
         return 1;
 error:
         return 0;
+}
+
+void mliTmpOcTree_print(const struct mliTmpOcTree *octree)
+{
+        mliTmpNode_print(&octree->root, 0u, 0u);
 }
