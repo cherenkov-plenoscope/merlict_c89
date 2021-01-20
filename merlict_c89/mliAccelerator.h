@@ -10,6 +10,9 @@
 #include "mliOcTree.h"
 
 struct mliAccelerator {
+        uint32_t num_objects;
+        struct mliOcTree *object_octrees;
+
         uint32_t num_robjects;
         struct mliOBB *robject_obbs;
 };
@@ -20,21 +23,22 @@ void mliAccelerator_free(struct mliAccelerator *accel);
 
 int mliAccelerator_malloc(
         struct mliAccelerator *accel,
+        const uint32_t num_objects,
         const uint32_t num_robjects);
 
 int mliAccelerator_malloc_from_scenery(
         struct mliAccelerator *accel,
         const struct mliScenery *scenery);
 
-int _mliAccelerator_set_obbs(
+int _mliAccelerator_set_robject_obbs(
+        struct mliAccelerator *accel,
+        const struct mliScenery *scenery);
+
+int _mliAccelerator_set_object_octrees(
         struct mliAccelerator *accel,
         const struct mliScenery *scenery);
 
 void mliAccelerator_fprint(FILE *f, const struct mliAccelerator *accel);
-
-int mliAccelerator_malloc(
-        struct mliAccelerator *accel,
-        const uint32_t num_robjects);
 
 /*
 int mliAccelerator_robject_has_overlap_obb(

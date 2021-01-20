@@ -18,6 +18,7 @@ struct mliOBB {
         struct mliVec upper;
 };
 
+struct mliOBB mliOBB_set(const struct mliVec lower, const struct mliVec upper);
 struct mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx);
 struct mliOBB mliOBB_dilate(
         const struct mliOBB a,

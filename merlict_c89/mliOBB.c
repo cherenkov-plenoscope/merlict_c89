@@ -1,6 +1,15 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOBB.h"
 
+struct mliOBB mliOBB_set(const struct mliVec lower, const struct mliVec upper)
+{
+        struct mliOBB obb;
+        obb.lower = lower;
+        obb.upper = upper;
+        return obb;
+}
+
+
 struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b)
 {
         struct mliOBB obb;

@@ -5,31 +5,56 @@
 struct mliAccelerator mliAccelerator_init(void)
 {
         struct mliAccelerator accel;
+
+        accel.num_objects = 0u;
+        accel.object_octrees = NULL;
+
         accel.num_robjects = 0u;
         accel.robject_obbs = NULL;
+
         return accel;
 }
 
 void mliAccelerator_free(struct mliAccelerator *accel)
 {
+        uint32_t obj;
+        for (obj = 0; obj < accel->num_objects; obj++) {
+                mliOcTree_free(&accel->object_octrees[obj]);
+        }
+        free(accel->object_octrees);
+
         free(accel->robject_obbs);
         (*accel) = mliAccelerator_init();
 }
 
 int mliAccelerator_malloc(
         struct mliAccelerator *accel,
+        const uint32_t num_objects,
         const uint32_t num_robjects)
 {
+        uint32_t obj, rob;
         mliAccelerator_free(accel);
+
+        accel->num_objects = num_objects;
+        mli_malloc(accel->object_octrees, struct mliOcTree, accel->num_objects);
+        for (obj = 0; obj < accel->num_objects; obj++) {
+                accel->object_octrees[obj] = mliOcTree_init();
+        }
+
         accel->num_robjects = num_robjects;
         mli_malloc(accel->robject_obbs, struct mliOBB, accel->num_robjects);
+        for (rob = 0; rob < accel->num_robjects; rob++) {
+                accel->robject_obbs[rob] = mliOBB_set(
+                        mliVec_set(0.0, 0.0, 0.0),
+                        mliVec_set(0.0, 0.0, 0.0));
+        }
 
         return 1;
 error:
         return 0;
 }
 
-int _mliAccelerator_set_obbs(
+int _mliAccelerator_set_robject_obbs(
         struct mliAccelerator *accel,
         const struct mliScenery *scenery)
 {
@@ -49,18 +74,58 @@ error:
         return 0;
 }
 
+int _mliAccelerator_set_object_octrees(
+        struct mliAccelerator *accel,
+        const struct mliScenery *scenery)
+{
+        uint32_t obj;
+        mli_check(accel->num_objects == scenery->resources.num_objects,
+                "Expected num_objects to be equal, but its not.");
+
+        for (obj = 0; obj < accel->num_objects; obj++) {
+
+                fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
+
+                mli_check(
+                        mliOcTree_malloc_from_object_wavefront(
+                                &accel->object_octrees[obj],
+                                &scenery->resources.objects[obj]),
+                        "Failed to setup mliOctree for object-wavefront.");
+        }
+
+        return 1;
+error:
+        return 0;
+}
+
+
 int mliAccelerator_malloc_from_scenery(
         struct mliAccelerator *accel,
         const struct mliScenery *scenery)
 {
+
+        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
-                mliAccelerator_malloc(accel, scenery->num_robjects),
+                mliAccelerator_malloc(
+                        accel,
+                        scenery->resources.num_objects,
+                        scenery->num_robjects),
                 "Failed to malloc mliAccelerator from mliScenery's "
                 "num_robjects");
 
+        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
+
         mli_check(
-                _mliAccelerator_set_obbs(accel, scenery),
+                _mliAccelerator_set_robject_obbs(accel, scenery),
                 "Failed to set OBBs of robjects.");
+
+        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
+
+        mli_check(
+                _mliAccelerator_set_object_octrees(accel, scenery),
+                "Failed to setup object octrees.");
+
+        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
 
         return 1;
 error:
