@@ -15,6 +15,8 @@ struct mliAccelerator {
 
         uint32_t num_robjects;
         struct mliOBB *robject_obbs;
+
+        struct mliOcTree scenery_octree;
 };
 
 struct mliAccelerator mliAccelerator_init(void);
