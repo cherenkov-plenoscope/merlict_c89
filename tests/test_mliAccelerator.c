@@ -25,6 +25,12 @@ CASE("mliAccelerator, init")
 
         mliAccelerator_fprint(stderr, &accel);
 
+        /*
+        struct mliTmpNode tmptree = mliTmpNode_init();
+
+        mliTmpNode_print(&tmptree);
+        */
+
         mliScenery_free(&scenery);
         mliAccelerator_free(&accel);
 }

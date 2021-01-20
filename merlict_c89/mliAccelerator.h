@@ -32,4 +32,15 @@ int _mliAccelerator_set_obbs(
 
 void mliAccelerator_fprint(FILE *f, const struct mliAccelerator *accel);
 
+int mliAccelerator_malloc(
+        struct mliAccelerator *accel,
+        const uint32_t num_robjects);
+
+/*
+int mliAccelerator_robject_has_overlap_obb(
+        const struct mliAccelerator *accel,
+        const uint64_t robject_idx,
+        const struct mliOBB obb);
+*/
+
 #endif

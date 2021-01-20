@@ -1,6 +1,26 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject_OBB.h"
 
+int mliObject_face_in_local_frame_has_overlap_obb(
+        const struct mliObject *obj,
+        const uint64_t face_idx,
+        const struct mliOBB obb)
+{
+        struct mliFace face;
+        if (face_idx >= obj->num_faces) {
+                return 0;
+        }
+        face = obj->faces_vertices[face_idx];
+        if (mliTriangle_has_overlap_obb(
+                obj->vertices[face.a],
+                obj->vertices[face.b],
+                obj->vertices[face.c],
+                obb)) {
+                return 1;
+        }
+        return 0;
+}
+
 int mliObject_has_overlap_obb(
         const struct mliObject *obj,
         const struct mliHomTraComp local2root_comp,

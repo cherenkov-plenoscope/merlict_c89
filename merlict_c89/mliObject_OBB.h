@@ -15,4 +15,9 @@ struct mliOBB mliObject_obb(
         const struct mliObject *obj,
         const struct mliHomTraComp local2root_comp);
 
+int mliObject_face_in_local_frame_has_overlap_obb(
+        const struct mliObject *obj,
+        const uint64_t face_idx,
+        const struct mliOBB obb);
+
 #endif
