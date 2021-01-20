@@ -9,10 +9,20 @@
 #include "mliScenery.h"
 
 struct mliAccelerator {
-        struct mliSceneryResources resources;
         uint32_t num_robjects;
+        struct mliOBB *robject_obbs;
 };
 
 struct mliAccelerator mliAccelerator_init(void);
+
+void mliAccelerator_free(struct mliAccelerator *accel);
+
+int mliAccelerator_malloc(
+        struct mliAccelerator *accel,
+        const uint32_t num_robjects);
+
+int mliAccelerator_set_obbs(
+        struct mliAccelerator *accel,
+        const struct mliScenery *scenery);
 
 #endif

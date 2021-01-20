@@ -48,7 +48,6 @@
 #include "mliScenery_object_interface.c"
 */
 #include "mliRay_OBB.c"
-#include "mliOuterPrismBound.c"
 #include "mliVec_OBB.c"
 #include "mliTriangle_OBB.c"
 /*#include "mli_intersection_and_scenery.c"*/
