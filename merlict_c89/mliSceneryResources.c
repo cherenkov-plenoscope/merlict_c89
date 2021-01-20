@@ -123,8 +123,7 @@ int mliSceneryResources_cpy(
                         "Failed to allocate struct mliObject in Resources.");
                 mli_check(
                         mliObject_cpy(
-                                &destination->objects[i],
-                                &source->objects[i]),
+                                &destination->objects[i], &source->objects[i]),
                         "Failed to copy Object to Resources.");
         }
 

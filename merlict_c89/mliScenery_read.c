@@ -7,7 +7,8 @@ int mliScenery_malloc_from_path(struct mliScenery *scenery, const char *path)
         FILE *f;
         f = fopen(path, "r");
         mli_check(f != NULL, "Can not open Scenery-file for reading.");
-        mli_check(mliScenery_malloc_from_file(scenery, f),
+        mli_check(
+                mliScenery_malloc_from_file(scenery, f),
                 "Can not read scenery-file.");
         fclose(f);
         return 1;
@@ -77,10 +78,7 @@ int mliScenery_malloc_from_file(struct mliScenery *scenery, FILE *f)
                 "Failed to read SceneryResources from file.");
 
         mli_fread(
-                scenery->robjects,
-                sizeof(uint32_t),
-                scenery->num_robjects,
-                f);
+                scenery->robjects, sizeof(uint32_t), scenery->num_robjects, f);
         mli_fread(
                 scenery->robject_ids,
                 sizeof(uint32_t),

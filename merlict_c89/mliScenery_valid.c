@@ -13,39 +13,39 @@ int mliScenery_valid(const struct mliScenery *scenery)
 
                 mli_check(
                         scenery->robjects[rob] <=
-                        scenery->resources.num_objects,
+                                scenery->resources.num_objects,
                         "Expected robjects to refer to valid objects.");
                 /*
-                *       robject_ids are set by the user and can be whatever
-                *       the user wants.
-                */
+                 *       robject_ids are set by the user and can be whatever
+                 *       the user wants.
+                 */
 
                 mli_check(
                         scenery->robject_boundary_layers[rob].inner.surface <=
-                        scenery->resources.num_surfaces,
+                                scenery->resources.num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid inner surface.");
                 mli_check(
                         scenery->robject_boundary_layers[rob].outer.surface <=
-                        scenery->resources.num_surfaces,
+                                scenery->resources.num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid outer surface.");
 
                 mli_check(
                         scenery->robject_boundary_layers[rob].inner.medium <=
-                        scenery->resources.num_surfaces,
+                                scenery->resources.num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid inner medium.");
                 mli_check(
                         scenery->robject_boundary_layers[rob].outer.medium <=
-                        scenery->resources.num_surfaces,
+                                scenery->resources.num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid outer medium.");
 
                 /*
-                *       robject homogenous transformations can be whatever
-                *       they want to be.
-                */
+                 *       robject homogenous transformations can be whatever
+                 *       they want to be.
+                 */
         }
 
         return 1;

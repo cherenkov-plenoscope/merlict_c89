@@ -49,16 +49,17 @@ int _mliSceneryResources_valid_objects(const struct mliSceneryResources *res)
 
 int mliSceneryResources_valid(const struct mliSceneryResources *res)
 {
-        mli_check(res->default_medium <= res->num_media,
+        mli_check(
+                res->default_medium <= res->num_media,
                 "Expected default-medium to reference a valid medium.");
 
         mli_check(
                 _mliSceneryResources_valid_objects(res),
                 "Expected objects to be valid.")
 
-        mli_check(
-                _mliSceneryResources_valid_media(res),
-                "Expected media to be valid.");
+                mli_check(
+                        _mliSceneryResources_valid_media(res),
+                        "Expected media to be valid.");
 
         mli_check(
                 _mliSceneryResources_valid_surfaces(res),

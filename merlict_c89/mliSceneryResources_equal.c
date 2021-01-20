@@ -8,7 +8,8 @@ int _mliSceneryResources_objects_equal(
         uint64_t i;
         mli_c(a->num_objects == b->num_objects)
 
-        for (i = 0; i < a->num_objects; i++) {
+                for (i = 0; i < a->num_objects; i++)
+        {
                 mli_c(mliObject_is_equal(&a->objects[i], &b->objects[i]));
         }
         return 1;

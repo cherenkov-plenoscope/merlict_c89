@@ -6,7 +6,8 @@ int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
         FILE *f;
         f = fopen(path, "w");
         mli_check(f != NULL, "Can not open Scenery-file for writing.");
-        mli_check(mliScenery_write_to_file(scenery, f),
+        mli_check(
+                mliScenery_write_to_file(scenery, f),
                 "Failed to write to file.");
         fclose(f);
         return 1;
@@ -16,7 +17,6 @@ error:
         }
         return 0;
 }
-
 
 int _mliScenery_write_header(FILE *f)
 {
@@ -38,8 +38,7 @@ error:
 int mliScenery_write_to_file(const struct mliScenery *scenery, FILE *f)
 {
         mli_check(
-                _mliScenery_write_header(f),
-                "Failed to write scenery-header.");
+                _mliScenery_write_header(f), "Failed to write scenery-header.");
 
         mli_write_type(uint32_t, scenery->num_robjects, f);
 
@@ -53,10 +52,7 @@ int mliScenery_write_to_file(const struct mliScenery *scenery, FILE *f)
                 "Can not write SceneryResources to file.");
 
         mli_fwrite(
-                scenery->robjects,
-                sizeof(uint32_t),
-                scenery->num_robjects,
-                f);
+                scenery->robjects, sizeof(uint32_t), scenery->num_robjects, f);
         mli_fwrite(
                 scenery->robject_ids,
                 sizeof(uint32_t),

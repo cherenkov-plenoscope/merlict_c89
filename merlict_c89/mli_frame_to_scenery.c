@@ -37,7 +37,8 @@ int __mliScenery_set_robjects(
         case MLI_FRAME:
                 for (i = 0; i < frame->children.dyn.size; i++) {
                         child = frame->children.arr[i];
-                        __mliScenery_set_robjects(scenery, child, robject_counter);
+                        __mliScenery_set_robjects(
+                                scenery, child, robject_counter);
                 }
                 break;
         case MLI_OBJECT:
@@ -79,10 +80,12 @@ int mliScenery_malloc_from_mliUserScenery(
                 "Can not estimate capacity of primitives.");
 
         /* malloc scenery */
-        mli_check(mliScenery_malloc(scenery, num_robjects),
+        mli_check(
+                mliScenery_malloc(scenery, num_robjects),
                 "Can not allocate scenery.");
 
-        mli_check(mliSceneryResources_malloc(
+        mli_check(
+                mliSceneryResources_malloc(
                         &scenery->resources, resource_capacity),
                 "Can not allocate scenery.");
 
@@ -92,9 +95,7 @@ int mliScenery_malloc_from_mliUserScenery(
 
         mli_check(
                 __mliScenery_set_robjects(
-                        scenery,
-                        &uscn->root,
-                        &robject_counter),
+                        scenery, &uscn->root, &robject_counter),
                 "Cen not set primitives");
 
         mli_c(num_robjects == robject_counter);

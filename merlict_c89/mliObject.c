@@ -175,15 +175,14 @@ int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
         }
         for (i = 0; i < a->num_vertex_normals; i++) {
                 mli_c(mliVec_is_equal(
-                            a->vertex_normals[i], b->vertex_normals[i]));
+                        a->vertex_normals[i], b->vertex_normals[i]));
         }
         for (i = 0; i < a->num_faces; i++) {
                 mli_c(mliFace_is_equal(
-                            a->faces_vertices[i],
-                            b->faces_vertices[i]));
+                        a->faces_vertices[i], b->faces_vertices[i]));
                 mli_c(mliFace_is_equal(
-                            a->faces_vertex_normals[i],
-                            b->faces_vertex_normals[i]));
+                        a->faces_vertex_normals[i],
+                        b->faces_vertex_normals[i]));
         }
         return 1;
 error:
@@ -215,7 +214,8 @@ int mliObject_cpy(struct mliObject *destination, struct mliObject *source)
                 "num_faces.");
         for (p = 0; p < destination->num_faces; p++) {
                 destination->faces_vertices[p] = source->faces_vertices[p];
-                destination->faces_vertex_normals[p] = source->faces_vertex_normals[p];
+                destination->faces_vertex_normals[p] =
+                        source->faces_vertex_normals[p];
         }
 
         return 1;

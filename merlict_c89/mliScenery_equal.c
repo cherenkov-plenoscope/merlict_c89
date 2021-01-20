@@ -12,7 +12,7 @@ int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
                 a->num_robjects == b->num_robjects,
                 "Expected num_robjects to be equal.");
 
-        for (rob = 0; rob < a->num_robjects; rob ++) {
+        for (rob = 0; rob < a->num_robjects; rob++) {
                 mli_check(
                         a->robjects[rob] == b->robjects[rob],
                         "Expected object-references to be equal.");
@@ -32,8 +32,7 @@ int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
 
                 mli_check(
                         mliHomTraComp_is_equal(
-                                a->robject2root[rob],
-                                b->robject2root[rob]),
+                                a->robject2root[rob], b->robject2root[rob]),
                         "Expected homogenous transformation of "
                         "object-references to be equal");
         }
