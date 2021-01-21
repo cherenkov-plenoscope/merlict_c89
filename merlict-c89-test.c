@@ -54,7 +54,7 @@ int main(void)
 #include "tests/test_lambertian_cosine_law.c"
 /*#include "tests/test_lensmaker.c"*/
 #include "tests/test_map.c"
-/*#include "tests/test_cache_aware_octree.c"*/
+#include "tests/test_cache_aware_octree.c"
 #include "tests/test_triangle.c"
 #include "tests/test_barycentric_coordinates.c"
 #include "tests/test_object_wavefront.c"
