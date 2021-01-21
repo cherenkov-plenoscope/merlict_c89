@@ -2,12 +2,21 @@
 
 CASE("init mliCaOctree")
 {
-        struct mliOcTree caoctree = mliOcTree_init();
-        CHECK(caoctree.cube.lower.x == 0.0);
+        struct mliOcTree octree = mliOcTree_init();
+        CHECK(mliVec_is_equal(octree.cube.lower, mliVec_set(0.0, 0.0, 0.0)));
+        CHECK(octree.cube.edge_length == 0.0);
+        CHECK(octree.num_nodes == 0);
+        CHECK(octree.leafs.num_leafs == 0);
+        CHECK(octree.root_type == MLI_OCTREE_TYPE_NONE);
+        CHECK(octree.nodes == NULL);
+        CHECK(octree.leafs.adresses == NULL);
+        CHECK(octree.leafs.num_object_links == 0);
+        CHECK(octree.leafs.object_links == NULL);
 }
 
 CASE("sizeof mliNode") { CHECK(sizeof(struct mliNode) == 5 * 8); }
 
+/*
 CASE("init mliCaOctree")
 {
         struct mliScenery scenery = mliScenery_init();
@@ -25,13 +34,6 @@ CASE("init mliCaOctree")
         CHECK(mliOcTree_malloc(
                 &octree, num_nodes, num_leafs, num_object_links));
         mliOcTree_set(&octree, &tmp_octree);
-
-        /*
-        fprintf(
-                stderr,
-                "nodes:%lu, leafs:%lu, objects:%lu\n",
-                num_nodes, num_leafs, num_object_links);
-        */
 
         CHECK(num_nodes == 65);
         CHECK(num_leafs == 361);
@@ -73,3 +75,4 @@ CASE("init mliOctree write and read")
         mliOcTree_free(&octree);
         mliScenery_free(&scenery);
 }
+*/

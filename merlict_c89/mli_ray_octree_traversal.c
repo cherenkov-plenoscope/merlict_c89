@@ -370,22 +370,12 @@ void mli_ray_octree_traversal(
         struct mliIntersection *isec)
 {
         uint64_t num_hits;
-        double divx;
-        double divy;
-        double divz;
-
-        double tx0;
-        double tx1;
-        double ty0;
-        double ty1;
-        double tz0;
-        double tz1;
+        double divx, divy, divz;
+        double tx0, tx1, ty0, ty1, tz0, tz1;
         struct mliRay ray_octree;
-        struct mliVec cube_upper;
-        struct mliVec cube_size;
+        struct mliVec cube_upper, cube_size;
         struct mliCube cube;
-        int32_t octree_root_node;
-        int32_t octree_root_type;
+        int32_t octree_root_node, octree_root_type;
         uint8_t a = 0;
         isec->distance_of_ray = DBL_MAX;
         cube = octree->cube;
