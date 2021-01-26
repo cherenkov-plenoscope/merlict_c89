@@ -37,7 +37,7 @@ void mli_set_txm_tym_tzm(
         const struct mliCube cube,
         const struct mliVec ray_octree_support,
         struct mliVec *tm);
-int _mli_new_node(double txm, int x, double tym, int y, double tzm, int z);
+int _mli_new_node(const struct mliVec tm, int x, int y, int z);
 int _mli_first_node(
         const struct mliVec t0,
         const struct mliVec tm);

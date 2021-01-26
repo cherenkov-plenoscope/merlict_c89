@@ -46,15 +46,15 @@ int _mli_first_node(
         return (int)child;
 }
 
-int _mli_new_node(double txm, int x, double tym, int y, double tzm, int z)
+int _mli_new_node(const struct mliVec tm, int x, int y, int z)
 {
-        if (txm < tym) {
-                if (txm < tzm) {
+        if (tm.x < tm.y) {
+                if (tm.x < tm.z) {
                         /* Y-Z-plane */
                         return x;
                 }
         } else {
-                if (tym < tzm) {
+                if (tm.y < tm.z) {
                         /* X-Z-plane */
                         return y;
                 }
@@ -133,6 +133,7 @@ void _mli_proc_subtree(
         uint64_t *num_hits)
 {
         struct mliVec tm;
+        struct mliVec ntm;
         int currNode;
 
         if (tx1 < 0 || ty1 < 0 || tz1 < 0) {
@@ -200,7 +201,10 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(tm.x, 4, tm.y, 2, tm.z, 1);
+                        ntm.x = tm.x;
+                        ntm.y = tm.y;
+                        ntm.z = tm.z;
+                        currNode = _mli_new_node(ntm, 4, 2, 1);
                         break;
                 }
                 case 1: {
@@ -221,7 +225,10 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(tm.x, 5, tm.y, 3, tm.z, 8);
+                        ntm.x = tm.x;
+                        ntm.y = tm.y;
+                        ntm.z = tm.z;
+                        currNode = _mli_new_node(ntm, 5, 3, 8);
                         break;
                 }
                 case 2: {
@@ -242,7 +249,10 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(tm.x, 6, ty1, 8, tm.z, 3);
+                        ntm.x = tm.x;
+                        ntm.y = ty1;
+                        ntm.z = tm.z;
+                        currNode = _mli_new_node(ntm, 6, 8, 3);
                         break;
                 }
                 case 3: {
@@ -263,7 +273,10 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(tm.x, 7, ty1, 8, tz1, 8);
+                        ntm.x = tm.x;
+                        ntm.y = ty1;
+                        ntm.z = tz1;
+                        currNode = _mli_new_node(ntm, 7, 8, 8);
                         break;
                 }
                 case 4: {
@@ -284,7 +297,10 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(tx1, 8, tm.y, 6, tm.z, 5);
+                        ntm.x = tx1;
+                        ntm.y = tm.y;
+                        ntm.z = tm.z;
+                        currNode = _mli_new_node(ntm, 8, 6, 5);
                         break;
                 }
                 case 5: {
@@ -305,7 +321,10 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(tx1, 8, tm.y, 7, tz1, 8);
+                        ntm.x = tx1;
+                        ntm.y = tm.y;
+                        ntm.z = tz1;
+                        currNode = _mli_new_node(ntm, 8, 7, 8);
                         break;
                 }
                 case 6: {
@@ -326,7 +345,10 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(tx1, 8, ty1, 8, tm.z, 7);
+                        ntm.x = tx1;
+                        ntm.y = ty1;
+                        ntm.z = tm.z;
+                        currNode = _mli_new_node(ntm, 8, 8, 7);
                         break;
                 }
                 case 7: {
