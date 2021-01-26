@@ -14,6 +14,47 @@
  *  Profiting from additional comments by Jeroen Baert.
  */
 
+/*
+ *                    __ Z
+ *        Y            /|
+ *         /\         /
+ *         |   -----------------
+ *         |  /   3   /   7   /|
+ *         | /---------------/ |
+ *         |/   2   /   6   /|7|
+ *         |---------------- | |
+ *         |       |       |6|/|
+ *         |   2   |   6   | / |
+ *         |       |       |/|5|
+ *         |-------|-------| | |
+ *         |       |       |4|/
+ *         |   0   |   4   | /
+ *         |       |       |/
+ *         L--------------------> X
+ *
+ *      Figure 1: Labeled Octree (the hidden one has label 1).
+ *      cite{revelles2000efficient}
+ */
+
+/*  Current  |     Exit-plane
+ *  sub-node |
+ *  (state)  |  YZ      XZ      XY
+ * ----------|----------------------
+ *      0    |  4       2       1
+ *      1    |  5       3       END
+ *      2    |  6       END     3
+ *      3    |  7       END     END
+ *      4    |  END     6       5
+ *      5    |  END     7       END
+ *      6    |  END     END     7
+ *      7    |  END     END     END
+ *
+ *      Table 3: State transition.
+ *      cite{revelles2000efficient}
+ */
+
+#define mli_END 8
+
 int _mli_first_octree_node(
         const struct mliVec t0,
         const struct mliVec tm)
@@ -221,7 +262,7 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_next_octree_node(nt1, 5, 3, 8);
+                        currNode = _mli_next_octree_node(nt1, 5, 3, mli_END);
                         break;
                 }
                 case 2: {
@@ -246,7 +287,7 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_next_octree_node(nt1, 6, 8, 3);
+                        currNode = _mli_next_octree_node(nt1, 6, mli_END, 3);
                         break;
                 }
                 case 3: {
@@ -272,7 +313,7 @@ void _mli_proc_subtree(
                                 ray,
                                 num_hits);
 
-                        currNode = _mli_next_octree_node(nt1, 7, 8, 8);
+                        currNode = _mli_next_octree_node(nt1, 7, mli_END, mli_END);
                         break;
                 }
                 case 4: {
@@ -297,7 +338,7 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_next_octree_node(nt1, 8, 6, 5);
+                        currNode = _mli_next_octree_node(nt1, mli_END, 6, 5);
                         break;
                 }
                 case 5: {
@@ -322,7 +363,7 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_next_octree_node(nt1, 8, 7, 8);
+                        currNode = _mli_next_octree_node(nt1, mli_END, 7, mli_END);
                         break;
                 }
                 case 6: {
@@ -347,7 +388,7 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_next_octree_node(nt1, 8, 8, 7);
+                        currNode = _mli_next_octree_node(nt1, mli_END, mli_END, 7);
                         break;
                 }
                 case 7: {
@@ -372,11 +413,11 @@ void _mli_proc_subtree(
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = 8;
+                        currNode = mli_END;
                         break;
                 }
                 }
-        } while (currNode < 8);
+        } while (currNode < mli_END);
 }
 
 void mli_ray_octree_traversal(
