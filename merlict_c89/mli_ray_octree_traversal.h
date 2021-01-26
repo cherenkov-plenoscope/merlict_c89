@@ -32,23 +32,13 @@ void _mli_proc_subtree(
         const struct mliRay ray,
         uint64_t *num_hits);
 void mli_set_txm_tym_tzm(
-        double tx0,
-        double ty0,
-        double tz0,
-        double tx1,
-        double ty1,
-        double tz1,
+        const struct mliVec t0,
+        const struct mliVec t1,
         const struct mliCube cube,
         const struct mliVec ray_octree_support,
-        double *txm,
-        double *tym,
-        double *tzm);
+        struct mliVec *tm);
 int _mli_new_node(double txm, int x, double tym, int y, double tzm, int z);
 int _mli_first_node(
-        double tx0,
-        double ty0,
-        double tz0,
-        double txm,
-        double tym,
-        double tzm);
+        const struct mliVec t0,
+        const struct mliVec tm);
 #endif
