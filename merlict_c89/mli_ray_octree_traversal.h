@@ -15,12 +15,8 @@ void mli_ray_octree_traversal(
         const struct mliRay ray,
         struct mliIntersection *isec);
 void _mli_proc_subtree(
-        double tx0,
-        double ty0,
-        double tz0,
-        double tx1,
-        double ty1,
-        double tz1,
+        struct mliVec t0,
+        struct mliVec t1,
         const struct mliOcTree *octree,
         const int32_t octree_node,
         const int32_t octree_type,
