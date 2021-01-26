@@ -103,56 +103,13 @@ int _mli_next_octree_node(const struct mliVec tm, int x, int y, int z)
         return z; /* X-Y-plane */
 }
 
-void mli_set_txm_tym_tzm(
-        const struct mliVec t0,
-        const struct mliVec t1,
-        const struct mliCube cube,
-        const struct mliVec ray_octree_support,
-        struct mliVec *tm)
+struct mliVec _mli_find_tm(const struct mliVec t0, const struct mliVec t1)
 {
-        /*
-         * This implements Section 3.3
-         * "Generalising for Rays Parallel to One Main Axis"
-         * in
-         *  @article{revelles2000efficient,
-         *      title={An efficient parametric algorithm for octree traversal},
-         *      author={Revelles, Jorge and Urena, Carlos and Lastra, Miguel},
-         *      year={2000},
-         *      publisher={V{\'a}clav Skala-UNION Agency}
-         *  }
-         */
-        tm->x = 0.5 * (t0.x + t1.x);
-        if (MLI_IS_NAN(tm->x)) {
-                const struct mliVec cube_upper = mliCube_upper(cube);
-                const double x0 = cube.lower.x;
-                const double x1 = cube_upper.x;
-                if (ray_octree_support.x < (x0 + x1) * .5)
-                        tm->x = DBL_MAX;
-                else
-                        tm->x = -DBL_MAX;
-        }
-
-        tm->y = 0.5 * (t0.y + t1.y);
-        if (MLI_IS_NAN(tm->y)) {
-                const struct mliVec cube_upper = mliCube_upper(cube);
-                const double y0 = cube.lower.y;
-                const double y1 = cube_upper.y;
-                if (ray_octree_support.y < (y0 + y1) * .5)
-                        tm->y = DBL_MAX;
-                else
-                        tm->y = -DBL_MAX;
-        }
-
-        tm->z = 0.5 * (t0.z + t1.z);
-        if (MLI_IS_NAN(tm->z)) {
-                const struct mliVec cube_upper = mliCube_upper(cube);
-                const double z0 = cube.lower.z;
-                const double z1 = cube_upper.z;
-                if (ray_octree_support.z < (z0 + z1) * .5)
-                        tm->z = DBL_MAX;
-                else
-                        tm->z = -DBL_MAX;
-        }
+        struct mliVec tm;
+        tm.x = 0.5 * (t0.x + t1.x);
+        tm.y = 0.5 * (t0.y + t1.y);
+        tm.z = 0.5 * (t0.z + t1.z);
+        return tm;
 }
 
 void _mli_proc_subtree(
@@ -474,27 +431,54 @@ void mli_ray_octree_traversal(
         }
 }
 
-void _mli_transform_ray_into_octree_frame(
-        const struct mliRay ray_wrt_scenery,
-        const struct mliVec octree_cube_size,
-        struct mliRay *ray_wrt_octree,
-        uint8_t *octree_permutation)
+void mli_set_txm_tym_tzm(
+        const struct mliVec t0,
+        const struct mliVec t1,
+        const struct mliCube cube,
+        const struct mliVec ray_octree_support,
+        struct mliVec *tm)
 {
-        uint8_t permutation = 0u;
-        if (ray_wrt_scenery.direction.x < 0.0) {
-                ray_wrt_octree->support.x = -ray_wrt_scenery.support.x + octree_cube_size.x;
-                ray_wrt_octree->direction.x = -ray_wrt_scenery.direction.x;
-                permutation |= 4;
+        /*
+         * This implements Section 3.3
+         * "Generalising for Rays Parallel to One Main Axis"
+         * in
+         *  @article{revelles2000efficient,
+         *      title={An efficient parametric algorithm for octree traversal},
+         *      author={Revelles, Jorge and Urena, Carlos and Lastra, Miguel},
+         *      year={2000},
+         *      publisher={V{\'a}clav Skala-UNION Agency}
+         *  }
+         */
+        tm->x = 0.5 * (t0.x + t1.x);
+        if (MLI_IS_NAN(tm->x)) {
+                const struct mliVec cube_upper = mliCube_upper(cube);
+                const double x0 = cube.lower.x;
+                const double x1 = cube_upper.x;
+                if (ray_octree_support.x < (x0 + x1) * .5)
+                        tm->x = DBL_MAX;
+                else
+                        tm->x = -DBL_MAX;
         }
-        if (ray_wrt_scenery.direction.y < 0.0) {
-                ray_wrt_octree->support.y = -ray_wrt_scenery.support.y + octree_cube_size.y;
-                ray_wrt_octree->direction.y = -ray_wrt_scenery.direction.y;
-                permutation |= 2;
+
+        tm->y = 0.5 * (t0.y + t1.y);
+        if (MLI_IS_NAN(tm->y)) {
+                const struct mliVec cube_upper = mliCube_upper(cube);
+                const double y0 = cube.lower.y;
+                const double y1 = cube_upper.y;
+                if (ray_octree_support.y < (y0 + y1) * .5)
+                        tm->y = DBL_MAX;
+                else
+                        tm->y = -DBL_MAX;
         }
-        if (ray_wrt_scenery.direction.z < 0.0) {
-                ray_wrt_octree->support.z = -ray_wrt_scenery.support.z + octree_cube_size.z;
-                ray_wrt_octree->direction.z = -ray_wrt_scenery.direction.z;
-                permutation |= 1;
+
+        tm->z = 0.5 * (t0.z + t1.z);
+        if (MLI_IS_NAN(tm->z)) {
+                const struct mliVec cube_upper = mliCube_upper(cube);
+                const double z0 = cube.lower.z;
+                const double z1 = cube_upper.z;
+                if (ray_octree_support.z < (z0 + z1) * .5)
+                        tm->z = DBL_MAX;
+                else
+                        tm->z = -DBL_MAX;
         }
-        (*octree_permutation) = permutation;
 }
