@@ -386,7 +386,7 @@ void mli_ray_octree_traversal(
         struct mliIntersection *isec)
 {
         uint64_t num_hits;
-        double divx, divy, divz;
+        struct mliVec div;
         struct mliVec t0, t1;
         struct mliRay ray_wrt_octree;
         struct mliVec cube_upper, cube_size;
@@ -418,16 +418,16 @@ void mli_ray_octree_traversal(
                 permutation |= 1;
         }
 
-        divx = 1 / ray_wrt_octree.direction.x;
-        divy = 1 / ray_wrt_octree.direction.y;
-        divz = 1 / ray_wrt_octree.direction.z;
+        div.x = 1.0 / ray_wrt_octree.direction.x;
+        div.y = 1.0 / ray_wrt_octree.direction.y;
+        div.z = 1.0 / ray_wrt_octree.direction.z;
 
-        t0.x = (cube.lower.x - ray_wrt_octree.support.x) * divx;
-        t1.x = (cube_upper.x - ray_wrt_octree.support.x) * divx;
-        t0.y = (cube.lower.y - ray_wrt_octree.support.y) * divy;
-        t1.y = (cube_upper.y - ray_wrt_octree.support.y) * divy;
-        t0.z = (cube.lower.z - ray_wrt_octree.support.z) * divz;
-        t1.z = (cube_upper.z - ray_wrt_octree.support.z) * divz;
+        t0.x = (cube.lower.x - ray_wrt_octree.support.x) * div.x;
+        t1.x = (cube_upper.x - ray_wrt_octree.support.x) * div.x;
+        t0.y = (cube.lower.y - ray_wrt_octree.support.y) * div.y;
+        t1.y = (cube_upper.y - ray_wrt_octree.support.y) * div.y;
+        t0.z = (cube.lower.z - ray_wrt_octree.support.z) * div.z;
+        t1.z = (cube_upper.z - ray_wrt_octree.support.z) * div.z;
 
         if (MLI_MAX3(t0.x, t0.y, t0.z) < MLI_MIN3(t1.x, t1.y, t1.z)) {
                 _mli_proc_subtree(
