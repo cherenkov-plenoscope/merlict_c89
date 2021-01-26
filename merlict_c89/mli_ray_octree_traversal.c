@@ -14,7 +14,7 @@
  *  Profiting from additional comments by Jeroen Baert.
  */
 
-int _mli_first_node(
+int _mli_first_octree_node(
         const struct mliVec t0,
         const struct mliVec tm)
 {
@@ -46,7 +46,7 @@ int _mli_first_node(
         return (int)child;
 }
 
-int _mli_new_node(const struct mliVec tm, int x, int y, int z)
+int _mli_next_octree_node(const struct mliVec tm, int x, int y, int z)
 {
         if (tm.x < tm.y) {
                 if (tm.x < tm.z) {
@@ -120,7 +120,7 @@ void _mli_proc_subtree(
         const struct mliOcTree *octree,
         const int32_t octree_node,
         const int32_t octree_type,
-        uint8_t a,
+        uint8_t permutation,
         const struct mliCube cube,
         const struct mliVec ray_octree_support,
         struct mliIntersection *isec,
@@ -171,7 +171,7 @@ void _mli_proc_subtree(
 
         mli_set_txm_tym_tzm(t0, t1, cube, ray_octree_support, &tm);
 
-        currNode = _mli_first_node(t0, tm);
+        currNode = _mli_first_octree_node(t0, tm);
         do {
                 switch (currNode) {
                 case 0: {
@@ -187,16 +187,16 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[octree_node].children[a],
-                                octree->nodes[octree_node].types[a],
-                                a,
-                                mliCube_octree_child_code(cube, a),
+                                octree->nodes[octree_node].children[permutation],
+                                octree->nodes[octree_node].types[permutation],
+                                permutation,
+                                mliCube_octree_child_code(cube, permutation),
                                 ray_octree_support,
                                 isec,
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(nt1, 4, 2, 1);
+                        currNode = _mli_next_octree_node(nt1, 4, 2, 1);
                         break;
                 }
                 case 1: {
@@ -212,16 +212,16 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[octree_node].children[1 ^ a],
-                                octree->nodes[octree_node].types[1 ^ a],
-                                a,
+                                octree->nodes[octree_node].children[1 ^ permutation],
+                                octree->nodes[octree_node].types[1 ^ permutation],
+                                permutation,
                                 cube,
                                 ray_octree_support,
                                 isec,
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(nt1, 5, 3, 8);
+                        currNode = _mli_next_octree_node(nt1, 5, 3, 8);
                         break;
                 }
                 case 2: {
@@ -237,16 +237,16 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[octree_node].children[2 ^ a],
-                                octree->nodes[octree_node].types[2 ^ a],
-                                a,
-                                mliCube_octree_child_code(cube, a),
+                                octree->nodes[octree_node].children[2 ^ permutation],
+                                octree->nodes[octree_node].types[2 ^ permutation],
+                                permutation,
+                                mliCube_octree_child_code(cube, permutation),
                                 ray_octree_support,
                                 isec,
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(nt1, 6, 8, 3);
+                        currNode = _mli_next_octree_node(nt1, 6, 8, 3);
                         break;
                 }
                 case 3: {
@@ -262,17 +262,17 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[octree_node].children[3 ^ a],
-                                octree->nodes[octree_node].types[3 ^ a],
-                                a,
-                                mliCube_octree_child_code(cube, a),
+                                octree->nodes[octree_node].children[3 ^ permutation],
+                                octree->nodes[octree_node].types[3 ^ permutation],
+                                permutation,
+                                mliCube_octree_child_code(cube, permutation),
                                 ray_octree_support,
                                 isec,
                                 scenery,
                                 ray,
                                 num_hits);
 
-                        currNode = _mli_new_node(nt1, 7, 8, 8);
+                        currNode = _mli_next_octree_node(nt1, 7, 8, 8);
                         break;
                 }
                 case 4: {
@@ -288,16 +288,16 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[octree_node].children[4 ^ a],
-                                octree->nodes[octree_node].types[4 ^ a],
-                                a,
-                                mliCube_octree_child_code(cube, a),
+                                octree->nodes[octree_node].children[4 ^ permutation],
+                                octree->nodes[octree_node].types[4 ^ permutation],
+                                permutation,
+                                mliCube_octree_child_code(cube, permutation),
                                 ray_octree_support,
                                 isec,
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(nt1, 8, 6, 5);
+                        currNode = _mli_next_octree_node(nt1, 8, 6, 5);
                         break;
                 }
                 case 5: {
@@ -313,16 +313,16 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[octree_node].children[5 ^ a],
-                                octree->nodes[octree_node].types[5 ^ a],
-                                a,
-                                mliCube_octree_child_code(cube, a),
+                                octree->nodes[octree_node].children[5 ^ permutation],
+                                octree->nodes[octree_node].types[5 ^ permutation],
+                                permutation,
+                                mliCube_octree_child_code(cube, permutation),
                                 ray_octree_support,
                                 isec,
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(nt1, 8, 7, 8);
+                        currNode = _mli_next_octree_node(nt1, 8, 7, 8);
                         break;
                 }
                 case 6: {
@@ -338,16 +338,16 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[octree_node].children[6 ^ a],
-                                octree->nodes[octree_node].types[6 ^ a],
-                                a,
-                                mliCube_octree_child_code(cube, a),
+                                octree->nodes[octree_node].children[6 ^ permutation],
+                                octree->nodes[octree_node].types[6 ^ permutation],
+                                permutation,
+                                mliCube_octree_child_code(cube, permutation),
                                 ray_octree_support,
                                 isec,
                                 scenery,
                                 ray,
                                 num_hits);
-                        currNode = _mli_new_node(nt1, 8, 8, 7);
+                        currNode = _mli_next_octree_node(nt1, 8, 8, 7);
                         break;
                 }
                 case 7: {
@@ -363,10 +363,10 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[octree_node].children[7 ^ a],
-                                octree->nodes[octree_node].types[7 ^ a],
-                                a,
-                                mliCube_octree_child_code(cube, a),
+                                octree->nodes[octree_node].children[7 ^ permutation],
+                                octree->nodes[octree_node].types[7 ^ permutation],
+                                permutation,
+                                mliCube_octree_child_code(cube, permutation),
                                 ray_octree_support,
                                 isec,
                                 scenery,
@@ -388,46 +388,46 @@ void mli_ray_octree_traversal(
         uint64_t num_hits;
         double divx, divy, divz;
         struct mliVec t0, t1;
-        struct mliRay ray_octree;
+        struct mliRay ray_wrt_octree;
         struct mliVec cube_upper, cube_size;
         struct mliCube cube;
         int32_t octree_root_node, octree_root_type;
-        uint8_t a = 0;
+        uint8_t permutation = 0;
         isec->distance_of_ray = DBL_MAX;
         cube = octree->cube;
         cube_upper = mliCube_upper(cube);
         octree_root_node = 0u;
         octree_root_type = octree->root_type;
-        ray_octree = ray;
+        ray_wrt_octree = ray;
         num_hits = 0u;
         cube_size = mliVec_add(cube.lower, cube_upper);
 
-        if (ray_octree.direction.x < 0) {
-                ray_octree.support.x = -ray_octree.support.x + cube_size.x;
-                ray_octree.direction.x = -ray_octree.direction.x;
-                a |= 4;
+        if (ray_wrt_octree.direction.x < 0) {
+                ray_wrt_octree.support.x = -ray_wrt_octree.support.x + cube_size.x;
+                ray_wrt_octree.direction.x = -ray_wrt_octree.direction.x;
+                permutation |= 4;
         }
-        if (ray_octree.direction.y < 0) {
-                ray_octree.support.y = -ray_octree.support.y + cube_size.y;
-                ray_octree.direction.y = -ray_octree.direction.y;
-                a |= 2;
+        if (ray_wrt_octree.direction.y < 0) {
+                ray_wrt_octree.support.y = -ray_wrt_octree.support.y + cube_size.y;
+                ray_wrt_octree.direction.y = -ray_wrt_octree.direction.y;
+                permutation |= 2;
         }
-        if (ray_octree.direction.z < 0) {
-                ray_octree.support.z = -ray_octree.support.z + cube_size.z;
-                ray_octree.direction.z = -ray_octree.direction.z;
-                a |= 1;
+        if (ray_wrt_octree.direction.z < 0) {
+                ray_wrt_octree.support.z = -ray_wrt_octree.support.z + cube_size.z;
+                ray_wrt_octree.direction.z = -ray_wrt_octree.direction.z;
+                permutation |= 1;
         }
 
-        divx = 1 / ray_octree.direction.x;
-        divy = 1 / ray_octree.direction.y;
-        divz = 1 / ray_octree.direction.z;
+        divx = 1 / ray_wrt_octree.direction.x;
+        divy = 1 / ray_wrt_octree.direction.y;
+        divz = 1 / ray_wrt_octree.direction.z;
 
-        t0.x = (cube.lower.x - ray_octree.support.x) * divx;
-        t1.x = (cube_upper.x - ray_octree.support.x) * divx;
-        t0.y = (cube.lower.y - ray_octree.support.y) * divy;
-        t1.y = (cube_upper.y - ray_octree.support.y) * divy;
-        t0.z = (cube.lower.z - ray_octree.support.z) * divz;
-        t1.z = (cube_upper.z - ray_octree.support.z) * divz;
+        t0.x = (cube.lower.x - ray_wrt_octree.support.x) * divx;
+        t1.x = (cube_upper.x - ray_wrt_octree.support.x) * divx;
+        t0.y = (cube.lower.y - ray_wrt_octree.support.y) * divy;
+        t1.y = (cube_upper.y - ray_wrt_octree.support.y) * divy;
+        t0.z = (cube.lower.z - ray_wrt_octree.support.z) * divz;
+        t1.z = (cube_upper.z - ray_wrt_octree.support.z) * divz;
 
         if (MLI_MAX3(t0.x, t0.y, t0.z) < MLI_MIN3(t1.x, t1.y, t1.z)) {
                 _mli_proc_subtree(
@@ -436,12 +436,37 @@ void mli_ray_octree_traversal(
                         octree,
                         octree_root_node,
                         octree_root_type,
-                        a,
+                        permutation,
                         cube,
-                        ray_octree.support,
+                        ray_wrt_octree.support,
                         isec,
                         scenery,
                         ray,
                         &num_hits);
         }
+}
+
+void _mli_transform_ray_into_octree_frame(
+        const struct mliRay ray_wrt_scenery,
+        const struct mliVec octree_cube_size,
+        struct mliRay *ray_wrt_octree,
+        uint8_t *octree_permutation)
+{
+        uint8_t permutation = 0u;
+        if (ray_wrt_scenery.direction.x < 0.0) {
+                ray_wrt_octree->support.x = -ray_wrt_scenery.support.x + octree_cube_size.x;
+                ray_wrt_octree->direction.x = -ray_wrt_scenery.direction.x;
+                permutation |= 4;
+        }
+        if (ray_wrt_scenery.direction.y < 0.0) {
+                ray_wrt_octree->support.y = -ray_wrt_scenery.support.y + octree_cube_size.y;
+                ray_wrt_octree->direction.y = -ray_wrt_scenery.direction.y;
+                permutation |= 2;
+        }
+        if (ray_wrt_scenery.direction.z < 0.0) {
+                ray_wrt_octree->support.z = -ray_wrt_scenery.support.z + octree_cube_size.z;
+                ray_wrt_octree->direction.z = -ray_wrt_scenery.direction.z;
+                permutation |= 1;
+        }
+        (*octree_permutation) = permutation;
 }

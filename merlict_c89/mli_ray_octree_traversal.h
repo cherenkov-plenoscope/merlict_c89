@@ -9,6 +9,12 @@
 #include "mliCube.h"
 #include "mli_math.h"
 
+struct _mliOctreeTraversal {
+        const struct mliOcTree *octree;
+        uint32_t node;
+        uint32_t child;
+};
+
 void mli_ray_octree_traversal(
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
@@ -20,7 +26,7 @@ void _mli_proc_subtree(
         const struct mliOcTree *octree,
         const int32_t octree_node,
         const int32_t octree_type,
-        uint8_t a,
+        uint8_t permutation,
         const struct mliCube cube,
         const struct mliVec ray_octree_support,
         struct mliIntersection *isec,
@@ -33,8 +39,8 @@ void mli_set_txm_tym_tzm(
         const struct mliCube cube,
         const struct mliVec ray_octree_support,
         struct mliVec *tm);
-int _mli_new_node(const struct mliVec tm, int x, int y, int z);
-int _mli_first_node(
+int _mli_next_octree_node(const struct mliVec tm, int x, int y, int z);
+int _mli_first_octree_node(
         const struct mliVec t0,
         const struct mliVec tm);
 #endif
