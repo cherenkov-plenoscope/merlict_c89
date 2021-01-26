@@ -31,8 +31,7 @@ void _mli_proc_subtree(
         const struct mliVec ray_octree_support,
         struct mliIntersection *isec,
         const struct mliScenery *scenery,
-        const struct mliRay ray,
-        uint64_t *num_hits);
+        const struct mliRay ray);
 void mli_set_txm_tym_tzm(
         const struct mliVec t0,
         const struct mliVec t1,

@@ -166,8 +166,7 @@ void _mli_proc_subtree(
         const struct mliVec ray_octree_support,
         struct mliIntersection *isec,
         const struct mliScenery *scenery,
-        const struct mliRay ray,
-        uint64_t *num_hits)
+        const struct mliRay ray)
 {
         struct mliVec tm;
         struct mliVec nt0, nt1;
@@ -200,7 +199,6 @@ void _mli_proc_subtree(
                         tmp_isec.object_idx = 0u;
                         tmp_isec.distance_of_ray = 0.0;
                         if (object_has_intersection) {
-                                (*num_hits) += 1u;
                                 if (tmp_isec.distance_of_ray <
                                     isec->distance_of_ray) {
                                         (*isec) = tmp_isec;
@@ -235,8 +233,7 @@ void _mli_proc_subtree(
                                 ray_octree_support,
                                 isec,
                                 scenery,
-                                ray,
-                                num_hits);
+                                ray);
                         currNode = _mli_next_octree_node(nt1, 4, 2, 1);
                         break;
                 }
@@ -260,8 +257,7 @@ void _mli_proc_subtree(
                                 ray_octree_support,
                                 isec,
                                 scenery,
-                                ray,
-                                num_hits);
+                                ray);
                         currNode = _mli_next_octree_node(nt1, 5, 3, mli_END);
                         break;
                 }
@@ -285,8 +281,7 @@ void _mli_proc_subtree(
                                 ray_octree_support,
                                 isec,
                                 scenery,
-                                ray,
-                                num_hits);
+                                ray);
                         currNode = _mli_next_octree_node(nt1, 6, mli_END, 3);
                         break;
                 }
@@ -310,8 +305,7 @@ void _mli_proc_subtree(
                                 ray_octree_support,
                                 isec,
                                 scenery,
-                                ray,
-                                num_hits);
+                                ray);
 
                         currNode = _mli_next_octree_node(nt1, 7, mli_END, mli_END);
                         break;
@@ -336,8 +330,7 @@ void _mli_proc_subtree(
                                 ray_octree_support,
                                 isec,
                                 scenery,
-                                ray,
-                                num_hits);
+                                ray);
                         currNode = _mli_next_octree_node(nt1, mli_END, 6, 5);
                         break;
                 }
@@ -361,8 +354,7 @@ void _mli_proc_subtree(
                                 ray_octree_support,
                                 isec,
                                 scenery,
-                                ray,
-                                num_hits);
+                                ray);
                         currNode = _mli_next_octree_node(nt1, mli_END, 7, mli_END);
                         break;
                 }
@@ -386,8 +378,7 @@ void _mli_proc_subtree(
                                 ray_octree_support,
                                 isec,
                                 scenery,
-                                ray,
-                                num_hits);
+                                ray);
                         currNode = _mli_next_octree_node(nt1, mli_END, mli_END, 7);
                         break;
                 }
@@ -411,8 +402,7 @@ void _mli_proc_subtree(
                                 ray_octree_support,
                                 isec,
                                 scenery,
-                                ray,
-                                num_hits);
+                                ray);
                         currNode = mli_END;
                         break;
                 }
@@ -426,7 +416,6 @@ void mli_ray_octree_traversal(
         const struct mliRay ray,
         struct mliIntersection *isec)
 {
-        uint64_t num_hits;
         struct mliVec div;
         struct mliVec t0, t1;
         struct mliRay ray_wrt_octree;
@@ -440,7 +429,6 @@ void mli_ray_octree_traversal(
         octree_root_node = 0u;
         octree_root_type = octree->root_type;
         ray_wrt_octree = ray;
-        num_hits = 0u;
         cube_size = mliVec_add(cube.lower, cube_upper);
 
         if (ray_wrt_octree.direction.x < 0) {
@@ -482,8 +470,7 @@ void mli_ray_octree_traversal(
                         ray_wrt_octree.support,
                         isec,
                         scenery,
-                        ray,
-                        &num_hits);
+                        ray);
         }
 }
 
