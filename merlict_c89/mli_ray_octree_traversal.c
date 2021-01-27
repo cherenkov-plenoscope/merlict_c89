@@ -687,42 +687,41 @@ void mli_set_txm_tym_tzm(
 }
 */
 
-struct __mli_inner_work {
+struct _mliInnerObjectWork {
         struct mliIntersection *intersection;
         int peter;
 };
 
-struct __mli_outer_work {
+struct _mliOuterSceneryWork {
         struct mliIntersection *intersection;
         int hans;
 };
 
-void __inner_traversal(
-        void *__inner_work,
+void _mli_inner_object_traversal(
+        void *_inner,
         const struct mliOcTree *object_octree,
         const uint32_t object_octree_leaf_idx)
 {
         /* traverse faces in an object-wavefront */
-        struct __mli_inner_work *inner = (struct __mli_inner_work *)__inner_work;
+        struct _mliInnerObjectWork *inner = (struct _mliInnerObjectWork *)_inner;
 
+        uint32_t f;
+        const uint32_t num_faces_in_object_leaf = mliOcTree_leaf_num_objects(
+            object_octree,
+            object_octree_leaf_idx);
 
-        uint64_t fac;
-        for (
-                fac = 0;
-                fac < mliOcTree_leaf_num_objects(object_octree, object_octree_leaf_idx);
-                fac++)
-        {
+        for (f = 0; f < num_faces_in_object_leaf; f++) {
+
                 uint32_t object_idx = mliOcTree_leaf_object_link(
                         object_octree,
                         object_octree_leaf_idx,
-                        fac);
+                        f);
+
+                int32_t face_has_intersection = 1;
 
                 /*
-                int object_has_intersection = 1;
-
                 mliScenery_intersection(
-                        scenery, ray, object_idx, &tmp_isec);
-
+                        scenery, ray, object_idx, outer->intersection);
                 tmp_isec.object_idx = 0u;
                 tmp_isec.distance_of_ray = 0.0;
                 if (object_has_intersection) {
@@ -733,36 +732,34 @@ void __inner_traversal(
                 }
                 */
         }
-
-
         return;
 }
 
-void __outer_traversal(
-        void *__outer_work,
+void _mli_outer_scenery_traversal(
+        void *_outer,
         const struct mliOcTree *scenery_octree,
         const uint32_t scenery_octree_leaf_idx)
 {
         /* traverse object-wavefronts in a scenery */
-        struct __mli_outer_work *outer = (struct __mli_outer_work *)__outer_work;
+        struct _mliOuterSceneryWork *outer = (struct _mliOuterSceneryWork *)_outer;
 
-        uint64_t obj;
-        for (
-                obj = 0;
-                obj < mliOcTree_leaf_num_objects(scenery_octree, scenery_octree_leaf_idx);
-                obj++)
-        {
+        uint32_t o;
+        const uint32_t num_objects_in_scenery_leaf = mliOcTree_leaf_num_objects(
+                scenery_octree,
+                scenery_octree_leaf_idx);
+
+        for (o = 0; o < num_objects_in_scenery_leaf; o++) {
+
                 uint32_t object_idx = mliOcTree_leaf_object_link(
                         scenery_octree,
                         scenery_octree_leaf_idx,
-                        obj);
+                        o);
+
+                int32_t object_has_intersection = 1;
 
                 /*
-                int object_has_intersection = 1;
-
                 mliScenery_intersection(
-                        scenery, ray, object_idx, &tmp_isec);
-
+                        scenery, ray, object_idx, outer->intersection);
                 tmp_isec.object_idx = 0u;
                 tmp_isec.distance_of_ray = 0.0;
                 if (object_has_intersection) {
@@ -773,8 +770,6 @@ void __outer_traversal(
                 }
                 */
         }
-
-
         return;
 }
 
@@ -783,7 +778,7 @@ void mli_ray_octree_traversal(
         const struct mliRay ray,
         struct mliIntersection *intersection)
 {
-        struct __mli_outer_work outer_work;
+        struct _mliOuterSceneryWork outer_work;
         outer_work.intersection = intersection;
         outer_work.intersection->distance_of_ray = DBL_MAX;
 
@@ -791,6 +786,6 @@ void mli_ray_octree_traversal(
                 &combine->accelerator->scenery_octree,
                 ray,
                 (void *)&outer_work,
-                __outer_traversal
+                _mli_outer_scenery_traversal
         );
 }

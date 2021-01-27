@@ -19,7 +19,7 @@ struct mliColor mli_trace(
         const struct mliRay ray)
 {
         struct mliColor color = {128., 128., 128.};
-        struct mliIntersection intersection;
+        struct mliIntersection intersection = mliIntersection_init();
         if (mli_first_casual_intersection(
                     combine, ray, &intersection)) {
                 struct mliIntersection global_light_intersection;
