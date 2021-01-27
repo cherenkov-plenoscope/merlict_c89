@@ -686,3 +686,33 @@ void mli_set_txm_tym_tzm(
         }
 }
 */
+
+
+struct __mli_outer_work {
+        int hans;
+};
+
+void __outer_traversal(
+        struct __mli_outer_work *outer_work,
+        const struct mliOcTree *octree,
+        const uint32_t node_idx)
+{
+        return;
+}
+
+void mli_ray_octree_traversal(
+        const struct mliCombine *combine,
+        const struct mliRay ray,
+        struct mliIntersection *isec)
+{
+        struct __mli_outer_work outer_work;
+        isec->distance_of_ray = DBL_MAX;
+
+        _mli_ray_octree_traversal(
+                &combine->accelerator.scenery_octree,
+                ray,
+                isec,
+                &outer_work,
+                __outer_traversal
+        );
+}
