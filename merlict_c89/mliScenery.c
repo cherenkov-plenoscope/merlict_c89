@@ -51,9 +51,24 @@ void mliScenery_fprint(FILE *f, const struct mliScenery *scenery)
 {
         uint32_t rob;
         fprintf(f, "__mliScenery__\n");
-        fprintf(f, " rob | obj |\n");
-        fprintf(f, "-----|-----|\n");
+        fprintf(f, " rob | obj | id  | translation(xyz) | rotation(xyz;w)  |\n");
+        fprintf(f, "-----|-----|-----|------------------|------------------|\n");
         for (rob = 0; rob < scenery->num_robjects; rob++) {
-                fprintf(f, "% 4d |% 4d \n", rob, scenery->robjects[rob]);
+                fprintf(
+                        f,
+                        "% 4d |% 4d |% 4d |"
+                        "(%.1f, %.1f, %.1f)|"
+                        "(%.1f, %.1f, %.1f; %.1f)|"
+                        "\n",
+                        rob,
+                        scenery->robjects[rob],
+                        scenery->robject_ids[rob],
+                        scenery->robject2root[rob].translation.x,
+                        scenery->robject2root[rob].translation.y,
+                        scenery->robject2root[rob].translation.z,
+                        scenery->robject2root[rob].rotation.x,
+                        scenery->robject2root[rob].rotation.y,
+                        scenery->robject2root[rob].rotation.z,
+                        scenery->robject2root[rob].rotation.w);
         }
 }
