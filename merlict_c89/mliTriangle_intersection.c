@@ -64,14 +64,30 @@ int mliTriangle_intersection(
                 intersection_ray_parameter);
 
         if (valid) {
+                struct mliVec normal_weights;
                 (*intersection_position) = mliRay_at(
                         &ray,
                         (*intersection_ray_parameter));
-                (*intersection_normal) = mli_barycentric(
-                        vertex_normal_a,
-                        vertex_normal_b,
-                        vertex_normal_c,
+
+                normal_weights = mli_barycentric(
+                        vertex_a,
+                        vertex_b,
+                        vertex_c,
                         (*intersection_position));
+
+                (*intersection_normal) = mliVec_set(
+                        vertex_normal_a.x * normal_weights.x +
+                        vertex_normal_b.x * normal_weights.y +
+                        vertex_normal_c.x * normal_weights.z,
+
+                        vertex_normal_a.y * normal_weights.x +
+                        vertex_normal_b.y * normal_weights.y +
+                        vertex_normal_c.y * normal_weights.z,
+
+                        vertex_normal_a.z * normal_weights.x +
+                        vertex_normal_b.z * normal_weights.y +
+                        vertex_normal_c.z * normal_weights.z);
+
                 return 1;
         } else {
                 return 0;
