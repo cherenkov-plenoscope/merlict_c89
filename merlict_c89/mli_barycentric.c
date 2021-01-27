@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_barycentric.h"
 
-struct mliVec mli_barycentric(
+struct mliVec mli_barycentric_weights(
         const struct mliVec a,
         const struct mliVec b,
         const struct mliVec c,

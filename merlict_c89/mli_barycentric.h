@@ -4,7 +4,7 @@
 
 #include "mliVec.h"
 
-struct mliVec mli_barycentric(
+struct mliVec mli_barycentric_weights(
         const struct mliVec a,
         const struct mliVec b,
         const struct mliVec c,

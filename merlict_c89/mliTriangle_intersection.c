@@ -69,7 +69,7 @@ int mliTriangle_intersection(
                         &ray,
                         (*intersection_ray_parameter));
 
-                normal_weights = mli_barycentric(
+                normal_weights = mli_barycentric_weights(
                         vertex_a,
                         vertex_b,
                         vertex_c,

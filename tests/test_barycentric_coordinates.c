@@ -9,19 +9,19 @@ CASE("barycentric coordinates on vertices")
         struct mliVec bary;
 
         test_point = a;
-        bary = mli_barycentric(a, b, c, test_point);
+        bary = mli_barycentric_weights(a, b, c, test_point);
         CHECK(bary.x == 1.0);
         CHECK(bary.y == 0.0);
         CHECK(bary.z == 0.0);
 
         test_point = b;
-        bary = mli_barycentric(a, b, c, test_point);
+        bary = mli_barycentric_weights(a, b, c, test_point);
         CHECK(bary.x == 0.0);
         CHECK(bary.y == 1.0);
         CHECK(bary.z == 0.0);
 
         test_point = c;
-        bary = mli_barycentric(a, b, c, test_point);
+        bary = mli_barycentric_weights(a, b, c, test_point);
         CHECK(bary.x == 0.0);
         CHECK(bary.y == 0.0);
         CHECK(bary.z == 1.0);
@@ -35,7 +35,7 @@ CASE("barycentric coordinates in center")
         const struct mliVec c = mliVec_set(cos(2.0 * phi), sin(2.0 * phi), 0.0);
         struct mliVec bary;
 
-        bary = mli_barycentric(a, b, c, mliVec_set(0.0, 0.0, 0.0));
+        bary = mli_barycentric_weights(a, b, c, mliVec_set(0.0, 0.0, 0.0));
         CHECK_MARGIN(bary.x, 1.0 / 3.0, 1e-6);
         CHECK_MARGIN(bary.y, 1.0 / 3.0, 1e-6);
         CHECK_MARGIN(bary.z, 1.0 / 3.0, 1e-6);
@@ -49,17 +49,17 @@ CASE("barycentric coordinates out of triangle")
         const struct mliVec c = mliVec_set(cos(2.0 * phi), sin(2.0 * phi), 0.0);
         struct mliVec bary;
 
-        bary = mli_barycentric(a, b, c, mliVec_multiply(a, 1.1));
+        bary = mli_barycentric_weights(a, b, c, mliVec_multiply(a, 1.1));
         CHECK(bary.x > 0.0);
         CHECK(bary.y < 0.0);
         CHECK(bary.z < 0.0);
 
-        bary = mli_barycentric(a, b, c, mliVec_multiply(b, 1.1));
+        bary = mli_barycentric_weights(a, b, c, mliVec_multiply(b, 1.1));
         CHECK(bary.x < 0.0);
         CHECK(bary.y > 0.0);
         CHECK(bary.z < 0.0);
 
-        bary = mli_barycentric(a, b, c, mliVec_multiply(c, 1.1));
+        bary = mli_barycentric_weights(a, b, c, mliVec_multiply(c, 1.1));
         CHECK(bary.x < 0.0);
         CHECK(bary.y < 0.0);
         CHECK(bary.z > 0.0);
