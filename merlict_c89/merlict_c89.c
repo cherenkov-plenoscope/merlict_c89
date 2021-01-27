@@ -49,7 +49,7 @@
 #include "mliRay_OBB.c"
 #include "mliVec_OBB.c"
 #include "mliTriangle_OBB.c"
-/*#include "mli_intersection_and_scenery.c"*/
+#include "mli_intersection_and_scenery.c"
 #include "mliOctOverlaps.c"
 #include "mliTmpOcTree.c"
 #include "mliOcTree.c"
@@ -60,7 +60,7 @@
 #include "mli_ray_octree_traversal.c"
 
 #include "mli_from_outside_to_inside.c"
-/*#include "mliTracer.c"*/
+#include "mliTracer.c"
 #include "mliView.c"
 /*
 #include "mli_pin_hole_camera.c"

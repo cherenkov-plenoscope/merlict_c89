@@ -6,7 +6,7 @@ struct mliSide _mli_side_coming_from(
         const struct mliIntersection *isec)
 {
         struct mliBoundaryLayer layer =
-                mliScenery_object_surfaces(scenery, isec->object_idx);
+                scenery->robject_boundary_layers[isec->object_idx];
         if (isec->from_outside_to_inside)
                 return layer.inner;
         else
@@ -18,7 +18,7 @@ struct mliSide _mli_side_going_to(
         const struct mliIntersection *isec)
 {
         struct mliBoundaryLayer layer =
-                mliScenery_object_surfaces(scenery, isec->object_idx);
+                scenery->robject_boundary_layers[isec->object_idx];
         if (isec->from_outside_to_inside)
                 return layer.outer;
         else
