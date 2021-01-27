@@ -687,32 +687,110 @@ void mli_set_txm_tym_tzm(
 }
 */
 
+struct __mli_inner_work {
+        struct mliIntersection *intersection;
+        int peter;
+};
 
 struct __mli_outer_work {
+        struct mliIntersection *intersection;
         int hans;
 };
 
-void __outer_traversal(
-        struct __mli_outer_work *outer_work,
-        const struct mliOcTree *octree,
-        const uint32_t node_idx)
+void __inner_traversal(
+        void *__inner_work,
+        const struct mliOcTree *object_octree,
+        const uint32_t object_octree_leaf_idx)
 {
+        /* traverse faces in an object-wavefront */
+        struct __mli_inner_work *inner = (struct __mli_inner_work *)__inner_work;
+
+
+        uint64_t fac;
+        for (
+                fac = 0;
+                fac < mliOcTree_leaf_num_objects(object_octree, object_octree_leaf_idx);
+                fac++)
+        {
+                uint32_t object_idx = mliOcTree_leaf_object_link(
+                        object_octree,
+                        object_octree_leaf_idx,
+                        fac);
+
+                /*
+                int object_has_intersection = 1;
+
+                mliScenery_intersection(
+                        scenery, ray, object_idx, &tmp_isec);
+
+                tmp_isec.object_idx = 0u;
+                tmp_isec.distance_of_ray = 0.0;
+                if (object_has_intersection) {
+                        if (tmp_isec.distance_of_ray <
+                            isec->distance_of_ray) {
+                                (*isec) = tmp_isec;
+                        }
+                }
+                */
+        }
+
+
+        return;
+}
+
+void __outer_traversal(
+        void *__outer_work,
+        const struct mliOcTree *scenery_octree,
+        const uint32_t scenery_octree_leaf_idx)
+{
+        /* traverse object-wavefronts in a scenery */
+        struct __mli_outer_work *outer = (struct __mli_outer_work *)__outer_work;
+
+        uint64_t obj;
+        for (
+                obj = 0;
+                obj < mliOcTree_leaf_num_objects(scenery_octree, scenery_octree_leaf_idx);
+                obj++)
+        {
+                uint32_t object_idx = mliOcTree_leaf_object_link(
+                        scenery_octree,
+                        scenery_octree_leaf_idx,
+                        obj);
+
+                /*
+                int object_has_intersection = 1;
+
+                mliScenery_intersection(
+                        scenery, ray, object_idx, &tmp_isec);
+
+                tmp_isec.object_idx = 0u;
+                tmp_isec.distance_of_ray = 0.0;
+                if (object_has_intersection) {
+                        if (tmp_isec.distance_of_ray <
+                            isec->distance_of_ray) {
+                                (*isec) = tmp_isec;
+                        }
+                }
+                */
+        }
+
+
         return;
 }
 
 void mli_ray_octree_traversal(
         const struct mliCombine *combine,
         const struct mliRay ray,
-        struct mliIntersection *isec)
+        struct mliIntersection *intersection)
 {
         struct __mli_outer_work outer_work;
-        isec->distance_of_ray = DBL_MAX;
+        outer_work.intersection = intersection;
+        outer_work.intersection->distance_of_ray = DBL_MAX;
 
         _mli_ray_octree_traversal(
-                &combine->accelerator.scenery_octree,
+                &combine->accelerator->scenery_octree,
                 ray,
-                isec,
-                &outer_work,
+                (void *)&outer_work,
                 __outer_traversal
         );
 }

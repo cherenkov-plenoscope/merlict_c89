@@ -10,7 +10,7 @@
 #include "mli_math.h"
 
 void mli_ray_octree_traversal(
-        const struct mliCombine combine,
+        const struct mliCombine *combine,
         const struct mliRay ray,
         struct mliIntersection *isec);
 
