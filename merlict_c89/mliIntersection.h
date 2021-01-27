@@ -8,7 +8,8 @@
 #include "mliVec.h"
 
 struct mliIntersection {
-        uint64_t object_idx;
+        uint32_t object_idx;
+        uint32_t face_idx;
         struct mliVec position;
         struct mliVec surface_normal;
         struct mliVec position_local;
@@ -16,5 +17,7 @@ struct mliIntersection {
         double distance_of_ray;
         int from_outside_to_inside;
 };
+
+struct mliIntersection mliIntersection_init(void);
 
 #endif

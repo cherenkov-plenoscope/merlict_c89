@@ -1,2 +1,16 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliIntersection.h"
+
+struct mliIntersection mliIntersection_init(void)
+{
+        struct mliIntersection isec;
+        isec.object_idx = 0u;
+        isec.face_idx = 0u;
+        isec.position = mliVec_set(0.0, 0.0, 0.0);
+        isec.surface_normal = mliVec_set(0.0, 0.0, 1.0);
+        isec.position_local = mliVec_set(0.0, 0.0, 0.0);
+        isec.surface_normal_local = mliVec_set(0.0, 0.0, 1.0);
+        isec.distance_of_ray = DBL_MAX;
+        isec.from_outside_to_inside = 1;
+        return isec;
+}
