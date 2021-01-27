@@ -103,15 +103,228 @@ int _mli_next_octree_node(const struct mliVec tm, int x, int y, int z)
         return z; /* X-Y-plane */
 }
 
-struct mliVec _mli_find_tm(const struct mliVec t0, const struct mliVec t1)
+void _mli_proc_subtree(
+        struct mliVec t0,
+        struct mliVec t1,
+        const struct mliOcTree *octree,
+        const int32_t node_idx,
+        const int32_t node_type,
+        uint8_t permutation,
+        void *work,
+        void (*work_on_leaf_node)(void *, const struct mliOcTree *, const uint32_t))
 {
-        struct mliVec tm;
+        int32_t proc_node;
+        struct mliVec tm, nt0, nt1;
+
+        if (t1.x < 0 || t1.y < 0 || t1.z < 0) {
+                return;
+        }
+
+        if (node_type == MLI_OCTREE_TYPE_NONE) {
+                return;
+        }
+
+        if (node_type == MLI_OCTREE_TYPE_LEAF) {
+                /* callback */
+                work_on_leaf_node(work, octree, node_idx);
+                return;
+        }
+
         tm.x = 0.5 * (t0.x + t1.x);
         tm.y = 0.5 * (t0.y + t1.y);
         tm.z = 0.5 * (t0.z + t1.z);
-        return tm;
+
+        proc_node = _mli_first_octree_node(t0, tm);
+
+        do {
+                switch (proc_node) {
+                case 0: {
+                        nt0 = mliVec_set(t0.x, t0.y, t0.z);
+                        nt1 = mliVec_set(tm.x, tm.y, tm.z);
+                        _mli_proc_subtree(
+                                nt0,
+                                nt1,
+                                octree,
+                                octree->nodes[node_idx].children[permutation],
+                                octree->nodes[node_idx].types[permutation],
+                                permutation,
+                                work,
+                                work_on_leaf_node);
+                        proc_node = _mli_next_octree_node(nt1, 4, 2, 1);
+                        break;
+                }
+                case 1: {
+                        nt0 = mliVec_set(t0.x, t0.y, tm.z);
+                        nt1 = mliVec_set(tm.x, tm.y, t1.z);
+                        _mli_proc_subtree(
+                                nt0,
+                                nt1,
+                                octree,
+                                octree->nodes[node_idx].children[1 ^ permutation],
+                                octree->nodes[node_idx].types[1 ^ permutation],
+                                permutation,
+                                work,
+                                work_on_leaf_node);
+                        proc_node = _mli_next_octree_node(nt1, 5, 3, mli_END);
+                        break;
+                }
+                case 2: {
+                        nt0 = mliVec_set(t0.x, tm.y, t0.z);
+                        nt1 = mliVec_set(tm.x, t1.y, tm.z);
+                        _mli_proc_subtree(
+                                nt0,
+                                nt1,
+                                octree,
+                                octree->nodes[node_idx].children[2 ^ permutation],
+                                octree->nodes[node_idx].types[2 ^ permutation],
+                                permutation,
+                                work,
+                                work_on_leaf_node);
+                        proc_node = _mli_next_octree_node(nt1, 6, mli_END, 3);
+                        break;
+                }
+                case 3: {
+                        nt0 = mliVec_set(t0.x, tm.y, tm.z);
+                        nt1 = mliVec_set(tm.x, t1.y, t1.z);
+                        _mli_proc_subtree(
+                                nt0,
+                                nt1,
+                                octree,
+                                octree->nodes[node_idx].children[3 ^ permutation],
+                                octree->nodes[node_idx].types[3 ^ permutation],
+                                permutation,
+                                work,
+                                work_on_leaf_node);
+                        proc_node = _mli_next_octree_node(nt1, 7, mli_END, mli_END);
+                        break;
+                }
+                case 4: {
+                        nt0 = mliVec_set(tm.x, t0.y, t0.z);
+                        nt1 = mliVec_set(t1.x, tm.y, tm.z);
+                        _mli_proc_subtree(
+                                nt0,
+                                nt1,
+                                octree,
+                                octree->nodes[node_idx].children[4 ^ permutation],
+                                octree->nodes[node_idx].types[4 ^ permutation],
+                                permutation,
+                                work,
+                                work_on_leaf_node);
+                        proc_node = _mli_next_octree_node(nt1, mli_END, 6, 5);
+                        break;
+                }
+                case 5: {
+                        nt0 = mliVec_set(tm.x, t0.y, tm.z);
+                        nt1 = mliVec_set(t1.x, tm.y, t1.z);
+                        _mli_proc_subtree(
+                                nt0,
+                                nt1,
+                                octree,
+                                octree->nodes[node_idx].children[5 ^ permutation],
+                                octree->nodes[node_idx].types[5 ^ permutation],
+                                permutation,
+                                work,
+                                work_on_leaf_node);
+                        proc_node = _mli_next_octree_node(nt1, mli_END, 7, mli_END);
+                        break;
+                }
+                case 6: {
+                        nt0 = mliVec_set(tm.x, tm.y, t0.z);
+                        nt1 = mliVec_set(t1.x, t1.y, tm.z);
+                        _mli_proc_subtree(
+                                nt0,
+                                nt1,
+                                octree,
+                                octree->nodes[node_idx].children[6 ^ permutation],
+                                octree->nodes[node_idx].types[6 ^ permutation],
+                                permutation,
+                                work,
+                                work_on_leaf_node);
+                        proc_node = _mli_next_octree_node(nt1, mli_END, mli_END, 7);
+                        break;
+                }
+                case 7: {
+                        nt0 = mliVec_set(tm.x, tm.y, t0.z);
+                        nt1 = mliVec_set(t1.x, t1.y, t1.z);
+                        _mli_proc_subtree(
+                                nt0,
+                                nt1,
+                                octree,
+                                octree->nodes[node_idx].children[7 ^ permutation],
+                                octree->nodes[node_idx].types[7 ^ permutation],
+                                permutation,
+                                work,
+                                work_on_leaf_node);
+                        proc_node = mli_END;
+                        break;
+                }
+                } /* end switch */
+        } while (proc_node < mli_END);
 }
 
+void _mli_ray_octree_traversal(
+        const struct mliOcTree *octree,
+        const struct mliRay ray,
+        void *work,
+        void (*work_on_leaf_node)(void *, const struct mliOcTree *, const uint32_t))
+{
+        struct mliVec div;
+        struct mliVec t0, t1;
+        struct mliRay ray_wrt_octree;
+        struct mliVec cube_upper, cube_size;
+        struct mliCube cube;
+        int32_t octree_root_node, octree_root_type;
+        uint8_t permutation = 0;
+        cube = octree->cube;
+        cube_upper = mliCube_upper(cube);
+        octree_root_node = 0u;
+        octree_root_type = octree->root_type;
+        ray_wrt_octree = ray;
+        cube_size = mliVec_add(cube.lower, cube_upper);
+
+        if (ray_wrt_octree.direction.x < 0) {
+                ray_wrt_octree.support.x = -ray_wrt_octree.support.x + cube_size.x;
+                ray_wrt_octree.direction.x = -ray_wrt_octree.direction.x;
+                permutation |= 4;
+        }
+        if (ray_wrt_octree.direction.y < 0) {
+                ray_wrt_octree.support.y = -ray_wrt_octree.support.y + cube_size.y;
+                ray_wrt_octree.direction.y = -ray_wrt_octree.direction.y;
+                permutation |= 2;
+        }
+        if (ray_wrt_octree.direction.z < 0) {
+                ray_wrt_octree.support.z = -ray_wrt_octree.support.z + cube_size.z;
+                ray_wrt_octree.direction.z = -ray_wrt_octree.direction.z;
+                permutation |= 1;
+        }
+
+        div.x = 1.0 / ray_wrt_octree.direction.x;
+        div.y = 1.0 / ray_wrt_octree.direction.y;
+        div.z = 1.0 / ray_wrt_octree.direction.z;
+
+        t0.x = (cube.lower.x - ray_wrt_octree.support.x) * div.x;
+        t1.x = (cube_upper.x - ray_wrt_octree.support.x) * div.x;
+        t0.y = (cube.lower.y - ray_wrt_octree.support.y) * div.y;
+        t1.y = (cube_upper.y - ray_wrt_octree.support.y) * div.y;
+        t0.z = (cube.lower.z - ray_wrt_octree.support.z) * div.z;
+        t1.z = (cube_upper.z - ray_wrt_octree.support.z) * div.z;
+
+
+        if (MLI_MAX3(t0.x, t0.y, t0.z) < MLI_MIN3(t1.x, t1.y, t1.z)) {
+                _mli_proc_subtree(
+                        t0,
+                        t1,
+                        octree,
+                        octree_root_node,
+                        octree_root_type,
+                        permutation,
+                        work,
+                        work_on_leaf_node);
+        }
+}
+
+
+/*
 void _mli_proc_subtree(
         struct mliVec t0,
         struct mliVec t1,
@@ -142,16 +355,14 @@ void _mli_proc_subtree(
                 uint64_t o;
                 for (o = 0; o < mliOcTree_leaf_num_objects(octree, octree_node);
                      o++) {
-                        /*
+
                         uint32_t object_idx = mliOcTree_leaf_object_link(
                                 octree, octree_node, o);
-                        */
 
                         int object_has_intersection = 1;
-/*
+
                         mliScenery_intersection(
                                 scenery, ray, object_idx, &tmp_isec);
-*/
 
                         tmp_isec.object_idx = 0u;
                         tmp_isec.distance_of_ray = 0.0;
@@ -366,7 +577,9 @@ void _mli_proc_subtree(
                 }
         } while (currNode < mli_END);
 }
+*/
 
+/*
 void mli_ray_octree_traversal(
         const struct mliScenery *scenery,
         const struct mliOcTree *octree,
@@ -380,6 +593,7 @@ void mli_ray_octree_traversal(
         struct mliCube cube;
         int32_t octree_root_node, octree_root_type;
         uint8_t permutation = 0;
+        void outer_work;
         isec->distance_of_ray = DBL_MAX;
         cube = octree->cube;
         cube_upper = mliCube_upper(cube);
@@ -415,6 +629,7 @@ void mli_ray_octree_traversal(
         t0.z = (cube.lower.z - ray_wrt_octree.support.z) * div.z;
         t1.z = (cube_upper.z - ray_wrt_octree.support.z) * div.z;
 
+
         if (MLI_MAX3(t0.x, t0.y, t0.z) < MLI_MIN3(t1.x, t1.y, t1.z)) {
                 _mli_proc_subtree(
                         t0,
@@ -423,14 +638,13 @@ void mli_ray_octree_traversal(
                         octree_root_node,
                         octree_root_type,
                         permutation,
-                        cube,
-                        ray_wrt_octree.support,
-                        isec,
-                        scenery,
-                        ray);
+                        (void *)&outer_work,
+                        outer_traversal);
         }
 }
+*/
 
+/*
 void mli_set_txm_tym_tzm(
         const struct mliVec t0,
         const struct mliVec t1,
@@ -438,17 +652,6 @@ void mli_set_txm_tym_tzm(
         const struct mliVec ray_octree_support,
         struct mliVec *tm)
 {
-        /*
-         * This implements Section 3.3
-         * "Generalising for Rays Parallel to One Main Axis"
-         * in
-         *  @article{revelles2000efficient,
-         *      title={An efficient parametric algorithm for octree traversal},
-         *      author={Revelles, Jorge and Urena, Carlos and Lastra, Miguel},
-         *      year={2000},
-         *      publisher={V{\'a}clav Skala-UNION Agency}
-         *  }
-         */
         tm->x = 0.5 * (t0.x + t1.x);
         if (MLI_IS_NAN(tm->x)) {
                 const struct mliVec cube_upper = mliCube_upper(cube);
@@ -482,3 +685,4 @@ void mli_set_txm_tym_tzm(
                         tm->z = -DBL_MAX;
         }
 }
+*/
