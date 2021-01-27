@@ -103,8 +103,7 @@ int mlivr_truncate_8bit(const int key)
 }
 
 int _mlivr_export_image(
-        const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
+        const struct mliCombine *combine,
         const struct mlivrConfig config,
         const struct mliView view,
         const double object_distance,
@@ -132,7 +131,7 @@ int _mlivr_export_image(
         apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
-                &prng, apcam, camera2root_comp, scenery, octree, &full);
+                &prng, apcam, camera2root_comp, combine, &full);
         mli_check(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
@@ -141,8 +140,7 @@ error:
 }
 
 int mlivr_run_interactive_viewer(
-        const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
+        const struct mliCombine *combine,
         const struct mlivrConfig config)
 {
         struct termios old_terminal = mlivr_disable_stdin_buffer();
@@ -210,8 +208,7 @@ int mlivr_run_interactive_viewer(
                                         num_screenshots);
                                 num_screenshots++;
                                 mli_c(_mlivr_export_image(
-                                        scenery,
-                                        octree,
+                                        combine,
                                         config,
                                         view,
                                         probing_intersection.distance_of_ray,
@@ -302,16 +299,14 @@ int mlivr_run_interactive_viewer(
                         if (super_resolution) {
                                 mli_pin_hole_camera_render_image_with_view(
                                         view,
-                                        scenery,
-                                        octree,
+                                        combine,
                                         &img2,
                                         row_over_column_pixel_ratio);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
                                 mli_pin_hole_camera_render_image_with_view(
                                         view,
-                                        scenery,
-                                        octree,
+                                        combine,
                                         &img,
                                         row_over_column_pixel_ratio);
                         }
@@ -357,8 +352,7 @@ int mlivr_run_interactive_viewer(
                                         &camera2root, probing_ray_wrt_camera);
                                 has_probing_intersection =
                                         mli_first_casual_intersection(
-                                                scenery,
-                                                octree,
+                                                combine,
                                                 probing_ray_wrt_root,
                                                 &probing_intersection);
                         }
@@ -368,21 +362,15 @@ int mlivr_run_interactive_viewer(
                 mlivr_print_info_line(view, cursor);
                 if (cursor.active) {
                         if (has_probing_intersection) {
-                                char type_string[1024];
-                                const struct mliIndex object_index =
-                                        _mliScenery_resolve_index(
-                                                scenery,
-                                                probing_intersection
-                                                        .object_idx);
-                                mli_c(mli_type_to_string(
-                                        object_index.type, type_string));
-                                printf("Obj % 6ld, %-16s, "
+
+                                printf("Obj % 6d, "
+                                       "face % 6d, "
                                        "dist % 6.1fm, "
                                        "pos [% -.2e,% -.2e,% -.2e], "
                                        "normal [% -.2f,% -.2f,% -.2f], "
                                        "surf %d.\n",
                                        probing_intersection.object_idx,
-                                       type_string,
+                                       probing_intersection.face_idx,
                                        probing_intersection.distance_of_ray,
                                        probing_intersection.position.x,
                                        probing_intersection.position.y,

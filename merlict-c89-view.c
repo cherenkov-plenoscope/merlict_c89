@@ -14,22 +14,30 @@
 
 int main(int argc, char *argv[])
 {
-        struct mliScenery scenery = mliScenery_init();
-        struct mliOcTree octree = mliOcTree_init();
         struct mlivrConfig config = mlivrConfig_default();
+        struct mliScenery scenery = mliScenery_init();
+        struct mliAccelerator accelerator = mliAccelerator_init();
+        struct mliCombine combine;
+
+        combine.scenery = &scenery;
+        combine.accelerator = &accelerator;
 
         if (argc >= 2) {
-                if (mli_string_ends_with(argv[1], ".json")) {
-                        mli_check(
-                                mliScenery_malloc_from_json_path(
-                                        &scenery, argv[1]),
-                                "Can not read scenery from json.");
-                } else {
-                        if (!mliScenery_read_from_path(&scenery, argv[1])) {
-                                fprintf(stderr, "Can not open '%s'\n", argv[1]);
-                                goto error;
-                        }
-                }
+                mli_check(
+                        mli_string_ends_with(argv[1], ".tar"),
+                        "Expectec scenery-file to be a tape-archive.");
+
+                mli_check(
+                        mliScenery_malloc_from_tape_archive(
+                                &scenery,
+                                argv[1]),
+                        "Can not read scenery from tape-archive.");
+
+                mli_check(
+                        mliAccelerator_malloc_from_scenery(
+                                &accelerator,
+                                &scenery),
+                        "Failed to malloc accelerator form scenery.");
         }
 
         if (argc == 3) {
@@ -46,14 +54,13 @@ int main(int argc, char *argv[])
                 goto error;
         }
 
+        mliAccelerator_fprint(stderr, combine.accelerator);
+
         mli_check(
-                mliOcTree_malloc_from_scenery(&octree, &scenery),
-                "Failed to build octree from scenery.");
-        mli_check(
-                mlivr_run_interactive_viewer(&scenery, &octree, config),
+                mlivr_run_interactive_viewer(&combine, config),
                 "Failure in viewer");
 
-        mliOcTree_free(&octree);
+        mliAccelerator_free(&accelerator);
         mliScenery_free(&scenery);
         return EXIT_SUCCESS;
 error:

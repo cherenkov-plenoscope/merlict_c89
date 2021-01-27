@@ -6,8 +6,7 @@
 
 #include "../merlict_c89/mliImage.h"
 #include "../merlict_c89/mliView.h"
-#include "../merlict_c89/mliScenery.h"
-#include "../merlict_c89/mliOcTree.h"
+#include "../merlict_c89/mliCombine.h"
 
 #include "mlivrCursor.h"
 #include "mlivrConfig.h"
@@ -30,14 +29,12 @@ void mlivr_restore_stdin_buffer(struct termios *old_terminal);
 int mlivr_truncate_8bit(const int key);
 
 int _mlivr_export_image(
-        const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
+        const struct mliCombine *combine,
         const struct mlivrConfig config,
         const struct mliView view,
         const double object_distance,
         const char *path);
 
 int mlivr_run_interactive_viewer(
-        const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
+        const struct mliCombine *combine,
         const struct mlivrConfig config);
