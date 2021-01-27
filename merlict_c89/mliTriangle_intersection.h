@@ -11,20 +11,21 @@
 #include "mli_from_outside_to_inside.h"
 
 int mliTriangle_intersection(
+        const struct mliRay ray,
         const struct mliVec vertex_a,
         const struct mliVec vertex_b,
         const struct mliVec vertex_c,
         const struct mliVec vertex_normal_a,
         const struct mliVec vertex_normal_b,
         const struct mliVec vertex_normal_c,
-        const struct mliRay ray,
-        struct mliIntersection *intersection);
+        double *intersection_ray_parameter,
+        struct mliVec *intersection_position,
+        struct mliVec *intersection_normal);
 
 int mliRay_intersects_triangle(
-        const struct mliVec support,
-        const struct mliVec direction,
+        const struct mliRay ray,
         const struct mliVec vertex_a,
         const struct mliVec vertex_b,
         const struct mliVec vertex_c,
-        double *ray_parameter);
+        double *intersection_ray_parameter);
 #endif
