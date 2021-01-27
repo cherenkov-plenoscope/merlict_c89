@@ -150,8 +150,7 @@ void _mliApCam_aquire_pixels(
         const struct mliApertureCamera camera,
         const struct mliImage *image,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
+        const struct mliCombine *combine,
         const struct mliPixels *pixels_to_do,
         struct mliImage *colors)
 {
@@ -174,7 +173,7 @@ void _mliApCam_aquire_pixels(
                         mliHomTra_ray(&camera2root, ray_wrt_camera);
 
                 struct mliColor set_color =
-                        mli_trace(scenery, octree, ray_wrt_root);
+                        mli_trace(combine, ray_wrt_root);
 
                 mliImage_set(colors, i, 0u, set_color);
         }
@@ -224,8 +223,7 @@ int mliApertureCamera_render_image(
         struct mliMT19937 *prng,
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
+        const struct mliCombine *combine,
         struct mliImage *image)
 {
         float noise_threshold = 0.05 * 255.0;
@@ -293,8 +291,7 @@ int mliApertureCamera_render_image(
                 camera,
                 image,
                 camera2root_comp,
-                scenery,
-                octree,
+                combine,
                 &pixels_to_do,
                 &colors);
 
@@ -330,8 +327,7 @@ int mliApertureCamera_render_image(
                         camera,
                         image,
                         camera2root_comp,
-                        scenery,
-                        octree,
+                        combine,
                         &pixels_to_do,
                         &colors);
 

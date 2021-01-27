@@ -6,10 +6,7 @@
 #include <assert.h>
 #include <stdint.h>
 
-#include "mliVec.h"
-#include "mliHomTra.h"
 #include "mliTracer.h"
-#include "mliOcTree.h"
 #include "mliView.h"
 
 struct mliPinHoleCamera {
@@ -29,14 +26,12 @@ struct mliPinHoleCamera mliPinHoleCamera_init(
 void mli_pin_hole_camera_render_image(
         struct mliPinHoleCamera camera,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
+        const struct mliCombine *combine,
         struct mliImage *image);
 
 void mli_pin_hole_camera_render_image_with_view(
         const struct mliView view,
-        const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
+        const struct mliCombine *combine,
         struct mliImage *image,
         const double row_over_column_pixel_ratio);
 
