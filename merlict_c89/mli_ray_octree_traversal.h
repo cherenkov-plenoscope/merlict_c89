@@ -34,6 +34,14 @@ int _mli_next_octree_node(const struct mliVec tm, int x, int y, int z);
 
 int _mli_first_octree_node(const struct mliVec t0, const struct mliVec tm);
 
+int mliRobject_intersection(
+        const struct mliObject *object,
+        const struct mliOcTree *object_octree,
+        const struct mliHomTraComp local2root_comp,
+        const struct mliRay ray_root,
+        struct mliIntersection *intersection);
+
+
 /*
 void mli_set_txm_tym_tzm(
         const struct mliVec t0,

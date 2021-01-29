@@ -8,7 +8,7 @@
 #include "mliVec.h"
 
 struct mliIntersection {
-        uint32_t object_idx;
+        uint32_t robject_idx;
         uint32_t face_idx;
         struct mliVec position;
         struct mliVec surface_normal;

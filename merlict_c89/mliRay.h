@@ -10,7 +10,6 @@ struct mliRay {
         struct mliVec direction;
 } mliRay;
 
-void mliRay_print(const struct mliRay ray);
 struct mliVec mliRay_at(const struct mliRay *ray, const double t);
 struct mliRay mliRay_set(
         const struct mliVec support,

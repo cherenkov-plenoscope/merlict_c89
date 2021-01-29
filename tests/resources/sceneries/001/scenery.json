@@ -3,7 +3,7 @@
         {
             "type": "Object",
             "id": 1,
-            "pos": [0, 0, -2],
+            "pos": [0, 0, 0],
             "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
             "obj": "teapot",
             "layer": {

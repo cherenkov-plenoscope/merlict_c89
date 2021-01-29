@@ -126,6 +126,7 @@ void _mli_proc_subtree(
 
         if (node_type == MLI_OCTREE_TYPE_LEAF) {
                 /* callback */
+                fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
                 work_on_leaf_node(work, octree, node_idx);
                 return;
         }
@@ -689,12 +690,16 @@ void mli_set_txm_tym_tzm(
 
 struct _mliInnerObjectWork {
         struct mliIntersection *intersection;
-        int peter;
+        const struct mliObject *object;
+        struct mliRay ray_wrt_object;
+        int has_intersection;
 };
 
 struct _mliOuterSceneryWork {
         struct mliIntersection *intersection;
-        int hans;
+        const struct mliScenery *scenery;
+        const struct mliAccelerator *accelerator;
+        struct mliRay ray_root;
 };
 
 void _mli_inner_object_traversal(
@@ -710,29 +715,81 @@ void _mli_inner_object_traversal(
             object_octree,
             object_octree_leaf_idx);
 
+        struct mliIntersection tmp_intersection = mliIntersection_init();
+
         for (f = 0; f < num_faces_in_object_leaf; f++) {
 
-                uint32_t object_idx = mliOcTree_leaf_object_link(
+                uint32_t face_idx = mliOcTree_leaf_object_link(
                         object_octree,
                         object_octree_leaf_idx,
                         f);
 
-                int32_t face_has_intersection = 1;
+                struct mliFace fv = inner->object->faces_vertices[face_idx];
+                struct mliFace fvn = inner->object->faces_vertex_normals[face_idx];
 
-                /*
-                mliScenery_intersection(
-                        scenery, ray, object_idx, outer->intersection);
-                tmp_isec.object_idx = 0u;
-                tmp_isec.distance_of_ray = 0.0;
-                if (object_has_intersection) {
-                        if (tmp_isec.distance_of_ray <
-                            isec->distance_of_ray) {
-                                (*isec) = tmp_isec;
+                int32_t face_has_intersection = mliTriangle_intersection(
+                        inner->ray_wrt_object,
+
+                        inner->object->vertices[fv.a],
+                        inner->object->vertices[fv.b],
+                        inner->object->vertices[fv.c],
+
+                        inner->object->vertex_normals[fvn.a],
+                        inner->object->vertex_normals[fvn.b],
+                        inner->object->vertex_normals[fvn.c],
+
+                        &tmp_intersection.distance_of_ray,
+                        &tmp_intersection.position_local,
+                        &tmp_intersection.surface_normal_local
+                );
+
+                tmp_intersection.face_idx = face_idx;
+
+                if (face_has_intersection) {
+                        inner->has_intersection = 1;
+                        if (tmp_intersection.distance_of_ray <
+                            inner->intersection->distance_of_ray) {
+                                (*inner->intersection) = tmp_intersection;
                         }
                 }
-                */
         }
         return;
+}
+
+int mliRobject_intersection(
+        const struct mliObject *object,
+        const struct mliOcTree *object_octree,
+        const struct mliHomTraComp local2root_comp,
+        const struct mliRay ray_root,
+        struct mliIntersection *intersection)
+{
+        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
+        struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
+
+        struct _mliInnerObjectWork inner;
+        inner.has_intersection = 0;
+        inner.intersection = intersection;
+        inner.ray_wrt_object = mliHomTra_ray_inverse(&local2root, ray_root);
+        inner.object = object;
+
+        fprintf(stderr,
+            "%s, %d: sup[%.1f, %.1f, %.1f] dir[%.1f, %.1f, %.1f]\n",
+             __FILE__, __LINE__,
+            inner.ray_wrt_object.support.x,
+            inner.ray_wrt_object.support.y,
+            inner.ray_wrt_object.support.z,
+            inner.ray_wrt_object.direction.x,
+            inner.ray_wrt_object.direction.y,
+            inner.ray_wrt_object.direction.z);
+
+        _mli_ray_octree_traversal(
+                object_octree,
+                inner.ray_wrt_object,
+                (void *)&inner,
+                _mli_inner_object_traversal
+        );
+
+        return inner.has_intersection;
 }
 
 void _mli_outer_scenery_traversal(
@@ -741,34 +798,43 @@ void _mli_outer_scenery_traversal(
         const uint32_t scenery_octree_leaf_idx)
 {
         /* traverse object-wavefronts in a scenery */
+        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         struct _mliOuterSceneryWork *outer = (struct _mliOuterSceneryWork *)_outer;
 
-        uint32_t o;
-        const uint32_t num_objects_in_scenery_leaf = mliOcTree_leaf_num_objects(
+        uint32_t ro;
+        const uint32_t num_robjects_in_scenery_leaf = mliOcTree_leaf_num_objects(
                 scenery_octree,
                 scenery_octree_leaf_idx);
 
-        for (o = 0; o < num_objects_in_scenery_leaf; o++) {
+        struct mliIntersection tmp_intersection = mliIntersection_init();
 
-                uint32_t object_idx = mliOcTree_leaf_object_link(
+        for (ro = 0; ro < num_robjects_in_scenery_leaf; ro++) {
+
+                uint32_t robject_idx = mliOcTree_leaf_object_link(
                         scenery_octree,
                         scenery_octree_leaf_idx,
-                        o);
+                        ro);
+                uint32_t object_idx = outer->scenery->robjects[robject_idx];
 
-                int32_t object_has_intersection = 1;
+                int32_t robject_has_intersection = 1;
 
-                /*
-                mliScenery_intersection(
-                        scenery, ray, object_idx, outer->intersection);
-                tmp_isec.object_idx = 0u;
-                tmp_isec.distance_of_ray = 0.0;
-                if (object_has_intersection) {
-                        if (tmp_isec.distance_of_ray <
-                            isec->distance_of_ray) {
-                                (*isec) = tmp_isec;
+                robject_has_intersection = mliRobject_intersection(
+                        &outer->scenery->resources.objects[object_idx],
+                        &outer->accelerator->object_octrees[object_idx],
+                        outer->scenery->robject2root[robject_idx],
+                        outer->ray_root,
+                        &tmp_intersection);
+
+                tmp_intersection.robject_idx = robject_idx;
+
+                if (robject_has_intersection) {
+                        if (
+                                tmp_intersection.distance_of_ray <
+                                outer->intersection->distance_of_ray
+                        ) {
+                                (*outer->intersection) = tmp_intersection;
                         }
                 }
-                */
         }
         return;
 }
@@ -778,14 +844,26 @@ void mli_ray_octree_traversal(
         const struct mliRay ray,
         struct mliIntersection *intersection)
 {
-        struct _mliOuterSceneryWork outer_work;
-        outer_work.intersection = intersection;
-        outer_work.intersection->distance_of_ray = DBL_MAX;
+        struct _mliOuterSceneryWork outer;
+        outer.intersection = intersection;
+        outer.scenery = combine->scenery;
+        outer.accelerator = combine->accelerator;
+        outer.ray_root = ray;
+
+        fprintf(stderr,
+            "%s, %d: sup[%.1f, %.1f, %.1f] dir[%.1f, %.1f, %.1f]\n",
+             __FILE__, __LINE__,
+            ray.support.x,
+            ray.support.y,
+            ray.support.z,
+            ray.direction.x,
+            ray.direction.y,
+            ray.direction.z);
 
         _mli_ray_octree_traversal(
                 &combine->accelerator->scenery_octree,
                 ray,
-                (void *)&outer_work,
+                (void *)&outer,
                 _mli_outer_scenery_traversal
         );
 }

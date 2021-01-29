@@ -7,6 +7,8 @@ int mli_first_casual_intersection(
         const struct mliRay ray,
         struct mliIntersection *intersection)
 {
+        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
+
         mli_ray_octree_traversal(combine, ray, intersection);
         if (intersection->distance_of_ray < DBL_MAX)
                 return 1;

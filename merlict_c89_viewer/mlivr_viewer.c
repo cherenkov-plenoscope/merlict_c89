@@ -369,7 +369,7 @@ int mlivr_run_interactive_viewer(
                                        "pos [% -.2e,% -.2e,% -.2e], "
                                        "normal [% -.2f,% -.2f,% -.2f], "
                                        "surf %d.\n",
-                                       probing_intersection.object_idx,
+                                       probing_intersection.robject_idx,
                                        probing_intersection.face_idx,
                                        probing_intersection.distance_of_ray,
                                        probing_intersection.position.x,
