@@ -350,6 +350,9 @@ int mlivr_run_interactive_viewer(
                                                 cursor.col);
                                 probing_ray_wrt_root = mliHomTra_ray(
                                         &camera2root, probing_ray_wrt_camera);
+
+                                probing_intersection = mliIntersection_init();
+
                                 has_probing_intersection =
                                         mli_first_casual_intersection(
                                                 combine,

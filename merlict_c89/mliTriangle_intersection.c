@@ -103,6 +103,10 @@ int mliTriangle_intersection(
                         normal_weights
                 );
 
+                (*intersection_normal) = mliVec_normalized(
+                        *intersection_normal
+                );
+
                 return 1;
         } else {
                 return 0;

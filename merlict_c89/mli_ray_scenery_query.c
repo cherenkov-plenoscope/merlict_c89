@@ -103,6 +103,13 @@ int mliRobject_intersection(
                 _mli_inner_object_traversal
         );
 
+        inner.intersection->position = mliHomTra_pos_inverse(
+                &local2root,
+                inner.intersection->position_local);
+        inner.intersection->surface_normal = mliHomTra_dir_inverse(
+                &local2root,
+                inner.intersection->surface_normal_local);
+
         return inner.has_intersection;
 }
 
@@ -156,6 +163,9 @@ void mli_ray_scenery_query(
         struct mliIntersection *intersection)
 {
         struct _mliOuterSceneryWork outer;
+
+        (*intersection) = mliIntersection_init();
+
         outer.intersection = intersection;
         outer.scenery = combine->scenery;
         outer.accelerator = combine->accelerator;
