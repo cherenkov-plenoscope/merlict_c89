@@ -54,6 +54,7 @@ int main(void)
 #include "tests/test_map.c"
 #include "tests/test_cache_aware_octree.c"
 #include "tests/test_barycentric_coordinates.c"
+#include "tests/test_triangle_intersection.c"
 #include "tests/test_object_wavefront.c"
 #include "tests/test_mliArchive.c"
 
