@@ -10,11 +10,6 @@
 #include "mli_math.h"
 
 void mli_ray_octree_traversal(
-        const struct mliCombine *combine,
-        const struct mliRay ray,
-        struct mliIntersection *isec);
-
-void _mli_ray_octree_traversal(
         const struct mliOcTree *octree,
         const struct mliRay ray,
         void *work,
@@ -33,36 +28,5 @@ void _mli_proc_subtree(
 int _mli_next_octree_node(const struct mliVec tm, int x, int y, int z);
 
 int _mli_first_octree_node(const struct mliVec t0, const struct mliVec tm);
-
-int mliRobject_intersection(
-        const struct mliObject *object,
-        const struct mliOcTree *object_octree,
-        const struct mliHomTraComp local2root_comp,
-        const struct mliRay ray_root,
-        struct mliIntersection *intersection);
-
-
-/*
-void mli_set_txm_tym_tzm(
-        const struct mliVec t0,
-        const struct mliVec t1,
-        const struct mliCube cube,
-        const struct mliVec ray_octree_support,
-        struct mliVec *tm);
-
-
-void _mli_proc_subtree(
-        struct mliVec t0,
-        struct mliVec t1,
-        const struct mliOcTree *octree,
-        const int32_t octree_node,
-        const int32_t octree_type,
-        uint8_t permutation,
-        const struct mliCube cube,
-        const struct mliVec ray_octree_support,
-        struct mliIntersection *isec,
-        const struct mliScenery *scenery,
-        const struct mliRay ray);
-*/
 
 #endif

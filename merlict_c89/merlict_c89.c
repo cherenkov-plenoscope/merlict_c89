@@ -58,6 +58,7 @@
 #include "mliOcTree_equal.c"
 
 #include "mli_ray_octree_traversal.c"
+#include "mli_ray_scenery_query.c"
 
 #include "mli_from_outside_to_inside.c"
 #include "mliTracer.c"
