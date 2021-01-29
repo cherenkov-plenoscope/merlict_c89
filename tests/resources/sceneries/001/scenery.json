@@ -21,7 +21,7 @@
                     "type": "Object",
                     "id": 3,
                     "pos": [0, 0, 3],
-                    "rot": {"repr": "tait_bryan", "xyz": [0, 0, 0]},
+                    "rot": {"repr": "tait_bryan", "xyz": [0, 1.570795, 0]},
                     "obj": "hexagonal_mirror_facet",
                     "layer": {
                         "inner": {"medium": "vacuum", "surface": "leafs"},

@@ -279,8 +279,9 @@ void mli_ray_octree_traversal(
         cube_upper = mliCube_upper(cube);
         octree_root_node = 0u;
         octree_root_type = octree->root_type;
-        ray_wrt_octree = ray;
         cube_size = mliVec_add(cube.lower, cube_upper);
+
+        ray_wrt_octree = ray;
 
         if (ray_wrt_octree.direction.x < 0) {
                 ray_wrt_octree.support.x = -ray_wrt_octree.support.x + cube_size.x;
