@@ -12,7 +12,7 @@ struct _mliOuterSceneryWork {
         struct mliIntersection *intersection;
         const struct mliScenery *scenery;
         const struct mliAccelerator *accelerator;
-        struct mliRay ray_root;
+        struct mliRay ray_wrt_root;
 };
 
 void _mli_inner_object_traversal(
@@ -73,7 +73,7 @@ int mliRobject_intersection(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp local2root_comp,
-        const struct mliRay ray_root,
+        const struct mliRay ray_wrt_root,
         struct mliIntersection *intersection)
 {
         struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
@@ -81,19 +81,19 @@ int mliRobject_intersection(
         struct _mliInnerObjectWork inner;
         inner.has_intersection = 0;
         inner.intersection = intersection;
-        inner.ray_wrt_object = mliHomTra_ray_inverse(&local2root, ray_root);
+        inner.ray_wrt_object = mliHomTra_ray_inverse(&local2root, ray_wrt_root);
         inner.object = object;
 
         /*
         fprintf(stderr,
-            "%s, %d: sup[%.1f, %.1f, %.1f] dir[%.1f, %.1f, %.1f]\n",
-             __FILE__, __LINE__,
-            inner.ray_wrt_object.support.x,
-            inner.ray_wrt_object.support.y,
-            inner.ray_wrt_object.support.z,
-            inner.ray_wrt_object.direction.x,
-            inner.ray_wrt_object.direction.y,
-            inner.ray_wrt_object.direction.z);
+                "%s, %d: sup[%.1f, %.1f, %.1f] dir[%.1f, %.1f, %.1f]\n",
+                __FILE__, __LINE__,
+                inner.ray_wrt_object.support.x,
+                inner.ray_wrt_object.support.y,
+                inner.ray_wrt_object.support.z,
+                inner.ray_wrt_object.direction.x,
+                inner.ray_wrt_object.direction.y,
+                inner.ray_wrt_object.direction.z);
         */
 
         mli_ray_octree_traversal(
@@ -129,13 +129,11 @@ void _mli_outer_scenery_traversal(
                         ro);
                 uint32_t object_idx = outer->scenery->robjects[robject_idx];
 
-                int32_t robject_has_intersection = 1;
-
-                robject_has_intersection = mliRobject_intersection(
+                int32_t robject_has_intersection = mliRobject_intersection(
                         &outer->scenery->resources.objects[object_idx],
                         &outer->accelerator->object_octrees[object_idx],
                         outer->scenery->robject2root[robject_idx],
-                        outer->ray_root,
+                        outer->ray_wrt_root,
                         &tmp_intersection);
 
                 tmp_intersection.robject_idx = robject_idx;
@@ -154,18 +152,18 @@ void _mli_outer_scenery_traversal(
 
 void mli_ray_scenery_query(
         const struct mliCombine *combine,
-        const struct mliRay ray,
+        const struct mliRay ray_wrt_root,
         struct mliIntersection *intersection)
 {
         struct _mliOuterSceneryWork outer;
         outer.intersection = intersection;
         outer.scenery = combine->scenery;
         outer.accelerator = combine->accelerator;
-        outer.ray_root = ray;
+        outer.ray_wrt_root = ray_wrt_root;
 
         mli_ray_octree_traversal(
                 &combine->accelerator->scenery_octree,
-                ray,
+                ray_wrt_root,
                 (void *)&outer,
                 _mli_outer_scenery_traversal
         );

@@ -7,14 +7,14 @@
 
 void mli_ray_scenery_query(
         const struct mliCombine *combine,
-        const struct mliRay ray,
-        struct mliIntersection *isec);
+        const struct mliRay ray_wrt_root,
+        struct mliIntersection *intersection);
 
 int mliRobject_intersection(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp local2root_comp,
-        const struct mliRay ray_root,
+        const struct mliRay ray_wrt_root,
         struct mliIntersection *intersection);
 
 #endif
