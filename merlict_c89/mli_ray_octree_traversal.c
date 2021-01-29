@@ -244,7 +244,7 @@ void _mli_proc_subtree(
                         break;
                 }
                 case 7: {
-                        nt0 = mliVec_set(tm.x, tm.y, t0.z);
+                        nt0 = mliVec_set(tm.x, tm.y, tm.z);
                         nt1 = mliVec_set(t1.x, t1.y, t1.z);
                         _mli_proc_subtree(
                                 nt0,
