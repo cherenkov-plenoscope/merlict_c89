@@ -22,6 +22,12 @@ int mliTriangle_intersection(
         struct mliVec *intersection_position,
         struct mliVec *intersection_normal);
 
+struct mliVec mliTriangle_estimate_normal(
+        const struct mliVec vertex_normal_a,
+        const struct mliVec vertex_normal_b,
+        const struct mliVec vertex_normal_c,
+        const struct mliBarycentrigWeights weights);
+
 int mliRay_intersects_triangle(
         const struct mliRay ray,
         const struct mliVec vertex_a,

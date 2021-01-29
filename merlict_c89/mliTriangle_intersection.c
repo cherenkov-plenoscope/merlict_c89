@@ -44,6 +44,27 @@ int mliRay_intersects_triangle(
         }
 }
 
+struct mliVec mliTriangle_estimate_normal(
+        const struct mliVec vertex_normal_a,
+        const struct mliVec vertex_normal_b,
+        const struct mliVec vertex_normal_c,
+        const struct mliBarycentrigWeights weights)
+{
+        return mliVec_set(
+                vertex_normal_a.x * weights.a +
+                vertex_normal_b.x * weights.b +
+                vertex_normal_c.x * weights.c,
+
+                vertex_normal_a.y * weights.a +
+                vertex_normal_b.y * weights.b +
+                vertex_normal_c.y * weights.c,
+
+                vertex_normal_a.z * weights.a +
+                vertex_normal_b.z * weights.b +
+                vertex_normal_c.z * weights.c
+        );
+}
+
 int mliTriangle_intersection(
         const struct mliRay ray,
         const struct mliVec vertex_a,
@@ -64,7 +85,7 @@ int mliTriangle_intersection(
                 intersection_ray_parameter);
 
         if (valid) {
-                struct mliVec normal_weights;
+                struct mliBarycentrigWeights normal_weights;
                 (*intersection_position) = mliRay_at(
                         &ray,
                         (*intersection_ray_parameter));
@@ -75,18 +96,12 @@ int mliTriangle_intersection(
                         vertex_c,
                         (*intersection_position));
 
-                (*intersection_normal) = mliVec_set(
-                        vertex_normal_a.x * normal_weights.x +
-                        vertex_normal_b.x * normal_weights.y +
-                        vertex_normal_c.x * normal_weights.z,
-
-                        vertex_normal_a.y * normal_weights.x +
-                        vertex_normal_b.y * normal_weights.y +
-                        vertex_normal_c.y * normal_weights.z,
-
-                        vertex_normal_a.z * normal_weights.x +
-                        vertex_normal_b.z * normal_weights.y +
-                        vertex_normal_c.z * normal_weights.z);
+                (*intersection_normal) = mliTriangle_estimate_normal(
+                        vertex_normal_a,
+                        vertex_normal_b,
+                        vertex_normal_c,
+                        normal_weights
+                );
 
                 return 1;
         } else {

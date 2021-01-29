@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_barycentric.h"
 
-struct mliVec mli_barycentric_weights(
+struct mliBarycentrigWeights mli_barycentric_weights(
         const struct mliVec a,
         const struct mliVec b,
         const struct mliVec c,
@@ -42,6 +42,8 @@ struct mliVec mli_barycentric_weights(
           a------------------------------ab-----------------------------b
 
         */
+        struct mliBarycentrigWeights weights;
+
         const struct mliVec ab = mliVec_substract(b, a);
         const struct mliVec ac = mliVec_substract(c, a);
 
@@ -58,9 +60,9 @@ struct mliVec mli_barycentric_weights(
         const double atc_area_pow2 = ab_ab * at_ac - ab_ac * at_ab;
         const double abt_area_pow2 = ac_ac * at_ab - ab_ac * at_ac;
 
-        const double bary_weight_c = atc_area_pow2 / abc_area_pow2;
-        const double bary_weight_b = abt_area_pow2 / abc_area_pow2;
-        const double bary_weight_a = 1.0 - bary_weight_b - bary_weight_c;
+        weights.c = atc_area_pow2 / abc_area_pow2;
+        weights.b = abt_area_pow2 / abc_area_pow2;
+        weights.a = 1.0 - weights.b - weights.c;
 
-        return mliVec_set(bary_weight_a, bary_weight_b, bary_weight_c);
+        return weights;
 }
