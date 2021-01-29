@@ -126,7 +126,6 @@ void _mli_proc_subtree(
 
         if (node_type == MLI_OCTREE_TYPE_LEAF) {
                 /* callback */
-                fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
                 work_on_leaf_node(work, octree, node_idx);
                 return;
         }

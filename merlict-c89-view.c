@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
                 goto error;
         }
 
-        mliAccelerator_fprint(stderr, combine.accelerator);
+        /*mliAccelerator_fprint(stderr, combine.accelerator);*/
 
         mli_check(
                 mlivr_run_interactive_viewer(&combine, config),
