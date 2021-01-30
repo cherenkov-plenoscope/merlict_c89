@@ -22,38 +22,42 @@ CASE("Read archive")
                 "r"));
 
         CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("functions/", tarh.name));
+        CHECK(0 == strcmp("./", tarh.name));
         CHECK(MLITAR_TDIR == tarh.type);
 
         CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("functions/zero.csv", tarh.name));
-        CHECK(41 == tarh.size);
-        memset(payload, '\0', payload_capacity);
-        CHECK(mliTar_read_data(&tar, payload, tarh.size));
-
-        CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("materials.json", tarh.name));
-        memset(payload, '\0', payload_capacity);
-        CHECK(mliTar_read_data(&tar, payload, tarh.size));
-
-        CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("objects/", tarh.name));
-        CHECK(MLITAR_TDIR == tarh.type);
-
-        CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("objects/triangle.obj", tarh.name));
-        CHECK(110 == tarh.size);
-        memset(payload, '\0', payload_capacity);
-        CHECK(mliTar_read_data(&tar, payload, tarh.size));
-
-        CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("README.md", tarh.name));
+        CHECK(0 == strcmp("./README.md", tarh.name));
         CHECK(61 == tarh.size);
         memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
 
         CHECK(mliTar_read_header(&tar, &tarh));
-        CHECK(0 == strcmp("scenery.json", tarh.name));
+        CHECK(0 == strcmp("./functions/", tarh.name));
+        CHECK(MLITAR_TDIR == tarh.type);
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("./functions/zero.csv", tarh.name));
+        CHECK(41 == tarh.size);
+        memset(payload, '\0', payload_capacity);
+        CHECK(mliTar_read_data(&tar, payload, tarh.size));
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("./materials.json", tarh.name));
+        memset(payload, '\0', payload_capacity);
+        CHECK(mliTar_read_data(&tar, payload, tarh.size));
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("./objects/", tarh.name));
+        CHECK(MLITAR_TDIR == tarh.type);
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("./objects/triangle.obj", tarh.name));
+        CHECK(110 == tarh.size);
+        memset(payload, '\0', payload_capacity);
+        CHECK(mliTar_read_data(&tar, payload, tarh.size));
+
+        CHECK(mliTar_read_header(&tar, &tarh));
+        CHECK(0 == strcmp("./scenery.json", tarh.name));
         CHECK(682 == tarh.size);
         memset(payload, '\0', payload_capacity);
         CHECK(mliTar_read_data(&tar, payload, tarh.size));

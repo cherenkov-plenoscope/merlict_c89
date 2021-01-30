@@ -2,7 +2,16 @@
 # Build merlict with gcc and clang, look for warnings early.
 
 echo "__prepare test-resources__"
-(cd tests/resources/sceneries && exec ./prepare_tape_archives.sh)
+
+for scenery_id in 000 001
+do
+    tar -cvf \
+    ./tests/resources/sceneries/$scenery_id.tar\
+    -C\
+    ./tests/resources/sceneries/$scenery_id\
+    .
+done
+
 tar_rc=$?
 echo "tar" $tar_rc
 
