@@ -57,6 +57,9 @@ void _mli_inner_object_traversal(
                 );
 
                 tmp_intersection.face_idx = face_idx;
+                tmp_intersection.from_outside_to_inside = mli_ray_runs_from_outside_to_inside(
+                    inner->ray_wrt_object.direction,
+                    tmp_intersection.surface_normal_local);
 
                 if (face_has_intersection) {
                         inner->has_intersection = 1;
