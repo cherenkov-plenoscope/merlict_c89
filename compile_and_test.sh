@@ -5,16 +5,17 @@ echo "__prepare test-resources__"
 
 for scenery_id in 000 001
 do
-    tar -cvf \
+    tar -cf \
     ./tests/resources/sceneries/$scenery_id.tar\
-    -C\
+    --directory \
     ./tests/resources/sceneries/$scenery_id\
-    --sort='name'\
+    --sort 'name'\
     .
+
+    tar_rc=$?
+    echo "tar" $tar_rc
 done
 
-tar_rc=$?
-echo "tar" $tar_rc
 
 echo "__gcc_c89__"
 gcc merlict-c89-test.c\
@@ -82,8 +83,6 @@ clang_rc=$?
 clang_test_rc=$?
 echo "compile" $clang_rc "test" $clang_test_rc
 
-cat "./tests/resources/sceneries/000.tar"
-
 if      [ "$gcc_c89_test_rc" -ne 0 ]
 then
         (cat "./build/test_gcc_c89.o" && cat "./build/test_gcc_c89.e")
@@ -108,8 +107,6 @@ if      [ "$clang_test_rc" -ne 0 ]
 then
         (cat "./build/test_clang.o" && cat "./build/test_clang.e")
 fi
-
-
 
 if      [ "$tar_rc" -ne 0 ] ||\
         [ "$gcc_c89_rc" -ne 0 ] ||\
