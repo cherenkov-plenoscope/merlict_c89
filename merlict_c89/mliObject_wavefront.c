@@ -424,6 +424,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
         uint64_t p = 0;
         char line[1024];
         uint64_t line_length;
+        int rc;
 
         /* init dyn */
         struct mliDynVec v = mliDynVec_init();
@@ -451,18 +452,30 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                 if (line[0] == 'v' && line[1] == 'n') {
                         /* vertex-normal-line*/
                         struct mliVec tmp_vn;
-                        mli_check(
-                                _mliObject_parse_three_float_line(
-                                        &line[2], &tmp_vn),
-                                "Can not parse vertex-normal-line.");
+                        rc = _mliObject_parse_three_float_line(
+                                &line[2], &tmp_vn);
+                        if (rc) {
+                                fprintf(
+                                    stderr,
+                                    "[ERROR] in vertex-normal-line %ld.\n",
+                                    vn.dyn.size
+                                );
+                        }
+                        mli_check(rc, "Can not parse vertex-normal-line.");
                         mli_c(mliDynVec_push_back(&vn, tmp_vn));
                 } else if (line[0] == 'v') {
                         /* vertex line */
                         struct mliVec tmp_v;
-                        mli_check(
-                                _mliObject_parse_three_float_line(
-                                        &line[1], &tmp_v),
-                                "Can not parse vertex-line.");
+                        rc = _mliObject_parse_three_float_line(
+                                &line[1], &tmp_v);
+                        if (rc) {
+                                fprintf(
+                                    stderr,
+                                    "[ERROR] in vertex-line %ld.\n",
+                                    v.dyn.size
+                                );
+                        }
+                        mli_check(rc, "Can not parse vertex-line.");
                         mli_c(mliDynVec_push_back(&v, tmp_v));
                 } else if (line[0] == 'f') {
                         /* face-line */
@@ -470,14 +483,22 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                         struct mliFace tmp_fv;
                         struct mliFace tmp_fvt;
                         struct mliFace tmp_fvn;
-                        mli_check(
-                                _mliObject_parse_face_line(
-                                        line,
-                                        &tmp_fv,
-                                        &tmp_fvt,
-                                        &tmp_fvn,
-                                        &line_mode),
-                                "Can not parse face-line.");
+
+                        rc = _mliObject_parse_face_line(
+                                line,
+                                &tmp_fv,
+                                &tmp_fvt,
+                                &tmp_fvn,
+                                &line_mode);
+                        if (rc) {
+                                fprintf(
+                                    stderr,
+                                    "[ERROR] in face-line %ld.\n",
+                                    fv.dyn.size
+                                );
+                        }
+                        mli_check(rc, "Can not parse face-line.");
+
                         mli_check(tmp_fv.a >= 1, "Expected fv.a >= 1");
                         mli_check(tmp_fv.b >= 1, "Expected fv.b >= 1");
                         mli_check(tmp_fv.c >= 1, "Expected fv.c >= 1");
