@@ -22,33 +22,24 @@ CASE("mliAccelerator, init")
                 "001.tar"
         ));
 
-        mliScenery_fprint(stderr, &scenery);
-
         CHECK(mliAccelerator_malloc_from_scenery(&accel, &scenery));
-
-        mliAccelerator_fprint(stderr, &accel);
-
-        mliOcTree_print(&accel.scenery_octree);
 
         combine.scenery = &scenery;
         combine.accelerator = &accel;
 
         ray = mliRay_set(mliVec_set(0.0, 0.0, -5.0), mliVec_set(0.0, 0.0, 1.0));
 
-        fprintf(stderr,
-                "sup[%.1f, %.1f, %.1f] dir[%.1f, %.1f, %.1f]\n",
-                ray.support.x,
-                ray.support.y,
-                ray.support.z,
-                ray.direction.x,
-                ray.direction.y,
-                ray.direction.z);
-
-        mliScenery_fprint(stderr, combine.scenery);
-
-        fprintf(stderr, "========= start ======================\n");
-
         color = mli_trace(&combine, ray);
+        /*
+        fprintf(
+                stderr,
+                "============ color[%f, %f, %f]\n", color.r, color.g, color.b
+        );
+        */
+
+        CHECK_MARGIN(color.r, 11.0, 1.0);
+        CHECK_MARGIN(color.g, 45.5, 1.0);
+        CHECK_MARGIN(color.b, 74.5, 1.0);
 
         mliScenery_free(&scenery);
         mliAccelerator_free(&accel);

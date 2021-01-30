@@ -132,8 +132,8 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(_obj1->type == MLI_OBJECT);
         CHECK(_obj1->id == 1);
         CHECK(_obj1->object == obj_teapot_idx);
-        CHECK(_obj1->boundary_layer.inner.surface == srf_grass);
-        CHECK(_obj1->boundary_layer.outer.surface == srf_grass);
+        CHECK(_obj1->boundary_layer.inner.surface == srf_wood);
+        CHECK(_obj1->boundary_layer.outer.surface == srf_blue_glass);
         CHECK(_obj1->boundary_layer.inner.medium == med_vacuum);
         CHECK(_obj1->boundary_layer.outer.medium == med_vacuum);
 
@@ -149,7 +149,7 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(_obj3->id == 3);
         CHECK(_obj3->object == obj_hex_idx);
         CHECK(_obj3->boundary_layer.inner.surface == srf_leafs);
-        CHECK(_obj3->boundary_layer.outer.surface == srf_leafs);
+        CHECK(_obj3->boundary_layer.outer.surface == srf_wood);
         CHECK(_obj3->boundary_layer.inner.medium == med_vacuum);
         CHECK(_obj3->boundary_layer.outer.medium == med_vacuum);
 
@@ -158,7 +158,7 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(_obj4->type == MLI_OBJECT);
         CHECK(_obj4->id == 4);
         CHECK(_obj4->object == obj_hex_idx);
-        CHECK(_obj4->boundary_layer.inner.surface == srf_wood);
+        CHECK(_obj4->boundary_layer.inner.surface == srf_grass);
         CHECK(_obj4->boundary_layer.outer.surface == srf_wood);
         CHECK(_obj4->boundary_layer.inner.medium == med_vacuum);
         CHECK(_obj4->boundary_layer.outer.medium == med_vacuum);
