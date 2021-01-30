@@ -42,6 +42,31 @@ CASE("mliUserScenery, from json")
         mliJson_free(&material_json);
 }
 
+CASE("multi malloc")
+{
+        uint64_t i;
+        struct mliUserScenery uscn = mliUserScenery_init();
+
+        for (i = 0; i < 100; i ++) {
+                int rc = mliUserScenery_malloc_from_tape_archive(
+                        &uscn,
+                        "tests/"
+                        "resources/"
+                        "sceneries/"
+                        "001.tar"
+                );
+
+                if (rc == 0) {
+                        fprintf(stderr, "[ BAD ] %ld\n", i);
+                } else {
+                        fprintf(stderr, "[ OK  ] %ld\n", i);
+                }
+
+                mliUserScenery_free(&uscn);
+        }
+}
+
+
 CASE("mliUserScenery, malloc from archive")
 {
         struct mliUserScenery uscn = mliUserScenery_init();
