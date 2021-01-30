@@ -120,7 +120,16 @@ if      [ "$tar_rc" -ne 0 ] ||\
         [ "$clang_rc" -ne 0 ] ||\
         [ "$clang_test_rc" -ne 0 ]
 then
-        exit 1
+    printf -- "-------VERSIONS---------\n"
+    tar --version
+    printf -- "------------------------\n"
+    gcc --version
+    printf -- "------------------------\n"
+    g++ --version
+    printf -- "------------------------\n"
+    clang --version
+    printf -- "------------------------\n"
+    exit 1
 else
-        exit 0
+    exit 0
 fi
