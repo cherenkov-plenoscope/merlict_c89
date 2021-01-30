@@ -2,14 +2,18 @@
 # Build merlict with gcc and clang, look for warnings early.
 
 printf -- "prepare    "
-for scenery_id in 000 001
+
+scenery_ids=(000 001)
+
+for scenery_id in "${scenery_ids[@]}";
 do
-    tar -cf \
+    tar -cvf \
     ./tests/resources/sceneries/$scenery_id.tar\
     --directory \
     ./tests/resources/sceneries/$scenery_id\
     --sort name\
-    .
+    .\
+    > ./build/tar_$scenery_id.o
 
     tar_rc=$?
     printf -- " $tar_rc"
@@ -120,6 +124,7 @@ if      [ "$tar_rc" -ne 0 ] ||\
         [ "$clang_rc" -ne 0 ] ||\
         [ "$clang_test_rc" -ne 0 ]
 then
+    printf -- "\n"
     printf -- "-------VERSIONS---------\n"
     tar --version
     printf -- "------------------------\n"
@@ -129,6 +134,15 @@ then
     printf -- "------------------------\n"
     clang --version
     printf -- "------------------------\n"
+    printf -- "\n"
+    printf -- "----TAR verbose---------\n"
+
+    for scenery_id in "${scenery_ids[@]}";
+    do
+        printf -- "\n$scenery_id.tar:\n"
+        cat ./build/tar_$scenery_id.o
+    done
+
     exit 1
 else
     exit 0
