@@ -127,8 +127,6 @@ int _mliTar_raw_to_header(
 {
         uint64_t chksum1, chksum2;
 
-        mli_check(*rh->checksum != '\0', "Record is null.");
-
         /* Build and compare checksum */
         chksum1 = _mliTar_checksum(rh);
         sscanf(rh->checksum, "%lo", &chksum2);
@@ -192,12 +190,29 @@ error:
         return 0;
 }
 
+int mliTar_raw_header_is_null(const struct _mliTarRawHeader *rh)
+{
+        uint64_t i = 0u;
+        unsigned char *p = (unsigned char *)rh;
+        for (i = 0; i < sizeof(struct _mliTarRawHeader); i++) {
+                if (p[i] != '\0') {
+                        return 0;
+                }
+        }
+        return 1;
+}
+
 int mliTar_read_header(struct mliTar *tar, struct mliTarHeader *h)
 {
         struct _mliTarRawHeader rh;
+
         mli_check(
                 _mliTar_tread(tar, &rh, sizeof(rh)),
                 "Failed to read raw header");
+
+        if (mliTar_raw_header_is_null(&rh)) {
+                return 0;
+        }
 
         mli_check(_mliTar_raw_to_header(h, &rh), "Failed to parse raw header.");
         tar->remaining_data = h->size;
