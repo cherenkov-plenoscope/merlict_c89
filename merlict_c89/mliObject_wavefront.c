@@ -454,7 +454,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                         struct mliVec tmp_vn;
                         rc = _mliObject_parse_three_float_line(
                                 &line[2], &tmp_vn);
-                        if (rc) {
+                        if (rc == 0) {
                                 fprintf(
                                     stderr,
                                     "[ERROR] in vertex-normal-line %ld.\n",
@@ -468,7 +468,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                         struct mliVec tmp_v;
                         rc = _mliObject_parse_three_float_line(
                                 &line[1], &tmp_v);
-                        if (rc) {
+                        if (rc == 0) {
                                 fprintf(
                                     stderr,
                                     "[ERROR] in vertex-line %ld.\n",
@@ -490,7 +490,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                                 &tmp_fvt,
                                 &tmp_fvn,
                                 &line_mode);
-                        if (rc) {
+                        if (rc == 0) {
                                 fprintf(
                                     stderr,
                                     "[ERROR] in face-line %ld.\n",
