@@ -126,6 +126,6 @@ struct mliOBB mliObject_obb_in_local_frame(const struct mliObject *obj)
 {
         const struct mliHomTraComp unity_comp = mliHomTraComp_set(
                 mliVec_set(0.0, 0.0, 0.0),
-                mliQuaternion_set(0.0, 0.0, 0.0, 1.0));
+                mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0));
         return mliObject_obb(obj, unity_comp);
 }
