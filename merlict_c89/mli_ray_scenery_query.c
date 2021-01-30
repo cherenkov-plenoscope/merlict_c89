@@ -103,10 +103,10 @@ int mliRobject_intersection(
                 _mli_inner_object_traversal
         );
 
-        inner.intersection->position = mliHomTra_pos_inverse(
+        inner.intersection->position = mliHomTra_pos(
                 &local2root,
                 inner.intersection->position_local);
-        inner.intersection->surface_normal = mliHomTra_dir_inverse(
+        inner.intersection->surface_normal = mliHomTra_dir(
                 &local2root,
                 inner.intersection->surface_normal_local);
 
