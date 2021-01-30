@@ -47,7 +47,7 @@ CASE("multi malloc")
         uint64_t i;
         struct mliUserScenery uscn = mliUserScenery_init();
 
-        for (i = 0; i < 100; i ++) {
+        for (i = 0; i < 13; i ++) {
                 int rc = mliUserScenery_malloc_from_tape_archive(
                         &uscn,
                         "tests/"
@@ -57,9 +57,7 @@ CASE("multi malloc")
                 );
 
                 if (rc == 0) {
-                        fprintf(stderr, "[ BAD ] %ld\n", i);
-                } else {
-                        fprintf(stderr, "[ OK  ] %ld\n", i);
+                        fprintf(stderr, "[ BAD ] in iteration %ld\n", i);
                 }
 
                 mliUserScenery_free(&uscn);
