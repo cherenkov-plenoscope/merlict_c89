@@ -387,6 +387,9 @@ int _mliObject_parse_three_float_line(const char *line, struct mliVec *v)
                 mli_check(i <= MAX_NUM_CHARS, "Expected less chars in line.");
                 c = line[i];
 
+                if (state == error_state) {
+                    fprintf(stderr, "[ERROR] Can not parse line '%s'\n", line);
+                }
                 mli_check(
                         state != error_state,
                         "Can not parse three float line.");
