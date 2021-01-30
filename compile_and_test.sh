@@ -72,6 +72,7 @@ clang_rc=$?
 clang_test_rc=$?
 echo "compile" $clang_rc "test" $clang_test_rc
 
+cat "./tests/resources/sceneries/000.tar"
 
 if      [ "$gcc_c89_test_rc" -ne 0 ]
 then
@@ -97,6 +98,8 @@ if      [ "$clang_test_rc" -ne 0 ]
 then
         (cat "./build/test_clang.o" && cat "./build/test_clang.e")
 fi
+
+
 
 if      [ "$tar_rc" -ne 0 ] ||\
         [ "$gcc_c89_rc" -ne 0 ] ||\
