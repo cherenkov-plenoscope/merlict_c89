@@ -84,21 +84,21 @@ int mliUserScenery_malloc_from_Archive(
 
         mli_check(
                 mliArchive_get_malloc_json(
-                        arc, "./materials.json", &materials_json),
+                        arc, "materials.json", &materials_json),
                 "Failed to parse 'materials.json'.");
 
         mli_check(
-                mliArchive_get_malloc_json(arc, "./scenery.json", &scenery_json),
+                mliArchive_get_malloc_json(arc, "scenery.json", &scenery_json),
                 "Failed to parse 'scenery.json'.");
 
         /* estimate required capacity */
         /*--------------------------- */
 
         rescap.num_objects =
-                mliArchive_num_filename_prefix_sufix(arc, "./objects/", ".obj");
+                mliArchive_num_filename_prefix_sufix(arc, "objects/", ".obj");
 
         rescap.num_functions =
-                mliArchive_num_filename_prefix_sufix(arc, "./functions/", ".csv");
+                mliArchive_num_filename_prefix_sufix(arc, "functions/", ".csv");
 
         mli_check(
                 __mliSceneryResourcesCapacity_from_materials_json(
@@ -148,7 +148,7 @@ int mliUserScenery_malloc_from_Archive(
         mli_malloc(arc_mask, uint64_t, mliArchive_num(arc));
 
         mliArchive_mask_filename_prefix_sufix(
-                arc, arc_mask, "./objects/", ".obj");
+                arc, arc_mask, "objects/", ".obj");
 
         obj_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(arc); arc_idx++) {
@@ -178,7 +178,7 @@ int mliUserScenery_malloc_from_Archive(
 
         /* functions */
         mliArchive_mask_filename_prefix_sufix(
-                arc, arc_mask, "./functions/", ".csv");
+                arc, arc_mask, "functions/", ".csv");
 
         fnc_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(arc); arc_idx++) {
@@ -320,17 +320,6 @@ void __mli_strip_key(const char *filename, char *key)
 {
         uint64_t i = 0u;
         uint64_t o = 0u;
-
-        while (1) {
-                if (filename[i] == '\0') {
-                        goto finalize;
-                }
-                if (filename[i] == '/') {
-                        i += 1;
-                        break;
-                }
-                i += 1;
-        }
 
         while (1) {
                 if (filename[i] == '\0') {

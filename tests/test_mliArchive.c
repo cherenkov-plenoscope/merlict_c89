@@ -15,21 +15,21 @@ CASE("mliArchive, read tar")
         CHECK(mliArchive_num(&arc) == 8);
 
         CHECK(1 ==
-              mliArchive_num_filename_prefix_sufix(&arc, "./functions/", ".csv"));
+              mliArchive_num_filename_prefix_sufix(&arc, "functions/", ".csv"));
 
         CHECK(1 ==
-              mliArchive_num_filename_prefix_sufix(&arc, "./objects/", ".obj"));
+              mliArchive_num_filename_prefix_sufix(&arc, "objects/", ".obj"));
 
         CHECK(1 == mliArchive_num_filename_prefix_sufix(&arc, NULL, ".md"));
 
-        CHECK(mliArchive_has(&arc, "./README.md"));
+        CHECK(mliArchive_has(&arc, "README.md"));
 
-        CHECK(mliArchive_has(&arc, "./functions/"));
-        CHECK(mliArchive_has(&arc, "./functions/zero.csv"));
+        CHECK(mliArchive_has(&arc, "functions/"));
+        CHECK(mliArchive_has(&arc, "functions/zero.csv"));
 
-        CHECK(mliArchive_has(&arc, "./objects/"));
-        CHECK(mliArchive_has(&arc, "./objects/triangle.obj"));
-        CHECK(mliArchive_get(&arc, "./objects/triangle.obj", &data));
+        CHECK(mliArchive_has(&arc, "objects/"));
+        CHECK(mliArchive_has(&arc, "objects/triangle.obj"));
+        CHECK(mliArchive_get(&arc, "objects/triangle.obj", &data));
         CHECK(data->capacity == 110 + 1);
 
         CHECK(mliObject_malloc_from_string(&triangle, data->c_str));

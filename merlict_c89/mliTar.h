@@ -40,6 +40,7 @@
 #define MLITAR_TBLK '4'
 #define MLITAR_TDIR '5'
 #define MLITAR_TFIFO '6'
+#define MLITAR_NAME_LENGTH 100
 
 struct mliTarHeader {
         uint64_t mode;
@@ -47,8 +48,8 @@ struct mliTarHeader {
         uint64_t size;
         uint64_t mtime;
         uint64_t type;
-        char name[100];
-        char linkname[100];
+        char name[MLITAR_NAME_LENGTH];
+        char linkname[MLITAR_NAME_LENGTH];
 };
 
 struct mliTarHeader mliTarHeader_init(void);

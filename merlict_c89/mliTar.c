@@ -7,7 +7,7 @@
 #include "mliTar.h"
 
 struct _mliTarRawHeader {
-        char name[100];
+        char name[MLITAR_NAME_LENGTH];
         char mode[8];
         char owner[8];
         char group[8];
@@ -15,7 +15,7 @@ struct _mliTarRawHeader {
         char mtime[12];
         char checksum[8];
         char type;
-        char linkname[100];
+        char linkname[MLITAR_NAME_LENGTH];
         char _padding[255];
 };
 
@@ -36,7 +36,7 @@ struct mliTarHeader mliTarHeader_init(void)
         h.size = 0;
         h.mtime = 0;
         h.type = 0;
-        for (i = 0; i < 100; i++) {
+        for (i = 0; i < MLITAR_NAME_LENGTH; i++) {
                 h.name[i] = '\0';
                 h.linkname[i] = '\0';
         }
