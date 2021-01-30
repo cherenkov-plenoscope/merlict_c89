@@ -9,6 +9,7 @@ do
     ./tests/resources/sceneries/$scenery_id.tar\
     -C\
     ./tests/resources/sceneries/$scenery_id\
+    --sort='name'\
     .
 done
 
