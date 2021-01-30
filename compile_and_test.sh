@@ -13,7 +13,7 @@ do
     ./tests/resources/sceneries/$scenery_id\
     --sort name\
     .\
-    > ./build/tar_$scenery_id.o
+    > ./build/tar_$scenery_id.o 2>&1
 
     tar_rc=$?
     printf -- " $tar_rc"
@@ -31,7 +31,7 @@ gcc merlict-c89-test.c\
         -Wextra\
         -Wstrict-prototypes
 gcc_c89_rc=$?
-./build/test_gcc_c89 > ./build/test_gcc_c89.o 2> ./build/test_gcc_c89.e
+./build/test_gcc_c89 > ./build/test_gcc_c89.o 2>&1
 gcc_c89_test_rc=$?
 printf -- "$gcc_c89_rc $gcc_c89_test_rc\n"
 
@@ -44,7 +44,7 @@ gcc merlict-c89-test.c\
         -Wextra\
         -Wstrict-prototypes
 gcc_rc=$?
-./build/test_gcc > ./build/test_gcc.o 2> ./build/test_gcc.e
+./build/test_gcc > ./build/test_gcc.o 2>&1
 gcc_test_rc=$?
 printf -- "$gcc_rc $gcc_test_rc\n"
 
@@ -56,7 +56,7 @@ g++ merlict-c89-test.c\
         -pedantic\
         -Wextra
 gpp_rc=$?
-./build/test_g++ > ./build/test_g++.o 2> ./build/test_g++.e
+./build/test_g++ > ./build/test_g++.o 2>&1
 gpp_test_rc=$?
 printf -- "$gpp_rc $gpp_test_rc\n"
 
@@ -70,7 +70,7 @@ clang merlict-c89-test.c\
         -Wextra\
         -Wstrict-prototypes
 clang_c89_rc=$?
-./build/test_clang_c89 > ./build/test_clang_c89.o 2> ./build/test_clang_c89.e
+./build/test_clang_c89 > ./build/test_clang_c89.o 2>&1
 clang_c89_test_rc=$?
 printf "$clang_c89_rc $clang_c89_test_rc\n"
 
@@ -82,34 +82,39 @@ clang merlict-c89-test.c\
         -pedantic\
         -Wextra
 clang_rc=$?
-./build/test_clang > ./build/test_clang.o 2> ./build/test_clang.e
+./build/test_clang > ./build/test_clang.o 2>&1
 clang_test_rc=$?
 printf "$clang_rc $clang_test_rc\n"
 
 
 if      [ "$gcc_c89_test_rc" -ne 0 ]
 then
-        (cat "./build/test_gcc_c89.o" && cat "./build/test_gcc_c89.e")
+        printf -- "\n"
+        cat "./build/test_gcc_c89.o"
 fi
 
 if      [ "$gcc_test_rc" -ne 0 ]
 then
-        (cat "./build/test_gcc.o" && cat "./build/test_gcc.e")
+        printf -- "\n"
+        cat "./build/test_gcc.o"
 fi
 
 if      [ "$gpp_test_rc" -ne 0 ]
 then
-        (cat "./build/test_gpp.o" && cat "./build/test_gpp.e")
+        printf -- "\n"
+        cat "./build/test_gpp.o"
 fi
 
 if      [ "$clang_c89_test_rc" -ne 0 ]
 then
-        (cat "./build/test_clang_c89.o" && cat "./build/test_clang_c89.e")
+        printf -- "\n"
+        cat "./build/test_clang_c89.o"
 fi
 
 if      [ "$clang_test_rc" -ne 0 ]
 then
-        (cat "./build/test_clang.o" && cat "./build/test_clang.e")
+        printf -- "\n"
+        cat "./build/test_clang.o"
 fi
 
 if      [ "$tar_rc" -ne 0 ] ||\
