@@ -4,6 +4,7 @@
 echo "__prepare test-resources__"
 (cd tests/resources/sceneries && exec ./prepare_tape_archives.sh)
 tar_rc=$?
+echo "tar" $tar_rc
 
 echo "__gcc_c89__"
 gcc merlict-c89-test.c\
@@ -71,6 +72,31 @@ clang_rc=$?
 clang_test_rc=$?
 echo "compile" $clang_rc "test" $clang_test_rc
 
+
+if      [ "$gcc_c89_test_rc" -ne 0 ]
+then
+        (cat "./build/test_gcc_c89.o" && cat "./build/test_gcc_c89.e")
+fi
+
+if      [ "$gcc_test_rc" -ne 0 ]
+then
+        (cat "./build/test_gcc.o" && cat "./build/test_gcc.e")
+fi
+
+if      [ "$gpp_test_rc" -ne 0 ]
+then
+        (cat "./build/test_gpp.o" && cat "./build/test_gpp.e")
+fi
+
+if      [ "$clang_c89_test_rc" -ne 0 ]
+then
+        (cat "./build/test_clang_c89.o" && cat "./build/test_clang_c89.e")
+fi
+
+if      [ "$clang_test_rc" -ne 0 ]
+then
+        (cat "./build/test_clang.o" && cat "./build/test_clang.e")
+fi
 
 if      [ "$tar_rc" -ne 0 ] ||\
         [ "$gcc_c89_rc" -ne 0 ] ||\
