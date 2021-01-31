@@ -63,9 +63,9 @@ void mlivr_print_info_line(
         const struct mlivrCursor cursor)
 {
         printf("Press 'h' for help. "
-               "Pos.: [ % -.2e, % -.2e, % -.2e]m, "
-               "Rot.: [ % -.1f, % -.1f, % -.1f]deg, "
-               "FoV.: %.2fdeg",
+               "Pos [ % -.2e, % -.2e, % -.2e]m, "
+               "Rot [ % -.1f, % -.1f, % -.1f]deg, "
+               "FoV %.2fdeg",
                view.position.x,
                view.position.y,
                view.position.z,
@@ -74,7 +74,7 @@ void mlivr_print_info_line(
                mli_rad2deg(view.rotation.z),
                mli_rad2deg(view.field_of_view));
         if (cursor.active) {
-                printf(", Cursor [% 2ld,% 2ld]pix", cursor.col, cursor.row);
+                printf(", Cursor [% 3ld, % 3ld]pix", cursor.col, cursor.row);
         }
         printf(".\n");
 }
@@ -366,13 +366,17 @@ int mlivr_run_interactive_viewer(
                 if (cursor.active) {
                         if (has_probing_intersection) {
 
-                                printf("Obj % 6d, "
+                                printf("rObj % 6d, "
+                                       "Obj % 6d, "
                                        "face % 6d, "
-                                       "dist % 6.1fm, "
-                                       "pos [% -.2e,% -.2e,% -.2e], "
-                                       "normal [% -.2f,% -.2f,% -.2f], "
+                                       "dist % 6.2fm, "
+                                       "pos [% -.2e, % -.2e, % -.2e], "
+                                       "normal [% -.3f, % -.3f, % -.3f], "
                                        "surf %d.\n",
                                        probing_intersection.robject_idx,
+                                       combine->scenery->robjects[
+                                                probing_intersection.robject_idx
+                                       ],
                                        probing_intersection.face_idx,
                                        probing_intersection.distance_of_ray,
                                        probing_intersection.position.x,
