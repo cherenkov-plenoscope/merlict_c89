@@ -85,9 +85,8 @@ error:
 
 int mliTar_close(struct mliTar *tar)
 {
-        fprintf(stderr, "%s,%d tar->stream %p\n", __FILE__, __LINE__, (void *)tar->stream);
         fclose(tar->stream);
-        fprintf(stderr, "%s,%d\n", __FILE__, __LINE__);
+        (*tar) = mliTar_init();
         return 1;
 }
 
