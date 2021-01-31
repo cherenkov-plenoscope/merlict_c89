@@ -442,9 +442,12 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
 
         /* parse wavefront into dyn */
         while (1) {
+                if (str[p] == '\0') {
+                        break;
+                }
                 line_length = mli_string_split(&str[p], '\n', line, 1024);
                 if (line_length == 0) {
-                        break;
+                        continue;
                 }
                 mli_check(line_length < 1024, "Line is too long.");
                 p += line_length + 1;
