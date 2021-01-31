@@ -154,3 +154,21 @@ int mliSceneryResources_cpy(
 error:
         return 0;
 }
+
+void mliSceneryResources_fprint(FILE *f, const struct mliSceneryResources *res)
+{
+        uint64_t i;
+        fprintf(f, "__mliSceneryResources__\n");
+        fprintf(f, "- default_medium: %d\n", res->default_medium);
+        fprintf(f, "- num_objects %d\n", res->num_objects);
+        for (i = 0; i < res->num_objects; i++) {
+                fprintf(
+                        f,
+                        "  (%ld) v %d vn %d f %d\n",
+                        i,
+                        res->objects[i].num_vertices,
+                        res->objects[i].num_vertex_normals,
+                        res->objects[i].num_faces
+                );
+        }
+}
