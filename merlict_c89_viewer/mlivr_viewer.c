@@ -63,9 +63,9 @@ void mlivr_print_info_line(
         const struct mlivrCursor cursor)
 {
         printf("Press 'h' for help. "
-               "Pos [ % -.2e, % -.2e, % -.2e]m, "
-               "Rot [ % -.1f, % -.1f, % -.1f]deg, "
-               "FoV %.2fdeg",
+               "pos [ % -.2e, % -.2e, % -.2e]m, "
+               "rot [ % -.1f, % -.1f, % -.1f]deg, "
+               "fov %.2fdeg",
                view.position.x,
                view.position.y,
                view.position.z,
@@ -74,7 +74,7 @@ void mlivr_print_info_line(
                mli_rad2deg(view.rotation.z),
                mli_rad2deg(view.field_of_view));
         if (cursor.active) {
-                printf(", Cursor [% 3ld, % 3ld]pix", cursor.col, cursor.row);
+                printf(", cursor [% 3ld, % 3ld]pix", cursor.col, cursor.row);
         }
         printf(".\n");
 }
@@ -366,13 +366,12 @@ int mlivr_run_interactive_viewer(
                 if (cursor.active) {
                         if (has_probing_intersection) {
 
-                                printf("rObj % 6d, "
-                                       "Obj % 6d, "
+                                printf("robj % 6d, "
+                                       "obj % 6d, "
                                        "face % 6d, "
                                        "dist % 6.2fm, "
                                        "pos [% -.2e, % -.2e, % -.2e], "
-                                       "normal [% -.3f, % -.3f, % -.3f], "
-                                       "surf %d.\n",
+                                       "normal [% -.3f, % -.3f, % -.3f], ",
                                        probing_intersection.robject_idx,
                                        combine->scenery->robjects[
                                                 probing_intersection.robject_idx
@@ -384,9 +383,14 @@ int mlivr_run_interactive_viewer(
                                        probing_intersection.position.z,
                                        probing_intersection.surface_normal.x,
                                        probing_intersection.surface_normal.y,
-                                       probing_intersection.surface_normal.z,
-                                       probing_intersection
-                                               .from_outside_to_inside);
+                                       probing_intersection.surface_normal.z);
+
+                                if (probing_intersection.from_outside_to_inside) {
+                                        printf("outside");
+                                } else {
+                                        printf(" inside");
+                                }
+                                printf(".\n");
                         } else {
                                 printf("No intersection.\n");
                         }
