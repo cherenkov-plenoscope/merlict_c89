@@ -222,3 +222,38 @@ int mliObject_cpy(struct mliObject *destination, struct mliObject *source)
 error:
         return 0;
 }
+
+void mliObject_fprint(FILE *f, const struct mliObject *obj)
+{
+        uint64_t i;
+        fprintf(f, "# vertices\n");
+        for (i = 0; i < obj->num_vertices; i++) {
+                fprintf(
+                        f,
+                        "v %.4f %.4f %.4f\n",
+                        obj->vertices[i].x,
+                        obj->vertices[i].y,
+                        obj->vertices[i].z);
+        }
+        fprintf(f, "# vertex normals\n");
+        for (i = 0; i < obj->num_vertex_normals; i++) {
+                fprintf(
+                        f,
+                        "vn %.4f %.4f %.4f\n",
+                        obj->vertex_normals[i].x,
+                        obj->vertex_normals[i].y,
+                        obj->vertex_normals[i].z);
+        }
+        fprintf(f, "# faces\n");
+        for (i = 0; i < obj->num_vertex_normals; i++) {
+                fprintf(
+                        f,
+                        "f %d//%d %d//%d %d//%d\n",
+                        obj->faces_vertices[i].a,
+                        obj->faces_vertex_normals[i].a,
+                        obj->faces_vertices[i].b,
+                        obj->faces_vertex_normals[i].b,
+                        obj->faces_vertices[i].c,
+                        obj->faces_vertex_normals[i].c);
+        }
+}
