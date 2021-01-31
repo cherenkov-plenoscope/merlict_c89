@@ -235,3 +235,109 @@ CASE("mli_strip_this_dir")
         CHECK(0 == strcmp(dst, ""));
         CHECK(0 == strcmp(src, ""));
 }
+
+CASE("find CRLF and CR linebreaks")
+{
+        char txt[128];
+        memset(txt, '\0', sizeof(txt));
+        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(!_mli_is_CR_line_break(&txt[0]));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "\r\n");
+        CHECK(_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(_mli_is_CR_line_break(&txt[0]));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "01\r\n23");
+        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(!_mli_is_CR_line_break(&txt[0]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[1]));
+        CHECK(!_mli_is_CR_line_break(&txt[1]));
+
+        CHECK(_mli_is_CRLF_line_break(&txt[2]));
+        CHECK(_mli_is_CR_line_break(&txt[2]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[3]));
+        CHECK(!_mli_is_CR_line_break(&txt[3]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[4]));
+        CHECK(!_mli_is_CR_line_break(&txt[4]));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "\r");
+        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(_mli_is_CR_line_break(&txt[0]));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "0\r1");
+        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(!_mli_is_CR_line_break(&txt[0]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[1]));
+        CHECK(_mli_is_CR_line_break(&txt[1]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[2]));
+        CHECK(!_mli_is_CR_line_break(&txt[2]));
+}
+
+CASE("replace CRLF and CR linebreaks with LF")
+{
+        struct mliString src = mliString_init();
+        struct mliString dst = mliString_init();
+
+        CHECK(mliString_malloc(&src, 32));
+        CHECK(mliString_malloc(&dst, 32));
+
+        /* all '\0' */
+        /* -------- */
+        CHECK(src.c_str[0] == '\0');
+        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(dst.c_str[0] == '\0');
+
+        /* minimal CR */
+        /* ---------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "\r");
+        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "\n"));
+
+        /* minimal CRLF */
+        /* ------------ */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "\r\n");
+        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "\n"));
+
+        /* minimal text CRLF */
+        /* ----------------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "hans\r\npeter");
+        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
+
+        /* minimal text CR */
+        /* ----------------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "hans\rpeter");
+        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
+
+        /* complex text CRLF */
+        /* ----------------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
+        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
+
+        /* complex text CR */
+        /* ----------------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "\rflower\rcar\r\rhouse\r");
+        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
+
+        mliString_free(&src);
+        mliString_free(&dst);
+}

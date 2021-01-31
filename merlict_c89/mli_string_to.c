@@ -154,3 +154,70 @@ error:
         mliString_free(str);
         return 0;
 }
+
+int _mli_is_CRLF_line_break(const char *s)
+{
+        if (s[0] == '\0') {
+                return 0;
+        }
+        if (s[1] == '\0') {
+                return 0;
+        }
+        if (s[0] == '\r' && s[1] == '\n') {
+                return 1;
+        }
+        return 0;
+}
+
+int _mli_is_CR_line_break(const char *s)
+{
+        if (s[0] == '\0') {
+                return 0;
+        }
+        if (s[0] == '\r') {
+                return 1;
+        }
+        return 0;
+}
+
+int mliString_to_newline(struct mliString *dst, const struct mliString *src)
+{
+        uint64_t s = 0;
+        uint64_t d = 0;
+
+        mli_c(src->capacity > 0);
+        mli_c(src->c_str[src->capacity - 1] == '\0');
+        mli_c(dst->capacity >= src->capacity);
+
+        fprintf(stderr, "======\n");
+        while (s < src->capacity) {
+                fprintf(stderr, "[%d, %d],", dst->c_str[d], src->c_str[s]);
+
+                if (_mli_is_CRLF_line_break(&src->c_str[s])) {
+                        dst->c_str[d] = '\n';
+                        s += 2;
+                        d += 1;
+                        continue;
+                }
+
+                if (_mli_is_CR_line_break(&src->c_str[s])) {
+                        dst->c_str[d] = '\n';
+                        s += 1;
+                        d += 1;
+                        continue;
+                }
+
+                dst->c_str[d] = src->c_str[s];
+                s += 1;
+                d += 1;
+        }
+
+        while (d < dst->capacity) {
+                dst->c_str[d] = '\0';
+                d += 1;
+        }
+
+        return 1;
+error:
+        return 0;
+}
