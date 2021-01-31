@@ -221,3 +221,35 @@ int mliString_to_newline(struct mliString *dst, const struct mliString *src)
 error:
         return 0;
 }
+
+int _mli_assert_string_has_only_NUL_LF_control_codes(const char *str) {
+        uint64_t pos = 0;
+        while (str[pos] != '\0') {
+                if (str[pos] >= 32 && str[pos] < 127) {
+                        /* all fine */
+                } else {
+                        if (str[pos] == '\n') {
+                                /* fine */
+                        } else if (str[pos] == '\t') {
+                                /* fine */
+                        } else {
+                                /*
+                                fprintf(
+                                        stderr,
+                                        "[ERROR] (%s,%d:) "
+                                        "Did not expect control code '%u' "
+                                        "at %ld in string."
+                                        "\n",
+                                        __FILE__,
+                                        __LINE__,
+                                        (uint8_t)str[pos],
+                                        pos
+                                );
+                                */
+                                return 0;
+                        }
+                }
+                pos += 1;
+        }
+        return 1;
+}

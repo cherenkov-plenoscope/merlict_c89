@@ -35,5 +35,6 @@ int mliString_malloc_from_file(struct mliString *str, const char *path);
 int mliString_to_newline(struct mliString *dst, const struct mliString *src);
 int _mli_is_CRLF_line_break(const char *s);
 int _mli_is_CR_line_break(const char *s);
+int _mli_string_has_only_expected_control_codes(const char *str);
 
 #endif
