@@ -449,7 +449,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                 mli_check(line_length < 1024, "Line is too long.");
                 p += line_length + 1;
 
-                if (line[0] == 'v' && line[1] == 'n') {
+                if (line[0] == 'v' && line[1] == 'n' && line[2] == ' ') {
                         /* vertex-normal-line*/
                         struct mliVec tmp_vn;
                         rc = _mliObject_parse_three_float_line(
@@ -463,7 +463,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                         }
                         mli_check(rc, "Can not parse vertex-normal-line.");
                         mli_c(mliDynVec_push_back(&vn, tmp_vn));
-                } else if (line[0] == 'v') {
+                } else if (line[0] == 'v' && line[1] == ' ') {
                         /* vertex line */
                         struct mliVec tmp_v;
                         rc = _mliObject_parse_three_float_line(
@@ -477,9 +477,9 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                         }
                         mli_check(rc, "Can not parse vertex-line.");
                         mli_c(mliDynVec_push_back(&v, tmp_v));
-                } else if (line[0] == 'f') {
+                } else if (line[0] == 'f' && line[1] == ' ') {
                         /* face-line */
-                        int line_mode;
+                        int line_mode = -1;
                         struct mliFace tmp_fv;
                         struct mliFace tmp_fvt;
                         struct mliFace tmp_fvn;
@@ -516,10 +516,10 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                         mli_c(mliDynFace_push_back(&fv, tmp_fv));
                         mli_c(mliDynFace_push_back(&fvn, tmp_fvn));
                         mli_check(
-                                line_mode == MLI_WAVEFRONT_FACE_LINE_V_VT_VN ||
-                                        line_mode ==
-                                                MLI_WAVEFRONT_FACE_LINE_V_VN,
-                                "Expected faces to have vertex-normals.")
+                                (line_mode == MLI_WAVEFRONT_FACE_LINE_V_VT_VN)
+                                ||
+                                (line_mode == MLI_WAVEFRONT_FACE_LINE_V_VN),
+                                "Expected faces to have vertex-normals.");
                 }
         }
 
