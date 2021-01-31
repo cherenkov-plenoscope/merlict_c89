@@ -293,49 +293,49 @@ CASE("replace CRLF and CR linebreaks with LF")
         /* all '\0' */
         /* -------- */
         CHECK(src.c_str[0] == '\0');
-        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(dst.c_str[0] == '\0');
 
         /* minimal CR */
         /* ---------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "\r");
-        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "\n"));
 
         /* minimal CRLF */
         /* ------------ */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "\r\n");
-        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "\n"));
 
         /* minimal text CRLF */
         /* ----------------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "hans\r\npeter");
-        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
 
         /* minimal text CR */
         /* ----------------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "hans\rpeter");
-        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
 
         /* complex text CRLF */
         /* ----------------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
-        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
 
         /* complex text CR */
         /* ----------------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "\rflower\rcar\r\rhouse\r");
-        CHECK(mliString_to_newline(&dst, &src));
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
 
         mliString_free(&src);

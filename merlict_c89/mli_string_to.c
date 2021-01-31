@@ -180,7 +180,9 @@ int _mli_is_CR_line_break(const char *s)
         return 0;
 }
 
-int mliString_to_newline(struct mliString *dst, const struct mliString *src)
+int mliString_convert_line_break_CRLF_CR_to_LF(
+        struct mliString *dst,
+        const struct mliString *src)
 {
         uint64_t s = 0;
         uint64_t d = 0;
@@ -189,10 +191,7 @@ int mliString_to_newline(struct mliString *dst, const struct mliString *src)
         mli_c(src->c_str[src->capacity - 1] == '\0');
         mli_c(dst->capacity >= src->capacity);
 
-        fprintf(stderr, "======\n");
         while (s < src->capacity) {
-                fprintf(stderr, "[%d, %d],", dst->c_str[d], src->c_str[s]);
-
                 if (_mli_is_CRLF_line_break(&src->c_str[s])) {
                         dst->c_str[d] = '\n';
                         s += 2;

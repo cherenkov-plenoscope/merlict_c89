@@ -25,6 +25,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
+        struct mliString tmp_payload = mliString_init();
 
         mliArchive_free(arc);
         mliDynString_malloc(&arc->strings, 0u);
@@ -42,25 +43,41 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                 mli_check(
                         mliDynMap_insert(&arc->filenames, tarh_name, next),
                         "Can not insert key.");
-
                 mli_check(
                         mliDynString_push_back(&arc->strings, mliString_init()),
                         "Can not push back mliString.");
+                mli_check(
+                        mliString_malloc(&tmp_payload, tarh.size),
+                        "Can not allocate tmp-string-buffer.");
+
                 payload = &arc->strings.arr[next];
+                (*payload) = mliString_init();
 
                 mli_check(
                         mliString_malloc(payload, tarh.size),
                         "Can not allocate string-buffer.");
-
                 mli_check(
                         mliTar_read_data(
-                                &tar, (void *)payload->c_str, tarh.size),
-                        "Failed to read payload from tar into string-buffer.");
+                                &tar, (void *)tmp_payload.c_str, tarh.size),
+                        "Failed to read payload from tar into "
+                        "tmp-string-buffer.");
+                mli_check(
+                        mliString_convert_line_break_CRLF_CR_to_LF(
+                                payload,
+                                &tmp_payload),
+                        "Failed to replace CRLF and CR linebreaks.");
+                mliString_free(&tmp_payload);
+                mli_check(
+                        _mli_assert_string_has_only_NUL_LF_control_codes(
+                                payload->c_str),
+                        "Did not expect control codes other than "
+                        "(\\n, \\t, \\0) in text-files.");
         }
 
         mliTar_close(&tar);
         return 1;
 error:
+        mliString_free(&tmp_payload);
         mliArchive_free(arc);
         if (tar.stream) {
                 mliTar_close(&tar);

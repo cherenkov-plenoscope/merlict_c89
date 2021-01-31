@@ -22,6 +22,7 @@ struct _mliTarRawHeader {
 struct mliTar mliTar_init(void)
 {
         struct mliTar out;
+        out.stream = NULL;
         out.pos = 0u;
         out.remaining_data = 0u;
         return out;
@@ -84,7 +85,9 @@ error:
 
 int mliTar_close(struct mliTar *tar)
 {
+        fprintf(stderr, "%s,%d tar->stream %p\n", __FILE__, __LINE__, (void *)tar->stream);
         fclose(tar->stream);
+        fprintf(stderr, "%s,%d\n", __FILE__, __LINE__);
         return 1;
 }
 

@@ -32,9 +32,11 @@ int mliString_malloc(struct mliString *str, const uint64_t strlen);
 void mliString_free(struct mliString *str);
 int mliString_malloc_from_file(struct mliString *str, const char *path);
 
-int mliString_to_newline(struct mliString *dst, const struct mliString *src);
+int mliString_convert_line_break_CRLF_CR_to_LF(
+        struct mliString *dst,
+        const struct mliString *src);
 int _mli_is_CRLF_line_break(const char *s);
 int _mli_is_CR_line_break(const char *s);
-int _mli_string_has_only_expected_control_codes(const char *str);
+int _mli_assert_string_has_only_NUL_LF_control_codes(const char *str);
 
 #endif
