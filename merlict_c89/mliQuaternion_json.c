@@ -7,14 +7,17 @@ int __mliQuaternion_tait_bryan_from_json(
         const uint64_t token)
 {
         uint64_t token_xyz;
-        struct mliVec xyz;
+        struct mliVec xyz_deg;
         mli_check(
-                mliJson_find_key(json, token, "xyz", &token_xyz),
-                "Expected tait_bryan to have key 'xyz'.");
+                mliJson_find_key(json, token, "xyz_deg", &token_xyz),
+                "Expected tait_bryan to have key 'xyz_deg'.");
         mli_check(
-                mliVec_from_json_token(&xyz, json, token_xyz + 1),
-                "Failed to parse tait_bryan's 'xyz' from json.");
-        *quat = mliQuaternion_set_tait_bryan(xyz.x, xyz.y, xyz.z);
+                mliVec_from_json_token(&xyz_deg, json, token_xyz + 1),
+                "Failed to parse tait_bryan's 'xyz_deg' from json.");
+        *quat = mliQuaternion_set_tait_bryan(
+                        mli_deg2rad(xyz_deg.x),
+                        mli_deg2rad(xyz_deg.y),
+                        mli_deg2rad(xyz_deg.z));
         return 1;
 error:
         return 0;
@@ -26,7 +29,7 @@ int __mliQuaternion_axis_angle_from_json(
         const uint64_t token)
 {
         uint64_t token_axis, token_angle;
-        double angle;
+        double angle_deg;
         struct mliVec axis;
         mli_check(
                 mliJson_find_key(json, token, "axis", &token_axis),
@@ -35,12 +38,14 @@ int __mliQuaternion_axis_angle_from_json(
                 mliVec_from_json_token(&axis, json, token_axis + 1),
                 "Failed to parse axis_angle's 'axis' from json.");
         mli_check(
-                mliJson_find_key(json, token, "angle", &token_angle),
-                "Expected axis_angle to have key 'axis'.");
+                mliJson_find_key(json, token, "angle_deg", &token_angle),
+                "Expected axis_angle to have key 'angle_deg'.");
         mli_check(
-                mliJson_as_float64(json, token_angle + 1, &angle),
-                "Failed to parse axis_angle's 'angle' from json.");
-        *quat = mliQuaternion_set_rotaxis_and_angle(axis, angle);
+                mliJson_as_float64(json, token_angle + 1, &angle_deg),
+                "Failed to parse axis_angle's 'angle_deg' from json.");
+        *quat = mliQuaternion_set_rotaxis_and_angle(
+                        axis,
+                        mli_deg2rad(angle_deg));
         return 1;
 error:
         return 0;
