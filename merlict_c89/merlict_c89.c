@@ -77,7 +77,7 @@
 #include "mliVec_from_json_token.c"
 #include "mli_frame_to_scenery.c"
 #include "mliPhoton.c"
-/*#include "mliPhotonInteraction.c"*/
+#include "mliPhotonInteraction.c"
 #include "mliDynPhoton.c"
 /*#include "mliDynPhotonInteraction.c"*/
 #include "mli_lambertian_cosine_law.c"
