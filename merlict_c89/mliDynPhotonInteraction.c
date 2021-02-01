@@ -19,10 +19,10 @@ void mliDynPhotonInteraction_print(
         printf(
                 " # , "
                 "(r,o,f), "
-                " id, "
-                "[   x,   y,   z], "
+                "user-id, "
+                "[ x/m, y/m, z/m], "
                 "type                "
-                ", refr.  , abs.   , dist,\n");
+                ", refr.  , abs.   , dist/m,\n");
         printf("------------------------------------------------"
                "-------------------------\n");
 

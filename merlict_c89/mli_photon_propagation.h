@@ -6,15 +6,13 @@
 #include <stdint.h>
 
 #include "mliPhoton.h"
-#include "mliScenery.h"
-#include "mliOcTree.h"
+#include "mliCombine.h"
 #include "mliDynPhotonInteraction.h"
 #include "mliMT19937.h"
 #include "mli_intersection_and_scenery.h"
 
 struct mliEnv {
-        const struct mliScenery *scenery;
-        const struct mliOcTree *octree;
+        const struct mliCombine *combine;
         struct mliDynPhotonInteraction *history;
         struct mliPhoton *photon;
         struct mliMT19937 *prng;
@@ -22,8 +20,7 @@ struct mliEnv {
 };
 
 int mli_propagate_photon(
-        struct mliScenery *scenery,
-        struct mliOcTree *octree,
+        const struct mliCombine *combine,
         struct mliDynPhotonInteraction *history,
         struct mliPhoton *photon,
         struct mliMT19937 *prng,
@@ -54,6 +51,5 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
         const struct mliScenery *scenery,
         const struct mliIntersection *isec);
-int _mli_propagate_photon(struct mliEnv *env);
 int _mli_propagate_photon(struct mliEnv *env);
 #endif

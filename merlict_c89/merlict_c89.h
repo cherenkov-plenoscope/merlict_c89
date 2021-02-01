@@ -83,4 +83,4 @@
 #include "mli_lambertian_cosine_law.h"
 #include "mliFresnel.h"
 #include "mli_photon_sources.h"
-/*#include "mli_photon_propagation.h"*/
+#include "mli_photon_propagation.h"
