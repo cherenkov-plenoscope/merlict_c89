@@ -79,7 +79,7 @@
 #include "mliPhoton.c"
 #include "mliPhotonInteraction.c"
 #include "mliDynPhoton.c"
-/*#include "mliDynPhotonInteraction.c"*/
+#include "mliDynPhotonInteraction.c"
 #include "mli_lambertian_cosine_law.c"
 #include "mliFresnel.c"
 #include "mli_photon_sources.c"

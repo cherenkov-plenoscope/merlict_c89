@@ -19,6 +19,7 @@
 #define MLI_PHOTON_DIFFUSE_REFLECTION 107u
 
 struct mliPhotonInteraction {
+        int32_t on_surface;
         uint32_t robject_idx;
         uint32_t face_idx;
 
