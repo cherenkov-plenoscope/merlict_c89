@@ -99,9 +99,9 @@ int mli_string_split(
         uint64_t i = 0;
         memset(token, '\0', token_length);
         for (i = 0; i < token_length; i++) {
-                if (str[i] == delimiter) {
+                if (str[i] == '\0') {
                         break;
-                } else if (str[i] == '\0') {
+                } else if (str[i] == delimiter) {
                         break;
                 } else {
                         token[i] = str[i];
@@ -216,6 +216,7 @@ int mliString_convert_line_break_CRLF_CR_to_LF(
                 d += 1;
         }
 
+        mli_c(dst->c_str[dst->capacity - 1] == '\0');
         return 1;
 error:
         return 0;
