@@ -420,11 +420,11 @@ error:
 
 int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
 {
-        uint64_t i;
-        uint64_t p = 0;
+        uint64_t i = 0u;
+        uint64_t p = 0u;
         char line[1024];
-        uint64_t line_length;
-        int rc;
+        uint64_t line_length = 0u;
+        int rc = -1;
 
         /* init dyn */
         struct mliDynVec v = mliDynVec_init();
@@ -432,6 +432,8 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
 
         struct mliDynFace fv = mliDynFace_init();
         struct mliDynFace fvn = mliDynFace_init();
+
+        memset(line, '\0', sizeof(line));
 
         /* malloc dyn */
         mli_c(mliDynVec_malloc(&v, 0u));
