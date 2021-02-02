@@ -20,7 +20,7 @@ CASE("simple propagation")
         struct mliPhoton photon;
         photon.ray = mliRay_set(mliVec_set(0, 0, -3), mliVec_set(0, 0, 1));
         photon.wavelength = 600e-9;
-        photon.simulation_truth_id = 0;
+        photon.id = 0;
 
         combine.scenery = &scenery;
         combine.accelerator = &accelerator;
