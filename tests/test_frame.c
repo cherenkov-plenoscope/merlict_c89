@@ -113,21 +113,6 @@ CASE("basic object allocation and initialization")
         mliFrame_free(&mother);
 }
 
-/*
-CASE("estimate capacity")
-{
-        struct mliFrame root = mliFrame_init();
-        struct mliFrame *obj = NULL;
-        struct mliSceneryCapacity scn_cap = mliSceneryCapacity_init();
-        CHECK(mliFrame_malloc(&root, MLI_FRAME));
-        obj = mliFrame_add(&root, MLI_OBJECT);
-        CHECK(obj);
-        CHECK(__mliScenery_set_primitive_capacity(&scn_cap, &root));
-        CHECK(scn_cap.num_object_references == 1u);
-        mliFrame_free(&root);
-}
-*/
-
 CASE("mapping frame-type-string to uint64")
 {
         uint64_t i;
@@ -169,26 +154,3 @@ CASE("mliFrame_set_frame2root, only translation z-component")
         CHECK_MARGIN(c2->frame2root.translation.z, -1., 1e-9);
         CHECK_MARGIN(c1_c1->frame2root.translation.z, 2., 1e-9);
 }
-
-/*
-CASE("mliUserScenery_malloc, free")
-{
-        struct mliUserScenery uscn = mliUserScenery_init();
-        CHECK(mliUserScenery_malloc(&uscn));
-        mliUserScenery_free(&uscn);
-}
-
-CASE("mli_frame_to_scenery")
-{
-        struct mliUserScenery uscn = mliUserScenery_init();
-        struct mliScenery scenery = mliScenery_init();
-        CHECK(mliUserScenery_malloc(&uscn));
-
-        CHECK(mliScenery_malloc_from_mliUserScenery(
-            &scenery,
-            &uscn));
-
-        mliScenery_free(&scenery);
-        mliUserScenery_free(&uscn);
-}
-*/

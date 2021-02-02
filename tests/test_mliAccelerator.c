@@ -30,12 +30,6 @@ CASE("mliAccelerator, init")
         ray = mliRay_set(mliVec_set(0.0, 0.0, -5.0), mliVec_set(0.0, 0.0, 1.0));
 
         color = mli_trace(&combine, ray);
-        /*
-        fprintf(
-                stderr,
-                "============ color[%f, %f, %f]\n", color.r, color.g, color.b
-        );
-        */
 
         CHECK_MARGIN(color.r, 11.0, 1.0);
         CHECK_MARGIN(color.g, 45.5, 1.0);
