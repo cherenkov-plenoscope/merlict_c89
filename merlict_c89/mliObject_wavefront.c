@@ -422,7 +422,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
 {
         uint64_t i = 0u;
         uint64_t p = 0u;
-        char line[1024];
+        char line[64];
         uint64_t line_length = 0u;
         int rc = -1;
 
@@ -444,20 +444,15 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
 
         /* parse wavefront into dyn */
         while (1) {
-                if (str[p] == '\0') {
-                        break;
-                }
                 line_length = mli_string_split(
                         &str[p],
                         '\n',
                         line,
                         sizeof(line));
-                if (line_length == 0) {
-                        continue;
-                }
-                mli_check(line_length < sizeof(line), "Line is too long.");
-                p += line_length + 1;
 
+                mli_check(line_length < sizeof(line), "Line is too long.");
+
+                if (line_length > 0) {
                 if (line[0] == 'v' && line[1] == 'n' && line[2] == ' ') {
                         /* vertex-normal-line*/
                         struct mliVec tmp_vn;
@@ -530,6 +525,13 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
                                 (line_mode == MLI_WAVEFRONT_FACE_LINE_V_VN),
                                 "Expected faces to have vertex-normals.");
                 }
+                } /* line_length > 0 */
+
+                if (str[p + line_length] == '\0') {
+                        break;
+                }
+                p += line_length + 1;
+
         }
 
         /* copy dyn into static mliObject */
