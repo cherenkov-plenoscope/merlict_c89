@@ -17,52 +17,52 @@ void mliDynPhotonInteraction_print(
         printf("==================\n");
 
         printf(
-                " # , "
-                "(r,o,f), "
-                "user-id, "
-                "[ x/m, y/m, z/m], "
-                "type                "
-                ", refr.  , abs.   , dist/m,\n");
-        printf("------------------------------------------------"
-               "-------------------------\n");
+                "   #  "
+                "( robj,  obj, face;   id)  "
+                "[     x/m,     y/m,     z/m]  "
+                "type         "
+                "refr.    "
+                "abs.    "
+                "dist/m"
+                "\n");
+        printf("-----------------------------------------------------"
+               "-----------------------------------------------------\n");
 
         for (i = 0; i < history->dyn.size; i++) {
                 struct mliPhotonInteraction phisec = history->arr[i];
-                printf("% 3ld, ", i);
+                printf(" % 3ld  ", i);
 
                 if (phisec.on_surface == 1) {
-                        printf("(% 4d,% 4d,% 4d), ",
+                        printf("(% 5d,% 5d,% 5d;% 5d)  ",
                                 phisec.robject_idx,
                                 scenery->robjects[phisec.robject_idx],
-                                phisec.face_idx);
-                        printf("% 4d, ",
+                                phisec.face_idx,
                                 scenery->robject_ids[phisec.robject_idx]);
                 } else {
-                        printf("( n/a , n/a , n/a ), ");
-                        printf("  n/a , ");
+                        printf("            n/a            ");
                 }
 
-                printf("[% -.3e,% -.3e,% -.3e], ",
+                printf("[% -.1e,% -.1e,% -.1e]  ",
                        phisec.position.x,
                        phisec.position.y,
                        phisec.position.z);
 
                 mli_photoninteraction_type_to_string(phisec.type, type_string);
 
-                printf("%-20s, ", type_string);
+                printf("%-12s ", type_string);
 
-                printf("{% 2d,% 2d}, ",
+                printf("{% 2d,% 2d}  ",
                        phisec.refraction_coming_from,
                        phisec.refraction_going_to);
 
-                printf("{% 2d,% 2d}, ",
+                printf("{% 2d,% 2d}  ",
                        phisec.absorbtion_coming_from,
                        phisec.absorbtion_going_to);
 
                 if (phisec.type == MLI_PHOTON_CREATION) {
-                        printf(" n/a  , ");
+                        printf(" n/a  ");
                 } else {
-                        printf(" %1.1f, ", phisec.distance_of_ray);
+                        printf(" %1.1f  ", phisec.distance_of_ray);
                 }
 
                 if (phisec.on_surface == 1) {
@@ -72,7 +72,7 @@ void mliDynPhotonInteraction_print(
                                 printf("%s", in_out);
                         }
                 } else {
-                        printf(" ");
+                        printf("n/a  ");
                 }
                 printf("\n");
         }
