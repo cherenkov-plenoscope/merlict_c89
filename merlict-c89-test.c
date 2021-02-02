@@ -48,7 +48,6 @@ int main(void)
 #include "tests/test_mliFresnel.c"
 #include "tests/test_mliAccelerator.c"
 #include "tests/test_mliApertureCamera.c"
-/*#include "tests/test_photon.c"*/
 #include "tests/test_photon_sources.c"
 #include "tests/test_lambertian_cosine_law.c"
 #include "tests/test_map.c"
@@ -57,6 +56,7 @@ int main(void)
 #include "tests/test_triangle_intersection.c"
 #include "tests/test_object_wavefront.c"
 #include "tests/test_mliArchive.c"
+#include "tests/test_photon.c"
 
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;
