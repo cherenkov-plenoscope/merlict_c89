@@ -1,0 +1,48 @@
+{
+    "children": [
+        {
+            "type": "Object",
+            "id": 1,
+            "pos": [0, 0, 0],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "cylinder",
+            "layer": {
+                "inner": {"medium": "vacuum", "surface": "glass_blue"},
+                "outer": {"medium": "glass", "surface": "glass_red"}
+            }
+        },
+        {
+            "type": "Object",
+            "id": 37,
+            "pos": [0, 0, 5],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "disc",
+            "layer": {
+                "inner": {"medium": "vacuum", "surface": "specular_mirror"},
+                "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+            }
+        },
+        {
+            "type": "Object",
+            "id": 47,
+            "pos": [0, 0, -5],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 45, 0]},
+            "obj": "disc",
+            "layer": {
+                "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+                "outer": {"medium": "vacuum", "surface": "specular_mirror"}
+            }
+        },
+        {
+            "type": "Object",
+            "id": 12,
+            "pos": [-5, 0, -5],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 90, 0]},
+            "obj": "disc",
+            "layer": {
+                "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+                "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+            }
+        }
+    ]
+}
