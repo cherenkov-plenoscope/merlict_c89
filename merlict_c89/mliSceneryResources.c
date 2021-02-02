@@ -113,7 +113,7 @@ int mliSceneryResources_cpy(
         destination->default_medium = source->default_medium;
 
         /* copy objects */
-        for (i = 0; i < source->num_functions; i++) {
+        for (i = 0; i < source->num_objects; i++) {
                 mli_check(
                         mliObject_malloc(
                                 &destination->objects[i],
