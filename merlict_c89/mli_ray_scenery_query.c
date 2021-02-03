@@ -87,18 +87,6 @@ int mliRobject_intersection(
         inner.ray_wrt_object = mliHomTra_ray_inverse(&local2root, ray_wrt_root);
         inner.object = object;
 
-        /*
-        fprintf(stderr,
-                "%s, %d: sup[%.1f, %.1f, %.1f] dir[%.1f, %.1f, %.1f]\n",
-                __FILE__, __LINE__,
-                inner.ray_wrt_object.support.x,
-                inner.ray_wrt_object.support.y,
-                inner.ray_wrt_object.support.z,
-                inner.ray_wrt_object.direction.x,
-                inner.ray_wrt_object.direction.y,
-                inner.ray_wrt_object.direction.z);
-        */
-
         mli_ray_octree_traversal(
                 object_octree,
                 inner.ray_wrt_object,
