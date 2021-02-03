@@ -232,7 +232,7 @@ void mliObject_fprint(FILE *f, const struct mliObject *obj)
         for (i = 0; i < obj->num_vertices; i++) {
                 fprintf(
                         f,
-                        "v %.4f %.4f %.4f\n",
+                        "v %.6f %.6f %.6f\n",
                         obj->vertices[i].x,
                         obj->vertices[i].y,
                         obj->vertices[i].z);
@@ -241,7 +241,7 @@ void mliObject_fprint(FILE *f, const struct mliObject *obj)
         for (i = 0; i < obj->num_vertex_normals; i++) {
                 fprintf(
                         f,
-                        "vn %.4f %.4f %.4f\n",
+                        "vn %.6f %.6f %.6f\n",
                         obj->vertex_normals[i].x,
                         obj->vertex_normals[i].y,
                         obj->vertex_normals[i].z);
