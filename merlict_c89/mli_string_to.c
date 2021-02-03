@@ -222,7 +222,7 @@ error:
         return 0;
 }
 
-int _mli_assert_string_has_only_NUL_LF_control_codes(const char *str) {
+int mli_string_assert_only_NUL_LF_TAB_controls(const char *str) {
         uint64_t pos = 0;
         while (str[pos] != '\0') {
                 if (str[pos] >= 32 && str[pos] < 127) {
@@ -233,19 +233,18 @@ int _mli_assert_string_has_only_NUL_LF_control_codes(const char *str) {
                         } else if (str[pos] == '\t') {
                                 /* fine */
                         } else {
-                                /*
-                                fprintf(
-                                        stderr,
-                                        "[ERROR] (%s,%d:) "
-                                        "Did not expect control code '%u' "
-                                        "at %ld in string."
-                                        "\n",
-                                        __FILE__,
-                                        __LINE__,
-                                        (uint8_t)str[pos],
-                                        pos
-                                );
-                                */
+                                if (MLI_PRINT_LEVEL) {
+                                        fprintf(
+                                                stderr,
+                                                "[ERROR] (%s,%d) "
+                                                "Control code %u "
+                                                "at column %ld in string.\n",
+                                                __FILE__,
+                                                __LINE__,
+                                                (uint8_t)str[pos],
+                                                pos
+                                        );
+                                }
                                 return 0;
                         }
                 }

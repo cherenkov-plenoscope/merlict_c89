@@ -68,7 +68,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         "Failed to replace CRLF and CR linebreaks.");
                 mliString_free(&tmp_payload);
                 mli_check(
-                        _mli_assert_string_has_only_NUL_LF_control_codes(
+                        mli_string_assert_only_NUL_LF_TAB_controls(
                                 payload->c_str),
                         "Did not expect control codes other than "
                         "(\\n, \\t, \\0) in text-files.");

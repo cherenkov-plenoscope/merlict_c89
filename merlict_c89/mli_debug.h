@@ -63,4 +63,6 @@
                 mli_check(__num_written == 1, "Can not write type to file.");  \
         }
 
+int MLI_PRINT_LEVEL = 1;
+
 #endif
