@@ -6,41 +6,29 @@
 Merlict simulates light. It propagates photons in a scenery, and it can render simple images. Merlict is a ```C```-library written in ```c89```. 
 
 # Abstract
-Merlict propagates photons in a scenery. You can define your scenery with a basic set of primitives, or with meshes of triangles from e.g. CAD-files. You define the physical properties of the surfaces in your scenery. You can also query the first intersection along a three-dimensional ray with the surfaces of your scenery. You can describe your scenery in a ```json```-file. Merlict takes your scenery and reorganizes it with space-partitioning to allow efficient queries for raytracing. A minimal viewer allows you to explore your scenery.
+Merlict propagates photons in a scenery. You define a scenery with meshes of triangles and their surface-normals. You define the physical properties of the surfaces and media such as reflectivity and transmissivity. Independent of light, you can query the intersection of a ray with the surfaces in your scenery. You describe the objects in your scenery using object-wavefront ```.obj```, and ```.json``` files. Merlict uses space-partitioning for efficient queries for raytracing. A minimal viewer allows you to explore your scenery on the command-line and allows you to export high resolution images with depth-of-field.
 
 # Interface
+Merlict reads your scenery from a tape-archive ```.tar``` containing human readable text-files which describe both the geometry and the materials.
+You can edit the text-files in a directory-tree and bundle them into a ```.tar```. Later you can also serialize and deserialize your entire scenery in binary for faster loading. 
 
-## Primitives
+## Objects
+A mesh defined by ```verices```, ```vertex-normals```, and triangular ```faces```.
 
-### Triangle (mesh)
-
-### Cap, spherical, hexagonal
-
-### Sphere
-
-### Cylinder
-
-### Disc, flat, hexagonal
-
-### Disc, flat, bi-circular
-
-### Disc, flat, round
+## R-Object
+A reference to an object bundeling the Object and the properties of its surfaces and media.
 
 ## Scenery
+A tree with frames as nodes and R-Objects as leafs defining the relative position and orientation of the R-Objects.
+
+## materials
+
+# media
+
+# surfaces
 
 
-### Writing the user-scenery in a json-file
-
-```json-file``` -> ```mliUserScenery``` -> ```mliScenery``` -> ```mliOctree``` 
-
-### Directly setting the raytracing-scenery
-
-```mliScenery``` -> ```mliOctree``` 
-
-## Photons
-
-## Rays
-
+# Photons
 
 
 # Tests
@@ -79,3 +67,5 @@ gcc merlict-c89-view.c -o merlict-c89-view -lm
 - Write unit-tests.
 - Format according to ```.clang-format```.
 
+# Suggestions
+The Blender toolbox to create and manipulate meshes, especially the surface-normals. 
