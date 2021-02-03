@@ -35,7 +35,6 @@ int main(void)
 #include "tests/test_mliQuaternion.c"
 #include "tests/test_homogeneous_transformation.c"
 #include "tests/test_math.c"
-#include "tests/test_quadratic_equation.c"
 #include "tests/test_mliColor.c"
 #include "tests/test_mliPixels.c"
 #include "tests/test_mliImage.c"

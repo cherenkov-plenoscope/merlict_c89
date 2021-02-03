@@ -24,7 +24,6 @@
 #include "mliPixels.c"
 #include "mliImage.c"
 #include "mliImage_print.c"
-#include "mliQuadraticEquation.c"
 #include "mliDynArray.c"
 #include "mliDynArray_template.c"
 #include "mliDynArray_channels_template.c"
