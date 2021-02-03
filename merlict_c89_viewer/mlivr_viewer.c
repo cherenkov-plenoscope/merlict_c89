@@ -2,7 +2,13 @@
 #include "mlivr_viewer.h"
 #include "mlivr_toggle_stdin.h"
 
-void mlivr_clear_screen(void) { printf("\033[2J\n"); }
+void mlivr_clear_screen(void) {
+        uint64_t n = 10;
+        while (n) {
+                putchar('\n');
+                n--;
+        }
+}
 
 void mlivr_print_help(void)
 {
