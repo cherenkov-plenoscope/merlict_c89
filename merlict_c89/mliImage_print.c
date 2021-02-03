@@ -55,8 +55,9 @@ void _mliImage_print_ansi_escape_chars(
                         }
                         printf("\033[48;2;%u;%u;%um%c\033[0m", r, g, b, symbol);
                 }
-                printf("\n");
+                putchar('\n');
         }
+        fflush(stdout);
 }
 
 void _mliImage_print_ascii_chars(
@@ -103,8 +104,9 @@ void _mliImage_print_ascii_chars(
                                         break;
                                 }
                         }
-                        printf("%c", symbol);
+                        putchar(symbol);
                 }
-                printf("\n");
+                putchar('\n');
         }
+        fflush(stdout);
 }
