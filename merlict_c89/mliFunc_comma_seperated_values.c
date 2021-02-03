@@ -15,6 +15,7 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
         int lpos = 0;
         int tpos = 0;
         int num_tokens;
+        uint64_t num_lines = 0u;
         uint64_t i;
 
         double _x;
@@ -26,6 +27,12 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
         mli_check(mliDynDouble_malloc(&ys, 0u), "Failed to malloc ys.");
 
         while (1) {
+                num_lines += 1;
+                mli_check(num_lines < 1000*1000*1000,
+                        "Expected less than 1e9 lines in "
+                        "comma-seperated-value-file. "
+                        "Something went wrong.");
+
                 line_length = mli_string_split(
                         &text[tpos],
                         line_delimiter,

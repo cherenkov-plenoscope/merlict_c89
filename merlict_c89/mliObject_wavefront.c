@@ -422,6 +422,7 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
 {
         uint64_t i = 0u;
         uint64_t p = 0u;
+        uint64_t num_lines = 0u;
         char line[64];
         uint64_t line_length = 0u;
         int rc = -1;
@@ -444,6 +445,11 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
 
         /* parse wavefront into dyn */
         while (1) {
+                num_lines += 1;
+                mli_check(num_lines < 1000*1000*1000,
+                        "Expected less than 1e9 lines in wavefront-file. "
+                        "Something went wrong.");
+
                 line_length = mli_string_split(
                         &str[p],
                         '\n',
