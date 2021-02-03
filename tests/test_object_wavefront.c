@@ -420,3 +420,61 @@ CASE("mliObject, write and read binary-string")
         mliObject_free(&obj);
         mliObject_free(&obj_back);
 }
+
+CASE("mliObject, write and read ascii-text-string")
+{
+        uint64_t i;
+        struct mliString str = mliString_init();
+        struct mliObject obj = mliObject_init();
+        struct mliObject obj_back = mliObject_init();
+        FILE *f;
+        CHECK(mliString_malloc_from_file(
+                &str,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001/"
+                "objects/"
+                "hexagonal_mirror_facet.obj"));
+        CHECK(mliObject_malloc_from_string(&obj, str.c_str));
+        mliString_free(&str);
+
+        f = fopen("tests/resources/hexagonal_mirror_facet.obj.tmp", "w");
+        CHECK(f != NULL);
+        mliObject_fprint(f, &obj);
+        fclose(f);
+
+        CHECK(mliString_malloc_from_file(
+                &str,
+                "tests/resources/hexagonal_mirror_facet.obj.tmp"));
+        CHECK(mliObject_malloc_from_string(&obj_back, str.c_str));
+        mliString_free(&str);
+
+        CHECK(obj.num_vertices == obj_back.num_vertices);
+        CHECK(obj.num_vertex_normals == obj_back.num_vertex_normals);
+        CHECK(obj.num_faces == obj_back.num_faces);
+
+        for (i = 0; i < obj.num_vertices; i++) {
+                CHECK(mliVec_equal_margin(
+                        obj.vertices[i],
+                        obj_back.vertices[i],
+                        1e-6));
+        }
+        for (i = 0; i < obj.num_vertex_normals; i++) {
+                CHECK(mliVec_equal_margin(
+                        obj.vertex_normals[i],
+                        obj_back.vertex_normals[i],
+                        1e-6));
+        }
+        for (i = 0; i < obj.num_faces; i++) {
+                CHECK(mliFace_is_equal(
+                        obj.faces_vertices[i],
+                        obj_back.faces_vertices[i]));
+                CHECK(mliFace_is_equal(
+                        obj.faces_vertex_normals[i],
+                        obj_back.faces_vertex_normals[i]));
+        }
+
+        mliObject_free(&obj);
+        mliObject_free(&obj_back);
+}

@@ -584,3 +584,40 @@ error:
 
         return 0;
 }
+
+uint64_t mliObject_fprint(FILE *f, const struct mliObject *obj)
+{
+        uint64_t total_num_chars_written = 0;
+        uint64_t i;
+        total_num_chars_written += fprintf(f, "# vertices\n");
+        for (i = 0; i < obj->num_vertices; i++) {
+                total_num_chars_written += fprintf(
+                        f,
+                        "v %.6f %.6f %.6f\n",
+                        obj->vertices[i].x,
+                        obj->vertices[i].y,
+                        obj->vertices[i].z);
+        }
+        total_num_chars_written += fprintf(f, "# vertex normals\n");
+        for (i = 0; i < obj->num_vertex_normals; i++) {
+                total_num_chars_written += fprintf(
+                        f,
+                        "vn %.6f %.6f %.6f\n",
+                        obj->vertex_normals[i].x,
+                        obj->vertex_normals[i].y,
+                        obj->vertex_normals[i].z);
+        }
+        total_num_chars_written += fprintf(f, "# faces\n");
+        for (i = 0; i < obj->num_faces; i++) {
+                total_num_chars_written += fprintf(
+                        f,
+                        "f %d//%d %d//%d %d//%d\n",
+                        obj->faces_vertices[i].a + 1,
+                        obj->faces_vertex_normals[i].a + 1,
+                        obj->faces_vertices[i].b + 1,
+                        obj->faces_vertex_normals[i].b + 1,
+                        obj->faces_vertices[i].c + 1,
+                        obj->faces_vertex_normals[i].c + 1);
+        }
+        return total_num_chars_written;
+}
