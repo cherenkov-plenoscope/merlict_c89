@@ -26,16 +26,15 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
         struct mliString tmp_payload = mliString_init();
+        char tarh_name[MLITAR_NAME_LENGTH] = {'\0'};
 
         mliArchive_free(arc);
         mliDynString_malloc(&arc->strings, 0u);
-
         mli_check(mliTar_open(&tar, path, "r"), "Cant open Tar.");
 
         while (mliTar_read_header(&tar, &tarh)) {
                 uint64_t next = arc->filenames.dyn.size;
                 struct mliString *payload = NULL;
-                char tarh_name[MLITAR_NAME_LENGTH];
                 memset(tarh_name, '\0', sizeof(tarh_name));
 
                 _mli_strip_this_dir(tarh_name, tarh.name);
@@ -71,12 +70,13 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         mli_string_assert_only_NUL_LF_TAB_controls(
                                 payload->c_str),
                         "Did not expect control codes other than "
-                        "(\\n, \\t, \\0) in text-files.");
+                        "('\\n', '\\t', '\\0') in text-files.");
         }
 
         mliTar_close(&tar);
         return 1;
 error:
+        mli_eprintf(("tar '%s', filename: '%s'.", path, tarh_name));
         mliString_free(&tmp_payload);
         mliArchive_free(arc);
         if (tar.stream) {

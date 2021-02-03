@@ -83,6 +83,7 @@ int mliObject_assert_valid_faces(const struct mliObject *obj)
         }
         return 1;
 error:
+        mli_eprintf(("Face %ld (counting starts at 0)", i));
         return 0;
 }
 
@@ -97,6 +98,7 @@ int mliObject_assert_normals(const struct mliObject *obj, const double epsilon)
         }
         return 1;
 error:
+        mli_eprintf(("Vertex-normal %ld (counting starts at 0)", i));
         return 0;
 }
 
