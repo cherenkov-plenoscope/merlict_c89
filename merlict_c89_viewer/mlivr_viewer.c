@@ -63,16 +63,17 @@ void mlivr_print_info_line(
         const struct mlivrCursor cursor)
 {
         printf("Press 'h' for help. "
-               "pos [ % -.2e, % -.2e, % -.2e]m, "
-               "rot [ % -.1f, % -.1f, % -.1f]deg, "
-               "fov %.2fdeg",
-               view.position.x,
-               view.position.y,
-               view.position.z,
-               mli_rad2deg(view.rotation.x),
-               mli_rad2deg(view.rotation.y),
-               mli_rad2deg(view.rotation.z),
-               mli_rad2deg(view.field_of_view));
+                "Camera: "
+                "pos [ % -.2e, % -.2e, % -.2e]m, "
+                "rot [ % -.1f, % -.1f, % -.1f]deg, "
+                "fov %.2fdeg",
+                view.position.x,
+                view.position.y,
+                view.position.z,
+                mli_rad2deg(view.rotation.x),
+                mli_rad2deg(view.rotation.y),
+                mli_rad2deg(view.rotation.z),
+                mli_rad2deg(view.field_of_view));
         if (cursor.active) {
                 printf(", cursor [% 3ld, % 3ld]pix", cursor.col, cursor.row);
         }
@@ -364,35 +365,41 @@ int mlivr_run_interactive_viewer(
                 }
                 mlivr_print_info_line(view, cursor);
                 if (cursor.active) {
+                        printf("Intersection: ");
                         if (has_probing_intersection) {
 
-                                printf("robj % 6d, "
-                                       "obj % 6d, "
-                                       "face % 6d, "
-                                       "dist % 6.2fm, "
-                                       "pos [% -.2e, % -.2e, % -.2e], "
-                                       "normal [% -.3f, % -.3f, % -.3f], ",
-                                       probing_intersection.robject_idx,
-                                       combine->scenery->robjects[
+                                printf(
+                                        "(% 5d,% 5d,% 5d;% 5d)"
+                                        "/"
+                                        "(ref,obj,face;id), "
+                                        "dist % 6.2fm, "
+                                        "pos [% -.2e, % -.2e, % -.2e], "
+                                        "normal [% -.3f, % -.3f, % -.3f], ",
+                                        probing_intersection.robject_idx,
+                                        combine->scenery->robjects[
                                                 probing_intersection.robject_idx
-                                       ],
-                                       probing_intersection.face_idx,
-                                       probing_intersection.distance_of_ray,
-                                       probing_intersection.position.x,
-                                       probing_intersection.position.y,
-                                       probing_intersection.position.z,
-                                       probing_intersection.surface_normal.x,
-                                       probing_intersection.surface_normal.y,
-                                       probing_intersection.surface_normal.z);
+                                        ],
+                                        probing_intersection.face_idx,
+                                        combine->scenery->robject_ids[
+                                                probing_intersection.robject_idx
+                                        ],
+                                        probing_intersection.distance_of_ray,
+                                        probing_intersection.position.x,
+                                        probing_intersection.position.y,
+                                        probing_intersection.position.z,
+                                        probing_intersection.surface_normal.x,
+                                        probing_intersection.surface_normal.y,
+                                        probing_intersection.surface_normal.z
+                                );
 
                                 if (probing_intersection.from_outside_to_inside) {
                                         printf("outside");
                                 } else {
                                         printf(" inside");
                                 }
-                                printf(".\n");
+                                printf("\n");
                         } else {
-                                printf("No intersection.\n");
+                                printf("None\n");
                         }
                 } else {
                         printf("\n");
