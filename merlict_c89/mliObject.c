@@ -247,7 +247,7 @@ void mliObject_fprint(FILE *f, const struct mliObject *obj)
                         obj->vertex_normals[i].z);
         }
         fprintf(f, "# faces\n");
-        for (i = 0; i < obj->num_vertex_normals; i++) {
+        for (i = 0; i < obj->num_faces; i++) {
                 fprintf(
                         f,
                         "f %d//%d %d//%d %d//%d\n",
