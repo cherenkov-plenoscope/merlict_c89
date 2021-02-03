@@ -88,57 +88,6 @@ error:
         return 0;
 }
 
-int __mliScenery_malloc_functions_from_json(
-        struct mliSceneryResources *resources,
-        struct mliDynMap *function_names,
-        const struct mliJson *json)
-{
-        uint64_t token;
-        uint64_t token_functions;
-        uint64_t f;
-        mli_check(
-                mliJson_find_key(json, 0, "functions", &token),
-                "Expected scenery-json to have key 'functions'.");
-        token_functions = token + 1;
-        mli_check(
-                json->tokens[token_functions].type == JSMN_ARRAY,
-                "Expected key 'functions' to point to a json-array.")
-                mli_check(
-                        resources->num_functions ==
-                                (uint64_t)json->tokens[token_functions].size,
-                        "Expected num_functions in mliScenery to "
-                        "match json-array.");
-
-        for (f = 0; f < resources->num_functions; f++) {
-                uint64_t token_f =
-                        mliJson_array_child_token(json, token_functions, f);
-                uint64_t token_f_name;
-                uint64_t token_f_val;
-                mli_check(
-                        json->tokens[token_f].type == JSMN_OBJECT,
-                        "Expected function-object with 'name' and 'values'.");
-                mli_check(
-                        mliJson_find_key(json, token_f, "name", &token_f_name),
-                        "Expected function to have key 'name'.");
-                mli_check(
-                        mliJson_find_key(json, token_f, "values", &token_f_val),
-                        "Expected function to have key 'values'.");
-                mli_check(
-                        mliFunc_malloc_from_json_token(
-                                &resources->functions[f],
-                                json,
-                                token_f_val + 1),
-                        "Failed to malloc mliFunc in mliScenery from json.");
-                mli_check(
-                        _mliDynMap_key_from_json(
-                                function_names, json, token_f_name, f),
-                        "Failed to read and insert function's name into map.");
-        }
-        return 1;
-error:
-        return 0;
-}
-
 int __mliScenery_assign_colors_from_json(
         struct mliSceneryResources *resources,
         struct mliDynMap *color_names,

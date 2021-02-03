@@ -71,10 +71,6 @@ int __mliScenery_assign_colors_from_json(
         struct mliSceneryResources *resources,
         struct mliDynMap *color_names,
         const struct mliJson *json);
-int __mliScenery_malloc_functions_from_json(
-        struct mliSceneryResources *resources,
-        struct mliDynMap *function_names,
-        const struct mliJson *json);
 int _mliDynMap_get_value_for_string_from_json(
         const struct mliDynMap *map,
         const struct mliJson *json,
