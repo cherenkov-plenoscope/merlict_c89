@@ -249,11 +249,11 @@ void mliObject_fprint(FILE *f, const struct mliObject *obj)
                 fprintf(
                         f,
                         "f %d//%d %d//%d %d//%d\n",
-                        obj->faces_vertices[i].a,
-                        obj->faces_vertex_normals[i].a,
-                        obj->faces_vertices[i].b,
-                        obj->faces_vertex_normals[i].b,
-                        obj->faces_vertices[i].c,
-                        obj->faces_vertex_normals[i].c);
+                        obj->faces_vertices[i].a + 1,
+                        obj->faces_vertex_normals[i].a + 1,
+                        obj->faces_vertices[i].b + 1,
+                        obj->faces_vertex_normals[i].b + 1,
+                        obj->faces_vertices[i].c + 1,
+                        obj->faces_vertex_normals[i].c + 1);
         }
 }
