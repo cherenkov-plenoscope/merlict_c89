@@ -235,7 +235,7 @@ int mli_string_assert_only_NUL_LF_TAB_controls(const char *str)
                                 /* fine */
                         } else {
                                 if (MLI_PRINT_LEVEL) {
-                                        mli_eprintf(
+                                        mli_log_err_vargs(
                                                 ("Control code %u "
                                                  "at column %ld in string.\n",
                                                  (uint8_t)str[pos],

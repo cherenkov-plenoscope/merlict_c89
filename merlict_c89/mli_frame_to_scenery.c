@@ -53,7 +53,7 @@ int __mliScenery_set_robjects(
                 (*robject_counter) += 1;
                 break;
         default:
-                mli_sentinel("Unknown type of frame.");
+                mli_sentinel("Expected either type 'frame' or 'object'.");
                 break;
         }
         return 1;

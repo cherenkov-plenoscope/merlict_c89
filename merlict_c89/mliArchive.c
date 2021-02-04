@@ -75,7 +75,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
         mliTar_close(&tar);
         return 1;
 error:
-        mli_eprintf(("tar '%s', filename: '%s'.", path, tarh_name));
+        mli_log_err_vargs(("tar '%s', filename: '%s'.", path, tarh_name));
         mliString_free(&tmp_payload);
         mliArchive_free(arc);
         if (tar.stream) {

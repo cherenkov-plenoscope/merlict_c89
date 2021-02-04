@@ -66,7 +66,7 @@
 
 void mli_stderr_printf(const char *format, ...);
 
-#define mli_eprintf(M)                                                         \
+#define mli_log_err_vargs(M)                                                   \
         {                                                                      \
                 fprintf(stderr, "[ERROR] (%s:%d) ", __FILE__, __LINE__);       \
                 mli_stderr_printf M;                                           \
