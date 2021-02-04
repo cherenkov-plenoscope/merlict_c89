@@ -23,12 +23,6 @@ int mliFunc_fold_numeric(
         const struct mliFunc *b,
         double *fold);
 int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out);
-double mli_linear_interpolate(
-        const double xarg,
-        const double x0,
-        const double y0,
-        const double x1,
-        const double y1);
 int mliFunc_x_is_causal(struct mliFunc *f);
 int mliFunc_malloc(struct mliFunc *f, const uint32_t num_points);
 void mliFunc_free(struct mliFunc *f);

@@ -10,7 +10,6 @@
 #include "mliOBB.h"
 
 #define MLI_TRI_EPS 10e-5
-#define MLI_LERP(A, B, C) ((B) + (A) * ((C) - (B)))
 #define MLI_INSIDE 0
 #define MLI_OUTSIDE 1
 

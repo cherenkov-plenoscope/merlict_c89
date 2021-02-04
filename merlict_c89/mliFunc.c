@@ -40,31 +40,6 @@ int mliFunc_x_is_causal(struct mliFunc *f)
         return 1;
 }
 
-double mli_linear_interpolate(
-        const double xarg,
-        const double x0,
-        const double y0,
-        const double x1,
-        const double y1)
-{
-        /*
-         *      |
-         *  y1 -|            o
-         *      |
-         *  y0 -|    o
-         *      |       xarg
-         *      +----|---|---|----
-         *          x0       x1
-         *
-         *  f(x) = m*x + b
-         *  m = (y1 - y0)/(x1 - x0)
-         *  y0 = m*x0 + b
-         *  b = y0 - m*x0
-         */
-        const double m = (y1 - y0) / (x1 - x0);
-        const double b = y0 - m * x0;
-        return m * xarg + b;
-}
 
 int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
 {
@@ -79,7 +54,7 @@ int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
                 y0 = f->y[idx - 1u];
                 x1 = f->x[idx];
                 x0 = f->x[idx - 1u];
-                (*out) = mli_linear_interpolate(xarg, x0, y0, x1, y1);
+                (*out) = mli_linear_interpolate_2d(xarg, x0, y0, x1, y1);
         }
         return 1;
 error:

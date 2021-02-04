@@ -103,9 +103,9 @@ int64_t __mli_check_point(
         int64_t mask)
 {
         struct mliVec plane_point;
-        plane_point.x = MLI_LERP(alpha, p1.x, p2.x);
-        plane_point.y = MLI_LERP(alpha, p1.y, p2.y);
-        plane_point.z = MLI_LERP(alpha, p1.z, p2.z);
+        plane_point.x = mli_linear_interpolate_1d(alpha, p1.x, p2.x);
+        plane_point.y = mli_linear_interpolate_1d(alpha, p1.y, p2.y);
+        plane_point.z = mli_linear_interpolate_1d(alpha, p1.z, p2.z);
         return (__mli_face_plane(plane_point) & mask);
 }
 

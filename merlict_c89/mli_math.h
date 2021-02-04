@@ -91,4 +91,14 @@ double mli_bin_center_in_linear_space(
         const double stop,
         const uint64_t num_bins,
         const uint64_t bin);
+double mli_linear_interpolate_1d(
+        const double weight,
+        const double start,
+        const double end);
+double mli_linear_interpolate_2d(
+        const double xarg,
+        const double x0,
+        const double y0,
+        const double x1,
+        const double y1);
 #endif

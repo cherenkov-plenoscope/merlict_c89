@@ -120,3 +120,37 @@ double mli_bin_center_in_linear_space(
         const double bin_width = width / (double)num_bins;
         return start + bin * bin_width + 0.5 * bin_width;
 }
+
+double mli_linear_interpolate_1d(
+        const double weight,
+        const double start,
+        const double end)
+{
+        return start + weight * (end - start);
+}
+
+double mli_linear_interpolate_2d(
+        const double xarg,
+        const double x0,
+        const double y0,
+        const double x1,
+        const double y1)
+{
+        /*
+         *      |
+         *  y1 -|            o
+         *      |
+         *  y0 -|    o
+         *      |       xarg
+         *      +----|---|---|----
+         *          x0       x1
+         *
+         *  f(x) = m*x + b
+         *  m = (y1 - y0)/(x1 - x0)
+         *  y0 = m*x0 + b
+         *  b = y0 - m*x0
+         */
+        const double m = (y1 - y0) / (x1 - x0);
+        const double b = y0 - m * x0;
+        return m * xarg + b;
+}
