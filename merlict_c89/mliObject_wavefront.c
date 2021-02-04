@@ -593,9 +593,9 @@ error:
         return 0;
 }
 
-uint64_t mliObject_fprint(FILE *f, const struct mliObject *obj)
+int64_t mliObject_fprint(FILE *f, const struct mliObject *obj)
 {
-        uint64_t total_num_chars_written = 0;
+        int64_t total_num_chars_written = 0;
         uint64_t i;
         total_num_chars_written += fprintf(f, "# vertices\n");
         for (i = 0; i < obj->num_vertices; i++) {
