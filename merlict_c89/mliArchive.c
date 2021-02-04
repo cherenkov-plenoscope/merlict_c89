@@ -127,12 +127,12 @@ uint64_t mliArchive_num(const struct mliArchive *arc)
         return arc->filenames.dyn.size;
 }
 
-void mliArchive_print(const struct mliArchive *arc)
+void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->strings.dyn.size; i++) {
                 struct _mliMapItem *map_item = &arc->filenames.arr[i];
-                fprintf(stderr,
+                fprintf(f,
                         "%ld: %s, %ld\n",
                         i,
                         map_item->key,
