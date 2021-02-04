@@ -9,9 +9,6 @@
 #include "mli_math.h"
 #include "mliOBB.h"
 
-#define MLI_INSIDE 0
-#define MLI_OUTSIDE 1
-
 #define MLI_SIGN3(A)                                                           \
         (((A).x < MLI_EPSILON)                                                 \
                  ? 4                                                           \
