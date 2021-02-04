@@ -59,7 +59,8 @@ void mli_pin_hole_camera_render_image(
                         struct mliRay ray_wrt_root =
                                 mliHomTra_ray(&camera2root, ray_wrt_camera);
 
-                        struct mliColor color = mli_trace(combine, ray_wrt_root);
+                        struct mliColor color =
+                                mli_trace(combine, ray_wrt_root);
                         mliImage_set(image, col, row, color);
                 }
         }

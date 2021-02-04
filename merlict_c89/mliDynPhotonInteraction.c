@@ -16,15 +16,14 @@ void mliDynPhotonInteraction_print(
                history->dyn.capacity);
         printf("==================\n");
 
-        printf(
-                "   #  "
-                "( robj,  obj, face;   id)  "
-                "[     x/m,     y/m,     z/m]  "
-                "type         "
-                "refr.    "
-                "abs.    "
-                "dist/m"
-                "\n");
+        printf("   #  "
+               "( robj,  obj, face;   id)  "
+               "[     x/m,     y/m,     z/m]  "
+               "type         "
+               "refr.    "
+               "abs.    "
+               "dist/m"
+               "\n");
         printf("-----------------------------------------------------"
                "-----------------------------------------------------\n");
 
@@ -34,10 +33,10 @@ void mliDynPhotonInteraction_print(
 
                 if (phisec.on_surface == 1) {
                         printf("(% 5d,% 5d,% 5d;% 5d)  ",
-                                phisec.robject_idx,
-                                scenery->robjects[phisec.robject_idx],
-                                phisec.face_idx,
-                                scenery->robject_ids[phisec.robject_idx]);
+                               phisec.robject_idx,
+                               scenery->robjects[phisec.robject_idx],
+                               phisec.face_idx,
+                               scenery->robject_ids[phisec.robject_idx]);
                 } else {
                         printf("            n/a            ");
                 }

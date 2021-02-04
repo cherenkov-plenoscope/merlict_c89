@@ -55,9 +55,7 @@
 
 #define mli_END 8
 
-int _mli_first_octree_node(
-        const struct mliVec t0,
-        const struct mliVec tm)
+int _mli_first_octree_node(const struct mliVec t0, const struct mliVec tm)
 {
         uint8_t child = 0;
         if (t0.x > t0.y) {
@@ -111,7 +109,10 @@ void _mli_proc_subtree(
         const int32_t node_type,
         uint8_t permutation,
         void *work,
-        void (*work_on_leaf_node)(void *, const struct mliOcTree *, const uint32_t))
+        void (*work_on_leaf_node)(
+                void *,
+                const struct mliOcTree *,
+                const uint32_t))
 {
         int32_t proc_node;
         struct mliVec tm, nt0, nt1;
@@ -160,7 +161,8 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[node_idx].children[1 ^ permutation],
+                                octree->nodes[node_idx]
+                                        .children[1 ^ permutation],
                                 octree->nodes[node_idx].types[1 ^ permutation],
                                 permutation,
                                 work,
@@ -175,7 +177,8 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[node_idx].children[2 ^ permutation],
+                                octree->nodes[node_idx]
+                                        .children[2 ^ permutation],
                                 octree->nodes[node_idx].types[2 ^ permutation],
                                 permutation,
                                 work,
@@ -190,12 +193,14 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[node_idx].children[3 ^ permutation],
+                                octree->nodes[node_idx]
+                                        .children[3 ^ permutation],
                                 octree->nodes[node_idx].types[3 ^ permutation],
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = _mli_next_octree_node(nt1, 7, mli_END, mli_END);
+                        proc_node =
+                                _mli_next_octree_node(nt1, 7, mli_END, mli_END);
                         break;
                 }
                 case 4: {
@@ -205,7 +210,8 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[node_idx].children[4 ^ permutation],
+                                octree->nodes[node_idx]
+                                        .children[4 ^ permutation],
                                 octree->nodes[node_idx].types[4 ^ permutation],
                                 permutation,
                                 work,
@@ -220,12 +226,14 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[node_idx].children[5 ^ permutation],
+                                octree->nodes[node_idx]
+                                        .children[5 ^ permutation],
                                 octree->nodes[node_idx].types[5 ^ permutation],
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = _mli_next_octree_node(nt1, mli_END, 7, mli_END);
+                        proc_node =
+                                _mli_next_octree_node(nt1, mli_END, 7, mli_END);
                         break;
                 }
                 case 6: {
@@ -235,12 +243,14 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[node_idx].children[6 ^ permutation],
+                                octree->nodes[node_idx]
+                                        .children[6 ^ permutation],
                                 octree->nodes[node_idx].types[6 ^ permutation],
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = _mli_next_octree_node(nt1, mli_END, mli_END, 7);
+                        proc_node =
+                                _mli_next_octree_node(nt1, mli_END, mli_END, 7);
                         break;
                 }
                 case 7: {
@@ -250,7 +260,8 @@ void _mli_proc_subtree(
                                 nt0,
                                 nt1,
                                 octree,
-                                octree->nodes[node_idx].children[7 ^ permutation],
+                                octree->nodes[node_idx]
+                                        .children[7 ^ permutation],
                                 octree->nodes[node_idx].types[7 ^ permutation],
                                 permutation,
                                 work,
@@ -266,7 +277,10 @@ void mli_ray_octree_traversal(
         const struct mliOcTree *octree,
         const struct mliRay ray,
         void *work,
-        void (*work_on_leaf_node)(void *, const struct mliOcTree *, const uint32_t))
+        void (*work_on_leaf_node)(
+                void *,
+                const struct mliOcTree *,
+                const uint32_t))
 {
         struct mliVec t0, t1;
         struct mliRay ray_wrt_octree;
@@ -283,17 +297,20 @@ void mli_ray_octree_traversal(
         ray_wrt_octree = ray;
 
         if (ray_wrt_octree.direction.x < 0) {
-                ray_wrt_octree.support.x = -ray_wrt_octree.support.x + cube_size.x;
+                ray_wrt_octree.support.x =
+                        -ray_wrt_octree.support.x + cube_size.x;
                 ray_wrt_octree.direction.x = -ray_wrt_octree.direction.x;
                 permutation |= 4;
         }
         if (ray_wrt_octree.direction.y < 0) {
-                ray_wrt_octree.support.y = -ray_wrt_octree.support.y + cube_size.y;
+                ray_wrt_octree.support.y =
+                        -ray_wrt_octree.support.y + cube_size.y;
                 ray_wrt_octree.direction.y = -ray_wrt_octree.direction.y;
                 permutation |= 2;
         }
         if (ray_wrt_octree.direction.z < 0) {
-                ray_wrt_octree.support.z = -ray_wrt_octree.support.z + cube_size.z;
+                ray_wrt_octree.support.z =
+                        -ray_wrt_octree.support.z + cube_size.z;
                 ray_wrt_octree.direction.z = -ray_wrt_octree.direction.z;
                 permutation |= 1;
         }

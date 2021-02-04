@@ -21,24 +21,23 @@ void _mli_inner_object_traversal(
         const uint32_t object_octree_leaf_idx)
 {
         /* traverse faces in an object-wavefront */
-        struct _mliInnerObjectWork *inner = (struct _mliInnerObjectWork *)_inner;
+        struct _mliInnerObjectWork *inner =
+                (struct _mliInnerObjectWork *)_inner;
 
         uint32_t f;
         const uint32_t num_faces_in_object_leaf = mliOcTree_leaf_num_objects(
-            object_octree,
-            object_octree_leaf_idx);
+                object_octree, object_octree_leaf_idx);
 
         struct mliIntersection tmp_intersection = mliIntersection_init();
 
         for (f = 0; f < num_faces_in_object_leaf; f++) {
 
                 uint32_t face_idx = mliOcTree_leaf_object_link(
-                        object_octree,
-                        object_octree_leaf_idx,
-                        f);
+                        object_octree, object_octree_leaf_idx, f);
 
                 struct mliFace fv = inner->object->faces_vertices[face_idx];
-                struct mliFace fvn = inner->object->faces_vertex_normals[face_idx];
+                struct mliFace fvn =
+                        inner->object->faces_vertex_normals[face_idx];
 
                 int32_t face_has_intersection = mliTriangle_intersection(
                         inner->ray_wrt_object,
@@ -53,13 +52,13 @@ void _mli_inner_object_traversal(
 
                         &tmp_intersection.distance_of_ray,
                         &tmp_intersection.position_local,
-                        &tmp_intersection.surface_normal_local
-                );
+                        &tmp_intersection.surface_normal_local);
 
                 tmp_intersection.face_idx = face_idx;
-                tmp_intersection.from_outside_to_inside = mli_ray_runs_from_outside_to_inside(
-                    inner->ray_wrt_object.direction,
-                    tmp_intersection.surface_normal_local);
+                tmp_intersection.from_outside_to_inside =
+                        mli_ray_runs_from_outside_to_inside(
+                                inner->ray_wrt_object.direction,
+                                tmp_intersection.surface_normal_local);
 
                 if (face_has_intersection) {
                         inner->has_intersection = 1;
@@ -91,15 +90,12 @@ int mliRobject_intersection(
                 object_octree,
                 inner.ray_wrt_object,
                 (void *)&inner,
-                _mli_inner_object_traversal
-        );
+                _mli_inner_object_traversal);
 
-        inner.intersection->position = mliHomTra_pos(
-                &local2root,
-                inner.intersection->position_local);
+        inner.intersection->position =
+                mliHomTra_pos(&local2root, inner.intersection->position_local);
         inner.intersection->surface_normal = mliHomTra_dir(
-                &local2root,
-                inner.intersection->surface_normal_local);
+                &local2root, inner.intersection->surface_normal_local);
 
         return inner.has_intersection;
 }
@@ -110,21 +106,20 @@ void _mli_outer_scenery_traversal(
         const uint32_t scenery_octree_leaf_idx)
 {
         /* traverse object-wavefronts in a scenery */
-        struct _mliOuterSceneryWork *outer = (struct _mliOuterSceneryWork *)_outer;
+        struct _mliOuterSceneryWork *outer =
+                (struct _mliOuterSceneryWork *)_outer;
 
         uint32_t ro;
-        const uint32_t num_robjects_in_scenery_leaf = mliOcTree_leaf_num_objects(
-                scenery_octree,
-                scenery_octree_leaf_idx);
+        const uint32_t num_robjects_in_scenery_leaf =
+                mliOcTree_leaf_num_objects(
+                        scenery_octree, scenery_octree_leaf_idx);
 
         struct mliIntersection tmp_intersection = mliIntersection_init();
 
         for (ro = 0; ro < num_robjects_in_scenery_leaf; ro++) {
 
                 uint32_t robject_idx = mliOcTree_leaf_object_link(
-                        scenery_octree,
-                        scenery_octree_leaf_idx,
-                        ro);
+                        scenery_octree, scenery_octree_leaf_idx, ro);
                 uint32_t object_idx = outer->scenery->robjects[robject_idx];
 
                 int32_t robject_has_intersection = mliRobject_intersection(
@@ -137,10 +132,8 @@ void _mli_outer_scenery_traversal(
                 tmp_intersection.robject_idx = robject_idx;
 
                 if (robject_has_intersection) {
-                        if (
-                                tmp_intersection.distance_of_ray <
-                                outer->intersection->distance_of_ray
-                        ) {
+                        if (tmp_intersection.distance_of_ray <
+                            outer->intersection->distance_of_ray) {
                                 (*outer->intersection) = tmp_intersection;
                         }
                 }
@@ -166,6 +159,5 @@ void mli_ray_scenery_query(
                 &combine->accelerator->scenery_octree,
                 ray_wrt_root,
                 (void *)&outer,
-                _mli_outer_scenery_traversal
-        );
+                _mli_outer_scenery_traversal);
 }

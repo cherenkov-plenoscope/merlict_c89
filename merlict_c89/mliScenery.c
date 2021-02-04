@@ -52,11 +52,12 @@ void mliScenery_fprint(FILE *f, const struct mliScenery *scenery)
 {
         uint32_t rob;
         fprintf(f, "__mliScenery__\n");
-        fprintf(f, " rob | obj | id  | translation(xyz) | rotation(xyz;w)  |\n");
-        fprintf(f, "-----|-----|-----|------------------|------------------|\n");
+        fprintf(f,
+                " rob | obj | id  | translation(xyz) | rotation(xyz;w)  |\n");
+        fprintf(f,
+                "-----|-----|-----|------------------|------------------|\n");
         for (rob = 0; rob < scenery->num_robjects; rob++) {
-                fprintf(
-                        f,
+                fprintf(f,
                         "% 4d |% 4d |% 4d |"
                         "(%.1f, %.1f, %.1f)|"
                         "(%.1f, %.1f, %.1f; %.1f)|"

@@ -15,9 +15,9 @@ int __mliQuaternion_tait_bryan_from_json(
                 mliVec_from_json_token(&xyz_deg, json, token_xyz + 1),
                 "Failed to parse tait_bryan's 'xyz_deg' from json.");
         *quat = mliQuaternion_set_tait_bryan(
-                        mli_deg2rad(xyz_deg.x),
-                        mli_deg2rad(xyz_deg.y),
-                        mli_deg2rad(xyz_deg.z));
+                mli_deg2rad(xyz_deg.x),
+                mli_deg2rad(xyz_deg.y),
+                mli_deg2rad(xyz_deg.z));
         return 1;
 error:
         return 0;
@@ -44,8 +44,7 @@ int __mliQuaternion_axis_angle_from_json(
                 mliJson_as_float64(json, token_angle + 1, &angle_deg),
                 "Failed to parse axis_angle's 'angle_deg' from json.");
         *quat = mliQuaternion_set_rotaxis_and_angle(
-                        axis,
-                        mli_deg2rad(angle_deg));
+                axis, mli_deg2rad(angle_deg));
         return 1;
 error:
         return 0;

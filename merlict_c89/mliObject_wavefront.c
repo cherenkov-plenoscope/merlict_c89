@@ -388,7 +388,9 @@ int _mliObject_parse_three_float_line(const char *line, struct mliVec *v)
                 c = line[i];
 
                 if (state == error_state) {
-                    fprintf(stderr, "[ERROR] Can not parse line '%s'\n", line);
+                        fprintf(stderr,
+                                "[ERROR] Can not parse line '%s'\n",
+                                line);
                 }
                 mli_check(
                         state != error_state,
@@ -446,98 +448,98 @@ int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
         /* parse wavefront into dyn */
         while (1) {
                 num_lines += 1;
-                mli_check(num_lines < 1000*1000*1000,
+                mli_check(
+                        num_lines < 1000 * 1000 * 1000,
                         "Expected less than 1e9 lines in wavefront-file. "
                         "Something went wrong.");
 
-                line_length = mli_string_split(
-                        &str[p],
-                        '\n',
-                        line,
-                        sizeof(line));
+                line_length =
+                        mli_string_split(&str[p], '\n', line, sizeof(line));
 
                 mli_check(line_length < sizeof(line), "Line is too long.");
 
                 if (line_length > 0) {
-                if (line[0] == 'v' && line[1] == 'n' && line[2] == ' ') {
-                        /* vertex-normal-line*/
-                        struct mliVec tmp_vn;
-                        rc = _mliObject_parse_three_float_line(
-                                &line[2], &tmp_vn);
-                        if (rc == 0) {
-                                fprintf(
-                                    stderr,
-                                    "[ERROR] in vertex-normal-line %ld.\n",
-                                    vn.dyn.size
-                                );
+                        if (line[0] == 'v' && line[1] == 'n' &&
+                            line[2] == ' ') {
+                                /* vertex-normal-line*/
+                                struct mliVec tmp_vn;
+                                rc = _mliObject_parse_three_float_line(
+                                        &line[2], &tmp_vn);
+                                if (rc == 0) {
+                                        fprintf(stderr,
+                                                "[ERROR] in vertex-normal-line "
+                                                "%ld.\n",
+                                                vn.dyn.size);
+                                }
+                                mli_check(
+                                        rc,
+                                        "Can not parse vertex-normal-line.");
+                                mli_c(mliDynVec_push_back(&vn, tmp_vn));
+                        } else if (line[0] == 'v' && line[1] == ' ') {
+                                /* vertex line */
+                                struct mliVec tmp_v;
+                                rc = _mliObject_parse_three_float_line(
+                                        &line[1], &tmp_v);
+                                if (rc == 0) {
+                                        fprintf(stderr,
+                                                "[ERROR] in vertex-line %ld.\n",
+                                                v.dyn.size);
+                                }
+                                mli_check(rc, "Can not parse vertex-line.");
+                                mli_c(mliDynVec_push_back(&v, tmp_v));
+                        } else if (line[0] == 'f' && line[1] == ' ') {
+                                /* face-line */
+                                int line_mode = -1;
+                                struct mliFace tmp_fv;
+                                struct mliFace tmp_fvt;
+                                struct mliFace tmp_fvn;
+
+                                rc = _mliObject_parse_face_line(
+                                        line,
+                                        &tmp_fv,
+                                        &tmp_fvt,
+                                        &tmp_fvn,
+                                        &line_mode);
+                                if (rc == 0) {
+                                        fprintf(stderr,
+                                                "[ERROR] in face-line %ld.\n",
+                                                fv.dyn.size);
+                                }
+                                mli_check(rc, "Can not parse face-line.");
+
+                                mli_check(tmp_fv.a >= 1, "Expected fv.a >= 1");
+                                mli_check(tmp_fv.b >= 1, "Expected fv.b >= 1");
+                                mli_check(tmp_fv.c >= 1, "Expected fv.c >= 1");
+                                tmp_fv.a -= 1;
+                                tmp_fv.b -= 1;
+                                tmp_fv.c -= 1;
+
+                                mli_check(
+                                        tmp_fvn.a >= 1, "Expected fvn.a >= 1");
+                                mli_check(
+                                        tmp_fvn.b >= 1, "Expected fvn.b >= 1");
+                                mli_check(
+                                        tmp_fvn.c >= 1, "Expected fvn.c >= 1");
+                                tmp_fvn.a -= 1;
+                                tmp_fvn.b -= 1;
+                                tmp_fvn.c -= 1;
+
+                                mli_c(mliDynFace_push_back(&fv, tmp_fv));
+                                mli_c(mliDynFace_push_back(&fvn, tmp_fvn));
+                                mli_check(
+                                        (line_mode ==
+                                         MLI_WAVEFRONT_FACE_LINE_V_VT_VN) ||
+                                                (line_mode ==
+                                                 MLI_WAVEFRONT_FACE_LINE_V_VN),
+                                        "Expected faces to have "
+                                        "vertex-normals.");
                         }
-                        mli_check(rc, "Can not parse vertex-normal-line.");
-                        mli_c(mliDynVec_push_back(&vn, tmp_vn));
-                } else if (line[0] == 'v' && line[1] == ' ') {
-                        /* vertex line */
-                        struct mliVec tmp_v;
-                        rc = _mliObject_parse_three_float_line(
-                                &line[1], &tmp_v);
-                        if (rc == 0) {
-                                fprintf(
-                                    stderr,
-                                    "[ERROR] in vertex-line %ld.\n",
-                                    v.dyn.size
-                                );
-                        }
-                        mli_check(rc, "Can not parse vertex-line.");
-                        mli_c(mliDynVec_push_back(&v, tmp_v));
-                } else if (line[0] == 'f' && line[1] == ' ') {
-                        /* face-line */
-                        int line_mode = -1;
-                        struct mliFace tmp_fv;
-                        struct mliFace tmp_fvt;
-                        struct mliFace tmp_fvn;
-
-                        rc = _mliObject_parse_face_line(
-                                line,
-                                &tmp_fv,
-                                &tmp_fvt,
-                                &tmp_fvn,
-                                &line_mode);
-                        if (rc == 0) {
-                                fprintf(
-                                    stderr,
-                                    "[ERROR] in face-line %ld.\n",
-                                    fv.dyn.size
-                                );
-                        }
-                        mli_check(rc, "Can not parse face-line.");
-
-                        mli_check(tmp_fv.a >= 1, "Expected fv.a >= 1");
-                        mli_check(tmp_fv.b >= 1, "Expected fv.b >= 1");
-                        mli_check(tmp_fv.c >= 1, "Expected fv.c >= 1");
-                        tmp_fv.a -= 1;
-                        tmp_fv.b -= 1;
-                        tmp_fv.c -= 1;
-
-                        mli_check(tmp_fvn.a >= 1, "Expected fvn.a >= 1");
-                        mli_check(tmp_fvn.b >= 1, "Expected fvn.b >= 1");
-                        mli_check(tmp_fvn.c >= 1, "Expected fvn.c >= 1");
-                        tmp_fvn.a -= 1;
-                        tmp_fvn.b -= 1;
-                        tmp_fvn.c -= 1;
-
-                        mli_c(mliDynFace_push_back(&fv, tmp_fv));
-                        mli_c(mliDynFace_push_back(&fvn, tmp_fvn));
-                        mli_check(
-                                (line_mode == MLI_WAVEFRONT_FACE_LINE_V_VT_VN)
-                                ||
-                                (line_mode == MLI_WAVEFRONT_FACE_LINE_V_VN),
-                                "Expected faces to have vertex-normals.");
-                }
                 } /* line_length > 0 */
 
                 if (str[p + line_length] == '\0') {
                         break;
                 }
                 p += line_length + 1;
-
         }
 
         /* copy dyn into static mliObject */
@@ -597,33 +599,33 @@ uint64_t mliObject_fprint(FILE *f, const struct mliObject *obj)
         uint64_t i;
         total_num_chars_written += fprintf(f, "# vertices\n");
         for (i = 0; i < obj->num_vertices; i++) {
-                total_num_chars_written += fprintf(
-                        f,
-                        "v %.6f %.6f %.6f\n",
-                        obj->vertices[i].x,
-                        obj->vertices[i].y,
-                        obj->vertices[i].z);
+                total_num_chars_written +=
+                        fprintf(f,
+                                "v %.6f %.6f %.6f\n",
+                                obj->vertices[i].x,
+                                obj->vertices[i].y,
+                                obj->vertices[i].z);
         }
         total_num_chars_written += fprintf(f, "# vertex normals\n");
         for (i = 0; i < obj->num_vertex_normals; i++) {
-                total_num_chars_written += fprintf(
-                        f,
-                        "vn %.6f %.6f %.6f\n",
-                        obj->vertex_normals[i].x,
-                        obj->vertex_normals[i].y,
-                        obj->vertex_normals[i].z);
+                total_num_chars_written +=
+                        fprintf(f,
+                                "vn %.6f %.6f %.6f\n",
+                                obj->vertex_normals[i].x,
+                                obj->vertex_normals[i].y,
+                                obj->vertex_normals[i].z);
         }
         total_num_chars_written += fprintf(f, "# faces\n");
         for (i = 0; i < obj->num_faces; i++) {
-                total_num_chars_written += fprintf(
-                        f,
-                        "f %d//%d %d//%d %d//%d\n",
-                        obj->faces_vertices[i].a + 1,
-                        obj->faces_vertex_normals[i].a + 1,
-                        obj->faces_vertices[i].b + 1,
-                        obj->faces_vertex_normals[i].b + 1,
-                        obj->faces_vertices[i].c + 1,
-                        obj->faces_vertex_normals[i].c + 1);
+                total_num_chars_written +=
+                        fprintf(f,
+                                "f %d//%d %d//%d %d//%d\n",
+                                obj->faces_vertices[i].a + 1,
+                                obj->faces_vertex_normals[i].a + 1,
+                                obj->faces_vertices[i].b + 1,
+                                obj->faces_vertex_normals[i].b + 1,
+                                obj->faces_vertices[i].c + 1,
+                                obj->faces_vertex_normals[i].c + 1);
         }
         return total_num_chars_written;
 }

@@ -172,8 +172,7 @@ void _mliApCam_aquire_pixels(
                 struct mliRay ray_wrt_root =
                         mliHomTra_ray(&camera2root, ray_wrt_camera);
 
-                struct mliColor set_color =
-                        mli_trace(combine, ray_wrt_root);
+                struct mliColor set_color = mli_trace(combine, ray_wrt_root);
 
                 mliImage_set(colors, i, 0u, set_color);
         }

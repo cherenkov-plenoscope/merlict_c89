@@ -40,7 +40,6 @@ int mliFunc_x_is_causal(struct mliFunc *f)
         return 1;
 }
 
-
 int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
 {
         double y1, y0, x1, x0;

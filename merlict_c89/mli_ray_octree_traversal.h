@@ -13,7 +13,10 @@ void mli_ray_octree_traversal(
         const struct mliOcTree *octree,
         const struct mliRay ray,
         void *work,
-        void (*work_on_leaf_node)(void *, const struct mliOcTree *, const uint32_t));
+        void (*work_on_leaf_node)(
+                void *,
+                const struct mliOcTree *,
+                const uint32_t));
 
 void _mli_proc_subtree(
         struct mliVec t0,
@@ -23,7 +26,10 @@ void _mli_proc_subtree(
         const int32_t node_type,
         uint8_t permutation,
         void *work,
-        void (*work_on_leaf_node)(void *, const struct mliOcTree *, const uint32_t));
+        void (*work_on_leaf_node)(
+                void *,
+                const struct mliOcTree *,
+                const uint32_t));
 
 int _mli_next_octree_node(const struct mliVec tm, int x, int y, int z);
 

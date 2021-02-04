@@ -62,8 +62,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         "tmp-string-buffer.");
                 mli_check(
                         mliString_convert_line_break_CRLF_CR_to_LF(
-                                payload,
-                                &tmp_payload),
+                                payload, &tmp_payload),
                         "Failed to replace CRLF and CR linebreaks.");
                 mliString_free(&tmp_payload);
                 mli_check(
@@ -188,10 +187,7 @@ void _mli_strip_this_dir(char *dst, const char *src)
 {
         const char *_src = &src[0];
         memset(dst, '\0', strlen(src));
-        while (
-                mli_string_starts_with(_src, "./") &&
-                _src[0] != '\0'
-        ) {
+        while (mli_string_starts_with(_src, "./") && _src[0] != '\0') {
                 _src += 2;
         }
         strcpy(dst, _src);

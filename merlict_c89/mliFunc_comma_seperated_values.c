@@ -28,7 +28,8 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
 
         while (1) {
                 num_lines += 1;
-                mli_check(num_lines < 1000*1000*1000,
+                mli_check(
+                        num_lines < 1000 * 1000 * 1000,
                         "Expected less than 1e9 lines in "
                         "comma-seperated-value-file. "
                         "Something went wrong.");
