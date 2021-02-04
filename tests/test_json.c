@@ -128,44 +128,6 @@ CASE("mliJson_malloc_from_string")
         mliJson_free(&json);
 }
 
-CASE("parse mliFunc")
-{
-        uint64_t token;
-        struct mliJson json = mliJson_init();
-        struct mliFunc f = mliFunc_init();
-        CHECK(mliJson_malloc_from_path(&json, "tests/resources/function.json"));
-        CHECK(mliJson_debug_export(&json, "tests/resources/function.debug.tmp"));
-        CHECK(mliJson_find_key(&json, 0, "two_functions", &token));
-        CHECK(json.tokens[token + 1].size == 2);
-        token += 1;
-        CHECK(token == 2);
-        token += 1;
-        CHECK(token == 3);
-        /* the first function */
-        CHECK(mliFunc_malloc_from_json_token(&f, &json, token));
-        CHECK(f.num_points == 2);
-        CHECK_MARGIN(f.x[0], 200e-9, 1e-9);
-        CHECK_MARGIN(f.x[1], 1200e-9, 1e-9);
-        CHECK_MARGIN(f.y[0], 0., 1e-9);
-        CHECK_MARGIN(f.y[1], 0., 1e-9);
-        mliFunc_free(&f);
-
-        token = 10;
-        /* the second function */
-        f = mliFunc_init();
-        CHECK(mliFunc_malloc_from_json_token(&f, &json, token));
-        CHECK(f.num_points == 3);
-        CHECK_MARGIN(f.x[0], -200e-9, 1e-9);
-        CHECK_MARGIN(f.x[1], 600e-9, 1e-9);
-        CHECK_MARGIN(f.x[2], 1200e-9, 1e-9);
-        CHECK_MARGIN(f.y[0], 1.49, 1e-6);
-        CHECK_MARGIN(f.y[1], -0.59, 1e-6);
-        CHECK_MARGIN(f.y[2], -7.9, 1e-6);
-        mliFunc_free(&f);
-
-        mliJson_free(&json);
-}
-
 CASE("parse mliVec and mliColor")
 {
         uint64_t token;

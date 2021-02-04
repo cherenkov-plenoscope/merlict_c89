@@ -73,7 +73,6 @@
 #include "mliFunc_comma_seperated_values.h"
 #include "mliQuaternion_json.h"
 #include "mliScenery_json.h"
-#include "mliFunc_malloc_from_json_token.h"
 #include "mliVec_from_json_token.h"
 #include "mli_frame_to_scenery.h"
 #include "mliPhoton.h"
