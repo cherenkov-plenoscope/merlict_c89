@@ -9,23 +9,22 @@
 #include "mli_math.h"
 #include "mliOBB.h"
 
-#define MLI_TRI_EPS 10e-5
 #define MLI_INSIDE 0
 #define MLI_OUTSIDE 1
 
 #define MLI_SIGN3(A)                                                           \
-        (((A).x < MLI_TRI_EPS)                                                 \
+        (((A).x < MLI_EPSILON)                                                 \
                  ? 4                                                           \
-                 : 0 | ((A).x > -MLI_TRI_EPS)                                  \
+                 : 0 | ((A).x > -MLI_EPSILON)                                  \
                            ? 32                                                \
-                           : 0 | ((A).y < MLI_TRI_EPS)                         \
+                           : 0 | ((A).y < MLI_EPSILON)                         \
                                      ? 2                                       \
-                                     : 0 | ((A).y > -MLI_TRI_EPS)              \
+                                     : 0 | ((A).y > -MLI_EPSILON)              \
                                                ? 16                            \
-                                               : 0 | ((A).z < MLI_TRI_EPS)     \
+                                               : 0 | ((A).z < MLI_EPSILON)     \
                                                          ? 1                   \
                                                          : 0 | ((A).z >        \
-                                                                -MLI_TRI_EPS)  \
+                                                                -MLI_EPSILON)  \
                                                                    ? 8         \
                                                                    : 0)
 

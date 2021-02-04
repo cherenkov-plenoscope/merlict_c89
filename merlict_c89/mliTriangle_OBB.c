@@ -312,7 +312,7 @@ int64_t __mli_triangle_cube_intersection(struct mliTriangle t)
 
         /* if one of the diagonals is parallel to the plane,
          * the other will intersect the plane */
-        if (fabs(denom = (norm.x + norm.y + norm.z)) > MLI_TRI_EPS)
+        if (fabs(denom = (norm.x + norm.y + norm.z)) > MLI_EPSILON)
         /* skip parallel diagonals to the plane; division by 0 can occur */
         {
                 hitpp.x = hitpp.y = hitpp.z = d / denom;
@@ -321,21 +321,21 @@ int64_t __mli_triangle_cube_intersection(struct mliTriangle t)
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
-        if (fabs(denom = (norm.x + norm.y - norm.z)) > MLI_TRI_EPS) {
+        if (fabs(denom = (norm.x + norm.y - norm.z)) > MLI_EPSILON) {
                 hitpn.z = -(hitpn.x = hitpn.y = d / denom);
                 if (fabs(hitpn.x) <= 0.5)
                         if (__mli_point_triangle_intersection(hitpn, t) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
-        if (fabs(denom = (norm.x - norm.y + norm.z)) > MLI_TRI_EPS) {
+        if (fabs(denom = (norm.x - norm.y + norm.z)) > MLI_EPSILON) {
                 hitnp.y = -(hitnp.x = hitnp.z = d / denom);
                 if (fabs(hitnp.x) <= 0.5)
                         if (__mli_point_triangle_intersection(hitnp, t) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
-        if (fabs(denom = (norm.x - norm.y - norm.z)) > MLI_TRI_EPS) {
+        if (fabs(denom = (norm.x - norm.y - norm.z)) > MLI_EPSILON) {
                 hitnn.y = hitnn.z = -(hitnn.x = d / denom);
                 if (fabs(hitnn.x) <= 0.5)
                         if (__mli_point_triangle_intersection(hitnn, t) ==
