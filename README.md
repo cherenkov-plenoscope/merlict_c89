@@ -3,72 +3,63 @@
 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Merlict simulates light. It propagates photons in a scenery, and it can render simple images. Merlict is a ```C```-library written in ```c89```.
-
-# Abstract
-Merlict propagates photons in a scenery. You define a scenery with meshes of triangles and their surface-normals. You define the physical properties of the surfaces and media such as reflectivity and transmissivity. Independent of light, you can query the intersection of a ray with the surfaces in your scenery. You describe the objects in your scenery using object-wavefront ```.obj```, and ```.json``` files. Merlict uses space-partitioning for efficient queries for raytracing. A minimal viewer allows you to explore your scenery on the command-line and allows you to export high resolution images with depth-of-field.
+Merlict simulates light. It propagates photons in a scenery, and renders images in an interactive viwer. Further merlict can query intersections of a ray with the scenery independent of light. Merlict is a ```C```-library written in ```c89```.
 
 # Interface
-Merlict reads your scenery from a tape-archive ```.tar``` containing human readable text-files which describe both the geometry and the materials.
-You can edit the text-files in a directory-tree and bundle them into a ```.tar```. Later you can also serialize and deserialize your entire scenery in binary for faster loading.
-
-## Objects
-A mesh defined by ```verices```, ```vertex-normals```, and triangular ```faces```.
-
-## R-Object
-A reference to an object bundeling the Object and the properties of its surfaces and media.
+Merlict reads your scenery from a tape-archive ```.tar``` containing human readable text-files which describe your objects, the geometry among them, and their materials. You provide each object with an ID.
+Further you provide photons defined by their creation-position, direction, and wavelength.
+For each photon, merlict will give you a propagation-history, referencing all objects the photon interacted with before its absorbtion.
 
 ## Scenery
-A tree with frames as nodes and R-Objects as leafs defining the relative position and orientation of the R-Objects.
 
-## materials
+### tree
+A tree with cartesian frames as nodes and object-references as leafs. The tree defines the relative position and orientation of your object-references.
 
-# media
+### object
+A mesh of triangular ```faces``` which are defined by their ```vertices```, and ```vertex-normals```.
+To approximate complex surfaces, especially complex surface-normals, you can control the ```vertex-normals``` of each ```face```. The surface-normal in an intersection will be the barycentric interpolation of the ```vertex-normals```.
 
-# surfaces
+### object-reference
+A reference to an object. It bundles the object and the pysical properties of its surfaces and media.
 
+### materials
+You describe a medium by its transmissivity and its refractive index.
 
-# Photons
+You define surfaces by their specular, and diffuse (lambertian) reflections approximating physical surfaces using the Phong-model.
 
+## Photons
+Photons are defined by their creation-position, their direction, their wavelength.
+During propagation, merlict writes the history of the photon bouncing around in the scenery until it is absorbed.
 
-# Tests
-#### compile
-```
-gcc merlict-c89-test.c -o merlict-c89-test -lm
-```
-
-#### run
-```
-./merlict-c89-test
-```
-
-#### compile and run tests with muliple compilers
+# Build and tests
 ```
 ./compile_and_test.sh
 ```
-To find compilation-warnings, and -errors early, the ```gcc``` and ```clang``` compilers are called in both ```c```, and ```c++``` configuration.
+A script to compile with both ```gcc``` and ```clang```, in both ```c```, and ```c++``` mode. Also run the unit-tests.
 
 # Viewer
-A minimal viewer for your command-line.
+A minimal viewer in the terminal.
 
-#### compile
+#### Compile
 ```
-gcc merlict-c89-view.c -o merlict-c89-view -lm
-```
-
-#### run
-```
-./merlict-c89-view tests/resources/small_scenery.json
+gcc merlict-c89-view.c -o view -lm
 ```
 
-## Code and library
-- Follow the ```std=c89``` standard.
-- Do not allow warnings in ```gcc``` and ```clang``` compilers.
+#### Run
+```
+./view tests/resources/sceneries/001.tar
+```
+
+## Code
 - Write unit-tests.
+- Obey ```std=c89``` standard.
+- No Warnings in```gcc``` and ```clang``` compilers both in ```c``` and ```c++``` mode.
 - Format according to ```.clang-format```.
 
-# Suggestions
-The Blender toolbox to create and manipulate meshes, especially the surface-normals.
+# Suggested tools
+- [Blender](https://www.blender.org/) to inspect and manipulate objects. It is especially useful to visualize surface-normals.
+
+- [OpenScad](http://www.openscad.org/) to create meshes in a parametric way. Unfortunately it does not have a concept of vertex-normals.
 
 # Acknowledgement
 In no particular order.
