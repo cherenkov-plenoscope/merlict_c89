@@ -2,7 +2,6 @@
 #ifndef MERLICT_C89_MLICOLOR_H_
 #define MERLICT_C89_MLICOLOR_H_
 
-#include <math.h>
 #include <stdint.h>
 
 struct mliColor {
