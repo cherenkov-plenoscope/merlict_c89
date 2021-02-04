@@ -62,32 +62,31 @@ gcc merlict-c89-view.c -o view -lm
 - [OpenScad](http://www.openscad.org/) to create meshes in a parametric way. Unfortunately it does not have a concept of vertex-normals.
 
 # Acknowledgement
-In no particular order.
 
 Finding intersections of triangles and cubes
 - Voorhies, Douglas; Triangle-Cube Intersection; Graphics Gems III, p. 236-239, code: p. 521-526
 
 Mirroring direction-vectors on a surface-normal
-- J.H., Bruge; University of Arizona; OPTI 421/521 – Introductory Optomechanical Engineering
+- J.H., Bruge; University of Arizona; OPTI 421/521 – 'Introductory Optomechanical Engineering'
 
 Traversing an octree with a ray
-- Revelles, Jorge and Urena, Carlos and Lastra, Miguel; An efficient parametric algorithm for octree traversal; Vaclav Skala-UNION Agency
+- Revelles, Jorge and Urena, Carlos and Lastra, Miguel; 'An efficient parametric algorithm for octree traversal'; Vaclav Skala-UNION Agency
 - Jeroen, Baert; additional comments
 
 Pseudo random number generator
-- Makoto, Matsumoto and Takuji, Nishimura and wikipedia.org; Mersenne Twister
+- Makoto, Matsumoto and Takuji, Nishimura and [wikipedia](https://en.wikipedia.org/wiki/Mersenne_Twister); Mersenne Twister
 
 Parsing JSON-strings
 - Serge, Zaitsev; [JSMN](https://zserge.com/jsmn/)
 
 Awesome debug MACROS
-- Zed, Shawn; Learning C the hard way
+- Zed, Shawn; 'Learn C the hard way'
 
 Sampling from random distributions
-- Volker, Blobel; Statistical and numerical methods
+- Volker, Blobel; 'Statistical and numerical methods'
 
-Homogenous Transformations in 3D
-- Bruno, Siciliano and Lorenzo, Sciavicco and Luigi, Villani and Guiseppe, Oriolo; Robotics -- Modelling, Planning and Control
+Homogenous Transformations
+- Bruno, Siciliano and Lorenzo, Sciavicco and Luigi, Villani and Guiseppe, Oriolo; 'Robotics -- Modelling, Planning and Control'
 
 Writing and reading tape-archives (```.tar```)
 - rxi; [microtar](https://github.com/rxi/microtar)
