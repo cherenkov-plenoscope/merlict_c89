@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTriangle_OBB.h"
+#include <math.h>
+#include "mli_math.h"
 
 #define MLI_INSIDE 0
 #define MLI_OUTSIDE 1

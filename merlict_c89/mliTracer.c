@@ -1,6 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTracer.h"
+#include <math.h>
+#include <stdint.h>
 #include "mli_intersection_and_scenery.h"
+#include "mli_ray_octree_traversal.h"
 
 int mli_first_casual_intersection(
         const struct mliCombine *combine,

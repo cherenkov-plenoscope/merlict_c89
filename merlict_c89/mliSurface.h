@@ -4,8 +4,6 @@
 
 #include <stdint.h>
 
-#include "mli_debug.h"
-
 #define MLI_MATERIAL_PHONG 100u
 #define MLI_MATERIAL_TRANSPARENT 102u
 

@@ -2,7 +2,6 @@
 #ifndef MERLICT_C89_MLIVEC_FROM_JSON_TOKEN_H_
 #define MERLICT_C89_MLIVEC_FROM_JSON_TOKEN_H_
 
-#include "mli_debug.h"
 #include "mliVec.h"
 #include "mliColor.h"
 #include "mli_json.h"

@@ -3,10 +3,7 @@
 #define MERLICT_C89_MLITRIANGLE_OBB_H_
 
 #include <stdint.h>
-#include <math.h>
-
 #include "mliVec.h"
-#include "mli_math.h"
 #include "mliOBB.h"
 
 struct mliTriangle {

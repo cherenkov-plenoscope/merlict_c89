@@ -3,12 +3,9 @@
 #define MERLICT_C89_MLITMPOCTREE_H_
 
 #include <stdint.h>
-
-#include "mliObject_OBB.h"
 #include "mliScenery.h"
 #include "mliOBB.h"
 #include "mliCube.h"
-#include "mli_math.h"
 #include "mliOctOverlaps.h"
 
 #define MLI_TMPNODE_FLAT_INDEX_NONE -1

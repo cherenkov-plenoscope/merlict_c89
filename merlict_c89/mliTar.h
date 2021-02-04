@@ -28,9 +28,7 @@
 #ifndef MERLICT_C89_MLITAR_H_
 #define MERLICT_C89_MLITAR_H_
 
-#include "mli_debug.h"
 #include <stdio.h>
-#include <string.h>
 #include <stdint.h>
 
 #define MLITAR_TREG '0'

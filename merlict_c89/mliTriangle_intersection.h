@@ -2,13 +2,8 @@
 #ifndef MERLICT_C89_MLITRIANGLE_INTERSECTION_H_
 #define MERLICT_C89_MLITRIANGLE_INTERSECTION_H_
 
-#include <math.h>
-
-#include "mli_math.h"
 #include "mliVec.h"
 #include "mliRay.h"
-#include "mliIntersection.h"
-#include "mli_from_outside_to_inside.h"
 
 int mliTriangle_intersection(
         const struct mliRay ray,

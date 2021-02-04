@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliString.h"
+#include <stdio.h>
 
 struct mliString mliString_init(void)
 {

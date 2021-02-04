@@ -1,6 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTriangle_intersection.h"
 #include "mli_barycentric.h"
+#include <math.h>
+#include "mli_math.h"
 
 int mliRay_intersects_triangle(
         const struct mliRay ray,

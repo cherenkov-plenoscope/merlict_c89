@@ -2,12 +2,8 @@
 #ifndef MERLICT_C89_MLITRACER_H_
 #define MERLICT_C89_MLITRACER_H_
 
-#include <math.h>
-#include <stdint.h>
-
 #include "mliCombine.h"
 #include "mliIntersection.h"
-#include "mli_ray_octree_traversal.h"
 
 struct mliColor mli_trace(
         const struct mliCombine *combine,

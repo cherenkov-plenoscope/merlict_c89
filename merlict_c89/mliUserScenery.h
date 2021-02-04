@@ -2,13 +2,8 @@
 #ifndef MERLICT_C89_MLIUSERSCENERY_H_
 #define MERLICT_C89_MLIUSERSCENERY_H_
 
-#include <math.h>
-#include <stdint.h>
-
-#include "mli_debug.h"
 #include "mliSceneryResources.h"
 #include "mliFrame.h"
-#include "mli_json.h"
 #include "mliDynMap.h"
 #include "mliArchive.h"
 

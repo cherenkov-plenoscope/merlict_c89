@@ -1,5 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliUserScenery.h"
+#include <math.h>
+#include <stdint.h>
+#include "mli_debug.h"
+#include "mli_json.h"
 
 /*
  *  A scenery as a user wants to define it.

@@ -5,6 +5,8 @@
  */
 
 #include "mliTar.h"
+#include <string.h>
+#include "mli_debug.h"
 
 struct _mliTarRawHeader {
         char name[MLITAR_NAME_LENGTH];

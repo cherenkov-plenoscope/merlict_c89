@@ -2,8 +2,6 @@
 #ifndef MERLICT_C89_MLIVEC_H_
 #define MERLICT_C89_MLIVEC_H_
 
-#include <math.h>
-#include <float.h>
 #include <stdint.h>
 
 struct mliVec {
