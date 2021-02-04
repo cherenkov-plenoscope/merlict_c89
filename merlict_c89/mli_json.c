@@ -220,7 +220,7 @@ uint64_t mliJson_array_child_token(
         return idx;
 }
 
-int mliJson_fprint_debug(FILE *f, const struct mliJson *json)
+int mliJson_debug_fprint(FILE *f, const struct mliJson *json)
 {
         uint64_t i;
         char *buff;
@@ -241,12 +241,12 @@ error:
         return 0;
 }
 
-int mliJson_write_debug(const struct mliJson *json, const char *path)
+int mliJson_debug_export(const struct mliJson *json, const char *path)
 {
         FILE *f;
         f = fopen(path, "wt");
         mli_check(f != NULL, "Failed to open file for Json debug output.");
-        mli_check(mliJson_fprint_debug(f, json), "Failed to fprint debug.");
+        mli_check(mliJson_debug_fprint(f, json), "Failed to fprint debug.");
         fclose(f);
         return 1;
 error:
