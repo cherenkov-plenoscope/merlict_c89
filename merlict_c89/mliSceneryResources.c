@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSceneryResources.h"
+#include "mli_debug.h"
 
 struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void)
 {

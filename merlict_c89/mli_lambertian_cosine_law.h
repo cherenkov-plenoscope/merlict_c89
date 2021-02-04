@@ -2,9 +2,6 @@
 #ifndef MERLICT_C89_MLI_LAMBERTIAN_COSINE_LAW_H_
 #define MERLICT_C89_MLI_LAMBERTIAN_COSINE_LAW_H_
 
-#include <math.h>
-#include <stdint.h>
-
 #include "mliVec.h"
 
 struct mliVec mli_draw_lambertian_direction_wrt_surface_normal(

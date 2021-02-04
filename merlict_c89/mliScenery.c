@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery.h"
+#include "mli_debug.h"
 
 struct mliScenery mliScenery_init(void)
 {

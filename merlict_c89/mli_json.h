@@ -3,11 +3,7 @@
 #define MERLICT_C89_MLI_JSON_H_
 
 #include <stdint.h>
-#include <stdlib.h>
-
 #include "jsmn.h"
-#include "mli_debug.h"
-#include "mli_string_to.h"
 
 struct mliJson {
         uint64_t num_chars;

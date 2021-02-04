@@ -2,10 +2,7 @@
 #ifndef MERLICT_C89_MLI_FRAME_TO_SCENERY_H_
 #define MERLICT_C89_MLI_FRAME_TO_SCENERY_H_
 
-#include <math.h>
 #include <stdint.h>
-
-#include "mli_debug.h"
 #include "mliScenery.h"
 #include "mliUserScenery.h"
 

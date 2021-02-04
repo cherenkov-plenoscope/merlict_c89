@@ -2,12 +2,9 @@
 #ifndef MERLICT_C89_MLI_INTERSECTION_AND_SCENERY_H_
 #define MERLICT_C89_MLI_INTERSECTION_AND_SCENERY_H_
 
-#include <math.h>
 #include <stdint.h>
-
 #include "mliIntersection.h"
 #include "mliScenery.h"
-#include "mliPhotonInteraction.h"
 
 struct mliIntersection mliIntersection_photon_creation(
         const uint64_t object_idx,

@@ -2,10 +2,7 @@
 #ifndef MERLICT_C89_MLISCENERYRESOURCES_H_
 #define MERLICT_C89_MLISCENERYRESOURCES_H_
 
-#include <math.h>
 #include <stdint.h>
-
-#include "mli_debug.h"
 #include "mliObject.h"
 #include "mliColor.h"
 #include "mliFunc.h"

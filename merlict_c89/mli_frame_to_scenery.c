@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_frame_to_scenery.h"
+#include <math.h>
+#include "mli_debug.h"
 
 int __mliScenery_estimate_num_robjects_in_frames(
         uint64_t *num_robjects,

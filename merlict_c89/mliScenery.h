@@ -2,17 +2,8 @@
 #ifndef MERLICT_C89_MLISCENERY_H_
 #define MERLICT_C89_MLISCENERY_H_
 
-#include <math.h>
 #include <stdint.h>
-
-#include "mli_debug.h"
-#include "mliVec.h"
 #include "mliHomTra.h"
-#include "mliColor.h"
-#include "mliFunc.h"
-#include "mliObject.h"
-#include "mliSurface.h"
-#include "mliMedium.h"
 #include "mliBoundaryLayer.h"
 #include "mliSceneryResources.h"
 
