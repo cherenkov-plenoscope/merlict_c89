@@ -86,10 +86,10 @@ int mli_type_to_string(const uint64_t type, char *s)
 {
         switch (type) {
         case MLI_FRAME:
-                sprintf(s, "Frame");
+                sprintf(s, "frame");
                 break;
         case MLI_OBJECT:
-                sprintf(s, "Object");
+                sprintf(s, "object");
                 break;
         default:
                 mli_sentinel("Type is unknown.");
@@ -102,9 +102,9 @@ error:
 
 int mli_string_to_type(const char *s, uint64_t *type)
 {
-        if (strcmp(s, "Frame") == 0) {
+        if (strcmp(s, "frame") == 0) {
                 *type = MLI_FRAME;
-        } else if (strcmp(s, "Object") == 0) {
+        } else if (strcmp(s, "object") == 0) {
                 *type = MLI_OBJECT;
         } else {
                 mli_sentinel("Type is unknown.");

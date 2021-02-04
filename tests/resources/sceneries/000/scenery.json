@@ -1,13 +1,13 @@
 {
     "children": [
         {
-            "type": "Frame",
+            "type": "frame",
             "id": 2,
             "pos": [5, 5, -2],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
             "children": [
                 {
-                    "type": "Object",
+                    "type": "object",
                     "id": 3,
                     "pos": [0, 0, 3],
                     "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},

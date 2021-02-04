@@ -1,7 +1,7 @@
 {
     "children": [
         {
-            "type": "Object",
+            "type": "object",
             "id": 1,
             "pos": [0, 0, 0],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
@@ -12,7 +12,7 @@
             }
         },
         {
-            "type": "Object",
+            "type": "object",
             "id": 37,
             "pos": [0, 0, 5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
@@ -23,7 +23,7 @@
             }
         },
         {
-            "type": "Object",
+            "type": "object",
             "id": 47,
             "pos": [0, 0, -5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 45, 0]},
@@ -34,7 +34,7 @@
             }
         },
         {
-            "type": "Object",
+            "type": "object",
             "id": 12,
             "pos": [-5, 0, -5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 90, 0]},

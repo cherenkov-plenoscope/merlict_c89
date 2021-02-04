@@ -191,7 +191,7 @@ int __mliScenery_assign_media_from_json(
                 uint64_t token_m_name;
                 mli_check(
                         json->tokens[token_m].type == JSMN_OBJECT,
-                        "Expected medium to be of type object {}.");
+                        "Expected medium to be a json-object {}.");
                 mli_check(
                         mliJson_find_key(json, token_m, "name", &token_m_name),
                         "Expected medium-object to have key 'name'.");
@@ -349,7 +349,7 @@ int __mliFrame_type_from_json(
                 json, token_type + 1, type_string, num_chars_for_type);
         mli_check(
                 mli_string_to_type(type_string, type),
-                "Expected Frame's type to be either 'Frame' or 'Object'.");
+                "Expected Frame's type to be either 'frame' or 'object'.");
         free(type_string);
         return 1;
 error:
@@ -510,7 +510,7 @@ int __mliFrame_set_object_reference(
         uint64_t token_obj_key;
         mli_check(
                 mliJson_find_key(json, token, "obj", &token_obj_key),
-                "Expected Object to have key 'obj'.");
+                "Expected object to have key 'obj'.");
         mli_check(
                 _mliDynMap_get_value_for_string_from_json(
                         object_names, json, token_obj_key, object_reference),
@@ -585,7 +585,7 @@ int __mliFrame_from_json(
                                         medium_names,
                                         json,
                                         token_child),
-                                "Failed to parse Objects's surface "
+                                "Failed to parse objects's surface "
                                 "from json.");
                         mli_check(
                                 __mliFrame_set_object_reference(
@@ -593,7 +593,7 @@ int __mliFrame_from_json(
                                         json,
                                         token_child,
                                         object_names),
-                                "Failed to parse Object reference "
+                                "Failed to parse object-reference "
                                 "from json.");
                         break;
                 default:
