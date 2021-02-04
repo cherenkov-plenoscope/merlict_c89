@@ -2,10 +2,7 @@
 #ifndef MERLICT_C89_MLIAPERTURECAMERA_H_
 #define MERLICT_C89_MLIAPERTURECAMERA_H_
 
-#include <math.h>
-#include <assert.h>
 #include <stdint.h>
-
 #include "mliMT19937.h"
 #include "mliVec.h"
 #include "mliHomTra.h"

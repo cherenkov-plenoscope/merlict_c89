@@ -1,4 +1,7 @@
+/* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliApertureCamera.h"
+#include <math.h>
+#include <assert.h>
 
 struct mliVec mliApCam_get_pixel_center_on_image_sensor_plane(
         const double image_sensor_width_x,
