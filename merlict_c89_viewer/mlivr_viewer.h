@@ -1,8 +1,6 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-#include <stdio.h>
-#include <stdint.h>
-#include <assert.h>
-#include <time.h>
+#ifndef MERLICT_C89_VIWER_MLIVR_VIEWER_H_
+#define MERLICT_C89_VIWER_MLIVR_VIEWER_H_
 
 #include "../merlict_c89/mliImage.h"
 #include "../merlict_c89/mliView.h"
@@ -38,3 +36,5 @@ int _mlivr_export_image(
 int mlivr_run_interactive_viewer(
         const struct mliCombine *combine,
         const struct mlivrConfig config);
+
+#endif
