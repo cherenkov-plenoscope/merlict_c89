@@ -20,7 +20,7 @@ int __mliScenery_estimate_num_robjects_in_frames(
                 (*num_robjects) += 1;
                 break;
         default:
-                mli_sentinel("Expected either type 'Frame' or 'Object'.");
+                mli_sentinel("Expected either type 'frame' or 'object'.");
                 break;
         }
         return 1;
