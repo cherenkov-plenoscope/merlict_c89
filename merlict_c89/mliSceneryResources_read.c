@@ -22,7 +22,7 @@ int mliSceneryResources_read_from_file(struct mliSceneryResources *res, FILE *f)
                 mli_c(mliObject_malloc_fread(&res->objects[i], f));
         }
         for (i = 0; i < res->num_functions; i++) {
-                mli_c(mliFunc_malloc_from_file(&res->functions[i], f));
+                mli_c(mliFunc_malloc_fread(&res->functions[i], f));
         }
         mli_fread(res->colors, sizeof(struct mliColor), res->num_colors, f);
         mli_fread(res->media, sizeof(struct mliMedium), res->num_media, f);

@@ -4,7 +4,7 @@
 
 #define MLI_CSV_BUFF_CAPACITY 128
 
-int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
+int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
 {
         char line_delimiter = '\n';
         char token_delimiter = ',';
@@ -35,7 +35,7 @@ int mliFunc_malloc_from_string(struct mliFunc *func, const char *text)
                         "Something went wrong.");
 
                 line_length = mli_string_split(
-                        &text[tpos],
+                        &str[tpos],
                         line_delimiter,
                         line,
                         MLI_CSV_BUFF_CAPACITY);

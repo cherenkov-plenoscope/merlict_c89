@@ -189,7 +189,7 @@ int mliUserScenery_malloc_from_Archive(
                                 "Expected less functions in archive.");
 
                         mli_check(
-                                mliFunc_malloc_from_string(
+                                mliFunc_malloc_from_csv(
                                         &uscn->resources.functions[fnc_idx],
                                         arc->strings.arr[arc_idx].c_str),
                                 "Failed to parse comma-separated-values from "

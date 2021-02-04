@@ -100,7 +100,7 @@ error:
         return 0;
 }
 
-int mliFunc_malloc_from_file(struct mliFunc *func, FILE *f)
+int mliFunc_malloc_fread(struct mliFunc *func, FILE *f)
 {
         uint32_t num_points;
         mli_fread(&num_points, sizeof(uint32_t), 1u, f);
