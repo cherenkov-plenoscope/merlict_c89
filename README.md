@@ -78,7 +78,7 @@ Pseudo random number generator
 - Makoto, Matsumoto and Takuji, Nishimura and wikipedia.org; Mersenne Twister
 
 Parsing JSON-strings
-- Serge, Zaitsev; JSMN; MIT-LICENSE
+- Serge, Zaitsev; [JSMN](https://zserge.com/jsmn/)
 
 Awesome debug MACROS
 - Zed, Shawn; Learning C the hard way
@@ -90,7 +90,7 @@ Homogenous Transformations in 3D
 - Bruno, Siciliano and Lorenzo, Sciavicco and Luigi, Villani and Guiseppe, Oriolo; Robotics -- Modelling, Planning and Control
 
 Writing and reading tape-archives (```.tar```)
-- rxi; microtar; https://github.com/rxi/microtar; MIT-LICENSE
+- rxi; [microtar](https://github.com/rxi/microtar)
 
 Controlling stdin buffer using ```termios```
 - Edwin, Buck;
