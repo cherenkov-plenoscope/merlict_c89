@@ -1,4 +1,9 @@
+/* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliArchive.h"
+#include "mli_string_to.h"
+#include "mli_debug.h"
+#include "mli_json.h"
+#include "mliTar.h"
 
 MLIDYNARRAY_IMPLEMENTATION(mli, String, struct mliString)
 
