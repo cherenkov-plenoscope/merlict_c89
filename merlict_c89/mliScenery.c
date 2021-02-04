@@ -48,7 +48,7 @@ error:
         return 0;
 }
 
-void mliScenery_fprint(FILE *f, const struct mliScenery *scenery)
+void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery)
 {
         uint32_t rob;
         fprintf(f, "__mliScenery__\n");

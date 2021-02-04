@@ -20,7 +20,7 @@ struct mliScenery {
 int mliScenery_malloc(struct mliScenery *scenery, const uint32_t num_robjects);
 void mliScenery_free(struct mliScenery *scenery);
 struct mliScenery mliScenery_init(void);
-void mliScenery_fprint(FILE *f, const struct mliScenery *scenery);
+void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery);
 struct mliBoundaryLayer mliScenery_object_surfaces(
         const struct mliScenery *scenery,
         const uint32_t object_idx);

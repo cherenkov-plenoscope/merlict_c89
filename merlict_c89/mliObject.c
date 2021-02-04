@@ -128,7 +128,7 @@ error:
         return 0;
 }
 
-int mliObject_malloc_from_file(struct mliObject *obj, FILE *f)
+int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
 {
         uint32_t num_vertices;
         uint32_t num_vertex_normals;

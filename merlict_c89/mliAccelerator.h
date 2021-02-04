@@ -40,7 +40,7 @@ int _mliAccelerator_set_object_octrees(
         struct mliAccelerator *accel,
         const struct mliScenery *scenery);
 
-void mliAccelerator_fprint(FILE *f, const struct mliAccelerator *accel);
+void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel);
 
 struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel);
 

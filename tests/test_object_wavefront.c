@@ -393,7 +393,7 @@ CASE("mliObject, write and read binary-string")
 
         f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "r");
         CHECK(f != NULL);
-        mliObject_malloc_from_file(&obj_back, f);
+        mliObject_malloc_fread(&obj_back, f);
         fclose(f);
 
         CHECK(obj.num_vertices == obj_back.num_vertices);

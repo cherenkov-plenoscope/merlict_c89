@@ -46,5 +46,5 @@ struct mliSceneryResources mliSceneryResources_init(void);
 int mliSceneryResources_cpy(
         struct mliSceneryResources *destination,
         const struct mliSceneryResources *source);
-void mliSceneryResources_fprint(FILE *f, const struct mliSceneryResources *res);
+void mliSceneryResources_info_fprint(FILE *f, const struct mliSceneryResources *res);
 #endif

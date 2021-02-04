@@ -135,7 +135,7 @@ error:
         return 0;
 }
 
-void mliAccelerator_fprint(FILE *f, const struct mliAccelerator *accel)
+void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
 {
         uint32_t rob;
         fprintf(f, "__mliAccelerator__\n");

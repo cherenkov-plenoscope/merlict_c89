@@ -54,9 +54,9 @@ int main(int argc, char *argv[])
                 goto error;
         }
 
-        mliScenery_fprint(stderr, combine.scenery);
-        mliAccelerator_fprint(stderr, combine.accelerator);
-        mliSceneryResources_fprint(stderr, &combine.scenery->resources);
+        mliScenery_info_fprint(stderr, combine.scenery);
+        mliAccelerator_info_fprint(stderr, combine.accelerator);
+        mliSceneryResources_info_fprint(stderr, &combine.scenery->resources);
 
         mli_check(
                 mlivr_run_interactive_viewer(&combine, config),

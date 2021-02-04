@@ -19,7 +19,7 @@ int mliSceneryResources_read_from_file(struct mliSceneryResources *res, FILE *f)
 {
         uint64_t i;
         for (i = 0; i < res->num_objects; i++) {
-                mli_c(mliObject_malloc_from_file(&res->objects[i], f));
+                mli_c(mliObject_malloc_fread(&res->objects[i], f));
         }
         for (i = 0; i < res->num_functions; i++) {
                 mli_c(mliFunc_malloc_from_file(&res->functions[i], f));

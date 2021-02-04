@@ -156,7 +156,7 @@ error:
         return 0;
 }
 
-void mliSceneryResources_fprint(FILE *f, const struct mliSceneryResources *res)
+void mliSceneryResources_info_fprint(FILE *f, const struct mliSceneryResources *res)
 {
         uint64_t i;
         fprintf(f, "__mliSceneryResources__\n");
