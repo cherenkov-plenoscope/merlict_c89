@@ -2,10 +2,6 @@
 #ifndef MERLICT_C89_MLIVIEW_H_
 #define MERLICT_C89_MLIVIEW_H_
 
-#include <math.h>
-#include <assert.h>
-#include <stdint.h>
-
 #include "mliVec.h"
 
 struct mliView {

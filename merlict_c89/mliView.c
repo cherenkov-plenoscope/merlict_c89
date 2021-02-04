@@ -1,5 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliView.h"
+#include <math.h>
+#include <assert.h>
+#include <stdint.h>
 
 struct mliVec mliView_optical_axis(const struct mliView cam)
 {
