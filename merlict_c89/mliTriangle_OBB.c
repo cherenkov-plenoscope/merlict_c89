@@ -24,9 +24,6 @@
                                                                    ? 8         \
                                                                    : 0)
 
-
-/*___________________________________________________________________________*/
-
 /* Which of the six face-plane(s) is point P outside of? */
 
 int64_t __mli_face_plane(struct mliVec p)
@@ -47,8 +44,6 @@ int64_t __mli_face_plane(struct mliVec p)
                 outcode |= 0x20;
         return (outcode);
 }
-
-/*. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
 
 /* Which of the twelve edge plane(s) is point P outside of? */
 
@@ -83,8 +78,6 @@ int64_t __mli_bevel_2d(struct mliVec p)
         return (outcode);
 }
 
-/*. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
-
 /* Which of the eight corner plane(s) is point P outside of? */
 
 int64_t __mli_bevel_3d(struct mliVec p)
@@ -110,8 +103,6 @@ int64_t __mli_bevel_3d(struct mliVec p)
         return (outcode);
 }
 
-/*. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
-
 /* Test the point "alpha" of the way from P1 to P2 */
 /* See if it is on a face of the cube              */
 /* Consider only faces in "mask"                   */
@@ -128,8 +119,6 @@ int64_t __mli_check_point(
         plane_point.z = mli_linear_interpolate_1d(alpha, p1.z, p2.z);
         return (__mli_face_plane(plane_point) & mask);
 }
-
-/*. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
 
 /* Compute intersection of P1 --> P2 line segment with face planes */
 /* Then test intersection point to see if it is on cube face       */
@@ -173,8 +162,6 @@ int64_t __mli_check_line(
                         return (MLI_INSIDE);
         return (MLI_OUTSIDE);
 }
-
-/*. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
 
 /* Test if 3D point is inside 3D triangle */
 
@@ -233,8 +220,6 @@ int64_t __mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
          * needs to be revised. */
         return ((sign12 & sign23 & sign31) == 0) ? MLI_OUTSIDE : MLI_INSIDE;
 }
-
-/*. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
 
 /**********************************************/
 /* This is the main algorithm procedure.      */
