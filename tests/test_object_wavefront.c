@@ -441,7 +441,7 @@ CASE("mliObject, write and read ascii-text-string")
 
         f = fopen("tests/resources/hexagonal_mirror_facet.obj.tmp", "w");
         CHECK(f != NULL);
-        mliObject_fprint(f, &obj);
+        mliObject_fprint_to_wavefront(f, &obj);
         fclose(f);
 
         CHECK(mliString_malloc_from_file(
