@@ -159,7 +159,7 @@ int mliUserScenery_malloc_from_Archive(
                                 "Expected less objects in archive.");
 
                         mli_check(
-                                mliObject_malloc_from_string(
+                                mliObject_malloc_from_wavefront(
                                         &uscn->resources.objects[obj_idx],
                                         arc->strings.arr[arc_idx].c_str),
                                 "Failed to parse wave-front-object from file.");

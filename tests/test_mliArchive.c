@@ -32,7 +32,7 @@ CASE("mliArchive, read tar")
         CHECK(mliArchive_get(&arc, "objects/triangle.obj", &data));
         CHECK(data->capacity == 110 + 1);
 
-        CHECK(mliObject_malloc_from_string(&triangle, data->c_str));
+        CHECK(mliObject_malloc_from_wavefront(&triangle, data->c_str));
         CHECK(triangle.num_vertices == 3u);
         CHECK(triangle.num_vertex_normals == 1u);
         CHECK(triangle.num_faces == 1);

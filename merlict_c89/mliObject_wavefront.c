@@ -420,7 +420,7 @@ error:
         return 0;
 }
 
-int mliObject_malloc_from_string(struct mliObject *obj, const char *str)
+int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 {
         uint64_t i = 0u;
         uint64_t p = 0u;
@@ -593,7 +593,7 @@ error:
         return 0;
 }
 
-int mliObject_fprint(FILE *f, const struct mliObject *obj)
+int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
 {
         uint64_t i;
         mli_c(fprintf(f, "# vertices\n"));

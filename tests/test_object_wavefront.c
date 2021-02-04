@@ -357,7 +357,7 @@ CASE("mliObject, read wavefront file")
                 "001/"
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
-        CHECK(mliObject_malloc_from_string(&obj, str.c_str));
+        CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
         CHECK(strlen(str.c_str) == str.capacity - 1);
         mliString_free(&str);
 
@@ -383,7 +383,7 @@ CASE("mliObject, write and read binary-string")
                 "001/"
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
-        CHECK(mliObject_malloc_from_string(&obj, str.c_str));
+        CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
         mliString_free(&str);
 
         f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "w");
@@ -436,7 +436,7 @@ CASE("mliObject, write and read ascii-text-string")
                 "001/"
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
-        CHECK(mliObject_malloc_from_string(&obj, str.c_str));
+        CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
         mliString_free(&str);
 
         f = fopen("tests/resources/hexagonal_mirror_facet.obj.tmp", "w");
@@ -447,7 +447,7 @@ CASE("mliObject, write and read ascii-text-string")
         CHECK(mliString_malloc_from_file(
                 &str,
                 "tests/resources/hexagonal_mirror_facet.obj.tmp"));
-        CHECK(mliObject_malloc_from_string(&obj_back, str.c_str));
+        CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));
         mliString_free(&str);
 
         CHECK(obj.num_vertices == obj_back.num_vertices);
