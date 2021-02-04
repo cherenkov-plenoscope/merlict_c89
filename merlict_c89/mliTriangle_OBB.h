@@ -9,22 +9,6 @@
 #include "mli_math.h"
 #include "mliOBB.h"
 
-#define MLI_SIGN3(A)                                                           \
-        (((A).x < MLI_EPSILON)                                                 \
-                 ? 4                                                           \
-                 : 0 | ((A).x > -MLI_EPSILON)                                  \
-                           ? 32                                                \
-                           : 0 | ((A).y < MLI_EPSILON)                         \
-                                     ? 2                                       \
-                                     : 0 | ((A).y > -MLI_EPSILON)              \
-                                               ? 16                            \
-                                               : 0 | ((A).z < MLI_EPSILON)     \
-                                                         ? 1                   \
-                                                         : 0 | ((A).z >        \
-                                                                -MLI_EPSILON)  \
-                                                                   ? 8         \
-                                                                   : 0)
-
 struct mliTriangle {
         struct mliVec v1;
         struct mliVec v2;

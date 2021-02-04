@@ -8,6 +8,23 @@
  * Triangle-Cube Intersection,
  * Graphics Gems III, p. 236-239, code: p. 521-526 */
 
+#define MLI_SIGN3(A)                                                           \
+        (((A).x < MLI_EPSILON)                                                 \
+                 ? 4                                                           \
+                 : 0 | ((A).x > -MLI_EPSILON)                                  \
+                           ? 32                                                \
+                           : 0 | ((A).y < MLI_EPSILON)                         \
+                                     ? 2                                       \
+                                     : 0 | ((A).y > -MLI_EPSILON)              \
+                                               ? 16                            \
+                                               : 0 | ((A).z < MLI_EPSILON)     \
+                                                         ? 1                   \
+                                                         : 0 | ((A).z >        \
+                                                                -MLI_EPSILON)  \
+                                                                   ? 8         \
+                                                                   : 0)
+
+
 /*___________________________________________________________________________*/
 
 /* Which of the six face-plane(s) is point P outside of? */
