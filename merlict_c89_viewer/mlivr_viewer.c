@@ -379,20 +379,20 @@ int mlivr_run_interactive_viewer(
                         printf("Intersection: ");
                         if (has_probing_intersection) {
 
-                                printf("(% 5d,% 5d,% 5d;% 5d)"
+                                printf("(% 5d;% 5d,% 5d,% 5d)"
                                        "/"
-                                       "(ref,obj,face;id), "
+                                       "(id;robj,obj,face), "
                                        "dist % 6.2fm, "
                                        "pos [% -.2e, % -.2e, % -.2e], "
                                        "normal [% -.3f, % -.3f, % -.3f], ",
+                                       combine->scenery->robject_ids
+                                               [probing_intersection
+                                                        .robject_idx],
                                        probing_intersection.robject_idx,
                                        combine->scenery
                                                ->robjects[probing_intersection
                                                                   .robject_idx],
                                        probing_intersection.face_idx,
-                                       combine->scenery->robject_ids
-                                               [probing_intersection
-                                                        .robject_idx],
                                        probing_intersection.distance_of_ray,
                                        probing_intersection.position.x,
                                        probing_intersection.position.y,
