@@ -88,8 +88,8 @@ int mliUserScenery_malloc_from_Archive(
                 "Failed to parse 'materials.json'.");
 
         mli_check(
-                mliArchive_get_malloc_json(arc, "scenery.json", &scenery_json),
-                "Failed to parse 'scenery.json'.");
+                mliArchive_get_malloc_json(arc, "tree.json", &scenery_json),
+                "Failed to parse 'tree.json'.");
 
         /* estimate required capacity */
         /*--------------------------- */
