@@ -82,11 +82,11 @@ error:
         return 0;
 }
 
-int mliJson_malloc_from_file(struct mliJson *json, const char *path)
+int mliJson_malloc_from_path(struct mliJson *json, const char *path)
 {
         struct mliString str = mliString_init();
         mli_check(
-                mliString_malloc_from_file(&str, path),
+                mliString_malloc_from_path(&str, path),
                 "Failed to read file into string.");
         mli_check(
                 mliJson_malloc_from_string(json, str.c_str),

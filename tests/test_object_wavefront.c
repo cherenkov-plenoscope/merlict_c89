@@ -349,7 +349,7 @@ CASE("mliObject, read wavefront file")
 {
         struct mliString str = mliString_init();
         struct mliObject obj = mliObject_init();
-        CHECK(mliString_malloc_from_file(
+        CHECK(mliString_malloc_from_path(
                 &str,
                 "tests/"
                 "resources/"
@@ -375,7 +375,7 @@ CASE("mliObject, write and read binary-string")
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
         FILE *f;
-        CHECK(mliString_malloc_from_file(
+        CHECK(mliString_malloc_from_path(
                 &str,
                 "tests/"
                 "resources/"
@@ -428,7 +428,7 @@ CASE("mliObject, write and read ascii-text-string")
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
         FILE *f;
-        CHECK(mliString_malloc_from_file(
+        CHECK(mliString_malloc_from_path(
                 &str,
                 "tests/"
                 "resources/"
@@ -444,7 +444,7 @@ CASE("mliObject, write and read ascii-text-string")
         mliObject_fprint_to_wavefront(f, &obj);
         fclose(f);
 
-        CHECK(mliString_malloc_from_file(
+        CHECK(mliString_malloc_from_path(
                 &str,
                 "tests/resources/hexagonal_mirror_facet.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));

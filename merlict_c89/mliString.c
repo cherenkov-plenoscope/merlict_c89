@@ -27,7 +27,7 @@ void mliString_free(struct mliString *str)
         (*str) = mliString_init();
 }
 
-int mliString_malloc_from_file(struct mliString *str, const char *path)
+int mliString_malloc_from_path(struct mliString *str, const char *path)
 {
         uint64_t str_length = 0u;
         FILE *f = fopen(path, "rt");

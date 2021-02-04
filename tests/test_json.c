@@ -77,14 +77,14 @@ CASE("struct mliJson malloc, and free")
         mliJson_free(&json);
 }
 
-CASE("mliJson_malloc_from_file")
+CASE("mliJson_malloc_from_path")
 {
         struct mliJson json = mliJson_init();
         uint64_t return_idx;
         int64_t myint;
         double myfloat;
 
-        CHECK(mliJson_malloc_from_file(&json, "tests/resources/example.json"));
+        CHECK(mliJson_malloc_from_path(&json, "tests/resources/example.json"));
         CHECK(mliJson_debug_export(&json, "tests/resources/example.debug.tmp"));
 
         CHECK(mliJson_find_key(&json, 0, "name", &return_idx));
@@ -133,7 +133,7 @@ CASE("parse mliFunc")
         uint64_t token;
         struct mliJson json = mliJson_init();
         struct mliFunc f = mliFunc_init();
-        CHECK(mliJson_malloc_from_file(&json, "tests/resources/function.json"));
+        CHECK(mliJson_malloc_from_path(&json, "tests/resources/function.json"));
         CHECK(mliJson_debug_export(&json, "tests/resources/function.debug.tmp"));
         CHECK(mliJson_find_key(&json, 0, "two_functions", &token));
         CHECK(json.tokens[token + 1].size == 2);
@@ -173,7 +173,7 @@ CASE("parse mliVec and mliColor")
         struct mliVec vec1 = mliVec_set(0., 0., 0.);
         struct mliVec vec2 = mliVec_set(0., 0., 0.);
         struct mliColor col = mliColor_set(0., 0., 0.);
-        CHECK(mliJson_malloc_from_file(&json, "tests/resources/vec.json"));
+        CHECK(mliJson_malloc_from_path(&json, "tests/resources/vec.json"));
         CHECK(mliJson_debug_export(&json, "tests/resources/vec.debug.tmp"));
 
         CHECK(mliJson_find_key(&json, 0, "vec1", &token));
