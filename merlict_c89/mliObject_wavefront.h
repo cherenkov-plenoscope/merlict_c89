@@ -15,5 +15,5 @@ int _mliObject_parse_three_float_line(const char *line, struct mliVec *v);
 
 int mliObject_malloc_from_string(struct mliObject *obj, const char *str);
 
-int64_t mliObject_fprint(FILE *f, const struct mliObject *obj);
+int mliObject_fprint(FILE *f, const struct mliObject *obj);
 #endif
