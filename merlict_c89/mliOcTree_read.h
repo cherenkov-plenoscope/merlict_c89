@@ -8,8 +8,8 @@
 #include "mli_debug.h"
 #include "mliOcTree.h"
 
-int mliOcTree_read_and_malloc_from_path(
+int mliOcTree_malloc_from_path(
         struct mliOcTree *octree,
         const char *path);
-int mliOcTree_read_and_malloc_from_file(struct mliOcTree *octree, FILE *f);
+int mliOcTree_malloc_fread(struct mliOcTree *octree, FILE *f);
 #endif

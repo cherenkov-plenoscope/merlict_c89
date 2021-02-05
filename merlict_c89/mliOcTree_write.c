@@ -1,7 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree_write.h"
+#include <math.h>
+#include <stdint.h>
+#include "mli_debug.h"
 
-int mliOcTree_write_to_file(struct mliOcTree *octree, FILE *f)
+int mliOcTree_fwrite(const struct mliOcTree *octree, FILE *f)
 {
         /* identifier */
         mli_c(fprintf(f, "merlict_c89\n"));
@@ -49,14 +52,14 @@ error:
         return 0;
 }
 
-int mliOcTree_write_to_path(struct mliOcTree *octree, const char *path)
+int mliOcTree_write_to_path(const struct mliOcTree *octree, const char *path)
 {
         FILE *f;
         f = fopen(path, "w");
         mli_check(f != NULL, "Can not open octree-file for writing.");
 
         mli_check(
-                mliOcTree_write_to_file(octree, f),
+                mliOcTree_fwrite(octree, f),
                 "Can not write octree to file.");
 
         fclose(f);

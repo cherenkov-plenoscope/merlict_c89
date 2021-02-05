@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree_read.h"
 
-int mliOcTree_read_and_malloc_from_file(struct mliOcTree *octree, FILE *f)
+int mliOcTree_malloc_fread(struct mliOcTree *octree, FILE *f)
 {
         char line[1024];
         uint64_t num_nodes;
@@ -58,7 +58,7 @@ error:
         return 0;
 }
 
-int mliOcTree_read_and_malloc_from_path(
+int mliOcTree_malloc_from_path(
         struct mliOcTree *octree,
         const char *path)
 {
@@ -67,7 +67,7 @@ int mliOcTree_read_and_malloc_from_path(
         mli_check(f != NULL, "Can not open octree-file for reading.");
 
         mli_check(
-                mliOcTree_read_and_malloc_from_file(octree, f),
+                mliOcTree_malloc_fread(octree, f),
                 "Can not read octree to file.");
 
         fclose(f);

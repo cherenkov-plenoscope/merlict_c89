@@ -178,3 +178,34 @@ struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel)
         }
         return obb;
 }
+
+int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f)
+{
+        uint64_t i;
+        mli_c(fprintf(f, "merlict_c89\n"));
+        mli_c(fprintf(f, "MLI_VERSION %d.%d.%d\n",
+                        MLI_VERSION_MAYOR,
+                        MLI_VERSION_MINOR,
+                        MLI_VERSION_PATCH));
+        mli_c(fprintf(f, "accelerator\n"));
+
+        mli_write_type(uint32_t, accel->num_objects, f);
+
+        for (i = 0; i < accel->num_objects; i++) {
+                mliOcTree_fwrite(&accel->object_octrees[i], f);
+        }
+
+        mli_write_type(uint32_t, accel->num_robjects, f);
+
+        mli_fwrite(
+                accel->robject_obbs,
+                sizeof(struct mliOBB),
+                accel->num_robjects,
+                f);
+
+        mliOcTree_fwrite(&accel->scenery_octree, f);
+
+        return 1;
+error:
+        return 0;
+}

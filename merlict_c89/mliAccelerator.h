@@ -44,4 +44,6 @@ void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel);
 
 struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel);
 
+int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f);
+
 #endif

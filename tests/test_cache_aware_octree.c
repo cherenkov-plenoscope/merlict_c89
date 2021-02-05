@@ -66,7 +66,7 @@ CASE("init mliOctree write and read")
         CHECK(mliOcTree_write_to_path(
                 &octree, "tests/resources/scn1.mli.octree.tmp"));
 
-        CHECK(mliOcTree_read_and_malloc_from_path(
+        CHECK(mliOcTree_malloc_from_path(
                 &octree_b, "tests/resources/scn1.mli.octree.tmp"));
 
         CHECK(mliOcTree_is_equal(&octree, &octree_b));
