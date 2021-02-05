@@ -8,7 +8,6 @@
 #include "mli_debug.h"
 #include "mliJson.h"
 #include "mliUserScenery.h"
-#include "mliVec_from_json_token.h"
 
 int mliUserScenery_malloc_from_json(
         struct mliUserScenery *uscn,
