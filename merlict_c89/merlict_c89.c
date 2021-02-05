@@ -55,8 +55,7 @@
 #include "mliOctOverlaps.c"
 #include "mliTmpOcTree.c"
 #include "mliOcTree.c"
-#include "mliOcTree_write.c"
-#include "mliOcTree_read.c"
+#include "mliOcTree_serialize.c"
 #include "mliOcTree_equal.c"
 
 #include "mli_ray_octree_traversal.c"
