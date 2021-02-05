@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliSceneryResources_write.h"
+#include "mliSceneryResources_serialize.h"
 #include "mliMagicId.h"
 
 int mliSceneryResources_capacity_fwrite(
