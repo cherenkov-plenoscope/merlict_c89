@@ -3,21 +3,28 @@
 
 int mliOcTree_malloc_fread(struct mliOcTree *octree, FILE *f)
 {
-        char line[1024];
+        char line[256];
         uint64_t num_nodes;
         uint64_t num_leafs;
         uint64_t num_object_links;
+        memset(line, '\0', sizeof(line));
 
         /* identifier */
-        mli_check(fgets(line, 1024, f), "Can not read identifier 1st line.");
+        mli_check(
+                fgets(line, sizeof(line), f),
+                "Can not read identifier 1st line.");
         mli_check(
                 strcmp(line, "merlict_c89\n") == 0,
                 "Expected starts with 'merlict_c89\\n'.");
-        mli_check(fgets(line, 1024, f), "Can not read identifier 2nd line.");
+        mli_check(
+                fgets(line, sizeof(line), f),
+                "Can not read identifier 2nd line.");
         mli_check(
                 strncmp(line, "MLI_VERSION", 11) == 0,
                 "Expected starts with 'MLI_VERSION'.");
-        mli_check(fgets(line, 1024, f), "Can not read identifier 3rd line.");
+        mli_check(
+                fgets(line, sizeof(line), f),
+                "Can not read identifier 3rd line.");
         mli_check(
                 strcmp(line, "octree\n") == 0,
                 "Expected starts with 'octree\\n'.");
