@@ -2,6 +2,7 @@
 #include "mliAccelerator.h"
 #include "mliObject_OBB.h"
 #include "mliCombine.h"
+#include "mliMagicId.h"
 
 struct mliAccelerator mliAccelerator_init(void)
 {
@@ -181,28 +182,25 @@ struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel)
 
 int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f)
 {
-        uint64_t i;
-        mli_c(fprintf(f, "merlict_c89\n"));
-        mli_c(fprintf(f, "MLI_VERSION %d.%d.%d\n",
-                        MLI_VERSION_MAYOR,
-                        MLI_VERSION_MINOR,
-                        MLI_VERSION_PATCH));
-        mli_c(fprintf(f, "accelerator\n"));
+        uint64_t i = 0;
 
+        /* magic identifier */
+        struct mliMagicId magic = mliMagicId_init();
+        mli_c(mliMagicId_set(&magic, "mliAccelerator"));
+        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+
+        /* capacity */
         mli_write_type(uint32_t, accel->num_objects, f);
+        mli_write_type(uint32_t, accel->num_robjects, f);
 
         for (i = 0; i < accel->num_objects; i++) {
                 mliOcTree_fwrite(&accel->object_octrees[i], f);
         }
-
-        mli_write_type(uint32_t, accel->num_robjects, f);
-
         mli_fwrite(
                 accel->robject_obbs,
                 sizeof(struct mliOBB),
                 accel->num_robjects,
                 f);
-
         mliOcTree_fwrite(&accel->scenery_octree, f);
 
         return 1;
@@ -210,33 +208,38 @@ error:
         return 0;
 }
 
-int mliAccelerator_malloc_fread(const struct mliAccelerator *accel, FILE *f)
+int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f)
 {
-        char line[256];
-        uint64_t num_nodes;
-        uint64_t num_leafs;
-        uint64_t num_object_links;
-        memset(line, '\0', sizeof(line));
+        uint64_t i = 0u;
+        struct mliMagicId magic;
 
-        /* identifier */
-        mli_check(
-                fgets(line, sizeof(line), f),
-                "Can not read identifier 1st line.");
-        mli_check(
-                strcmp(line, "merlict_c89\n") == 0,
-                "Expected starts with 'merlict_c89\\n'.");
-        mli_check(
-                fgets(line, sizeof(line), f),
-                "Can not read identifier 2nd line.");
-        mli_check(
-                strncmp(line, "MLI_VERSION", 11) == 0,
-                "Expected starts with 'MLI_VERSION'.");
-        mli_check(
-                fgets(line, sizeof(line), f),
-                "Can not read identifier 3rd line.");
-        mli_check(
-                strcmp(line, "accelerator\n") == 0,
-                "Expected starts with 'accelerator\\n'.");
+        uint32_t num_robjects = 0u;
+        uint32_t num_objects = 0u;
+
+        /* magic identifier */
+        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_c(mliMagicId_has_word(&magic, "mliAccelerator"));
+        mliMagicId_warn_version(&magic);
+
+        /* capacity */
+        mli_fread(&num_objects, sizeof(uint32_t), 1u, f);
+        mli_fread(&num_robjects, sizeof(uint32_t), 1u, f);
+
+        /* malloc */
+        mli_check_mem(mliAccelerator_malloc(accel, num_objects, num_robjects));
+
+        for (i = 0; i < accel->num_objects; i++) {
+                mli_check_mem(
+                        mliOcTree_malloc_fread(&accel->object_octrees[i], f));
+        }
+
+        mli_fread(
+                accel->robject_obbs,
+                sizeof(struct mliOBB),
+                accel->num_robjects,
+                f);
+
+        mli_check_mem(mliOcTree_malloc_fread(&accel->scenery_octree, f));
 
         return 1;
 error:

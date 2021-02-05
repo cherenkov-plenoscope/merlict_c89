@@ -21,6 +21,7 @@ int main(void)
                MLI_VERSION_MINOR,
                MLI_VERSION_PATCH);
 
+#include "tests/test_mliMagicId.c"
 #include "tests/test_frame.c"
 #include "tests/test_tape_archive.c"
 #include "tests/test_comma_seperated_values.c"

@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject.h"
 #include "mli_debug.h"
+#include "mliMagicId.h"
 
 struct mliObject mliObject_init(void)
 {
@@ -104,6 +105,10 @@ error:
 
 int mliObject_fwrite(const struct mliObject *obj, FILE *f)
 {
+        struct mliMagicId magic;
+        mli_c(mliMagicId_set(&magic, "mliObject"));
+        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+
         mli_fwrite(&obj->num_vertices, sizeof(uint32_t), 1u, f);
         mli_fwrite(&obj->num_vertex_normals, sizeof(uint32_t), 1u, f);
         mli_fwrite(&obj->num_faces, sizeof(uint32_t), 1u, f);
@@ -133,6 +138,10 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
         uint32_t num_vertices;
         uint32_t num_vertex_normals;
         uint32_t num_faces;
+        struct mliMagicId magic;
+        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_c(mliMagicId_has_word(&magic, "mliObject"));
+        mliMagicId_warn_version(&magic);
 
         mli_fread(&num_vertices, sizeof(uint32_t), 1u, f);
         mli_fread(&num_vertex_normals, sizeof(uint32_t), 1u, f);

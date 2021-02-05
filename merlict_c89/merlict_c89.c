@@ -2,6 +2,7 @@
 #include "mli_version.c"
 #include "mli_debug.c"
 #include "mli_math.c"
+#include "mliMagicId.c"
 #include "mliFunc.c"
 #include "mliMT19937.c"
 #include "mli_random.c"
