@@ -2,9 +2,7 @@
 #ifndef MERLICT_C89_MLIPHOTONINTERACTION_H_
 #define MERLICT_C89_MLIPHOTONINTERACTION_H_
 
-#include <math.h>
 #include <stdint.h>
-
 #include "mliIntersection.h"
 #include "mliVec.h"
 #include "mliPhoton.h"
@@ -19,9 +17,8 @@
 #define MLI_PHOTON_DIFFUSE_REFLECTION 107u
 
 struct mliPhotonInteraction {
-        int32_t on_surface;
-        uint32_t robject_idx;
-        uint32_t face_idx;
+        int32_t on_geometry_surface;
+        struct mliGeometryId geometry_id;
 
         struct mliVec position;
         struct mliVec position_local;

@@ -31,12 +31,12 @@ void mliDynPhotonInteraction_print(
                 struct mliPhotonInteraction phisec = history->arr[i];
                 printf(" % 3ld  ", i);
 
-                if (phisec.on_surface == 1) {
+                if (phisec.on_geometry_surface == 1) {
                         printf("(% 5d;% 5d,% 5d,% 5d)  ",
-                               scenery->robject_ids[phisec.robject_idx],
-                               phisec.robject_idx,
-                               scenery->robjects[phisec.robject_idx],
-                               phisec.face_idx);
+                               scenery->robject_ids[phisec.geometry_id.robj],
+                               phisec.geometry_id.robj,
+                               scenery->robjects[phisec.geometry_id.robj],
+                               phisec.geometry_id.face);
                 } else {
                         printf("            n/a            ");
                 }
@@ -64,7 +64,7 @@ void mliDynPhotonInteraction_print(
                         printf(" %1.1f  ", phisec.distance_of_ray);
                 }
 
-                if (phisec.on_surface == 1) {
+                if (phisec.on_geometry_surface == 1) {
                         if (phisec.from_outside_to_inside) {
                                 printf("%s", out_in);
                         } else {

@@ -2,14 +2,11 @@
 #ifndef MERLICT_C89_MLIINTERSECTION_H_
 #define MERLICT_C89_MLIINTERSECTION_H_
 
-#include <math.h>
 #include <stdint.h>
-
 #include "mliVec.h"
 
 struct mliIntersection {
-        uint32_t robject_idx;
-        uint32_t face_idx;
+        struct mliGeometryId geometry_id;
         struct mliVec position;
         struct mliVec surface_normal;
         struct mliVec position_local;

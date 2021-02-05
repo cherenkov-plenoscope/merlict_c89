@@ -3,6 +3,7 @@
 #include "mli_debug.c"
 #include "mli_math.c"
 #include "mliMagicId.c"
+#include "mliGeometryId.c"
 #include "mliFunc.c"
 #include "mliFunc_serialize.c"
 #include "mliMT19937.c"

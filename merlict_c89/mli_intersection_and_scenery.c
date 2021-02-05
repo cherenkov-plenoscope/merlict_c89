@@ -6,7 +6,7 @@ struct mliSide _mli_side_coming_from(
         const struct mliIntersection *isec)
 {
         struct mliBoundaryLayer layer =
-                scenery->robject_boundary_layers[isec->robject_idx];
+                scenery->robject_boundary_layers[isec->geometry_id.robj];
         if (isec->from_outside_to_inside)
                 return layer.inner;
         else
@@ -18,7 +18,7 @@ struct mliSide _mli_side_going_to(
         const struct mliIntersection *isec)
 {
         struct mliBoundaryLayer layer =
-                scenery->robject_boundary_layers[isec->robject_idx];
+                scenery->robject_boundary_layers[isec->geometry_id.robj];
         if (isec->from_outside_to_inside)
                 return layer.outer;
         else
@@ -47,17 +47,4 @@ const struct mliFunc *_mli_refractive_index_coming_from(
                 scenery->resources.media[coming_from.medium];
         refractive_index = &scenery->resources.functions[medium.refraction];
         return refractive_index;
-}
-
-struct mliIntersection mliIntersection_photon_creation(
-        const uint64_t robject_idx,
-        const struct mliRay ray)
-{
-        struct mliIntersection isec;
-        isec.robject_idx = robject_idx;
-        isec.position = ray.support;
-        isec.surface_normal = ray.direction;
-        isec.distance_of_ray = 0.0;
-        isec.from_outside_to_inside = 1;
-        return isec;
 }

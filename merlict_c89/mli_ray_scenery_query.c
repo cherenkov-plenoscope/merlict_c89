@@ -54,7 +54,7 @@ void _mli_inner_object_traversal(
                         &tmp_intersection.position_local,
                         &tmp_intersection.surface_normal_local);
 
-                tmp_intersection.face_idx = face_idx;
+                tmp_intersection.geometry_id.face = face_idx;
                 tmp_intersection.from_outside_to_inside =
                         mli_ray_runs_from_outside_to_inside(
                                 inner->ray_wrt_object.direction,
@@ -129,7 +129,7 @@ void _mli_outer_scenery_traversal(
                         outer->ray_wrt_root,
                         &tmp_intersection);
 
-                tmp_intersection.robject_idx = robject_idx;
+                tmp_intersection.geometry_id.robj = robject_idx;
 
                 if (robject_has_intersection) {
                         if (tmp_intersection.distance_of_ray <

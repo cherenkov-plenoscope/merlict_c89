@@ -4,8 +4,7 @@
 struct mliIntersection mliIntersection_init(void)
 {
         struct mliIntersection isec;
-        isec.robject_idx = 0u;
-        isec.face_idx = 0u;
+        isec.geometry_id = mliGeometryId_init();
         isec.position = mliVec_set(0.0, 0.0, 0.0);
         isec.surface_normal = mliVec_set(0.0, 0.0, 1.0);
         isec.position_local = mliVec_set(0.0, 0.0, 0.0);

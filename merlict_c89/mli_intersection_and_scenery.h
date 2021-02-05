@@ -6,9 +6,6 @@
 #include "mliIntersection.h"
 #include "mliScenery.h"
 
-struct mliIntersection mliIntersection_photon_creation(
-        const uint64_t object_idx,
-        const struct mliRay ray);
 const struct mliFunc *_mli_refractive_index_coming_from(
         const struct mliScenery *scenery,
         const struct mliIntersection *isec);

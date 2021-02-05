@@ -27,9 +27,8 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         phia.absorbtion_coming_from = medi_coming_from.absorbtion;
         phia.absorbtion_going_to = medi_going_to.absorbtion;
         phia.distance_of_ray = isec->distance_of_ray;
-        phia.on_surface = 1;
-        phia.robject_idx = isec->robject_idx;
-        phia.face_idx = isec->face_idx;
+        phia.on_geometry_surface = 1;
+        phia.geometry_id = isec->geometry_id;
         phia.from_outside_to_inside = isec->from_outside_to_inside;
         return phia;
 }
@@ -299,9 +298,8 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                         phia.position = env->photon->ray.support;
                         phia.position_local = phia.position;
                         phia.distance_of_ray = 0.0;
-                        phia.on_surface = 0;
-                        phia.robject_idx = 0;
-                        phia.face_idx = 0;
+                        phia.on_geometry_surface = 0;
+                        phia.geometry_id = mliGeometryId_init();
                         phia.from_outside_to_inside = 1;
 
                         phia.refraction_coming_from =
@@ -324,9 +322,8 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                         ;
                         phia.position_local = phia.position;
                         phia.distance_of_ray = distance_until_absorbtion;
-                        phia.on_surface = 0;
-                        phia.robject_idx = 0;
-                        phia.face_idx = 0;
+                        phia.on_geometry_surface = 0;
+                        phia.geometry_id = mliGeometryId_init();
                         phia.from_outside_to_inside = 1;
 
                         phia.refraction_coming_from =
@@ -366,9 +363,8 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                         phia.position = env->photon->ray.support;
                         phia.position_local = phia.position;
                         phia.distance_of_ray = 0.0;
-                        phia.on_surface = 0;
-                        phia.robject_idx = 0;
-                        phia.face_idx = 0;
+                        phia.on_geometry_surface = 0;
+                        phia.geometry_id = mliGeometryId_init();
                         phia.from_outside_to_inside = 1;
 
                         phia.refraction_coming_from =
@@ -389,9 +385,8 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                         mliRay_at(&env->photon->ray, distance_until_absorbtion);
                 phia.position_local = phia.position;
                 phia.distance_of_ray = distance_until_absorbtion;
-                phia.on_surface = 0;
-                phia.robject_idx = 0;
-                phia.face_idx = 0;
+                phia.on_geometry_surface = 0;
+                phia.geometry_id = mliGeometryId_init();
                 phia.from_outside_to_inside = 1;
 
                 phia.refraction_coming_from = medium_passing_through.refraction;

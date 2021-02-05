@@ -387,12 +387,13 @@ int mlivr_run_interactive_viewer(
                                        "normal [% -.3f, % -.3f, % -.3f], ",
                                        combine->scenery->robject_ids
                                                [probing_intersection
-                                                        .robject_idx],
-                                       probing_intersection.robject_idx,
+                                                        .geometry_id.robj],
+                                       probing_intersection.geometry_id.robj,
                                        combine->scenery
                                                ->robjects[probing_intersection
-                                                                  .robject_idx],
-                                       probing_intersection.face_idx,
+                                                                  .geometry_id
+                                                                  .robj],
+                                       probing_intersection.geometry_id.face,
                                        probing_intersection.distance_of_ray,
                                        probing_intersection.position.x,
                                        probing_intersection.position.y,
