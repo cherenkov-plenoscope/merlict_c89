@@ -12,6 +12,6 @@
 int mliScenery_write_to_path(
         const struct mliScenery *scenery,
         const char *path);
-int mliScenery_write_to_file(const struct mliScenery *scenery, FILE *f);
+int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f);
 
 #endif

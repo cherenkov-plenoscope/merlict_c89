@@ -24,7 +24,7 @@ int mliScenery_malloc_from_path(struct mliScenery *scenery, const char *path)
         f = fopen(path, "r");
         mli_check(f != NULL, "Can not open Scenery-file for reading.");
         mli_check(
-                mliScenery_malloc_from_file(scenery, f),
+                mliScenery_malloc_fread(scenery, f),
                 "Can not read scenery-file.");
         fclose(f);
         return 1;
@@ -65,7 +65,7 @@ error:
         return 0;
 }
 
-int mliScenery_malloc_from_file(struct mliScenery *scenery, FILE *f)
+int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
 {
         uint32_t num_robjects = 0u;
         struct mliSceneryResourcesCapacity rescap =

@@ -7,7 +7,7 @@ int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
         f = fopen(path, "w");
         mli_check(f != NULL, "Can not open Scenery-file for writing.");
         mli_check(
-                mliScenery_write_to_file(scenery, f),
+                mliScenery_fwrite(scenery, f),
                 "Failed to write to file.");
         fclose(f);
         return 1;
@@ -35,7 +35,7 @@ error:
         return 0;
 }
 
-int mliScenery_write_to_file(const struct mliScenery *scenery, FILE *f)
+int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
 {
         mli_check(
                 _mliScenery_write_header(f), "Failed to write scenery-header.");
