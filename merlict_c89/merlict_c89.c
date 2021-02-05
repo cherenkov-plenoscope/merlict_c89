@@ -62,7 +62,7 @@
 #include "mli_from_outside_to_inside.c"
 #include "mliTracer.c"
 #include "mliView.c"
-#include "mli_pin_hole_camera.c"
+#include "mliPinHoleCamera.c"
 #include "mliApertureCamera.c"
 #include "mli_string_to.c"
 #include "mliString.c"

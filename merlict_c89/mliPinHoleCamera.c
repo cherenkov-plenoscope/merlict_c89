@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_pin_hole_camera.h"
+#include "mliPinHoleCamera.h"
 #include <math.h>
 #include <assert.h>
 
@@ -24,7 +24,7 @@ struct mliPinHoleCamera mliPinHoleCamera_init(
         return sensor;
 }
 
-struct mliRay mli_pin_hole_camera_ray_at_row_col(
+struct mliRay mliPinHoleCamera_ray_at_row_col(
         const struct mliPinHoleCamera *camera,
         const struct mliImage *image,
         const uint32_t row,
@@ -43,7 +43,7 @@ struct mliRay mli_pin_hole_camera_ray_at_row_col(
         return mliRay_set(pin_hole_position, sensor_intersection);
 }
 
-void mli_pin_hole_camera_render_image(
+void mliPinHoleCamera_render_image(
         struct mliPinHoleCamera camera,
         const struct mliHomTraComp camera2root_comp,
         const struct mliCombine *combine,
@@ -55,7 +55,7 @@ void mli_pin_hole_camera_render_image(
         for (row = 0; row < image->num_rows; row++) {
                 for (col = 0; col < image->num_cols; col++) {
                         struct mliRay ray_wrt_camera =
-                                mli_pin_hole_camera_ray_at_row_col(
+                                mliPinHoleCamera_ray_at_row_col(
                                         &camera, image, row, col);
 
                         struct mliRay ray_wrt_root =
@@ -68,7 +68,7 @@ void mli_pin_hole_camera_render_image(
         }
 }
 
-void mli_pin_hole_camera_render_image_with_view(
+void mliPinHoleCamera_render_image_with_view(
         const struct mliView view,
         const struct mliCombine *combine,
         struct mliImage *image,
@@ -77,6 +77,6 @@ void mli_pin_hole_camera_render_image_with_view(
         struct mliPinHoleCamera camera = mliPinHoleCamera_init(
                 view.field_of_view, image, row_over_column_pixel_ratio);
         struct mliHomTraComp camera2root_comp = mliView_to_HomTraComp(view);
-        mli_pin_hole_camera_render_image(
+        mliPinHoleCamera_render_image(
                 camera, camera2root_comp, combine, image);
 }

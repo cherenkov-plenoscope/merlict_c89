@@ -20,19 +20,19 @@ struct mliPinHoleCamera mliPinHoleCamera_init(
         const struct mliImage *image,
         const double row_over_column_pixel_ratio);
 
-void mli_pin_hole_camera_render_image(
+void mliPinHoleCamera_render_image(
         struct mliPinHoleCamera camera,
         const struct mliHomTraComp camera2root_comp,
         const struct mliCombine *combine,
         struct mliImage *image);
 
-void mli_pin_hole_camera_render_image_with_view(
+void mliPinHoleCamera_render_image_with_view(
         const struct mliView view,
         const struct mliCombine *combine,
         struct mliImage *image,
         const double row_over_column_pixel_ratio);
 
-struct mliRay mli_pin_hole_camera_ray_at_row_col(
+struct mliRay mliPinHoleCamera_ray_at_row_col(
         const struct mliPinHoleCamera *camera,
         const struct mliImage *image,
         const uint32_t row,
