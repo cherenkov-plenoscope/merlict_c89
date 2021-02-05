@@ -12,7 +12,7 @@ struct mliJson {
         struct jsmntok_t *tokens;
 };
 
-int mliJson_debug_export(const struct mliJson *json, const char *path);
+int mliJson_debug_to_path(const struct mliJson *json, const char *path);
 int mliJson_debug_fprint(FILE *f, const struct mliJson *json);
 uint64_t mliJson_array_child_token(
         const struct mliJson *json,

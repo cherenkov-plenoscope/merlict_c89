@@ -241,7 +241,7 @@ error:
         return 0;
 }
 
-int mliJson_debug_export(const struct mliJson *json, const char *path)
+int mliJson_debug_to_path(const struct mliJson *json, const char *path)
 {
         FILE *f;
         f = fopen(path, "wt");
