@@ -47,6 +47,7 @@
 #include "mliScenery_write.h"
 #include "mliScenery_read.h"
 #include "mliAccelerator.h"
+#include "mliAccelerator_serialize.h"
 #include "mliCombine.h"
 #include "mliRay_OBB.h"
 #include "mliVec_OBB.h"

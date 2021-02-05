@@ -2,10 +2,7 @@
 #ifndef MERLICT_C89_MLIACCELERATOR_H_
 #define MERLICT_C89_MLIACCELERATOR_H_
 
-#include <math.h>
 #include <stdint.h>
-
-#include "mli_debug.h"
 #include "mliScenery.h"
 #include "mliOcTree.h"
 
@@ -43,7 +40,5 @@ int _mliAccelerator_set_object_octrees(
 void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel);
 
 struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel);
-
-int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f);
 
 #endif
