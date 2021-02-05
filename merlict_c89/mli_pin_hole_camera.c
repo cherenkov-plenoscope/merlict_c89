@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_pin_hole_camera.h"
+#include <math.h>
+#include <assert.h>
 
 struct mliPinHoleCamera mliPinHoleCamera_init(
         const double field_of_view,

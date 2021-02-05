@@ -2,10 +2,7 @@
 #ifndef MERLICT_C89_MLI_PIN_HOLE_CAMERA_H_
 #define MERLICT_C89_MLI_PIN_HOLE_CAMERA_H_
 
-#include <math.h>
-#include <assert.h>
 #include <stdint.h>
-
 #include "mliTracer.h"
 #include "mliView.h"
 
