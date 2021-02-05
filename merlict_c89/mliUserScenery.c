@@ -66,7 +66,7 @@ int mliUserScenery_malloc_from_Archive(
         const struct mliArchive *arc)
 {
         struct mliJson materials_json = mliJson_init();
-        struct mliJson scenery_json = mliJson_init();
+        struct mliJson tree_json = mliJson_init();
 
         struct mliSceneryResourcesCapacity rescap =
                 mliSceneryResourcesCapacity_init();
@@ -92,7 +92,7 @@ int mliUserScenery_malloc_from_Archive(
                 "Failed to parse 'materials.json'.");
 
         mli_check(
-                mliArchive_get_malloc_json(arc, "tree.json", &scenery_json),
+                mliArchive_get_malloc_json(arc, "tree.json", &tree_json),
                 "Failed to parse 'tree.json'.");
 
         /* estimate required capacity */
@@ -260,19 +260,19 @@ int mliUserScenery_malloc_from_Archive(
         /* frames */
 
         mli_check(
-                mliJson_find_key(&scenery_json, 0, "children", &token),
+                mliJson_find_key(&tree_json, 0, "children", &token),
                 "Expected scenery-json to have key 'children'.");
         mli_check(
                 __mliFrame_from_json(
                         &uscn->root,
-                        &scenery_json,
+                        &tree_json,
                         token + 1,
                         &uscn->object_names,
                         &uscn->surface_names,
                         &uscn->medium_names),
                 "Failed to populate tree of Frames from scenery-json.");
 
-        mliJson_free(&scenery_json);
+        mliJson_free(&tree_json);
 
         /* transformations */
         mliFrame_set_frame2root(&uscn->root);
@@ -280,7 +280,7 @@ int mliUserScenery_malloc_from_Archive(
         return 1;
 error:
         mliJson_free(&materials_json);
-        mliJson_free(&scenery_json);
+        mliJson_free(&tree_json);
         free(arc_mask);
 
         mliUserScenery_free(uscn);
