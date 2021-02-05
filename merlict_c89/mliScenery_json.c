@@ -1,6 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_json.h"
+#include "mli_debug.h"
 #include "mliVec_json.h"
+#include "mliColor_json.h"
 
 int __mli_material_type_from_name_token(
         const struct mliJson *json,
