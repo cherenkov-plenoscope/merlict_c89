@@ -2,12 +2,8 @@
 #ifndef MERLICT_C89_MLIIMAGE_H_
 #define MERLICT_C89_MLIIMAGE_H_
 
-#include <math.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <stdio.h>
-
-#include "mli_debug.h"
 #include "mliColor.h"
 #include "mliPixels.h"
 
