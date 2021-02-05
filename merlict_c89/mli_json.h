@@ -6,8 +6,8 @@
 #include "jsmn.h"
 
 struct mliJson {
-        uint64_t num_chars;
-        char *chars;
+        uint64_t c_str_capacity;
+        char *c_str;
         uint64_t num_tokens;
         struct jsmntok_t *tokens;
 };
