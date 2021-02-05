@@ -4,6 +4,7 @@
 #include "mli_math.h"
 #include "mliMagicId.h"
 #include "mliFunc.h"
+#include "mliFunc_serialize.h"
 #include "mliMT19937.h"
 #include "mli_random.h"
 #include "mliVec.h"

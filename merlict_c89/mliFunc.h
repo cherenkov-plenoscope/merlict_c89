@@ -16,8 +16,6 @@ struct mliFunc {
 
 int mliFunc_cpy(struct mliFunc *destination, const struct mliFunc *source);
 int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b);
-int mliFunc_malloc_fread(struct mliFunc *func, FILE *f);
-int mliFunc_fwrite(const struct mliFunc *func, FILE *f);
 int mliFunc_fold_numeric(
         const struct mliFunc *a,
         const struct mliFunc *b,
