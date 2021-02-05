@@ -2,7 +2,7 @@
 #include "mliSceneryResources_read.h"
 #include "mliMagicId.h"
 
-int mliSceneryResources_read_capacity_from_file(
+int mliSceneryResourcesCapacity_fread(
         struct mliSceneryResourcesCapacity *capacity,
         FILE *f)
 {
@@ -24,7 +24,7 @@ error:
         return 0;
 }
 
-int mliSceneryResources_read_from_file(struct mliSceneryResources *res, FILE *f)
+int mliSceneryResources_malloc_fread(struct mliSceneryResources *res, FILE *f)
 {
         uint64_t i;
         struct mliMagicId magic;

@@ -207,15 +207,15 @@ CASE("mliUserScenery, read, write mliSceneryResources")
 
         f = fopen("tests/resources/sceneryresources.bin.tmp", "w");
         CHECK(f != NULL);
-        CHECK(mliSceneryResources_write_capacity_to_file(&uscn.resources, f));
-        CHECK(mliSceneryResources_append_to_file(&uscn.resources, f));
+        CHECK(mliSceneryResources_capacity_fwrite(&uscn.resources, f));
+        CHECK(mliSceneryResources_fwrite(&uscn.resources, f));
         fclose(f);
 
         f = fopen("tests/resources/sceneryresources.bin.tmp", "r");
         CHECK(f != NULL);
-        CHECK(mliSceneryResources_read_capacity_from_file(&rescap, f));
+        CHECK(mliSceneryResourcesCapacity_fread(&rescap, f));
         CHECK(mliSceneryResources_malloc(&resources, rescap));
-        CHECK(mliSceneryResources_read_from_file(&resources, f));
+        CHECK(mliSceneryResources_malloc_fread(&resources, f));
         fclose(f);
 
         CHECK(mliSceneryResources_equal(&resources, &uscn.resources));

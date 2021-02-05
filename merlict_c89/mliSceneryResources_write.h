@@ -8,10 +8,10 @@
 #include "mli_debug.h"
 #include "mliSceneryResources.h"
 
-int mliSceneryResources_append_to_file(
+int mliSceneryResources_fwrite(
         const struct mliSceneryResources *res,
         FILE *f);
-int mliSceneryResources_write_capacity_to_file(
+int mliSceneryResources_capacity_fwrite(
         const struct mliSceneryResources *res,
         FILE *f);
 #endif

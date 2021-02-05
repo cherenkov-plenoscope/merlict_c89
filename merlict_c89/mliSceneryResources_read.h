@@ -8,10 +8,10 @@
 #include "mli_debug.h"
 #include "mliSceneryResources.h"
 
-int mliSceneryResources_read_from_file(
+int mliSceneryResources_malloc_fread(
         struct mliSceneryResources *res,
         FILE *f);
-int mliSceneryResources_read_capacity_from_file(
+int mliSceneryResourcesCapacity_fread(
         struct mliSceneryResourcesCapacity *capacity,
         FILE *f);
 #endif

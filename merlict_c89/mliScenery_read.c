@@ -82,7 +82,7 @@ int mliScenery_malloc_from_file(struct mliScenery *scenery, FILE *f)
                 "Failed to malloc robjects in mliScenery.");
 
         mli_check(
-                mliSceneryResources_read_capacity_from_file(&rescap, f),
+                mliSceneryResourcesCapacity_fread(&rescap, f),
                 "Failed to read SceneryResources' capacity from file");
 
         mli_check(
@@ -90,7 +90,7 @@ int mliScenery_malloc_from_file(struct mliScenery *scenery, FILE *f)
                 "Failed to malloc SceneryResources.");
 
         mli_check(
-                mliSceneryResources_read_from_file(&scenery->resources, f),
+                mliSceneryResources_malloc_fread(&scenery->resources, f),
                 "Failed to read SceneryResources from file.");
 
         mli_fread(

@@ -43,12 +43,12 @@ int mliScenery_write_to_file(const struct mliScenery *scenery, FILE *f)
         mli_write_type(uint32_t, scenery->num_robjects, f);
 
         mli_check(
-                mliSceneryResources_write_capacity_to_file(
+                mliSceneryResources_capacity_fwrite(
                         &scenery->resources, f),
                 "Failed to write SceneryResources' capacity to file.");
 
         mli_check(
-                mliSceneryResources_append_to_file(&scenery->resources, f),
+                mliSceneryResources_fwrite(&scenery->resources, f),
                 "Can not write SceneryResources to file.");
 
         mli_fwrite(
