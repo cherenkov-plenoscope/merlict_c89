@@ -28,6 +28,7 @@
 #include "mliColor_json.h"
 #include "mliPixels.h"
 #include "mliImage.h"
+#include "mliImage_ppm.h"
 #include "mliImage_print.h"
 #include "mliDynArray.h"
 #include "mliDynArray_template.h"
