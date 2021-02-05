@@ -36,45 +36,19 @@ error:
         return 0;
 }
 
-int _mliScenery_read_header(FILE *f)
-{
-        char line[1024];
-        mli_check(
-                fgets(line, sizeof(line), f),
-                "Can not read identifier 1st line.");
-        mli_check(
-                strcmp(line, "merlict_c89\n") == 0,
-                "Expected starts with 'merlict_c89\\n'.");
-
-        mli_check(
-                fgets(line, sizeof(line), f),
-                "Can not read identifier 2nd line.");
-        mli_check(
-                strncmp(line, "MLI_VERSION", 11) == 0,
-                "Expected starts with 'MLI_VERSION'.");
-
-        mli_check(
-                fgets(line, sizeof(line), f),
-                "Can not read identifier 3rd line.");
-        mli_check(
-                strcmp(line, "scenery\n") == 0,
-                "Expected starts with 'scenery\\n'.");
-
-        return 1;
-error:
-        return 0;
-}
-
 int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
 {
         uint32_t num_robjects = 0u;
+        struct mliMagicId magic;
         struct mliSceneryResourcesCapacity rescap =
                 mliSceneryResourcesCapacity_init();
 
-        mli_check(
-                _mliScenery_read_header(f),
-                "Failed to read scenery-file-header");
+        /* magic identifier */
+        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_c(mliMagicId_has_word(&magic, "mliScenery"));
+        mliMagicId_warn_version(&magic);
 
+        /* payload */
         mli_fread(&num_robjects, sizeof(uint32_t), 1u, f);
 
         mli_check(
