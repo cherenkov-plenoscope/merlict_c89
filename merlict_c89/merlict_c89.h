@@ -25,6 +25,7 @@
 #include "mliObject_wavefront.h"
 #include "mliTriangle_intersection.h"
 #include "mliColor.h"
+#include "mliColor_json.h"
 #include "mliPixels.h"
 #include "mliImage.h"
 #include "mliImage_print.h"
