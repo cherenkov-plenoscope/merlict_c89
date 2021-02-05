@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject.h"
 #include "mli_debug.h"
-#include "mliMagicId.h"
 
 struct mliObject mliObject_init(void)
 {
@@ -100,77 +99,6 @@ int mliObject_assert_normals(const struct mliObject *obj, const double epsilon)
         return 1;
 error:
         mli_log_err_vargs(("Vertex-normal %ld (counting starts at 0)", i));
-        return 0;
-}
-
-int mliObject_fwrite(const struct mliObject *obj, FILE *f)
-{
-        struct mliMagicId magic;
-        mli_c(mliMagicId_set(&magic, "mliObject"));
-        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
-
-        mli_fwrite(&obj->num_vertices, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&obj->num_vertex_normals, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&obj->num_faces, sizeof(uint32_t), 1u, f);
-
-        mli_fwrite(obj->vertices, sizeof(struct mliVec), obj->num_vertices, f);
-
-        mli_fwrite(
-                obj->vertex_normals,
-                sizeof(struct mliVec),
-                obj->num_vertex_normals,
-                f);
-
-        mli_fwrite(
-                obj->faces_vertices, sizeof(struct mliFace), obj->num_faces, f);
-        mli_fwrite(
-                obj->faces_vertex_normals,
-                sizeof(struct mliFace),
-                obj->num_faces,
-                f);
-        return 1;
-error:
-        return 0;
-}
-
-int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
-{
-        uint32_t num_vertices;
-        uint32_t num_vertex_normals;
-        uint32_t num_faces;
-        struct mliMagicId magic;
-        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
-        mli_c(mliMagicId_has_word(&magic, "mliObject"));
-        mliMagicId_warn_version(&magic);
-
-        mli_fread(&num_vertices, sizeof(uint32_t), 1u, f);
-        mli_fread(&num_vertex_normals, sizeof(uint32_t), 1u, f);
-        mli_fread(&num_faces, sizeof(uint32_t), 1u, f);
-
-        mli_c(mliObject_malloc(
-                obj, num_vertices, num_vertex_normals, num_faces));
-
-        mli_fread(obj->vertices, sizeof(struct mliVec), obj->num_vertices, f);
-        mli_fread(
-                obj->vertex_normals,
-                sizeof(struct mliVec),
-                obj->num_vertex_normals,
-                f);
-
-        mli_fread(
-                obj->faces_vertices, sizeof(struct mliFace), obj->num_faces, f);
-        mli_fread(
-                obj->faces_vertex_normals,
-                sizeof(struct mliFace),
-                obj->num_faces,
-                f);
-
-        mli_check(
-                mliObject_assert_valid_faces(obj),
-                "A face refers to a not existing vertex/vertex_normal.");
-        return 1;
-error:
-        mliObject_free(obj);
         return 0;
 }
 

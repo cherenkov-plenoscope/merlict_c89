@@ -18,6 +18,7 @@
 #include "mliFace.h"
 #include "mli_barycentric.h"
 #include "mliObject.h"
+#include "mliObject_serialize.h"
 #include "mliObject_OBB.h"
 #include "mliObject_wavefront.h"
 #include "mliTriangle_intersection.h"
