@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_json.h"
+#include "mliJson.h"
 #include <stdlib.h>
 #include "mli_debug.h"
 #include "mli_string_to.h"

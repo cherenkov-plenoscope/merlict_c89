@@ -4,7 +4,7 @@
 
 #include "mliVec.h"
 #include "mliColor.h"
-#include "mli_json.h"
+#include "mliJson.h"
 
 int mliColor_from_json_token(
         struct mliColor *c,

@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 #include "mli_debug.h"
-#include "mli_json.h"
+#include "mliJson.h"
 
 /*
  *  A scenery as a user wants to define it.

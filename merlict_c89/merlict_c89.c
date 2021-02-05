@@ -67,7 +67,7 @@
 #include "mli_string_to.c"
 #include "mliString.c"
 #include "jsmn.c"
-#include "mli_json.c"
+#include "mliJson.c"
 #include "mliArchive.c"
 #include "mliTar.c"
 #include "mliFunc_comma_seperated_values.c"

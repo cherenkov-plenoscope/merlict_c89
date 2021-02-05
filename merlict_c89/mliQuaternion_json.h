@@ -4,7 +4,7 @@
 
 #include "mli_debug.h"
 #include "mliQuaternion.h"
-#include "mli_json.h"
+#include "mliJson.h"
 
 int __mliQuaternion_tait_bryan_from_json(
         struct mliQuaternion *quat,

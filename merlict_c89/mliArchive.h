@@ -3,7 +3,7 @@
 #define MERLICT_C89_ARCHIVE_H_
 
 #include "mliString.h"
-#include "mli_json.h"
+#include "mliJson.h"
 
 MLIDYNARRAY_DEFINITON(mli, String, struct mliString)
 
