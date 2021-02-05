@@ -3,15 +3,11 @@
 
 int mliOcTree_fwrite(const struct mliOcTree *octree, FILE *f)
 {
-        /* identifier */
-        mli_c(fprintf(f, "merlict_c89\n"));
-        mli_c(
-                fprintf(f,
-                        "MLI_VERSION %d.%d.%d\n",
-                        MLI_VERSION_MAYOR,
-                        MLI_VERSION_MINOR,
-                        MLI_VERSION_PATCH));
-        mli_c(fprintf(f, "octree\n"));
+        struct mliMagicId magic;
+
+        /* magic identifier */
+        mli_c(mliMagicId_set(&magic, "mliOcTree"));
+        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* capacity */
         mli_fwrite(&octree->num_nodes, sizeof(uint64_t), 1u, f);
@@ -51,31 +47,15 @@ error:
 
 int mliOcTree_malloc_fread(struct mliOcTree *octree, FILE *f)
 {
-        char line[256];
         uint64_t num_nodes;
         uint64_t num_leafs;
         uint64_t num_object_links;
-        memset(line, '\0', sizeof(line));
+        struct mliMagicId magic;
 
-        /* identifier */
-        mli_check(
-                fgets(line, sizeof(line), f),
-                "Can not read identifier 1st line.");
-        mli_check(
-                strcmp(line, "merlict_c89\n") == 0,
-                "Expected starts with 'merlict_c89\\n'.");
-        mli_check(
-                fgets(line, sizeof(line), f),
-                "Can not read identifier 2nd line.");
-        mli_check(
-                strncmp(line, "MLI_VERSION", 11) == 0,
-                "Expected starts with 'MLI_VERSION'.");
-        mli_check(
-                fgets(line, sizeof(line), f),
-                "Can not read identifier 3rd line.");
-        mli_check(
-                strcmp(line, "octree\n") == 0,
-                "Expected starts with 'octree\\n'.");
+        /* magic identifier */
+        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_c(mliMagicId_has_word(&magic, "mliOcTree"));
+        mliMagicId_warn_version(&magic);
 
         /* capacity */
         mli_fread(&num_nodes, sizeof(uint64_t), 1u, f);
