@@ -436,6 +436,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         struct mliDynFace fv = mliDynFace_init();
         struct mliDynFace fvn = mliDynFace_init();
 
+        struct mliDynUint32 groups = mliDynUint32_init();
+
         memset(line, '\0', sizeof(line));
 
         /* malloc dyn */
@@ -444,6 +446,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
         mli_c(mliDynFace_malloc(&fv, 0u));
         mli_c(mliDynFace_malloc(&fvn, 0u));
+
+        mli_c(mliDynUint32_malloc(&groups, 0u));
 
         /* parse wavefront into dyn */
         while (1) {
@@ -533,6 +537,20 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                                  MLI_WAVEFRONT_FACE_LINE_V_VN),
                                         "Expected faces to have "
                                         "vertex-normals.");
+                        } else if (
+                                line_length > 6 &&
+                                line[0] == 'u' &&
+                                line[1] == 's' &&
+                                line[2] == 'e' &&
+                                line[3] == 'm' &&
+                                line[4] == 't' &&
+                                line[5] == 'l' &&
+                                line[6] == ' '
+                        ) {
+                                if (fv.dyn.size > 0) {
+                                        mli_c(mliDynUint32_push_back(
+                                                &groups, fv.dyn.size));
+                                }
                         }
                 } /* line_length > 0 */
 
@@ -542,12 +560,20 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                 p += line_length + 1;
         }
 
+        /* closing the groups */
+        mli_c(mliDynUint32_push_back(&groups, fv.dyn.size));
+
         /* copy dyn into static mliObject */
         mli_check(
                 fv.dyn.size == fvn.dyn.size,
                 "Expected num. vertex-indices == num. vertex-normal-indices.");
         mli_check(
-                mliObject_malloc(obj, v.dyn.size, vn.dyn.size, fv.dyn.size),
+                mliObject_malloc(
+                        obj,
+                        v.dyn.size,
+                        vn.dyn.size,
+                        fv.dyn.size,
+                        groups.dyn.size),
                 "Failed to malloc mliObject from file.");
 
         for (i = 0; i < v.dyn.size; i++) {
@@ -561,6 +587,9 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         }
         for (i = 0; i < fvn.dyn.size; i++) {
                 obj->faces_vertex_normals[i] = fvn.arr[i];
+        }
+        for (i = 0; i < groups.dyn.size; i++) {
+                obj->last_face_in_group[i] = groups.arr[i];
         }
 
         mli_check(
@@ -579,6 +608,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         mliDynFace_free(&fv);
         mliDynFace_free(&fvn);
 
+        mliDynUint32_free(&groups);
+
         return 1;
 error:
         mliObject_free(obj);
@@ -590,12 +621,14 @@ error:
         mliDynFace_free(&fv);
         mliDynFace_free(&fvn);
 
+        mliDynUint32_free(&groups);
+
         return 0;
 }
 
 int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
 {
-        uint64_t i;
+        uint32_t i, g, face;
         mli_c(fprintf(f, "# vertices\n"));
         for (i = 0; i < obj->num_vertices; i++) {
                 mli_c(fprintf(f,
@@ -615,16 +648,22 @@ int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
         }
 
         mli_c(fprintf(f, "# faces\n"));
-        for (i = 0; i < obj->num_faces; i++) {
-                mli_c(fprintf(f,
-                                "f %d//%d %d//%d %d//%d\n",
-                                obj->faces_vertices[i].a + 1,
-                                obj->faces_vertex_normals[i].a + 1,
-                                obj->faces_vertices[i].b + 1,
-                                obj->faces_vertex_normals[i].b + 1,
-                                obj->faces_vertices[i].c + 1,
-                                obj->faces_vertex_normals[i].c + 1));
+
+        face = 0;
+        for (g = 0; g < obj->num_groups; g++) {
+                mli_c(fprintf(f, "usemtl %d\n", g));
+                for (; face < obj->last_face_in_group[g]; face++) {
+                        mli_c(fprintf(f,
+                                      "f %d//%d %d//%d %d//%d\n",
+                                      obj->faces_vertices[face].a + 1,
+                                      obj->faces_vertex_normals[face].a + 1,
+                                      obj->faces_vertices[face].b + 1,
+                                      obj->faces_vertex_normals[face].b + 1,
+                                      obj->faces_vertices[face].c + 1,
+                                      obj->faces_vertex_normals[face].c + 1));
+                }
         }
+
         return 1;
 error:
         return 0;

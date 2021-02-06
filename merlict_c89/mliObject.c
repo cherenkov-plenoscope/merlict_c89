@@ -42,6 +42,7 @@ int mliObject_malloc(
                 "Expected num_vertex_normals < uint32");
         mli_check(num_faces < UINT32_MAX, "Expected num_faces < uint32");
         mli_check(num_groups < UINT32_MAX, "Expected num_groups < uint32");
+        mli_check(num_groups > 0, "Expected num_groups > 0");
         mli_check(num_groups <= num_faces, "Expected num_groups <= num_faces");
 
         mliObject_free(obj);
@@ -193,6 +194,24 @@ int mliObject_cpy(struct mliObject *destination, struct mliObject *source)
 
         }
 
+        return 1;
+error:
+        return 0;
+}
+
+int mliObject_resolve_group(
+        const struct mliObject *obj,
+        const uint32_t face_idx,
+        uint32_t *group)
+{
+        uint32_t _group = 0;
+        mli_check(face_idx < obj->num_faces, "Expected face_idx < num_faces");
+        MLI_UPPER_COMPARE(
+                obj->last_face_in_group,
+                obj->num_groups,
+                face_idx,
+                _group);
+        (*group) = _group;
         return 1;
 error:
         return 0;

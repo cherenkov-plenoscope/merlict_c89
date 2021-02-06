@@ -20,30 +20,35 @@ CASE("mliObject, malloc")
         const uint64_t num_vertices = 9;
         const uint64_t num_vertex_normals = 9;
         const uint64_t num_faces = 3;
+        const uint64_t num_groups = 1;
 
         struct mliObject obj = mliObject_init();
         CHECK(mliObject_malloc(
-                &obj, num_vertices, num_vertex_normals, num_faces));
+                &obj, num_vertices, num_vertex_normals, num_faces, num_groups));
 
         CHECK(obj.num_vertices == num_vertices);
         CHECK(obj.num_vertex_normals == num_vertex_normals);
         CHECK(obj.num_faces == num_faces);
+        CHECK(obj.num_groups == num_groups);
 
         CHECK(obj.vertices != NULL);
         CHECK(obj.vertex_normals != NULL);
         CHECK(obj.faces_vertices != NULL);
         CHECK(obj.faces_vertex_normals != NULL);
+        CHECK(obj.last_face_in_group != NULL);
 
         mliObject_free(&obj);
 
         CHECK(obj.num_vertices == 0u);
         CHECK(obj.num_vertex_normals == 0u);
         CHECK(obj.num_faces == 0u);
+        CHECK(obj.num_groups == 0u);
 
         CHECK(obj.vertices == NULL);
         CHECK(obj.vertex_normals == NULL);
         CHECK(obj.faces_vertices == NULL);
         CHECK(obj.faces_vertex_normals == NULL);
+        CHECK(obj.last_face_in_group == NULL);
 }
 
 CASE("mliObject, parse valid obj face lines")
@@ -453,6 +458,7 @@ CASE("mliObject, write and read ascii-text-string")
         CHECK(obj.num_vertices == obj_back.num_vertices);
         CHECK(obj.num_vertex_normals == obj_back.num_vertex_normals);
         CHECK(obj.num_faces == obj_back.num_faces);
+        CHECK(obj.num_groups == obj_back.num_groups);
 
         for (i = 0; i < obj.num_vertices; i++) {
                 CHECK(mliVec_equal_margin(
@@ -474,7 +480,29 @@ CASE("mliObject, write and read ascii-text-string")
                         obj.faces_vertex_normals[i],
                         obj_back.faces_vertex_normals[i]));
         }
+        for (i = 0; i < obj.num_groups; i++) {
+                CHECK(obj.last_face_in_group[i] ==
+                        obj_back.last_face_in_group[i]);
+        }
 
         mliObject_free(&obj);
         mliObject_free(&obj_back);
+}
+
+
+CASE("mliObject, read multi materials")
+{
+        struct mliString str = mliString_init();
+        struct mliObject obj = mliObject_init();
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/"
+                "resources/"
+                "cube_with_materials.obj"));
+        CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
+        mliString_free(&str);
+
+        CHECK(obj.num_groups == 6);
+
+        mliObject_free(&obj);
 }
