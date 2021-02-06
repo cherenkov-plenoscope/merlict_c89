@@ -17,8 +17,8 @@ struct mliObject {
         struct mliFace *faces_vertices;
         struct mliFace *faces_vertex_normals;
 
-        uint32_t num_groups;
-        uint32_t *last_face_in_group;
+        uint32_t num_materials;
+        uint32_t *last_face_in_material;
 };
 
 int mliObject_malloc(
@@ -26,11 +26,12 @@ int mliObject_malloc(
         const uint64_t num_vertices,
         const uint64_t num_vertex_normals,
         const uint64_t num_faces,
-        const uint64_t num_groups);
+        const uint64_t num_materials);
 void mliObject_free(struct mliObject *obj);
 struct mliObject mliObject_init(void);
 int mliObject_assert_valid_faces(const struct mliObject *obj);
 int mliObject_assert_normals(const struct mliObject *obj, const double epsilon);
+int mliObject_assert_valid_materials(const struct mliObject *obj);
 int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b);
 int mliObject_cpy(struct mliObject *destination, struct mliObject *source);
 #endif

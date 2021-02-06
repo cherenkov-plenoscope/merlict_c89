@@ -15,8 +15,8 @@ struct mliObject mliObject_init(void)
         obj.faces_vertices = NULL;
         obj.faces_vertex_normals = NULL;
 
-        obj.num_groups = 0;
-        obj.last_face_in_group = NULL;
+        obj.num_materials = 0;
+        obj.last_face_in_material = NULL;
         return obj;
 }
 
@@ -26,7 +26,7 @@ void mliObject_free(struct mliObject *obj)
         free(obj->vertex_normals);
         free(obj->faces_vertices);
         free(obj->faces_vertex_normals);
-        free(obj->last_face_in_group);
+        free(obj->last_face_in_material);
         *obj = mliObject_init();
 }
 
@@ -35,26 +35,26 @@ int mliObject_malloc(
         const uint64_t num_vertices,
         const uint64_t num_vertex_normals,
         const uint64_t num_faces,
-        const uint64_t num_groups)
+        const uint64_t num_materials)
 {
         mli_check(num_vertices < UINT32_MAX, "Expected num_vertices < uint32");
         mli_check(num_vertex_normals < UINT32_MAX,
                 "Expected num_vertex_normals < uint32");
         mli_check(num_faces < UINT32_MAX, "Expected num_faces < uint32");
-        mli_check(num_groups < UINT32_MAX, "Expected num_groups < uint32");
-        mli_check(num_groups > 0, "Expected num_groups > 0");
-        mli_check(num_groups <= num_faces, "Expected num_groups <= num_faces");
+        mli_check(num_materials < UINT32_MAX, "Expected num_materials < uint32");
+        mli_check(num_materials > 0, "Expected num_materials > 0");
+        mli_check(num_materials <= num_faces, "Expected num_materials <= num_faces");
 
         mliObject_free(obj);
         obj->num_vertices = num_vertices;
         obj->num_vertex_normals = num_vertex_normals;
         obj->num_faces = num_faces;
-        obj->num_groups = num_groups;
+        obj->num_materials = num_materials;
         mli_malloc(obj->vertices, struct mliVec, obj->num_vertices);
         mli_malloc(obj->vertex_normals, struct mliVec, obj->num_vertex_normals);
         mli_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
         mli_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
-        mli_malloc(obj->last_face_in_group, uint32_t, obj->num_groups);
+        mli_malloc(obj->last_face_in_material, uint32_t, obj->num_materials);
         return 1;
 error:
         return 0;
@@ -111,13 +111,13 @@ error:
         return 0;
 }
 
-int mliObject_assert_valid_groups(const struct mliObject *obj)
+int mliObject_assert_valid_materials(const struct mliObject *obj)
 {
         uint64_t i;
-        for (i = 0; i < obj->num_groups; i++) {
+        for (i = 0; i < obj->num_materials; i++) {
                 mli_check(
-                        obj->last_face_in_group[i] < obj->num_faces,
-                        "Expected last_face_in_group < num_faces.");
+                        obj->last_face_in_material[i] < obj->num_faces,
+                        "Expected last_face_in_material < num_faces.");
         }
         return 1;
 error:
@@ -131,7 +131,7 @@ int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
         mli_c(a->num_vertices == b->num_vertices);
         mli_c(a->num_vertex_normals == b->num_vertex_normals);
         mli_c(a->num_faces == b->num_faces);
-        mli_c(a->num_groups == b->num_groups);
+        mli_c(a->num_materials == b->num_materials);
 
         for (i = 0; i < a->num_vertices; i++) {
                 mli_c(mliVec_is_equal(a->vertices[i], b->vertices[i]));
@@ -147,8 +147,8 @@ int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
                         a->faces_vertex_normals[i],
                         b->faces_vertex_normals[i]));
         }
-        for (i = 0; i < a->num_groups; i++) {
-                mli_c(a->last_face_in_group[i] == b->last_face_in_group[i]);
+        for (i = 0; i < a->num_materials; i++) {
+                mli_c(a->last_face_in_material[i] == b->last_face_in_material[i]);
         }
         return 1;
 error:
@@ -185,12 +185,12 @@ int mliObject_cpy(struct mliObject *destination, struct mliObject *source)
         }
 
         mli_check(
-                destination->num_groups == source->num_groups,
+                destination->num_materials == source->num_materials,
                 "Expected source and destination mliObject to have same "
-                "num_groups.");
-        for (p = 0; p < destination->num_groups; p++) {
-                destination->last_face_in_group[p] =
-                        source->last_face_in_group[p];
+                "num_materials.");
+        for (p = 0; p < destination->num_materials; p++) {
+                destination->last_face_in_material[p] =
+                        source->last_face_in_material[p];
 
         }
 
@@ -207,8 +207,8 @@ int mliObject_resolve_group(
         uint32_t _group = 0;
         mli_check(face_idx < obj->num_faces, "Expected face_idx < num_faces");
         MLI_UPPER_COMPARE(
-                obj->last_face_in_group,
-                obj->num_groups,
+                obj->last_face_in_material,
+                obj->num_materials,
                 face_idx,
                 _group);
         (*group) = _group;

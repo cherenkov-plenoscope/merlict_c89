@@ -121,7 +121,7 @@ int mliSceneryResources_cpy(
                                 source->objects[i].num_vertices,
                                 source->objects[i].num_vertex_normals,
                                 source->objects[i].num_faces,
-                                source->objects[i].num_groups),
+                                source->objects[i].num_materials),
                         "Failed to allocate struct mliObject in Resources.");
                 mli_check(
                         mliObject_cpy(
