@@ -2,14 +2,14 @@
 #include "mli_ray_scenery_query.h"
 
 struct _mliInnerObjectWork {
-        struct mliIntersection *intersection;
+        struct mliPresection *presection;
         const struct mliObject *object;
         struct mliRay ray_wrt_object;
         int has_intersection;
 };
 
 struct _mliOuterSceneryWork {
-        struct mliIntersection *intersection;
+        struct mliPresection *presection;
         const struct mliScenery *scenery;
         const struct mliAccelerator *accelerator;
         struct mliRay ray_wrt_root;
@@ -28,7 +28,7 @@ void _mli_inner_object_traversal(
         const uint32_t num_faces_in_object_leaf = mliOcTree_leaf_num_objects(
                 object_octree, object_octree_leaf_idx);
 
-        struct mliIntersection tmp_intersection = mliIntersection_init();
+        struct mliPresection tmp_presection = mliPresection_init();
 
         for (f = 0; f < num_faces_in_object_leaf; f++) {
 
@@ -36,35 +36,26 @@ void _mli_inner_object_traversal(
                         object_octree, object_octree_leaf_idx, f);
 
                 struct mliFace fv = inner->object->faces_vertices[face_idx];
-                struct mliFace fvn =
-                        inner->object->faces_vertex_normals[face_idx];
 
-                int32_t face_has_intersection = mliTriangle_intersection(
+                int32_t face_has_intersection = mliRay_intersects_triangle(
                         inner->ray_wrt_object,
-
                         inner->object->vertices[fv.a],
                         inner->object->vertices[fv.b],
                         inner->object->vertices[fv.c],
+                        &tmp_presection.distance_of_ray);
 
-                        inner->object->vertex_normals[fvn.a],
-                        inner->object->vertex_normals[fvn.b],
-                        inner->object->vertex_normals[fvn.c],
-
-                        &tmp_intersection.distance_of_ray,
-                        &tmp_intersection.position_local,
-                        &tmp_intersection.surface_normal_local);
-
-                tmp_intersection.geometry_id.face = face_idx;
-                tmp_intersection.from_outside_to_inside =
-                        mli_ray_runs_from_outside_to_inside(
-                                inner->ray_wrt_object.direction,
-                                tmp_intersection.surface_normal_local);
+                tmp_presection.geometry_id.face = face_idx;
 
                 if (face_has_intersection) {
+
+                        tmp_presection.position_local = mliRay_at(
+                                &inner->ray_wrt_object,
+                                tmp_presection.distance_of_ray);
+
                         inner->has_intersection = 1;
-                        if (tmp_intersection.distance_of_ray <
-                            inner->intersection->distance_of_ray) {
-                                (*inner->intersection) = tmp_intersection;
+                        if (tmp_presection.distance_of_ray <
+                            inner->presection->distance_of_ray) {
+                                (*inner->presection) = tmp_presection;
                         }
                 }
         }
@@ -76,13 +67,13 @@ int mliRobject_intersection(
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp local2root_comp,
         const struct mliRay ray_wrt_root,
-        struct mliIntersection *intersection)
+        struct mliPresection *presection)
 {
         struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
 
         struct _mliInnerObjectWork inner;
         inner.has_intersection = 0;
-        inner.intersection = intersection;
+        inner.presection = presection;
         inner.ray_wrt_object = mliHomTra_ray_inverse(&local2root, ray_wrt_root);
         inner.object = object;
 
@@ -91,11 +82,6 @@ int mliRobject_intersection(
                 inner.ray_wrt_object,
                 (void *)&inner,
                 _mli_inner_object_traversal);
-
-        inner.intersection->position =
-                mliHomTra_pos(&local2root, inner.intersection->position_local);
-        inner.intersection->surface_normal = mliHomTra_dir(
-                &local2root, inner.intersection->surface_normal_local);
 
         return inner.has_intersection;
 }
@@ -114,7 +100,7 @@ void _mli_outer_scenery_traversal(
                 mliOcTree_leaf_num_objects(
                         scenery_octree, scenery_octree_leaf_idx);
 
-        struct mliIntersection tmp_intersection = mliIntersection_init();
+        struct mliPresection tmp_presection = mliPresection_init();
 
         for (ro = 0; ro < num_robjects_in_scenery_leaf; ro++) {
 
@@ -127,14 +113,14 @@ void _mli_outer_scenery_traversal(
                         &outer->accelerator->object_octrees[object_idx],
                         outer->scenery->robject2root[robject_idx],
                         outer->ray_wrt_root,
-                        &tmp_intersection);
+                        &tmp_presection);
 
-                tmp_intersection.geometry_id.robj = robject_idx;
+                tmp_presection.geometry_id.robj = robject_idx;
 
                 if (robject_has_intersection) {
-                        if (tmp_intersection.distance_of_ray <
-                            outer->intersection->distance_of_ray) {
-                                (*outer->intersection) = tmp_intersection;
+                        if (tmp_presection.distance_of_ray <
+                            outer->presection->distance_of_ray) {
+                                (*outer->presection) = tmp_presection;
                         }
                 }
         }
@@ -144,13 +130,13 @@ void _mli_outer_scenery_traversal(
 void mli_ray_scenery_query(
         const struct mliCombine *combine,
         const struct mliRay ray_wrt_root,
-        struct mliIntersection *intersection)
+        struct mliPresection *presection)
 {
         struct _mliOuterSceneryWork outer;
 
-        (*intersection) = mliIntersection_init();
+        (*presection) = mliPresection_init();
 
-        outer.intersection = intersection;
+        outer.presection = presection;
         outer.scenery = combine->scenery;
         outer.accelerator = combine->accelerator;
         outer.ray_wrt_root = ray_wrt_root;
@@ -167,7 +153,7 @@ int mli_first_casual_intersection(
         const struct mliRay ray,
         struct mliIntersection *intersection)
 {
-        struct mliIntersection presec = mliIntersection_init();
+        struct mliPresection presec = mliPresection_init();
 
         mli_ray_scenery_query(combine, ray, &presec);
         if (presec.distance_of_ray == DBL_MAX) {

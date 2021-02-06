@@ -10,12 +10,8 @@ int mliTriangle_intersection(
         const struct mliVec vertex_a,
         const struct mliVec vertex_b,
         const struct mliVec vertex_c,
-        const struct mliVec vertex_normal_a,
-        const struct mliVec vertex_normal_b,
-        const struct mliVec vertex_normal_c,
         double *intersection_ray_parameter,
-        struct mliVec *intersection_position,
-        struct mliVec *intersection_normal);
+        struct mliVec *intersection_position);
 
 struct mliVec mliTriangle_interpolate_surface_normal(
         const struct mliVec vertex_normal_a,

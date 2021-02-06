@@ -67,33 +67,15 @@ int mliTriangle_intersection(
         const struct mliVec vertex_a,
         const struct mliVec vertex_b,
         const struct mliVec vertex_c,
-        const struct mliVec vertex_normal_a,
-        const struct mliVec vertex_normal_b,
-        const struct mliVec vertex_normal_c,
         double *intersection_ray_parameter,
-        struct mliVec *intersection_position,
-        struct mliVec *intersection_normal)
+        struct mliVec *intersection_position)
 {
         const int valid = mliRay_intersects_triangle(
                 ray, vertex_a, vertex_b, vertex_c, intersection_ray_parameter);
 
         if (valid) {
-                struct mliBarycentrigWeights normal_weights;
                 (*intersection_position) =
                         mliRay_at(&ray, (*intersection_ray_parameter));
-
-                normal_weights = mli_barycentric_weights(
-                        vertex_a, vertex_b, vertex_c, (*intersection_position));
-
-                (*intersection_normal) = mliTriangle_interpolate_surface_normal(
-                        vertex_normal_a,
-                        vertex_normal_b,
-                        vertex_normal_c,
-                        normal_weights);
-
-                (*intersection_normal) =
-                        mliVec_normalized(*intersection_normal);
-
                 return 1;
         } else {
                 return 0;

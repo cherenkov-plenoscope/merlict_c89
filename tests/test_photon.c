@@ -34,7 +34,8 @@ CASE("simple propagation")
         CHECK(mliAccelerator_malloc_from_scenery(
                 &accelerator,
                 &scenery));
-        mli_ray_scenery_query(&combine, photon.ray, &intersection);
+        CHECK(mli_first_casual_intersection(
+                &combine, photon.ray, &intersection));
 
         CHECK(mliVec_equal_margin(
                 intersection.position, mliVec_set(0, 0, 0), 1e-9));
