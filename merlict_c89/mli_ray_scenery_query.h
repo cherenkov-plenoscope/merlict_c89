@@ -17,4 +17,9 @@ int mliRobject_intersection(
         const struct mliRay ray_wrt_root,
         struct mliIntersection *intersection);
 
+int mli_first_casual_intersection(
+        const struct mliCombine *combine,
+        const struct mliRay ray,
+        struct mliIntersection *intersection);
+
 #endif

@@ -5,18 +5,6 @@
 #include "mli_intersection_and_scenery.h"
 #include "mli_ray_octree_traversal.h"
 
-int mli_first_casual_intersection(
-        const struct mliCombine *combine,
-        const struct mliRay ray,
-        struct mliIntersection *intersection)
-{
-        mli_ray_scenery_query(combine, ray, intersection);
-        if (intersection->distance_of_ray < DBL_MAX)
-                return 1;
-        else
-                return 0;
-}
-
 struct mliColor mli_trace(
         const struct mliCombine *combine,
         const struct mliRay ray)

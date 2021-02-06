@@ -99,3 +99,27 @@ int mliTriangle_intersection(
                 return 0;
         }
 }
+
+struct mliVec mliTriangle_surface_normal(
+        const struct mliVec vertex_a,
+        const struct mliVec vertex_b,
+        const struct mliVec vertex_c,
+        const struct mliVec vertex_normal_a,
+        const struct mliVec vertex_normal_b,
+        const struct mliVec vertex_normal_c,
+        const struct mliVec intersection_position)
+{
+        struct mliVec surface_normal;
+        struct mliBarycentrigWeights normal_weights = mli_barycentric_weights(
+                vertex_a, vertex_b, vertex_c, intersection_position);
+
+        surface_normal = mliTriangle_estimate_normal(
+                vertex_normal_a,
+                vertex_normal_b,
+                vertex_normal_c,
+                normal_weights);
+
+        surface_normal = mliVec_normalized(surface_normal);
+
+        return surface_normal;
+}

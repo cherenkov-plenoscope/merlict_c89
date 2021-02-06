@@ -8,8 +8,4 @@
 struct mliColor mli_trace(
         const struct mliCombine *combine,
         const struct mliRay ray);
-int mli_first_casual_intersection(
-        const struct mliCombine *combine,
-        const struct mliRay ray,
-        struct mliIntersection *intersection);
 #endif

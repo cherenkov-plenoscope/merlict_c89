@@ -29,4 +29,13 @@ int mliRay_intersects_triangle(
         const struct mliVec vertex_b,
         const struct mliVec vertex_c,
         double *intersection_ray_parameter);
+
+struct mliVec mliTriangle_surface_normal(
+        const struct mliVec vertex_a,
+        const struct mliVec vertex_b,
+        const struct mliVec vertex_c,
+        const struct mliVec vertex_normal_a,
+        const struct mliVec vertex_normal_b,
+        const struct mliVec vertex_normal_c,
+        const struct mliVec intersection_position);
 #endif

@@ -17,6 +17,7 @@
 #include "mliHomTra.c"
 #include "mliOBB.c"
 #include "mliCube.c"
+#include "mliPresection.c"
 #include "mliIntersection.c"
 #include "mliFace.c"
 #include "mli_barycentric.c"
