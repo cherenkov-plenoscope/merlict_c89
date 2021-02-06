@@ -21,7 +21,6 @@
 #include "mliIntersection.h"
 #include "mliFace.h"
 #include "mli_barycentric.h"
-#include "mliFaceGroup.h"
 #include "mliObject.h"
 #include "mliObject_serialize.h"
 #include "mliObject_OBB.h"
