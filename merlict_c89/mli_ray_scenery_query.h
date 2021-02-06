@@ -10,7 +10,7 @@ void mli_ray_scenery_query(
         const struct mliRay ray_wrt_root,
         struct mliPresection *presection);
 
-int mliRobject_intersection(
+int _mliRobject_first_causual_intersection(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp local2root_comp,
