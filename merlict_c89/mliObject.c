@@ -35,8 +35,8 @@ int mliObject_malloc(
         mli_check(num_vertices < UINT32_MAX, "Expected num_vertices < uint32");
         mli_check(
                 num_vertex_normals < UINT32_MAX,
-                "Expected num_vertices < uint32");
-        mli_check(num_faces < UINT32_MAX, "Expected num_vertices < uint32");
+                "Expected num_vertex_normals < uint32");
+        mli_check(num_faces < UINT32_MAX, "Expected num_faces < uint32");
 
         mliObject_free(obj);
         obj->num_vertices = num_vertices;
