@@ -490,19 +490,49 @@ CASE("mliObject, write and read ascii-text-string")
 }
 
 
-CASE("mliObject, read multi materials")
+CASE("mliObject, read and write multiple materials")
 {
+        FILE *f;
+        uint32_t face_idx, material_idx;
         struct mliString str = mliString_init();
-        struct mliObject obj = mliObject_init();
+        struct mliObject obj_orig = mliObject_init();
+        struct mliObject obj_back = mliObject_init();
         CHECK(mliString_malloc_from_path(
                 &str,
                 "tests/"
                 "resources/"
                 "cube_with_materials.obj"));
-        CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
+        CHECK(mliObject_malloc_from_wavefront(&obj_orig, str.c_str));
+        mliString_free(&str);
+        CHECK(obj_orig.num_vertices == 8);
+        CHECK(obj_orig.num_vertex_normals == 6);
+        CHECK(obj_orig.num_faces == 12);
+        CHECK(obj_orig.num_materials == 6);
+
+        f = fopen("tests/resources/cube_with_materials.obj.tmp", "w");
+        CHECK(f != NULL);
+        mliObject_fprint_to_wavefront(f, &obj_orig);
+        fclose(f);
+
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/"
+                "resources/"
+                "cube_with_materials.obj.tmp"));
+        CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));
         mliString_free(&str);
 
-        CHECK(obj.num_materials == 6);
+        CHECK(obj_back.num_vertices == 8);
+        CHECK(obj_back.num_vertex_normals == 6);
+        CHECK(obj_back.num_faces == 12);
+        CHECK(obj_back.num_materials == 6);
 
-        mliObject_free(&obj);
+
+        face_idx = 0;
+        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(material_idx == 0);
+
+
+        mliObject_free(&obj_orig);
+        mliObject_free(&obj_back);
 }

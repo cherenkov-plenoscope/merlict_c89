@@ -113,15 +113,23 @@ error:
 
 int mliObject_assert_valid_materials(const struct mliObject *obj)
 {
-        uint64_t i;
+        uint32_t i;
         for (i = 0; i < obj->num_materials; i++) {
                 mli_check(
-                        obj->last_face_in_material[i] < obj->num_faces,
+                        obj->last_face_in_material[i] <= obj->num_faces,
                         "Expected last_face_in_material < num_faces.");
+                if (i > 0) {
+                        mli_check(
+                                obj->last_face_in_material[i] >
+                                obj->last_face_in_material[i - 1],
+                                "Expected last_face_in_material to be strictly "
+                                "ascending, but it is not."
+                        );
+                }
         }
         return 1;
 error:
-        mli_log_err_vargs(("Group %d's last face > num_faces.", i));
+        mli_log_err_vargs(("material %u's last face > num_faces.", i));
         return 0;
 }
 
@@ -199,19 +207,19 @@ error:
         return 0;
 }
 
-int mliObject_resolve_group(
+int mliObject_resolve_material(
         const struct mliObject *obj,
         const uint32_t face_idx,
-        uint32_t *group)
+        uint32_t *material_idx)
 {
-        uint32_t _group = 0;
+        uint32_t _material_idx = 0;
         mli_check(face_idx < obj->num_faces, "Expected face_idx < num_faces");
         MLI_UPPER_COMPARE(
                 obj->last_face_in_material,
                 obj->num_materials,
                 face_idx,
-                _group);
-        (*group) = _group;
+                _material_idx);
+        (*material_idx) = _material_idx;
         return 1;
 error:
         return 0;

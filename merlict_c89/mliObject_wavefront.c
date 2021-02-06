@@ -427,6 +427,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         uint64_t num_lines = 0u;
         char line[64];
         uint64_t line_length = 0u;
+        uint64_t usemtl_occurences = 0u;
         int rc = -1;
 
         /* init dyn */
@@ -498,6 +499,11 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 struct mliFace tmp_fvt;
                                 struct mliFace tmp_fvn;
 
+                                mli_check(
+                                        usemtl_occurences > 0,
+                                        "Expected 'usemtl' before first "
+                                        "face 'f'.");
+
                                 rc = _mliObject_parse_face_line(
                                         line,
                                         &tmp_fv,
@@ -547,9 +553,11 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 line[5] == 'l' &&
                                 line[6] == ' '
                         ) {
-                                if (fv.dyn.size > 0) {
+                                usemtl_occurences += 1;
+                                if (usemtl_occurences > 1) {
                                         mli_c(mliDynUint32_push_back(
-                                                &materials, fv.dyn.size));
+                                                &materials,
+                                                (uint32_t)fv.dyn.size));
                                 }
                         }
                 } /* line_length > 0 */
@@ -560,8 +568,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                 p += line_length + 1;
         }
 
-        /* closing the materials */
-        mli_c(mliDynUint32_push_back(&materials, fv.dyn.size));
+        /* finalize materials */
+        mli_c(mliDynUint32_push_back(&materials, (uint32_t)fv.dyn.size));
 
         /* copy dyn into static mliObject */
         mli_check(
@@ -600,6 +608,10 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         mli_check(
                 mliObject_assert_normals(obj, 1e-6),
                 "Expected vertex-normals to be normalized to at least 1e-6.");
+
+        mli_check(
+                mliObject_assert_valid_materials(obj),
+                "Expected each 'usemtl' to have at least one face.");
 
         /* free dyn */
         mliDynVec_free(&v);
