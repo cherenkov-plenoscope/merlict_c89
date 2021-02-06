@@ -66,6 +66,9 @@ gcc merlict-c89-view.c -o view -lm
 Finding intersections of triangles and cubes
 - Voorhies, Douglas; Triangle-Cube Intersection; Graphics Gems III, p. 236-239, code: p. 521-526
 
+Finding ray and triangle intersection
+- Thomas, Moeller and Ben, Trumbore; ['Fast, Minimum Storage Ray-Triangle Intersection'](doi:10.1080/10867651.1997.10487468), Journal of Graphics Tools 2: 21-28 and Wikipedia
+
 Mirroring direction-vectors on a surface-normal
 - J.H., Bruge; University of Arizona; OPTI 421/521 – 'Introductory Optomechanical Engineering'
 
