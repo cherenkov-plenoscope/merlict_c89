@@ -37,7 +37,7 @@ void _mli_inner_object_traversal(
 
                 struct mliFace fv = inner->object->faces_vertices[face_idx];
 
-                int32_t face_has_intersection = mliRay_intersects_triangle(
+                int32_t hit = mliRay_intersects_triangle(
                         inner->ray_wrt_object,
                         inner->object->vertices[fv.a],
                         inner->object->vertices[fv.b],
@@ -46,8 +46,7 @@ void _mli_inner_object_traversal(
 
                 tmp_presection.geometry_id.face = face_idx;
 
-                if (face_has_intersection) {
-
+                if (hit) {
                         tmp_presection.position_local = mliRay_at(
                                 &inner->ray_wrt_object,
                                 tmp_presection.distance_of_ray);
@@ -108,7 +107,7 @@ void _mli_outer_scenery_traversal(
                         scenery_octree, scenery_octree_leaf_idx, ro);
                 uint32_t object_idx = outer->scenery->robjects[robject_idx];
 
-                int32_t robject_has_intersection = _mliRobject_first_causual_intersection(
+                int32_t hit = _mliRobject_first_causual_intersection(
                         &outer->scenery->resources.objects[object_idx],
                         &outer->accelerator->object_octrees[object_idx],
                         outer->scenery->robject2root[robject_idx],
@@ -117,7 +116,7 @@ void _mli_outer_scenery_traversal(
 
                 tmp_presection.geometry_id.robj = robject_idx;
 
-                if (robject_has_intersection) {
+                if (hit) {
                         if (tmp_presection.distance_of_ray <
                             outer->presection->distance_of_ray) {
                                 (*outer->presection) = tmp_presection;
