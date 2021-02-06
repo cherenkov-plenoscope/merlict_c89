@@ -126,7 +126,7 @@ void _mli_outer_scenery_traversal(
         return;
 }
 
-void mli_ray_scenery_query(
+void mli_first_casual_presection(
         const struct mliCombine *combine,
         const struct mliRay ray_wrt_root,
         struct mliPresection *presection)
@@ -154,7 +154,7 @@ int mli_first_casual_intersection(
 {
         struct mliPresection presec = mliPresection_init();
 
-        mli_ray_scenery_query(combine, ray, &presec);
+        mli_first_casual_presection(combine, ray, &presec);
         if (presec.distance_of_ray == DBL_MAX) {
                 return 0;
         } else {

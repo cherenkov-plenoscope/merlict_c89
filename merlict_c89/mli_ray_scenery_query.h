@@ -5,7 +5,7 @@
 #include "mli_ray_octree_traversal.h"
 #include "mliCombine.h"
 
-void mli_ray_scenery_query(
+void mli_first_casual_presection(
         const struct mliCombine *combine,
         const struct mliRay ray_wrt_root,
         struct mliPresection *presection);
