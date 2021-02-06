@@ -5,14 +5,6 @@
 #include "mliVec.h"
 #include "mliRay.h"
 
-int mliTriangle_intersection(
-        const struct mliRay ray,
-        const struct mliVec vertex_a,
-        const struct mliVec vertex_b,
-        const struct mliVec vertex_c,
-        double *intersection_ray_parameter,
-        struct mliVec *intersection_position);
-
 struct mliVec mliTriangle_interpolate_surface_normal(
         const struct mliVec vertex_normal_a,
         const struct mliVec vertex_normal_b,
