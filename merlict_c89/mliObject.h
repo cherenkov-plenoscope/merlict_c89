@@ -16,13 +16,17 @@ struct mliObject {
         uint32_t num_faces;
         struct mliFace *faces_vertices;
         struct mliFace *faces_vertex_normals;
+
+        uint32_t num_groups;
+        uint32_t *last_face_in_group;
 };
 
 int mliObject_malloc(
         struct mliObject *obj,
         const uint64_t num_vertices,
         const uint64_t num_vertex_normals,
-        const uint64_t num_faces);
+        const uint64_t num_faces,
+        const uint64_t num_groups);
 void mliObject_free(struct mliObject *obj);
 struct mliObject mliObject_init(void);
 int mliObject_assert_valid_faces(const struct mliObject *obj);
