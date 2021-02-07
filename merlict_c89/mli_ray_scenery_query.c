@@ -4,7 +4,7 @@
 struct _mliInnerObjectWork {
         struct mliIntersectionMinimalQuery *intersection;
         const struct mliObject *object;
-        struct mliRay ray_wrt_object;
+        struct mliRay ray_object;
         int has_intersection;
 };
 
@@ -38,7 +38,7 @@ void _mli_inner_object_traversal(
                 struct mliFace fv = inner->object->faces_vertices[face_idx];
 
                 int32_t hit = mliRay_intersects_triangle(
-                        inner->ray_wrt_object,
+                        inner->ray_object,
                         inner->object->vertices[fv.a],
                         inner->object->vertices[fv.b],
                         inner->object->vertices[fv.c],
@@ -48,7 +48,7 @@ void _mli_inner_object_traversal(
 
                 if (hit) {
                         tmp_isec_min.position_local = mliRay_at(
-                                &inner->ray_wrt_object,
+                                &inner->ray_object,
                                 tmp_isec_min.distance_of_ray);
 
                         inner->has_intersection = 1;
@@ -73,12 +73,12 @@ int _mli_query_object_reference(
         struct _mliInnerObjectWork inner;
         inner.has_intersection = 0;
         inner.intersection = isec_min;
-        inner.ray_wrt_object = mliHomTra_ray_inverse(&local2root, ray_root);
+        inner.ray_object = mliHomTra_ray_inverse(&local2root, ray_root);
         inner.object = object;
 
         mli_ray_octree_traversal(
                 object_octree,
-                inner.ray_wrt_object,
+                inner.ray_object,
                 (void *)&inner,
                 _mli_inner_object_traversal);
 
@@ -165,7 +165,7 @@ int mli_query_intersection_with_surface_normal(
 
                 struct mliHomTra local2root = mliHomTra_from_compact(
                         combine->scenery->robject2root[robject_idx]);
-                struct mliRay ray_wrt_object = mliHomTra_ray_inverse(
+                struct mliRay ray_object = mliHomTra_ray_inverse(
                         &local2root,
                         ray_root);
 
@@ -197,7 +197,7 @@ int mli_query_intersection_with_surface_normal(
 
                 intersection->from_outside_to_inside =
                         mli_ray_runs_from_outside_to_inside(
-                                ray_wrt_object.direction,
+                                ray_object.direction,
                                 intersection->surface_normal_local);
 
                 return 1;
