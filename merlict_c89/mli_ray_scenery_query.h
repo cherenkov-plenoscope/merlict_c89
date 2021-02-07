@@ -12,7 +12,7 @@ void mli_query_intersection_minimal(
 
 int mli_query_intersection_with_surface_normal(
         const struct mliCombine *combine,
-        const struct mliRay ray,
+        const struct mliRay ray_wrt_root,
         struct mliIntersectionSurfaceNormal *intersection);
 
 int _mli_query_object_reference(

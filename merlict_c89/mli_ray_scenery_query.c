@@ -149,12 +149,12 @@ void mli_query_intersection_minimal(
 
 int mli_query_intersection_with_surface_normal(
         const struct mliCombine *combine,
-        const struct mliRay ray,
+        const struct mliRay ray_wrt_root,
         struct mliIntersectionSurfaceNormal *intersection)
 {
         struct mliIntersectionMinimalQuery presec = mliIntersectionMinimalQuery_init();
 
-        mli_query_intersection_minimal(combine, ray, &presec);
+        mli_query_intersection_minimal(combine, ray_wrt_root, &presec);
         if (presec.distance_of_ray == DBL_MAX) {
                 return 0;
         } else {
@@ -167,7 +167,7 @@ int mli_query_intersection_with_surface_normal(
                         combine->scenery->robject2root[robject_idx]);
                 struct mliRay ray_wrt_object = mliHomTra_ray_inverse(
                         &local2root,
-                        ray);
+                        ray_wrt_root);
 
                 struct mliObject *obj = &combine->scenery->resources.objects[
                         object_idx];
@@ -179,7 +179,7 @@ int mli_query_intersection_with_surface_normal(
                 intersection->distance_of_ray = presec.distance_of_ray;
                 intersection->geometry_id = presec.geometry_id;
                 intersection->position = mliRay_at(
-                        &ray, presec.distance_of_ray);
+                        &ray_wrt_root, presec.distance_of_ray);
                 intersection->position_local = presec.position_local;
 
                 /* find surface-normal */
