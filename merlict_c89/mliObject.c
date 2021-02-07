@@ -133,7 +133,7 @@ int mliObject_assert_valid_materials(const struct mliObject *obj)
                                 "ascending, but it is not."
                         );
                 }
-                mli_check(obj->material_names[i].c_str[127] == '\0',
+                mli_check(mliName_valid(&obj->material_names[i]),
                         "Expected material_name to be '\\0' terminated.");
                 mli_check(strlen(obj->material_names[i].c_str) > 0,
                         "Expected strlen(material_name) > 0.");
