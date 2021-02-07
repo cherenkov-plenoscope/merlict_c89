@@ -2,6 +2,13 @@
 #include "mliObject.h"
 #include "mli_debug.h"
 
+struct mliName mliName_init(void)
+{
+        struct mliName name;
+        memset(name.c_str, '\0', sizeof(name.c_str));
+        return name;
+}
+
 struct mliObject mliObject_init(void)
 {
         struct mliObject obj;
@@ -17,6 +24,7 @@ struct mliObject mliObject_init(void)
 
         obj.num_materials = 0;
         obj.last_face_in_material = NULL;
+        obj.material_names = NULL;
         return obj;
 }
 
@@ -27,6 +35,7 @@ void mliObject_free(struct mliObject *obj)
         free(obj->faces_vertices);
         free(obj->faces_vertex_normals);
         free(obj->last_face_in_material);
+        free(obj->material_names);
         *obj = mliObject_init();
 }
 
@@ -37,6 +46,7 @@ int mliObject_malloc(
         const uint64_t num_faces,
         const uint64_t num_materials)
 {
+        uint32_t i;
         mli_check(num_vertices < UINT32_MAX, "Expected num_vertices < uint32");
         mli_check(num_vertex_normals < UINT32_MAX,
                 "Expected num_vertex_normals < uint32");
@@ -55,6 +65,10 @@ int mliObject_malloc(
         mli_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
         mli_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
         mli_malloc(obj->last_face_in_material, uint32_t, obj->num_materials);
+        mli_malloc(obj->material_names, struct mliName, obj->num_materials);
+        for (i = 0; i < obj->num_materials; i++) {
+                obj->material_names[i] = mliName_init();
+        }
         return 1;
 error:
         return 0;
@@ -126,6 +140,10 @@ int mliObject_assert_valid_materials(const struct mliObject *obj)
                                 "ascending, but it is not."
                         );
                 }
+                mli_check(obj->material_names[i].c_str[127] == '\0',
+                        "Expected material_name to be '\\0' terminated.");
+                mli_check(strlen(obj->material_names[i].c_str) > 0,
+                        "Expected strlen(material_name) > 0.");
         }
         return 1;
 error:

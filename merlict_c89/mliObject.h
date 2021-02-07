@@ -6,6 +6,13 @@
 #include "mliVec.h"
 #include "mliFace.h"
 
+struct mliName {
+        char c_str[128];
+};
+
+struct mliName mliName_init(void);
+
+
 struct mliObject {
         uint32_t num_vertices;
         struct mliVec *vertices;
@@ -19,6 +26,7 @@ struct mliObject {
 
         uint32_t num_materials;
         uint32_t *last_face_in_material;
+        struct mliName *material_names;
 };
 
 int mliObject_malloc(
