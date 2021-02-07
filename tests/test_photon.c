@@ -7,7 +7,7 @@ CASE("simple propagation")
         struct mliAccelerator accelerator = mliAccelerator_init();
         struct mliCombine combine;
         struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
-        struct mliIntersection intersection;
+        struct mliIntersectionSurfaceNormal intersection;
         struct mliSide side_coming_from, side_going_to;
         struct mliSurface surf_coming_from, surf_going_to;
         struct mliMedium medi_coming_from, medi_going_to;

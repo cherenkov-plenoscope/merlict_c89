@@ -2,7 +2,6 @@
 #ifndef MERLICT_C89_MLIPRESECTION_H_
 #define MERLICT_C89_MLIPRESECTION_H_
 
-#include <stdint.h>
 #include "mliVec.h"
 #include "mliGeometryId.h"
 

@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliIntersection.h"
+#include "mliIntersectionSurfaceNormal.h"
 
-struct mliIntersection mliIntersection_init(void)
+struct mliIntersectionSurfaceNormal mliIntersectionSurfaceNormal_init(void)
 {
-        struct mliIntersection isec;
+        struct mliIntersectionSurfaceNormal isec;
         isec.geometry_id = mliGeometryId_init();
         isec.position = mliVec_set(0.0, 0.0, 0.0);
         isec.surface_normal = mliVec_set(0.0, 0.0, 1.0);

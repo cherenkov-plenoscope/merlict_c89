@@ -3,7 +3,6 @@
 #define MERLICT_C89_MLITRACER_H_
 
 #include "mliCombine.h"
-#include "mliIntersection.h"
 
 struct mliColor mli_trace(
         const struct mliCombine *combine,

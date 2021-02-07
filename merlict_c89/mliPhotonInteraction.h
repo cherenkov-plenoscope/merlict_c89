@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIPHOTONINTERACTION_H_
 
 #include <stdint.h>
-#include "mliIntersection.h"
+#include "mliIntersectionSurfaceNormal.h"
 #include "mliVec.h"
 #include "mliPhoton.h"
 

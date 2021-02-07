@@ -6,7 +6,7 @@ int _mli_propagate_photon(struct mliEnv *env);
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
         const struct mliScenery *scenery,
-        const struct mliIntersection *isec)
+        const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mliPhotonInteraction phia;
 
@@ -33,7 +33,7 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         return phia;
 }
 
-int _mli_phong(struct mliEnv *env, const struct mliIntersection *isec)
+int _mli_phong(struct mliEnv *env, const struct mliIntersectionSurfaceNormal *isec)
 {
         double specular;
         double diffuse;
@@ -113,7 +113,7 @@ error:
 
 int _mli_pass_boundary_layer(
         struct mliEnv *env,
-        const struct mliIntersection *isec,
+        const struct mliIntersectionSurfaceNormal *isec,
         const struct mliFresnel fresnel)
 {
         mli_c(mliDynPhotonInteraction_push_back(
@@ -133,7 +133,7 @@ error:
 int _mli_probability_passing_medium_coming_from(
         const struct mliScenery *scenery,
         const struct mliPhoton *photon,
-        const struct mliIntersection *isec,
+        const struct mliIntersectionSurfaceNormal *isec,
         double *probability_passing)
 {
         double one_over_e_way;
@@ -157,7 +157,7 @@ error:
 
 int _mli_fresnel_refraction_and_reflection(
         struct mliEnv *env,
-        const struct mliIntersection *isec)
+        const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mliFresnel fresnel;
         double n_going_to;
@@ -213,7 +213,7 @@ error:
 
 int _mli_interact_with_object(
         struct mliEnv *env,
-        const struct mliIntersection *isec)
+        const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mliSurface surface_coming_from;
         const struct mliSide side_coming_from =
@@ -262,7 +262,7 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
 {
         int ray_does_intersect_surface = 0;
         double distance_until_absorbtion = 0.0;
-        struct mliIntersection next_intersection;
+        struct mliIntersectionSurfaceNormal next_intersection;
         struct mliMedium medium_passing_through;
         struct mliFunc *absorbtion_in_medium_passing_through;
         struct mliPhotonInteraction phia;

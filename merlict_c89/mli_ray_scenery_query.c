@@ -150,7 +150,7 @@ void mli_first_casual_presection(
 int mli_first_casual_intersection(
         const struct mliCombine *combine,
         const struct mliRay ray,
-        struct mliIntersection *intersection)
+        struct mliIntersectionSurfaceNormal *intersection)
 {
         struct mliPresection presec = mliPresection_init();
 
@@ -175,7 +175,7 @@ int mli_first_casual_intersection(
                 struct mliFace fv = obj->faces_vertices[face_idx];
                 struct mliFace fvn = obj->faces_vertex_normals[face_idx];
 
-                (*intersection) = mliIntersection_init();
+                (*intersection) = mliIntersectionSurfaceNormal_init();
                 intersection->distance_of_ray = presec.distance_of_ray;
                 intersection->geometry_id = presec.geometry_id;
                 intersection->position = mliRay_at(

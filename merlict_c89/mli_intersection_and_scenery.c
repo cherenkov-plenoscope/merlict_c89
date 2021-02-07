@@ -3,7 +3,7 @@
 
 struct mliSide _mli_side_coming_from(
         const struct mliScenery *scenery,
-        const struct mliIntersection *isec)
+        const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mliBoundaryLayer layer =
                 scenery->robject_boundary_layers[isec->geometry_id.robj];
@@ -15,7 +15,7 @@ struct mliSide _mli_side_coming_from(
 
 struct mliSide _mli_side_going_to(
         const struct mliScenery *scenery,
-        const struct mliIntersection *isec)
+        const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mliBoundaryLayer layer =
                 scenery->robject_boundary_layers[isec->geometry_id.robj];
@@ -27,7 +27,7 @@ struct mliSide _mli_side_going_to(
 
 const struct mliFunc *_mli_refractive_index_going_to(
         const struct mliScenery *scenery,
-        const struct mliIntersection *isec)
+        const struct mliIntersectionSurfaceNormal *isec)
 {
         const struct mliFunc *refractive_index;
         const struct mliSide going_to = _mli_side_going_to(scenery, isec);
@@ -39,7 +39,7 @@ const struct mliFunc *_mli_refractive_index_going_to(
 
 const struct mliFunc *_mli_refractive_index_coming_from(
         const struct mliScenery *scenery,
-        const struct mliIntersection *isec)
+        const struct mliIntersectionSurfaceNormal *isec)
 {
         const struct mliFunc *refractive_index;
         const struct mliSide coming_from = _mli_side_coming_from(scenery, isec);

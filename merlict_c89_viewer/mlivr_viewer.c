@@ -171,7 +171,7 @@ int mlivr_run_interactive_viewer(
         int update_image = 1;
         int print_help = 0;
         int has_probing_intersection;
-        struct mliIntersection probing_intersection;
+        struct mliIntersectionSurfaceNormal probing_intersection;
 
         mlivr_timestamp_now_19chars(timestamp);
         mli_check_mem(mliImage_malloc(
@@ -363,7 +363,7 @@ int mlivr_run_interactive_viewer(
                                 probing_ray_wrt_root = mliHomTra_ray(
                                         &camera2root, probing_ray_wrt_camera);
 
-                                probing_intersection = mliIntersection_init();
+                                probing_intersection = mliIntersectionSurfaceNormal_init();
 
                                 has_probing_intersection =
                                         mli_first_casual_intersection(

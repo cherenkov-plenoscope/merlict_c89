@@ -1,11 +1,11 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIINTERSECTION_H_
-#define MERLICT_C89_MLIINTERSECTION_H_
+#ifndef MERLICT_C89_mliIntersectionSurfaceNormal_H_
+#define MERLICT_C89_mliIntersectionSurfaceNormal_H_
 
 #include "mliVec.h"
 #include "mliGeometryId.h"
 
-struct mliIntersection {
+struct mliIntersectionSurfaceNormal {
         struct mliGeometryId geometry_id;
         struct mliVec position;
         struct mliVec surface_normal;
@@ -15,6 +15,6 @@ struct mliIntersection {
         int from_outside_to_inside;
 };
 
-struct mliIntersection mliIntersection_init(void);
+struct mliIntersectionSurfaceNormal mliIntersectionSurfaceNormal_init(void);
 
 #endif

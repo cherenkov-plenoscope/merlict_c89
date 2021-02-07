@@ -19,7 +19,7 @@
 #include "mliOBB.h"
 #include "mliCube.h"
 #include "mliPresection.h"
-#include "mliIntersection.h"
+#include "mliIntersectionSurfaceNormal.h"
 #include "mliFace.h"
 #include "mli_barycentric.h"
 #include "mliObject.h"
