@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_mliIntersectionSurfaceNormal_H_
-#define MERLICT_C89_mliIntersectionSurfaceNormal_H_
+#ifndef MERLICT_C89_MLIINTERSECTIONSURFACENORMAL_H_
+#define MERLICT_C89_MLIINTERSECTIONSURFACENORMAL_H_
 
 #include "mliVec.h"
 #include "mliGeometryId.h"
