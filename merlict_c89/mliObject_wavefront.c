@@ -425,7 +425,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         uint64_t i = 0u;
         uint64_t p = 0u;
         uint64_t num_lines = 0u;
-        char line[64];
+        char line[2 * MLI_NAME_CAPACITY];
         uint64_t line_length = 0u;
         uint64_t usemtl_occurences = 0u;
         int rc = -1;
