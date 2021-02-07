@@ -18,7 +18,7 @@
 #include "mliHomTra.h"
 #include "mliOBB.h"
 #include "mliCube.h"
-#include "mliPresection.h"
+#include "mliIntersectionMinimalQuery.h"
 #include "mliIntersectionSurfaceNormal.h"
 #include "mliFace.h"
 #include "mli_barycentric.h"

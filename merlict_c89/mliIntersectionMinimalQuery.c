@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliPresection.h"
+#include "mliIntersectionMinimalQuery.h"
 
-struct mliPresection mliPresection_init(void)
+struct mliIntersectionMinimalQuery mliIntersectionMinimalQuery_init(void)
 {
-        struct mliPresection psec;
+        struct mliIntersectionMinimalQuery psec;
         psec.geometry_id = mliGeometryId_init();
         psec.position_local = mliVec_set(0.0, 0.0, 0.0);
         psec.distance_of_ray = DBL_MAX;

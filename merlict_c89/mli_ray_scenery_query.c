@@ -2,14 +2,14 @@
 #include "mli_ray_scenery_query.h"
 
 struct _mliInnerObjectWork {
-        struct mliPresection *presection;
+        struct mliIntersectionMinimalQuery *presection;
         const struct mliObject *object;
         struct mliRay ray_wrt_object;
         int has_intersection;
 };
 
 struct _mliOuterSceneryWork {
-        struct mliPresection *presection;
+        struct mliIntersectionMinimalQuery *presection;
         const struct mliScenery *scenery;
         const struct mliAccelerator *accelerator;
         struct mliRay ray_wrt_root;
@@ -28,7 +28,7 @@ void _mli_inner_object_traversal(
         const uint32_t num_faces_in_object_leaf = mliOcTree_leaf_num_objects(
                 object_octree, object_octree_leaf_idx);
 
-        struct mliPresection tmp_presection = mliPresection_init();
+        struct mliIntersectionMinimalQuery tmp_presection = mliIntersectionMinimalQuery_init();
 
         for (f = 0; f < num_faces_in_object_leaf; f++) {
 
@@ -66,7 +66,7 @@ int _mliRobject_first_causual_intersection(
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp local2root_comp,
         const struct mliRay ray_wrt_root,
-        struct mliPresection *presection)
+        struct mliIntersectionMinimalQuery *presection)
 {
         struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
 
@@ -99,7 +99,7 @@ void _mli_outer_scenery_traversal(
                 mliOcTree_leaf_num_objects(
                         scenery_octree, scenery_octree_leaf_idx);
 
-        struct mliPresection tmp_presection = mliPresection_init();
+        struct mliIntersectionMinimalQuery tmp_presection = mliIntersectionMinimalQuery_init();
 
         for (ro = 0; ro < num_robjects_in_scenery_leaf; ro++) {
 
@@ -129,11 +129,11 @@ void _mli_outer_scenery_traversal(
 void mli_first_casual_presection(
         const struct mliCombine *combine,
         const struct mliRay ray_wrt_root,
-        struct mliPresection *presection)
+        struct mliIntersectionMinimalQuery *presection)
 {
         struct _mliOuterSceneryWork outer;
 
-        (*presection) = mliPresection_init();
+        (*presection) = mliIntersectionMinimalQuery_init();
 
         outer.presection = presection;
         outer.scenery = combine->scenery;
@@ -152,7 +152,7 @@ int mli_first_casual_intersection(
         const struct mliRay ray,
         struct mliIntersectionSurfaceNormal *intersection)
 {
-        struct mliPresection presec = mliPresection_init();
+        struct mliIntersectionMinimalQuery presec = mliIntersectionMinimalQuery_init();
 
         mli_first_casual_presection(combine, ray, &presec);
         if (presec.distance_of_ray == DBL_MAX) {

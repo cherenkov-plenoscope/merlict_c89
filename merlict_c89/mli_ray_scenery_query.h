@@ -8,7 +8,7 @@
 void mli_first_casual_presection(
         const struct mliCombine *combine,
         const struct mliRay ray_wrt_root,
-        struct mliPresection *presection);
+        struct mliIntersectionMinimalQuery *presection);
 
 int mli_first_casual_intersection(
         const struct mliCombine *combine,
@@ -20,6 +20,6 @@ int _mliRobject_first_causual_intersection(
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp local2root_comp,
         const struct mliRay ray_wrt_root,
-        struct mliPresection *presection);
+        struct mliIntersectionMinimalQuery *presection);
 
 #endif
