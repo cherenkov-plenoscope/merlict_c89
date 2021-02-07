@@ -27,7 +27,7 @@ void _mli_inner_object_traversal(
         const uint32_t num_faces_in_object_leaf = mliOcTree_leaf_num_objects(
                 object_octree, object_octree_leaf_idx);
 
-        struct mliIntersectionMinimalQuery tmp_isec_min = mliIntersectionMinimalQuery_init();
+        struct mliIntersectionMinimalQuery tmp_isecmin = mliIntersectionMinimalQuery_init();
 
         for (f = 0; f < num_faces_in_object_leaf; f++) {
 
@@ -41,19 +41,19 @@ void _mli_inner_object_traversal(
                         inner->object->vertices[fv.a],
                         inner->object->vertices[fv.b],
                         inner->object->vertices[fv.c],
-                        &tmp_isec_min.distance_of_ray);
+                        &tmp_isecmin.distance_of_ray);
 
-                tmp_isec_min.geometry_id.face = face_idx;
+                tmp_isecmin.geometry_id.face = face_idx;
 
                 if (hit) {
-                        tmp_isec_min.position_local = mliRay_at(
+                        tmp_isecmin.position_local = mliRay_at(
                                 &inner->ray_object,
-                                tmp_isec_min.distance_of_ray);
+                                tmp_isecmin.distance_of_ray);
 
                         inner->has_intersection = 1;
-                        if (tmp_isec_min.distance_of_ray <
+                        if (tmp_isecmin.distance_of_ray <
                             inner->intersection->distance_of_ray) {
-                                (*inner->intersection) = tmp_isec_min;
+                                (*inner->intersection) = tmp_isecmin;
                         }
                 }
         }
@@ -65,13 +65,13 @@ int _mli_query_object_reference(
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp robject2root_comp,
         const struct mliRay ray_root,
-        struct mliIntersectionMinimalQuery *isec_min)
+        struct mliIntersectionMinimalQuery *isecmin)
 {
         struct mliHomTra robject2root = mliHomTra_from_compact(robject2root_comp);
 
         struct _mliInnerWork inner;
         inner.has_intersection = 0;
-        inner.intersection = isec_min;
+        inner.intersection = isecmin;
         inner.ray_object = mliHomTra_ray_inverse(&robject2root, ray_root);
         inner.object = object;
 
@@ -97,7 +97,7 @@ void _mli_outer_scenery_traversal(
                 mliOcTree_leaf_num_objects(
                         scenery_octree, scenery_octree_leaf_idx);
 
-        struct mliIntersectionMinimalQuery tmp_isec_min = mliIntersectionMinimalQuery_init();
+        struct mliIntersectionMinimalQuery tmp_isecmin = mliIntersectionMinimalQuery_init();
 
         for (ro = 0; ro < num_robjects_in_scenery_leaf; ro++) {
 
@@ -110,14 +110,14 @@ void _mli_outer_scenery_traversal(
                         &outer->accelerator->object_octrees[object_idx],
                         outer->scenery->robject2root[robject_idx],
                         outer->ray_root,
-                        &tmp_isec_min);
+                        &tmp_isecmin);
 
-                tmp_isec_min.geometry_id.robj = robject_idx;
+                tmp_isecmin.geometry_id.robj = robject_idx;
 
                 if (hit) {
-                        if (tmp_isec_min.distance_of_ray <
+                        if (tmp_isecmin.distance_of_ray <
                             outer->intersection->distance_of_ray) {
-                                (*outer->intersection) = tmp_isec_min;
+                                (*outer->intersection) = tmp_isecmin;
                         }
                 }
         }
@@ -127,13 +127,13 @@ void _mli_outer_scenery_traversal(
 void mli_query_intersection_minimal(
         const struct mliCombine *combine,
         const struct mliRay ray_root,
-        struct mliIntersectionMinimalQuery *isec_min)
+        struct mliIntersectionMinimalQuery *isecmin)
 {
         struct _mliOuterWork outer;
 
-        (*isec_min) = mliIntersectionMinimalQuery_init();
+        (*isecmin) = mliIntersectionMinimalQuery_init();
 
-        outer.intersection = isec_min;
+        outer.intersection = isecmin;
         outer.scenery = combine->scenery;
         outer.accelerator = combine->accelerator;
         outer.ray_root = ray_root;
@@ -148,18 +148,18 @@ void mli_query_intersection_minimal(
 int mli_query_intersection_with_surface_normal(
         const struct mliCombine *combine,
         const struct mliRay ray_root,
-        struct mliIntersectionSurfaceNormal *isec_srf)
+        struct mliIntersectionSurfaceNormal *isecsrf)
 {
-        struct mliIntersectionMinimalQuery isec_min = mliIntersectionMinimalQuery_init();
+        struct mliIntersectionMinimalQuery isecmin = mliIntersectionMinimalQuery_init();
 
-        mli_query_intersection_minimal(combine, ray_root, &isec_min);
-        if (isec_min.distance_of_ray == DBL_MAX) {
+        mli_query_intersection_minimal(combine, ray_root, &isecmin);
+        if (isecmin.distance_of_ray == DBL_MAX) {
                 return 0;
         } else {
-                uint32_t robject_idx = isec_min.geometry_id.robj;
+                uint32_t robject_idx = isecmin.geometry_id.robj;
                 uint32_t object_idx = combine->scenery->robjects[
-                        isec_min.geometry_id.robj];
-                uint32_t face_idx = isec_min.geometry_id.face;
+                        isecmin.geometry_id.robj];
+                uint32_t face_idx = isecmin.geometry_id.face;
 
                 struct mliHomTra robject2root = mliHomTra_from_compact(
                         combine->scenery->robject2root[robject_idx]);
@@ -173,30 +173,30 @@ int mli_query_intersection_with_surface_normal(
                 struct mliFace fv = obj->faces_vertices[face_idx];
                 struct mliFace fvn = obj->faces_vertex_normals[face_idx];
 
-                (*isec_srf) = mliIntersectionSurfaceNormal_init();
-                isec_srf->distance_of_ray = isec_min.distance_of_ray;
-                isec_srf->geometry_id = isec_min.geometry_id;
-                isec_srf->position = mliRay_at(
-                        &ray_root, isec_min.distance_of_ray);
-                isec_srf->position_local = isec_min.position_local;
+                (*isecsrf) = mliIntersectionSurfaceNormal_init();
+                isecsrf->distance_of_ray = isecmin.distance_of_ray;
+                isecsrf->geometry_id = isecmin.geometry_id;
+                isecsrf->position = mliRay_at(
+                        &ray_root, isecmin.distance_of_ray);
+                isecsrf->position_local = isecmin.position_local;
 
                 /* find surface-normal */
-                isec_srf->surface_normal_local = mliTriangle_surface_normal(
+                isecsrf->surface_normal_local = mliTriangle_surface_normal(
                         obj->vertices[fv.a],
                         obj->vertices[fv.b],
                         obj->vertices[fv.c],
                         obj->vertex_normals[fvn.a],
                         obj->vertex_normals[fvn.b],
                         obj->vertex_normals[fvn.c],
-                        isec_srf->position_local);
+                        isecsrf->position_local);
 
-                isec_srf->surface_normal = mliHomTra_dir(
-                        &robject2root, isec_srf->surface_normal_local);
+                isecsrf->surface_normal = mliHomTra_dir(
+                        &robject2root, isecsrf->surface_normal_local);
 
-                isec_srf->from_outside_to_inside =
+                isecsrf->from_outside_to_inside =
                         mli_ray_runs_from_outside_to_inside(
                                 ray_object.direction,
-                                isec_srf->surface_normal_local);
+                                isecsrf->surface_normal_local);
 
                 return 1;
         }
