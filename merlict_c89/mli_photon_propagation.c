@@ -267,7 +267,7 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
         struct mliFunc *absorbtion_in_medium_passing_through;
         struct mliPhotonInteraction phia;
 
-        ray_does_intersect_surface = mli_first_casual_intersection(
+        ray_does_intersect_surface = mli_query_intersection_with_surface_normal(
                 env->combine, env->photon->ray, &next_intersection);
 
         if (ray_does_intersect_surface) {

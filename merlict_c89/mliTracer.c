@@ -11,7 +11,7 @@ struct mliColor mli_trace(
 {
         struct mliColor color = {128., 128., 128.};
         struct mliIntersectionSurfaceNormal intersection = mliIntersectionSurfaceNormal_init();
-        if (mli_first_casual_intersection(combine, ray, &intersection)) {
+        if (mli_query_intersection_with_surface_normal(combine, ray, &intersection)) {
                 struct mliIntersectionSurfaceNormal global_light_intersection;
                 struct mliRay line_of_sight_to_source;
                 struct mliSide side;
@@ -25,7 +25,7 @@ struct mliColor mli_trace(
                 surface = combine->scenery->resources.surfaces[side.surface];
                 color = combine->scenery->resources.colors[surface.color];
 
-                if (mli_first_casual_intersection(
+                if (mli_query_intersection_with_surface_normal(
                             combine,
                             line_of_sight_to_source,
                             &global_light_intersection)) {

@@ -366,7 +366,7 @@ int mlivr_run_interactive_viewer(
                                 probing_intersection = mliIntersectionSurfaceNormal_init();
 
                                 has_probing_intersection =
-                                        mli_first_casual_intersection(
+                                        mli_query_intersection_with_surface_normal(
                                                 combine,
                                                 probing_ray_wrt_root,
                                                 &probing_intersection);

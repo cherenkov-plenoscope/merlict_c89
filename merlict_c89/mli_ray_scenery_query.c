@@ -126,7 +126,7 @@ void _mli_outer_scenery_traversal(
         return;
 }
 
-void mli_first_casual_presection(
+void mli_query_intersection_minimal(
         const struct mliCombine *combine,
         const struct mliRay ray_wrt_root,
         struct mliIntersectionMinimalQuery *presection)
@@ -147,14 +147,14 @@ void mli_first_casual_presection(
                 _mli_outer_scenery_traversal);
 }
 
-int mli_first_casual_intersection(
+int mli_query_intersection_with_surface_normal(
         const struct mliCombine *combine,
         const struct mliRay ray,
         struct mliIntersectionSurfaceNormal *intersection)
 {
         struct mliIntersectionMinimalQuery presec = mliIntersectionMinimalQuery_init();
 
-        mli_first_casual_presection(combine, ray, &presec);
+        mli_query_intersection_minimal(combine, ray, &presec);
         if (presec.distance_of_ray == DBL_MAX) {
                 return 0;
         } else {

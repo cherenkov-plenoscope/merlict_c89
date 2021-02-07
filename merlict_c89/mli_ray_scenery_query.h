@@ -5,12 +5,12 @@
 #include "mli_ray_octree_traversal.h"
 #include "mliCombine.h"
 
-void mli_first_casual_presection(
+void mli_query_intersection_minimal(
         const struct mliCombine *combine,
         const struct mliRay ray_wrt_root,
         struct mliIntersectionMinimalQuery *presection);
 
-int mli_first_casual_intersection(
+int mli_query_intersection_with_surface_normal(
         const struct mliCombine *combine,
         const struct mliRay ray,
         struct mliIntersectionSurfaceNormal *intersection);
