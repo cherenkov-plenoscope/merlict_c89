@@ -655,7 +655,7 @@ error:
 
 int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
 {
-        uint32_t i, g, face;
+        uint32_t i, m, face;
         mli_c(fprintf(f, "# vertices\n"));
         for (i = 0; i < obj->num_vertices; i++) {
                 mli_c(fprintf(f,
@@ -677,9 +677,9 @@ int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
         mli_c(fprintf(f, "# faces\n"));
 
         face = 0;
-        for (g = 0; g < obj->num_materials; g++) {
-                mli_c(fprintf(f, "usemtl %s\n", obj->material_names[g].c_str));
-                for (; face < obj->last_face_in_material[g]; face++) {
+        for (m = 0; m < obj->num_materials; m++) {
+                mli_c(fprintf(f, "usemtl %s\n", obj->material_names[m].c_str));
+                for (; face < obj->last_face_in_material[m]; face++) {
                         mli_c(fprintf(f,
                                       "f %d//%d %d//%d %d//%d\n",
                                       obj->faces_vertices[face].a + 1,
