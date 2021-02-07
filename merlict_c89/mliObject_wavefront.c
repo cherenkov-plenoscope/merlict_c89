@@ -556,8 +556,6 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 line[6] == ' '
                         ) {
                                 usemtl_occurences += 1;
-                                fprintf(stderr, "line: '%s'.\n", line);
-                                fprintf(stderr, "insert key '%s'.\n", &line[7]);
                                 mli_c(mliDynMap_insert(
                                         &material_names,
                                         &line[7],
