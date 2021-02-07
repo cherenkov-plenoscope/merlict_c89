@@ -15,7 +15,7 @@ int mli_query_intersection_with_surface_normal(
         const struct mliRay ray,
         struct mliIntersectionSurfaceNormal *intersection);
 
-int _mliRobject_first_causual_intersection(
+int _mli_query_object_reference(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp local2root_comp,

@@ -61,7 +61,7 @@ void _mli_inner_object_traversal(
         return;
 }
 
-int _mliRobject_first_causual_intersection(
+int _mli_query_object_reference(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp local2root_comp,
@@ -107,7 +107,7 @@ void _mli_outer_scenery_traversal(
                         scenery_octree, scenery_octree_leaf_idx, ro);
                 uint32_t object_idx = outer->scenery->robjects[robject_idx];
 
-                int32_t hit = _mliRobject_first_causual_intersection(
+                int32_t hit = _mli_query_object_reference(
                         &outer->scenery->resources.objects[object_idx],
                         &outer->accelerator->object_octrees[object_idx],
                         outer->scenery->robject2root[robject_idx],
