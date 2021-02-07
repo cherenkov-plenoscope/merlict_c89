@@ -610,7 +610,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                 memcpy(
                         obj->material_names[i].c_str,
                         material_names.arr[i].key,
-                        MLI_MAP_KEY_CAPACITY);
+                        MLI_NAME_CAPACITY);
         }
 
         mli_check(

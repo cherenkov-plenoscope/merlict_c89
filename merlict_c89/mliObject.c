@@ -2,13 +2,6 @@
 #include "mliObject.h"
 #include "mli_debug.h"
 
-struct mliName mliName_init(void)
-{
-        struct mliName name;
-        memset(name.c_str, '\0', sizeof(name.c_str));
-        return name;
-}
-
 struct mliObject mliObject_init(void)
 {
         struct mliObject obj;

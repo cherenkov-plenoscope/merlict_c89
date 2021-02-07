@@ -5,13 +5,7 @@
 #include <stdint.h>
 #include "mliVec.h"
 #include "mliFace.h"
-
-struct mliName {
-        char c_str[128];
-};
-
-struct mliName mliName_init(void);
-
+#include "mliName.h"
 
 struct mliObject {
         uint32_t num_vertices;

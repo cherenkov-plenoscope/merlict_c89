@@ -8,6 +8,7 @@
 #include "mliFunc_serialize.c"
 #include "mliMT19937.c"
 #include "mli_random.c"
+#include "mliName.c"
 #include "mliVec.c"
 #include "mliVec_json.c"
 #include "mliRay.c"

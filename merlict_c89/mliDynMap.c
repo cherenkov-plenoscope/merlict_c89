@@ -29,9 +29,9 @@ int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value)
                         mliDynMap_malloc(map, 0u),
                         "Failed to initially malloc dyn-map.");
         }
-        mli_check(strlen(key) < MLI_MAP_KEY_CAPACITY, "Key too long.");
+        mli_check(strlen(key) < MLI_NAME_CAPACITY, "Key too long.");
         mli_check(0 == mliDynMap_has(map, key), "Key already in use.");
-        memset(item.key, '\0', MLI_MAP_KEY_CAPACITY);
+        memset(item.key, '\0', MLI_NAME_CAPACITY);
         strcpy(item.key, key);
         item.value = value;
         mli_check(mliDynMap_push_back(map, item), "Failed to mmaloc item.");

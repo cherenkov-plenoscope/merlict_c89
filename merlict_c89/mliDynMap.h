@@ -4,11 +4,10 @@
 
 #include <stdint.h>
 #include "mli_debug.h"
-
-#define MLI_MAP_KEY_CAPACITY 128
+#include "mliName.h"
 
 struct _mliMapItem {
-        char key[MLI_MAP_KEY_CAPACITY];
+        char key[MLI_NAME_CAPACITY];
         uint64_t value;
 };
 MLIDYNARRAY_DEFINITON(mli, Map, struct _mliMapItem)
