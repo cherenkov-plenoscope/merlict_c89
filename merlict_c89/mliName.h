@@ -10,4 +10,5 @@ struct mliName {
 
 struct mliName mliName_init(void);
 int mliName_valid(const struct mliName *name);
+int mliName_is_equal(const struct mliName *a, const struct mliName *b);
 #endif

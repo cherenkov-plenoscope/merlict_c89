@@ -17,3 +17,14 @@ int mliName_valid(const struct mliName *name)
                 return 0;
         }
 }
+
+int mliName_is_equal(const struct mliName *a, const struct mliName *b)
+{
+        uint32_t i;
+        for (i = 0; i < sizeof(a->c_str); i++) {
+                if (a->c_str[i] != b->c_str[i]) {
+                        return 0;
+                }
+        }
+        return 1;
+}

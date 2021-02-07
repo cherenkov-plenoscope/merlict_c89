@@ -167,7 +167,12 @@ int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
                         b->faces_vertex_normals[i]));
         }
         for (i = 0; i < a->num_materials; i++) {
-                mli_c(a->first_face_in_next_material[i] == b->first_face_in_next_material[i]);
+                mli_c(
+                        a->first_face_in_next_material[i] ==
+                        b->first_face_in_next_material[i]);
+                mli_c(mliName_is_equal(
+                        &a->material_names[i],
+                        &b->material_names[i]));
         }
         return 1;
 error:
@@ -210,7 +215,7 @@ int mliObject_cpy(struct mliObject *destination, struct mliObject *source)
         for (p = 0; p < destination->num_materials; p++) {
                 destination->first_face_in_next_material[p] =
                         source->first_face_in_next_material[p];
-
+                destination->material_names[p] = source->material_names[p];
         }
 
         return 1;
