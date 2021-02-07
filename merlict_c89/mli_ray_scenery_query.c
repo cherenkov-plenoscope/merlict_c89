@@ -1,14 +1,14 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_ray_scenery_query.h"
 
-struct _mliInnerObjectWork {
+struct _mliInnerWork {
         struct mliIntersectionMinimalQuery *intersection;
         const struct mliObject *object;
         struct mliRay ray_object;
         int has_intersection;
 };
 
-struct _mliOuterSceneryWork {
+struct _mliOuterWork {
         struct mliIntersectionMinimalQuery *intersection;
         const struct mliScenery *scenery;
         const struct mliAccelerator *accelerator;
@@ -21,8 +21,7 @@ void _mli_inner_object_traversal(
         const uint32_t object_octree_leaf_idx)
 {
         /* traverse faces in an object-wavefront */
-        struct _mliInnerObjectWork *inner =
-                (struct _mliInnerObjectWork *)_inner;
+        struct _mliInnerWork *inner = (struct _mliInnerWork *)_inner;
 
         uint32_t f;
         const uint32_t num_faces_in_object_leaf = mliOcTree_leaf_num_objects(
@@ -70,7 +69,7 @@ int _mli_query_object_reference(
 {
         struct mliHomTra robject2root = mliHomTra_from_compact(robject2root_comp);
 
-        struct _mliInnerObjectWork inner;
+        struct _mliInnerWork inner;
         inner.has_intersection = 0;
         inner.intersection = isec_min;
         inner.ray_object = mliHomTra_ray_inverse(&robject2root, ray_root);
@@ -91,8 +90,7 @@ void _mli_outer_scenery_traversal(
         const uint32_t scenery_octree_leaf_idx)
 {
         /* traverse object-wavefronts in a scenery */
-        struct _mliOuterSceneryWork *outer =
-                (struct _mliOuterSceneryWork *)_outer;
+        struct _mliOuterWork *outer = (struct _mliOuterWork *)_outer;
 
         uint32_t ro;
         const uint32_t num_robjects_in_scenery_leaf =
@@ -131,7 +129,7 @@ void mli_query_intersection_minimal(
         const struct mliRay ray_root,
         struct mliIntersectionMinimalQuery *isec_min)
 {
-        struct _mliOuterSceneryWork outer;
+        struct _mliOuterWork outer;
 
         (*isec_min) = mliIntersectionMinimalQuery_init();
 
