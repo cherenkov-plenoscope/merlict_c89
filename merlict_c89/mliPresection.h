@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "mliVec.h"
+#include "mliGeometryId.h"
 
 struct mliPresection {
         struct mliGeometryId geometry_id;

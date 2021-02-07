@@ -2,8 +2,8 @@
 #ifndef MERLICT_C89_MLIINTERSECTION_H_
 #define MERLICT_C89_MLIINTERSECTION_H_
 
-#include <stdint.h>
 #include "mliVec.h"
+#include "mliGeometryId.h"
 
 struct mliIntersection {
         struct mliGeometryId geometry_id;
