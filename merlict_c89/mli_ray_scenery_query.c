@@ -150,7 +150,7 @@ void mli_query_intersection_minimal(
 int mli_query_intersection_with_surface_normal(
         const struct mliCombine *combine,
         const struct mliRay ray_root,
-        struct mliIntersectionSurfaceNormal *intersection)
+        struct mliIntersectionSurfaceNormal *isec_srf)
 {
         struct mliIntersectionMinimalQuery isec_min = mliIntersectionMinimalQuery_init();
 
@@ -175,30 +175,30 @@ int mli_query_intersection_with_surface_normal(
                 struct mliFace fv = obj->faces_vertices[face_idx];
                 struct mliFace fvn = obj->faces_vertex_normals[face_idx];
 
-                (*intersection) = mliIntersectionSurfaceNormal_init();
-                intersection->distance_of_ray = isec_min.distance_of_ray;
-                intersection->geometry_id = isec_min.geometry_id;
-                intersection->position = mliRay_at(
+                (*isec_srf) = mliIntersectionSurfaceNormal_init();
+                isec_srf->distance_of_ray = isec_min.distance_of_ray;
+                isec_srf->geometry_id = isec_min.geometry_id;
+                isec_srf->position = mliRay_at(
                         &ray_root, isec_min.distance_of_ray);
-                intersection->position_local = isec_min.position_local;
+                isec_srf->position_local = isec_min.position_local;
 
                 /* find surface-normal */
-                intersection->surface_normal_local = mliTriangle_surface_normal(
+                isec_srf->surface_normal_local = mliTriangle_surface_normal(
                         obj->vertices[fv.a],
                         obj->vertices[fv.b],
                         obj->vertices[fv.c],
                         obj->vertex_normals[fvn.a],
                         obj->vertex_normals[fvn.b],
                         obj->vertex_normals[fvn.c],
-                        intersection->position_local);
+                        isec_srf->position_local);
 
-                intersection->surface_normal = mliHomTra_dir(
-                        &local2root, intersection->surface_normal_local);
+                isec_srf->surface_normal = mliHomTra_dir(
+                        &local2root, isec_srf->surface_normal_local);
 
-                intersection->from_outside_to_inside =
+                isec_srf->from_outside_to_inside =
                         mli_ray_runs_from_outside_to_inside(
                                 ray_object.direction,
-                                intersection->surface_normal_local);
+                                isec_srf->surface_normal_local);
 
                 return 1;
         }
