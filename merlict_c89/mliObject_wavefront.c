@@ -437,7 +437,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         struct mliDynFace fv = mliDynFace_init();
         struct mliDynFace fvn = mliDynFace_init();
 
-        struct mliDynUint32 last_face_in_material = mliDynUint32_init();
+        struct mliDynUint32 first_face_in_next_material = mliDynUint32_init();
         struct mliDynMap material_names = mliDynMap_init();
 
         memset(line, '\0', sizeof(line));
@@ -449,7 +449,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         mli_c(mliDynFace_malloc(&fv, 0u));
         mli_c(mliDynFace_malloc(&fvn, 0u));
 
-        mli_c(mliDynUint32_malloc(&last_face_in_material, 0u));
+        mli_c(mliDynUint32_malloc(&first_face_in_next_material, 0u));
         mli_c(mliDynMap_malloc(&material_names, 0u));
 
         /* parse wavefront into dyn */
@@ -565,7 +565,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
                                 if (usemtl_occurences > 1) {
                                         mli_c(mliDynUint32_push_back(
-                                                &last_face_in_material,
+                                                &first_face_in_next_material,
                                                 (uint32_t)fv.dyn.size));
                                 }
                         }
@@ -577,8 +577,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                 p += line_length + 1;
         }
 
-        /* finalize last_face_in_material */
-        mli_c(mliDynUint32_push_back(&last_face_in_material, (uint32_t)fv.dyn.size));
+        /* finalize first_face_in_next_material */
+        mli_c(mliDynUint32_push_back(&first_face_in_next_material, (uint32_t)fv.dyn.size));
 
         /* copy dyn into static mliObject */
         mli_check(
@@ -590,7 +590,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                         v.dyn.size,
                         vn.dyn.size,
                         fv.dyn.size,
-                        last_face_in_material.dyn.size),
+                        first_face_in_next_material.dyn.size),
                 "Failed to malloc mliObject from file.");
 
         for (i = 0; i < v.dyn.size; i++) {
@@ -605,8 +605,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         for (i = 0; i < fvn.dyn.size; i++) {
                 obj->faces_vertex_normals[i] = fvn.arr[i];
         }
-        for (i = 0; i < last_face_in_material.dyn.size; i++) {
-                obj->last_face_in_material[i] = last_face_in_material.arr[i];
+        for (i = 0; i < first_face_in_next_material.dyn.size; i++) {
+                obj->first_face_in_next_material[i] = first_face_in_next_material.arr[i];
                 memcpy(
                         obj->material_names[i].c_str,
                         material_names.arr[i].key,
@@ -633,7 +633,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         mliDynFace_free(&fv);
         mliDynFace_free(&fvn);
 
-        mliDynUint32_free(&last_face_in_material);
+        mliDynUint32_free(&first_face_in_next_material);
         mliDynMap_free(&material_names);
 
         return 1;
@@ -647,7 +647,7 @@ error:
         mliDynFace_free(&fv);
         mliDynFace_free(&fvn);
 
-        mliDynUint32_free(&last_face_in_material);
+        mliDynUint32_free(&first_face_in_next_material);
         mliDynMap_free(&material_names);
 
         return 0;
@@ -679,7 +679,7 @@ int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
         face = 0;
         for (m = 0; m < obj->num_materials; m++) {
                 mli_c(fprintf(f, "usemtl %s\n", obj->material_names[m].c_str));
-                for (; face < obj->last_face_in_material[m]; face++) {
+                for (; face < obj->first_face_in_next_material[m]; face++) {
                         mli_c(fprintf(f,
                                       "f %d//%d %d//%d %d//%d\n",
                                       obj->faces_vertices[face].a + 1,

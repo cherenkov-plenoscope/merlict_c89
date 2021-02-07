@@ -16,7 +16,7 @@ struct mliObject mliObject_init(void)
         obj.faces_vertex_normals = NULL;
 
         obj.num_materials = 0;
-        obj.last_face_in_material = NULL;
+        obj.first_face_in_next_material = NULL;
         obj.material_names = NULL;
         return obj;
 }
@@ -27,7 +27,7 @@ void mliObject_free(struct mliObject *obj)
         free(obj->vertex_normals);
         free(obj->faces_vertices);
         free(obj->faces_vertex_normals);
-        free(obj->last_face_in_material);
+        free(obj->first_face_in_next_material);
         free(obj->material_names);
         *obj = mliObject_init();
 }
@@ -57,7 +57,7 @@ int mliObject_malloc(
         mli_malloc(obj->vertex_normals, struct mliVec, obj->num_vertex_normals);
         mli_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
         mli_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
-        mli_malloc(obj->last_face_in_material, uint32_t, obj->num_materials);
+        mli_malloc(obj->first_face_in_next_material, uint32_t, obj->num_materials);
         mli_malloc(obj->material_names, struct mliName, obj->num_materials);
         for (i = 0; i < obj->num_materials; i++) {
                 obj->material_names[i] = mliName_init();
@@ -123,13 +123,13 @@ int mliObject_assert_valid_materials(const struct mliObject *obj)
         uint32_t i;
         for (i = 0; i < obj->num_materials; i++) {
                 mli_check(
-                        obj->last_face_in_material[i] <= obj->num_faces,
-                        "Expected last_face_in_material < num_faces.");
+                        obj->first_face_in_next_material[i] <= obj->num_faces,
+                        "Expected first_face_in_next_material < num_faces.");
                 if (i > 0) {
                         mli_check(
-                                obj->last_face_in_material[i] >
-                                obj->last_face_in_material[i - 1],
-                                "Expected last_face_in_material to be strictly "
+                                obj->first_face_in_next_material[i] >
+                                obj->first_face_in_next_material[i - 1],
+                                "Expected first_face_in_next_material to be strictly "
                                 "ascending, but it is not."
                         );
                 }
@@ -167,7 +167,7 @@ int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
                         b->faces_vertex_normals[i]));
         }
         for (i = 0; i < a->num_materials; i++) {
-                mli_c(a->last_face_in_material[i] == b->last_face_in_material[i]);
+                mli_c(a->first_face_in_next_material[i] == b->first_face_in_next_material[i]);
         }
         return 1;
 error:
@@ -208,8 +208,8 @@ int mliObject_cpy(struct mliObject *destination, struct mliObject *source)
                 "Expected source and destination mliObject to have same "
                 "num_materials.");
         for (p = 0; p < destination->num_materials; p++) {
-                destination->last_face_in_material[p] =
-                        source->last_face_in_material[p];
+                destination->first_face_in_next_material[p] =
+                        source->first_face_in_next_material[p];
 
         }
 
@@ -226,7 +226,7 @@ int mliObject_resolve_material(
         uint32_t _material_idx = 0;
         mli_check(face_idx < obj->num_faces, "Expected face_idx < num_faces");
         MLI_UPPER_COMPARE(
-                obj->last_face_in_material,
+                obj->first_face_in_next_material,
                 obj->num_materials,
                 face_idx,
                 _material_idx);

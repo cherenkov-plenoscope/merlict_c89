@@ -35,7 +35,7 @@ CASE("mliObject, malloc")
         CHECK(obj.vertex_normals != NULL);
         CHECK(obj.faces_vertices != NULL);
         CHECK(obj.faces_vertex_normals != NULL);
-        CHECK(obj.last_face_in_material != NULL);
+        CHECK(obj.first_face_in_next_material != NULL);
 
         mliObject_free(&obj);
 
@@ -48,7 +48,7 @@ CASE("mliObject, malloc")
         CHECK(obj.vertex_normals == NULL);
         CHECK(obj.faces_vertices == NULL);
         CHECK(obj.faces_vertex_normals == NULL);
-        CHECK(obj.last_face_in_material == NULL);
+        CHECK(obj.first_face_in_next_material == NULL);
 }
 
 CASE("mliObject, parse valid obj face lines")
@@ -481,8 +481,8 @@ CASE("mliObject, write and read ascii-text-string")
                         obj_back.faces_vertex_normals[i]));
         }
         for (i = 0; i < obj.num_materials; i++) {
-                CHECK(obj.last_face_in_material[i] ==
-                        obj_back.last_face_in_material[i]);
+                CHECK(obj.first_face_in_next_material[i] ==
+                        obj_back.first_face_in_next_material[i]);
         }
 
         mliObject_free(&obj);
