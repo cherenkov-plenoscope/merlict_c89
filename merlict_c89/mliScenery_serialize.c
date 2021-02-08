@@ -160,6 +160,8 @@ int mliScenery_malloc_from_tape_archive(
         mli_check(
                 mliScenery_malloc_from_mliUserScenery(scenery, &user_scenery),
                 "Failed to malloc mliScenery from mliUserScenery.");
+
+        mliUserScenery_free(&user_scenery);
         return 1;
 error:
         return 0;
