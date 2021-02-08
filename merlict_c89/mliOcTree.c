@@ -492,7 +492,7 @@ int mliOcTree_malloc_from_scenery(
                         &tmp_octree,
                         (const void *)scenery,
                         scenery->num_robjects,
-                        _mliCombine_robject_has_overlap_obb,
+                        _mliScenery_robject_has_overlap_obb,
                         outermost_obb),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from combine(Scenery, Accelerator)");

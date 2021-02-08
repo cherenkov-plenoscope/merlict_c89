@@ -5,12 +5,12 @@
 #include "mliScenery.h"
 #include "mliOBB.h"
 
-int _mliCombine_robject_has_overlap_obb(
+int _mliScenery_robject_has_overlap_obb(
         const void *scenery,
         const uint32_t robject_idx,
         const struct mliOBB obb);
 
-int mliCombine_robject_has_overlap_obb(
+int mliScenery_robject_has_overlap_obb(
         const struct mliScenery *scenery,
         const uint32_t robject_idx,
         const struct mliOBB obb);
