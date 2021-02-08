@@ -51,6 +51,7 @@
 #include "mliScenery_equal.c"
 #include "mliScenery_valid.c"
 #include "mliScenery_serialize.c"
+#include "mliScenery_OBB.c"
 #include "mliAccelerator.c"
 #include "mliAccelerator_serialize.c"
 #include "mliCombine.c"
