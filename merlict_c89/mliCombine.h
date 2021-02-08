@@ -20,7 +20,7 @@ void mliCombine_free(struct mliCombine *combine);
 int mliCombine_malloc_from_tar(
         struct mliCombine *combine,
         const char *path);
-int mliCombine_malloc_from_archive(
+int mliCombine_malloc_from_Archive(
         struct mliCombine *combine,
         const struct mliArchive *archive);
 

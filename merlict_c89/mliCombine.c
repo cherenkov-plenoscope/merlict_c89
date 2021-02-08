@@ -22,24 +22,24 @@ int mliCombine_malloc_from_tar(
         struct mliCombine *combine,
         const char *path)
 {
-        struct mliArchive arc = mliArchive_init();
+        struct mliArchive archive = mliArchive_init();
 
         mli_check(
-                mliArchive_malloc_from_tar(&arc, path),
+                mliArchive_malloc_from_tar(&archive, path),
                 "Can not read tape-archive to malloc mliCombine.");
 
         mli_check(
-                mliCombine_malloc_from_archive(combine, &arc),
+                mliCombine_malloc_from_Archive(combine, &archive),
                 "Can not malloc mliUserScenery from archive.");
 
-        mliArchive_free(&arc);
+        mliArchive_free(&archive);
 
         return 1;
 error:
         return 0;
 }
 
-int mliCombine_malloc_from_archive(
+int mliCombine_malloc_from_Archive(
         struct mliCombine *combine,
         const struct mliArchive *archive)
 {
