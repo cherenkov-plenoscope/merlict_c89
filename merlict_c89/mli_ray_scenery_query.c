@@ -106,7 +106,7 @@ void _mli_outer_scenery_traversal(
                 uint32_t object_idx = outer->scenery->robjects[robject_idx];
 
                 int32_t hit = _mli_query_object_reference(
-                        &outer->scenery->resources.objects[object_idx],
+                        &outer->scenery->objects[object_idx],
                         &outer->accelerator->object_octrees[object_idx],
                         outer->scenery->robject2root[robject_idx],
                         outer->ray_root,
@@ -167,7 +167,7 @@ int mli_query_intersection_with_surface_normal(
                         &robject2root,
                         ray_root);
 
-                struct mliObject *obj = &combine->scenery.resources.objects[
+                struct mliObject *obj = &combine->scenery.objects[
                         object_idx];
 
                 struct mliFace fv = obj->faces_vertices[face_idx];
