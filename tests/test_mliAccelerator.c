@@ -12,7 +12,7 @@ CASE("mliAccelerator, init")
         struct mliColor color;
         struct mliRay ray;
 
-        CHECK(mliCombine_malloc_from_tape_archive(
+        CHECK(mliCombine_malloc_from_tar(
                 &combine,
                 "tests/"
                 "resources/"

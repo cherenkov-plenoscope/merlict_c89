@@ -15,12 +15,7 @@
 int main(int argc, char *argv[])
 {
         struct mlivrConfig config = mlivrConfig_default();
-        struct mliScenery scenery = mliScenery_init();
-        struct mliAccelerator accelerator = mliAccelerator_init();
-        struct mliCombine combine;
-
-        combine.scenery = &scenery;
-        combine.accelerator = &accelerator;
+        struct mliCombine combine = mliCombine_init();
 
         if (argc >= 2) {
                 mli_check(
@@ -28,16 +23,10 @@ int main(int argc, char *argv[])
                         "Expectec scenery-file to be a tape-archive.");
 
                 mli_check(
-                        mliScenery_malloc_from_tape_archive(
-                                &scenery,
+                        mliCombine_malloc_from_tar(
+                                &combine,
                                 argv[1]),
                         "Can not read scenery from tape-archive.");
-
-                mli_check(
-                        mliAccelerator_malloc_from_scenery(
-                                &accelerator,
-                                &scenery),
-                        "Failed to malloc accelerator form scenery.");
         }
 
         if (argc == 3) {
@@ -54,16 +43,15 @@ int main(int argc, char *argv[])
                 goto error;
         }
 
-        mliScenery_info_fprint(stderr, combine.scenery);
-        mliAccelerator_info_fprint(stderr, combine.accelerator);
-        mliSceneryResources_info_fprint(stderr, &combine.scenery->resources);
+        mliScenery_info_fprint(stderr, &combine.scenery);
+        mliAccelerator_info_fprint(stderr, &combine.accelerator);
+        mliSceneryResources_info_fprint(stderr, &combine.scenery.resources);
 
         mli_check(
                 mlivr_run_interactive_viewer(&combine, config),
                 "Failure in viewer");
 
-        mliAccelerator_free(&accelerator);
-        mliScenery_free(&scenery);
+        mliCombine_free(&combine);
         return EXIT_SUCCESS;
 error:
         return EXIT_FAILURE;

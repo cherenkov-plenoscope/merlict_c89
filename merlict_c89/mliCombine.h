@@ -17,7 +17,7 @@ struct mliCombine mliCombine_init(void);
 void mliCombine_free(struct mliCombine *combine);
 
 
-int mliCombine_malloc_from_tape_archive(
+int mliCombine_malloc_from_tar(
         struct mliCombine *combine,
         const char *path);
 int mliCombine_malloc_from_archive(

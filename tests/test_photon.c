@@ -20,7 +20,7 @@ CASE("simple propagation")
         photon.wavelength = 600e-9;
         photon.id = 0;
 
-        CHECK(mliCombine_malloc_from_tape_archive(
+        CHECK(mliCombine_malloc_from_tar(
                 &combine,
                 "tests/"
                 "resources/"
