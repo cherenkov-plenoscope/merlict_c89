@@ -20,16 +20,14 @@ CASE("simple propagation")
         photon.wavelength = 600e-9;
         photon.id = 0;
 
-        CHECK(mliScenery_malloc_from_tape_archive(
-                &combine.scenery,
+        CHECK(mliCombine_malloc_from_tape_archive(
+                &combine,
                 "tests/"
                 "resources/"
                 "sceneries/"
                 "002.tar"));
         CHECK(combine.scenery.resources.default_medium == 0u);
-        CHECK(mliAccelerator_malloc_from_scenery(
-                &combine.accelerator,
-                &combine.scenery));
+
         CHECK(mli_query_intersection_with_surface_normal(
                 &combine, photon.ray, &intersection));
 

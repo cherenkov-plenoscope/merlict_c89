@@ -12,8 +12,5 @@ int mliScenery_write_to_path(
         const struct mliScenery *scenery,
         const char *path);
 int mliScenery_malloc_from_path(struct mliScenery *scenery, const char *path);
-int mliScenery_malloc_from_tape_archive(
-        struct mliScenery *scenery,
-        const char *path);
 
 #endif

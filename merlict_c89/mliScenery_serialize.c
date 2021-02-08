@@ -148,21 +148,3 @@ error:
         }
         return 0;
 }
-
-int mliScenery_malloc_from_tape_archive(
-        struct mliScenery *scenery,
-        const char *path)
-{
-        struct mliUserScenery user_scenery = mliUserScenery_init();
-        mli_check(
-                mliUserScenery_malloc_from_tape_archive(&user_scenery, path),
-                "Failed to malloc mliUserScenery from tape-archive.");
-        mli_check(
-                mliScenery_malloc_from_mliUserScenery(scenery, &user_scenery),
-                "Failed to malloc mliScenery from mliUserScenery.");
-
-        mliUserScenery_free(&user_scenery);
-        return 1;
-error:
-        return 0;
-}

@@ -12,17 +12,13 @@ CASE("mliAccelerator, init")
         struct mliColor color;
         struct mliRay ray;
 
-        CHECK(mliScenery_malloc_from_tape_archive(
-                &combine.scenery,
+        CHECK(mliCombine_malloc_from_tape_archive(
+                &combine,
                 "tests/"
                 "resources/"
                 "sceneries/"
                 "001.tar"
         ));
-
-        CHECK(mliAccelerator_malloc_from_scenery(
-                &combine.accelerator,
-                &combine.scenery));
 
         ray = mliRay_set(mliVec_set(0.0, 0.0, -5.0), mliVec_set(0.0, 0.0, 1.0));
 
