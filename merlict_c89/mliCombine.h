@@ -16,8 +16,12 @@ struct mliCombine mliCombine_init(void);
 
 void mliCombine_free(struct mliCombine *combine);
 
+
+int mliCombine_malloc_from_tape_archive(
+        struct mliCombine *combine,
+        const char *path);
 int mliCombine_malloc_from_archive(
         struct mliCombine *combine,
-        const struct mliArchive *arc);
+        const struct mliArchive *archive);
 
 #endif
