@@ -134,12 +134,12 @@ void mli_query_intersection_minimal(
         (*isecmin) = mliIntersectionMinimalQuery_init();
 
         outer.intersection = isecmin;
-        outer.scenery = combine->scenery;
-        outer.accelerator = combine->accelerator;
+        outer.scenery = &combine->scenery;
+        outer.accelerator = &combine->accelerator;
         outer.ray_root = ray_root;
 
         mli_ray_octree_traversal(
-                &combine->accelerator->scenery_octree,
+                &combine->accelerator.scenery_octree,
                 ray_root,
                 (void *)&outer,
                 _mli_outer_scenery_traversal);
@@ -157,17 +157,17 @@ int mli_query_intersection_with_surface_normal(
                 return 0;
         } else {
                 uint32_t robject_idx = isecmin.geometry_id.robj;
-                uint32_t object_idx = combine->scenery->robjects[
+                uint32_t object_idx = combine->scenery.robjects[
                         isecmin.geometry_id.robj];
                 uint32_t face_idx = isecmin.geometry_id.face;
 
                 struct mliHomTra robject2root = mliHomTra_from_compact(
-                        combine->scenery->robject2root[robject_idx]);
+                        combine->scenery.robject2root[robject_idx]);
                 struct mliRay ray_object = mliHomTra_ray_inverse(
                         &robject2root,
                         ray_root);
 
-                struct mliObject *obj = &combine->scenery->resources.objects[
+                struct mliObject *obj = &combine->scenery.resources.objects[
                         object_idx];
 
                 struct mliFace fv = obj->faces_vertices[face_idx];

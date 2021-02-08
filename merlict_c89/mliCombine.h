@@ -2,16 +2,22 @@
 #ifndef MERLICT_C89_MLICOMBINE_H_
 #define MERLICT_C89_MLICOMBINE_H_
 
-#include <math.h>
-#include <stdint.h>
-
-#include "mli_debug.h"
 #include "mliScenery.h"
+#include "mliSceneryResources.h"
 #include "mliAccelerator.h"
+#include "mliArchive.h"
 
 struct mliCombine {
-        const struct mliScenery *scenery;
-        struct mliAccelerator *accelerator;
+        struct mliScenery scenery;
+        struct mliAccelerator accelerator;
 };
+
+struct mliCombine mliCombine_init(void);
+
+void mliCombine_free(struct mliCombine *combine);
+
+int mliCombine_malloc_from_archive(
+        struct mliCombine *combine,
+        const struct mliArchive *arc);
 
 #endif
