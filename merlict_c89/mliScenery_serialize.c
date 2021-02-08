@@ -5,6 +5,8 @@
 
 int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
 {
+        uint32_t i;
+        uint32_t num_objects = 0u;
         uint32_t num_robjects = 0u;
         struct mliMagicId magic;
         struct mliSceneryResourcesCapacity rescap =
@@ -16,11 +18,18 @@ int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
         mliMagicId_warn_version(&magic);
 
         /* payload */
+        mli_fread(&num_objects, sizeof(uint32_t), 1u, f);
         mli_fread(&num_robjects, sizeof(uint32_t), 1u, f);
 
         mli_check(
-                mliScenery_malloc(scenery, num_robjects),
+                mliScenery_malloc(scenery, num_objects, num_robjects),
                 "Failed to malloc robjects in mliScenery.");
+
+        for (i = 0; i < scenery->num_objects; i++) {
+                mli_check(
+                        mliObject_malloc_fread(&scenery->objects[i], f),
+                        "Failed to read object into scenery.");
+        }
 
         mli_check(
                 mliSceneryResourcesCapacity_fread(&rescap, f),
@@ -59,6 +68,7 @@ error:
 
 int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
 {
+        uint32_t i;
         struct mliMagicId magic;
 
         /* magic identifier */
@@ -66,7 +76,14 @@ int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* payload */
+        mli_write_type(uint32_t, scenery->num_objects, f);
         mli_write_type(uint32_t, scenery->num_robjects, f);
+
+        for (i = 0; i < scenery->num_objects; i++) {
+                mli_check(mliObject_fwrite(&scenery->objects[i], f),
+                        "Failed to write objects.");
+        }
+
         mli_check(
                 mliSceneryResources_capacity_fwrite(
                         &scenery->resources, f),

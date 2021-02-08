@@ -65,6 +65,7 @@ int mliScenery_malloc_from_mliUserScenery(
         struct mliScenery *scenery,
         const struct mliUserScenery *uscn)
 {
+        uint32_t i;
         uint64_t num_robjects = 0u;
         uint64_t robject_counter = 0u;
         struct mliSceneryResourcesCapacity resource_capacity =
@@ -85,7 +86,10 @@ int mliScenery_malloc_from_mliUserScenery(
 
         /* malloc scenery */
         mli_check(
-                mliScenery_malloc(scenery, num_robjects),
+                mliScenery_malloc(
+                        scenery,
+                        uscn->resources.num_objects,
+                        num_robjects),
                 "Can not allocate scenery.");
 
         mli_check(
@@ -93,9 +97,30 @@ int mliScenery_malloc_from_mliUserScenery(
                         &scenery->resources, resource_capacity),
                 "Can not allocate scenery.");
 
+        /* copy materials */
         mli_check(
                 mliSceneryResources_cpy(&scenery->resources, &uscn->resources),
                 "Can not copy mliSceneryResources.");
+
+        /* copy objects */
+        mli_check(
+                scenery->num_objects == uscn->resources.num_objects,
+                "Expected source and destination to have same "
+                "num_objects.");
+        for (i = 0; i < uscn->resources.num_objects; i++) {
+                mli_check(
+                        mliObject_malloc(
+                                &scenery->objects[i],
+                                uscn->resources.objects[i].num_vertices,
+                                uscn->resources.objects[i].num_vertex_normals,
+                                uscn->resources.objects[i].num_faces,
+                                uscn->resources.objects[i].num_materials),
+                        "Failed to allocate struct mliObject in Resources.");
+                mli_check(
+                        mliObject_cpy(
+                                &scenery->objects[i], &uscn->resources.objects[i]),
+                        "Failed to copy Object to Resources.");
+        }
 
         mli_check(
                 __mliScenery_set_robjects(

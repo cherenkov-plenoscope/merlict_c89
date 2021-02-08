@@ -10,6 +10,9 @@
 struct mliScenery {
         struct mliSceneryResources resources;
 
+        uint32_t num_objects;
+        struct mliObject *objects;
+
         uint32_t num_robjects;
         uint32_t *robjects;
         uint32_t *robject_ids;
@@ -17,7 +20,10 @@ struct mliScenery {
         struct mliHomTraComp *robject2root;
 };
 
-int mliScenery_malloc(struct mliScenery *scenery, const uint32_t num_robjects);
+int mliScenery_malloc(
+        struct mliScenery *scenery,
+        const uint32_t num_objects,
+        const uint32_t num_robjects);
 void mliScenery_free(struct mliScenery *scenery);
 struct mliScenery mliScenery_init(void);
 void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery);

@@ -1,14 +1,19 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_valid.h"
 
-int mliScenery_valid(const struct mliScenery *scenery)
+int _mliScenery_valid_objects(const struct mliScenery *scenery)
+{
+        uint64_t i;
+        for (i = 0; i < scenery->num_objects; i++) {
+                if (!mliObject_assert_valid_faces(&scenery->objects[i]))
+                        return 0;
+        }
+        return 1;
+}
+
+int _mliScenery_valid_object_references(const struct mliScenery *scenery)
 {
         uint64_t rob;
-
-        mli_check(
-                mliSceneryResources_valid(&scenery->resources),
-                "Expected resources to be valid.");
-
         for (rob = 0; rob < scenery->num_robjects; rob++) {
 
                 mli_check(
@@ -47,7 +52,22 @@ int mliScenery_valid(const struct mliScenery *scenery)
                  *       they want to be.
                  */
         }
+        return 1;
+error:
+        return 0;
+}
 
+int mliScenery_valid(const struct mliScenery *scenery)
+{
+        mli_check(
+                mliSceneryResources_valid(&scenery->resources),
+                "Expected resources to be valid.");
+        mli_check(
+                _mliScenery_valid_objects(scenery),
+                "Expected objects to be valid.");
+        mli_check(
+                _mliScenery_valid_object_references(scenery),
+                "Expected object-references to be valid.");
         return 1;
 error:
         return 0;

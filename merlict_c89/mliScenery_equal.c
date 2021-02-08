@@ -1,13 +1,30 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_equal.h"
 
-int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
+int _mliScenery_objects_equal(
+        const struct mliScenery *a,
+        const struct mliScenery *b)
+{
+        uint32_t i;
+        mli_check(
+                a->num_objects == b->num_objects,
+                "Expected num_objects to be equal.");
+
+        for (i = 0; i < a->num_objects; i++) {
+                mli_check(
+                        mliObject_is_equal(&a->objects[i], &b->objects[i]),
+                        "Expected object to be equal.");
+        }
+        return 1;
+error:
+        return 0;
+}
+
+int _mliScenery_object_references_equal(
+        const struct mliScenery *a,
+        const struct mliScenery *b)
 {
         uint64_t rob;
-
-        mli_check(
-                mliSceneryResources_equal(&a->resources, &b->resources),
-                "Expected SceneryResources to be equal, but its not.");
         mli_check(
                 a->num_robjects == b->num_robjects,
                 "Expected num_robjects to be equal.");
@@ -36,7 +53,23 @@ int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
                         "Expected homogenous transformation of "
                         "object-references to be equal");
         }
+        return 1;
+error:
+        return 0;
+}
 
+
+int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
+{
+        mli_check(
+                mliSceneryResources_equal(&a->resources, &b->resources),
+                "Expected SceneryResources to be equal, but its not.");
+        mli_check(
+                _mliScenery_objects_equal(a, b),
+                "Expected objects to be equal.");
+        mli_check(
+                _mliScenery_object_references_equal(a, b),
+                "Expected object-references to be equal.");
         return 1;
 error:
         return 0;
