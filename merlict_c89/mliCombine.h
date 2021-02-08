@@ -15,12 +15,12 @@ struct mliCombine {
 };
 
 int _mliCombine_robject_has_overlap_obb(
-        const void *combine,
+        const void *scenery,
         const uint32_t robject_idx,
         const struct mliOBB obb);
 
 int mliCombine_robject_has_overlap_obb(
-        const struct mliCombine *combine,
+        const struct mliScenery *scenery,
         const uint32_t robject_idx,
         const struct mliOBB obb);
 

@@ -4,7 +4,6 @@
 
 #include <stdint.h>
 #include "mliAccelerator.h"
-#include "mliCombine.h"
 #include "mliTmpOcTree.h"
 
 #define MLI_OCTREE_TYPE_NONE 0
@@ -93,8 +92,9 @@ int mliOcTree_malloc_from_object_wavefront(
         struct mliOcTree *octree,
         const struct mliObject *object_wavefront);
 
-int mliOcTree_malloc_from_combine(
+int mliOcTree_malloc_from_scenery(
         struct mliOcTree *octree,
-        struct mliCombine *combine);
+        const struct mliScenery *scenery,
+        const struct mliOBB outermost_obb);
 
 #endif
