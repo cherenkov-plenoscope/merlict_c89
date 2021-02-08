@@ -33,7 +33,7 @@ CASE("mliScenery, malloc from mliUserScenery")
         struct mliScenery scn_back = mliScenery_init();
         struct mliUserScenery uscn = mliUserScenery_init();
 
-        CHECK(mliUserScenery_malloc_from_tape_archive(
+        CHECK(mliUserScenery_malloc_from_tar(
                 &uscn,
                 "tests/"
                 "resources/"

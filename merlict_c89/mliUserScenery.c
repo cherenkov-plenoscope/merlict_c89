@@ -40,7 +40,7 @@ void mliUserScenery_free(struct mliUserScenery *uscn)
         (*uscn) = mliUserScenery_init();
 }
 
-int mliUserScenery_malloc_from_tape_archive(
+int mliUserScenery_malloc_from_tar(
         struct mliUserScenery *uscn,
         const char *path)
 {

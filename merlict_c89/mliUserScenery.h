@@ -23,7 +23,7 @@ struct mliUserScenery mliUserScenery_init(void);
 int mliUserScenery_malloc_from_Archive(
         struct mliUserScenery *uscn,
         const struct mliArchive *arc);
-int mliUserScenery_malloc_from_tape_archive(
+int mliUserScenery_malloc_from_tar(
         struct mliUserScenery *uscn,
         const char *path);
 

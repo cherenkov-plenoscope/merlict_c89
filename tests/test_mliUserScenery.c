@@ -48,7 +48,7 @@ CASE("multi malloc")
         struct mliUserScenery uscn = mliUserScenery_init();
 
         for (i = 0; i < 13; i ++) {
-                int rc = mliUserScenery_malloc_from_tape_archive(
+                int rc = mliUserScenery_malloc_from_tar(
                         &uscn,
                         "tests/"
                         "resources/"
@@ -75,7 +75,7 @@ CASE("mliUserScenery, malloc from archive")
         uint64_t med_vacuum;
         uint64_t fcn_idx;
 
-        CHECK(mliUserScenery_malloc_from_tape_archive(
+        CHECK(mliUserScenery_malloc_from_tar(
                 &uscn,
                 "tests/"
                 "resources/"
@@ -197,7 +197,7 @@ CASE("mliUserScenery, read, write mliSceneryResources")
         struct mliSceneryResources resources = mliSceneryResources_init();
         FILE *f = NULL;
 
-        CHECK(mliUserScenery_malloc_from_tape_archive(
+        CHECK(mliUserScenery_malloc_from_tar(
                 &uscn,
                 "tests/"
                 "resources/"
