@@ -69,20 +69,17 @@ int mliScenery_malloc_from_Archive(
         struct mliDynMap object_names = mliDynMap_init();
         struct mliFrame root = mliFrame_init();
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(mli_malloc_materials_form_archive(
                 &scenery->materials,
                 &material_names,
                 archive),
                 "Failed to malloc materials.");
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(mli_malloc_object_names_from_archive(
                 &object_names,
                 archive),
                 "Failed to malloc object-names.");
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 mli_malloc_root_frame_from_Archive(
                         &root,
@@ -92,14 +89,12 @@ int mliScenery_malloc_from_Archive(
                         &material_names.media),
                 "Failed to malloc and populate tree of frames.");
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 __mliGeometry_estimate_num_robjects_in_frames(
                         &num_robjects, &root),
                 "Can not estimate num_robjects from tree of frames.");
         num_objects = object_names.dyn.size;
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 mliGeometry_malloc(
                         &scenery->geometry,
@@ -107,7 +102,6 @@ int mliScenery_malloc_from_Archive(
                         num_robjects),
                 "Failed to malloc geometry.");
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 mliGeometry_set_objects_from_Archive(
                         &scenery->geometry,
@@ -115,33 +109,27 @@ int mliScenery_malloc_from_Archive(
                         archive),
                 "Failed to set objects in geometry from archive.");
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 __mliGeometry_set_robjects(
                         &scenery->geometry, &root, &robject_counter),
                 "Can not set robjects.");
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 num_robjects == robject_counter,
                 "Expected to set the num_robjects found while "
                 "estimating capacity.");
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mliNameMap_free(&material_names);
         mliDynMap_free(&object_names);
         mliFrame_free(&root);
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(mliAccelerator_malloc_from_Geometry(
                 &scenery->accelerator,
                 &scenery->geometry),
                 "");
 
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 mliScenery_valid(scenery), "Expected scenery to be valid.");
-        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         return 1;
 error:
         return 0;
