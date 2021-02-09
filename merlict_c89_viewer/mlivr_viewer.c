@@ -55,6 +55,7 @@ void mlivr_print_help(void)
         printf("- focus-finder        [  c  ]\n");
         printf("- take picture        [Space]\n");
         printf("\n");
+        printf("- print scenery-info  [  p  ]\n");
         printf("Version\n");
         printf("-------\n");
         printf("- mli   %d.%d.%d\n",
@@ -170,6 +171,7 @@ int mlivr_run_interactive_viewer(
         const double row_over_column_pixel_ratio = 2.0;
         int update_image = 1;
         int print_help = 0;
+        int print_scenery_info = 0;
         int has_probing_intersection;
         struct mliIntersectionSurfaceNormal probing_intersection;
 
@@ -191,6 +193,7 @@ int mlivr_run_interactive_viewer(
         while ((key = mlivr_truncate_8bit(getchar())) != MLIVR_ESCAPE_KEY) {
                 update_image = 1;
                 print_help = 0;
+                print_scenery_info = 0;
                 if (cursor.active) {
                         update_image = 0;
                         super_resolution = 0;
@@ -300,6 +303,10 @@ int mlivr_run_interactive_viewer(
                                         print_mode = MLI_ASCII_MONOCHROME;
                                 }
                                 break;
+                        case 'p':
+                                print_scenery_info = 1;
+                                update_image = 0;
+                                break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
                                 update_image = 0;
@@ -381,7 +388,7 @@ int mlivr_run_interactive_viewer(
 
                                 printf("(% 5d;% 5d,% 5d,% 5d)"
                                        "/"
-                                       "(id;robj,obj,face), "
+                                       "(id;ref,obj,face), "
                                        "dist % 6.2fm, "
                                        "pos [% -.2e, % -.2e, % -.2e], "
                                        "normal [% -.3f, % -.3f, % -.3f], ",
@@ -417,6 +424,10 @@ int mlivr_run_interactive_viewer(
                 }
                 if (print_help) {
                         mlivr_print_help();
+                }
+                if (print_scenery_info) {
+                        mlivr_clear_screen();
+                        mliScenery_info_fprint(stdout, scenery);
                 }
         }
 

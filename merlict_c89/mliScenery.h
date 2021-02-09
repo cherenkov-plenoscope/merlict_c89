@@ -14,4 +14,5 @@ struct mliScenery {
 
 struct mliScenery mliScenery_init(void);
 void mliScenery_free(struct mliScenery *scenery);
+void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery);
 #endif

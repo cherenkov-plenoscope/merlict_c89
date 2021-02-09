@@ -43,10 +43,6 @@ int main(int argc, char *argv[])
                 goto error;
         }
 
-        mliGeometry_info_fprint(stderr, &scenery.geometry);
-        mliAccelerator_info_fprint(stderr, &scenery.accelerator);
-        mliMaterials_info_fprint(stderr, &scenery.materials);
-
         mli_check(
                 mlivr_run_interactive_viewer(&scenery, config),
                 "Failure in viewer");
