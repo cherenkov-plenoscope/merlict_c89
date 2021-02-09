@@ -17,6 +17,7 @@ int mliMaterials_fwrite(
         mli_fwrite(&res->num_colors, sizeof(uint32_t), 1u, f);
         mli_fwrite(&res->num_media, sizeof(uint32_t), 1u, f);
         mli_fwrite(&res->num_surfaces, sizeof(uint32_t), 1u, f);
+        mli_fwrite(&res->num_boundary_layers, sizeof(uint32_t), 1u, f);
 
         for (i = 0; i < res->num_functions; i++) {
                 mliFunc_fwrite(&res->functions[i], f);
@@ -48,6 +49,17 @@ int mliMaterials_fwrite(
                 sizeof(struct mliName),
                 res->num_surfaces,
                 f);
+
+        mli_fwrite(
+                res->boundary_layers,
+                sizeof(struct mliBoundaryLayer),
+                res->num_boundary_layers,
+                f);
+        mli_fwrite(
+                res->boundary_layer_names,
+                sizeof(struct mliName),
+                res->num_boundary_layers,
+                f);
         return 1;
 error:
         return 0;
@@ -68,6 +80,7 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
         mli_fread(&cap.num_colors, sizeof(uint32_t), 1u, f);
         mli_fread(&cap.num_media, sizeof(uint32_t), 1u, f);
         mli_fread(&cap.num_surfaces, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap.num_boundary_layers, sizeof(uint32_t), 1u, f);
 
         mli_c(mliMaterials_malloc(res, cap));
 
@@ -97,13 +110,24 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
 
         mli_fread(
                 res->surfaces,
-                sizeof(struct mliBoundaryLayer),
+                sizeof(struct mliSurface),
                 res->num_surfaces,
                 f);
         mli_fread(
                 res->surface_names,
                 sizeof(struct mliName),
                 res->num_surfaces,
+                f);
+
+        mli_fread(
+                res->boundary_layers,
+                sizeof(struct mliBoundaryLayer),
+                res->num_boundary_layers,
+                f);
+        mli_fread(
+                res->boundary_layer_names,
+                sizeof(struct mliName),
+                res->num_boundary_layers,
                 f);
         return 1;
 error:

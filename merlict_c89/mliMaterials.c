@@ -9,6 +9,7 @@ struct mliMaterialsCapacity mliMaterialsCapacity_init(void)
         cap.num_colors = 0;
         cap.num_surfaces = 0;
         cap.num_media = 0;
+        cap.num_boundary_layers = 0;
         return cap;
 }
 
@@ -32,6 +33,10 @@ struct mliMaterials mliMaterials_init(void)
         res.num_surfaces = 0u;
         res.surfaces = NULL;
         res.surface_names = NULL;
+
+        res.num_boundary_layers = 0u;
+        res.boundary_layers = NULL;
+        res.boundary_layer_names = NULL;
         return res;
 }
 
@@ -52,6 +57,9 @@ void mliMaterials_free(struct mliMaterials *res)
 
         free(res->surfaces);
         free(res->surface_names);
+
+        free(res->boundary_layers);
+        free(res->boundary_layer_names);
 
         (*res) = mliMaterials_init();
 }
@@ -90,6 +98,18 @@ int mliMaterials_malloc(
         mli_malloc(res->surface_names, struct mliName, res->num_surfaces);
         for (i = 0; i < res->num_surfaces; i++) {
                 res->surface_names[i] = mliName_init();
+        }
+
+        mli_malloc(
+                res->boundary_layers,
+                struct mliBoundaryLayer,
+                res->num_boundary_layers);
+        mli_malloc(
+                res->boundary_layer_names,
+                struct mliName,
+                res->num_boundary_layers);
+        for (i = 0; i < res->num_boundary_layers; i++) {
+                res->boundary_layer_names[i] = mliName_init();
         }
 
         return 1;
@@ -139,6 +159,13 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                         res->surfaces[i].specular_reflection,
                         res->surfaces[i].diffuse_reflection);
                 fprintf(f, "color: % 3d\n", res->surfaces[i].color);
+        }
+
+        fprintf(f, "    boundary_layers:\n");
+        for (i = 0; i < res->num_boundary_layers; i++) {
+                fprintf(f, "        ");
+                fprintf(f, "% 3d, %-32s  ", i, res->boundary_layer_names[i].c_str);
+                fprintf(f, "\n");
         }
 
         fprintf(f, "    colors:\n");

@@ -8,6 +8,7 @@
 #include "mliFunc.h"
 #include "mliSurface.h"
 #include "mliMedium.h"
+#include "mliBoundaryLayer.h"
 #include "mliName.h"
 
 struct mliMaterialsCapacity {
@@ -15,6 +16,7 @@ struct mliMaterialsCapacity {
         uint32_t num_colors;
         uint32_t num_surfaces;
         uint32_t num_media;
+        uint32_t num_boundary_layers;
 };
 
 struct mliMaterialsCapacity mliMaterialsCapacity_init(void);
@@ -35,6 +37,10 @@ struct mliMaterials {
         uint32_t num_media;
         struct mliMedium *media;
         struct mliName *medium_names;
+
+        uint32_t num_boundary_layers;
+        struct mliBoundaryLayer *boundary_layers;
+        struct mliName *boundary_layer_names;
 
         uint32_t default_medium;
 };

@@ -72,6 +72,26 @@ error:
         return 0;
 }
 
+int _mliMaterials_boundary_layers_equal(
+        const struct mliMaterials *a,
+        const struct mliMaterials *b)
+{
+        uint32_t i = 0u;
+        mli_c(a->num_boundary_layers == b->num_boundary_layers);
+        for (i = 0; i < a->num_boundary_layers; i++) {
+                mli_c(mliBoundaryLayer_is_equal(
+                        a->boundary_layers[i],
+                        b->boundary_layers[i]));
+                mli_c(mliName_is_equal(
+                        &a->boundary_layer_names[i],
+                        &b->boundary_layer_names[i]));
+        }
+        return 1;
+error:
+        mli_eprintf("In boundary_layers[%u].\n", i);
+        return 0;
+}
+
 int mliMaterials_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b)
@@ -81,6 +101,7 @@ int mliMaterials_equal(
         mli_c(_mliMaterials_colors_equal(a, b));
         mli_c(_mliMaterials_media_equal(a, b));
         mli_c(_mliMaterials_surfaces_equal(a, b));
+        mli_c(_mliMaterials_boundary_layers_equal(a, b));
         return 1;
 error:
         return 0;
