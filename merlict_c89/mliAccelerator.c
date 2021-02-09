@@ -141,18 +141,18 @@ void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
 {
         uint32_t rob;
         fprintf(f, "__mliAccelerator__\n");
-        fprintf(f, " rob|  lx|  ly|  lz|  ux|  uy|  uz|\n");
-        fprintf(f, "----|----|----|----|----|----|----|\n");
+        fprintf(f, " rob   -x/m   -y/m   -z/m   +x/m   +y/m   +z/m\n");
+        fprintf(f, "----------------------------------------------\n");
         for (rob = 0; rob < accel->num_robjects; rob++) {
                 fprintf(f,
-                        "% 4d|"
-                        "% .1f|"
-                        "% .1f|"
-                        "% .1f|"
+                        "% 4d "
+                        "% 6.1f "
+                        "% 6.1f "
+                        "% 6.1f "
 
-                        "% .1f|"
-                        "% .1f|"
-                        "% .1f|"
+                        "% 6.1f "
+                        "% 6.1f "
+                        "% 6.1f "
                         "\n",
                         rob,
                         accel->robject_obbs[rob].lower.x,
