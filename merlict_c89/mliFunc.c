@@ -48,7 +48,7 @@ int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
         if (idx == 0) {
                 mli_sentinel("mliFunc argument below lower bound.");
         } else if (idx == f->num_points) {
-                mli_sentinel("mliFunc argument larger upper bound.");
+                mli_sentinel("mliFunc argument above upper bound.");
         } else {
                 y1 = f->y[idx];
                 y0 = f->y[idx - 1u];
