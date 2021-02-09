@@ -18,11 +18,11 @@ int _mliGeometry_valid_object_references(
         const struct mliGeometry *geometry,
         const struct mliMaterials *materials)
 {
-        uint64_t rob;
-        for (rob = 0; rob < geometry->num_robjects; rob++) {
+        uint32_t i;
+        for (i = 0; i < geometry->num_robjects; i++) {
 
                 mli_check(
-                        geometry->robjects[rob] <= geometry->num_objects,
+                        geometry->robjects[i] < geometry->num_objects,
                         "Expected robjects to refer to valid objects.");
                 /*
                  *       robject_ids are set by the user and can be whatever
@@ -30,23 +30,23 @@ int _mliGeometry_valid_object_references(
                  */
 
                 mli_check(
-                        geometry->robject_boundary_layers[rob].inner.surface <=
+                        geometry->robject_boundary_layers[i].inner.surface <
                                 materials->num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid inner surface.");
                 mli_check(
-                        geometry->robject_boundary_layers[rob].outer.surface <=
+                        geometry->robject_boundary_layers[i].outer.surface <
                                 materials->num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid outer surface.");
 
                 mli_check(
-                        geometry->robject_boundary_layers[rob].inner.medium <=
+                        geometry->robject_boundary_layers[i].inner.medium <
                                 materials->num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid inner medium.");
                 mli_check(
-                        geometry->robject_boundary_layers[rob].outer.medium <=
+                        geometry->robject_boundary_layers[i].outer.medium <
                                 materials->num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid outer medium.");
@@ -57,6 +57,7 @@ int _mliGeometry_valid_object_references(
                  */
         }
         return 1;
+        mli_log_err_vargs(("robject[%u] is invalid.", i));
 error:
         return 0;
 }
