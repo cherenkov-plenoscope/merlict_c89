@@ -4,10 +4,12 @@
 
 int mliObject_is_valid(const struct mliObject *obj)
 {
+        mli_check(mliObject_has_valid_vertices(obj),
+                "Expected vertices to be valid.");
         mli_check(mliObject_has_valid_faces(obj),
                 "Expected faces to be valid.");
         mli_check(mliObject_has_valid_normals(obj, MLI_EPSILON),
-                "Expected surface-normals to be normalized.");
+                "Expected vertex-normals to be normalized.");
         mli_check(mliObject_has_valid_materials(obj),
                 "Expected materials to be valid.");
         return 1;
@@ -51,11 +53,30 @@ error:
         return 0;
 }
 
+int mliObject_has_valid_vertices(const struct mliObject *obj)
+{
+        uint32_t i;
+        for (i = 0; i < obj->num_vertices; i++) {
+                mli_check(!MLI_IS_NAN(obj->vertices[i].x), "X is 'nan'.");
+                mli_check(!MLI_IS_NAN(obj->vertices[i].y), "Y is 'nan'.");
+                mli_check(!MLI_IS_NAN(obj->vertices[i].z), "Z is 'nan'.");
+        }
+        return 1;
+error:
+        mli_log_err_vargs(("Vertex[%u] is invalid.", i));
+        return 0;
+}
+
 int mliObject_has_valid_normals(const struct mliObject *obj, const double epsilon)
 {
         uint32_t i;
         for (i = 0; i < obj->num_vertex_normals; i++) {
-                const double norm = mliVec_norm(obj->vertex_normals[i]);
+                double norm;
+                mli_check(!MLI_IS_NAN(obj->vertex_normals[i].x), "X is 'nan'.");
+                mli_check(!MLI_IS_NAN(obj->vertex_normals[i].y), "Y is 'nan'.");
+                mli_check(!MLI_IS_NAN(obj->vertex_normals[i].z), "Z is 'nan'.");
+
+                norm = mliVec_norm(obj->vertex_normals[i]);
                 mli_check(
                         fabs(norm - 1.0) <= epsilon,
                         "Expected vertex_normals to be normalized.");
