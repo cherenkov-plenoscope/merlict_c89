@@ -64,14 +64,7 @@
                 mli_check(__num_written == 1, "Can not write type to file.");  \
         }
 
-void mli_stderr_printf(const char *format, ...);
-
-#define mli_log_err_vargs(M)                                                   \
-        {                                                                      \
-                fprintf(stderr, "[ERROR] (%s:%d) ", __FILE__, __LINE__);       \
-                mli_stderr_printf M;                                           \
-                fprintf(stderr, "\n");                                         \
-        }
+void mli_eprintf(const char *format, ...);
 
 int MLI_PRINT_LEVEL = 1;
 

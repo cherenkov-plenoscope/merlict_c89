@@ -13,7 +13,7 @@ int _mliMaterials_valid_colors(const struct mliMaterials *materials)
         }
         return 1;
 error:
-        mli_log_err_vargs(("colors[%u] is invalid.", i));
+        mli_eprintf("colors[%u] is invalid.", i);
         return 0;
 }
 
@@ -28,7 +28,7 @@ int _mliMaterials_valid_functions(const struct mliMaterials *materials)
         }
         return 1;
 error:
-        mli_log_err_vargs(("function[%u] is invalid.", i));
+        mli_eprintf("function[%u] is invalid.", i);
         return 0;
 }
 
@@ -49,7 +49,7 @@ int _mliMaterials_valid_media(const struct mliMaterials *materials)
         }
         return 1;
 error:
-        mli_log_err_vargs(("media[%u] is invalid.", i));
+        mli_eprintf("media[%u] is invalid.", i);
         return 0;
 }
 
@@ -81,7 +81,7 @@ int _mliMaterials_valid_surfaces(const struct mliMaterials *materials)
         }
         return 1;
 error:
-        mli_log_err_vargs(("surface[%u] is invalid.", i));
+        mli_eprintf("surface[%u] is invalid.", i);
         return 0;
 }
 

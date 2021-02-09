@@ -16,7 +16,7 @@ int _mliMaterials_functions_equal(
         }
         return 1;
 error:
-        mli_log_err_vargs(("functions[%u] is not equal.", i));
+        mli_eprintf("In functions[%u].\n", i);
         return 0;
 }
 
@@ -32,7 +32,7 @@ int _mliMaterials_colors_equal(
         }
         return 1;
 error:
-        mli_log_err_vargs(("colors[%u] is not equal.", i));
+        mli_eprintf("In colors[%u].\n", i);
         return 0;
 }
 
@@ -50,7 +50,7 @@ int _mliMaterials_media_equal(
         }
         return 1;
 error:
-        mli_log_err_vargs(("media[%u] is not equal.", i));
+        mli_eprintf("In media[%u].\n", i);
         return 0;
 }
 
@@ -68,7 +68,7 @@ int _mliMaterials_surfaces_equal(
         }
         return 1;
 error:
-        mli_log_err_vargs(("surfaces[%u] is not equal.", i));
+        mli_eprintf("In surfaces[%u].\n", i);
         return 0;
 }
 

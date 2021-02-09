@@ -19,7 +19,7 @@ error:
 
 int mliObject_has_valid_faces(const struct mliObject *obj)
 {
-        uint32_t i;
+        uint32_t i = 0;
         for (i = 0; i < obj->num_faces; i++) {
                 mli_check(
                         obj->faces_vertices[i].a <= obj->num_vertices,
@@ -49,13 +49,13 @@ int mliObject_has_valid_faces(const struct mliObject *obj)
         }
         return 1;
 error:
-        mli_log_err_vargs(("face[%u] is invalid.", i));
+        mli_eprintf("faces[%u] is invalid.", i);
         return 0;
 }
 
 int mliObject_has_valid_vertices(const struct mliObject *obj)
 {
-        uint32_t i;
+        uint32_t i = 0;
         for (i = 0; i < obj->num_vertices; i++) {
                 mli_check(!MLI_IS_NAN(obj->vertices[i].x), "X is 'nan'.");
                 mli_check(!MLI_IS_NAN(obj->vertices[i].y), "Y is 'nan'.");
@@ -63,13 +63,13 @@ int mliObject_has_valid_vertices(const struct mliObject *obj)
         }
         return 1;
 error:
-        mli_log_err_vargs(("Vertex[%u] is invalid.", i));
+        mli_eprintf("vertices[%u] is invalid.", i);
         return 0;
 }
 
 int mliObject_has_valid_normals(const struct mliObject *obj, const double epsilon)
 {
-        uint32_t i;
+        uint32_t i = 0;
         for (i = 0; i < obj->num_vertex_normals; i++) {
                 double norm;
                 mli_check(!MLI_IS_NAN(obj->vertex_normals[i].x), "X is 'nan'.");
@@ -83,13 +83,13 @@ int mliObject_has_valid_normals(const struct mliObject *obj, const double epsilo
         }
         return 1;
 error:
-        mli_log_err_vargs(("Vertex_normal[%u] is invalid.", i));
+        mli_eprintf("vertex_normals[%u] is invalid.", i);
         return 0;
 }
 
 int mliObject_has_valid_materials(const struct mliObject *obj)
 {
-        uint32_t i;
+        uint32_t i = 0;
         for (i = 0; i < obj->num_materials; i++) {
                 mli_check(
                         obj->first_face_in_next_material[i] <= obj->num_faces,
@@ -109,6 +109,6 @@ int mliObject_has_valid_materials(const struct mliObject *obj)
         }
         return 1;
 error:
-        mli_log_err_vargs(("material[%u] is invalid.", i));
+        mli_eprintf("materials[%u] is invalid.", i);
         return 0;
 }

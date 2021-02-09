@@ -22,7 +22,7 @@ int _mliGeometry_objects_equal(
         }
         return 1;
 error:
-        mli_log_err_vargs(("object[%u] is not equal.", i));
+        mli_eprintf("object[%u] is not equal.", i);
         return 0;
 }
 
@@ -30,7 +30,7 @@ int _mliGeometry_object_references_equal(
         const struct mliGeometry *a,
         const struct mliGeometry *b)
 {
-        uint64_t rob;
+        uint64_t rob = 0u;
         mli_check(
                 a->num_robjects == b->num_robjects,
                 "Expected num_robjects to be equal.");
@@ -61,6 +61,7 @@ int _mliGeometry_object_references_equal(
         }
         return 1;
 error:
+        mli_eprintf("object_reference[%u] is not equal.", rob);
         return 0;
 }
 
