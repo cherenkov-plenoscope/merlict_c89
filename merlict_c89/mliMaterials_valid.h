@@ -4,8 +4,8 @@
 
 #include "mliMaterials.h"
 
-int mliMaterials_valid(const struct mliMaterials *res);
-int _mliMaterials_valid_surfaces(const struct mliMaterials *res);
-int _mliMaterials_valid_media(const struct mliMaterials *res);
+int mliMaterials_valid(const struct mliMaterials *materials);
+int _mliMaterials_valid_surfaces(const struct mliMaterials *materials);
+int _mliMaterials_valid_media(const struct mliMaterials *materials);
 int _mliMaterials_valid_colors(const struct mliMaterials *materials);
 #endif
