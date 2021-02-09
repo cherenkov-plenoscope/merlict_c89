@@ -4,10 +4,12 @@
 
 int _mliMaterials_valid_colors(const struct mliMaterials *materials)
 {
-        uint32_t i;
+        uint32_t i = 0u;
         for (i = 0; i < materials->num_colors; i++) {
                 mli_check(mliColor_is_valid_8bit_range(materials->colors[i]),
                         "Expected 0.0 <= color < 256.0.");
+                mli_check(mliName_valid(&materials->color_names[i]),
+                        "Name is invalid.");
         }
         return 1;
 error:
@@ -17,10 +19,12 @@ error:
 
 int _mliMaterials_valid_functions(const struct mliMaterials *materials)
 {
-        uint32_t i;
+        uint32_t i = 0u;
         for (i = 0; i < materials->num_functions; i++) {
                 mli_check(mliFunc_is_valid(&materials->functions[i]),
                         "Expected function to be valid.");
+                mli_check(mliName_valid(&materials->function_names[i]),
+                        "Name is invalid.");
         }
         return 1;
 error:
@@ -30,7 +34,7 @@ error:
 
 int _mliMaterials_valid_media(const struct mliMaterials *materials)
 {
-        uint32_t i;
+        uint32_t i = 0u;
         for (i = 0; i < materials->num_media; i++) {
                 mli_check(
                         materials->media[i].refraction <
@@ -40,6 +44,8 @@ int _mliMaterials_valid_media(const struct mliMaterials *materials)
                         materials->media[i].absorbtion <
                         materials->num_functions,
                         "Absorbtion-reference is invalid.");
+                mli_check(mliName_valid(&materials->medium_names[i]),
+                        "Name is invalid.");
         }
         return 1;
 error:
@@ -49,7 +55,7 @@ error:
 
 int _mliMaterials_valid_surfaces(const struct mliMaterials *materials)
 {
-        uint32_t i;
+        uint32_t i = 0u;
         for (i = 0; i < materials->num_surfaces; i++) {
                 mli_check(
                         (materials->surfaces[i].material ==
@@ -70,6 +76,8 @@ int _mliMaterials_valid_surfaces(const struct mliMaterials *materials)
                         materials->surfaces[i].diffuse_reflection <
                         materials->num_functions,
                         "Diffuse-reflection-reference is invalid.");
+                mli_check(mliName_valid(&materials->surface_names[i]),
+                        "Name is invalid.");
         }
         return 1;
 error:

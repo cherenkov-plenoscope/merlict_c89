@@ -2,10 +2,6 @@
 #ifndef MERLICT_C89_MLIMATERIALS_EQUAL_H_
 #define MERLICT_C89_MLIMATERIALS_EQUAL_H_
 
-#include <math.h>
-#include <stdint.h>
-
-#include "mli_debug.h"
 #include "mliMaterials.h"
 
 int mliMaterials_equal(
