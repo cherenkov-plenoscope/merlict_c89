@@ -254,6 +254,11 @@ int mliGeometry_set_objects_from_Archive(
                         mli_check(obj_idx == obj_idx_in_name_map,
                                 "Expected a different obj_idx for this "
                                 "object_name");
+                        memcpy(
+                                geometry->object_names[obj_idx].c_str,
+                                key,
+                                MLI_NAME_CAPACITY);
+
                         obj_idx += 1u;
                 }
         }
