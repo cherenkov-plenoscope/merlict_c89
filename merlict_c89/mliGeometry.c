@@ -80,14 +80,14 @@ void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
         }
 
         fprintf(f,
-                " rob | obj | id  | translation(xyz) | rotation(xyz;w)  |\n");
-        fprintf(f,
-                "-----|-----|-----|------------------|------------------|\n");
+                " rob   obj    id   translation(xyz)/m       rotation(xyz;w)  \n");
+        fprintf(f, "-----------------------------------------------------------"
+                "-----\n");
         for (rob = 0; rob < geometry->num_robjects; rob++) {
                 fprintf(f,
-                        "% 4d |% 4d |% 4d |"
-                        "(%.1f, %.1f, %.1f)|"
-                        "(%.1f, %.1f, %.1f; %.1f)|"
+                        "% 4d  % 4d  % 4d  "
+                        "(% 5.1f, % 5.1f, % 5.1f) "
+                        "(% 1.1f, % 1.1f, % 1.1f; % 1.1f) "
                         "\n",
                         rob,
                         geometry->robjects[rob],
