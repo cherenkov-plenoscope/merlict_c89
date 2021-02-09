@@ -478,9 +478,9 @@ error:
         return 0;
 }
 
-int mliOcTree_malloc_from_scenery(
+int mliOcTree_malloc_from_Geometry(
         struct mliOcTree *octree,
-        const struct mliGeometry *scenery,
+        const struct mliGeometry *geometry,
         const struct mliOBB outermost_obb)
 {
         uint64_t num_nodes = 0;
@@ -490,12 +490,12 @@ int mliOcTree_malloc_from_scenery(
         mli_check(
                 mliTmpOcTree_malloc_from_bundle(
                         &tmp_octree,
-                        (const void *)scenery,
-                        scenery->num_robjects,
+                        (const void *)geometry,
+                        geometry->num_robjects,
                         _mliGeometry_robject_has_overlap_obb,
                         outermost_obb),
                 "Failed to create dynamic, and temporary TmpOcTree "
-                "from combine(Scenery, Accelerator)");
+                "from combine(Geometry, Accelerator)");
         mliTmpNode_set_flat_index(&tmp_octree.root);
         mliTmpNode_num_nodes_leafs_objects(
                 &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);

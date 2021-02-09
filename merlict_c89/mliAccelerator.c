@@ -126,7 +126,7 @@ int mliAccelerator_malloc_from_Geometry(
         outermost_obb = mliAccelerator_outermost_obb(accel);
 
         mli_check(
-                mliOcTree_malloc_from_scenery(
+                mliOcTree_malloc_from_Geometry(
                         &accel->scenery_octree,
                         geometry,
                         outermost_obb),
