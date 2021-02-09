@@ -27,14 +27,14 @@ void mlivr_restore_stdin_buffer(struct termios *old_terminal);
 int mlivr_truncate_8bit(const int key);
 
 int _mlivr_export_image(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mlivrConfig config,
         const struct mliView view,
         const double object_distance,
         const char *path);
 
 int mlivr_run_interactive_viewer(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mlivrConfig config);
 
 #endif

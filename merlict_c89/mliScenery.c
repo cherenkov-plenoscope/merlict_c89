@@ -6,28 +6,28 @@
 
 struct mliScenery mliScenery_init(void)
 {
-        struct mliScenery combine;
-        combine.geometry = mliGeometry_init();
-        combine.accelerator = mliAccelerator_init();
-        combine.materials = mliMaterials_init();
-        return combine;
+        struct mliScenery scenery;
+        scenery.geometry = mliGeometry_init();
+        scenery.accelerator = mliAccelerator_init();
+        scenery.materials = mliMaterials_init();
+        return scenery;
 }
 
-void mliScenery_free(struct mliScenery *combine)
+void mliScenery_free(struct mliScenery *scenery)
 {
-        mliGeometry_free(&combine->geometry);
-        mliAccelerator_free(&combine->accelerator);
-        mliMaterials_free(&combine->materials);
+        mliGeometry_free(&scenery->geometry);
+        mliAccelerator_free(&scenery->accelerator);
+        mliMaterials_free(&scenery->materials);
 }
 
-int mliScenery_valid(const struct mliScenery *combine)
+int mliScenery_valid(const struct mliScenery *scenery)
 {
         mli_check(
-                mliMaterials_valid(&combine->materials),
+                mliMaterials_valid(&scenery->materials),
                 "Expected materials to be valid.");
 
         mli_check(
-                mliGeometry_valid(&combine->geometry, &combine->materials),
+                mliGeometry_valid(&scenery->geometry, &scenery->materials),
                 "Expected geometry to be valid.");
 
 
@@ -37,7 +37,7 @@ error:
 }
 
 int mliScenery_malloc_from_tar(
-        struct mliScenery *combine,
+        struct mliScenery *scenery,
         const char *path)
 {
         struct mliArchive archive = mliArchive_init();
@@ -47,7 +47,7 @@ int mliScenery_malloc_from_tar(
                 "Can not read tape-archive to malloc mliScenery.");
 
         mli_check(
-                mliScenery_malloc_from_Archive(combine, &archive),
+                mliScenery_malloc_from_Archive(scenery, &archive),
                 "Can not malloc mliUsergeometry from archive.");
 
         mliArchive_free(&archive);
@@ -58,7 +58,7 @@ error:
 }
 
 int mliScenery_malloc_from_Archive(
-        struct mliScenery *combine,
+        struct mliScenery *scenery,
         const struct mliArchive *archive)
 {
         uint64_t num_robjects = 0u;
@@ -71,7 +71,7 @@ int mliScenery_malloc_from_Archive(
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(mli_malloc_materials_form_archive(
-                &combine->materials,
+                &scenery->materials,
                 &material_names,
                 archive),
                 "Failed to malloc materials.");
@@ -102,7 +102,7 @@ int mliScenery_malloc_from_Archive(
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 mliGeometry_malloc(
-                        &combine->geometry,
+                        &scenery->geometry,
                         num_objects,
                         num_robjects),
                 "Failed to malloc geometry.");
@@ -110,7 +110,7 @@ int mliScenery_malloc_from_Archive(
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 mliGeometry_set_objects_from_Archive(
-                        &combine->geometry,
+                        &scenery->geometry,
                         &object_names,
                         archive),
                 "Failed to set objects in geometry from archive.");
@@ -118,7 +118,7 @@ int mliScenery_malloc_from_Archive(
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 __mliGeometry_set_robjects(
-                        &combine->geometry, &root, &robject_counter),
+                        &scenery->geometry, &root, &robject_counter),
                 "Can not set robjects.");
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
@@ -134,13 +134,13 @@ int mliScenery_malloc_from_Archive(
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(mliAccelerator_malloc_from_Geometry(
-                &combine->accelerator,
-                &combine->geometry),
+                &scenery->accelerator,
+                &scenery->geometry),
                 "");
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
-                mliScenery_valid(combine), "Expected combine to be valid.");
+                mliScenery_valid(scenery), "Expected scenery to be valid.");
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         return 1;
 error:

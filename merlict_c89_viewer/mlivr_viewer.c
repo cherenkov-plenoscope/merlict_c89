@@ -115,7 +115,7 @@ int mlivr_truncate_8bit(const int key)
 }
 
 int _mlivr_export_image(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mlivrConfig config,
         const struct mliView view,
         const double object_distance,
@@ -143,7 +143,7 @@ int _mlivr_export_image(
         apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
-                &prng, apcam, camera2root_comp, combine, &full);
+                &prng, apcam, camera2root_comp, scenery, &full);
         mli_check(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
@@ -152,7 +152,7 @@ error:
 }
 
 int mlivr_run_interactive_viewer(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mlivrConfig config)
 {
         struct termios old_terminal = mlivr_disable_stdin_buffer();
@@ -220,7 +220,7 @@ int mlivr_run_interactive_viewer(
                                         num_screenshots);
                                 num_screenshots++;
                                 mli_c(_mlivr_export_image(
-                                        combine,
+                                        scenery,
                                         config,
                                         view,
                                         probing_intersection.distance_of_ray,
@@ -311,14 +311,14 @@ int mlivr_run_interactive_viewer(
                         if (super_resolution) {
                                 mliPinHoleCamera_render_image_with_view(
                                         view,
-                                        combine,
+                                        scenery,
                                         &img2,
                                         row_over_column_pixel_ratio);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
                                 mliPinHoleCamera_render_image_with_view(
                                         view,
-                                        combine,
+                                        scenery,
                                         &img,
                                         row_over_column_pixel_ratio);
                         }
@@ -367,7 +367,7 @@ int mlivr_run_interactive_viewer(
 
                                 has_probing_intersection =
                                         mli_query_intersection_with_surface_normal(
-                                                combine,
+                                                scenery,
                                                 probing_ray_wrt_root,
                                                 &probing_intersection);
                         }
@@ -385,11 +385,11 @@ int mlivr_run_interactive_viewer(
                                        "dist % 6.2fm, "
                                        "pos [% -.2e, % -.2e, % -.2e], "
                                        "normal [% -.3f, % -.3f, % -.3f], ",
-                                       combine->geometry.robject_ids
+                                       scenery->geometry.robject_ids
                                                [probing_intersection
                                                         .geometry_id.robj],
                                        probing_intersection.geometry_id.robj,
-                                       combine->geometry
+                                       scenery->geometry
                                                .robjects[probing_intersection
                                                                   .geometry_id
                                                                   .robj],

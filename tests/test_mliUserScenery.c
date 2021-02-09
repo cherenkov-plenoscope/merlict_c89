@@ -43,7 +43,7 @@ CASE("mliMaterials, estimate capacity from json")
 /*
 CASE("mliScenery, malloc from archive")
 {
-        struct mliScenery combine = mliScenery_init();
+        struct mliScenery scenery = mliScenery_init();
         struct mliFrame *_root, *_obj1, *_frame2, *_obj3, *_obj4 = NULL;
 
         uint64_t obj_idx, obj_teapot_idx, obj_hex_idx;
@@ -52,14 +52,14 @@ CASE("mliScenery, malloc from archive")
         uint64_t fcn_idx;
 
         CHECK(mliScenery_malloc_from_tar(
-                &combine,
+                &scenery,
                 "tests/"
                 "resources/"
                 "sceneries/"
                 "001.tar"
         ));
 
-        CHECK(2 == combine.scenery.num_objects);
+        CHECK(2 == scenery.scenery.num_objects);
 
         CHECK(mliDynMap_get(
                 &uscn.object_names,

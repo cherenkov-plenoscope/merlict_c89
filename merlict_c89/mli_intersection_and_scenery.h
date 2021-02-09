@@ -7,10 +7,10 @@
 #include "mliGeometry.h"
 
 const struct mliFunc *_mli_refractive_index_coming_from(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec);
 const struct mliFunc *_mli_refractive_index_going_to(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec);
 struct mliSide _mli_side_going_to(
         const struct mliGeometry *geometry,

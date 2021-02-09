@@ -8,12 +8,12 @@ CASE("mliAccelerator, init")
 
 CASE("mliAccelerator, init")
 {
-        struct mliScenery combine = mliScenery_init();
+        struct mliScenery scenery = mliScenery_init();
         struct mliColor color;
         struct mliRay ray;
 
         CHECK(mliScenery_malloc_from_tar(
-                &combine,
+                &scenery,
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -22,11 +22,11 @@ CASE("mliAccelerator, init")
 
         ray = mliRay_set(mliVec_set(0.0, 0.0, -5.0), mliVec_set(0.0, 0.0, 1.0));
 
-        color = mli_trace(&combine, ray);
+        color = mli_trace(&scenery, ray);
 
         CHECK_MARGIN(color.r, 11.0, 1.0);
         CHECK_MARGIN(color.g, 45.5, 1.0);
         CHECK_MARGIN(color.b, 74.5, 1.0);
 
-        mliScenery_free(&combine);
+        mliScenery_free(&scenery);
 }

@@ -6,12 +6,12 @@
 #include "mliScenery.h"
 
 void mli_query_intersection_minimal(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mliRay ray_root,
         struct mliIntersectionMinimalQuery *isecmin);
 
 int mli_query_intersection_with_surface_normal(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mliRay ray_root,
         struct mliIntersectionSurfaceNormal *isecsrf);
 

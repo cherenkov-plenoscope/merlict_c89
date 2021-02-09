@@ -15,14 +15,14 @@ struct mliScenery {
 
 struct mliScenery mliScenery_init(void);
 
-void mliScenery_free(struct mliScenery *combine);
+void mliScenery_free(struct mliScenery *scenery);
 
 
 int mliScenery_malloc_from_tar(
-        struct mliScenery *combine,
+        struct mliScenery *scenery,
         const char *path);
 int mliScenery_malloc_from_Archive(
-        struct mliScenery *combine,
+        struct mliScenery *scenery,
         const struct mliArchive *archive);
 
 #endif

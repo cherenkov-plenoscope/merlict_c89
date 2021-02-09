@@ -5,6 +5,6 @@
 #include "mliScenery.h"
 
 struct mliColor mli_trace(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mliRay ray);
 #endif

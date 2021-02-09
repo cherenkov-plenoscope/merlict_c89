@@ -46,7 +46,7 @@ struct mliRay mliPinHoleCamera_ray_at_row_col(
 void mliPinHoleCamera_render_image(
         struct mliPinHoleCamera camera,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         struct mliImage *image)
 {
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
@@ -62,7 +62,7 @@ void mliPinHoleCamera_render_image(
                                 mliHomTra_ray(&camera2root, ray_wrt_camera);
 
                         struct mliColor color =
-                                mli_trace(combine, ray_wrt_root);
+                                mli_trace(scenery, ray_wrt_root);
                         mliImage_set(image, col, row, color);
                 }
         }
@@ -70,7 +70,7 @@ void mliPinHoleCamera_render_image(
 
 void mliPinHoleCamera_render_image_with_view(
         const struct mliView view,
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         struct mliImage *image,
         const double row_over_column_pixel_ratio)
 {
@@ -78,5 +78,5 @@ void mliPinHoleCamera_render_image_with_view(
                 view.field_of_view, image, row_over_column_pixel_ratio);
         struct mliHomTraComp camera2root_comp = mliView_to_HomTraComp(view);
         mliPinHoleCamera_render_image(
-                camera, camera2root_comp, combine, image);
+                camera, camera2root_comp, scenery, image);
 }

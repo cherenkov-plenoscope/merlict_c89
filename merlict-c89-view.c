@@ -15,7 +15,7 @@
 int main(int argc, char *argv[])
 {
         struct mlivrConfig config = mlivrConfig_default();
-        struct mliScenery combine = mliScenery_init();
+        struct mliScenery scenery = mliScenery_init();
 
         if (argc >= 2) {
                 mli_check(
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 
                 mli_check(
                         mliScenery_malloc_from_tar(
-                                &combine,
+                                &scenery,
                                 argv[1]),
                         "Can not read scenery from tape-archive.");
         }
@@ -43,15 +43,15 @@ int main(int argc, char *argv[])
                 goto error;
         }
 
-        mliGeometry_info_fprint(stderr, &combine.geometry);
-        mliAccelerator_info_fprint(stderr, &combine.accelerator);
-        mliMaterials_info_fprint(stderr, &combine.materials);
+        mliGeometry_info_fprint(stderr, &scenery.geometry);
+        mliAccelerator_info_fprint(stderr, &scenery.accelerator);
+        mliMaterials_info_fprint(stderr, &scenery.materials);
 
         mli_check(
-                mlivr_run_interactive_viewer(&combine, config),
+                mlivr_run_interactive_viewer(&scenery, config),
                 "Failure in viewer");
 
-        mliScenery_free(&combine);
+        mliScenery_free(&scenery);
         return EXIT_SUCCESS;
 error:
         return EXIT_FAILURE;

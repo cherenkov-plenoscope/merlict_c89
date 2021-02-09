@@ -495,7 +495,7 @@ int mliOcTree_malloc_from_Geometry(
                         _mliGeometry_robject_has_overlap_obb,
                         outermost_obb),
                 "Failed to create dynamic, and temporary TmpOcTree "
-                "from combine(Geometry, Accelerator)");
+                "from scenery(Geometry, Accelerator)");
         mliTmpNode_set_flat_index(&tmp_octree.root);
         mliTmpNode_num_nodes_leafs_objects(
                 &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);

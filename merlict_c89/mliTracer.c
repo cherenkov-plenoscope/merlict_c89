@@ -6,12 +6,12 @@
 #include "mli_ray_octree_traversal.h"
 
 struct mliColor mli_trace(
-        const struct mliScenery *combine,
+        const struct mliScenery *scenery,
         const struct mliRay ray)
 {
         struct mliColor color = {128., 128., 128.};
         struct mliIntersectionSurfaceNormal intersection = mliIntersectionSurfaceNormal_init();
-        if (mli_query_intersection_with_surface_normal(combine, ray, &intersection)) {
+        if (mli_query_intersection_with_surface_normal(scenery, ray, &intersection)) {
                 struct mliIntersectionSurfaceNormal global_light_intersection;
                 struct mliRay line_of_sight_to_source;
                 struct mliSide side;
@@ -21,12 +21,12 @@ struct mliColor mli_trace(
                 line_of_sight_to_source =
                         mliRay_set(intersection.position, dir_to_source);
 
-                side = _mli_side_going_to(&combine->geometry, &intersection);
-                surface = combine->materials.surfaces[side.surface];
-                color = combine->materials.colors[surface.color];
+                side = _mli_side_going_to(&scenery->geometry, &intersection);
+                surface = scenery->materials.surfaces[side.surface];
+                color = scenery->materials.colors[surface.color];
 
                 if (mli_query_intersection_with_surface_normal(
-                            combine,
+                            scenery,
                             line_of_sight_to_source,
                             &global_light_intersection)) {
                         color.r = color.r * .5;
