@@ -33,6 +33,11 @@ int mliMaterials_fwrite(
         mli_c(mliMagicId_set(&magic, "mliMaterials"));
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
+        mli_fwrite(&res->num_functions, sizeof(uint32_t), 1u, f);
+        mli_fwrite(&res->num_colors, sizeof(uint32_t), 1u, f);
+        mli_fwrite(&res->num_media, sizeof(uint32_t), 1u, f);
+        mli_fwrite(&res->num_surfaces, sizeof(uint32_t), 1u, f);
+
         for (i = 0; i < res->num_functions; i++) {
                 mliFunc_fwrite(&res->functions[i], f);
         }
@@ -93,11 +98,19 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
 {
         uint64_t i;
         struct mliMagicId magic;
+        struct mliMaterialsCapacity cap;
 
         /* magic identifier */
         mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
         mli_c(mliMagicId_has_word(&magic, "mliMaterials"));
         mliMagicId_warn_version(&magic);
+
+        mli_fread(&cap.num_functions, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap.num_colors, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap.num_media, sizeof(uint32_t), 1u, f);
+        mli_fread(&cap.num_surfaces, sizeof(uint32_t), 1u, f);
+
+        mli_c(mliMaterials_malloc(res, cap));
 
         /* payload */
         for (i = 0; i < res->num_functions; i++) {

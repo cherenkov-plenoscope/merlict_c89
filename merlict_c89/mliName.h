@@ -11,4 +11,9 @@ struct mliName {
 struct mliName mliName_init(void);
 int mliName_valid(const struct mliName *name);
 int mliName_is_equal(const struct mliName *a, const struct mliName *b);
+int mliName_find_idx(
+        const struct mliName *names,
+        const uint64_t num_names,
+        const char *key,
+        uint64_t*idx);
 #endif

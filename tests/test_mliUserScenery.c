@@ -40,13 +40,11 @@ CASE("mliMaterials, estimate capacity from json")
         mliJson_free(&material_json);
 }
 
-/*
 CASE("mliScenery, malloc from archive")
 {
         struct mliScenery scenery = mliScenery_init();
-        struct mliFrame *_root, *_obj1, *_frame2, *_obj3, *_obj4 = NULL;
 
-        uint64_t obj_idx, obj_teapot_idx, obj_hex_idx;
+        uint64_t obj_teapot_idx, obj_hex_idx;
         uint64_t srf_grass, srf_wood, srf_leafs, srf_blue_glass;
         uint64_t med_vacuum;
         uint64_t fcn_idx;
@@ -59,38 +57,41 @@ CASE("mliScenery, malloc from archive")
                 "001.tar"
         ));
 
-        CHECK(2 == scenery.scenery.num_objects);
+        CHECK(2 == scenery.geometry.num_objects);
 
-        CHECK(mliDynMap_get(
-                &uscn.object_names,
+        CHECK(mliName_find_idx(
+                scenery.geometry.object_names,
+                scenery.geometry.num_objects,
                 "hexagonal_mirror_facet",
-                &obj_idx));
-        CHECK(600 == uscn.resources.objects[obj_idx].num_faces);
-        CHECK(331 == uscn.resources.objects[obj_idx].num_vertices);
-        CHECK(331 == uscn.resources.objects[obj_idx].num_vertex_normals);
+                &obj_hex_idx));
+        CHECK(600 == scenery.geometry.objects[obj_hex_idx].num_faces);
+        CHECK(331 == scenery.geometry.objects[obj_hex_idx].num_vertices);
+        CHECK(331 == scenery.geometry.objects[obj_hex_idx].num_vertex_normals);
 
-        CHECK(mliDynMap_get(
-                &uscn.object_names,
+        CHECK(mliName_find_idx(
+                scenery.geometry.object_names,
+                scenery.geometry.num_objects,
                 "teapot",
-                &obj_idx));
-        CHECK(2256 == uscn.resources.objects[obj_idx].num_faces);
-        CHECK(1202 == uscn.resources.objects[obj_idx].num_vertices);
-        CHECK(1202 == uscn.resources.objects[obj_idx].num_vertex_normals);
+                &obj_teapot_idx));
+        CHECK(2256 == scenery.geometry.objects[obj_teapot_idx].num_faces);
+        CHECK(1202 == scenery.geometry.objects[obj_teapot_idx].num_vertices);
+        CHECK(1202 == scenery.geometry.objects[obj_teapot_idx].num_vertex_normals);
 
-        CHECK(2 == uscn.resources.num_functions);
+        CHECK(2 == scenery.materials.num_functions);
 
-        CHECK(mliDynMap_get(
-                &uscn.function_names,
+        CHECK(mliName_find_idx(
+                scenery.materials.function_names,
+                scenery.materials.num_functions,
                 "refractive_index_water",
                 &fcn_idx));
-        CHECK(mliDynMap_get(
-                &uscn.function_names,
+        CHECK(mliName_find_idx(
+                scenery.materials.function_names,
+                scenery.materials.num_functions,
                 "zero",
                 &fcn_idx));
-
-        CHECK(4 == uscn.resources.num_colors);
-        CHECK(4 == uscn.resources.num_surfaces);
-        CHECK(2 == uscn.resources.num_media);
+        CHECK(4 == scenery.materials.num_colors);
+        CHECK(4 == scenery.materials.num_surfaces);
+        CHECK(2 == scenery.materials.num_media);
 
         /* frames
          * ------
@@ -102,102 +103,63 @@ CASE("mliScenery, malloc from archive")
          *              |_____ obj3 (hex)
          *              |
          *              |_____ obj4 (hex)
-         *
+         */
 
-        CHECK(mliDynMap_get(
-                &uscn.object_names,
-                "teapot",
-                &obj_teapot_idx));
+        CHECK(mliName_find_idx(
+                scenery.materials.surface_names,
+                scenery.materials.num_surfaces,
+                "grass",
+                &srf_grass));
+        CHECK(mliName_find_idx(
+                scenery.materials.surface_names,
+                scenery.materials.num_surfaces,
+                "wood",
+                &srf_wood));
+        CHECK(mliName_find_idx(
+                scenery.materials.surface_names,
+                scenery.materials.num_surfaces,
+                "leafs",
+                &srf_leafs));
+        CHECK(mliName_find_idx(
+                scenery.materials.surface_names,
+                scenery.materials.num_surfaces,
+                "blue_glass",
+                &srf_blue_glass));
+        CHECK(mliName_find_idx(
+                scenery.materials.medium_names,
+                scenery.materials.num_media,
+                "vacuum",
+                &med_vacuum));
 
-        CHECK(mliDynMap_get(
-                &uscn.object_names,
-                "hexagonal_mirror_facet",
-                &obj_hex_idx));
-
-        CHECK(mliDynMap_get(&uscn.surface_names, "grass", &srf_grass));
-        CHECK(mliDynMap_get(&uscn.surface_names, "wood", &srf_wood));
-        CHECK(mliDynMap_get(&uscn.surface_names, "leafs", &srf_leafs));
-        CHECK(mliDynMap_get(&uscn.surface_names, "blue_glass", &srf_blue_glass));
-        CHECK(mliDynMap_get(&uscn.medium_names, "vacuum", &med_vacuum));
-
-        /* root *
-        _root = &uscn.root;
-        CHECK(_root->id == 0);
-        CHECK(_root->type == MLI_FRAME);
-        CHECK(_root->children.dyn.size == 2);
-
-        /* obj1 *
-        _obj1 = _root->children.arr[0];
-        CHECK(_obj1->type == MLI_OBJECT);
-        CHECK(_obj1->id == 1);
-        CHECK(_obj1->object == obj_teapot_idx);
-        CHECK(_obj1->boundary_layer.inner.surface == srf_wood);
-        CHECK(_obj1->boundary_layer.outer.surface == srf_blue_glass);
-        CHECK(_obj1->boundary_layer.inner.medium == med_vacuum);
-        CHECK(_obj1->boundary_layer.outer.medium == med_vacuum);
-
-        /* frame2 *
-        _frame2 = _root->children.arr[1];
-        CHECK(_frame2->type == MLI_FRAME);
-        CHECK(_frame2->id == 2);
-        CHECK(_frame2->children.dyn.size == 2);
-
-        /* obj3 *
-        _obj3 = _frame2->children.arr[0];
-        CHECK(_obj3->type == MLI_OBJECT);
-        CHECK(_obj3->id == 3);
-        CHECK(_obj3->object == obj_hex_idx);
-        CHECK(_obj3->boundary_layer.inner.surface == srf_leafs);
-        CHECK(_obj3->boundary_layer.outer.surface == srf_wood);
-        CHECK(_obj3->boundary_layer.inner.medium == med_vacuum);
-        CHECK(_obj3->boundary_layer.outer.medium == med_vacuum);
-
-        /* obj4 *
-        _obj4 = _frame2->children.arr[1];
-        CHECK(_obj4->type == MLI_OBJECT);
-        CHECK(_obj4->id == 4);
-        CHECK(_obj4->object == obj_hex_idx);
-        CHECK(_obj4->boundary_layer.inner.surface == srf_grass);
-        CHECK(_obj4->boundary_layer.outer.surface == srf_wood);
-        CHECK(_obj4->boundary_layer.inner.medium == med_vacuum);
-        CHECK(_obj4->boundary_layer.outer.medium == med_vacuum);
-
-        mliUserScenery_free(&uscn);
+        mliScenery_free(&scenery);
 }
-*/
 
-/*
-CASE("mliUserScenery, read, write mliMaterials")
+CASE("mliScenery, read, write")
 {
-        struct mliUserScenery uscn = mliUserScenery_init();
-        struct mliMaterialsCapacity rescap =
-                mliMaterialsCapacity_init();
-        struct mliMaterials resources = mliMaterials_init();
+        struct mliScenery scenery = mliScenery_init();
+        struct mliMaterials material_back = mliMaterials_init();
         FILE *f = NULL;
 
-        CHECK(mliUserScenery_malloc_from_tar(
-                &uscn,
+        CHECK(mliScenery_malloc_from_tar(
+                &scenery,
                 "tests/"
                 "resources/"
                 "sceneries/"
                 "001.tar"
         ));
 
-        f = fopen("tests/resources/sceneryresources.bin.tmp", "w");
+        f = fopen("tests/resources/materials.bin.tmp", "w");
         CHECK(f != NULL);
-        CHECK(mliMaterials_capacity_fwrite(&uscn.resources, f));
-        CHECK(mliMaterials_fwrite(&uscn.resources, f));
+        CHECK(mliMaterials_fwrite(&scenery.materials, f));
         fclose(f);
 
-        f = fopen("tests/resources/sceneryresources.bin.tmp", "r");
+        f = fopen("tests/resources/materials.bin.tmp", "r");
         CHECK(f != NULL);
-        CHECK(mliMaterialsCapacity_fread(&rescap, f));
-        CHECK(mliMaterials_malloc(&resources, rescap));
-        CHECK(mliMaterials_malloc_fread(&resources, f));
+        CHECK(mliMaterials_malloc_fread(&material_back, f));
         fclose(f);
 
-        CHECK(mliMaterials_equal(&resources, &uscn.resources));
+        CHECK(mliMaterials_equal(&material_back, &scenery.materials));
 
-        mliUserScenery_free(&uscn);
+        mliMaterials_free(&material_back);
+        mliScenery_free(&scenery);
 }
-*/
