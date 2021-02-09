@@ -3,12 +3,15 @@
 
 int _mliGeometry_valid_objects(const struct mliGeometry *geometry)
 {
-        uint64_t i;
+        uint32_t i;
         for (i = 0; i < geometry->num_objects; i++) {
-                if (!mliObject_has_valid_faces(&geometry->objects[i]))
-                        return 0;
+                mli_check(mliObject_is_valid(&geometry->objects[i]),
+                        "Expected object to be valid.");
         }
         return 1;
+error:
+        mli_log_err_vargs(("objects[%u] is invalid.", i));
+        return 0;
 }
 
 int _mliGeometry_valid_object_references(
