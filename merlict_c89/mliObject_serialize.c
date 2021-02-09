@@ -92,7 +92,7 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
                 f);
 
         mli_check(
-                mliObject_assert_valid_faces(obj),
+                mliObject_has_valid_faces(obj),
                 "A face refers to a not existing vertex/vertex_normal.");
         return 1;
 error:

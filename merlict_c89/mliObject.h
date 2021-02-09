@@ -31,9 +31,6 @@ int mliObject_malloc(
         const uint64_t num_materials);
 void mliObject_free(struct mliObject *obj);
 struct mliObject mliObject_init(void);
-int mliObject_assert_valid_faces(const struct mliObject *obj);
-int mliObject_assert_normals(const struct mliObject *obj, const double epsilon);
-int mliObject_assert_valid_materials(const struct mliObject *obj);
 int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b);
 int mliObject_resolve_material_idx(
         const struct mliObject *obj,

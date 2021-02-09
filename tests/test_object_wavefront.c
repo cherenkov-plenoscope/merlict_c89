@@ -12,7 +12,7 @@ CASE("mliObject, init")
         CHECK(obj.faces_vertices == NULL);
         CHECK(obj.faces_vertex_normals == NULL);
 
-        CHECK(mliObject_assert_valid_faces(&obj));
+        CHECK(mliObject_has_valid_faces(&obj));
 }
 
 CASE("mliObject, malloc")
@@ -369,7 +369,7 @@ CASE("mliObject, read wavefront file")
         CHECK(obj.num_faces == 600);
         CHECK(obj.num_vertices == 331);
         CHECK(obj.num_vertex_normals == 331);
-        CHECK(mliObject_assert_valid_faces(&obj));
+        CHECK(mliObject_has_valid_faces(&obj));
         mliObject_free(&obj);
 }
 

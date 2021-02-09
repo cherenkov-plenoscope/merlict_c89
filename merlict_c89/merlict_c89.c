@@ -23,6 +23,7 @@
 #include "mliFace.c"
 #include "mli_barycentric.c"
 #include "mliObject.c"
+#include "mliObject_valid.c"
 #include "mliObject_serialize.c"
 #include "mliObject_OBB.c"
 #include "mliObject_wavefront.c"

@@ -5,7 +5,7 @@ int _mliGeometry_valid_objects(const struct mliGeometry *geometry)
 {
         uint64_t i;
         for (i = 0; i < geometry->num_objects; i++) {
-                if (!mliObject_assert_valid_faces(&geometry->objects[i]))
+                if (!mliObject_has_valid_faces(&geometry->objects[i]))
                         return 0;
         }
         return 1;

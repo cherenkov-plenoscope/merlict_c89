@@ -612,16 +612,16 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         }
 
         mli_check(
-                mliObject_assert_valid_faces(obj),
+                mliObject_has_valid_faces(obj),
                 "Expected the vertex-indices and vertex-normal-indices "
                 "referenced by the faces to be contained by the mliObject.");
 
         mli_check(
-                mliObject_assert_normals(obj, 1e-6),
+                mliObject_has_valid_normals(obj, 1e-6),
                 "Expected vertex-normals to be normalized to at least 1e-6.");
 
         mli_check(
-                mliObject_assert_valid_materials(obj),
+                mliObject_has_valid_materials(obj),
                 "Expected each 'usemtl' to have at least one face.");
 
         /* free dyn */
