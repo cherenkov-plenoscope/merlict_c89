@@ -24,7 +24,7 @@ CASE("parse_empty_text")
         struct mliFunc func = mliFunc_init();
 
         memset(text, '\0', 128);
-        CHECK(mliFunc_malloc_from_csv(&func, text));
+        CHECK(!mliFunc_malloc_from_csv(&func, text));
         CHECK(func.num_points == 0);
         mliFunc_free(&func);
 }
@@ -35,7 +35,7 @@ CASE("parse_empty_csv")
         struct mliFunc func = mliFunc_init();
 
         sprintf(text, "# only a comment line\n");
-        CHECK(mliFunc_malloc_from_csv(&func, text));
+        CHECK(!mliFunc_malloc_from_csv(&func, text));
         CHECK(func.num_points == 0);
         mliFunc_free(&func);
 }
@@ -46,7 +46,7 @@ CASE("parse_empty_csv_no_newline")
         struct mliFunc func = mliFunc_init();
 
         sprintf(text, "# only a comment line");
-        CHECK(mliFunc_malloc_from_csv(&func, text));
+        CHECK(!mliFunc_malloc_from_csv(&func, text));
         CHECK(func.num_points == 0);
         mliFunc_free(&func);
 }

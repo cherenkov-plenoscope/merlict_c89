@@ -95,6 +95,9 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
                 func->y[i] = ys.arr[i];
         }
 
+        mli_check(mliFunc_is_valid(func),
+                "Expected function from csv to be valid.");
+
         mliDynDouble_free(&ys);
         mliDynDouble_free(&xs);
         return 1;

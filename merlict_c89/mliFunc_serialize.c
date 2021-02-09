@@ -28,10 +28,7 @@ int mliFunc_malloc_fread(struct mliFunc *func, FILE *f)
         mli_c(mliFunc_malloc(func, num_points));
         mli_fread(func->x, sizeof(double), func->num_points, f);
         mli_fread(func->y, sizeof(double), func->num_points, f);
-        mli_check(
-                mliFunc_x_is_strictly_increasing(func),
-                "Expected function x-arguments to be ascending, but they are "
-                "not.");
+        mli_check(mliFunc_is_valid(func), "Expected function to be valid.");
         return 1;
 error:
         mliFunc_free(func);
