@@ -25,17 +25,17 @@ int mliAccelerator_malloc(
         const uint32_t num_objects,
         const uint32_t num_robjects);
 
-int mliAccelerator_malloc_from_scenery(
+int mliAccelerator_malloc_from_Geometry(
         struct mliAccelerator *accel,
-        const struct mliGeometry *scenery);
+        const struct mliGeometry *geometry);
 
 int _mliAccelerator_set_robject_obbs(
         struct mliAccelerator *accel,
-        const struct mliGeometry *scenery);
+        const struct mliGeometry *geometry);
 
 int _mliAccelerator_set_object_octrees(
         struct mliAccelerator *accel,
-        const struct mliGeometry *scenery);
+        const struct mliGeometry *geometry);
 
 void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel);
 

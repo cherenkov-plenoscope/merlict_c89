@@ -7,7 +7,7 @@
 struct mliCombine mliCombine_init(void)
 {
         struct mliCombine combine;
-        combine.scenery = mliGeometry_init();
+        combine.geometry = mliGeometry_init();
         combine.accelerator = mliAccelerator_init();
         combine.materials = mliMaterials_init();
         return combine;
@@ -15,7 +15,7 @@ struct mliCombine mliCombine_init(void)
 
 void mliCombine_free(struct mliCombine *combine)
 {
-        mliGeometry_free(&combine->scenery);
+        mliGeometry_free(&combine->geometry);
         mliAccelerator_free(&combine->accelerator);
         mliMaterials_free(&combine->materials);
 }
@@ -27,8 +27,8 @@ int mliCombine_valid(const struct mliCombine *combine)
                 "Expected materials to be valid.");
 
         mli_check(
-                mliGeometry_valid(&combine->scenery, &combine->materials),
-                "Expected scenery to be valid.");
+                mliGeometry_valid(&combine->geometry, &combine->materials),
+                "Expected geometry to be valid.");
 
 
         return 1;
@@ -48,7 +48,7 @@ int mliCombine_malloc_from_tar(
 
         mli_check(
                 mliCombine_malloc_from_Archive(combine, &archive),
-                "Can not malloc mliUserScenery from archive.");
+                "Can not malloc mliUsergeometry from archive.");
 
         mliArchive_free(&archive);
 
@@ -102,23 +102,23 @@ int mliCombine_malloc_from_Archive(
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 mliGeometry_malloc(
-                        &combine->scenery,
+                        &combine->geometry,
                         num_objects,
                         num_robjects),
-                "Failed to malloc scenery.");
+                "Failed to malloc geometry.");
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 mliGeometry_set_objects_from_Archive(
-                        &combine->scenery,
+                        &combine->geometry,
                         &object_names,
                         archive),
-                "Failed to set objects in scenery from archive.");
+                "Failed to set objects in geometry from archive.");
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
                 __mliGeometry_set_robjects(
-                        &combine->scenery, &root, &robject_counter),
+                        &combine->geometry, &root, &robject_counter),
                 "Can not set robjects.");
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
@@ -133,9 +133,9 @@ int mliCombine_malloc_from_Archive(
         mliFrame_free(&root);
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
-        mli_check(mliAccelerator_malloc_from_scenery(
+        mli_check(mliAccelerator_malloc_from_Geometry(
                 &combine->accelerator,
-                &combine->scenery),
+                &combine->geometry),
                 "");
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);

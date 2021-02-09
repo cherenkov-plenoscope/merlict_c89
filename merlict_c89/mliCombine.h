@@ -8,7 +8,7 @@
 #include "mliArchive.h"
 
 struct mliCombine {
-        struct mliGeometry scenery;
+        struct mliGeometry geometry;
         struct mliAccelerator accelerator;
         struct mliMaterials materials;
 };

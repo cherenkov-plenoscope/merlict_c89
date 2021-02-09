@@ -13,10 +13,10 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         struct mliSide side_coming_from, side_going_to;
         struct mliMedium medi_coming_from, medi_going_to;
 
-        side_coming_from = _mli_side_coming_from(&combine->scenery, isec);
+        side_coming_from = _mli_side_coming_from(&combine->geometry, isec);
         medi_coming_from = combine->materials.media[side_coming_from.medium];
 
-        side_going_to = _mli_side_going_to(&combine->scenery, isec);
+        side_going_to = _mli_side_going_to(&combine->geometry, isec);
         medi_going_to = combine->materials.media[side_going_to.medium];
 
         phia.type = type;
@@ -40,7 +40,7 @@ int _mli_phong(struct mliEnv *env, const struct mliIntersectionSurfaceNormal *is
         double rnd;
         struct mliSurface surface_coming_from;
         struct mliSide side_coming_from =
-                _mli_side_coming_from(&env->combine->scenery, isec);
+                _mli_side_coming_from(&env->combine->geometry, isec);
         surface_coming_from = env->combine->materials.surfaces[
                 side_coming_from.surface];
 
@@ -139,7 +139,7 @@ int _mli_probability_passing_medium_coming_from(
         double one_over_e_way;
         struct mliMedium medium_coming_from;
         const struct mliSide side_coming_from =
-                _mli_side_coming_from(&combine->scenery, isec);
+                _mli_side_coming_from(&combine->geometry, isec);
         medium_coming_from = combine->materials.media[side_coming_from.medium];
         mli_check(
                 mliFunc_evaluate(
@@ -217,7 +217,7 @@ int _mli_interact_with_object(
 {
         struct mliSurface surface_coming_from;
         const struct mliSide side_coming_from =
-                _mli_side_coming_from(&env->combine->scenery, isec);
+                _mli_side_coming_from(&env->combine->geometry, isec);
         surface_coming_from = env->combine->materials.surfaces[
                 side_coming_from.surface];
         switch (surface_coming_from.material) {
@@ -275,7 +275,7 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                 struct mliSide side_coming_from;
 
                 side_coming_from = _mli_side_coming_from(
-                        &env->combine->scenery, &next_intersection);
+                        &env->combine->geometry, &next_intersection);
                 medium_passing_through =
                         env->combine->materials
                                 .media[side_coming_from.medium];

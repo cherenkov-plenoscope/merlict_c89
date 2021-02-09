@@ -10,7 +10,7 @@ struct _mliInnerWork {
 
 struct _mliOuterWork {
         struct mliIntersectionMinimalQuery *intersection;
-        const struct mliGeometry *scenery;
+        const struct mliGeometry *geometry;
         const struct mliAccelerator *accelerator;
         struct mliRay ray_root;
 };
@@ -103,12 +103,12 @@ void _mli_outer_scenery_traversal(
 
                 uint32_t robject_idx = mliOcTree_leaf_object_link(
                         scenery_octree, scenery_octree_leaf_idx, ro);
-                uint32_t object_idx = outer->scenery->robjects[robject_idx];
+                uint32_t object_idx = outer->geometry->robjects[robject_idx];
 
                 int32_t hit = _mli_query_object_reference(
-                        &outer->scenery->objects[object_idx],
+                        &outer->geometry->objects[object_idx],
                         &outer->accelerator->object_octrees[object_idx],
-                        outer->scenery->robject2root[robject_idx],
+                        outer->geometry->robject2root[robject_idx],
                         outer->ray_root,
                         &tmp_isecmin);
 
@@ -134,7 +134,7 @@ void mli_query_intersection_minimal(
         (*isecmin) = mliIntersectionMinimalQuery_init();
 
         outer.intersection = isecmin;
-        outer.scenery = &combine->scenery;
+        outer.geometry = &combine->geometry;
         outer.accelerator = &combine->accelerator;
         outer.ray_root = ray_root;
 
@@ -157,17 +157,17 @@ int mli_query_intersection_with_surface_normal(
                 return 0;
         } else {
                 uint32_t robject_idx = isecmin.geometry_id.robj;
-                uint32_t object_idx = combine->scenery.robjects[
+                uint32_t object_idx = combine->geometry.robjects[
                         isecmin.geometry_id.robj];
                 uint32_t face_idx = isecmin.geometry_id.face;
 
                 struct mliHomTra robject2root = mliHomTra_from_compact(
-                        combine->scenery.robject2root[robject_idx]);
+                        combine->geometry.robject2root[robject_idx]);
                 struct mliRay ray_object = mliHomTra_ray_inverse(
                         &robject2root,
                         ray_root);
 
-                struct mliObject *obj = &combine->scenery.objects[
+                struct mliObject *obj = &combine->geometry.objects[
                         object_idx];
 
                 struct mliFace fv = obj->faces_vertices[face_idx];
