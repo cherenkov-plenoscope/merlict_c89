@@ -9,7 +9,8 @@
             "layer": {
                 "inner": {"medium": "vacuum", "surface": "glass_blue"},
                 "outer": {"medium": "glass", "surface": "glass_red"}
-            }
+            },
+            "mtl": {"cylinder_skin": "vacu_gblu_gred_glass"}
         },
         {
             "type": "object",
@@ -20,7 +21,8 @@
             "layer": {
                 "inner": {"medium": "vacuum", "surface": "specular_mirror"},
                 "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
-            }
+            },
+            "mtl": {"disc_skin": "vacu_spcm_pabs_vacu"}
         },
         {
             "type": "object",
@@ -31,7 +33,8 @@
             "layer": {
                 "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
                 "outer": {"medium": "vacuum", "surface": "specular_mirror"}
-            }
+            },
+            "mtl": {"disc_skin": "vacu_pabs_spcm_vacu"}
         },
         {
             "type": "object",
@@ -42,7 +45,8 @@
             "layer": {
                 "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
                 "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
-            }
+            },
+            "mtl": {"disc_skin": "vacu_pabs_pabs_vacu"}
         }
     ]
 }

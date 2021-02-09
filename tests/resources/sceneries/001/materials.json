@@ -47,5 +47,22 @@
             "diffuse_reflection": "zero",
             "color": "blue"
         }
+    ],
+    "boundary_layers": [
+        {
+            "name": "vacu_wood_blue_vacu",
+            "inner": {"medium": "vacuum", "surface": "wood"},
+            "outer": {"medium": "vacuum", "surface": "blue_glass"}
+        },
+        {
+            "name": "vacu_leaf_wood_vacu",
+            "inner": {"medium": "vacuum", "surface": "leafs"},
+            "outer": {"medium": "vacuum", "surface": "wood"}
+        },
+        {
+            "name": "vacu_gras_wood_vacu",
+            "inner": {"medium": "vacuum", "surface": "grass"},
+            "outer": {"medium": "vacuum", "surface": "wood"}
+        },
     ]
 }

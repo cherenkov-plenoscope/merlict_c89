@@ -15,7 +15,8 @@
                     "layer": {
                         "inner": {"medium": "vacuum", "surface": "grass"},
                         "outer": {"medium": "vacuum", "surface": "grass"}
-                    }
+                    },
+                    "mtl": {"layer123": "vacu.gras:gras.vacu"}
                 }
             ]
         }

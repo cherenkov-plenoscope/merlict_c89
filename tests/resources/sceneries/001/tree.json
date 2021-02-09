@@ -9,7 +9,8 @@
             "layer": {
                 "inner": {"medium": "vacuum", "surface": "wood"},
                 "outer": {"medium": "vacuum", "surface": "blue_glass"}
-            }
+            },
+            "mtl": {"a": "vacu_wood_blue_vacu"}
         },
         {
             "type": "frame",
@@ -26,7 +27,8 @@
                     "layer": {
                         "inner": {"medium": "vacuum", "surface": "leafs"},
                         "outer": {"medium": "vacuum", "surface": "wood"}
-                    }
+                    },
+                    "mtl": {"mirror": "vacu_leaf_wood_vacu"}
                 },
                 {
                     "type": "object",
@@ -37,7 +39,8 @@
                     "layer": {
                         "inner": {"medium": "vacuum", "surface": "grass"},
                         "outer": {"medium": "vacuum", "surface": "wood"}
-                    }
+                    },
+                    "mtl": {"mirror": "vacu_gras_wood_vacu"}
                 }
             ]
         }

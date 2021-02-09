@@ -47,5 +47,27 @@
             "diffuse_reflection": "zero",
             "color": "grey"
         }
+    ],
+    "boundary_layers": [
+        {
+            "name": "vacu_gblu_gred_glass",
+            "inner": {"medium": "vacuum", "surface": "glass_blue"},
+            "outer": {"medium": "glass", "surface": "glass_red"}
+        },
+        {
+            "name": "vacu_spcm_pabs_vacu",
+            "inner": {"medium": "vacuum", "surface": "specular_mirror"},
+            "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+        },
+        {
+            "name": "vacu_pabs_spcm_vacu",
+            "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+            "outer": {"medium": "vacuum", "surface": "specular_mirror"}
+        },
+        {
+            "name": "vacu_pabs_pabs_vacu",
+            "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+            "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+        },
     ]
 }

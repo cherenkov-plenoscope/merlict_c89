@@ -18,5 +18,12 @@
             "diffuse_reflection": "zero",
             "color": "grass_green"
         }
+    ],
+    "boundary_layers": [
+        {
+            "name": "vacu.gras:gras.vacu",
+            "inner": {"medium": "vacuum", "surface": "grass"},
+            "outer": {"medium": "vacuum", "surface": "grass"}
+        }
     ]
 }
