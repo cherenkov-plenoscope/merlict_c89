@@ -52,4 +52,7 @@ CASE("mliColor 8bit range")
 
         c = mliColor_set(255.9, 255.9, 256.0);
         CHECK(!mliColor_is_valid_8bit_range(c));
+
+        c = mliColor_set(1.0, MLI_NAN, 1.0);
+        CHECK(!mliColor_is_valid_8bit_range(c));
 }
