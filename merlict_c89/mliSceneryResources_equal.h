@@ -11,9 +11,6 @@
 int mliSceneryResources_equal(
         const struct mliSceneryResources *a,
         const struct mliSceneryResources *b);
-int _mliSceneryResources_objects_equal(
-        const struct mliSceneryResources *a,
-        const struct mliSceneryResources *b);
 int _mliSceneryResources_surfaces_equal(
         const struct mliSceneryResources *a,
         const struct mliSceneryResources *b);

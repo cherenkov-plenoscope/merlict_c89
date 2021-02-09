@@ -71,7 +71,7 @@ int _mliAccelerator_set_robject_obbs(
                 uint32_t robject;
                 robject = scenery->robjects[rob];
                 accel->robject_obbs[rob] = mliObject_obb(
-                        &scenery->resources.objects[robject],
+                        &scenery->objects[robject],
                         scenery->robject2root[rob]);
         }
         return 1;
@@ -85,14 +85,14 @@ int _mliAccelerator_set_object_octrees(
 {
         uint32_t obj;
         mli_check(
-                accel->num_objects == scenery->resources.num_objects,
+                accel->num_objects == scenery->num_objects,
                 "Expected num_objects to be equal, but its not.");
 
         for (obj = 0; obj < accel->num_objects; obj++) {
                 mli_check(
                         mliOcTree_malloc_from_object_wavefront(
                                 &accel->object_octrees[obj],
-                                &scenery->resources.objects[obj]),
+                                &scenery->objects[obj]),
                         "Failed to setup mliOctree for object-wavefront.");
         }
 
@@ -110,7 +110,7 @@ int mliAccelerator_malloc_from_scenery(
         mli_check(
                 mliAccelerator_malloc(
                         accel,
-                        scenery->resources.num_objects,
+                        scenery->num_objects,
                         scenery->num_robjects),
                 "Failed to malloc mliAccelerator from mliScenery's "
                 "num_robjects");

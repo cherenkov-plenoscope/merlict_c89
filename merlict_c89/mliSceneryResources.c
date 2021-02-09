@@ -5,7 +5,6 @@
 struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void)
 {
         struct mliSceneryResourcesCapacity cap;
-        cap.num_objects = 0;
         cap.num_functions = 0;
         cap.num_colors = 0;
         cap.num_surfaces = 0;
@@ -17,9 +16,6 @@ struct mliSceneryResources mliSceneryResources_init(void)
 {
         struct mliSceneryResources res;
         res.default_medium = 0u;
-
-        res.num_objects = 0u;
-        res.objects = NULL;
 
         res.num_functions = 0u;
         res.functions = NULL;
@@ -38,12 +34,6 @@ struct mliSceneryResources mliSceneryResources_init(void)
 void mliSceneryResources_free(struct mliSceneryResources *res)
 {
         uint64_t i;
-
-        for (i = 0; i < res->num_objects; i++) {
-                mliObject_free(&(res->objects[i]));
-        }
-        free(res->objects);
-
         for (i = 0; i < res->num_functions; i++) {
                 mliFunc_free(&(res->functions[i]));
         }
@@ -61,16 +51,11 @@ int mliSceneryResources_malloc(
 {
         uint64_t i;
         mliSceneryResources_free(res);
-        res->num_objects = rescap.num_objects;
         res->num_functions = rescap.num_functions;
         res->num_colors = rescap.num_colors;
         res->num_surfaces = rescap.num_surfaces;
         res->num_media = rescap.num_media;
 
-        mli_malloc(res->objects, struct mliObject, res->num_objects);
-        for (i = 0; i < res->num_objects; i++) {
-                res->objects[i] = mliObject_init();
-        }
         mli_malloc(res->functions, struct mliFunc, res->num_functions);
         for (i = 0; i < res->num_functions; i++) {
                 res->functions[i] = mliFunc_init();
@@ -90,10 +75,6 @@ int mliSceneryResources_cpy(
 {
         uint64_t i;
         mli_check(
-                destination->num_objects == source->num_objects,
-                "Expected source and destination to have same "
-                "num_objects.");
-        mli_check(
                 destination->num_functions == source->num_functions,
                 "Expected source and destination to have same "
                 "num_functions.");
@@ -112,22 +93,6 @@ int mliSceneryResources_cpy(
 
         /* default_medium */
         destination->default_medium = source->default_medium;
-
-        /* copy objects */
-        for (i = 0; i < source->num_objects; i++) {
-                mli_check(
-                        mliObject_malloc(
-                                &destination->objects[i],
-                                source->objects[i].num_vertices,
-                                source->objects[i].num_vertex_normals,
-                                source->objects[i].num_faces,
-                                source->objects[i].num_materials),
-                        "Failed to allocate struct mliObject in Resources.");
-                mli_check(
-                        mliObject_cpy(
-                                &destination->objects[i], &source->objects[i]),
-                        "Failed to copy Object to Resources.");
-        }
 
         /* copy surfaces */
         for (i = 0; i < source->num_functions; i++) {
@@ -159,16 +124,6 @@ error:
 
 void mliSceneryResources_info_fprint(FILE *f, const struct mliSceneryResources *res)
 {
-        uint64_t i;
         fprintf(f, "__mliSceneryResources__\n");
         fprintf(f, "- default_medium: %d\n", res->default_medium);
-        fprintf(f, "- num_objects %d\n", res->num_objects);
-        for (i = 0; i < res->num_objects; i++) {
-                fprintf(f,
-                        "  (%ld) v %d vn %d f %d\n",
-                        i,
-                        res->objects[i].num_vertices,
-                        res->objects[i].num_vertex_normals,
-                        res->objects[i].num_faces);
-        }
 }

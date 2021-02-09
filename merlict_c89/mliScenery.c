@@ -5,8 +5,6 @@
 struct mliScenery mliScenery_init(void)
 {
         struct mliScenery scn;
-        scn.resources = mliSceneryResources_init();
-
         scn.num_objects = 0u;
         scn.objects = NULL;
 
@@ -22,8 +20,6 @@ struct mliScenery mliScenery_init(void)
 void mliScenery_free(struct mliScenery *scenery)
 {
         uint32_t i;
-        mliSceneryResources_free(&scenery->resources);
-
         for (i = 0; i < scenery->num_objects; i++) {
                 mliObject_free(&(scenery->objects[i]));
         }

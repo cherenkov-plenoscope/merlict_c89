@@ -13,7 +13,6 @@ int mliSceneryResources_capacity_fwrite(
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* payload */
-        mli_fwrite(&res->num_objects, sizeof(uint32_t), 1u, f);
         mli_fwrite(&res->num_functions, sizeof(uint32_t), 1u, f);
         mli_fwrite(&res->num_colors, sizeof(uint32_t), 1u, f);
         mli_fwrite(&res->num_media, sizeof(uint32_t), 1u, f);
@@ -33,10 +32,6 @@ int mliSceneryResources_fwrite(
         /* magic identifier */
         mli_c(mliMagicId_set(&magic, "mliSceneryResources"));
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
-
-        for (i = 0; i < res->num_objects; i++) {
-                mliObject_fwrite(&res->objects[i], f);
-        }
 
         for (i = 0; i < res->num_functions; i++) {
                 mliFunc_fwrite(&res->functions[i], f);
@@ -62,7 +57,6 @@ int mliSceneryResourcesCapacity_fread(
         mliMagicId_warn_version(&magic);
 
         /* payload */
-        mli_fread(&capacity->num_objects, sizeof(uint32_t), 1u, f);
         mli_fread(&capacity->num_functions, sizeof(uint32_t), 1u, f);
         mli_fread(&capacity->num_colors, sizeof(uint32_t), 1u, f);
         mli_fread(&capacity->num_media, sizeof(uint32_t), 1u, f);
@@ -83,9 +77,6 @@ int mliSceneryResources_malloc_fread(struct mliSceneryResources *res, FILE *f)
         mliMagicId_warn_version(&magic);
 
         /* payload */
-        for (i = 0; i < res->num_objects; i++) {
-                mli_c(mliObject_malloc_fread(&res->objects[i], f));
-        }
         for (i = 0; i < res->num_functions; i++) {
                 mli_c(mliFunc_malloc_fread(&res->functions[i], f));
         }

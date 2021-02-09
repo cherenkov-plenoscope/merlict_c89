@@ -5,229 +5,147 @@
 #include "mli_debug.h"
 #include "mliJson.h"
 
-/*
- *  A scenery as a user wants to define it.
- *  It can grow dynamically.
- *  It can represent the geometric hiracrhy between abstract frames.
- *  Before ray tracing, this UserScenery will be translated into a Scenery
- *  which is optimized for ray tracing.
- */
-
-struct mliUserScenery mliUserScenery_init(void)
-{
-        struct mliUserScenery uscn;
-        uscn.resources = mliSceneryResources_init();
-        uscn.root = mliFrame_init();
-
-        uscn.object_names = mliDynMap_init();
-        uscn.function_names = mliDynMap_init();
-        uscn.color_names = mliDynMap_init();
-        uscn.medium_names = mliDynMap_init();
-        uscn.surface_names = mliDynMap_init();
-        return uscn;
+struct mliNameMap mliNameMap_init(void) {
+        struct mliNameMap nm;
+        nm.functions = mliDynMap_init();
+        nm.colors = mliDynMap_init();
+        nm.media = mliDynMap_init();
+        nm.surfaces = mliDynMap_init();
+        return nm;
 }
 
-void mliUserScenery_free(struct mliUserScenery *uscn)
+int mliNameMap_malloc(struct mliNameMap *namemap)
 {
-        mliSceneryResources_free(&uscn->resources);
-        mliFrame_free(&uscn->root);
-
-        mliDynMap_free(&uscn->object_names);
-        mliDynMap_free(&uscn->function_names);
-        mliDynMap_free(&uscn->color_names);
-        mliDynMap_free(&uscn->medium_names);
-        mliDynMap_free(&uscn->surface_names);
-        (*uscn) = mliUserScenery_init();
+        mliNameMap_free(namemap);
+        mli_check_mem(mliDynMap_malloc(&namemap->functions, 0u));
+        mli_check_mem(mliDynMap_malloc(&namemap->colors, 0u));
+        mli_check_mem(mliDynMap_malloc(&namemap->media, 0u));
+        mli_check_mem(mliDynMap_malloc(&namemap->surfaces, 0u));
+        return 1;
+error:
+        return 0;
 }
 
-int mliUserScenery_malloc_from_tar(
-        struct mliUserScenery *uscn,
-        const char *path)
+void mliNameMap_free(struct mliNameMap *namemap)
 {
-        struct mliArchive arc = mliArchive_init();
+        mliDynMap_free(&namemap->functions);
+        mliDynMap_free(&namemap->colors);
+        mliDynMap_free(&namemap->media);
+        mliDynMap_free(&namemap->surfaces);
+}
 
-        mli_check(
-                mliArchive_malloc_from_tar(&arc, path),
-                "Can not read tape-archive to malloc mliUserScenery.");
+int mli_malloc_object_names_from_archive(
+        struct mliDynMap *object_names,
+        const struct mliArchive *archive)
+{
+        uint64_t arc_idx = 0u;
+        uint64_t obj_idx = 0u;
+        char key[MLI_NAME_CAPACITY];
 
-        mli_check(
-                mliUserScenery_malloc_from_Archive(uscn, &arc),
-                "Can not malloc mliUserScenery from archive.");
+        mliDynMap_malloc(object_names, 0u);
 
-        mliArchive_free(&arc);
+        /* objects */
+        obj_idx = 0u;
+        for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
+                if (mli_string_has_prefix_suffix(
+                        archive->filenames.arr[arc_idx].key, "objects/", ".obj")
+                ) {
+                        memset(key, '\0', sizeof(key));
+                        __mli_strip_key(
+                                archive->filenames.arr[arc_idx].key,
+                                key);
+                        mli_check(
+                                mliDynMap_insert(object_names, key, obj_idx),
+                                "Failed to insert object-filename into map.");
+                        obj_idx += 1u;
+                }
+        }
 
         return 1;
 error:
         return 0;
 }
 
-int mliUserScenery_malloc_from_Archive(
-        struct mliUserScenery *uscn,
-        const struct mliArchive *arc)
+int mli_malloc_materials_form_archive(
+        struct mliSceneryResources *materials,
+        struct mliNameMap *names,
+        const struct mliArchive *archive)
 {
-        struct mliJson materials_json = mliJson_init();
-        struct mliJson tree_json = mliJson_init();
+        uint64_t fnc_idx = 0;
+        uint64_t arc_idx = 0;
+        uint64_t token = 0u;
+        char key[MLI_NAME_CAPACITY];
 
-        struct mliSceneryResourcesCapacity rescap =
+        struct mliJson materials_json = mliJson_init();
+        struct mliSceneryResourcesCapacity cap =
                 mliSceneryResourcesCapacity_init();
 
-        uint64_t *arc_mask = NULL;
-        uint64_t arc_idx = 0u;
-        uint64_t obj_idx = 0u;
-        uint64_t fnc_idx = 0u;
-        uint64_t token = 0u;
-        char key[128];
+        /* free */
+        mliSceneryResources_free(materials);
+        mliNameMap_free(names);
 
-        /* free everything */
-        /* --------------- */
-
-        mliUserScenery_free(uscn);
-
-        /* parse json files  */
-        /*------------------ */
+        /* estimate capacity and malloc */
+        mli_c(mliNameMap_malloc(names));
 
         mli_check(
                 mliArchive_get_malloc_json(
-                        arc, "materials.json", &materials_json),
+                        archive, "materials.json", &materials_json),
                 "Failed to parse 'materials.json'.");
 
-        mli_check(
-                mliArchive_get_malloc_json(arc, "tree.json", &tree_json),
-                "Failed to parse 'tree.json'.");
-
-        /* estimate required capacity */
-        /*--------------------------- */
-
-        rescap.num_objects =
-                mliArchive_num_filename_prefix_sufix(arc, "objects/", ".obj");
-
-        rescap.num_functions =
-                mliArchive_num_filename_prefix_sufix(arc, "functions/", ".csv");
+        cap.num_functions = mliArchive_num_filename_prefix_sufix(
+                archive, "functions/", ".csv");
 
         mli_check(
                 __mliSceneryResourcesCapacity_from_materials_json(
-                        &rescap, &materials_json),
+                        &cap, &materials_json),
                 "Can not estimate capacity from materials-json.");
 
-        /* malloc fields */
-        /*-------------- */
-
         mli_check(
-                mliSceneryResources_malloc(&uscn->resources, rescap),
-                "Can not malloc resources in mliUserScenery.");
-
-        mli_check(
-                mliFrame_malloc(&uscn->root, MLI_FRAME),
-                "Can not allocate root-frame in UserScenery.");
-
-        mli_check(
-                mliDynMap_malloc(
-                        &uscn->object_names, uscn->resources.num_objects),
-                "Failed to malloc object-name-map.");
-
-        mli_check(
-                mliDynMap_malloc(
-                        &uscn->function_names, uscn->resources.num_functions),
-                "Failed to malloc function-name-map.");
-
-        mli_check(
-                mliDynMap_malloc(
-                        &uscn->color_names, uscn->resources.num_colors),
-                "Failed to malloc color-name-map.");
-
-        mli_check(
-                mliDynMap_malloc(
-                        &uscn->medium_names, uscn->resources.num_media),
-                "Failed to malloc media-name-map.");
-
-        mli_check(
-                mliDynMap_malloc(
-                        &uscn->surface_names, uscn->resources.num_surfaces),
-                "Failed to malloc surface-name-map.");
+                mliSceneryResources_malloc(materials, cap),
+                "Can not malloc materials.");
 
         /* set fields */
         /* ---------- */
 
-        /* objects */
-        mli_malloc(arc_mask, uint64_t, mliArchive_num(arc));
-
-        mliArchive_mask_filename_prefix_sufix(
-                arc, arc_mask, "objects/", ".obj");
-
-        obj_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_num(arc); arc_idx++) {
-                if (arc_mask[arc_idx]) {
-
-                        mli_check(
-                                obj_idx < uscn->resources.num_objects,
-                                "Expected less objects in archive.");
-
-                        mli_check(
-                                mliObject_malloc_from_wavefront(
-                                        &uscn->resources.objects[obj_idx],
-                                        arc->strings.arr[arc_idx].c_str),
-                                "Failed to parse wave-front-object from file.");
-
-                        memset(key, '\0', sizeof(key));
-                        __mli_strip_key(arc->filenames.arr[arc_idx].key, key);
-
-                        mli_check(
-                                mliDynMap_insert(
-                                        &uscn->object_names, key, obj_idx),
-                                "Failed to insert object-filename into map.");
-
-                        obj_idx += 1u;
-                }
-        }
-
         /* functions */
-        mliArchive_mask_filename_prefix_sufix(
-                arc, arc_mask, "functions/", ".csv");
-
         fnc_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_num(arc); arc_idx++) {
-                if (arc_mask[arc_idx]) {
-
-                        mli_check(
-                                fnc_idx < uscn->resources.num_functions,
-                                "Expected less functions in archive.");
-
+        for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
+                if (mli_string_has_prefix_suffix(
+                        archive->filenames.arr[arc_idx].key, "functions/", ".csv")
+                ) {
                         mli_check(
                                 mliFunc_malloc_from_csv(
-                                        &uscn->resources.functions[fnc_idx],
-                                        arc->strings.arr[arc_idx].c_str),
+                                        &materials->functions[fnc_idx],
+                                        archive->strings.arr[arc_idx].c_str),
                                 "Failed to parse comma-separated-values from "
                                 "file.");
 
                         memset(key, '\0', sizeof(key));
-                        __mli_strip_key(arc->filenames.arr[arc_idx].key, key);
+                        __mli_strip_key(archive->filenames.arr[arc_idx].key, key);
 
                         mli_check(
                                 mliDynMap_insert(
-                                        &uscn->function_names, key, fnc_idx),
-                                "Failed to insert function-filename into map.");
+                                        &names->functions, key, fnc_idx),
+                                "Failed to insert function-name into map.");
 
                         fnc_idx += 1u;
                 }
         }
 
-        free(arc_mask);
-        arc_mask = NULL;
-
         /* colors */
 
         mli_check(
                 __mliScenery_assign_colors_from_json(
-                        &uscn->resources, &uscn->color_names, &materials_json),
+                        materials, &names->colors, &materials_json),
                 "Failed to copy colors from materials.json.");
 
         /* media */
 
         mli_check(
                 __mliScenery_assign_media_from_json(
-                        &uscn->resources,
-                        &uscn->medium_names,
-                        &uscn->function_names,
+                        materials,
+                        &names->media,
+                        &names->functions,
                         &materials_json),
                 "Failed to copy media from materials.json.");
 
@@ -235,10 +153,10 @@ int mliUserScenery_malloc_from_Archive(
 
         mli_check(
                 __mliScenery_assign_surfaces_from_json(
-                        &uscn->resources,
-                        &uscn->surface_names,
-                        &uscn->function_names,
-                        &uscn->color_names,
+                        materials,
+                        &names->surfaces,
+                        &names->functions,
+                        &names->colors,
                         &materials_json),
                 "Failed to copy surfaces from materials.json.");
 
@@ -249,72 +167,96 @@ int mliUserScenery_malloc_from_Archive(
                 "Expected materials.json to have key 'default_medium'.");
         mli_check(
                 _mliDynMap_get_value_for_string_from_json(
-                        &uscn->medium_names,
+                        &names->media,
                         &materials_json,
                         token,
-                        &uscn->resources.default_medium),
+                        &materials->default_medium),
                 "Failed to assign the 'default_medium'.");
 
         mliJson_free(&materials_json);
 
-        /* frames */
-
-        mli_check(
-                mliJson_find_key(&tree_json, 0, "children", &token),
-                "Expected scenery-json to have key 'children'.");
-        mli_check(
-                __mliFrame_from_json(
-                        &uscn->root,
-                        &tree_json,
-                        token + 1,
-                        &uscn->object_names,
-                        &uscn->surface_names,
-                        &uscn->medium_names),
-                "Failed to populate tree of Frames from scenery-json.");
-
-        mliJson_free(&tree_json);
-
-        /* transformations */
-        mliFrame_set_frame2root(&uscn->root);
-
         return 1;
 error:
         mliJson_free(&materials_json);
-        mliJson_free(&tree_json);
-        free(arc_mask);
-
-        mliUserScenery_free(uscn);
+        mliSceneryResources_free(materials);
+        mliNameMap_free(names);
         return 0;
 }
 
-int __mliSceneryResourcesCapacity_from_materials_json(
-        struct mliSceneryResourcesCapacity *rescap,
-        const struct mliJson *json)
+int mli_malloc_root_frame_from_Archive(
+        struct mliFrame *root,
+        const struct mliArchive *archive,
+        const struct mliDynMap *object_names,
+        const struct mliDynMap *surface_names,
+        const struct mliDynMap *medium_names)
 {
-        uint64_t token;
+        uint64_t token = 0u;
+        struct mliJson tree_json = mliJson_init();
         mli_check(
-                mliJson_find_key(json, 0, "colors", &token),
-                "Expected materials-json to have key 'colors'.");
+                mliArchive_get_malloc_json(archive, "tree.json", &tree_json),
+                "Failed to parse 'tree.json'.");
         mli_check(
-                json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'colors' to point to a json-array.");
-        rescap->num_colors = json->tokens[token + 1].size;
+                mliJson_find_key(&tree_json, 0, "children", &token),
+                "Expected 'tree.json' to have key 'children'.");
+        mli_check(
+                mliFrame_malloc(root, MLI_FRAME),
+                "Can not malloc root-frame.");
+        mli_check(
+                __mliFrame_from_json(
+                        root,
+                        &tree_json,
+                        token + 1,
+                        object_names,
+                        surface_names,
+                        medium_names),
+                "Failed to populate tree of Frames from scenery-json.");
+        mliJson_free(&tree_json);
 
-        mli_check(
-                mliJson_find_key(json, 0, "media", &token),
-                "Expected materials-json to have key 'media'.");
-        mli_check(
-                json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'media' to point to a json-array.");
-        rescap->num_media = json->tokens[token + 1].size;
+        /* init transformations */
+        mliFrame_set_frame2root(root);
 
-        mli_check(
-                mliJson_find_key(json, 0, "surfaces", &token),
-                "Expected materials-json to have key 'surfaces'.");
-        mli_check(
-                json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'surfaces' to point to a json-array.");
-        rescap->num_surfaces = json->tokens[token + 1].size;
+        return 1;
+error:
+        mliJson_free(&tree_json);
+        return 0;
+}
+
+int mliScenery_set_objects_from_Archive(
+        struct mliScenery *scenery,
+        const struct mliDynMap *object_names,
+        const struct mliArchive *archive)
+{
+        uint64_t obj_idx = 0u;
+        uint64_t obj_idx_in_name_map = 0u;
+        uint64_t arc_idx = 0u;
+        const uint64_t num_objects = object_names->dyn.size;
+        char key[MLI_NAME_CAPACITY];
+
+        for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
+                if (mli_string_has_prefix_suffix(
+                        archive->filenames.arr[arc_idx].key, "objects/", ".obj")
+                ) {
+                        mli_check(
+                                obj_idx < num_objects,
+                                "Expected less objects in archive.");
+
+                        mli_check(
+                                mliObject_malloc_from_wavefront(
+                                        &scenery->objects[obj_idx],
+                                        archive->strings.arr[arc_idx].c_str),
+                                "Failed to parse wave-front-object.");
+
+                        memset(key, '\0', sizeof(key));
+                        __mli_strip_key(archive->filenames.arr[arc_idx].key, key);
+                        mli_check(mliDynMap_get(
+                                object_names, key, &obj_idx_in_name_map),
+                                "Failed to find object in object_names.");
+                        mli_check(obj_idx == obj_idx_in_name_map,
+                                "Expected a different obj_idx for this "
+                                "object_name");
+                        obj_idx += 1u;
+                }
+        }
         return 1;
 error:
         return 0;
@@ -351,4 +293,35 @@ void __mli_strip_key(const char *filename, char *key)
 
 finalize:
         key[o] = '\0';
+}
+
+int __mliSceneryResourcesCapacity_from_materials_json(
+        struct mliSceneryResourcesCapacity *rescap,
+        const struct mliJson *json)
+{
+        uint64_t token;
+        mli_check(
+                mliJson_find_key(json, 0, "colors", &token),
+                "Expected materials-json to have key 'colors'.");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_ARRAY,
+                "Expected key 'colors' to point to a json-array.");
+        rescap->num_colors = json->tokens[token + 1].size;
+        mli_check(
+                mliJson_find_key(json, 0, "media", &token),
+                "Expected materials-json to have key 'media'.");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_ARRAY,
+                "Expected key 'media' to point to a json-array.");
+        rescap->num_media = json->tokens[token + 1].size;
+        mli_check(
+                mliJson_find_key(json, 0, "surfaces", &token),
+                "Expected materials-json to have key 'surfaces'.");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_ARRAY,
+                "Expected key 'surfaces' to point to a json-array.");
+        rescap->num_surfaces = json->tokens[token + 1].size;
+        return 1;
+error:
+        return 0;
 }

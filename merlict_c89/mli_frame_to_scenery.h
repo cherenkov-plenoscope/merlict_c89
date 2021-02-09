@@ -6,9 +6,6 @@
 #include "mliScenery.h"
 #include "mliUserScenery.h"
 
-int mliScenery_malloc_from_mliUserScenery(
-        struct mliScenery *scenery,
-        const struct mliUserScenery *uscn);
 int __mliScenery_set_robjects(
         struct mliScenery *scenery,
         const struct mliFrame *frame,

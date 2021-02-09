@@ -9,8 +9,6 @@ int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
         uint32_t num_objects = 0u;
         uint32_t num_robjects = 0u;
         struct mliMagicId magic;
-        struct mliSceneryResourcesCapacity rescap =
-                mliSceneryResourcesCapacity_init();
 
         /* magic identifier */
         mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
@@ -30,18 +28,6 @@ int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
                         mliObject_malloc_fread(&scenery->objects[i], f),
                         "Failed to read object into scenery.");
         }
-
-        mli_check(
-                mliSceneryResourcesCapacity_fread(&rescap, f),
-                "Failed to read SceneryResources' capacity from file");
-
-        mli_check(
-                mliSceneryResources_malloc(&scenery->resources, rescap),
-                "Failed to malloc SceneryResources.");
-
-        mli_check(
-                mliSceneryResources_malloc_fread(&scenery->resources, f),
-                "Failed to read SceneryResources from file.");
 
         mli_fread(
                 scenery->robjects, sizeof(uint32_t), scenery->num_robjects, f);
@@ -83,14 +69,6 @@ int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
                 mli_check(mliObject_fwrite(&scenery->objects[i], f),
                         "Failed to write objects.");
         }
-
-        mli_check(
-                mliSceneryResources_capacity_fwrite(
-                        &scenery->resources, f),
-                "Failed to write SceneryResources' capacity to file.");
-        mli_check(
-                mliSceneryResources_fwrite(&scenery->resources, f),
-                "Can not write SceneryResources to file.");
         mli_fwrite(
                 scenery->robjects, sizeof(uint32_t), scenery->num_robjects, f);
         mli_fwrite(

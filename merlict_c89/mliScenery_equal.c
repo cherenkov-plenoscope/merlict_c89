@@ -62,9 +62,6 @@ error:
 int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
 {
         mli_check(
-                mliSceneryResources_equal(&a->resources, &b->resources),
-                "Expected SceneryResources to be equal, but its not.");
-        mli_check(
                 _mliScenery_objects_equal(a, b),
                 "Expected objects to be equal.");
         mli_check(

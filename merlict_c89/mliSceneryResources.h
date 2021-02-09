@@ -10,7 +10,6 @@
 #include "mliMedium.h"
 
 struct mliSceneryResourcesCapacity {
-        uint32_t num_objects;
         uint32_t num_functions;
         uint32_t num_colors;
         uint32_t num_surfaces;
@@ -20,9 +19,6 @@ struct mliSceneryResourcesCapacity {
 struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void);
 
 struct mliSceneryResources {
-        uint32_t num_objects;
-        struct mliObject *objects;
-
         uint32_t num_functions;
         struct mliFunc *functions;
 

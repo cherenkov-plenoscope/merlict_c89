@@ -26,7 +26,7 @@ CASE("simple propagation")
                 "resources/"
                 "sceneries/"
                 "002.tar"));
-        CHECK(combine.scenery.resources.default_medium == 0u);
+        CHECK(combine.materials.default_medium == 0u);
 
         CHECK(mli_query_intersection_with_surface_normal(
                 &combine, photon.ray, &intersection));
@@ -37,16 +37,16 @@ CASE("simple propagation")
                 intersection.surface_normal, mliVec_set(0, 0, -1), 1e-9));
         CHECK_MARGIN(intersection.distance_of_ray, 3., 1e-9);
 
-        CHECK(combine.scenery.resources.num_media == 2);
-        CHECK(combine.scenery.resources.num_functions == 4);
+        CHECK(combine.materials.num_media == 2);
+        CHECK(combine.materials.num_functions == 4);
 
         side_coming_from = _mli_side_coming_from(&combine.scenery, &intersection);
-        surf_coming_from = combine.scenery.resources.surfaces[side_coming_from.surface];
-        medi_coming_from = combine.scenery.resources.media[side_coming_from.medium];
+        surf_coming_from = combine.materials.surfaces[side_coming_from.surface];
+        medi_coming_from = combine.materials.media[side_coming_from.medium];
 
         side_going_to = _mli_side_going_to(&combine.scenery, &intersection);
-        surf_going_to = combine.scenery.resources.surfaces[side_going_to.surface];
-        medi_going_to = combine.scenery.resources.media[side_going_to.medium];
+        surf_going_to = combine.materials.surfaces[side_going_to.surface];
+        medi_going_to = combine.materials.media[side_going_to.medium];
 
         CHECK(surf_going_to.material == MLI_MATERIAL_TRANSPARENT);
         CHECK(medi_going_to.refraction == FNC_REFRACTION_GLASS);

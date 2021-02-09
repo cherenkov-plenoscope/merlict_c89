@@ -22,8 +22,8 @@ struct mliColor mli_trace(
                         mliRay_set(intersection.position, dir_to_source);
 
                 side = _mli_side_going_to(&combine->scenery, &intersection);
-                surface = combine->scenery.resources.surfaces[side.surface];
-                color = combine->scenery.resources.colors[surface.color];
+                surface = combine->materials.surfaces[side.surface];
+                color = combine->materials.colors[surface.color];
 
                 if (mli_query_intersection_with_surface_normal(
                             combine,

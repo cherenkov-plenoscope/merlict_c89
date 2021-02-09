@@ -10,6 +10,7 @@
 struct mliCombine {
         struct mliScenery scenery;
         struct mliAccelerator accelerator;
+        struct mliSceneryResources materials;
 };
 
 struct mliCombine mliCombine_init(void);

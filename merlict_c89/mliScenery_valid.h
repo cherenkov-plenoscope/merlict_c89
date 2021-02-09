@@ -3,8 +3,8 @@
 #define MERLICT_C89_MLISCENERY_VALID_H_
 
 #include "mliScenery.h"
-#include "mliSceneryResources_valid.h"
 
-int mliScenery_valid(const struct mliScenery *scenery);
-
+int mliScenery_valid(
+        const struct mliScenery *scenery,
+        const struct mliSceneryResources *materials);
 #endif

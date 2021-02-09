@@ -6,9 +6,6 @@
 #include "mliJson.h"
 #include "mliUserScenery.h"
 
-int mliUserScenery_malloc_from_json(
-        struct mliUserScenery *uscn,
-        const struct mliJson *json);
 int __mliFrame_from_json(
         struct mliFrame *mother,
         const struct mliJson *json,

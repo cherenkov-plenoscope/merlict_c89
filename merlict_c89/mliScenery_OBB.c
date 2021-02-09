@@ -10,8 +10,7 @@ int mliScenery_robject_has_overlap_obb(
         const struct mliOBB obb)
 {
         const uint32_t object_idx = scenery->robjects[robject_idx];
-        const struct mliObject *obj_ptr =
-                &scenery->resources.objects[object_idx];
+        const struct mliObject *obj_ptr = &scenery->objects[object_idx];
         const struct mliHomTraComp local2root_comp =
                 scenery->robject2root[robject_idx];
 

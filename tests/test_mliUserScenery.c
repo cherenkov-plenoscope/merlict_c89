@@ -3,8 +3,6 @@
 CASE("mliUserScenery, init")
 {
         struct mliSceneryResources resources = mliSceneryResources_init();
-        CHECK(resources.num_objects == 0u);
-        CHECK(resources.objects == NULL);
         CHECK(resources.num_functions == 0u);
         CHECK(resources.functions == NULL);
         CHECK(resources.num_colors == 0u);
@@ -15,7 +13,7 @@ CASE("mliUserScenery, init")
         CHECK(resources.media == NULL);
 }
 
-CASE("mliUserScenery, from json")
+CASE("mliSceneryResources, estimate capacity from json")
 {
         char json_str[256];
         struct mliJson material_json = mliJson_init();
@@ -42,32 +40,10 @@ CASE("mliUserScenery, from json")
         mliJson_free(&material_json);
 }
 
-CASE("multi malloc")
+/*
+CASE("mliCombine, malloc from archive")
 {
-        uint64_t i;
-        struct mliUserScenery uscn = mliUserScenery_init();
-
-        for (i = 0; i < 13; i ++) {
-                int rc = mliUserScenery_malloc_from_tar(
-                        &uscn,
-                        "tests/"
-                        "resources/"
-                        "sceneries/"
-                        "001.tar"
-                );
-
-                if (rc == 0) {
-                        fprintf(stderr, "[ BAD ] in iteration %ld\n", i);
-                }
-
-                mliUserScenery_free(&uscn);
-        }
-}
-
-
-CASE("mliUserScenery, malloc from archive")
-{
-        struct mliUserScenery uscn = mliUserScenery_init();
+        struct mliCombine combine = mliCombine_init();
         struct mliFrame *_root, *_obj1, *_frame2, *_obj3, *_obj4 = NULL;
 
         uint64_t obj_idx, obj_teapot_idx, obj_hex_idx;
@@ -75,15 +51,15 @@ CASE("mliUserScenery, malloc from archive")
         uint64_t med_vacuum;
         uint64_t fcn_idx;
 
-        CHECK(mliUserScenery_malloc_from_tar(
-                &uscn,
+        CHECK(mliCombine_malloc_from_tar(
+                &combine,
                 "tests/"
                 "resources/"
                 "sceneries/"
                 "001.tar"
         ));
 
-        CHECK(2 == uscn.resources.num_objects);
+        CHECK(2 == combine.scenery.num_objects);
 
         CHECK(mliDynMap_get(
                 &uscn.object_names,
@@ -116,17 +92,17 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(4 == uscn.resources.num_surfaces);
         CHECK(2 == uscn.resources.num_media);
 
-        /* frames */
-        /* ------ */
-        /*
-                root
-                |______ obj1 (teapot)
-                |
-                |______ frame2
-                        |_____ obj3 (hex)
-                        |
-                        |_____ obj4 (hex)
-        */
+        /* frames
+         * ------
+         *
+         *      root
+         *      |______ obj1 (teapot)
+         *      |
+         *      |______ frame2
+         *              |_____ obj3 (hex)
+         *              |
+         *              |_____ obj4 (hex)
+         *
 
         CHECK(mliDynMap_get(
                 &uscn.object_names,
@@ -144,13 +120,13 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(mliDynMap_get(&uscn.surface_names, "blue_glass", &srf_blue_glass));
         CHECK(mliDynMap_get(&uscn.medium_names, "vacuum", &med_vacuum));
 
-        /* root */
+        /* root *
         _root = &uscn.root;
         CHECK(_root->id == 0);
         CHECK(_root->type == MLI_FRAME);
         CHECK(_root->children.dyn.size == 2);
 
-        /* obj1 */
+        /* obj1 *
         _obj1 = _root->children.arr[0];
         CHECK(_obj1->type == MLI_OBJECT);
         CHECK(_obj1->id == 1);
@@ -160,13 +136,13 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(_obj1->boundary_layer.inner.medium == med_vacuum);
         CHECK(_obj1->boundary_layer.outer.medium == med_vacuum);
 
-        /* frame2 */
+        /* frame2 *
         _frame2 = _root->children.arr[1];
         CHECK(_frame2->type == MLI_FRAME);
         CHECK(_frame2->id == 2);
         CHECK(_frame2->children.dyn.size == 2);
 
-        /* obj3 */
+        /* obj3 *
         _obj3 = _frame2->children.arr[0];
         CHECK(_obj3->type == MLI_OBJECT);
         CHECK(_obj3->id == 3);
@@ -176,7 +152,7 @@ CASE("mliUserScenery, malloc from archive")
         CHECK(_obj3->boundary_layer.inner.medium == med_vacuum);
         CHECK(_obj3->boundary_layer.outer.medium == med_vacuum);
 
-        /* obj4 */
+        /* obj4 *
         _obj4 = _frame2->children.arr[1];
         CHECK(_obj4->type == MLI_OBJECT);
         CHECK(_obj4->id == 4);
@@ -188,7 +164,9 @@ CASE("mliUserScenery, malloc from archive")
 
         mliUserScenery_free(&uscn);
 }
+*/
 
+/*
 CASE("mliUserScenery, read, write mliSceneryResources")
 {
         struct mliUserScenery uscn = mliUserScenery_init();
@@ -222,3 +200,4 @@ CASE("mliUserScenery, read, write mliSceneryResources")
 
         mliUserScenery_free(&uscn);
 }
+*/

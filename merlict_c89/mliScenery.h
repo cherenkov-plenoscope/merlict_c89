@@ -8,8 +8,6 @@
 #include "mliSceneryResources.h"
 
 struct mliScenery {
-        struct mliSceneryResources resources;
-
         uint32_t num_objects;
         struct mliObject *objects;
 
