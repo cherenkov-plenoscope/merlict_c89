@@ -2,9 +2,22 @@
 #include "mliMaterials_valid.h"
 #include "mliObject.h"
 
+int _mliMaterials_valid_functions(const struct mliMaterials *materials)
+{
+        uint32_t i;
+        for (i = 0; i < materials->num_functions; i++) {
+                mli_check(mliFunc_is_valid(&materials->functions[i]),
+                        "Expected function to be valid.");
+        }
+        return 1;
+error:
+        mli_log_err_vargs(("function[%u] is invalid.", i));
+        return 0;
+}
+
 int _mliMaterials_valid_media(const struct mliMaterials *res)
 {
-        uint64_t i;
+        uint32_t i;
         for (i = 0; i < res->num_media; i++) {
                 if (res->media[i].refraction >= res->num_functions)
                         return 0;
@@ -16,7 +29,7 @@ int _mliMaterials_valid_media(const struct mliMaterials *res)
 
 int _mliMaterials_valid_surfaces(const struct mliMaterials *res)
 {
-        uint64_t i;
+        uint32_t i;
         for (i = 0; i < res->num_surfaces; i++) {
                 switch (res->surfaces[i].material) {
                 case MLI_MATERIAL_PHONG:

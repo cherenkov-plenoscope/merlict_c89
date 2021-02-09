@@ -17,7 +17,7 @@ error:
 
 int mliObject_has_valid_faces(const struct mliObject *obj)
 {
-        uint64_t i;
+        uint32_t i;
         for (i = 0; i < obj->num_faces; i++) {
                 mli_check(
                         obj->faces_vertices[i].a <= obj->num_vertices,
@@ -47,13 +47,13 @@ int mliObject_has_valid_faces(const struct mliObject *obj)
         }
         return 1;
 error:
-        mli_log_err_vargs(("Face %ld (counting starts at 0)", i));
+        mli_log_err_vargs(("face[%u] is invalid.", i));
         return 0;
 }
 
 int mliObject_has_valid_normals(const struct mliObject *obj, const double epsilon)
 {
-        uint64_t i;
+        uint32_t i;
         for (i = 0; i < obj->num_vertex_normals; i++) {
                 const double norm = mliVec_norm(obj->vertex_normals[i]);
                 mli_check(
@@ -62,7 +62,7 @@ int mliObject_has_valid_normals(const struct mliObject *obj, const double epsilo
         }
         return 1;
 error:
-        mli_log_err_vargs(("Vertex-normal %ld (counting starts at 0)", i));
+        mli_log_err_vargs(("Vertex_normal[%u] is invalid.", i));
         return 0;
 }
 
@@ -88,6 +88,6 @@ int mliObject_has_valid_materials(const struct mliObject *obj)
         }
         return 1;
 error:
-        mli_log_err_vargs(("material %u's last face > num_faces.", i));
+        mli_log_err_vargs(("material[%u] is invalid.", i));
         return 0;
 }
