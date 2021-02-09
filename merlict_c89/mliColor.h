@@ -20,4 +20,5 @@ struct mliColor mliColor_mix(
         const struct mliColor b,
         const float refl);
 struct mliColor mliColor_set(const float r, const float g, const float b);
+int mliColor_is_valid_8bit_range(const struct mliColor c);
 #endif

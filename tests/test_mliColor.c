@@ -25,3 +25,31 @@ CASE("mliColor_mean")
         CHECK_MARGIN(mean.g, (20. + 2. + 60.) / 3., 1e-6);
         CHECK_MARGIN(mean.b, (30. + 3. + 70.) / 3., 1e-5);
 }
+
+CASE("mliColor 8bit range")
+{
+        struct mliColor c;
+        c = mliColor_set(0.0, 0.0, 0.0);
+        CHECK(mliColor_is_valid_8bit_range(c));
+
+        c = mliColor_set(-MLI_EPSILON, 0.0, 0.0);
+        CHECK(!mliColor_is_valid_8bit_range(c));
+
+        c = mliColor_set(0.0, -MLI_EPSILON, 0.0);
+        CHECK(!mliColor_is_valid_8bit_range(c));
+
+        c = mliColor_set(0.0, 0.0, -MLI_EPSILON);
+        CHECK(!mliColor_is_valid_8bit_range(c));
+
+        c = mliColor_set(255.9, 255.9, 255.9);
+        CHECK(mliColor_is_valid_8bit_range(c));
+
+        c = mliColor_set(256.0, 255.9, 255.9);
+        CHECK(!mliColor_is_valid_8bit_range(c));
+
+        c = mliColor_set(255.9, 256.0, 255.9);
+        CHECK(!mliColor_is_valid_8bit_range(c));
+
+        c = mliColor_set(255.9, 255.9, 256.0);
+        CHECK(!mliColor_is_valid_8bit_range(c));
+}

@@ -2,6 +2,19 @@
 #include "mliMaterials_valid.h"
 #include "mliObject.h"
 
+int _mliMaterials_valid_colors(const struct mliMaterials *materials)
+{
+        uint32_t i;
+        for (i = 0; i < materials->num_colors; i++) {
+                mli_check(mliColor_is_valid_8bit_range(materials->colors[i]),
+                        "Expected 0.0 <= color < 256.0.");
+        }
+        return 1;
+error:
+        mli_log_err_vargs(("colors[%u] is invalid.", i));
+        return 0;
+}
+
 int _mliMaterials_valid_functions(const struct mliMaterials *materials)
 {
         uint32_t i;
@@ -61,7 +74,9 @@ int mliMaterials_valid(const struct mliMaterials *res)
         mli_check(
                 res->default_medium <= res->num_media,
                 "Expected default-medium to reference a valid medium.");
-
+        mli_check(
+                _mliMaterials_valid_colors(res),
+                "Expected colors to be valid.");
         mli_check(
                 _mliMaterials_valid_functions(res),
                 "Expected functions to be valid.");
