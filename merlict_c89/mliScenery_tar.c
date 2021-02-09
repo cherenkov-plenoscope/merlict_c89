@@ -95,7 +95,7 @@ int mliScenery_malloc_from_Archive(
         mli_check(mliAccelerator_malloc_from_Geometry(
                 &scenery->accelerator,
                 &scenery->geometry),
-                "");
+                "Failed to malloc accelerator from geometry.");
 
         mli_check(
                 mliScenery_valid(scenery), "Expected scenery to be valid.");
