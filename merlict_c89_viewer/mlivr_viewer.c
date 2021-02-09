@@ -385,11 +385,11 @@ int mlivr_run_interactive_viewer(
                                        "dist % 6.2fm, "
                                        "pos [% -.2e, % -.2e, % -.2e], "
                                        "normal [% -.3f, % -.3f, % -.3f], ",
-                                       combine->scenery.robject_ids
+                                       combine->geometry.robject_ids
                                                [probing_intersection
                                                         .geometry_id.robj],
                                        probing_intersection.geometry_id.robj,
-                                       combine->scenery
+                                       combine->geometry
                                                .robjects[probing_intersection
                                                                   .geometry_id
                                                                   .robj],
