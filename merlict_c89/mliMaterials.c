@@ -101,5 +101,9 @@ error:
 void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
 {
         fprintf(f, "__mliMaterials__\n");
-        fprintf(f, "- default_medium: %d\n", res->default_medium);
+        fprintf(
+                f,
+                "- default_medium: %d, %s\n",
+                res->default_medium,
+                res->medium_names[res->default_medium].c_str);
 }

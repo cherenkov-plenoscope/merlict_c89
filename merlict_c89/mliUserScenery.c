@@ -71,6 +71,7 @@ int mli_malloc_materials_form_archive(
         struct mliNameMap *names,
         const struct mliArchive *archive)
 {
+        uint64_t i = 0u;
         uint64_t fnc_idx = 0;
         uint64_t arc_idx = 0;
         uint64_t token = 0u;
@@ -128,6 +129,11 @@ int mli_malloc_materials_form_archive(
                                         &names->functions, key, fnc_idx),
                                 "Failed to insert function-name into map.");
 
+                        memcpy(
+                                materials->function_names[fnc_idx].c_str,
+                                names->functions.arr[i].key,
+                                MLI_NAME_CAPACITY);
+
                         fnc_idx += 1u;
                 }
         }
@@ -138,6 +144,12 @@ int mli_malloc_materials_form_archive(
                 __mliGeometry_assign_colors_from_json(
                         materials, &names->colors, &materials_json),
                 "Failed to copy colors from materials.json.");
+        for (i = 0; i < materials->num_colors; i++) {
+                memcpy(
+                        materials->color_names[i].c_str,
+                        names->colors.arr[i].key,
+                        MLI_NAME_CAPACITY);
+        }
 
         /* media */
 
@@ -148,6 +160,12 @@ int mli_malloc_materials_form_archive(
                         &names->functions,
                         &materials_json),
                 "Failed to copy media from materials.json.");
+        for (i = 0; i < materials->num_media; i++) {
+                memcpy(
+                        materials->medium_names[i].c_str,
+                        names->media.arr[i].key,
+                        MLI_NAME_CAPACITY);
+        }
 
         /* surfaces */
 
@@ -159,6 +177,12 @@ int mli_malloc_materials_form_archive(
                         &names->colors,
                         &materials_json),
                 "Failed to copy surfaces from materials.json.");
+        for (i = 0; i < materials->num_surfaces; i++) {
+                memcpy(
+                        materials->surface_names[i].c_str,
+                        names->surfaces.arr[i].key,
+                        MLI_NAME_CAPACITY);
+        }
 
         /* default medium */
 
