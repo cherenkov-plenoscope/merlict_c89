@@ -11,11 +11,4 @@ int mliMaterials_fwrite(
 int mliMaterials_malloc_fread(
         struct mliMaterials *res,
         FILE *f);
-int mliMaterials_capacity_fwrite(
-        const struct mliMaterials *res,
-        FILE *f);
-int mliMaterialsCapacity_fread(
-        struct mliMaterialsCapacity *capacity,
-        FILE *f);
-
 #endif

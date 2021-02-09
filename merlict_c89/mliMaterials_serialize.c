@@ -2,26 +2,6 @@
 #include "mliMaterials_serialize.h"
 #include "mliMagicId.h"
 
-int mliMaterials_capacity_fwrite(
-        const struct mliMaterials *res,
-        FILE *f)
-{
-        struct mliMagicId magic = mliMagicId_init();
-
-        /* magic identifier */
-        mli_c(mliMagicId_set(&magic, "mliScnResCap"));
-        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
-
-        /* payload */
-        mli_fwrite(&res->num_functions, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&res->num_colors, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&res->num_media, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&res->num_surfaces, sizeof(uint32_t), 1u, f);
-        return 1;
-error:
-        return 0;
-}
-
 int mliMaterials_fwrite(
         const struct mliMaterials *res,
         FILE *f)
@@ -68,27 +48,6 @@ int mliMaterials_fwrite(
                 sizeof(struct mliName),
                 res->num_surfaces,
                 f);
-        return 1;
-error:
-        return 0;
-}
-
-int mliMaterialsCapacity_fread(
-        struct mliMaterialsCapacity *capacity,
-        FILE *f)
-{
-        struct mliMagicId magic;
-
-        /* magic identifier */
-        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
-        mli_c(mliMagicId_has_word(&magic, "mliScnResCap"));
-        mliMagicId_warn_version(&magic);
-
-        /* payload */
-        mli_fread(&capacity->num_functions, sizeof(uint32_t), 1u, f);
-        mli_fread(&capacity->num_colors, sizeof(uint32_t), 1u, f);
-        mli_fread(&capacity->num_media, sizeof(uint32_t), 1u, f);
-        mli_fread(&capacity->num_surfaces, sizeof(uint32_t), 1u, f);
         return 1;
 error:
         return 0;
