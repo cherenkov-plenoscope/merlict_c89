@@ -8,11 +8,11 @@ CASE("mliAccelerator, init")
 
 CASE("mliAccelerator, init")
 {
-        struct mliCombine combine = mliCombine_init();
+        struct mliScenery combine = mliScenery_init();
         struct mliColor color;
         struct mliRay ray;
 
-        CHECK(mliCombine_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_tar(
                 &combine,
                 "tests/"
                 "resources/"
@@ -28,5 +28,5 @@ CASE("mliAccelerator, init")
         CHECK_MARGIN(color.g, 45.5, 1.0);
         CHECK_MARGIN(color.b, 74.5, 1.0);
 
-        mliCombine_free(&combine);
+        mliScenery_free(&combine);
 }

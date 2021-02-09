@@ -3,15 +3,15 @@
 #define MERLICT_C89_MLI_RAY_SCENERY_QUERY_H_
 
 #include "mli_ray_octree_traversal.h"
-#include "mliCombine.h"
+#include "mliScenery.h"
 
 void mli_query_intersection_minimal(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliRay ray_root,
         struct mliIntersectionMinimalQuery *isecmin);
 
 int mli_query_intersection_with_surface_normal(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliRay ray_root,
         struct mliIntersectionSurfaceNormal *isecsrf);
 

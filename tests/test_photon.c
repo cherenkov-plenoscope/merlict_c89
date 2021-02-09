@@ -3,7 +3,7 @@
 CASE("simple propagation")
 {
         struct mliMT19937 prng = mliMT19937_init(0u);
-        struct mliCombine combine = mliCombine_init();
+        struct mliScenery combine = mliScenery_init();
         struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
         struct mliIntersectionSurfaceNormal intersection;
         struct mliSide side_coming_from, side_going_to;
@@ -20,7 +20,7 @@ CASE("simple propagation")
         photon.wavelength = 600e-9;
         photon.id = 0;
 
-        CHECK(mliCombine_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_tar(
                 &combine,
                 "tests/"
                 "resources/"
@@ -65,7 +65,7 @@ CASE("simple propagation")
 
         mliDynPhotonInteraction_print(&history, &combine.geometry);
 
-        mliCombine_free(&combine);
+        mliScenery_free(&combine);
         mliDynPhotonInteraction_free(&history);
 }
 

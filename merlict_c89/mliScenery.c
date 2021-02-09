@@ -1,26 +1,26 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliCombine.h"
+#include "mliScenery.h"
 #include <math.h>
 #include <stdint.h>
 #include "mli_debug.h"
 
-struct mliCombine mliCombine_init(void)
+struct mliScenery mliScenery_init(void)
 {
-        struct mliCombine combine;
+        struct mliScenery combine;
         combine.geometry = mliGeometry_init();
         combine.accelerator = mliAccelerator_init();
         combine.materials = mliMaterials_init();
         return combine;
 }
 
-void mliCombine_free(struct mliCombine *combine)
+void mliScenery_free(struct mliScenery *combine)
 {
         mliGeometry_free(&combine->geometry);
         mliAccelerator_free(&combine->accelerator);
         mliMaterials_free(&combine->materials);
 }
 
-int mliCombine_valid(const struct mliCombine *combine)
+int mliScenery_valid(const struct mliScenery *combine)
 {
         mli_check(
                 mliMaterials_valid(&combine->materials),
@@ -36,18 +36,18 @@ error:
         return 0;
 }
 
-int mliCombine_malloc_from_tar(
-        struct mliCombine *combine,
+int mliScenery_malloc_from_tar(
+        struct mliScenery *combine,
         const char *path)
 {
         struct mliArchive archive = mliArchive_init();
 
         mli_check(
                 mliArchive_malloc_from_tar(&archive, path),
-                "Can not read tape-archive to malloc mliCombine.");
+                "Can not read tape-archive to malloc mliScenery.");
 
         mli_check(
-                mliCombine_malloc_from_Archive(combine, &archive),
+                mliScenery_malloc_from_Archive(combine, &archive),
                 "Can not malloc mliUsergeometry from archive.");
 
         mliArchive_free(&archive);
@@ -57,8 +57,8 @@ error:
         return 0;
 }
 
-int mliCombine_malloc_from_Archive(
-        struct mliCombine *combine,
+int mliScenery_malloc_from_Archive(
+        struct mliScenery *combine,
         const struct mliArchive *archive)
 {
         uint64_t num_robjects = 0u;
@@ -140,7 +140,7 @@ int mliCombine_malloc_from_Archive(
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
-                mliCombine_valid(combine), "Expected combine to be valid.");
+                mliScenery_valid(combine), "Expected combine to be valid.");
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         return 1;
 error:

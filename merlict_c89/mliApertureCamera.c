@@ -153,7 +153,7 @@ void _mliApCam_aquire_pixels(
         const struct mliApertureCamera camera,
         const struct mliImage *image,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliPixels *pixels_to_do,
         struct mliImage *colors)
 {
@@ -225,7 +225,7 @@ int mliApertureCamera_render_image(
         struct mliMT19937 *prng,
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         struct mliImage *image)
 {
         float noise_threshold = 0.05 * 255.0;

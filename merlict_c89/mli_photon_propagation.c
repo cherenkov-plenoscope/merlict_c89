@@ -5,7 +5,7 @@ int _mli_propagate_photon(struct mliEnv *env);
 
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mliPhotonInteraction phia;
@@ -131,7 +131,7 @@ error:
 }
 
 int _mli_probability_passing_medium_coming_from(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliPhoton *photon,
         const struct mliIntersectionSurfaceNormal *isec,
         double *probability_passing)
@@ -413,7 +413,7 @@ error:
 }
 
 int mli_propagate_photon(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         struct mliDynPhotonInteraction *history,
         struct mliPhoton *photon,
         struct mliMT19937 *prng,

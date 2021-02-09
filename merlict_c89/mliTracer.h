@@ -2,9 +2,9 @@
 #ifndef MERLICT_C89_MLITRACER_H_
 #define MERLICT_C89_MLITRACER_H_
 
-#include "mliCombine.h"
+#include "mliScenery.h"
 
 struct mliColor mli_trace(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliRay ray);
 #endif

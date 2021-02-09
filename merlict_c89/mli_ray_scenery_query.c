@@ -125,7 +125,7 @@ void _mli_outer_scenery_traversal(
 }
 
 void mli_query_intersection_minimal(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliRay ray_root,
         struct mliIntersectionMinimalQuery *isecmin)
 {
@@ -146,7 +146,7 @@ void mli_query_intersection_minimal(
 }
 
 int mli_query_intersection_with_surface_normal(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliRay ray_root,
         struct mliIntersectionSurfaceNormal *isecsrf)
 {

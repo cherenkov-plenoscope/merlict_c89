@@ -41,9 +41,9 @@ CASE("mliMaterials, estimate capacity from json")
 }
 
 /*
-CASE("mliCombine, malloc from archive")
+CASE("mliScenery, malloc from archive")
 {
-        struct mliCombine combine = mliCombine_init();
+        struct mliScenery combine = mliScenery_init();
         struct mliFrame *_root, *_obj1, *_frame2, *_obj3, *_obj4 = NULL;
 
         uint64_t obj_idx, obj_teapot_idx, obj_hex_idx;
@@ -51,7 +51,7 @@ CASE("mliCombine, malloc from archive")
         uint64_t med_vacuum;
         uint64_t fcn_idx;
 
-        CHECK(mliCombine_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_tar(
                 &combine,
                 "tests/"
                 "resources/"

@@ -6,13 +6,13 @@
 #include <stdint.h>
 
 #include "mliPhoton.h"
-#include "mliCombine.h"
+#include "mliScenery.h"
 #include "mliDynPhotonInteraction.h"
 #include "mliMT19937.h"
 #include "mli_intersection_and_scenery.h"
 
 struct mliEnv {
-        const struct mliCombine *combine;
+        const struct mliScenery *combine;
         struct mliDynPhotonInteraction *history;
         struct mliPhoton *photon;
         struct mliMT19937 *prng;
@@ -20,7 +20,7 @@ struct mliEnv {
 };
 
 int mli_propagate_photon(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         struct mliDynPhotonInteraction *history,
         struct mliPhoton *photon,
         struct mliMT19937 *prng,
@@ -38,7 +38,7 @@ int _mli_fresnel_refraction_and_reflection(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec);
 int _mli_probability_passing_medium_coming_from(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliPhoton *photon,
         const struct mliIntersectionSurfaceNormal *isec,
         double *probability_passing);
@@ -49,7 +49,7 @@ int _mli_pass_boundary_layer(
 int _mli_phong(struct mliEnv *env, const struct mliIntersectionSurfaceNormal *isec);
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mliIntersectionSurfaceNormal *isec);
 int _mli_propagate_photon(struct mliEnv *env);
 #endif

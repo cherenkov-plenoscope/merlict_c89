@@ -54,7 +54,7 @@
 #include "mliGeometry_OBB.h"
 #include "mliAccelerator.h"
 #include "mliAccelerator_serialize.h"
-#include "mliCombine.h"
+#include "mliScenery.h"
 #include "mliRay_OBB.h"
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"

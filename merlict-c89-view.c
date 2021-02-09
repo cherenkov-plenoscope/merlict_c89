@@ -15,7 +15,7 @@
 int main(int argc, char *argv[])
 {
         struct mlivrConfig config = mlivrConfig_default();
-        struct mliCombine combine = mliCombine_init();
+        struct mliScenery combine = mliScenery_init();
 
         if (argc >= 2) {
                 mli_check(
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
                         "Expectec scenery-file to be a tape-archive.");
 
                 mli_check(
-                        mliCombine_malloc_from_tar(
+                        mliScenery_malloc_from_tar(
                                 &combine,
                                 argv[1]),
                         "Can not read scenery from tape-archive.");
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
                 mlivr_run_interactive_viewer(&combine, config),
                 "Failure in viewer");
 
-        mliCombine_free(&combine);
+        mliScenery_free(&combine);
         return EXIT_SUCCESS;
 error:
         return EXIT_FAILURE;

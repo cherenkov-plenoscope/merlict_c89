@@ -46,7 +46,7 @@ struct mliRay mliPinHoleCamera_ray_at_row_col(
 void mliPinHoleCamera_render_image(
         struct mliPinHoleCamera camera,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         struct mliImage *image)
 {
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
@@ -70,7 +70,7 @@ void mliPinHoleCamera_render_image(
 
 void mliPinHoleCamera_render_image_with_view(
         const struct mliView view,
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         struct mliImage *image,
         const double row_over_column_pixel_ratio)
 {

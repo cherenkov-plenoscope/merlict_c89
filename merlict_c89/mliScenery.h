@@ -1,28 +1,28 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLICOMBINE_H_
-#define MERLICT_C89_MLICOMBINE_H_
+#ifndef MERLICT_C89_MLISCENERY_H_
+#define MERLICT_C89_MLISCENERY_H_
 
 #include "mliGeometry.h"
 #include "mliMaterials.h"
 #include "mliAccelerator.h"
 #include "mliArchive.h"
 
-struct mliCombine {
+struct mliScenery {
         struct mliGeometry geometry;
         struct mliAccelerator accelerator;
         struct mliMaterials materials;
 };
 
-struct mliCombine mliCombine_init(void);
+struct mliScenery mliScenery_init(void);
 
-void mliCombine_free(struct mliCombine *combine);
+void mliScenery_free(struct mliScenery *combine);
 
 
-int mliCombine_malloc_from_tar(
-        struct mliCombine *combine,
+int mliScenery_malloc_from_tar(
+        struct mliScenery *combine,
         const char *path);
-int mliCombine_malloc_from_Archive(
-        struct mliCombine *combine,
+int mliScenery_malloc_from_Archive(
+        struct mliScenery *combine,
         const struct mliArchive *archive);
 
 #endif

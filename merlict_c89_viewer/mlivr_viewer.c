@@ -115,7 +115,7 @@ int mlivr_truncate_8bit(const int key)
 }
 
 int _mlivr_export_image(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mlivrConfig config,
         const struct mliView view,
         const double object_distance,
@@ -152,7 +152,7 @@ error:
 }
 
 int mlivr_run_interactive_viewer(
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         const struct mlivrConfig config)
 {
         struct termios old_terminal = mlivr_disable_stdin_buffer();

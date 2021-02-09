@@ -143,7 +143,7 @@ int mliApertureCamera_render_image(
         struct mliMT19937 *prng,
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliCombine *combine,
+        const struct mliScenery *combine,
         struct mliImage *image);
 
 #endif
