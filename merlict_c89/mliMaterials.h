@@ -39,8 +39,5 @@ int mliMaterials_malloc(
         const struct mliMaterialsCapacity rescap);
 void mliMaterials_free(struct mliMaterials *res);
 struct mliMaterials mliMaterials_init(void);
-int mliMaterials_cpy(
-        struct mliMaterials *destination,
-        const struct mliMaterials *source);
 void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res);
 #endif

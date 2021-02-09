@@ -104,19 +104,3 @@ int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b)
         }
         return 1;
 }
-
-int mliFunc_cpy(struct mliFunc *destination, const struct mliFunc *source)
-{
-        uint64_t p;
-        mli_check(
-                destination->num_points == source->num_points,
-                "Expected source and destination mliFunc to have same "
-                "num_points.");
-        for (p = 0; p < destination->num_points; p++) {
-                destination->x[p] = source->x[p];
-                destination->y[p] = source->y[p];
-        }
-        return 1;
-error:
-        return 0;
-}

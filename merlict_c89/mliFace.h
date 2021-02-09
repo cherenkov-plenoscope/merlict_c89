@@ -10,10 +10,6 @@ struct mliFace {
         uint32_t c;
 };
 
-void mliFace_ncpy(
-        const struct mliFace *from,
-        struct mliFace *to,
-        const uint64_t num);
 int mliFace_is_equal(const struct mliFace a, const struct mliFace b);
 struct mliFace mliFace_set(
         const uint32_t a,

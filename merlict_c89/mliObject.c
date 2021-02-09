@@ -179,50 +179,6 @@ error:
         return 0;
 }
 
-int mliObject_cpy(struct mliObject *destination, struct mliObject *source)
-{
-        uint64_t p;
-        mli_check(
-                destination->num_vertices == source->num_vertices,
-                "Expected source and destination mliObject to have same "
-                "num_vertices.");
-        for (p = 0; p < destination->num_vertices; p++) {
-                destination->vertices[p] = source->vertices[p];
-        }
-
-        mli_check(
-                destination->num_vertex_normals == source->num_vertex_normals,
-                "Expected source and destination mliObject to have same "
-                "num_vertex_normals.");
-        for (p = 0; p < destination->num_vertex_normals; p++) {
-                destination->vertex_normals[p] = source->vertex_normals[p];
-        }
-
-        mli_check(
-                destination->num_faces == source->num_faces,
-                "Expected source and destination mliObject to have same "
-                "num_faces.");
-        for (p = 0; p < destination->num_faces; p++) {
-                destination->faces_vertices[p] = source->faces_vertices[p];
-                destination->faces_vertex_normals[p] =
-                        source->faces_vertex_normals[p];
-        }
-
-        mli_check(
-                destination->num_materials == source->num_materials,
-                "Expected source and destination mliObject to have same "
-                "num_materials.");
-        for (p = 0; p < destination->num_materials; p++) {
-                destination->first_face_in_next_material[p] =
-                        source->first_face_in_next_material[p];
-                destination->material_names[p] = source->material_names[p];
-        }
-
-        return 1;
-error:
-        return 0;
-}
-
 int mliObject_resolve_material(
         const struct mliObject *obj,
         const uint32_t face_idx,

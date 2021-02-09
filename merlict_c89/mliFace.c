@@ -20,14 +20,3 @@ int mliFace_is_equal(const struct mliFace a, const struct mliFace b)
                 return 0;
         return 1;
 }
-
-void mliFace_ncpy(
-        const struct mliFace *from,
-        struct mliFace *to,
-        const uint64_t num)
-{
-        uint64_t i;
-        for (i = 0; i < num; i++) {
-                to[i] = from[i];
-        }
-}

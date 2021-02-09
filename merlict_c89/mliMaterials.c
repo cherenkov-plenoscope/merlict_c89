@@ -69,59 +69,6 @@ error:
         return 0;
 }
 
-int mliMaterials_cpy(
-        struct mliMaterials *destination,
-        const struct mliMaterials *source)
-{
-        uint64_t i;
-        mli_check(
-                destination->num_functions == source->num_functions,
-                "Expected source and destination to have same "
-                "num_functions.");
-        mli_check(
-                destination->num_colors == source->num_colors,
-                "Expected source and destination to have same "
-                "num_colors.");
-        mli_check(
-                destination->num_surfaces == source->num_surfaces,
-                "Expected source and destination to have same "
-                "num_surfaces.");
-        mli_check(
-                destination->num_media == source->num_media,
-                "Expected source and destination to have same "
-                "num_media.");
-
-        /* default_medium */
-        destination->default_medium = source->default_medium;
-
-        /* copy surfaces */
-        for (i = 0; i < source->num_functions; i++) {
-                mli_check(
-                        mliFunc_malloc(
-                                &destination->functions[i],
-                                source->functions[i].num_points),
-                        "Failed to allocate struct mliFunc in Resources.");
-                mli_check(
-                        mliFunc_cpy(
-                                &destination->functions[i],
-                                &source->functions[i]),
-                        "Failed to copy function to Resources.");
-        }
-        for (i = 0; i < source->num_colors; i++) {
-                destination->colors[i] = source->colors[i];
-        }
-        for (i = 0; i < source->num_media; i++) {
-                destination->media[i] = source->media[i];
-        }
-        for (i = 0; i < source->num_surfaces; i++) {
-                destination->surfaces[i] = source->surfaces[i];
-        }
-
-        return 1;
-error:
-        return 0;
-}
-
 void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
 {
         fprintf(f, "__mliMaterials__\n");
