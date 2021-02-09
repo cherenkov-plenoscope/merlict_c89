@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliSceneryResources.h"
+#include "mliMaterials.h"
 #include "mli_debug.h"
 
-struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void)
+struct mliMaterialsCapacity mliMaterialsCapacity_init(void)
 {
-        struct mliSceneryResourcesCapacity cap;
+        struct mliMaterialsCapacity cap;
         cap.num_functions = 0;
         cap.num_colors = 0;
         cap.num_surfaces = 0;
@@ -12,9 +12,9 @@ struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void)
         return cap;
 }
 
-struct mliSceneryResources mliSceneryResources_init(void)
+struct mliMaterials mliMaterials_init(void)
 {
-        struct mliSceneryResources res;
+        struct mliMaterials res;
         res.default_medium = 0u;
 
         res.num_functions = 0u;
@@ -31,7 +31,7 @@ struct mliSceneryResources mliSceneryResources_init(void)
         return res;
 }
 
-void mliSceneryResources_free(struct mliSceneryResources *res)
+void mliMaterials_free(struct mliMaterials *res)
 {
         uint64_t i;
         for (i = 0; i < res->num_functions; i++) {
@@ -42,15 +42,15 @@ void mliSceneryResources_free(struct mliSceneryResources *res)
         free(res->colors);
         free(res->media);
         free(res->surfaces);
-        (*res) = mliSceneryResources_init();
+        (*res) = mliMaterials_init();
 }
 
-int mliSceneryResources_malloc(
-        struct mliSceneryResources *res,
-        const struct mliSceneryResourcesCapacity rescap)
+int mliMaterials_malloc(
+        struct mliMaterials *res,
+        const struct mliMaterialsCapacity rescap)
 {
         uint64_t i;
-        mliSceneryResources_free(res);
+        mliMaterials_free(res);
         res->num_functions = rescap.num_functions;
         res->num_colors = rescap.num_colors;
         res->num_surfaces = rescap.num_surfaces;
@@ -65,13 +65,13 @@ int mliSceneryResources_malloc(
         mli_malloc(res->surfaces, struct mliSurface, res->num_surfaces);
         return 1;
 error:
-        mliSceneryResources_free(res);
+        mliMaterials_free(res);
         return 0;
 }
 
-int mliSceneryResources_cpy(
-        struct mliSceneryResources *destination,
-        const struct mliSceneryResources *source)
+int mliMaterials_cpy(
+        struct mliMaterials *destination,
+        const struct mliMaterials *source)
 {
         uint64_t i;
         mli_check(
@@ -122,8 +122,8 @@ error:
         return 0;
 }
 
-void mliSceneryResources_info_fprint(FILE *f, const struct mliSceneryResources *res)
+void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
 {
-        fprintf(f, "__mliSceneryResources__\n");
+        fprintf(f, "__mliMaterials__\n");
         fprintf(f, "- default_medium: %d\n", res->default_medium);
 }

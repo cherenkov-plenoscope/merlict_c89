@@ -9,7 +9,7 @@ struct mliCombine mliCombine_init(void)
         struct mliCombine combine;
         combine.scenery = mliScenery_init();
         combine.accelerator = mliAccelerator_init();
-        combine.materials = mliSceneryResources_init();
+        combine.materials = mliMaterials_init();
         return combine;
 }
 
@@ -17,13 +17,13 @@ void mliCombine_free(struct mliCombine *combine)
 {
         mliScenery_free(&combine->scenery);
         mliAccelerator_free(&combine->accelerator);
-        mliSceneryResources_free(&combine->materials);
+        mliMaterials_free(&combine->materials);
 }
 
 int mliCombine_valid(const struct mliCombine *combine)
 {
         mli_check(
-                mliSceneryResources_valid(&combine->materials),
+                mliMaterials_valid(&combine->materials),
                 "Expected materials to be valid.");
 
         mli_check(

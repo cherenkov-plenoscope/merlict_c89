@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliSceneryResources_equal.h"
+#include "mliMaterials_equal.h"
 
-int _mliSceneryResources_functions_equal(
-        const struct mliSceneryResources *a,
-        const struct mliSceneryResources *b)
+int _mliMaterials_functions_equal(
+        const struct mliMaterials *a,
+        const struct mliMaterials *b)
 {
         uint64_t i;
         if (a->num_functions != b->num_functions)
@@ -15,9 +15,9 @@ int _mliSceneryResources_functions_equal(
         return 1;
 }
 
-int _mliSceneryResources_colors_equal(
-        const struct mliSceneryResources *a,
-        const struct mliSceneryResources *b)
+int _mliMaterials_colors_equal(
+        const struct mliMaterials *a,
+        const struct mliMaterials *b)
 {
         uint64_t i;
         if (a->num_colors != b->num_colors)
@@ -29,9 +29,9 @@ int _mliSceneryResources_colors_equal(
         return 1;
 }
 
-int _mliSceneryResources_media_equal(
-        const struct mliSceneryResources *a,
-        const struct mliSceneryResources *b)
+int _mliMaterials_media_equal(
+        const struct mliMaterials *a,
+        const struct mliMaterials *b)
 {
         uint64_t i;
         if (a->num_media != b->num_media)
@@ -43,9 +43,9 @@ int _mliSceneryResources_media_equal(
         return 1;
 }
 
-int _mliSceneryResources_surfaces_equal(
-        const struct mliSceneryResources *a,
-        const struct mliSceneryResources *b)
+int _mliMaterials_surfaces_equal(
+        const struct mliMaterials *a,
+        const struct mliMaterials *b)
 {
         uint64_t i;
         if (a->num_surfaces != b->num_surfaces)
@@ -57,15 +57,15 @@ int _mliSceneryResources_surfaces_equal(
         return 1;
 }
 
-int mliSceneryResources_equal(
-        const struct mliSceneryResources *a,
-        const struct mliSceneryResources *b)
+int mliMaterials_equal(
+        const struct mliMaterials *a,
+        const struct mliMaterials *b)
 {
         mli_c(a->default_medium == b->default_medium);
-        mli_c(_mliSceneryResources_functions_equal(a, b));
-        mli_c(_mliSceneryResources_colors_equal(a, b));
-        mli_c(_mliSceneryResources_media_equal(a, b));
-        mli_c(_mliSceneryResources_surfaces_equal(a, b));
+        mli_c(_mliMaterials_functions_equal(a, b));
+        mli_c(_mliMaterials_colors_equal(a, b));
+        mli_c(_mliMaterials_media_equal(a, b));
+        mli_c(_mliMaterials_surfaces_equal(a, b));
         return 1;
 error:
         return 0;

@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
         mliScenery_info_fprint(stderr, &combine.scenery);
         mliAccelerator_info_fprint(stderr, &combine.accelerator);
-        mliSceneryResources_info_fprint(stderr, &combine.scenery.resources);
+        mliMaterials_info_fprint(stderr, &combine.materials);
 
         mli_check(
                 mlivr_run_interactive_viewer(&combine, config),

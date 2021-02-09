@@ -13,7 +13,7 @@ int _mliScenery_valid_objects(const struct mliScenery *scenery)
 
 int _mliScenery_valid_object_references(
         const struct mliScenery *scenery,
-        const struct mliSceneryResources *materials)
+        const struct mliMaterials *materials)
 {
         uint64_t rob;
         for (rob = 0; rob < scenery->num_robjects; rob++) {
@@ -60,7 +60,7 @@ error:
 
 int mliScenery_valid(
         const struct mliScenery *scenery,
-        const struct mliSceneryResources *materials)
+        const struct mliMaterials *materials)
 {
         mli_check(
                 _mliScenery_valid_objects(scenery),

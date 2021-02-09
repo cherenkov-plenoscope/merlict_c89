@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mliHomTra.h"
 #include "mliBoundaryLayer.h"
-#include "mliSceneryResources.h"
+#include "mliMaterials.h"
 
 struct mliScenery {
         uint32_t num_objects;
