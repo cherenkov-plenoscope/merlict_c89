@@ -19,35 +19,41 @@ int _mliMaterials_valid_media(const struct mliMaterials *res)
 {
         uint32_t i;
         for (i = 0; i < res->num_media; i++) {
-                if (res->media[i].refraction >= res->num_functions)
-                        return 0;
-                if (res->media[i].refraction >= res->num_functions)
-                        return 0;
+                mli_check(res->media[i].refraction < res->num_functions,
+                        "Refraction-reference is invalid.");
+                mli_check(res->media[i].absorbtion < res->num_functions,
+                        "Absorbtion-reference is invalid.");
         }
         return 1;
+error:
+        mli_log_err_vargs(("media[%u] is invalid.", i));
+        return 0;
 }
 
 int _mliMaterials_valid_surfaces(const struct mliMaterials *res)
 {
         uint32_t i;
         for (i = 0; i < res->num_surfaces; i++) {
-                switch (res->surfaces[i].material) {
-                case MLI_MATERIAL_PHONG:
-                        break;
-                case MLI_MATERIAL_TRANSPARENT:
-                        break;
-                default:
-                        return 0;
-                        break;
-                }
-                if (res->surfaces[i].color >= res->num_colors)
-                        return 0;
-                if (res->surfaces[i].specular_reflection >= res->num_functions)
-                        return 0;
-                if (res->surfaces[i].diffuse_reflection >= res->num_functions)
-                        return 0;
+                mli_check(
+                        (res->surfaces[i].material == MLI_MATERIAL_PHONG)
+                        ||
+                        (res->surfaces[i].material == MLI_MATERIAL_TRANSPARENT),
+                        "Material-type is unknown."
+                );
+                mli_check(
+                        res->surfaces[i].color < res->num_colors,
+                        "Color-reference is invalid.");
+                mli_check(
+                        res->surfaces[i].specular_reflection < res->num_functions,
+                        "Specular-reflection-reference is invalid.");
+                mli_check(
+                        res->surfaces[i].diffuse_reflection < res->num_functions,
+                        "Diffuse-reflection-reference is invalid.");
         }
         return 1;
+error:
+        mli_log_err_vargs(("surface[%u] is invalid.", i));
+        return 0;
 }
 
 int mliMaterials_valid(const struct mliMaterials *res)
@@ -55,6 +61,10 @@ int mliMaterials_valid(const struct mliMaterials *res)
         mli_check(
                 res->default_medium <= res->num_media,
                 "Expected default-medium to reference a valid medium.");
+
+        mli_check(
+                _mliMaterials_valid_functions(res),
+                "Expected functions to be valid.");
 
         mli_check(
                 _mliMaterials_valid_media(res),
