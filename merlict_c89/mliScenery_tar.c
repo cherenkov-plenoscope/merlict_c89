@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_tar.h"
+#include "mliScenery_valid.h"
 #include <math.h>
 #include <stdint.h>
 #include "mli_debug.h"
