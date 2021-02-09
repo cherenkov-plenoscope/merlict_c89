@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliSceneryResources_serialize.h"
+#include "mliMaterials_serialize.h"
 #include "mliMagicId.h"
 
-int mliSceneryResources_capacity_fwrite(
-        const struct mliSceneryResources *res,
+int mliMaterials_capacity_fwrite(
+        const struct mliMaterials *res,
         FILE *f)
 {
         struct mliMagicId magic = mliMagicId_init();
@@ -22,15 +22,15 @@ error:
         return 0;
 }
 
-int mliSceneryResources_fwrite(
-        const struct mliSceneryResources *res,
+int mliMaterials_fwrite(
+        const struct mliMaterials *res,
         FILE *f)
 {
         uint64_t i;
         struct mliMagicId magic = mliMagicId_init();
 
         /* magic identifier */
-        mli_c(mliMagicId_set(&magic, "mliSceneryResources"));
+        mli_c(mliMagicId_set(&magic, "mliMaterials"));
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         for (i = 0; i < res->num_functions; i++) {
@@ -45,8 +45,8 @@ error:
         return 0;
 }
 
-int mliSceneryResourcesCapacity_fread(
-        struct mliSceneryResourcesCapacity *capacity,
+int mliMaterialsCapacity_fread(
+        struct mliMaterialsCapacity *capacity,
         FILE *f)
 {
         struct mliMagicId magic;
@@ -66,14 +66,14 @@ error:
         return 0;
 }
 
-int mliSceneryResources_malloc_fread(struct mliSceneryResources *res, FILE *f)
+int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
 {
         uint64_t i;
         struct mliMagicId magic;
 
         /* magic identifier */
         mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
-        mli_c(mliMagicId_has_word(&magic, "mliSceneryResources"));
+        mli_c(mliMagicId_has_word(&magic, "mliMaterials"));
         mliMagicId_warn_version(&magic);
 
         /* payload */

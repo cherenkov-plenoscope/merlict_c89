@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISCENERYRESOURCES_VALID_H_
-#define MERLICT_C89_MLISCENERYRESOURCES_VALID_H_
+#ifndef MERLICT_C89_MLIMATERIALS_VALID_H_
+#define MERLICT_C89_MLIMATERIALS_VALID_H_
 
-#include "mliSceneryResources.h"
+#include "mliMaterials.h"
 
-int mliSceneryResources_valid(const struct mliSceneryResources *res);
-int _mliSceneryResources_valid_surfaces(const struct mliSceneryResources *res);
-int _mliSceneryResources_valid_media(const struct mliSceneryResources *res);
+int mliMaterials_valid(const struct mliMaterials *res);
+int _mliMaterials_valid_surfaces(const struct mliMaterials *res);
+int _mliMaterials_valid_media(const struct mliMaterials *res);
 #endif

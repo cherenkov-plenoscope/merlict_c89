@@ -29,7 +29,7 @@ CASE("mliScenery, malloc from mliUserScenery")
 
         CHECK(mliScenery_malloc_from_mliUserScenery(&scn, &uscn));
 
-        CHECK(mliSceneryResources_equal(&scn.resources, &uscn.resources));
+        CHECK(mliMaterials_equal(&scn.resources, &uscn.resources));
         mliUserScenery_free(&uscn);
 
         CHECK(mliScenery_is_equal(&scn, &scn));

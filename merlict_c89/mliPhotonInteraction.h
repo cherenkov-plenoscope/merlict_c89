@@ -34,7 +34,7 @@ struct mliPhotonInteraction {
 };
 
 int mli_time_of_flight(
-        const struct mliSceneryResources *materials,
+        const struct mliMaterials *materials,
         const struct mliPhotonInteraction *phisec,
         const struct mliPhoton *photon,
         double *time_of_flight);

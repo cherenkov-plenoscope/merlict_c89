@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISCENERYRESOURCES_H_
-#define MERLICT_C89_MLISCENERYRESOURCES_H_
+#ifndef MERLICT_C89_MLIMATERIALS_H_
+#define MERLICT_C89_MLIMATERIALS_H_
 
 #include <stdint.h>
 #include "mliObject.h"
@@ -9,16 +9,16 @@
 #include "mliSurface.h"
 #include "mliMedium.h"
 
-struct mliSceneryResourcesCapacity {
+struct mliMaterialsCapacity {
         uint32_t num_functions;
         uint32_t num_colors;
         uint32_t num_surfaces;
         uint32_t num_media;
 };
 
-struct mliSceneryResourcesCapacity mliSceneryResourcesCapacity_init(void);
+struct mliMaterialsCapacity mliMaterialsCapacity_init(void);
 
-struct mliSceneryResources {
+struct mliMaterials {
         uint32_t num_functions;
         struct mliFunc *functions;
 
@@ -34,13 +34,13 @@ struct mliSceneryResources {
         uint32_t default_medium;
 };
 
-int mliSceneryResources_malloc(
-        struct mliSceneryResources *res,
-        const struct mliSceneryResourcesCapacity rescap);
-void mliSceneryResources_free(struct mliSceneryResources *res);
-struct mliSceneryResources mliSceneryResources_init(void);
-int mliSceneryResources_cpy(
-        struct mliSceneryResources *destination,
-        const struct mliSceneryResources *source);
-void mliSceneryResources_info_fprint(FILE *f, const struct mliSceneryResources *res);
+int mliMaterials_malloc(
+        struct mliMaterials *res,
+        const struct mliMaterialsCapacity rescap);
+void mliMaterials_free(struct mliMaterials *res);
+struct mliMaterials mliMaterials_init(void);
+int mliMaterials_cpy(
+        struct mliMaterials *destination,
+        const struct mliMaterials *source);
+void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res);
 #endif

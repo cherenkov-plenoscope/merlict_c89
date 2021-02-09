@@ -2,7 +2,7 @@
 
 CASE("mliUserScenery, init")
 {
-        struct mliSceneryResources resources = mliSceneryResources_init();
+        struct mliMaterials resources = mliMaterials_init();
         CHECK(resources.num_functions == 0u);
         CHECK(resources.functions == NULL);
         CHECK(resources.num_colors == 0u);
@@ -13,12 +13,12 @@ CASE("mliUserScenery, init")
         CHECK(resources.media == NULL);
 }
 
-CASE("mliSceneryResources, estimate capacity from json")
+CASE("mliMaterials, estimate capacity from json")
 {
         char json_str[256];
         struct mliJson material_json = mliJson_init();
-        struct mliSceneryResourcesCapacity rescap =
-                mliSceneryResourcesCapacity_init();
+        struct mliMaterialsCapacity rescap =
+                mliMaterialsCapacity_init();
 
         sprintf(
                 json_str,
@@ -29,7 +29,7 @@ CASE("mliSceneryResources, estimate capacity from json")
                 "}\n"
         );
         CHECK(mliJson_malloc_from_string(&material_json, json_str));
-        CHECK(__mliSceneryResourcesCapacity_from_materials_json(
+        CHECK(__mliMaterialsCapacity_from_materials_json(
                 &rescap,
                 &material_json));
 
@@ -167,12 +167,12 @@ CASE("mliCombine, malloc from archive")
 */
 
 /*
-CASE("mliUserScenery, read, write mliSceneryResources")
+CASE("mliUserScenery, read, write mliMaterials")
 {
         struct mliUserScenery uscn = mliUserScenery_init();
-        struct mliSceneryResourcesCapacity rescap =
-                mliSceneryResourcesCapacity_init();
-        struct mliSceneryResources resources = mliSceneryResources_init();
+        struct mliMaterialsCapacity rescap =
+                mliMaterialsCapacity_init();
+        struct mliMaterials resources = mliMaterials_init();
         FILE *f = NULL;
 
         CHECK(mliUserScenery_malloc_from_tar(
@@ -185,18 +185,18 @@ CASE("mliUserScenery, read, write mliSceneryResources")
 
         f = fopen("tests/resources/sceneryresources.bin.tmp", "w");
         CHECK(f != NULL);
-        CHECK(mliSceneryResources_capacity_fwrite(&uscn.resources, f));
-        CHECK(mliSceneryResources_fwrite(&uscn.resources, f));
+        CHECK(mliMaterials_capacity_fwrite(&uscn.resources, f));
+        CHECK(mliMaterials_fwrite(&uscn.resources, f));
         fclose(f);
 
         f = fopen("tests/resources/sceneryresources.bin.tmp", "r");
         CHECK(f != NULL);
-        CHECK(mliSceneryResourcesCapacity_fread(&rescap, f));
-        CHECK(mliSceneryResources_malloc(&resources, rescap));
-        CHECK(mliSceneryResources_malloc_fread(&resources, f));
+        CHECK(mliMaterialsCapacity_fread(&rescap, f));
+        CHECK(mliMaterials_malloc(&resources, rescap));
+        CHECK(mliMaterials_malloc_fread(&resources, f));
         fclose(f);
 
-        CHECK(mliSceneryResources_equal(&resources, &uscn.resources));
+        CHECK(mliMaterials_equal(&resources, &uscn.resources));
 
         mliUserScenery_free(&uscn);
 }

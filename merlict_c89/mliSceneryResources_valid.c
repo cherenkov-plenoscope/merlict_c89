@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliSceneryResources_valid.h"
+#include "mliMaterials_valid.h"
 #include "mliObject.h"
 
-int _mliSceneryResources_valid_media(const struct mliSceneryResources *res)
+int _mliMaterials_valid_media(const struct mliMaterials *res)
 {
         uint64_t i;
         for (i = 0; i < res->num_media; i++) {
@@ -14,7 +14,7 @@ int _mliSceneryResources_valid_media(const struct mliSceneryResources *res)
         return 1;
 }
 
-int _mliSceneryResources_valid_surfaces(const struct mliSceneryResources *res)
+int _mliMaterials_valid_surfaces(const struct mliMaterials *res)
 {
         uint64_t i;
         for (i = 0; i < res->num_surfaces; i++) {
@@ -37,18 +37,18 @@ int _mliSceneryResources_valid_surfaces(const struct mliSceneryResources *res)
         return 1;
 }
 
-int mliSceneryResources_valid(const struct mliSceneryResources *res)
+int mliMaterials_valid(const struct mliMaterials *res)
 {
         mli_check(
                 res->default_medium <= res->num_media,
                 "Expected default-medium to reference a valid medium.");
 
         mli_check(
-                _mliSceneryResources_valid_media(res),
+                _mliMaterials_valid_media(res),
                 "Expected media to be valid.");
 
         mli_check(
-                _mliSceneryResources_valid_surfaces(res),
+                _mliMaterials_valid_surfaces(res),
                 "Expected surfaces to be valid.");
 
         return 1;

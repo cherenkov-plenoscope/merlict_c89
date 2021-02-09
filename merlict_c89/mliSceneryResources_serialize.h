@@ -1,21 +1,21 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISCENERYRESOURCES_SERIALIZE_H_
-#define MERLICT_C89_MLISCENERYRESOURCES_SERIALIZE_H_
+#ifndef MERLICT_C89_MLIMATERIALS_SERIALIZE_H_
+#define MERLICT_C89_MLIMATERIALS_SERIALIZE_H_
 
 #include <stdio.h>
-#include "mliSceneryResources.h"
+#include "mliMaterials.h"
 
-int mliSceneryResources_fwrite(
-        const struct mliSceneryResources *res,
+int mliMaterials_fwrite(
+        const struct mliMaterials *res,
         FILE *f);
-int mliSceneryResources_malloc_fread(
-        struct mliSceneryResources *res,
+int mliMaterials_malloc_fread(
+        struct mliMaterials *res,
         FILE *f);
-int mliSceneryResources_capacity_fwrite(
-        const struct mliSceneryResources *res,
+int mliMaterials_capacity_fwrite(
+        const struct mliMaterials *res,
         FILE *f);
-int mliSceneryResourcesCapacity_fread(
-        struct mliSceneryResourcesCapacity *capacity,
+int mliMaterialsCapacity_fread(
+        struct mliMaterialsCapacity *capacity,
         FILE *f);
 
 #endif

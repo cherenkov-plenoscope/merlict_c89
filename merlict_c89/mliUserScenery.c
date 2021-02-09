@@ -67,7 +67,7 @@ error:
 }
 
 int mli_malloc_materials_form_archive(
-        struct mliSceneryResources *materials,
+        struct mliMaterials *materials,
         struct mliNameMap *names,
         const struct mliArchive *archive)
 {
@@ -77,11 +77,11 @@ int mli_malloc_materials_form_archive(
         char key[MLI_NAME_CAPACITY];
 
         struct mliJson materials_json = mliJson_init();
-        struct mliSceneryResourcesCapacity cap =
-                mliSceneryResourcesCapacity_init();
+        struct mliMaterialsCapacity cap =
+                mliMaterialsCapacity_init();
 
         /* free */
-        mliSceneryResources_free(materials);
+        mliMaterials_free(materials);
         mliNameMap_free(names);
 
         /* estimate capacity and malloc */
@@ -96,12 +96,12 @@ int mli_malloc_materials_form_archive(
                 archive, "functions/", ".csv");
 
         mli_check(
-                __mliSceneryResourcesCapacity_from_materials_json(
+                __mliMaterialsCapacity_from_materials_json(
                         &cap, &materials_json),
                 "Can not estimate capacity from materials-json.");
 
         mli_check(
-                mliSceneryResources_malloc(materials, cap),
+                mliMaterials_malloc(materials, cap),
                 "Can not malloc materials.");
 
         /* set fields */
@@ -178,7 +178,7 @@ int mli_malloc_materials_form_archive(
         return 1;
 error:
         mliJson_free(&materials_json);
-        mliSceneryResources_free(materials);
+        mliMaterials_free(materials);
         mliNameMap_free(names);
         return 0;
 }
@@ -295,8 +295,8 @@ finalize:
         key[o] = '\0';
 }
 
-int __mliSceneryResourcesCapacity_from_materials_json(
-        struct mliSceneryResourcesCapacity *rescap,
+int __mliMaterialsCapacity_from_materials_json(
+        struct mliMaterialsCapacity *rescap,
         const struct mliJson *json)
 {
         uint64_t token;

@@ -6,5 +6,5 @@
 
 int mliScenery_valid(
         const struct mliScenery *scenery,
-        const struct mliSceneryResources *materials);
+        const struct mliMaterials *materials);
 #endif

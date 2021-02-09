@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_serialize.h"
-#include "mliSceneryResources_serialize.h"
+#include "mliMaterials_serialize.h"
 #include "mliMagicId.h"
 
 int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)

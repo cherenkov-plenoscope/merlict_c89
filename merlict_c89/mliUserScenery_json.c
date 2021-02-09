@@ -92,7 +92,7 @@ error:
 }
 
 int __mliScenery_assign_colors_from_json(
-        struct mliSceneryResources *resources,
+        struct mliMaterials *resources,
         struct mliDynMap *color_names,
         const struct mliJson *json)
 {
@@ -168,7 +168,7 @@ error:
 }
 
 int __mliScenery_assign_media_from_json(
-        struct mliSceneryResources *resources,
+        struct mliMaterials *resources,
         struct mliDynMap *medium_names,
         const struct mliDynMap *function_names,
         const struct mliJson *json)
@@ -284,7 +284,7 @@ error:
 }
 
 int __mliScenery_assign_surfaces_from_json(
-        struct mliSceneryResources *resources,
+        struct mliMaterials *resources,
         struct mliDynMap *surface_names,
         const struct mliDynMap *function_names,
         const struct mliDynMap *color_names,

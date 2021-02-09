@@ -38,7 +38,7 @@ int __mliFrame_type_from_json(
         const struct mliJson *json,
         const uint64_t token_child);
 int __mliScenery_assign_surfaces_from_json(
-        struct mliSceneryResources *resources,
+        struct mliMaterials *resources,
         struct mliDynMap *surface_names,
         const struct mliDynMap *function_names,
         const struct mliDynMap *color_names,
@@ -50,7 +50,7 @@ int __mliSurface_from_json(
         const struct mliJson *json,
         const uint64_t token_s);
 int __mliScenery_assign_media_from_json(
-        struct mliSceneryResources *resources,
+        struct mliMaterials *resources,
         struct mliDynMap *medium_names,
         const struct mliDynMap *function_names,
         const struct mliJson *json);
@@ -60,7 +60,7 @@ int __mliMedium_from_json(
         const struct mliJson *json,
         const uint64_t token_s);
 int __mliScenery_assign_colors_from_json(
-        struct mliSceneryResources *resources,
+        struct mliMaterials *resources,
         struct mliDynMap *color_names,
         const struct mliJson *json);
 int _mliDynMap_get_value_for_string_from_json(
@@ -73,7 +73,7 @@ int _mliDynMap_key_from_json(
         const struct mliJson *json,
         const uint64_t token_name,
         const uint64_t value);
-int __mliSceneryResourcesCapacity_from_json(
-        struct mliSceneryResourcesCapacity *res_cap,
+int __mliMaterialsCapacity_from_json(
+        struct mliMaterialsCapacity *res_cap,
         const struct mliJson *json);
 #endif
