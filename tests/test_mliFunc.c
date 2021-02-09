@@ -5,11 +5,11 @@ CASE("mliFunc_malloc")
         struct mliFunc func = mliFunc_init();
         CHECK(mliFunc_malloc(&func, 0u));
         CHECK(func.num_points == 0u);
-        CHECK(mliFunc_x_is_causal(&func));
+        CHECK(mliFunc_x_is_strictly_increasing(&func));
         mliFunc_free(&func);
 }
 
-CASE("mliFunc_x_is_causal")
+CASE("mliFunc_x_is_strictly_increasing")
 {
         struct mliFunc func = mliFunc_init();
         CHECK(mliFunc_malloc(&func, 3u));
@@ -17,7 +17,7 @@ CASE("mliFunc_x_is_causal")
         func.x[0] = 0.;
         func.x[1] = 1.;
         func.x[2] = 2.;
-        CHECK(mliFunc_x_is_causal(&func));
+        CHECK(mliFunc_x_is_strictly_increasing(&func));
         mliFunc_free(&func);
 }
 
@@ -40,7 +40,7 @@ CASE("mliFunc_evaluate, explicit")
         func.y[3] = 1.;
         func.y[4] = 0.;
 
-        CHECK(mliFunc_x_is_causal(&func));
+        CHECK(mliFunc_x_is_strictly_increasing(&func));
         CHECK(mli_upper_compare_double(func.x, func.num_points, 1.5) == 2);
         CHECK(mliFunc_evaluate(&func, 1.5, &y));
         CHECK(y == 2.5);
@@ -56,7 +56,7 @@ CASE("mliFunc_evaluate, loop")
         func.x[1] = 1.;
         func.y[0] = 0.;
         func.y[1] = 1.;
-        CHECK(mliFunc_x_is_causal(&func));
+        CHECK(mliFunc_x_is_strictly_increasing(&func));
         for (x = 0.; x < 1.; x = x + 1e-2) {
                 CHECK(mliFunc_evaluate(&func, x, &y));
                 CHECK_MARGIN(y, x, 1e-6);

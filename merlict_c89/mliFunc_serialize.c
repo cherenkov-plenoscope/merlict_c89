@@ -29,7 +29,7 @@ int mliFunc_malloc_fread(struct mliFunc *func, FILE *f)
         mli_fread(func->x, sizeof(double), func->num_points, f);
         mli_fread(func->y, sizeof(double), func->num_points, f);
         mli_check(
-                mliFunc_x_is_causal(func),
+                mliFunc_x_is_strictly_increasing(func),
                 "Expected function x-arguments to be ascending, but they are "
                 "not.");
         return 1;

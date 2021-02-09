@@ -30,7 +30,7 @@ error:
         return 0;
 }
 
-int mliFunc_x_is_causal(struct mliFunc *f)
+int mliFunc_x_is_strictly_increasing(const struct mliFunc *f)
 {
         uint32_t i;
         for (i = 1; i < f->num_points; i++) {
@@ -103,4 +103,32 @@ int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b)
                         return 0;
         }
         return 1;
+}
+
+int mliFunc_is_valid(const struct mliFunc *func)
+{
+        uint64_t i;
+        mli_check(func->num_points >= 2,
+                "Expected function to have at least two points. "
+                "Evaluation is not possible when there is no valid range "
+                "between two points.");
+
+        for (i = 0; i < func->num_points; i++) {
+                mli_check(
+                        !MLI_IS_NAN(func->x[i]),
+                        "Expected x-argument to be a real number, "
+                        "but it is 'nan'.");
+                mli_check(
+                        !MLI_IS_NAN(func->y[i]),
+                        "Expected y-value to be a real number, "
+                        "but it is 'nan'.");
+        }
+
+        mli_check(mliFunc_x_is_strictly_increasing(func),
+                "Expected x-arguments to be strictly increasing, "
+                "but they do not.");
+
+        return 1;
+error:
+        return 0;
 }
