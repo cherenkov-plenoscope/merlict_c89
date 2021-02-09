@@ -56,6 +56,8 @@
 #include "mliAccelerator.c"
 #include "mliAccelerator_serialize.c"
 #include "mliScenery.c"
+#include "mliScenery_valid.c"
+#include "mliScenery_tar.c"
 #include "mliRay_OBB.c"
 #include "mliVec_OBB.c"
 #include "mliTriangle_OBB.c"
