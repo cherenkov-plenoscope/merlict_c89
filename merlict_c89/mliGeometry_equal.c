@@ -5,7 +5,7 @@ int _mliGeometry_objects_equal(
         const struct mliGeometry *a,
         const struct mliGeometry *b)
 {
-        uint32_t i;
+        uint32_t i = 0u;
         mli_check(
                 a->num_objects == b->num_objects,
                 "Expected num_objects to be equal.");
@@ -14,9 +14,15 @@ int _mliGeometry_objects_equal(
                 mli_check(
                         mliObject_is_equal(&a->objects[i], &b->objects[i]),
                         "Expected object to be equal.");
+                mli_check(
+                        mliName_is_equal(
+                                &a->object_names[i],
+                                &b->object_names[i]),
+                        "Expected object_name to be equal.");
         }
         return 1;
 error:
+        mli_log_err_vargs(("object[%u] is not equal.", i));
         return 0;
 }
 

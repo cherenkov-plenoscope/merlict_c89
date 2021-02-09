@@ -28,6 +28,11 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
                         mliObject_malloc_fread(&geometry->objects[i], f),
                         "Failed to read object into geometry.");
         }
+        mli_fread(
+                geometry->object_names,
+                sizeof(struct mliName),
+                geometry->num_objects,
+                f);
 
         mli_fread(
                 geometry->robjects, sizeof(uint32_t), geometry->num_robjects, f);
@@ -69,6 +74,12 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
                 mli_check(mliObject_fwrite(&geometry->objects[i], f),
                         "Failed to write objects.");
         }
+        mli_fwrite(
+                geometry->object_names,
+                sizeof(struct mliName),
+                geometry->num_objects,
+                f);
+
         mli_fwrite(
                 geometry->robjects, sizeof(uint32_t), geometry->num_robjects, f);
         mli_fwrite(

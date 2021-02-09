@@ -6,10 +6,12 @@
 #include "mliHomTra.h"
 #include "mliBoundaryLayer.h"
 #include "mliMaterials.h"
+#include "mliName.h"
 
 struct mliGeometry {
         uint32_t num_objects;
         struct mliObject *objects;
+        struct mliName *object_names;
 
         uint32_t num_robjects;
         uint32_t *robjects;

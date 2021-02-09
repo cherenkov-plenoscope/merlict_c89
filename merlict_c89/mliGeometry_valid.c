@@ -7,6 +7,8 @@ int _mliGeometry_valid_objects(const struct mliGeometry *geometry)
         for (i = 0; i < geometry->num_objects; i++) {
                 mli_check(mliObject_is_valid(&geometry->objects[i]),
                         "Expected object to be valid.");
+                mli_check(mliName_valid(&geometry->object_names[i]),
+                        "Expected object_name to be valid.");
         }
         return 1;
 error:

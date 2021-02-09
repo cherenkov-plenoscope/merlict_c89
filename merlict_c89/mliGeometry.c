@@ -7,6 +7,7 @@ struct mliGeometry mliGeometry_init(void)
         struct mliGeometry geometry;
         geometry.num_objects = 0u;
         geometry.objects = NULL;
+        geometry.object_names = NULL;
 
         geometry.num_robjects = 0u;
         geometry.robjects = NULL;
@@ -24,6 +25,7 @@ void mliGeometry_free(struct mliGeometry *geometry)
                 mliObject_free(&(geometry->objects[i]));
         }
         free(geometry->objects);
+        free(geometry->object_names);
 
         free(geometry->robjects);
         free(geometry->robject_ids);
@@ -43,8 +45,10 @@ int mliGeometry_malloc(
 
         geometry->num_objects = num_objects;
         mli_malloc(geometry->objects, struct mliObject, geometry->num_objects);
+        mli_malloc(geometry->object_names, struct mliName, geometry->num_objects);
         for (i = 0; i < geometry->num_objects; i++) {
                 geometry->objects[i] = mliObject_init();
+                geometry->object_names[i] = mliName_init();
         }
 
         geometry->num_robjects = num_robjects;
@@ -67,9 +71,14 @@ error:
 
 void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
 {
-        uint32_t rob;
+        uint32_t rob, i;
         fprintf(f, "__mliGeometry__ [num obj: %u, num obj-refs: %u]\n",
                 geometry->num_objects, geometry->num_robjects);
+
+        for (i = 0; i < geometry->num_objects; i++) {
+                fprintf(f, "% 4d, %s\n", i, geometry->object_names[i].c_str);
+        }
+
         fprintf(f,
                 " rob | obj | id  | translation(xyz) | rotation(xyz;w)  |\n");
         fprintf(f,
