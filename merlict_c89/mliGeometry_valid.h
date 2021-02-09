@@ -5,6 +5,6 @@
 #include "mliGeometry.h"
 
 int mliGeometry_valid(
-        const struct mliGeometry *scenery,
+        const struct mliGeometry *geometry,
         const struct mliMaterials *materials);
 #endif

@@ -1,25 +1,25 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry_valid.h"
 
-int _mliGeometry_valid_objects(const struct mliGeometry *scenery)
+int _mliGeometry_valid_objects(const struct mliGeometry *geometry)
 {
         uint64_t i;
-        for (i = 0; i < scenery->num_objects; i++) {
-                if (!mliObject_assert_valid_faces(&scenery->objects[i]))
+        for (i = 0; i < geometry->num_objects; i++) {
+                if (!mliObject_assert_valid_faces(&geometry->objects[i]))
                         return 0;
         }
         return 1;
 }
 
 int _mliGeometry_valid_object_references(
-        const struct mliGeometry *scenery,
+        const struct mliGeometry *geometry,
         const struct mliMaterials *materials)
 {
         uint64_t rob;
-        for (rob = 0; rob < scenery->num_robjects; rob++) {
+        for (rob = 0; rob < geometry->num_robjects; rob++) {
 
                 mli_check(
-                        scenery->robjects[rob] <= scenery->num_objects,
+                        geometry->robjects[rob] <= geometry->num_objects,
                         "Expected robjects to refer to valid objects.");
                 /*
                  *       robject_ids are set by the user and can be whatever
@@ -27,23 +27,23 @@ int _mliGeometry_valid_object_references(
                  */
 
                 mli_check(
-                        scenery->robject_boundary_layers[rob].inner.surface <=
+                        geometry->robject_boundary_layers[rob].inner.surface <=
                                 materials->num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid inner surface.");
                 mli_check(
-                        scenery->robject_boundary_layers[rob].outer.surface <=
+                        geometry->robject_boundary_layers[rob].outer.surface <=
                                 materials->num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid outer surface.");
 
                 mli_check(
-                        scenery->robject_boundary_layers[rob].inner.medium <=
+                        geometry->robject_boundary_layers[rob].inner.medium <=
                                 materials->num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid inner medium.");
                 mli_check(
-                        scenery->robject_boundary_layers[rob].outer.medium <=
+                        geometry->robject_boundary_layers[rob].outer.medium <=
                                 materials->num_surfaces,
                         "Expected object-reference to refer "
                         "to a valid outer medium.");
@@ -59,14 +59,14 @@ error:
 }
 
 int mliGeometry_valid(
-        const struct mliGeometry *scenery,
+        const struct mliGeometry *geometry,
         const struct mliMaterials *materials)
 {
         mli_check(
-                _mliGeometry_valid_objects(scenery),
+                _mliGeometry_valid_objects(geometry),
                 "Expected objects to be valid.");
         mli_check(
-                _mliGeometry_valid_object_references(scenery, materials),
+                _mliGeometry_valid_object_references(geometry, materials),
                 "Expected object-references to be valid.");
         return 1;
 error:

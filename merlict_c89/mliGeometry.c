@@ -17,75 +17,78 @@ struct mliGeometry mliGeometry_init(void)
         return scn;
 }
 
-void mliGeometry_free(struct mliGeometry *scenery)
+void mliGeometry_free(struct mliGeometry *geometry)
 {
         uint32_t i;
-        for (i = 0; i < scenery->num_objects; i++) {
-                mliObject_free(&(scenery->objects[i]));
+        for (i = 0; i < geometry->num_objects; i++) {
+                mliObject_free(&(geometry->objects[i]));
         }
-        free(scenery->objects);
+        free(geometry->objects);
 
-        free(scenery->robjects);
-        free(scenery->robject_ids);
-        free(scenery->robject_boundary_layers);
-        free(scenery->robject2root);
+        free(geometry->robjects);
+        free(geometry->robject_ids);
+        free(geometry->robject_boundary_layers);
+        free(geometry->robject2root);
 
-        (*scenery) = mliGeometry_init();
+        (*geometry) = mliGeometry_init();
 }
 
 int mliGeometry_malloc(
-        struct mliGeometry *scn,
+        struct mliGeometry *geometry,
         const uint32_t num_objects,
         const uint32_t num_robjects)
 {
         uint32_t i;
-        mliGeometry_free(scn);
+        mliGeometry_free(geometry);
 
-        scn->num_objects = num_objects;
-        mli_malloc(scn->objects, struct mliObject, scn->num_objects);
-        for (i = 0; i < scn->num_objects; i++) {
-                scn->objects[i] = mliObject_init();
+        geometry->num_objects = num_objects;
+        mli_malloc(geometry->objects, struct mliObject, geometry->num_objects);
+        for (i = 0; i < geometry->num_objects; i++) {
+                geometry->objects[i] = mliObject_init();
         }
 
-        scn->num_robjects = num_robjects;
-        mli_malloc(scn->robjects, uint32_t, scn->num_robjects);
-        mli_malloc(scn->robject_ids, uint32_t, scn->num_robjects);
+        geometry->num_robjects = num_robjects;
+        mli_malloc(geometry->robjects, uint32_t, geometry->num_robjects);
+        mli_malloc(geometry->robject_ids, uint32_t, geometry->num_robjects);
         mli_malloc(
-                scn->robject_boundary_layers,
+                geometry->robject_boundary_layers,
                 struct mliBoundaryLayer,
-                scn->num_robjects);
-        mli_malloc(scn->robject2root, struct mliHomTraComp, scn->num_robjects);
+                geometry->num_robjects);
+        mli_malloc(
+                geometry->robject2root,
+                struct mliHomTraComp,
+                geometry->num_robjects);
 
         return 1;
 error:
-        mliGeometry_free(scn);
+        mliGeometry_free(geometry);
         return 0;
 }
 
-void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *scenery)
+void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
 {
         uint32_t rob;
         fprintf(f, "__mliGeometry__ [num obj: %u, num obj-refs: %u]\n",
-                scenery->num_objects, scenery->num_robjects);
+                geometry->num_objects, geometry->num_robjects);
         fprintf(f,
                 " rob | obj | id  | translation(xyz) | rotation(xyz;w)  |\n");
         fprintf(f,
                 "-----|-----|-----|------------------|------------------|\n");
-        for (rob = 0; rob < scenery->num_robjects; rob++) {
+        for (rob = 0; rob < geometry->num_robjects; rob++) {
                 fprintf(f,
                         "% 4d |% 4d |% 4d |"
                         "(%.1f, %.1f, %.1f)|"
                         "(%.1f, %.1f, %.1f; %.1f)|"
                         "\n",
                         rob,
-                        scenery->robjects[rob],
-                        scenery->robject_ids[rob],
-                        scenery->robject2root[rob].translation.x,
-                        scenery->robject2root[rob].translation.y,
-                        scenery->robject2root[rob].translation.z,
-                        scenery->robject2root[rob].rotation.x,
-                        scenery->robject2root[rob].rotation.y,
-                        scenery->robject2root[rob].rotation.z,
-                        scenery->robject2root[rob].rotation.w);
+                        geometry->robjects[rob],
+                        geometry->robject_ids[rob],
+                        geometry->robject2root[rob].translation.x,
+                        geometry->robject2root[rob].translation.y,
+                        geometry->robject2root[rob].translation.z,
+                        geometry->robject2root[rob].rotation.x,
+                        geometry->robject2root[rob].rotation.y,
+                        geometry->robject2root[rob].rotation.z,
+                        geometry->robject2root[rob].rotation.w);
         }
 }

@@ -6,12 +6,12 @@
 #include "mliOBB.h"
 
 int _mliGeometry_robject_has_overlap_obb(
-        const void *scenery,
+        const void *geometry,
         const uint32_t robject_idx,
         const struct mliOBB obb);
 
 int mliGeometry_robject_has_overlap_obb(
-        const struct mliGeometry *scenery,
+        const struct mliGeometry *geometry,
         const uint32_t robject_idx,
         const struct mliOBB obb);
 

@@ -19,13 +19,13 @@ struct mliGeometry {
 };
 
 int mliGeometry_malloc(
-        struct mliGeometry *scenery,
+        struct mliGeometry *geometry,
         const uint32_t num_objects,
         const uint32_t num_robjects);
-void mliGeometry_free(struct mliGeometry *scenery);
+void mliGeometry_free(struct mliGeometry *geometry);
 struct mliGeometry mliGeometry_init(void);
-void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *scenery);
+void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry);
 struct mliBoundaryLayer mliGeometry_object_surfaces(
-        const struct mliGeometry *scenery,
+        const struct mliGeometry *geometry,
         const uint32_t object_idx);
 #endif
