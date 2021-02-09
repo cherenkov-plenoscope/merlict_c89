@@ -4,17 +4,17 @@
 
 struct mliGeometry mliGeometry_init(void)
 {
-        struct mliGeometry scn;
-        scn.num_objects = 0u;
-        scn.objects = NULL;
+        struct mliGeometry geometry;
+        geometry.num_objects = 0u;
+        geometry.objects = NULL;
 
-        scn.num_robjects = 0u;
-        scn.robjects = NULL;
-        scn.robject_ids = NULL;
+        geometry.num_robjects = 0u;
+        geometry.robjects = NULL;
+        geometry.robject_ids = NULL;
 
-        scn.robject_boundary_layers = NULL;
-        scn.robject2root = NULL;
-        return scn;
+        geometry.robject_boundary_layers = NULL;
+        geometry.robject2root = NULL;
+        return geometry;
 }
 
 void mliGeometry_free(struct mliGeometry *geometry)
