@@ -135,14 +135,14 @@ int mli_malloc_materials_form_archive(
         /* colors */
 
         mli_check(
-                __mliScenery_assign_colors_from_json(
+                __mliGeometry_assign_colors_from_json(
                         materials, &names->colors, &materials_json),
                 "Failed to copy colors from materials.json.");
 
         /* media */
 
         mli_check(
-                __mliScenery_assign_media_from_json(
+                __mliGeometry_assign_media_from_json(
                         materials,
                         &names->media,
                         &names->functions,
@@ -152,7 +152,7 @@ int mli_malloc_materials_form_archive(
         /* surfaces */
 
         mli_check(
-                __mliScenery_assign_surfaces_from_json(
+                __mliGeometry_assign_surfaces_from_json(
                         materials,
                         &names->surfaces,
                         &names->functions,
@@ -221,8 +221,8 @@ error:
         return 0;
 }
 
-int mliScenery_set_objects_from_Archive(
-        struct mliScenery *scenery,
+int mliGeometry_set_objects_from_Archive(
+        struct mliGeometry *scenery,
         const struct mliDynMap *object_names,
         const struct mliArchive *archive)
 {

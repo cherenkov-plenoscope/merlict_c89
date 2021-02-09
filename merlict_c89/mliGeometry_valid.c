@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliScenery_valid.h"
+#include "mliGeometry_valid.h"
 
-int _mliScenery_valid_objects(const struct mliScenery *scenery)
+int _mliGeometry_valid_objects(const struct mliGeometry *scenery)
 {
         uint64_t i;
         for (i = 0; i < scenery->num_objects; i++) {
@@ -11,8 +11,8 @@ int _mliScenery_valid_objects(const struct mliScenery *scenery)
         return 1;
 }
 
-int _mliScenery_valid_object_references(
-        const struct mliScenery *scenery,
+int _mliGeometry_valid_object_references(
+        const struct mliGeometry *scenery,
         const struct mliMaterials *materials)
 {
         uint64_t rob;
@@ -58,15 +58,15 @@ error:
         return 0;
 }
 
-int mliScenery_valid(
-        const struct mliScenery *scenery,
+int mliGeometry_valid(
+        const struct mliGeometry *scenery,
         const struct mliMaterials *materials)
 {
         mli_check(
-                _mliScenery_valid_objects(scenery),
+                _mliGeometry_valid_objects(scenery),
                 "Expected objects to be valid.");
         mli_check(
-                _mliScenery_valid_object_references(scenery, materials),
+                _mliGeometry_valid_object_references(scenery, materials),
                 "Expected object-references to be valid.");
         return 1;
 error:

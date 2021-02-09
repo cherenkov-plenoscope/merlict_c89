@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLITMPOCTREE_H_
 
 #include <stdint.h>
-#include "mliScenery.h"
+#include "mliGeometry.h"
 #include "mliOBB.h"
 #include "mliCube.h"
 #include "mliOctOverlaps.h"

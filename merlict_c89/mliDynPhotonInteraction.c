@@ -5,7 +5,7 @@ MLIDYNARRAY_IMPLEMENTATION(mli, PhotonInteraction, struct mliPhotonInteraction)
 
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,
-        const struct mliScenery *scenery)
+        const struct mliGeometry *scenery)
 {
         uint64_t i;
         char type_string[1024];

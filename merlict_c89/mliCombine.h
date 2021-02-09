@@ -2,13 +2,13 @@
 #ifndef MERLICT_C89_MLICOMBINE_H_
 #define MERLICT_C89_MLICOMBINE_H_
 
-#include "mliScenery.h"
+#include "mliGeometry.h"
 #include "mliMaterials.h"
 #include "mliAccelerator.h"
 #include "mliArchive.h"
 
 struct mliCombine {
-        struct mliScenery scenery;
+        struct mliGeometry scenery;
         struct mliAccelerator accelerator;
         struct mliMaterials materials;
 };

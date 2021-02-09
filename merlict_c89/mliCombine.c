@@ -7,7 +7,7 @@
 struct mliCombine mliCombine_init(void)
 {
         struct mliCombine combine;
-        combine.scenery = mliScenery_init();
+        combine.scenery = mliGeometry_init();
         combine.accelerator = mliAccelerator_init();
         combine.materials = mliMaterials_init();
         return combine;
@@ -15,7 +15,7 @@ struct mliCombine mliCombine_init(void)
 
 void mliCombine_free(struct mliCombine *combine)
 {
-        mliScenery_free(&combine->scenery);
+        mliGeometry_free(&combine->scenery);
         mliAccelerator_free(&combine->accelerator);
         mliMaterials_free(&combine->materials);
 }
@@ -27,7 +27,7 @@ int mliCombine_valid(const struct mliCombine *combine)
                 "Expected materials to be valid.");
 
         mli_check(
-                mliScenery_valid(&combine->scenery, &combine->materials),
+                mliGeometry_valid(&combine->scenery, &combine->materials),
                 "Expected scenery to be valid.");
 
 
@@ -94,14 +94,14 @@ int mliCombine_malloc_from_Archive(
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
-                __mliScenery_estimate_num_robjects_in_frames(
+                __mliGeometry_estimate_num_robjects_in_frames(
                         &num_robjects, &root),
                 "Can not estimate num_robjects from tree of frames.");
         num_objects = object_names.dyn.size;
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
-                mliScenery_malloc(
+                mliGeometry_malloc(
                         &combine->scenery,
                         num_objects,
                         num_robjects),
@@ -109,7 +109,7 @@ int mliCombine_malloc_from_Archive(
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
-                mliScenery_set_objects_from_Archive(
+                mliGeometry_set_objects_from_Archive(
                         &combine->scenery,
                         &object_names,
                         archive),
@@ -117,7 +117,7 @@ int mliCombine_malloc_from_Archive(
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         mli_check(
-                __mliScenery_set_robjects(
+                __mliGeometry_set_robjects(
                         &combine->scenery, &root, &robject_counter),
                 "Can not set robjects.");
 

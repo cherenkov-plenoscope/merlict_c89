@@ -1,17 +1,17 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISCENERY_OBB_H_
-#define MERLICT_C89_MLISCENERY_OBB_H_
+#ifndef MERLICT_C89_mliGeometry_OBB_H_
+#define MERLICT_C89_mliGeometry_OBB_H_
 
-#include "mliScenery.h"
+#include "mliGeometry.h"
 #include "mliOBB.h"
 
-int _mliScenery_robject_has_overlap_obb(
+int _mliGeometry_robject_has_overlap_obb(
         const void *scenery,
         const uint32_t robject_idx,
         const struct mliOBB obb);
 
-int mliScenery_robject_has_overlap_obb(
-        const struct mliScenery *scenery,
+int mliGeometry_robject_has_overlap_obb(
+        const struct mliGeometry *scenery,
         const uint32_t robject_idx,
         const struct mliOBB obb);
 

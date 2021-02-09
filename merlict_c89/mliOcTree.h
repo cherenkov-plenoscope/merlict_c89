@@ -94,7 +94,7 @@ int mliOcTree_malloc_from_object_wavefront(
 
 int mliOcTree_malloc_from_scenery(
         struct mliOcTree *octree,
-        const struct mliScenery *scenery,
+        const struct mliGeometry *scenery,
         const struct mliOBB outermost_obb);
 
 #endif

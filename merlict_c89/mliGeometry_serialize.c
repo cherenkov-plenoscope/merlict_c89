@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliScenery_serialize.h"
+#include "mliGeometry_serialize.h"
 #include "mliMaterials_serialize.h"
 #include "mliMagicId.h"
 
-int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
+int mliGeometry_malloc_fread(struct mliGeometry *scenery, FILE *f)
 {
         uint32_t i;
         uint32_t num_objects = 0u;
@@ -12,7 +12,7 @@ int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
 
         /* magic identifier */
         mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
-        mli_c(mliMagicId_has_word(&magic, "mliScenery"));
+        mli_c(mliMagicId_has_word(&magic, "mliGeometry"));
         mliMagicId_warn_version(&magic);
 
         /* payload */
@@ -20,8 +20,8 @@ int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
         mli_fread(&num_robjects, sizeof(uint32_t), 1u, f);
 
         mli_check(
-                mliScenery_malloc(scenery, num_objects, num_robjects),
-                "Failed to malloc robjects in mliScenery.");
+                mliGeometry_malloc(scenery, num_objects, num_robjects),
+                "Failed to malloc robjects in mliGeometry.");
 
         for (i = 0; i < scenery->num_objects; i++) {
                 mli_check(
@@ -52,13 +52,13 @@ error:
         return 0;
 }
 
-int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
+int mliGeometry_fwrite(const struct mliGeometry *scenery, FILE *f)
 {
         uint32_t i;
         struct mliMagicId magic;
 
         /* magic identifier */
-        mli_c(mliMagicId_set(&magic, "mliScenery"));
+        mli_c(mliMagicId_set(&magic, "mliGeometry"));
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* payload */
@@ -92,13 +92,13 @@ error:
         return 0;
 }
 
-int mliScenery_malloc_from_path(struct mliScenery *scenery, const char *path)
+int mliGeometry_malloc_from_path(struct mliGeometry *scenery, const char *path)
 {
         FILE *f;
         f = fopen(path, "r");
         mli_check(f != NULL, "Can not open Scenery-file for reading.");
         mli_check(
-                mliScenery_malloc_fread(scenery, f),
+                mliGeometry_malloc_fread(scenery, f),
                 "Can not read scenery-file.");
         fclose(f);
         return 1;
@@ -106,17 +106,17 @@ error:
         if (f != NULL) {
                 fclose(f);
         }
-        mliScenery_free(scenery);
+        mliGeometry_free(scenery);
         return 0;
 }
 
-int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
+int mliGeometry_write_to_path(const struct mliGeometry *scenery, const char *path)
 {
         FILE *f;
         f = fopen(path, "w");
         mli_check(f != NULL, "Can not open Scenery-file for writing.");
         mli_check(
-                mliScenery_fwrite(scenery, f),
+                mliGeometry_fwrite(scenery, f),
                 "Failed to write to file.");
         fclose(f);
         return 1;

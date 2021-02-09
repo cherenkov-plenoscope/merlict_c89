@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliScenery.h"
+#include "mliGeometry.h"
 #include "mli_debug.h"
 
-struct mliScenery mliScenery_init(void)
+struct mliGeometry mliGeometry_init(void)
 {
-        struct mliScenery scn;
+        struct mliGeometry scn;
         scn.num_objects = 0u;
         scn.objects = NULL;
 
@@ -17,7 +17,7 @@ struct mliScenery mliScenery_init(void)
         return scn;
 }
 
-void mliScenery_free(struct mliScenery *scenery)
+void mliGeometry_free(struct mliGeometry *scenery)
 {
         uint32_t i;
         for (i = 0; i < scenery->num_objects; i++) {
@@ -30,16 +30,16 @@ void mliScenery_free(struct mliScenery *scenery)
         free(scenery->robject_boundary_layers);
         free(scenery->robject2root);
 
-        (*scenery) = mliScenery_init();
+        (*scenery) = mliGeometry_init();
 }
 
-int mliScenery_malloc(
-        struct mliScenery *scn,
+int mliGeometry_malloc(
+        struct mliGeometry *scn,
         const uint32_t num_objects,
         const uint32_t num_robjects)
 {
         uint32_t i;
-        mliScenery_free(scn);
+        mliGeometry_free(scn);
 
         scn->num_objects = num_objects;
         mli_malloc(scn->objects, struct mliObject, scn->num_objects);
@@ -58,14 +58,14 @@ int mliScenery_malloc(
 
         return 1;
 error:
-        mliScenery_free(scn);
+        mliGeometry_free(scn);
         return 0;
 }
 
-void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery)
+void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *scenery)
 {
         uint32_t rob;
-        fprintf(f, "__mliScenery__ [num obj: %u, num obj-refs: %u]\n",
+        fprintf(f, "__mliGeometry__ [num obj: %u, num obj-refs: %u]\n",
                 scenery->num_objects, scenery->num_robjects);
         fprintf(f,
                 " rob | obj | id  | translation(xyz) | rotation(xyz;w)  |\n");

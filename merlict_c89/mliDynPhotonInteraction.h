@@ -9,11 +9,11 @@
 
 #include "mli_debug.h"
 #include "mliPhotonInteraction.h"
-#include "mliScenery.h"
+#include "mliGeometry.h"
 
 MLIDYNARRAY_DEFINITON(mli, PhotonInteraction, struct mliPhotonInteraction)
 
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,
-        const struct mliScenery *scenery);
+        const struct mliGeometry *scenery);
 #endif

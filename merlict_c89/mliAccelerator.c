@@ -60,7 +60,7 @@ error:
 
 int _mliAccelerator_set_robject_obbs(
         struct mliAccelerator *accel,
-        const struct mliScenery *scenery)
+        const struct mliGeometry *scenery)
 {
         uint32_t rob;
         mli_check(
@@ -81,7 +81,7 @@ error:
 
 int _mliAccelerator_set_object_octrees(
         struct mliAccelerator *accel,
-        const struct mliScenery *scenery)
+        const struct mliGeometry *scenery)
 {
         uint32_t obj;
         mli_check(
@@ -103,7 +103,7 @@ error:
 
 int mliAccelerator_malloc_from_scenery(
         struct mliAccelerator *accel,
-        const struct mliScenery *scenery)
+        const struct mliGeometry *scenery)
 {
         struct mliOBB outermost_obb;
 
@@ -112,7 +112,7 @@ int mliAccelerator_malloc_from_scenery(
                         accel,
                         scenery->num_objects,
                         scenery->num_robjects),
-                "Failed to malloc mliAccelerator from mliScenery's "
+                "Failed to malloc mliAccelerator from mliGeometry's "
                 "num_robjects");
 
         mli_check(

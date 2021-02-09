@@ -1,13 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISCENERY_H_
-#define MERLICT_C89_MLISCENERY_H_
+#ifndef MERLICT_C89_mliGeometry_H_
+#define MERLICT_C89_mliGeometry_H_
 
 #include <stdint.h>
 #include "mliHomTra.h"
 #include "mliBoundaryLayer.h"
 #include "mliMaterials.h"
 
-struct mliScenery {
+struct mliGeometry {
         uint32_t num_objects;
         struct mliObject *objects;
 
@@ -18,14 +18,14 @@ struct mliScenery {
         struct mliHomTraComp *robject2root;
 };
 
-int mliScenery_malloc(
-        struct mliScenery *scenery,
+int mliGeometry_malloc(
+        struct mliGeometry *scenery,
         const uint32_t num_objects,
         const uint32_t num_robjects);
-void mliScenery_free(struct mliScenery *scenery);
-struct mliScenery mliScenery_init(void);
-void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery);
-struct mliBoundaryLayer mliScenery_object_surfaces(
-        const struct mliScenery *scenery,
+void mliGeometry_free(struct mliGeometry *scenery);
+struct mliGeometry mliGeometry_init(void);
+void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *scenery);
+struct mliBoundaryLayer mliGeometry_object_surfaces(
+        const struct mliGeometry *scenery,
         const uint32_t object_idx);
 #endif

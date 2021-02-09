@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliIntersectionSurfaceNormal.h"
-#include "mliScenery.h"
+#include "mliGeometry.h"
 
 const struct mliFunc *_mli_refractive_index_coming_from(
         const struct mliCombine *combine,
@@ -13,9 +13,9 @@ const struct mliFunc *_mli_refractive_index_going_to(
         const struct mliCombine *combine,
         const struct mliIntersectionSurfaceNormal *isec);
 struct mliSide _mli_side_going_to(
-        const struct mliScenery *scenery,
+        const struct mliGeometry *scenery,
         const struct mliIntersectionSurfaceNormal *isec);
 struct mliSide _mli_side_coming_from(
-        const struct mliScenery *scenery,
+        const struct mliGeometry *scenery,
         const struct mliIntersectionSurfaceNormal *isec);
 #endif

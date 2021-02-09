@@ -91,7 +91,7 @@ error:
         return 0;
 }
 
-int __mliScenery_assign_colors_from_json(
+int __mliGeometry_assign_colors_from_json(
         struct mliMaterials *resources,
         struct mliDynMap *color_names,
         const struct mliJson *json)
@@ -167,7 +167,7 @@ error:
         return 0;
 }
 
-int __mliScenery_assign_media_from_json(
+int __mliGeometry_assign_media_from_json(
         struct mliMaterials *resources,
         struct mliDynMap *medium_names,
         const struct mliDynMap *function_names,
@@ -186,7 +186,7 @@ int __mliScenery_assign_media_from_json(
                 mli_check(
                         resources->num_media ==
                                 (uint64_t)json->tokens[token_surfaces].size,
-                        "Expected num_media in struct mliScenery to match "
+                        "Expected num_media in struct mliGeometry to match "
                         "json-array.");
         for (m = 0; m < resources->num_media; m++) {
                 uint64_t token_m =
@@ -283,7 +283,7 @@ error:
         return 0;
 }
 
-int __mliScenery_assign_surfaces_from_json(
+int __mliGeometry_assign_surfaces_from_json(
         struct mliMaterials *resources,
         struct mliDynMap *surface_names,
         const struct mliDynMap *function_names,

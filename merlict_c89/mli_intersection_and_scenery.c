@@ -2,7 +2,7 @@
 #include "mli_intersection_and_scenery.h"
 
 struct mliSide _mli_side_coming_from(
-        const struct mliScenery *scenery,
+        const struct mliGeometry *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mliBoundaryLayer layer =
@@ -14,7 +14,7 @@ struct mliSide _mli_side_coming_from(
 }
 
 struct mliSide _mli_side_going_to(
-        const struct mliScenery *scenery,
+        const struct mliGeometry *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mliBoundaryLayer layer =

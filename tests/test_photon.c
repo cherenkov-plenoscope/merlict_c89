@@ -75,7 +75,7 @@ CASE("Do not leak out of closed box")
         struct mliMT19937 prng = mliMT19937_init(0u);
         struct mliDynPhoton photons = mliDynPhoton_init();
         struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
-        struct mliScenery scenery = mliScenery_init();
+        struct mliGeometry scenery = mliGeometry_init();
         struct mliOcTree octree = mliOcTree_init();
         const float wavelength = 433e-9;
         const float opening_angle = mli_deg2rad(180.0);
@@ -85,7 +85,7 @@ CASE("Do not leak out of closed box")
         const struct mliVec center_of_crystal = mliVec_set(5e-3, 5e-3, 5e-3);
         uint64_t i;
 
-        CHECK(mliScenery_malloc_from_json_path(
+        CHECK(mliGeometry_malloc_from_json_path(
                 &scenery, "tests/resources/lyso_crystal_scenery.json"));
 
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
@@ -139,7 +139,7 @@ CASE("Do not leak out of closed box")
         }
 
         mliOcTree_free(&octree);
-        mliScenery_free(&scenery);
+        mliGeometry_free(&scenery);
         mliDynPhoton_free(&photons);
 }
 */

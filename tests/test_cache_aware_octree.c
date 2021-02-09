@@ -19,12 +19,12 @@ CASE("sizeof mliNode") { CHECK(sizeof(struct mliNode) == 5 * 8); }
 /*
 CASE("init mliCaOctree")
 {
-        struct mliScenery scenery = mliScenery_init();
+        struct mliGeometry scenery = mliGeometry_init();
         struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
         struct mliOcTree octree = mliOcTree_init();
         struct mliIntersectionSurfaceNormal isec;
         uint64_t num_nodes, num_leafs, num_object_links;
-        mliScenery_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
+        mliGeometry_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
         CHECK(mliTmpOcTree_malloc_from_scenery(&tmp_octree, &scenery));
 
         mliTmpNode_set_flat_index(&tmp_octree.root);
@@ -49,16 +49,16 @@ CASE("init mliCaOctree")
 
         mliTmpOcTree_free(&tmp_octree);
         mliOcTree_free(&octree);
-        mliScenery_free(&scenery);
+        mliGeometry_free(&scenery);
 }
 
 CASE("init mliOctree write and read")
 {
-        struct mliScenery scenery = mliScenery_init();
+        struct mliGeometry scenery = mliGeometry_init();
         struct mliOcTree octree = mliOcTree_init();
         struct mliOcTree octree_b = mliOcTree_init();
 
-        CHECK(mliScenery_read_from_path(
+        CHECK(mliGeometry_read_from_path(
                 &scenery, "tests/resources/scn1.mli.tmp"));
 
         CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
@@ -73,6 +73,6 @@ CASE("init mliOctree write and read")
 
         mliOcTree_free(&octree_b);
         mliOcTree_free(&octree);
-        mliScenery_free(&scenery);
+        mliGeometry_free(&scenery);
 }
 */

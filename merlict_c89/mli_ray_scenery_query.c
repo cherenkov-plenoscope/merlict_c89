@@ -10,7 +10,7 @@ struct _mliInnerWork {
 
 struct _mliOuterWork {
         struct mliIntersectionMinimalQuery *intersection;
-        const struct mliScenery *scenery;
+        const struct mliGeometry *scenery;
         const struct mliAccelerator *accelerator;
         struct mliRay ray_root;
 };

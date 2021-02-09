@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIACCELERATOR_H_
 
 #include <stdint.h>
-#include "mliScenery.h"
+#include "mliGeometry.h"
 #include "mliOcTree.h"
 
 struct mliAccelerator {
@@ -27,15 +27,15 @@ int mliAccelerator_malloc(
 
 int mliAccelerator_malloc_from_scenery(
         struct mliAccelerator *accel,
-        const struct mliScenery *scenery);
+        const struct mliGeometry *scenery);
 
 int _mliAccelerator_set_robject_obbs(
         struct mliAccelerator *accel,
-        const struct mliScenery *scenery);
+        const struct mliGeometry *scenery);
 
 int _mliAccelerator_set_object_octrees(
         struct mliAccelerator *accel,
-        const struct mliScenery *scenery);
+        const struct mliGeometry *scenery);
 
 void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel);
 

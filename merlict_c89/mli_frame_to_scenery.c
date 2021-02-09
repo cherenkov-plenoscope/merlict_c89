@@ -3,7 +3,7 @@
 #include <math.h>
 #include "mli_debug.h"
 
-int __mliScenery_estimate_num_robjects_in_frames(
+int __mliGeometry_estimate_num_robjects_in_frames(
         uint64_t *num_robjects,
         const struct mliFrame *frame)
 {
@@ -12,7 +12,7 @@ int __mliScenery_estimate_num_robjects_in_frames(
         case MLI_FRAME:
                 for (c = 0; c < frame->children.dyn.size; c++) {
                         struct mliFrame *child = frame->children.arr[c];
-                        mli_c(__mliScenery_estimate_num_robjects_in_frames(
+                        mli_c(__mliGeometry_estimate_num_robjects_in_frames(
                                 num_robjects, child));
                 }
                 break;
@@ -28,8 +28,8 @@ error:
         return 0;
 }
 
-int __mliScenery_set_robjects(
-        struct mliScenery *scenery,
+int __mliGeometry_set_robjects(
+        struct mliGeometry *scenery,
         const struct mliFrame *frame,
         uint64_t *robject_counter)
 {
@@ -40,7 +40,7 @@ int __mliScenery_set_robjects(
         case MLI_FRAME:
                 for (c = 0; c < frame->children.dyn.size; c++) {
                         child = frame->children.arr[c];
-                        __mliScenery_set_robjects(
+                        __mliGeometry_set_robjects(
                                 scenery, child, robject_counter);
                 }
                 break;

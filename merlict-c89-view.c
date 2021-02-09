@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
                 goto error;
         }
 
-        mliScenery_info_fprint(stderr, &combine.scenery);
+        mliGeometry_info_fprint(stderr, &combine.scenery);
         mliAccelerator_info_fprint(stderr, &combine.accelerator);
         mliMaterials_info_fprint(stderr, &combine.materials);
 

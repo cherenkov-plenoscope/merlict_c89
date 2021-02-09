@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliScenery_equal.h"
+#include "mliGeometry_equal.h"
 
-int _mliScenery_objects_equal(
-        const struct mliScenery *a,
-        const struct mliScenery *b)
+int _mliGeometry_objects_equal(
+        const struct mliGeometry *a,
+        const struct mliGeometry *b)
 {
         uint32_t i;
         mli_check(
@@ -20,9 +20,9 @@ error:
         return 0;
 }
 
-int _mliScenery_object_references_equal(
-        const struct mliScenery *a,
-        const struct mliScenery *b)
+int _mliGeometry_object_references_equal(
+        const struct mliGeometry *a,
+        const struct mliGeometry *b)
 {
         uint64_t rob;
         mli_check(
@@ -59,13 +59,13 @@ error:
 }
 
 
-int mliScenery_is_equal(const struct mliScenery *a, const struct mliScenery *b)
+int mliGeometry_is_equal(const struct mliGeometry *a, const struct mliGeometry *b)
 {
         mli_check(
-                _mliScenery_objects_equal(a, b),
+                _mliGeometry_objects_equal(a, b),
                 "Expected objects to be equal.");
         mli_check(
-                _mliScenery_object_references_equal(a, b),
+                _mliGeometry_object_references_equal(a, b),
                 "Expected object-references to be equal.");
         return 1;
 error:

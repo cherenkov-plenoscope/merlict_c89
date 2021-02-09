@@ -33,7 +33,7 @@
  * Structure of mliOcTree
  * ----------------------
  *
- *                object_links w.r.t. mliScenery ->
+ *                object_links w.r.t. mliGeometry ->
  *          leafs +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
  *            |---|  a  |  b  |  c  |  c  |  d  |  e  |  f  |  f  |  g  |  h  |
  *            |   +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
@@ -480,7 +480,7 @@ error:
 
 int mliOcTree_malloc_from_scenery(
         struct mliOcTree *octree,
-        const struct mliScenery *scenery,
+        const struct mliGeometry *scenery,
         const struct mliOBB outermost_obb)
 {
         uint64_t num_nodes = 0;
@@ -492,7 +492,7 @@ int mliOcTree_malloc_from_scenery(
                         &tmp_octree,
                         (const void *)scenery,
                         scenery->num_robjects,
-                        _mliScenery_robject_has_overlap_obb,
+                        _mliGeometry_robject_has_overlap_obb,
                         outermost_obb),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from combine(Scenery, Accelerator)");
