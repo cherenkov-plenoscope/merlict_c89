@@ -209,7 +209,7 @@ int mli_malloc_root_frame_from_Archive(
                         object_names,
                         surface_names,
                         medium_names),
-                "Failed to populate tree of Frames from scenery-json.");
+                "Failed to populate tree of Frames from 'tree.json'.");
         mliJson_free(&tree_json);
 
         /* init transformations */
@@ -222,7 +222,7 @@ error:
 }
 
 int mliGeometry_set_objects_from_Archive(
-        struct mliGeometry *scenery,
+        struct mliGeometry *geometry,
         const struct mliDynMap *object_names,
         const struct mliArchive *archive)
 {
@@ -242,7 +242,7 @@ int mliGeometry_set_objects_from_Archive(
 
                         mli_check(
                                 mliObject_malloc_from_wavefront(
-                                        &scenery->objects[obj_idx],
+                                        &geometry->objects[obj_idx],
                                         archive->strings.arr[arc_idx].c_str),
                                 "Failed to parse wave-front-object.");
 
