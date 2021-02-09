@@ -18,8 +18,7 @@ void mlivr_clear_screen(void)
 void mlivr_print_help(void)
 {
         mlivr_clear_screen();
-        printf("merlict-c89\n");
-        printf("===========\n");
+        mli_logo_fprint(stdout);
         printf("\n");
         printf("- this help           [  h  ]\n");
         printf("- exit                [ Esc ]\n");
