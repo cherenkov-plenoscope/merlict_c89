@@ -529,48 +529,48 @@ CASE("mliObject, read and write multiple materials")
 
 
         face_idx = 0;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 0);
         face_idx = 1;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 0);
 
         face_idx = 2;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 1);
         face_idx = 3;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 1);
 
         face_idx = 4;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 2);
         face_idx = 5;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 2);
 
         face_idx = 6;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 3);
         face_idx = 7;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 3);
 
         face_idx = 8;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 4);
         face_idx = 9;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 4);
 
         face_idx = 10;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 5);
         face_idx = 11;
-        CHECK(mliObject_resolve_material(&obj_back, face_idx, &material_idx));
+        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
         CHECK(material_idx == 5);
 
-        CHECK(!mliObject_resolve_material(&obj_back, 12, &material_idx));
+        CHECK(!mliObject_resolve_material_idx(&obj_back, 12, &material_idx));
 
         mliObject_free(&obj_orig);
         mliObject_free(&obj_back);

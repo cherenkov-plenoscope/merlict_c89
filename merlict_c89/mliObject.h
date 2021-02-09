@@ -35,7 +35,7 @@ int mliObject_assert_valid_faces(const struct mliObject *obj);
 int mliObject_assert_normals(const struct mliObject *obj, const double epsilon);
 int mliObject_assert_valid_materials(const struct mliObject *obj);
 int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b);
-int mliObject_resolve_material(
+int mliObject_resolve_material_idx(
         const struct mliObject *obj,
         const uint32_t face_idx,
         uint32_t *material_idx);

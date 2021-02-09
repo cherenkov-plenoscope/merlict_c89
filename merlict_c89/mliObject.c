@@ -179,7 +179,7 @@ error:
         return 0;
 }
 
-int mliObject_resolve_material(
+int mliObject_resolve_material_idx(
         const struct mliObject *obj,
         const uint32_t face_idx,
         uint32_t *material_idx)
