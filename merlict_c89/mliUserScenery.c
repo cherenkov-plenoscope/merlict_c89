@@ -131,7 +131,7 @@ int mli_malloc_materials_form_archive(
 
                         memcpy(
                                 materials->function_names[fnc_idx].c_str,
-                                names->functions.arr[i].key,
+                                names->functions.arr[fnc_idx].key,
                                 MLI_NAME_CAPACITY);
 
                         fnc_idx += 1u;

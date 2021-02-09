@@ -140,12 +140,13 @@ error:
 void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
 {
         uint32_t rob;
-        fprintf(f, "__mliAccelerator__\n");
-        fprintf(f, " rob   -x/m   -y/m   -z/m   +x/m   +y/m   +z/m\n");
-        fprintf(f, "----------------------------------------------\n");
+        fprintf(f, "Accelerator:\n");
+        fprintf(f, "    object-reference-bounding-boxes (OBB)s:\n");
+        fprintf(f, "%*s ref   -x/m   -y/m   -z/m   +x/m   +y/m   +z/m\n", 8, "");
+        fprintf(f, "%*s----------------------------------------------\n", 8, "");
         for (rob = 0; rob < accel->num_robjects; rob++) {
                 fprintf(f,
-                        "% 4d "
+                        "%*s% 4d "
                         "% 6.1f "
                         "% 6.1f "
                         "% 6.1f "
@@ -154,6 +155,8 @@ void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
                         "% 6.1f "
                         "% 6.1f "
                         "\n",
+                        8,
+                        "",
                         rob,
                         accel->robject_obbs[rob].lower.x,
                         accel->robject_obbs[rob].lower.y,
@@ -162,6 +165,7 @@ void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
                         accel->robject_obbs[rob].upper.y,
                         accel->robject_obbs[rob].upper.z);
         }
+        fprintf(f, "\n");
 }
 
 struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel)

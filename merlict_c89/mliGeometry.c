@@ -72,23 +72,35 @@ error:
 void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
 {
         uint32_t rob, i;
-        fprintf(f, "__mliGeometry__ [num obj: %u, num obj-refs: %u]\n",
-                geometry->num_objects, geometry->num_robjects);
+        fprintf(f, "Geometry:\n");
+        fprintf(f, "%*sobjects:\n", 4, "");
 
+        fprintf(f, "%*s obj  name                                 #v    #vn     #f   #mtl\n", 8, "");
+        fprintf(f, "%*s------------------------------------------------------------------\n", 8, "");
         for (i = 0; i < geometry->num_objects; i++) {
-                fprintf(f, "% 4d, %s\n", i, geometry->object_names[i].c_str);
+                fprintf(f, "%*s% 4d  ", 8, "", i);
+                fprintf(f, "%-32s  ", geometry->object_names[i].c_str);
+                fprintf(f, "% 5d  % 5d  % 5d  % 5d",
+                        geometry->objects[i].num_vertices,
+                        geometry->objects[i].num_vertex_normals,
+                        geometry->objects[i].num_faces,
+                        geometry->objects[i].num_materials);
+                fprintf(f, "\n");
         }
-
+        fprintf(f, "\n");
+        fprintf(f, "%*sobject-references:\n", 4, "");
         fprintf(f,
-                " rob   obj    id   translation(xyz)/m       rotation(xyz;w)  \n");
-        fprintf(f, "-----------------------------------------------------------"
-                "-----\n");
+                "%*s ref   obj    id   translation(xyz)/m     rot. quarternion(xyz;w)\n", 8, "");
+        fprintf(f, "%*s------------------------------------------------------------"
+                "-----\n", 8, "");
         for (rob = 0; rob < geometry->num_robjects; rob++) {
                 fprintf(f,
-                        "% 4d  % 4d  % 4d  "
-                        "(% 5.1f, % 5.1f, % 5.1f) "
+                        "%*s% 4d  % 4d  % 4d  "
+                        "(% 5.1f, % 5.1f, % 5.1f)  "
                         "(% 1.1f, % 1.1f, % 1.1f; % 1.1f) "
                         "\n",
+                        8,
+                        "",
                         rob,
                         geometry->robjects[rob],
                         geometry->robject_ids[rob],
@@ -100,4 +112,5 @@ void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
                         geometry->robject2root[rob].rotation.z,
                         geometry->robject2root[rob].rotation.w);
         }
+        fprintf(f, "\n");
 }

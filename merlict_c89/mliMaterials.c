@@ -100,10 +100,56 @@ error:
 
 void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
 {
-        fprintf(f, "__mliMaterials__\n");
-        fprintf(
-                f,
-                "- default_medium: %d, %s\n",
-                res->default_medium,
+        uint32_t i = 0;
+        fprintf(f, "Materials:\n");
+
+        fprintf(f, "    functions:\n");
+        for (i = 0; i < res->num_functions; i++) {
+                fprintf(f, "        % 3d, %-32s  ",
+                        i, res->function_names[i].c_str);
+                fprintf(f, "x: [% 1.3e, % 1.3e)\n",
+                        res->functions[i].x[0],
+                        res->functions[i].x[res->functions[i].num_points - 1]);
+        }
+
+        fprintf(f, "    media:\n");
+        for (i = 0; i < res->num_media; i++) {
+                fprintf(f, "        ");
+                fprintf(f, "% 3d, %-32s  ", i, res->medium_names[i].c_str);
+                fprintf(f, "absorbtion: % 3d, refraction: % 3d\n",
+                        res->media[i].absorbtion, res->media[i].refraction);
+        }
+
+        fprintf(f, "    surfaces:\n");
+        for (i = 0; i < res->num_surfaces; i++) {
+                fprintf(f, "        % 3d, %-32s  ",
+                        i,
+                        res->surface_names[i].c_str);
+                fprintf(f, "model: ");
+                if (res->surfaces[i].material == MLI_MATERIAL_TRANSPARENT) {
+                        fprintf(f, "transparent,  ");
+                } else if (res->surfaces[i].material == MLI_MATERIAL_PHONG) {
+                        fprintf(f, "Phong      ,  ");
+                } else {
+                        fprintf(f, "UNKNOWN    ,  ");
+                }
+                fprintf(f,
+                        "specular-refl.: % 3d,  "
+                        "diffuse-refl.: % 3d,  ",
+                        res->surfaces[i].specular_reflection,
+                        res->surfaces[i].diffuse_reflection);
+                fprintf(f, "color: % 3d\n", res->surfaces[i].color);
+        }
+
+        fprintf(f, "    colors:\n");
+        for (i = 0; i < res->num_colors; i++) {
+                fprintf(f, "        % 3d, %-32s  ",
+                        i,
+                        res->color_names[i].c_str);
+                fprintf(f, "rgb/8bit [%3.0f, %3.0f, %3.0f]\n",
+                        res->colors[i].r, res->colors[i].g, res->colors[i].b);
+        }
+
+        fprintf(f, "    default medium: %s\n",
                 res->medium_names[res->default_medium].c_str);
 }
