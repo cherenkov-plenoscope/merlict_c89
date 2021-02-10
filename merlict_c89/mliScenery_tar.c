@@ -33,7 +33,6 @@ int mliScenery_malloc_from_Archive(
         uint64_t num_robjects = 0u;
         uint64_t num_objects = 0u;
         uint64_t total_num_boundary_layers = 0u;
-        uint64_t robject_counter = 0u;
 
         struct mliNameMap material_names = mliNameMap_init();
         struct mliDynMap object_names = mliDynMap_init();
@@ -95,14 +94,11 @@ int mliScenery_malloc_from_Archive(
                 "Failed to malloc geometry.references.");
 
         mli_check(
-                __mliGeometry_set_robjects(
-                        &scenery->geometry, &root, &robject_counter),
+                mliFrame_set_robjects_and_material_map(
+                        &root,
+                        &scenery->geometry,
+                        &scenery->geomap),
                 "Can not set robjects.");
-
-        mli_check(
-                num_robjects == robject_counter,
-                "Expected to set the num_robjects found while "
-                "estimating capacity.");
 
         mliNameMap_free(&material_names);
         mliDynMap_free(&object_names);

@@ -31,34 +31,88 @@ error:
         return 0;
 }
 
-int __mliGeometry_set_robjects(
-        struct mliGeometry *geometry,
+int __mliFrame_set_robjects_and_material_map(
         const struct mliFrame *frame,
-        uint64_t *robject_counter)
+        struct mliGeometry *geometry,
+        struct mliGeometryToMaterialMap *geomap,
+        uint64_t *robject_counter,
+        uint64_t *boundary_layer_counter)
 {
         uint64_t c;
-        uint64_t rob;
+        uint64_t material_idx;
+        uint64_t robject_idx;
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.dyn.size; c++) {
-                        mli_c(__mliGeometry_set_robjects(
-                                geometry,
+                        mli_c(__mliFrame_set_robjects_and_material_map(
                                 frame->children.arr[c],
-                                robject_counter));
+                                geometry,
+                                geomap,
+                                robject_counter,
+                                boundary_layer_counter));
                 }
                 break;
         case MLI_OBJECT:
-                rob = (*robject_counter);
-                geometry->robjects[rob] = frame->object;
-                geometry->robject_boundary_layers[rob] = frame->boundary_layer;
-                geometry->robject2root[rob] = frame->frame2root;
-                geometry->robject_ids[rob] = frame->id;
+                robject_idx = (*robject_counter);
+
+                mli_check(
+                        frame->object < geometry->num_objects,
+                        "Expected frame->object < num_objects.");
+                /* geometry */
+                geometry->robjects[robject_idx] = frame->object;
+                geometry->robject_boundary_layers[robject_idx] =
+                        frame->boundary_layer;
+                geometry->robject2root[robject_idx] = frame->frame2root;
+                geometry->robject_ids[robject_idx] = frame->id;
+
+                /* materials map */
+                mli_check(
+                        frame->boundary_layers.dyn.size ==
+                        geometry->objects[frame->object].num_materials,
+                        "Expected Frame to have same "
+                        "num boundary_layers as object.");
+
+                geomap->first_boundary_layer_in_robject[robject_idx] =
+                        (*boundary_layer_counter);
+                for (
+                        material_idx = 0;
+                        material_idx < frame->boundary_layers.dyn.size;
+                        material_idx++)
+                {
+                        mliGeometryToMaterialMap_set(
+                                geomap,
+                                robject_idx,
+                                material_idx,
+                                frame->boundary_layers.arr[material_idx]);
+                        (*boundary_layer_counter) += 1;
+                }
+
                 (*robject_counter) += 1;
                 break;
         default:
                 mli_sentinel("Expected either type 'frame' or 'object'.");
                 break;
         }
+        return 1;
+error:
+        return 0;
+}
+
+int mliFrame_set_robjects_and_material_map(
+        const struct mliFrame *frame,
+        struct mliGeometry *geometry,
+        struct mliGeometryToMaterialMap *geomap)
+{
+        uint64_t robject_counter = 0u;
+        uint64_t boundary_layer_counter = 0u;
+        mli_check(__mliFrame_set_robjects_and_material_map(
+                frame,
+                geometry,
+                geomap,
+                &robject_counter,
+                &boundary_layer_counter),
+                "Failed to walk to tree of frames to set "
+                "robjects and material map.");
         return 1;
 error:
         return 0;

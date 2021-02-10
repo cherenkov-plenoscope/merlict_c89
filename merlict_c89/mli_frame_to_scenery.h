@@ -5,10 +5,10 @@
 #include <stdint.h>
 #include "mliGeometry.h"
 
-int __mliGeometry_set_robjects(
-        struct mliGeometry *geometry,
+int mliFrame_set_robjects_and_material_map(
         const struct mliFrame *frame,
-        uint64_t *robject_counter);
+        struct mliGeometry *geometry,
+        struct mliGeometryToMaterialMap *geomap);
 
 int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         const struct mliFrame *frame,
