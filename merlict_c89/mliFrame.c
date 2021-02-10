@@ -17,7 +17,7 @@ struct mliFrame mliFrame_init(void)
         f.children = mliDynFramePtr_init();
         f.object = 0u;
 
-        f.boundlayer = 0u;
+        f.boundary_layers = mliDynUint32_init();
         f.boundary_layer.inner.surface = 0u;
         f.boundary_layer.outer.surface = 0u;
         f.boundary_layer.inner.medium = 0u;
@@ -35,6 +35,9 @@ void mliFrame_free(struct mliFrame *f)
                 }
                 mliDynFramePtr_free(&f->children);
         }
+        if (f->type == MLI_OBJECT) {
+                mliDynUint32_free(&f->boundary_layers);
+        }
         (*f) = mliFrame_init();
 }
 
@@ -46,6 +49,11 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type)
                 mli_check(
                         mliDynFramePtr_malloc(&f->children, 0u),
                         "Can not allocate children of frame.");
+        }
+        if (type == MLI_OBJECT) {
+                mli_check(
+                        mliDynUint32_malloc(&f->boundary_layers, 0u),
+                        "Failed to malloc frame's boundary_layers.");
         }
         return 1;
 error:
@@ -142,8 +150,13 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
                f->frame2mother.rotation.y,
                f->frame2mother.rotation.z);
         if (f->type == MLI_OBJECT) {
+                uint32_t ii;
                 printf("%*s", (int)indention, "");
-                printf("|-boundary_layer %u\n", f->boundlayer);
+                printf("|-boundary_layers [");
+                for (ii = 0; ii < f->boundary_layers.dyn.size; ii++) {
+                        printf("%u,", f->boundary_layers.arr[ii]);
+                }
+                printf("]\n");
 
                 printf("|-inner (surf: %u, med: %u)\n",
                        f->boundary_layer.inner.surface,
