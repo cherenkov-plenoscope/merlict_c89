@@ -37,7 +37,7 @@ int __mliFrame_type_from_json(
         uint64_t *type,
         const struct mliJson *json,
         const uint64_t token_child);
-int __mliFrame_set_boundary_layer(
+int __mliBoundaryLayer_from_json(
         struct mliBoundaryLayer *boundary_layer,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names,

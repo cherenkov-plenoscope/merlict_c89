@@ -370,7 +370,7 @@ int __mliMaterials_assign_boundary_layers_from_json(
                                 boundary_layer_names, json, token_s_name, s),
                         "Failed to insert boundary_layer's name into map.");
                 mli_check(
-                        __mliFrame_set_boundary_layer(
+                        __mliBoundaryLayer_from_json(
                                 &materials->boundary_layers[s],
                                 surface_names,
                                 medium_names,
@@ -490,7 +490,7 @@ error:
         return 0;
 }
 
-int __mliFrame_set_boundary_layer(
+int __mliBoundaryLayer_from_json(
         struct mliBoundaryLayer *boundary_layer,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names,
@@ -563,7 +563,7 @@ int __mliFrame_set_surface_idx(
 
         token_surface = token_surface_key + 1;
         mli_check(
-                __mliFrame_set_boundary_layer(
+                __mliBoundaryLayer_from_json(
                         boundary_layer,
                         surface_names,
                         medium_names,
