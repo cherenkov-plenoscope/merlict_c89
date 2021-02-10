@@ -7,9 +7,10 @@
 #include "mliUserScenery.h"
 
 int __mliGeometry_set_robjects(
-        struct mliGeometry *scenery,
+        struct mliGeometry *geometry,
         const struct mliFrame *frame,
         uint64_t *robject_counter);
+
 int __mliFrame_estimate_num_robjects(
         const struct mliFrame *frame,
         uint64_t *num_robjects);

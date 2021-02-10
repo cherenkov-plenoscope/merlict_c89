@@ -28,7 +28,7 @@ error:
 }
 
 int __mliGeometry_set_robjects(
-        struct mliGeometry *scenery,
+        struct mliGeometry *geometry,
         const struct mliFrame *frame,
         uint64_t *robject_counter)
 {
@@ -38,17 +38,17 @@ int __mliGeometry_set_robjects(
         case MLI_FRAME:
                 for (c = 0; c < frame->children.dyn.size; c++) {
                         mli_c(__mliGeometry_set_robjects(
-                                scenery,
+                                geometry,
                                 frame->children.arr[c],
                                 robject_counter));
                 }
                 break;
         case MLI_OBJECT:
                 rob = (*robject_counter);
-                scenery->robjects[rob] = frame->object;
-                scenery->robject_boundary_layers[rob] = frame->boundary_layer;
-                scenery->robject2root[rob] = frame->frame2root;
-                scenery->robject_ids[rob] = frame->id;
+                geometry->robjects[rob] = frame->object;
+                geometry->robject_boundary_layers[rob] = frame->boundary_layer;
+                geometry->robject2root[rob] = frame->frame2root;
+                geometry->robject_ids[rob] = frame->id;
                 (*robject_counter) += 1;
                 break;
         default:
