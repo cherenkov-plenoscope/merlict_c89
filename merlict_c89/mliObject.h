@@ -32,8 +32,7 @@ int mliObject_malloc(
 void mliObject_free(struct mliObject *obj);
 struct mliObject mliObject_init(void);
 int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b);
-int mliObject_resolve_material_idx(
+uint32_t mliObject_resolve_material_idx(
         const struct mliObject *obj,
-        const uint32_t face_idx,
-        uint32_t *material_idx);
+        const uint32_t face_idx);
 #endif

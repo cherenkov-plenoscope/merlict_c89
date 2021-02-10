@@ -40,11 +40,11 @@ CASE("simple propagation")
         CHECK(scenery.materials.num_media == 2);
         CHECK(scenery.materials.num_functions == 4);
 
-        side_coming_from = _mli_side_coming_from(&scenery.geometry, &intersection);
+        side_coming_from = _mli_side_coming_from(&scenery, &intersection);
         surf_coming_from = scenery.materials.surfaces[side_coming_from.surface];
         medi_coming_from = scenery.materials.media[side_coming_from.medium];
 
-        side_going_to = _mli_side_going_to(&scenery.geometry, &intersection);
+        side_going_to = _mli_side_going_to(&scenery, &intersection);
         surf_going_to = scenery.materials.surfaces[side_going_to.surface];
         medi_going_to = scenery.materials.media[side_going_to.medium];
 

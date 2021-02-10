@@ -102,20 +102,16 @@ error:
         return 0;
 }
 
-int mliObject_resolve_material_idx(
+uint32_t mliObject_resolve_material_idx(
         const struct mliObject *obj,
-        const uint32_t face_idx,
-        uint32_t *material_idx)
+        const uint32_t face_idx)
 {
-        uint32_t _material_idx = 0;
-        mli_check(face_idx < obj->num_faces, "Expected face_idx < num_faces");
+        uint32_t material_idx = 0;
+        assert(face_idx < obj->num_faces);
         MLI_UPPER_COMPARE(
                 obj->first_face_in_next_material,
                 obj->num_materials,
                 face_idx,
-                _material_idx);
-        (*material_idx) = _material_idx;
-        return 1;
-error:
-        return 0;
+                material_idx);
+        return material_idx;
 }

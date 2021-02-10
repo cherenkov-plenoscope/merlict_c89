@@ -493,7 +493,6 @@ CASE("mliObject, write and read ascii-text-string")
 CASE("mliObject, read and write multiple materials")
 {
         FILE *f;
-        uint32_t face_idx, material_idx;
         struct mliString str = mliString_init();
         struct mliObject obj_orig = mliObject_init();
         struct mliObject obj_back = mliObject_init();
@@ -531,49 +530,23 @@ CASE("mliObject, read and write multiple materials")
         CHECK(obj_back.num_materials == 6);
 
 
-        face_idx = 0;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 0);
-        face_idx = 1;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 0);
+        CHECK(0 == mliObject_resolve_material_idx(&obj_back, 0));
+        CHECK(0 == mliObject_resolve_material_idx(&obj_back, 1));
 
-        face_idx = 2;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 1);
-        face_idx = 3;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 1);
+        CHECK(1 == mliObject_resolve_material_idx(&obj_back, 2));
+        CHECK(1 == mliObject_resolve_material_idx(&obj_back, 3));
 
-        face_idx = 4;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 2);
-        face_idx = 5;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 2);
+        CHECK(2 == mliObject_resolve_material_idx(&obj_back, 4));
+        CHECK(2 == mliObject_resolve_material_idx(&obj_back, 5));
 
-        face_idx = 6;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 3);
-        face_idx = 7;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 3);
+        CHECK(3 == mliObject_resolve_material_idx(&obj_back, 6));
+        CHECK(3 == mliObject_resolve_material_idx(&obj_back, 7));
 
-        face_idx = 8;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 4);
-        face_idx = 9;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 4);
+        CHECK(4 == mliObject_resolve_material_idx(&obj_back, 8));
+        CHECK(4 == mliObject_resolve_material_idx(&obj_back, 9));
 
-        face_idx = 10;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 5);
-        face_idx = 11;
-        CHECK(mliObject_resolve_material_idx(&obj_back, face_idx, &material_idx));
-        CHECK(material_idx == 5);
-
-        CHECK(!mliObject_resolve_material_idx(&obj_back, 12, &material_idx));
+        CHECK(5 == mliObject_resolve_material_idx(&obj_back, 10));
+        CHECK(5 == mliObject_resolve_material_idx(&obj_back, 11));
 
         mliObject_free(&obj_orig);
         mliObject_free(&obj_back);

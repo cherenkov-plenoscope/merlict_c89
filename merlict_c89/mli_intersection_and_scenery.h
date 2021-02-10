@@ -13,9 +13,9 @@ const struct mliFunc *_mli_refractive_index_going_to(
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec);
 struct mliSide _mli_side_going_to(
-        const struct mliGeometry *geometry,
+        const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec);
 struct mliSide _mli_side_coming_from(
-        const struct mliGeometry *geometry,
+        const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec);
 #endif
