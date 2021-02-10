@@ -6,10 +6,6 @@
             "pos": [0, 0, 0],
             "rot": {"repr": "tait_bryan", "xyz_deg": [-90.0, 0, 0]},
             "obj": "teapot",
-            "layer": {
-                "inner": {"medium": "vacuum", "surface": "wood"},
-                "outer": {"medium": "vacuum", "surface": "blue_glass"}
-            },
             "mtl": {"a": "vacu_wood_blue_vacu"}
         },
         {
@@ -24,10 +20,6 @@
                     "pos": [0, 0, 3],
                     "rot": {"repr": "tait_bryan", "xyz_deg": [0, 90, 0]},
                     "obj": "hexagonal_mirror_facet",
-                    "layer": {
-                        "inner": {"medium": "vacuum", "surface": "leafs"},
-                        "outer": {"medium": "vacuum", "surface": "wood"}
-                    },
                     "mtl": {"mirror": "vacu_leaf_wood_vacu"}
                 },
                 {
@@ -36,10 +28,6 @@
                     "pos": [0, 0, 0.75],
                     "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
                     "obj": "hexagonal_mirror_facet",
-                    "layer": {
-                        "inner": {"medium": "vacuum", "surface": "grass"},
-                        "outer": {"medium": "vacuum", "surface": "wood"}
-                    },
                     "mtl": {"mirror": "vacu_gras_wood_vacu"}
                 }
             ]

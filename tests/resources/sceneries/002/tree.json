@@ -6,10 +6,6 @@
             "pos": [0, 0, 0],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
             "obj": "cylinder",
-            "layer": {
-                "inner": {"medium": "vacuum", "surface": "glass_blue"},
-                "outer": {"medium": "glass", "surface": "glass_red"}
-            },
             "mtl": {"cylinder_skin": "vacu_gblu_gred_glass"}
         },
         {
@@ -18,10 +14,6 @@
             "pos": [0, 0, 5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
             "obj": "disc",
-            "layer": {
-                "inner": {"medium": "vacuum", "surface": "specular_mirror"},
-                "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
-            },
             "mtl": {"disc_skin": "vacu_spcm_pabs_vacu"}
         },
         {
@@ -30,10 +22,6 @@
             "pos": [0, 0, -5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 45, 0]},
             "obj": "disc",
-            "layer": {
-                "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
-                "outer": {"medium": "vacuum", "surface": "specular_mirror"}
-            },
             "mtl": {"disc_skin": "vacu_pabs_spcm_vacu"}
         },
         {
@@ -42,10 +30,6 @@
             "pos": [-5, 0, -5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 90, 0]},
             "obj": "disc",
-            "layer": {
-                "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
-                "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
-            },
             "mtl": {"disc_skin": "vacu_pabs_pabs_vacu"}
         },
         {
@@ -54,10 +38,6 @@
             "pos": [-5, 0, 5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
             "obj": "cube_with_materials",
-            "layer": {
-                "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
-                "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
-            },
             "mtl": {
                 "px": "vacu_gblu_gred_glass",
                 "mx": "vacu_spcm_pabs_vacu",

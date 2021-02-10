@@ -697,15 +697,6 @@ int __mliFrame_from_json(
                         break;
                 case MLI_OBJECT:
                         mli_check(
-                                __mliFrame_set_surface_idx(
-                                        &child->boundary_layer,
-                                        surface_names,
-                                        medium_names,
-                                        json,
-                                        token_child),
-                                "Failed to parse objects's surface "
-                                "from json.");
-                        mli_check(
                                 __mliFrame_set_object_reference(
                                         &child->object,
                                         json,
