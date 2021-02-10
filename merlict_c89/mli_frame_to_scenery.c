@@ -43,7 +43,7 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
                         frame,
                         num_robjects,
                         total_num_boundary_layers),
-                "Failed to walk through tree of frames to estimate "
+                "Failed to walk tree of frames to estimate "
                 "num_robjects and total_num_boundary_layers.");
         return 1;
 error:
@@ -54,8 +54,8 @@ int __mliFrame_set_robjects_and_material_map(
         const struct mliFrame *frame,
         struct mliGeometry *geometry,
         struct mliGeometryToMaterialMap *geomap,
-        uint64_t *robject_counter,
-        uint64_t *boundary_layer_counter)
+        uint64_t *num_robjects,
+        uint64_t *total_num_boundary_layers)
 {
         uint64_t c;
         uint64_t material_idx;
@@ -67,12 +67,12 @@ int __mliFrame_set_robjects_and_material_map(
                                 frame->children.arr[c],
                                 geometry,
                                 geomap,
-                                robject_counter,
-                                boundary_layer_counter));
+                                num_robjects,
+                                total_num_boundary_layers));
                 }
                 break;
         case MLI_OBJECT:
-                robject_idx = (*robject_counter);
+                robject_idx = (*num_robjects);
 
                 mli_check(
                         frame->object < geometry->num_objects,
@@ -92,7 +92,7 @@ int __mliFrame_set_robjects_and_material_map(
                         "num boundary_layers as object.");
 
                 geomap->first_boundary_layer_in_robject[robject_idx] =
-                        (*boundary_layer_counter);
+                        (*total_num_boundary_layers);
                 for (
                         material_idx = 0;
                         material_idx < frame->boundary_layers.dyn.size;
@@ -103,10 +103,10 @@ int __mliFrame_set_robjects_and_material_map(
                                 robject_idx,
                                 material_idx,
                                 frame->boundary_layers.arr[material_idx]);
-                        (*boundary_layer_counter) += 1;
+                        (*total_num_boundary_layers) += 1;
                 }
 
-                (*robject_counter) += 1;
+                (*num_robjects) += 1;
                 break;
         default:
                 mli_sentinel("Expected either type 'frame' or 'object'.");
@@ -122,15 +122,15 @@ int mliFrame_set_robjects_and_material_map(
         struct mliGeometry *geometry,
         struct mliGeometryToMaterialMap *geomap)
 {
-        uint64_t robject_counter = 0u;
-        uint64_t boundary_layer_counter = 0u;
+        uint64_t num_robjects = 0u;
+        uint64_t total_num_boundary_layers = 0u;
         mli_check(__mliFrame_set_robjects_and_material_map(
                 frame,
                 geometry,
                 geomap,
-                &robject_counter,
-                &boundary_layer_counter),
-                "Failed to walk to tree of frames to set "
+                &num_robjects,
+                &total_num_boundary_layers),
+                "Failed to walk tree of frames to set "
                 "robjects and material map.");
         return 1;
 error:
