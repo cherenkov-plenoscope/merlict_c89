@@ -59,7 +59,7 @@ int mliScenery_malloc_from_Archive(
                 "Failed to malloc and populate tree of frames.");
 
         mli_check(
-                __mliGeometry_estimate_num_robjects_in_frames(
+                __mliFrame_estimate_num_robjects(
                         &num_robjects, &root),
                 "Can not estimate num_robjects from tree of frames.");
         num_objects = object_names.dyn.size;

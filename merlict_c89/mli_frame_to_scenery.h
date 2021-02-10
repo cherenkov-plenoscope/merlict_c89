@@ -10,7 +10,7 @@ int __mliGeometry_set_robjects(
         struct mliGeometry *scenery,
         const struct mliFrame *frame,
         uint64_t *robject_counter);
-int __mliGeometry_estimate_num_robjects_in_frames(
+int __mliFrame_estimate_num_robjects(
         uint64_t *num_robjects,
         const struct mliFrame *frame);
 #endif

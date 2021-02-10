@@ -3,7 +3,7 @@
 #include <math.h>
 #include "mli_debug.h"
 
-int __mliGeometry_estimate_num_robjects_in_frames(
+int __mliFrame_estimate_num_robjects(
         uint64_t *num_robjects,
         const struct mliFrame *frame)
 {
@@ -12,7 +12,7 @@ int __mliGeometry_estimate_num_robjects_in_frames(
         case MLI_FRAME:
                 for (c = 0; c < frame->children.dyn.size; c++) {
                         struct mliFrame *child = frame->children.arr[c];
-                        mli_c(__mliGeometry_estimate_num_robjects_in_frames(
+                        mli_c(__mliFrame_estimate_num_robjects(
                                 num_robjects, child));
                 }
                 break;
