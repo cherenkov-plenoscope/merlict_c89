@@ -37,7 +37,8 @@ void mliNameMap_free(struct mliNameMap *namemap)
         mliDynMap_free(&namemap->boundary_layers);
 }
 
-int mli_malloc_object_names_from_archive(
+int mli_set_geometry_objects_and_names_from_archive(
+        struct mliGeometry *geometry,
         struct mliDynMap *object_names,
         const struct mliArchive *archive)
 {
@@ -45,14 +46,16 @@ int mli_malloc_object_names_from_archive(
         uint64_t obj_idx = 0u;
         char key[MLI_NAME_CAPACITY];
 
-        mliDynMap_malloc(object_names, 0u);
-
         /* objects */
         obj_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_string_has_prefix_suffix(
                         archive->filenames.arr[arc_idx].key, "objects/", ".obj")
                 ) {
+                        mli_check(
+                                obj_idx < geometry->num_objects,
+                                "Expected less objects in archive.");
+
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(
                                 archive->filenames.arr[arc_idx].key,
@@ -60,6 +63,16 @@ int mli_malloc_object_names_from_archive(
                         mli_check(
                                 mliDynMap_insert(object_names, key, obj_idx),
                                 "Failed to insert object-filename into map.");
+                        mli_check(
+                                mliObject_malloc_from_wavefront(
+                                        &geometry->objects[obj_idx],
+                                        archive->strings.arr[arc_idx].c_str),
+                                "Failed to parse wave-front-object.");
+                        memcpy(
+                                geometry->object_names[obj_idx].c_str,
+                                key,
+                                MLI_NAME_CAPACITY);
+
                         obj_idx += 1u;
                 }
         }
@@ -262,52 +275,6 @@ int mli_malloc_root_frame_from_Archive(
         return 1;
 error:
         mliJson_free(&tree_json);
-        return 0;
-}
-
-int mliGeometry_set_objects_from_Archive(
-        struct mliGeometry *geometry,
-        const struct mliDynMap *object_names,
-        const struct mliArchive *archive)
-{
-        uint64_t obj_idx = 0u;
-        uint64_t obj_idx_in_name_map = 0u;
-        uint64_t arc_idx = 0u;
-        const uint64_t num_objects = object_names->dyn.size;
-        char key[MLI_NAME_CAPACITY];
-
-        for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
-                if (mli_string_has_prefix_suffix(
-                        archive->filenames.arr[arc_idx].key, "objects/", ".obj")
-                ) {
-                        mli_check(
-                                obj_idx < num_objects,
-                                "Expected less objects in archive.");
-
-                        mli_check(
-                                mliObject_malloc_from_wavefront(
-                                        &geometry->objects[obj_idx],
-                                        archive->strings.arr[arc_idx].c_str),
-                                "Failed to parse wave-front-object.");
-
-                        memset(key, '\0', sizeof(key));
-                        __mli_strip_key(archive->filenames.arr[arc_idx].key, key);
-                        mli_check(mliDynMap_get(
-                                object_names, key, &obj_idx_in_name_map),
-                                "Failed to find object in object_names.");
-                        mli_check(obj_idx == obj_idx_in_name_map,
-                                "Expected a different obj_idx for this "
-                                "object_name");
-                        memcpy(
-                                geometry->object_names[obj_idx].c_str,
-                                key,
-                                MLI_NAME_CAPACITY);
-
-                        obj_idx += 1u;
-                }
-        }
-        return 1;
-error:
         return 0;
 }
 

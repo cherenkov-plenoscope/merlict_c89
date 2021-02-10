@@ -44,10 +44,23 @@ int mliScenery_malloc_from_Archive(
                 archive),
                 "Failed to malloc materials.");
 
-        mli_check(mli_malloc_object_names_from_archive(
+        mli_c(mliDynMap_malloc(&object_names, 0u));
+
+        num_objects = mliArchive_num_filename_prefix_sufix(
+                archive,
+                "objects/",
+                ".obj");
+
+        mli_check(_mliGeometry_malloc_objects(
+                &scenery->geometry,
+                num_objects),
+                "Failed to malloc geometry.objects.");
+
+        mli_check(mli_set_geometry_objects_and_names_from_archive(
+                &scenery->geometry,
                 &object_names,
                 archive),
-                "Failed to malloc object-names.");
+                "Failed to malloc geometry.objects.");
 
         mli_check(
                 mli_malloc_root_frame_from_Archive(
@@ -61,21 +74,12 @@ int mliScenery_malloc_from_Archive(
         mli_check(
                 mliFrame_estimate_num_robjects(&root, &num_robjects),
                 "Can not estimate num_robjects from tree of frames.");
-        num_objects = object_names.dyn.size;
 
         mli_check(
-                mliGeometry_malloc(
+                _mliGeometry_malloc_references(
                         &scenery->geometry,
-                        num_objects,
                         num_robjects),
-                "Failed to malloc geometry.");
-
-        mli_check(
-                mliGeometry_set_objects_from_Archive(
-                        &scenery->geometry,
-                        &object_names,
-                        archive),
-                "Failed to set objects in geometry from archive.");
+                "Failed to malloc geometry.references.");
 
         mli_check(
                 __mliGeometry_set_robjects(
