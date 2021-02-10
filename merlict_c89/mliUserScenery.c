@@ -11,6 +11,7 @@ struct mliNameMap mliNameMap_init(void) {
         nm.colors = mliDynMap_init();
         nm.media = mliDynMap_init();
         nm.surfaces = mliDynMap_init();
+        nm.boundary_layers = mliDynMap_init();
         return nm;
 }
 
@@ -21,6 +22,7 @@ int mliNameMap_malloc(struct mliNameMap *namemap)
         mli_check_mem(mliDynMap_malloc(&namemap->colors, 0u));
         mli_check_mem(mliDynMap_malloc(&namemap->media, 0u));
         mli_check_mem(mliDynMap_malloc(&namemap->surfaces, 0u));
+        mli_check_mem(mliDynMap_malloc(&namemap->boundary_layers, 0u));
         return 1;
 error:
         return 0;
@@ -32,6 +34,7 @@ void mliNameMap_free(struct mliNameMap *namemap)
         mliDynMap_free(&namemap->colors);
         mliDynMap_free(&namemap->media);
         mliDynMap_free(&namemap->surfaces);
+        mliDynMap_free(&namemap->boundary_layers);
 }
 
 int mli_malloc_object_names_from_archive(
@@ -183,6 +186,8 @@ int mli_malloc_materials_form_archive(
                         names->surfaces.arr[i].key,
                         MLI_NAME_CAPACITY);
         }
+
+        /* boundary_layers */
 
         /* default medium */
 
@@ -350,6 +355,13 @@ int __mliMaterialsCapacity_from_materials_json(
                 json->tokens[token + 1].type == JSMN_ARRAY,
                 "Expected key 'surfaces' to point to a json-array.");
         rescap->num_surfaces = json->tokens[token + 1].size;
+        mli_check(
+                mliJson_find_key(json, 0, "boundary_layers", &token),
+                "Expected materials-json to have key 'boundary_layers'.");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_ARRAY,
+                "Expected key 'boundary_layers' to be a json-array.");
+        rescap->num_boundary_layers = json->tokens[token + 1].size;
         return 1;
 error:
         return 0;

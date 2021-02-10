@@ -26,6 +26,7 @@ CASE("mliMaterials, estimate capacity from json")
                 "    \"colors\": [1, 2],\n"
                 "    \"surfaces\": [1, 2, 3, 4, 5, 6, 7, 8]\n"
                 "    \"media\": [1],\n"
+                "    \"boundary_layers\": [1, 2, 3, 4],\n"
                 "}\n"
         );
         CHECK(mliJson_malloc_from_string(&material_json, json_str));
@@ -36,6 +37,7 @@ CASE("mliMaterials, estimate capacity from json")
         CHECK(rescap.num_colors == 2);
         CHECK(rescap.num_surfaces == 8);
         CHECK(rescap.num_media == 1);
+        CHECK(rescap.num_boundary_layers == 4);
 
         mliJson_free(&material_json);
 }

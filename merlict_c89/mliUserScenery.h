@@ -13,6 +13,7 @@ struct mliNameMap {
         struct mliDynMap colors;
         struct mliDynMap media;
         struct mliDynMap surfaces;
+        struct mliDynMap boundary_layers;
 };
 struct mliNameMap mliNameMap_init(void);
 int mliNameMap_malloc(struct mliNameMap *namemap);
