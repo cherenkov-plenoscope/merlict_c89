@@ -12,15 +12,7 @@ int __mliFrame_from_json(
         const uint64_t token_children,
         const struct mliDynMap *object_names,
         const struct mliObject *objects,
-        const struct mliDynMap *boundary_layer_names,
-        const struct mliDynMap *surface_names,
-        const struct mliDynMap *medium_names);
-int __mliFrame_set_surface_idx(
-        struct mliBoundaryLayer *boundary_layer,
-        const struct mliDynMap *surface_names,
-        const struct mliDynMap *medium_names,
-        const struct mliJson *json,
-        const uint64_t token);
+        const struct mliDynMap *boundary_layer_names);
 int __mliSide_set(
         struct mliSide *side,
         const struct mliDynMap *surface_names,

@@ -245,9 +245,7 @@ int mli_malloc_root_frame_from_Archive(
         const struct mliArchive *archive,
         const struct mliDynMap *object_names,
         const struct mliObject *objects,
-        const struct mliDynMap *boundary_layer_names,
-        const struct mliDynMap *surface_names,
-        const struct mliDynMap *medium_names)
+        const struct mliDynMap *boundary_layer_names)
 {
         uint64_t token = 0u;
         struct mliJson tree_json = mliJson_init();
@@ -267,9 +265,7 @@ int mli_malloc_root_frame_from_Archive(
                         token + 1,
                         object_names,
                         objects,
-                        boundary_layer_names,
-                        surface_names,
-                        medium_names),
+                        boundary_layer_names),
                 "Failed to populate tree of Frames from 'tree.json'.");
         mliJson_free(&tree_json);
 

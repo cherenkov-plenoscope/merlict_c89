@@ -68,9 +68,7 @@ int mliScenery_malloc_from_Archive(
                         archive,
                         &object_names,
                         scenery->geometry.objects,
-                        &material_names.boundary_layers,
-                        &material_names.surfaces,
-                        &material_names.media),
+                        &material_names.boundary_layers),
                 "Failed to malloc and populate tree of frames.");
 
         mli_check(

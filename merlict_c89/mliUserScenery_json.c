@@ -589,32 +589,6 @@ error:
         return 0;
 }
 
-int __mliFrame_set_surface_idx(
-        struct mliBoundaryLayer *boundary_layer,
-        const struct mliDynMap *surface_names,
-        const struct mliDynMap *medium_names,
-        const struct mliJson *json,
-        const uint64_t token)
-{
-        uint64_t token_surface, token_surface_key;
-        mli_check(
-                mliJson_find_key(json, token, "layer", &token_surface_key),
-                "Expected primitive to have key 'layer'.");
-
-        token_surface = token_surface_key + 1;
-        mli_check(
-                __mliBoundaryLayer_from_json(
-                        boundary_layer,
-                        surface_names,
-                        medium_names,
-                        json,
-                        token_surface),
-                "Failed to set inner, and outer boundary-layer.");
-        return 1;
-error:
-        return 0;
-}
-
 int __mliFrame_set_object_reference(
         uint32_t *object_reference,
         const struct mliJson *json,
@@ -640,9 +614,7 @@ int __mliFrame_from_json(
         const uint64_t token_children,
         const struct mliDynMap *object_names,
         const struct mliObject *objects,
-        const struct mliDynMap *boundary_layer_names,
-        const struct mliDynMap *surface_names,
-        const struct mliDynMap *medium_names)
+        const struct mliDynMap *boundary_layer_names)
 {
         uint64_t num_children;
         uint64_t c;
@@ -689,9 +661,7 @@ int __mliFrame_from_json(
                                         token_grandchildren + 1,
                                         object_names,
                                         objects,
-                                        boundary_layer_names,
-                                        surface_names,
-                                        medium_names),
+                                        boundary_layer_names),
                                 "Failed to populate grandchildren "
                                 "Frames from json.");
                         break;
