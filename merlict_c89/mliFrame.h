@@ -29,6 +29,7 @@ struct mliFrame {
         struct mliDynFramePtr children;
 
         uint32_t object;
+        uint32_t boundlayer;
         struct mliBoundaryLayer boundary_layer;
 };
 

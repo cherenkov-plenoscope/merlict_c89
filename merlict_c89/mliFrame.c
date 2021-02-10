@@ -17,6 +17,7 @@ struct mliFrame mliFrame_init(void)
         f.children = mliDynFramePtr_init();
         f.object = 0u;
 
+        f.boundlayer = 0u;
         f.boundary_layer.inner.surface = 0u;
         f.boundary_layer.outer.surface = 0u;
         f.boundary_layer.inner.medium = 0u;
@@ -142,6 +143,8 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
                f->frame2mother.rotation.z);
         if (f->type == MLI_OBJECT) {
                 printf("%*s", (int)indention, "");
+                printf("|-boundary_layer %u\n", f->boundlayer);
+
                 printf("|-inner (surf: %u, med: %u)\n",
                        f->boundary_layer.inner.surface,
                        f->boundary_layer.inner.medium);
