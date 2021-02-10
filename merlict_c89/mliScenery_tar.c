@@ -32,6 +32,7 @@ int mliScenery_malloc_from_Archive(
 {
         uint64_t num_robjects = 0u;
         uint64_t num_objects = 0u;
+        uint64_t total_num_boundary_layers = 0u;
         uint64_t robject_counter = 0u;
 
         struct mliNameMap material_names = mliNameMap_init();
@@ -74,8 +75,18 @@ int mliScenery_malloc_from_Archive(
                 "Failed to malloc and populate tree of frames.");
 
         mli_check(
-                mliFrame_estimate_num_robjects(&root, &num_robjects),
+                mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+                        &root,
+                        &num_robjects,
+                        &total_num_boundary_layers),
                 "Can not estimate num_robjects from tree of frames.");
+
+        mli_check(
+                mliGeometryToMaterialMap_malloc(
+                        &scenery->geomap,
+                        num_robjects,
+                        total_num_boundary_layers),
+                "Failed to malloc geometry to materials map.");
 
         mli_check(
                 _mliGeometry_malloc_references(

@@ -55,6 +55,7 @@
 #include "mliGeometry_OBB.c"
 #include "mliAccelerator.c"
 #include "mliAccelerator_serialize.c"
+#include "mliGeometryToMaterialMap.c"
 #include "mliScenery.c"
 #include "mliScenery_valid.c"
 #include "mliScenery_tar.c"

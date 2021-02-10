@@ -3,20 +3,24 @@
 #include <math.h>
 #include "mli_debug.h"
 
-int mliFrame_estimate_num_robjects(
+int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         const struct mliFrame *frame,
-        uint64_t *num_robjects)
+        uint64_t *num_robjects,
+        uint64_t *total_num_boundary_layers)
 {
         uint64_t c;
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.dyn.size; c++) {
-                        mli_c(mliFrame_estimate_num_robjects(
-                                frame->children.arr[c], num_robjects));
+                        mli_c(mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+                                frame->children.arr[c],
+                                num_robjects,
+                                total_num_boundary_layers));
                 }
                 break;
         case MLI_OBJECT:
                 (*num_robjects) += 1;
+                (*total_num_boundary_layers) += frame->boundary_layers.dyn.size;
                 break;
         default:
                 mli_sentinel("Expected either type 'frame' or 'object'.");

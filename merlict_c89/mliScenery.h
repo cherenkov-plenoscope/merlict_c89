@@ -10,6 +10,7 @@ struct mliScenery {
         struct mliGeometry geometry;
         struct mliAccelerator accelerator;
         struct mliMaterials materials;
+        struct mliGeometryToMaterialMap geomap;
 };
 
 struct mliScenery mliScenery_init(void);
