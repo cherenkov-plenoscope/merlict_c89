@@ -220,24 +220,37 @@ uint64_t mliJson_array_child_token(
         return idx;
 }
 
+int mliJson_debug_token_fprint(
+        FILE *f,
+        const struct mliJson *json,
+        const uint64_t token)
+{
+        uint64_t i = 0u;
+        uint32_t token_size = 0u;
+        struct jsmntok_t t = json->tokens[token];
+        token_size = t.end - t.start;
+        mli_c(fprintf(f, "Token: %lu ", i));
+        mli_c(fprintf(f, "sz: %d ", t.size));
+        mli_c(fprintf(f, "type: %d ", t.type));
+        mli_c(fprintf(f, "(%d -> %d, %d)\n", t.start, t.end, token_size));
+        for (i = 0; i < token_size; i++) {
+                mli_c(fputc(json->c_str[t.start + i], f));
+        }
+        mli_c(fprintf(f, "\n"));
+        return 1;
+error:
+        return 0;
+}
+
 int mliJson_debug_fprint(FILE *f, const struct mliJson *json)
 {
         uint64_t i;
-        char *buff;
-        mli_malloc(buff, char, json->c_str_capacity);
         for (i = 0; i < json->num_tokens; i++) {
-                struct jsmntok_t t = json->tokens[i];
-                fprintf(f, "Token: %lu ", i);
-                fprintf(f, "sz: %d ", t.size);
-                fprintf(f, "tp: %d ", t.type);
-                fprintf(f, "(%d -> %d, %d)\n", t.start, t.end, t.end - t.start);
-                mliJson_as_string(json, i, buff, json->c_str_capacity);
-                fprintf(f, "%s\n", buff);
+                mli_check(mliJson_debug_token_fprint(f, json, i),
+                        "Failed to write json-token debug-info to file.");
         }
-        free(buff);
         return 1;
 error:
-        free(buff);
         return 0;
 }
 

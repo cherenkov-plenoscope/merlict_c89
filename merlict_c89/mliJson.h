@@ -14,6 +14,10 @@ struct mliJson {
 
 int mliJson_debug_to_path(const struct mliJson *json, const char *path);
 int mliJson_debug_fprint(FILE *f, const struct mliJson *json);
+int mliJson_debug_token_fprint(
+        FILE *f,
+        const struct mliJson *json,
+        const uint64_t token);
 uint64_t mliJson_array_child_token(
         const struct mliJson *json,
         const uint64_t start_token_idx,
