@@ -74,6 +74,7 @@ int mliMaterials_malloc(
         res->num_colors = rescap.num_colors;
         res->num_surfaces = rescap.num_surfaces;
         res->num_media = rescap.num_media;
+        res->num_boundary_layers = rescap.num_boundary_layers;
 
         mli_malloc(res->functions, struct mliFunc, res->num_functions);
         mli_malloc(res->function_names, struct mliName, res->num_functions);

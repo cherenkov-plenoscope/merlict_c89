@@ -37,11 +37,24 @@ int __mliFrame_type_from_json(
         uint64_t *type,
         const struct mliJson *json,
         const uint64_t token_child);
+int __mliFrame_set_boundary_layer(
+        struct mliBoundaryLayer *boundary_layer,
+        const struct mliDynMap *surface_names,
+        const struct mliDynMap *medium_names,
+        const struct mliJson *json,
+        const uint64_t token_surface);
+
 int __mliMaterials_assign_surfaces_from_json(
         struct mliMaterials *resources,
         struct mliDynMap *surface_names,
         const struct mliDynMap *function_names,
         const struct mliDynMap *color_names,
+        const struct mliJson *json);
+int __mliMaterials_assign_boundary_layers_from_json(
+        struct mliMaterials *materials,
+        struct mliDynMap *boundary_layer_names,
+        const struct mliDynMap *surface_names,
+        const struct mliDynMap *medium_names,
         const struct mliJson *json);
 int __mliSurface_from_json(
         struct mliSurface *surface,

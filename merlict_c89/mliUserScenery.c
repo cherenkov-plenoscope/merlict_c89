@@ -189,6 +189,21 @@ int mli_malloc_materials_form_archive(
 
         /* boundary_layers */
 
+        mli_check(
+                __mliMaterials_assign_boundary_layers_from_json(
+                        materials,
+                        &names->boundary_layers,
+                        &names->surfaces,
+                        &names->media,
+                        &materials_json),
+                "Failed to copy boundary_layers from materials.json.");
+        for (i = 0; i < materials->num_boundary_layers; i++) {
+                memcpy(
+                        materials->boundary_layer_names[i].c_str,
+                        names->boundary_layers.arr[i].key,
+                        MLI_NAME_CAPACITY);
+        }
+
         /* default medium */
 
         mli_check(

@@ -333,6 +333,56 @@ error:
         return 0;
 }
 
+int __mliMaterials_assign_boundary_layers_from_json(
+        struct mliMaterials *materials,
+        struct mliDynMap *boundary_layer_names,
+        const struct mliDynMap *surface_names,
+        const struct mliDynMap *medium_names,
+        const struct mliJson *json)
+{
+        uint64_t token;
+        uint64_t token_layers;
+        uint64_t s;
+        mli_check(
+                mliJson_find_key(json, 0, "boundary_layers", &token),
+                "Expected scenery-json to have key 'boundary_layers'.");
+        token_layers = token + 1;
+        mli_check(
+                json->tokens[token_layers].type == JSMN_ARRAY,
+                "Expected key 'boundary_layers' to be a json-array.");
+        mli_check(
+                materials->num_boundary_layers ==
+                        (uint32_t)json->tokens[token_layers].size,
+                "Expected num_boundary_layers in materials to match "
+                "json-array.size.");
+        for (s = 0; s < materials->num_boundary_layers; s++) {
+                uint64_t token_s =
+                        mliJson_array_child_token(json, token_layers, s);
+                uint64_t token_s_name;
+                mli_check(
+                        json->tokens[token_s].type == JSMN_OBJECT,
+                        "Expected boundary_layer to be of type object {}.");
+                mli_check(
+                        mliJson_find_key(json, token_s, "name", &token_s_name),
+                        "Expected boundary_layers-object to have key 'name'.");
+                mli_check(
+                        _mliDynMap_key_from_json(
+                                boundary_layer_names, json, token_s_name, s),
+                        "Failed to insert boundary_layer's name into map.");
+                mli_check(
+                        __mliFrame_set_boundary_layer(
+                                &materials->boundary_layers[s],
+                                surface_names,
+                                medium_names,
+                                json,
+                                token_s),
+                        "Failed to copy boundary_layer from json.");
+        }
+        return 1;
+error:
+        return 0;
+}
+
 int __mliFrame_type_from_json(
         uint64_t *type,
         const struct mliJson *json,
