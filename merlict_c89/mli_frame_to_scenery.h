@@ -4,7 +4,6 @@
 
 #include <stdint.h>
 #include "mliGeometry.h"
-#include "mliUserScenery.h"
 
 int __mliGeometry_set_robjects(
         struct mliGeometry *geometry,
