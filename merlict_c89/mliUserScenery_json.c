@@ -528,26 +528,66 @@ error:
         return 0;
 }
 
-/*
-int __mliFrame_set_material(
-        struct mliFrame *frame,
+int  __mliFrame_set_boundary_layers(
+        struct mliDynUint32 *boundary_layers,
+        const uint32_t object_idx,
+        const struct mliObject *objects,
         const struct mliDynMap *boundary_layer_names,
-        const struct mliDynMap *object_material_names,
         const struct mliJson *json,
         const uint64_t token)
 {
-        uint64_t token_mtl;
+        uint64_t token_mtl_key, token_mtl;
+        uint64_t material_idx;
         mli_check(
-                mliJson_find_key(json, token, "mtl", &token_mtl),
+                mliJson_find_key(json, token, "mtl", &token_mtl_key),
                 "Expected 'mtl' in Frame.");
+        token_mtl = token_mtl_key + 1;
         mli_check(
                 json->tokens[token_mtl].type == JSMN_OBJECT,
                 "Expected 'mtl' to be a json-object {}.");
+
+        for (
+                material_idx = 0u;
+                material_idx < objects[object_idx].num_materials;
+                material_idx++)
+        {
+                const char *material_key_in_object = objects[object_idx].
+                        material_names[material_idx].c_str;
+
+                uint64_t token_material_key = 0u;
+                uint32_t boundary_layer_idx = 0u;
+                mli_check(
+                        mliJson_find_key(
+                                json,
+                                token_mtl,
+                                material_key_in_object,
+                                &token_material_key),
+                        "Expected object's material-key to be in "
+                        "object-reference's mtls in tree.json.");
+
+                mli_check(
+                        _mliDynMap_get_value_for_string_from_json(
+                                boundary_layer_names,
+                                json,
+                                token_material_key,
+                                &boundary_layer_idx),
+                        "Expected boundary-layer to exist in materials.");
+
+                mli_check(
+                        mliDynUint32_push_back(
+                                boundary_layers,
+                                boundary_layer_idx),
+                        "Failed to push-back boundary_layer_idx into "
+                        "frame's boundary_layers.");
+        }
+
         return 1;
 error:
+        mli_eprintf("object-idx: %u\n", object_idx);
+        mli_eprintf("json-token: %lu\n", token);
+        mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
-*/
 
 int __mliFrame_set_surface_idx(
         struct mliBoundaryLayer *boundary_layer,
@@ -599,6 +639,8 @@ int __mliFrame_from_json(
         const struct mliJson *json,
         const uint64_t token_children,
         const struct mliDynMap *object_names,
+        const struct mliObject *objects,
+        const struct mliDynMap *boundary_layer_names,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names)
 {
@@ -646,6 +688,8 @@ int __mliFrame_from_json(
                                         json,
                                         token_grandchildren + 1,
                                         object_names,
+                                        objects,
+                                        boundary_layer_names,
                                         surface_names,
                                         medium_names),
                                 "Failed to populate grandchildren "
@@ -668,6 +712,16 @@ int __mliFrame_from_json(
                                         token_child,
                                         object_names),
                                 "Failed to parse object-reference "
+                                "from json.");
+                        mli_check(
+                                __mliFrame_set_boundary_layers(
+                                        &child->boundary_layers,
+                                        child->object,
+                                        objects,
+                                        boundary_layer_names,
+                                        json,
+                                        token_child),
+                                "Failed to set boundary_layers of Frame "
                                 "from json.");
                         break;
                 default:

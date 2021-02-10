@@ -11,6 +11,8 @@ int __mliFrame_from_json(
         const struct mliJson *json,
         const uint64_t token_children,
         const struct mliDynMap *object_names,
+        const struct mliObject *objects,
+        const struct mliDynMap *boundary_layer_names,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names);
 int __mliFrame_set_surface_idx(

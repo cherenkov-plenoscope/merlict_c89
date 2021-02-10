@@ -158,6 +158,7 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
                 }
                 printf("]\n");
 
+                printf("%*s", (int)indention, "");
                 printf("|-inner (surf: %u, med: %u)\n",
                        f->boundary_layer.inner.surface,
                        f->boundary_layer.inner.medium);
@@ -168,7 +169,7 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
                        f->boundary_layer.outer.medium);
 
                 printf("%*s", (int)indention, "");
-                printf("|-obj [%u]\n", f->object);
+                printf("|-obj %u\n", f->object);
         }
         for (c = 0; c < f->children.dyn.size; c++) {
                 const struct mliFrame *child = f->children.arr[c];
