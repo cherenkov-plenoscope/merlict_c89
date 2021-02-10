@@ -299,11 +299,11 @@ int __mliMaterials_assign_surfaces_from_json(
         token_surfaces = token + 1;
         mli_check(
                 json->tokens[token_surfaces].type == JSMN_ARRAY,
-                "Expected key 'surfaces' to point to a json-array.")
+                "Expected key 'surfaces' to be a json-array.")
                 mli_check(
                         resources->num_surfaces ==
                                 (uint64_t)json->tokens[token_surfaces].size,
-                        "Expected num_surfaces in SceneryResources "
+                        "Expected num_surfaces in materials to match "
                         "json-array.size.");
         for (s = 0; s < resources->num_surfaces; s++) {
                 uint64_t token_s =
@@ -318,7 +318,7 @@ int __mliMaterials_assign_surfaces_from_json(
                 mli_check(
                         _mliDynMap_key_from_json(
                                 surface_names, json, token_s_name, s),
-                        "Failed to read and insert surface's name into map.");
+                        "Failed to insert surface's name into map.");
                 mli_check(
                         __mliSurface_from_json(
                                 &resources->surfaces[s],
