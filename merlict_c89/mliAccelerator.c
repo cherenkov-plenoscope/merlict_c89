@@ -165,7 +165,6 @@ void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
                         accel->robject_obbs[rob].upper.y,
                         accel->robject_obbs[rob].upper.z);
         }
-        fprintf(f, "\n");
 }
 
 struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel)

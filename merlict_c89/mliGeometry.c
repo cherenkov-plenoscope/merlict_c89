@@ -143,5 +143,4 @@ void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
                         geometry->robject2root[rob].rotation.z,
                         geometry->robject2root[rob].rotation.w);
         }
-        fprintf(f, "\n");
 }
