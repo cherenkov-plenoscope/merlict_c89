@@ -79,8 +79,6 @@ int __mliFrame_set_robjects_and_material_map(
                         "Expected frame->object < num_objects.");
                 /* geometry */
                 geometry->robjects[robject_idx] = frame->object;
-                geometry->robject_boundary_layers[robject_idx] =
-                        frame->boundary_layer;
                 geometry->robject2root[robject_idx] = frame->frame2root;
                 geometry->robject_ids[robject_idx] = frame->id;
 

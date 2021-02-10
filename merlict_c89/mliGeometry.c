@@ -14,8 +14,6 @@ void _mliGeometry_init_references(struct mliGeometry *geometry)
         geometry->num_robjects = 0u;
         geometry->robjects = NULL;
         geometry->robject_ids = NULL;
-
-        geometry->robject_boundary_layers = NULL;
         geometry->robject2root = NULL;
 }
 
@@ -42,7 +40,6 @@ void _mliGeometry_free_references(struct mliGeometry *geometry)
 {
         free(geometry->robjects);
         free(geometry->robject_ids);
-        free(geometry->robject_boundary_layers);
         free(geometry->robject2root);
         _mliGeometry_init_references(geometry);
 }
@@ -79,10 +76,6 @@ int _mliGeometry_malloc_references(
         geometry->num_robjects = num_robjects;
         mli_malloc(geometry->robjects, uint32_t, geometry->num_robjects);
         mli_malloc(geometry->robject_ids, uint32_t, geometry->num_robjects);
-        mli_malloc(
-                geometry->robject_boundary_layers,
-                struct mliBoundaryLayer,
-                geometry->num_robjects);
         mli_malloc(
                 geometry->robject2root,
                 struct mliHomTraComp,

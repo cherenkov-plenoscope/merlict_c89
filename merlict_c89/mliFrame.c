@@ -18,10 +18,6 @@ struct mliFrame mliFrame_init(void)
         f.object = 0u;
 
         f.boundary_layers = mliDynUint32_init();
-        f.boundary_layer.inner.surface = 0u;
-        f.boundary_layer.outer.surface = 0u;
-        f.boundary_layer.inner.medium = 0u;
-        f.boundary_layer.outer.medium = 0u;
         return f;
 }
 
@@ -157,16 +153,6 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
                         printf("%u,", f->boundary_layers.arr[ii]);
                 }
                 printf("]\n");
-
-                printf("%*s", (int)indention, "");
-                printf("|-inner (surf: %u, med: %u)\n",
-                       f->boundary_layer.inner.surface,
-                       f->boundary_layer.inner.medium);
-
-                printf("%*s", (int)indention, "");
-                printf("|-outer (surf: %u, med: %u)\n",
-                       f->boundary_layer.outer.surface,
-                       f->boundary_layer.outer.medium);
 
                 printf("%*s", (int)indention, "");
                 printf("|-obj %u\n", f->object);

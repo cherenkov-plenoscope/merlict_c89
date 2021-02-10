@@ -4,7 +4,6 @@
 
 #include <stdint.h>
 #include "mliHomTra.h"
-#include "mliBoundaryLayer.h"
 #include "mliMaterials.h"
 #include "mliName.h"
 
@@ -16,7 +15,6 @@ struct mliGeometry {
         uint32_t num_robjects;
         uint32_t *robjects;
         uint32_t *robject_ids;
-        struct mliBoundaryLayer *robject_boundary_layers;
         struct mliHomTraComp *robject2root;
 };
 

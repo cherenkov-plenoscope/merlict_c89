@@ -38,12 +38,10 @@ error:
 }
 
 int _mliGeometry_valid_object_references(
-        const struct mliGeometry *geometry,
-        const struct mliMaterials *materials)
+        const struct mliGeometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
-
                 mli_check(
                         geometry->robjects[i] < geometry->num_objects,
                         "Expected robjects to refer to valid objects.");
@@ -51,28 +49,6 @@ int _mliGeometry_valid_object_references(
                  *       robject_ids are set by the user and can be whatever
                  *       the user wants.
                  */
-
-                mli_check(
-                        geometry->robject_boundary_layers[i].inner.surface <
-                                materials->num_surfaces,
-                        "Expected object-reference to refer "
-                        "to a valid inner surface.");
-                mli_check(
-                        geometry->robject_boundary_layers[i].outer.surface <
-                                materials->num_surfaces,
-                        "Expected object-reference to refer "
-                        "to a valid outer surface.");
-
-                mli_check(
-                        geometry->robject_boundary_layers[i].inner.medium <
-                                materials->num_surfaces,
-                        "Expected object-reference to refer "
-                        "to a valid inner medium.");
-                mli_check(
-                        geometry->robject_boundary_layers[i].outer.medium <
-                                materials->num_surfaces,
-                        "Expected object-reference to refer "
-                        "to a valid outer medium.");
         }
         return 1;
         mli_eprintf("robject[%u] is invalid.", i);
@@ -81,8 +57,7 @@ error:
 }
 
 int mliGeometry_valid(
-        const struct mliGeometry *geometry,
-        const struct mliMaterials *materials)
+        const struct mliGeometry *geometry)
 {
         mli_check(
                 _mliGeometry_valid_objects(geometry),
@@ -91,7 +66,7 @@ int mliGeometry_valid(
                 _mliGeometry_valid_robjects_HomTras(geometry),
                 "Expected robject transformations to be free of 'nan'.");
         mli_check(
-                _mliGeometry_valid_object_references(geometry, materials),
+                _mliGeometry_valid_object_references(geometry),
                 "Expected object-references to be valid.");
         return 1;
 error:

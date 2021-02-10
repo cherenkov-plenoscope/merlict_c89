@@ -8,7 +8,6 @@ CASE("mliGeometry, init")
         CHECK(scenery.num_robjects == 0u);
         CHECK(scenery.robjects == NULL);
         CHECK(scenery.robject_ids == NULL);
-        CHECK(scenery.robject_boundary_layers == NULL);
         CHECK(scenery.robject2root == NULL);
 }
 

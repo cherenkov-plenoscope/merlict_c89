@@ -30,7 +30,6 @@ struct mliFrame {
 
         uint32_t object;
         struct mliDynUint32 boundary_layers;
-        struct mliBoundaryLayer boundary_layer;
 };
 
 void mliFrame_set_frame2root(struct mliFrame *f);

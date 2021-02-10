@@ -8,7 +8,7 @@ int mliScenery_valid(const struct mliScenery *scenery)
                 mliMaterials_valid(&scenery->materials),
                 "Expected materials to be valid.");
         mli_check(
-                mliGeometry_valid(&scenery->geometry, &scenery->materials),
+                mliGeometry_valid(&scenery->geometry),
                 "Expected geometry to be valid.");
         return 1;
 error:

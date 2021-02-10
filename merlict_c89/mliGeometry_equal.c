@@ -48,12 +48,6 @@ int _mliGeometry_object_references_equal(
                         "Expected the users object-ids to be equal.");
 
                 mli_check(
-                        mliBoundaryLayer_is_equal(
-                                a->robject_boundary_layers[rob],
-                                b->robject_boundary_layers[rob]),
-                        "Expected boundary layers to be equal");
-
-                mli_check(
                         mliHomTraComp_is_equal(
                                 a->robject2root[rob], b->robject2root[rob]),
                         "Expected homogenous transformation of "

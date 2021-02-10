@@ -42,11 +42,6 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
                 geometry->num_robjects,
                 f);
         mli_fread(
-                geometry->robject_boundary_layers,
-                sizeof(struct mliBoundaryLayer),
-                geometry->num_robjects,
-                f);
-        mli_fread(
                 geometry->robject2root,
                 sizeof(struct mliHomTraComp),
                 geometry->num_robjects,
@@ -85,11 +80,6 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
         mli_fwrite(
                 geometry->robject_ids,
                 sizeof(uint32_t),
-                geometry->num_robjects,
-                f);
-        mli_fwrite(
-                geometry->robject_boundary_layers,
-                sizeof(struct mliBoundaryLayer),
                 geometry->num_robjects,
                 f);
         mli_fwrite(
