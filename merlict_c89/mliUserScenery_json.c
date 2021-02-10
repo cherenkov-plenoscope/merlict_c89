@@ -528,6 +528,27 @@ error:
         return 0;
 }
 
+/*
+int __mliFrame_set_material(
+        struct mliFrame *frame,
+        const struct mliDynMap *boundary_layer_names,
+        const struct mliDynMap *object_material_names,
+        const struct mliJson *json,
+        const uint64_t token)
+{
+        uint64_t token_mtl;
+        mli_check(
+                mliJson_find_key(json, token, "mtl", &token_mtl),
+                "Expected 'mtl' in Frame.");
+        mli_check(
+                json->tokens[token_mtl].type == JSMN_OBJECT,
+                "Expected 'mtl' to be a json-object {}.");
+        return 1;
+error:
+        return 0;
+}
+*/
+
 int __mliFrame_set_surface_idx(
         struct mliBoundaryLayer *boundary_layer,
         const struct mliDynMap *surface_names,
