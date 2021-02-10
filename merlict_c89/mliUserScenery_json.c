@@ -91,7 +91,7 @@ error:
         return 0;
 }
 
-int __mliGeometry_assign_colors_from_json(
+int __mliMaterials_assign_colors_from_json(
         struct mliMaterials *resources,
         struct mliDynMap *color_names,
         const struct mliJson *json)
@@ -167,7 +167,7 @@ error:
         return 0;
 }
 
-int __mliGeometry_assign_media_from_json(
+int __mliMaterials_assign_media_from_json(
         struct mliMaterials *resources,
         struct mliDynMap *medium_names,
         const struct mliDynMap *function_names,
@@ -283,7 +283,7 @@ error:
         return 0;
 }
 
-int __mliGeometry_assign_surfaces_from_json(
+int __mliMaterials_assign_surfaces_from_json(
         struct mliMaterials *resources,
         struct mliDynMap *surface_names,
         const struct mliDynMap *function_names,
