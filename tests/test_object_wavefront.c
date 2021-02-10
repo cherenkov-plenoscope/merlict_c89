@@ -501,6 +501,9 @@ CASE("mliObject, read and write multiple materials")
                 &str,
                 "tests/"
                 "resources/"
+                "sceneries/"
+                "002/"
+                "objects/"
                 "cube_with_materials.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj_orig, str.c_str));
         mliString_free(&str);

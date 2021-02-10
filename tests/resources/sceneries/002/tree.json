@@ -47,6 +47,25 @@
                 "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
             },
             "mtl": {"disc_skin": "vacu_pabs_pabs_vacu"}
-        }
+        },
+        {
+            "type": "object",
+            "id": 89,
+            "pos": [-5, 0, 5],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "cube_with_materials",
+            "layer": {
+                "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+                "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+            },
+            "mtl": {
+                "px": "vacu_gblu_gred_glass",
+                "mx": "vacu_spcm_pabs_vacu",
+                "py": "vacu_pabs_spcm_vacu",
+                "my": "vacu_gblu_gred_glass",
+                "pz": "vacu_spcm_pabs_vacu",
+                "mz": "vacu_pabs_pabs_vacu"
+            }
+        },
     ]
 }
