@@ -11,6 +11,6 @@ int __mliGeometry_set_robjects(
         const struct mliFrame *frame,
         uint64_t *robject_counter);
 int __mliFrame_estimate_num_robjects(
-        uint64_t *num_robjects,
-        const struct mliFrame *frame);
+        const struct mliFrame *frame,
+        uint64_t *num_robjects);
 #endif

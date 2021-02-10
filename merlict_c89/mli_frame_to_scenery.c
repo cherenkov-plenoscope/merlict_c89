@@ -4,8 +4,8 @@
 #include "mli_debug.h"
 
 int __mliFrame_estimate_num_robjects(
-        uint64_t *num_robjects,
-        const struct mliFrame *frame)
+        const struct mliFrame *frame,
+        uint64_t *num_robjects)
 {
         uint64_t c;
         switch (frame->type) {
@@ -13,7 +13,7 @@ int __mliFrame_estimate_num_robjects(
                 for (c = 0; c < frame->children.dyn.size; c++) {
                         struct mliFrame *child = frame->children.arr[c];
                         mli_c(__mliFrame_estimate_num_robjects(
-                                num_robjects, child));
+                                child, num_robjects));
                 }
                 break;
         case MLI_OBJECT:
