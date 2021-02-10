@@ -3,7 +3,7 @@
 #include <math.h>
 #include "mli_debug.h"
 
-int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+int __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         const struct mliFrame *frame,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers)
@@ -12,7 +12,7 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.dyn.size; c++) {
-                        mli_c(mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+                        mli_c(__mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
                                 frame->children.arr[c],
                                 num_robjects,
                                 total_num_boundary_layers));
@@ -26,6 +26,25 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
                 mli_sentinel("Expected either type 'frame' or 'object'.");
                 break;
         }
+        return 1;
+error:
+        return 0;
+}
+
+int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+        const struct mliFrame *frame,
+        uint64_t *num_robjects,
+        uint64_t *total_num_boundary_layers)
+{
+        (*num_robjects) = 0u;
+        (*total_num_boundary_layers) = 0u;
+        mli_check(
+                __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+                        frame,
+                        num_robjects,
+                        total_num_boundary_layers),
+                "Failed to walk through tree of frames to estimate "
+                "num_robjects and total_num_boundary_layers.");
         return 1;
 error:
         return 0;
