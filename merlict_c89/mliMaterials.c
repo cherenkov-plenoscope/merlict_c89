@@ -166,6 +166,13 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         for (i = 0; i < res->num_boundary_layers; i++) {
                 fprintf(f, "        ");
                 fprintf(f, "% 3d, %-32s  ", i, res->boundary_layer_names[i].c_str);
+                fprintf(f, "inner (medium: % 3d, surface : % 3d)",
+                        res->boundary_layers[i].inner.medium,
+                        res->boundary_layers[i].inner.surface);
+                fprintf(f, ",  ");
+                fprintf(f, "outer (medium: % 3d, surface : % 3d)",
+                        res->boundary_layers[i].outer.medium,
+                        res->boundary_layers[i].outer.surface);
                 fprintf(f, "\n");
         }
 
