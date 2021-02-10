@@ -11,9 +11,8 @@ int __mliFrame_estimate_num_robjects(
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.dyn.size; c++) {
-                        struct mliFrame *child = frame->children.arr[c];
                         mli_c(__mliFrame_estimate_num_robjects(
-                                child, num_robjects));
+                                frame->children.arr[c], num_robjects));
                 }
                 break;
         case MLI_OBJECT:
@@ -35,13 +34,13 @@ int __mliGeometry_set_robjects(
 {
         uint64_t c;
         uint64_t rob;
-        struct mliFrame *child;
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.dyn.size; c++) {
-                        child = frame->children.arr[c];
-                        __mliGeometry_set_robjects(
-                                scenery, child, robject_counter);
+                        mli_c(__mliGeometry_set_robjects(
+                                scenery,
+                                frame->children.arr[c],
+                                robject_counter));
                 }
                 break;
         case MLI_OBJECT:
