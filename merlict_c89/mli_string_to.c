@@ -4,9 +4,10 @@
 #include <limits.h>
 #include <stdlib.h>
 
-int mli_string_to_int(int64_t *out, char *s, uint64_t base)
+int mli_nstring_to_int(int64_t *out, char *s, uint64_t base, const uint64_t expected_num_chars)
 {
         char *end;
+        uint64_t actual_num_chars = 0u;
         int64_t l;
         mli_check(
                 !(s[0] == '\0' || isspace(s[0])),
@@ -16,8 +17,21 @@ int mli_string_to_int(int64_t *out, char *s, uint64_t base)
         mli_check(
                 errno != ERANGE,
                 "Can not convert string to int64, over-, under-flow.");
-        mli_check(*end == '\0', "Can not convert string to int64, bad string.");
+        mli_check(end != NULL, "Can not convert string to int64, bad string.");
+        actual_num_chars = end - s;
+        mli_check(actual_num_chars == expected_num_chars,
+                "Integer has not the expected number of chars.");
         *out = l;
+        return 1;
+error:
+        return 0;
+}
+
+int mli_string_to_int(int64_t *out, char *s, uint64_t base)
+{
+        mli_check(
+                mli_nstring_to_int(out, s, base, strlen(s)),
+                "Can not convert string to int64.");
         return 1;
 error:
         return 0;

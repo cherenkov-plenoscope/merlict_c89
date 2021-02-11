@@ -122,21 +122,16 @@ int mliJson_as_int64(
         const uint64_t token_idx,
         int64_t *return_int64)
 {
-        struct jsmntok_t t = json->tokens[token_idx];
-        uint64_t buff_size = t.end - t.start + 1u;
-        char *buff = NULL;
+        const struct jsmntok_t t = json->tokens[token_idx];
+        const uint64_t token_length = t.end - t.start;
         mli_check(
                 t.type == JSMN_PRIMITIVE,
                 "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
-        mli_malloc(buff, char, buff_size);
-        mliJson_as_string(json, token_idx, buff, buff_size);
         mli_check(
-                mli_string_to_int(return_int64, buff, 10),
+                mli_nstring_to_int(return_int64, &json->c_str[t.start], 10, token_length),
                 "Can not parse int.");
-        free(buff);
         return 1;
 error:
-        free(buff);
         return 0;
 }
 
