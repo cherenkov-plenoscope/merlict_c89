@@ -65,6 +65,7 @@
 #include "mliScenery_valid.c"
 #include "mliScenery_tar.c"
 #include "mliScenery_serialize.c"
+#include "mliScenery_equal.c"
 #include "mliRay_OBB.c"
 #include "mliVec_OBB.c"
 #include "mliTriangle_OBB.c"

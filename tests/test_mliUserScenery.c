@@ -204,7 +204,7 @@ CASE("mliScenery, read, write")
                 &orig, "tests/resources/scenery.bin.tmp"));
         CHECK(mliScenery_malloc_from_path(
                 &back, "tests/resources/scenery.bin.tmp"));
-        /*CHECK(mliScenery_equal(&back, &orig));*/
+        CHECK(mliScenery_equal(&back, &orig));
 
         mliScenery_free(&back);
         mliScenery_free(&orig);
