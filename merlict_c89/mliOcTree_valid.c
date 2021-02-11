@@ -42,7 +42,7 @@ error:
         return 0;
 }
 
-int mliOcTree_valid_links(
+int mliOcTree_valid_wrt_links(
         const struct mliOcTree *octree,
         const uint32_t num_links)
 {

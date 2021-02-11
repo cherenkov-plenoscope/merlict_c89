@@ -8,6 +8,7 @@
 
 int mliScenery_valid(const struct mliScenery *scenery)
 {
+        /* check in itself */
         mli_check(
                 mliMaterials_valid(&scenery->materials),
                 "Expected materials to be valid.");
@@ -20,6 +21,15 @@ int mliScenery_valid(const struct mliScenery *scenery)
         mli_check(
                 mliGeometryToMaterialMap_valid(&scenery->geomap),
                 "Expected geometry-to-materials-map to be valid.");
+
+        /* check interplay */
+        mli_check(
+                mliAccelerator_valid_wrt_Geometry(
+                        &scenery->accelerator,
+                        &scenery->geometry),
+                "Expected accelerator to be valid w.r.t. geometry.");
+
+
         return 1;
 error:
         return 0;
