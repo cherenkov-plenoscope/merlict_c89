@@ -203,10 +203,7 @@ int mliJson_find_key(
                 idx += 1;
                 child += 1;
         }
-        mli_check(found, "No such key in json-object.");
-        return 1;
-error:
-        return 0;
+        return found;
 }
 
 uint64_t mliJson_array_child_token(
@@ -237,13 +234,17 @@ int mliJson_debug_token_fprint(
         const uint64_t token)
 {
         uint64_t i = 0u;
-        uint32_t token_size = 0u;
         struct jsmntok_t t = json->tokens[token];
-        token_size = t.end - t.start;
-        mli_c(fprintf(f, "Token: %lu ", i));
-        mli_c(fprintf(f, "sz: %d ", t.size));
-        mli_c(fprintf(f, "type: %d ", t.type));
-        mli_c(fprintf(f, "(%d -> %d, %d)\n", t.start, t.end, token_size));
+        uint32_t token_size = t.end - t.start;
+        uint64_t line_number = 1u + mli_string_count_chars_up_to(
+                json->c_str,
+                '\n',
+                t.start);
+        mli_c(fprintf(f, "line: %lu, ", line_number));
+        mli_c(fprintf(f, "token: %lu, ", token));
+        mli_c(fprintf(f, "type: %d, ", t.type));
+        mli_c(fprintf(f, "children: %d, ", t.size));
+        mli_c(fprintf(f, "chars: (%d -> %d, %d)\n", t.start, t.end, token_size));
         for (i = 0; i < token_size; i++) {
                 mli_c(fputc(json->c_str[t.start + i], f));
         }

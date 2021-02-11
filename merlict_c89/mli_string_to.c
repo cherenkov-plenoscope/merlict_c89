@@ -201,3 +201,19 @@ int mli_string_assert_only_NUL_LF_TAB_controls(const char *str)
         }
         return 1;
 }
+
+uint64_t mli_string_count_chars_up_to(
+        const char *str,
+        const char c,
+        const uint64_t num_chars_to_scan)
+{
+        uint64_t i = 0;
+        uint64_t count = 0u;
+        while (str[i] != '\0' && i < num_chars_to_scan) {
+                if (str[i] == c) {
+                        count++;
+                }
+                i++;
+        }
+        return count;
+}

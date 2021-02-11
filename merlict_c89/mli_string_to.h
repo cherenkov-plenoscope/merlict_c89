@@ -31,4 +31,9 @@ int _mli_is_CRLF_line_break(const char *s);
 int _mli_is_CR_line_break(const char *s);
 int mli_string_assert_only_NUL_LF_TAB_controls(const char *str);
 
+uint64_t mli_string_count_chars_up_to(
+        const char *str,
+        const char c,
+        const uint64_t num_chars_to_scan);
+
 #endif

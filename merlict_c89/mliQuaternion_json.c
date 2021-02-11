@@ -101,7 +101,7 @@ int __mliQuaternion_from_json(
                         __mliQuaternion_quaternion_from_json(quat, json, token),
                         "Failed to parse quaternion rotation.");
         } else {
-                mli_sentinel("Unknown representation ('repr') in rotation.");
+                mli_sentinel("Unknown representation 'repr' in rotation.");
         }
         free(repr_str);
         return 1;
