@@ -6,91 +6,89 @@
 
 int __mli_material_type_from_name_token(
         const struct mliJson *json,
-        const uint64_t token_name,
+        const uint64_t token,
         uint32_t *out_material_type)
 {
-        char *name_str = NULL;
-        uint64_t name_str_capacity =
-                (json->tokens[token_name + 1].end -
-                 json->tokens[token_name + 1].start + 1u);
+        char buff[MLI_NAME_CAPACITY] = {'\0'};
+        const uint64_t name_strlen = (json->tokens[token + 1].end -
+                json->tokens[token + 1].start);
         mli_check(
-                json->tokens[token_name + 1].type == JSMN_STRING,
+                name_strlen < sizeof(buff),
+                "Value of 'name' is too long");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_STRING,
                 "Expected 'name' to be of type string.");
-        mli_malloc(name_str, char, name_str_capacity);
         mli_check(
                 mliJson_as_string(
-                        json, token_name + 1, name_str, name_str_capacity),
+                        json, token + 1, buff, name_strlen + 1),
                 "Failed to extract string from json.");
         mli_check(
-                mli_material_type_from_string(name_str, out_material_type),
+                mli_material_type_from_string(buff, out_material_type),
                 "Failed to parse material type from json-string.");
-        free(name_str);
         return 1;
 error:
-        free(name_str);
-        mliJson_debug_token_fprint(stderr, json, token_name);
+        mliJson_debug_token_fprint(stderr, json, token + 1);
         return 0;
 }
 
 int _mliDynMap_insert_key_from_json(
         struct mliDynMap *map,
         const struct mliJson *json,
-        const uint64_t token_name,
+        const uint64_t token,
         const uint64_t value)
 {
-        char *name_str = NULL;
-        uint64_t name_str_capacity =
-                (json->tokens[token_name + 1].end -
-                 json->tokens[token_name + 1].start + 1u);
+        char buff[MLI_NAME_CAPACITY] = {'\0'};
+        const uint64_t name_strlen =
+                (json->tokens[token + 1].end -
+                 json->tokens[token + 1].start);
         mli_check(
-                json->tokens[token_name + 1].type == JSMN_STRING,
-                "Expected 'name' to be of type string.");
-        mli_malloc(name_str, char, name_str_capacity);
+                name_strlen < sizeof(buff),
+                "Key is too long");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_STRING,
+                "Expected key to be of type string.");
         mli_check(
                 mliJson_as_string(
-                        json, token_name + 1, name_str, name_str_capacity),
+                        json, token + 1, buff, name_strlen + 1),
                 "Failed to extract string from json.");
         mli_check(
-                mliDynMap_insert(map, name_str, value),
+                mliDynMap_insert(map, buff, value),
                 "Failed to insert name and value into map.");
-        free(name_str);
         return 1;
 error:
-        free(name_str);
-        mliJson_debug_token_fprint(stderr, json, token_name);
+        mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
 int _mliDynMap_get_value_for_string_from_json(
         const struct mliDynMap *map,
         const struct mliJson *json,
-        const uint64_t token_name,
+        const uint64_t token,
         uint32_t *out_value)
 {
-        char *name_str = NULL;
+        char buff[MLI_NAME_CAPACITY] = {'\0'};
         uint64_t value;
-        uint64_t name_str_capacity =
-                (json->tokens[token_name + 1].end -
-                 json->tokens[token_name + 1].start + 1u);
+        uint64_t name_strlen =
+                (json->tokens[token + 1].end -
+                 json->tokens[token + 1].start);
         mli_check(
-                json->tokens[token_name + 1].type == JSMN_STRING,
+                name_strlen < sizeof(buff),
+                "Key is too long");
+        mli_check(
+                json->tokens[token + 1].type == JSMN_STRING,
                 "Expected token to be of type string to be given to mliMap.");
-        mli_malloc(name_str, char, name_str_capacity);
         mli_check(
                 mliJson_as_string(
-                        json, token_name + 1, name_str, name_str_capacity),
+                        json, token + 1, buff, name_strlen + 1),
                 "Failed to extract string from json.");
         mli_check(
-                mliDynMap_get(map, name_str, &value),
+                mliDynMap_get(map, buff, &value),
                 "Failed to get value for json-string-key from map.");
-
         (*out_value) = (uint32_t)value;
 
-        free(name_str);
         return 1;
 error:
-        free(name_str);
-        mliJson_debug_token_fprint(stderr, json, token_name);
+        mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
