@@ -76,10 +76,8 @@
 #include "mliOcTree_serialize.h"
 #include "mliOcTree_equal.h"
 #include "mliOcTree_valid.h"
-
 #include "mli_ray_octree_traversal.h"
 #include "mli_ray_scenery_query.h"
-
 #include "mli_from_outside_to_inside.h"
 #include "mliTracer.h"
 #include "mliView.h"
