@@ -2,6 +2,7 @@
 #include "mliScenery_valid.h"
 #include "mliMaterials_valid.h"
 #include "mliGeometry_valid.h"
+#include "mliAccelerator_valid.h"
 #include "mliGeometryToMaterialMap_valid.h"
 #include "mli_debug.h"
 
@@ -13,6 +14,9 @@ int mliScenery_valid(const struct mliScenery *scenery)
         mli_check(
                 mliGeometry_valid(&scenery->geometry),
                 "Expected geometry to be valid.");
+        mli_check(
+                mliAccelerator_valid(&scenery->accelerator),
+                "Expected accelerator to be valid");
         mli_check(
                 mliGeometryToMaterialMap_valid(&scenery->geomap),
                 "Expected geometry-to-materials-map to be valid.");

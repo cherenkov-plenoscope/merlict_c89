@@ -55,6 +55,7 @@
 #include "mliGeometry_OBB.c"
 #include "mliAccelerator.c"
 #include "mliAccelerator_serialize.c"
+#include "mliAccelerator_valid.c"
 #include "mliGeometryToMaterialMap.c"
 #include "mliGeometryToMaterialMap_equal.c"
 #include "mliGeometryToMaterialMap_valid.c"

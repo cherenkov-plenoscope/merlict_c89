@@ -4,5 +4,5 @@
 
 #include "mliAccelerator.h"
 
-int mliAccelerator_valid(struct mliAccelerator *accel,);
+int mliAccelerator_valid(const struct mliAccelerator *accel);
 #endif
