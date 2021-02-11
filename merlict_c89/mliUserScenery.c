@@ -310,7 +310,7 @@ int __mliMaterialsCapacity_from_materials_json(
         struct mliMaterialsCapacity *rescap,
         const struct mliJson *json)
 {
-        uint64_t token;
+        uint64_t token = 0u;
         mli_check(
                 mliJson_find_key(json, 0, "colors", &token),
                 "Expected materials-json to have key 'colors'.");

@@ -28,10 +28,11 @@ int __mli_material_type_from_name_token(
         return 1;
 error:
         free(name_str);
+        mliJson_debug_token_fprint(stderr, json, token_name);
         return 0;
 }
 
-int _mliDynMap_key_from_json(
+int _mliDynMap_insert_key_from_json(
         struct mliDynMap *map,
         const struct mliJson *json,
         const uint64_t token_name,
@@ -56,6 +57,7 @@ int _mliDynMap_key_from_json(
         return 1;
 error:
         free(name_str);
+        mliJson_debug_token_fprint(stderr, json, token_name);
         return 0;
 }
 
@@ -88,6 +90,7 @@ int _mliDynMap_get_value_for_string_from_json(
         return 1;
 error:
         free(name_str);
+        mliJson_debug_token_fprint(stderr, json, token_name);
         return 0;
 }
 
@@ -130,7 +133,7 @@ int __mliMaterials_assign_colors_from_json(
                                 &resources->colors[c], json, token_c_rgb + 1),
                         "Failed to assign color from json.");
                 mli_check(
-                        _mliDynMap_key_from_json(
+                        _mliDynMap_insert_key_from_json(
                                 color_names, json, token_c_name, c),
                         "Failed to read and insert color's name into map.");
         }
@@ -143,11 +146,11 @@ int __mliMedium_from_json(
         struct mliMedium *medium,
         const struct mliDynMap *function_names,
         const struct mliJson *json,
-        const uint64_t token_s)
+        const uint64_t token)
 {
         uint64_t token_refr, token_abso;
         mli_check(
-                mliJson_find_key(json, token_s, "refraction", &token_refr),
+                mliJson_find_key(json, token, "refraction", &token_refr),
                 "Expected surface-item to contain key 'refraction'.");
         mli_check(
                 _mliDynMap_get_value_for_string_from_json(
@@ -155,7 +158,7 @@ int __mliMedium_from_json(
                 "Failed to get idx from map for string from json");
 
         mli_check(
-                mliJson_find_key(json, token_s, "absorbtion", &token_abso),
+                mliJson_find_key(json, token, "absorbtion", &token_abso),
                 "Expected surface-item to contain key 'absorbtion'.");
         mli_check(
                 _mliDynMap_get_value_for_string_from_json(
@@ -164,6 +167,7 @@ int __mliMedium_from_json(
 
         return 1;
 error:
+        mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
@@ -206,7 +210,7 @@ int __mliMaterials_assign_media_from_json(
                                 token_m),
                         "Failed to copy medium from json.");
                 mli_check(
-                        _mliDynMap_key_from_json(
+                        _mliDynMap_insert_key_from_json(
                                 medium_names, json, token_m_name, m),
                         "Failed to read and insert medium's name into map.");
         }
@@ -280,6 +284,7 @@ int __mliSurface_from_json(
 
         return 1;
 error:
+        mliJson_debug_token_fprint(stderr, json, token_s);
         return 0;
 }
 
@@ -316,7 +321,7 @@ int __mliMaterials_assign_surfaces_from_json(
                         mliJson_find_key(json, token_s, "name", &token_s_name),
                         "Expected surface-object to have key 'name'.");
                 mli_check(
-                        _mliDynMap_key_from_json(
+                        _mliDynMap_insert_key_from_json(
                                 surface_names, json, token_s_name, s),
                         "Failed to insert surface's name into map.");
                 mli_check(
@@ -366,7 +371,7 @@ int __mliMaterials_assign_boundary_layers_from_json(
                         mliJson_find_key(json, token_s, "name", &token_s_name),
                         "Expected boundary_layers-object to have key 'name'.");
                 mli_check(
-                        _mliDynMap_key_from_json(
+                        _mliDynMap_insert_key_from_json(
                                 boundary_layer_names, json, token_s_name, s),
                         "Failed to insert boundary_layer's name into map.");
                 mli_check(
@@ -380,6 +385,7 @@ int __mliMaterials_assign_boundary_layers_from_json(
         }
         return 1;
 error:
+        mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
@@ -408,6 +414,7 @@ int __mliFrame_type_from_json(
 
         return 1;
 error:
+        mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
@@ -429,6 +436,7 @@ int __mliFrame_set_id(
 
         return 1;
 error:
+        mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
@@ -457,6 +465,7 @@ int __mliFrame_set_pos_rot(
                 "Failed to parse Frame's 'rot' from json.");
         return 1;
 error:
+        mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
@@ -488,6 +497,7 @@ int __mliSide_set(
 
         return 1;
 error:
+        mliJson_debug_token_fprint(stderr, json, side_token + 1);
         return 0;
 }
 
@@ -526,6 +536,7 @@ int __mliBoundaryLayer_from_json(
                 "Failed to parse outer side.");
         return 1;
 error:
+        mliJson_debug_token_fprint(stderr, json, token_surface);
         return 0;
 }
 
@@ -581,8 +592,6 @@ int __mliFrame_set_boundary_layers(
 
         return 1;
 error:
-        mli_eprintf("object-idx: %u\n", object_idx);
-        mli_eprintf("json-token: %lu\n", token);
         mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
@@ -600,9 +609,10 @@ int __mliFrame_set_object_reference(
         mli_check(
                 _mliDynMap_get_value_for_string_from_json(
                         object_names, json, token_obj_key, object_reference),
-                "Failed to get object-reference from map");
+                "Failed to get object-reference 'obj' from map");
         return 1;
 error:
+        mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
 

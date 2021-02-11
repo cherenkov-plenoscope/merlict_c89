@@ -75,7 +75,7 @@ int _mliDynMap_get_value_for_string_from_json(
         const struct mliJson *json,
         const uint64_t token_name,
         uint32_t *out_value);
-int _mliDynMap_key_from_json(
+int _mliDynMap_insert_key_from_json(
         struct mliDynMap *map,
         const struct mliJson *json,
         const uint64_t token_name,
