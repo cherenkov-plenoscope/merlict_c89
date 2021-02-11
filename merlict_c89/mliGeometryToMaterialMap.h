@@ -29,6 +29,10 @@ void mliGeometryToMaterialMap_set(
         const uint32_t material_idx,
         const uint32_t boundary_layer_idx);
 
+uint32_t mliGeometryToMaterialMap_num_boundary_layers_in_robject(
+        const struct mliGeometryToMaterialMap *map,
+        const uint32_t robject_idx);
+
 void mliGeometryToMaterialMap_info_fprint(
         FILE *f,
         const struct mliGeometryToMaterialMap *map);

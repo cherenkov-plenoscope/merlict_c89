@@ -6,4 +6,11 @@
 
 int mliGeometryToMaterialMap_valid(
         const struct mliGeometryToMaterialMap *geomap);
+
+int mliGeometryToMaterialMap_valid_wrt_Geometry(
+        const struct mliGeometryToMaterialMap *geomap,
+        const struct mliGeometry *geometry);
+int mliGeometryToMaterialMap_valid_wrt_Materials(
+        const struct mliGeometryToMaterialMap *geomap,
+        const struct mliMaterials *materials);
 #endif

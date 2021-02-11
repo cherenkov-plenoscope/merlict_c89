@@ -76,30 +76,47 @@ void mliGeometryToMaterialMap_set(
                         map, robject_idx, material_idx)] = boundary_layer_idx;
 }
 
+uint32_t mliGeometryToMaterialMap_num_boundary_layers_in_robject(
+        const struct mliGeometryToMaterialMap *map,
+        const uint32_t robject_idx)
+{
+        const uint32_t start = _mliGeometryToMaterialMap_resolve_idx(
+                map,
+                robject_idx,
+                0u);
+        uint32_t end = start;
+        if (robject_idx + 1 < map->num_robjects) {
+                end = _mliGeometryToMaterialMap_resolve_idx(
+                        map,
+                        robject_idx + 1,
+                        0u);
+        } else {
+                end = map->total_num_boundary_layers;
+        }
+        return end - start;
+}
+
 void mliGeometryToMaterialMap_info_fprint(
         FILE *f,
         const struct mliGeometryToMaterialMap *map)
 {
-        uint32_t robj, bdl;
+        uint32_t robj, bdl, bdl_start, num_bdls;
         fprintf(f, "Geometry to material map:\n");
         fprintf(f, "%*s", 4, "");
         fprintf(f, " ref    boundary-layers\n");
         fprintf(f, "%*s", 4, "");
         fprintf(f, "--------------------------------\n");
         for (robj = 0u; robj < map->num_robjects; robj++) {
-                uint32_t bdl_start = map->first_boundary_layer_in_robject[robj];
-                uint32_t bdl_end = bdl_start;
-
+                bdl_start = _mliGeometryToMaterialMap_resolve_idx(
+                        map, robj, 0u);
+                num_bdls = mliGeometryToMaterialMap_num_boundary_layers_in_robject(
+                        map, robj);
                 fprintf(f, "%*s", 4, "");
                 fprintf(f, "% 4d  [", robj);
-
-                if (robj + 1 < map->num_robjects) {
-                        bdl_end = map->first_boundary_layer_in_robject[robj+1];
-                } else {
-                        bdl_end = map->total_num_boundary_layers;
-                }
-                for (bdl = bdl_start; bdl < bdl_end; bdl++) {
-                        fprintf(f, "% 2d, ", map->boundary_layers[bdl]);
+                for (bdl = 0u; bdl < num_bdls; bdl++) {
+                        fprintf(f,
+                                "% 2d, ",
+                                map->boundary_layers[bdl_start + bdl]);
                 }
                 fprintf(f, "]\n");
         }
