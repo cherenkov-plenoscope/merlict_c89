@@ -63,7 +63,11 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
         mli_fread(&num_materials, sizeof(uint32_t), 1u, f);
 
         mli_c(mliObject_malloc(
-                obj, num_vertices, num_vertex_normals, num_faces, num_materials));
+                obj,
+                num_vertices,
+                num_vertex_normals,
+                num_faces,
+                num_materials));
 
         mli_fread(obj->vertices, sizeof(struct mliVec), obj->num_vertices, f);
         mli_fread(

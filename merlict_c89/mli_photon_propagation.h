@@ -46,7 +46,9 @@ int _mli_pass_boundary_layer(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec,
         const struct mliFresnel fresnel);
-int _mli_phong(struct mliEnv *env, const struct mliIntersectionSurfaceNormal *isec);
+int _mli_phong(
+        struct mliEnv *env,
+        const struct mliIntersectionSurfaceNormal *isec);
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
         const struct mliScenery *scenery,

@@ -58,7 +58,8 @@ int _mliGeometry_malloc_objects(
         uint32_t i;
         geometry->num_objects = num_objects;
         mli_malloc(geometry->objects, struct mliObject, geometry->num_objects);
-        mli_malloc(geometry->object_names, struct mliName, geometry->num_objects);
+        mli_malloc(
+                geometry->object_names, struct mliName, geometry->num_objects);
         for (i = 0; i < geometry->num_objects; i++) {
                 geometry->objects[i] = mliObject_init();
                 geometry->object_names[i] = mliName_init();
@@ -106,12 +107,21 @@ void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
         fprintf(f, "Geometry:\n");
         fprintf(f, "%*sobjects:\n", 4, "");
 
-        fprintf(f, "%*s obj  name                                 #v    #vn     #f   #mtl\n", 8, "");
-        fprintf(f, "%*s------------------------------------------------------------------\n", 8, "");
+        fprintf(f,
+                "%*s obj  name                                 #v    #vn     "
+                "#f   #mtl\n",
+                8,
+                "");
+        fprintf(f,
+                "%*s-----------------------------------------------------------"
+                "-------\n",
+                8,
+                "");
         for (i = 0; i < geometry->num_objects; i++) {
                 fprintf(f, "%*s% 4d  ", 8, "", i);
                 fprintf(f, "%-32s  ", geometry->object_names[i].c_str);
-                fprintf(f, "% 5d  % 5d  % 5d  % 5d",
+                fprintf(f,
+                        "% 5d  % 5d  % 5d  % 5d",
                         geometry->objects[i].num_vertices,
                         geometry->objects[i].num_vertex_normals,
                         geometry->objects[i].num_faces,
@@ -121,9 +131,16 @@ void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
         fprintf(f, "\n");
         fprintf(f, "%*sobject-references:\n", 4, "");
         fprintf(f,
-                "%*s ref   obj    id   translation(xyz)/m     rot. quarternion(xyz;w)\n", 8, "");
-        fprintf(f, "%*s------------------------------------------------------------"
-                "-----\n", 8, "");
+                "%*s ref   obj    id   translation(xyz)/m     rot. "
+                "quarternion(xyz;w)\n",
+                8,
+                "");
+        fprintf(f,
+                "%*s-----------------------------------------------------------"
+                "-"
+                "-----\n",
+                8,
+                "");
         for (rob = 0; rob < geometry->num_robjects; rob++) {
                 fprintf(f,
                         "%*s% 4d  % 4d  % 4d  "

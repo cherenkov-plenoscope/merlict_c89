@@ -5,7 +5,8 @@
 #include "mli_debug.h"
 #include "mliJson.h"
 
-struct mliNameMap mliNameMap_init(void) {
+struct mliNameMap mliNameMap_init(void)
+{
         struct mliNameMap nm;
         nm.functions = mliDynMap_init();
         nm.colors = mliDynMap_init();
@@ -50,16 +51,16 @@ int mli_set_geometry_objects_and_names_from_archive(
         obj_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_string_has_prefix_suffix(
-                        archive->filenames.arr[arc_idx].key, "objects/", ".obj")
-                ) {
+                            archive->filenames.arr[arc_idx].key,
+                            "objects/",
+                            ".obj")) {
                         mli_check(
                                 obj_idx < geometry->num_objects,
                                 "Expected less objects in archive.");
 
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(
-                                archive->filenames.arr[arc_idx].key,
-                                key);
+                                archive->filenames.arr[arc_idx].key, key);
                         mli_check(
                                 mliDynMap_insert(object_names, key, obj_idx),
                                 "Failed to insert object-filename into map.");
@@ -68,10 +69,9 @@ int mli_set_geometry_objects_and_names_from_archive(
                                         &geometry->objects[obj_idx],
                                         archive->strings.arr[arc_idx].c_str),
                                 "Failed to parse wave-front-object.");
-                        memcpy(
-                                geometry->object_names[obj_idx].c_str,
-                                key,
-                                MLI_NAME_CAPACITY);
+                        memcpy(geometry->object_names[obj_idx].c_str,
+                               key,
+                               MLI_NAME_CAPACITY);
 
                         obj_idx += 1u;
                 }
@@ -94,8 +94,7 @@ int mli_malloc_materials_form_archive(
         char key[MLI_NAME_CAPACITY];
 
         struct mliJson materials_json = mliJson_init();
-        struct mliMaterialsCapacity cap =
-                mliMaterialsCapacity_init();
+        struct mliMaterialsCapacity cap = mliMaterialsCapacity_init();
 
         /* free */
         mliMaterials_free(materials);
@@ -128,8 +127,9 @@ int mli_malloc_materials_form_archive(
         fnc_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_string_has_prefix_suffix(
-                        archive->filenames.arr[arc_idx].key, "functions/", ".csv")
-                ) {
+                            archive->filenames.arr[arc_idx].key,
+                            "functions/",
+                            ".csv")) {
                         mli_check(
                                 mliFunc_malloc_from_csv(
                                         &materials->functions[fnc_idx],
@@ -138,17 +138,17 @@ int mli_malloc_materials_form_archive(
                                 "file.");
 
                         memset(key, '\0', sizeof(key));
-                        __mli_strip_key(archive->filenames.arr[arc_idx].key, key);
+                        __mli_strip_key(
+                                archive->filenames.arr[arc_idx].key, key);
 
                         mli_check(
                                 mliDynMap_insert(
                                         &names->functions, key, fnc_idx),
                                 "Failed to insert function-name into map.");
 
-                        memcpy(
-                                materials->function_names[fnc_idx].c_str,
-                                names->functions.arr[fnc_idx].key,
-                                MLI_NAME_CAPACITY);
+                        memcpy(materials->function_names[fnc_idx].c_str,
+                               names->functions.arr[fnc_idx].key,
+                               MLI_NAME_CAPACITY);
 
                         fnc_idx += 1u;
                 }
@@ -161,10 +161,9 @@ int mli_malloc_materials_form_archive(
                         materials, &names->colors, &materials_json),
                 "Failed to copy colors from materials.json.");
         for (i = 0; i < materials->num_colors; i++) {
-                memcpy(
-                        materials->color_names[i].c_str,
-                        names->colors.arr[i].key,
-                        MLI_NAME_CAPACITY);
+                memcpy(materials->color_names[i].c_str,
+                       names->colors.arr[i].key,
+                       MLI_NAME_CAPACITY);
         }
 
         /* media */
@@ -177,10 +176,9 @@ int mli_malloc_materials_form_archive(
                         &materials_json),
                 "Failed to copy media from materials.json.");
         for (i = 0; i < materials->num_media; i++) {
-                memcpy(
-                        materials->medium_names[i].c_str,
-                        names->media.arr[i].key,
-                        MLI_NAME_CAPACITY);
+                memcpy(materials->medium_names[i].c_str,
+                       names->media.arr[i].key,
+                       MLI_NAME_CAPACITY);
         }
 
         /* surfaces */
@@ -194,10 +192,9 @@ int mli_malloc_materials_form_archive(
                         &materials_json),
                 "Failed to copy surfaces from materials.json.");
         for (i = 0; i < materials->num_surfaces; i++) {
-                memcpy(
-                        materials->surface_names[i].c_str,
-                        names->surfaces.arr[i].key,
-                        MLI_NAME_CAPACITY);
+                memcpy(materials->surface_names[i].c_str,
+                       names->surfaces.arr[i].key,
+                       MLI_NAME_CAPACITY);
         }
 
         /* boundary_layers */
@@ -211,10 +208,9 @@ int mli_malloc_materials_form_archive(
                         &materials_json),
                 "Failed to copy boundary_layers from materials.json.");
         for (i = 0; i < materials->num_boundary_layers; i++) {
-                memcpy(
-                        materials->boundary_layer_names[i].c_str,
-                        names->boundary_layers.arr[i].key,
-                        MLI_NAME_CAPACITY);
+                memcpy(materials->boundary_layer_names[i].c_str,
+                       names->boundary_layers.arr[i].key,
+                       MLI_NAME_CAPACITY);
         }
 
         /* default medium */
@@ -256,8 +252,7 @@ int mli_malloc_root_frame_from_Archive(
                 mliJson_find_key(&tree_json, 0, "children", &token),
                 "Expected 'tree.json' to have key 'children'.");
         mli_check(
-                mliFrame_malloc(root, MLI_FRAME),
-                "Can not malloc root-frame.");
+                mliFrame_malloc(root, MLI_FRAME), "Can not malloc root-frame.");
         mli_check(
                 __mliFrame_from_json(
                         root,

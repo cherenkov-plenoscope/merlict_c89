@@ -40,9 +40,7 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         (*total_num_boundary_layers) = 0u;
         mli_check(
                 __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
-                        frame,
-                        num_robjects,
-                        total_num_boundary_layers),
+                        frame, num_robjects, total_num_boundary_layers),
                 "Failed to walk tree of frames to estimate "
                 "num_robjects and total_num_boundary_layers.");
         return 1;
@@ -85,17 +83,15 @@ int __mliFrame_set_robjects_and_material_map(
                 /* materials map */
                 mli_check(
                         frame->boundary_layers.dyn.size ==
-                        geometry->objects[frame->object].num_materials,
+                                geometry->objects[frame->object].num_materials,
                         "Expected Frame to have same "
                         "num boundary_layers as object.");
 
                 geomap->first_boundary_layer_in_robject[robject_idx] =
                         (*total_num_boundary_layers);
-                for (
-                        material_idx = 0;
-                        material_idx < frame->boundary_layers.dyn.size;
-                        material_idx++)
-                {
+                for (material_idx = 0;
+                     material_idx < frame->boundary_layers.dyn.size;
+                     material_idx++) {
                         mliGeometryToMaterialMap_set(
                                 geomap,
                                 robject_idx,
@@ -122,12 +118,13 @@ int mliFrame_set_robjects_and_material_map(
 {
         uint64_t num_robjects = 0u;
         uint64_t total_num_boundary_layers = 0u;
-        mli_check(__mliFrame_set_robjects_and_material_map(
-                frame,
-                geometry,
-                geomap,
-                &num_robjects,
-                &total_num_boundary_layers),
+        mli_check(
+                __mliFrame_set_robjects_and_material_map(
+                        frame,
+                        geometry,
+                        geomap,
+                        &num_robjects,
+                        &total_num_boundary_layers),
                 "Failed to walk tree of frames to set "
                 "robjects and material map.");
         return 1;

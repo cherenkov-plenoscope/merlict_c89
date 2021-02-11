@@ -19,7 +19,6 @@ struct mliNameMap mliNameMap_init(void);
 int mliNameMap_malloc(struct mliNameMap *namemap);
 void mliNameMap_free(struct mliNameMap *namemap);
 
-
 int __mliMaterialsCapacity_from_materials_json(
         struct mliMaterialsCapacity *rescap,
         const struct mliJson *json);

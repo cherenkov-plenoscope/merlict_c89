@@ -369,7 +369,8 @@ int mlivr_run_interactive_viewer(
                                 probing_ray_wrt_root = mliHomTra_ray(
                                         &camera2root, probing_ray_wrt_camera);
 
-                                probing_intersection = mliIntersectionSurfaceNormal_init();
+                                probing_intersection =
+                                        mliIntersectionSurfaceNormal_init();
 
                                 has_probing_intersection =
                                         mli_query_intersection_with_surface_normal(
@@ -392,13 +393,12 @@ int mlivr_run_interactive_viewer(
                                        "pos [% -.2e, % -.2e, % -.2e], "
                                        "normal [% -.3f, % -.3f, % -.3f], ",
                                        scenery->geometry.robject_ids
-                                               [probing_intersection
-                                                        .geometry_id.robj],
+                                               [probing_intersection.geometry_id
+                                                        .robj],
                                        probing_intersection.geometry_id.robj,
-                                       scenery->geometry
-                                               .robjects[probing_intersection
-                                                                  .geometry_id
-                                                                  .robj],
+                                       scenery->geometry.robjects
+                                               [probing_intersection.geometry_id
+                                                        .robj],
                                        probing_intersection.geometry_id.face,
                                        probing_intersection.distance_of_ray,
                                        probing_intersection.position.x,

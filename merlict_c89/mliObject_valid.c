@@ -4,13 +4,16 @@
 
 int mliObject_is_valid(const struct mliObject *obj)
 {
-        mli_check(mliObject_has_valid_vertices(obj),
+        mli_check(
+                mliObject_has_valid_vertices(obj),
                 "Expected vertices to be valid.");
-        mli_check(mliObject_has_valid_faces(obj),
-                "Expected faces to be valid.");
-        mli_check(mliObject_has_valid_normals(obj, MLI_EPSILON),
+        mli_check(
+                mliObject_has_valid_faces(obj), "Expected faces to be valid.");
+        mli_check(
+                mliObject_has_valid_normals(obj, MLI_EPSILON),
                 "Expected vertex-normals to be normalized.");
-        mli_check(mliObject_has_valid_materials(obj),
+        mli_check(
+                mliObject_has_valid_materials(obj),
                 "Expected materials to be valid.");
         return 1;
 error:
@@ -67,7 +70,9 @@ error:
         return 0;
 }
 
-int mliObject_has_valid_normals(const struct mliObject *obj, const double epsilon)
+int mliObject_has_valid_normals(
+        const struct mliObject *obj,
+        const double epsilon)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_vertex_normals; i++) {
@@ -97,14 +102,16 @@ int mliObject_has_valid_materials(const struct mliObject *obj)
                 if (i > 0) {
                         mli_check(
                                 obj->first_face_in_next_material[i] >
-                                obj->first_face_in_next_material[i - 1],
-                                "Expected first_face_in_next_material to be strictly "
-                                "ascending, but it is not."
-                        );
+                                        obj->first_face_in_next_material[i - 1],
+                                "Expected first_face_in_next_material to be "
+                                "strictly "
+                                "ascending, but it is not.");
                 }
-                mli_check(mliName_valid(&obj->material_names[i]),
+                mli_check(
+                        mliName_valid(&obj->material_names[i]),
                         "Expected material_name to be '\\0' terminated.");
-                mli_check(strlen(obj->material_names[i].c_str) > 0,
+                mli_check(
+                        strlen(obj->material_names[i].c_str) > 0,
                         "Expected strlen(material_name) > 0.");
         }
         return 1;

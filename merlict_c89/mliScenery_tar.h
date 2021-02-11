@@ -5,9 +5,7 @@
 #include "mliScenery.h"
 #include "mliArchive.h"
 
-int mliScenery_malloc_from_tar(
-        struct mliScenery *scenery,
-        const char *path);
+int mliScenery_malloc_from_tar(struct mliScenery *scenery, const char *path);
 int mliScenery_malloc_from_Archive(
         struct mliScenery *scenery,
         const struct mliArchive *archive);

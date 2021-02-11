@@ -7,27 +7,34 @@ int mliOcTree_valid(const struct mliOcTree *octree)
         mli_check(!MLI_IS_NAN(octree->cube.lower.x), "cube.lower.x is 'nan'.");
         mli_check(!MLI_IS_NAN(octree->cube.lower.y), "cube.lower.y is 'nan'.");
         mli_check(!MLI_IS_NAN(octree->cube.lower.z), "cube.lower.z is 'nan'.");
-        mli_check(!MLI_IS_NAN(octree->cube.edge_length),
+        mli_check(
+                !MLI_IS_NAN(octree->cube.edge_length),
                 "cube.edge_length is 'nan'.");
-        mli_check(octree->cube.edge_length >= 0.0,
+        mli_check(
+                octree->cube.edge_length >= 0.0,
                 "Expected cube.edge_length >= 0.0.");
 
         for (n = 0u; n < octree->num_nodes; n++) {
                 for (c = 0u; c < 8u; c++) {
                         if (octree->nodes[n].types[c] == MLI_OCTREE_TYPE_NONE) {
-                                mli_check(octree->nodes[n].children[c] == 0u,
+                                mli_check(
+                                        octree->nodes[n].children[c] == 0u,
                                         "Expected the address of a 'NONE' "
                                         "child to be '0'.");
-                        } else if (octree->nodes[n].types[c] == MLI_OCTREE_TYPE_NODE) {
+                        } else if (
+                                octree->nodes[n].types[c] ==
+                                MLI_OCTREE_TYPE_NODE) {
                                 mli_check(
                                         octree->nodes[n].children[c] <
-                                        octree->num_nodes,
+                                                octree->num_nodes,
                                         "Expected the address of a 'NODE' "
                                         "child to be < num_nodes.");
-                        } else if (octree->nodes[n].types[c] == MLI_OCTREE_TYPE_LEAF) {
+                        } else if (
+                                octree->nodes[n].types[c] ==
+                                MLI_OCTREE_TYPE_LEAF) {
                                 mli_check(
                                         octree->nodes[n].children[c] <
-                                        octree->leafs.num_leafs,
+                                                octree->leafs.num_leafs,
                                         "Expected the address of a 'LEAF' "
                                         "child to be < leafs.num_leafs.");
                         } else {
@@ -48,7 +55,8 @@ int mliOcTree_valid_wrt_links(
 {
         uint32_t n;
         for (n = 0u; n < octree->leafs.num_object_links; n++) {
-                mli_check(octree->leafs.object_links[n] < num_links,
+                mli_check(
+                        octree->leafs.object_links[n] < num_links,
                         "Expected object_links[n] <  num_links.");
         }
         return 1;

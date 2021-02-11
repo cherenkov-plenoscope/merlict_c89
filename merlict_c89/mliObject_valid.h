@@ -7,6 +7,8 @@
 int mliObject_is_valid(const struct mliObject *obj);
 int mliObject_has_valid_vertices(const struct mliObject *obj);
 int mliObject_has_valid_faces(const struct mliObject *obj);
-int mliObject_has_valid_normals(const struct mliObject *obj, const double epsilon);
+int mliObject_has_valid_normals(
+        const struct mliObject *obj,
+        const double epsilon);
 int mliObject_has_valid_materials(const struct mliObject *obj);
 #endif

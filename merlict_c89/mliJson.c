@@ -246,7 +246,8 @@ int mliJson_debug_fprint(FILE *f, const struct mliJson *json)
 {
         uint64_t i;
         for (i = 0; i < json->num_tokens; i++) {
-                mli_check(mliJson_debug_token_fprint(f, json, i),
+                mli_check(
+                        mliJson_debug_token_fprint(f, json, i),
                         "Failed to write json-token debug-info to file.");
         }
         return 1;

@@ -44,9 +44,7 @@ int mliScenery_malloc_from_path(struct mliScenery *scenery, const char *path)
         FILE *f;
         f = fopen(path, "r");
         mli_check(f != NULL, "Can not open file for reading.");
-        mli_check(
-                mliScenery_malloc_fread(scenery, f),
-                "Can not read file.");
+        mli_check(mliScenery_malloc_fread(scenery, f), "Can not read file.");
         fclose(f);
         return 1;
 error:
@@ -62,9 +60,7 @@ int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
         FILE *f;
         f = fopen(path, "w");
         mli_check(f != NULL, "Can not open file for writing.");
-        mli_check(
-                mliScenery_fwrite(scenery, f),
-                "Failed to write to file.");
+        mli_check(mliScenery_fwrite(scenery, f), "Failed to write to file.");
         fclose(f);
         return 1;
 error:

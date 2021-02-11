@@ -11,8 +11,7 @@ int _mliMaterials_functions_equal(
         for (i = 0; i < a->num_functions; i++) {
                 mli_c(mliFunc_equal(a->functions[i], b->functions[i]));
                 mli_c(mliName_equal(
-                        &a->function_names[i],
-                        &b->function_names[i]));
+                        &a->function_names[i], &b->function_names[i]));
         }
         return 1;
 error:
@@ -44,9 +43,7 @@ int _mliMaterials_media_equal(
         mli_c(a->num_media == b->num_media);
         for (i = 0; i < a->num_media; i++) {
                 mli_c(mliMedium_equal(a->media[i], b->media[i]));
-                mli_c(mliName_equal(
-                        &a->medium_names[i],
-                        &b->medium_names[i]));
+                mli_c(mliName_equal(&a->medium_names[i], &b->medium_names[i]));
         }
         return 1;
 error:
@@ -63,8 +60,7 @@ int _mliMaterials_surfaces_equal(
         for (i = 0; i < a->num_surfaces; i++) {
                 mli_c(mliSurface_equal(a->surfaces[i], b->surfaces[i]));
                 mli_c(mliName_equal(
-                        &a->surface_names[i],
-                        &b->surface_names[i]));
+                        &a->surface_names[i], &b->surface_names[i]));
         }
         return 1;
 error:
@@ -80,8 +76,7 @@ int _mliMaterials_boundary_layers_equal(
         mli_c(a->num_boundary_layers == b->num_boundary_layers);
         for (i = 0; i < a->num_boundary_layers; i++) {
                 mli_c(mliBoundaryLayer_equal(
-                        a->boundary_layers[i],
-                        b->boundary_layers[i]));
+                        a->boundary_layers[i], b->boundary_layers[i]));
                 mli_c(mliName_equal(
                         &a->boundary_layer_names[i],
                         &b->boundary_layer_names[i]));

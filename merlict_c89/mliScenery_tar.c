@@ -5,9 +5,7 @@
 #include <stdint.h>
 #include "mli_debug.h"
 
-int mliScenery_malloc_from_tar(
-        struct mliScenery *scenery,
-        const char *path)
+int mliScenery_malloc_from_tar(struct mliScenery *scenery, const char *path)
 {
         struct mliArchive archive = mliArchive_init();
 
@@ -38,28 +36,23 @@ int mliScenery_malloc_from_Archive(
         struct mliDynMap object_names = mliDynMap_init();
         struct mliFrame root = mliFrame_init();
 
-        mli_check(mli_malloc_materials_form_archive(
-                &scenery->materials,
-                &material_names,
-                archive),
+        mli_check(
+                mli_malloc_materials_form_archive(
+                        &scenery->materials, &material_names, archive),
                 "Failed to malloc materials.");
 
         mli_c(mliDynMap_malloc(&object_names, 0u));
 
         num_objects = mliArchive_num_filename_prefix_sufix(
-                archive,
-                "objects/",
-                ".obj");
+                archive, "objects/", ".obj");
 
-        mli_check(_mliGeometry_malloc_objects(
-                &scenery->geometry,
-                num_objects),
+        mli_check(
+                _mliGeometry_malloc_objects(&scenery->geometry, num_objects),
                 "Failed to malloc geometry.objects.");
 
-        mli_check(mli_set_geometry_objects_and_names_from_archive(
-                &scenery->geometry,
-                &object_names,
-                archive),
+        mli_check(
+                mli_set_geometry_objects_and_names_from_archive(
+                        &scenery->geometry, &object_names, archive),
                 "Failed to malloc geometry.objects.");
 
         mli_check(
@@ -73,9 +66,7 @@ int mliScenery_malloc_from_Archive(
 
         mli_check(
                 mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
-                        &root,
-                        &num_robjects,
-                        &total_num_boundary_layers),
+                        &root, &num_robjects, &total_num_boundary_layers),
                 "Can not estimate num_robjects from tree of frames.");
 
         mli_check(
@@ -87,28 +78,24 @@ int mliScenery_malloc_from_Archive(
 
         mli_check(
                 _mliGeometry_malloc_references(
-                        &scenery->geometry,
-                        num_robjects),
+                        &scenery->geometry, num_robjects),
                 "Failed to malloc geometry.references.");
 
         mli_check(
                 mliFrame_set_robjects_and_material_map(
-                        &root,
-                        &scenery->geometry,
-                        &scenery->geomap),
+                        &root, &scenery->geometry, &scenery->geomap),
                 "Can not set robjects.");
 
         mliNameMap_free(&material_names);
         mliDynMap_free(&object_names);
         mliFrame_free(&root);
 
-        mli_check(mliAccelerator_malloc_from_Geometry(
-                &scenery->accelerator,
-                &scenery->geometry),
+        mli_check(
+                mliAccelerator_malloc_from_Geometry(
+                        &scenery->accelerator, &scenery->geometry),
                 "Failed to malloc accelerator from geometry.");
 
-        mli_check(
-                mliScenery_valid(scenery), "Expected scenery to be valid.");
+        mli_check(mliScenery_valid(scenery), "Expected scenery to be valid.");
         return 1;
 error:
         return 0;

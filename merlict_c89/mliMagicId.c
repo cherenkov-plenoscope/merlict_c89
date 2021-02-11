@@ -3,7 +3,8 @@
 #include <assert.h>
 #include "mli_debug.h"
 
-struct mliMagicId mliMagicId_init(void) {
+struct mliMagicId mliMagicId_init(void)
+{
         struct mliMagicId magic;
         memset(magic.word, '\0', sizeof(magic.word));
         magic.mayor = MLI_VERSION_MAYOR;
@@ -61,15 +62,10 @@ error:
 
 void mliMagicId_warn_version(const struct mliMagicId *magic)
 {
-        if (
-                (magic->mayor != MLI_VERSION_MAYOR)
-                ||
-                (magic->minor != MLI_VERSION_MINOR)
-                ||
-                (magic->patch != MLI_VERSION_PATCH)
-        ) {
-                fprintf(
-                        stderr,
+        if ((magic->mayor != MLI_VERSION_MAYOR) ||
+            (magic->minor != MLI_VERSION_MINOR) ||
+            (magic->patch != MLI_VERSION_PATCH)) {
+                fprintf(stderr,
                         "[WARNING] Expected magic version to be %d.%d.%d, "
                         "but it is %d.%d.%d.\n",
                         MLI_VERSION_MAYOR,

@@ -7,27 +7,27 @@ int mliAccelerator_equal(
         const struct mliAccelerator *b)
 {
         uint32_t i = 0u;
-        mli_check(a->num_objects == b->num_objects,
+        mli_check(
+                a->num_objects == b->num_objects,
                 "Expected num_objects to be equal.");
         for (i = 0; i < a->num_objects; i++) {
                 mli_check(
                         mliOcTree_equal(
-                                &a->object_octrees[i],
-                                &b->object_octrees[i]),
+                                &a->object_octrees[i], &b->object_octrees[i]),
                         "Expected object_octrees[i] to be equal.");
         }
 
-        mli_check(a->num_robjects == b->num_robjects,
+        mli_check(
+                a->num_robjects == b->num_robjects,
                 "Expected num_robjects to be equal.");
         for (i = 0; i < a->num_robjects; i++) {
                 mli_check(
-                        mliOBB_equal(
-                                a->robject_obbs[i],
-                                b->robject_obbs[i]),
+                        mliOBB_equal(a->robject_obbs[i], b->robject_obbs[i]),
                         "Expected robject_obbs[i] to be equal.");
         }
 
-        mli_check(mliOcTree_equal(&a->scenery_octree, &b->scenery_octree),
+        mli_check(
+                mliOcTree_equal(&a->scenery_octree, &b->scenery_octree),
                 "Expected scenery_octree to be equal.");
 
         return 1;

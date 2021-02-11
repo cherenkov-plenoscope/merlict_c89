@@ -126,9 +126,12 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
 
         fprintf(f, "    functions:\n");
         for (i = 0; i < res->num_functions; i++) {
-                fprintf(f, "        % 3d, %-32s  ",
-                        i, res->function_names[i].c_str);
-                fprintf(f, "x: [% 1.3e, % 1.3e)\n",
+                fprintf(f,
+                        "        % 3d, %-32s  ",
+                        i,
+                        res->function_names[i].c_str);
+                fprintf(f,
+                        "x: [% 1.3e, % 1.3e)\n",
                         res->functions[i].x[0],
                         res->functions[i].x[res->functions[i].num_points - 1]);
         }
@@ -137,13 +140,16 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         for (i = 0; i < res->num_media; i++) {
                 fprintf(f, "        ");
                 fprintf(f, "% 3d, %-32s  ", i, res->medium_names[i].c_str);
-                fprintf(f, "absorbtion: % 3d, refraction: % 3d\n",
-                        res->media[i].absorbtion, res->media[i].refraction);
+                fprintf(f,
+                        "absorbtion: % 3d, refraction: % 3d\n",
+                        res->media[i].absorbtion,
+                        res->media[i].refraction);
         }
 
         fprintf(f, "    surfaces:\n");
         for (i = 0; i < res->num_surfaces; i++) {
-                fprintf(f, "        % 3d, %-32s  ",
+                fprintf(f,
+                        "        % 3d, %-32s  ",
                         i,
                         res->surface_names[i].c_str);
                 fprintf(f, "model: ");
@@ -165,12 +171,17 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         fprintf(f, "    boundary_layers:\n");
         for (i = 0; i < res->num_boundary_layers; i++) {
                 fprintf(f, "        ");
-                fprintf(f, "% 3d, %-32s  ", i, res->boundary_layer_names[i].c_str);
-                fprintf(f, "inner (medium: % 3d, surface : % 3d)",
+                fprintf(f,
+                        "% 3d, %-32s  ",
+                        i,
+                        res->boundary_layer_names[i].c_str);
+                fprintf(f,
+                        "inner (medium: % 3d, surface : % 3d)",
                         res->boundary_layers[i].inner.medium,
                         res->boundary_layers[i].inner.surface);
                 fprintf(f, ",  ");
-                fprintf(f, "outer (medium: % 3d, surface : % 3d)",
+                fprintf(f,
+                        "outer (medium: % 3d, surface : % 3d)",
                         res->boundary_layers[i].outer.medium,
                         res->boundary_layers[i].outer.surface);
                 fprintf(f, "\n");
@@ -178,13 +189,18 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
 
         fprintf(f, "    colors:\n");
         for (i = 0; i < res->num_colors; i++) {
-                fprintf(f, "        % 3d, %-32s  ",
+                fprintf(f,
+                        "        % 3d, %-32s  ",
                         i,
                         res->color_names[i].c_str);
-                fprintf(f, "rgb/8bit [%3.0f, %3.0f, %3.0f]\n",
-                        res->colors[i].r, res->colors[i].g, res->colors[i].b);
+                fprintf(f,
+                        "rgb/8bit [%3.0f, %3.0f, %3.0f]\n",
+                        res->colors[i].r,
+                        res->colors[i].g,
+                        res->colors[i].b);
         }
 
-        fprintf(f, "    default medium: %s\n",
+        fprintf(f,
+                "    default medium: %s\n",
                 res->medium_names[res->default_medium].c_str);
 }

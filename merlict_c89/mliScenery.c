@@ -22,7 +22,8 @@ void mliScenery_free(struct mliScenery *scenery)
         mliGeometryToMaterialMap_free(&scenery->geomap);
 }
 
-void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery) {
+void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery)
+{
         mliGeometry_info_fprint(f, &scenery->geometry);
         fprintf(f, "\n");
         mliAccelerator_info_fprint(f, &scenery->accelerator);

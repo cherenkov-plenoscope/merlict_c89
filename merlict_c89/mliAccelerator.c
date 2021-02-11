@@ -109,9 +109,7 @@ int mliAccelerator_malloc_from_Geometry(
 
         mli_check(
                 mliAccelerator_malloc(
-                        accel,
-                        geometry->num_objects,
-                        geometry->num_robjects),
+                        accel, geometry->num_objects, geometry->num_robjects),
                 "Failed to malloc mliAccelerator from mliGeometry's "
                 "num_robjects");
 
@@ -127,9 +125,7 @@ int mliAccelerator_malloc_from_Geometry(
 
         mli_check(
                 mliOcTree_malloc_from_Geometry(
-                        &accel->scenery_octree,
-                        geometry,
-                        outermost_obb),
+                        &accel->scenery_octree, geometry, outermost_obb),
                 "Failed to set up octree across all robjects in geometry.");
 
         return 1;
@@ -142,8 +138,14 @@ void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
         uint32_t rob;
         fprintf(f, "Accelerator:\n");
         fprintf(f, "    object-reference-bounding-boxes (OBB)s:\n");
-        fprintf(f, "%*s ref   -x/m   -y/m   -z/m   +x/m   +y/m   +z/m\n", 8, "");
-        fprintf(f, "%*s----------------------------------------------\n", 8, "");
+        fprintf(f,
+                "%*s ref   -x/m   -y/m   -z/m   +x/m   +y/m   +z/m\n",
+                8,
+                "");
+        fprintf(f,
+                "%*s----------------------------------------------\n",
+                8,
+                "");
         for (rob = 0; rob < accel->num_robjects; rob++) {
                 fprintf(f,
                         "%*s% 4d "

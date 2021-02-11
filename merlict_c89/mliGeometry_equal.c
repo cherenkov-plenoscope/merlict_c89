@@ -15,9 +15,7 @@ int _mliGeometry_objects_equal(
                         mliObject_equal(&a->objects[i], &b->objects[i]),
                         "Expected object to be equal.");
                 mli_check(
-                        mliName_equal(
-                                &a->object_names[i],
-                                &b->object_names[i]),
+                        mliName_equal(&a->object_names[i], &b->object_names[i]),
                         "Expected object_name to be equal.");
         }
         return 1;
@@ -58,7 +56,6 @@ error:
         mli_eprintf("object_reference[%u] is not equal.", rob);
         return 0;
 }
-
 
 int mliGeometry_equal(const struct mliGeometry *a, const struct mliGeometry *b)
 {

@@ -33,7 +33,9 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         return phia;
 }
 
-int _mli_phong(struct mliEnv *env, const struct mliIntersectionSurfaceNormal *isec)
+int _mli_phong(
+        struct mliEnv *env,
+        const struct mliIntersectionSurfaceNormal *isec)
 {
         double specular;
         double diffuse;
@@ -41,8 +43,8 @@ int _mli_phong(struct mliEnv *env, const struct mliIntersectionSurfaceNormal *is
         struct mliSurface surface_coming_from;
         struct mliSide side_coming_from =
                 _mli_side_coming_from(env->scenery, isec);
-        surface_coming_from = env->scenery->materials.surfaces[
-                side_coming_from.surface];
+        surface_coming_from =
+                env->scenery->materials.surfaces[side_coming_from.surface];
 
         mli_check(
                 mliFunc_evaluate(
@@ -102,9 +104,7 @@ int _mli_phong(struct mliEnv *env, const struct mliIntersectionSurfaceNormal *is
                 mli_c(mliDynPhotonInteraction_push_back(
                         env->history,
                         mliPhotonInteraction_from_Intersection(
-                                MLI_PHOTON_ABSORBTION,
-                                env->scenery,
-                                isec)));
+                                MLI_PHOTON_ABSORBTION, env->scenery, isec)));
         }
         return 1;
 error:
@@ -143,8 +143,8 @@ int _mli_probability_passing_medium_coming_from(
         medium_coming_from = scenery->materials.media[side_coming_from.medium];
         mli_check(
                 mliFunc_evaluate(
-                        &scenery->materials.functions[
-                                medium_coming_from.absorbtion],
+                        &scenery->materials
+                                 .functions[medium_coming_from.absorbtion],
                         photon->wavelength,
                         &one_over_e_way),
                 "Photon's wavelength is out of range to "
@@ -166,15 +166,13 @@ int _mli_fresnel_refraction_and_reflection(
         struct mliVec facing_surface_normal;
         mli_check(
                 mliFunc_evaluate(
-                        _mli_refractive_index_going_to(
-                                env->scenery, isec),
+                        _mli_refractive_index_going_to(env->scenery, isec),
                         env->photon->wavelength,
                         &n_going_to),
                 "Failed to eval. refraction going to for wavelength.");
         mli_check(
                 mliFunc_evaluate(
-                        _mli_refractive_index_coming_from(
-                                env->scenery, isec),
+                        _mli_refractive_index_coming_from(env->scenery, isec),
                         env->photon->wavelength,
                         &n_coming_from),
                 "Failed to eval. refraction coming from for wavelength.");
@@ -218,8 +216,8 @@ int _mli_interact_with_object(
         struct mliSurface surface_coming_from;
         const struct mliSide side_coming_from =
                 _mli_side_coming_from(env->scenery, isec);
-        surface_coming_from = env->scenery->materials.surfaces[
-                side_coming_from.surface];
+        surface_coming_from =
+                env->scenery->materials.surfaces[side_coming_from.surface];
         switch (surface_coming_from.material) {
         case MLI_MATERIAL_TRANSPARENT:
                 mli_check(
@@ -274,11 +272,10 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                 int photon_is_absorbed_before_reaching_surface;
                 struct mliSide side_coming_from;
 
-                side_coming_from = _mli_side_coming_from(
-                        env->scenery, &next_intersection);
+                side_coming_from =
+                        _mli_side_coming_from(env->scenery, &next_intersection);
                 medium_passing_through =
-                        env->scenery->materials
-                                .media[side_coming_from.medium];
+                        env->scenery->materials.media[side_coming_from.medium];
                 absorbtion_in_medium_passing_through =
                         &env->scenery->materials
                                  .functions[medium_passing_through.absorbtion];

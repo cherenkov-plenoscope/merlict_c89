@@ -2,9 +2,7 @@
 #include "mliMaterials_serialize.h"
 #include "mliMagicId.h"
 
-int mliMaterials_fwrite(
-        const struct mliMaterials *res,
-        FILE *f)
+int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
 {
         uint64_t i;
         struct mliMagicId magic = mliMagicId_init();
@@ -30,17 +28,11 @@ int mliMaterials_fwrite(
 
         mli_fwrite(res->colors, sizeof(struct mliColor), res->num_colors, f);
         mli_fwrite(
-                res->color_names,
-                sizeof(struct mliName),
-                res->num_colors,
-                f);
+                res->color_names, sizeof(struct mliName), res->num_colors, f);
 
         mli_fwrite(res->media, sizeof(struct mliMedium), res->num_media, f);
         mli_fwrite(
-                res->medium_names,
-                sizeof(struct mliName),
-                res->num_media,
-                f);
+                res->medium_names, sizeof(struct mliName), res->num_media, f);
 
         mli_fwrite(
                 res->surfaces, sizeof(struct mliSurface), res->num_surfaces, f);
@@ -95,24 +87,13 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
                 f);
 
         mli_fread(res->colors, sizeof(struct mliColor), res->num_colors, f);
-        mli_fread(
-                res->color_names,
-                sizeof(struct mliName),
-                res->num_colors,
-                f);
+        mli_fread(res->color_names, sizeof(struct mliName), res->num_colors, f);
 
         mli_fread(res->media, sizeof(struct mliMedium), res->num_media, f);
-        mli_fread(
-                res->medium_names,
-                sizeof(struct mliName),
-                res->num_media,
-                f);
+        mli_fread(res->medium_names, sizeof(struct mliName), res->num_media, f);
 
         mli_fread(
-                res->surfaces,
-                sizeof(struct mliSurface),
-                res->num_surfaces,
-                f);
+                res->surfaces, sizeof(struct mliSurface), res->num_surfaces, f);
         mli_fread(
                 res->surface_names,
                 sizeof(struct mliName),

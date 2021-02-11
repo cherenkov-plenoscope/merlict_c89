@@ -33,7 +33,7 @@ int mliName_find_idx(
         const struct mliName *names,
         const uint64_t num_names,
         const char *key,
-        uint64_t*idx)
+        uint64_t *idx)
 {
         uint64_t i;
         (*idx) = 0u;

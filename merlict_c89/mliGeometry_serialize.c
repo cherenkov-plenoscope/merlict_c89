@@ -35,7 +35,10 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
                 f);
 
         mli_fread(
-                geometry->robjects, sizeof(uint32_t), geometry->num_robjects, f);
+                geometry->robjects,
+                sizeof(uint32_t),
+                geometry->num_robjects,
+                f);
         mli_fread(
                 geometry->robject_ids,
                 sizeof(uint32_t),
@@ -66,7 +69,8 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
         mli_write_type(uint32_t, geometry->num_robjects, f);
 
         for (i = 0; i < geometry->num_objects; i++) {
-                mli_check(mliObject_fwrite(&geometry->objects[i], f),
+                mli_check(
+                        mliObject_fwrite(&geometry->objects[i], f),
                         "Failed to write objects.");
         }
         mli_fwrite(
@@ -76,7 +80,10 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
                 f);
 
         mli_fwrite(
-                geometry->robjects, sizeof(uint32_t), geometry->num_robjects, f);
+                geometry->robjects,
+                sizeof(uint32_t),
+                geometry->num_robjects,
+                f);
         mli_fwrite(
                 geometry->robject_ids,
                 sizeof(uint32_t),

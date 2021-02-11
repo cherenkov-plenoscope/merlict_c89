@@ -99,9 +99,7 @@ int mliOcTree_write_to_path(const struct mliOcTree *octree, const char *path)
         f = fopen(path, "w");
         mli_check(f != NULL, "Can not open octree-file for writing.");
 
-        mli_check(
-                mliOcTree_fwrite(octree, f),
-                "Can not write octree to file.");
+        mli_check(mliOcTree_fwrite(octree, f), "Can not write octree to file.");
 
         fclose(f);
         return 1;
@@ -112,9 +110,7 @@ error:
         return 0;
 }
 
-int mliOcTree_malloc_from_path(
-        struct mliOcTree *octree,
-        const char *path)
+int mliOcTree_malloc_from_path(struct mliOcTree *octree, const char *path)
 {
         FILE *f;
         f = fopen(path, "r");

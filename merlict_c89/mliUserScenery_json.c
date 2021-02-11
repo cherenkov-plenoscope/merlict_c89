@@ -528,7 +528,7 @@ error:
         return 0;
 }
 
-int  __mliFrame_set_boundary_layers(
+int __mliFrame_set_boundary_layers(
         struct mliDynUint32 *boundary_layers,
         const uint32_t object_idx,
         const struct mliObject *objects,
@@ -546,13 +546,11 @@ int  __mliFrame_set_boundary_layers(
                 json->tokens[token_mtl].type == JSMN_OBJECT,
                 "Expected 'mtl' to be a json-object {}.");
 
-        for (
-                material_idx = 0u;
-                material_idx < objects[object_idx].num_materials;
-                material_idx++)
-        {
-                const char *material_key_in_object = objects[object_idx].
-                        material_names[material_idx].c_str;
+        for (material_idx = 0u;
+             material_idx < objects[object_idx].num_materials;
+             material_idx++) {
+                const char *material_key_in_object =
+                        objects[object_idx].material_names[material_idx].c_str;
 
                 uint64_t token_material_key = 0u;
                 uint32_t boundary_layer_idx = 0u;
@@ -575,8 +573,7 @@ int  __mliFrame_set_boundary_layers(
 
                 mli_check(
                         mliDynUint32_push_back(
-                                boundary_layers,
-                                boundary_layer_idx),
+                                boundary_layers, boundary_layer_idx),
                         "Failed to push-back boundary_layer_idx into "
                         "frame's boundary_layers.");
         }

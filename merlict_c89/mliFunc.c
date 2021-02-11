@@ -108,7 +108,8 @@ int mliFunc_equal(const struct mliFunc a, const struct mliFunc b)
 int mliFunc_is_valid(const struct mliFunc *func)
 {
         uint64_t i;
-        mli_check(func->num_points >= 2,
+        mli_check(
+                func->num_points >= 2,
                 "Expected function to have at least two points. "
                 "Evaluation is not possible when there is no valid range "
                 "between two points.");
@@ -124,7 +125,8 @@ int mliFunc_is_valid(const struct mliFunc *func)
                         "but it is 'nan'.");
         }
 
-        mli_check(mliFunc_x_is_strictly_increasing(func),
+        mli_check(
+                mliFunc_x_is_strictly_increasing(func),
                 "Expected x-arguments to be strictly increasing, "
                 "but they do not.");
 

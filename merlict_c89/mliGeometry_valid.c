@@ -5,9 +5,11 @@ int _mliGeometry_valid_objects(const struct mliGeometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_objects; i++) {
-                mli_check(mliObject_is_valid(&geometry->objects[i]),
+                mli_check(
+                        mliObject_is_valid(&geometry->objects[i]),
                         "Expected object to be valid.");
-                mli_check(mliName_valid(&geometry->object_names[i]),
+                mli_check(
+                        mliName_valid(&geometry->object_names[i]),
                         "Expected object_name to be valid.");
         }
         return 1;
@@ -21,7 +23,8 @@ int _mliGeometry_valid_robjects_HomTras(const struct mliGeometry *geometry)
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
                 const struct mliVec t = geometry->robject2root[i].translation;
-                const struct mliQuaternion q = geometry->robject2root[i].rotation;
+                const struct mliQuaternion q =
+                        geometry->robject2root[i].rotation;
                 mli_check(!MLI_IS_NAN(t.x), "translation.x is 'nan'.");
                 mli_check(!MLI_IS_NAN(t.y), "translation.y is 'nan'.");
                 mli_check(!MLI_IS_NAN(t.z), "translation.z is 'nan'.");
@@ -37,8 +40,7 @@ error:
         return 0;
 }
 
-int _mliGeometry_valid_object_references(
-        const struct mliGeometry *geometry)
+int _mliGeometry_valid_object_references(const struct mliGeometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
@@ -56,8 +58,7 @@ error:
         return 0;
 }
 
-int mliGeometry_valid(
-        const struct mliGeometry *geometry)
+int mliGeometry_valid(const struct mliGeometry *geometry)
 {
         mli_check(
                 _mliGeometry_valid_objects(geometry),

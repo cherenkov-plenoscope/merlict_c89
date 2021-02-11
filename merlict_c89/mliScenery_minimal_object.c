@@ -24,18 +24,20 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         mliScenery_free(scenery);
 
-        mli_check(mliGeometry_malloc(&scenery->geometry, 1u, 1u),
+        mli_check(
+                mliGeometry_malloc(&scenery->geometry, 1u, 1u),
                 "Failed to malloc geometry.");
 
         /* set object */
-        mli_check(mliString_malloc_from_path(&str, path),
-                "Failed to read file.");
-        mli_check(mli_string_assert_only_NUL_LF_TAB_controls(str.c_str),
+        mli_check(
+                mliString_malloc_from_path(&str, path), "Failed to read file.");
+        mli_check(
+                mli_string_assert_only_NUL_LF_TAB_controls(str.c_str),
                 "Expected object-wavefront file to be free of "
                 "control characters, except [NUL, TAB, LF].");
-        mli_check(mliObject_malloc_from_wavefront(
-                &scenery->geometry.objects[0],
-                str.c_str),
+        mli_check(
+                mliObject_malloc_from_wavefront(
+                        &scenery->geometry.objects[0], str.c_str),
                 "Failed to malloc wavefront-object from string.");
         mliString_free(&str);
         sprintf(scenery->geometry.object_names[0].c_str, "default-object");
@@ -56,7 +58,8 @@ int mliScenery_malloc_minimal_from_wavefront(
         mtlcap.num_colors = total_num_boundary_layers;
         mtlcap.num_surfaces = total_num_boundary_layers;
 
-        mli_check(mliMaterials_malloc(&scenery->materials, mtlcap),
+        mli_check(
+                mliMaterials_malloc(&scenery->materials, mtlcap),
                 "Failed to malloc materials.");
 
         scenery->materials.functions[0] = mliFunc_init();
@@ -84,25 +87,25 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         for (i = 0u; i < total_num_boundary_layers; i++) {
                 scenery->materials.colors[i] = mli_random_color(&prng);
-                sprintf(
-                        scenery->materials.color_names[i].c_str,
-                        "color_%06u", i);
+                sprintf(scenery->materials.color_names[i].c_str,
+                        "color_%06u",
+                        i);
 
                 scenery->materials.surfaces[i].material = MLI_MATERIAL_PHONG;
                 scenery->materials.surfaces[i].specular_reflection = 0u;
                 scenery->materials.surfaces[i].diffuse_reflection = 1u;
                 scenery->materials.surfaces[i].color = i;
-                sprintf(
-                        scenery->materials.surface_names[i].c_str,
-                        "surface_%06u", i);
+                sprintf(scenery->materials.surface_names[i].c_str,
+                        "surface_%06u",
+                        i);
 
                 scenery->materials.boundary_layers[i].inner.medium = 0u;
                 scenery->materials.boundary_layers[i].outer.medium = 0u;
                 scenery->materials.boundary_layers[i].inner.surface = i;
                 scenery->materials.boundary_layers[i].outer.surface = i;
-                sprintf(
-                        scenery->materials.boundary_layer_names[i].c_str,
-                        "boundary_layer_%06u", i);
+                sprintf(scenery->materials.boundary_layer_names[i].c_str,
+                        "boundary_layer_%06u",
+                        i);
         }
 
         mli_check(
@@ -114,21 +117,15 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         /* set map */
         for (i = 0u; i < total_num_boundary_layers; i++) {
-                mliGeometryToMaterialMap_set(
-                        &scenery->geomap,
-                        0u,
-                        i,
-                        i);
+                mliGeometryToMaterialMap_set(&scenery->geomap, 0u, i, i);
         }
 
         mli_check(
                 mliAccelerator_malloc_from_Geometry(
-                        &scenery->accelerator,
-                        &scenery->geometry),
+                        &scenery->accelerator, &scenery->geometry),
                 "Failed to malloc accelerator from geometry.");
 
-        mli_check(
-                mliScenery_valid(scenery), "Expected scenery to be valid.");
+        mli_check(mliScenery_valid(scenery), "Expected scenery to be valid.");
         return 1;
 error:
         return 0;
