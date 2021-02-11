@@ -50,17 +50,12 @@ void mlivr_print_help(void)
         printf("    focus-finder      [  c  ]\n");
         printf("    take picture      [Space]\n");
         printf("\n");
-        printf(" Version\n");
-        printf("    mli   %d.%d.%d\n",
+        printf(" Version %d.%d.%d\n",
                MLI_VERSION_MAYOR,
                MLI_VERSION_MINOR,
                MLI_VERSION_PATCH);
-        printf("    mlivr %d.%d.%d\n",
-               MLIVR_VERSION_MAYOR,
-               MLIVR_VERSION_MINOR,
-               MLIVR_VERSION_PATCH);
         printf("\n");
-        printf("Copyright Sebastian Achim Mueller\n");
+        printf(" Sebastian Achim Mueller\n");
 }
 
 void mlivr_print_info_line(
