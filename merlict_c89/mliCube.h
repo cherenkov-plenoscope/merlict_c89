@@ -17,7 +17,7 @@ struct mliCube {
         double edge_length;
 };
 
-int mliCube_is_equal(const struct mliCube a, const struct mliCube b);
+int mliCube_equal(const struct mliCube a, const struct mliCube b);
 struct mliCube mliCube_octree_child_code(
         const struct mliCube cube,
         const uint8_t a);

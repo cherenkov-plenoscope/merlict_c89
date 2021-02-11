@@ -152,13 +152,13 @@ struct mliVec mliHomTra_dir_inverse(
         return mli_transform_orientation_inverse(&t->rotation, in);
 }
 
-int mliHomTraComp_is_equal(
+int mliHomTraComp_equal(
         const struct mliHomTraComp a,
         const struct mliHomTraComp b)
 {
-        if (!mliVec_is_equal(a.translation, b.translation))
+        if (!mliVec_equal(a.translation, b.translation))
                 return 0;
-        if (!mliQuaternion_is_equal(a.rotation, b.rotation))
+        if (!mliQuaternion_equal(a.rotation, b.rotation))
                 return 0;
         return 1;
 }

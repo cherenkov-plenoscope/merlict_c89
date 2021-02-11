@@ -4,5 +4,5 @@
 
 #include "mliOcTree.h"
 
-int mliOcTree_is_equal(const struct mliOcTree *a, const struct mliOcTree *b);
+int mliOcTree_equal(const struct mliOcTree *a, const struct mliOcTree *b);
 #endif

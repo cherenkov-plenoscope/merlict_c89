@@ -4,7 +4,7 @@
 
 #include "mliGeometryToMaterialMap.h"
 
-int mliGeometryToMaterialMap_is_equal(
+int mliGeometryToMaterialMap_equal(
         const struct mliGeometryToMaterialMap *a,
         const struct mliGeometryToMaterialMap *b);
 #endif

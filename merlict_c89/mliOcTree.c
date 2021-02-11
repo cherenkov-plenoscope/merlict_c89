@@ -364,7 +364,7 @@ int mliOcTree_equal_payload(
         int32_t root_node_idx = 0;
         int32_t root_node_type = MLI_OCTREE_TYPE_NODE;
         mli_check(
-                mliCube_is_equal(tree->cube, tmp_octree->cube),
+                mliCube_equal(tree->cube, tmp_octree->cube),
                 "Cubes are not equal");
         mli_check(
                 _mliOcTree_equal_payload(

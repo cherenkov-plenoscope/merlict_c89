@@ -18,7 +18,7 @@ int mliName_valid(const struct mliName *name)
         }
 }
 
-int mliName_is_equal(const struct mliName *a, const struct mliName *b)
+int mliName_equal(const struct mliName *a, const struct mliName *b)
 {
         uint32_t i;
         for (i = 0; i < sizeof(a->c_str); i++) {

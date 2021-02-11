@@ -406,21 +406,21 @@ CASE("mliObject, write and read binary-string")
         CHECK(obj.num_faces == obj_back.num_faces);
 
         for (i = 0; i < obj.num_vertices; i++) {
-                CHECK(mliVec_is_equal(obj.vertices[i], obj_back.vertices[i]));
+                CHECK(mliVec_equal(obj.vertices[i], obj_back.vertices[i]));
         }
         for (i = 0; i < obj.num_vertex_normals; i++) {
-                CHECK(mliVec_is_equal(
+                CHECK(mliVec_equal(
                         obj.vertex_normals[i], obj_back.vertex_normals[i]));
         }
         for (i = 0; i < obj.num_faces; i++) {
-                CHECK(mliFace_is_equal(
+                CHECK(mliFace_equal(
                         obj.faces_vertices[i], obj_back.faces_vertices[i]));
-                CHECK(mliFace_is_equal(
+                CHECK(mliFace_equal(
                         obj.faces_vertex_normals[i],
                         obj_back.faces_vertex_normals[i]));
         }
 
-        CHECK(mliObject_is_equal(&obj, &obj_back));
+        CHECK(mliObject_equal(&obj, &obj_back));
 
         mliObject_free(&obj);
         mliObject_free(&obj_back);
@@ -473,10 +473,10 @@ CASE("mliObject, write and read ascii-text-string")
                         1e-6));
         }
         for (i = 0; i < obj.num_faces; i++) {
-                CHECK(mliFace_is_equal(
+                CHECK(mliFace_equal(
                         obj.faces_vertices[i],
                         obj_back.faces_vertices[i]));
-                CHECK(mliFace_is_equal(
+                CHECK(mliFace_equal(
                         obj.faces_vertex_normals[i],
                         obj_back.faces_vertex_normals[i]));
         }

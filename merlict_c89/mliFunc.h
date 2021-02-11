@@ -14,7 +14,7 @@ struct mliFunc {
         double *y;
 };
 
-int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b);
+int mliFunc_equal(const struct mliFunc a, const struct mliFunc b);
 int mliFunc_fold_numeric(
         const struct mliFunc *a,
         const struct mliFunc *b,

@@ -11,7 +11,7 @@ int mliAccelerator_equal(
                 "Expected num_objects to be equal.");
         for (i = 0; i < a->num_objects; i++) {
                 mli_check(
-                        mliOcTree_is_equal(
+                        mliOcTree_equal(
                                 &a->object_octrees[i],
                                 &b->object_octrees[i]),
                         "Expected object_octrees[i] to be equal.");
@@ -27,7 +27,7 @@ int mliAccelerator_equal(
                         "Expected robject_obbs[i] to be equal.");
         }
 
-        mli_check(mliOcTree_is_equal(&a->scenery_octree, &b->scenery_octree),
+        mli_check(mliOcTree_equal(&a->scenery_octree, &b->scenery_octree),
                 "Expected scenery_octree to be equal.");
 
         return 1;

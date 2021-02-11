@@ -161,10 +161,10 @@ error:
 int mliOBB_equal(const struct mliOBB a, const struct mliOBB b)
 {
         mli_check(
-                mliVec_is_equal(a.lower, b.lower),
+                mliVec_equal(a.lower, b.lower),
                 "Expected 'lower'-corner to be equal.");
         mli_check(
-                mliVec_is_equal(a.upper, b.upper),
+                mliVec_equal(a.upper, b.upper),
                 "Expected 'upper'-corner to be equal.");
         return 1;
 error:

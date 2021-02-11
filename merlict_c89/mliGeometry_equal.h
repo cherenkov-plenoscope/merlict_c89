@@ -4,6 +4,6 @@
 
 #include "mliGeometry.h"
 
-int mliGeometry_is_equal(const struct mliGeometry *a, const struct mliGeometry *b);
+int mliGeometry_equal(const struct mliGeometry *a, const struct mliGeometry *b);
 
 #endif

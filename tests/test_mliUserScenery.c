@@ -160,7 +160,7 @@ CASE("mliScenery, read, write")
         CHECK(f != NULL);
         CHECK(mliGeometry_malloc_fread(&back.geometry, f));
         fclose(f);
-        CHECK(mliGeometry_is_equal(&back.geometry, &orig.geometry));
+        CHECK(mliGeometry_equal(&back.geometry, &orig.geometry));
 
         /* materials */
         /* --------- */
@@ -196,7 +196,7 @@ CASE("mliScenery, read, write")
         CHECK(f != NULL);
         CHECK(mliGeometryToMaterialMap_malloc_fread(&back.geomap, f));
         fclose(f);
-        CHECK(mliGeometryToMaterialMap_is_equal(&back.geomap, &orig.geomap));
+        CHECK(mliGeometryToMaterialMap_equal(&back.geomap, &orig.geomap));
 
         /* full scenery */
         /* ------------ */

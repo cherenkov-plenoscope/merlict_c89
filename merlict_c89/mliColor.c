@@ -61,7 +61,7 @@ struct mliColor mliColor_truncate_to_uint8(const struct mliColor color)
         return out;
 }
 
-int mliColor_is_equal(const struct mliColor a, const struct mliColor b)
+int mliColor_equal(const struct mliColor a, const struct mliColor b)
 {
         if (a.r != b.r)
                 return 0;

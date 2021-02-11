@@ -16,7 +16,7 @@ void mliVec_ncpy(
         struct mliVec *to,
         const uint64_t num);
 uint32_t mliVec_octant(const struct mliVec a);
-int mliVec_is_equal(const struct mliVec a, const struct mliVec b);
+int mliVec_equal(const struct mliVec a, const struct mliVec b);
 int mliVec_equal_margin(
         const struct mliVec a,
         const struct mliVec b,

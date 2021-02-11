@@ -11,5 +11,5 @@ struct mliMedium {
         uint32_t absorbtion;
 };
 
-int mliMedium_is_equal(const struct mliMedium a, const struct mliMedium b);
+int mliMedium_equal(const struct mliMedium a, const struct mliMedium b);
 #endif

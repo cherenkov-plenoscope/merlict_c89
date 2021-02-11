@@ -2,7 +2,7 @@
 #include "mliSurface.h"
 #include "mli_debug.h"
 
-int mliSurface_is_equal(const struct mliSurface a, const struct mliSurface b)
+int mliSurface_equal(const struct mliSurface a, const struct mliSurface b)
 {
         if (a.material != b.material)
                 return 0;

@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree_equal.h"
 
-int mliOcTree_is_equal(const struct mliOcTree *a, const struct mliOcTree *b)
+int mliOcTree_equal(const struct mliOcTree *a, const struct mliOcTree *b)
 {
         uint64_t i, j;
         mli_check(a->num_nodes == b->num_nodes, "num_nodes not equal.");

@@ -22,5 +22,5 @@ struct mliSurface {
 
 int mli_material_type_to_string(const uint32_t type, char *s);
 int mli_material_type_from_string(const char *s, uint32_t *id);
-int mliSurface_is_equal(const struct mliSurface a, const struct mliSurface b);
+int mliSurface_equal(const struct mliSurface a, const struct mliSurface b);
 #endif

@@ -12,10 +12,10 @@ int _mliGeometry_objects_equal(
 
         for (i = 0; i < a->num_objects; i++) {
                 mli_check(
-                        mliObject_is_equal(&a->objects[i], &b->objects[i]),
+                        mliObject_equal(&a->objects[i], &b->objects[i]),
                         "Expected object to be equal.");
                 mli_check(
-                        mliName_is_equal(
+                        mliName_equal(
                                 &a->object_names[i],
                                 &b->object_names[i]),
                         "Expected object_name to be equal.");
@@ -48,7 +48,7 @@ int _mliGeometry_object_references_equal(
                         "Expected the users object-ids to be equal.");
 
                 mli_check(
-                        mliHomTraComp_is_equal(
+                        mliHomTraComp_equal(
                                 a->robject2root[rob], b->robject2root[rob]),
                         "Expected homogenous transformation of "
                         "object-references to be equal");
@@ -60,7 +60,7 @@ error:
 }
 
 
-int mliGeometry_is_equal(const struct mliGeometry *a, const struct mliGeometry *b)
+int mliGeometry_equal(const struct mliGeometry *a, const struct mliGeometry *b)
 {
         mli_check(
                 _mliGeometry_objects_equal(a, b),

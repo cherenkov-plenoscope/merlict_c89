@@ -31,7 +31,7 @@ CASE("mliGeometry, malloc from mliUserScenery")
         CHECK(mliMaterials_equal(&scn.resources, &uscn.resources));
         mliUserScenery_free(&uscn);
 
-        CHECK(mliGeometry_is_equal(&scn, &scn));
+        CHECK(mliGeometry_equal(&scn, &scn));
 
         CHECK(mliGeometry_write_to_path(
                 &scn,
@@ -49,7 +49,7 @@ CASE("mliGeometry, malloc from mliUserScenery")
                 "001.mli.tmp"
         ));
 
-        CHECK(mliGeometry_is_equal(&scn, &scn_back));
+        CHECK(mliGeometry_equal(&scn, &scn_back));
 
         mliGeometry_free(&scn);
         mliGeometry_free(&scn_back);

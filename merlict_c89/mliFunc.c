@@ -91,7 +91,7 @@ error:
         return 0;
 }
 
-int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b)
+int mliFunc_equal(const struct mliFunc a, const struct mliFunc b)
 {
         uint64_t i;
         if (a.num_points != b.num_points)

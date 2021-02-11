@@ -14,7 +14,7 @@ struct mliBoundaryLayer {
         struct mliSide outer;
 };
 
-int mliBoundaryLayer_is_equal(
+int mliBoundaryLayer_equal(
         const struct mliBoundaryLayer a,
         const struct mliBoundaryLayer b);
 

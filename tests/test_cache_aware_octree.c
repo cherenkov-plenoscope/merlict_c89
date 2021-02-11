@@ -3,7 +3,7 @@
 CASE("init mliCaOctree")
 {
         struct mliOcTree octree = mliOcTree_init();
-        CHECK(mliVec_is_equal(octree.cube.lower, mliVec_set(0.0, 0.0, 0.0)));
+        CHECK(mliVec_equal(octree.cube.lower, mliVec_set(0.0, 0.0, 0.0)));
         CHECK(octree.cube.edge_length == 0.0);
         CHECK(octree.num_nodes == 0);
         CHECK(octree.leafs.num_leafs == 0);
@@ -69,7 +69,7 @@ CASE("init mliOctree write and read")
         CHECK(mliOcTree_malloc_from_path(
                 &octree_b, "tests/resources/scn1.mli.octree.tmp"));
 
-        CHECK(mliOcTree_is_equal(&octree, &octree_b));
+        CHECK(mliOcTree_equal(&octree, &octree_b));
 
         mliOcTree_free(&octree_b);
         mliOcTree_free(&octree);

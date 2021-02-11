@@ -9,8 +9,8 @@ int _mliMaterials_functions_equal(
         uint32_t i = 0u;
         mli_c(a->num_functions == b->num_functions);
         for (i = 0; i < a->num_functions; i++) {
-                mli_c(mliFunc_is_equal(a->functions[i], b->functions[i]));
-                mli_c(mliName_is_equal(
+                mli_c(mliFunc_equal(a->functions[i], b->functions[i]));
+                mli_c(mliName_equal(
                         &a->function_names[i],
                         &b->function_names[i]));
         }
@@ -27,8 +27,8 @@ int _mliMaterials_colors_equal(
         uint32_t i = 0u;
         mli_c(a->num_colors == b->num_colors);
         for (i = 0; i < a->num_colors; i++) {
-                mli_c(mliColor_is_equal(a->colors[i], b->colors[i]));
-                mli_c(mliName_is_equal(&a->color_names[i], &b->color_names[i]));
+                mli_c(mliColor_equal(a->colors[i], b->colors[i]));
+                mli_c(mliName_equal(&a->color_names[i], &b->color_names[i]));
         }
         return 1;
 error:
@@ -43,8 +43,8 @@ int _mliMaterials_media_equal(
         uint32_t i = 0u;
         mli_c(a->num_media == b->num_media);
         for (i = 0; i < a->num_media; i++) {
-                mli_c(mliMedium_is_equal(a->media[i], b->media[i]));
-                mli_c(mliName_is_equal(
+                mli_c(mliMedium_equal(a->media[i], b->media[i]));
+                mli_c(mliName_equal(
                         &a->medium_names[i],
                         &b->medium_names[i]));
         }
@@ -61,8 +61,8 @@ int _mliMaterials_surfaces_equal(
         uint32_t i = 0u;
         mli_c(a->num_surfaces == b->num_surfaces);
         for (i = 0; i < a->num_surfaces; i++) {
-                mli_c(mliSurface_is_equal(a->surfaces[i], b->surfaces[i]));
-                mli_c(mliName_is_equal(
+                mli_c(mliSurface_equal(a->surfaces[i], b->surfaces[i]));
+                mli_c(mliName_equal(
                         &a->surface_names[i],
                         &b->surface_names[i]));
         }
@@ -79,10 +79,10 @@ int _mliMaterials_boundary_layers_equal(
         uint32_t i = 0u;
         mli_c(a->num_boundary_layers == b->num_boundary_layers);
         for (i = 0; i < a->num_boundary_layers; i++) {
-                mli_c(mliBoundaryLayer_is_equal(
+                mli_c(mliBoundaryLayer_equal(
                         a->boundary_layers[i],
                         b->boundary_layers[i]));
-                mli_c(mliName_is_equal(
+                mli_c(mliName_equal(
                         &a->boundary_layer_names[i],
                         &b->boundary_layer_names[i]));
         }

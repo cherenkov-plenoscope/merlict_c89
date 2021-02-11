@@ -131,7 +131,7 @@ int mliVec_equal_margin(
         return distance_squared <= distance_margin * distance_margin;
 }
 
-int mliVec_is_equal(const struct mliVec a, const struct mliVec b)
+int mliVec_equal(const struct mliVec a, const struct mliVec b)
 {
         if (fabs(a.x - b.x) > DBL_EPSILON)
                 return 0;

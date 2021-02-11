@@ -10,7 +10,7 @@ struct mliColor {
         float b;
 };
 
-int mliColor_is_equal(const struct mliColor a, const struct mliColor b);
+int mliColor_equal(const struct mliColor a, const struct mliColor b);
 struct mliColor mliColor_truncate_to_uint8(const struct mliColor color);
 struct mliColor mliColor_mean(
         const struct mliColor colors[],

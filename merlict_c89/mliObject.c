@@ -67,7 +67,7 @@ error:
         return 0;
 }
 
-int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
+int mliObject_equal(const struct mliObject *a, const struct mliObject *b)
 {
         uint64_t i;
         mli_c(a->num_vertices == b->num_vertices);
@@ -76,16 +76,16 @@ int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
         mli_c(a->num_materials == b->num_materials);
 
         for (i = 0; i < a->num_vertices; i++) {
-                mli_c(mliVec_is_equal(a->vertices[i], b->vertices[i]));
+                mli_c(mliVec_equal(a->vertices[i], b->vertices[i]));
         }
         for (i = 0; i < a->num_vertex_normals; i++) {
-                mli_c(mliVec_is_equal(
+                mli_c(mliVec_equal(
                         a->vertex_normals[i], b->vertex_normals[i]));
         }
         for (i = 0; i < a->num_faces; i++) {
-                mli_c(mliFace_is_equal(
+                mli_c(mliFace_equal(
                         a->faces_vertices[i], b->faces_vertices[i]));
-                mli_c(mliFace_is_equal(
+                mli_c(mliFace_equal(
                         a->faces_vertex_normals[i],
                         b->faces_vertex_normals[i]));
         }
@@ -93,7 +93,7 @@ int mliObject_is_equal(const struct mliObject *a, const struct mliObject *b)
                 mli_c(
                         a->first_face_in_next_material[i] ==
                         b->first_face_in_next_material[i]);
-                mli_c(mliName_is_equal(
+                mli_c(mliName_equal(
                         &a->material_names[i],
                         &b->material_names[i]));
         }

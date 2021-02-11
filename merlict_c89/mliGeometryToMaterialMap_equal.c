@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "mli_debug.h"
 
-int mliGeometryToMaterialMap_is_equal(
+int mliGeometryToMaterialMap_equal(
         const struct mliGeometryToMaterialMap *a,
         const struct mliGeometryToMaterialMap *b)
 {

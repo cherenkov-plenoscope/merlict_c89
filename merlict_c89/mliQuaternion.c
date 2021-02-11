@@ -32,7 +32,7 @@ struct mliQuaternion mliQuaternion_set_unit_xyz(
         return mliQuaternion_set(w, x, y, z);
 }
 
-int mliQuaternion_is_equal(
+int mliQuaternion_equal(
         const struct mliQuaternion a,
         const struct mliQuaternion b)
 {
@@ -47,7 +47,7 @@ int mliQuaternion_is_equal(
         return 1;
 }
 
-int mliQuaternion_is_equal_margin(
+int mliQuaternion_equal_margin(
         const struct mliQuaternion a,
         const struct mliQuaternion b,
         const double margin)
