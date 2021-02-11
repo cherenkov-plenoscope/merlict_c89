@@ -26,4 +26,5 @@ struct mliOBB mliOBB_dilate(
 struct mliVec mliOBB_center(const struct mliOBB a);
 struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b);
 int mliOBB_valid(const struct mliOBB obb);
+int mliOBB_equal(const struct mliOBB a, const struct mliOBB b);
 #endif

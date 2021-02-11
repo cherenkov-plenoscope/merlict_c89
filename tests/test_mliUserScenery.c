@@ -138,30 +138,74 @@ CASE("mliScenery, malloc from archive")
 
 CASE("mliScenery, read, write")
 {
-        struct mliScenery scenery = mliScenery_init();
-        struct mliMaterials material_back = mliMaterials_init();
+        struct mliScenery orig = mliScenery_init();
+        struct mliScenery back = mliScenery_init();
         FILE *f = NULL;
 
         CHECK(mliScenery_malloc_from_tar(
-                &scenery,
+                &orig,
                 "tests/"
                 "resources/"
                 "sceneries/"
-                "001.tar"
+                "002.tar"
         ));
 
+        /* geometry */
+        /* -------- */
+        f = fopen("tests/resources/geometry.bin.tmp", "w");
+        CHECK(f != NULL);
+        CHECK(mliGeometry_fwrite(&orig.geometry, f));
+        fclose(f);
+        f = fopen("tests/resources/geometry.bin.tmp", "r");
+        CHECK(f != NULL);
+        CHECK(mliGeometry_malloc_fread(&back.geometry, f));
+        fclose(f);
+        CHECK(mliGeometry_is_equal(&back.geometry, &orig.geometry));
+
+        /* materials */
+        /* --------- */
         f = fopen("tests/resources/materials.bin.tmp", "w");
         CHECK(f != NULL);
-        CHECK(mliMaterials_fwrite(&scenery.materials, f));
+        CHECK(mliMaterials_fwrite(&orig.materials, f));
         fclose(f);
-
         f = fopen("tests/resources/materials.bin.tmp", "r");
         CHECK(f != NULL);
-        CHECK(mliMaterials_malloc_fread(&material_back, f));
+        CHECK(mliMaterials_malloc_fread(&back.materials, f));
         fclose(f);
+        CHECK(mliMaterials_equal(&back.materials, &orig.materials));
 
-        CHECK(mliMaterials_equal(&material_back, &scenery.materials));
+        /* accelerator */
+        /* ----------- */
+        f = fopen("tests/resources/accelerator.bin.tmp", "w");
+        CHECK(f != NULL);
+        CHECK(mliAccelerator_fwrite(&orig.accelerator, f));
+        fclose(f);
+        f = fopen("tests/resources/accelerator.bin.tmp", "r");
+        CHECK(f != NULL);
+        CHECK(mliAccelerator_malloc_fread(&back.accelerator, f));
+        fclose(f);
+        CHECK(mliAccelerator_equal(&back.accelerator, &orig.accelerator));
 
-        mliMaterials_free(&material_back);
-        mliScenery_free(&scenery);
+        /* geomap */
+        /* ------ */
+        f = fopen("tests/resources/geomap.bin.tmp", "w");
+        CHECK(f != NULL);
+        CHECK(mliGeometryToMaterialMap_fwrite(&orig.geomap, f));
+        fclose(f);
+        f = fopen("tests/resources/geomap.bin.tmp", "r");
+        CHECK(f != NULL);
+        CHECK(mliGeometryToMaterialMap_malloc_fread(&back.geomap, f));
+        fclose(f);
+        CHECK(mliGeometryToMaterialMap_is_equal(&back.geomap, &orig.geomap));
+
+        /* full scenery */
+        /* ------------ */
+        CHECK(mliScenery_write_to_path(
+                &orig, "tests/resources/scenery.bin.tmp"));
+        CHECK(mliScenery_malloc_from_path(
+                &back, "tests/resources/scenery.bin.tmp"));
+        /*CHECK(mliScenery_equal(&back, &orig));*/
+
+        mliScenery_free(&back);
+        mliScenery_free(&orig);
 }

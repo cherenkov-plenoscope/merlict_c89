@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 struct mliMagicId {
-        char word[20];
+        char word[52];
         uint32_t mayor;
         uint32_t minor;
         uint32_t patch;
