@@ -66,6 +66,7 @@
 #include "mliScenery_tar.h"
 #include "mliScenery_serialize.h"
 #include "mliScenery_equal.h"
+#include "mliScenery_minimal_object.h"
 #include "mliRay_OBB.h"
 #include "mliVec_OBB.h"
 #include "mliTriangle_OBB.h"

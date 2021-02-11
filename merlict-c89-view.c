@@ -18,15 +18,18 @@ int main(int argc, char *argv[])
         struct mliScenery scenery = mliScenery_init();
 
         if (argc >= 2) {
-                mli_check(
-                        mli_string_ends_with(argv[1], ".tar"),
-                        "Expectec scenery-file to be a tape-archive.");
-
-                mli_check(
-                        mliScenery_malloc_from_tar(
-                                &scenery,
-                                argv[1]),
-                        "Can not read scenery from tape-archive.");
+                int rc = 0;
+                if (!rc) {
+                        rc = mliScenery_malloc_from_tar(&scenery, argv[1]);
+                }
+                if (!rc) {
+                        rc = mliScenery_malloc_from_path(&scenery, argv[1]);
+                }
+                if (!rc) {
+                        rc = mliScenery_malloc_minimal_from_wavefront(
+                                &scenery, argv[1]);
+                }
+                mli_check(rc, "Failed to read scenery from scenery-path.")
         }
 
         if (argc == 3) {
