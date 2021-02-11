@@ -128,7 +128,8 @@ int mliJson_as_int64(
                 t.type == JSMN_PRIMITIVE,
                 "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
         mli_check(
-                mli_nstring_to_int(return_int64, &json->c_str[t.start], 10, token_length),
+                mli_nstring_to_int(
+                        return_int64, &json->c_str[t.start], 10, token_length),
                 "Can not parse int.");
         return 1;
 error:
@@ -146,7 +147,8 @@ int mliJson_as_float64(
                 t.type == JSMN_PRIMITIVE,
                 "Json float64 expected json-token-to be JSMN_PRIMITIVE.");
         mli_check(
-                mli_nstring_to_float(return_float64, &json->c_str[t.start], token_length),
+                mli_nstring_to_float(
+                        return_float64, &json->c_str[t.start], token_length),
                 "Can not parse float.");
         return 1;
 error:
@@ -167,11 +169,11 @@ int _mliJson_strcmp(
                 return 0;
         }
         for (i = 0; i < token_length; i++) {
-               const char token_char = json->c_str[t.start + i];
-               const char str_char = str[i];
-               if (token_char != str_char) {
+                const char token_char = json->c_str[t.start + i];
+                const char str_char = str[i];
+                if (token_char != str_char) {
                         return 0;
-               }
+                }
         }
         return 1;
 }
