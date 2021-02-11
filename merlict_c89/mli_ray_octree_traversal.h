@@ -3,11 +3,9 @@
 #define MERLICT_C89_MLI_RAY_OCTREE_TRAVERSAL_H_
 
 #include <stdint.h>
-#include <float.h>
 
 #include "mliOcTree.h"
-#include "mliCube.h"
-#include "mli_math.h"
+#include "mliRay.h"
 
 void mli_ray_octree_traversal(
         const struct mliOcTree *octree,

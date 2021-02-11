@@ -2,12 +2,7 @@
 #ifndef MERLICT_C89_MLIOBB_H_
 #define MERLICT_C89_MLIOBB_H_
 
-#include <assert.h>
-
 #include "mliVec.h"
-#include "mli_math.h"
-#include "mliRay.h"
-#include "mliEdge.h"
 
 struct mliOBB {
         /*

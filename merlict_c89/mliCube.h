@@ -3,7 +3,6 @@
 #define MERLICT_C89_MLICUBE_H_
 
 #include "mliVec.h"
-#include "mli_math.h"
 #include "mliOBB.h"
 
 #define MLI_IS_BIT(var, pos) ((var) & (1 << (pos)))
