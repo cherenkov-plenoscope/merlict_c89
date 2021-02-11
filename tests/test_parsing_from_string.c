@@ -40,12 +40,16 @@ CASE("string to int")
         CHECK(!mli_string_to_int(&i, s, 10));
         sprintf(s, "1 ");
         CHECK(!mli_string_to_int(&i, s, 10));
+        CHECK(mli_nstring_to_int(&i, s, 10, 1));
+        CHECK(i == 1);
 
         /* Trash characters. */
         sprintf(s, "a10 ");
         CHECK(!mli_string_to_int(&i, s, 10));
         sprintf(s, "10a ");
         CHECK(!mli_string_to_int(&i, s, 10));
+        CHECK(mli_nstring_to_int(&i, s, 10, 2));
+        CHECK(i == 10);
 
         /* long overflow */
         sprintf(s, "%ld0", LONG_MAX);
@@ -91,12 +95,16 @@ CASE("string to float")
         CHECK(!mli_string_to_float(&i, s));
         sprintf(s, "1 ");
         CHECK(!mli_string_to_float(&i, s));
+        CHECK(mli_nstring_to_float(&i, s, 1));
+        CHECK(i == 1.0);
 
         /* Trash characters. */
         sprintf(s, "a10");
         CHECK(!mli_string_to_float(&i, s));
         sprintf(s, "10a");
         CHECK(!mli_string_to_float(&i, s));
+        CHECK(mli_nstring_to_float(&i, s, 2));
+        CHECK(i == 10.0);
 
         /* long overflow */
         sprintf(s, "9.9e9999");
