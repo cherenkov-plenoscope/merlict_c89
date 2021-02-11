@@ -20,48 +20,42 @@ void mlivr_print_help(void)
         mlivr_clear_screen();
         mli_logo_fprint(stdout);
         printf("\n");
-        printf("- this help           [  h  ]\n");
-        printf("- exit                [ Esc ]\n");
+        printf("    this help         [  h  ]\n");
+        printf("    exit              [ Esc ]\n");
+        printf("    scenery-info      [  p  ]\n");
         printf("\n");
-        printf("Look\n");
-        printf("----\n");
-        printf("- up                  [  i  ]\n");
-        printf("- down                [  k  ]\n");
-        printf("- left                [  j  ]\n");
-        printf("- right               [  l  ]\n");
+        printf(" Look\n");
+        printf("    up                [  i  ]\n");
+        printf("    down              [  k  ]\n");
+        printf("    left              [  j  ]\n");
+        printf("    right             [  l  ]\n");
         printf("\n");
-        printf("Move\n");
-        printf("----\n");
-        printf("- forward             [  w  ]\n");
-        printf("- backward            [  s  ]\n");
-        printf("- left                [  a  ]\n");
-        printf("- right               [  d  ]\n");
-        printf("- up                  [  q  ]\n");
-        printf("- down                [  e  ]\n");
+        printf(" Move\n");
+        printf("    forward           [  w  ]\n");
+        printf("    backward          [  s  ]\n");
+        printf("    left              [  a  ]\n");
+        printf("    right             [  d  ]\n");
+        printf("    up                [  q  ]\n");
+        printf("    down              [  e  ]\n");
         printf("\n");
-        printf("Field-of-view\n");
-        printf("-------------\n");
-        printf("- increace            [  n  ]\n");
-        printf("- decreace            [  m  ]\n");
+        printf(" Field-of-view\n");
+        printf("    increace          [  n  ]\n");
+        printf("    decreace          [  m  ]\n");
         printf("\n");
-        printf("Quality\n");
-        printf("-------\n");
-        printf("- super sampling      [  b  ]\n");
-        printf("- color/monochrome    [  g  ]\n");
+        printf(" Quality\n");
+        printf("    super sampling    [  b  ]\n");
+        printf("    color/monochrome  [  g  ]\n");
         printf("\n");
-        printf("Take picture\n");
-        printf("------------\n");
-        printf("- focus-finder        [  c  ]\n");
-        printf("- take picture        [Space]\n");
+        printf(" Take picture\n");
+        printf("    focus-finder      [  c  ]\n");
+        printf("    take picture      [Space]\n");
         printf("\n");
-        printf("- print scenery-info  [  p  ]\n");
-        printf("Version\n");
-        printf("-------\n");
-        printf("- mli   %d.%d.%d\n",
+        printf(" Version\n");
+        printf("    mli   %d.%d.%d\n",
                MLI_VERSION_MAYOR,
                MLI_VERSION_MINOR,
                MLI_VERSION_PATCH);
-        printf("- mlivr %d.%d.%d\n",
+        printf("    mlivr %d.%d.%d\n",
                MLIVR_VERSION_MAYOR,
                MLIVR_VERSION_MINOR,
                MLIVR_VERSION_PATCH);
