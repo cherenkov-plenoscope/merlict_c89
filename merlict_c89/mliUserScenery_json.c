@@ -394,7 +394,7 @@ int __mliFrame_type_from_json(
 
         if (has_obj && has_children) {
                 mli_sentinel(
-                        "Frame must not have both key 'obj' and 'children'.");
+                        "Frame must not have boths key 'obj' and 'children'.");
         } else if (!has_obj && !has_children) {
                 mli_sentinel(
                         "Frame must have either of keys 'obj', or 'children'.");
