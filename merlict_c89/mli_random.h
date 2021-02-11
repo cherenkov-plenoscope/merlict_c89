@@ -2,7 +2,6 @@
 #ifndef MERLICT_C89_MLI_RANDOM_H_
 #define MERLICT_C89_MLI_RANDOM_H_
 
-
 #include <stdint.h>
 #include "mliVec.h"
 
