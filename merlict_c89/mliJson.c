@@ -163,6 +163,29 @@ error:
         return 0;
 }
 
+int _mliJson_strcmp(
+        const struct mliJson *json,
+        const uint64_t token_idx,
+        const char *str)
+{
+        uint64_t i;
+        const struct jsmntok_t t = json->tokens[token_idx];
+        const uint64_t token_length = t.end - t.start;
+        const uint64_t str_length = strlen(str);
+
+        if (token_length != str_length) {
+                return 0;
+        }
+        for (i = 0; i < token_length; i++) {
+               const char token_char = json->c_str[t.start + i];
+               const char str_char = str[i];
+               if (token_char != str_char) {
+                        return 0;
+               }
+        }
+        return 1;
+}
+
 int mliJson_find_key(
         const struct mliJson *json,
         const uint64_t start_token_idx,
@@ -173,11 +196,9 @@ int mliJson_find_key(
         int64_t child = 0;
         int64_t subchild_balance = 0;
         int64_t idx = start_token_idx + 1;
-        char *buff;
-        mli_malloc(buff, char, json->c_str_capacity);
+
         while (child < json->tokens[start_token_idx].size) {
-                mliJson_as_string(json, idx, buff, json->c_str_capacity);
-                if (strcmp(buff, key) == 0 && strlen(buff) == strlen(key)) {
+                if (_mliJson_strcmp(json, idx, key)) {
                         (*return_idx) = idx;
                         found += 1;
                 }
@@ -191,10 +212,8 @@ int mliJson_find_key(
                 child += 1;
         }
         mli_check(found, "No such key in json-object.");
-        free(buff);
         return 1;
 error:
-        free(buff);
         return 0;
 }
 
