@@ -3,7 +3,6 @@
 CASE("string to int")
 {
         int64_t i;
-        /* Lazy to calculate this size properly. */
         char s[256];
 
         /* Simple case. */
@@ -60,7 +59,6 @@ CASE("string to int")
 CASE("string to float")
 {
         double i;
-        /* Lazy to calculate this size properly. */
         char s[256];
 
         /* Simple case. */
