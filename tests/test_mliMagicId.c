@@ -3,7 +3,7 @@
 CASE("sizeof")
 {
         struct mliMagicId magic = mliMagicId_init();
-        CHECK(sizeof(magic) == 64u);
+        CHECK(sizeof(magic) == MLI_MAGICID_SIZE);
 }
 
 CASE("init")
@@ -31,10 +31,10 @@ CASE("set word")
 CASE("set bad word")
 {
         struct mliMagicId magic = mliMagicId_init();
-        CHECK(!mliMagicId_set(
-                &magic,
-                "way too long can not accept whatever is written "
-                "here is longer than 52chars, bla, bla bla"));
+        char too_long[] = "way too long can not accept whatever is written "
+                          "here is longer than 52chars, bla, bla bla";
+        CHECK(strlen(too_long) > MLI_MAGICID_WORD_CAPACITY);
+        CHECK(!mliMagicId_set(&magic, too_long));
 }
 
 CASE("compare words")

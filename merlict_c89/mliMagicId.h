@@ -4,8 +4,11 @@
 
 #include <stdint.h>
 
+#define MLI_MAGICID_WORD_CAPACITY 52
+#define MLI_MAGICID_SIZE MLI_MAGICID_WORD_CAPACITY + 12
+
 struct mliMagicId {
-        char word[52];
+        char word[MLI_MAGICID_WORD_CAPACITY];
         uint32_t mayor;
         uint32_t minor;
         uint32_t patch;
