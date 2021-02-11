@@ -92,38 +92,3 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
 error:
         return 0;
 }
-
-int mliGeometry_malloc_from_path(struct mliGeometry *geometry, const char *path)
-{
-        FILE *f;
-        f = fopen(path, "r");
-        mli_check(f != NULL, "Can not open geometry-file for reading.");
-        mli_check(
-                mliGeometry_malloc_fread(geometry, f),
-                "Can not read geometry-file.");
-        fclose(f);
-        return 1;
-error:
-        if (f != NULL) {
-                fclose(f);
-        }
-        mliGeometry_free(geometry);
-        return 0;
-}
-
-int mliGeometry_write_to_path(const struct mliGeometry *geometry, const char *path)
-{
-        FILE *f;
-        f = fopen(path, "w");
-        mli_check(f != NULL, "Can not open geometry-file for writing.");
-        mli_check(
-                mliGeometry_fwrite(geometry, f),
-                "Failed to write to file.");
-        fclose(f);
-        return 1;
-error:
-        if (f != NULL) {
-                fclose(f);
-        }
-        return 0;
-}
