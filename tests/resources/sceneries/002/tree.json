@@ -1,7 +1,6 @@
 {
     "children": [
         {
-            "type": "object",
             "id": 1,
             "pos": [0, 0, 0],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
@@ -9,7 +8,6 @@
             "mtl": {"cylinder_skin": "vacu_gblu_gred_glass"}
         },
         {
-            "type": "object",
             "id": 37,
             "pos": [0, 0, 5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
@@ -17,7 +15,6 @@
             "mtl": {"disc_skin": "vacu_spcm_pabs_vacu"}
         },
         {
-            "type": "object",
             "id": 47,
             "pos": [0, 0, -5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 45, 0]},
@@ -25,7 +22,6 @@
             "mtl": {"disc_skin": "vacu_pabs_spcm_vacu"}
         },
         {
-            "type": "object",
             "id": 12,
             "pos": [-5, 0, -5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 90, 0]},
@@ -33,7 +29,6 @@
             "mtl": {"disc_skin": "vacu_pabs_pabs_vacu"}
         },
         {
-            "type": "object",
             "id": 89,
             "pos": [-5, 0, 5],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},

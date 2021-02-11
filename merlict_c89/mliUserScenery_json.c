@@ -386,27 +386,28 @@ error:
 int __mliFrame_type_from_json(
         uint64_t *type,
         const struct mliJson *json,
-        const uint64_t token_child)
+        const uint64_t token)
 {
-        uint64_t token_type;
-        char *type_string = NULL;
-        uint64_t num_chars_for_type;
-        mli_check(
-                mliJson_find_key(json, token_child, "type", &token_type),
-                "Expected Frame to have key 'type'.");
-        num_chars_for_type =
-                (json->tokens[token_type + 1].end -
-                 json->tokens[token_type + 1].start + 1u);
-        mli_malloc(type_string, char, num_chars_for_type);
-        mliJson_as_string(
-                json, token_type + 1, type_string, num_chars_for_type);
-        mli_check(
-                mli_string_to_type(type_string, type),
-                "Expected Frame's type to be either 'frame' or 'object'.");
-        free(type_string);
+        uint64_t _t;
+        int has_obj = mliJson_find_key(json, token, "obj", &_t);
+        int has_children = mliJson_find_key(json, token, "children", &_t);
+
+        if (has_obj && has_children) {
+                mli_sentinel(
+                        "Frame must not have both key 'obj' and 'children'.");
+        } else if (!has_obj && !has_children) {
+                mli_sentinel(
+                        "Frame must have either of keys 'obj', or 'children'.");
+        } else if (has_obj && !has_children) {
+                (*type) = MLI_OBJECT;
+        } else if (!has_obj && has_children) {
+                (*type) = MLI_FRAME;
+        } else {
+                mli_sentinel("Not expected to happen");
+        }
+
         return 1;
 error:
-        free(type_string);
         return 0;
 }
 
