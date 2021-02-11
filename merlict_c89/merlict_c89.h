@@ -56,6 +56,8 @@
 #include "mliAccelerator.h"
 #include "mliAccelerator_serialize.h"
 #include "mliGeometryToMaterialMap.h"
+#include "mliGeometryToMaterialMap_equal.h"
+#include "mliGeometryToMaterialMap_valid.h"
 #include "mliScenery.h"
 #include "mliScenery_valid.h"
 #include "mliScenery_tar.h"
