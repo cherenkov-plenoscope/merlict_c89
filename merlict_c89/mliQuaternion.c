@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliQuaternion.h"
+#include <math.h>
+#include <float.h>
 
 struct mliQuaternion mliQuaternion_set(
         const double w,

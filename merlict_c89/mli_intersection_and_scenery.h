@@ -2,9 +2,8 @@
 #ifndef MERLICT_C89_MLI_INTERSECTION_AND_SCENERY_H_
 #define MERLICT_C89_MLI_INTERSECTION_AND_SCENERY_H_
 
-#include <stdint.h>
 #include "mliIntersectionSurfaceNormal.h"
-#include "mliGeometry.h"
+#include "mliScenery.h"
 
 const struct mliFunc *_mli_refractive_index_coming_from(
         const struct mliScenery *scenery,

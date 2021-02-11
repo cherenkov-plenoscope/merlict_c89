@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFresnel.h"
+#include <math.h>
 
 struct mliFresnel mliFresnel_init(
         const struct mliVec incident,

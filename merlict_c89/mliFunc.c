@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFunc.h"
+#include <stdlib.h>
 #include "mliMagicId.h"
 
 struct mliFunc mliFunc_init(void)

@@ -2,9 +2,6 @@
 #ifndef MERLICT_C89_MLIROTMAT_H_
 #define MERLICT_C89_MLIROTMAT_H_
 
-#include <math.h>
-#include <stdint.h>
-
 #include "mliVec.h"
 
 struct mliRotMat {

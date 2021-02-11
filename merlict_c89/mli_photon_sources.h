@@ -2,8 +2,6 @@
 #ifndef MERLICT_C89_MLI_PHOTON_SOURCES_H_
 #define MERLICT_C89_MLI_PHOTON_SOURCES_H_
 
-#include <math.h>
-
 #include "mliDynPhoton.h"
 
 int point_like_towards_z_opening_angle_num_photons(

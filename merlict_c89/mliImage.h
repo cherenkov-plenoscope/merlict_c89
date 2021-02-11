@@ -3,7 +3,6 @@
 #define MERLICT_C89_MLIIMAGE_H_
 
 #include <stdint.h>
-#include <stdio.h>
 #include "mliColor.h"
 #include "mliPixels.h"
 

@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_random.h"
+#include <math.h>
+#include <assert.h>
 
 double mli_random_uniform(struct mliMT19937 *prng)
 {

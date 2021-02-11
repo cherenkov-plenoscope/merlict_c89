@@ -2,9 +2,7 @@
 #ifndef MERLICT_C89_MLIDYNARRAY_H_
 #define MERLICT_C89_MLIDYNARRAY_H_
 
-#include <math.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 #define MLI_DYNARRAY_MIN_CAPACITY 2
 #define MLI_DYNARRAY_GROWTH_FACTOR 2

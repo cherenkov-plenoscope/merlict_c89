@@ -3,7 +3,6 @@
 #define MERLICT_C89_MLIFRAME_H_
 
 #include <stdint.h>
-
 #include "mliHomTra.h"
 #include "mliDynArray_template.h"
 

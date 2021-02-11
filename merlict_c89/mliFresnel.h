@@ -2,8 +2,6 @@
 #ifndef MERLICT_C89_MLIFRESNEL_H_
 #define MERLICT_C89_MLIFRESNEL_H_
 
-#include <math.h>
-
 struct mliFresnel {
         struct mliVec incident;
         struct mliVec normal;

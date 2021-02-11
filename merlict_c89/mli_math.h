@@ -4,7 +4,6 @@
 
 #include <math.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #define MLI_PI 3.14159265358979323846
 #define MLI_2PI 6.28318530717958623199

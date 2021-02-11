@@ -2,10 +2,6 @@
 #ifndef MERLICT_C89_MLIQUATERNION_H_
 #define MERLICT_C89_MLIQUATERNION_H_
 
-#include <math.h>
-#include <float.h>
-#include <stdint.h>
-
 #include "mliVec.h"
 #include "mliRotMat.h"
 

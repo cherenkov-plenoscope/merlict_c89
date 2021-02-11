@@ -2,14 +2,13 @@
 #ifndef MERLICT_C89_MLI_PHOTON_PROPAGATION_H_
 #define MERLICT_C89_MLI_PHOTON_PROPAGATION_H_
 
-#include <math.h>
 #include <stdint.h>
 
 #include "mliPhoton.h"
+#include "mliPhotonInteraction.h"
 #include "mliScenery.h"
 #include "mliDynPhotonInteraction.h"
 #include "mliMT19937.h"
-#include "mli_intersection_and_scenery.h"
 
 struct mliEnv {
         const struct mliScenery *scenery;
