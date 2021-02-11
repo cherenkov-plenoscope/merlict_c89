@@ -37,9 +37,10 @@ error:
         return 0;
 }
 
-int mli_string_to_float(double *out, char *s)
+int mli_nstring_to_float(double *out, char *s, const uint64_t expected_num_chars)
 {
         char *end;
+        uint64_t actual_num_chars = 0u;
         double l;
         mli_check(
                 !(s[0] == '\0' || isspace(s[0])),
@@ -49,9 +50,22 @@ int mli_string_to_float(double *out, char *s)
         mli_check(
                 errno != ERANGE,
                 "Can not convert string to float64, over-, under-flow.");
-        mli_check(
-                *end == '\0', "Can not convert string to float64, bad string.");
+        mli_check(end != NULL, "Can not convert string to float64.");
+
+        actual_num_chars = end - s;
+        mli_check(actual_num_chars == expected_num_chars,
+                "float64 has not the expected number of chars.");
         *out = l;
+        return 1;
+error:
+        return 0;
+}
+
+int mli_string_to_float(double *out, char *s)
+{
+        mli_check(
+                mli_nstring_to_float(out, s, strlen(s)),
+                "Can not convert string to float64.");
         return 1;
 error:
         return 0;
