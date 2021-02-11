@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOBB.h"
+#include "mli_debug.h"
 
 struct mliOBB mliOBB_set(const struct mliVec lower, const struct mliVec upper)
 {
@@ -137,4 +138,22 @@ struct mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx)
         }
         edge.ray = mliRay_set(start, mliVec_substract(stop, start));
         return edge;
+}
+
+int mliOBB_valid(const struct mliOBB obb)
+{
+        mli_check(!MLI_IS_NAN(obb.lower.x), "obb.lower.x is 'nan'.");
+        mli_check(!MLI_IS_NAN(obb.lower.y), "obb.lower.y is 'nan'.");
+        mli_check(!MLI_IS_NAN(obb.lower.z), "obb.lower.z is 'nan'.");
+
+        mli_check(!MLI_IS_NAN(obb.upper.x), "obb.upper.x is 'nan'.");
+        mli_check(!MLI_IS_NAN(obb.upper.y), "obb.upper.y is 'nan'.");
+        mli_check(!MLI_IS_NAN(obb.upper.z), "obb.upper.z is 'nan'.");
+
+        mli_check(obb.lower.x <= obb.upper.x, "Expected lower.x <= upper.x");
+        mli_check(obb.lower.y <= obb.upper.y, "Expected lower.y <= upper.y");
+        mli_check(obb.lower.z <= obb.upper.z, "Expected lower.z <= upper.z");
+        return 1;
+error:
+        return 0;
 }

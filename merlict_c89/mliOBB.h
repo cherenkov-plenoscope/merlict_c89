@@ -25,4 +25,5 @@ struct mliOBB mliOBB_dilate(
         const double dilation_radius);
 struct mliVec mliOBB_center(const struct mliOBB a);
 struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b);
+int mliOBB_valid(const struct mliOBB obb);
 #endif
