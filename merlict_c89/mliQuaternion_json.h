@@ -2,7 +2,6 @@
 #ifndef MERLICT_C89_MLIQUATERNION_JSON_H_
 #define MERLICT_C89_MLIQUATERNION_JSON_H_
 
-#include "mli_debug.h"
 #include "mliQuaternion.h"
 #include "mliJson.h"
 

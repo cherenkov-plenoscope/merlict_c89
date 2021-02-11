@@ -3,7 +3,6 @@
 #define MERLICT_C89_MLIMAP_H_
 
 #include <stdint.h>
-#include "mli_debug.h"
 #include "mliName.h"
 
 struct _mliMapItem {

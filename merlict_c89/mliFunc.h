@@ -2,11 +2,7 @@
 #ifndef MERLICT_C89_MLIFUNC_H_
 #define MERLICT_C89_MLIFUNC_H_
 
-#include <stdlib.h>
-#include <math.h>
-
-#include "mli_debug.h"
-#include "mli_math.h"
+#include <stdio.h>
 
 struct mliFunc {
         uint32_t num_points;

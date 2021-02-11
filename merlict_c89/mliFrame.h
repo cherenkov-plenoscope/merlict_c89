@@ -2,16 +2,9 @@
 #ifndef MERLICT_C89_MLIFRAME_H_
 #define MERLICT_C89_MLIFRAME_H_
 
-#include <math.h>
 #include <stdint.h>
 
-#include "mli_debug.h"
-#include "mliVec.h"
 #include "mliHomTra.h"
-#include "mliFunc.h"
-#include "mliObject.h"
-#include "mliSurface.h"
-#include "mliBoundaryLayer.h"
 #include "mliDynArray_template.h"
 
 #define MLI_FRAME 1000u
