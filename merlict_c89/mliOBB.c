@@ -28,18 +28,6 @@ struct mliVec mliOBB_center(const struct mliOBB a)
         return mliVec_multiply(sum, .5);
 }
 
-struct mliOBB mliOBB_dilate(const struct mliOBB a, const double dilation_radius)
-{
-        struct mliOBB out = a;
-        out.lower.x -= dilation_radius;
-        out.lower.y -= dilation_radius;
-        out.lower.z -= dilation_radius;
-        out.upper.x += dilation_radius;
-        out.upper.y += dilation_radius;
-        out.upper.z += dilation_radius;
-        return out;
-}
-
 struct mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx)
 {
         /*
