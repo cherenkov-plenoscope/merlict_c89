@@ -155,7 +155,7 @@ error:
         return 0;
 }
 
-int _mliJson_strcmp(
+int mliJson_strcmp(
         const struct mliJson *json,
         const uint64_t token_idx,
         const char *str)
@@ -190,7 +190,7 @@ int mliJson_find_key(
         int64_t idx = start_token_idx + 1;
 
         while (child < json->tokens[start_token_idx].size) {
-                if (_mliJson_strcmp(json, idx, key)) {
+                if (mliJson_strcmp(json, idx, key)) {
                         (*return_idx) = idx;
                         found += 1;
                 }

@@ -78,32 +78,27 @@ int __mliQuaternion_from_json(
         const uint64_t token)
 {
         uint64_t token_repr = 0u;
-        char *repr_str = NULL;
-        uint64_t num_chars = 0u;
+        uint64_t token_repr_value = 0u;
         mli_check(
                 mliJson_find_key(json, token, "repr", &token_repr),
                 "Expected 'rot' to have key 'repr'.");
-        num_chars =
-                (json->tokens[token_repr + 1].end -
-                 json->tokens[token_repr + 1].start + 1u);
-        mli_malloc(repr_str, char, num_chars);
-        mliJson_as_string(json, token_repr + 1, repr_str, num_chars);
-        if (strcmp(repr_str, "tait_bryan") == 0) {
+        token_repr_value = token_repr + 1;
+
+        if (mliJson_strcmp(json, token_repr_value, "tait_bryan")) {
                 mli_check(
                         __mliQuaternion_tait_bryan_from_json(quat, json, token),
                         "Failed to parse tait_bryan rotation.");
-        } else if (strcmp(repr_str, "axis_angle") == 0) {
+        } else if (mliJson_strcmp(json, token_repr_value, "axis_angle")) {
                 mli_check(
                         __mliQuaternion_axis_angle_from_json(quat, json, token),
                         "Failed to parse axis_angle rotation.");
-        } else if (strcmp(repr_str, "quaternion") == 0) {
+        } else if (mliJson_strcmp(json, token_repr_value, "quaternion")) {
                 mli_check(
                         __mliQuaternion_quaternion_from_json(quat, json, token),
                         "Failed to parse quaternion rotation.");
         } else {
                 mli_sentinel("Unknown representation 'repr' in rotation.");
         }
-        free(repr_str);
         return 1;
 error:
         return 0;

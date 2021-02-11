@@ -40,6 +40,10 @@ int mliJson_as_string(
         const uint64_t token_idx,
         char *return_string,
         const uint64_t return_string_size);
+int mliJson_strcmp(
+        const struct mliJson *json,
+        const uint64_t token_idx,
+        const char *str);
 int mliJson_malloc_from_path(struct mliJson *json, const char *path);
 int mliJson_malloc_from_string(struct mliJson *json, const char *json_str);
 int mliJson_malloc(struct mliJson *json, const uint64_t json_strlen);
