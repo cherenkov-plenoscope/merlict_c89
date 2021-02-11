@@ -38,6 +38,9 @@ int __mliBoundaryLayer_from_json(
         const struct mliJson *json,
         const uint64_t token_surface);
 
+int __mliMaterialsCapacity_from_materials_json(
+        struct mliMaterialsCapacity *rescap,
+        const struct mliJson *json);
 int __mliMaterials_assign_surfaces_from_json(
         struct mliMaterials *resources,
         struct mliDynMap *surface_names,
