@@ -2,8 +2,11 @@
 #ifndef MERLICT_C89_MLI_VERSION_H_
 #define MERLICT_C89_MLI_VERSION_H_
 
-#define MLI_VERSION_MAYOR 0
-#define MLI_VERSION_MINOR 2
-#define MLI_VERSION_PATCH 2
+#include <stdio.h>
 
+#define MLI_VERSION_MAYOR 1
+#define MLI_VERSION_MINOR 0
+#define MLI_VERSION_PATCH 0
+
+void mli_logo_fprint(FILE *f);
 #endif

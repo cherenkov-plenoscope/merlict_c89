@@ -1,13 +1,10 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-#include <stdio.h>
-#include <stdint.h>
-#include <assert.h>
-#include <time.h>
+#ifndef MERLICT_C89_VIWER_MLIVR_VIEWER_H_
+#define MERLICT_C89_VIWER_MLIVR_VIEWER_H_
 
 #include "../merlict_c89/mliImage.h"
 #include "../merlict_c89/mliView.h"
 #include "../merlict_c89/mliScenery.h"
-#include "../merlict_c89/mliOcTree.h"
 
 #include "mlivrCursor.h"
 #include "mlivrConfig.h"
@@ -31,7 +28,6 @@ int mlivr_truncate_8bit(const int key);
 
 int _mlivr_export_image(
         const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
         const struct mlivrConfig config,
         const struct mliView view,
         const double object_distance,
@@ -39,5 +35,6 @@ int _mlivr_export_image(
 
 int mlivr_run_interactive_viewer(
         const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
         const struct mlivrConfig config);
+
+#endif

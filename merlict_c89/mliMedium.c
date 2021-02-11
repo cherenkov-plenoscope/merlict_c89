@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMedium.h"
 
-int mliMedium_is_equal(const struct mliMedium a, const struct mliMedium b)
+int mliMedium_equal(const struct mliMedium a, const struct mliMedium b)
 {
         if (a.refraction != b.refraction)
                 return 0;

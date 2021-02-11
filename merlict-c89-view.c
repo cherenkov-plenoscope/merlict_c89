@@ -14,22 +14,22 @@
 
 int main(int argc, char *argv[])
 {
-        struct mliScenery scenery = mliScenery_init();
-        struct mliOcTree octree = mliOcTree_init();
         struct mlivrConfig config = mlivrConfig_default();
+        struct mliScenery scenery = mliScenery_init();
 
         if (argc >= 2) {
-                if (mli_string_ends_with(argv[1], ".json")) {
-                        mli_check(
-                                mliScenery_malloc_from_json_path(
-                                        &scenery, argv[1]),
-                                "Can not read scenery from json.");
-                } else {
-                        if (!mliScenery_read_from_path(&scenery, argv[1])) {
-                                fprintf(stderr, "Can not open '%s'\n", argv[1]);
-                                goto error;
-                        }
+                int rc = 0;
+                if (!rc) {
+                        rc = mliScenery_malloc_from_tar(&scenery, argv[1]);
                 }
+                if (!rc) {
+                        rc = mliScenery_malloc_from_path(&scenery, argv[1]);
+                }
+                if (!rc) {
+                        rc = mliScenery_malloc_minimal_from_wavefront(
+                                &scenery, argv[1]);
+                }
+                mli_check(rc, "Failed to read scenery from scenery-path.")
         }
 
         if (argc == 3) {
@@ -47,13 +47,9 @@ int main(int argc, char *argv[])
         }
 
         mli_check(
-                mliOcTree_malloc_from_scenery(&octree, &scenery),
-                "Failed to build octree from scenery.");
-        mli_check(
-                mlivr_run_interactive_viewer(&scenery, &octree, config),
+                mlivr_run_interactive_viewer(&scenery, config),
                 "Failure in viewer");
 
-        mliOcTree_free(&octree);
         mliScenery_free(&scenery);
         return EXIT_SUCCESS;
 error:

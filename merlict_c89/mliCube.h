@@ -3,7 +3,6 @@
 #define MERLICT_C89_MLICUBE_H_
 
 #include "mliVec.h"
-#include "mli_math.h"
 #include "mliOBB.h"
 
 #define MLI_IS_BIT(var, pos) ((var) & (1 << (pos)))
@@ -17,7 +16,7 @@ struct mliCube {
         double edge_length;
 };
 
-int mliCube_is_equal(const struct mliCube a, const struct mliCube b);
+int mliCube_equal(const struct mliCube a, const struct mliCube b);
 struct mliCube mliCube_octree_child_code(
         const struct mliCube cube,
         const uint8_t a);

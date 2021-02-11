@@ -2,8 +2,6 @@
 #ifndef MERLICT_C89_MLIOCTOVERLAPS_H_
 #define MERLICT_C89_MLIOCTOVERLAPS_H_
 
-#include <stdint.h>
-
 #include "mliDynArray_template.h"
 
 #define mliOctOverlap mliDynUint32

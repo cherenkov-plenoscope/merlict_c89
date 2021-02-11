@@ -2,12 +2,7 @@
 #ifndef MERLICT_C89_MLIIMAGE_H_
 #define MERLICT_C89_MLIIMAGE_H_
 
-#include <math.h>
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "mli_debug.h"
 #include "mliColor.h"
 #include "mliPixels.h"
 
@@ -42,8 +37,6 @@ void mliImage_sobel(const struct mliImage *image, struct mliImage *out);
 int mliImage_scale_down_twice(
         const struct mliImage *source,
         struct mliImage *destination);
-int mliImage_write_to_ppm(const struct mliImage *img, const char *path);
-int mliImage_malloc_from_ppm(struct mliImage *img, const char *path);
 struct mliColor mliImage_at(
         const struct mliImage *img,
         const uint32_t col,

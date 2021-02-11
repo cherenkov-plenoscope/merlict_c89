@@ -2,8 +2,6 @@
 #ifndef MERLICT_C89_MLIVEC_OBB_H_
 #define MERLICT_C89_MLIVEC_OBB_H_
 
-#include <stdint.h>
-
 #include "mliVec.h"
 
 int mliVec_overlap_obb(

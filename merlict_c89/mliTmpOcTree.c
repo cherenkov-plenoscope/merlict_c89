@@ -1,5 +1,17 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTmpOcTree.h"
+#include "mli_math.h"
+#include "mliObject_OBB.h"
+
+uint64_t mli_guess_octree_depth_based_on_num_objects(const uint64_t num_objects)
+{
+        return 3u + (uint64_t)ceil(log((double)num_objects) / log(8.0));
+}
+
+/*
+ * The dynamic node
+ * ================
+ */
 
 struct mliTmpNode mliTmpNode_init(void)
 {
@@ -45,7 +57,11 @@ uint32_t mliTmpNode_signs_to_child(
 
 int mliTmpNode_add_children(
         struct mliTmpNode *node,
-        const struct mliScenery *scenery,
+        const void *bundle,
+        int (*item_in_bundle_has_overlap_obb)(
+                const void *,
+                const uint32_t,
+                const struct mliOBB),
         const struct mliCube cube,
         const uint64_t depth,
         const uint64_t max_depth)
@@ -79,8 +95,8 @@ int mliTmpNode_add_children(
                                 for (obj = 0u; obj < node->num_objects; obj++) {
                                         const uint32_t object_idx =
                                                 node->objects[obj];
-                                        if (mliScenery_overlap_obb(
-                                                    scenery,
+                                        if (item_in_bundle_has_overlap_obb(
+                                                    bundle,
                                                     object_idx,
                                                     mliCube_to_obb(
                                                             child_cubes
@@ -112,7 +128,8 @@ int mliTmpNode_add_children(
         for (c = 0; c < 8u; c++) {
                 mliTmpNode_add_children(
                         node->children[c],
-                        scenery,
+                        bundle,
+                        item_in_bundle_has_overlap_obb,
                         child_cubes[c],
                         depth + 1u,
                         max_depth);
@@ -123,31 +140,35 @@ error:
         return 0;
 }
 
-uint64_t mli_guess_octree_depth_based_on_num_objects(const uint64_t num_objects)
-{
-        return 3u + (uint64_t)ceil(log((double)num_objects) / log(8.0));
-}
-
-int mliTmpNode_malloc_tree_from_scenery(
+int mliTmpNode_malloc_tree_from_bundle(
         struct mliTmpNode *root_node,
-        const struct mliScenery *scenery,
-        const struct mliCube scenery_cube)
+        const void *bundle,
+        const uint32_t num_items_in_bundle,
+        int (*item_in_bundle_has_overlap_obb)(
+                const void *,
+                const uint32_t,
+                const struct mliOBB),
+        const struct mliCube bundle_cube)
 {
-        uint32_t idx, start_depth, max_depth, num_objects;
+        uint32_t idx, start_depth, max_depth;
         start_depth = 0u;
-        num_objects = mliScenery_num_primitives(scenery);
-        max_depth = mli_guess_octree_depth_based_on_num_objects(num_objects);
+        max_depth = mli_guess_octree_depth_based_on_num_objects(
+                num_items_in_bundle);
 
         mli_check(
-                mliTmpNode_malloc(root_node, num_objects),
-                "Failed to allocate root-node in dynamic octree.")
+                mliTmpNode_malloc(root_node, num_items_in_bundle),
+                "Failed to allocate root-node in dynamic octree.");
 
-                for (idx = 0; idx < root_node->num_objects; idx++)
-        {
+        for (idx = 0; idx < root_node->num_objects; idx++) {
                 root_node->objects[idx] = idx;
         }
         mliTmpNode_add_children(
-                root_node, scenery, scenery_cube, start_depth, max_depth);
+                root_node,
+                bundle,
+                item_in_bundle_has_overlap_obb,
+                bundle_cube,
+                start_depth,
+                max_depth);
         return 1;
 error:
         return 0;
@@ -316,6 +337,7 @@ void mliTmpNode_num_nodes_leafs_objects(
 
 /*
  * The dynamic octree
+ * ==================
  */
 
 struct mliTmpOcTree mliTmpOcTree_init(void)
@@ -332,18 +354,32 @@ void mliTmpOcTree_free(struct mliTmpOcTree *octree)
         mliTmpNode_free(&octree->root);
 }
 
-int mliTmpOcTree_malloc_from_scenery(
+int mliTmpOcTree_malloc_from_bundle(
         struct mliTmpOcTree *octree,
-        const struct mliScenery *scenery)
+        const void *bundle,
+        const uint32_t num_items_in_bundle,
+        int (*item_in_bundle_has_overlap_obb)(
+                const void *,
+                const uint32_t,
+                const struct mliOBB),
+        struct mliOBB bundle_obb)
 {
         mliTmpOcTree_free(octree);
-        octree->cube =
-                mliCube_outermost_cube(mliScenery_outermost_obb(scenery));
+        octree->cube = mliCube_outermost_cube(bundle_obb);
         mli_check(
-                mliTmpNode_malloc_tree_from_scenery(
-                        &octree->root, scenery, octree->cube),
-                "Failed to allocate dynamic octree from scenery.");
+                mliTmpNode_malloc_tree_from_bundle(
+                        &octree->root,
+                        bundle,
+                        num_items_in_bundle,
+                        item_in_bundle_has_overlap_obb,
+                        octree->cube),
+                "Failed to allocate dynamic octree from bundle.");
         return 1;
 error:
         return 0;
+}
+
+void mliTmpOcTree_print(const struct mliTmpOcTree *octree)
+{
+        mliTmpNode_print(&octree->root, 0u, 0u);
 }

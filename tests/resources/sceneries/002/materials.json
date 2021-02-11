@@ -1,0 +1,73 @@
+{
+    "colors": [
+        {"rgb": [22, 9, 255], "name": "blue"},
+        {"rgb": [255, 91, 49], "name": "red"},
+        {"rgb": [16, 255, 0], "name": "green"},
+        {"rgb": [23, 23, 23], "name": "grey"}
+    ],
+    "media": [
+        {
+            "name": "vacuum",
+            "refraction": "unity",
+            "absorbtion": "positiv_infinity"
+        },
+        {
+            "name": "glass",
+            "refraction": "refraction_glass",
+            "absorbtion": "positiv_infinity"
+        }
+    ],
+    "default_medium": "vacuum",
+    "surfaces": [
+        {
+            "name": "glass_blue",
+            "material": "transparent",
+            "specular_reflection": "unity",
+            "diffuse_reflection": "unity",
+            "color": "blue"
+        },
+        {
+            "name": "glass_red",
+            "material": "transparent",
+            "specular_reflection": "unity",
+            "diffuse_reflection": "unity",
+            "color": "red"
+        },
+        {
+            "name": "specular_mirror",
+            "material": "Phong",
+            "specular_reflection": "unity",
+            "diffuse_reflection": "zero",
+            "color": "green"
+        },
+        {
+            "name": "perfect_absorber",
+            "material": "Phong",
+            "specular_reflection": "zero",
+            "diffuse_reflection": "zero",
+            "color": "grey"
+        }
+    ],
+    "boundary_layers": [
+        {
+            "name": "vacu_gblu_gred_glass",
+            "inner": {"medium": "vacuum", "surface": "glass_blue"},
+            "outer": {"medium": "glass", "surface": "glass_red"}
+        },
+        {
+            "name": "vacu_spcm_pabs_vacu",
+            "inner": {"medium": "vacuum", "surface": "specular_mirror"},
+            "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+        },
+        {
+            "name": "vacu_pabs_spcm_vacu",
+            "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+            "outer": {"medium": "vacuum", "surface": "specular_mirror"}
+        },
+        {
+            "name": "vacu_pabs_pabs_vacu",
+            "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+            "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+        },
+    ]
+}

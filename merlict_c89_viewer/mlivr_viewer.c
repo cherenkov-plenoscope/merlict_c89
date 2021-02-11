@@ -1,14 +1,24 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 #include "mlivr_viewer.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <assert.h>
+#include <time.h>
 #include "mlivr_toggle_stdin.h"
 
-void mlivr_clear_screen(void) { printf("\033[2J\n"); }
+void mlivr_clear_screen(void)
+{
+        uint64_t n = 10;
+        while (n) {
+                putchar('\n');
+                n--;
+        }
+}
 
 void mlivr_print_help(void)
 {
         mlivr_clear_screen();
-        printf("merlict-c89\n");
-        printf("===========\n");
+        mli_logo_fprint(stdout);
         printf("\n");
         printf("- this help           [  h  ]\n");
         printf("- exit                [ Esc ]\n");
@@ -44,6 +54,7 @@ void mlivr_print_help(void)
         printf("- focus-finder        [  c  ]\n");
         printf("- take picture        [Space]\n");
         printf("\n");
+        printf("- print scenery-info  [  p  ]\n");
         printf("Version\n");
         printf("-------\n");
         printf("- mli   %d.%d.%d\n",
@@ -63,9 +74,10 @@ void mlivr_print_info_line(
         const struct mlivrCursor cursor)
 {
         printf("Press 'h' for help. "
-               "Pos.: [ % -.2e, % -.2e, % -.2e]m, "
-               "Rot.: [ % -.1f, % -.1f, % -.1f]deg, "
-               "FoV.: %.2fdeg",
+               "Camera: "
+               "pos [ % -.2e, % -.2e, % -.2e]m, "
+               "rot [ % -.1f, % -.1f, % -.1f]deg, "
+               "fov %.2fdeg",
                view.position.x,
                view.position.y,
                view.position.z,
@@ -74,7 +86,7 @@ void mlivr_print_info_line(
                mli_rad2deg(view.rotation.z),
                mli_rad2deg(view.field_of_view));
         if (cursor.active) {
-                printf(", Cursor [% 2ld,% 2ld]pix", cursor.col, cursor.row);
+                printf(", cursor [% 3ld, % 3ld]pix", cursor.col, cursor.row);
         }
         printf(".\n");
 }
@@ -104,7 +116,6 @@ int mlivr_truncate_8bit(const int key)
 
 int _mlivr_export_image(
         const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
         const struct mlivrConfig config,
         const struct mliView view,
         const double object_distance,
@@ -132,7 +143,7 @@ int _mlivr_export_image(
         apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
-                &prng, apcam, camera2root_comp, scenery, octree, &full);
+                &prng, apcam, camera2root_comp, scenery, &full);
         mli_check(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
@@ -142,7 +153,6 @@ error:
 
 int mlivr_run_interactive_viewer(
         const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
         const struct mlivrConfig config)
 {
         struct termios old_terminal = mlivr_disable_stdin_buffer();
@@ -160,8 +170,9 @@ int mlivr_run_interactive_viewer(
         const double row_over_column_pixel_ratio = 2.0;
         int update_image = 1;
         int print_help = 0;
+        int print_scenery_info = 0;
         int has_probing_intersection;
-        struct mliIntersection probing_intersection;
+        struct mliIntersectionSurfaceNormal probing_intersection;
 
         mlivr_timestamp_now_19chars(timestamp);
         mli_check_mem(mliImage_malloc(
@@ -181,6 +192,7 @@ int mlivr_run_interactive_viewer(
         while ((key = mlivr_truncate_8bit(getchar())) != MLIVR_ESCAPE_KEY) {
                 update_image = 1;
                 print_help = 0;
+                print_scenery_info = 0;
                 if (cursor.active) {
                         update_image = 0;
                         super_resolution = 0;
@@ -211,7 +223,6 @@ int mlivr_run_interactive_viewer(
                                 num_screenshots++;
                                 mli_c(_mlivr_export_image(
                                         scenery,
-                                        octree,
                                         config,
                                         view,
                                         probing_intersection.distance_of_ray,
@@ -291,6 +302,10 @@ int mlivr_run_interactive_viewer(
                                         print_mode = MLI_ASCII_MONOCHROME;
                                 }
                                 break;
+                        case 'p':
+                                print_scenery_info = 1;
+                                update_image = 0;
+                                break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
                                 update_image = 0;
@@ -300,18 +315,16 @@ int mlivr_run_interactive_viewer(
         show_image:
                 if (update_image) {
                         if (super_resolution) {
-                                mli_pin_hole_camera_render_image_with_view(
+                                mliPinHoleCamera_render_image_with_view(
                                         view,
                                         scenery,
-                                        octree,
                                         &img2,
                                         row_over_column_pixel_ratio);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
-                                mli_pin_hole_camera_render_image_with_view(
+                                mliPinHoleCamera_render_image_with_view(
                                         view,
                                         scenery,
-                                        octree,
                                         &img,
                                         row_over_column_pixel_ratio);
                         }
@@ -348,17 +361,20 @@ int mlivr_run_interactive_viewer(
                                 struct mliRay probing_ray_wrt_root;
 
                                 probing_ray_wrt_camera =
-                                        mli_pin_hole_camera_ray_at_row_col(
+                                        mliPinHoleCamera_ray_at_row_col(
                                                 &pin_hole_camera,
                                                 &img,
                                                 cursor.row,
                                                 cursor.col);
                                 probing_ray_wrt_root = mliHomTra_ray(
                                         &camera2root, probing_ray_wrt_camera);
+
+                                probing_intersection =
+                                        mliIntersectionSurfaceNormal_init();
+
                                 has_probing_intersection =
-                                        mli_first_casual_intersection(
+                                        mli_query_intersection_with_surface_normal(
                                                 scenery,
-                                                octree,
                                                 probing_ray_wrt_root,
                                                 &probing_intersection);
                         }
@@ -367,39 +383,50 @@ int mlivr_run_interactive_viewer(
                 }
                 mlivr_print_info_line(view, cursor);
                 if (cursor.active) {
+                        printf("Intersection: ");
                         if (has_probing_intersection) {
-                                char type_string[1024];
-                                const struct mliIndex object_index =
-                                        _mliScenery_resolve_index(
-                                                scenery,
-                                                probing_intersection
-                                                        .object_idx);
-                                mli_c(mli_type_to_string(
-                                        object_index.type, type_string));
-                                printf("Obj % 6ld, %-16s, "
-                                       "dist % 6.1fm, "
-                                       "pos [% -.2e,% -.2e,% -.2e], "
-                                       "normal [% -.2f,% -.2f,% -.2f], "
-                                       "surf %d.\n",
-                                       probing_intersection.object_idx,
-                                       type_string,
+
+                                printf("(% 5d;% 5d,% 5d,% 5d)"
+                                       "/"
+                                       "(id;ref,obj,face), "
+                                       "dist % 6.2fm, "
+                                       "pos [% -.2e, % -.2e, % -.2e], "
+                                       "normal [% -.3f, % -.3f, % -.3f], ",
+                                       scenery->geometry.robject_ids
+                                               [probing_intersection.geometry_id
+                                                        .robj],
+                                       probing_intersection.geometry_id.robj,
+                                       scenery->geometry.robjects
+                                               [probing_intersection.geometry_id
+                                                        .robj],
+                                       probing_intersection.geometry_id.face,
                                        probing_intersection.distance_of_ray,
                                        probing_intersection.position.x,
                                        probing_intersection.position.y,
                                        probing_intersection.position.z,
                                        probing_intersection.surface_normal.x,
                                        probing_intersection.surface_normal.y,
-                                       probing_intersection.surface_normal.z,
-                                       probing_intersection
-                                               .from_outside_to_inside);
+                                       probing_intersection.surface_normal.z);
+
+                                if (probing_intersection
+                                            .from_outside_to_inside) {
+                                        printf("outside");
+                                } else {
+                                        printf(" inside");
+                                }
+                                printf("\n");
                         } else {
-                                printf("No intersection.\n");
+                                printf("None\n");
                         }
                 } else {
                         printf("\n");
                 }
                 if (print_help) {
                         mlivr_print_help();
+                }
+                if (print_scenery_info) {
+                        mlivr_clear_screen();
+                        mliScenery_info_fprint(stdout, scenery);
                 }
         }
 

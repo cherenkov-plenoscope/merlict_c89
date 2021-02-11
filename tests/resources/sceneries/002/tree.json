@@ -1,0 +1,46 @@
+{
+    "children": [
+        {
+            "id": 1,
+            "pos": [0, 0, 0],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "cylinder",
+            "mtl": {"cylinder_skin": "vacu_gblu_gred_glass"}
+        },
+        {
+            "id": 37,
+            "pos": [0, 0, 5],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "disc",
+            "mtl": {"disc_skin": "vacu_spcm_pabs_vacu"}
+        },
+        {
+            "id": 47,
+            "pos": [0, 0, -5],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 45, 0]},
+            "obj": "disc",
+            "mtl": {"disc_skin": "vacu_pabs_spcm_vacu"}
+        },
+        {
+            "id": 12,
+            "pos": [-5, 0, -5],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 90, 0]},
+            "obj": "disc",
+            "mtl": {"disc_skin": "vacu_pabs_pabs_vacu"}
+        },
+        {
+            "id": 89,
+            "pos": [-5, 0, 5],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "cube_with_materials",
+            "mtl": {
+                "px": "vacu_gblu_gred_glass",
+                "mx": "vacu_spcm_pabs_vacu",
+                "py": "vacu_pabs_spcm_vacu",
+                "my": "vacu_gblu_gred_glass",
+                "pz": "vacu_spcm_pabs_vacu",
+                "mz": "vacu_pabs_pabs_vacu"
+            }
+        },
+    ]
+}

@@ -10,7 +10,7 @@ struct mliFace mliFace_set(const uint32_t a, const uint32_t b, const uint32_t c)
         return face;
 }
 
-int mliFace_is_equal(const struct mliFace a, const struct mliFace b)
+int mliFace_equal(const struct mliFace a, const struct mliFace b)
 {
         if (a.a != b.a)
                 return 0;
@@ -19,15 +19,4 @@ int mliFace_is_equal(const struct mliFace a, const struct mliFace b)
         if (a.c != b.c)
                 return 0;
         return 1;
-}
-
-void mliFace_ncpy(
-        const struct mliFace *from,
-        struct mliFace *to,
-        const uint64_t num)
-{
-        uint64_t i;
-        for (i = 0; i < num; i++) {
-                to[i] = from[i];
-        }
 }

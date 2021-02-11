@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIOCTREE_H_
 
 #include <stdint.h>
-
+#include "mliAccelerator.h"
 #include "mliTmpOcTree.h"
 
 #define MLI_OCTREE_TYPE_NONE 0
@@ -50,9 +50,6 @@ int _mliOcTree_equal_payload(
         const int32_t node_idx,
         const int32_t node_type,
         const struct mliTmpNode *tmp_node);
-int mliOcTree_malloc_from_scenery(
-        struct mliOcTree *octree,
-        const struct mliScenery *scenery);
 uint32_t mliOcTree_leaf_object_link(
         const struct mliOcTree *tree,
         const uint64_t leaf,
@@ -90,4 +87,14 @@ int mliLeafArray_malloc(
 void mliLeafArray_free(struct mliLeafArray *leafs);
 struct mliLeafArray mliLeafArray_init(void);
 struct mliLeafAddress mliLeafAddress_init(void);
+
+int mliOcTree_malloc_from_object_wavefront(
+        struct mliOcTree *octree,
+        const struct mliObject *object_wavefront);
+
+int mliOcTree_malloc_from_Geometry(
+        struct mliOcTree *octree,
+        const struct mliGeometry *geometry,
+        const struct mliOBB outermost_obb);
+
 #endif

@@ -2,52 +2,26 @@
 #ifndef MERLICT_C89_MLIFRAME_H_
 #define MERLICT_C89_MLIFRAME_H_
 
-#include <math.h>
 #include <stdint.h>
-
-#include "mli_debug.h"
-#include "mli_primitive_codes.h"
-#include "mliVec.h"
 #include "mliHomTra.h"
-#include "mliColor.h"
-#include "mliFunc.h"
-#include "mliMesh.h"
-#include "mliSphericalCapHex.h"
-#include "mliSphere.h"
-#include "mliCylinder.h"
-#include "mliHexagon.h"
-#include "mliBiCirclePlane.h"
-#include "mliDisc.h"
-#include "mliSurface.h"
-#include "mliBoundaryLayer.h"
 #include "mliDynArray_template.h"
 
 #define MLI_FRAME 1000u
-#define MLI_MESH 1001u
-#define MLI_FRAME_NAME_SIZE 64u
+#define MLI_OBJECT 1001u
 
 MLIDYNARRAY_DEFINITON(mli, FramePtr, struct mliFrame *)
 
 struct mliFrame {
-        char name[MLI_FRAME_NAME_SIZE];
+        uint32_t type;
         uint32_t id;
-        struct mliFrame *mother;
-        struct mliDynFramePtr children;
-
         struct mliHomTraComp frame2mother;
         struct mliHomTraComp frame2root;
+        struct mliFrame *mother;
 
-        uint32_t type;
-        union {
-                struct mliMesh *mesh;
-                struct mliSphericalCapHex *spherical_cap_hex;
-                struct mliSphere *sphere;
-                struct mliCylinder *cylinder;
-                struct mliHexagon *hexagon;
-                struct mliBiCirclePlane *bicircleplane;
-                struct mliDisc *disc;
-        } primitive;
-        struct mliBoundaryLayer boundary_layer;
+        struct mliDynFramePtr children;
+
+        uint32_t object;
+        struct mliDynUint32 boundary_layers;
 };
 
 void mliFrame_set_frame2root(struct mliFrame *f);
@@ -60,6 +34,6 @@ int mliFrame_set_mother_and_child(
         struct mliFrame *mother,
         struct mliFrame *child);
 int mliFrame_malloc(struct mliFrame *f, const uint64_t type);
-int mliFrame_free(struct mliFrame *f);
+void mliFrame_free(struct mliFrame *f);
 struct mliFrame mliFrame_init(void);
 #endif

@@ -35,7 +35,7 @@ error:
 }
 
 int mli_time_of_flight(
-        const struct mliScenery *scenery,
+        const struct mliMaterials *materials,
         const struct mliPhotonInteraction *phisec,
         const struct mliPhoton *photon,
         double *time_of_flight)
@@ -43,8 +43,7 @@ int mli_time_of_flight(
         double refractive_index;
         mli_check(
                 mliFunc_evaluate(
-                        &scenery->resources
-                                 .functions[phisec->refraction_coming_from],
+                        &materials->functions[phisec->refraction_coming_from],
                         photon->wavelength,
                         &refractive_index),
                 "Failed to eval. refraction for wavelength.");

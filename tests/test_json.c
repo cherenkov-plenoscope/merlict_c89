@@ -63,8 +63,8 @@ CASE("mliJson_as_string")
 CASE("mliJson_init, defaults")
 {
         struct mliJson json = mliJson_init();
-        CHECK(json.num_chars == 0u);
-        CHECK(json.chars == NULL);
+        CHECK(json.c_str_capacity == 0u);
+        CHECK(json.c_str == NULL);
         CHECK(json.num_tokens == 0u);
         CHECK(json.tokens == NULL);
 }
@@ -77,15 +77,15 @@ CASE("struct mliJson malloc, and free")
         mliJson_free(&json);
 }
 
-CASE("mliJson_malloc_from_file")
+CASE("mliJson_malloc_from_path")
 {
         struct mliJson json = mliJson_init();
         uint64_t return_idx;
         int64_t myint;
         double myfloat;
 
-        CHECK(mliJson_malloc_from_file(&json, "tests/resources/example.json"));
-        CHECK(mliJson_write_debug(&json, "tests/resources/example.debug.tmp"));
+        CHECK(mliJson_malloc_from_path(&json, "tests/resources/example.json"));
+        CHECK(mliJson_debug_to_path(&json, "tests/resources/example.debug.tmp"));
 
         CHECK(mliJson_find_key(&json, 0, "name", &return_idx));
         CHECK(return_idx == 1);
@@ -128,44 +128,6 @@ CASE("mliJson_malloc_from_string")
         mliJson_free(&json);
 }
 
-CASE("parse mliFunc")
-{
-        uint64_t token;
-        struct mliJson json = mliJson_init();
-        struct mliFunc f = mliFunc_init();
-        CHECK(mliJson_malloc_from_file(&json, "tests/resources/function.json"));
-        CHECK(mliJson_write_debug(&json, "tests/resources/function.debug.tmp"));
-        CHECK(mliJson_find_key(&json, 0, "two_functions", &token));
-        CHECK(json.tokens[token + 1].size == 2);
-        token += 1;
-        CHECK(token == 2);
-        token += 1;
-        CHECK(token == 3);
-        /* the first function */
-        CHECK(mliFunc_malloc_from_json_token(&f, &json, token));
-        CHECK(f.num_points == 2);
-        CHECK_MARGIN(f.x[0], 200e-9, 1e-9);
-        CHECK_MARGIN(f.x[1], 1200e-9, 1e-9);
-        CHECK_MARGIN(f.y[0], 0., 1e-9);
-        CHECK_MARGIN(f.y[1], 0., 1e-9);
-        mliFunc_free(&f);
-
-        token = 10;
-        /* the second function */
-        f = mliFunc_init();
-        CHECK(mliFunc_malloc_from_json_token(&f, &json, token));
-        CHECK(f.num_points == 3);
-        CHECK_MARGIN(f.x[0], -200e-9, 1e-9);
-        CHECK_MARGIN(f.x[1], 600e-9, 1e-9);
-        CHECK_MARGIN(f.x[2], 1200e-9, 1e-9);
-        CHECK_MARGIN(f.y[0], 1.49, 1e-6);
-        CHECK_MARGIN(f.y[1], -0.59, 1e-6);
-        CHECK_MARGIN(f.y[2], -7.9, 1e-6);
-        mliFunc_free(&f);
-
-        mliJson_free(&json);
-}
-
 CASE("parse mliVec and mliColor")
 {
         uint64_t token;
@@ -173,8 +135,8 @@ CASE("parse mliVec and mliColor")
         struct mliVec vec1 = mliVec_set(0., 0., 0.);
         struct mliVec vec2 = mliVec_set(0., 0., 0.);
         struct mliColor col = mliColor_set(0., 0., 0.);
-        CHECK(mliJson_malloc_from_file(&json, "tests/resources/vec.json"));
-        CHECK(mliJson_write_debug(&json, "tests/resources/vec.debug.tmp"));
+        CHECK(mliJson_malloc_from_path(&json, "tests/resources/vec.json"));
+        CHECK(mliJson_debug_to_path(&json, "tests/resources/vec.debug.tmp"));
 
         CHECK(mliJson_find_key(&json, 0, "vec1", &token));
         CHECK(mliVec_from_json_token(&vec1, &json, token + 1));
@@ -207,152 +169,69 @@ CASE("rotation representations")
         /* unity */
         q_expected = mliQuaternion_set_tait_bryan(0., 0., 0.);
 
-        sprintf(json_str, "{\"repr\": \"tait_bryan\", \"xyz\": [0, 0, 0]}");
+        sprintf(json_str,
+                "{"
+                "\"repr\": \"tait_bryan\", "
+                "\"xyz_deg\": [0, 0, 0]"
+                "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(__mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
-        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+        CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
         sprintf(json_str,
-                "{\"repr\": \"axis_angle\", \"axis\": [0, 0, 0], \"angle\": "
-                "0.}");
+                "{"
+                "\"repr\": \"axis_angle\", "
+                "\"axis\": [0, 0, 0], "
+                "\"angle_deg\": 0."
+                "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(__mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
-        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+        CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
-        sprintf(json_str, "{\"repr\": \"quaternion\", \"xyz\": [0, 0, 0]}");
+        sprintf(json_str,
+                "{"
+                "\"repr\": \"quaternion\", "
+                "\"xyz\": [0, 0, 0]"
+                "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(__mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
-        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+        CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
         /* z-axis, 45deg */
         q_expected = mliQuaternion_set_tait_bryan(0., 0., -mli_deg2rad(45.));
 
         sprintf(json_str,
-                "{\"repr\": \"tait_bryan\", \"xyz\": [0, 0, %f]}",
-                -mli_deg2rad(45.));
+                "{"
+                "\"repr\": \"tait_bryan\", "
+                "\"xyz_deg\": [0, 0, -45]"
+                "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(__mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
-        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+        CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
         sprintf(json_str,
-                "{\"repr\": \"axis_angle\", \"axis\": [0, 0, 1], \"angle\": "
-                "%f}",
-                mli_deg2rad(45.));
+                "{"
+                "\"repr\": \"axis_angle\", "
+                "\"axis\": [0, 0, 1], "
+                "\"angle_deg\": 45"
+                "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(__mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
-        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
+        CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
         sprintf(json_str,
-                "{\"repr\": \"quaternion\", \"xyz\": [0, 0, %f]}",
+                "{"
+                "\"repr\": \"quaternion\", "
+                "\"xyz\": [0, 0, %f]"
+                "}",
                 q_expected.z);
         CHECK(mliJson_malloc_from_string(&json, json_str));
         CHECK(__mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
-        CHECK(mliQuaternion_is_equal_margin(q, q_expected, 1e-6));
-}
-
-CASE("parse mliUserScenery")
-{
-        struct mliJson json = mliJson_init();
-        struct mliUserScenery uscn = mliUserScenery_init();
-        struct mliFrame *f;
-        struct mliSurface *uscn_srfs;
-        struct mliMedium *uscn_medi;
-        uint32_t default_medium_idx;
-        CHECK(mliJson_malloc_from_file(
-                &json, "tests/resources/small_scenery.json"));
-        CHECK(mliJson_write_debug(
-                &json, "tests/resources/small_scenery.debug.tmp"));
-        CHECK(mliUserScenery_malloc_from_json(&uscn, &json));
-
-        /* functions */
-        CHECK(uscn.resources.num_functions == 2u);
-        CHECK(uscn.resources.functions[0].num_points == 2u);
-        CHECK_MARGIN(uscn.resources.functions[0].x[0], 200e-9, 1e-9);
-        CHECK_MARGIN(uscn.resources.functions[0].y[0], 0., 1e-9);
-        CHECK_MARGIN(uscn.resources.functions[0].x[1], 1200e-9, 1e-9);
-        CHECK_MARGIN(uscn.resources.functions[0].y[1], 0., 1e-9);
-        CHECK(uscn.resources.functions[1].num_points == 2u);
-        CHECK_MARGIN(uscn.resources.functions[1].x[0], 200e-9, 1e-9);
-        CHECK_MARGIN(uscn.resources.functions[1].y[0], 1.49, 1e-9);
-        CHECK_MARGIN(uscn.resources.functions[1].x[1], 1200e-9, 1e-9);
-        CHECK_MARGIN(uscn.resources.functions[1].y[1], 1.49, 1e-9);
-        /* default_medium */
-        CHECK(mliMap2_get_value(
-                &uscn.medium_names,
-                "vacuum",
-                &default_medium_idx));
-        CHECK(uscn.default_medium == default_medium_idx);
-        /* colors */
-        CHECK(uscn.resources.num_colors == 4u);
-        CHECK(mliColor_is_equal(
-                uscn.resources.colors[0], mliColor_set(22, 91, 49)));
-        CHECK(mliColor_is_equal(
-                uscn.resources.colors[1], mliColor_set(122, 91, 49)));
-        CHECK(mliColor_is_equal(
-                uscn.resources.colors[2], mliColor_set(22, 191, 49)));
-        CHECK(mliColor_is_equal(
-                uscn.resources.colors[3], mliColor_set(22, 91, 149)));
-        /* surfaces */
-        CHECK(uscn.resources.num_surfaces == 4u);
-        uscn_srfs = uscn.resources.surfaces;
-        uscn_medi = uscn.resources.media;
-
-        CHECK(uscn.resources.num_media == 2u);
-        CHECK(uscn_medi[0].refraction == 0u);
-        CHECK(uscn_medi[0].absorbtion == 0u);
-        CHECK(uscn_medi[1].refraction == 1u);
-        CHECK(uscn_medi[1].absorbtion == 0u);
-
-        CHECK(uscn.resources.num_surfaces == 4u);
-        CHECK(uscn_srfs[0].color == 0u);
-        CHECK(uscn_srfs[0].material == MLI_MATERIAL_PHONG);
-        CHECK(uscn_srfs[0].specular_reflection == 0u);
-        CHECK(uscn_srfs[0].diffuse_reflection == 0u);
-
-        CHECK(uscn_srfs[1].color == 1u);
-        CHECK(uscn_srfs[1].material == MLI_MATERIAL_PHONG);
-        CHECK(uscn_srfs[1].specular_reflection == 0u);
-        CHECK(uscn_srfs[1].diffuse_reflection == 0u);
-
-        CHECK(uscn_srfs[2].color == 2u);
-        CHECK(uscn_srfs[2].material == MLI_MATERIAL_PHONG);
-        CHECK(uscn_srfs[2].specular_reflection == 0u);
-        CHECK(uscn_srfs[2].diffuse_reflection == 0u);
-
-        CHECK(uscn_srfs[3].color == 3u);
-        CHECK(uscn_srfs[3].material == MLI_MATERIAL_PHONG);
-        CHECK(uscn_srfs[3].specular_reflection == 0u);
-        CHECK(uscn_srfs[3].diffuse_reflection == 0u);
-        /* frames */
-        CHECK(uscn.root.children.dyn.size == 4u);
-        f = uscn.root.children.arr[0];
-        CHECK(f->type == MLI_DISC);
-        f = uscn.root.children.arr[1];
-        CHECK(f->type == MLI_FRAME);
-        f = uscn.root.children.arr[2];
-        CHECK(f->type == MLI_MESH);
-        CHECK(f->primitive.mesh->num_vertices == 4u);
-        CHECK_MARGIN(f->primitive.mesh->vertices[0].x, 0., 1e-6);
-        CHECK_MARGIN(f->primitive.mesh->vertices[0].y, 0., 1e-6);
-        CHECK_MARGIN(f->primitive.mesh->vertices[0].z, 0., 1e-6);
-        CHECK_MARGIN(f->primitive.mesh->vertices[1].x, 1., 1e-6);
-        CHECK_MARGIN(f->primitive.mesh->vertices[1].y, 0., 1e-6);
-        CHECK_MARGIN(f->primitive.mesh->vertices[1].z, 0., 1e-6);
-        CHECK(f->primitive.mesh->num_faces == 4u);
-        CHECK(f->primitive.mesh->faces[0].a == 0);
-        CHECK(f->primitive.mesh->faces[0].b == 1);
-        CHECK(f->primitive.mesh->faces[0].c == 2);
-        CHECK(f->primitive.mesh->faces[1].a == 0);
-        CHECK(f->primitive.mesh->faces[1].b == 1);
-        CHECK(f->primitive.mesh->faces[1].c == 3);
-        f = uscn.root.children.arr[3];
-        CHECK(f->type == MLI_SPHERE);
-        mliUserScenery_free(&uscn);
-        mliJson_free(&json);
+        CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 }

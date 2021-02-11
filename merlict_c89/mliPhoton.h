@@ -5,7 +5,7 @@
 struct mliPhoton {
         struct mliRay ray;
         double wavelength;
-        int64_t simulation_truth_id;
+        int64_t id;
 };
 
 #endif

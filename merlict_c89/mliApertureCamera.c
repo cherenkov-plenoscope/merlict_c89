@@ -1,4 +1,7 @@
+/* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliApertureCamera.h"
+#include <math.h>
+#include <assert.h>
 
 struct mliVec mliApCam_get_pixel_center_on_image_sensor_plane(
         const double image_sensor_width_x,
@@ -151,7 +154,6 @@ void _mliApCam_aquire_pixels(
         const struct mliImage *image,
         const struct mliHomTraComp camera2root_comp,
         const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
         const struct mliPixels *pixels_to_do,
         struct mliImage *colors)
 {
@@ -173,8 +175,7 @@ void _mliApCam_aquire_pixels(
                 struct mliRay ray_wrt_root =
                         mliHomTra_ray(&camera2root, ray_wrt_camera);
 
-                struct mliColor set_color =
-                        mli_trace(scenery, octree, ray_wrt_root);
+                struct mliColor set_color = mli_trace(scenery, ray_wrt_root);
 
                 mliImage_set(colors, i, 0u, set_color);
         }
@@ -225,7 +226,6 @@ int mliApertureCamera_render_image(
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
         const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
         struct mliImage *image)
 {
         float noise_threshold = 0.05 * 255.0;
@@ -294,7 +294,6 @@ int mliApertureCamera_render_image(
                 image,
                 camera2root_comp,
                 scenery,
-                octree,
                 &pixels_to_do,
                 &colors);
 
@@ -331,7 +330,6 @@ int mliApertureCamera_render_image(
                         image,
                         camera2root_comp,
                         scenery,
-                        octree,
                         &pixels_to_do,
                         &colors);
 

@@ -1,0 +1,35 @@
+# vertices
+v 1 0 0
+v 1 1 0
+v 0 1 0
+v 0 0 0
+v 1 0 1
+v 1 1 1
+v 0 1 1
+v 0 0 1
+# vertex-normals
+vn 1 0 0
+vn 0 1 0
+vn 0 0 1
+vn -1 0 0
+vn 0 -1 0
+vn 0 0 -1
+# faces
+usemtl px
+f 1//1 2//1 6//1
+f 6//1 5//1 1//1
+usemtl py
+f 2//2 3//2 6//2
+f 6//2 3//2 7//2
+usemtl pz
+f 5//3 6//3 7//3
+f 7//3 8//3 5//3
+usemtl mx
+f 3//4 7//4 4//4
+f 7//4 8//4 4//4
+usemtl my
+f 1//5 4//5 8//5
+f 8//5 5//5 1//5
+usemtl mz
+f 1//6 2//6 3//6
+f 3//6 4//6 1//6

@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliBoundaryLayer.h"
 
-int mliBoundaryLayer_is_equal(
+int mliBoundaryLayer_equal(
         const struct mliBoundaryLayer a,
         const struct mliBoundaryLayer b)
 {
@@ -14,4 +14,14 @@ int mliBoundaryLayer_is_equal(
         if (a.outer.medium != b.outer.medium)
                 return 0;
         return 1;
+}
+
+void mliBoundaryLayer_print(const struct mliBoundaryLayer a)
+{
+        fprintf(stderr,
+                "inner %d srf / %d med\nouter %d srf / %d med\n",
+                a.inner.surface,
+                a.inner.medium,
+                a.outer.surface,
+                a.outer.medium);
 }

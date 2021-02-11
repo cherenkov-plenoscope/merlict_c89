@@ -3,7 +3,6 @@
 CASE("string to int")
 {
         int64_t i;
-        /* Lazy to calculate this size properly. */
         char s[256];
 
         /* Simple case. */
@@ -41,12 +40,16 @@ CASE("string to int")
         CHECK(!mli_string_to_int(&i, s, 10));
         sprintf(s, "1 ");
         CHECK(!mli_string_to_int(&i, s, 10));
+        CHECK(mli_nstring_to_int(&i, s, 10, 1));
+        CHECK(i == 1);
 
         /* Trash characters. */
         sprintf(s, "a10 ");
         CHECK(!mli_string_to_int(&i, s, 10));
         sprintf(s, "10a ");
         CHECK(!mli_string_to_int(&i, s, 10));
+        CHECK(mli_nstring_to_int(&i, s, 10, 2));
+        CHECK(i == 10);
 
         /* long overflow */
         sprintf(s, "%ld0", LONG_MAX);
@@ -60,7 +63,6 @@ CASE("string to int")
 CASE("string to float")
 {
         double i;
-        /* Lazy to calculate this size properly. */
         char s[256];
 
         /* Simple case. */
@@ -93,12 +95,16 @@ CASE("string to float")
         CHECK(!mli_string_to_float(&i, s));
         sprintf(s, "1 ");
         CHECK(!mli_string_to_float(&i, s));
+        CHECK(mli_nstring_to_float(&i, s, 1));
+        CHECK(i == 1.0);
 
         /* Trash characters. */
         sprintf(s, "a10");
         CHECK(!mli_string_to_float(&i, s));
         sprintf(s, "10a");
         CHECK(!mli_string_to_float(&i, s));
+        CHECK(mli_nstring_to_float(&i, s, 2));
+        CHECK(i == 10.0);
 
         /* long overflow */
         sprintf(s, "9.9e9999");
@@ -117,4 +123,277 @@ CASE("mli_string_ends_with")
         CHECK(mli_string_ends_with("123", "123"));
         CHECK(mli_string_ends_with("my_file.json", ".json"));
         CHECK(!mli_string_ends_with("my_file.json.stuff", ".json"));
+}
+
+CASE("mli_string_starts_with")
+{
+        CHECK(mli_string_starts_with("123", ""));
+        CHECK(mli_string_starts_with("", ""));
+        CHECK(!mli_string_starts_with("", "123"));
+        CHECK(mli_string_starts_with("123", "123"));
+        CHECK(mli_string_starts_with("my_file.json", "my_file"));
+        CHECK(mli_string_starts_with("my_file.json.stuff", "my_file.json"));
+        CHECK(mli_string_starts_with("functions/hans.csv", "functions/"));
+}
+
+CASE("mli_string_has_prefix_suffix")
+{
+        CHECK(mli_string_has_prefix_suffix("", "", ""));
+        CHECK(mli_string_has_prefix_suffix("", NULL, NULL));
+        CHECK(mli_string_has_prefix_suffix("abc", NULL, NULL));
+        CHECK(mli_string_has_prefix_suffix("abc", "a", "c"));
+        CHECK(!mli_string_has_prefix_suffix("abc", "a", "d"));
+        CHECK(!mli_string_has_prefix_suffix("_abc", "a", "c"));
+}
+
+CASE("mli_string_split_valid")
+{
+        char token[128];
+        char str[128];
+        char delimiter = '\n';
+        int token_size;
+        int p = 0;
+
+        sprintf(str, "first\nsecond\n\nthird");
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 5);
+        CHECK(0 == strcmp(token, "first"));
+        p += token_size + 1;
+
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 6);
+        CHECK(0 == strcmp(token, "second"));
+        p += token_size + 1;
+
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 0);
+        CHECK(0 == strcmp(token, ""));
+        p += token_size + 1;
+
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 5);
+        CHECK(0 == strcmp(token, "third"));
+        CHECK(str[p + token_size] == '\0');
+}
+
+CASE("mli_string_split_empty")
+{
+        char token[128];
+        char str[128];
+        char delimiter = '\n';
+        int token_size;
+        int p = 0;
+
+        memset(str, '\0', 128);
+        token_size = mli_string_split(&str[p], delimiter, token, 128);
+        CHECK(token_size == 0);
+        CHECK(token[0] == '\0');
+}
+
+CASE("mli_strip_this_dir")
+{
+        char src[128];
+        char dst[128];
+
+        CHECK(0 == strcmp("", ""));
+
+        memset(src, '\0', sizeof(src));
+        memset(dst, '\0', sizeof(dst));
+
+        sprintf(src, "/a/b/c");
+        _mli_strip_this_dir(dst, src);
+        CHECK(0 == strcmp(dst, src));
+
+        sprintf(src, "./a/b/c");
+        _mli_strip_this_dir(dst, src);
+        CHECK(0 == strcmp(dst, "a/b/c"));
+        CHECK(0 == strcmp(src, "./a/b/c"));
+
+        sprintf(src, "./functions/hans.csv");
+        _mli_strip_this_dir(dst, src);
+        CHECK(0 == strcmp(dst, "functions/hans.csv"));
+        CHECK(0 == strcmp(src, "./functions/hans.csv"));
+
+        sprintf(src, "././././f/h.csv");
+        _mli_strip_this_dir(dst, src);
+        CHECK(0 == strcmp(dst, "f/h.csv"));
+        CHECK(0 == strcmp(src, "././././f/h.csv"));
+
+        sprintf(src, "a/b");
+        _mli_strip_this_dir(dst, src);
+        CHECK(0 == strcmp(dst, "a/b"));
+        CHECK(0 == strcmp(src, "a/b"));
+
+        sprintf(src, ".a/b");
+        _mli_strip_this_dir(dst, src);
+        CHECK(0 == strcmp(dst, ".a/b"));
+        CHECK(0 == strcmp(src, ".a/b"));
+
+        sprintf(src, "a./b");
+        _mli_strip_this_dir(dst, src);
+        CHECK(0 == strcmp(dst, "a./b"));
+        CHECK(0 == strcmp(src, "a./b"));
+
+        memset(src, '\0', sizeof(src));
+        _mli_strip_this_dir(dst, src);
+        CHECK(0 == strlen(src));
+        CHECK(0 == strlen(dst));
+        CHECK(0 == strcmp(dst, ""));
+        CHECK(0 == strcmp(src, ""));
+}
+
+CASE("find CRLF and CR linebreaks")
+{
+        char txt[128];
+        memset(txt, '\0', sizeof(txt));
+        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(!_mli_is_CR_line_break(&txt[0]));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "\r\n");
+        CHECK(_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(_mli_is_CR_line_break(&txt[0]));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "01\r\n23");
+        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(!_mli_is_CR_line_break(&txt[0]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[1]));
+        CHECK(!_mli_is_CR_line_break(&txt[1]));
+
+        CHECK(_mli_is_CRLF_line_break(&txt[2]));
+        CHECK(_mli_is_CR_line_break(&txt[2]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[3]));
+        CHECK(!_mli_is_CR_line_break(&txt[3]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[4]));
+        CHECK(!_mli_is_CR_line_break(&txt[4]));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "\r");
+        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(_mli_is_CR_line_break(&txt[0]));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "0\r1");
+        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
+        CHECK(!_mli_is_CR_line_break(&txt[0]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[1]));
+        CHECK(_mli_is_CR_line_break(&txt[1]));
+
+        CHECK(!_mli_is_CRLF_line_break(&txt[2]));
+        CHECK(!_mli_is_CR_line_break(&txt[2]));
+}
+
+CASE("replace CRLF and CR linebreaks with LF")
+{
+        struct mliString src = mliString_init();
+        struct mliString dst = mliString_init();
+
+        CHECK(mliString_malloc(&src, 32));
+        CHECK(mliString_malloc(&dst, 32));
+
+        /* all '\0' */
+        /* -------- */
+        CHECK(src.c_str[0] == '\0');
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(dst.c_str[0] == '\0');
+
+        /* minimal CR */
+        /* ---------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "\r");
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "\n"));
+
+        /* minimal CRLF */
+        /* ------------ */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "\r\n");
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "\n"));
+
+        /* minimal text CRLF */
+        /* ----------------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "hans\r\npeter");
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
+
+        /* minimal text CR */
+        /* ----------------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "hans\rpeter");
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
+
+        /* complex text CRLF */
+        /* ----------------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
+
+        /* complex text CR */
+        /* ----------------- */
+        memset(src.c_str, '\0', src.capacity);
+        sprintf(src.c_str, "\rflower\rcar\r\rhouse\r");
+        CHECK(mliString_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
+
+        mliString_free(&src);
+        mliString_free(&dst);
+}
+
+CASE("assert no unexpected control codes in ascii-text.")
+{
+        char txt[32];
+        uint8_t i;
+
+        MLI_PRINT_LEVEL = 0;
+        CHECK(mli_string_assert_only_NUL_LF_TAB_controls(""));
+        CHECK(mli_string_assert_only_NUL_LF_TAB_controls("\n"));
+        CHECK(mli_string_assert_only_NUL_LF_TAB_controls("\0"));
+        CHECK(mli_string_assert_only_NUL_LF_TAB_controls("house"));
+        CHECK(mli_string_assert_only_NUL_LF_TAB_controls("house\n"));
+
+        CHECK(!mli_string_assert_only_NUL_LF_TAB_controls("\r"));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "%c", 0);
+        CHECK(mli_string_assert_only_NUL_LF_TAB_controls(txt));
+
+        for (i = 1; i < 9; i++) {
+                memset(txt, '\0', sizeof(txt));
+                sprintf(txt, "%c", i);
+                CHECK(!mli_string_assert_only_NUL_LF_TAB_controls(txt));
+        }
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "%c", 9);
+        CHECK(mli_string_assert_only_NUL_LF_TAB_controls(txt));
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "%c", 10);
+        CHECK(mli_string_assert_only_NUL_LF_TAB_controls(txt));
+
+        for (i = 11; i < 32; i++) {
+                memset(txt, '\0', sizeof(txt));
+                sprintf(txt, "%c", i);
+                CHECK(!mli_string_assert_only_NUL_LF_TAB_controls(txt));
+        }
+
+        memset(txt, '\0', sizeof(txt));
+        sprintf(txt, "%c", 127);
+        CHECK(!mli_string_assert_only_NUL_LF_TAB_controls(txt));
+
+        for (i = 128; i < 255; i++) {
+                memset(txt, '\0', sizeof(txt));
+                sprintf(txt, "%c", i);
+                CHECK(!mli_string_assert_only_NUL_LF_TAB_controls(txt));
+        }
+        MLI_PRINT_LEVEL = 1;
 }

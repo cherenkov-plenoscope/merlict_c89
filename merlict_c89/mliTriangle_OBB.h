@@ -3,33 +3,8 @@
 #define MERLICT_C89_MLITRIANGLE_OBB_H_
 
 #include <stdint.h>
-#include <math.h>
-
-#include "mliScenery.h"
 #include "mliVec.h"
-#include "mli_math.h"
 #include "mliOBB.h"
-
-#define MLI_TRI_EPS 10e-5
-#define MLI_LERP(A, B, C) ((B) + (A) * ((C) - (B)))
-#define MLI_INSIDE 0
-#define MLI_OUTSIDE 1
-
-#define MLI_SIGN3(A)                                                           \
-        (((A).x < MLI_TRI_EPS)                                                 \
-                 ? 4                                                           \
-                 : 0 | ((A).x > -MLI_TRI_EPS)                                  \
-                           ? 32                                                \
-                           : 0 | ((A).y < MLI_TRI_EPS)                         \
-                                     ? 2                                       \
-                                     : 0 | ((A).y > -MLI_TRI_EPS)              \
-                                               ? 16                            \
-                                               : 0 | ((A).z < MLI_TRI_EPS)     \
-                                                         ? 1                   \
-                                                         : 0 | ((A).z >        \
-                                                                -MLI_TRI_EPS)  \
-                                                                   ? 8         \
-                                                                   : 0)
 
 struct mliTriangle {
         struct mliVec v1;

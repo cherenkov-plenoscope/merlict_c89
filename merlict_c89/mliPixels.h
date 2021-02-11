@@ -3,10 +3,6 @@
 #define MERLICT_C89_MLIPIXELS_H_
 
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "mli_debug.h"
 
 struct mliPixel {
         uint16_t row;

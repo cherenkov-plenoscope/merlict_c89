@@ -53,73 +53,6 @@ CASE("ray and orientated bounding box")
                 &ray_parameter));
 }
 
-CASE("ray has causal intersection")
-{
-        double causal_solution;
-        int rc;
-        struct mliBoundSurfaceChecklist cl;
-
-        /*
-         *       _/_ps
-         *      //  \
-         *     |/ ms |
-         *     /\___/
-         *    /
-         *   X support
-         */
-        cl.plus_solution = 2.0;
-        cl.minus_solution = 1.0;
-        cl.plus_is_inside = 1;
-        cl.minus_is_inside = 1;
-        rc = mli_outer_bound_surface_causal_intersection(cl, &causal_solution);
-        CHECK(causal_solution == cl.minus_solution);
-        CHECK(rc);
-
-        /*
-         *       _/_ps
-         *      //  \
-         *     |X support
-         *  ms /\___/
-         *    /
-         *
-         */
-        cl.plus_solution = 1.0;
-        cl.minus_solution = -1.0;
-        cl.plus_is_inside = 1;
-        cl.minus_is_inside = 1;
-        rc = mli_outer_bound_surface_causal_intersection(cl, &causal_solution);
-        CHECK(causal_solution == cl.plus_solution);
-        CHECK(rc);
-
-        /*
-         *          /
-         *         X support
-         *       _/_ps
-         *      //  \
-         *     |/    |
-         *  ms /\___/
-         *    /
-         *
-         */
-        cl.plus_solution = -1.0;
-        cl.minus_solution = -2.0;
-        cl.plus_is_inside = 1;
-        cl.minus_is_inside = 1;
-        rc = mli_outer_bound_surface_causal_intersection(cl, &causal_solution);
-        CHECK(!rc);
-}
-
-CASE("mliSphericalCapHex, bounding radius")
-{
-        struct mliSphericalCapHex cap;
-        double bounding_radius;
-        cap.curvature_radius = 1.0;
-        cap.inner_hex_radius = .1;
-        bounding_radius = mliSphericalCapHex_bounding_radius(cap);
-        CHECK(bounding_radius > cap.inner_hex_radius * MLI_2_OVER_SQRT3);
-        CHECK(bounding_radius < 1.1 * cap.inner_hex_radius * MLI_2_OVER_SQRT3);
-}
-
 CASE("mliHomTraComp, transform direction")
 {
         struct mliHomTraComp Tcomp;
@@ -221,22 +154,4 @@ CASE("translation and rotation")
         CHECK_MARGIN(ray3.direction.x, ray.direction.x, 1e-6);
         CHECK_MARGIN(ray3.direction.y, ray.direction.y, 1e-6);
         CHECK_MARGIN(ray3.direction.z, ray.direction.z, 1e-6);
-}
-
-CASE("mli_xyplane_equation")
-{
-        double solution;
-        CHECK(mli_xyplane_equation(
-                mliRay_set(mliVec_set(0., 0., 1.), mliVec_set(0., 0., -1.)),
-                &solution));
-        CHECK_MARGIN(solution, 1., 1e-6);
-
-        CHECK(mli_xyplane_equation(
-                mliRay_set(mliVec_set(0., 0., 1.), mliVec_set(0., 1., -1.)),
-                &solution));
-        CHECK_MARGIN(solution, sqrt(2.), 1e-6);
-
-        CHECK(!mli_xyplane_equation(
-                mliRay_set(mliVec_set(0., 0., 1.), mliVec_set(0., 1., 0.)),
-                &solution));
 }

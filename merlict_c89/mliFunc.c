@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFunc.h"
+#include <stdlib.h>
+#include "mliMagicId.h"
 
 struct mliFunc mliFunc_init(void)
 {
@@ -29,7 +31,7 @@ error:
         return 0;
 }
 
-int mliFunc_x_is_causal(struct mliFunc *f)
+int mliFunc_x_is_strictly_increasing(const struct mliFunc *f)
 {
         uint32_t i;
         for (i = 1; i < f->num_points; i++) {
@@ -40,32 +42,6 @@ int mliFunc_x_is_causal(struct mliFunc *f)
         return 1;
 }
 
-double mli_linear_interpolate(
-        const double xarg,
-        const double x0,
-        const double y0,
-        const double x1,
-        const double y1)
-{
-        /*
-         *      |
-         *  y1 -|            o
-         *      |
-         *  y0 -|    o
-         *      |       xarg
-         *      +----|---|---|----
-         *          x0       x1
-         *
-         *  f(x) = m*x + b
-         *  m = (y1 - y0)/(x1 - x0)
-         *  y0 = m*x0 + b
-         *  b = y0 - m*x0
-         */
-        const double m = (y1 - y0) / (x1 - x0);
-        const double b = y0 - m * x0;
-        return m * xarg + b;
-}
-
 int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
 {
         double y1, y0, x1, x0;
@@ -73,13 +49,13 @@ int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
         if (idx == 0) {
                 mli_sentinel("mliFunc argument below lower bound.");
         } else if (idx == f->num_points) {
-                mli_sentinel("mliFunc argument larger upper bound.");
+                mli_sentinel("mliFunc argument above upper bound.");
         } else {
                 y1 = f->y[idx];
                 y0 = f->y[idx - 1u];
                 x1 = f->x[idx];
                 x0 = f->x[idx - 1u];
-                (*out) = mli_linear_interpolate(xarg, x0, y0, x1, y1);
+                (*out) = mli_linear_interpolate_2d(xarg, x0, y0, x1, y1);
         }
         return 1;
 error:
@@ -116,34 +92,7 @@ error:
         return 0;
 }
 
-int mliFunc_fwrite(const struct mliFunc *func, FILE *f)
-{
-        mli_fwrite(&func->num_points, sizeof(uint32_t), 1u, f);
-        mli_fwrite(func->x, sizeof(double), func->num_points, f);
-        mli_fwrite(func->y, sizeof(double), func->num_points, f);
-        return 1;
-error:
-        return 0;
-}
-
-int mliFunc_malloc_from_file(struct mliFunc *func, FILE *f)
-{
-        uint32_t num_points;
-        mli_fread(&num_points, sizeof(uint32_t), 1u, f);
-        mli_c(mliFunc_malloc(func, num_points));
-        mli_fread(func->x, sizeof(double), func->num_points, f);
-        mli_fread(func->y, sizeof(double), func->num_points, f);
-        mli_check(
-                mliFunc_x_is_causal(func),
-                "Expected function x-arguments to be ascending, but they are "
-                "not.");
-        return 1;
-error:
-        mliFunc_free(func);
-        return 0;
-}
-
-int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b)
+int mliFunc_equal(const struct mliFunc a, const struct mliFunc b)
 {
         uint64_t i;
         if (a.num_points != b.num_points)
@@ -157,17 +106,31 @@ int mliFunc_is_equal(const struct mliFunc a, const struct mliFunc b)
         return 1;
 }
 
-int mliFunc_cpy(struct mliFunc *destination, const struct mliFunc *source)
+int mliFunc_is_valid(const struct mliFunc *func)
 {
-        uint64_t p;
+        uint64_t i;
         mli_check(
-                destination->num_points == source->num_points,
-                "Expected source and destination mliFunc to have same "
-                "num_points.");
-        for (p = 0; p < destination->num_points; p++) {
-                destination->x[p] = source->x[p];
-                destination->y[p] = source->y[p];
+                func->num_points >= 2,
+                "Expected function to have at least two points. "
+                "Evaluation is not possible when there is no valid range "
+                "between two points.");
+
+        for (i = 0; i < func->num_points; i++) {
+                mli_check(
+                        !MLI_IS_NAN(func->x[i]),
+                        "Expected x-argument to be a real number, "
+                        "but it is 'nan'.");
+                mli_check(
+                        !MLI_IS_NAN(func->y[i]),
+                        "Expected y-value to be a real number, "
+                        "but it is 'nan'.");
         }
+
+        mli_check(
+                mliFunc_x_is_strictly_increasing(func),
+                "Expected x-arguments to be strictly increasing, "
+                "but they do not.");
+
         return 1;
 error:
         return 0;

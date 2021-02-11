@@ -1,0 +1,19 @@
+{
+    "children": [
+        {
+            "id": 2,
+            "pos": [5, 5, -2],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "children": [
+                {
+                    "id": 3,
+                    "pos": [0, 0, 3],
+                    "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+                    "obj": "triangle",
+                    "mtl": {"layer123": "vacu.gras:gras.vacu"}
+                }
+            ]
+        }
+    ]
+}
+

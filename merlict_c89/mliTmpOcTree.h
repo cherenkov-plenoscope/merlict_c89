@@ -3,14 +3,20 @@
 #define MERLICT_C89_MLITMPOCTREE_H_
 
 #include <stdint.h>
-
-#include "mliScenery.h"
+#include "mliGeometry.h"
 #include "mliOBB.h"
 #include "mliCube.h"
-#include "mli_math.h"
 #include "mliOctOverlaps.h"
 
 #define MLI_TMPNODE_FLAT_INDEX_NONE -1
+
+uint64_t mli_guess_octree_depth_based_on_num_objects(
+        const uint64_t num_objects);
+
+/*
+ * The dynamic node
+ * ================
+ */
 
 struct mliTmpNode {
         struct mliTmpNode *children[8];
@@ -22,16 +28,9 @@ struct mliTmpNode {
         int32_t leaf_index;
 };
 
-struct mliTmpOcTree {
-        struct mliCube cube;
-        struct mliTmpNode root;
-};
-
-int mliTmpOcTree_malloc_from_scenery(
-        struct mliTmpOcTree *octree,
-        const struct mliScenery *scenery);
-void mliTmpOcTree_free(struct mliTmpOcTree *octree);
-struct mliTmpOcTree mliTmpOcTree_init(void);
+int mliTmpNode_malloc(struct mliTmpNode *n, const uint32_t num_objects);
+void mliTmpNode_free(struct mliTmpNode *n);
+struct mliTmpNode mliTmpNode_init(void);
 void mliTmpNode_num_nodes_leafs_objects(
         const struct mliTmpNode *root_node,
         uint64_t *num_nodes,
@@ -54,15 +53,22 @@ void mliTmpNode_print(
         const uint32_t indent,
         const uint32_t child);
 int mliTmpNode_num_children(const struct mliTmpNode *node);
-int mliTmpNode_malloc_tree_from_scenery(
+int mliTmpNode_malloc_tree_from_bundle(
         struct mliTmpNode *root_node,
-        const struct mliScenery *scenery,
-        const struct mliCube scenery_cube);
-uint64_t mli_guess_octree_depth_based_on_num_objects(
-        const uint64_t num_objects);
+        const void *bundle,
+        const uint32_t num_items_in_bundle,
+        int (*item_in_bundle_has_overlap_obb)(
+                const void *,
+                const uint32_t,
+                const struct mliOBB),
+        const struct mliCube bundle_cube);
 int mliTmpNode_add_children(
         struct mliTmpNode *node,
-        const struct mliScenery *scenery,
+        const void *bundle,
+        int (*item_in_bundle_has_overlap_obb)(
+                const void *,
+                const uint32_t,
+                const struct mliOBB),
         const struct mliCube cube,
         const uint64_t depth,
         const uint64_t max_depth);
@@ -70,7 +76,29 @@ uint32_t mliTmpNode_signs_to_child(
         const uint32_t sx,
         const uint32_t sy,
         const uint32_t sz);
-int mliTmpNode_malloc(struct mliTmpNode *n, const uint32_t num_objects);
-void mliTmpNode_free(struct mliTmpNode *n);
-struct mliTmpNode mliTmpNode_init(void);
+
+/*
+ * The dynamic octree
+ * ==================
+ */
+
+struct mliTmpOcTree {
+        struct mliCube cube;
+        struct mliTmpNode root;
+};
+
+int mliTmpOcTree_malloc_from_bundle(
+        struct mliTmpOcTree *octree,
+        const void *bundle,
+        const uint32_t num_items_in_bundle,
+        int (*item_in_bundle_has_overlap_obb)(
+                const void *,
+                const uint32_t,
+                const struct mliOBB),
+        struct mliOBB bundle_obb);
+
+void mliTmpOcTree_free(struct mliTmpOcTree *octree);
+struct mliTmpOcTree mliTmpOcTree_init(void);
+void mliTmpOcTree_print(const struct mliTmpOcTree *octree);
+
 #endif

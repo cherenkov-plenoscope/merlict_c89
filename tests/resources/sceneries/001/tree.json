@@ -1,0 +1,33 @@
+{
+    "children": [
+        {
+            "id": 1,
+            "pos": [0, 0, 0],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [-90.0, 0, 0]},
+            "obj": "teapot",
+            "mtl": {"a": "vacu_wood_blue_vacu"}
+        },
+        {
+            "id": 2,
+            "pos": [5, 5, -2],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "children": [
+                {
+                    "id": 3,
+                    "pos": [0, 0, 3],
+                    "rot": {"repr": "tait_bryan", "xyz_deg": [0, 90, 0]},
+                    "obj": "hexagonal_mirror_facet",
+                    "mtl": {"mirror": "vacu_leaf_wood_vacu"}
+                },
+                {
+                    "id": 4,
+                    "pos": [0, 0, 0.75],
+                    "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+                    "obj": "hexagonal_mirror_facet",
+                    "mtl": {"mirror": "vacu_gras_wood_vacu"}
+                }
+            ]
+        }
+    ]
+}
+

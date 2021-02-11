@@ -2,7 +2,6 @@
 #ifndef MERLICT_C89_MLICOLOR_H_
 #define MERLICT_C89_MLICOLOR_H_
 
-#include <math.h>
 #include <stdint.h>
 
 struct mliColor {
@@ -11,7 +10,7 @@ struct mliColor {
         float b;
 };
 
-int mliColor_is_equal(const struct mliColor a, const struct mliColor b);
+int mliColor_equal(const struct mliColor a, const struct mliColor b);
 struct mliColor mliColor_truncate_to_uint8(const struct mliColor color);
 struct mliColor mliColor_mean(
         const struct mliColor colors[],
@@ -21,4 +20,5 @@ struct mliColor mliColor_mix(
         const struct mliColor b,
         const float refl);
 struct mliColor mliColor_set(const float r, const float g, const float b);
+int mliColor_is_valid_8bit_range(const struct mliColor c);
 #endif

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <stdarg.h>
 
 /*
  *  Based on Zed Shawn's awesome Debug Macros from his book:
@@ -62,5 +63,9 @@
                         fwrite(&__temp_value, sizeof(TYPE), 1, F);             \
                 mli_check(__num_written == 1, "Can not write type to file.");  \
         }
+
+void mli_eprintf(const char *format, ...);
+
+int MLI_PRINT_LEVEL = 1;
 
 #endif

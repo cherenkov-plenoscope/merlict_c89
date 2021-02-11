@@ -2,26 +2,37 @@
 #ifndef MERLICT_C89_MLIOBB_H_
 #define MERLICT_C89_MLIOBB_H_
 
-#include <assert.h>
-
 #include "mliVec.h"
-#include "mli_math.h"
-#include "mliRay.h"
-#include "mliEdge.h"
 
 struct mliOBB {
         /*
          * Rectangular Oriented-Bounding-Box
          * oriented w.r.t. the unit-vectors.
+         *
+         *                     O----------------------O
+         *                    /.                     /|
+         *                   / .                    / |
+         *                  /  .                   /  |
+         *                 /   .                  /   |
+         *                O----------------------O upper
+         *                |    .                 |    |
+         *      Z         |    .                 |    |
+         *      |       lo|wer O- - - - - - - - -| - -O
+         *      |         |   .                  |   /
+         *      |         |  .                   |  /
+         *      /-----Y   | .                    | /
+         *     /          |.                     |/
+         *    X           O----------------------O
+         *
+         *
          */
         struct mliVec lower;
         struct mliVec upper;
 };
 
-struct mliEdge mliOBB_edge(const struct mliOBB obb, const uint64_t edge_idx);
-struct mliOBB mliOBB_dilate(
-        const struct mliOBB a,
-        const double dilation_radius);
+struct mliOBB mliOBB_set(const struct mliVec lower, const struct mliVec upper);
 struct mliVec mliOBB_center(const struct mliOBB a);
 struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b);
+int mliOBB_valid(const struct mliOBB obb);
+int mliOBB_equal(const struct mliOBB a, const struct mliOBB b);
 #endif

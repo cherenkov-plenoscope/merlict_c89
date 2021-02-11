@@ -12,7 +12,7 @@ CASE("mliObject, init")
         CHECK(obj.faces_vertices == NULL);
         CHECK(obj.faces_vertex_normals == NULL);
 
-        CHECK(mliObject_assert_valid_faces(&obj));
+        CHECK(mliObject_has_valid_faces(&obj));
 }
 
 CASE("mliObject, malloc")
@@ -20,29 +20,35 @@ CASE("mliObject, malloc")
         const uint64_t num_vertices = 9;
         const uint64_t num_vertex_normals = 9;
         const uint64_t num_faces = 3;
+        const uint64_t num_materials = 1;
 
         struct mliObject obj = mliObject_init();
-        CHECK(mliObject_malloc(&obj, num_vertices, num_vertex_normals, num_faces));
+        CHECK(mliObject_malloc(
+                &obj, num_vertices, num_vertex_normals, num_faces, num_materials));
 
         CHECK(obj.num_vertices == num_vertices);
         CHECK(obj.num_vertex_normals == num_vertex_normals);
         CHECK(obj.num_faces == num_faces);
+        CHECK(obj.num_materials == num_materials);
 
         CHECK(obj.vertices != NULL);
         CHECK(obj.vertex_normals != NULL);
         CHECK(obj.faces_vertices != NULL);
         CHECK(obj.faces_vertex_normals != NULL);
+        CHECK(obj.first_face_in_next_material != NULL);
 
         mliObject_free(&obj);
 
         CHECK(obj.num_vertices == 0u);
         CHECK(obj.num_vertex_normals == 0u);
         CHECK(obj.num_faces == 0u);
+        CHECK(obj.num_materials == 0u);
 
         CHECK(obj.vertices == NULL);
         CHECK(obj.vertex_normals == NULL);
         CHECK(obj.faces_vertices == NULL);
         CHECK(obj.faces_vertex_normals == NULL);
+        CHECK(obj.first_face_in_next_material == NULL);
 }
 
 CASE("mliObject, parse valid obj face lines")
@@ -186,7 +192,6 @@ CASE("mliObject, parse valid obj face lines")
         CHECK(faces_vertex_normals.c == 83);
 }
 
-
 CASE("mliObject, parse bad obj face lines")
 {
         int line_mode = 0;
@@ -232,13 +237,11 @@ CASE("mliObject, parse bad obj face lines")
         CHECK(line_mode == -1);
 
         /* provoce int64 overflow */
-        strcpy(
-                line,
-                "f "
-                "999999999999999999999999999999"
-                "999999999999999999999999999999"
-                " 0 0"
-        );
+        strcpy(line,
+               "f "
+               "999999999999999999999999999999"
+               "999999999999999999999999999999"
+               " 0 0");
         CHECK(!_mliObject_parse_face_line(
                 line,
                 &faces_vertices,
@@ -248,14 +251,12 @@ CASE("mliObject, parse bad obj face lines")
         CHECK(line_mode == -1);
 
         /* provoce int buffer length */
-        strcpy(
-                line,
-                "f "
-                "9999999999999999999999999999999999999"
-                "9999999999999999999999999999999999999"
-                "9999999999999999999999999999999999999"
-                " 0 0"
-        );
+        strcpy(line,
+               "f "
+               "9999999999999999999999999999999999999"
+               "9999999999999999999999999999999999999"
+               "9999999999999999999999999999999999999"
+               " 0 0");
         CHECK(!_mliObject_parse_face_line(
                 line,
                 &faces_vertices,
@@ -264,7 +265,6 @@ CASE("mliObject, parse bad obj face lines")
                 &line_mode));
         CHECK(line_mode == -1);
 }
-
 
 CASE("mliObject, parse valid obj-float-lines")
 {
@@ -352,18 +352,202 @@ CASE("mliObject, parse bad obj-float-lines")
 
 CASE("mliObject, read wavefront file")
 {
+        struct mliString str = mliString_init();
         struct mliObject obj = mliObject_init();
-
-        FILE *f = fopen("tests/resources/hexagonal_mirror_facet.obj", "r");
-        CHECK(f != NULL);
-        mliObject_malloc_from_file(&obj, f);
-        fclose(f);
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001/"
+                "objects/"
+                "hexagonal_mirror_facet.obj"));
+        CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
+        CHECK(strlen(str.c_str) == str.capacity - 1);
+        mliString_free(&str);
 
         CHECK(obj.num_faces == 600);
         CHECK(obj.num_vertices == 331);
         CHECK(obj.num_vertex_normals == 331);
+        CHECK(mliObject_has_valid_faces(&obj));
+        mliObject_free(&obj);
+}
 
-        CHECK(mliObject_assert_valid_faces(&obj));
+CASE("mliObject, write and read binary-string")
+{
+        uint64_t i;
+        struct mliString str = mliString_init();
+        struct mliObject obj = mliObject_init();
+        struct mliObject obj_back = mliObject_init();
+        FILE *f;
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001/"
+                "objects/"
+                "hexagonal_mirror_facet.obj"));
+        CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
+        mliString_free(&str);
+
+        f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "w");
+        CHECK(f != NULL);
+        mliObject_fwrite(&obj, f);
+        fclose(f);
+
+        f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "r");
+        CHECK(f != NULL);
+        mliObject_malloc_fread(&obj_back, f);
+        fclose(f);
+
+        CHECK(obj.num_vertices == obj_back.num_vertices);
+        CHECK(obj.num_vertex_normals == obj_back.num_vertex_normals);
+        CHECK(obj.num_faces == obj_back.num_faces);
+
+        for (i = 0; i < obj.num_vertices; i++) {
+                CHECK(mliVec_equal(obj.vertices[i], obj_back.vertices[i]));
+        }
+        for (i = 0; i < obj.num_vertex_normals; i++) {
+                CHECK(mliVec_equal(
+                        obj.vertex_normals[i], obj_back.vertex_normals[i]));
+        }
+        for (i = 0; i < obj.num_faces; i++) {
+                CHECK(mliFace_equal(
+                        obj.faces_vertices[i], obj_back.faces_vertices[i]));
+                CHECK(mliFace_equal(
+                        obj.faces_vertex_normals[i],
+                        obj_back.faces_vertex_normals[i]));
+        }
+
+        CHECK(mliObject_equal(&obj, &obj_back));
 
         mliObject_free(&obj);
+        mliObject_free(&obj_back);
+}
+
+CASE("mliObject, write and read ascii-text-string")
+{
+        uint64_t i;
+        struct mliString str = mliString_init();
+        struct mliObject obj = mliObject_init();
+        struct mliObject obj_back = mliObject_init();
+        FILE *f;
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001/"
+                "objects/"
+                "hexagonal_mirror_facet.obj"));
+        CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
+        mliString_free(&str);
+
+        f = fopen("tests/resources/hexagonal_mirror_facet.obj.tmp", "w");
+        CHECK(f != NULL);
+        mliObject_fprint_to_wavefront(f, &obj);
+        fclose(f);
+
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/resources/hexagonal_mirror_facet.obj.tmp"));
+        CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));
+        mliString_free(&str);
+
+        CHECK(obj.num_vertices == obj_back.num_vertices);
+        CHECK(obj.num_vertex_normals == obj_back.num_vertex_normals);
+        CHECK(obj.num_faces == obj_back.num_faces);
+        CHECK(obj.num_materials == obj_back.num_materials);
+
+        for (i = 0; i < obj.num_vertices; i++) {
+                CHECK(mliVec_equal_margin(
+                        obj.vertices[i],
+                        obj_back.vertices[i],
+                        1e-6));
+        }
+        for (i = 0; i < obj.num_vertex_normals; i++) {
+                CHECK(mliVec_equal_margin(
+                        obj.vertex_normals[i],
+                        obj_back.vertex_normals[i],
+                        1e-6));
+        }
+        for (i = 0; i < obj.num_faces; i++) {
+                CHECK(mliFace_equal(
+                        obj.faces_vertices[i],
+                        obj_back.faces_vertices[i]));
+                CHECK(mliFace_equal(
+                        obj.faces_vertex_normals[i],
+                        obj_back.faces_vertex_normals[i]));
+        }
+        for (i = 0; i < obj.num_materials; i++) {
+                CHECK(obj.first_face_in_next_material[i] ==
+                        obj_back.first_face_in_next_material[i]);
+        }
+
+        mliObject_free(&obj);
+        mliObject_free(&obj_back);
+}
+
+
+CASE("mliObject, read and write multiple materials")
+{
+        FILE *f;
+        struct mliString str = mliString_init();
+        struct mliObject obj_orig = mliObject_init();
+        struct mliObject obj_back = mliObject_init();
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "002/"
+                "objects/"
+                "cube_with_materials.obj"));
+        CHECK(mliObject_malloc_from_wavefront(&obj_orig, str.c_str));
+        mliString_free(&str);
+        CHECK(obj_orig.num_vertices == 8);
+        CHECK(obj_orig.num_vertex_normals == 6);
+        CHECK(obj_orig.num_faces == 12);
+        CHECK(obj_orig.num_materials == 6);
+
+        f = fopen("tests/resources/cube_with_materials.obj.tmp", "w");
+        CHECK(f != NULL);
+        mliObject_fprint_to_wavefront(f, &obj_orig);
+        fclose(f);
+
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/"
+                "resources/"
+                "cube_with_materials.obj.tmp"));
+        CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));
+        mliString_free(&str);
+
+        CHECK(obj_back.num_vertices == 8);
+        CHECK(obj_back.num_vertex_normals == 6);
+        CHECK(obj_back.num_faces == 12);
+        CHECK(obj_back.num_materials == 6);
+
+
+        CHECK(0 == mliObject_resolve_material_idx(&obj_back, 0));
+        CHECK(0 == mliObject_resolve_material_idx(&obj_back, 1));
+
+        CHECK(1 == mliObject_resolve_material_idx(&obj_back, 2));
+        CHECK(1 == mliObject_resolve_material_idx(&obj_back, 3));
+
+        CHECK(2 == mliObject_resolve_material_idx(&obj_back, 4));
+        CHECK(2 == mliObject_resolve_material_idx(&obj_back, 5));
+
+        CHECK(3 == mliObject_resolve_material_idx(&obj_back, 6));
+        CHECK(3 == mliObject_resolve_material_idx(&obj_back, 7));
+
+        CHECK(4 == mliObject_resolve_material_idx(&obj_back, 8));
+        CHECK(4 == mliObject_resolve_material_idx(&obj_back, 9));
+
+        CHECK(5 == mliObject_resolve_material_idx(&obj_back, 10));
+        CHECK(5 == mliObject_resolve_material_idx(&obj_back, 11));
+
+        mliObject_free(&obj_orig);
+        mliObject_free(&obj_back);
 }

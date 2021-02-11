@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliRotMat.h"
+#include <math.h>
 
 struct mliRotMat mliRotMat_init_tait_bryan(
         const double rx,

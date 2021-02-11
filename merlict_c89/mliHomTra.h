@@ -2,9 +2,6 @@
 #ifndef MERLICT_C89_MLIHOMTRA_H_
 #define MERLICT_C89_MLIHOMTRA_H_
 
-#include <math.h>
-#include <stdint.h>
-
 #include "mliVec.h"
 #include "mliRay.h"
 #include "mliRotMat.h"
@@ -27,7 +24,7 @@ struct mliHomTraComp mliHomTraComp_set(
 struct mliHomTraComp mliHomTraComp_sequence(
         const struct mliHomTraComp a,
         const struct mliHomTraComp b);
-int mliHomTraComp_is_equal(
+int mliHomTraComp_equal(
         const struct mliHomTraComp a,
         const struct mliHomTraComp b);
 struct mliVec mliHomTra_dir_inverse(

@@ -4,8 +4,6 @@
 
 #include <stdint.h>
 
-#include "mli_debug.h"
-
 #define MLI_MATERIAL_PHONG 100u
 #define MLI_MATERIAL_TRANSPARENT 102u
 
@@ -22,6 +20,7 @@ struct mliSurface {
         uint32_t color;
 };
 
-int mli_material_to_string(const uint32_t type, char *s);
-int mliSurface_is_equal(const struct mliSurface a, const struct mliSurface b);
+int mli_material_type_to_string(const uint32_t type, char *s);
+int mli_material_type_from_string(const char *s, uint32_t *id);
+int mliSurface_equal(const struct mliSurface a, const struct mliSurface b);
 #endif

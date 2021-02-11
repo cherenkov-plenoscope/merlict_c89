@@ -2,10 +2,8 @@
 #ifndef MERLICT_C89_MLIPHOTONINTERACTION_H_
 #define MERLICT_C89_MLIPHOTONINTERACTION_H_
 
-#include <math.h>
 #include <stdint.h>
-
-#include "mliIntersection.h"
+#include "mliIntersectionSurfaceNormal.h"
 #include "mliVec.h"
 #include "mliPhoton.h"
 
@@ -19,7 +17,8 @@
 #define MLI_PHOTON_DIFFUSE_REFLECTION 107u
 
 struct mliPhotonInteraction {
-        int64_t object_idx;
+        int32_t on_geometry_surface;
+        struct mliGeometryId geometry_id;
 
         struct mliVec position;
         struct mliVec position_local;
@@ -35,7 +34,7 @@ struct mliPhotonInteraction {
 };
 
 int mli_time_of_flight(
-        const struct mliScenery *scenery,
+        const struct mliMaterials *materials,
         const struct mliPhotonInteraction *phisec,
         const struct mliPhoton *photon,
         double *time_of_flight);

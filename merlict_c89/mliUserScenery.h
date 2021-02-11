@@ -2,27 +2,27 @@
 #ifndef MERLICT_C89_MLIUSERSCENERY_H_
 #define MERLICT_C89_MLIUSERSCENERY_H_
 
-#include <math.h>
-#include <stdint.h>
-
-#include "mli_debug.h"
-#include "mliScenery.h"
-#include "mliSceneryResources.h"
+#include "mliMaterials.h"
 #include "mliFrame.h"
-#include "mliMap.h"
+#include "mliDynMap.h"
+#include "mliArchive.h"
 
-struct mliUserScenery {
-        struct mliSceneryResources resources;
-        struct mliFrame root;
-        uint32_t default_medium;
-
-        struct mliMap2 function_names;
-        struct mliMap2 color_names;
-        struct mliMap2 medium_names;
-        struct mliMap2 surface_names;
+struct mliNameMap {
+        struct mliDynMap objects;
+        struct mliDynMap functions;
+        struct mliDynMap colors;
+        struct mliDynMap media;
+        struct mliDynMap surfaces;
+        struct mliDynMap boundary_layers;
 };
+struct mliNameMap mliNameMap_init(void);
+int mliNameMap_malloc(struct mliNameMap *namemap);
+void mliNameMap_free(struct mliNameMap *namemap);
 
-int mliUserScenery_malloc(struct mliUserScenery *uscn);
-void mliUserScenery_free(struct mliUserScenery *uscn);
-struct mliUserScenery mliUserScenery_init(void);
+int __mliMaterialsCapacity_from_materials_json(
+        struct mliMaterialsCapacity *rescap,
+        const struct mliJson *json);
+
+void __mli_strip_key(const char *filename, char *key);
+
 #endif

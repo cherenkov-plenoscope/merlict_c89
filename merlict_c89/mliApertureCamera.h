@@ -2,10 +2,7 @@
 #ifndef MERLICT_C89_MLIAPERTURECAMERA_H_
 #define MERLICT_C89_MLIAPERTURECAMERA_H_
 
-#include <math.h>
-#include <assert.h>
 #include <stdint.h>
-
 #include "mliMT19937.h"
 #include "mliVec.h"
 #include "mliHomTra.h"
@@ -147,7 +144,6 @@ int mliApertureCamera_render_image(
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
         const struct mliScenery *scenery,
-        const struct mliOcTree *octree,
         struct mliImage *image);
 
 #endif

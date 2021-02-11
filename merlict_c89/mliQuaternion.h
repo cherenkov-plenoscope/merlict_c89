@@ -2,10 +2,6 @@
 #ifndef MERLICT_C89_MLIQUATERNION_H_
 #define MERLICT_C89_MLIQUATERNION_H_
 
-#include <math.h>
-#include <float.h>
-#include <stdint.h>
-
 #include "mliVec.h"
 #include "mliRotMat.h"
 
@@ -32,11 +28,11 @@ struct mliQuaternion mliQuaternion_product(
         const struct mliQuaternion q);
 struct mliQuaternion mliQuaternion_complex_conjugate(
         const struct mliQuaternion q);
-int mliQuaternion_is_equal_margin(
+int mliQuaternion_equal_margin(
         const struct mliQuaternion a,
         const struct mliQuaternion b,
         const double margin);
-int mliQuaternion_is_equal(
+int mliQuaternion_equal(
         const struct mliQuaternion a,
         const struct mliQuaternion b);
 struct mliQuaternion mliQuaternion_set(
