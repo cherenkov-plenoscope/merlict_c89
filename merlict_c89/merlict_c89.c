@@ -58,6 +58,7 @@
 #include "mliGeometryToMaterialMap.c"
 #include "mliGeometryToMaterialMap_equal.c"
 #include "mliGeometryToMaterialMap_valid.c"
+#include "mliGeometryToMaterialMap_serialize.c"
 #include "mliScenery.c"
 #include "mliScenery_valid.c"
 #include "mliScenery_tar.c"
