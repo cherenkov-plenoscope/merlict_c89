@@ -6,7 +6,6 @@ int mliGeometryToMaterialMap_malloc_fread(
         struct mliGeometryToMaterialMap *geomap,
         FILE *f)
 {
-        uint32_t i;
         uint32_t num_robjects = 0u;
         uint32_t total_num_boundary_layers = 0u;
         struct mliMagicId magic;
@@ -30,7 +29,7 @@ int mliGeometryToMaterialMap_malloc_fread(
                 sizeof(uint32_t),
                 geomap->total_num_boundary_layers,
                 f);
-        mli_frea(
+        mli_fread(
                 geomap->first_boundary_layer_in_robject,
                 sizeof(uint32_t),
                 geomap->num_robjects,
@@ -44,7 +43,6 @@ int mliGeometryToMaterialMap_fwrite(
         const struct mliGeometryToMaterialMap *geomap,
         FILE *f)
 {
-        uint32_t i;
         struct mliMagicId magic;
 
         /* magic identifier */
@@ -52,8 +50,8 @@ int mliGeometryToMaterialMap_fwrite(
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* payload */
-        mli_write_type(uint32_t, geometry->num_robjects, f);
-        mli_write_type(uint32_t, geometry->total_num_boundary_layers, f);
+        mli_write_type(uint32_t, geomap->num_robjects, f);
+        mli_write_type(uint32_t, geomap->total_num_boundary_layers, f);
         mli_fwrite(
                 geomap->boundary_layers,
                 sizeof(uint32_t),
