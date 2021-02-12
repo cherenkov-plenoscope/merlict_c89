@@ -11,9 +11,9 @@ void mliDynPhotonInteraction_print(
         char type_string[1024];
         char out_in[] = "out->in";
         char in_out[] = "in->out";
-        printf("History(%lusize, %lucapacity)\n",
-               history->dyn.size,
-               history->dyn.capacity);
+        printf("History(%usize, %ucapacity)\n",
+               (uint32_t)history->dyn.size,
+               (uint32_t)history->dyn.capacity);
         printf("==================\n");
 
         printf("   #  "

@@ -133,7 +133,6 @@ int _mliTar_raw_to_header(
 
         /* Build and compare checksum */
         chksum1 = _mliTar_checksum(rh);
-        sscanf(rh->checksum, "%lo", &chksum2);
         mli_check(mli_string_to_uint(&chksum2, rh->checksum, 8u),
                 "bad checksum string.");
         mli_check(chksum1 == chksum2, "Bad checksum.");

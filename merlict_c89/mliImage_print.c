@@ -23,8 +23,8 @@ void mliImage_print_chars(
                         img, symbols, rows, cols, num_symbols);
                 if (print_mode != MLI_ASCII_MONOCHROME) {
                         fprintf(stderr,
-                                "Do not know print_mode %lu\n",
-                                print_mode);
+                                "Do not know print_mode %u\n",
+                                (uint32_t)print_mode);
                 }
         }
         return;
