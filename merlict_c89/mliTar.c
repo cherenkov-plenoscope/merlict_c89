@@ -135,6 +135,12 @@ void mliTar_raw_header_info_fprint(FILE *f, const struct _mliTarRawHeader *rh)
         }
         fprintf(f, "\n");
 
+        fprintf(f, "mode: ");
+        for (i = 0; i < sizeof(rh->mode); i++) {
+                fprintf(f, "('%c', %d) ", rh->mode[i], rh->mode[i]);
+        }
+        fprintf(f, "\n");
+
         fprintf(f, "owner: ");
         for (i = 0; i < sizeof(rh->owner); i++) {
                 fprintf(f, "('%c', %d) ", rh->owner[i], rh->owner[i]);
@@ -176,27 +182,69 @@ void mliTar_raw_header_info_fprint(FILE *f, const struct _mliTarRawHeader *rh)
         fprintf(f, "\n");
 }
 
-int _mliTar_raw_to_header(
-        struct mliTarHeader *h,
+struct _mliTarRawHeader _mliTar_raw_header_null_termination(
         const struct _mliTarRawHeader *rh)
 {
-        uint64_t chksum1, chksum2;
+        /* terminate all fields with numeric values using '\0' */
+        struct _mliTarRawHeader ch = (*rh);
+        if (ch.name[sizeof(ch.name) - 1] == 32) {
+                ch.name[sizeof(ch.name) - 1] = 0;
+        }
+        if (ch.mode[sizeof(ch.mode) - 1] == 32) {
+                ch.mode[sizeof(ch.mode) - 1] = 0;
+        }
+        if (ch.owner[sizeof(ch.owner) - 1] == 32) {
+                ch.owner[sizeof(ch.owner) - 1] = 0;
+        }
+        if (ch.group[sizeof(ch.group) - 1] == 32) {
+                ch.group[sizeof(ch.group) - 1] = 0;
+        }
+        if (ch.size[sizeof(ch.size) - 1] == 32) {
+                ch.size[sizeof(ch.size) - 1] = 0;
+        }
+        if (ch.mtime[sizeof(ch.mtime) - 1] == 32) {
+                ch.mtime[sizeof(ch.mtime) - 1] = 0;
+        }
 
-        mliTar_raw_header_info_fprint(stderr, rh);
+        /* 1st last should be ' ', i.e. 32(decimal) */
+        if (ch.checksum[sizeof(ch.checksum) - 1] == 32) {
+                ch.checksum[sizeof(ch.checksum) - 1] = 0;
+        }
+        /* 2nd last must be '\0' i.e. 0(decimal)*/
+        if (ch.checksum[sizeof(ch.checksum) - 2] == 32) {
+                ch.checksum[sizeof(ch.checksum) - 2] = 0;
+        }
+
+        /* type */
+        if (ch.linkname[sizeof(ch.linkname) - 1] == 32) {
+                ch.linkname[sizeof(ch.linkname) - 1] = 0;
+        }
+        /* padding */
+        return ch;
+}
+
+int _mliTar_raw_to_header(
+        struct mliTarHeader *h,
+        const struct _mliTarRawHeader *original_rh)
+{
+        uint64_t chksum1, chksum2;
+        struct _mliTarRawHeader rh = _mliTar_raw_header_null_termination(
+                original_rh);
+        mliTar_raw_header_info_fprint(stderr, original_rh);
 
         /* Build and compare checksum */
-        chksum1 = _mliTar_checksum(rh);
-        mli_check(mli_string_to_uint(&chksum2, rh->checksum, 8u),
+        chksum1 = _mliTar_checksum(&rh);
+        mli_check(mli_string_to_uint(&chksum2, rh.checksum, 8u),
                 "bad checksum string.");
         mli_check(chksum1 == chksum2, "Bad checksum.");
         /* Load raw header into header */
-        mli_check(mli_string_to_uint(&h->mode, rh->mode, 8u), "bad mode");
-        mli_check(mli_string_to_uint(&h->owner, rh->owner, 8u), "bad owner");
-        mli_check(mli_string_to_uint(&h->size, rh->size, 8u), "bad size");
-        mli_check(mli_string_to_uint(&h->mtime, rh->mtime, 8u), "bad mtime");
-        h->type = rh->type;
-        sprintf(h->name, "%s", rh->name);
-        sprintf(h->linkname, "%s", rh->linkname);
+        mli_check(mli_string_to_uint(&h->mode, rh.mode, 8u), "bad mode");
+        mli_check(mli_string_to_uint(&h->owner, rh.owner, 8u), "bad owner");
+        mli_check(mli_string_to_uint(&h->size, rh.size, 8u), "bad size");
+        mli_check(mli_string_to_uint(&h->mtime, rh.mtime, 8u), "bad mtime");
+        h->type = rh.type;
+        sprintf(h->name, "%s", rh.name);
+        sprintf(h->linkname, "%s", rh.linkname);
 
         return 1;
 error:
@@ -229,9 +277,15 @@ int _mliTar_make_raw_header(
                 mli_uint_to_string(
                         chksum,
                         rh->checksum,
-                        sizeof(rh->checksum), 8u, sizeof(rh->checksum) - 1),
+                        sizeof(rh->checksum), 8u, sizeof(rh->checksum) - 2),
                 "bad checksum");
-        /*rh->checksum[7] = ' ';*/
+
+        rh->checksum[sizeof(rh->checksum) - 1] = 32;
+
+        mli_check(rh->checksum[sizeof(rh->checksum) - 2] == 0,
+                "Second last char in checksum must be '\\0', i.e. 0(decimal).");
+        mli_check(rh->checksum[sizeof(rh->checksum) - 1] == 32,
+                "Last char in checksum must be ' ', i.e. 32(decimal).");
 
         return 1;
 error:
@@ -315,7 +369,7 @@ error:
 int mliTar_write_header(struct mliTar *tar, const struct mliTarHeader *h)
 {
         struct _mliTarRawHeader rh;
-        _mliTar_make_raw_header(&rh, h);
+        mli_check(_mliTar_make_raw_header(&rh, h), "Failed to make raw-header");
         tar->remaining_data = h->size;
         mli_check(
                 _mliTar_twrite(tar, &rh, sizeof(rh)),
