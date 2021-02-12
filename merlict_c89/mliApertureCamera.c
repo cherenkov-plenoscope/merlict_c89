@@ -319,7 +319,7 @@ int mliApertureCamera_render_image(
                     image->num_rows * image->num_cols / 100.0)
                         break;
 
-                printf("loop %3ld / %3ld, %d,%03d pixel left\n",
+                printf("loop %3lu / %3lu, %d,%03d pixel left\n",
                        iteration + 1,
                        MAX_ITERATIONS,
                        pixels_to_do.num_pixels_to_do / 1000,

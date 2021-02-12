@@ -430,8 +430,8 @@ void _mliOcTree_print(
 void mliOcTree_print(const struct mliOcTree *tree)
 {
         printf("__mliOctree__\n");
-        printf("- num_nodes %ld\n", tree->num_nodes);
-        printf("- num_leafs %ld\n", tree->leafs.num_leafs);
+        printf("- num_nodes %lu\n", tree->num_nodes);
+        printf("- num_leafs %lu\n", tree->leafs.num_leafs);
         printf("- root_type %d\n", tree->root_type);
         printf("- cube.lower %.1f, %.1f, %.1f\n",
                tree->cube.lower.x,

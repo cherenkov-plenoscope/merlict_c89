@@ -134,13 +134,14 @@ int _mliTar_raw_to_header(
         /* Build and compare checksum */
         chksum1 = _mliTar_checksum(rh);
         sscanf(rh->checksum, "%lo", &chksum2);
+        mli_check(mli_string_to_uint(&chksum2, rh->checksum, 8u),
+                "bad checksum string.");
         mli_check(chksum1 == chksum2, "Bad checksum.");
-
         /* Load raw header into header */
-        sscanf(rh->mode, "%lo", &h->mode);
-        sscanf(rh->owner, "%lo", &h->owner);
-        sscanf(rh->size, "%lo", &h->size);
-        sscanf(rh->mtime, "%lo", &h->mtime);
+        mli_check(mli_string_to_uint(&h->mode, rh->mode, 8u), "bad mode");
+        mli_check(mli_string_to_uint(&h->owner, rh->owner, 8u), "bad owner");
+        mli_check(mli_string_to_uint(&h->size, rh->size, 8u), "bad size");
+        mli_check(mli_string_to_uint(&h->mtime, rh->mtime, 8u), "bad mtime");
         h->type = rh->type;
         sprintf(h->name, "%s", rh->name);
         sprintf(h->linkname, "%s", rh->linkname);
@@ -158,20 +159,29 @@ int _mliTar_make_raw_header(
 
         /* Load header into raw header */
         memset(rh, 0, sizeof(*rh));
-        sprintf(rh->mode, "%lo", h->mode);
-        sprintf(rh->owner, "%lo", h->owner);
-        sprintf(rh->size, "%lo", h->size);
-        sprintf(rh->mtime, "%lo", h->mtime);
+        mli_check(mli_uint_to_string(h->mode, rh->mode, sizeof(rh->mode), 8u),
+                "bad mode");
+        mli_check(mli_uint_to_string(h->owner, rh->owner, sizeof(rh->owner), 8u),
+                "bad owner");
+        mli_check(mli_uint_to_string(h->size, rh->size, sizeof(rh->size), 8u),
+                "bad size");
+        mli_check(mli_uint_to_string(h->mtime, rh->mtime, sizeof(rh->mtime), 8u),
+                "bad mtime");
         rh->type = h->type ? h->type : MLITAR_TREG;
         sprintf(rh->name, "%s", h->name);
         sprintf(rh->linkname, "%s", h->linkname);
 
         /* Calculate and write checksum */
         chksum = _mliTar_checksum(rh);
-        sprintf(rh->checksum, "%06lo", chksum);
+        mli_check(
+                mli_uint_to_string(
+                        chksum, rh->checksum, sizeof(rh->checksum), 8u),
+                "bad checksum");
         rh->checksum[7] = ' ';
 
         return 1;
+error:
+        return 0;
 }
 
 int mliTar_open(struct mliTar *tar, const char *filename, const char *mode)

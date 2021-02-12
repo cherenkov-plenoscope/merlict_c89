@@ -475,7 +475,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 if (rc == 0) {
                                         fprintf(stderr,
                                                 "[ERROR] in vertex-normal-line "
-                                                "%ld.\n",
+                                                "%lu.\n",
                                                 vn.dyn.size);
                                 }
                                 mli_check(
@@ -489,7 +489,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                         &line[1], &tmp_v);
                                 if (rc == 0) {
                                         fprintf(stderr,
-                                                "[ERROR] in vertex-line %ld.\n",
+                                                "[ERROR] in vertex-line %lu.\n",
                                                 v.dyn.size);
                                 }
                                 mli_check(rc, "Can not parse vertex-line.");
@@ -514,7 +514,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                         &line_mode);
                                 if (rc == 0) {
                                         fprintf(stderr,
-                                                "[ERROR] in face-line %ld.\n",
+                                                "[ERROR] in face-line %lu.\n",
                                                 fv.dyn.size);
                                 }
                                 mli_check(rc, "Can not parse face-line.");

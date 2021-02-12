@@ -238,8 +238,8 @@ int mliJson_debug_token_fprint(
         uint32_t token_size = t.end - t.start;
         uint64_t line_number =
                 1u + mli_string_count_chars_up_to(json->c_str, '\n', t.start);
-        mli_c(fprintf(f, "line: %lu, ", line_number));
-        mli_c(fprintf(f, "token: %lu, ", token));
+        mli_c(fprintf(f, "line: %u, ", (uint32_t)line_number));
+        mli_c(fprintf(f, "token: %u, ", (uint32_t)token));
         mli_c(fprintf(f, "type: %d, ", t.type));
         mli_c(fprintf(f, "children: %d, ", t.size));
         mli_c(fprintf(
