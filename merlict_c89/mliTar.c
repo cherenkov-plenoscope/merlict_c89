@@ -190,15 +190,28 @@ struct _mliTarRawHeader _mliTar_raw_header_null_termination(
         if (ch.name[sizeof(ch.name) - 1] == 32) {
                 ch.name[sizeof(ch.name) - 1] = 0;
         }
+
         if (ch.mode[sizeof(ch.mode) - 1] == 32) {
                 ch.mode[sizeof(ch.mode) - 1] = 0;
         }
+        if (ch.mode[sizeof(ch.mode) - 2] == 32) {
+                ch.mode[sizeof(ch.mode) - 2] = 0;
+        }
+
         if (ch.owner[sizeof(ch.owner) - 1] == 32) {
                 ch.owner[sizeof(ch.owner) - 1] = 0;
         }
+        if (ch.owner[sizeof(ch.owner) - 2] == 32) {
+                ch.owner[sizeof(ch.owner) - 2] = 0;
+        }
+
         if (ch.group[sizeof(ch.group) - 1] == 32) {
                 ch.group[sizeof(ch.group) - 1] = 0;
         }
+        if (ch.group[sizeof(ch.group) - 2] == 32) {
+                ch.group[sizeof(ch.group) - 2] = 0;
+        }
+
         if (ch.size[sizeof(ch.size) - 1] == 32) {
                 ch.size[sizeof(ch.size) - 1] = 0;
         }
