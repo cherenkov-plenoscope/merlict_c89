@@ -125,11 +125,64 @@ error:
         return 0;
 }
 
+void mliTar_raw_header_info_fprint(FILE *f, const struct _mliTarRawHeader *rh)
+{
+        uint64_t i = 0;
+        fprintf(f, "Tar-raw-header\n");
+        fprintf(f, "name: ");
+        for (i = 0; i < sizeof(rh->name); i++) {
+                fprintf(f, "('%c', %d) ", rh->name[i], rh->name[i]);
+        }
+        fprintf(f, "\n");
+
+        fprintf(f, "owner: ");
+        for (i = 0; i < sizeof(rh->owner); i++) {
+                fprintf(f, "('%c', %d) ", rh->owner[i], rh->owner[i]);
+        }
+        fprintf(f, "\n");
+
+        fprintf(f, "group: ");
+        for (i = 0; i < sizeof(rh->group); i++) {
+                fprintf(f, "('%c', %d) ", rh->group[i], rh->group[i]);
+        }
+        fprintf(f, "\n");
+
+        fprintf(f, "size: ");
+        for (i = 0; i < sizeof(rh->size); i++) {
+                fprintf(f, "('%c', %d) ", rh->size[i], rh->size[i]);
+        }
+        fprintf(f, "\n");
+
+        fprintf(f, "mtime: ");
+        for (i = 0; i < sizeof(rh->mtime); i++) {
+                fprintf(f, "('%c', %d) ", rh->mtime[i], rh->mtime[i]);
+        }
+        fprintf(f, "\n");
+
+        fprintf(f, "checksum: ");
+        for (i = 0; i < sizeof(rh->checksum); i++) {
+                fprintf(f, "('%c', %d) ", rh->checksum[i], rh->checksum[i]);
+        }
+        fprintf(f, "\n");
+
+        fprintf(f, "type: ");
+        fprintf(f, "('%c', %d) ", rh->type, rh->type);
+        fprintf(f, "\n");
+
+        fprintf(f, "linkname: ");
+        for (i = 0; i < sizeof(rh->linkname); i++) {
+                fprintf(f, "('%c', %d) ", rh->linkname[i], rh->linkname[i]);
+        }
+        fprintf(f, "\n");
+}
+
 int _mliTar_raw_to_header(
         struct mliTarHeader *h,
         const struct _mliTarRawHeader *rh)
 {
         uint64_t chksum1, chksum2;
+
+        mliTar_raw_header_info_fprint(stderr, rh);
 
         /* Build and compare checksum */
         chksum1 = _mliTar_checksum(rh);
@@ -158,13 +211,13 @@ int _mliTar_make_raw_header(
 
         /* Load header into raw header */
         memset(rh, 0, sizeof(*rh));
-        mli_check(mli_uint_to_string(h->mode, rh->mode, sizeof(rh->mode), 8u),
+        mli_check(mli_uint_to_string(h->mode, rh->mode, sizeof(rh->mode), 8u, sizeof(rh->mode) - 1),
                 "bad mode");
-        mli_check(mli_uint_to_string(h->owner, rh->owner, sizeof(rh->owner), 8u),
+        mli_check(mli_uint_to_string(h->owner, rh->owner, sizeof(rh->owner), 8u, sizeof(rh->owner) - 1),
                 "bad owner");
-        mli_check(mli_uint_to_string(h->size, rh->size, sizeof(rh->size), 8u),
+        mli_check(mli_uint_to_string(h->size, rh->size, sizeof(rh->size), 8u, sizeof(rh->size) - 1),
                 "bad size");
-        mli_check(mli_uint_to_string(h->mtime, rh->mtime, sizeof(rh->mtime), 8u),
+        mli_check(mli_uint_to_string(h->mtime, rh->mtime, sizeof(rh->mtime), 8u, sizeof(rh->mtime) - 1),
                 "bad mtime");
         rh->type = h->type ? h->type : MLITAR_TREG;
         sprintf(rh->name, "%s", h->name);
@@ -174,9 +227,11 @@ int _mliTar_make_raw_header(
         chksum = _mliTar_checksum(rh);
         mli_check(
                 mli_uint_to_string(
-                        chksum, rh->checksum, sizeof(rh->checksum), 8u),
+                        chksum,
+                        rh->checksum,
+                        sizeof(rh->checksum), 8u, sizeof(rh->checksum) - 1),
                 "bad checksum");
-        rh->checksum[7] = ' ';
+        /*rh->checksum[7] = ' ';*/
 
         return 1;
 error:

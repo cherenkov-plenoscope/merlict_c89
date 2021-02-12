@@ -233,32 +233,52 @@ int mli_uint_to_string(
         uint64_t u,
         char *s,
         const uint64_t max_num_chars,
-        const uint64_t base)
+        const uint64_t base,
+        const uint64_t min_num_digits)
 {
         char literals[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
         char tmp[128] = {'\0'};
         uint64_t remainder = 0u;
         uint32_t remainder32 = 0u;
         uint64_t quotient = u;
-        uint64_t i = 0u;
-        uint64_t d;
+        int64_t digs = 0u;
+        int64_t pos = 0;
+        int64_t i = 0;
+        int64_t num_leading_zeors = 0;
 
         mli_check(base <= 10, "Expected base <= 10");
         mli_check(base > 1, "Expected base > 1");
         mli_check(max_num_chars < sizeof(tmp), "Exceeded max num. chars.");
+        mli_check(min_num_digits < max_num_chars, "Exceeded max num. chars.");
 
         do {
                 remainder = quotient % base;
                 quotient = quotient / base;
                 remainder32 = (uint32_t)remainder;
-                tmp[i] = literals[remainder32];
-                i ++;
-                mli_check(i < max_num_chars, "Exceeded max num. chars.");
+                tmp[digs] = literals[remainder32];
+                digs ++;
+                mli_check(digs < (int64_t)sizeof(tmp), "Exceeded max num. chars.");
         } while (quotient > 0u);
 
-        for (d = 0; d < i; d++) {
-                s[d] = tmp[i - d - 1];
+        num_leading_zeors = min_num_digits - digs;
+        if (num_leading_zeors < 0) {
+                num_leading_zeors = 0;
         }
+
+        for (i = 0; i < num_leading_zeors; i++) {
+                mli_check(pos < (int64_t)max_num_chars, "Exceeded max num. chars.");
+                s[pos] = '0';
+                pos++;
+        }
+
+        for (i = 0; i < digs; i++) {
+                mli_check(pos < (int64_t)max_num_chars, "Exceeded max num. chars.");
+                s[pos] = tmp[digs - i - 1];
+                pos++;
+        }
+
+        mli_check(pos < (int64_t)max_num_chars, "Exceeded max num. chars.");
+        s[pos] = '\0';
 
         return 1;
 error:

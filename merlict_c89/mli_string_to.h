@@ -42,6 +42,7 @@ int mli_uint_to_string(
         uint64_t u,
         char *s,
         const uint64_t max_num_chars,
-        const uint64_t base);
+        const uint64_t base,
+        const uint64_t min_num_digits);
 
 #endif
