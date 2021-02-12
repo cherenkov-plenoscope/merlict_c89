@@ -22,8 +22,6 @@ void mlivr_print_info_line(
 
 void mlivr_timestamp_now_19chars(char *buffer);
 
-void mlivr_restore_stdin_buffer(struct termios *old_terminal);
-
 int mlivr_truncate_8bit(const int key);
 
 int _mlivr_export_image(
