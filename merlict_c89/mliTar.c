@@ -225,26 +225,26 @@ struct _mliTarRawHeader _mliTar_raw_header_null_termination(
 
 int _mliTar_raw_to_header(
         struct mliTarHeader *h,
-        const struct _mliTarRawHeader *original_rh)
+        const struct _mliTarRawHeader *rh)
 {
-        uint64_t chksum1, chksum2;
-        struct _mliTarRawHeader rh = _mliTar_raw_header_null_termination(
-                original_rh);
-        mliTar_raw_header_info_fprint(stderr, original_rh);
+        struct _mliTarRawHeader rhnt;
+        uint64_t chksum_actual, chksum_expected;
+        chksum_actual = _mliTar_checksum(rh);
+        mliTar_raw_header_info_fprint(stderr, rh);
+        rhnt = _mliTar_raw_header_null_termination(rh);
 
         /* Build and compare checksum */
-        chksum1 = _mliTar_checksum(&rh);
-        mli_check(mli_string_to_uint(&chksum2, rh.checksum, 8u),
+        mli_check(mli_string_to_uint(&chksum_expected, rhnt.checksum, 8u),
                 "bad checksum string.");
-        mli_check(chksum1 == chksum2, "Bad checksum.");
+        mli_check(chksum_actual == chksum_expected, "Bad checksum.");
         /* Load raw header into header */
-        mli_check(mli_string_to_uint(&h->mode, rh.mode, 8u), "bad mode");
-        mli_check(mli_string_to_uint(&h->owner, rh.owner, 8u), "bad owner");
-        mli_check(mli_string_to_uint(&h->size, rh.size, 8u), "bad size");
-        mli_check(mli_string_to_uint(&h->mtime, rh.mtime, 8u), "bad mtime");
-        h->type = rh.type;
-        sprintf(h->name, "%s", rh.name);
-        sprintf(h->linkname, "%s", rh.linkname);
+        mli_check(mli_string_to_uint(&h->mode, rhnt.mode, 8u), "bad mode");
+        mli_check(mli_string_to_uint(&h->owner, rhnt.owner, 8u), "bad owner");
+        mli_check(mli_string_to_uint(&h->size, rhnt.size, 8u), "bad size");
+        mli_check(mli_string_to_uint(&h->mtime, rhnt.mtime, 8u), "bad mtime");
+        h->type = rhnt.type;
+        sprintf(h->name, "%s", rhnt.name);
+        sprintf(h->linkname, "%s", rhnt.linkname);
 
         return 1;
 error:
