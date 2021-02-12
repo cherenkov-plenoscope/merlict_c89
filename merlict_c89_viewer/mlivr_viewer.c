@@ -8,7 +8,7 @@
 
 void mlivr_clear_screen(void)
 {
-        uint64_t n = 10;
+        uint64_t n = 20;
         while (n) {
                 putchar('\n');
                 n--;
@@ -19,43 +19,29 @@ void mlivr_print_help(void)
 {
         mlivr_clear_screen();
         mli_logo_fprint(stdout);
-        printf("\n");
-        printf("    this help         [  h  ]\n");
-        printf("    exit              [ esc ]\n");
-        printf("    scenery-info      [  p  ]\n");
-        printf("\n");
-        printf(" Look\n");
-        printf("    up                [  i  ]\n");
-        printf("    down              [  k  ]\n");
-        printf("    left              [  j  ]\n");
-        printf("    right             [  l  ]\n");
-        printf("\n");
-        printf(" Move\n");
-        printf("    forward           [  w  ]\n");
-        printf("    backward          [  s  ]\n");
-        printf("    left              [  a  ]\n");
-        printf("    right             [  d  ]\n");
-        printf("    up                [  q  ]\n");
-        printf("    down              [  e  ]\n");
-        printf("\n");
-        printf(" Field-of-view\n");
-        printf("    increace          [  m  ]\n");
-        printf("    decreace          [  n  ]\n");
-        printf("\n");
-        printf(" Quality\n");
-        printf("    super sampling    [  b  ]\n");
-        printf("    color/monochrome  [  g  ]\n");
-        printf("\n");
-        printf(" Take picture\n");
-        printf("    focus-finder      [  c  ]\n");
-        printf("    take picture      [space]\n");
-        printf("\n");
-        printf(" Version %d.%d.%d\n",
+        printf("  v%d.%d.%d\n",
                MLI_VERSION_MAYOR,
                MLI_VERSION_MINOR,
                MLI_VERSION_PATCH);
         printf("\n");
-        printf(" Sebastian Achim Mueller\n");
+        printf("  General                       Inspect\n");
+        printf("    exit              [ esc ]     focus/cursor      [  c  ]\n");
+        printf("    this help         [  h  ]     take picture      [space]\n");
+        printf("    scenery-info      [  p  ]\n");
+        printf("\n");
+        printf("  Look                          Move\n");
+        printf("    up                [  i  ]     forward           [  w  ]\n");
+        printf("    down              [  k  ]     backward          [  s  ]\n");
+        printf("    left              [  j  ]     left              [  a  ]\n");
+        printf("    right             [  l  ]     right             [  d  ]\n");
+        printf("                                  up                [  q  ]\n");
+        printf("                                  down              [  e  ]\n");
+        printf("\n");
+        printf("  Field-of-view                 Quality\n");
+        printf("    increace          [  m  ]     super sampling    [  b  ]\n");
+        printf("    decreace          [  n  ]     color/monochrome  [  g  ]\n");
+        printf("\n");
+        mli_authors_and_affiliations_fprint(stdout);
 }
 
 void mlivr_print_info_line(

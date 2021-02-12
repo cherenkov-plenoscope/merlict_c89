@@ -9,4 +9,5 @@
 #define MLI_VERSION_PATCH 0
 
 void mli_logo_fprint(FILE *f);
+void mli_authors_and_affiliations_fprint(FILE *f);
 #endif
