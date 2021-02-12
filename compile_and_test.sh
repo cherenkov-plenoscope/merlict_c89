@@ -11,7 +11,6 @@ do
     ./tests/resources/sceneries/$scenery_id.tar\
     --directory \
     ./tests/resources/sceneries/$scenery_id\
-    --sort name\
     .\
     > ./build/tar_$scenery_id.o 2>&1
 
