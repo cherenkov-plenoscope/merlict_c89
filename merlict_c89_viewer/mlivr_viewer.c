@@ -21,7 +21,7 @@ void mlivr_print_help(void)
         mli_logo_fprint(stdout);
         printf("\n");
         printf("    this help         [  h  ]\n");
-        printf("    exit              [ Esc ]\n");
+        printf("    exit              [ esc ]\n");
         printf("    scenery-info      [  p  ]\n");
         printf("\n");
         printf(" Look\n");
@@ -39,8 +39,8 @@ void mlivr_print_help(void)
         printf("    down              [  e  ]\n");
         printf("\n");
         printf(" Field-of-view\n");
-        printf("    increace          [  n  ]\n");
-        printf("    decreace          [  m  ]\n");
+        printf("    increace          [  m  ]\n");
+        printf("    decreace          [  n  ]\n");
         printf("\n");
         printf(" Quality\n");
         printf("    super sampling    [  b  ]\n");
@@ -48,7 +48,7 @@ void mlivr_print_help(void)
         printf("\n");
         printf(" Take picture\n");
         printf("    focus-finder      [  c  ]\n");
-        printf("    take picture      [Space]\n");
+        printf("    take picture      [space]\n");
         printf("\n");
         printf(" Version %d.%d.%d\n",
                MLI_VERSION_MAYOR,
@@ -379,7 +379,7 @@ int mlivr_run_interactive_viewer(
                                        "/"
                                        "(id;ref,obj,face), "
                                        "dist % 6.2fm, "
-                                       "pos [% -.2e, % -.2e, % -.2e], "
+                                       "pos [% -.2e, % -.2e, % -.2e]m, "
                                        "normal [% -.3f, % -.3f, % -.3f], ",
                                        scenery->geometry.robject_ids
                                                [probing_intersection.geometry_id
