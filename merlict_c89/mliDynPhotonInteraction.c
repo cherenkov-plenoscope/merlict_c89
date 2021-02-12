@@ -29,7 +29,7 @@ void mliDynPhotonInteraction_print(
 
         for (i = 0; i < history->dyn.size; i++) {
                 struct mliPhotonInteraction phisec = history->arr[i];
-                printf(" % 3ld  ", (int64_t)i);
+                printf(" % 3d  ", (int32_t)i);
 
                 if (phisec.on_geometry_surface == 1) {
                         printf("(% 5d;% 5d,% 5d,% 5d)  ",
