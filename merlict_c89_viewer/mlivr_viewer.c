@@ -130,15 +130,15 @@ int mlivr_run_interactive_viewer_try_non_canonical_stdin(
         const struct mliScenery *scenery,
         const struct mlivrConfig config)
 {
-        struct termios old_terminal = mlivr_disable_stdin_buffer();
+#ifdef HAVE_TERMIOS_H
+        struct termios old_terminal = mlivr_non_canonical_stdin();
+#endif
+        int rc = mlivr_run_interactive_viewer(scenery, config);
 
-        mli_c(mlivr_run_interactive_viewer(scenery, config));
-
-        mlivr_restore_stdin_buffer(&old_terminal);
-        return 1;
-error:
-        mlivr_restore_stdin_buffer(&old_terminal);
-        return 0;
+#ifdef HAVE_TERMIOS_H
+        mlivr_restore_stdin(&old_terminal);
+#endif
+        return rc;
 }
 
 int mlivr_run_interactive_viewer(
