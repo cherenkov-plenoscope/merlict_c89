@@ -34,5 +34,7 @@ int _mlivr_export_image(
 int mlivr_run_interactive_viewer(
         const struct mliScenery *scenery,
         const struct mlivrConfig config);
-
+int mlivr_run_interactive_viewer_try_non_canonical_stdin(
+        const struct mliScenery *scenery,
+        const struct mlivrConfig config);
 #endif
