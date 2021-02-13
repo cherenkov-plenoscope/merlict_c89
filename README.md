@@ -83,7 +83,7 @@ f 3//6 4//6 1//6
 ```
 
 # Viewer
-Merlict ships with an interactive viewer for the terminal. The viewer can read three formats:
+Merlict's viewer runs in the terminal and reads three formats:
 
 - merlict's own ```scenery.tar```
 - merlict's own ```scenery.bin```
