@@ -3,12 +3,13 @@
 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Merlict simulates light. It propagates photons in a scenery, and renders images in an interactive viwer. Further merlict can query intersections of a ray with the scenery independent of light. Merlict is a ```C```-library written in ```c89```.
+Merlict simulates light. It can find intersections of rays and complex geometries in 3D with special emphasis on surface-normals. Merlict can propagate photons based on geometric optics according to Fresnel. Merlict is a library written in ```c89```.
+
+Merlict reads your scenery from text-files which describe your objects, the geometric relations among them, their materials, and their sourrounding media. Merlict can read a subset of the popular [wavefront-object-fileformat](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```.
+You define photons with a creation-position, direction, and wavelength.
+For each photon, merlict gives you the list of physical interactions up to its absorbtion.
 
 # Interface
-Merlict reads your scenery from a tape-archive ```.tar``` containing human readable text-files which describe your objects, the geometry among them, and their materials. You provide each object with an ID.
-Further you provide photons defined by their creation-position, direction, and wavelength.
-For each photon, merlict will give you a propagation-history, referencing all objects the photon interacted with before its absorbtion.
 
 ## Scenery
 
