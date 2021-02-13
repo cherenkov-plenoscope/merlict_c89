@@ -32,15 +32,55 @@ You define surfaces by their specular, and diffuse (lambertian) reflections appr
 Photons are defined by their creation-position, their direction, their wavelength.
 During propagation, merlict writes the history of the photon bouncing around in the scenery until it is absorbed.
 
-## object-wavefront fileformat ```.obj```
-Merlict supports a subset of the ```obj``` fileformat. ASCII-text with '\n' newlines. There may be blank lines to help formating.
-- ```#``` comment
-- ```v``` vertex
-- ```vn``` vertex-normal
-- ```f``` face
-- ```usemtl``` material-reference
-Other features of ```obj``` will be ignored.
+## object-wavefront format ```.obj```
+Merlict supports a subset of the [```obj``` format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) in ASCII-text. An object-wavefront defines a mesh of triangle-faces in a 3D space with special emphasis on the meshe's surface-normal. Each face ```f``` references its three vertices ```v```. The surface-normal of a face ```f``` will be interpolated between the face's three vertex-normals ```vn``` using the barycentrig weight of the intersection-position w.r.t the face.
 
+- ```#``` comment. Any text in this line.
+- ```v``` vertices. A vertex defines the 3D position in the mesh.
+- ```vn``` vertex-normals. A vertex-normal defines the surface-normal on the mesh. 
+- ```f``` faces. A face must reference exactly 3 vertices and 3 vertex-normals.
+- ```usemtl``` material-reference. All following faces are assigned the same material. There must be at least 1 ```usemtl``` before the first face.
+
+Other features of ```obj``` will be ignored. Blank lines are accepted but ignored.
+
+A simple cube where each of the six sides references a different material:
+```obj
+# vertices
+v 1.0 0.0 0.0
+v 1.0 1.0 0.0
+v 0.0 1.0 0.0
+v 0.0 0.0 0.0
+v 1.0 0.0 1.0
+v 1.0 1.0 1.0
+v 0.0 1.0 1.0
+v 0.0 0.0 1.0
+# vertex normals
+vn 1.0 0.0 0.0
+vn 0.0 1.0 0.0
+vn 0.0 0.0 1.0
+vn -1.0 0.0 0.0
+vn 0.0 -1.0 0.0
+vn 0.0 0.0 -1.0
+# faces
+usemtl px
+f 1//1 2//1 6//1
+f 6//1 5//1 1//1
+usemtl py
+f 2//2 3//2 6//2
+f 6//2 3//2 7//2
+usemtl pz
+f 5//3 6//3 7//3
+f 7//3 8//3 5//3
+usemtl mx
+f 3//4 7//4 4//4
+f 7//4 8//4 4//4
+usemtl my
+f 1//5 4//5 8//5
+f 8//5 5//5 1//5
+usemtl mz
+f 1//6 2//6 3//6
+f 3//6 4//6 1//6
+```
 
 # Build and tests
 ```
