@@ -41,7 +41,7 @@ Merlict supports a subset of the [```obj``` format](https://en.wikipedia.org/wik
 - ```f``` face-line. Exactly __three__ integer references to vertices define a face. And __three__ integer references to vertex-normals define the surface-normals on this face. References must be positive, backwards referencing with negative integers is not supported.
 - ```usemtl``` material-reference. All following faces are assigned the same material. There must be __at least one__ ```usemtl``` before the first face.
 
-Other features of ```obj``` will be ignored. Blank lines are accepted but ignored.
+Other features of ```obj``` such as e.g. vertex-texture-coordinates ```vt``` will be ignored. Blank lines are accepted but ignored.
 
 A simple cube where each of the six sides references a different material:
 ```obj
