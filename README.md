@@ -117,7 +117,7 @@ in your ```main.c``` and
 gcc main.c -o exe -lm
 ```
 
-I did not gain speed with buildsystems (e.g. ```make```, ```cmake```), but since merlict is strictly structured into ```header.h``` and ```source.c``` files you may do so. For my projects, building all sources again for each executable was always fastest.
+Since merlict is structured into pairs of ```header.h``` and ```source.c``` files you can put it into your buildsystem. However, in my projects building all sources again from scratch for each executable was always fastest.
 
 ## Unit-tests
 ```bash
