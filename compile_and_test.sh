@@ -17,7 +17,7 @@ do
     tar_rc=$?
     printf " $tar_rc"
 done
-    printf "\n"
+printf "\n"
 
 
 printf "gcc c89     "
