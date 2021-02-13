@@ -35,10 +35,10 @@ During propagation, merlict writes the history of the photon bouncing around in 
 ## object-wavefront format ```.obj```
 Merlict supports a subset of the [```obj``` format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) in ASCII-text. An object-wavefront defines a mesh of triangle-faces in a 3D space with special emphasis on the meshe's surface-normal. Each face ```f``` references its three vertices ```v```. The surface-normal of a face ```f``` will be interpolated between the face's three vertex-normals ```vn``` using the barycentrig weight of the intersection-position w.r.t the face.
 
-- ```#``` comment. Any text in this line.
-- ```v``` vertices. A vertex defines the 3D position in the mesh.
-- ```vn``` vertex-normals. A vertex-normal defines the surface-normal on the mesh. 
-- ```f``` faces. A face must reference exactly __three__ vertices and __three__ vertex-normals. References to vertices and vertex-normals must be positive, backwards referencing is not supported.
+- ```#``` comment-line. Any text in this line.
+- ```v``` vertex-line. Three real numbers define one vertex in the mesh. 
+- ```vn``` vertex-normal-line. Three reel numbers define one surface-normal in the mesh.
+- ```f``` face-line. Exactly __three__ integer references to vertices define a face. And __three__ integer references to vertex-normals define the surface-normals on this face. References must be positive, backwards referencing with negative integers is not supported.
 - ```usemtl``` material-reference. All following faces are assigned the same material. There must be __at least one__ ```usemtl``` before the first face.
 
 Other features of ```obj``` will be ignored. Blank lines are accepted but ignored.
