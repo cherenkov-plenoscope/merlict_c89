@@ -8,6 +8,8 @@
 #include <string.h>
 #include "mli_debug.h"
 
+#define MLITAR_OCTAL 8u
+
 struct _mliTarRawHeader {
         char name[MLITAR_NAME_LENGTH];
         char mode[8];
@@ -162,85 +164,77 @@ void _mliTar_raw_header_info_fprint(FILE *f, const struct _mliTarRawHeader *rh)
         _mli_field_fprintf(f, "linkname", rh->linkname, sizeof(rh->linkname));
 }
 
-struct _mliTarRawHeader _mliTar_raw_header_null_termination(
-        const struct _mliTarRawHeader *rh)
+int mliTar_field_to_uint(
+        uint64_t *out,
+        const char *field,
+        const uint64_t field_size)
 {
-        /* terminate all fields with numeric values using '\0' */
-        struct _mliTarRawHeader ch = (*rh);
-        if (ch.name[sizeof(ch.name) - 1] == 32) {
-                ch.name[sizeof(ch.name) - 1] = 0;
+        char buff[MLITAR_NAME_LENGTH] = {'\0'};
+        mli_c(field_size < MLITAR_NAME_LENGTH);
+        memcpy(buff, field, field_size);
+
+        /* Take care of historic 'space' (32 decimal) termination */
+        /* Convert all 'space' terminations to '\0' terminations. */
+
+        if (buff[field_size - 1] == 32) {
+                buff[field_size - 1] = 0;
+        }
+        if (buff[field_size - 2] == 32) {
+                buff[field_size - 2] = 0;
         }
 
-        if (ch.mode[sizeof(ch.mode) - 1] == 32) {
-                ch.mode[sizeof(ch.mode) - 1] = 0;
-        }
-        if (ch.mode[sizeof(ch.mode) - 2] == 32) {
-                ch.mode[sizeof(ch.mode) - 2] = 0;
-        }
-
-        if (ch.owner[sizeof(ch.owner) - 1] == 32) {
-                ch.owner[sizeof(ch.owner) - 1] = 0;
-        }
-        if (ch.owner[sizeof(ch.owner) - 2] == 32) {
-                ch.owner[sizeof(ch.owner) - 2] = 0;
-        }
-
-        if (ch.group[sizeof(ch.group) - 1] == 32) {
-                ch.group[sizeof(ch.group) - 1] = 0;
-        }
-        if (ch.group[sizeof(ch.group) - 2] == 32) {
-                ch.group[sizeof(ch.group) - 2] = 0;
-        }
-
-        if (ch.size[sizeof(ch.size) - 1] == 32) {
-                ch.size[sizeof(ch.size) - 1] = 0;
-        }
-        if (ch.mtime[sizeof(ch.mtime) - 1] == 32) {
-                ch.mtime[sizeof(ch.mtime) - 1] = 0;
-        }
-
-        /* 1st last should be ' ', i.e. 32(decimal) */
-        if (ch.checksum[sizeof(ch.checksum) - 1] == 32) {
-                ch.checksum[sizeof(ch.checksum) - 1] = 0;
-        }
-        /* 2nd last must be '\0' i.e. 0(decimal)*/
-        if (ch.checksum[sizeof(ch.checksum) - 2] == 32) {
-                ch.checksum[sizeof(ch.checksum) - 2] = 0;
-        }
-
-        /* type */
-        if (ch.linkname[sizeof(ch.linkname) - 1] == 32) {
-                ch.linkname[sizeof(ch.linkname) - 1] = 0;
-        }
-        /* padding */
-        return ch;
+        mli_c(mli_string_to_uint(out, buff, MLITAR_OCTAL));
+        return 1;
+error:
+        return 0;
 }
 
 int _mliTar_raw_to_header(
         struct mliTarHeader *h,
         const struct _mliTarRawHeader *rh)
 {
-        struct _mliTarRawHeader rhnt;
         uint64_t chksum_actual, chksum_expected;
         chksum_actual = _mliTar_checksum(rh);
-        rhnt = _mliTar_raw_header_null_termination(rh);
 
         /* Build and compare checksum */
-        mli_check(mli_string_to_uint(&chksum_expected, rhnt.checksum, 8u),
+        mli_check(
+                mliTar_field_to_uint(
+                        &chksum_expected, rh->checksum, sizeof(rh->checksum)),
                 "bad checksum string.");
-        mli_check(chksum_actual == chksum_expected, "Bad checksum.");
+        mli_check(chksum_actual == chksum_expected, "bad checksum.");
+
         /* Load raw header into header */
-        mli_check(mli_string_to_uint(&h->mode, rhnt.mode, 8u), "bad mode");
-        mli_check(mli_string_to_uint(&h->owner, rhnt.owner, 8u), "bad owner");
-        mli_check(mli_string_to_uint(&h->size, rhnt.size, 8u), "bad size");
-        mli_check(mli_string_to_uint(&h->mtime, rhnt.mtime, 8u), "bad mtime");
-        h->type = rhnt.type;
-        sprintf(h->name, "%s", rhnt.name);
-        sprintf(h->linkname, "%s", rhnt.linkname);
+        mli_check(
+                mliTar_field_to_uint(&h->mode, rh->mode, sizeof(rh->mode)),
+                "bad mode");
+        mli_check(
+                mliTar_field_to_uint(&h->owner, rh->owner, sizeof(rh->owner)),
+                "bad owner");
+        mli_check(
+                mliTar_field_to_uint(&h->size, rh->size, sizeof(rh->size)),
+                "bad size");
+        mli_check(
+                mliTar_field_to_uint(&h->mtime, rh->mtime, sizeof(rh->mtime)),
+                "bad mtime");
+        h->type = rh->type;
+        sprintf(h->name, "%s", rh->name);
+        sprintf(h->linkname, "%s", rh->linkname);
 
         return 1;
 error:
         _mliTar_raw_header_info_fprint(stderr, rh);
+        return 0;
+}
+
+int mliTar_uint_to_field(
+        const uint64_t val,
+        char *field,
+        const uint64_t fieldsize)
+{
+        mli_c(mli_uint_to_string(
+                val, field, fieldsize, MLITAR_OCTAL, fieldsize - 1));
+        return 1;
+error:
         return 0;
 }
 
@@ -252,13 +246,17 @@ int _mliTar_make_raw_header(
 
         /* Load header into raw header */
         memset(rh, 0, sizeof(*rh));
-        mli_check(mli_uint_to_string(h->mode, rh->mode, sizeof(rh->mode), 8u, sizeof(rh->mode) - 1),
+        mli_check(
+                mliTar_uint_to_field(h->mode, rh->mode, sizeof(rh->mode)),
                 "bad mode");
-        mli_check(mli_uint_to_string(h->owner, rh->owner, sizeof(rh->owner), 8u, sizeof(rh->owner) - 1),
+        mli_check(
+                mliTar_uint_to_field(h->owner, rh->owner, sizeof(rh->owner)),
                 "bad owner");
-        mli_check(mli_uint_to_string(h->size, rh->size, sizeof(rh->size), 8u, sizeof(rh->size) - 1),
+        mli_check(
+                mliTar_uint_to_field(h->size, rh->size, sizeof(rh->size)),
                 "bad size");
-        mli_check(mli_uint_to_string(h->mtime, rh->mtime, sizeof(rh->mtime), 8u, sizeof(rh->mtime) - 1),
+        mli_check(
+                mliTar_uint_to_field(h->mtime, rh->mtime, sizeof(rh->mtime)),
                 "bad mtime");
         rh->type = h->type ? h->type : MLITAR_TREG;
         sprintf(rh->name, "%s", h->name);
@@ -270,14 +268,18 @@ int _mliTar_make_raw_header(
                 mli_uint_to_string(
                         chksum,
                         rh->checksum,
-                        sizeof(rh->checksum), 8u, sizeof(rh->checksum) - 2),
+                        sizeof(rh->checksum),
+                        MLITAR_OCTAL,
+                        sizeof(rh->checksum) - 2),
                 "bad checksum");
 
         rh->checksum[sizeof(rh->checksum) - 1] = 32;
 
-        mli_check(rh->checksum[sizeof(rh->checksum) - 2] == 0,
+        mli_check(
+                rh->checksum[sizeof(rh->checksum) - 2] == 0,
                 "Second last char in checksum must be '\\0', i.e. 0(decimal).");
-        mli_check(rh->checksum[sizeof(rh->checksum) - 1] == 32,
+        mli_check(
+                rh->checksum[sizeof(rh->checksum) - 1] == 32,
                 "Last char in checksum must be ' ', i.e. 32(decimal).");
 
         return 1;
