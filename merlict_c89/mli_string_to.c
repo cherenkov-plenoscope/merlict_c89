@@ -256,8 +256,10 @@ int mli_uint_to_string(
                 quotient = quotient / base;
                 remainder32 = (uint32_t)remainder;
                 tmp[digs] = literals[remainder32];
-                digs ++;
-                mli_check(digs < (int64_t)sizeof(tmp), "Exceeded max num. chars.");
+                digs++;
+                mli_check(
+                        digs < (int64_t)sizeof(tmp),
+                        "Exceeded max num. chars.");
         } while (quotient > 0u);
 
         num_leading_zeors = min_num_digits - digs;
@@ -266,13 +268,17 @@ int mli_uint_to_string(
         }
 
         for (i = 0; i < num_leading_zeors; i++) {
-                mli_check(pos < (int64_t)max_num_chars, "Exceeded max num. chars.");
+                mli_check(
+                        pos < (int64_t)max_num_chars,
+                        "Exceeded max num. chars.");
                 s[pos] = '0';
                 pos++;
         }
 
         for (i = 0; i < digs; i++) {
-                mli_check(pos < (int64_t)max_num_chars, "Exceeded max num. chars.");
+                mli_check(
+                        pos < (int64_t)max_num_chars,
+                        "Exceeded max num. chars.");
                 s[pos] = tmp[digs - i - 1];
                 pos++;
         }

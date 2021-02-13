@@ -10,7 +10,6 @@ int mli_nstring_to_int(
 int mli_string_to_int(int64_t *out, const char *s, const uint64_t base);
 int mli_string_to_uint(uint64_t *out, const char *s, const uint64_t base);
 
-
 int mli_nstring_to_float(
         double *out,
         const char *s,
