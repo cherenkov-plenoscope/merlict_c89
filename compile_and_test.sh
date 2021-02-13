@@ -3,7 +3,7 @@
 
 printf -- "prepare    "
 
-scenery_ids=(000 001 002)
+scenery_ids=( 000 001 002 )
 
 for scenery_id in "${scenery_ids[@]}";
 do
