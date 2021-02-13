@@ -32,6 +32,16 @@ You define surfaces by their specular, and diffuse (lambertian) reflections appr
 Photons are defined by their creation-position, their direction, their wavelength.
 During propagation, merlict writes the history of the photon bouncing around in the scenery until it is absorbed.
 
+## object-wavefront fileformat ```.obj```
+Merlict supports a subset of the ```obj``` fileformat. ASCII-text with '\n' newlines. There may be blank lines to help formating.
+- ```#``` comment
+- ```v``` vertex
+- ```vn``` vertex-normal
+- ```f``` face
+- ```usemtl``` material-reference
+Other features of ```obj``` will be ignored.
+
+
 # Build and tests
 ```
 ./compile_and_test.sh
