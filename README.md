@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Merlict simulates light. It can find intersections of rays and complex geometries in 3D with special emphasis on surface-normals. Merlict can propagate photons based on geometric optics according to Fresnel. Merlict is a library written in ```c89```.
+Merlict simulates light. It can find intersections of a ray in a complex 3D geometry with special emphasis on surface-normals. Merlict can propagate photons based on geometric optics according to Fresnel. Merlict comes with its own interactive viewer for the terminal. Merlict is a library written in ```c89```.
 
 Merlict reads your scenery from text-files which describe your objects, the geometric relations among them, their materials, and their sourrounding media. Merlict can read a subset of the popular [wavefront-object-fileformat](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```.
 You define photons with a creation-position, direction, and wavelength.
@@ -38,8 +38,8 @@ Merlict supports a subset of the [```obj``` format](https://en.wikipedia.org/wik
 - ```#``` comment. Any text in this line.
 - ```v``` vertices. A vertex defines the 3D position in the mesh.
 - ```vn``` vertex-normals. A vertex-normal defines the surface-normal on the mesh. 
-- ```f``` faces. A face must reference exactly 3 vertices and 3 vertex-normals.
-- ```usemtl``` material-reference. All following faces are assigned the same material. There must be at least 1 ```usemtl``` before the first face.
+- ```f``` faces. A face must reference exactly __three__ vertices and __three__ vertex-normals.
+- ```usemtl``` material-reference. All following faces are assigned the same material. There must be __at least one__ ```usemtl``` before the first face.
 
 Other features of ```obj``` will be ignored. Blank lines are accepted but ignored.
 
@@ -89,7 +89,15 @@ f 3//6 4//6 1//6
 A script to compile with both ```gcc``` and ```clang```, in both ```c```, and ```c++``` mode. Also run the unit-tests.
 
 # Viewer
-A minimal viewer in the terminal.
+Merlict ships with an interactive viewer for the terminal. The viewer can read three formats:
+
+- merlict's own ```scenery.tar```
+- merlict's own ```scenery.bin```
+- a standalone object-wavefront ```.obj```
+
+Just like in a 3D video-game you control your viewing-direction and position via the keyboard. You can inspect the scenery and render high resolution images.
+The viewer prints its rendering directly into the terminal in ASCII-art. When your terminal supports ANSI-escape-sequences you may toggle to 24bit color depth on the fly. The terminal based viewer is especially useful when you run merlict on a remote computer via ```ssh```.
+Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical mode so that you do not have to press [Enter] after each keypress.
 
 #### Compile
 ```
@@ -104,7 +112,7 @@ gcc merlict-c89-view.c -o view -lm
 ## Code
 - Write unit-tests.
 - Obey ```std=c89``` standard.
-- No Warnings in```gcc``` and ```clang``` compilers both in ```c``` and ```c++``` mode.
+- Avoid all Warnings in```gcc``` and ```clang``` in both ```c``` and ```c++``` mode.
 - Format according to ```.clang-format```.
 
 # Suggested tools
