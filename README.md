@@ -82,12 +82,6 @@ f 1//6 2//6 3//6
 f 3//6 4//6 1//6
 ```
 
-# Build and tests
-```
-./compile_and_test.sh
-```
-A script to compile with both ```gcc``` and ```clang```, in both ```c```, and ```c++``` mode. Also run the unit-tests.
-
 # Viewer
 Merlict ships with an interactive viewer for the terminal. The viewer can read three formats:
 
@@ -100,14 +94,37 @@ The viewer prints its rendering directly into the terminal in ASCII-art. When yo
 Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical mode so that you do not have to press [Enter] after each keypress.
 
 #### Compile
-```
+```bash
 gcc merlict-c89-view.c -o view -lm
 ```
 
 #### Run
-```
+```bash
 ./view tests/resources/sceneries/001.tar
 ```
+
+# Build
+Merlict uses the only buildsystem which does not try to murder you. This is, no buildsystem.
+
+Just
+```c
+#include "merlict_c89/merlict_c89.h"
+#include "merlict_c89/merlict_c89.c"
+```
+in your ```main.c``` and
+
+```bash
+gcc main.c -o exe -lm
+```
+
+I did not gain speed with buildsystems (e.g. ```make```, ```cmake```), but since merlict is strictly structured into ```header.h``` and ```source.c``` files you may do so. For my projects, building all sources again for each executable was always fastest.
+
+## Unit-tests
+```bash
+./compile_and_test.sh
+```
+A script to compile with both ```gcc``` and ```clang```, in both ```c```, and ```c++``` mode. Also run the unit-tests.
+
 
 ## Code
 - Write unit-tests.
