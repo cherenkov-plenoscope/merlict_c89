@@ -1,7 +1,7 @@
 #!/bin/bash
 # Build merlict with gcc and clang, look for warnings early.
 
-printf -- "prepare    "
+printf "prepare    "
 
 scenery_ids=( 000 001 002 )
 
@@ -15,12 +15,12 @@ do
     > ./build/tar_$scenery_id.o 2>&1
 
     tar_rc=$?
-    printf -- " $tar_rc"
+    printf " $tar_rc"
 done
-    printf -- "\n"
+    printf "\n"
 
 
-printf -- "gcc c89     "
+printf "gcc c89     "
 gcc merlict-c89-test.c\
         -o build/test_gcc_c89\
         -std=c89\
@@ -32,9 +32,9 @@ gcc merlict-c89-test.c\
 gcc_c89_rc=$?
 ./build/test_gcc_c89 > ./build/test_gcc_c89.o 2>&1
 gcc_c89_test_rc=$?
-printf -- "$gcc_c89_rc $gcc_c89_test_rc\n"
+printf "$gcc_c89_rc $gcc_c89_test_rc\n"
 
-printf -- "gcc         "
+printf "gcc         "
 gcc merlict-c89-test.c\
         -o build/test_gcc\
         -lm\
@@ -45,9 +45,9 @@ gcc merlict-c89-test.c\
 gcc_rc=$?
 ./build/test_gcc > ./build/test_gcc.o 2>&1
 gcc_test_rc=$?
-printf -- "$gcc_rc $gcc_test_rc\n"
+printf "$gcc_rc $gcc_test_rc\n"
 
-printf -- "g++         "
+printf "g++         "
 g++ merlict-c89-test.c\
         -o build/test_g++\
         -lm\
@@ -57,9 +57,9 @@ g++ merlict-c89-test.c\
 gpp_rc=$?
 ./build/test_g++ > ./build/test_g++.o 2>&1
 gpp_test_rc=$?
-printf -- "$gpp_rc $gpp_test_rc\n"
+printf "$gpp_rc $gpp_test_rc\n"
 
-printf -- "clang c89   "
+printf "clang c89   "
 clang merlict-c89-test.c\
         -o build/test_clang_c89\
         -std=c89\
@@ -73,7 +73,7 @@ clang_c89_rc=$?
 clang_c89_test_rc=$?
 printf "$clang_c89_rc $clang_c89_test_rc\n"
 
-printf -- "clang       "
+printf "clang       "
 clang merlict-c89-test.c\
         -o build/test_clang\
         -lm\
@@ -88,31 +88,31 @@ printf "$clang_rc $clang_test_rc\n"
 
 if      [ "$gcc_c89_test_rc" -ne 0 ]
 then
-        printf -- "\n"
+        printf "\n"
         cat "./build/test_gcc_c89.o"
 fi
 
 if      [ "$gcc_test_rc" -ne 0 ]
 then
-        printf -- "\n"
+        printf "\n"
         cat "./build/test_gcc.o"
 fi
 
 if      [ "$gpp_test_rc" -ne 0 ]
 then
-        printf -- "\n"
+        printf "\n"
         cat "./build/test_gpp.o"
 fi
 
 if      [ "$clang_c89_test_rc" -ne 0 ]
 then
-        printf -- "\n"
+        printf "\n"
         cat "./build/test_clang_c89.o"
 fi
 
 if      [ "$clang_test_rc" -ne 0 ]
 then
-        printf -- "\n"
+        printf "\n"
         cat "./build/test_clang.o"
 fi
 
@@ -128,22 +128,22 @@ if      [ "$tar_rc" -ne 0 ] ||\
         [ "$clang_rc" -ne 0 ] ||\
         [ "$clang_test_rc" -ne 0 ]
 then
-    printf -- "\n"
-    printf -- "-------VERSIONS---------\n"
+    printf "\n"
+    printf "-------VERSIONS---------\n"
     tar --version
-    printf -- "------------------------\n"
+    printf "------------------------\n"
     gcc --version
-    printf -- "------------------------\n"
+    printf "------------------------\n"
     g++ --version
-    printf -- "------------------------\n"
+    printf "------------------------\n"
     clang --version
-    printf -- "------------------------\n"
-    printf -- "\n"
-    printf -- "----TAR verbose---------\n"
+    printf "------------------------\n"
+    printf "\n"
+    printf "----TAR verbose---------\n"
 
     for scenery_id in "${scenery_ids[@]}";
     do
-        printf -- "\n$scenery_id.tar:\n"
+        printf "\n$scenery_id.tar:\n"
         cat ./build/tar_$scenery_id.o
     done
 
