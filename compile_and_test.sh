@@ -8,14 +8,14 @@ scenery_ids=( 000 001 002 )
 for scenery_id in "${scenery_ids[@]}";
 do
     tar -cvf \
-    ./tests/resources/sceneries/$scenery_id.tar\
+    "./tests/resources/sceneries/$scenery_id.tar"\
     --directory \
-    ./tests/resources/sceneries/$scenery_id\
+    "./tests/resources/sceneries/$scenery_id"\
     .\
-    > ./build/tar_$scenery_id.o 2>&1
+    > "./build/tar_$scenery_id.o" 2>&1
 
     tar_rc=$?
-    printf " $tar_rc"
+    printf " %d" $tar_rc
 done
 printf "\n"
 
@@ -32,7 +32,7 @@ gcc merlict-c89-test.c\
 gcc_c89_rc=$?
 ./build/test_gcc_c89 > ./build/test_gcc_c89.o 2>&1
 gcc_c89_test_rc=$?
-printf "$gcc_c89_rc $gcc_c89_test_rc\n"
+printf "%d %d\n" $gcc_c89_rc $gcc_c89_test_rc
 
 printf "gcc         "
 gcc merlict-c89-test.c\
@@ -45,7 +45,7 @@ gcc merlict-c89-test.c\
 gcc_rc=$?
 ./build/test_gcc > ./build/test_gcc.o 2>&1
 gcc_test_rc=$?
-printf "$gcc_rc $gcc_test_rc\n"
+printf "%d %d\n" $gcc_rc $gcc_test_rc
 
 printf "g++         "
 g++ merlict-c89-test.c\
@@ -57,7 +57,7 @@ g++ merlict-c89-test.c\
 gpp_rc=$?
 ./build/test_g++ > ./build/test_g++.o 2>&1
 gpp_test_rc=$?
-printf "$gpp_rc $gpp_test_rc\n"
+printf "%d %d\n" $gpp_rc $gpp_test_rc
 
 printf "clang c89   "
 clang merlict-c89-test.c\
@@ -71,7 +71,7 @@ clang merlict-c89-test.c\
 clang_c89_rc=$?
 ./build/test_clang_c89 > ./build/test_clang_c89.o 2>&1
 clang_c89_test_rc=$?
-printf "$clang_c89_rc $clang_c89_test_rc\n"
+printf "%d %d\n" $clang_c89_rc $clang_c89_test_rc
 
 printf "clang       "
 clang merlict-c89-test.c\
@@ -83,68 +83,68 @@ clang merlict-c89-test.c\
 clang_rc=$?
 ./build/test_clang > ./build/test_clang.o 2>&1
 clang_test_rc=$?
-printf "$clang_rc $clang_test_rc\n"
+printf "%d %d\n" $clang_rc $clang_test_rc
 
 
-if      [ "$gcc_c89_test_rc" -ne 0 ]
+if      [ $gcc_c89_test_rc -ne 0 ]
 then
         printf "\n"
         cat "./build/test_gcc_c89.o"
 fi
 
-if      [ "$gcc_test_rc" -ne 0 ]
+if      [ $gcc_test_rc -ne 0 ]
 then
         printf "\n"
         cat "./build/test_gcc.o"
 fi
 
-if      [ "$gpp_test_rc" -ne 0 ]
+if      [ $gpp_test_rc -ne 0 ]
 then
         printf "\n"
         cat "./build/test_gpp.o"
 fi
 
-if      [ "$clang_c89_test_rc" -ne 0 ]
+if      [ $clang_c89_test_rc -ne 0 ]
 then
         printf "\n"
         cat "./build/test_clang_c89.o"
 fi
 
-if      [ "$clang_test_rc" -ne 0 ]
+if      [ $clang_test_rc -ne 0 ]
 then
         printf "\n"
         cat "./build/test_clang.o"
 fi
 
-if      [ "$tar_rc" -ne 0 ] ||\
-        [ "$gcc_c89_rc" -ne 0 ] ||\
-        [ "$gcc_c89_test_rc" -ne 0 ]||\
-        [ "$gcc_rc" -ne 0 ] ||\
-        [ "$gcc_test_rc" -ne 0 ]||\
-        [ "$gpp_rc" -ne 0 ] ||\
-        [ "$gpp_test_rc" -ne 0 ]||\
-        [ "$clang_c89_rc" -ne 0 ] ||\
-        [ "$clang_c89_test_rc" -ne 0 ]||\
-        [ "$clang_rc" -ne 0 ] ||\
-        [ "$clang_test_rc" -ne 0 ]
+if      [ $tar_rc -ne 0 ] ||\
+        [ $gcc_c89_rc -ne 0 ] ||\
+        [ $gcc_c89_test_rc -ne 0 ]||\
+        [ $gcc_rc -ne 0 ] ||\
+        [ $gcc_test_rc -ne 0 ]||\
+        [ $gpp_rc -ne 0 ] ||\
+        [ $gpp_test_rc -ne 0 ]||\
+        [ $clang_c89_rc -ne 0 ] ||\
+        [ $clang_c89_test_rc -ne 0 ]||\
+        [ $clang_rc -ne 0 ] ||\
+        [ $clang_test_rc -ne 0 ]
 then
     printf "\n"
-    printf "-------VERSIONS---------\n"
+    printf ".......VERSIONS.........\n"
     tar --version
-    printf "------------------------\n"
+    printf "........................\n"
     gcc --version
-    printf "------------------------\n"
+    printf "........................\n"
     g++ --version
-    printf "------------------------\n"
+    printf "........................\n"
     clang --version
-    printf "------------------------\n"
+    printf "........................\n"
     printf "\n"
-    printf "----TAR verbose---------\n"
+    printf "....TAR verbose.........\n"
 
     for scenery_id in "${scenery_ids[@]}";
     do
-        printf "\n$scenery_id.tar:\n"
-        cat ./build/tar_$scenery_id.o
+        printf "\n%s.tar:\n" "$scenery_id"
+        cat "./build/tar_$scenery_id.o"
     done
 
     exit 1
