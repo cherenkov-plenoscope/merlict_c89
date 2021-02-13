@@ -6,8 +6,8 @@
 
 int mli_nstring_to_int(
         int64_t *out,
-        char *s,
-        uint64_t base,
+        const char *s,
+        const uint64_t base,
         const uint64_t expected_num_chars)
 {
         char *end;
@@ -32,7 +32,7 @@ error:
         return 0;
 }
 
-int mli_string_to_int(int64_t *out, char *s, uint64_t base)
+int mli_string_to_int(int64_t *out, const char *s, const uint64_t base)
 {
         mli_check(
                 mli_nstring_to_int(out, s, base, strlen(s)),
@@ -42,9 +42,20 @@ error:
         return 0;
 }
 
+int mli_string_to_uint(uint64_t *out, const char *s, const uint64_t base)
+{
+        int64_t tmp;
+        mli_c(mli_string_to_int(&tmp, s, base));
+        mli_check(tmp >= 0, "Expected a positive integer.");
+        (*out) = tmp;
+        return 1;
+error:
+        return 0;
+}
+
 int mli_nstring_to_float(
         double *out,
-        char *s,
+        const char *s,
         const uint64_t expected_num_chars)
 {
         char *end;
@@ -70,7 +81,7 @@ error:
         return 0;
 }
 
-int mli_string_to_float(double *out, char *s)
+int mli_string_to_float(double *out, const char *s)
 {
         mli_check(
                 mli_nstring_to_float(out, s, strlen(s)),
@@ -216,4 +227,66 @@ uint64_t mli_string_count_chars_up_to(
                 i++;
         }
         return count;
+}
+
+int mli_uint_to_string(
+        uint64_t u,
+        char *s,
+        const uint64_t max_num_chars,
+        const uint64_t base,
+        const uint64_t min_num_digits)
+{
+        char literals[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        char tmp[128] = {'\0'};
+        uint64_t remainder = 0u;
+        uint32_t remainder32 = 0u;
+        uint64_t quotient = u;
+        int64_t digs = 0u;
+        int64_t pos = 0;
+        int64_t i = 0;
+        int64_t num_leading_zeors = 0;
+
+        mli_check(base <= 10, "Expected base <= 10");
+        mli_check(base > 1, "Expected base > 1");
+        mli_check(max_num_chars < sizeof(tmp), "Exceeded max num. chars.");
+        mli_check(min_num_digits < max_num_chars, "Exceeded max num. chars.");
+
+        do {
+                remainder = quotient % base;
+                quotient = quotient / base;
+                remainder32 = (uint32_t)remainder;
+                tmp[digs] = literals[remainder32];
+                digs++;
+                mli_check(
+                        digs < (int64_t)sizeof(tmp),
+                        "Exceeded max num. chars.");
+        } while (quotient > 0u);
+
+        num_leading_zeors = min_num_digits - digs;
+        if (num_leading_zeors < 0) {
+                num_leading_zeors = 0;
+        }
+
+        for (i = 0; i < num_leading_zeors; i++) {
+                mli_check(
+                        pos < (int64_t)max_num_chars,
+                        "Exceeded max num. chars.");
+                s[pos] = '0';
+                pos++;
+        }
+
+        for (i = 0; i < digs; i++) {
+                mli_check(
+                        pos < (int64_t)max_num_chars,
+                        "Exceeded max num. chars.");
+                s[pos] = tmp[digs - i - 1];
+                pos++;
+        }
+
+        mli_check(pos < (int64_t)max_num_chars, "Exceeded max num. chars.");
+        s[pos] = '\0';
+
+        return 1;
+error:
+        return 0;
 }

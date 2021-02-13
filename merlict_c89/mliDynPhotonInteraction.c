@@ -11,9 +11,9 @@ void mliDynPhotonInteraction_print(
         char type_string[1024];
         char out_in[] = "out->in";
         char in_out[] = "in->out";
-        printf("History(%ldsize, %ldcapacity)\n",
-               history->dyn.size,
-               history->dyn.capacity);
+        printf("History(%usize, %ucapacity)\n",
+               (uint32_t)history->dyn.size,
+               (uint32_t)history->dyn.capacity);
         printf("==================\n");
 
         printf("   #  "
@@ -29,7 +29,7 @@ void mliDynPhotonInteraction_print(
 
         for (i = 0; i < history->dyn.size; i++) {
                 struct mliPhotonInteraction phisec = history->arr[i];
-                printf(" % 3ld  ", i);
+                printf(" % 3d  ", (int32_t)i);
 
                 if (phisec.on_geometry_surface == 1) {
                         printf("(% 5d;% 5d,% 5d,% 5d)  ",

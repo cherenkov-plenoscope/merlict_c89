@@ -8,6 +8,8 @@
 #include <string.h>
 #include "mli_debug.h"
 
+#define MLITAR_OCTAL 8u
+
 struct _mliTarRawHeader {
         char name[MLITAR_NAME_LENGTH];
         char mode[8];
@@ -32,17 +34,14 @@ struct mliTar mliTar_init(void)
 
 struct mliTarHeader mliTarHeader_init(void)
 {
-        uint64_t i;
         struct mliTarHeader h;
         h.mode = 0;
         h.owner = 0;
         h.size = 0;
         h.mtime = 0;
         h.type = 0;
-        for (i = 0; i < MLITAR_NAME_LENGTH; i++) {
-                h.name[i] = '\0';
-                h.linkname[i] = '\0';
-        }
+        memset(h.name, '\0', sizeof(h.name));
+        memset(h.linkname, '\0', sizeof(h.linkname));
         return h;
 }
 
@@ -125,26 +124,112 @@ error:
         return 0;
 }
 
+void _mli_field_fprintf(
+        FILE *f,
+        const char *fieldname,
+        const char *field,
+        const uint64_t size)
+{
+        uint64_t i = 0;
+        char c;
+        fprintf(f, "%s:", fieldname);
+        for (i = 0; i < size; i++) {
+                if ((i % 16) == 0) {
+                        fprintf(stderr, "\n");
+                }
+                if (isprint(field[i])) {
+                        c = field[i];
+                } else {
+                        c = ' ';
+                }
+                fprintf(f, "%c %03d ", c, field[i]);
+        }
+        fprintf(f, "\n");
+}
+
+void _mliTar_raw_header_info_fprint(FILE *f, const struct _mliTarRawHeader *rh)
+{
+        fprintf(f, "tar-header:\n");
+        _mli_field_fprintf(f, "name", rh->name, sizeof(rh->name));
+        _mli_field_fprintf(f, "mode", rh->mode, sizeof(rh->mode));
+        _mli_field_fprintf(f, "owner", rh->owner, sizeof(rh->owner));
+        _mli_field_fprintf(f, "group", rh->group, sizeof(rh->group));
+        _mli_field_fprintf(f, "size", rh->size, sizeof(rh->size));
+        _mli_field_fprintf(f, "mtime", rh->mtime, sizeof(rh->mtime));
+        _mli_field_fprintf(f, "checksum", rh->checksum, sizeof(rh->checksum));
+        _mli_field_fprintf(f, "type", &rh->type, 1);
+        _mli_field_fprintf(f, "linkname", rh->linkname, sizeof(rh->linkname));
+}
+
+int mliTar_field_to_uint(
+        uint64_t *out,
+        const char *field,
+        const uint64_t field_size)
+{
+        char buff[MLITAR_NAME_LENGTH] = {'\0'};
+        mli_c(field_size < MLITAR_NAME_LENGTH);
+        memcpy(buff, field, field_size);
+
+        /* Take care of historic 'space' (32 decimal) termination */
+        /* Convert all 'space' terminations to '\0' terminations. */
+
+        if (buff[field_size - 1] == 32) {
+                buff[field_size - 1] = 0;
+        }
+        if (buff[field_size - 2] == 32) {
+                buff[field_size - 2] = 0;
+        }
+
+        mli_c(mli_string_to_uint(out, buff, MLITAR_OCTAL));
+        return 1;
+error:
+        return 0;
+}
+
 int _mliTar_raw_to_header(
         struct mliTarHeader *h,
         const struct _mliTarRawHeader *rh)
 {
-        uint64_t chksum1, chksum2;
+        uint64_t chksum_actual, chksum_expected;
+        chksum_actual = _mliTar_checksum(rh);
 
         /* Build and compare checksum */
-        chksum1 = _mliTar_checksum(rh);
-        sscanf(rh->checksum, "%lo", &chksum2);
-        mli_check(chksum1 == chksum2, "Bad checksum.");
+        mli_check(
+                mliTar_field_to_uint(
+                        &chksum_expected, rh->checksum, sizeof(rh->checksum)),
+                "bad checksum string.");
+        mli_check(chksum_actual == chksum_expected, "bad checksum.");
 
         /* Load raw header into header */
-        sscanf(rh->mode, "%lo", &h->mode);
-        sscanf(rh->owner, "%lo", &h->owner);
-        sscanf(rh->size, "%lo", &h->size);
-        sscanf(rh->mtime, "%lo", &h->mtime);
+        mli_check(
+                mliTar_field_to_uint(&h->mode, rh->mode, sizeof(rh->mode)),
+                "bad mode");
+        mli_check(
+                mliTar_field_to_uint(&h->owner, rh->owner, sizeof(rh->owner)),
+                "bad owner");
+        mli_check(
+                mliTar_field_to_uint(&h->size, rh->size, sizeof(rh->size)),
+                "bad size");
+        mli_check(
+                mliTar_field_to_uint(&h->mtime, rh->mtime, sizeof(rh->mtime)),
+                "bad mtime");
         h->type = rh->type;
-        sprintf(h->name, "%s", rh->name);
-        sprintf(h->linkname, "%s", rh->linkname);
+        memcpy(h->name, rh->name, sizeof(h->name));
+        memcpy(h->linkname, rh->linkname, sizeof(h->linkname));
 
+        return 1;
+error:
+        _mliTar_raw_header_info_fprint(stderr, rh);
+        return 0;
+}
+
+int mliTar_uint_to_field(
+        const uint64_t val,
+        char *field,
+        const uint64_t fieldsize)
+{
+        mli_c(mli_uint_to_string(
+                val, field, fieldsize, MLITAR_OCTAL, fieldsize - 1));
         return 1;
 error:
         return 0;
@@ -158,20 +243,45 @@ int _mliTar_make_raw_header(
 
         /* Load header into raw header */
         memset(rh, 0, sizeof(*rh));
-        sprintf(rh->mode, "%lo", h->mode);
-        sprintf(rh->owner, "%lo", h->owner);
-        sprintf(rh->size, "%lo", h->size);
-        sprintf(rh->mtime, "%lo", h->mtime);
+        mli_check(
+                mliTar_uint_to_field(h->mode, rh->mode, sizeof(rh->mode)),
+                "bad mode");
+        mli_check(
+                mliTar_uint_to_field(h->owner, rh->owner, sizeof(rh->owner)),
+                "bad owner");
+        mli_check(
+                mliTar_uint_to_field(h->size, rh->size, sizeof(rh->size)),
+                "bad size");
+        mli_check(
+                mliTar_uint_to_field(h->mtime, rh->mtime, sizeof(rh->mtime)),
+                "bad mtime");
         rh->type = h->type ? h->type : MLITAR_TREG;
-        sprintf(rh->name, "%s", h->name);
-        sprintf(rh->linkname, "%s", h->linkname);
+        memcpy(rh->name, h->name, sizeof(rh->name));
+        memcpy(rh->linkname, h->linkname, sizeof(rh->linkname));
 
         /* Calculate and write checksum */
         chksum = _mliTar_checksum(rh);
-        sprintf(rh->checksum, "%06lo", chksum);
-        rh->checksum[7] = ' ';
+        mli_check(
+                mli_uint_to_string(
+                        chksum,
+                        rh->checksum,
+                        sizeof(rh->checksum),
+                        MLITAR_OCTAL,
+                        sizeof(rh->checksum) - 2),
+                "bad checksum");
+
+        rh->checksum[sizeof(rh->checksum) - 1] = 32;
+
+        mli_check(
+                rh->checksum[sizeof(rh->checksum) - 2] == 0,
+                "Second last char in checksum must be '\\0', i.e. 0(decimal).");
+        mli_check(
+                rh->checksum[sizeof(rh->checksum) - 1] == 32,
+                "Last char in checksum must be ' ', i.e. 32(decimal).");
 
         return 1;
+error:
+        return 0;
 }
 
 int mliTar_open(struct mliTar *tar, const char *filename, const char *mode)
@@ -251,7 +361,7 @@ error:
 int mliTar_write_header(struct mliTar *tar, const struct mliTarHeader *h)
 {
         struct _mliTarRawHeader rh;
-        _mliTar_make_raw_header(&rh, h);
+        mli_check(_mliTar_make_raw_header(&rh, h), "Failed to make raw-header");
         tar->remaining_data = h->size;
         mli_check(
                 _mliTar_twrite(tar, &rh, sizeof(rh)),
@@ -267,7 +377,8 @@ int mliTar_write_file_header(
         uint64_t size)
 {
         struct mliTarHeader h = mliTarHeader_init();
-        sprintf(h.name, "%s", name);
+        mli_check(strlen(name) < sizeof(h.name), "Filename is too long.");
+        memcpy(h.name, name, strlen(name));
         h.size = size;
         h.type = MLITAR_TREG;
         h.mode = 0664;
@@ -281,7 +392,8 @@ error:
 int mliTar_write_dir_header(struct mliTar *tar, const char *name)
 {
         struct mliTarHeader h = mliTarHeader_init();
-        sprintf(h.name, "%s", name);
+        mli_check(strlen(name) < sizeof(h.name), "Dirname is too long.");
+        memcpy(h.name, name, strlen(name));
         h.type = MLITAR_TDIR;
         h.mode = 0775;
         mli_check(mliTar_write_header(tar, &h), "Failed to write dir-header.");

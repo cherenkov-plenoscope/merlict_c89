@@ -12,8 +12,8 @@ CASE("simple propagation")
         uint64_t max_interactions = 16;
 
         uint64_t FNC_POSITIV_INFINITY = 0;
-        uint64_t FNC_REFRACTION_GLASS = 1;
-        uint64_t FNC_UNITY = 2;
+        uint64_t FNC_REFRACTION_GLASS = 0;
+        uint64_t FNC_UNITY = 0;
 
         struct mliPhoton photon;
         photon.ray = mliRay_set(mliVec_set(0, 0, -3), mliVec_set(0, 0, 1));
@@ -26,6 +26,23 @@ CASE("simple propagation")
                 "resources/"
                 "sceneries/"
                 "002.tar"));
+
+        CHECK(mliName_find_idx(
+                scenery.materials.function_names,
+                scenery.materials.num_functions,
+                "refraction_glass",
+                &FNC_REFRACTION_GLASS));
+        CHECK(mliName_find_idx(
+                scenery.materials.function_names,
+                scenery.materials.num_functions,
+                "unity",
+                &FNC_UNITY));
+        CHECK(mliName_find_idx(
+                scenery.materials.function_names,
+                scenery.materials.num_functions,
+                "positiv_infinity",
+                &FNC_POSITIV_INFINITY));
+
         CHECK(scenery.materials.default_medium == 0u);
 
         CHECK(mli_query_intersection_with_surface_normal(

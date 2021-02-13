@@ -1,8 +1,10 @@
 #include "mlivr_toggle_stdin.h"
+
+#ifdef __unix__
+
 #include <unistd.h> /* STDIN_FILENO */
 
-/* Thanks to Edwin Buck */
-struct termios mlivr_disable_stdin_buffer(void)
+struct termios mlivr_non_canonical_stdin(void)
 {
         struct termios old_terminal;
         struct termios new_terminal;
@@ -13,7 +15,9 @@ struct termios mlivr_disable_stdin_buffer(void)
         return old_terminal;
 }
 
-void mlivr_restore_stdin_buffer(struct termios *old_terminal)
+void mlivr_restore_stdin(struct termios *old_terminal)
 {
         tcsetattr(STDIN_FILENO, TCSANOW, old_terminal);
 }
+
+#endif /* __unix__ */

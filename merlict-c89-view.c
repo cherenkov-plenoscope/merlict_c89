@@ -47,7 +47,8 @@ int main(int argc, char *argv[])
         }
 
         mli_check(
-                mlivr_run_interactive_viewer(&scenery, config),
+                mlivr_run_interactive_viewer_try_non_canonical_stdin(
+                        &scenery, config),
                 "Failure in viewer");
 
         mliScenery_free(&scenery);

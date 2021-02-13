@@ -22,8 +22,6 @@ void mlivr_print_info_line(
 
 void mlivr_timestamp_now_19chars(char *buffer);
 
-void mlivr_restore_stdin_buffer(struct termios *old_terminal);
-
 int mlivr_truncate_8bit(const int key);
 
 int _mlivr_export_image(
@@ -36,5 +34,7 @@ int _mlivr_export_image(
 int mlivr_run_interactive_viewer(
         const struct mliScenery *scenery,
         const struct mlivrConfig config);
-
+int mlivr_run_interactive_viewer_try_non_canonical_stdin(
+        const struct mliScenery *scenery,
+        const struct mlivrConfig config);
 #endif

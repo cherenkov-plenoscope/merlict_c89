@@ -475,8 +475,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 if (rc == 0) {
                                         fprintf(stderr,
                                                 "[ERROR] in vertex-normal-line "
-                                                "%ld.\n",
-                                                vn.dyn.size);
+                                                "%u.\n",
+                                                (uint32_t)vn.dyn.size);
                                 }
                                 mli_check(
                                         rc,
@@ -489,8 +489,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                         &line[1], &tmp_v);
                                 if (rc == 0) {
                                         fprintf(stderr,
-                                                "[ERROR] in vertex-line %ld.\n",
-                                                v.dyn.size);
+                                                "[ERROR] in vertex-line %u.\n",
+                                                (uint32_t)v.dyn.size);
                                 }
                                 mli_check(rc, "Can not parse vertex-line.");
                                 mli_c(mliDynVec_push_back(&v, tmp_v));
@@ -514,8 +514,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                         &line_mode);
                                 if (rc == 0) {
                                         fprintf(stderr,
-                                                "[ERROR] in face-line %ld.\n",
-                                                fv.dyn.size);
+                                                "[ERROR] in face-line %u.\n",
+                                                (uint32_t)fv.dyn.size);
                                 }
                                 mli_check(rc, "Can not parse face-line.");
 

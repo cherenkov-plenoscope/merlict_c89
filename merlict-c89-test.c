@@ -23,6 +23,7 @@ int main(void)
 
 #include "tests/test_mliMagicId.c"
 #include "tests/test_frame.c"
+#include "tests/test_parsing_from_string.c"
 #include "tests/test_tape_archive.c"
 #include "tests/test_comma_seperated_values.c"
 #include "tests/test_upper_bound.c"
@@ -43,7 +44,6 @@ int main(void)
 #include "tests/test_linear_interpolation.c"
 #include "tests/test_mliFunc.c"
 #include "tests/test_mliRay.c"
-#include "tests/test_parsing_from_string.c"
 #include "tests/test_json.c"
 #include "tests/test_mliFresnel.c"
 #include "tests/test_mliAccelerator.c"

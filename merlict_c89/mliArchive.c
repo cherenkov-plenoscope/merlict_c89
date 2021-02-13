@@ -138,10 +138,10 @@ void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
         for (i = 0; i < arc->strings.dyn.size; i++) {
                 struct _mliMapItem *map_item = &arc->filenames.arr[i];
                 fprintf(f,
-                        "%ld: %s, %ld\n",
-                        i,
+                        "%u: %s, %u\n",
+                        (uint32_t)i,
                         map_item->key,
-                        arc->strings.arr[i].capacity);
+                        (uint32_t)arc->strings.arr[i].capacity);
         }
 }
 

@@ -60,6 +60,49 @@ CASE("string to int")
         CHECK(!mli_string_to_int(&i, s, 10));
 }
 
+CASE("uint to string")
+{
+        char s[64] = {'\0'};
+
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_uint_to_string(0, s, sizeof(s), 10u, 0u));
+        CHECK(strcmp(s, "0") == 0);
+
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_uint_to_string(123, s, sizeof(s), 10u, 0u));
+        CHECK(strcmp(s, "123") == 0);
+
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_uint_to_string(1233456789, s, sizeof(s), 10u, 0u));
+        CHECK(strcmp(s, "1233456789") == 0);
+
+        /* octal */
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_uint_to_string(0, s, sizeof(s), 8u, 0u));
+        CHECK(strcmp(s, "0") == 0);
+
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_uint_to_string(1337, s, sizeof(s), 8u, 0u));
+        CHECK(strcmp(s, "2471") == 0);
+
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_uint_to_string(42, s, sizeof(s), 8u, 0u));
+        CHECK(strcmp(s, "52") == 0);
+
+        /* binary */
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_uint_to_string(13, s, sizeof(s), 2u, 0u));
+        CHECK(strcmp(s, "1101") == 0);
+
+        CHECK(!mli_uint_to_string(13, s, sizeof(s), 1u, 0u));
+        CHECK(!mli_uint_to_string(13, s, sizeof(s), 11u, 0u));
+
+        /* leading zeros */
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_uint_to_string(123, s, sizeof(s), 10u, 9u));
+        CHECK(strcmp(s, "000" "000" "123") == 0);
+}
+
 CASE("string to float")
 {
         double i;

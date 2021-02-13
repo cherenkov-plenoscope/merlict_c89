@@ -126,12 +126,25 @@ error:
         return 0;
 }
 
+int mlivr_run_interactive_viewer_try_non_canonical_stdin(
+        const struct mliScenery *scenery,
+        const struct mlivrConfig config)
+{
+#ifdef HAVE_TERMIOS_H
+        struct termios old_terminal = mlivr_non_canonical_stdin();
+#endif
+        int rc = mlivr_run_interactive_viewer(scenery, config);
+
+#ifdef HAVE_TERMIOS_H
+        mlivr_restore_stdin(&old_terminal);
+#endif
+        return rc;
+}
+
 int mlivr_run_interactive_viewer(
         const struct mliScenery *scenery,
         const struct mlivrConfig config)
 {
-        struct termios old_terminal = mlivr_disable_stdin_buffer();
-
         char path[1024];
         int key;
         int super_resolution = 0;
@@ -407,11 +420,9 @@ int mlivr_run_interactive_viewer(
 
         mliImage_free(&img);
         mliImage_free(&img2);
-        mlivr_restore_stdin_buffer(&old_terminal);
         return 1;
 error:
         mliImage_free(&img);
         mliImage_free(&img2);
-        mlivr_restore_stdin_buffer(&old_terminal);
         return 0;
 }

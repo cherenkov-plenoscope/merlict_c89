@@ -4,16 +4,17 @@
 
 int mli_nstring_to_int(
         int64_t *out,
-        char *s,
-        uint64_t base,
+        const char *s,
+        const uint64_t base,
         const uint64_t expected_num_chars);
-int mli_string_to_int(int64_t *out, char *s, uint64_t base);
+int mli_string_to_int(int64_t *out, const char *s, const uint64_t base);
+int mli_string_to_uint(uint64_t *out, const char *s, const uint64_t base);
 
 int mli_nstring_to_float(
         double *out,
-        char *s,
+        const char *s,
         const uint64_t expected_num_chars);
-int mli_string_to_float(double *out, char *s);
+int mli_string_to_float(double *out, const char *s);
 
 int mli_string_ends_with(const char *str, const char *sufix);
 int mli_string_starts_with(const char *str, const char *prefix);
@@ -35,5 +36,12 @@ uint64_t mli_string_count_chars_up_to(
         const char *str,
         const char c,
         const uint64_t num_chars_to_scan);
+
+int mli_uint_to_string(
+        uint64_t u,
+        char *s,
+        const uint64_t max_num_chars,
+        const uint64_t base,
+        const uint64_t min_num_digits);
 
 #endif
