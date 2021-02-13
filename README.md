@@ -90,7 +90,7 @@ Merlict's viewer runs in the terminal and reads three formats:
 - a standalone object-wavefront ```.obj```
 
 Just like in a 3D video-game you control your viewing-direction and position via the keyboard. You can inspect the scenery and render high resolution images.
-The viewer prints its rendering directly into the terminal in ASCII-art. When your terminal supports ANSI-escape-sequences you may toggle to 24bit color depth on the fly. The terminal based viewer is especially useful when you run merlict on a remote computer via ```ssh```.
+The viewer prints its rendering directly into the terminal in ASCII-art. When your terminal supports [```ANSI-escape-code```](https://en.wikipedia.org/wiki/ANSI_escape_code) you can switch to 24-bit true color. The terminal based viewer is especially useful when you run merlict on a remote computer via ```ssh```.
 Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical mode so that you do not have to press [Enter] after each keypress.
 
 #### Compile
