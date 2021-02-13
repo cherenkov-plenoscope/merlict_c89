@@ -38,7 +38,7 @@ Merlict supports a subset of the [```obj``` format](https://en.wikipedia.org/wik
 - ```#``` comment. Any text in this line.
 - ```v``` vertices. A vertex defines the 3D position in the mesh.
 - ```vn``` vertex-normals. A vertex-normal defines the surface-normal on the mesh. 
-- ```f``` faces. A face must reference exactly __three__ vertices and __three__ vertex-normals.
+- ```f``` faces. A face must reference exactly __three__ vertices and __three__ vertex-normals. References to vertices and vertex-normals must be positive, backwards referencing is not supported.
 - ```usemtl``` material-reference. All following faces are assigned the same material. There must be __at least one__ ```usemtl``` before the first face.
 
 Other features of ```obj``` will be ignored. Blank lines are accepted but ignored.
