@@ -34,17 +34,14 @@ struct mliTar mliTar_init(void)
 
 struct mliTarHeader mliTarHeader_init(void)
 {
-        uint64_t i;
         struct mliTarHeader h;
         h.mode = 0;
         h.owner = 0;
         h.size = 0;
         h.mtime = 0;
         h.type = 0;
-        for (i = 0; i < MLITAR_NAME_LENGTH; i++) {
-                h.name[i] = '\0';
-                h.linkname[i] = '\0';
-        }
+        memset(h.name, '\0', sizeof(h.name));
+        memset(h.linkname, '\0', sizeof(h.linkname));
         return h;
 }
 
@@ -217,8 +214,8 @@ int _mliTar_raw_to_header(
                 mliTar_field_to_uint(&h->mtime, rh->mtime, sizeof(rh->mtime)),
                 "bad mtime");
         h->type = rh->type;
-        sprintf(h->name, "%s", rh->name);
-        sprintf(h->linkname, "%s", rh->linkname);
+        memcpy(h->name, rh->name, sizeof(h->name));
+        memcpy(h->linkname, rh->linkname, sizeof(h->linkname));
 
         return 1;
 error:
@@ -259,8 +256,8 @@ int _mliTar_make_raw_header(
                 mliTar_uint_to_field(h->mtime, rh->mtime, sizeof(rh->mtime)),
                 "bad mtime");
         rh->type = h->type ? h->type : MLITAR_TREG;
-        sprintf(rh->name, "%s", h->name);
-        sprintf(rh->linkname, "%s", h->linkname);
+        memcpy(rh->name, h->name, sizeof(rh->name));
+        memcpy(rh->linkname, h->linkname, sizeof(rh->linkname));
 
         /* Calculate and write checksum */
         chksum = _mliTar_checksum(rh);
@@ -380,7 +377,8 @@ int mliTar_write_file_header(
         uint64_t size)
 {
         struct mliTarHeader h = mliTarHeader_init();
-        sprintf(h.name, "%s", name);
+        mli_check(strlen(name) < sizeof(h.name), "Filename is too long.");
+        memcpy(h.name, name, strlen(name));
         h.size = size;
         h.type = MLITAR_TREG;
         h.mode = 0664;
@@ -394,7 +392,8 @@ error:
 int mliTar_write_dir_header(struct mliTar *tar, const char *name)
 {
         struct mliTarHeader h = mliTarHeader_init();
-        sprintf(h.name, "%s", name);
+        mli_check(strlen(name) < sizeof(h.name), "Dirname is too long.");
+        memcpy(h.name, name, strlen(name));
         h.type = MLITAR_TDIR;
         h.mode = 0775;
         mli_check(mliTar_write_header(tar, &h), "Failed to write dir-header.");
