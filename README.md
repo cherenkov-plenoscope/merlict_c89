@@ -36,10 +36,10 @@ in your headers, and
 ```
 
 in your sources. Thats it. :checkered_flag:
-Build and inspect the unit-tests to see a minimal example.
+See ```./merlict-c89-test.c``` and run ```./compile_and_test.sh``` for a minimal example.
 
 ### Your Buildsystem
-Merlict is structured into pairs of ```merlict_c89/mli*.h```, and ```merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to.
+Merlict is structured into pairs of ```./merlict_c89/mli*.h```, and ```./merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to.
 In my projects, the 'single header / single source' approach, where all sources are build over again from scratch for each executable, was always faster.
 
 # Interface
@@ -128,12 +128,12 @@ Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical 
 
 #### Build :hammer:
 ```bash
-gcc merlict-c89-view.c -o view -lm
+gcc ./merlict-c89-view.c -o view -lm
 ```
 
 #### Run
 ```bash
-./view tests/resources/sceneries/001.tar
+./view ./tests/resources/sceneries/001.tar
 ```
 # Unit-Tests
 Merlict has a ```bash``` script
