@@ -136,23 +136,31 @@ Merlict is structured into pairs of ```merlict_c89/mli*.h```, and ```merlict_c89
 
 However, in my projects the 'single header / single source' approach, where all sources are build over again from scratch for each executable, was always faster.
 
-## Unit-Tests
+# Unit-Tests
+Merlict has a ```bash``` script
 ```bash
 ./compile_and_test.sh
 ```
-A script to compile with both ```gcc``` and ```clang```, in both ```c```, and ```c++``` mode. Also run the unit-tests.
+to prepare, build, and run the unit-tests. Run this script to check whether merlict builds and runs fine on your platform.
+The unit-tests and their resources are located in the ```./tests/``` directory.
 
+The script
+- prepares the resources as it ```tar```s the sceneries into tape-archives,
+- builds with both ```gcc``` and ```clang```, in both ```c```, and ```c++``` mode,
+- and runs the tests.
 
-## Development
+# Development
+Open an issue and describe your problem or wish.
 
+Then its the core developer's job to:
 - Write unit-tests.
+- Credit and acknowledge original authors.
 - Obey ```std=c89``` standard.
-- Keep the header's namespace clean. Merlict uses ```mli``` prefix.
+- Keep the header's namespace clean. No ```typedef```s! Merlict uses ```mli``` prefix.
 - Avoid all Warnings in```gcc``` and ```clang``` in both ```c``` and ```c++``` mode.
-- Format according to ```.clang-format```.
+- Format ```c``` according to ```./.clang-format```.
 
-### why ```c89```?
-Portability. I wanted to increase merlict's probability to run. In science it is common to run remote clusters where unexperieced useres are stuck with 10+ year old compilers, and have no root privileges, and very limited space. But of course there are strong arguments why ```c99``` might have been a better choice afterall.
+but of course she will happily recive pull-requests that meet such expectations :wink:.
 
 # Suggested Tools
 - [Blender](https://www.blender.org/) to inspect and manipulate objects. It is especially useful to visualize surface-normals.
