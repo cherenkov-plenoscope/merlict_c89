@@ -5,7 +5,7 @@
 
 Merlict simulates light. It can find intersections of a ray in a complex 3D geometry with special emphasis on surface-normals. Merlict can propagate photons based on geometric optics according to Fresnel. Merlict comes with its own interactive viewer for the terminal. Merlict is a library written in ```c89```.
 
-Merlict reads your scenery from text-files which describe your objects, the geometric relations among them, their materials, and their sourrounding media. Merlict can read a subset of the popular [wavefront-object-fileformat](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```.
+Merlict reads your scenery from text-files which describe your objects, the geometric relations among them, their materials, and their sourrounding media. Merlict can read a subset of the popular [object-wavefront format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```.
 You define photons with a creation-position, direction, and wavelength.
 For each photon, merlict gives you the list of physical interactions up to its absorbtion.
 
