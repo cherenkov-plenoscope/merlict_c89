@@ -143,13 +143,16 @@ However, in my projects the 'single header / single source' approach, where all 
 A script to compile with both ```gcc``` and ```clang```, in both ```c```, and ```c++``` mode. Also run the unit-tests.
 
 
-## Code
+## Development
+
 - Write unit-tests.
 - Obey ```std=c89``` standard.
 - Keep the header's namespace clean. Merlict uses ```mli``` prefix.
 - Avoid all Warnings in```gcc``` and ```clang``` in both ```c``` and ```c++``` mode.
 - Format according to ```.clang-format```.
 
+### why ```c89```?
+Portability. I wanted to increase merlict's probability to run. In science it is common to run remote clusters where unexperieced useres are stuck with 10+ year old compilers, and have no root privileges, and very limited space. But of course there are strong arguments why ```c99``` might have been a better choice afterall.
 
 # Suggested Tools
 - [Blender](https://www.blender.org/) to inspect and manipulate objects. It is especially useful to visualize surface-normals.
