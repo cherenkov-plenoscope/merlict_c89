@@ -93,7 +93,7 @@ f 1//6 2//6 3//6
 f 3//6 4//6 1//6
 ```
 
-# Viewer
+# Viewer :eyes:
 Merlict's viewer runs in the terminal and reads three formats:
 
 - merlict's own ```scenery.tar```
@@ -104,7 +104,7 @@ Just like in a 3D video-game you control your viewing-direction and position via
 The viewer prints its rendering directly into the terminal in ASCII-art. When your terminal supports [```ANSI-escape-code```](https://en.wikipedia.org/wiki/ANSI_escape_code) you can switch to 24-bit true color. The terminal based viewer is especially useful when you run merlict on a remote computer via ```ssh```.
 Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical mode so that you do not have to press [Enter] after each keypress.
 
-#### Compile
+#### Build :hammer:
 ```bash
 gcc merlict-c89-view.c -o view -lm
 ```
@@ -114,7 +114,7 @@ gcc merlict-c89-view.c -o view -lm
 ./view tests/resources/sceneries/001.tar
 ```
 
-# Build
+# Build :hammer:
 
 ## Single Header / Single Source
 To involve merlict in your project
