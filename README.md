@@ -36,12 +36,11 @@ in your headers, and
 ```
 
 in your sources. Thats it. :checkered_flag:
+Build and inspect the unit-tests to see a minimal example.
 
-## Your Buildsystem
+### Your Buildsystem
 Merlict is structured into pairs of ```merlict_c89/mli*.h```, and ```merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to.
-
-However, in my projects the 'single header / single source' approach, where all sources are build over again from scratch for each executable, was always faster.
-
+In my projects, the 'single header / single source' approach, where all sources are build over again from scratch for each executable, was always faster.
 
 # Interface
 
