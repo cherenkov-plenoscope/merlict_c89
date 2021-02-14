@@ -24,17 +24,17 @@ Merlict would not exist without the author's past and present affiliations:
 
 ## Scenery
 
-### tree
+### Tree
 A tree with cartesian frames as nodes and object-references as leafs. The tree defines the relative position and orientation of your object-references.
 
-### object
+### Object
 A mesh of triangular ```faces``` which are defined by their ```vertices```, and ```vertex-normals```.
 To approximate complex surfaces, especially complex surface-normals, you can control the ```vertex-normals``` of each ```face```. The surface-normal in an intersection will be the barycentric interpolation of the ```vertex-normals```.
 
-### object-reference
+### Object-Reference
 A reference to an object. It bundles the object and the pysical properties of its surfaces and media.
 
-### materials
+### Materials
 You describe a medium by its transmissivity and its refractive index.
 
 You define surfaces by their specular, and diffuse (lambertian) reflections approximating physical surfaces using the Phong-model.
@@ -43,7 +43,7 @@ You define surfaces by their specular, and diffuse (lambertian) reflections appr
 Photons are defined by their creation-position, their direction, their wavelength.
 During propagation, merlict writes the history of the photon bouncing around in the scenery until it is absorbed.
 
-## object-wavefront format ```.obj```
+## Object-Wavefront Format ```.obj```
 Merlict supports a subset of the [```obj``` format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) in ASCII-text. An object-wavefront defines a mesh of triangle-faces in a 3D space with special emphasis on the meshe's surface-normal. Each face ```f``` references its three vertices ```v```. The surface-normal of a face ```f``` will be interpolated between the face's three vertex-normals ```vn``` using the barycentrig weight of the intersection-position w.r.t the face.
 
 - ```#``` comment-line. Any text in this line.
@@ -115,22 +115,28 @@ gcc merlict-c89-view.c -o view -lm
 ```
 
 # Build
-Merlict uses the only buildsystem which does not try to murder you: No buildsystem.
 
-Just 
+## Single Header / Single Source
+To involve merlict in your project
+
 ```c
 #include "merlict_c89/merlict_c89.h"
+```
+
+in your headers, and
+
+```c
 #include "merlict_c89/merlict_c89.c"
 ```
-in your ```main.c``` and
 
-```bash
-gcc main.c -o exe -lm
-```
+in your sources. Thats it.
 
-Merlict is structured into pairs of ```merlict_c89/mli*.h``` and ```merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to. However, in my projects building all sources over again from scratch for each executable was always fastest. So I just include the collective ```merlict_c89/merlict_c89.h``` in my project's headers, and the collective ```merlict_c89/merlict_c89.c``` in my project's sources.
+## Your Buildsystem
+Merlict is structured into pairs of ```merlict_c89/mli*.h```, and ```merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to.
 
-## Unit-tests
+However, in my projects the 'single header / single source' approach, where all sources are build over again from scratch for each executable, was always faster.
+
+## Unit-Tests
 ```bash
 ./compile_and_test.sh
 ```
@@ -140,10 +146,12 @@ A script to compile with both ```gcc``` and ```clang```, in both ```c```, and ``
 ## Code
 - Write unit-tests.
 - Obey ```std=c89``` standard.
+- Keep the header's namespace clean. Merlict uses ```mli``` prefix.
 - Avoid all Warnings in```gcc``` and ```clang``` in both ```c``` and ```c++``` mode.
 - Format according to ```.clang-format```.
 
-# Suggested tools
+
+# Suggested Tools
 - [Blender](https://www.blender.org/) to inspect and manipulate objects. It is especially useful to visualize surface-normals.
 
 - [OpenScad](http://www.openscad.org/) to create meshes in a parametric way. Unfortunately it does not have a concept of vertex-normals.
