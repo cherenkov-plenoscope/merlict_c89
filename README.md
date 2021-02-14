@@ -9,6 +9,17 @@ Merlict reads your scenery from text-files which describe your objects, the geom
 You define photons with a creation-position, direction, and wavelength.
 For each photon, merlict gives you the list of physical interactions up to its absorbtion.
 
+Merlict would not exist without the author's past and present affiliations:
+
+- Max-Planck-Institute for Nuclear Physics,
+  Saupfercheckweg 1, 69117 Heidelberg, Germany
+ 
+- Institute for Particle Physics and Astrophysics,
+  ETH-Zurich, Otto-Stern-Weg 5, 8093 Zurich, Switzerland
+
+- Experimental Physics Vb, Astroparticle Physics,
+  TU-Dortmund, Otto-Hahn-Str. 4a, 44227 Dortmund, Germany
+
 # Interface
 
 ## Scenery
