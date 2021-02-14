@@ -20,6 +20,29 @@ Merlict would not exist without the author's past and present affiliations:
 - Experimental Physics Vb, Astroparticle Physics,
   TU-Dortmund, Otto-Hahn-Str. 4a, 44227 Dortmund, Germany
 
+# Build :hammer:
+
+## Single Header / Single Source
+To involve merlict in your project
+
+```c
+#include "merlict_c89/merlict_c89.h"
+```
+
+in your headers, and
+
+```c
+#include "merlict_c89/merlict_c89.c"
+```
+
+in your sources. Thats it. :checkered_flag:
+
+## Your Buildsystem
+Merlict is structured into pairs of ```merlict_c89/mli*.h```, and ```merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to.
+
+However, in my projects the 'single header / single source' approach, where all sources are build over again from scratch for each executable, was always faster.
+
+
 # Interface
 
 ## Scenery
@@ -113,29 +136,6 @@ gcc merlict-c89-view.c -o view -lm
 ```bash
 ./view tests/resources/sceneries/001.tar
 ```
-
-# Build :hammer:
-
-## Single Header / Single Source
-To involve merlict in your project
-
-```c
-#include "merlict_c89/merlict_c89.h"
-```
-
-in your headers, and
-
-```c
-#include "merlict_c89/merlict_c89.c"
-```
-
-in your sources. Thats it.
-
-## Your Buildsystem
-Merlict is structured into pairs of ```merlict_c89/mli*.h```, and ```merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to.
-
-However, in my projects the 'single header / single source' approach, where all sources are build over again from scratch for each executable, was always faster.
-
 # Unit-Tests
 Merlict has a ```bash``` script
 ```bash
