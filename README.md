@@ -115,9 +115,9 @@ gcc merlict-c89-view.c -o view -lm
 ```
 
 # Build
-Merlict uses the only buildsystem which does not try to murder you. This is, no buildsystem.
+Merlict uses the only buildsystem which does not try to murder you: No buildsystem.
 
-Just
+Just 
 ```c
 #include "merlict_c89/merlict_c89.h"
 #include "merlict_c89/merlict_c89.c"
@@ -128,7 +128,7 @@ in your ```main.c``` and
 gcc main.c -o exe -lm
 ```
 
-Since merlict is structured into pairs of ```header.h``` and ```source.c``` files you can put it into your buildsystem. However, in my projects building all sources again from scratch for each executable was always fastest.
+Merlict is structured into pairs of ```merlict_c89/mli*.h``` and ```merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to. However, in my projects building all sources over again from scratch for each executable was always fastest. So I just include the collective ```merlict_c89/merlict_c89.h``` in my project's headers, and the collective ```merlict_c89/merlict_c89.c``` in my project's sources.
 
 ## Unit-tests
 ```bash
