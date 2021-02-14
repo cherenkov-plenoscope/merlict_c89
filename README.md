@@ -3,9 +3,9 @@
 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Merlict simulates light. It can find intersections of a ray in a complex 3D geometry with special emphasis on surface-normals. Merlict can propagate photons based on geometric optics according to Fresnel. Merlict comes with its own interactive viewer for the terminal. Merlict is a library written in ```c89```.
+Merlict simulates light. It finds the intersections of a ray and a complex 3D geometry with special emphasis on surface-normals. Merlict can propagate photons based on geometric optics according to Fresnel. Merlict comes with its own interactive viewer for the terminal. Merlict is a library written in ```c89```.
 
-Merlict reads your scenery from text-files which describe your objects, the geometric relations among them, their materials, and their sourrounding media. Merlict can read a subset of the popular [object-wavefront format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```.
+Merlict reads your scenery from text-files which describe your objects, the geometric relations between them, their materials, and their sourrounding media. Merlict can read a subset of the popular [object-wavefront format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```.
 You define photons with a creation-position, direction, and wavelength.
 For each photon, merlict gives you the list of physical interactions up to its absorbtion.
 
@@ -39,8 +39,7 @@ in your sources. Thats it. :checkered_flag:
 See ```./merlict-c89-test.c``` and run ```./compile_and_test.sh``` for a minimal example.
 
 ### Your Buildsystem
-Merlict is structured into pairs of ```./merlict_c89/mli*.h```, and ```./merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to.
-In my projects, the 'single header / single source' approach, where all sources are build over again from scratch for each executable, was always faster.
+Merlict is structured into pairs of ```./merlict_c89/mli*.h```, and ```./merlict_c89/mli*.c``` files which you can put into your buildsystem.
 
 # Viewer :eyes:
 Merlict's viewer runs in the terminal and reads three formats:
@@ -49,8 +48,8 @@ Merlict's viewer runs in the terminal and reads three formats:
 - merlict's own ```scenery.bin```
 - a standalone object-wavefront ```.obj```
 
-Just like in a 3D video-game you control your viewing-direction and position via the keyboard. You can inspect the scenery and render high resolution images.
-The viewer prints its rendering directly into the terminal in ASCII-art. When your terminal supports [```ANSI-escape-code```](https://en.wikipedia.org/wiki/ANSI_escape_code) you can switch to 24-bit true color. The terminal based viewer is especially useful when you run merlict on a remote computer via ```ssh```.
+Control your viewing-direction and position via the keyboard. You can inspect the scenery and render high resolution images.
+The viewer prints into the terminal using ASCII-art. When your terminal supports [```ANSI-escape-code```](https://en.wikipedia.org/wiki/ANSI_escape_code) you can switch to 24-bit true color. The viewer is especially useful when you run merlict on a remote computer via ```ssh``` without an ```X```-server.
 Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical mode so that you do not have to press [Enter] after each keypress.
 
 # Interface
