@@ -52,10 +52,20 @@ Control your viewing-direction and position via the keyboard. You can inspect th
 The viewer prints into the terminal using ASCII-art. When your terminal supports [```ANSI-escape-code```](https://en.wikipedia.org/wiki/ANSI_escape_code) you can switch to 24-bit true color. The viewer is especially useful when you run merlict on a remote computer via ```ssh``` without an ```X```-server.
 Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical mode so that you do not have to press [Enter] after each keypress.
 
-The Stanford teapot in merlict's viewer in ASCII-art.
+#### Build :hammer:
+```bash
+gcc ./merlict-c89-view.c -o view -lm
+```
+
+#### Run
+```bash
+./view ./tests/resources/sceneries/001.tar
+```
+
+The Stanford teapot in merlict's viewer in ASCII-art
 ![viewer-ascii-art](/readme/viewer/teapot_ascii_v1-0-0.png)
 
-and with ANSI-escape-codes
+and with ANSI-escape-codes.
 ![viewer-ansi-escape](/readme/viewer/teapot_ansi_v1-0-0.png)
 
 # Interface
@@ -131,15 +141,6 @@ f 1//6 2//6 3//6
 f 3//6 4//6 1//6
 ```
 
-#### Build :hammer:
-```bash
-gcc ./merlict-c89-view.c -o view -lm
-```
-
-#### Run
-```bash
-./view ./tests/resources/sceneries/001.tar
-```
 # Unit-Tests
 Merlict has a ```bash``` script
 ```bash
