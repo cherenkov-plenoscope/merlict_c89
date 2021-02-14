@@ -159,7 +159,7 @@ Then its the core developer's job to:
 - Avoid all Warnings in```gcc``` and ```clang``` in both ```c``` and ```c++``` mode.
 - Format ```c``` according to ```./.clang-format```.
 
-but of course she will happily recive pull-requests that meet such expectations :wink:.
+But of course the author will happily recive pull-requests that meet such expectations :wink:.
 
 # Suggested Tools
 - [Blender](https://www.blender.org/) to inspect and manipulate objects. It is especially useful to visualize surface-normals.
