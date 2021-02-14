@@ -42,6 +42,17 @@ See ```./merlict-c89-test.c``` and run ```./compile_and_test.sh``` for a minimal
 Merlict is structured into pairs of ```./merlict_c89/mli*.h```, and ```./merlict_c89/mli*.c``` files which you can put into your buildsystem if you want to.
 In my projects, the 'single header / single source' approach, where all sources are build over again from scratch for each executable, was always faster.
 
+# Viewer :eyes:
+Merlict's viewer runs in the terminal and reads three formats:
+
+- merlict's own ```scenery.tar```
+- merlict's own ```scenery.bin```
+- a standalone object-wavefront ```.obj```
+
+Just like in a 3D video-game you control your viewing-direction and position via the keyboard. You can inspect the scenery and render high resolution images.
+The viewer prints its rendering directly into the terminal in ASCII-art. When your terminal supports [```ANSI-escape-code```](https://en.wikipedia.org/wiki/ANSI_escape_code) you can switch to 24-bit true color. The terminal based viewer is especially useful when you run merlict on a remote computer via ```ssh```.
+Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical mode so that you do not have to press [Enter] after each keypress.
+
 # Interface
 
 ## Scenery
@@ -114,17 +125,6 @@ usemtl mz
 f 1//6 2//6 3//6
 f 3//6 4//6 1//6
 ```
-
-# Viewer :eyes:
-Merlict's viewer runs in the terminal and reads three formats:
-
-- merlict's own ```scenery.tar```
-- merlict's own ```scenery.bin```
-- a standalone object-wavefront ```.obj```
-
-Just like in a 3D video-game you control your viewing-direction and position via the keyboard. You can inspect the scenery and render high resolution images.
-The viewer prints its rendering directly into the terminal in ASCII-art. When your terminal supports [```ANSI-escape-code```](https://en.wikipedia.org/wiki/ANSI_escape_code) you can switch to 24-bit true color. The terminal based viewer is especially useful when you run merlict on a remote computer via ```ssh```.
-Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical mode so that you do not have to press [Enter] after each keypress.
 
 #### Build :hammer:
 ```bash
