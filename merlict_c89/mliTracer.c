@@ -34,6 +34,13 @@ struct mliColor mli_trace(
                         color.r = color.r * .5;
                         color.g = color.g * .5;
                         color.b = color.b * .5;
+                } else {
+                    const double theta = mliVec_angle_between(
+                            dir_to_source, intersection.surface_normal);
+                    const double lambert = fabs(cos(theta));
+                        color.r = color.r * 0.5 * (1 + lambert);
+                        color.g = color.g * 0.5 * (1 + lambert);
+                        color.b = color.b * 0.5 * (1 + lambert);
                 }
         }
 
