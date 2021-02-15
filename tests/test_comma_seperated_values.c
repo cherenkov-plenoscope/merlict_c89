@@ -1,5 +1,7 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 
+MLI_PRINT_LEVEL = 0;
+
 CASE("parse_correct_csv")
 {
         char text[128];
@@ -107,3 +109,5 @@ CASE("do_not_tolerate_whitespaces")
         CHECK(0 == mliFunc_malloc_from_csv(&func, text));
         mliFunc_free(&func);
 }
+
+MLI_PRINT_LEVEL = 1;

@@ -15,7 +15,8 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
         int lpos = 0;
         int tpos = 0;
         int num_tokens;
-        uint64_t num_lines = 0u;
+        uint64_t line_number = 0u;
+        const uint64_t debug_line_radius = 5u;
         uint64_t i;
 
         double _x;
@@ -27,9 +28,9 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
         mli_check(mliDynDouble_malloc(&ys, 0u), "Failed to malloc ys.");
 
         while (1) {
-                num_lines += 1;
+                line_number += 1;
                 mli_check(
-                        num_lines < 1000 * 1000 * 1000,
+                        line_number < 1000 * 1000 * 1000,
                         "Expected less than 1e9 lines in "
                         "comma-seperated-value-file. "
                         "Something went wrong.");
@@ -106,5 +107,11 @@ error:
         mliDynDouble_free(&ys);
         mliDynDouble_free(&xs);
         mliFunc_free(func);
+
+        if (MLI_PRINT_LEVEL) {
+                mli_lines_info_fprint(
+                        stderr, str, line_number, debug_line_radius);
+        }
+
         return 0;
 }

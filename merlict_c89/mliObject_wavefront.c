@@ -424,11 +424,11 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 {
         uint64_t i = 0u;
         uint64_t p = 0u;
-        uint64_t num_lines = 0u;
+        uint64_t line_number = 0u;
         char line[2 * MLI_NAME_CAPACITY];
         uint64_t line_length = 0u;
         uint64_t usemtl_occurences = 0u;
-        int rc = -1;
+        const uint64_t debug_line_radius = 5u;
 
         /* init dyn */
         struct mliDynVec v = mliDynVec_init();
@@ -454,9 +454,9 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
         /* parse wavefront into dyn */
         while (1) {
-                num_lines += 1;
+                line_number += 1;
                 mli_check(
-                        num_lines < 1000 * 1000 * 1000,
+                        line_number < 1000 * 1000 * 1000,
                         "Expected less than 1e9 lines in wavefront-file. "
                         "Something went wrong.");
 
@@ -470,29 +470,18 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                             line[2] == ' ') {
                                 /* vertex-normal-line*/
                                 struct mliVec tmp_vn;
-                                rc = _mliObject_parse_three_float_line(
-                                        &line[2], &tmp_vn);
-                                if (rc == 0) {
-                                        fprintf(stderr,
-                                                "[ERROR] in vertex-normal-line "
-                                                "%u.\n",
-                                                (uint32_t)vn.dyn.size);
-                                }
                                 mli_check(
-                                        rc,
+                                        _mliObject_parse_three_float_line(
+                                                &line[2], &tmp_vn),
                                         "Can not parse vertex-normal-line.");
                                 mli_c(mliDynVec_push_back(&vn, tmp_vn));
                         } else if (line[0] == 'v' && line[1] == ' ') {
                                 /* vertex line */
                                 struct mliVec tmp_v;
-                                rc = _mliObject_parse_three_float_line(
-                                        &line[1], &tmp_v);
-                                if (rc == 0) {
-                                        fprintf(stderr,
-                                                "[ERROR] in vertex-line %u.\n",
-                                                (uint32_t)v.dyn.size);
-                                }
-                                mli_check(rc, "Can not parse vertex-line.");
+                                mli_check(
+                                        _mliObject_parse_three_float_line(
+                                                &line[1], &tmp_v),
+                                        "Can not parse vertex-line.");
                                 mli_c(mliDynVec_push_back(&v, tmp_v));
                         } else if (line[0] == 'f' && line[1] == ' ') {
                                 /* face-line */
@@ -506,18 +495,14 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
 
-                                rc = _mliObject_parse_face_line(
-                                        line,
-                                        &tmp_fv,
-                                        &tmp_fvt,
-                                        &tmp_fvn,
-                                        &line_mode);
-                                if (rc == 0) {
-                                        fprintf(stderr,
-                                                "[ERROR] in face-line %u.\n",
-                                                (uint32_t)fv.dyn.size);
-                                }
-                                mli_check(rc, "Can not parse face-line.");
+                                mli_check(
+                                        _mliObject_parse_face_line(
+                                                line,
+                                                &tmp_fv,
+                                                &tmp_fvt,
+                                                &tmp_fvn,
+                                                &line_mode),
+                                        "Can not parse face-line.");
 
                                 mli_check(tmp_fv.a >= 1, "Expected fv.a >= 1");
                                 mli_check(tmp_fv.b >= 1, "Expected fv.b >= 1");
@@ -630,6 +615,11 @@ error:
 
         mliDynUint32_free(&first_face_in_next_material);
         mliDynMap_free(&material_names);
+
+        if (MLI_PRINT_LEVEL) {
+                mli_lines_info_fprint(
+                        stderr, str, line_number, debug_line_radius);
+        }
 
         return 0;
 }
