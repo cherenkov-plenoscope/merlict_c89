@@ -66,6 +66,8 @@ gcc ./merlict-c89-view.c -o view -lm
 :-------------------------:|:-------------------------:
 ![viewer-ascii-art](/readme/viewer/teapot_ascii_v1-0-0.png)  |  ![viewer-ansi-escape](/readme/viewer/teapot_ansi_v1-0-0.png)
 
+![viewer-rendering-ppm](/readme/viewer/teapot_full_v1-0-0.png) 
+
 # Interface
 
 ## Scenery
