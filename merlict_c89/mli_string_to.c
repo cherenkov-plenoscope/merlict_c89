@@ -290,3 +290,61 @@ int mli_uint_to_string(
 error:
         return 0;
 }
+
+int _mli_fprint_line_match(
+        FILE *f,
+        const int64_t line,
+        const int64_t line_number)
+{
+        mli_c(fprintf(f, "% 6d", (int32_t)line));
+        if (line == line_number) {
+                mli_c(fprintf(f, "->|  "));
+        } else {
+                mli_c(fprintf(f, "  |  "));
+        }
+        return 1;
+error:
+        return 0;
+}
+
+int mli_lines_info_fprint(
+        FILE *f,
+        const char *text,
+        const uint64_t line_number,
+        const uint64_t line_radius)
+{
+        int64_t _line_number = (int64_t)line_number;
+        int64_t _line_radius = (int64_t)line_radius;
+        int64_t line_start = MLI_MAX2(_line_number - _line_radius, 1);
+        int64_t line_stop = line_number + line_radius;
+        int64_t line = 1;
+        int64_t i = 0;
+
+        mli_check(line_radius > 1, "Expected line_radius > 1.");
+
+        mli_c(fprintf(f, "  line     text\n"));
+        mli_c(fprintf(f, "        |\n"));
+
+        while (text[i]) {
+                int prefix = (line + 1 >= line_start) && (line < line_stop);
+                int valid = (line >= line_start) && (line <= line_stop);
+                if (text[i] == '\n') {
+                        line++;
+                }
+                if (prefix && i == 0) {
+                        mli_c(_mli_fprint_line_match(f, line, _line_number));
+                }
+                if (valid) {
+                        mli_c(putc(text[i], f));
+                }
+                if (prefix && text[i] == '\n') {
+                        mli_c(_mli_fprint_line_match(f, line, _line_number));
+                }
+                i++;
+        }
+        mli_c(putc('\n', f));
+
+        return 1;
+error:
+        return 0;
+}

@@ -30,7 +30,8 @@ void mli_authors_and_affiliations_fprint(FILE *f)
                 "      ETH-Zurich, Otto-Stern-Weg 5, 8093 Zurich, Switzerland\n"
                 "\n"
                 "  [3] Experimental Physics Vb, Astroparticle Physics,\n"
-                "      TU-Dortmund, Otto-Hahn-Str. 4a, 44227 Dortmund, Germany\n"
+                "      TU-Dortmund, Otto-Hahn-Str. 4a, 44227 Dortmund, "
+                "Germany\n"
                 "\n"
                 "   *  (2015 - 2019)\n"
                 "   ^  (2013 - 2015)\n");

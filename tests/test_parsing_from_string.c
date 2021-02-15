@@ -100,7 +100,10 @@ CASE("uint to string")
         /* leading zeros */
         memset(s, '\0', sizeof(s));
         CHECK(mli_uint_to_string(123, s, sizeof(s), 10u, 9u));
-        CHECK(strcmp(s, "000" "000" "123") == 0);
+        CHECK(strcmp(s,
+                     "000"
+                     "000"
+                     "123") == 0);
 }
 
 CASE("string to float")
@@ -439,4 +442,26 @@ CASE("assert no unexpected control codes in ascii-text.")
                 CHECK(!mli_string_assert_only_NUL_LF_TAB_controls(txt));
         }
         MLI_PRINT_LEVEL = 1;
+}
+
+CASE("line info fprint")
+{
+        struct mliString s = mliString_init();
+        FILE *f;
+        CHECK(mliString_malloc_from_path(
+                &s,
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "002/"
+                "objects/"
+                "cube_with_materials.obj"));
+        f = fopen("tests/resources/lines_info.tmp", "w");
+        CHECK(f);
+        CHECK(mli_lines_info_fprint(f, s.c_str, 1, 3));
+        CHECK(mli_lines_info_fprint(f, s.c_str, 10, 3));
+        CHECK(mli_lines_info_fprint(f, s.c_str, 35, 3));
+        fclose(f);
+
+        mliString_free(&s);
 }

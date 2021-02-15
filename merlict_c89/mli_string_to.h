@@ -43,5 +43,10 @@ int mli_uint_to_string(
         const uint64_t max_num_chars,
         const uint64_t base,
         const uint64_t min_num_digits);
+int mli_lines_info_fprint(
+        FILE *f,
+        const char *str,
+        const uint64_t line,
+        const uint64_t line_radius);
 
 #endif
