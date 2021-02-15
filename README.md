@@ -62,11 +62,9 @@ gcc ./merlict-c89-view.c -o view -lm
 ./view ./tests/resources/sceneries/001.tar
 ```
 
-The Stanford teapot in merlict's viewer in ASCII-art
-![viewer-ascii-art](/readme/viewer/teapot_ascii_v1-0-0.png)
-
-and with ANSI-escape-codes.
-![viewer-ansi-escape](/readme/viewer/teapot_ansi_v1-0-0.png)
+ ASCII-art                 | ANSI-escape-codes
+:-------------------------:|:-------------------------:
+![viewer-ascii-art](/readme/viewer/teapot_ascii_v1-0-0.png)  |  ![viewer-ansi-escape](/readme/viewer/teapot_ansi_v1-0-0.png)
 
 # Interface
 
