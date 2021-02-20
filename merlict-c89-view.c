@@ -2,7 +2,7 @@
 
 /*
  *  Compile with:
- *  gcc merlict-c89-view.c -o merlict-c89-view -std=c89 -lm -Wall -pedantic
+ *  gcc merlict-c89-view.c -o view -lm
  */
 
 #include <stdio.h>
