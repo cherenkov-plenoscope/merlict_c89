@@ -145,6 +145,7 @@ int mlivr_run_interactive_viewer(
         const struct mliScenery *scenery,
         const struct mlivrConfig config)
 {
+        struct mliMT19937 prng = mliMT19937_init(config.random_seed);
         char path[1024];
         int key;
         int super_resolution = 0;
@@ -307,14 +308,16 @@ int mlivr_run_interactive_viewer(
                                         view,
                                         scenery,
                                         &img2,
-                                        row_over_column_pixel_ratio);
+                                        row_over_column_pixel_ratio,
+                                        &prng);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
                                 mliPinHoleCamera_render_image_with_view(
                                         view,
                                         scenery,
                                         &img,
-                                        row_over_column_pixel_ratio);
+                                        row_over_column_pixel_ratio,
+                                        &prng);
                         }
                 }
                 mlivr_clear_screen();

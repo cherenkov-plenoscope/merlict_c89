@@ -40,4 +40,5 @@ double mli_random_normal_Irwin_Hall_approximation(
         const double std);
 double mli_random_expovariate(struct mliMT19937 *prng, const double rate);
 double mli_random_uniform(struct mliMT19937 *prng);
+struct mliVec mli_random_position_inside_unit_sphere(struct mliMT19937 *prng);
 #endif

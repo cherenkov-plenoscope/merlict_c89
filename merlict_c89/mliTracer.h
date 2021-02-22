@@ -4,7 +4,27 @@
 
 #include "mliScenery.h"
 
+struct mliLightSource {
+        struct mliVec position;
+        double radius;
+        double distance_in_default_medium;
+        double power;
+        /* spectrum */
+};
+
+struct mliTracerCongig {
+        struct mliColor background_color;
+
+        double ambient_power;
+
+        uint64_t num_trails_global_light_source;
+        struct mliLightSource global_light_source;
+};
+
+struct mliTracerCongig mliTracerCongig_init(void);
+
 struct mliColor mli_trace(
         const struct mliScenery *scenery,
-        const struct mliRay ray);
+        const struct mliRay ray,
+        struct mliMT19937 *prng);
 #endif
