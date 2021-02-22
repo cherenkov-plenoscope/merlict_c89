@@ -6,10 +6,6 @@
 #include "mli_ray_octree_traversal.h"
 #include "mliMT19937.h"
 
-struct mliColor _trace_to_background(const struct mliTracerCongig *config)
-{
-        return config->background_color;
-}
 
 double _mli_shadowing(
         const struct mliTracerCongig *config,
@@ -90,7 +86,7 @@ struct mliColor mli_trace(
                 return _trace_to_intersection(
                         config, &intersection, scenery, prng);
         } else {
-                return _trace_to_background(config);
+                return config->background_color;
         }
 }
 
@@ -102,14 +98,10 @@ struct mliTracerCongig mliTracerCongig_init(void)
         struct mliTracerCongig config;
         config.background_color = mliColor_set(128.0, 128.0, 128.0);
 
-        config.ambient_power = 0.5;
-
         config.global_light_source.position = mliVec_multiply(
                 mliVec_normalized(mliVec_set(1.0, 1.0, 3.0)),
                 distance_earth_to_sun);
         config.global_light_source.radius = radius_sun;
-        config.global_light_source.distance_in_default_medium = 1.0;
-        config.global_light_source.power = 0.5;
         config.num_trails_global_light_source = 10;
 
         return config;
