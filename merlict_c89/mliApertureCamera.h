@@ -6,6 +6,7 @@
 #include "mliMT19937.h"
 #include "mliVec.h"
 #include "mliHomTra.h"
+#include "mliTracer.h"
 
 /*
 principal-rays of the thin-lens
@@ -140,10 +141,11 @@ struct mliApertureCamera {
 };
 
 int mliApertureCamera_render_image(
-        struct mliMT19937 *prng,
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
         const struct mliScenery *scenery,
-        struct mliImage *image);
+        struct mliImage *image,
+        const struct mliTracerCongig *tracer_config,
+        struct mliMT19937 *prng);
 
 #endif

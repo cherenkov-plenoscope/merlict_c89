@@ -93,10 +93,11 @@ int _mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mlivrConfig config,
         const struct mliView view,
+        struct mliMT19937 *prng,
+        const struct mliTracerCongig *tracer_config,
         const double object_distance,
         const char *path)
 {
-        struct mliMT19937 prng = mliMT19937_init(config.random_seed);
         struct mliImage full = mliImage_init();
         struct mliHomTraComp camera2root_comp;
         struct mliApertureCamera apcam;
@@ -118,7 +119,7 @@ int _mlivr_export_image(
         apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
-                &prng, apcam, camera2root_comp, scenery, &full);
+                apcam, camera2root_comp, scenery, &full, tracer_config, prng);
         mli_check(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
@@ -146,6 +147,7 @@ int mlivr_run_interactive_viewer(
         const struct mlivrConfig config)
 {
         struct mliMT19937 prng = mliMT19937_init(config.random_seed);
+        const struct mliTracerCongig tracer_config = mliTracerCongig_init();
         char path[1024];
         int key;
         int super_resolution = 0;
@@ -214,6 +216,8 @@ int mlivr_run_interactive_viewer(
                                         scenery,
                                         config,
                                         view,
+                                        &prng,
+                                        &tracer_config,
                                         probing_intersection.distance_of_ray,
                                         path));
                                 update_image = 0;
@@ -309,6 +313,7 @@ int mlivr_run_interactive_viewer(
                                         scenery,
                                         &img2,
                                         row_over_column_pixel_ratio,
+                                        &tracer_config,
                                         &prng);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
@@ -317,6 +322,7 @@ int mlivr_run_interactive_viewer(
                                         scenery,
                                         &img,
                                         row_over_column_pixel_ratio,
+                                        &tracer_config,
                                         &prng);
                         }
                 }

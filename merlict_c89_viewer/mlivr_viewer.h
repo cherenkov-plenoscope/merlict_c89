@@ -28,6 +28,8 @@ int _mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mlivrConfig config,
         const struct mliView view,
+        struct mliMT19937 *prng,
+        const struct mliTracerCongig *tracer_config,
         const double object_distance,
         const char *path);
 

@@ -26,5 +26,6 @@ struct mliTracerCongig mliTracerCongig_init(void);
 struct mliColor mli_trace(
         const struct mliScenery *scenery,
         const struct mliRay ray,
+        const struct mliTracerCongig *config,
         struct mliMT19937 *prng);
 #endif

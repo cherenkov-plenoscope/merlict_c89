@@ -52,6 +52,8 @@ struct mliColor _trace_to_intersection(
         struct mliColor color;
         struct mliSide side;
         struct mliSurface surface;
+        double theta;
+        double lambert;
 
         const double shadow =
                 _mli_shadowing(config, intersection->position, scenery, prng);
@@ -60,12 +62,12 @@ struct mliColor _trace_to_intersection(
         surface = scenery->materials.surfaces[side.surface];
         color = scenery->materials.colors[surface.color];
 
-        const double theta = mliVec_angle_between(
+        theta = mliVec_angle_between(
                 mliVec_substract(
                         config->global_light_source.position,
                         intersection->position),
                 intersection->surface_normal);
-        const double lambert = fabs(cos(theta));
+        lambert = fabs(cos(theta));
 
         color.r = color.r * 0.5 * (1.0 + (1.0 - shadow) * lambert);
         color.g = color.g * 0.5 * (1.0 + (1.0 - shadow) * lambert);
@@ -77,19 +79,18 @@ struct mliColor _trace_to_intersection(
 struct mliColor mli_trace(
         const struct mliScenery *scenery,
         const struct mliRay ray,
+        const struct mliTracerCongig *config,
         struct mliMT19937 *prng)
 {
-        struct mliTracerCongig config = mliTracerCongig_init();
-
         struct mliIntersectionSurfaceNormal intersection =
                 mliIntersectionSurfaceNormal_init();
 
         if (mli_query_intersection_with_surface_normal(
                     scenery, ray, &intersection)) {
                 return _trace_to_intersection(
-                        &config, &intersection, scenery, prng);
+                        config, &intersection, scenery, prng);
         } else {
-                return _trace_to_background(&config);
+                return _trace_to_background(config);
         }
 }
 

@@ -149,13 +149,14 @@ struct mliRay mliApCam_get_ray_for_pixel(
 }
 
 void _mliApCam_aquire_pixels(
-        struct mliMT19937 *prng,
         const struct mliApertureCamera camera,
         const struct mliImage *image,
         const struct mliHomTraComp camera2root_comp,
         const struct mliScenery *scenery,
         const struct mliPixels *pixels_to_do,
-        struct mliImage *colors)
+        struct mliImage *colors,
+        const struct mliTracerCongig *tracer_config,
+        struct mliMT19937 *prng)
 {
         uint64_t i;
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
@@ -176,7 +177,7 @@ void _mliApCam_aquire_pixels(
                         mliHomTra_ray(&camera2root, ray_wrt_camera);
 
                 struct mliColor set_color =
-                        mli_trace(scenery, ray_wrt_root, prng);
+                        mli_trace(scenery, ray_wrt_root, tracer_config, prng);
 
                 mliImage_set(colors, i, 0u, set_color);
         }
@@ -223,11 +224,12 @@ void _mliApCam_image_from_sum_and_exposure(
 }
 
 int mliApertureCamera_render_image(
-        struct mliMT19937 *prng,
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
         const struct mliScenery *scenery,
-        struct mliImage *image)
+        struct mliImage *image,
+        const struct mliTracerCongig *tracer_config,
+        struct mliMT19937 *prng)
 {
         float noise_threshold = 0.05 * 255.0;
         uint64_t MAX_ITERATIONS = 128;
@@ -290,13 +292,14 @@ int mliApertureCamera_render_image(
         pixels_to_do.num_pixels_to_do = image->num_cols * image->num_rows;
 
         _mliApCam_aquire_pixels(
-                prng,
                 camera,
                 image,
                 camera2root_comp,
                 scenery,
                 &pixels_to_do,
-                &colors);
+                &colors,
+                tracer_config,
+                prng);
 
         _mliApCam_assign_pixel_colors_to_sum_and_exposure_image(
                 &pixels_to_do, &colors, &sum_image, &exposure_image);
@@ -326,13 +329,14 @@ int mliApertureCamera_render_image(
                        pixels_to_do.num_pixels_to_do / 1000,
                        pixels_to_do.num_pixels_to_do % 1000);
                 _mliApCam_aquire_pixels(
-                        prng,
                         camera,
                         image,
                         camera2root_comp,
                         scenery,
                         &pixels_to_do,
-                        &colors);
+                        &colors,
+                        tracer_config,
+                        prng);
 
                 _mliApCam_assign_pixel_colors_to_sum_and_exposure_image(
                         &pixels_to_do, &colors, &sum_image, &exposure_image);
