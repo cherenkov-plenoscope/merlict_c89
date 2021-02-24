@@ -25,8 +25,8 @@ int mliRay_sphere_intersection(
         const struct mliVec support,
         const struct mliVec direction,
         const double radius,
-        double *plus_solution,
-        double *minus_solution)
+        double *minus_solution,
+        double *plus_solution)
 {
         const double sup_times_dir = mliVec_dot(support, direction);
         const double dir_times_dir = mliVec_dot(direction, direction);
@@ -36,5 +36,5 @@ int mliRay_sphere_intersection(
         const double p = 2.0 * (sup_times_dir / dir_times_dir);
         const double q = sup_times_sup / dir_times_dir - radius_square;
 
-        return mli_quadratic_equation(p, q, plus_solution, minus_solution);
+        return mli_quadratic_equation(p, q, minus_solution, plus_solution);
 }

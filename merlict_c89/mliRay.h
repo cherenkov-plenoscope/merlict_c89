@@ -18,6 +18,6 @@ int mliRay_sphere_intersection(
         const struct mliVec support,
         const struct mliVec direction,
         const double radius,
-        double *plus_solution,
-        double *minus_solution);
+        double *minus_solution,
+        double *plus_solution);
 #endif

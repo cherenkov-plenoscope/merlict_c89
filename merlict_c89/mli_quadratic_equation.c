@@ -5,8 +5,8 @@
 int mli_quadratic_equation(
         const double p,
         const double q,
-        double *plus_solution,
-        double *minus_solution)
+        double *minus_solution,
+        double *plus_solution)
 {
         /*
          *  y = a*x^2 + b*x + c
