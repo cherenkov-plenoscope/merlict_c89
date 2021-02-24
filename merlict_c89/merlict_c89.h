@@ -20,6 +20,7 @@
 #include "mliIntersectionMinimalQuery.h"
 #include "mliIntersectionSurfaceNormal.h"
 #include "mliFace.h"
+#include "mli_quadratic_equation.h"
 #include "mli_barycentric.h"
 #include "mliObject.h"
 #include "mliObject_valid.h"
