@@ -2,7 +2,7 @@
 #include "mli_quadratic_equation.h"
 #include <math.h>
 
-int mli_quadratiq_equation(
+int mli_quadratic_equation(
         const double p,
         const double q,
         double *plus_solution,

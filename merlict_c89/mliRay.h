@@ -14,4 +14,10 @@ struct mliVec mliRay_at(const struct mliRay *ray, const double t);
 struct mliRay mliRay_set(
         const struct mliVec support,
         const struct mliVec direction);
+int mliRay_sphere_intersection(
+        const struct mliVec support,
+        const struct mliVec direction,
+        const double radius,
+        double *plus_solution,
+        double *minus_solution);
 #endif

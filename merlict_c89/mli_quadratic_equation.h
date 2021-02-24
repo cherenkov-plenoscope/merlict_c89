@@ -2,7 +2,7 @@
 #ifndef MLI_QUADRATIC_EQUATION_H_
 #define MLI_QUADRATIC_EQUATION_H_
 
-int mli_quadratiq_equation(
+int mli_quadratic_equation(
         const double p,
         const double q,
         double *plus_solution,
