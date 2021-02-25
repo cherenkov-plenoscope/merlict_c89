@@ -41,18 +41,25 @@ void mlivr_print_help(void)
         printf("    increace          [  m  ]     super sampling    [  b  ]\n");
         printf("    decreace          [  n  ]     color/monochrome  [  g  ]\n");
         printf("\n");
+        printf("  Atmosphere                    Sun\n");
+        printf("    on/off            [  0  ]     later daytime     [  9  ]\n");
+        printf("                                  earlier daytime   [  8  ]\n");
+        printf("                                  + latitude        [  7  ]\n");
+        printf("                                  - latitude        [  6  ]\n");
+        printf("\n");
         mli_authors_and_affiliations_fprint(stdout);
 }
 
 void mlivr_print_info_line(
         const struct mliView view,
-        const struct mlivrCursor cursor)
+        const struct mlivrCursor cursor,
+        const struct mliTracerCongig tracer_config)
 {
         printf("Press 'h' for help. "
                "Camera: "
                "pos [ % -.2e, % -.2e, % -.2e]m, "
                "rot [ % -.1f, % -.1f, % -.1f]deg, "
-               "fov %.2fdeg",
+               "fov %.2fdeg, ",
                view.position.x,
                view.position.y,
                view.position.z,
@@ -60,6 +67,11 @@ void mlivr_print_info_line(
                mli_rad2deg(view.rotation.y),
                mli_rad2deg(view.rotation.z),
                mli_rad2deg(view.field_of_view));
+        printf("Sun: lat % 3.0fdeg, %02d:%02dh",
+                mli_rad2deg(tracer_config.atmosphere.sunLatitude),
+                (int)(tracer_config.atmosphere.sunHourAngle),
+                (int)(tracer_config.atmosphere.sunHourAngle*60)%60
+        );
         if (cursor.active) {
                 printf(", cursor [% 3ld, % 3ld]pix", cursor.col, cursor.row);
         }
@@ -147,7 +159,7 @@ int mlivr_run_interactive_viewer(
         const struct mlivrConfig config)
 {
         struct mliMT19937 prng = mliMT19937_init(config.random_seed);
-        const struct mliTracerCongig tracer_config = mliTracerCongig_init();
+        struct mliTracerCongig tracer_config = mliTracerCongig_init();
         char path[1024];
         int key;
         int super_resolution = 0;
@@ -299,6 +311,30 @@ int mlivr_run_interactive_viewer(
                                 print_scenery_info = 1;
                                 update_image = 0;
                                 break;
+
+                        case '6':
+                                mliAtmosphere_decrease_latitude(
+                                        &tracer_config.atmosphere,
+                                        mli_deg2rad(2.0));
+                                break;
+                        case '7':
+                                mliAtmosphere_increase_latitude(
+                                        &tracer_config.atmosphere,
+                                        mli_deg2rad(2.0));
+                                break;
+
+                        case '8':
+                                mliAtmosphere_decrease_hours(
+                                        &tracer_config.atmosphere, 0.1);
+                                break;
+                        case '9':
+                                mliAtmosphere_increase_hours(
+                                        &tracer_config.atmosphere, 0.1);
+                                break;
+                        case '0':
+                                tracer_config.have_atmosphere =
+                                        !tracer_config.have_atmosphere;
+                                break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
                                 update_image = 0;
@@ -378,7 +414,7 @@ int mlivr_run_interactive_viewer(
                 } else {
                         mliImage_print(&img, print_mode);
                 }
-                mlivr_print_info_line(view, cursor);
+                mlivr_print_info_line(view, cursor, tracer_config);
                 if (cursor.active) {
                         printf("Intersection: ");
                         if (has_probing_intersection) {

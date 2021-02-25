@@ -18,10 +18,15 @@ double _mli_shadowing(
 
         for (i = 0; i < config->num_trails_global_light_source; i++) {
                 struct mliVec pos_in_source = mliVec_add(
-                        config->global_light_source.position,
+                        mliVec_multiply(
+                                config->atmosphere.sunDirection,
+                                config->atmosphere.sunDistance
+                        ),
                         mliVec_multiply(
                                 mli_random_position_inside_unit_sphere(prng),
-                                config->global_light_source.radius));
+                                config->atmosphere.sunRadius
+                        )
+                );
 
                 struct mliRay line_of_sight_to_source = mliRay_set(
                         position, mliVec_substract(pos_in_source, position));
@@ -59,9 +64,7 @@ struct mliColor _trace_to_intersection(
         color = scenery->materials.colors[surface.color];
 
         theta = mliVec_angle_between(
-                mliVec_substract(
-                        config->global_light_source.position,
-                        intersection->position),
+                config->atmosphere.sunDirection,
                 intersection->surface_normal);
         lambert = fabs(cos(theta));
 
@@ -86,23 +89,23 @@ struct mliColor mli_trace(
                 return _trace_to_intersection(
                         config, &intersection, scenery, prng);
         } else {
-                return config->background_color;
+                if (config->have_atmosphere) {
+                        return mliAtmosphere_query(
+                            &config->atmosphere,
+                            ray.support,
+                            ray.direction);
+                } else {
+                        return config->background_color;
+                }
         }
 }
 
 struct mliTracerCongig mliTracerCongig_init(void)
 {
-        double distance_earth_to_sun = 1.5e11;
-        double radius_sun = 7e8;
-
         struct mliTracerCongig config;
         config.background_color = mliColor_set(128.0, 128.0, 128.0);
-
-        config.global_light_source.position = mliVec_multiply(
-                mliVec_normalized(mliVec_set(1.0, 1.0, 3.0)),
-                distance_earth_to_sun);
-        config.global_light_source.radius = radius_sun;
-        config.num_trails_global_light_source = 10;
-
+        config.num_trails_global_light_source = 3;
+        config.have_atmosphere = 0;
+        config.atmosphere = mliAtmosphere_init();
         return config;
 }

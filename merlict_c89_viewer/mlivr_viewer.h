@@ -18,7 +18,8 @@ void mlivr_print_help(void);
 
 void mlivr_print_info_line(
         const struct mliView view,
-        const struct mlivrCursor cursor);
+        const struct mlivrCursor cursor,
+        const struct mliTracerCongig tracer_config);
 
 void mlivr_timestamp_now_19chars(char *buffer);
 

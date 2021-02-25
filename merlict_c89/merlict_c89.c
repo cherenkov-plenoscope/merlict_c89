@@ -81,6 +81,7 @@
 #include "mli_ray_scenery_query.c"
 #include "mli_from_outside_to_inside.c"
 #include "mliTracer.c"
+#include "mliAtmosphere.c"
 #include "mliView.c"
 #include "mliPinHoleCamera.c"
 #include "mliApertureCamera.c"

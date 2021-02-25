@@ -3,17 +3,15 @@
 #define MERLICT_C89_MLITRACER_H_
 
 #include "mliScenery.h"
-
-struct mliLightSource {
-        struct mliVec position;
-        double radius;
-};
+#include "mliAtmosphere.h"
 
 struct mliTracerCongig {
-        struct mliColor background_color;
-
         uint64_t num_trails_global_light_source;
-        struct mliLightSource global_light_source;
+
+        int have_atmosphere;
+        struct mliAtmosphere atmosphere;
+
+        struct mliColor background_color;
 };
 
 struct mliTracerCongig mliTracerCongig_init(void);
