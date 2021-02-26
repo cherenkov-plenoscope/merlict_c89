@@ -1,16 +1,27 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTracer.h"
+#include "mliTracer_atmosphere.c"
 #include <math.h>
 #include <stdint.h>
 #include "mli_intersection_and_scenery.h"
 #include "mli_ray_octree_traversal.h"
-#include "mliMT19937.h"
 
-
-double _mli_shadowing(
-        const struct mliTracerCongig *config,
-        const struct mliVec position,
+double _mli_trace_sun_visibility(
         const struct mliScenery *scenery,
+        const struct mliVec position,
+        const struct mliTracerCongig *config,
+        struct mliMT19937 *prng)
+{
+        return (
+                1.0 -
+                _mli_trace_sun_obstruction(scenery, position, config, prng)
+        );
+}
+
+double _mli_trace_sun_obstruction(
+        const struct mliScenery *scenery,
+        const struct mliVec position,
+        const struct mliTracerCongig *config,
         struct mliMT19937 *prng)
 {
         uint64_t i;
@@ -54,10 +65,10 @@ struct mliColor _trace_to_intersection(
         struct mliSide side;
         struct mliSurface surface;
         double theta;
-        double lambert;
+        double lambert_factor;
 
-        const double shadow =
-                _mli_shadowing(config, intersection->position, scenery, prng);
+        const double sun_visibility = _mli_trace_sun_visibility(
+                    scenery, intersection->position, config, prng);
 
         side = _mli_side_going_to(scenery, intersection);
         surface = scenery->materials.surfaces[side.surface];
@@ -66,16 +77,16 @@ struct mliColor _trace_to_intersection(
         theta = mliVec_angle_between(
                 config->atmosphere.sunDirection,
                 intersection->surface_normal);
-        lambert = fabs(cos(theta));
+        lambert_factor = fabs(cos(theta));
 
-        color.r = color.r * 0.5 * (1.0 + (1.0 - shadow) * lambert);
-        color.g = color.g * 0.5 * (1.0 + (1.0 - shadow) * lambert);
-        color.b = color.b * 0.5 * (1.0 + (1.0 - shadow) * lambert);
+        color.r = color.r * 0.5 * (1.0 + sun_visibility * lambert_factor);
+        color.g = color.g * 0.5 * (1.0 + sun_visibility * lambert_factor);
+        color.b = color.b * 0.5 * (1.0 + sun_visibility * lambert_factor);
 
         return color;
 }
 
-struct mliColor mli_trace(
+struct mliColor _mli_trace(
         const struct mliScenery *scenery,
         const struct mliRay ray,
         const struct mliTracerCongig *config,
@@ -89,14 +100,20 @@ struct mliColor mli_trace(
                 return _trace_to_intersection(
                         config, &intersection, scenery, prng);
         } else {
-                if (config->have_atmosphere) {
-                        return mliAtmosphere_query(
-                            &config->atmosphere,
-                            ray.support,
-                            ray.direction);
-                } else {
-                        return config->background_color;
-                }
+                return config->background_color;
+        }
+}
+
+struct mliColor mli_trace(
+        const struct mliScenery *scenery,
+        const struct mliRay ray,
+        const struct mliTracerCongig *config,
+        struct mliMT19937 *prng)
+{
+        if (config->have_atmosphere) {
+                return _mli_trace_atmosphere(scenery, ray, config, prng);
+        } else {
+                return _mli_trace(scenery, ray, config, prng);
         }
 }
 
