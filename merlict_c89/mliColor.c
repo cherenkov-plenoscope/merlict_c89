@@ -89,3 +89,20 @@ int mliColor_is_valid_8bit_range(const struct mliColor c)
                 return 0;
         return 1;
 }
+
+struct mliColor mliColor_add(const struct mliColor u, const struct mliColor v)
+{
+        return mliColor_set(u.r + v.r, u.g + v.g, u.b + v.b);
+}
+
+struct mliColor mliColor_multiply(const struct mliColor c, const double f)
+{
+        return mliColor_set(c.r * f, c.g * f, c.b * f);
+}
+
+struct mliColor mliColor_multiply_elementwise(
+        const struct mliColor u,
+        const struct mliColor v)
+{
+        return mliColor_set(u.r * v.r, u.g * v.g, u.b * v.b);
+}

@@ -27,8 +27,8 @@ struct mliAtmosphere mliAtmosphere_init(void) {
         atm.Height_Rayleigh = 7994.0;
         atm.Height_Mie = 1200.0;
 
-        atm.beta_Rayleigh = mliVec_set(3.8e-6, 13.5e-6, 33.1e-6);
-        atm.beta_Mie = mliVec_multiply(mliVec_set(1.0, 1.0, 1.0), 41e-6);
+        atm.beta_Rayleigh = mliColor_set(3.8e-6, 13.5e-6, 33.1e-6);
+        atm.beta_Mie = mliColor_multiply(mliColor_set(1.0, 1.0, 1.0), 41e-6);
 
         atm.numSamples = 16;
         atm.numSamplesLight = 8;
@@ -77,8 +77,8 @@ struct mliColor _mliAtmosphere_compute_depth(
         uint64_t i, j;
         const double segmentLength = (tmax - tmin) / atmosphere->numSamples;
         double tCurrent = tmin;
-        struct mliVec sumR = mliVec_set(0.0, 0.0, 0.0);
-        struct mliVec sumM = mliVec_set(0.0, 0.0, 0.0);
+        struct mliColor sumR = mliColor_set(0.0, 0.0, 0.0);
+        struct mliColor sumM = mliColor_set(0.0, 0.0, 0.0);
         /* mie and rayleigh contribution */
 
         double opticalDepthR = 0.0;
@@ -94,7 +94,6 @@ struct mliColor _mliAtmosphere_compute_depth(
                 ((1.f - g * g) * (1.f + mu * mu)) /
                 ((2.f + g * g) * pow(1.f + g * g - 2.f * g * mu, 1.5f))
         );
-        struct mliVec col;
 
         for (i = 0; i < atmosphere->numSamples; ++i) {
                 const struct mliVec samplePosition = mliVec_add(
@@ -147,50 +146,42 @@ struct mliColor _mliAtmosphere_compute_depth(
                 }
 
                 if (j == atmosphere->numSamplesLight) {
-                        const struct mliVec tau = mliVec_add(
-                                mliVec_multiply(
+                        const struct mliColor tau = mliColor_add(
+                                mliColor_multiply(
                                         atmosphere->beta_Rayleigh,
                                         opticalDepthR + opticalDepthLightR
                                 ),
-                                mliVec_multiply(
+                                mliColor_multiply(
                                         atmosphere->beta_Mie,
                                         1.1*(opticalDepthM + opticalDepthLightM)
                                 )
                         );
-                        const struct mliVec attenuation = mliVec_set(
-                                exp(-tau.x),
-                                exp(-tau.y),
-                                exp(-tau.z)
+                        const struct mliColor attenuation = mliColor_set(
+                                exp(-tau.r),
+                                exp(-tau.g),
+                                exp(-tau.b)
                         );
-                        sumR = mliVec_add(
-                                sumR, mliVec_multiply(attenuation, hr));
-                        sumM = mliVec_add(
-                                sumM, mliVec_multiply(attenuation, hm));
+                        sumR = mliColor_add(
+                                sumR, mliColor_multiply(attenuation, hr));
+                        sumM = mliColor_add(
+                                sumM, mliColor_multiply(attenuation, hm));
                 }
                 tCurrent += segmentLength;
         }
 
-        col = mliVec_multiply(
-                mliVec_add(
-                        mliVec_multiply(
-                                mliVec_set(
-                                        sumR.x * atmosphere->beta_Rayleigh.x,
-                                        sumR.y * atmosphere->beta_Rayleigh.y,
-                                        sumR.z * atmosphere->beta_Rayleigh.z
-                                ),
+        return mliColor_multiply(
+                mliColor_add(
+                        mliColor_multiply(
+                                mliColor_multiply_elementwise(
+                                        sumR, atmosphere->beta_Rayleigh),
                                 phaseR),
-                        mliVec_multiply(
-                                mliVec_set(
-                                        sumM.x * atmosphere->beta_Mie.x,
-                                        sumM.y * atmosphere->beta_Mie.y,
-                                        sumM.z * atmosphere->beta_Mie.z
-                                ),
+                        mliColor_multiply(
+                                mliColor_multiply_elementwise(
+                                        sumM, atmosphere->beta_Mie),
                                 phaseM)
                 ),
                 atmosphere->power
         );
-
-        return mliColor_set(col.x, col.y, col.z);
 }
 
 struct mliColor _mliAtmosphere_hit_outer_atmosphere(

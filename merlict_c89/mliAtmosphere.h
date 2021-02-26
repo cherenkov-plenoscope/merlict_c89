@@ -16,8 +16,8 @@ struct mliAtmosphere {
         double Height_Rayleigh;
         double Height_Mie;
 
-        struct mliVec beta_Rayleigh;
-        struct mliVec beta_Mie;
+        struct mliColor beta_Rayleigh;
+        struct mliColor beta_Mie;
 
         uint64_t numSamples;
         uint64_t numSamplesLight;
