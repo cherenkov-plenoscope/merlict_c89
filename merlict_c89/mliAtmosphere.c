@@ -11,7 +11,10 @@ struct mliAtmosphere mliAtmosphere_init(void) {
         struct mliAtmosphere atm;
         atm.sunLatitude = 0.0;
         atm.sunHourAngle = 12.0;
-        mliAtmosphere_set_sun_direction(&atm);
+        mliAtmosphere_set_sun_direction(
+                &atm,
+                atm.sunLatitude,
+                atm.sunHourAngle);
 
         atm.sunDistance = 1.5e11;
         atm.sunRadius = 7e8;
@@ -34,26 +37,36 @@ struct mliAtmosphere mliAtmosphere_init(void) {
         return atm;
 }
 
-void mliAtmosphere_set_sun_direction(struct mliAtmosphere *atmosphere)
+void mliAtmosphere_set_sun_direction(
+        struct mliAtmosphere *atmosphere,
+        const double sunLatitude,
+        const double sunHourAngle)
 {
-        double hours_rad = MLI_PI + (2.0 * MLI_PI * atmosphere->sunHourAngle / 24.0);
+        atmosphere->sunHourAngle = sunHourAngle;
+        atmosphere->sunLatitude = sunLatitude;
 
-        struct mliHomTraComp tc_latitude = mliHomTraComp_set(
-                mliVec_set(0.0, 0.0, 0.0),
-                mliQuaternion_set_tait_bryan(atmosphere->sunLatitude, 0.0, 0.0)
-        );
-        struct mliHomTraComp tc_hour = mliHomTraComp_set(
-                mliVec_set(0.0, 0.0, 0.0),
-                mliQuaternion_set_tait_bryan(0.0, hours_rad, 0.0)
-        );
-        struct mliHomTraComp tc = mliHomTraComp_sequence(tc_latitude, tc_hour);
+        {
+                const double hours_rad = MLI_PI +
+                        2.0 * MLI_PI * atmosphere->sunHourAngle / 24.0;
 
-        struct mliHomTra t = mliHomTra_from_compact(tc);
-        struct mliVec zenith = mliVec_set(0.0, 0.0, 1.0);
-        atmosphere->sunDirection = mliHomTra_dir(&t, zenith);
+                const struct mliHomTraComp tc_latitude = mliHomTraComp_set(
+                        mliVec_set(0.0, 0.0, 0.0),
+                        mliQuaternion_set_tait_bryan(
+                                atmosphere->sunLatitude, 0.0, 0.0)
+                );
+                const struct mliHomTraComp tc_hour = mliHomTraComp_set(
+                        mliVec_set(0.0, 0.0, 0.0),
+                        mliQuaternion_set_tait_bryan(0.0, hours_rad, 0.0)
+                );
+                const struct mliHomTraComp tc = mliHomTraComp_sequence(
+                        tc_latitude, tc_hour);
+                const struct mliHomTra t = mliHomTra_from_compact(tc);
+                const struct mliVec zenith = mliVec_set(0.0, 0.0, 1.0);
+                atmosphere->sunDirection = mliHomTra_dir(&t, zenith);
+        }
 }
 
-struct mliColor mliAtmosphere_computeIncidentLight(
+struct mliColor _mliAtmosphere_compute_depth(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,
@@ -61,25 +74,6 @@ struct mliColor mliAtmosphere_computeIncidentLight(
         double tmax)
 {
         uint64_t i, j;
-        double t_minus = -1.0;
-        double t_plus = -1.0;
-        int has_intersection = mliRay_sphere_intersection(
-                orig,
-                dir,
-                atmosphere->atmosphereRadius,
-                &t_minus,
-                &t_plus);
-
-        if (!has_intersection || t_plus < 0.0) {
-                return mliColor_set(0.0, 0.0, 0.0);
-        }
-        if (t_minus > tmin && t_minus > 0) {
-                tmin = t_minus;
-        }
-        if (t_plus < tmax) {
-                tmax = t_plus;
-        }
-
         const double segmentLength = (tmax - tmin) / atmosphere->numSamples;
         double tCurrent = tmin;
         struct mliVec sumR = mliVec_set(0.0, 0.0, 0.0);
@@ -89,9 +83,9 @@ struct mliColor mliAtmosphere_computeIncidentLight(
         double opticalDepthR = 0.0;
         double opticalDepthM = 0.0;
         /*
-                mu in the paper which is the cosine of the angle between the sun
-                direction and the ray direction
-        */
+         * mu in the paper which is the cosine of the angle between the sun
+         * direction and the ray direction
+         */
         const double mu = mliVec_dot(dir, atmosphere->sunDirection);
         const double phaseR = 3.f / (16.f * MLI_PI) * (1.0 + mu * mu);
         const double g = 0.76f;
@@ -99,6 +93,7 @@ struct mliColor mliAtmosphere_computeIncidentLight(
                 ((1.f - g * g) * (1.f + mu * mu)) /
                 ((2.f + g * g) * pow(1.f + g * g - 2.f * g * mu, 1.5f))
         );
+        struct mliVec col;
 
         for (i = 0; i < atmosphere->numSamples; ++i) {
                 const struct mliVec samplePosition = mliVec_add(
@@ -172,7 +167,7 @@ struct mliColor mliAtmosphere_computeIncidentLight(
                 tCurrent += segmentLength;
         }
 
-        struct mliVec col = mliVec_multiply(
+        col = mliVec_multiply(
                 mliVec_add(
                         mliVec_multiply(
                                 mliVec_set(
@@ -195,31 +190,68 @@ struct mliColor mliAtmosphere_computeIncidentLight(
         return mliColor_set(col.x, col.y, col.z);
 }
 
+struct mliColor _mliAtmosphere_hit_outer_atmosphere(
+        const struct mliAtmosphere *atmosphere,
+        const struct mliVec orig,
+        const struct mliVec dir,
+        double tmin,
+        double tmax)
+{
+        double t_minus = -1.0;
+        double t_plus = -1.0;
+        int has_intersection = mliRay_sphere_intersection(
+                orig,
+                dir,
+                atmosphere->atmosphereRadius,
+                &t_minus,
+                &t_plus);
 
-struct mliColor mliAtmosphere_query(
+        if (!has_intersection || t_plus < 0.0) {
+                return mliColor_set(0.0, 0.0, 0.0);
+        }
+        if (t_minus > tmin && t_minus > 0) {
+                tmin = t_minus;
+        }
+        if (t_plus < tmax) {
+                tmax = t_plus;
+        }
+
+        return _mliAtmosphere_compute_depth(
+                atmosphere, orig, dir, tmin, tmax);
+}
+
+struct mliColor _mliAtmosphere_hit_earth_body(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir)
 {
         double t_minus = DBL_MAX;
         double t_plus = DBL_MAX;
-        double tMax = DBL_MAX;
-        struct mliVec orig_up = orig;
-        orig_up.z += (atmosphere->earthRadius + atmosphere->altitude);
-
+        double t_max = DBL_MAX;
         int intersects_earth_body = mliRay_sphere_intersection(
-                orig_up,
+                orig,
                 dir,
                 atmosphere->earthRadius,
                 &t_minus,
                 &t_plus);
 
         if (intersects_earth_body && t_minus > 0) {
-                tMax = MLI_MAX2(0.0, t_minus);
+                t_max = MLI_MAX2(0.0, t_minus);
         }
 
-        return mliAtmosphere_computeIncidentLight(
-                atmosphere, orig_up, dir, 0.0, tMax);
+        return _mliAtmosphere_hit_outer_atmosphere(
+                atmosphere, orig, dir, 0.0, t_max);
+}
+
+struct mliColor mliAtmosphere_query(
+        const struct mliAtmosphere *atmosphere,
+        const struct mliVec orig,
+        const struct mliVec dir)
+{
+        struct mliVec orig_up = orig;
+        orig_up.z += (atmosphere->earthRadius + atmosphere->altitude);
+
+        return _mliAtmosphere_hit_earth_body(atmosphere, orig_up, dir);
 }
 
 void mliAtmosphere_increase_latitude(
@@ -228,7 +260,10 @@ void mliAtmosphere_increase_latitude(
 {
         if (atmosphere->sunLatitude + increment <= 0.5 * MLI_PI) {
                 atmosphere->sunLatitude += increment;
-                mliAtmosphere_set_sun_direction(atmosphere);
+                mliAtmosphere_set_sun_direction(
+                        atmosphere,
+                        atmosphere->sunLatitude,
+                        atmosphere->sunHourAngle);
         }
 }
 
@@ -238,7 +273,10 @@ void mliAtmosphere_decrease_latitude(
 {
         if (atmosphere->sunLatitude - increment >= -0.5 * MLI_PI) {
                 atmosphere->sunLatitude -= increment;
-                mliAtmosphere_set_sun_direction(atmosphere);
+                mliAtmosphere_set_sun_direction(
+                        atmosphere,
+                        atmosphere->sunLatitude,
+                        atmosphere->sunHourAngle);
         }
 }
 
@@ -246,9 +284,12 @@ void mliAtmosphere_increase_hours(
         struct mliAtmosphere *atmosphere,
         const double increment)
 {
-        if (atmosphere->sunHourAngle + increment <= 24.0) {
+        if (atmosphere->sunHourAngle + increment < 24.0) {
                 atmosphere->sunHourAngle += increment;
-                mliAtmosphere_set_sun_direction(atmosphere);
+                mliAtmosphere_set_sun_direction(
+                        atmosphere,
+                        atmosphere->sunLatitude,
+                        atmosphere->sunHourAngle);
         }
 }
 
@@ -258,6 +299,9 @@ void mliAtmosphere_decrease_hours(
 {
         if (atmosphere->sunHourAngle - increment >= 0.0) {
                 atmosphere->sunHourAngle -= increment;
-                mliAtmosphere_set_sun_direction(atmosphere);
+                mliAtmosphere_set_sun_direction(
+                        atmosphere,
+                        atmosphere->sunLatitude,
+                        atmosphere->sunHourAngle);
         }
 }

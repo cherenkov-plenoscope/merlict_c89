@@ -27,9 +27,10 @@ struct mliAtmosphere {
 };
 
 struct mliAtmosphere mliAtmosphere_init(void);
-
-void mliAtmosphere_set_sun_direction(struct mliAtmosphere *atmosphere);
-
+void mliAtmosphere_set_sun_direction(
+        struct mliAtmosphere *atmosphere,
+        const double sunLatitude,
+        const double sunHourAngle);
 void mliAtmosphere_increase_latitude(
         struct mliAtmosphere *atmosphere,
         const double increment);
@@ -44,16 +45,28 @@ void mliAtmosphere_decrease_hours(
         const double increment);
 
 
-struct mliColor mliAtmosphere_computeIncidentLight(
+struct mliColor mliAtmosphere_query(
+        const struct mliAtmosphere *atmosphere,
+        const struct mliVec orig,
+        const struct mliVec dir);
+
+struct mliColor _mliAtmosphere_hit_earth_body(
+        const struct mliAtmosphere *atmosphere,
+        const struct mliVec orig,
+        const struct mliVec dir);
+
+struct mliColor _mliAtmosphere_hit_outer_atmosphere(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,
         double tmin,
         double tmax);
 
-struct mliColor mliAtmosphere_query(
+struct mliColor _mliAtmosphere_compute_depth(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
-        const struct mliVec dir);
+        const struct mliVec dir,
+        double tmin,
+        double tmax);
 
 #endif
