@@ -7,14 +7,13 @@
 
 #include "mliAtmosphere.h"
 
-struct mliAtmosphere mliAtmosphere_init(void) {
+struct mliAtmosphere mliAtmosphere_init(void)
+{
         struct mliAtmosphere atm;
         atm.sunLatitude = 0.0;
         atm.sunHourAngle = 12.0;
         mliAtmosphere_set_sun_direction(
-                &atm,
-                atm.sunLatitude,
-                atm.sunHourAngle);
+                &atm, atm.sunLatitude, atm.sunHourAngle);
 
         atm.sunDistance = 1.5e11;
         atm.sunRadius = 7e8;
@@ -47,20 +46,18 @@ void mliAtmosphere_set_sun_direction(
         atmosphere->sunLatitude = sunLatitude;
 
         {
-                const double hours_rad = MLI_PI +
-                        2.0 * MLI_PI * atmosphere->sunHourAngle / 24.0;
+                const double hours_rad =
+                        MLI_PI + 2.0 * MLI_PI * atmosphere->sunHourAngle / 24.0;
 
                 const struct mliHomTraComp tc_latitude = mliHomTraComp_set(
                         mliVec_set(0.0, 0.0, 0.0),
                         mliQuaternion_set_tait_bryan(
-                                atmosphere->sunLatitude, 0.0, 0.0)
-                );
+                                atmosphere->sunLatitude, 0.0, 0.0));
                 const struct mliHomTraComp tc_hour = mliHomTraComp_set(
                         mliVec_set(0.0, 0.0, 0.0),
-                        mliQuaternion_set_tait_bryan(0.0, hours_rad, 0.0)
-                );
-                const struct mliHomTraComp tc = mliHomTraComp_sequence(
-                        tc_latitude, tc_hour);
+                        mliQuaternion_set_tait_bryan(0.0, hours_rad, 0.0));
+                const struct mliHomTraComp tc =
+                        mliHomTraComp_sequence(tc_latitude, tc_hour);
                 const struct mliHomTra t = mliHomTra_from_compact(tc);
                 const struct mliVec zenith = mliVec_set(0.0, 0.0, 1.0);
                 atmosphere->sunDirection = mliHomTra_dir(&t, zenith);
@@ -90,23 +87,23 @@ struct mliColor _mliAtmosphere_compute_depth(
         const double mu = mliVec_dot(dir, atmosphere->sunDirection);
         const double phaseR = 3.f / (16.f * MLI_PI) * (1.0 + mu * mu);
         const double g = 0.76f;
-        const double phaseM = 3.f / (8.f * MLI_PI) * (
-                ((1.f - g * g) * (1.f + mu * mu)) /
-                ((2.f + g * g) * pow(1.f + g * g - 2.f * g * mu, 1.5f))
-        );
+        const double phaseM =
+                3.f / (8.f * MLI_PI) *
+                (((1.f - g * g) * (1.f + mu * mu)) /
+                 ((2.f + g * g) * pow(1.f + g * g - 2.f * g * mu, 1.5f)));
 
         for (i = 0; i < atmosphere->numSamples; ++i) {
                 const struct mliVec samplePosition = mliVec_add(
                         orig,
-                        mliVec_multiply(dir, (tCurrent + segmentLength * 0.5f))
-                );
-                const double height = (
-                        mliVec_norm(samplePosition) - atmosphere->earthRadius);
+                        mliVec_multiply(
+                                dir, (tCurrent + segmentLength * 0.5f)));
+                const double height =
+                        (mliVec_norm(samplePosition) - atmosphere->earthRadius);
                 /* compute optical depth for light */
-                const double hr = segmentLength * exp(
-                        -height / atmosphere->Height_Rayleigh);
-                const double hm = segmentLength * exp(
-                        -height / atmosphere->Height_Mie);
+                const double hr = segmentLength *
+                                  exp(-height / atmosphere->Height_Rayleigh);
+                const double hm =
+                        segmentLength * exp(-height / atmosphere->Height_Mie);
                 double t0Light = 0;
                 double t1Light = 0;
                 double segmentLengthLight = 0;
@@ -130,18 +127,21 @@ struct mliColor _mliAtmosphere_compute_depth(
                                 samplePosition,
                                 mliVec_multiply(
                                         atmosphere->sunDirection,
-                                        tCurrentLight + 0.5*segmentLengthLight
-                                )
-                        );
-                        const double heightLight = mliVec_norm(
-                                samplePositionLight) - atmosphere->earthRadius;
+                                        tCurrentLight +
+                                                0.5 * segmentLengthLight));
+                        const double heightLight =
+                                mliVec_norm(samplePositionLight) -
+                                atmosphere->earthRadius;
 
-                        if (heightLight < 0) break;
+                        if (heightLight < 0)
+                                break;
 
-                        opticalDepthLightR += segmentLengthLight * exp(
-                                -heightLight / atmosphere->Height_Rayleigh);
-                        opticalDepthLightM += segmentLengthLight * exp(
-                                -heightLight / atmosphere->Height_Mie);
+                        opticalDepthLightR +=
+                                segmentLengthLight *
+                                exp(-heightLight / atmosphere->Height_Rayleigh);
+                        opticalDepthLightM +=
+                                segmentLengthLight *
+                                exp(-heightLight / atmosphere->Height_Mie);
                         tCurrentLight += segmentLengthLight;
                 }
 
@@ -149,18 +149,13 @@ struct mliColor _mliAtmosphere_compute_depth(
                         const struct mliColor tau = mliColor_add(
                                 mliColor_multiply(
                                         atmosphere->beta_Rayleigh,
-                                        opticalDepthR + opticalDepthLightR
-                                ),
+                                        opticalDepthR + opticalDepthLightR),
                                 mliColor_multiply(
                                         atmosphere->beta_Mie,
-                                        1.1*(opticalDepthM + opticalDepthLightM)
-                                )
-                        );
+                                        1.1 * (opticalDepthM +
+                                               opticalDepthLightM)));
                         const struct mliColor attenuation = mliColor_set(
-                                exp(-tau.r),
-                                exp(-tau.g),
-                                exp(-tau.b)
-                        );
+                                exp(-tau.r), exp(-tau.g), exp(-tau.b));
                         sumR = mliColor_add(
                                 sumR, mliColor_multiply(attenuation, hr));
                         sumM = mliColor_add(
@@ -178,10 +173,8 @@ struct mliColor _mliAtmosphere_compute_depth(
                         mliColor_multiply(
                                 mliColor_multiply_elementwise(
                                         sumM, atmosphere->beta_Mie),
-                                phaseM)
-                ),
-                atmosphere->power
-        );
+                                phaseM)),
+                atmosphere->power);
 }
 
 struct mliColor _mliAtmosphere_hit_outer_atmosphere(
@@ -194,11 +187,7 @@ struct mliColor _mliAtmosphere_hit_outer_atmosphere(
         double t_minus = -1.0;
         double t_plus = -1.0;
         int has_intersection = mliRay_sphere_intersection(
-                orig,
-                dir,
-                atmosphere->atmosphereRadius,
-                &t_minus,
-                &t_plus);
+                orig, dir, atmosphere->atmosphereRadius, &t_minus, &t_plus);
 
         if (!has_intersection || t_plus < 0.0) {
                 return mliColor_set(0.0, 0.0, 0.0);
@@ -210,8 +199,7 @@ struct mliColor _mliAtmosphere_hit_outer_atmosphere(
                 tmax = t_plus;
         }
 
-        return _mliAtmosphere_compute_depth(
-                atmosphere, orig, dir, tmin, tmax);
+        return _mliAtmosphere_compute_depth(atmosphere, orig, dir, tmin, tmax);
 }
 
 struct mliColor _mliAtmosphere_hit_earth_body(
@@ -223,11 +211,7 @@ struct mliColor _mliAtmosphere_hit_earth_body(
         double t_plus = DBL_MAX;
         double t_max = DBL_MAX;
         int intersects_earth_body = mliRay_sphere_intersection(
-                orig,
-                dir,
-                atmosphere->earthRadius,
-                &t_minus,
-                &t_plus);
+                orig, dir, atmosphere->earthRadius, &t_minus, &t_plus);
 
         if (intersects_earth_body && t_minus > 0) {
                 t_max = MLI_MAX2(0.0, t_minus);

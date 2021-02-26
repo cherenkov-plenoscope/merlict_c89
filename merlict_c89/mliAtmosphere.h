@@ -50,7 +50,6 @@ void mliAtmosphere_decrease_altitude(
         struct mliAtmosphere *atmosphere,
         const double factor);
 
-
 struct mliColor mliAtmosphere_query(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
