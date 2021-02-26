@@ -43,6 +43,12 @@ void mliAtmosphere_increase_hours(
 void mliAtmosphere_decrease_hours(
         struct mliAtmosphere *atmosphere,
         const double increment);
+void mliAtmosphere_increase_altitude(
+        struct mliAtmosphere *atmosphere,
+        const double factor);
+void mliAtmosphere_decrease_altitude(
+        struct mliAtmosphere *atmosphere,
+        const double factor);
 
 
 struct mliColor mliAtmosphere_query(

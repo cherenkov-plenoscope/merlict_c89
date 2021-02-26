@@ -43,8 +43,8 @@ void mlivr_print_help(void)
         printf("\n");
         printf("  Atmosphere                    Sun\n");
         printf("    on/off            [  0  ]     later daytime     [  9  ]\n");
-        printf("                                  earlier daytime   [  8  ]\n");
-        printf("                                  + latitude        [  7  ]\n");
+        printf("    - altitude        [  4  ]     earlier daytime   [  8  ]\n");
+        printf("    + altitude        [  5  ]     + latitude        [  7  ]\n");
         printf("                                  - latitude        [  6  ]\n");
         printf("\n");
         mli_authors_and_affiliations_fprint(stdout);
@@ -55,7 +55,7 @@ void mlivr_print_info_line(
         const struct mlivrCursor cursor,
         const struct mliTracerCongig tracer_config)
 {
-        printf("Press 'h' for help. "
+        printf("Help 'h', "
                "Camera: "
                "pos [ % -.2e, % -.2e, % -.2e]m, "
                "rot [ % -.1f, % -.1f, % -.1f]deg, "
@@ -67,10 +67,11 @@ void mlivr_print_info_line(
                mli_rad2deg(view.rotation.y),
                mli_rad2deg(view.rotation.z),
                mli_rad2deg(view.field_of_view));
-        printf("Sun: lat % 3.0fdeg, %02d:%02dh",
+        printf("Sun: lat % 3.0fdeg, %02d:%02dh, alt % 3.1fkm",
                 mli_rad2deg(tracer_config.atmosphere.sunLatitude),
                 (int)(tracer_config.atmosphere.sunHourAngle),
-                (int)(tracer_config.atmosphere.sunHourAngle*60)%60
+                (int)(tracer_config.atmosphere.sunHourAngle*60)%60,
+                tracer_config.atmosphere.altitude * 1e-3
         );
         if (cursor.active) {
                 printf(", cursor [% 3ld, % 3ld]pix", cursor.col, cursor.row);
@@ -312,6 +313,15 @@ int mlivr_run_interactive_viewer(
                                 update_image = 0;
                                 break;
 
+
+                        case '4':
+                                mliAtmosphere_decrease_altitude(
+                                        &tracer_config.atmosphere, 0.9);
+                                break;
+                        case '5':
+                                mliAtmosphere_increase_altitude(
+                                        &tracer_config.atmosphere, 1.1);
+                                break;
                         case '6':
                                 mliAtmosphere_decrease_latitude(
                                         &tracer_config.atmosphere,
@@ -322,7 +332,6 @@ int mlivr_run_interactive_viewer(
                                         &tracer_config.atmosphere,
                                         mli_deg2rad(2.0));
                                 break;
-
                         case '8':
                                 mliAtmosphere_decrease_hours(
                                         &tracer_config.atmosphere, 0.1);

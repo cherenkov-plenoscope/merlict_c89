@@ -23,11 +23,12 @@ struct mliAtmosphere mliAtmosphere_init(void) {
         atm.earthRadius = 6360e3;
         atm.atmosphereRadius = atm.earthRadius + 60e3;
 
+        /* The height for the density to drop by 1 over e */
         atm.Height_Rayleigh = 7994.0;
         atm.Height_Mie = 1200.0;
 
         atm.beta_Rayleigh = mliVec_set(3.8e-6, 13.5e-6, 33.1e-6);
-        atm.beta_Mie = mliVec_multiply(mliVec_set(1.0, 1.0, 1.0), 81e-6);
+        atm.beta_Mie = mliVec_multiply(mliVec_set(1.0, 1.0, 1.0), 41e-6);
 
         atm.numSamples = 16;
         atm.numSamplesLight = 8;
@@ -130,12 +131,14 @@ struct mliColor _mliAtmosphere_compute_depth(
                                 samplePosition,
                                 mliVec_multiply(
                                         atmosphere->sunDirection,
-                                        (tCurrentLight + segmentLengthLight * 0.5f)
+                                        tCurrentLight + 0.5*segmentLengthLight
                                 )
                         );
-                        const double heightLight = mliVec_norm(samplePositionLight)
-                                - atmosphere->earthRadius;
+                        const double heightLight = mliVec_norm(
+                                samplePositionLight) - atmosphere->earthRadius;
+
                         if (heightLight < 0) break;
+
                         opticalDepthLightR += segmentLengthLight * exp(
                                 -heightLight / atmosphere->Height_Rayleigh);
                         opticalDepthLightM += segmentLengthLight * exp(
@@ -304,4 +307,21 @@ void mliAtmosphere_decrease_hours(
                         atmosphere->sunLatitude,
                         atmosphere->sunHourAngle);
         }
+}
+
+void mliAtmosphere_increase_altitude(
+        struct mliAtmosphere *atmosphere,
+        const double factor)
+{
+        assert(factor > 1.0);
+        atmosphere->altitude *= factor;
+}
+
+void mliAtmosphere_decrease_altitude(
+        struct mliAtmosphere *atmosphere,
+        const double factor)
+{
+        assert(factor < 1.0);
+        assert(factor > 0.0);
+        atmosphere->altitude *= factor;
 }
