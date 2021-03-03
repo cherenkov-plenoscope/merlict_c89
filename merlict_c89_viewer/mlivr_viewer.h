@@ -18,7 +18,8 @@ void mlivr_print_help(void);
 
 void mlivr_print_info_line(
         const struct mliView view,
-        const struct mlivrCursor cursor);
+        const struct mlivrCursor cursor,
+        const struct mliTracerCongig tracer_config);
 
 void mlivr_timestamp_now_19chars(char *buffer);
 
@@ -28,6 +29,8 @@ int _mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mlivrConfig config,
         const struct mliView view,
+        struct mliMT19937 *prng,
+        const struct mliTracerCongig *tracer_config,
         const double object_distance,
         const char *path);
 

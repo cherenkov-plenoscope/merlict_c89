@@ -21,4 +21,10 @@ struct mliColor mliColor_mix(
         const float refl);
 struct mliColor mliColor_set(const float r, const float g, const float b);
 int mliColor_is_valid_8bit_range(const struct mliColor c);
+
+struct mliColor mliColor_add(const struct mliColor a, const struct mliColor b);
+struct mliColor mliColor_multiply(const struct mliColor c, const double f);
+struct mliColor mliColor_multiply_elementwise(
+        const struct mliColor a,
+        const struct mliColor b);
 #endif

@@ -3,7 +3,7 @@
 #define MERLICT_C89_VIWER_MLIVR_TOGGLE_STDIN_H_
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-# define HAVE_TERMIOS_H 1
+#define HAVE_TERMIOS_H 1
 #endif
 
 #ifdef HAVE_TERMIOS_H

@@ -103,3 +103,15 @@ struct mliVec mli_random_position_on_disc(
         const double azimuth = mli_random_uniform(prng) * MLI_2PI;
         return mliVec_set(r * cos(azimuth), r * sin(azimuth), 0.0);
 }
+
+struct mliVec mli_random_position_inside_unit_sphere(struct mliMT19937 *prng)
+{
+        /* rejection sampling */
+        struct mliVec pos;
+        do {
+                pos.x = -1.0 + 2.0 * mli_random_uniform(prng);
+                pos.y = -1.0 + 2.0 * mli_random_uniform(prng);
+                pos.z = -1.0 + 2.0 * mli_random_uniform(prng);
+        } while ((pos.x * pos.x + pos.y * pos.y + pos.z * pos.z) > 1.0);
+        return pos;
+}

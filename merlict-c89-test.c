@@ -25,6 +25,7 @@ int main(void)
 #include "tests/test_comma_seperated_values.c"
 #include "tests/test_upper_bound.c"
 #include "tests/test_histogram.c"
+#include "tests/test_quadratic_equation.c"
 #include "tests/test_pseudo_random_number_generator.c"
 #include "tests/test_from_outside_to_inside.c"
 #include "tests/test_orientated_bounding_box.c"
