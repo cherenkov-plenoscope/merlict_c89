@@ -56,9 +56,9 @@ void mlivr_print_info_line(
         const struct mliTracerCongig tracer_config)
 {
         printf("Help 'h', "
-               "Camera: "
-               "pos [ % -.2e, % -.2e, % -.2e]m, "
-               "rot [ % -.1f, % -.1f, % -.1f]deg, "
+               "Cam: "
+               "pos[% -.2e, % -.2e, % -.2e]m, "
+               "rot[% -.1f, % -.1f, % -.1f]deg, "
                "fov %.2fdeg, ",
                view.position.x,
                view.position.y,
@@ -74,7 +74,7 @@ void mlivr_print_info_line(
                 tracer_config.atmosphere.altitude * 1e-3
         );
         if (cursor.active) {
-                printf(", cursor [% 3ld, % 3ld]pix", cursor.col, cursor.row);
+                printf(", Cursor[%3ld, %3ld]pix", cursor.col, cursor.row);
         }
         printf(".\n");
 }
