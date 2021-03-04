@@ -70,7 +70,7 @@ struct mliColor _trace_to_intersection(
         const double sun_visibility = _mli_trace_sun_visibility(
                     scenery, intersection->position, config, prng);
 
-        side = _mli_side_going_to(scenery, intersection);
+        side = _mli_side_coming_from(scenery, intersection);
         surface = scenery->materials.surfaces[side.surface];
         color = scenery->materials.colors[surface.color];
 

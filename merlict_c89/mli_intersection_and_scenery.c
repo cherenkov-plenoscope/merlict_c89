@@ -24,9 +24,9 @@ struct mliSide _mli_side_coming_from(
                         .boundary_layers[mliScenery_resolve_boundary_layer_idx(
                                 scenery, isec->geometry_id)];
         if (isec->from_outside_to_inside)
-                return layer.inner;
-        else
                 return layer.outer;
+        else
+                return layer.inner;
 }
 
 struct mliSide _mli_side_going_to(
@@ -38,9 +38,9 @@ struct mliSide _mli_side_going_to(
                         .boundary_layers[mliScenery_resolve_boundary_layer_idx(
                                 scenery, isec->geometry_id)];
         if (isec->from_outside_to_inside)
-                return layer.outer;
-        else
                 return layer.inner;
+        else
+                return layer.outer;
 }
 
 const struct mliFunc *_mli_refractive_index_going_to(
