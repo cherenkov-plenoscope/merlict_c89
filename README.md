@@ -71,7 +71,7 @@ gcc ./merlict-c89-view.c -o view -lm
 # Interface
 
 ## Scenery
-css
+
 ### Tree
 A tree with cartesian frames as nodes and object-references as leafs. The tree defines the relative position and orientation of your object-references.
 
