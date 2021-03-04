@@ -5,7 +5,7 @@
             "pos": [0, 0, 0],
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
             "obj": "cylinder",
-            "mtl": {"cylinder_skin": "vacu_gblu_gred_glass"}
+            "mtl": {"cylinder_skin": "glas_gblu_gred_vacu"}
         },
         {
             "id": 37,
@@ -34,10 +34,10 @@
             "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
             "obj": "cube_with_materials",
             "mtl": {
-                "px": "vacu_gblu_gred_glass",
+                "px": "vacu_pabs_pabs_vacu",
                 "mx": "vacu_spcm_pabs_vacu",
                 "py": "vacu_pabs_spcm_vacu",
-                "my": "vacu_gblu_gred_glass",
+                "my": "vacu_pabs_spcm_vacu",
                 "pz": "vacu_spcm_pabs_vacu",
                 "mz": "vacu_pabs_pabs_vacu"
             }
