@@ -61,7 +61,7 @@ void mliDynPhotonInteraction_print(
                 if (phisec.type == MLI_PHOTON_CREATION) {
                         printf(" n/a  ");
                 } else {
-                        printf(" %1.1f  ", phisec.distance_of_ray);
+                        printf(" %1.1e  ", phisec.distance_of_ray);
                 }
 
                 if (phisec.on_geometry_surface == 1) {
