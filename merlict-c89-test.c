@@ -56,6 +56,8 @@ int main(void)
 #include "tests/test_mliArchive.c"
 #include "tests/test_photon.c"
 
+#include "tests/test_optics_prism.c"
+
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;
 test_failure:

@@ -1,0 +1,19 @@
+{
+    "children": [
+        {
+            "id": 1,
+            "pos": [0, 0, -0.01],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "prism",
+            "mtl": {"glass_faces": "scho_glas_glas_vacu", "side_faces": "scho_glas_glas_vacu"}
+        },
+        {
+            "id": 2,
+            "pos": [0, 1.0, 0.0],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "screen",
+            "mtl": {"screen_face": "vacu_scre_scre_vacu"}
+        }
+    ]
+}
+
