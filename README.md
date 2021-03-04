@@ -172,6 +172,8 @@ But of course the author will happily recive pull-requests that meet such expect
 
 - [OpenScad](http://www.openscad.org/) to create meshes in a parametric way. Unfortunately it does not have a concept of vertex-normals.
 
+- [refractive-index-database](https://refractiveindex.info/) a database of refractive indices of various materials.
+
 # Acknowledgement
 
 Finding intersections of triangles and cubes
