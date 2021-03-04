@@ -86,7 +86,7 @@ void mli_linspace(
         const double range = stop - start;
         const double step = range / (double)(num_points - 1u);
         for (i = 0; i < num_points; i++) {
-                points[i] = (double)i * step;
+                points[i] = (double)i * step + start;
         }
 }
 

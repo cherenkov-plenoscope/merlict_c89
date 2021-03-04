@@ -130,3 +130,11 @@ CASE("bin centers in linear space")
         c = mli_bin_center_in_linear_space(0.0, 1.0, 4, 3);
         CHECK_MARGIN(c, 0.875, 1e-6);
 }
+
+CASE("linspace")
+{
+        double arr[16];
+        mli_linspace(-1.0, 2.0, arr, 16);
+        CHECK(arr[0] == -1.0);
+        CHECK(arr[15] == 2.0);
+}
