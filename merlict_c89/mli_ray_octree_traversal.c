@@ -55,6 +55,7 @@
  */
 
 #define mli_END 8
+#define MLI_MINIMAL 1.0e-307
 
 int _mli_first_octree_node(const struct mliVec t0, const struct mliVec tm)
 {
@@ -284,6 +285,7 @@ void mli_ray_octree_traversal(
                 const uint32_t))
 {
         struct mliVec t0, t1;
+        struct mliVec div;
         struct mliRay ray_wrt_octree;
         struct mliVec cube_upper, cube_size;
         struct mliCube cube;
@@ -302,37 +304,40 @@ void mli_ray_octree_traversal(
                         -ray_wrt_octree.support.x + cube_size.x;
                 ray_wrt_octree.direction.x = -ray_wrt_octree.direction.x;
                 permutation |= 4;
+        } else if (ray_wrt_octree.direction.x == 0.0) {
+                ray_wrt_octree.direction.x = MLI_MINIMAL;
         }
+
         if (ray_wrt_octree.direction.y < 0) {
                 ray_wrt_octree.support.y =
                         -ray_wrt_octree.support.y + cube_size.y;
                 ray_wrt_octree.direction.y = -ray_wrt_octree.direction.y;
                 permutation |= 2;
+        } else if (ray_wrt_octree.direction.y == 0.0) {
+                ray_wrt_octree.direction.y = MLI_MINIMAL;
         }
+
         if (ray_wrt_octree.direction.z < 0) {
                 ray_wrt_octree.support.z =
                         -ray_wrt_octree.support.z + cube_size.z;
                 ray_wrt_octree.direction.z = -ray_wrt_octree.direction.z;
                 permutation |= 1;
+        } else if (ray_wrt_octree.direction.z == 0.0) {
+                ray_wrt_octree.direction.z = MLI_MINIMAL;
         }
 
-        t0.x = (cube.lower.x - ray_wrt_octree.support.x);
-        t1.x = (cube_upper.x - ray_wrt_octree.support.x);
+        div.x = 1.0 / ray_wrt_octree.direction.x;
+        div.y = 1.0 / ray_wrt_octree.direction.y;
+        div.z = 1.0 / ray_wrt_octree.direction.z;
 
-        t0.x /= ray_wrt_octree.direction.x;
-        t1.x /= ray_wrt_octree.direction.x;
+        t0.x = (cube.lower.x - ray_wrt_octree.support.x) * div.x;
+        t1.x = (cube_upper.x - ray_wrt_octree.support.x) * div.x;
 
-        t0.y = (cube.lower.y - ray_wrt_octree.support.y);
-        t1.y = (cube_upper.y - ray_wrt_octree.support.y);
+        t0.y = (cube.lower.y - ray_wrt_octree.support.y) * div.y;
+        t1.y = (cube_upper.y - ray_wrt_octree.support.y) * div.y;
 
-        t0.y /= ray_wrt_octree.direction.y;
-        t1.y /= ray_wrt_octree.direction.y;
-
-        t0.z = (cube.lower.z - ray_wrt_octree.support.z);
-        t1.z = (cube_upper.z - ray_wrt_octree.support.z);
-
-        t0.z /= ray_wrt_octree.direction.z;
-        t1.z /= ray_wrt_octree.direction.z;
+        t0.z = (cube.lower.z - ray_wrt_octree.support.z) * div.z;
+        t1.z = (cube_upper.z - ray_wrt_octree.support.z) * div.z;
 
         if (MLI_MAX3(t0.x, t0.y, t0.z) < MLI_MIN3(t1.x, t1.y, t1.z)) {
                 _mli_proc_subtree(
