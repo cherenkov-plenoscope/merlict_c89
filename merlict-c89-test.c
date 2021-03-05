@@ -57,6 +57,7 @@ int main(void)
 #include "tests/test_photon.c"
 
 #include "tests/test_optics_prism.c"
+#include "tests/test_optics_focussing_mirror.c"
 
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;

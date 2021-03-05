@@ -1,0 +1,26 @@
+{
+    "children": [
+        {
+            "id": 1,
+            "pos": [0, 0, 0],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "spherical_mirror_R8m_F4",
+            "mtl": {"SphericalCap": "vacu_mirr_hous_vacu"}
+        },
+        {
+            "id": 2,
+            "pos": [0, 0, 4.01],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "screen_housing",
+            "mtl": {"disc": "vacu_hous_hous_vacu"}
+        },
+        {
+            "id": 42,
+            "pos": [0, 0, 4.0],
+            "rot": {"repr": "tait_bryan", "xyz_deg": [0, 0, 0]},
+            "obj": "screen",
+            "mtl": {"disc": "vacu_scre_scre_vacu"}
+        }
+    ]
+}
+

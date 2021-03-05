@@ -1,0 +1,55 @@
+{
+    "colors": [
+        {"rgb": [122, 91, 49], "name": "brown"},
+        {"rgb": [30, 200, 30], "name": "green"},
+        {"rgb": [22, 91, 149], "name": "blue"}
+    ],
+    "media": [
+        {
+            "name": "vacuum",
+            "refraction": "unity",
+            "absorbtion": "positiv_infinity"
+        }
+    ],
+    "default_medium": "vacuum",
+    "surfaces": [
+        {
+            "name": "mirror",
+            "material": "Phong",
+            "specular_reflection": "unity",
+            "diffuse_reflection": "zero",
+            "color": "blue"
+        },
+        {
+            "name": "screen",
+            "material": "Phong",
+            "specular_reflection": "zero",
+            "diffuse_reflection": "zero",
+            "color": "green"
+        },
+        {
+            "name": "housing",
+            "material": "Phong",
+            "specular_reflection": "zero",
+            "diffuse_reflection": "zero",
+            "color": "brown"
+        }
+    ],
+    "boundary_layers": [
+        {
+            "name": "vacu_mirr_hous_vacu",
+            "inner": {"medium": "vacuum", "surface": "housing"},
+            "outer": {"medium": "vacuum", "surface": "mirror"}
+        },
+        {
+            "name": "vacu_hous_hous_vacu",
+            "inner": {"medium": "vacuum", "surface": "housing"},
+            "outer": {"medium": "vacuum", "surface": "housing"}
+        },
+        {
+            "name": "vacu_scre_scre_vacu",
+            "inner": {"medium": "vacuum", "surface": "screen"},
+            "outer": {"medium": "vacuum", "surface": "screen"}
+        }
+    ]
+}
