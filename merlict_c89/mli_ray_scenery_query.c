@@ -1,20 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_ray_scenery_query.h"
 
-struct _mliInnerWork {
-        struct mliIntersectionMinimalQuery *intersection;
-        const struct mliObject *object;
-        struct mliRay ray_object;
-        int has_intersection;
-};
-
-struct _mliOuterWork {
-        struct mliIntersectionMinimalQuery *intersection;
-        const struct mliGeometry *geometry;
-        const struct mliAccelerator *accelerator;
-        struct mliRay ray_root;
-};
-
 void _mli_inner_object_traversal(
         void *_inner,
         const struct mliOcTree *object_octree,

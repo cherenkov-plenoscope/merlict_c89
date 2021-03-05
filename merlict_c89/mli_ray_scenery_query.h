@@ -22,4 +22,23 @@ int _mli_query_object_reference(
         const struct mliRay ray_root,
         struct mliIntersectionMinimalQuery *isecmin);
 
+struct _mliInnerWork {
+        struct mliIntersectionMinimalQuery *intersection;
+        const struct mliObject *object;
+        struct mliRay ray_object;
+        int has_intersection;
+};
+
+struct _mliOuterWork {
+        struct mliIntersectionMinimalQuery *intersection;
+        const struct mliGeometry *geometry;
+        const struct mliAccelerator *accelerator;
+        struct mliRay ray_root;
+};
+
+void _mli_inner_object_traversal(
+        void *_inner,
+        const struct mliOcTree *object_octree,
+        const uint32_t object_octree_leaf_idx);
+
 #endif
