@@ -16,63 +16,63 @@ CASE("init mliCaOctree")
 
 CASE("sizeof mliNode") { CHECK(sizeof(struct mliNode) == 5 * 8); }
 
-/*
-CASE("init mliCaOctree")
-{
-        struct mliGeometry scenery = mliGeometry_init();
-        struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
-        struct mliOcTree octree = mliOcTree_init();
-        struct mliIntersectionSurfaceNormal isec;
-        uint64_t num_nodes, num_leafs, num_object_links;
-        mliGeometry_read_from_path(&scenery, "tests/resources/scn1.mli.tmp");
-        CHECK(mliTmpOcTree_malloc_from_scenery(&tmp_octree, &scenery));
+CASE("ray parallel to axis") {
+        struct mliScenery scenery = mliScenery_init();
+        uint32_t i;
+        uint32_t robj = 0;
+        uint32_t obj;
+        struct mliIntersectionMinimalQuery isecmin;
+        struct mliVec sups[6];
+        struct mliVec dirs[6];
+        const double N = 0.0;
 
-        mliTmpNode_set_flat_index(&tmp_octree.root);
-        mliTmpNode_num_nodes_leafs_objects(
-                &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);
+        sups[0] = mliVec_set(0, 0, -10);
+        dirs[0] = mliVec_set(N, N, 1);
 
-        CHECK(mliOcTree_malloc(
-                &octree, num_nodes, num_leafs, num_object_links));
-        mliOcTree_set(&octree, &tmp_octree);
+        sups[1] = mliVec_set(0, 0, 10);
+        dirs[1] = mliVec_set(N, N, -1);
 
-        CHECK(num_nodes == 65);
-        CHECK(num_leafs == 361);
-        CHECK(num_object_links == 6068);
+        sups[2] = mliVec_set(-10, 0, 0);
+        dirs[2] = mliVec_set(1, N, N);
 
-        CHECK(mliOcTree_equal_payload(&octree, &tmp_octree));
+        sups[2] = mliVec_set(10, 0, 0);
+        dirs[2] = mliVec_set(-1, N, N);
 
-        mli_ray_octree_traversal(
+        sups[3] = mliVec_set(-10, 0, 0);
+        dirs[3] = mliVec_set(1, N, N);
+
+        sups[4] = mliVec_set(0, -10, 0);
+        dirs[4] = mliVec_set(N, 1, N);
+
+        sups[5] = mliVec_set(0, 10, 0);
+        dirs[5] = mliVec_set(N, -1, N);
+
+        CHECK(mliScenery_malloc_from_tar(
                 &scenery,
-                &octree,
-                mliRay_set(mliVec_set(0.1, 2.5, 10.), mliVec_set(0., 0., -1.)),
-                &isec);
+                "tests/"
+                "resources/"
+                "sceneries/"
+                "001.tar"));
 
-        mliTmpOcTree_free(&tmp_octree);
-        mliOcTree_free(&octree);
-        mliGeometry_free(&scenery);
+        obj = scenery.geometry.robjects[robj];
+        CHECK(strcmp("teapot", scenery.geometry.object_names[obj].c_str) == 0);
+
+        for (i = 0; i < 6; i++) {
+                struct mliRay ray;
+
+                ray = mliRay_set(sups[i], dirs[i]);
+
+                isecmin = mliIntersectionMinimalQuery_init();
+
+                _mli_query_object_reference(
+                        &scenery.geometry.objects[obj],
+                        &scenery.accelerator.object_octrees[obj],
+                        scenery.geometry.robject2root[robj],
+                        ray,
+                        &isecmin);
+
+                CHECK(isecmin.distance_of_ray != DBL_MAX);
+        }
+
+        mliScenery_free(&scenery);
 }
-
-CASE("init mliOctree write and read")
-{
-        struct mliGeometry scenery = mliGeometry_init();
-        struct mliOcTree octree = mliOcTree_init();
-        struct mliOcTree octree_b = mliOcTree_init();
-
-        CHECK(mliGeometry_read_from_path(
-                &scenery, "tests/resources/scn1.mli.tmp"));
-
-        CHECK(mliOcTree_malloc_from_scenery(&octree, &scenery));
-
-        CHECK(mliOcTree_write_to_path(
-                &octree, "tests/resources/scn1.mli.octree.tmp"));
-
-        CHECK(mliOcTree_malloc_from_path(
-                &octree_b, "tests/resources/scn1.mli.octree.tmp"));
-
-        CHECK(mliOcTree_equal(&octree, &octree_b));
-
-        mliOcTree_free(&octree_b);
-        mliOcTree_free(&octree);
-        mliGeometry_free(&scenery);
-}
-*/

@@ -3,7 +3,7 @@
 
 printf "prepare    "
 
-scenery_ids=( 000 001 002 optics_prism )
+scenery_ids=( 000 001 002 optics_prism optics_focussing_mirror )
 
 for scenery_id in "${scenery_ids[@]}";
 do
