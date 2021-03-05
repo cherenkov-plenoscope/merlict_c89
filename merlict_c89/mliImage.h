@@ -65,4 +65,14 @@ void mliImage_fabs_difference(
         const struct mliImage *b,
         struct mliImage *out);
 struct mliImage mliImage_init(void);
+
+void mliImage_histogram(
+        struct mliImage *img,
+        const double *col_bin_edges,
+        const double *row_bin_edges,
+        const double x,
+        const double y,
+        const struct mliColor weight);
+struct mliColor mliImage_max(const struct mliImage *img);
+void mliImage_multiply(struct mliImage *img, const struct mliColor color);
 #endif

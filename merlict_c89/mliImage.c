@@ -326,3 +326,60 @@ void mliImage_fabs_difference(
                 out->raw[pix].b = fabs(a->raw[pix].b - b->raw[pix].b);
         }
 }
+
+void mliImage_histogram(
+        struct mliImage *img,
+        const double *col_bin_edges,
+        const double *row_bin_edges,
+        const double col_val,
+        const double row_val,
+        const struct mliColor weight)
+{
+        uint64_t col_upper_idx, row_upper_idx;
+        int valid_col, valid_row;
+
+        col_upper_idx = mli_upper_compare_double(
+                col_bin_edges, img->num_cols + 1, col_val);
+
+        row_upper_idx = mli_upper_compare_double(
+                row_bin_edges, img->num_rows + 1, row_val);
+
+        valid_col = col_upper_idx > 0 && col_upper_idx < img->num_cols + 1;
+        valid_row = row_upper_idx > 0 && row_upper_idx < img->num_rows + 1;
+
+        if (valid_col && valid_row) {
+                const uint32_t col_idx = col_upper_idx - 1;
+                const uint32_t row_idx = row_upper_idx - 1;
+                const uint64_t pix = mliImage_idx(img, col_idx, row_idx);
+                img->raw[pix] = mliColor_add(img->raw[pix], weight);
+        }
+}
+
+struct mliColor mliImage_max(const struct mliImage *img)
+{
+        struct mliColor max = mliColor_set(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+        uint64_t pix;
+        for (pix = 0u; pix < img->num_rows * img->num_cols; pix++) {
+                struct mliColor c = img->raw[pix];
+                if (c.r > max.r) {
+                        max.r = c.r;
+                }
+                if (c.g > max.g) {
+                        max.g = c.g;
+                }
+                if (c.b > max.b) {
+                        max.b = c.b;
+                }
+        }
+        return max;
+}
+
+void mliImage_multiply(struct mliImage *img, const struct mliColor color)
+{
+        uint64_t pix;
+        for (pix = 0u; pix < img->num_rows * img->num_cols; pix++) {
+                img->raw[pix].r *= color.r;
+                img->raw[pix].g *= color.g;
+                img->raw[pix].b *= color.b;
+        }
+}
