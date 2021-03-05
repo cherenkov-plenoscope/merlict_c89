@@ -318,33 +318,21 @@ void mli_ray_octree_traversal(
 
         t0.x = (cube.lower.x - ray_wrt_octree.support.x);
         t1.x = (cube_upper.x - ray_wrt_octree.support.x);
-        if (ray_wrt_octree.direction.x == 0.0) {
-                t0.x = t0.x > 0.0 ? DBL_MAX : -DBL_MAX;
-                t1.x = t1.x > 0.0 ? DBL_MAX : -DBL_MAX;
-        } else {
-                t0.x /= ray_wrt_octree.direction.x;
-                t1.x /= ray_wrt_octree.direction.x;
-        }
+
+        t0.x /= ray_wrt_octree.direction.x;
+        t1.x /= ray_wrt_octree.direction.x;
 
         t0.y = (cube.lower.y - ray_wrt_octree.support.y);
         t1.y = (cube_upper.y - ray_wrt_octree.support.y);
-        if (ray_wrt_octree.direction.y == 0.0) {
-                t0.y = t0.y > 0.0 ? DBL_MAX : -DBL_MAX;
-                t1.y = t1.y > 0.0 ? DBL_MAX : -DBL_MAX;
-        } else {
-                t0.y /= ray_wrt_octree.direction.y;
-                t1.y /= ray_wrt_octree.direction.y;
-        }
+
+        t0.y /= ray_wrt_octree.direction.y;
+        t1.y /= ray_wrt_octree.direction.y;
 
         t0.z = (cube.lower.z - ray_wrt_octree.support.z);
         t1.z = (cube_upper.z - ray_wrt_octree.support.z);
-        if (ray_wrt_octree.direction.z == 0.0) {
-                t0.z = t0.z > 0.0 ? DBL_MAX : -DBL_MAX;
-                t1.z = t1.z > 0.0 ? DBL_MAX : -DBL_MAX;
-        } else {
-                t0.z /= ray_wrt_octree.direction.z;
-                t1.z /= ray_wrt_octree.direction.z;
-        }
+
+        t0.z /= ray_wrt_octree.direction.z;
+        t1.z /= ray_wrt_octree.direction.z;
 
         if (MLI_MAX3(t0.x, t0.y, t0.z) < MLI_MIN3(t1.x, t1.y, t1.z)) {
                 _mli_proc_subtree(
