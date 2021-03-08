@@ -18,18 +18,25 @@ int main(int argc, char *argv[])
         struct mliScenery scenery = mliScenery_init();
 
         if (argc >= 2) {
-                int rc = 0;
-                if (!rc) {
-                        rc = mliScenery_malloc_from_tar(&scenery, argv[1]);
+                if (mli_string_ends_with(argv[1], ".tar")) {
+                        mli_check(
+                                mliScenery_malloc_from_tar(
+                                        &scenery, argv[1]),
+                                "Can not read scenery from '.tar'.");
+                } else if (mli_string_ends_with(argv[1], ".mli")) {
+                        mli_check(
+                                mliScenery_malloc_from_path(
+                                        &scenery, argv[1]),
+                                "Can not read scenery from '.mli'.");
+                } else if (mli_string_ends_with(argv[1], ".obj")) {
+                        mli_check(
+                                mliScenery_malloc_minimal_from_wavefront(
+                                        &scenery, argv[1]),
+                                "Can not read scenery from '.obj'.");
+                } else {
+                        mli_sentinel("Scenery-format has to be either of "
+                                "('.tar', '.mli', '.obj').");
                 }
-                if (!rc) {
-                        rc = mliScenery_malloc_from_path(&scenery, argv[1]);
-                }
-                if (!rc) {
-                        rc = mliScenery_malloc_minimal_from_wavefront(
-                                &scenery, argv[1]);
-                }
-                mli_check(rc, "Failed to read scenery from scenery-path.")
         }
 
         if (argc == 3) {
