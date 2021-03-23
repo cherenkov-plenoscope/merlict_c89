@@ -72,7 +72,7 @@ struct mliColor _trace_color_tone_of_diffuse_sky(
                 obstruction_ray.support = intersection->position;
                 obstruction_ray.direction = rnd_dir;
 
-                has_direct_view_to_sky = !mli_query_intersection_minimal(
+                has_direct_view_to_sky = !mli_query_intersection(
                         scenery, obstruction_ray, &isec);
 
                 if (has_direct_view_to_sky) {

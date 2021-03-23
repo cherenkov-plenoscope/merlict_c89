@@ -113,7 +113,7 @@ void _mli_outer_scenery_traversal(
         return;
 }
 
-int mli_query_intersection_minimal(
+int mli_query_intersection(
         const struct mliScenery *scenery,
         const struct mliRay ray_root,
         struct mliIntersectionMinimal *isecmin)
@@ -148,7 +148,7 @@ int mli_query_intersection_with_surface_normal(
         struct mliIntersectionMinimal isecmin = mliIntersectionMinimal_init();
 
         const int has_intersection =
-                mli_query_intersection_minimal(scenery, ray_root, &isecmin);
+                mli_query_intersection(scenery, ray_root, &isecmin);
 
         if (has_intersection) {
                 uint32_t robject_idx = isecmin.geometry_id.robj;

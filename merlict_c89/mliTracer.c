@@ -39,7 +39,7 @@ double _mli_trace_sun_obstruction(
 
                 struct mliIntersectionMinimal isec;
 
-                const int has_intersection = mli_query_intersection_minimal(
+                const int has_intersection = mli_query_intersection(
                         scenery, line_of_sight_to_source, &isec);
 
                 if (has_intersection) {
