@@ -5,7 +5,7 @@
 #include "mli_ray_octree_traversal.h"
 #include "mliScenery.h"
 
-void mli_query_intersection_minimal(
+int mli_query_intersection_minimal(
         const struct mliScenery *scenery,
         const struct mliRay ray_root,
         struct mliIntersectionMinimalQuery *isecmin);

@@ -113,7 +113,7 @@ void _mli_outer_scenery_traversal(
         return;
 }
 
-void mli_query_intersection_minimal(
+int mli_query_intersection_minimal(
         const struct mliScenery *scenery,
         const struct mliRay ray_root,
         struct mliIntersectionMinimalQuery *isecmin)
@@ -132,6 +132,12 @@ void mli_query_intersection_minimal(
                 ray_root,
                 (void *)&outer,
                 _mli_outer_scenery_traversal);
+
+        if (isecmin->distance_of_ray == DBL_MAX) {
+                return 0;
+        } else {
+                return 1;
+        }
 }
 
 int mli_query_intersection_with_surface_normal(
@@ -142,10 +148,10 @@ int mli_query_intersection_with_surface_normal(
         struct mliIntersectionMinimalQuery isecmin =
                 mliIntersectionMinimalQuery_init();
 
-        mli_query_intersection_minimal(scenery, ray_root, &isecmin);
-        if (isecmin.distance_of_ray == DBL_MAX) {
-                return 0;
-        } else {
+        const int has_intersection =
+                mli_query_intersection_minimal(scenery, ray_root, &isecmin);
+
+        if (has_intersection) {
                 uint32_t robject_idx = isecmin.geometry_id.robj;
                 uint32_t object_idx =
                         scenery->geometry.robjects[isecmin.geometry_id.robj];
@@ -187,5 +193,7 @@ int mli_query_intersection_with_surface_normal(
                                 isecsrf->surface_normal_local);
 
                 return 1;
+        } else {
+                return 0;
         }
 }

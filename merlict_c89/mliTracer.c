@@ -12,10 +12,8 @@ double _mli_trace_sun_visibility(
         const struct mliTracerCongig *config,
         struct mliMT19937 *prng)
 {
-        return (
-                1.0 -
-                _mli_trace_sun_obstruction(scenery, position, config, prng)
-        );
+        return (1.0 -
+                _mli_trace_sun_obstruction(scenery, position, config, prng));
 }
 
 double _mli_trace_sun_obstruction(
@@ -31,23 +29,20 @@ double _mli_trace_sun_obstruction(
                 struct mliVec pos_in_source = mliVec_add(
                         mliVec_multiply(
                                 config->atmosphere.sunDirection,
-                                config->atmosphere.sunDistance
-                        ),
+                                config->atmosphere.sunDistance),
                         mliVec_multiply(
                                 mli_random_position_inside_unit_sphere(prng),
-                                config->atmosphere.sunRadius
-                        )
-                );
+                                config->atmosphere.sunRadius));
 
                 struct mliRay line_of_sight_to_source = mliRay_set(
                         position, mliVec_substract(pos_in_source, position));
 
                 struct mliIntersectionMinimalQuery isec;
 
-                mli_query_intersection_minimal(
+                const int has_intersection = mli_query_intersection_minimal(
                         scenery, line_of_sight_to_source, &isec);
 
-                if (isec.distance_of_ray != DBL_MAX) {
+                if (has_intersection) {
                         num_obstructions += 1.0;
                 }
         }
@@ -68,15 +63,14 @@ struct mliColor _trace_to_intersection(
         double lambert_factor;
 
         const double sun_visibility = _mli_trace_sun_visibility(
-                    scenery, intersection->position, config, prng);
+                scenery, intersection->position, config, prng);
 
         side = _mli_side_coming_from(scenery, intersection);
         surface = scenery->materials.surfaces[side.surface];
         color = scenery->materials.colors[surface.color];
 
         theta = mliVec_angle_between(
-                config->atmosphere.sunDirection,
-                intersection->surface_normal);
+                config->atmosphere.sunDirection, intersection->surface_normal);
         lambert_factor = fabs(cos(theta));
 
         color.r = color.r * 0.5 * (1.0 + sun_visibility * lambert_factor);

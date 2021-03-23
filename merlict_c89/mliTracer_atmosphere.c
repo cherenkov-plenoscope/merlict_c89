@@ -20,13 +20,13 @@ struct mliColor _trace_color_tone_of_sun(
 {
         struct mliColor sun_color = mliColor_set(1.0, 1.0, 1.0);
         double width_atmosphere = config->atmosphere.atmosphereRadius -
-                        config->atmosphere.earthRadius;
+                                  config->atmosphere.earthRadius;
 
         if (config->atmosphere.altitude < width_atmosphere) {
                 struct mliColor color_close_to_sun = mliAtmosphere_query(
-                    &config->atmosphere,
-                    support,
-                    config->atmosphere.sunDirection);
+                        &config->atmosphere,
+                        support,
+                        config->atmosphere.sunDirection);
 
                 double f = config->atmosphere.sunDirection.z;
                 double max = MLI_MAX3(
@@ -67,22 +67,13 @@ struct mliColor _trace_color_tone_of_diffuse_sky(
 
         for (i = 0; i < num_samples; i++) {
                 struct mliVec rnd_dir = mli_random_direction_in_hemisphere(
-                        prng,
-                        facing_surface_normal);
+                        prng, facing_surface_normal);
 
                 obstruction_ray.support = intersection->position;
                 obstruction_ray.direction = rnd_dir;
 
-                mli_query_intersection_minimal(
-                        scenery,
-                        obstruction_ray,
-                        &isec);
-
-                if (isec.distance_of_ray == DBL_MAX) {
-                        has_direct_view_to_sky = 1;
-                } else {
-                        has_direct_view_to_sky = 0;
-                }
+                has_direct_view_to_sky = !mli_query_intersection_minimal(
+                        scenery, obstruction_ray, &isec);
 
                 if (has_direct_view_to_sky) {
                         struct mliColor sample = mliAtmosphere_query(
@@ -91,13 +82,11 @@ struct mliColor _trace_color_tone_of_diffuse_sky(
                                 rnd_dir);
 
                         double theta = mliVec_angle_between(
-                                rnd_dir,
-                                facing_surface_normal);
+                                rnd_dir, facing_surface_normal);
                         double lambert_factor = fabs(cos(theta));
 
                         sky = mliColor_add(
-                                sky,
-                                mliColor_multiply(sample, lambert_factor));
+                                sky, mliColor_multiply(sample, lambert_factor));
                 }
         }
 
@@ -118,7 +107,7 @@ struct mliColor _trace_to_intersection_atmosphere(
         double lambert_factor;
 
         const double sun_visibility = _mli_trace_sun_visibility(
-                    scenery, intersection->position, config, prng);
+                scenery, intersection->position, config, prng);
 
         if (sun_visibility > 0.0) {
                 tone = _trace_color_tone_of_sun(config, intersection->position);
@@ -133,8 +122,7 @@ struct mliColor _trace_to_intersection_atmosphere(
         color = scenery->materials.colors[surface.color];
 
         theta = mliVec_angle_between(
-                config->atmosphere.sunDirection,
-                intersection->surface_normal);
+                config->atmosphere.sunDirection, intersection->surface_normal);
         lambert_factor = fabs(cos(theta));
 
         color = mliColor_multiply(color, lambert_factor);
@@ -158,9 +146,7 @@ struct mliColor _mli_trace_atmosphere(
                         config, &intersection, scenery, prng);
         } else {
                 out = mliAtmosphere_query(
-                        &config->atmosphere,
-                        ray.support,
-                        ray.direction);
+                        &config->atmosphere, ray.support, ray.direction);
         }
         return out;
 }
