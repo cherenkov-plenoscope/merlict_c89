@@ -37,7 +37,7 @@ double _mli_trace_sun_obstruction(
                 struct mliRay line_of_sight_to_source = mliRay_set(
                         position, mliVec_substract(pos_in_source, position));
 
-                struct mliIntersectionMinimal isec;
+                struct mliIntersection isec;
 
                 const int has_intersection = mli_query_intersection(
                         scenery, line_of_sight_to_source, &isec);

@@ -21,7 +21,7 @@ CASE("ray parallel to axis") {
         uint32_t i;
         uint32_t robj = 0;
         uint32_t obj;
-        struct mliIntersectionMinimal isecmin;
+        struct mliIntersection isec;
         struct mliVec sups[6];
         struct mliVec dirs[6];
         const double N = 0.0;
@@ -62,16 +62,16 @@ CASE("ray parallel to axis") {
 
                 ray = mliRay_set(sups[i], dirs[i]);
 
-                isecmin = mliIntersectionMinimal_init();
+                isec = mliIntersection_init();
 
                 _mli_query_object_reference(
                         &scenery.geometry.objects[obj],
                         &scenery.accelerator.object_octrees[obj],
                         scenery.geometry.robject2root[robj],
                         ray,
-                        &isecmin);
+                        &isec);
 
-                CHECK(isecmin.distance_of_ray != DBL_MAX);
+                CHECK(isec.distance_of_ray != DBL_MAX);
         }
 
         mliScenery_free(&scenery);
