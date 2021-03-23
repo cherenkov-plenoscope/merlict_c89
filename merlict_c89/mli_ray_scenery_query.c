@@ -13,8 +13,8 @@ void _mli_inner_object_traversal(
         const uint32_t num_faces_in_object_leaf = mliOcTree_leaf_num_objects(
                 object_octree, object_octree_leaf_idx);
 
-        struct mliIntersectionMinimalQuery tmp_isecmin =
-                mliIntersectionMinimalQuery_init();
+        struct mliIntersectionMinimal tmp_isecmin =
+                mliIntersectionMinimal_init();
 
         for (f = 0; f < num_faces_in_object_leaf; f++) {
 
@@ -52,7 +52,7 @@ int _mli_query_object_reference(
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp robject2root_comp,
         const struct mliRay ray_root,
-        struct mliIntersectionMinimalQuery *isecmin)
+        struct mliIntersectionMinimal *isecmin)
 {
         struct mliHomTra robject2root =
                 mliHomTra_from_compact(robject2root_comp);
@@ -85,8 +85,8 @@ void _mli_outer_scenery_traversal(
                 mliOcTree_leaf_num_objects(
                         scenery_octree, scenery_octree_leaf_idx);
 
-        struct mliIntersectionMinimalQuery tmp_isecmin =
-                mliIntersectionMinimalQuery_init();
+        struct mliIntersectionMinimal tmp_isecmin =
+                mliIntersectionMinimal_init();
 
         for (ro = 0; ro < num_robjects_in_scenery_leaf; ro++) {
 
@@ -116,11 +116,11 @@ void _mli_outer_scenery_traversal(
 int mli_query_intersection_minimal(
         const struct mliScenery *scenery,
         const struct mliRay ray_root,
-        struct mliIntersectionMinimalQuery *isecmin)
+        struct mliIntersectionMinimal *isecmin)
 {
         struct _mliOuterWork outer;
 
-        (*isecmin) = mliIntersectionMinimalQuery_init();
+        (*isecmin) = mliIntersectionMinimal_init();
 
         outer.intersection = isecmin;
         outer.geometry = &scenery->geometry;
@@ -145,8 +145,8 @@ int mli_query_intersection_with_surface_normal(
         const struct mliRay ray_root,
         struct mliIntersectionSurfaceNormal *isecsrf)
 {
-        struct mliIntersectionMinimalQuery isecmin =
-                mliIntersectionMinimalQuery_init();
+        struct mliIntersectionMinimal isecmin =
+                mliIntersectionMinimal_init();
 
         const int has_intersection =
                 mli_query_intersection_minimal(scenery, ray_root, &isecmin);

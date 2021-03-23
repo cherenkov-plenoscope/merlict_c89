@@ -17,7 +17,7 @@
 #include "mliHomTra.h"
 #include "mliOBB.h"
 #include "mliCube.h"
-#include "mliIntersectionMinimalQuery.h"
+#include "mliIntersectionMinimal.h"
 #include "mliIntersectionSurfaceNormal.h"
 #include "mliFace.h"
 #include "mli_quadratic_equation.h"

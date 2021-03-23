@@ -56,7 +56,7 @@ struct mliColor _trace_color_tone_of_diffuse_sky(
         struct mliColor sky = mliColor_set(0.0, 0.0, 0.0);
         struct mliRay obstruction_ray;
         struct mliVec facing_surface_normal;
-        struct mliIntersectionMinimalQuery isec;
+        struct mliIntersectionMinimal isec;
         int has_direct_view_to_sky = 0;
         int num_samples = 5;
 
