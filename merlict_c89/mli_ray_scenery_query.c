@@ -145,8 +145,7 @@ int mli_query_intersection_with_surface_normal(
         const struct mliRay ray_root,
         struct mliIntersectionSurfaceNormal *isecsrf)
 {
-        struct mliIntersectionMinimal isecmin =
-                mliIntersectionMinimal_init();
+        struct mliIntersectionMinimal isecmin = mliIntersectionMinimal_init();
 
         const int has_intersection =
                 mli_query_intersection_minimal(scenery, ray_root, &isecmin);
