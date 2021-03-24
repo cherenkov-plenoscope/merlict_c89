@@ -4,7 +4,7 @@ CASE("average of uniform distribution")
 {
         double sum = 0;
         uint64_t i;
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         for (i = 0; i < 1000000; i++) {
                 sum += mli_random_uniform(&prng);
         }
@@ -14,7 +14,7 @@ CASE("average of uniform distribution")
 CASE("uniform population of histogram")
 {
         uint64_t i;
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         double bin_edges[100];
         const uint64_t num_bin_edges = 100;
         const uint64_t num_bins = num_bin_edges - 1u;
@@ -46,7 +46,7 @@ CASE("throwing Pi")
         uint64_t i;
         uint64_t num_in_circle = 0u;
         double pi_estimate;
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         for (i = 0; i < num_throws; i++) {
                 const double x = mli_random_uniform(&prng);
                 const double y = mli_random_uniform(&prng);
@@ -61,7 +61,7 @@ CASE("throwing Pi")
 
 CASE("normal, Irwin Hall approximation")
 {
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
 
         const uint64_t num_scenarios = 6;
         const uint64_t num_throws = 100u * 1000u;
@@ -91,7 +91,7 @@ CASE("normal, Irwin Hall approximation")
 
 CASE("uniform_0_to_1_stddev")
 {
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         const uint64_t num_samples = 42 * 1337;
         struct mliDynDouble samples = mliDynDouble_init();
         double mean, std;
@@ -110,7 +110,7 @@ CASE("uniform_0_to_1_stddev")
 
 CASE("draw_from_poisson_distribution")
 {
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         double sum = 0.0;
         const double rate = 1e6;
         uint64_t i = 0;
@@ -123,7 +123,7 @@ CASE("full_sphere")
 {
         const uint64_t n = 1000 * 1000;
         uint64_t i = 0;
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         const struct mliRandomUniformRange azimuth =
                 mliRandomUniformRange_set(0.0, 2.0 * MLI_PI);
         const struct mliRandomZenithRange zenith =
@@ -148,7 +148,7 @@ CASE("octo_sphere")
 {
         const uint64_t n = 1000 * 1000;
         uint64_t i = 0;
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         const struct mliRandomUniformRange azimuth =
                 mliRandomUniformRange_set(0.0, MLI_PI / 2.0);
         const struct mliRandomZenithRange zenith =
@@ -172,7 +172,7 @@ CASE("octo_sphere_minus_z")
 {
         const uint64_t n = 1000 * 1000;
         uint64_t i = 0;
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         const struct mliRandomUniformRange azimuth =
                 mliRandomUniformRange_set(0.0, MLI_PI / 2.0);
         const struct mliRandomZenithRange zenith =
@@ -194,7 +194,7 @@ CASE("octo_sphere_minus_z")
 
 CASE("position_on_disc")
 {
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         uint64_t n_points = 1e6;
         double disc_radius = 1.337;
         double evaluation_disc_radius = disc_radius / 5.0;
@@ -253,4 +253,38 @@ CASE("position_on_disc")
                         mean_count);
         CHECK(std_count / mean_count < 1e-2);
         mliDynVec_free(&points);
+}
+
+CASE("Generator")
+{
+        uint32_t i;
+        struct mliPrng prng = mliPrng_init_MT19937(42);
+        struct mliMT19937 mt_prng = mliMT19937_init(42);
+        struct mliPCG32 pcg_prng = mliPCG32_init(42);
+
+        for (i = 0; i < 10; i++) {
+                CHECK(mliPrng_generate_uint32(&prng) == mliMT19937_generate_uint32(&mt_prng));
+        }
+
+        mliPrng_reinit(&prng, 1337);
+        _mliMT19937_reinit(&mt_prng, 1337);
+
+        for (i = 0; i < 10; i++) {
+                CHECK(mliPrng_generate_uint32(&prng) == mliMT19937_generate_uint32(&mt_prng));
+        }
+
+
+        prng = mliPrng_init_PCG32(42);
+
+        for (i = 0; i < 10; i++) {
+                CHECK(mliPrng_generate_uint32(&prng) == mliPCG32_generate_uint32(&pcg_prng));
+                fprintf(stderr, "rng: %u, %u\n", mliPrng_generate_uint32(&prng), mliPCG32_generate_uint32(&pcg_prng));
+        }
+
+        mliPrng_reinit(&prng, 1337);
+        mliPCG32_reinit(&pcg_prng, 1337);
+
+        for (i = 0; i < 10; i++) {
+                CHECK(mliPrng_generate_uint32(&prng) == mliPCG32_generate_uint32(&pcg_prng));
+        }
 }

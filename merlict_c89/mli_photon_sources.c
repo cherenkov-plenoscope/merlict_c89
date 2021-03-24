@@ -6,7 +6,7 @@ int mli_photon_source_parallel_towards_z_from_xy_disc(
         const double wavelength,
         const double radius,
         const uint64_t num_photons,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         uint64_t i;
         const struct mliVec direction = mliVec_set(0., 0., 1.);
@@ -28,7 +28,7 @@ int point_like_towards_z_opening_angle_num_photons(
         const double wavelength,
         const double opening_angle,
         const uint64_t num_photons,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         uint64_t i;
         struct mliRandomUniformRange azimuth =

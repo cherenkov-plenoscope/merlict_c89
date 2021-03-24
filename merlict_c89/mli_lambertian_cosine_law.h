@@ -6,7 +6,7 @@
 #include "mliMT19937.h"
 
 struct mliVec mli_draw_lambertian_direction_wrt_surface_normal(
-        struct mliMT19937 *prng,
+        struct mliPrng *prng,
         const struct mliVec surface_normal);
-struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliMT19937 *prng);
+struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliPrng *prng);
 #endif

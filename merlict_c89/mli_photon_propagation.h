@@ -14,7 +14,7 @@ struct mliEnv {
         const struct mliScenery *scenery;
         struct mliDynPhotonInteraction *history;
         struct mliPhoton *photon;
-        struct mliMT19937 *prng;
+        struct mliPrng *prng;
         uint64_t max_interactions;
 };
 
@@ -22,13 +22,13 @@ int mli_propagate_photon(
         const struct mliScenery *scenery,
         struct mliDynPhotonInteraction *history,
         struct mliPhoton *photon,
-        struct mliMT19937 *prng,
+        struct mliPrng *prng,
         const uint64_t max_interactions);
 int _mli_work_on_causal_intersection(struct mliEnv *env);
 int _mli_distance_until_absorbtion(
         const struct mliFunc *absorbtion_in_medium_passing_through,
         const double wavelength,
-        struct mliMT19937 *prng,
+        struct mliPrng *prng,
         double *distance_until_absorbtion);
 int _mli_interact_with_object(
         struct mliEnv *env,

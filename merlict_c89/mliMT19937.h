@@ -22,7 +22,7 @@ struct mliMT19937 {
         uint16_t index;
 };
 
-uint32_t mliMT19937_uint32(struct mliMT19937 *mt);
+uint32_t mliMT19937_generate_uint32(struct mliMT19937 *mt);
 void _mliMT19937_twist(struct mliMT19937 *mt);
 struct mliMT19937 mliMT19937_init(const uint32_t seed);
 void _mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed);

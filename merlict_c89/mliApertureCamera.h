@@ -98,7 +98,7 @@ struct mliVec mliApCam_get_random_pixel_support_on_image_sensor_plane(
         const uint64_t num_pixel_y,
         const uint64_t pixel_x,
         const uint64_t pixel_y,
-        struct mliMT19937 *prng);
+        struct mliPrng *prng);
 
 struct mliVec mliApCam_get_object_point(
         const double focal_length,
@@ -118,7 +118,7 @@ double mliApCam_focal_length_given_field_of_view_and_sensor_width(
 
 struct mliVec mliApCam_ray_support_on_aperture(
         const double aperture_radius,
-        struct mliMT19937 *prng);
+        struct mliPrng *prng);
 
 struct mliRay mliApCam_get_ray_for_pixel(
         const double focal_length,
@@ -130,7 +130,7 @@ struct mliRay mliApCam_get_ray_for_pixel(
         const uint64_t num_pixel_y,
         const uint64_t pixel_x,
         const uint64_t pixel_y,
-        struct mliMT19937 *prng);
+        struct mliPrng *prng);
 
 struct mliApertureCamera {
         double focal_length;
@@ -146,6 +146,6 @@ int mliApertureCamera_render_image(
         const struct mliScenery *scenery,
         struct mliImage *image,
         const struct mliTracerCongig *tracer_config,
-        struct mliMT19937 *prng);
+        struct mliPrng *prng);
 
 #endif

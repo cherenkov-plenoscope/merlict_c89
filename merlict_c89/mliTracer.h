@@ -20,18 +20,18 @@ struct mliColor mli_trace(
         const struct mliScenery *scenery,
         const struct mliRay ray,
         const struct mliTracerCongig *config,
-        struct mliMT19937 *prng);
+        struct mliPrng *prng);
 
 double _mli_trace_sun_obstruction(
         const struct mliScenery *scenery,
         const struct mliVec position,
         const struct mliTracerCongig *config,
-        struct mliMT19937 *prng);
+        struct mliPrng *prng);
 
 double _mli_trace_sun_visibility(
         const struct mliScenery *scenery,
         const struct mliVec position,
         const struct mliTracerCongig *config,
-        struct mliMT19937 *prng);
+        struct mliPrng *prng);
 
 #endif

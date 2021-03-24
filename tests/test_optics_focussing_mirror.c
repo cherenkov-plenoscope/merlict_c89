@@ -8,7 +8,7 @@
 CASE("focussing_a_parallel_beam")
 {
         #define NUM_PIXEL 127
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         struct mliScenery scenery = mliScenery_init();
         struct mliDynPhotonInteraction photon_history =
                 mliDynPhotonInteraction_init();

@@ -7,6 +7,8 @@
 #include "mliFunc.h"
 #include "mliFunc_serialize.h"
 #include "mliMT19937.h"
+#include "mliPCG32.h"
+#include "mliPrng.h"
 #include "mli_random.h"
 #include "mliName.h"
 #include "mliVec.h"

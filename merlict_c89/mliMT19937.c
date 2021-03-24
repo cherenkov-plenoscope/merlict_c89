@@ -59,7 +59,7 @@ void _mliMT19937_twist(struct mliMT19937 *mt)
         mt->index = 0;
 }
 
-uint32_t mliMT19937_uint32(struct mliMT19937 *mt)
+uint32_t mliMT19937_generate_uint32(struct mliMT19937 *mt)
 {
         uint32_t y;
         int i = mt->index;

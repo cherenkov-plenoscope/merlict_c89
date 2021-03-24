@@ -26,7 +26,7 @@ void mliPinHoleCamera_render_image(
         const struct mliScenery *scenery,
         struct mliImage *image,
         const struct mliTracerCongig *tracer_config,
-        struct mliMT19937 *prng);
+        struct mliPrng *prng);
 
 void mliPinHoleCamera_render_image_with_view(
         const struct mliView view,
@@ -34,7 +34,7 @@ void mliPinHoleCamera_render_image_with_view(
         struct mliImage *image,
         const double row_over_column_pixel_ratio,
         const struct mliTracerCongig *tracer_config,
-        struct mliMT19937 *prng);
+        struct mliPrng *prng);
 
 struct mliRay mliPinHoleCamera_ray_at_row_col(
         const struct mliPinHoleCamera *camera,

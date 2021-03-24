@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 struct mliVec mli_random_direction_in_hemisphere(
-        struct mliMT19937 *prng,
+        struct mliPrng *prng,
         struct mliVec normal)
 {
         struct mliVec rnd_dir;
@@ -50,7 +50,7 @@ struct mliColor _trace_color_tone_of_diffuse_sky(
         const struct mliTracerCongig *config,
         const struct mliIntersectionSurfaceNormal *intersection,
         const struct mliScenery *scenery,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         int i;
         struct mliColor sky = mliColor_set(0.0, 0.0, 0.0);
@@ -97,7 +97,7 @@ struct mliColor _trace_to_intersection_atmosphere(
         const struct mliTracerCongig *config,
         const struct mliIntersectionSurfaceNormal *intersection,
         const struct mliScenery *scenery,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         struct mliColor color;
         struct mliColor tone;
@@ -134,7 +134,7 @@ struct mliColor _mli_trace_atmosphere(
         const struct mliScenery *scenery,
         const struct mliRay ray,
         const struct mliTracerCongig *config,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         struct mliIntersectionSurfaceNormal intersection =
                 mliIntersectionSurfaceNormal_init();

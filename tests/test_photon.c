@@ -2,7 +2,7 @@
 
 CASE("simple propagation")
 {
-        struct mliMT19937 prng = mliMT19937_init(0u);
+        struct mliPrng prng = mliPrng_init_MT19937(0u);
         struct mliScenery scenery = mliScenery_init();
         struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
         struct mliIntersectionSurfaceNormal intersection;

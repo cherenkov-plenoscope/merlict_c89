@@ -106,7 +106,7 @@ int _mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mlivrConfig config,
         const struct mliView view,
-        struct mliMT19937 *prng,
+        struct mliPrng *prng,
         const struct mliTracerCongig *tracer_config,
         const double object_distance,
         const char *path)
@@ -159,7 +159,7 @@ int mlivr_run_interactive_viewer(
         const struct mliScenery *scenery,
         const struct mlivrConfig config)
 {
-        struct mliMT19937 prng = mliMT19937_init(config.random_seed);
+        struct mliPrng prng = mliPrng_init_MT19937(config.random_seed);
         struct mliTracerCongig tracer_config = mliTracerCongig_init();
         char path[1024];
         int key;

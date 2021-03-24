@@ -2,7 +2,7 @@
 #include "mliScenery_minimal_object.h"
 #include "mli_debug.h"
 
-struct mliColor mli_random_color(struct mliMT19937 *prng)
+struct mliColor mli_random_color(struct mliPrng *prng)
 {
         struct mliRandomUniformRange uniform_8bit_range;
         uniform_8bit_range.start = 0.0;
@@ -18,7 +18,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         const char *path)
 {
         uint32_t i, total_num_boundary_layers;
-        struct mliMT19937 prng = mliMT19937_init(1u);
+        struct mliPrng prng = mliPrng_init_MT19937(1u);
         struct mliString str = mliString_init();
         struct mliMaterialsCapacity mtlcap = mliMaterialsCapacity_init();
 

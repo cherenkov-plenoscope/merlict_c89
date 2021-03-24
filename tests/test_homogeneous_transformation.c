@@ -137,7 +137,7 @@ CASE("complex sequence")
 {
         uint64_t i;
         const uint64_t num_combinations = 100;
-        struct mliMT19937 prng = mliMT19937_init(1337);
+        struct mliPrng prng = mliPrng_init_MT19937(1337);
 
         struct mliRandomUniformRange trans_range;
         struct mliRandomUniformRange angle_range;

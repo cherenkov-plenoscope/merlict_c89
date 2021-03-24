@@ -35,7 +35,7 @@ struct mliVec mliApCam_get_random_pixel_support_on_image_sensor_plane(
         const uint64_t num_pixel_y,
         const uint64_t pixel_x,
         const uint64_t pixel_y,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         double pixel_bin_width_x = image_sensor_width_x / (double)num_pixel_x;
         double pixel_bin_width_y = image_sensor_width_y / (double)num_pixel_y;
@@ -73,7 +73,7 @@ struct mliVec mliApCam_get_object_point(
 
 struct mliVec mliApCam_ray_support_on_aperture(
         const double aperture_radius,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         /* use a perfect disc as aperture */
         return mli_random_position_on_disc(aperture_radius, prng);
@@ -118,7 +118,7 @@ struct mliRay mliApCam_get_ray_for_pixel(
         const uint64_t num_pixel_y,
         const uint64_t pixel_x,
         const uint64_t pixel_y,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         struct mliVec direction;
         struct mliVec aperture_support =
@@ -156,7 +156,7 @@ void _mliApCam_aquire_pixels(
         const struct mliPixels *pixels_to_do,
         struct mliImage *colors,
         const struct mliTracerCongig *tracer_config,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         uint64_t i;
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
@@ -229,7 +229,7 @@ int mliApertureCamera_render_image(
         const struct mliScenery *scenery,
         struct mliImage *image,
         const struct mliTracerCongig *tracer_config,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         float noise_threshold = 0.05 * 255.0;
         uint64_t MAX_ITERATIONS = 128;

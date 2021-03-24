@@ -10,7 +10,7 @@ double _mli_trace_sun_visibility(
         const struct mliScenery *scenery,
         const struct mliVec position,
         const struct mliTracerCongig *config,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         return (1.0 -
                 _mli_trace_sun_obstruction(scenery, position, config, prng));
@@ -20,7 +20,7 @@ double _mli_trace_sun_obstruction(
         const struct mliScenery *scenery,
         const struct mliVec position,
         const struct mliTracerCongig *config,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         uint64_t i;
         double num_obstructions = 0.0;
@@ -54,7 +54,7 @@ struct mliColor _trace_to_intersection(
         const struct mliTracerCongig *config,
         const struct mliIntersectionSurfaceNormal *intersection,
         const struct mliScenery *scenery,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         struct mliColor color;
         struct mliSide side;
@@ -84,7 +84,7 @@ struct mliColor _mli_trace(
         const struct mliScenery *scenery,
         const struct mliRay ray,
         const struct mliTracerCongig *config,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         struct mliIntersectionSurfaceNormal intersection =
                 mliIntersectionSurfaceNormal_init();
@@ -102,7 +102,7 @@ struct mliColor mli_trace(
         const struct mliScenery *scenery,
         const struct mliRay ray,
         const struct mliTracerCongig *config,
-        struct mliMT19937 *prng)
+        struct mliPrng *prng)
 {
         if (config->have_atmosphere) {
                 return _mli_trace_atmosphere(scenery, ray, config, prng);

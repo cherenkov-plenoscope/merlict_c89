@@ -2,7 +2,7 @@
 #include "mli_lambertian_cosine_law.h"
 #include <math.h>
 
-struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliMT19937 *prng)
+struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliPrng *prng)
 {
         double azimuth;
         double sin_theta, cos_theta;
@@ -14,7 +14,7 @@ struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliMT19937 *prng)
 }
 
 struct mliVec mli_draw_lambertian_direction_wrt_surface_normal(
-        struct mliMT19937 *prng,
+        struct mliPrng *prng,
         const struct mliVec surface_normal)
 {
         const struct mliVec z = mliVec_set(0, 0, 1);
