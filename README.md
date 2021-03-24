@@ -191,6 +191,7 @@ Traversing an octree with a ray
 
 Pseudo random number generator
 - Makoto, Matsumoto and Takuji, Nishimura and [wikipedia](https://en.wikipedia.org/wiki/Mersenne_Twister); Mersenne Twister
+- Melissa E. O'Neill; Harvey Mudd College; [pcg-random.org](http://www.pcg-random.org); Permuted Congruential Generator (PCG)
 
 Parsing JSON-strings
 - Serge, Zaitsev; [JSMN](https://zserge.com/jsmn/)
