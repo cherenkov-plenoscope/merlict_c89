@@ -278,7 +278,6 @@ CASE("Generator")
 
         for (i = 0; i < 10; i++) {
                 CHECK(mliPrng_generate_uint32(&prng) == mliPCG32_generate_uint32(&pcg_prng));
-                fprintf(stderr, "rng: %u, %u\n", mliPrng_generate_uint32(&prng), mliPCG32_generate_uint32(&pcg_prng));
         }
 
         mliPrng_reinit(&prng, 1337);
