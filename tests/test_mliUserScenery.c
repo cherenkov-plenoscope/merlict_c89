@@ -17,22 +17,18 @@ CASE("mliMaterials, estimate capacity from json")
 {
         char json_str[256];
         struct mliJson material_json = mliJson_init();
-        struct mliMaterialsCapacity rescap =
-                mliMaterialsCapacity_init();
+        struct mliMaterialsCapacity rescap = mliMaterialsCapacity_init();
 
-        sprintf(
-                json_str,
+        sprintf(json_str,
                 "{\n"
                 "    \"colors\": [1, 2],\n"
                 "    \"surfaces\": [1, 2, 3, 4, 5, 6, 7, 8]\n"
                 "    \"media\": [1],\n"
                 "    \"boundary_layers\": [1, 2, 3, 4],\n"
-                "}\n"
-        );
+                "}\n");
         CHECK(mliJson_malloc_from_string(&material_json, json_str));
         CHECK(__mliMaterialsCapacity_from_materials_json(
-                &rescap,
-                &material_json));
+                &rescap, &material_json));
 
         CHECK(rescap.num_colors == 2);
         CHECK(rescap.num_surfaces == 8);
@@ -56,8 +52,7 @@ CASE("mliScenery, malloc from archive")
                 "tests/"
                 "resources/"
                 "sceneries/"
-                "001.tar"
-        ));
+                "001.tar"));
 
         CHECK(2 == scenery.geometry.num_objects);
 
@@ -77,7 +72,8 @@ CASE("mliScenery, malloc from archive")
                 &obj_teapot_idx));
         CHECK(2256 == scenery.geometry.objects[obj_teapot_idx].num_faces);
         CHECK(1202 == scenery.geometry.objects[obj_teapot_idx].num_vertices);
-        CHECK(1202 == scenery.geometry.objects[obj_teapot_idx].num_vertex_normals);
+        CHECK(1202 ==
+              scenery.geometry.objects[obj_teapot_idx].num_vertex_normals);
 
         CHECK(2 == scenery.materials.num_functions);
 
@@ -147,8 +143,7 @@ CASE("mliScenery, read, write")
                 "tests/"
                 "resources/"
                 "sceneries/"
-                "002.tar"
-        ));
+                "002.tar"));
 
         /* geometry */
         /* -------- */

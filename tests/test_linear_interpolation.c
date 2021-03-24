@@ -1,6 +1,5 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-
 CASE("linear interpolation 1d")
 {
         /*                                    xarg  x0  x1                    */

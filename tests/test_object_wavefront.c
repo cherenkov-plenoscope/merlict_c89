@@ -24,7 +24,11 @@ CASE("mliObject, malloc")
 
         struct mliObject obj = mliObject_init();
         CHECK(mliObject_malloc(
-                &obj, num_vertices, num_vertex_normals, num_faces, num_materials));
+                &obj,
+                num_vertices,
+                num_vertex_normals,
+                num_faces,
+                num_materials));
 
         CHECK(obj.num_vertices == num_vertices);
         CHECK(obj.num_vertex_normals == num_vertex_normals);
@@ -450,8 +454,7 @@ CASE("mliObject, write and read ascii-text-string")
         fclose(f);
 
         CHECK(mliString_malloc_from_path(
-                &str,
-                "tests/resources/hexagonal_mirror_facet.obj.tmp"));
+                &str, "tests/resources/hexagonal_mirror_facet.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));
         mliString_free(&str);
 
@@ -462,9 +465,7 @@ CASE("mliObject, write and read ascii-text-string")
 
         for (i = 0; i < obj.num_vertices; i++) {
                 CHECK(mliVec_equal_margin(
-                        obj.vertices[i],
-                        obj_back.vertices[i],
-                        1e-6));
+                        obj.vertices[i], obj_back.vertices[i], 1e-6));
         }
         for (i = 0; i < obj.num_vertex_normals; i++) {
                 CHECK(mliVec_equal_margin(
@@ -474,21 +475,19 @@ CASE("mliObject, write and read ascii-text-string")
         }
         for (i = 0; i < obj.num_faces; i++) {
                 CHECK(mliFace_equal(
-                        obj.faces_vertices[i],
-                        obj_back.faces_vertices[i]));
+                        obj.faces_vertices[i], obj_back.faces_vertices[i]));
                 CHECK(mliFace_equal(
                         obj.faces_vertex_normals[i],
                         obj_back.faces_vertex_normals[i]));
         }
         for (i = 0; i < obj.num_materials; i++) {
                 CHECK(obj.first_face_in_next_material[i] ==
-                        obj_back.first_face_in_next_material[i]);
+                      obj_back.first_face_in_next_material[i]);
         }
 
         mliObject_free(&obj);
         mliObject_free(&obj_back);
 }
-
 
 CASE("mliObject, read and write multiple materials")
 {
@@ -528,7 +527,6 @@ CASE("mliObject, read and write multiple materials")
         CHECK(obj_back.num_vertex_normals == 6);
         CHECK(obj_back.num_faces == 12);
         CHECK(obj_back.num_materials == 6);
-
 
         CHECK(0 == mliObject_resolve_material_idx(&obj_back, 0));
         CHECK(0 == mliObject_resolve_material_idx(&obj_back, 1));

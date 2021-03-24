@@ -19,8 +19,7 @@ CASE("mliAccelerator, init")
                 "tests/"
                 "resources/"
                 "sceneries/"
-                "001.tar"
-        ));
+                "001.tar"));
 
         ray = mliRay_set(mliVec_set(0.0, 0.0, -5.0), mliVec_set(0.0, 0.0, 1.0));
 

@@ -53,8 +53,8 @@ CASE("refraction_in_prism")
                 photon.ray = mliRay_set(
                         mliVec_set(0.0, -1.0, -angle_of_attack),
                         mliVec_set(0.0, 1.0, angle_of_attack));
-                photon.wavelength = mli_random_draw_uniform(
-                        wavelength_range, &prng);
+                photon.wavelength =
+                        mli_random_draw_uniform(wavelength_range, &prng);
                 photon.id = i;
 
                 CHECK(mliDynPhotonInteraction_malloc(
@@ -67,10 +67,11 @@ CASE("refraction_in_prism")
                         &prng,
                         MAX_INTERACTIONS));
 
-                final_intersection = photon_history.arr[
-                        photon_history.dyn.size - 1];
-                final_robj_id = scenery.geometry.robject_ids[
-                        final_intersection.geometry_id.robj];
+                final_intersection =
+                        photon_history.arr[photon_history.dyn.size - 1];
+                final_robj_id =
+                        scenery.geometry.robject_ids[final_intersection
+                                                             .geometry_id.robj];
 
                 if (final_robj_id == 2) {
                         count_passing_prism += 1.0;
@@ -90,15 +91,13 @@ CASE("refraction_in_prism")
         }
 
         for (i = 1; i < 32; i++) {
-                if (
-                        spectrum_intensity[i] > 10.0 &&
-                        spectrum_intensity[i - 1] > 10.0
-                ) {
+                if (spectrum_intensity[i] > 10.0 &&
+                    spectrum_intensity[i - 1] > 10.0) {
                         CHECK(spectrum_colors[i] < spectrum_colors[i - 1]);
                 }
         }
 
-        fraction_passing_prism = count_passing_prism/(double)NUM_PHOTONS;
+        fraction_passing_prism = count_passing_prism / (double)NUM_PHOTONS;
 
         CHECK(fraction_passing_prism < 0.9);
         CHECK(fraction_passing_prism > 0.8);

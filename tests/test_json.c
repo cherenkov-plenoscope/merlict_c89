@@ -85,7 +85,8 @@ CASE("mliJson_malloc_from_path")
         double myfloat;
 
         CHECK(mliJson_malloc_from_path(&json, "tests/resources/example.json"));
-        CHECK(mliJson_debug_to_path(&json, "tests/resources/example.debug.tmp"));
+        CHECK(mliJson_debug_to_path(
+                &json, "tests/resources/example.debug.tmp"));
 
         CHECK(mliJson_find_key(&json, 0, "name", &return_idx));
         CHECK(return_idx == 1);

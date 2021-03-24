@@ -16,7 +16,8 @@ CASE("init mliCaOctree")
 
 CASE("sizeof mliNode") { CHECK(sizeof(struct mliNode) == 5 * 8); }
 
-CASE("ray parallel to axis") {
+CASE("ray parallel to axis")
+{
         struct mliScenery scenery = mliScenery_init();
         uint32_t i;
         uint32_t robj = 0;

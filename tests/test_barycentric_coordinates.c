@@ -77,7 +77,8 @@ CASE("estimate surface normal")
         struct mliVec normal;
 
         weights = mli_barycentric_weights(a, b, c, mliVec_set(0.0, 0.0, 0.0));
-        normal = mliTriangle_interpolate_surface_normal(unit_z, unit_z, unit_z, weights);
+        normal = mliTriangle_interpolate_surface_normal(
+                unit_z, unit_z, unit_z, weights);
         CHECK(normal.x == unit_z.x);
         CHECK(normal.y == unit_z.y);
         CHECK(normal.z == unit_z.z);
@@ -90,20 +91,14 @@ CASE("estimate surface normal")
 
         weights = mli_barycentric_weights(a, b, c, c);
         normal = mliTriangle_interpolate_surface_normal(
-                unit_z,
-                unit_z,
-                negative_unit_z,
-                weights);
+                unit_z, unit_z, negative_unit_z, weights);
         CHECK_MARGIN(normal.x, negative_unit_z.x, 1e-6);
         CHECK_MARGIN(normal.y, negative_unit_z.y, 1e-6);
         CHECK_MARGIN(normal.z, negative_unit_z.z, 1e-6);
 
         weights = mli_barycentric_weights(a, b, c, a);
         normal = mliTriangle_interpolate_surface_normal(
-                unit_z,
-                unit_z,
-                negative_unit_z,
-                weights);
+                unit_z, unit_z, negative_unit_z, weights);
         CHECK_MARGIN(normal.x, unit_z.x, 1e-6);
         CHECK_MARGIN(normal.y, unit_z.y, 1e-6);
         CHECK_MARGIN(normal.z, unit_z.z, 1e-6);

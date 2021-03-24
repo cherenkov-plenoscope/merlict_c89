@@ -263,27 +263,30 @@ CASE("Generator")
         struct mliPCG32 pcg_prng = mliPCG32_init(42);
 
         for (i = 0; i < 10; i++) {
-                CHECK(mliPrng_generate_uint32(&prng) == mliMT19937_generate_uint32(&mt_prng));
+                CHECK(mliPrng_generate_uint32(&prng) ==
+                      mliMT19937_generate_uint32(&mt_prng));
         }
 
         mliPrng_reinit(&prng, 1337);
         _mliMT19937_reinit(&mt_prng, 1337);
 
         for (i = 0; i < 10; i++) {
-                CHECK(mliPrng_generate_uint32(&prng) == mliMT19937_generate_uint32(&mt_prng));
+                CHECK(mliPrng_generate_uint32(&prng) ==
+                      mliMT19937_generate_uint32(&mt_prng));
         }
-
 
         prng = mliPrng_init_PCG32(42);
 
         for (i = 0; i < 10; i++) {
-                CHECK(mliPrng_generate_uint32(&prng) == mliPCG32_generate_uint32(&pcg_prng));
+                CHECK(mliPrng_generate_uint32(&prng) ==
+                      mliPCG32_generate_uint32(&pcg_prng));
         }
 
         mliPrng_reinit(&prng, 1337);
         mliPCG32_reinit(&pcg_prng, 1337);
 
         for (i = 0; i < 10; i++) {
-                CHECK(mliPrng_generate_uint32(&prng) == mliPCG32_generate_uint32(&pcg_prng));
+                CHECK(mliPrng_generate_uint32(&prng) ==
+                      mliPCG32_generate_uint32(&pcg_prng));
         }
 }
