@@ -49,6 +49,12 @@ int mliObject_has_valid_faces(const struct mliObject *obj)
                                 obj->num_vertex_normals,
                         "Expected faces_vertex_normals.c <= "
                         "num_vertex_normals");
+                mli_check(
+                        obj->faces_materials[i] <
+                                obj->num_materials,
+                        "Expected faces_materials < "
+                        "num_materials");
+
         }
         return 1;
 error:
@@ -96,17 +102,6 @@ int mliObject_has_valid_materials(const struct mliObject *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_materials; i++) {
-                mli_check(
-                        obj->first_face_in_next_material[i] <= obj->num_faces,
-                        "Expected first_face_in_next_material < num_faces.");
-                if (i > 0) {
-                        mli_check(
-                                obj->first_face_in_next_material[i] >
-                                        obj->first_face_in_next_material[i - 1],
-                                "Expected first_face_in_next_material to be "
-                                "strictly "
-                                "ascending, but it is not.");
-                }
                 mli_check(
                         mliName_valid(&obj->material_names[i]),
                         "Expected material_name to be '\\0' terminated.");

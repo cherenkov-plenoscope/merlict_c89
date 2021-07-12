@@ -20,7 +20,6 @@ struct mliObject {
         uint16_t *faces_materials;
 
         uint32_t num_materials;
-        uint32_t *first_face_in_next_material;
         struct mliName *material_names;
 };
 

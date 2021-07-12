@@ -17,7 +17,6 @@ struct mliObject mliObject_init(void)
         obj.faces_materials = NULL;
 
         obj.num_materials = 0;
-        obj.first_face_in_next_material = NULL;
         obj.material_names = NULL;
         return obj;
 }
@@ -29,7 +28,6 @@ void mliObject_free(struct mliObject *obj)
         free(obj->faces_vertices);
         free(obj->faces_vertex_normals);
         free(obj->faces_materials);
-        free(obj->first_face_in_next_material);
         free(obj->material_names);
         *obj = mliObject_init();
 }
@@ -64,8 +62,6 @@ int mliObject_malloc(
         mli_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
         mli_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
         mli_malloc(obj->faces_materials, uint16_t, obj->num_faces);
-        mli_malloc(
-                obj->first_face_in_next_material, uint32_t, obj->num_materials);
         mli_malloc(obj->material_names, struct mliName, obj->num_materials);
         for (i = 0; i < obj->num_materials; i++) {
                 obj->material_names[i] = mliName_init();
@@ -98,8 +94,6 @@ int mliObject_equal(const struct mliObject *a, const struct mliObject *b)
                 mli_c(a->faces_materials[i] == b->faces_materials[i]);
         }
         for (i = 0; i < a->num_materials; i++) {
-                mli_c(a->first_face_in_next_material[i] ==
-                      b->first_face_in_next_material[i]);
                 mli_c(mliName_equal(
                         &a->material_names[i], &b->material_names[i]));
         }

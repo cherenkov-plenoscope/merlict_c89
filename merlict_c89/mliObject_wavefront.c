@@ -446,7 +446,6 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         struct mliDynFace fvn = mliDynFace_init();
         struct mliDynUint32 fm = mliDynUint32_init();
 
-        struct mliDynUint32 first_face_in_next_material = mliDynUint32_init();
         struct mliDynMap material_names = mliDynMap_init();
 
         memset(line, '\0', sizeof(line));
@@ -459,7 +458,6 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         mli_c(mliDynFace_malloc(&fvn, 0u));
         mli_c(mliDynUint32_malloc(&fm, 0u));
 
-        mli_c(mliDynUint32_malloc(&first_face_in_next_material, 0u));
         mli_c(mliDynMap_malloc(&material_names, 0u));
 
         /* parse wavefront into dyn */
@@ -547,12 +545,6 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 usemtl_occurences += 1;
                                 mli_c(mliDynMap_insert(
                                         &material_names, &line[7], 0));
-
-                                if (usemtl_occurences > 1) {
-                                        mli_c(mliDynUint32_push_back(
-                                                &first_face_in_next_material,
-                                                (uint32_t)fv.dyn.size));
-                                }
                         }
                 } /* line_length > 0 */
 
@@ -561,10 +553,6 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                 }
                 p += line_length + 1;
         }
-
-        /* finalize first_face_in_next_material */
-        mli_c(mliDynUint32_push_back(
-                &first_face_in_next_material, (uint32_t)fv.dyn.size));
 
         /* copy dyn into static mliObject */
         mli_check(
@@ -576,7 +564,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                         v.dyn.size,
                         vn.dyn.size,
                         fv.dyn.size,
-                        first_face_in_next_material.dyn.size),
+                        material_names.dyn.size),
                 "Failed to malloc mliObject from file.");
 
         for (i = 0; i < v.dyn.size; i++) {
@@ -594,9 +582,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         for (i = 0; i < fvn.dyn.size; i++) {
                 obj->faces_materials[i] = fm.arr[i];
         }
-        for (i = 0; i < first_face_in_next_material.dyn.size; i++) {
-                obj->first_face_in_next_material[i] =
-                        first_face_in_next_material.arr[i];
+        for (i = 0; i < material_names.dyn.size; i++) {
                 memcpy(obj->material_names[i].c_str,
                        material_names.arr[i].key,
                        MLI_NAME_CAPACITY);
@@ -612,7 +598,6 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         mliDynFace_free(&fvn);
         mliDynUint32_free(&fm);
 
-        mliDynUint32_free(&first_face_in_next_material);
         mliDynMap_free(&material_names);
 
         return 1;
@@ -627,7 +612,6 @@ error:
         mliDynFace_free(&fvn);
         mliDynUint32_free(&fm);
 
-        mliDynUint32_free(&first_face_in_next_material);
         mliDynMap_free(&material_names);
 
         if (MLI_PRINT_LEVEL) {
@@ -663,19 +647,21 @@ int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
 
         mli_c(fprintf(f, "# faces\n"));
 
-        face = 0;
+
         for (m = 0; m < obj->num_materials; m++) {
                 mli_c(fprintf(f, "usemtl %s\n", obj->material_names[m].c_str));
-                for (; face < obj->first_face_in_next_material[m]; face++) {
-                        mli_c(
-                                fprintf(f,
-                                        "f %d//%d %d//%d %d//%d\n",
-                                        obj->faces_vertices[face].a + 1,
-                                        obj->faces_vertex_normals[face].a + 1,
-                                        obj->faces_vertices[face].b + 1,
-                                        obj->faces_vertex_normals[face].b + 1,
-                                        obj->faces_vertices[face].c + 1,
-                                        obj->faces_vertex_normals[face].c + 1));
+                for (face = 0; face < obj->num_faces; face++) {
+                        if (obj->faces_materials[face] == m) {
+                            mli_c(
+                                    fprintf(f,
+                                            "f %d//%d %d//%d %d//%d\n",
+                                            obj->faces_vertices[face].a + 1,
+                                            obj->faces_vertex_normals[face].a + 1,
+                                            obj->faces_vertices[face].b + 1,
+                                            obj->faces_vertex_normals[face].b + 1,
+                                            obj->faces_vertices[face].c + 1,
+                                            obj->faces_vertex_normals[face].c + 1));
+                        }
                 }
         }
 
