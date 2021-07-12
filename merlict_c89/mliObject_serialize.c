@@ -29,7 +29,7 @@ int mliObject_fwrite(const struct mliObject *obj, FILE *f)
                 sizeof(struct mliFace),
                 obj->num_faces,
                 f);
-
+        mli_fwrite(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
         mli_fwrite(
                 obj->first_face_in_next_material,
                 sizeof(uint32_t),
@@ -83,7 +83,7 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
                 sizeof(struct mliFace),
                 obj->num_faces,
                 f);
-
+        mli_fread(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
         mli_fread(
                 obj->first_face_in_next_material,
                 sizeof(uint32_t),

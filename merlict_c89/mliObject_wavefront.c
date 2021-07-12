@@ -582,6 +582,9 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         for (i = 0; i < fvn.dyn.size; i++) {
                 obj->faces_vertex_normals[i] = fvn.arr[i];
         }
+        for (i = 0; i < fvn.dyn.size; i++) {
+                obj->faces_materials[i] = 0u;
+        }
         for (i = 0; i < first_face_in_next_material.dyn.size; i++) {
                 obj->first_face_in_next_material[i] =
                         first_face_in_next_material.arr[i];

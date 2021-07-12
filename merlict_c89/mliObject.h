@@ -17,6 +17,7 @@ struct mliObject {
         uint32_t num_faces;
         struct mliFace *faces_vertices;
         struct mliFace *faces_vertex_normals;
+        uint16_t *faces_materials;
 
         uint32_t num_materials;
         uint32_t *first_face_in_next_material;
