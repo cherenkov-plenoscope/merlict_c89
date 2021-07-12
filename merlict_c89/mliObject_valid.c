@@ -50,11 +50,9 @@ int mliObject_has_valid_faces(const struct mliObject *obj)
                         "Expected faces_vertex_normals.c <= "
                         "num_vertex_normals");
                 mli_check(
-                        obj->faces_materials[i] <
-                                obj->num_materials,
+                        obj->faces_materials[i] < obj->num_materials,
                         "Expected faces_materials < "
                         "num_materials");
-
         }
         return 1;
 error:

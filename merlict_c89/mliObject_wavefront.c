@@ -422,10 +422,9 @@ error:
 
 int _mli_line_is_usemtl(const char *line, const uint64_t line_length)
 {
-    return line_length > 6 && line[0] == 'u' &&
-    line[1] == 's' && line[2] == 'e' &&
-    line[3] == 'm' && line[4] == 't' &&
-    line[5] == 'l' && line[6] == ' ';
+        return line_length > 6 && line[0] == 'u' && line[1] == 's' &&
+               line[2] == 'e' && line[3] == 'm' && line[4] == 't' &&
+               line[5] == 'l' && line[6] == ' ';
 }
 
 int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
@@ -532,8 +531,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 mli_c(mliDynFace_push_back(&fv, tmp_fv));
                                 mli_c(mliDynFace_push_back(&fvn, tmp_fvn));
                                 mli_c(mliDynUint32_push_back(
-                                    &fm,
-                                    usemtl_occurences - 1));
+                                        &fm, usemtl_occurences - 1));
                                 mli_check(
                                         (line_mode ==
                                          MLI_WAVEFRONT_FACE_LINE_V_VT_VN) ||
@@ -647,20 +645,19 @@ int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
 
         mli_c(fprintf(f, "# faces\n"));
 
-
         for (m = 0; m < obj->num_materials; m++) {
                 mli_c(fprintf(f, "usemtl %s\n", obj->material_names[m].c_str));
                 for (face = 0; face < obj->num_faces; face++) {
                         if (obj->faces_materials[face] == m) {
-                            mli_c(
-                                    fprintf(f,
-                                            "f %d//%d %d//%d %d//%d\n",
-                                            obj->faces_vertices[face].a + 1,
-                                            obj->faces_vertex_normals[face].a + 1,
-                                            obj->faces_vertices[face].b + 1,
-                                            obj->faces_vertex_normals[face].b + 1,
-                                            obj->faces_vertices[face].c + 1,
-                                            obj->faces_vertex_normals[face].c + 1));
+                                mli_c(fprintf(
+                                        f,
+                                        "f %d//%d %d//%d %d//%d\n",
+                                        obj->faces_vertices[face].a + 1,
+                                        obj->faces_vertex_normals[face].a + 1,
+                                        obj->faces_vertices[face].b + 1,
+                                        obj->faces_vertex_normals[face].b + 1,
+                                        obj->faces_vertices[face].c + 1,
+                                        obj->faces_vertex_normals[face].c + 1));
                         }
                 }
         }
