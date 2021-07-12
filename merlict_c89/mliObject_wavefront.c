@@ -420,6 +420,14 @@ error:
         return 0;
 }
 
+int _mli_line_is_usemtl(const char *line, const uint64_t line_length)
+{
+    return line_length > 6 && line[0] == 'u' &&
+    line[1] == 's' && line[2] == 'e' &&
+    line[3] == 'm' && line[4] == 't' &&
+    line[5] == 'l' && line[6] == ' ';
+}
+
 int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 {
         uint64_t i = 0u;
@@ -532,11 +540,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                                  MLI_WAVEFRONT_FACE_LINE_V_VN),
                                         "Expected faces to have "
                                         "vertex-normals.");
-                        } else if (
-                                line_length > 6 && line[0] == 'u' &&
-                                line[1] == 's' && line[2] == 'e' &&
-                                line[3] == 'm' && line[4] == 't' &&
-                                line[5] == 'l' && line[6] == ' ') {
+                        } else if (_mli_line_is_usemtl(line, line_length)) {
                                 usemtl_occurences += 1;
                                 mli_c(mliDynMap_insert(
                                         &material_names, &line[7], 0));
