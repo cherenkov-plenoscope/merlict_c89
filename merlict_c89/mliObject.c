@@ -112,12 +112,6 @@ uint32_t mliObject_resolve_material_idx(
         const struct mliObject *obj,
         const uint32_t face_idx)
 {
-        uint32_t material_idx = 0;
         assert(face_idx < obj->num_faces);
-        MLI_UPPER_COMPARE(
-                obj->first_face_in_next_material,
-                obj->num_materials,
-                face_idx,
-                material_idx);
-        return material_idx;
+        return obj->faces_materials[face_idx];
 }
