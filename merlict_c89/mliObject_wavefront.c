@@ -533,6 +533,9 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
                                 mli_c(mliDynFace_push_back(&fv, tmp_fv));
                                 mli_c(mliDynFace_push_back(&fvn, tmp_fvn));
+                                mli_c(mliDynUint32_push_back(
+                                    &fm,
+                                    usemtl_occurences - 1));
                                 mli_check(
                                         (line_mode ==
                                          MLI_WAVEFRONT_FACE_LINE_V_VT_VN) ||
@@ -589,7 +592,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                 obj->faces_vertex_normals[i] = fvn.arr[i];
         }
         for (i = 0; i < fvn.dyn.size; i++) {
-                obj->faces_materials[i] = 0u;
+                obj->faces_materials[i] = fm.arr[i];
         }
         for (i = 0; i < first_face_in_next_material.dyn.size; i++) {
                 obj->first_face_in_next_material[i] =
