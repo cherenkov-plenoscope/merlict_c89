@@ -649,19 +649,22 @@ int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
         mli_c(fprintf(f, "# faces\n"));
         for (face = 0; face < obj->num_faces; face++) {
                 if ((face == 0) || (mtl != obj->faces_materials[face])) {
-                    mtl = obj->faces_materials[face];
-                    mli_c(fprintf(f, "usemtl %s\n", obj->material_names[mtl].c_str));
+                        mtl = obj->faces_materials[face];
+                        mli_c(
+                                fprintf(f,
+                                        "usemtl %s\n",
+                                        obj->material_names[mtl].c_str));
                 }
 
-                mli_c(fprintf(
-                        f,
-                        "f %d//%d %d//%d %d//%d\n",
-                        obj->faces_vertices[face].a + 1,
-                        obj->faces_vertex_normals[face].a + 1,
-                        obj->faces_vertices[face].b + 1,
-                        obj->faces_vertex_normals[face].b + 1,
-                        obj->faces_vertices[face].c + 1,
-                        obj->faces_vertex_normals[face].c + 1));
+                mli_c(
+                        fprintf(f,
+                                "f %d//%d %d//%d %d//%d\n",
+                                obj->faces_vertices[face].a + 1,
+                                obj->faces_vertex_normals[face].a + 1,
+                                obj->faces_vertices[face].b + 1,
+                                obj->faces_vertex_normals[face].b + 1,
+                                obj->faces_vertices[face].c + 1,
+                                obj->faces_vertex_normals[face].c + 1));
         }
 
         return 1;
