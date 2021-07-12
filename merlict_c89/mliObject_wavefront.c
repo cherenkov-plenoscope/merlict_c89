@@ -436,6 +436,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
         struct mliDynFace fv = mliDynFace_init();
         struct mliDynFace fvn = mliDynFace_init();
+        struct mliDynUint32 fm = mliDynUint32_init();
 
         struct mliDynUint32 first_face_in_next_material = mliDynUint32_init();
         struct mliDynMap material_names = mliDynMap_init();
@@ -448,6 +449,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
         mli_c(mliDynFace_malloc(&fv, 0u));
         mli_c(mliDynFace_malloc(&fvn, 0u));
+        mli_c(mliDynUint32_malloc(&fm, 0u));
 
         mli_c(mliDynUint32_malloc(&first_face_in_next_material, 0u));
         mli_c(mliDynMap_malloc(&material_names, 0u));
@@ -601,6 +603,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
         mliDynFace_free(&fv);
         mliDynFace_free(&fvn);
+        mliDynUint32_free(&fm);
 
         mliDynUint32_free(&first_face_in_next_material);
         mliDynMap_free(&material_names);
@@ -615,6 +618,7 @@ error:
 
         mliDynFace_free(&fv);
         mliDynFace_free(&fvn);
+        mliDynUint32_free(&fm);
 
         mliDynUint32_free(&first_face_in_next_material);
         mliDynMap_free(&material_names);
