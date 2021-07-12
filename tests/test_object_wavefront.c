@@ -546,3 +546,47 @@ CASE("mliObject, read and write multiple materials")
         mliObject_free(&obj_orig);
         mliObject_free(&obj_back);
 }
+
+CASE("mliObject, read and write repeating materials")
+{
+        FILE *f;
+        struct mliString str = mliString_init();
+        struct mliObject obj_orig = mliObject_init();
+        struct mliObject obj_back = mliObject_init();
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/"
+                "resources/"
+                "repeating_material.obj"));
+        CHECK(mliObject_malloc_from_wavefront(&obj_orig, str.c_str));
+        mliString_free(&str);
+        CHECK(obj_orig.num_vertices == 5);
+        CHECK(obj_orig.num_vertex_normals == 1);
+        CHECK(obj_orig.num_faces == 3);
+        CHECK(obj_orig.num_materials == 2);
+
+        f = fopen("tests/resources/repeating_material.obj.tmp", "w");
+        CHECK(f != NULL);
+        mliObject_fprint_to_wavefront(f, &obj_orig);
+        fclose(f);
+
+        CHECK(mliString_malloc_from_path(
+                &str,
+                "tests/"
+                "resources/"
+                "repeating_material.obj.tmp"));
+        CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));
+        mliString_free(&str);
+
+        CHECK(obj_back.num_vertices == obj_orig.num_vertices);
+        CHECK(obj_back.num_vertex_normals == obj_orig.num_vertex_normals);
+        CHECK(obj_back.num_faces == obj_orig.num_faces);
+        CHECK(obj_back.num_materials == obj_orig.num_materials);
+
+        CHECK(0 == mliObject_resolve_material_idx(&obj_back, 0));
+        CHECK(1 == mliObject_resolve_material_idx(&obj_back, 1));
+        CHECK(0 == mliObject_resolve_material_idx(&obj_back, 2));
+
+        mliObject_free(&obj_orig);
+        mliObject_free(&obj_back);
+}
