@@ -8,7 +8,7 @@ CASE("Write and read tape-archive")
 
         sprintf(payload, "%s", "Hello world!");
 
-        CHECK(mliTar_open(&tar, "tests/resources/123.tar.tmp", "w"));
+        CHECK(mliTar_open(&tar, "merlict_c89/tests/resources/123.tar.tmp", "w"));
         CHECK(mliTar_write_dir_header(&tar, "resources"));
         CHECK(mliTar_write_file_header(
                 &tar, "resources/hans.txt", strlen(payload)));
@@ -18,7 +18,7 @@ CASE("Write and read tape-archive")
 
         memset(payload, '\0', sizeof(payload));
 
-        CHECK(mliTar_open(&tar, "tests/resources/123.tar.tmp", "r"));
+        CHECK(mliTar_open(&tar, "merlict_c89/tests/resources/123.tar.tmp", "r"));
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("resources", tarh.name));

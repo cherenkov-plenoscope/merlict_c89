@@ -60,7 +60,7 @@ CASE("scaling")
 
 CASE("mliImage_write_to_ppm, mliImage_malloc_from_ppm")
 {
-        const char path[] = "tests/resources/img.ppm.tmp";
+        const char path[] = "merlict_c89/tests/resources/img.ppm.tmp";
         struct mliImage img = mliImage_init();
         struct mliImage back = mliImage_init();
         uint32_t col;

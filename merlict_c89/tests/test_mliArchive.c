@@ -8,6 +8,7 @@ CASE("mliArchive, read tar")
 
         CHECK(mliArchive_malloc_from_tar(
                 &arc,
+                "merlict_c89/"
                 "tests/"
                 "resources/"
                 "sceneries/"

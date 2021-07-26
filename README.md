@@ -26,17 +26,17 @@ Merlict would not exist without the author's past and present affiliations:
 To involve merlict in your project
 
 ```c
-#include "merlict_c89/merlict_c89.h"
+#include "merlict_c89/all_headers.h"
 ```
 
 in your headers, and
 
 ```c
-#include "merlict_c89/merlict_c89.c"
+#include "merlict_c89/all_sources.c"
 ```
 
 in your sources. Thats it. :checkered_flag:
-See ```./merlict-c89-test.c``` and run ```./compile_and_test.sh``` for a minimal example.
+See ```./merlict_c89/tests/test.c``` and run ```./compile_and_test.sh``` for a minimal example.
 
 ### Your Buildsystem
 Merlict is structured into pairs of ```./merlict_c89/mli*.h```, and ```./merlict_c89/mli*.c``` files which you can put into your buildsystem.
@@ -54,19 +54,19 @@ Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical 
 
 #### Build :hammer:
 ```bash
-gcc ./merlict-c89-view.c -o view -lm
+gcc ./merlict_c89_viewer/apps/viewer.c -o viewer -lm
 ```
 
 #### Run
 ```bash
-./view ./tests/resources/sceneries/001.tar
+./viewer ./merlict_c89/tests/resources/sceneries/001.tar
 ```
 
  ASCII-art                 | ANSI-escape-codes
 :-------------------------:|:-------------------------:
 ![viewer-ascii-art](/readme/viewer/teapot_ascii_v1-0-0.png)  |  ![viewer-ansi-escape](/readme/viewer/teapot_ansi_v1-0-0.png)
 
-![viewer-rendering-ppm](/readme/viewer/teapot_full_v1-0-0.png) 
+![viewer-rendering-ppm](/readme/viewer/teapot_full_v1-0-0.png)
 
 # Interface
 

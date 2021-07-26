@@ -49,6 +49,7 @@ CASE("mliScenery, malloc from archive")
 
         CHECK(mliScenery_malloc_from_tar(
                 &scenery,
+                "merlict_c89/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -140,6 +141,7 @@ CASE("mliScenery, read, write")
 
         CHECK(mliScenery_malloc_from_tar(
                 &orig,
+                "merlict_c89/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -147,11 +149,11 @@ CASE("mliScenery, read, write")
 
         /* geometry */
         /* -------- */
-        f = fopen("tests/resources/geometry.bin.tmp", "w");
+        f = fopen("merlict_c89/tests/resources/geometry.bin.tmp", "w");
         CHECK(f != NULL);
         CHECK(mliGeometry_fwrite(&orig.geometry, f));
         fclose(f);
-        f = fopen("tests/resources/geometry.bin.tmp", "r");
+        f = fopen("merlict_c89/tests/resources/geometry.bin.tmp", "r");
         CHECK(f != NULL);
         CHECK(mliGeometry_malloc_fread(&back.geometry, f));
         fclose(f);
@@ -159,11 +161,11 @@ CASE("mliScenery, read, write")
 
         /* materials */
         /* --------- */
-        f = fopen("tests/resources/materials.bin.tmp", "w");
+        f = fopen("merlict_c89/tests/resources/materials.bin.tmp", "w");
         CHECK(f != NULL);
         CHECK(mliMaterials_fwrite(&orig.materials, f));
         fclose(f);
-        f = fopen("tests/resources/materials.bin.tmp", "r");
+        f = fopen("merlict_c89/tests/resources/materials.bin.tmp", "r");
         CHECK(f != NULL);
         CHECK(mliMaterials_malloc_fread(&back.materials, f));
         fclose(f);
@@ -171,11 +173,11 @@ CASE("mliScenery, read, write")
 
         /* accelerator */
         /* ----------- */
-        f = fopen("tests/resources/accelerator.bin.tmp", "w");
+        f = fopen("merlict_c89/tests/resources/accelerator.bin.tmp", "w");
         CHECK(f != NULL);
         CHECK(mliAccelerator_fwrite(&orig.accelerator, f));
         fclose(f);
-        f = fopen("tests/resources/accelerator.bin.tmp", "r");
+        f = fopen("merlict_c89/tests/resources/accelerator.bin.tmp", "r");
         CHECK(f != NULL);
         CHECK(mliAccelerator_malloc_fread(&back.accelerator, f));
         fclose(f);
@@ -183,11 +185,11 @@ CASE("mliScenery, read, write")
 
         /* geomap */
         /* ------ */
-        f = fopen("tests/resources/geomap.bin.tmp", "w");
+        f = fopen("merlict_c89/tests/resources/geomap.bin.tmp", "w");
         CHECK(f != NULL);
         CHECK(mliGeometryToMaterialMap_fwrite(&orig.geomap, f));
         fclose(f);
-        f = fopen("tests/resources/geomap.bin.tmp", "r");
+        f = fopen("merlict_c89/tests/resources/geomap.bin.tmp", "r");
         CHECK(f != NULL);
         CHECK(mliGeometryToMaterialMap_malloc_fread(&back.geomap, f));
         fclose(f);
@@ -196,9 +198,9 @@ CASE("mliScenery, read, write")
         /* full scenery */
         /* ------------ */
         CHECK(mliScenery_write_to_path(
-                &orig, "tests/resources/scenery.bin.tmp"));
+                &orig, "merlict_c89/tests/resources/scenery.bin.tmp"));
         CHECK(mliScenery_malloc_from_path(
-                &back, "tests/resources/scenery.bin.tmp"));
+                &back, "merlict_c89/tests/resources/scenery.bin.tmp"));
         CHECK(mliScenery_equal(&back, &orig));
 
         mliScenery_free(&back);

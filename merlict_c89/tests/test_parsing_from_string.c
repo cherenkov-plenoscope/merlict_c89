@@ -450,13 +450,14 @@ CASE("line info fprint")
         FILE *f;
         CHECK(mliString_malloc_from_path(
                 &s,
+                "merlict_c89/"
                 "tests/"
                 "resources/"
                 "sceneries/"
                 "002/"
                 "objects/"
                 "cube_with_materials.obj"));
-        f = fopen("tests/resources/lines_info.tmp", "w");
+        f = fopen("merlict_c89/tests/resources/lines_info.tmp", "w");
         CHECK(f);
         CHECK(mli_lines_info_fprint(f, s.c_str, 1, 3));
         CHECK(mli_lines_info_fprint(f, s.c_str, 10, 3));
