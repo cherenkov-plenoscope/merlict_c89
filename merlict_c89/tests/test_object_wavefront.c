@@ -398,13 +398,15 @@ CASE("mliObject, write and read binary-string")
         mliString_free(&str);
 
         f = fopen(
-            "merlict_c89/tests/resources/hexagonal_mirror_facet.bin.tmp", "w");
+                "merlict_c89/tests/resources/hexagonal_mirror_facet.bin.tmp",
+                "w");
         CHECK(f != NULL);
         mliObject_fwrite(&obj, f);
         fclose(f);
 
         f = fopen(
-            "merlict_c89/tests/resources/hexagonal_mirror_facet.bin.tmp", "r");
+                "merlict_c89/tests/resources/hexagonal_mirror_facet.bin.tmp",
+                "r");
         CHECK(f != NULL);
         mliObject_malloc_fread(&obj_back, f);
         fclose(f);
@@ -454,7 +456,8 @@ CASE("mliObject, write and read ascii-text-string")
         mliString_free(&str);
 
         f = fopen(
-            "merlict_c89/tests/resources/hexagonal_mirror_facet.obj.tmp", "w");
+                "merlict_c89/tests/resources/hexagonal_mirror_facet.obj.tmp",
+                "w");
         CHECK(f != NULL);
         mliObject_fprint_to_wavefront(f, &obj);
         fclose(f);
@@ -516,7 +519,7 @@ CASE("mliObject, read and write multiple materials")
         CHECK(obj_orig.num_materials == 6);
 
         f = fopen(
-            "merlict_c89/tests/resources/cube_with_materials.obj.tmp", "w");
+                "merlict_c89/tests/resources/cube_with_materials.obj.tmp", "w");
         CHECK(f != NULL);
         mliObject_fprint_to_wavefront(f, &obj_orig);
         fclose(f);
@@ -577,7 +580,7 @@ CASE("mliObject, read and write repeating materials")
         CHECK(obj_orig.num_materials == 2);
 
         f = fopen(
-            "merlict_c89/tests/resources/repeating_material.obj.tmp", "w");
+                "merlict_c89/tests/resources/repeating_material.obj.tmp", "w");
         CHECK(f != NULL);
         mliObject_fprint_to_wavefront(f, &obj_orig);
         fclose(f);
