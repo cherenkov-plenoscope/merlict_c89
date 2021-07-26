@@ -9,8 +9,8 @@
 
 #include "merlict_c89/all_headers.h"
 #include "merlict_c89/all_sources.c"
-#include "merlict_c89_viewer/merlict_c89_viewer.h"
-#include "merlict_c89_viewer/merlict_c89_viewer.c"
+#include "merlict_c89_viewer/all_headers.h"
+#include "merlict_c89_viewer/all_sources.c"
 
 int main(int argc, char *argv[])
 {
