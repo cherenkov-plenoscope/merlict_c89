@@ -2,7 +2,7 @@
 
 /*
  *  Compile with:
- *  gcc merlict-c89-view.c -o view -lm
+ *  gcc merlict_c89_viewer/apps/viewer.c -o viewer -lm
  */
 
 #include <stdio.h>
