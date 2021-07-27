@@ -18,8 +18,8 @@ struct mliArchive mliArchive_init(void)
 void mliArchive_free(struct mliArchive *arc)
 {
         uint64_t i;
-        for (i = 0; i < arc->strings.dyn.size; i++) {
-                mliString_free(&arc->strings.arr[i]);
+        for (i = 0; i < arc->strings.size; i++) {
+                mliString_free(&arc->strings.array[i]);
         }
         mliDynString_free(&arc->strings);
         mliDynMap_free(&arc->filenames);
@@ -38,7 +38,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
         mli_check(mliTar_open(&tar, path, "r"), "Cant open Tar.");
 
         while (mliTar_read_header(&tar, &tarh)) {
-                uint64_t next = arc->filenames.dyn.size;
+                uint64_t next = arc->filenames.size;
                 struct mliString *payload = NULL;
                 memset(tarh_name, '\0', sizeof(tarh_name));
 
@@ -54,7 +54,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         mliString_malloc(&tmp_payload, tarh.size),
                         "Can not allocate tmp-string-buffer.");
 
-                payload = &arc->strings.arr[next];
+                payload = &arc->strings.array[next];
                 (*payload) = mliString_init();
 
                 mli_check(
@@ -101,7 +101,7 @@ int mliArchive_get(
 {
         uint64_t idx;
         mli_c(mliDynMap_find(&arc->filenames, filename, &idx));
-        (*str) = &arc->strings.arr[idx];
+        (*str) = &arc->strings.array[idx];
         return 1;
 error:
         return 0;
@@ -129,19 +129,19 @@ error:
 
 uint64_t mliArchive_num(const struct mliArchive *arc)
 {
-        return arc->filenames.dyn.size;
+        return arc->filenames.size;
 }
 
 void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
 {
         uint64_t i;
-        for (i = 0; i < arc->strings.dyn.size; i++) {
-                struct _mliMapItem *map_item = &arc->filenames.arr[i];
+        for (i = 0; i < arc->strings.size; i++) {
+                struct _mliMapItem *map_item = &arc->filenames.array[i];
                 fprintf(f,
                         "%u: %s, %u\n",
                         (uint32_t)i,
                         map_item->key,
-                        (uint32_t)arc->strings.arr[i].capacity);
+                        (uint32_t)arc->strings.array[i].capacity);
         }
 }
 
@@ -153,8 +153,8 @@ void mliArchive_mask_filename_prefix_sufix(
 {
         uint64_t i = 0u;
         uint64_t match = 0u;
-        for (i = 0; i < arc->strings.dyn.size; i++) {
-                struct _mliMapItem *map_item = &arc->filenames.arr[i];
+        for (i = 0; i < arc->strings.size; i++) {
+                struct _mliMapItem *map_item = &arc->filenames.array[i];
 
                 match = mli_string_has_prefix_suffix(
                         map_item->key, prefix, sufix);
@@ -175,8 +175,8 @@ uint64_t mliArchive_num_filename_prefix_sufix(
         uint64_t i = 0;
         uint64_t match;
         uint64_t num_matches = 0;
-        for (i = 0; i < arc->strings.dyn.size; i++) {
-                struct _mliMapItem *map_item = &arc->filenames.arr[i];
+        for (i = 0; i < arc->strings.size; i++) {
+                struct _mliMapItem *map_item = &arc->filenames.array[i];
 
                 match = mli_string_has_prefix_suffix(
                         map_item->key, prefix, sufix);

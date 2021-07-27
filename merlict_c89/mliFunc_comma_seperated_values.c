@@ -90,10 +90,10 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
                 mli_check(mliDynDouble_push_back(&ys, _y), "Failed to grow y.");
         }
 
-        mli_check(mliFunc_malloc(func, xs.dyn.size), "Failed to malloc func.");
-        for (i = 0; i < xs.dyn.size; i++) {
-                func->x[i] = xs.arr[i];
-                func->y[i] = ys.arr[i];
+        mli_check(mliFunc_malloc(func, xs.size), "Failed to malloc func.");
+        for (i = 0; i < xs.size; i++) {
+                func->x[i] = xs.array[i];
+                func->y[i] = ys.array[i];
         }
 
         mli_check(

@@ -69,7 +69,7 @@ CASE("refraction_in_prism")
                         MAX_INTERACTIONS));
 
                 final_intersection =
-                        photon_history.arr[photon_history.dyn.size - 1];
+                        photon_history.array[photon_history.size - 1];
                 final_robj_id =
                         scenery.geometry.robject_ids[final_intersection
                                                              .geometry_id.robj];

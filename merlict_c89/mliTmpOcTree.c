@@ -114,11 +114,11 @@ int mliTmpNode_add_children(
                 mli_malloc(node->children[c], struct mliTmpNode, 1u);
                 (*node->children[c]) = mliTmpNode_init();
                 mli_c(mliTmpNode_malloc(
-                        node->children[c], overlap[c].dyn.size));
+                        node->children[c], overlap[c].size));
                 mli_uint32_ncpy(
-                        overlap[c].arr,
+                        overlap[c].array,
                         node->children[c]->objects,
-                        overlap[c].dyn.size);
+                        overlap[c].size);
         }
 
         for (c = 0u; c < 8u; c++) {

@@ -79,7 +79,7 @@ CASE("simple propagation")
         CHECK(mli_propagate_photon(
                 &scenery, &history, &photon, &prng, max_interactions));
 
-        CHECK(history.dyn.size >= 1);
+        CHECK(history.size >= 1);
 
         mliDynPhotonInteraction_print(&history, &scenery.geometry);
 

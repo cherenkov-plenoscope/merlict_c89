@@ -498,7 +498,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 struct mliFace tmp_fvn;
 
                                 mli_check(
-                                        material_names.dyn.size > 0,
+                                        material_names.size > 0,
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
 
@@ -557,35 +557,35 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
         /* copy dyn into static mliObject */
         mli_check(
-                fv.dyn.size == fvn.dyn.size,
+                fv.size == fvn.size,
                 "Expected num. vertex-indices == num. vertex-normal-indices.");
         mli_check(
                 mliObject_malloc(
                         obj,
-                        v.dyn.size,
-                        vn.dyn.size,
-                        fv.dyn.size,
-                        material_names.dyn.size),
+                        v.size,
+                        vn.size,
+                        fv.size,
+                        material_names.size),
                 "Failed to malloc mliObject from file.");
 
-        for (i = 0; i < v.dyn.size; i++) {
-                obj->vertices[i] = v.arr[i];
+        for (i = 0; i < v.size; i++) {
+                obj->vertices[i] = v.array[i];
         }
-        for (i = 0; i < vn.dyn.size; i++) {
-                obj->vertex_normals[i] = mliVec_normalized(vn.arr[i]);
+        for (i = 0; i < vn.size; i++) {
+                obj->vertex_normals[i] = mliVec_normalized(vn.array[i]);
         }
-        for (i = 0; i < fv.dyn.size; i++) {
-                obj->faces_vertices[i] = fv.arr[i];
+        for (i = 0; i < fv.size; i++) {
+                obj->faces_vertices[i] = fv.array[i];
         }
-        for (i = 0; i < fvn.dyn.size; i++) {
-                obj->faces_vertex_normals[i] = fvn.arr[i];
+        for (i = 0; i < fvn.size; i++) {
+                obj->faces_vertex_normals[i] = fvn.array[i];
         }
-        for (i = 0; i < fvn.dyn.size; i++) {
-                obj->faces_materials[i] = fm.arr[i];
+        for (i = 0; i < fvn.size; i++) {
+                obj->faces_materials[i] = fm.array[i];
         }
-        for (i = 0; i < material_names.dyn.size; i++) {
+        for (i = 0; i < material_names.size; i++) {
                 memcpy(obj->material_names[i].c_str,
-                       material_names.arr[i].key,
+                       material_names.array[i].key,
                        MLI_NAME_CAPACITY);
         }
 

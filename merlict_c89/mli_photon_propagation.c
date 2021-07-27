@@ -289,7 +289,7 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                         distance_until_absorbtion <
                         next_intersection.distance_of_ray;
 
-                if (env->history->dyn.size == 0) {
+                if (env->history->size == 0) {
                         /* creation */
                         phia.type = MLI_PHOTON_CREATION;
                         phia.position = env->photon->ray.support;
@@ -353,7 +353,7 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                         env->prng,
                         &distance_until_absorbtion));
 
-                if (env->history->dyn.size == 0) {
+                if (env->history->size == 0) {
                         /* creation */
                         phia.type = MLI_PHOTON_CREATION;
                         phia.position = env->photon->ray.support;
@@ -399,7 +399,7 @@ error:
 
 int _mli_propagate_photon(struct mliEnv *env)
 {
-        if (env->max_interactions > env->history->dyn.size) {
+        if (env->max_interactions > env->history->size) {
                 mli_check(
                         _mli_work_on_causal_intersection(env),
                         "Failed to work on intersection.");

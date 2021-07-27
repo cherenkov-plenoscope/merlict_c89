@@ -25,8 +25,8 @@ void mliFrame_free(struct mliFrame *f)
 {
         uint64_t c;
         if (f->type == MLI_FRAME) {
-                for (c = 0; c < f->children.dyn.size; c++) {
-                        struct mliFrame *child = f->children.arr[c];
+                for (c = 0; c < f->children.size; c++) {
+                        struct mliFrame *child = f->children.array[c];
                         mliFrame_free(child);
                 }
                 mliDynFramePtr_free(&f->children);
@@ -149,16 +149,16 @@ void __mliFrame_print(const struct mliFrame *f, const uint64_t indention)
                 uint32_t ii;
                 printf("%*s", (int)indention, "");
                 printf("|-boundary_layers [");
-                for (ii = 0; ii < f->boundary_layers.dyn.size; ii++) {
-                        printf("%u,", f->boundary_layers.arr[ii]);
+                for (ii = 0; ii < f->boundary_layers.size; ii++) {
+                        printf("%u,", f->boundary_layers.array[ii]);
                 }
                 printf("]\n");
 
                 printf("%*s", (int)indention, "");
                 printf("|-obj %u\n", f->object);
         }
-        for (c = 0; c < f->children.dyn.size; c++) {
-                const struct mliFrame *child = f->children.arr[c];
+        for (c = 0; c < f->children.size; c++) {
+                const struct mliFrame *child = f->children.array[c];
                 __mliFrame_print(child, indention + 4);
         }
 }
@@ -175,8 +175,8 @@ void mliFrame_set_frame2root(struct mliFrame *f)
         }
         if (f->type == MLI_FRAME) {
                 uint64_t c;
-                for (c = 0; c < f->children.dyn.size; c++) {
-                        struct mliFrame *child = f->children.arr[c];
+                for (c = 0; c < f->children.size; c++) {
+                        struct mliFrame *child = f->children.array[c];
                         mliFrame_set_frame2root(child);
                 }
         }

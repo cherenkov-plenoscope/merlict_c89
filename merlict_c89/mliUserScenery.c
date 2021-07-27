@@ -51,7 +51,7 @@ int mli_set_geometry_objects_and_names_from_archive(
         obj_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_string_has_prefix_suffix(
-                            archive->filenames.arr[arc_idx].key,
+                            archive->filenames.array[arc_idx].key,
                             "objects/",
                             ".obj")) {
                         mli_check(
@@ -60,14 +60,14 @@ int mli_set_geometry_objects_and_names_from_archive(
 
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(
-                                archive->filenames.arr[arc_idx].key, key);
+                                archive->filenames.array[arc_idx].key, key);
                         mli_check(
                                 mliDynMap_insert(object_names, key, obj_idx),
                                 "Failed to insert object-filename into map.");
                         mli_check(
                                 mliObject_malloc_from_wavefront(
                                         &geometry->objects[obj_idx],
-                                        archive->strings.arr[arc_idx].c_str),
+                                        archive->strings.array[arc_idx].c_str),
                                 "Failed to parse wave-front-object.");
                         memcpy(geometry->object_names[obj_idx].c_str,
                                key,
@@ -127,19 +127,19 @@ int mli_malloc_materials_form_archive(
         fnc_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_string_has_prefix_suffix(
-                            archive->filenames.arr[arc_idx].key,
+                            archive->filenames.array[arc_idx].key,
                             "functions/",
                             ".csv")) {
                         mli_check(
                                 mliFunc_malloc_from_csv(
                                         &materials->functions[fnc_idx],
-                                        archive->strings.arr[arc_idx].c_str),
+                                        archive->strings.array[arc_idx].c_str),
                                 "Failed to parse comma-separated-values from "
                                 "file.");
 
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(
-                                archive->filenames.arr[arc_idx].key, key);
+                                archive->filenames.array[arc_idx].key, key);
 
                         mli_check(
                                 mliDynMap_insert(
@@ -147,7 +147,7 @@ int mli_malloc_materials_form_archive(
                                 "Failed to insert function-name into map.");
 
                         memcpy(materials->function_names[fnc_idx].c_str,
-                               names->functions.arr[fnc_idx].key,
+                               names->functions.array[fnc_idx].key,
                                MLI_NAME_CAPACITY);
 
                         fnc_idx += 1u;
@@ -162,7 +162,7 @@ int mli_malloc_materials_form_archive(
                 "Failed to copy colors from materials.json.");
         for (i = 0; i < materials->num_colors; i++) {
                 memcpy(materials->color_names[i].c_str,
-                       names->colors.arr[i].key,
+                       names->colors.array[i].key,
                        MLI_NAME_CAPACITY);
         }
 
@@ -177,7 +177,7 @@ int mli_malloc_materials_form_archive(
                 "Failed to copy media from materials.json.");
         for (i = 0; i < materials->num_media; i++) {
                 memcpy(materials->medium_names[i].c_str,
-                       names->media.arr[i].key,
+                       names->media.array[i].key,
                        MLI_NAME_CAPACITY);
         }
 
@@ -193,7 +193,7 @@ int mli_malloc_materials_form_archive(
                 "Failed to copy surfaces from materials.json.");
         for (i = 0; i < materials->num_surfaces; i++) {
                 memcpy(materials->surface_names[i].c_str,
-                       names->surfaces.arr[i].key,
+                       names->surfaces.array[i].key,
                        MLI_NAME_CAPACITY);
         }
 
@@ -209,7 +209,7 @@ int mli_malloc_materials_form_archive(
                 "Failed to copy boundary_layers from materials.json.");
         for (i = 0; i < materials->num_boundary_layers; i++) {
                 memcpy(materials->boundary_layer_names[i].c_str,
-                       names->boundary_layers.arr[i].key,
+                       names->boundary_layers.array[i].key,
                        MLI_NAME_CAPACITY);
         }
 

@@ -6,8 +6,8 @@ MLIDYNARRAY_IMPLEMENTATION(mli, Map, struct _mliMapItem)
 int mliDynMap_find(const struct mliDynMap *map, const char *key, uint64_t *idx)
 {
         uint64_t i;
-        for (i = 0; i < map->dyn.size; i++) {
-                if (strcmp(map->arr[i].key, key) == 0) {
+        for (i = 0; i < map->size; i++) {
+                if (strcmp(map->array[i].key, key) == 0) {
                         (*idx) = i;
                         return 1;
                 }
@@ -24,7 +24,7 @@ int mliDynMap_has(const struct mliDynMap *map, const char *key)
 int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value)
 {
         struct _mliMapItem item;
-        if (map->dyn.size == 0u) {
+        if (map->size == 0u) {
                 mli_check(
                         mliDynMap_malloc(map, 0u),
                         "Failed to initially malloc dyn-map.");
@@ -44,7 +44,7 @@ int mliDynMap_get(const struct mliDynMap *map, const char *key, uint64_t *value)
 {
         uint64_t idx;
         mli_check(mliDynMap_find(map, key, &idx), "Key does not exist.");
-        (*value) = map->arr[idx].value;
+        (*value) = map->array[idx].value;
         return 1;
 error:
         return 0;

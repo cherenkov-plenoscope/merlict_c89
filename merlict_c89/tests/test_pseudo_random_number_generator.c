@@ -101,8 +101,8 @@ CASE("uniform_0_to_1_stddev")
         for (i = 0; i < num_samples; i++) {
                 mliDynDouble_push_back(&samples, mli_random_uniform(&prng));
         }
-        mean = mli_mean(samples.arr, samples.dyn.size);
-        std = mli_std(samples.arr, samples.dyn.size, mean);
+        mean = mli_mean(samples.array, samples.size);
+        std = mli_std(samples.array, samples.size, mean);
 
         CHECK_MARGIN(1.0 / sqrt(12.0), std, 1e-3);
         mliDynDouble_free(&samples);
@@ -213,9 +213,9 @@ CASE("position_on_disc")
 
         /* mean position */
         mean = mliVec_set(0., 0., 0.);
-        for (i = 0; i < points.dyn.size; i++)
-                mean = mliVec_add(mean, points.arr[i]);
-        mean = mliVec_multiply(mean, 1.0 / (double)points.dyn.size);
+        for (i = 0; i < points.size; i++)
+                mean = mliVec_add(mean, points.array[i]);
+        mean = mliVec_multiply(mean, 1.0 / (double)points.size);
 
         CHECK_MARGIN(mean.x, 0.0, 1e-3);
         CHECK_MARGIN(mean.y, 0.0, 1e-3);
@@ -230,9 +230,9 @@ CASE("position_on_disc")
                         double counts_in_evaluation_bin = 0.0;
                         struct mliVec eval_disc_pos =
                                 mliVec_set(r * cos(phi), r * sin(phi), 0.0);
-                        for (i = 0; i < points.dyn.size; i++) {
+                        for (i = 0; i < points.size; i++) {
                                 if (mliVec_norm_between(
-                                            eval_disc_pos, points.arr[i]) <=
+                                            eval_disc_pos, points.array[i]) <=
                                     evaluation_disc_radius) {
                                         counts_in_evaluation_bin++;
                                 }
@@ -245,11 +245,11 @@ CASE("position_on_disc")
 
         /* Expect num. counts in evaluation-bins to be similar */
         mean_count = mli_mean(
-                counts_in_evaluation_bins.arr,
-                counts_in_evaluation_bins.dyn.size);
+                counts_in_evaluation_bins.array,
+                counts_in_evaluation_bins.size);
         std_count =
-                mli_std(counts_in_evaluation_bins.arr,
-                        counts_in_evaluation_bins.dyn.size,
+                mli_std(counts_in_evaluation_bins.array,
+                        counts_in_evaluation_bins.size,
                         mean_count);
         CHECK(std_count / mean_count < 1e-2);
         mliDynVec_free(&points);

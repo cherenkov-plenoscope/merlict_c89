@@ -5,26 +5,26 @@ CASE("malloc, and free")
         uint64_t i;
         struct mliDynColor vec = mliDynColor_init();
         CHECK(mliDynColor_malloc(&vec, 0u));
-        CHECK(vec.dyn.size == 0u);
+        CHECK(vec.size == 0u);
 
         for (i = 0; i < 100; i++) {
                 struct mliColor color = mliColor_set(i * 1., i * 2., i * 3.);
-                CHECK(vec.dyn.size == i);
+                CHECK(vec.size == i);
                 CHECK(mliDynColor_push_back(&vec, color));
-                CHECK(vec.dyn.size == i + 1);
+                CHECK(vec.size == i + 1);
         }
 
-        for (i = 0; i < vec.dyn.size; i++) {
-                struct mliColor color = vec.arr[i];
+        for (i = 0; i < vec.size; i++) {
+                struct mliColor color = vec.array[i];
                 CHECK_MARGIN(color.r, i * 1., 1e-9);
                 CHECK_MARGIN(color.g, i * 2., 1e-9);
                 CHECK_MARGIN(color.b, i * 3., 1e-9);
-                CHECK(vec.dyn.size == 100);
+                CHECK(vec.size == 100);
         }
 
         mliDynColor_free(&vec);
-        CHECK(vec.dyn.size == 0);
-        CHECK(vec.dyn.capacity == 0);
+        CHECK(vec.size == 0);
+        CHECK(vec.capacity == 0);
 }
 
 CASE("with pointers to mliColor")
@@ -32,91 +32,92 @@ CASE("with pointers to mliColor")
         uint64_t i;
         struct mliDynColorPtr vec = mliDynColorPtr_init();
         CHECK(mliDynColorPtr_malloc(&vec, 0u));
-        CHECK(vec.dyn.size == 0u);
+        CHECK(vec.size == 0u);
 
         for (i = 0; i < 10; i++) {
                 struct mliColor *ptr_color_in = (struct mliColor *)(i * i);
-                CHECK(vec.dyn.size == i);
+                CHECK(vec.size == i);
                 CHECK(mliDynColorPtr_push_back(&vec, ptr_color_in));
-                CHECK(vec.dyn.size == i + 1);
+                CHECK(vec.size == i + 1);
         }
 
-        for (i = 0; i < vec.dyn.size; i++) {
-                struct mliColor *ptr_color_out = vec.arr[i];
+        for (i = 0; i < vec.size; i++) {
+                struct mliColor *ptr_color_out = vec.array[i];
                 CHECK(ptr_color_out == (struct mliColor *)(i * i));
-                CHECK(vec.dyn.size == 10);
+                CHECK(vec.size == 10);
         }
 
         mliDynColorPtr_free(&vec);
-        CHECK(vec.dyn.size == 0);
-        CHECK(vec.dyn.capacity == 0);
+        CHECK(vec.size == 0);
+        CHECK(vec.capacity == 0);
 }
 
 CASE("DynArray")
 {
         struct mliColor c;
         struct mliDynColor colors = mliDynColor_init();
-        CHECK(_mliDynColor_test_after_init(&colors));
+        CHECK(mliDynColor_test_init(&colors));
 
         CHECK(mliDynColor_malloc(&colors, 10));
-        CHECK(_mliDynColor_test_after_malloc(&colors, 10));
+        CHECK(mliDynColor_test_malloc(&colors, 10));
 
-        colors.arr[0].r = 4.0;
-        colors.arr[0].g = 5.9;
-        colors.arr[0].b = 2.9;
-        c = colors.arr[0];
+        colors.array[0].r = 4.0;
+        colors.array[0].g = 5.9;
+        colors.array[0].b = 2.9;
+        c = colors.array[0];
         CHECK_MARGIN(c.r, 4.0, 1e-6);
         CHECK_MARGIN(c.g, 5.9, 1e-6);
         CHECK_MARGIN(c.b, 2.9, 1e-6);
 
         mliDynColor_free(&colors);
-        CHECK(_mliDynColor_test_after_free(&colors));
+        CHECK(mliDynColor_test_free(&colors));
 }
 
 CASE("DynArray malloc 0")
 {
         struct mliDynColor colors = mliDynColor_init();
-        CHECK(_mliDynColor_test_after_init(&colors));
+        CHECK(mliDynColor_test_init(&colors));
 
         CHECK(mliDynColor_malloc(&colors, 0));
-        CHECK(_mliDynColor_test_after_malloc(&colors, 0));
+        CHECK(mliDynColor_test_malloc(&colors, 0));
 
         mliDynColor_free(&colors);
-        CHECK(_mliDynColor_test_after_free(&colors));
+        CHECK(mliDynColor_test_free(&colors));
 }
 
 CASE("DynArray push")
 {
         uint64_t i;
         struct mliDynColor channel = mliDynColor_init();
-        CHECK(_mliDynColor_test_after_init(&channel));
+        CHECK(mliDynColor_test_init(&channel));
 
         CHECK(mliDynColor_malloc(&channel, 0));
-        CHECK(_mliDynColor_test_after_malloc(&channel, 0));
+        CHECK(mliDynColor_test_malloc(&channel, 0));
 
         for (i = 0; i < 1337 * 1337; i++) {
                 struct mliColor c = mliColor_set(
                         1. * (float)i, 2. * (float)i, -1. * (float)i);
                 CHECK(mliDynColor_push_back(&channel, c));
         }
-        CHECK(channel.dyn.size == 1337 * 1337);
-        CHECK(channel.arr != NULL);
-        CHECK(channel.dyn.capacity >= channel.dyn.size);
+        CHECK(channel.size == 1337 * 1337);
+        CHECK(channel.array != NULL);
+        CHECK(channel.capacity >= channel.size);
 
-        for (i = 0; i < channel.dyn.size; i++) {
-                CHECK_MARGIN(channel.arr[i].r, 1. * (float)i, 1e-1);
-                CHECK_MARGIN(channel.arr[i].g, 2. * (float)i, 1e-1);
-                CHECK_MARGIN(channel.arr[i].b, -1. * (float)i, 1e-1);
+        for (i = 0; i < channel.size; i++) {
+                CHECK_MARGIN(channel.array[i].r, 1. * (float)i, 1e-1);
+                CHECK_MARGIN(channel.array[i].g, 2. * (float)i, 1e-1);
+                CHECK_MARGIN(channel.array[i].b, -1. * (float)i, 1e-1);
         }
         mliDynColor_free(&channel);
-        CHECK(_mliDynColor_test_after_free(&channel));
+        CHECK(mliDynColor_test_free(&channel));
 
         CHECK(mliDynColor_malloc(&channel, 100));
-        CHECK(_mliDynColor_test_after_malloc(&channel, 100));
+        CHECK(mliDynColor_test_malloc(&channel, 100));
         mliDynColor_free(&channel);
-        CHECK(_mliDynColor_test_after_free(&channel));
+        CHECK(mliDynColor_test_free(&channel));
 }
 
+/*
 CASE("num_pulses ExtractChannels")
 {
         uint64_t num_channel_scenarios = 7;
@@ -156,3 +157,4 @@ CASE("num_pulses ExtractChannels")
                 }
         }
 }
+*/

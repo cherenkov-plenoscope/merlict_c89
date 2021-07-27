@@ -11,16 +11,16 @@ int __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         uint64_t c;
         switch (frame->type) {
         case MLI_FRAME:
-                for (c = 0; c < frame->children.dyn.size; c++) {
+                for (c = 0; c < frame->children.size; c++) {
                         mli_c(__mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
-                                frame->children.arr[c],
+                                frame->children.array[c],
                                 num_robjects,
                                 total_num_boundary_layers));
                 }
                 break;
         case MLI_OBJECT:
                 (*num_robjects) += 1;
-                (*total_num_boundary_layers) += frame->boundary_layers.dyn.size;
+                (*total_num_boundary_layers) += frame->boundary_layers.size;
                 break;
         default:
                 mli_sentinel("Expected either type 'frame' or 'object'.");
@@ -60,9 +60,9 @@ int __mliFrame_set_robjects_and_material_map(
         uint64_t robject_idx;
         switch (frame->type) {
         case MLI_FRAME:
-                for (c = 0; c < frame->children.dyn.size; c++) {
+                for (c = 0; c < frame->children.size; c++) {
                         mli_c(__mliFrame_set_robjects_and_material_map(
-                                frame->children.arr[c],
+                                frame->children.array[c],
                                 geometry,
                                 geomap,
                                 num_robjects,
@@ -82,7 +82,7 @@ int __mliFrame_set_robjects_and_material_map(
 
                 /* materials map */
                 mli_check(
-                        frame->boundary_layers.dyn.size ==
+                        frame->boundary_layers.size ==
                                 geometry->objects[frame->object].num_materials,
                         "Expected Frame to have same "
                         "num boundary_layers as object.");
@@ -90,13 +90,13 @@ int __mliFrame_set_robjects_and_material_map(
                 geomap->first_boundary_layer_in_robject[robject_idx] =
                         (*total_num_boundary_layers);
                 for (material_idx = 0;
-                     material_idx < frame->boundary_layers.dyn.size;
+                     material_idx < frame->boundary_layers.size;
                      material_idx++) {
                         mliGeometryToMaterialMap_set(
                                 geomap,
                                 robject_idx,
                                 material_idx,
-                                frame->boundary_layers.arr[material_idx]);
+                                frame->boundary_layers.array[material_idx]);
                         (*total_num_boundary_layers) += 1;
                 }
 

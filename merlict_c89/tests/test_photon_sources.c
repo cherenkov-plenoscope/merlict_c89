@@ -13,16 +13,16 @@ CASE("parallel_towards_z_from_xy_disc")
         CHECK(mli_photon_source_parallel_towards_z_from_xy_disc(
                 &photons, wavelength, disc_radius, num_photons, &prng));
 
-        for (i = 0; i < photons.dyn.size; i++) {
-                CHECK(photons.arr[i].ray.support.z == 0.0);
+        for (i = 0; i < photons.size; i++) {
+                CHECK(photons.array[i].ray.support.z == 0.0);
                 CHECK(mli_hypot(
-                              photons.arr[i].ray.support.x,
-                              photons.arr[i].ray.support.y) <= disc_radius);
-                CHECK(photons.arr[i].ray.direction.x == 0.0);
-                CHECK(photons.arr[i].ray.direction.y == 0.0);
-                CHECK(photons.arr[i].ray.direction.z == 1.0);
-                CHECK(photons.arr[i].wavelength == wavelength);
-                CHECK(photons.arr[i].id == (int64_t)i);
+                              photons.array[i].ray.support.x,
+                              photons.array[i].ray.support.y) <= disc_radius);
+                CHECK(photons.array[i].ray.direction.x == 0.0);
+                CHECK(photons.array[i].ray.direction.y == 0.0);
+                CHECK(photons.array[i].ray.direction.z == 1.0);
+                CHECK(photons.array[i].wavelength == wavelength);
+                CHECK(photons.array[i].id == (int64_t)i);
         }
 
         mliDynPhoton_free(&photons);
@@ -41,17 +41,17 @@ CASE("point_like_towards_z")
         CHECK(point_like_towards_z_opening_angle_num_photons(
                 &photons, wavelength, opening_angle, num_photons, &prng));
 
-        for (i = 0; i < photons.dyn.size; i++) {
-                CHECK(photons.arr[i].ray.support.z == 0.0);
-                CHECK(photons.arr[i].ray.support.x == 0.0);
-                CHECK(photons.arr[i].ray.support.y == 0.0);
+        for (i = 0; i < photons.size; i++) {
+                CHECK(photons.array[i].ray.support.z == 0.0);
+                CHECK(photons.array[i].ray.support.x == 0.0);
+                CHECK(photons.array[i].ray.support.y == 0.0);
                 CHECK_MARGIN(
-                        mliVec_norm(photons.arr[i].ray.direction), 1.0, 1e-6);
+                        mliVec_norm(photons.array[i].ray.direction), 1.0, 1e-6);
                 CHECK(mliVec_angle_between(
-                              photons.arr[i].ray.direction,
+                              photons.array[i].ray.direction,
                               mliVec_set(0., 0., 1.)) <= opening_angle);
-                CHECK(photons.arr[i].wavelength == wavelength);
-                CHECK(photons.arr[i].id == (int64_t)i);
+                CHECK(photons.array[i].wavelength == wavelength);
+                CHECK(photons.array[i].id == (int64_t)i);
         }
 
         mliDynPhoton_free(&photons);
