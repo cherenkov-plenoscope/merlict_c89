@@ -26,7 +26,6 @@ void mliArchive_free(struct mliArchive *arc)
         (*arc) = mliArchive_init();
 }
 
-
 int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 {
         struct mliTar tar = mliTar_init();

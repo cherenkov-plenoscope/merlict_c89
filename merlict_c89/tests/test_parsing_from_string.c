@@ -489,14 +489,18 @@ CASE("DynStr")
         CHECK(s.c_str[1] == '1');
         CHECK(s.c_str[2] == '2');
         CHECK(s.c_str[3] == '\0');
-        for (i = s.length; i < s.capacity; i++) {CHECK(s.c_str[i] == '\0');}
+        for (i = s.length; i < s.capacity; i++) {
+                CHECK(s.c_str[i] == '\0');
+        }
 
         CHECK(mliDynStr_push_back(&s, "\n"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 4);
         CHECK(s.c_str[3] == '\n');
         CHECK(s.c_str[4] == '\0');
-        for (i = s.length; i < s.capacity; i++) {CHECK(s.c_str[i] == '\0');}
+        for (i = s.length; i < s.capacity; i++) {
+                CHECK(s.c_str[i] == '\0');
+        }
 
         CHECK(mliDynStr_push_back(&s, "456"));
         CHECK(s.capacity > s.length);
@@ -505,17 +509,23 @@ CASE("DynStr")
         CHECK(s.c_str[5] == '5');
         CHECK(s.c_str[6] == '6');
         CHECK(s.c_str[7] == '\0');
-        for (i = s.length; i < s.capacity; i++) {CHECK(s.c_str[i] == '\0');}
+        for (i = s.length; i < s.capacity; i++) {
+                CHECK(s.c_str[i] == '\0');
+        }
 
         CHECK(mliDynStr_push_back(&s, ""));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
-        for (i = s.length; i < s.capacity; i++) {CHECK(s.c_str[i] == '\0');}
+        for (i = s.length; i < s.capacity; i++) {
+                CHECK(s.c_str[i] == '\0');
+        }
 
         CHECK(mliDynStr_push_back(&s, "\0"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
-        for (i = s.length; i < s.capacity; i++) {CHECK(s.c_str[i] == '\0');}
+        for (i = s.length; i < s.capacity; i++) {
+                CHECK(s.c_str[i] == '\0');
+        }
 
         mliDynStr_free(&s);
         CHECK(s.capacity == 0u);

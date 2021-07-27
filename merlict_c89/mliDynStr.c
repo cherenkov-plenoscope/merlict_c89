@@ -35,18 +35,15 @@ int mliDynStr_push_back(struct mliDynStr *str, const char *s)
         const uint64_t new_size = str->length + slen;
 
         if (new_size >= str->capacity) {
-                const uint64_t min_new_capacity = MLI_MAX2(
-                        new_size,
-                        2 * str->capacity);
+                const uint64_t min_new_capacity =
+                        MLI_MAX2(new_size, 2 * str->capacity);
 
                 str->capacity = min_new_capacity * 2;
                 str->c_str = (char *)realloc(
-                        (void *)str->c_str,
-                        str->capacity * sizeof(char));
-                memset(
-                        &str->c_str[str->length],
-                        '\0',
-                        str->capacity - str->length);
+                        (void *)str->c_str, str->capacity * sizeof(char));
+                memset(&str->c_str[str->length],
+                       '\0',
+                       str->capacity - str->length);
                 mli_check_mem(str->c_str);
         }
 
@@ -68,7 +65,8 @@ int mliDynStr_malloc_from_path(struct mliDynStr *str, const char *path)
         str_length = ftell(f);
         str_capacity = str_length + 1;
         mli_check(fseek(f, 0, SEEK_SET) == 0, "Can not seek to begin of file");
-        mli_check(mliDynStr_malloc(str, str_capacity), "Can not malloc string.");
+        mli_check(
+                mliDynStr_malloc(str, str_capacity), "Can not malloc string.");
         mli_fread(str->c_str, sizeof(char), str_length, f);
         fclose(f);
         return 1;

@@ -561,11 +561,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                 "Expected num. vertex-indices == num. vertex-normal-indices.");
         mli_check(
                 mliObject_malloc(
-                        obj,
-                        v.size,
-                        vn.size,
-                        fv.size,
-                        material_names.size),
+                        obj, v.size, vn.size, fv.size, material_names.size),
                 "Failed to malloc mliObject from file.");
 
         for (i = 0; i < v.size; i++) {

@@ -18,16 +18,13 @@
         void LIB##Dyn##NAME##_free(struct LIB##Dyn##NAME *dh);                 \
                                                                                \
         int LIB##Dyn##NAME##_malloc(                                           \
-                struct LIB##Dyn##NAME *dh,                                     \
-                const uint64_t size);                                          \
+                struct LIB##Dyn##NAME *dh, const uint64_t size);               \
                                                                                \
         int LIB##Dyn##NAME##_malloc_set_size(                                  \
-                struct LIB##Dyn##NAME *dh,                                     \
-                const uint64_t size);                                          \
+                struct LIB##Dyn##NAME *dh, const uint64_t size);               \
                                                                                \
         int LIB##Dyn##NAME##_push_back(                                        \
-                struct LIB##Dyn##NAME *dh,                                     \
-                PAYLOAD_TYPE item);
+                struct LIB##Dyn##NAME *dh, PAYLOAD_TYPE item);
 
 #define MLIDYNARRAY_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                    \
                                                                                \
@@ -47,8 +44,7 @@
         }                                                                      \
                                                                                \
         int LIB##Dyn##NAME##_malloc(                                           \
-                struct LIB##Dyn##NAME *dh,                                     \
-                const uint64_t size)                                           \
+                struct LIB##Dyn##NAME *dh, const uint64_t size)                \
         {                                                                      \
                 LIB##Dyn##NAME##_free(dh);                                     \
                 dh->capacity = MLI_MAX2(2, size);                              \
@@ -60,8 +56,7 @@
         }                                                                      \
                                                                                \
         int LIB##Dyn##NAME##_malloc_set_size(                                  \
-                struct LIB##Dyn##NAME *dh,                                     \
-                const uint64_t size)                                           \
+                struct LIB##Dyn##NAME *dh, const uint64_t size)                \
         {                                                                      \
                 mli_c(LIB##Dyn##NAME##_malloc(dh, size));                      \
                 dh->size = size;                                               \
@@ -71,8 +66,7 @@
         }                                                                      \
                                                                                \
         int LIB##Dyn##NAME##_push_back(                                        \
-                struct LIB##Dyn##NAME *dh,                                     \
-                PAYLOAD_TYPE item)                                             \
+                struct LIB##Dyn##NAME *dh, PAYLOAD_TYPE item)                  \
         {                                                                      \
                 if (dh->size == dh->capacity) {                                \
                         dh->capacity = dh->capacity * 2;                       \
@@ -95,10 +89,9 @@
         int LIB##Dyn##NAME##_test_init(struct LIB##Dyn##NAME *dh);             \
                                                                                \
         int LIB##Dyn##NAME##_test_malloc(                                      \
-                struct LIB##Dyn##NAME *dh,                                     \
-                const uint64_t capacity);                                      \
+                struct LIB##Dyn##NAME *dh, const uint64_t capacity);           \
                                                                                \
-        int LIB##Dyn##NAME##_test_free(struct LIB##Dyn##NAME *dh);             \
+        int LIB##Dyn##NAME##_test_free(struct LIB##Dyn##NAME *dh);
 
 #define MLIDYNARRAY_TEST_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)               \
                                                                                \
@@ -113,8 +106,7 @@
         }                                                                      \
                                                                                \
         int LIB##Dyn##NAME##_test_malloc(                                      \
-                struct LIB##Dyn##NAME *dh,                                     \
-                const uint64_t capacity)                                       \
+                struct LIB##Dyn##NAME *dh, const uint64_t capacity)            \
         {                                                                      \
                 mli_c(dh->capacity >= dh->size);                               \
                 if (capacity < 2) {                                            \
@@ -128,7 +120,8 @@
                 return 0;                                                      \
         }                                                                      \
                                                                                \
-        int LIB##Dyn##NAME##_test_free(struct LIB##Dyn##NAME *dh) {            \
+        int LIB##Dyn##NAME##_test_free(struct LIB##Dyn##NAME *dh)              \
+        {                                                                      \
                 return LIB##Dyn##NAME##_test_init(dh);                         \
         }
 
