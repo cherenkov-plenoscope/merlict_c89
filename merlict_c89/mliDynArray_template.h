@@ -21,6 +21,10 @@
                 struct LIB##Dyn##NAME *dh,                                     \
                 const uint64_t size);                                          \
                                                                                \
+        int LIB##Dyn##NAME##_malloc_set_size(                                  \
+                struct LIB##Dyn##NAME *dh,                                     \
+                const uint64_t size);                                          \
+                                                                               \
         int LIB##Dyn##NAME##_push_back(                                        \
                 struct LIB##Dyn##NAME *dh,                                     \
                 PAYLOAD_TYPE item);
@@ -55,14 +59,25 @@
                 return 0;                                                      \
         }                                                                      \
                                                                                \
+        int LIB##Dyn##NAME##_malloc_set_size(                                  \
+                struct LIB##Dyn##NAME *dh,                                     \
+                const uint64_t size)                                           \
+        {                                                                      \
+                mli_c(LIB##Dyn##NAME##_malloc(dh, size));                      \
+                dh->size = size;                                               \
+                return 1;                                                      \
+        error:                                                                 \
+                return 0;                                                      \
+        }                                                                      \
+                                                                               \
         int LIB##Dyn##NAME##_push_back(                                        \
                 struct LIB##Dyn##NAME *dh,                                     \
                 PAYLOAD_TYPE item)                                             \
         {                                                                      \
                 if (dh->size == dh->capacity) {                                \
                         dh->capacity = dh->capacity * 2;                       \
-                        dh->array = realloc(                                   \
-                                dh->array,                                     \
+                        dh->array = (PAYLOAD_TYPE *)realloc(                   \
+                                (void *)dh->array,                             \
                                 dh->capacity * sizeof(PAYLOAD_TYPE));          \
                         mli_check_mem(dh->array);                              \
                 }                                                              \
