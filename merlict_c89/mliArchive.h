@@ -2,7 +2,7 @@
 #ifndef MERLICT_C89_ARCHIVE_H_
 #define MERLICT_C89_ARCHIVE_H_
 
-#include "mliString.h"
+#include "mliDynStr.h"
 #include "mliJson.h"
 
 MLIDYNARRAY_DEFINITON(mli, String, struct mliDynStr)

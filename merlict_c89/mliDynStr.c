@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliString.h"
+#include "mliDynStr.h"
 #include <stdio.h>
 
 struct mliDynStr mliDynStr_init(void)
