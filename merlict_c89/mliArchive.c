@@ -5,7 +5,7 @@
 #include "mliJson.h"
 #include "mliTar.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, String, struct mliString)
+MLIDYNARRAY_IMPLEMENTATION(mli, String, struct mliDynStr)
 
 struct mliArchive mliArchive_init(void)
 {
@@ -19,18 +19,19 @@ void mliArchive_free(struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->strings.size; i++) {
-                mliString_free(&arc->strings.array[i]);
+                mliDynStr_free(&arc->strings.array[i]);
         }
         mliDynString_free(&arc->strings);
         mliDynMap_free(&arc->filenames);
         (*arc) = mliArchive_init();
 }
 
+
 int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
-        struct mliString tmp_payload = mliString_init();
+        struct mliDynStr tmp_payload = mliDynStr_init();
         char tarh_name[MLITAR_NAME_LENGTH] = {'\0'};
 
         mliArchive_free(arc);
@@ -39,7 +40,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 
         while (mliTar_read_header(&tar, &tarh)) {
                 uint64_t next = arc->filenames.size;
-                struct mliString *payload = NULL;
+                struct mliDynStr *payload = NULL;
                 memset(tarh_name, '\0', sizeof(tarh_name));
 
                 _mli_strip_this_dir(tarh_name, tarh.name);
@@ -48,17 +49,17 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         mliDynMap_insert(&arc->filenames, tarh_name, next),
                         "Can not insert key.");
                 mli_check(
-                        mliDynString_push_back(&arc->strings, mliString_init()),
+                        mliDynString_push_back(&arc->strings, mliDynStr_init()),
                         "Can not push back mliString.");
                 mli_check(
-                        mliString_malloc(&tmp_payload, tarh.size),
+                        mliDynStr_malloc(&tmp_payload, tarh.size + 1),
                         "Can not allocate tmp-string-buffer.");
 
                 payload = &arc->strings.array[next];
-                (*payload) = mliString_init();
+                (*payload) = mliDynStr_init();
 
                 mli_check(
-                        mliString_malloc(payload, tarh.size),
+                        mliDynStr_malloc(payload, 0),
                         "Can not allocate string-buffer.");
                 mli_check(
                         mliTar_read_data(
@@ -66,10 +67,10 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         "Failed to read payload from tar into "
                         "tmp-string-buffer.");
                 mli_check(
-                        mliString_convert_line_break_CRLF_CR_to_LF(
+                        mliDynStr_convert_line_break_CRLF_CR_to_LF(
                                 payload, &tmp_payload),
                         "Failed to replace CRLF and CR linebreaks.");
-                mliString_free(&tmp_payload);
+                mliDynStr_free(&tmp_payload);
                 mli_check(
                         mli_string_assert_only_NUL_LF_TAB_controls(
                                 payload->c_str),
@@ -81,7 +82,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
         return 1;
 error:
         mli_eprintf("tar '%s', filename: '%s'.", path, tarh_name);
-        mliString_free(&tmp_payload);
+        mliDynStr_free(&tmp_payload);
         mliArchive_free(arc);
         if (tar.stream) {
                 mliTar_close(&tar);
@@ -97,7 +98,7 @@ int mliArchive_has(const struct mliArchive *arc, const char *filename)
 int mliArchive_get(
         const struct mliArchive *arc,
         const char *filename,
-        struct mliString **str)
+        struct mliDynStr **str)
 {
         uint64_t idx;
         mli_c(mliDynMap_find(&arc->filenames, filename, &idx));
@@ -112,7 +113,7 @@ int mliArchive_get_malloc_json(
         const char *filename,
         struct mliJson *json)
 {
-        struct mliString *text = NULL;
+        struct mliDynStr *text = NULL;
 
         mli_check(
                 mliArchive_get(arc, filename, &text),

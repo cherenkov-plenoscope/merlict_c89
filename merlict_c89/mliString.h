@@ -2,16 +2,18 @@
 #ifndef MERLICT_C89_MLISTRING_H_
 #define MERLICT_C89_MLISTRING_H_
 
-struct mliString {
+struct mliDynStr {
         char *c_str;
         uint64_t capacity;
+        uint64_t length;
 };
+struct mliDynStr mliDynStr_init(void);
+void mliDynStr_free(struct mliDynStr *str);
+int mliDynStr_malloc(struct mliDynStr *str, const uint64_t capacity);
+int mliDynStr_push_back(struct mliDynStr *str, const char *s);
+int mliDynStr_malloc_from_path(struct mliDynStr *str, const char *path);
+int mliDynStr_convert_line_break_CRLF_CR_to_LF(
+        struct mliDynStr *dst,
+        const struct mliDynStr *src);
 
-struct mliString mliString_init(void);
-int mliString_malloc(struct mliString *str, const uint64_t strlen);
-void mliString_free(struct mliString *str);
-int mliString_malloc_from_path(struct mliString *str, const char *path);
-int mliString_convert_line_break_CRLF_CR_to_LF(
-        struct mliString *dst,
-        const struct mliString *src);
 #endif

@@ -5,7 +5,7 @@
 #include "mliString.h"
 #include "mliJson.h"
 
-MLIDYNARRAY_DEFINITON(mli, String, struct mliString)
+MLIDYNARRAY_DEFINITON(mli, String, struct mliDynStr)
 
 struct mliArchive {
         struct mliDynString strings;
@@ -21,7 +21,7 @@ int mliArchive_has(const struct mliArchive *arc, const char *filename);
 int mliArchive_get(
         const struct mliArchive *arc,
         const char *filename,
-        struct mliString **str);
+        struct mliDynStr **str);
 int mliArchive_get_malloc_json(
         const struct mliArchive *arc,
         const char *filename,

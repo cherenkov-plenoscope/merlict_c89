@@ -356,9 +356,9 @@ CASE("mliObject, parse bad obj-float-lines")
 
 CASE("mliObject, read wavefront file")
 {
-        struct mliString str = mliString_init();
+        struct mliDynStr str = mliDynStr_init();
         struct mliObject obj = mliObject_init();
-        CHECK(mliString_malloc_from_path(
+        CHECK(mliDynStr_malloc_from_path(
                 &str,
                 "merlict_c89/"
                 "tests/"
@@ -369,7 +369,7 @@ CASE("mliObject, read wavefront file")
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
         CHECK(strlen(str.c_str) == str.capacity - 1);
-        mliString_free(&str);
+        mliDynStr_free(&str);
 
         CHECK(obj.num_faces == 600);
         CHECK(obj.num_vertices == 331);
@@ -381,11 +381,11 @@ CASE("mliObject, read wavefront file")
 CASE("mliObject, write and read binary-string")
 {
         uint64_t i;
-        struct mliString str = mliString_init();
+        struct mliDynStr str = mliDynStr_init();
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
         FILE *f;
-        CHECK(mliString_malloc_from_path(
+        CHECK(mliDynStr_malloc_from_path(
                 &str,
                 "merlict_c89/"
                 "tests/"
@@ -395,7 +395,7 @@ CASE("mliObject, write and read binary-string")
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
-        mliString_free(&str);
+        mliDynStr_free(&str);
 
         f = fopen(
                 "merlict_c89/tests/resources/hexagonal_mirror_facet.bin.tmp",
@@ -439,11 +439,11 @@ CASE("mliObject, write and read binary-string")
 CASE("mliObject, write and read ascii-text-string")
 {
         uint64_t i;
-        struct mliString str = mliString_init();
+        struct mliDynStr str = mliDynStr_init();
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
         FILE *f;
-        CHECK(mliString_malloc_from_path(
+        CHECK(mliDynStr_malloc_from_path(
                 &str,
                 "merlict_c89/"
                 "tests/"
@@ -453,7 +453,7 @@ CASE("mliObject, write and read ascii-text-string")
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
-        mliString_free(&str);
+        mliDynStr_free(&str);
 
         f = fopen(
                 "merlict_c89/tests/resources/hexagonal_mirror_facet.obj.tmp",
@@ -462,11 +462,11 @@ CASE("mliObject, write and read ascii-text-string")
         mliObject_fprint_to_wavefront(f, &obj);
         fclose(f);
 
-        CHECK(mliString_malloc_from_path(
+        CHECK(mliDynStr_malloc_from_path(
                 &str,
                 "merlict_c89/tests/resources/hexagonal_mirror_facet.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));
-        mliString_free(&str);
+        mliDynStr_free(&str);
 
         CHECK(obj.num_vertices == obj_back.num_vertices);
         CHECK(obj.num_vertex_normals == obj_back.num_vertex_normals);
@@ -499,10 +499,10 @@ CASE("mliObject, write and read ascii-text-string")
 CASE("mliObject, read and write multiple materials")
 {
         FILE *f;
-        struct mliString str = mliString_init();
+        struct mliDynStr str = mliDynStr_init();
         struct mliObject obj_orig = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        CHECK(mliString_malloc_from_path(
+        CHECK(mliDynStr_malloc_from_path(
                 &str,
                 "merlict_c89/"
                 "tests/"
@@ -512,7 +512,7 @@ CASE("mliObject, read and write multiple materials")
                 "objects/"
                 "cube_with_materials.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj_orig, str.c_str));
-        mliString_free(&str);
+        mliDynStr_free(&str);
         CHECK(obj_orig.num_vertices == 8);
         CHECK(obj_orig.num_vertex_normals == 6);
         CHECK(obj_orig.num_faces == 12);
@@ -524,14 +524,14 @@ CASE("mliObject, read and write multiple materials")
         mliObject_fprint_to_wavefront(f, &obj_orig);
         fclose(f);
 
-        CHECK(mliString_malloc_from_path(
+        CHECK(mliDynStr_malloc_from_path(
                 &str,
                 "merlict_c89/"
                 "tests/"
                 "resources/"
                 "cube_with_materials.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));
-        mliString_free(&str);
+        mliDynStr_free(&str);
 
         CHECK(obj_back.num_vertices == 8);
         CHECK(obj_back.num_vertex_normals == 6);
@@ -563,17 +563,17 @@ CASE("mliObject, read and write multiple materials")
 CASE("mliObject, read and write repeating materials")
 {
         FILE *f;
-        struct mliString str = mliString_init();
+        struct mliDynStr str = mliDynStr_init();
         struct mliObject obj_orig = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        CHECK(mliString_malloc_from_path(
+        CHECK(mliDynStr_malloc_from_path(
                 &str,
                 "merlict_c89/"
                 "tests/"
                 "resources/"
                 "repeating_material.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj_orig, str.c_str));
-        mliString_free(&str);
+        mliDynStr_free(&str);
         CHECK(obj_orig.num_vertices == 5);
         CHECK(obj_orig.num_vertex_normals == 1);
         CHECK(obj_orig.num_faces == 3);
@@ -585,14 +585,14 @@ CASE("mliObject, read and write repeating materials")
         mliObject_fprint_to_wavefront(f, &obj_orig);
         fclose(f);
 
-        CHECK(mliString_malloc_from_path(
+        CHECK(mliDynStr_malloc_from_path(
                 &str,
                 "merlict_c89/"
                 "tests/"
                 "resources/"
                 "repeating_material.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, str.c_str));
-        mliString_free(&str);
+        mliDynStr_free(&str);
 
         CHECK(obj_back.num_vertices == obj_orig.num_vertices);
         CHECK(obj_back.num_vertex_normals == obj_orig.num_vertex_normals);
