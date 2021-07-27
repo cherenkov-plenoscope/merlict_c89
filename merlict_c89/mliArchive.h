@@ -5,10 +5,10 @@
 #include "mliDynStr.h"
 #include "mliJson.h"
 
-MLIDYNARRAY_DEFINITON(mli, String, struct mliDynStr)
+MLIDYNARRAY_DEFINITON(mli, TextFiles, struct mliDynStr)
 
 struct mliArchive {
-        struct mliDynString strings;
+        struct mliDynTextFiles textfiles;
         struct mliDynMap filenames;
 };
 

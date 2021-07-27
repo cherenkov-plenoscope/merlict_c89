@@ -67,7 +67,8 @@ int mli_set_geometry_objects_and_names_from_archive(
                         mli_check(
                                 mliObject_malloc_from_wavefront(
                                         &geometry->objects[obj_idx],
-                                        archive->strings.array[arc_idx].c_str),
+                                        archive->textfiles.array[arc_idx]
+                                                .c_str),
                                 "Failed to parse wave-front-object.");
                         memcpy(geometry->object_names[obj_idx].c_str,
                                key,
@@ -133,7 +134,8 @@ int mli_malloc_materials_form_archive(
                         mli_check(
                                 mliFunc_malloc_from_csv(
                                         &materials->functions[fnc_idx],
-                                        archive->strings.array[arc_idx].c_str),
+                                        archive->textfiles.array[arc_idx]
+                                                .c_str),
                                 "Failed to parse comma-separated-values from "
                                 "file.");
 

@@ -5,12 +5,12 @@
 #include "mliJson.h"
 #include "mliTar.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, String, struct mliDynStr)
+MLIDYNARRAY_IMPLEMENTATION(mli, TextFiles, struct mliDynStr)
 
 struct mliArchive mliArchive_init(void)
 {
         struct mliArchive arc;
-        arc.strings = mliDynString_init();
+        arc.textfiles = mliDynTextFiles_init();
         arc.filenames = mliDynMap_init();
         return arc;
 }
@@ -18,10 +18,10 @@ struct mliArchive mliArchive_init(void)
 void mliArchive_free(struct mliArchive *arc)
 {
         uint64_t i;
-        for (i = 0; i < arc->strings.size; i++) {
-                mliDynStr_free(&arc->strings.array[i]);
+        for (i = 0; i < arc->textfiles.size; i++) {
+                mliDynStr_free(&arc->textfiles.array[i]);
         }
-        mliDynString_free(&arc->strings);
+        mliDynTextFiles_free(&arc->textfiles);
         mliDynMap_free(&arc->filenames);
         (*arc) = mliArchive_init();
 }
@@ -34,7 +34,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
         char tarh_name[MLITAR_NAME_LENGTH] = {'\0'};
 
         mliArchive_free(arc);
-        mliDynString_malloc(&arc->strings, 0u);
+        mliDynTextFiles_malloc(&arc->textfiles, 0u);
         mli_check(mliTar_open(&tar, path, "r"), "Cant open Tar.");
 
         while (mliTar_read_header(&tar, &tarh)) {
@@ -48,13 +48,14 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         mliDynMap_insert(&arc->filenames, tarh_name, next),
                         "Can not insert key.");
                 mli_check(
-                        mliDynString_push_back(&arc->strings, mliDynStr_init()),
+                        mliDynTextFiles_push_back(
+                                &arc->textfiles, mliDynStr_init()),
                         "Can not push back mliString.");
                 mli_check(
                         mliDynStr_malloc(&tmp_payload, tarh.size + 1),
                         "Can not allocate tmp-string-buffer.");
 
-                payload = &arc->strings.array[next];
+                payload = &arc->textfiles.array[next];
                 (*payload) = mliDynStr_init();
 
                 mli_check(
@@ -74,7 +75,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         mli_string_assert_only_NUL_LF_TAB_controls(
                                 payload->c_str),
                         "Did not expect control codes other than "
-                        "('\\n', '\\t', '\\0') in text-files.");
+                        "('\\n', '\\t', '\\0') in textfiles.");
         }
 
         mliTar_close(&tar);
@@ -101,7 +102,7 @@ int mliArchive_get(
 {
         uint64_t idx;
         mli_c(mliDynMap_find(&arc->filenames, filename, &idx));
-        (*str) = &arc->strings.array[idx];
+        (*str) = &arc->textfiles.array[idx];
         return 1;
 error:
         return 0;
@@ -135,13 +136,13 @@ uint64_t mliArchive_num(const struct mliArchive *arc)
 void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
 {
         uint64_t i;
-        for (i = 0; i < arc->strings.size; i++) {
+        for (i = 0; i < arc->textfiles.size; i++) {
                 struct _mliMapItem *map_item = &arc->filenames.array[i];
                 fprintf(f,
                         "%u: %s, %u\n",
                         (uint32_t)i,
                         map_item->key,
-                        (uint32_t)arc->strings.array[i].capacity);
+                        (uint32_t)arc->textfiles.array[i].capacity);
         }
 }
 
@@ -153,7 +154,7 @@ void mliArchive_mask_filename_prefix_sufix(
 {
         uint64_t i = 0u;
         uint64_t match = 0u;
-        for (i = 0; i < arc->strings.size; i++) {
+        for (i = 0; i < arc->textfiles.size; i++) {
                 struct _mliMapItem *map_item = &arc->filenames.array[i];
 
                 match = mli_string_has_prefix_suffix(
@@ -175,7 +176,7 @@ uint64_t mliArchive_num_filename_prefix_sufix(
         uint64_t i = 0;
         uint64_t match;
         uint64_t num_matches = 0;
-        for (i = 0; i < arc->strings.size; i++) {
+        for (i = 0; i < arc->textfiles.size; i++) {
                 struct _mliMapItem *map_item = &arc->filenames.array[i];
 
                 match = mli_string_has_prefix_suffix(
