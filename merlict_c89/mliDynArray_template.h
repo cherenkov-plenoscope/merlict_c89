@@ -126,7 +126,7 @@
         }
 
 MLIDYNARRAY_DEFINITON(mli, Uint32, uint32_t)
-MLIDYNARRAY_DEFINITON(mli, Float32, float)
+MLIDYNARRAY_DEFINITON(mli, Float, float)
 MLIDYNARRAY_DEFINITON(mli, Double, double)
 MLIDYNARRAY_DEFINITON(mli, Color, struct mliColor)
 MLIDYNARRAY_TEST_DEFINITON(mli, Color, struct mliColor)

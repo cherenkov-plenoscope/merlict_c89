@@ -125,8 +125,7 @@ int _read_telescope_positions(
 
         mli_check(num_following_arrays == 4, "Expected exactly four arrays.")
 
-        mli_c(mliDynEventIoTelPos_malloc(telescope_positions, ntel));
-        telescope_positions->size = ntel;
+        mli_c(mliDynEventIoTelPos_malloc_set_size(telescope_positions, ntel));
         mli_fread(
             telescope_positions->array, sizeof(struct mliEventIoTelPos), ntel, f);
         return 1;
@@ -146,9 +145,9 @@ int _read_telescope_offsets(
         int32_t narray;
         float toff;
 
-        struct mliDynFloat32 xoff = mliDynFloat32_init();
-        struct mliDynFloat32 yoff = mliDynFloat32_init();
-        struct mliDynFloat32 weight = mliDynFloat32_init();
+        struct mliDynFloat xoff = mliDynFloat_init();
+        struct mliDynFloat yoff = mliDynFloat_init();
+        struct mliDynFloat weight = mliDynFloat_init();
 
         mli_check(
                 mliEventIoHeader_read_from_file(
@@ -165,9 +164,9 @@ int _read_telescope_offsets(
         mli_fread(&toff, sizeof(float), 1, f);
 
 
-        mli_c(mliDynFloat32_malloc(&xoff, narray));
-        mli_c(mliDynFloat32_malloc(&yoff, narray));
-        mli_c(mliDynFloat32_malloc(&weight, narray));
+        mli_c(mliDynFloat_malloc_set_size(&xoff, narray));
+        mli_c(mliDynFloat_malloc_set_size(&yoff, narray));
+        mli_c(mliDynFloat_malloc_set_size(&weight, narray));
 
         num_following_arrays = (int)(
                 (head.length - length_first_two) / narray /4);
@@ -189,9 +188,8 @@ int _read_telescope_offsets(
         }
 
         mli_check(
-                mliDynEventIoTelOffset_malloc(telescope_offsets, narray),
+                mliDynEventIoTelOffset_malloc_set_size(telescope_offsets, narray),
                 "Failed to malloc telescope_offsets.");
-        telescope_offsets->size = narray;
 
         for (n = 0; n < narray; n++) {
                 telescope_offsets->array[n].xoff = xoff.array[n];
@@ -200,9 +198,9 @@ int _read_telescope_offsets(
                 telescope_offsets->array[n].weight = weight.array[n];
         }
 
-        mliDynFloat32_free(&xoff);
-        mliDynFloat32_free(&yoff);
-        mliDynFloat32_free(&weight);
+        mliDynFloat_free(&xoff);
+        mliDynFloat_free(&yoff);
+        mliDynFloat_free(&weight);
 
         return 1;
 error:
@@ -268,10 +266,8 @@ int _read_photon_bunches(
         is_compact = (int)(subhead.version/1000 == 1);
 
         mli_check(
-                mliDynCorsikaPhotonBunch_malloc(bunches, b_head.num_bunches),
+                mliDynCorsikaPhotonBunch_malloc_set_size(bunches, b_head.num_bunches),
                 "Failed to malloc bunches.");
-        bunches->size = b_head.num_bunches;
-
 
         if (is_compact) {
                 int16_t buff[8];
