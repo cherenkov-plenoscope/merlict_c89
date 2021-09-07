@@ -2,6 +2,7 @@
 #include "mliDynArray_template.h"
 
 MLIDYNARRAY_IMPLEMENTATION(mli, Uint32, uint32_t)
+MLIDYNARRAY_IMPLEMENTATION(mli, Float32, float)
 MLIDYNARRAY_IMPLEMENTATION(mli, Double, double)
 MLIDYNARRAY_IMPLEMENTATION(mli, Color, struct mliColor)
 MLIDYNARRAY_TEST_IMPLEMENTATION(mli, Color, struct mliColor)
