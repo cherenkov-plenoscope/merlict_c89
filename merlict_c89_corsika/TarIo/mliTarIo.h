@@ -1,9 +1,9 @@
 /* Copyright 2020 Sebastian A. Mueller */
-#ifndef MERLICT_C89_CORSIKA_MLITARIO_H_
-#define MERLICT_C89_CORSIKA_MLITARIO_H_
+#ifndef MERLICT_C89_CORSIKA_TARIO_MLITARIO_H_
+#define MERLICT_C89_CORSIKA_TARIO_MLITARIO_H_
 
-#include "../merlict_c89/mliTar.h"
-#include "../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
+#include "../../merlict_c89/mliTar.h"
+#include "../../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
 
 struct mliTarIoRun {
         struct mliTar tar;
