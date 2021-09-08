@@ -40,8 +40,8 @@ struct mliEventIoRun {
         struct mliDynEventIoTelPos telescope_positions;
 };
 struct mliEventIoRun mliEventIoRun_init(void);
-int mliEventIoRun_malloc(struct mliEventIoRun *runstream, const char *path);
-void mliEventIoRun_free(struct mliEventIoRun *runstream);
+void mliEventIoRun_close(struct mliEventIoRun *runstream);
+int mliEventIoRun_open(struct mliEventIoRun *runstream, const char *path);
 int mliEventIoRun_malloc_next_event(
         struct mliEventIoRun *runstream,
         struct mliEventIoEvent *eventstream);

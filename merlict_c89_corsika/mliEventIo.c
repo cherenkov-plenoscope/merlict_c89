@@ -295,7 +295,7 @@ error:
         return 0;
 }
 
-int mliEventIoRun_malloc(struct mliEventIoRun *runstream, const char *path)
+int mliEventIoRun_open(struct mliEventIoRun *runstream, const char *path)
 {
         runstream->f = fopen(path, "rb");
         mli_check(runstream->f, "Can not open event-io-file.");
@@ -317,7 +317,7 @@ error:
         return 0;
 }
 
-void mliEventIoRun_free(struct mliEventIoRun *runstream)
+void mliEventIoRun_close(struct mliEventIoRun *runstream)
 {
         mliDynStr_free(&runstream->corsika_input_card);
         mliDynEventIoTelPos_free(&runstream->telescope_positions);
