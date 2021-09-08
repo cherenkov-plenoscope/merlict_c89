@@ -40,8 +40,8 @@ CASE("TarIo: while loop")
                 "merlict_c89_corsika/tests/resources/corsika_primary_run.tar"));
 
         while (1) {
-                int event_valid;
-                int i;
+                uint64_t event_valid;
+                uint64_t i;
                 struct mliTarIoEvent event = mliTarIoEvent_init();
 
                 event_valid = mliTarIoEvent_malloc_from_run(&event, &run);

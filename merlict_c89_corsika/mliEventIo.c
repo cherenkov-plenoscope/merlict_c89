@@ -4,7 +4,7 @@
 MLIDYNARRAY_IMPLEMENTATION(mli, EventIoTelPos, struct mliEventIoTelPos)
 MLIDYNARRAY_IMPLEMENTATION(mli, EventIoTelOffset, struct mliEventIoTelOffset)
 
-struct mliEventIoEvent mliEventIoEvent_init()
+struct mliEventIoEvent mliEventIoEvent_init(void)
 {
         struct mliEventIoEvent evt;
         memset(evt.corsika_event_header, 0.0, 273);
@@ -19,7 +19,7 @@ void mliEventIoEvent_free(struct mliEventIoEvent *evt)
         (*evt) = mliEventIoEvent_init();
 }
 
-struct mliEventIoRun mliEventIoRun_init()
+struct mliEventIoRun mliEventIoRun_init(void)
 {
         struct mliEventIoRun runstream;
         runstream.f = NULL;
@@ -40,8 +40,8 @@ int _read_273_block(FILE *f, float *block, const int32_t type)
         mliEventIoHeader_fprint(head, stderr);
 
         mli_fread(&block_size, sizeof(int32_t), 1, f);
-        mli_check(block_size == 273, "Expected block-size to be 273.")
-                mli_fread(block, sizeof(float), block_size, f);
+        mli_check(block_size == 273, "Expected block-size to be 273.");
+        mli_fread(block, sizeof(float), (uint64_t)block_size, f);
         return 1;
 error:
         return 0;
@@ -71,7 +71,7 @@ int _read_input_card(FILE *f, struct mliDynStr *input_card)
 {
         struct mliEventIoHeader head;
         char _unknown[8];
-        int input_card_length;
+        uint64_t input_card_length;
         mli_check(
                 mliEventIoHeader_read_from_file(
                         &head, f, MLI_EVENTIO_TOP_LEVEL),
@@ -85,7 +85,9 @@ int _read_input_card(FILE *f, struct mliDynStr *input_card)
                 "Failed to malloc c_str for input-card.");
 
         mli_fread(_unknown, sizeof(_unknown), 1, f);
-
+        mli_check(
+                head.length >= sizeof(_unknown),
+                "Expected at least 8bytes payload.");
         input_card_length = head.length - sizeof(_unknown);
         mli_fread(input_card->c_str, sizeof(char), input_card_length, f);
         return 1;
@@ -120,7 +122,7 @@ int _read_telescope_positions(
         mli_fread(
                 telescope_positions->array,
                 sizeof(struct mliEventIoTelPos),
-                ntel,
+                (uint64_t)ntel,
                 f);
         return 1;
 error:
@@ -135,8 +137,9 @@ int _read_telescope_offsets(
 
         const int length_first_two = 4 + 4;
         int num_following_arrays;
-        int n;
-        int32_t narray;
+        int32_t _narray;
+        uint64_t narray;
+        uint64_t n;
         float toff;
 
         struct mliDynFloat xoff = mliDynFloat_init();
@@ -150,7 +153,10 @@ int _read_telescope_offsets(
         mli_check(head.type == 1203, "Expected telescope-offsets, type: 1203.");
         mliEventIoHeader_fprint(head, stderr);
 
-        mli_fread(&narray, sizeof(int32_t), 1, f);
+        mli_fread(&_narray, sizeof(int32_t), 1, f);
+        mli_check(_narray >= 0, "Expected num. of arrays to be positive.");
+        narray = (uint64_t)_narray;
+
         mli_fread(&toff, sizeof(float), 1, f);
 
         mli_c(mliDynFloat_malloc_set_size(&xoff, narray));
@@ -224,6 +230,7 @@ int _read_photon_bunches(FILE *f, struct mliDynCorsikaPhotonBunch *bunches)
         struct _BunchHeader b_head;
         float tmp[8];
         int is_compact = 0;
+        uint64_t row, field;
 
         mli_check(
                 mliEventIoHeader_read_from_file(
@@ -251,10 +258,10 @@ int _read_photon_bunches(FILE *f, struct mliDynCorsikaPhotonBunch *bunches)
 
         if (is_compact) {
                 int16_t buff[8];
-                for (size_t row = 0; row < bunches->size; row++) {
+                for (row = 0; row < bunches->size; row++) {
                         mli_fread(buff, sizeof(int16_t), 8, f);
 
-                        for (size_t field = 0; field < 8; field++) {
+                        for (field = 0; field < 8; field++) {
                                 tmp[field] = (float)buff[field];
                         }
 
@@ -269,7 +276,7 @@ int _read_photon_bunches(FILE *f, struct mliDynCorsikaPhotonBunch *bunches)
                         bunches->array[row].wavelength_nm = tmp[7];
                 }
         } else {
-                for (size_t row = 0; row < bunches->size; row++) {
+                for (row = 0; row < bunches->size; row++) {
                         mli_fread(tmp, sizeof(float), 8, f);
 
                         bunches->array[row].x_cm = tmp[0];
@@ -310,7 +317,7 @@ error:
         return 0;
 }
 
-int mliEventIoRun_free(struct mliEventIoRun *runstream)
+void mliEventIoRun_free(struct mliEventIoRun *runstream)
 {
         mliDynStr_free(&runstream->corsika_input_card);
         mliDynEventIoTelPos_free(&runstream->telescope_positions);

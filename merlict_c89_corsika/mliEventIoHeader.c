@@ -9,7 +9,7 @@ struct _FirstFour {
         int32_t id;
         int32_t length;
 };
-struct _FirstFour _FirstFour_zeros()
+struct _FirstFour _FirstFour_zeros(void)
 {
         struct _FirstFour ff;
         ff.sync = 0;
@@ -25,7 +25,7 @@ struct _TypeInfo {
         int user;
         int extended;
 };
-struct _TypeInfo _TypeInfo_zeros()
+struct _TypeInfo _TypeInfo_zeros(void)
 {
         struct _TypeInfo ti;
         ti.type = 0;
@@ -48,7 +48,7 @@ struct _LengthInfo {
         int only_sub_objects;
         int32_t length;
 };
-struct _LengthInfo _LengthInfo_zeros()
+struct _LengthInfo _LengthInfo_zeros(void)
 {
         struct _LengthInfo li;
         li.only_sub_objects = 0;
@@ -135,6 +135,6 @@ void mliEventIoHeader_fprint(const struct mliEventIoHeader head, FILE *f)
         fprintf(f, "h.user %d\n", head.user);
         fprintf(f, "h.extended %d\n", head.extended);
         fprintf(f, "h.only_sub_objects %d\n", head.only_sub_objects);
-        fprintf(f, "h.length %u\n", head.length);
+        fprintf(f, "h.length %lu\n", head.length);
         fprintf(f, "h.id %d\n", head.id);
 }

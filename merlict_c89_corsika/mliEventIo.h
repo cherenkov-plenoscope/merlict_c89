@@ -27,7 +27,7 @@ struct mliEventIoEvent {
         struct mliDynEventIoTelOffset telescope_offsets;
         struct mliDynCorsikaPhotonBunch photon_bunches;
 };
-struct mliEventIoEvent mliEventIoEvent_init();
+struct mliEventIoEvent mliEventIoEvent_init(void);
 void mliEventIoEvent_free(struct mliEventIoEvent *ioevt);
 int mliEventIoEvent_malloc(
         struct mliEventIoEvent *ioevt,
@@ -39,9 +39,9 @@ struct mliEventIoRun {
         struct mliDynStr corsika_input_card;
         struct mliDynEventIoTelPos telescope_positions;
 };
-struct mliEventIoRun mliEventIoRun_init();
+struct mliEventIoRun mliEventIoRun_init(void);
 int mliEventIoRun_malloc(struct mliEventIoRun *runstream, const char *path);
-int mliEventIoRun_free(struct mliEventIoRun *runstream);
+void mliEventIoRun_free(struct mliEventIoRun *runstream);
 int mliEventIoRun_malloc_next_event(
         struct mliEventIoRun *runstream,
         struct mliEventIoEvent *eventstream);

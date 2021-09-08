@@ -106,10 +106,10 @@ CASE("EventIoFile_telescope_dat__check_input_card")
 
 CASE("EventIoFile_telescope_dat__mmcs_run_header")
 {
+        float runh[273];
         struct mliEventIoRun run = mliEventIoRun_init();
         CHECK(mliEventIoRun_malloc(
                 &run, "merlict_c89_corsika/tests/resources/telescope.dat"));
-        float runh[273];
         memcpy(runh, run.corsika_run_header, sizeof(runh));
 
         CHECK_MARGIN(7., runh[MLI_CORSIKA_RUNH_RUN_NUMBER], 1e-6);
@@ -163,6 +163,7 @@ CASE("EventIoFile_telescope_dat__event_header")
 
 CASE("EventIoFile_telescope_dat__photon_bundle_size")
 {
+        uint64_t i;
         struct mliEventIoRun run = mliEventIoRun_init();
         struct mliEventIoEvent event = mliEventIoEvent_init();
         CHECK(mliEventIoRun_malloc(
@@ -170,7 +171,7 @@ CASE("EventIoFile_telescope_dat__photon_bundle_size")
         CHECK(mliEventIoRun_malloc_next_event(&run, &event));
 
         CHECK(event.photon_bunches.size == 42629u);
-        for (int i = 0; i < event.photon_bunches.size; i++) {
+        for (i = 0; i < event.photon_bunches.size; i++) {
                 struct mliCorsikaPhotonBunch bunch =
                         event.photon_bunches.array[i];
                 CHECK(bunch.z_emission_cm > 0.0);
@@ -182,14 +183,7 @@ CASE("EventIoFile_telescope_dat__photon_bundle_size")
 
 CASE("EventIoFile_telescope_dat__photon_bundle_values")
 {
-        struct mliEventIoRun run = mliEventIoRun_init();
-        struct mliEventIoEvent event = mliEventIoEvent_init();
-        CHECK(mliEventIoRun_malloc(
-                &run, "merlict_c89_corsika/tests/resources/telescope.dat"));
-        CHECK(mliEventIoRun_malloc_next_event(&run, &event));
-
-        CHECK(event.photon_bunches.size == 42629u);
-
+        int j;
         struct mliCorsikaPhotonBunch some[5] = {{161.90000915527344,
                                                  236.8000030517578,
                                                  0.23186667263507843,
@@ -231,7 +225,14 @@ CASE("EventIoFile_telescope_dat__photon_bundle_values")
                                                  0.9899999499320984,
                                                  -523.0}};
 
-        for (int j = 2; j < 5; j++) {
+        struct mliEventIoRun run = mliEventIoRun_init();
+        struct mliEventIoEvent event = mliEventIoEvent_init();
+        CHECK(mliEventIoRun_malloc(
+                &run, "merlict_c89_corsika/tests/resources/telescope.dat"));
+        CHECK(mliEventIoRun_malloc_next_event(&run, &event));
+        CHECK(event.photon_bunches.size == 42629u);
+
+        for (j = 2; j < 5; j++) {
                 struct mliCorsikaPhotonBunch b = event.photon_bunches.array[j];
 
                 CHECK_MARGIN(b.x_cm, some[j].x_cm, 1e-6);
@@ -239,7 +240,7 @@ CASE("EventIoFile_telescope_dat__photon_bundle_values")
                 CHECK_MARGIN(b.cx_rad, some[j].cx_rad, 1e-6);
                 CHECK_MARGIN(b.cy_rad, some[j].cy_rad, 1e-6);
                 CHECK_MARGIN(b.time_ns, some[j].time_ns, 1e-6);
-                CHECK_MARGIN(b.z_emission_cm, some[j].z_emission_cm, 10);
+                CHECK_MARGIN(b.z_emission_cm, some[j].z_emission_cm, 10.0);
                 /* the height can sometimes be way off! */
                 CHECK_MARGIN(b.weight_photons, some[j].weight_photons, 1e-6);
                 CHECK_MARGIN(b.wavelength_nm, some[j].wavelength_nm, 1e-6);

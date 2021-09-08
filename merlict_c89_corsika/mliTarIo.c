@@ -85,11 +85,14 @@ int mliTarIoEvent_malloc_from_run(
         const char *BUNCH_SUFFIX = ".cherenkov_bunches.Nx8_float32";
         const uint64_t BUNCH_PATH_LENGTH =
                 PATH_NUM_DIGITS + strlen(BUNCH_SUFFIX);
-
-        mliTarIoEvent_free(event);
-
         uint64_t evth_event_id = 0;
         uint64_t photon_bunches_event_id = 0;
+
+        uint64_t SIZE_OF_BUNCH;
+        uint64_t size_rest;
+        uint64_t num_bunches;
+
+        mliTarIoEvent_free(event);
 
         rc_info_header = mliTar_read_header(&run->tar, &info_header);
         if (!rc_info_header) {
@@ -107,7 +110,7 @@ int mliTarIoEvent_malloc_from_run(
                 "Expected evth path to have suffix '.evth.float32'.");
 
         mli_check(
-                mli_nstring_to_int(
+                mli_nstring_to_uint(
                         &evth_event_id, info_header.name, 10, PATH_NUM_DIGITS),
                 "Failed to parse event-id from evth-path.");
 
@@ -134,7 +137,7 @@ int mliTarIoEvent_malloc_from_run(
                 "'.cherenkov_bunches.Nx8_float32'.");
 
         mli_check(
-                mli_nstring_to_int(
+                mli_nstring_to_uint(
                         &photon_bunches_event_id,
                         info_bunches.name,
                         10,
@@ -146,9 +149,9 @@ int mliTarIoEvent_malloc_from_run(
                 "Expected event-id in evth-path == "
                 "event-id in photon-bunches-path.");
 
-        const uint64_t SIZE_OF_BUNCH = sizeof(struct mliCorsikaPhotonBunch);
-        const uint64_t size_rest = info_bunches.size % SIZE_OF_BUNCH;
-        const uint64_t num_bunches = info_bunches.size / SIZE_OF_BUNCH;
+        SIZE_OF_BUNCH = sizeof(struct mliCorsikaPhotonBunch);
+        size_rest = info_bunches.size % SIZE_OF_BUNCH;
+        num_bunches = info_bunches.size / SIZE_OF_BUNCH;
 
         mli_check(
                 size_rest == 0,

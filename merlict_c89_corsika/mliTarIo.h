@@ -1,4 +1,4 @@
-// Copyright 2020 Sebastian A. Mueller
+/* Copyright 2020 Sebastian A. Mueller */
 #ifndef MERLICT_C89_CORSIKA_MLITARIO_H_
 #define MERLICT_C89_CORSIKA_MLITARIO_H_
 
