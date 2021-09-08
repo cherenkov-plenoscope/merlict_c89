@@ -170,7 +170,6 @@ int mliEventIoEvent_malloc_from_run(
         /* corsika_event_header */
         /* -------------------- */
         mli_check(run->_next_block.type == 1202, "Expected type 1202.");
-        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
                 _read_273_block(run->_f, event->corsika_event_header),
                 "Failed to read corsika_event_header 273 float block.");
@@ -179,7 +178,6 @@ int mliEventIoEvent_malloc_from_run(
         /* ----------------- */
         mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
         mli_check(run->_next_block.type == 1203, "Expected type 1203.");
-        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
                 _read_telescope_offsets(
                         run->_f,
@@ -195,7 +193,6 @@ int mliEventIoEvent_malloc_from_run(
                 run->_next_block.only_sub_objects,
                 "Expected telescope-array-block to only contain sub-blocks.");
         remaining_array_block_length = run->_next_block.length;
-        mliEventIoHeader_fprint(run->_next_block, stderr);
 
         /* photon_bunches */
         /* -------------- */
@@ -211,7 +208,6 @@ int mliEventIoEvent_malloc_from_run(
                 mli_check(
                         run->_next_block.type == 1205,
                         "Expected subheader type 1205");
-                mliEventIoHeader_fprint(run->_next_block, stderr);
 
                 mli_check(
                         _read_photon_bunches(
@@ -225,7 +221,6 @@ int mliEventIoEvent_malloc_from_run(
         /* corsika_event_end */
         /* ----------------- */
         mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
-        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(run->_next_block.type == 1209, "Expected type 1209.");
         mli_check(
                 _read_273_block(run->_f, event->corsika_event_end),
@@ -234,7 +229,6 @@ int mliEventIoEvent_malloc_from_run(
         /* next */
         /* ---- */
         mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
-        mliEventIoHeader_fprint(run->_next_block, stderr);
 
         return 1;
 error:

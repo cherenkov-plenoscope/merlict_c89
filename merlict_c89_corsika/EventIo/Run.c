@@ -98,7 +98,6 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
         /* ------------------ */
         mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
         mli_check(run->_next_block.type == 1200, "Expected type 1200.");
-        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
                 _read_273_block(run->_f, run->corsika_run_header),
                 "Failed to read corsika_run_header 273 float block.");
@@ -108,7 +107,6 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
         /* ------------------ */
         mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
         mli_check(run->_next_block.type == 1212, "Expected type 1212.");
-        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
                 _read_input_card(
                         run->_f, &run->corsika_input_card, run->_next_block.length),
@@ -118,7 +116,6 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
         /* ------------------- */
         mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
         mli_check(run->_next_block.type == 1201, "Expected type 1201.");
-        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
                 _read_telescope_positions(
                         run->_f, &run->telescope_positions, run->_next_block.length),
@@ -127,7 +124,6 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
         /* next */
         /* ---- */
         mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
-        mliEventIoHeader_fprint(run->_next_block, stderr);
 
         return 1;
 error:
