@@ -3,6 +3,19 @@
 
 #define EXPECTED_SYNC -736130505
 
+struct mliEventIoHeader mliEventIoHeader_init(void) {
+        struct mliEventIoHeader h;
+        h.is_sync = 0;
+        h.type = -1;
+        h.version = -1;
+        h.user = -1;
+        h.extended = 0;
+        h.only_sub_objects = 0;
+        h.length = 0u;
+        h.id = -1;
+        return h;
+}
+
 struct _FirstFour {
         int32_t sync;
         int32_t type;

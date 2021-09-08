@@ -5,6 +5,7 @@ struct mliEventIoRun mliEventIoRun_init(void)
 {
         struct mliEventIoRun run;
         run._f = NULL;
+        run._next = mliEventIoHeader_init();
         memset(run.corsika_run_header, 0.0, 273);
         run.corsika_input_card = mliDynStr_init();
         run.telescope_positions = mliDynEventIoTelescopePosition_init();

@@ -8,6 +8,7 @@
 
 struct mliEventIoRun {
         FILE *_f;
+        struct mliEventIoHeader _next;
         float corsika_run_header[273];
         struct mliDynStr corsika_input_card;
         struct mliDynEventIoTelescopePosition telescope_positions;
