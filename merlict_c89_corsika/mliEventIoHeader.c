@@ -9,7 +9,8 @@ struct _FirstFour {
         int32_t id;
         int32_t length;
 };
-struct _FirstFour _FirstFour_zeros() {
+struct _FirstFour _FirstFour_zeros()
+{
         struct _FirstFour ff;
         ff.sync = 0;
         ff.type = 0;
@@ -24,7 +25,8 @@ struct _TypeInfo {
         int user;
         int extended;
 };
-struct _TypeInfo _TypeInfo_zeros() {
+struct _TypeInfo _TypeInfo_zeros()
+{
         struct _TypeInfo ti;
         ti.type = 0;
         ti.version = 0;
@@ -32,12 +34,13 @@ struct _TypeInfo _TypeInfo_zeros() {
         ti.extended = 0;
         return ti;
 }
-struct _TypeInfo _TypeInfo_init(const int32_t _type) {
+struct _TypeInfo _TypeInfo_init(const int32_t _type)
+{
         struct _TypeInfo info;
         info.type = _type & 0xffff;
         info.version = (_type & 0xfff00000) >> 20;
-        info.user = (int)(_type & (1<<16));
-        info.extended = (int)(_type & (1<<17));
+        info.user = (int)(_type & (1 << 16));
+        info.extended = (int)(_type & (1 << 17));
         return info;
 }
 
@@ -52,11 +55,12 @@ struct _LengthInfo _LengthInfo_zeros()
         li.length = 0;
         return li;
 }
-struct _LengthInfo _LengthInfo_init(const int32_t _length) {
+struct _LengthInfo _LengthInfo_init(const int32_t _length)
+{
         struct _LengthInfo info;
-        info.only_sub_objects = (int)(_length & 1<<30);
+        info.only_sub_objects = (int)(_length & 1 << 30);
         /* bit 31 of length is reserved */
-        info.length = _length &  0x3fffffff;
+        info.length = _length & 0x3fffffff;
         return info;
 }
 
@@ -111,18 +115,17 @@ int mliEventIoHeader_read_from_file(
         header->only_sub_objects = length_info.only_sub_objects;
 
         if (!type_info.extended) {
-            header->length = length_info.length;
+                header->length = length_info.length;
         } else {
-            int32_t extended;
-            mli_fread(&extended, sizeof(int32_t), 1, f);
-            header->length = _extend_length(extended, length_info);
+                int32_t extended;
+                mli_fread(&extended, sizeof(int32_t), 1, f);
+                header->length = _extend_length(extended, length_info);
         }
 
         return 1;
 error:
         return 0;
 }
-
 
 void mliEventIoHeader_fprint(const struct mliEventIoHeader head, FILE *f)
 {

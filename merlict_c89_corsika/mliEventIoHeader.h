@@ -7,7 +7,7 @@
 #define MLI_EVENTIO_TOP_LEVEL 1
 #define MLI_EVENTIO_SUB_LEVEL 0
 
-struct mliEventIoHeader{
+struct mliEventIoHeader {
         int is_sync;
         int32_t type;
         int32_t version;

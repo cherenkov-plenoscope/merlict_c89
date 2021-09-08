@@ -8,15 +8,15 @@
 
 struct mliCorsikaPhotonBunch {
         /*
-        * x in cm
-        * y in cm
-        * cx
-        * cy
-        * time in nanoseconds since first interaction.
-        * zem
-        * photons
-        * wavelength is in nanometer negative if scattered ?!
-        */
+         * x in cm
+         * y in cm
+         * cx
+         * cy
+         * time in nanoseconds since first interaction.
+         * zem
+         * photons
+         * wavelength is in nanometer negative if scattered ?!
+         */
         float x_cm;
         float y_cm;
         float cx_rad;

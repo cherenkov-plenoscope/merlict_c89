@@ -5,10 +5,9 @@
 #include "../merlict_c89/mliTar.h"
 #include "../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
 
-
 struct mliTarIoRun {
-    struct mliTar tar;
-    float header[273];
+        struct mliTar tar;
+        float header[273];
 };
 
 struct mliTarIoRun mliTarIoRun_init(void);
@@ -26,7 +25,7 @@ int mliTarIoEvent_malloc(
         struct mliTarIoEvent *event,
         const uint64_t num_photon_bunches);
 int mliTarIoEvent_malloc_from_run(
-    struct mliTarIoEvent *event,
-    struct mliTarIoRun *run);
+        struct mliTarIoEvent *event,
+        struct mliTarIoRun *run);
 
 #endif

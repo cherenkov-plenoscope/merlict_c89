@@ -1,86 +1,90 @@
 // Copyright 2014 Sebastian A. Mueller
 
-CASE("EventIoPhotonFactoryTest: intersection_point_on_ground") {
-    /* compare the input ground intersection point with the actual intersection
-     * point of the merlict photons when they are absorbed on the ground.
-     */
-    const double production_distance_offset = 1e3;
-    struct mliDynPhoton merlict_photons = mliDynPhoton_init();
-    struct mliDynCorsikaPhotonBunch corsika_photons = mliDynCorsikaPhotonBunch_init();
-    CHECK(mliDynPhoton_malloc(&merlict_photons, 0u));
-    CHECK(mliDynCorsikaPhotonBunch_malloc(&corsika_photons, 0u));
+CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
+{
+        /* compare the input ground intersection point with the actual
+         * intersection point of the merlict photons when they are absorbed on
+         * the ground.
+         */
+        const double production_distance_offset = 1e3;
+        struct mliDynPhoton merlict_photons = mliDynPhoton_init();
+        struct mliDynCorsikaPhotonBunch corsika_photons =
+                mliDynCorsikaPhotonBunch_init();
+        CHECK(mliDynPhoton_malloc(&merlict_photons, 0u));
+        CHECK(mliDynCorsikaPhotonBunch_malloc(&corsika_photons, 0u));
 
-    int64_t id = 0;
-    for (float x = -1e4; x < 1e4; x = x+1495.0) {
-        for (float y = -1e4; y < 1e4; y = y+1495.0) {
-            for (float cx = -0.5; cx < 0.5; cx = cx+0.11) {
-                for (float cy = -0.5; cy < 0.5; cy = cy+0.11) {
-                    struct mliPhoton merlict_photon;
-                    struct mliCorsikaPhotonBunch corsika_photon;
-                    corsika_photon.x_cm = x;
-                    corsika_photon.y_cm = y;
-                    corsika_photon.cx_rad = cx;
-                    corsika_photon.cy_rad = cy;
-                    corsika_photon.time_ns = 0.0;
-                    corsika_photon.z_emission_cm = 1e5;
-                    corsika_photon.weight_photons = 1.0;
-                    corsika_photon.wavelength_nm = 433.0;
-                    CHECK(mliDynCorsikaPhotonBunch_push_back(
-                        &corsika_photons,
-                        corsika_photon));
+        int64_t id = 0;
+        for (float x = -1e4; x < 1e4; x = x + 1495.0) {
+                for (float y = -1e4; y < 1e4; y = y + 1495.0) {
+                        for (float cx = -0.5; cx < 0.5; cx = cx + 0.11) {
+                                for (float cy = -0.5; cy < 0.5;
+                                     cy = cy + 0.11) {
+                                        struct mliPhoton merlict_photon;
+                                        struct mliCorsikaPhotonBunch
+                                                corsika_photon;
+                                        corsika_photon.x_cm = x;
+                                        corsika_photon.y_cm = y;
+                                        corsika_photon.cx_rad = cx;
+                                        corsika_photon.cy_rad = cy;
+                                        corsika_photon.time_ns = 0.0;
+                                        corsika_photon.z_emission_cm = 1e5;
+                                        corsika_photon.weight_photons = 1.0;
+                                        corsika_photon.wavelength_nm = 433.0;
+                                        CHECK(mliDynCorsikaPhotonBunch_push_back(
+                                                &corsika_photons,
+                                                corsika_photon));
 
-                    merlict_photon = mliCorsikaPhotonBunch_to_merlict_photon(
-                        corsika_photon
-                        production_distance_offset,
-                        id);
+                                        merlict_photon =
+                                                mliCorsikaPhotonBunch_to_merlict_photon(
+                                                        corsika_photon
+                                                                production_distance_offset,
+                                                        id);
 
-                    CHECK(mliDynPhoton_push_back(
-                        &merlict_photons,
-                        merlict_photon));
-                    id += 1;
+                                        CHECK(mliDynPhoton_push_back(
+                                                &merlict_photons,
+                                                merlict_photon));
+                                        id += 1;
+                                }
+                        }
                 }
-            }
         }
-    }
 
+        // propagate merlict photons down to ground
+        ml::Scenery scenery;
+        ml::Disc *ground = scenery.root.add<ml::Disc>();
+        ground->set_name_pos_rot("ground", ml::VEC3_ORIGIN, ml::ROT3_UNITY);
+        scenery.colors.add("ground_color", ml::COLOR_GRAY);
+        const unsigned int ground_sensor_id = 0;
+        ground->outer_color = scenery.colors.get("ground_color");
+        ground->inner_color = scenery.colors.get("ground_color");
+        ground->set_radius(1e3);
 
-    // propagate merlict photons down to ground
-    ml::Scenery scenery;
-    ml::Disc* ground = scenery.root.add<ml::Disc>();
-    ground->set_name_pos_rot(
-        "ground",
-        ml::VEC3_ORIGIN,
-        ml::ROT3_UNITY);
-    scenery.colors.add("ground_color", ml::COLOR_GRAY);
-    const unsigned int ground_sensor_id = 0;
-    ground->outer_color = scenery.colors.get("ground_color");
-    ground->inner_color = scenery.colors.get("ground_color");
-    ground->set_radius(1e3);
+        ml::sensor::Sensor sensor(ground_sensor_id, ground);
+        std::vector<ml::sensor::Sensor *> sensor_vec = {&sensor};
+        ml::sensor::Sensors sensor_list(sensor_vec);
 
-    ml::sensor::Sensor sensor(ground_sensor_id, ground);
-    std::vector<ml::sensor::Sensor*> sensor_vec = {&sensor};
-    ml::sensor::Sensors sensor_list(sensor_vec);
+        scenery.root.init_tree_based_on_mother_child_relations();
 
-    scenery.root.init_tree_based_on_mother_child_relations();
+        // propagation settings
+        ml::PropagationConfig settings;
 
-    // propagation settings
-    ml::PropagationConfig settings;
+        // photon propagation down to the ground
+        ml::propagate_photons_in_frame_with_config(
+                &photons, &scenery.root, &settings, &prng);
 
-    // photon propagation down to the ground
-    ml::propagate_photons_in_frame_with_config(
-        &photons, &scenery.root, &settings, &prng);
+        // detect photons in ground sensor
+        sensor_list.clear_history();
+        sensor_list.assign_photons(&photons);
 
-    // detect photons in ground sensor
-    sensor_list.clear_history();
-    sensor_list.assign_photons(&photons);
+        REQUIRE(sensor.photon_arrival_history.size() == 1u);
 
-    REQUIRE(sensor.photon_arrival_history.size() == 1u);
+        CHECK(x * 1e-2 == Approx(sensor.photon_arrival_history[0].x_intersect)
+                                  .margin(1e-6));
+        CHECK(y * 1e-2 == Approx(sensor.photon_arrival_history[0].y_intersect)
+                                  .margin(1e-6));
 
-    CHECK(x*1e-2 == Approx(sensor.photon_arrival_history[0].x_intersect).margin(1e-6));
-    CHECK(y*1e-2 == Approx(sensor.photon_arrival_history[0].y_intersect).margin(1e-6));
-
-    mliDynPhoton_free(&merlict_photons);
-    mliDynCorsikaPhotonBunch_free(&corsika_photons);
+        mliDynPhoton_free(&merlict_photons);
+        mliDynCorsikaPhotonBunch_free(&corsika_photons);
 }
 
 /*
@@ -209,7 +213,8 @@ CASE("EventIoPhotonFactoryTest: merlict_rejects_photon_weight_below_0") {
     const std::array<float, 8> corsika_photon =
         {1.2, 3.4, 0.0, 0.0, 1e-9, 1e5, -0.1, 433};
 
-    CHECK_THROWS_AS(ml::EventIoPhotonFactory(corsika_photon, id, &prng), ml::EventIoPhotonFactory::BadPhotonWeight);
+    CHECK_THROWS_AS(ml::EventIoPhotonFactory(corsika_photon, id, &prng),
+ml::EventIoPhotonFactory::BadPhotonWeight);
 }
 
 CASE("EventIoPhotonFactoryTest: merlict_accepts_photon_weight_equal_1") {
@@ -227,7 +232,8 @@ CASE("EventIoPhotonFactoryTest: merlict_rejects_photon_weight_above_1") {
     const std::array<float, 8> corsika_photon =
         {1.2, 3.4, 0.0, 0.0, 1e-9, 1e5, 16.1, 433};
 
-    CHECK_THROWS_AS(ml::EventIoPhotonFactory(corsika_photon, id, &prng), ml::EventIoPhotonFactory::BadPhotonWeight);
+    CHECK_THROWS_AS(ml::EventIoPhotonFactory(corsika_photon, id, &prng),
+ml::EventIoPhotonFactory::BadPhotonWeight);
 }
 
 CASE("EventIoPhotonFactoryTest: merlict_accepts_photon_weight_equal_0") {
@@ -262,14 +268,16 @@ CASE("EventIoPhotonFactoryTest: relative_arrival_time_on_ground") {
     const unsigned int id = 1337;
     ml::random::FakeConstant prng(0.0);
     ml::EventIoPhotonFactory cpf(corsika_photon, id, &prng);
-    CHECK(cpf.relative_arrival_time_on_ground() == arrival_time_on_dround_in_ns*1e-9);
+    CHECK(cpf.relative_arrival_time_on_ground() ==
+arrival_time_on_dround_in_ns*1e-9);
 }
 
 CASE("EventIoPhotonFactoryTest: correct_rel_time_when_intersecting_ground") {
     eventio::Run corsika_file("merlict_corsika/tests/resources/telescope.dat");
     while (corsika_file.has_still_events_left()) {
         // read in a corsika eventio event. we remember the relative arrival
-        // times in the eventio file 'relative_arrival_times_in_corsika_file' and
+        // times in the eventio file 'relative_arrival_times_in_corsika_file'
+and
         // compare these to the actual arrival times of the merlict
         // photons on ground.
 
@@ -352,7 +360,8 @@ CASE("EventIoPhotonFactoryTest: correct_rel_time_when_intersecting_ground") {
         ) {
             unsigned int id =
                 sensor.photon_arrival_history[i].simulation_truth_id;
-            CHECK(relative_arrival_times_in_corsika_file.at(id) == Approx(sensor.photon_arrival_history[i].arrival_time).margin(1e-11));
+            CHECK(relative_arrival_times_in_corsika_file.at(id) ==
+Approx(sensor.photon_arrival_history[i].arrival_time).margin(1e-11));
         }
 
         // relative_arrival_times_in_corsika_file

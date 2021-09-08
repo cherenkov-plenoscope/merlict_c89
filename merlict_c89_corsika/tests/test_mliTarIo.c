@@ -1,7 +1,7 @@
 /* Copyright 2014 Sebastian A. Mueller, Dominik Neise */
 
-
-CASE("TarIo: read one by one") {
+CASE("TarIo: read one by one")
+{
         struct mliTarIoRun run = mliTarIoRun_init();
         struct mliTarIoEvent first_evt = mliTarIoEvent_init();
         struct mliTarIoEvent second_evt = mliTarIoEvent_init();
@@ -31,7 +31,8 @@ CASE("TarIo: read one by one") {
         CHECK(mliTarIoRun_close(&run));
 }
 
-CASE("TarIo: while loop") {
+CASE("TarIo: while loop")
+{
         struct mliPrng prng = mliPrng_init_MT19937(0u);
         struct mliTarIoRun run = mliTarIoRun_init();
         CHECK(mliTarIoRun_open(

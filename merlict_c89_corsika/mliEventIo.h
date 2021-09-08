@@ -14,7 +14,6 @@ struct mliEventIoTelPos {
 };
 MLIDYNARRAY_DEFINITON(mli, EventIoTelPos, struct mliEventIoTelPos)
 
-
 struct mliEventIoTelOffset {
         float toff;
         float xoff;
@@ -22,7 +21,6 @@ struct mliEventIoTelOffset {
         float weight;
 };
 MLIDYNARRAY_DEFINITON(mli, EventIoTelOffset, struct mliEventIoTelOffset)
-
 
 struct mliEventIoEvent {
         float corsika_event_header[273];
@@ -35,24 +33,18 @@ int mliEventIoEvent_malloc(
         struct mliEventIoEvent *ioevt,
         uint64_t num_photon_bunches);
 
-
 struct mliEventIoRun {
         FILE *f;
         float corsika_run_header[273];
         struct mliDynStr corsika_input_card;
         struct mliDynEventIoTelPos telescope_positions;
-
 };
 struct mliEventIoRun mliEventIoRun_init();
-int mliEventIoRun_malloc(
-        struct mliEventIoRun *runstream,
-        const char *path);
+int mliEventIoRun_malloc(struct mliEventIoRun *runstream, const char *path);
 int mliEventIoRun_free(struct mliEventIoRun *runstream);
 int mliEventIoRun_malloc_next_event(
         struct mliEventIoRun *runstream,
         struct mliEventIoEvent *eventstream);
-
-
 
 #define MLI_CORSIKA_RUNH_RUN_NUMBER 1
 #define MLI_CORSIKA_RUNH_SLOPE_OF_ENERGY_SPECTRUM 15

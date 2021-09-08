@@ -4,7 +4,6 @@
 MLIDYNARRAY_IMPLEMENTATION(mli, EventIoTelPos, struct mliEventIoTelPos)
 MLIDYNARRAY_IMPLEMENTATION(mli, EventIoTelOffset, struct mliEventIoTelOffset)
 
-
 struct mliEventIoEvent mliEventIoEvent_init()
 {
         struct mliEventIoEvent evt;
@@ -34,17 +33,15 @@ int _read_273_block(FILE *f, float *block, const int32_t type)
 {
         struct mliEventIoHeader head;
         int32_t block_size;
-        mli_check(mliEventIoHeader_read_from_file(
-                &head,
-                f,
-                1),
+        mli_check(
+                mliEventIoHeader_read_from_file(&head, f, 1),
                 "Failed to read event-io-header.");
         mli_check(head.type == type, "Expected different header-type=.");
         mliEventIoHeader_fprint(head, stderr);
 
         mli_fread(&block_size, sizeof(int32_t), 1, f);
         mli_check(block_size == 273, "Expected block-size to be 273.")
-        mli_fread(block, sizeof(float), block_size, f);
+                mli_fread(block, sizeof(float), block_size, f);
         return 1;
 error:
         return 0;
@@ -70,26 +67,21 @@ int _read_evte_273_block(FILE *f, float *block)
         return _read_273_block(f, block, 1209);
 }
 
-
-int _read_input_card(
-        FILE *f,
-        struct mliDynStr *input_card)
+int _read_input_card(FILE *f, struct mliDynStr *input_card)
 {
         struct mliEventIoHeader head;
         char _unknown[8];
         int input_card_length;
-        mli_check(mliEventIoHeader_read_from_file(
-                &head,
-                f,
-                MLI_EVENTIO_TOP_LEVEL),
+        mli_check(
+                mliEventIoHeader_read_from_file(
+                        &head, f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read event-io-header from file.");
         mli_check(
-                head.type == 1212,
-                "Expected corsika-input-card, type: 1212.");
+                head.type == 1212, "Expected corsika-input-card, type: 1212.");
         mliEventIoHeader_fprint(head, stderr);
 
         mli_check(
-                mliDynStr_malloc(input_card, head.length+1),
+                mliDynStr_malloc(input_card, head.length + 1),
                 "Failed to malloc c_str for input-card.");
 
         mli_fread(_unknown, sizeof(_unknown), 1, f);
@@ -109,25 +101,27 @@ int _read_telescope_positions(
         int32_t ntel;
         int num_following_arrays;
 
-        mli_check(mliEventIoHeader_read_from_file(
-                &head,
-                f,
-                MLI_EVENTIO_TOP_LEVEL),
+        mli_check(
+                mliEventIoHeader_read_from_file(
+                        &head, f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read event-io-header from file.");
         mli_check(
-                head.type == 1201,
-                "Expected telescope-positions, type: 1201.");
+                head.type == 1201, "Expected telescope-positions, type: 1201.");
         mliEventIoHeader_fprint(head, stderr);
 
         mli_fread(&ntel, sizeof(int32_t), 1, f);
 
-        num_following_arrays = (int)((head.length - 4) / ntel /4);
+        num_following_arrays = (int)((head.length - 4) / ntel / 4);
 
         mli_check(num_following_arrays == 4, "Expected exactly four arrays.")
 
-        mli_c(mliDynEventIoTelPos_malloc_set_size(telescope_positions, ntel));
+                mli_c(mliDynEventIoTelPos_malloc_set_size(
+                        telescope_positions, ntel));
         mli_fread(
-            telescope_positions->array, sizeof(struct mliEventIoTelPos), ntel, f);
+                telescope_positions->array,
+                sizeof(struct mliEventIoTelPos),
+                ntel,
+                f);
         return 1;
 error:
         return 0;
@@ -151,25 +145,20 @@ int _read_telescope_offsets(
 
         mli_check(
                 mliEventIoHeader_read_from_file(
-                        &head,
-                        f,
-                        MLI_EVENTIO_TOP_LEVEL),
+                        &head, f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read event-io-header from file.");
-        mli_check(
-                head.type == 1203,
-                "Expected telescope-offsets, type: 1203.");
+        mli_check(head.type == 1203, "Expected telescope-offsets, type: 1203.");
         mliEventIoHeader_fprint(head, stderr);
 
         mli_fread(&narray, sizeof(int32_t), 1, f);
         mli_fread(&toff, sizeof(float), 1, f);
 
-
         mli_c(mliDynFloat_malloc_set_size(&xoff, narray));
         mli_c(mliDynFloat_malloc_set_size(&yoff, narray));
         mli_c(mliDynFloat_malloc_set_size(&weight, narray));
 
-        num_following_arrays = (int)(
-                (head.length - length_first_two) / narray /4);
+        num_following_arrays =
+                (int)((head.length - length_first_two) / narray / 4);
 
         mli_fread(xoff.array, sizeof(float), narray, f);
         mli_fread(yoff.array, sizeof(float), narray, f);
@@ -188,7 +177,8 @@ int _read_telescope_offsets(
         }
 
         mli_check(
-                mliDynEventIoTelOffset_malloc_set_size(telescope_offsets, narray),
+                mliDynEventIoTelOffset_malloc_set_size(
+                        telescope_offsets, narray),
                 "Failed to malloc telescope_offsets.");
 
         for (n = 0; n < narray; n++) {
@@ -207,17 +197,13 @@ error:
         return 0;
 }
 
-
 int _read_telescope_array_header_1204(FILE *f)
 {
         struct mliEventIoHeader head;
         mli_check(
                 mliEventIoHeader_read_from_file(
-                        &head,
-                        f,
-                        MLI_EVENTIO_TOP_LEVEL),
-                "Failed to read telescope_array_header, type: 1204."
-        );
+                        &head, f, MLI_EVENTIO_TOP_LEVEL),
+                "Failed to read telescope_array_header, type: 1204.");
         mli_check(head.type == 1204, "Expected subheader of type 1204");
         mliEventIoHeader_fprint(head, stderr);
         return 1;
@@ -225,18 +211,14 @@ error:
         return 0;
 }
 
-
 struct _BunchHeader {
-    int16_t array;
-    int16_t tel;
-    float photons;
-    int32_t num_bunches;
+        int16_t array;
+        int16_t tel;
+        float photons;
+        int32_t num_bunches;
 };
 
-
-int _read_photon_bunches(
-        FILE *f,
-        struct mliDynCorsikaPhotonBunch *bunches)
+int _read_photon_bunches(FILE *f, struct mliDynCorsikaPhotonBunch *bunches)
 {
         struct mliEventIoHeader subhead;
         struct _BunchHeader b_head;
@@ -245,11 +227,8 @@ int _read_photon_bunches(
 
         mli_check(
                 mliEventIoHeader_read_from_file(
-                        &subhead,
-                        f,
-                        MLI_EVENTIO_SUB_LEVEL),
-                "Failed to read subhead for photon_bunches."
-        );
+                        &subhead, f, MLI_EVENTIO_SUB_LEVEL),
+                "Failed to read subhead for photon_bunches.");
         mli_check(subhead.type == 1205, "Expected subheader of type 1205");
         mliEventIoHeader_fprint(subhead, stderr);
 
@@ -263,10 +242,11 @@ int _read_photon_bunches(
         fprintf(stderr, "b_head.photons %f\n", b_head.photons);
         fprintf(stderr, "b_head.num_bunches %u\n", b_head.num_bunches);
 
-        is_compact = (int)(subhead.version/1000 == 1);
+        is_compact = (int)(subhead.version / 1000 == 1);
 
         mli_check(
-                mliDynCorsikaPhotonBunch_malloc_set_size(bunches, b_head.num_bunches),
+                mliDynCorsikaPhotonBunch_malloc_set_size(
+                        bunches, b_head.num_bunches),
                 "Failed to malloc bunches.");
 
         if (is_compact) {
@@ -283,7 +263,8 @@ int _read_photon_bunches(
                         bunches->array[row].cx_rad = tmp[2] / 30000;
                         bunches->array[row].cy_rad = tmp[3] / 30000;
                         bunches->array[row].time_ns = tmp[4] * 0.1;
-                        bunches->array[row].z_emission_cm = pow(10, tmp[5] * 0.001);
+                        bunches->array[row].z_emission_cm =
+                                pow(10, tmp[5] * 0.001);
                         bunches->array[row].weight_photons = tmp[6] * 0.01;
                         bunches->array[row].wavelength_nm = tmp[7];
                 }
@@ -307,10 +288,7 @@ error:
         return 0;
 }
 
-
-int mliEventIoRun_malloc(
-        struct mliEventIoRun *runstream,
-        const char *path)
+int mliEventIoRun_malloc(struct mliEventIoRun *runstream, const char *path)
 {
         runstream->f = fopen(path, "rb");
         mli_check(runstream->f, "Can not open event-io-file.");
@@ -320,8 +298,7 @@ int mliEventIoRun_malloc(
                         runstream->f, runstream->corsika_run_header),
                 "Failed to read corsika_run_header 273 float block.");
         mli_check(
-                _read_input_card(
-                        runstream->f, &runstream->corsika_input_card),
+                _read_input_card(runstream->f, &runstream->corsika_input_card),
                 "Failed to read corsika-input-card.");
         mli_check(
                 _read_telescope_positions(
@@ -346,20 +323,16 @@ int mliEventIoRun_malloc_next_event(
 {
         mliEventIoEvent_free(event);
         mli_check(
-                _read_evth_273_block(
-                        runstream->f, event->corsika_event_header),
+                _read_evth_273_block(runstream->f, event->corsika_event_header),
                 "Failed to read corsika_event_header 273 float block.");
         mli_check(
-                _read_telescope_offsets(runstream->f, &event->telescope_offsets),
+                _read_telescope_offsets(
+                        runstream->f, &event->telescope_offsets),
                 "");
+        mli_check(_read_telescope_array_header_1204(runstream->f), "");
         mli_check(
-                _read_telescope_array_header_1204(runstream->f),
-                "");
-        mli_check(
-                _read_photon_bunches(runstream->f, &event->photon_bunches),
-                "");
+                _read_photon_bunches(runstream->f, &event->photon_bunches), "");
         return 1;
 error:
         return 0;
-
 }

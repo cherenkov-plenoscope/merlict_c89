@@ -1,8 +1,10 @@
 /* Copyright 2016 Sebastian A. Mueller */
 #include "../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, CorsikaPhotonBunch, struct mliCorsikaPhotonBunch)
-
+MLIDYNARRAY_IMPLEMENTATION(
+        mli,
+        CorsikaPhotonBunch,
+        struct mliCorsikaPhotonBunch)
 
 struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
         const struct mliCorsikaPhotonBunch bunch,
@@ -37,16 +39,14 @@ struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
                 mli_corsika_photon_support_on_observation_level(bunch),
                 mliVec_multiply(photon_direction_of_motion, -1.0));
 
-        const double offset = (
-                production_distance_offset +
-                VACUUM_SPPED_OF_LIGHT *
-                mli_corsika_photon_relative_arrival_time_on_observation_level(
-                        bunch)
-        );
+        const double offset =
+                (production_distance_offset +
+                 VACUUM_SPPED_OF_LIGHT *
+                         mli_corsika_photon_relative_arrival_time_on_observation_level(
+                                 bunch));
 
-        const struct mliVec photon_emission_position = mliRay_at(
-                &ray_running_upwards_to_production,
-                offset);
+        const struct mliVec photon_emission_position =
+                mliRay_at(&ray_running_upwards_to_production, offset);
 
         struct mliPhoton photon;
         photon.ray.support = photon_emission_position;
@@ -56,59 +56,59 @@ struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
         return photon;
 }
 
-
 struct mliVec mli_corsika_photon_direction_of_motion(
         const struct mliCorsikaPhotonBunch bunch)
-{       /*
-             KIT-CORSIKA coordinate-system
+{ /*
+       KIT-CORSIKA coordinate-system
 
-                               /\ z-axis
-                               |
-                               |\ p
-                               | \ a
-                               |  \ r
-                               |   \ t
-                               |    \ i
-                               |     \ c
-                               |      \ l
-                               |       \ e
-                               |        \
-                               |  theta  \ m
-                               |       ___\ o
-                               |___----    \ m      ___
-                               |            \ e       /| y-axis (west)
-                               |             \ n    /
-                               |              \ t /
-                               |               \/u
-                               |              / \ m
-                               |            /    \
-                               |          /       \
-                               |        /__________\
-                               |      /      ___---/
-                               |    /   __---    /
-                               |  /__--- phi \ /
-               ________________|/--__________/______\ x-axis (north)
-                              /|                    /
-                            /  |
-                          /    |
-                        /
+                         /\ z-axis
+                         |
+                         |\ p
+                         | \ a
+                         |  \ r
+                         |   \ t
+                         |    \ i
+                         |     \ c
+                         |      \ l
+                         |       \ e
+                         |        \
+                         |  theta  \ m
+                         |       ___\ o
+                         |___----    \ m      ___
+                         |            \ e       /| y-axis (west)
+                         |             \ n    /
+                         |              \ t /
+                         |               \/u
+                         |              / \ m
+                         |            /    \
+                         |          /       \
+                         |        /__________\
+                         |      /      ___---/
+                         |    /   __---    /
+                         |  /__--- phi \ /
+         ________________|/--__________/______\ x-axis (north)
+                        /|                    /
+                      /  |
+                    /    |
+                  /
 
 
-                Extensive Air Shower Simulation with CORSIKA, Figure 1, page 114
-                (Version 7.6400 from December 27, 2017)
+          Extensive Air Shower Simulation with CORSIKA, Figure 1, page 114
+          (Version 7.6400 from December 27, 2017)
 
-                Direction-cosines:
+          Direction-cosines:
 
-                cx = sin(theta) * cos(phi)
-                cy = sin(theta) * sin(phi)
+          cx = sin(theta) * cos(phi)
+          cy = sin(theta) * sin(phi)
 
-                The zenith-angle theta opens relative to the negative z-axis.
+          The zenith-angle theta opens relative to the negative z-axis.
 
-                It is the momentum of the Cherenkov-photon, which is pointing
-                down towards the observation-plane.
-        */
-        const double cz_rad = sqrt(
-                1.0 -bunch.cx_rad*bunch.cx_rad -bunch.cy_rad*bunch.cy_rad);
+          It is the momentum of the Cherenkov-photon, which is pointing
+          down towards the observation-plane.
+  */
+        const double cz_rad =
+                sqrt(1.0 - bunch.cx_rad * bunch.cx_rad -
+                     bunch.cy_rad * bunch.cy_rad);
         return mliVec_set(bunch.cx_rad, bunch.cy_rad, -cz_rad);
 }
 
@@ -116,9 +116,7 @@ struct mliVec mli_corsika_photon_support_on_observation_level(
         const struct mliCorsikaPhotonBunch bunch)
 {
         return mliVec_set(
-                (double)bunch.x_cm * 1e-2,
-                (double)bunch.y_cm * 1e-2,
-                0.0);
+                (double)bunch.x_cm * 1e-2, (double)bunch.y_cm * 1e-2, 0.0);
 }
 
 double mli_corsika_photon_wavelength(const struct mliCorsikaPhotonBunch bunch)
@@ -129,11 +127,11 @@ double mli_corsika_photon_wavelength(const struct mliCorsikaPhotonBunch bunch)
 double mli_corsika_photon_emission_height(
         const struct mliCorsikaPhotonBunch bunch)
 {
-    return (double)bunch.z_emission_cm * 1e-2;
+        return (double)bunch.z_emission_cm * 1e-2;
 }
 
 double mli_corsika_photon_relative_arrival_time_on_observation_level(
         const struct mliCorsikaPhotonBunch bunch)
 {
-    return (double)bunch.time_ns * 1e-9;
+        return (double)bunch.time_ns * 1e-9;
 }
