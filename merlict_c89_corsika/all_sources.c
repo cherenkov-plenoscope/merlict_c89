@@ -4,4 +4,5 @@
 #include "mliCorsikaPhotonBunch.c"
 #include "mliEventIo.c"
 #include "mliEventIoHeader.c"
-#include "TarIo/mliTarIo.c"
+#include "TarIo/Run.c"
+#include "TarIo/Event.c"
