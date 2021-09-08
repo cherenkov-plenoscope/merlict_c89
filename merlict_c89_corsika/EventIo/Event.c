@@ -75,31 +75,24 @@ struct _BunchHeader {
 
 int _read_photon_bunches(
         FILE *f,
+        struct _BunchHeader *b_head,
         struct mliDynCorsikaPhotonBunch *bunches,
-        const struct mliEventIoHeader eventio_head)
+        const int32_t version)
 {
-        struct _BunchHeader b_head;
         float tmp[8];
         int is_compact = 0;
         uint64_t row, field;
 
-        mli_fread(&b_head.array, sizeof(b_head.array), 1, f);
-        mli_fread(&b_head.tel, sizeof(b_head.tel), 1, f);
-        mli_fread(&b_head.photons, sizeof(b_head.photons), 1, f);
-        mli_fread(&b_head.num_bunches, sizeof(b_head.num_bunches), 1, f);
+        mli_fread(&b_head->array, sizeof(b_head->array), 1, f);
+        mli_fread(&b_head->tel, sizeof(b_head->tel), 1, f);
+        mli_fread(&b_head->photons, sizeof(b_head->photons), 1, f);
+        mli_fread(&b_head->num_bunches, sizeof(b_head->num_bunches), 1, f);
 
-        /*
-        fprintf(stderr, "b_head.array %d\n", b_head.array);
-        fprintf(stderr, "b_head.tel %d\n", b_head.tel);
-        fprintf(stderr, "b_head.photons %f\n", b_head.photons);
-        fprintf(stderr, "b_head.num_bunches %u\n", b_head.num_bunches);
-        */
-
-        is_compact = (int)(eventio_head.version / 1000 == 1);
+        is_compact = (int)(version / 1000 == 1);
 
         mli_check(
                 mliDynCorsikaPhotonBunch_malloc_set_size(
-                        bunches, b_head.num_bunches),
+                        bunches, b_head->num_bunches),
                 "Failed to malloc bunches.");
 
         if (is_compact) {
@@ -196,6 +189,7 @@ int mliEventIoEvent_malloc_from_run(
         /* photon_bunches */
         /* -------------- */
         while (remaining_array_block_length) {
+                struct _BunchHeader b_head;
 
                 header_length = mliEventIoHeader_read(
                         &run->_next_block, run->_f, MLI_EVENTIO_SUB_LEVEL);
@@ -211,8 +205,9 @@ int mliEventIoEvent_malloc_from_run(
                 mli_check(
                         _read_photon_bunches(
                                 run->_f,
+                                &b_head,
                                 &event->photon_bunches,
-                                run->_next_block),
+                                run->_next_block.version),
                         "Failed to read photon_bunches.");
                 remaining_array_block_length -= run->_next_block.length;
         }
