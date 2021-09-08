@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "mliCorsikaPhotonBunch.h"
 #include "EventIo/Run.h"
+#include "EventIo/Event.h"
 #include "EventIo/Header.h"
 #include "EventIo/TelescopeOffset.h"
 #include "EventIo/TelescopePosition.h"
