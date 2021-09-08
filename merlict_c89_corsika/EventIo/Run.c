@@ -4,7 +4,7 @@
 struct mliEventIoRun mliEventIoRun_init(void)
 {
         struct mliEventIoRun run;
-        run.f = NULL;
+        run._f = NULL;
         memset(run.corsika_run_header, 0.0, 273);
         run.corsika_input_card = mliDynStr_init();
         run.telescope_positions = mliDynEventIoTelescopePosition_init();
@@ -81,44 +81,44 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
 {
         struct mliEventIoHeader a, b, c;
 
-        run->f = fopen(path, "rb");
-        mli_check(run->f, "Can not open EventIo-file.");
+        run->_f = fopen(path, "rb");
+        mli_check(run->_f, "Can not open EventIo-file.");
 
         /* corsika_run_header */
         /* ------------------ */
         mli_check(
                 mliEventIoHeader_read(
-                        &a, run->f, MLI_EVENTIO_TOP_LEVEL),
+                        &a, run->_f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read EventIo-header.");
         mli_check(a.type == 1200, "Expected type 1200.");
         mliEventIoHeader_fprint(a, stderr);
         mli_check(
-                _read_273_block(run->f, run->corsika_run_header),
+                _read_273_block(run->_f, run->corsika_run_header),
                 "Failed to read corsika_run_header 273 float block.");
 
         /* corsika_input_card */
         /* ------------------ */
         mli_check(
                 mliEventIoHeader_read(
-                        &b, run->f, MLI_EVENTIO_TOP_LEVEL),
+                        &b, run->_f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read EventIo-header.");
         mli_check(b.type == 1212, "Expected type 1212.");
         mliEventIoHeader_fprint(b, stderr);
         mli_check(
-                _read_input_card(run->f, &run->corsika_input_card, b.length),
+                _read_input_card(run->_f, &run->corsika_input_card, b.length),
                 "Failed to read corsika-input-card.");
 
         /* telescope_positions */
         /* ------------------- */
         mli_check(
                 mliEventIoHeader_read(
-                        &c, run->f, MLI_EVENTIO_TOP_LEVEL),
+                        &c, run->_f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read EventIo-header.");
         mli_check(c.type == 1201, "Expected type 1201.");
         mliEventIoHeader_fprint(c, stderr);
         mli_check(
                 _read_telescope_positions(
-                        run->f, &run->telescope_positions, c.length),
+                        run->_f, &run->telescope_positions, c.length),
                 "Failed to read telescope-positions.");
 
         return 1;
@@ -130,5 +130,5 @@ void mliEventIoRun_close(struct mliEventIoRun *run)
 {
         mliDynStr_free(&run->corsika_input_card);
         mliDynEventIoTelescopePosition_free(&run->telescope_positions);
-        fclose(run->f);
+        fclose(run->_f);
 }

@@ -7,7 +7,7 @@
 #include "../../merlict_c89_corsika/EventIo/TelescopePosition.h"
 
 struct mliEventIoRun {
-        FILE *f;
+        FILE *_f;
         float corsika_run_header[273];
         struct mliDynStr corsika_input_card;
         struct mliDynEventIoTelescopePosition telescope_positions;
