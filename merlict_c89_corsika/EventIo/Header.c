@@ -94,6 +94,7 @@ int mliEventIoHeader_read(
         FILE *f,
         int level)
 {
+        int length_read = 0;
         struct _FirstFour first_four = _FirstFour_zeros();
         struct _TypeInfo type_info = _TypeInfo_zeros();
         struct _LengthInfo length_info = _LengthInfo_zeros();
@@ -101,6 +102,7 @@ int mliEventIoHeader_read(
 
         if (level == MLI_EVENTIO_TOP_LEVEL) {
                 mli_fread(&first_four.sync, sizeof(first_four.sync), 1, f);
+                length_read += sizeof(first_four.sync);
                 header->is_sync = EXPECTED_SYNC == first_four.sync;
         } else {
                 mli_check(
@@ -109,8 +111,11 @@ int mliEventIoHeader_read(
                 header->is_sync = 1;
         }
         mli_fread(&first_four.type, sizeof(first_four.type), 1, f);
+        length_read += sizeof(first_four.type);
         mli_fread(&first_four.id, sizeof(first_four.id), 1, f);
+        length_read += sizeof(first_four.id);
         mli_fread(&first_four.length, sizeof(first_four.length), 1, f);
+        length_read += sizeof(first_four.length);
 
         type_info = _TypeInfo_init(first_four.type);
         length_info = _LengthInfo_init(first_four.length);
@@ -132,16 +137,18 @@ int mliEventIoHeader_read(
         } else {
                 int32_t extended;
                 mli_fread(&extended, sizeof(int32_t), 1, f);
+                length_read += sizeof(int32_t);
                 header->length = _extend_length(extended, length_info);
         }
 
-        return 1;
+        return length_read;
 error:
         return 0;
 }
 
 void mliEventIoHeader_fprint(const struct mliEventIoHeader head, FILE *f)
 {
+        fprintf(f, "----\n");
         fprintf(f, "h.is_sync %d\n", head.is_sync);
         fprintf(f, "h.type %d\n", head.type);
         fprintf(f, "h.version %d\n", head.version);
