@@ -248,25 +248,33 @@ CASE("EventIoFile_telescope_dat__photon_bundle_values")
         mliEventIoRun_close(&run);
         mliEventIoEvent_free(&event);
 }
-/*
-TEST_CASE("EventIoTest: EventIoFile_telescope_dat_run_time", "[merlict]") {
-    eventio::Run my_run("merlict_corsika/tests/resources/telescope.dat");
 
-    while (my_run.has_still_events_left()) {
-        eventio::Event event = my_run.next_event();
+CASE("EventIoFile_telescope_dat_run_time")
+{
+        struct mliEventIoRun run = mliEventIoRun_init();
 
-        merlict::random::Mt19937 prng;
+        CHECK(mliEventIoRun_open(
+                &run, "merlict_c89_corsika/tests/resources/telescope.dat"));
 
-        std::vector<merlict::Photon> photons;
-        unsigned int id = 0;
-        for (std::array<float, 8> corsika_photon : event.photons) {
-            merlict::EventIoPhotonFactory cpf(corsika_photon, id++, &prng);
+        while (mliEventIoRun_has_still_events_left(&run)) {
+                struct mliEventIoEvent event = mliEventIoEvent_init();
+                CHECK(mliEventIoEvent_malloc_from_run(&event, &run));
 
-            if (cpf.passed_atmosphere()) {
-                photons.push_back(cpf.make_photon());
-            }
+                /*
+                merlict::random::Mt19937 prng;
+
+                std::vector<merlict::Photon> photons;
+                unsigned int id = 0;
+                for (std::array<float, 8> corsika_photon : event.photons) {
+                    merlict::EventIoPhotonFactory cpf(corsika_photon, id++, &prng);
+
+                    if (cpf.passed_atmosphere()) {
+                        photons.push_back(cpf.make_photon());
+                    }
+                }
+                */
+
+                mliEventIoEvent_free(&event);
         }
-    }
+        mliEventIoRun_close(&run);
 }
-
-*/

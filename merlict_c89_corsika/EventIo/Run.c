@@ -82,7 +82,7 @@ int _mliEventIoRun_next_block(struct mliEventIoRun *run, const int level)
 {
         mli_check(
                 mliEventIoHeader_read(
-                        &run->_next_block, run->_f, MLI_EVENTIO_TOP_LEVEL),
+                        &run->_next_block, run->_f, level),
                 "Failed to read EventIo-block-header.");
         return 1;
 error:
@@ -124,12 +124,20 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
                         run->_f, &run->telescope_positions, run->_next_block.length),
                 "Failed to read telescope-positions.");
 
-        /* next head must be event-header */
-        /* ------------------------------ */
-        /*mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));*/
+        /* next */
+        /* ---- */
+        mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        mliEventIoHeader_fprint(run->_next_block, stderr);
+
         return 1;
 error:
         return 0;
+}
+
+int mliEventIoRun_has_still_events_left(struct mliEventIoRun *run)
+{
+        const int32_t CORSIKA_RUN_END_TYPE = 1210;
+        return run->_next_block.type != CORSIKA_RUN_END_TYPE;
 }
 
 void mliEventIoRun_close(struct mliEventIoRun *run)

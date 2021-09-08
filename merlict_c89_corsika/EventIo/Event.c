@@ -89,10 +89,12 @@ int _read_photon_bunches(
         mli_fread(&b_head.photons, sizeof(b_head.photons), 1, f);
         mli_fread(&b_head.num_bunches, sizeof(b_head.num_bunches), 1, f);
 
+        /*
         fprintf(stderr, "b_head.array %d\n", b_head.array);
         fprintf(stderr, "b_head.tel %d\n", b_head.tel);
         fprintf(stderr, "b_head.photons %f\n", b_head.photons);
         fprintf(stderr, "b_head.num_bunches %u\n", b_head.num_bunches);
+        */
 
         is_compact = (int)(eventio_head.version / 1000 == 1);
 
@@ -144,6 +146,7 @@ struct mliEventIoEvent mliEventIoEvent_init(void)
 {
         struct mliEventIoEvent event;
         memset(event.corsika_event_header, 0.0, 273);
+        memset(event.corsika_event_end, 0.0, 273);
         event.telescope_offsets = mliDynEventIoTelescopeOffset_init();
         event.photon_bunches = mliDynCorsikaPhotonBunch_init();
         return event;
@@ -159,53 +162,79 @@ int mliEventIoEvent_malloc_from_run(
         struct mliEventIoEvent *event,
         struct mliEventIoRun *run)
 {
-        struct mliEventIoHeader a, b, c, d;
+        uint64_t remaining_array_block_length = 0;
+        uint64_t header_length = 0;
+
         mliEventIoEvent_free(event);
 
         /* corsika_event_header */
         /* -------------------- */
-        mli_check(
-                mliEventIoHeader_read(
-                        &a, run->_f, MLI_EVENTIO_TOP_LEVEL),
-                "Failed to read EventIo-header.");
-        mli_check(a.type == 1202, "Expected type 1202.");
-        mliEventIoHeader_fprint(a, stderr);
+        mli_check(run->_next_block.type == 1202, "Expected type 1202.");
+        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
                 _read_273_block(run->_f, event->corsika_event_header),
                 "Failed to read corsika_event_header 273 float block.");
 
         /* telescope_offsets */
         /* ----------------- */
-        mli_check(
-                mliEventIoHeader_read(
-                        &b, run->_f, MLI_EVENTIO_TOP_LEVEL),
-                "Failed to read EventIo-header.");
-        mli_check(b.type == 1203, "Expected type 1203.");
-        mliEventIoHeader_fprint(b, stderr);
+        mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        mli_check(run->_next_block.type == 1203, "Expected type 1203.");
+        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
                 _read_telescope_offsets(
-                        run->_f, &event->telescope_offsets, b.length),
+                        run->_f,
+                        &event->telescope_offsets,
+                        run->_next_block.length),
                 "Failed to read telescope_offsets.");
 
         /* array_header */
         /* ------------ */
+        mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        mli_check(run->_next_block.type == 1204, "Expected type 1204.");
         mli_check(
-                mliEventIoHeader_read(
-                        &c, run->_f, MLI_EVENTIO_TOP_LEVEL),
-                "Failed to read EventIo-header.");
-        mli_check(c.type == 1204, "Expected type 1204.");
+                run->_next_block.only_sub_objects,
+                "Expected telescope-array-block to only contain sub-blocks.");
+        remaining_array_block_length = run->_next_block.length;
+        mliEventIoHeader_fprint(run->_next_block, stderr);
 
         /* photon_bunches */
         /* -------------- */
+        while (remaining_array_block_length) {
+
+                header_length = mliEventIoHeader_read(
+                        &run->_next_block, run->_f, MLI_EVENTIO_SUB_LEVEL);
+                mli_check(
+                        header_length,
+                        "Failed to read EventIo-SUB-block-header.");
+                remaining_array_block_length -= header_length;
+
+                mli_check(
+                        run->_next_block.type == 1205,
+                        "Expected subheader type 1205");
+                mliEventIoHeader_fprint(run->_next_block, stderr);
+
+                mli_check(
+                        _read_photon_bunches(
+                                run->_f,
+                                &event->photon_bunches,
+                                run->_next_block),
+                        "Failed to read photon_bunches.");
+                remaining_array_block_length -= run->_next_block.length;
+        }
+
+        /* corsika_event_end */
+        /* ----------------- */
+        mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        mliEventIoHeader_fprint(run->_next_block, stderr);
+        mli_check(run->_next_block.type == 1209, "Expected type 1209.");
         mli_check(
-                mliEventIoHeader_read(
-                        &d, run->_f, MLI_EVENTIO_SUB_LEVEL),
-                "Failed to read subhead for photon_bunches.");
-        mli_check(d.type == 1205, "Expected subheader type 1205");
-        mliEventIoHeader_fprint(d, stderr);
-        mli_check(
-                _read_photon_bunches(run->_f, &event->photon_bunches, d),
-                "Failed to read photon_bunches.");
+                _read_273_block(run->_f, event->corsika_event_end),
+                "Failed to read corsika_event_end 273 float block.");
+
+        /* next */
+        /* ---- */
+        mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        mliEventIoHeader_fprint(run->_next_block, stderr);
 
         return 1;
 error:

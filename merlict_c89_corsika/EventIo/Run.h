@@ -16,5 +16,7 @@ struct mliEventIoRun {
 struct mliEventIoRun mliEventIoRun_init(void);
 void mliEventIoRun_close(struct mliEventIoRun *run);
 int mliEventIoRun_open(struct mliEventIoRun *run, const char *path);
+int mliEventIoRun_has_still_events_left(struct mliEventIoRun *run);
+int _mliEventIoRun_next_block(struct mliEventIoRun *run, const int level);
 
 #endif

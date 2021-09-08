@@ -9,6 +9,7 @@
 
 struct mliEventIoEvent {
         float corsika_event_header[273];
+        float corsika_event_end[273];
         struct mliDynEventIoTelescopeOffset telescope_offsets;
         struct mliDynCorsikaPhotonBunch photon_bunches;
 };
