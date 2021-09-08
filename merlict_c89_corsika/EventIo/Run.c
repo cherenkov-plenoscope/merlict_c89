@@ -5,7 +5,7 @@ struct mliEventIoRun mliEventIoRun_init(void)
 {
         struct mliEventIoRun run;
         run._f = NULL;
-        run._next = mliEventIoHeader_init();
+        run._next_block = mliEventIoHeader_init();
         memset(run.corsika_run_header, 0.0, 273);
         run.corsika_input_card = mliDynStr_init();
         run.telescope_positions = mliDynEventIoTelescopePosition_init();
@@ -78,50 +78,55 @@ error:
         return 0;
 }
 
+int _mliEventIoRun_next_block(struct mliEventIoRun *run, const int level)
+{
+        mli_check(
+                mliEventIoHeader_read(
+                        &run->_next_block, run->_f, MLI_EVENTIO_TOP_LEVEL),
+                "Failed to read EventIo-block-header.");
+        return 1;
+error:
+        return 0;
+}
+
 int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
 {
-        struct mliEventIoHeader a, b, c;
-
         run->_f = fopen(path, "rb");
         mli_check(run->_f, "Can not open EventIo-file.");
 
         /* corsika_run_header */
         /* ------------------ */
-        mli_check(
-                mliEventIoHeader_read(
-                        &a, run->_f, MLI_EVENTIO_TOP_LEVEL),
-                "Failed to read EventIo-header.");
-        mli_check(a.type == 1200, "Expected type 1200.");
-        mliEventIoHeader_fprint(a, stderr);
+        mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        mli_check(run->_next_block.type == 1200, "Expected type 1200.");
+        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
                 _read_273_block(run->_f, run->corsika_run_header),
                 "Failed to read corsika_run_header 273 float block.");
 
+
         /* corsika_input_card */
         /* ------------------ */
+        mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        mli_check(run->_next_block.type == 1212, "Expected type 1212.");
+        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
-                mliEventIoHeader_read(
-                        &b, run->_f, MLI_EVENTIO_TOP_LEVEL),
-                "Failed to read EventIo-header.");
-        mli_check(b.type == 1212, "Expected type 1212.");
-        mliEventIoHeader_fprint(b, stderr);
-        mli_check(
-                _read_input_card(run->_f, &run->corsika_input_card, b.length),
+                _read_input_card(
+                        run->_f, &run->corsika_input_card, run->_next_block.length),
                 "Failed to read corsika-input-card.");
 
         /* telescope_positions */
         /* ------------------- */
-        mli_check(
-                mliEventIoHeader_read(
-                        &c, run->_f, MLI_EVENTIO_TOP_LEVEL),
-                "Failed to read EventIo-header.");
-        mli_check(c.type == 1201, "Expected type 1201.");
-        mliEventIoHeader_fprint(c, stderr);
+        mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        mli_check(run->_next_block.type == 1201, "Expected type 1201.");
+        mliEventIoHeader_fprint(run->_next_block, stderr);
         mli_check(
                 _read_telescope_positions(
-                        run->_f, &run->telescope_positions, c.length),
+                        run->_f, &run->telescope_positions, run->_next_block.length),
                 "Failed to read telescope-positions.");
 
+        /* next head must be event-header */
+        /* ------------------------------ */
+        /*mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));*/
         return 1;
 error:
         return 0;
