@@ -21,12 +21,12 @@ void mliEventIoEvent_free(struct mliEventIoEvent *evt)
 
 struct mliEventIoRun mliEventIoRun_init(void)
 {
-        struct mliEventIoRun runstream;
-        runstream.f = NULL;
-        memset(runstream.corsika_run_header, 0.0, 273);
-        runstream.corsika_input_card = mliDynStr_init();
-        runstream.telescope_positions = mliDynEventIoTelPos_init();
-        return runstream;
+        struct mliEventIoRun run;
+        run.f = NULL;
+        memset(run.corsika_run_header, 0.0, 273);
+        run.corsika_input_card = mliDynStr_init();
+        run.telescope_positions = mliDynEventIoTelPos_init();
+        return run;
 }
 
 int _read_273_block(FILE *f, float *block, const int32_t type)
@@ -295,21 +295,21 @@ error:
         return 0;
 }
 
-int mliEventIoRun_open(struct mliEventIoRun *runstream, const char *path)
+int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
 {
-        runstream->f = fopen(path, "rb");
-        mli_check(runstream->f, "Can not open event-io-file.");
+        run->f = fopen(path, "rb");
+        mli_check(run->f, "Can not open event-io-file.");
 
         mli_check(
                 _read_runh_273_block(
-                        runstream->f, runstream->corsika_run_header),
+                        run->f, run->corsika_run_header),
                 "Failed to read corsika_run_header 273 float block.");
         mli_check(
-                _read_input_card(runstream->f, &runstream->corsika_input_card),
+                _read_input_card(run->f, &run->corsika_input_card),
                 "Failed to read corsika-input-card.");
         mli_check(
                 _read_telescope_positions(
-                        runstream->f, &runstream->telescope_positions),
+                        run->f, &run->telescope_positions),
                 "Failed to read telescope-positions.");
 
         return 1;
@@ -317,28 +317,28 @@ error:
         return 0;
 }
 
-void mliEventIoRun_close(struct mliEventIoRun *runstream)
+void mliEventIoRun_close(struct mliEventIoRun *run)
 {
-        mliDynStr_free(&runstream->corsika_input_card);
-        mliDynEventIoTelPos_free(&runstream->telescope_positions);
-        fclose(runstream->f);
+        mliDynStr_free(&run->corsika_input_card);
+        mliDynEventIoTelPos_free(&run->telescope_positions);
+        fclose(run->f);
 }
 
 int mliEventIoRun_malloc_next_event(
-        struct mliEventIoRun *runstream,
+        struct mliEventIoRun *run,
         struct mliEventIoEvent *event)
 {
         mliEventIoEvent_free(event);
         mli_check(
-                _read_evth_273_block(runstream->f, event->corsika_event_header),
+                _read_evth_273_block(run->f, event->corsika_event_header),
                 "Failed to read corsika_event_header 273 float block.");
         mli_check(
                 _read_telescope_offsets(
-                        runstream->f, &event->telescope_offsets),
+                        run->f, &event->telescope_offsets),
                 "");
-        mli_check(_read_telescope_array_header_1204(runstream->f), "");
+        mli_check(_read_telescope_array_header_1204(run->f), "");
         mli_check(
-                _read_photon_bunches(runstream->f, &event->photon_bunches), "");
+                _read_photon_bunches(run->f, &event->photon_bunches), "");
         return 1;
 error:
         return 0;

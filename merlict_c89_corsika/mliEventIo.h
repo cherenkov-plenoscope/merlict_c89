@@ -40,11 +40,11 @@ struct mliEventIoRun {
         struct mliDynEventIoTelPos telescope_positions;
 };
 struct mliEventIoRun mliEventIoRun_init(void);
-void mliEventIoRun_close(struct mliEventIoRun *runstream);
-int mliEventIoRun_open(struct mliEventIoRun *runstream, const char *path);
+void mliEventIoRun_close(struct mliEventIoRun *run);
+int mliEventIoRun_open(struct mliEventIoRun *run, const char *path);
 int mliEventIoRun_malloc_next_event(
-        struct mliEventIoRun *runstream,
-        struct mliEventIoEvent *eventstream);
+        struct mliEventIoRun *run,
+        struct mliEventIoEvent *event);
 
 #define MLI_CORSIKA_RUNH_RUN_NUMBER 1
 #define MLI_CORSIKA_RUNH_SLOPE_OF_ENERGY_SPECTRUM 15
