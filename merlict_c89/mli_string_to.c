@@ -32,6 +32,21 @@ error:
         return 0;
 }
 
+int mli_nstring_to_uint(
+        uint64_t *out,
+        const char *s,
+        const uint64_t base,
+        const uint64_t expected_num_chars)
+{
+        int64_t tmp;
+        mli_c(mli_nstring_to_int(&tmp, s, base, expected_num_chars));
+        mli_check(tmp >= 0, "Expected a positive integer.");
+        (*out) = tmp;
+        return 1;
+error:
+        return 0;
+}
+
 int mli_string_to_int(int64_t *out, const char *s, const uint64_t base)
 {
         mli_check(

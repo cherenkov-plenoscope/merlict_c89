@@ -7,6 +7,11 @@ int mli_nstring_to_int(
         const char *s,
         const uint64_t base,
         const uint64_t expected_num_chars);
+int mli_nstring_to_uint(
+        uint64_t *out,
+        const char *s,
+        const uint64_t base,
+        const uint64_t expected_num_chars);
 int mli_string_to_int(int64_t *out, const char *s, const uint64_t base);
 int mli_string_to_uint(uint64_t *out, const char *s, const uint64_t base);
 
