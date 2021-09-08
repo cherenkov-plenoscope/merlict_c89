@@ -1,10 +1,10 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
-#ifndef MERLICT_C89_CORSIKA_EVENTIO_H_
-#define MERLICT_C89_CORSIKA_EVENTIO_H_
+#ifndef MERLICT_C89_CORSIKA_EVENTIO_RUN_H_
+#define MERLICT_C89_CORSIKA_EVENTIO_RUN_H_
 
 #include <stdint.h>
-#include "mliEventIoHeader.h"
-#include "mliCorsikaPhotonBunch.h"
+#include "../../merlict_c89_corsika/mliEventIoHeader.h"
+#include "../../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
 
 struct mliEventIoTelPos {
         float x;

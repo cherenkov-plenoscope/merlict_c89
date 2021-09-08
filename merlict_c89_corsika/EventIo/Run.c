@@ -1,5 +1,5 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
-#include "../merlict_c89_corsika/mliEventIo.h"
+#include "../../merlict_c89_corsika/EventIo/Run.h"
 
 MLIDYNARRAY_IMPLEMENTATION(mli, EventIoTelPos, struct mliEventIoTelPos)
 MLIDYNARRAY_IMPLEMENTATION(mli, EventIoTelOffset, struct mliEventIoTelOffset)

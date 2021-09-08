@@ -2,7 +2,7 @@
 #include "version.h"
 #include "utils.h"
 #include "mliCorsikaPhotonBunch.h"
-#include "mliEventIo.h"
+#include "EventIo/Run.h"
 #include "mliEventIoHeader.h"
 #include "TarIo/Run.h"
 #include "TarIo/Event.h"
