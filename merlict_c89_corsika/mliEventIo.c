@@ -324,9 +324,9 @@ void mliEventIoRun_close(struct mliEventIoRun *run)
         fclose(run->f);
 }
 
-int mliEventIoRun_malloc_next_event(
-        struct mliEventIoRun *run,
-        struct mliEventIoEvent *event)
+int mliEventIoEvent_malloc_from_run(
+        struct mliEventIoEvent *event,
+        struct mliEventIoRun *run)
 {
         mliEventIoEvent_free(event);
         mli_check(

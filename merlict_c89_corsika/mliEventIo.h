@@ -42,8 +42,8 @@ struct mliEventIoRun {
 struct mliEventIoRun mliEventIoRun_init(void);
 void mliEventIoRun_close(struct mliEventIoRun *run);
 int mliEventIoRun_open(struct mliEventIoRun *run, const char *path);
-int mliEventIoRun_malloc_next_event(
-        struct mliEventIoRun *run,
-        struct mliEventIoEvent *event);
+int mliEventIoEvent_malloc_from_run(
+        struct mliEventIoEvent *event,
+        struct mliEventIoRun *run);
 
 #endif
