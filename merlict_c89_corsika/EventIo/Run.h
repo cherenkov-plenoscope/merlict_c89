@@ -4,27 +4,13 @@
 
 #include <stdint.h>
 #include "../../merlict_c89_corsika/EventIo/Header.h"
+#include "../../merlict_c89_corsika/EventIo/TelescopeOffset.h"
+#include "../../merlict_c89_corsika/EventIo/TelescopePosition.h"
 #include "../../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
-
-struct mliEventIoTelPos {
-        float x;
-        float y;
-        float z;
-        float r;
-};
-MLIDYNARRAY_DEFINITON(mli, EventIoTelPos, struct mliEventIoTelPos)
-
-struct mliEventIoTelOffset {
-        float toff;
-        float xoff;
-        float yoff;
-        float weight;
-};
-MLIDYNARRAY_DEFINITON(mli, EventIoTelOffset, struct mliEventIoTelOffset)
 
 struct mliEventIoEvent {
         float corsika_event_header[273];
-        struct mliDynEventIoTelOffset telescope_offsets;
+        struct mliDynEventIoTelescopeOffset telescope_offsets;
         struct mliDynCorsikaPhotonBunch photon_bunches;
 };
 struct mliEventIoEvent mliEventIoEvent_init(void);
@@ -37,7 +23,7 @@ struct mliEventIoRun {
         FILE *f;
         float corsika_run_header[273];
         struct mliDynStr corsika_input_card;
-        struct mliDynEventIoTelPos telescope_positions;
+        struct mliDynEventIoTelescopePosition telescope_positions;
 };
 struct mliEventIoRun mliEventIoRun_init(void);
 void mliEventIoRun_close(struct mliEventIoRun *run);

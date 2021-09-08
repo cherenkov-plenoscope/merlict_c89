@@ -4,5 +4,8 @@
 #include "mliCorsikaPhotonBunch.c"
 #include "EventIo/Run.c"
 #include "EventIo/Header.c"
+#include "EventIo/TelescopeOffset.c"
+#include "EventIo/TelescopePosition.c"
 #include "TarIo/Run.c"
 #include "TarIo/Event.c"
+

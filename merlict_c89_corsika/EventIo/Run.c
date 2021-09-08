@@ -1,20 +1,17 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
 #include "../../merlict_c89_corsika/EventIo/Run.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, EventIoTelPos, struct mliEventIoTelPos)
-MLIDYNARRAY_IMPLEMENTATION(mli, EventIoTelOffset, struct mliEventIoTelOffset)
-
 struct mliEventIoEvent mliEventIoEvent_init(void)
 {
         struct mliEventIoEvent evt;
         memset(evt.corsika_event_header, 0.0, 273);
-        evt.telescope_offsets = mliDynEventIoTelOffset_init();
+        evt.telescope_offsets = mliDynEventIoTelescopeOffset_init();
         evt.photon_bunches = mliDynCorsikaPhotonBunch_init();
         return evt;
 }
 void mliEventIoEvent_free(struct mliEventIoEvent *evt)
 {
-        mliDynEventIoTelOffset_free(&evt->telescope_offsets);
+        mliDynEventIoTelescopeOffset_free(&evt->telescope_offsets);
         mliDynCorsikaPhotonBunch_free(&evt->photon_bunches);
         (*evt) = mliEventIoEvent_init();
 }
@@ -25,7 +22,7 @@ struct mliEventIoRun mliEventIoRun_init(void)
         run.f = NULL;
         memset(run.corsika_run_header, 0.0, 273);
         run.corsika_input_card = mliDynStr_init();
-        run.telescope_positions = mliDynEventIoTelPos_init();
+        run.telescope_positions = mliDynEventIoTelescopePosition_init();
         return run;
 }
 
@@ -97,7 +94,7 @@ error:
 
 int _read_telescope_positions(
         FILE *f,
-        struct mliDynEventIoTelPos *telescope_positions)
+        struct mliDynEventIoTelescopePosition *telescope_positions)
 {
         struct mliEventIoHeader head;
         int32_t ntel;
@@ -117,11 +114,11 @@ int _read_telescope_positions(
 
         mli_check(num_following_arrays == 4, "Expected exactly four arrays.")
 
-                mli_c(mliDynEventIoTelPos_malloc_set_size(
+                mli_c(mliDynEventIoTelescopePosition_malloc_set_size(
                         telescope_positions, ntel));
         mli_fread(
                 telescope_positions->array,
-                sizeof(struct mliEventIoTelPos),
+                sizeof(struct mliEventIoTelescopePosition),
                 (uint64_t)ntel,
                 f);
         return 1;
@@ -131,7 +128,7 @@ error:
 
 int _read_telescope_offsets(
         FILE *f,
-        struct mliDynEventIoTelOffset *telescope_offsets)
+        struct mliDynEventIoTelescopeOffset *telescope_offsets)
 {
         struct mliEventIoHeader head;
 
@@ -183,7 +180,7 @@ int _read_telescope_offsets(
         }
 
         mli_check(
-                mliDynEventIoTelOffset_malloc_set_size(
+                mliDynEventIoTelescopeOffset_malloc_set_size(
                         telescope_offsets, narray),
                 "Failed to malloc telescope_offsets.");
 
@@ -320,7 +317,7 @@ error:
 void mliEventIoRun_close(struct mliEventIoRun *run)
 {
         mliDynStr_free(&run->corsika_input_card);
-        mliDynEventIoTelPos_free(&run->telescope_positions);
+        mliDynEventIoTelescopePosition_free(&run->telescope_positions);
         fclose(run->f);
 }
 
