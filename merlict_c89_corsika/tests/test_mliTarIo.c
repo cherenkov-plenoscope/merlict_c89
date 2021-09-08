@@ -19,7 +19,8 @@ CASE("TarIo: read one by one")
         mliTarIoEvent_free(&first_evt);
 
         CHECK(mliTarIoEvent_malloc_from_run(&second_evt, &run));
-        CHECK(second_evt.corsika_event_header[0] == mli_4chars_to_float("EVTH"));
+        CHECK(second_evt.corsika_event_header[0] ==
+              mli_4chars_to_float("EVTH"));
         mliTarIoEvent_free(&second_evt);
 
         CHECK(mliTarIoEvent_malloc_from_run(&third_evt, &run));

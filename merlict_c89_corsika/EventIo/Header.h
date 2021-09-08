@@ -18,9 +18,6 @@ struct mliEventIoHeader {
         int32_t id;
 };
 struct mliEventIoHeader mliEventIoHeader_init(void);
-int mliEventIoHeader_read(
-        struct mliEventIoHeader *header,
-        FILE *f,
-        int level);
+int mliEventIoHeader_read(struct mliEventIoHeader *header, FILE *f, int level);
 void mliEventIoHeader_fprint(const struct mliEventIoHeader head, FILE *f);
 #endif

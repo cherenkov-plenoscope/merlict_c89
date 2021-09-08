@@ -271,7 +271,8 @@ CASE("EventIoFile_telescope_dat_run_time")
                 std::vector<merlict::Photon> photons;
                 unsigned int id = 0;
                 for (std::array<float, 8> corsika_photon : event.photons) {
-                    merlict::EventIoPhotonFactory cpf(corsika_photon, id++, &prng);
+                    merlict::EventIoPhotonFactory cpf(corsika_photon, id++,
+                &prng);
 
                     if (cpf.passed_atmosphere()) {
                         photons.push_back(cpf.make_photon());

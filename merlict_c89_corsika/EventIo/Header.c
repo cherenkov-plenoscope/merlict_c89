@@ -3,7 +3,8 @@
 
 #define EXPECTED_SYNC -736130505
 
-struct mliEventIoHeader mliEventIoHeader_init(void) {
+struct mliEventIoHeader mliEventIoHeader_init(void)
+{
         struct mliEventIoHeader h;
         h.is_sync = 0;
         h.type = -1;
@@ -89,10 +90,7 @@ int64_t _extend_length(
         return len;
 }
 
-int mliEventIoHeader_read(
-        struct mliEventIoHeader *header,
-        FILE *f,
-        int level)
+int mliEventIoHeader_read(struct mliEventIoHeader *header, FILE *f, int level)
 {
         int length_read = 0;
         struct _FirstFour first_four = _FirstFour_zeros();

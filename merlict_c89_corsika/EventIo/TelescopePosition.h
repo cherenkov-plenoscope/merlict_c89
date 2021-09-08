@@ -11,6 +11,9 @@ struct mliEventIoTelescopePosition {
         float z;
         float r;
 };
-MLIDYNARRAY_DEFINITON(mli, EventIoTelescopePosition, struct mliEventIoTelescopePosition)
+MLIDYNARRAY_DEFINITON(
+        mli,
+        EventIoTelescopePosition,
+        struct mliEventIoTelescopePosition)
 
 #endif

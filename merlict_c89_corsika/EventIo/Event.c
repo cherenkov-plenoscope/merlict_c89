@@ -1,7 +1,6 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
 #include "../../merlict_c89_corsika/EventIo/Event.h"
 
-
 int _read_telescope_offsets(
         FILE *f,
         struct mliDynEventIoTelescopeOffset *telescope_offsets,

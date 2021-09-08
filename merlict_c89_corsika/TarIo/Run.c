@@ -26,7 +26,9 @@ int mliTarIoRun_open(struct mliTarIoRun *run, const char *path)
                 "Expected corsika_run_header to have size 273*sizeof(float).");
         mli_check(
                 mliTar_read_data(
-                        &run->tar, (void *)&(run->corsika_run_header), info.size),
+                        &run->tar,
+                        (void *)&(run->corsika_run_header),
+                        info.size),
                 "Failed to read corsika_run_header from tar.");
         mli_check(
                 run->corsika_run_header[0] == mli_4chars_to_float("RUNH"),

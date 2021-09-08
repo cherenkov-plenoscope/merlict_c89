@@ -32,7 +32,10 @@ error:
  *      bunches 1205 (sub)
  */
 
-int _read_input_card(FILE *f, struct mliDynStr *input_card, const uint64_t length)
+int _read_input_card(
+        FILE *f,
+        struct mliDynStr *input_card,
+        const uint64_t length)
 {
         char _unknown[8];
         uint64_t input_card_length;
@@ -81,8 +84,7 @@ error:
 int _mliEventIoRun_next_block(struct mliEventIoRun *run, const int level)
 {
         mli_check(
-                mliEventIoHeader_read(
-                        &run->_next_block, run->_f, level),
+                mliEventIoHeader_read(&run->_next_block, run->_f, level),
                 "Failed to read EventIo-block-header.");
         return 1;
 error:
@@ -102,14 +104,15 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
                 _read_273_block(run->_f, run->corsika_run_header),
                 "Failed to read corsika_run_header 273 float block.");
 
-
         /* corsika_input_card */
         /* ------------------ */
         mli_c(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
         mli_check(run->_next_block.type == 1212, "Expected type 1212.");
         mli_check(
                 _read_input_card(
-                        run->_f, &run->corsika_input_card, run->_next_block.length),
+                        run->_f,
+                        &run->corsika_input_card,
+                        run->_next_block.length),
                 "Failed to read corsika-input-card.");
 
         /* telescope_positions */
@@ -118,7 +121,9 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
         mli_check(run->_next_block.type == 1201, "Expected type 1201.");
         mli_check(
                 _read_telescope_positions(
-                        run->_f, &run->telescope_positions, run->_next_block.length),
+                        run->_f,
+                        &run->telescope_positions,
+                        run->_next_block.length),
                 "Failed to read telescope-positions.");
 
         /* next */
