@@ -3,6 +3,6 @@
 #include "utils.h"
 #include "mliCorsikaPhotonBunch.h"
 #include "EventIo/Run.h"
-#include "mliEventIoHeader.h"
+#include "EventIo/Header.h"
 #include "TarIo/Run.h"
 #include "TarIo/Event.h"

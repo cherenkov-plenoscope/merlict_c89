@@ -3,7 +3,7 @@
 #define MERLICT_C89_CORSIKA_EVENTIO_RUN_H_
 
 #include <stdint.h>
-#include "../../merlict_c89_corsika/mliEventIoHeader.h"
+#include "../../merlict_c89_corsika/EventIo/Header.h"
 #include "../../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
 
 struct mliEventIoTelPos {
