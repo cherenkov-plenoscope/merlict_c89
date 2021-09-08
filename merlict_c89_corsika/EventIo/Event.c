@@ -165,7 +165,7 @@ int mliEventIoEvent_malloc_from_run(
         /* corsika_event_header */
         /* -------------------- */
         mli_check(
-                mliEventIoHeader_read_from_file(
+                mliEventIoHeader_read(
                         &a, run->f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read EventIo-header.");
         mli_check(a.type == 1202, "Expected type 1202.");
@@ -177,7 +177,7 @@ int mliEventIoEvent_malloc_from_run(
         /* telescope_offsets */
         /* ----------------- */
         mli_check(
-                mliEventIoHeader_read_from_file(
+                mliEventIoHeader_read(
                         &b, run->f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read EventIo-header.");
         mli_check(b.type == 1203, "Expected type 1203.");
@@ -190,7 +190,7 @@ int mliEventIoEvent_malloc_from_run(
         /* array_header */
         /* ------------ */
         mli_check(
-                mliEventIoHeader_read_from_file(
+                mliEventIoHeader_read(
                         &c, run->f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read EventIo-header.");
         mli_check(c.type == 1204, "Expected type 1204.");
@@ -198,7 +198,7 @@ int mliEventIoEvent_malloc_from_run(
         /* photon_bunches */
         /* -------------- */
         mli_check(
-                mliEventIoHeader_read_from_file(
+                mliEventIoHeader_read(
                         &d, run->f, MLI_EVENTIO_SUB_LEVEL),
                 "Failed to read subhead for photon_bunches.");
         mli_check(d.type == 1205, "Expected subheader type 1205");

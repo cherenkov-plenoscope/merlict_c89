@@ -76,7 +76,7 @@ int64_t _extend_length(
         return len;
 }
 
-int mliEventIoHeader_read_from_file(
+int mliEventIoHeader_read(
         struct mliEventIoHeader *header,
         FILE *f,
         int level)

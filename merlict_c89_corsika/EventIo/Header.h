@@ -17,7 +17,7 @@ struct mliEventIoHeader {
         uint64_t length;
         int32_t id;
 };
-int mliEventIoHeader_read_from_file(
+int mliEventIoHeader_read(
         struct mliEventIoHeader *header,
         FILE *f,
         int level);

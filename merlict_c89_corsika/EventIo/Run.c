@@ -87,7 +87,7 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
         /* corsika_run_header */
         /* ------------------ */
         mli_check(
-                mliEventIoHeader_read_from_file(
+                mliEventIoHeader_read(
                         &a, run->f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read EventIo-header.");
         mli_check(a.type == 1200, "Expected type 1200.");
@@ -99,7 +99,7 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
         /* corsika_input_card */
         /* ------------------ */
         mli_check(
-                mliEventIoHeader_read_from_file(
+                mliEventIoHeader_read(
                         &b, run->f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read EventIo-header.");
         mli_check(b.type == 1212, "Expected type 1212.");
@@ -111,7 +111,7 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
         /* telescope_positions */
         /* ------------------- */
         mli_check(
-                mliEventIoHeader_read_from_file(
+                mliEventIoHeader_read(
                         &c, run->f, MLI_EVENTIO_TOP_LEVEL),
                 "Failed to read EventIo-header.");
         mli_check(c.type == 1201, "Expected type 1201.");

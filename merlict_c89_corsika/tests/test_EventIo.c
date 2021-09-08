@@ -6,7 +6,7 @@ CASE("EventIoHeader_works")
         struct mliEventIoHeader my_header;
         f = fopen("merlict_c89_corsika/tests/resources/telescope.dat", "rb");
         CHECK(f);
-        CHECK(mliEventIoHeader_read_from_file(&my_header, f, 1));
+        CHECK(mliEventIoHeader_read(&my_header, f, 1));
         fclose(f);
 
         CHECK(my_header.is_sync);
@@ -52,7 +52,7 @@ CASE("EventIoHeader_fails_wrong_sync_marker")
                       "telescope.dat-bad-sync.tmp",
                       "wb");
         CHECK(fbad);
-        CHECK(!mliEventIoHeader_read_from_file(&my_header, fbad, 1));
+        CHECK(!mliEventIoHeader_read(&my_header, fbad, 1));
         fclose(fbad);
 }
 
@@ -68,7 +68,7 @@ CASE("EventIoHeader_fails_empty_file")
         while (tmp != EOF) {
                 tmp = getc(fempty);
         }
-        CHECK(!mliEventIoHeader_read_from_file(&my_header, fempty, 1));
+        CHECK(!mliEventIoHeader_read(&my_header, fempty, 1));
         fclose(fempty);
 }
 
