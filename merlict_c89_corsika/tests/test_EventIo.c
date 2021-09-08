@@ -240,7 +240,8 @@ CASE("EventIoFile_telescope_dat__photon_bundle_values")
         CHECK(event.telescopes.array[0].photon_bunches.size == 42629u);
 
         for (j = 2; j < 5; j++) {
-                struct mliCorsikaPhotonBunch b = event.telescopes.array[0].photon_bunches.array[j];
+                struct mliCorsikaPhotonBunch b =
+                        event.telescopes.array[0].photon_bunches.array[j];
 
                 CHECK_MARGIN(b.x_cm, some[j].x_cm, 1e-6);
                 CHECK_MARGIN(b.y_cm, some[j].y_cm, 1e-6);

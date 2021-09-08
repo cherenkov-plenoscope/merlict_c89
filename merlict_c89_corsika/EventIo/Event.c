@@ -178,9 +178,7 @@ int mliEventIoEvent_malloc_from_run(
         mli_check(run->_next_block.type == 1203, "Expected type 1203.");
         mli_check(
                 _read_telescope_offsets(
-                        run->_f,
-                        &tmp_offsets,
-                        run->_next_block.length),
+                        run->_f, &tmp_offsets, run->_next_block.length),
                 "Failed to read telescope_offsets.");
 
         /* array_header */
@@ -237,8 +235,9 @@ int mliEventIoEvent_malloc_from_run(
         }
 
         mli_check(remaining_length == 0, "Expected remaining_length == 0.");
-        mli_check(num_sub_blocks == event->telescopes.size,
-                "Expected every telescope to have photon_bunches.")
+        mli_check(
+                num_sub_blocks == event->telescopes.size,
+                "Expected every telescope to have photon_bunches.");
 
         /* corsika_event_end */
         /* ----------------- */
