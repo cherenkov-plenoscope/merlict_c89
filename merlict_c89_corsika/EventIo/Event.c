@@ -67,8 +67,8 @@ error:
 }
 
 struct _BunchHeader {
-        int16_t array;
-        int16_t tel;
+        int16_t array_id;
+        int16_t telescope_id;
         float photons;
         int32_t num_bunches;
 };
@@ -83,8 +83,8 @@ int _read_photon_bunches(
         int is_compact = 0;
         uint64_t row, field;
 
-        mli_fread(&b_head->array, sizeof(b_head->array), 1, f);
-        mli_fread(&b_head->tel, sizeof(b_head->tel), 1, f);
+        mli_fread(&b_head->array_id, sizeof(b_head->array_id), 1, f);
+        mli_fread(&b_head->telescope_id, sizeof(b_head->telescope_id), 1, f);
         mli_fread(&b_head->photons, sizeof(b_head->photons), 1, f);
         mli_fread(&b_head->num_bunches, sizeof(b_head->num_bunches), 1, f);
 
@@ -139,14 +139,16 @@ struct mliEventIoEvent mliEventIoEvent_init(void)
         struct mliEventIoEvent event;
         memset(event.corsika_event_header, 0.0, 273);
         memset(event.corsika_event_end, 0.0, 273);
-        event.telescope_offsets = mliDynEventIoTelescopeOffset_init();
-        event.photon_bunches = mliDynCorsikaPhotonBunch_init();
+        event.telescopes = mliDynEventIoTelescope_init();
         return event;
 }
 void mliEventIoEvent_free(struct mliEventIoEvent *event)
 {
-        mliDynEventIoTelescopeOffset_free(&event->telescope_offsets);
-        mliDynCorsikaPhotonBunch_free(&event->photon_bunches);
+        uint64_t i;
+        for (i = 0; i < event->telescopes.size; i++) {
+                mliEventIoTelescope_free(&event->telescopes.array[i]);
+        }
+        mliDynEventIoTelescope_free(&event->telescopes);
         (*event) = mliEventIoEvent_init();
 }
 
@@ -154,8 +156,12 @@ int mliEventIoEvent_malloc_from_run(
         struct mliEventIoEvent *event,
         struct mliEventIoRun *run)
 {
-        uint64_t remaining_array_block_length = 0;
+        uint64_t remaining_length = 0;
         uint64_t header_length = 0;
+        uint64_t num_sub_blocks = 0;
+        uint64_t i;
+        struct mliDynEventIoTelescopeOffset tmp_offsets =
+                mliDynEventIoTelescopeOffset_init();
 
         mliEventIoEvent_free(event);
 
@@ -173,7 +179,7 @@ int mliEventIoEvent_malloc_from_run(
         mli_check(
                 _read_telescope_offsets(
                         run->_f,
-                        &event->telescope_offsets,
+                        &tmp_offsets,
                         run->_next_block.length),
                 "Failed to read telescope_offsets.");
 
@@ -184,33 +190,55 @@ int mliEventIoEvent_malloc_from_run(
         mli_check(
                 run->_next_block.only_sub_objects,
                 "Expected telescope-array-block to only contain sub-blocks.");
-        remaining_array_block_length = run->_next_block.length;
+        remaining_length = run->_next_block.length;
 
-        /* photon_bunches */
-        /* -------------- */
-        while (remaining_array_block_length) {
+        /* telescopes */
+        /* ---------- */
+        mli_check(
+                mliDynEventIoTelescope_malloc_set_size(
+                        &event->telescopes, tmp_offsets.size),
+                "Failed to malloc telescpes");
+        for (i = 0; i < event->telescopes.size; i++) {
+                event->telescopes.array[i] = mliEventIoTelescope_init();
+                event->telescopes.array[i].offset = tmp_offsets.array[i];
+        }
+        mliDynEventIoTelescopeOffset_free(&tmp_offsets);
+
+        while (remaining_length) {
+
+                /* photon_bunches for each telescope */
+                /* --------------------------------- */
                 struct _BunchHeader b_head;
+                struct mliEventIoTelescope *telescope =
+                        &event->telescopes.array[num_sub_blocks];
 
                 header_length = mliEventIoHeader_read(
                         &run->_next_block, run->_f, MLI_EVENTIO_SUB_LEVEL);
                 mli_check(
                         header_length,
                         "Failed to read EventIo-SUB-block-header.");
-                remaining_array_block_length -= header_length;
+                remaining_length -= header_length;
 
                 mli_check(
                         run->_next_block.type == 1205,
                         "Expected subheader type 1205");
 
+                telescope->array_id = b_head.array_id;
+                telescope->telescope_id = b_head.telescope_id;
                 mli_check(
                         _read_photon_bunches(
                                 run->_f,
                                 &b_head,
-                                &event->photon_bunches,
+                                &telescope->photon_bunches,
                                 run->_next_block.version),
                         "Failed to read photon_bunches.");
-                remaining_array_block_length -= run->_next_block.length;
+                remaining_length -= run->_next_block.length;
+                num_sub_blocks += 1;
         }
+
+        mli_check(remaining_length == 0, "Expected remaining_length == 0.");
+        mli_check(num_sub_blocks == event->telescopes.size,
+                "Expected every telescope to have photon_bunches.")
 
         /* corsika_event_end */
         /* ----------------- */

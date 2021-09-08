@@ -5,6 +5,7 @@
 #include "EventIo/Run.c"
 #include "EventIo/Event.c"
 #include "EventIo/Header.c"
+#include "EventIo/Telescope.c"
 #include "EventIo/TelescopeOffset.c"
 #include "EventIo/TelescopePosition.c"
 #include "TarIo/Run.c"

@@ -148,12 +148,12 @@ CASE("EventIoFile_telescope_dat__corsika_event_header")
         CHECK(mliEventIoRun_has_still_events_left(&run));
         CHECK(mliEventIoEvent_malloc_from_run(&event, &run));
 
-        CHECK(event.telescope_offsets.size == 1u);
-        CHECK_MARGIN(379489.3125, event.telescope_offsets.array[0].toff, 1e-6);
+        CHECK(event.telescopes.size == 1u);
+        CHECK_MARGIN(379489.3125, event.telescopes.array[0].offset.toff, 1e-6);
 
-        CHECK_MARGIN(-0., event.telescope_offsets.array[0].xoff, 1e-6);
+        CHECK_MARGIN(-0., event.telescopes.array[0].offset.xoff, 1e-6);
         CHECK_MARGIN(
-                -6589.96044922, event.telescope_offsets.array[0].yoff, 1e-6);
+                -6589.96044922, event.telescopes.array[0].offset.yoff, 1e-6);
         memcpy(evth, event.corsika_event_header, sizeof(evth));
 
         CHECK_MARGIN(1., evth[MLI_CORSIKA_EVTH_EVENT_NUMBER], 1e-6);
@@ -174,10 +174,11 @@ CASE("EventIoFile_telescope_dat__photon_bundle_size")
         CHECK(mliEventIoRun_has_still_events_left(&run));
         CHECK(mliEventIoEvent_malloc_from_run(&event, &run));
 
-        CHECK(event.photon_bunches.size == 42629u);
-        for (i = 0; i < event.photon_bunches.size; i++) {
+        CHECK(event.telescopes.size == 1u);
+        CHECK(event.telescopes.array[0].photon_bunches.size == 42629u);
+        for (i = 0; i < event.telescopes.array[0].photon_bunches.size; i++) {
                 struct mliCorsikaPhotonBunch bunch =
-                        event.photon_bunches.array[i];
+                        event.telescopes.array[0].photon_bunches.array[i];
                 CHECK(bunch.z_emission_cm > 0.0);
         }
 
@@ -234,10 +235,12 @@ CASE("EventIoFile_telescope_dat__photon_bundle_values")
         CHECK(mliEventIoRun_open(
                 &run, "merlict_c89_corsika/tests/resources/telescope.dat"));
         CHECK(mliEventIoEvent_malloc_from_run(&event, &run));
-        CHECK(event.photon_bunches.size == 42629u);
+
+        CHECK(event.telescopes.size == 1u);
+        CHECK(event.telescopes.array[0].photon_bunches.size == 42629u);
 
         for (j = 2; j < 5; j++) {
-                struct mliCorsikaPhotonBunch b = event.photon_bunches.array[j];
+                struct mliCorsikaPhotonBunch b = event.telescopes.array[0].photon_bunches.array[j];
 
                 CHECK_MARGIN(b.x_cm, some[j].x_cm, 1e-6);
                 CHECK_MARGIN(b.y_cm, some[j].y_cm, 1e-6);

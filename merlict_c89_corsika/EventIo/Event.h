@@ -5,13 +5,13 @@
 #include <stdint.h>
 #include "../../merlict_c89_corsika/EventIo/TelescopeOffset.h"
 #include "../../merlict_c89_corsika/EventIo/Run.h"
+#include "../../merlict_c89_corsika/EventIo/Telescope.h"
 #include "../../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
 
 struct mliEventIoEvent {
         float corsika_event_header[273];
         float corsika_event_end[273];
-        struct mliDynEventIoTelescopeOffset telescope_offsets;
-        struct mliDynCorsikaPhotonBunch photon_bunches;
+        struct mliDynEventIoTelescope telescopes;
 };
 struct mliEventIoEvent mliEventIoEvent_init(void);
 void mliEventIoEvent_free(struct mliEventIoEvent *event);

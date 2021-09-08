@@ -11,6 +11,8 @@ struct mliEventIoTelescopeOffset {
         float yoff;
         float weight;
 };
+struct mliEventIoTelescopeOffset mliEventIoTelescopeOffset_init(void);
+
 MLIDYNARRAY_DEFINITON(
         mli,
         EventIoTelescopeOffset,
