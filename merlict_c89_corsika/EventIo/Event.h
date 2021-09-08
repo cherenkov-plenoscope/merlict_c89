@@ -13,9 +13,9 @@ struct mliEventIoEvent {
         struct mliDynCorsikaPhotonBunch photon_bunches;
 };
 struct mliEventIoEvent mliEventIoEvent_init(void);
-void mliEventIoEvent_free(struct mliEventIoEvent *ioevt);
+void mliEventIoEvent_free(struct mliEventIoEvent *event);
 int mliEventIoEvent_malloc(
-        struct mliEventIoEvent *ioevt,
+        struct mliEventIoEvent *event,
         uint64_t num_photon_bunches);
 int mliEventIoEvent_malloc_from_run(
         struct mliEventIoEvent *event,

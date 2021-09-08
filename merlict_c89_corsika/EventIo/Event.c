@@ -3,17 +3,17 @@
 
 struct mliEventIoEvent mliEventIoEvent_init(void)
 {
-        struct mliEventIoEvent evt;
-        memset(evt.corsika_event_header, 0.0, 273);
-        evt.telescope_offsets = mliDynEventIoTelescopeOffset_init();
-        evt.photon_bunches = mliDynCorsikaPhotonBunch_init();
-        return evt;
+        struct mliEventIoEvent event;
+        memset(event.corsika_event_header, 0.0, 273);
+        event.telescope_offsets = mliDynEventIoTelescopeOffset_init();
+        event.photon_bunches = mliDynCorsikaPhotonBunch_init();
+        return event;
 }
-void mliEventIoEvent_free(struct mliEventIoEvent *evt)
+void mliEventIoEvent_free(struct mliEventIoEvent *event)
 {
-        mliDynEventIoTelescopeOffset_free(&evt->telescope_offsets);
-        mliDynCorsikaPhotonBunch_free(&evt->photon_bunches);
-        (*evt) = mliEventIoEvent_init();
+        mliDynEventIoTelescopeOffset_free(&event->telescope_offsets);
+        mliDynCorsikaPhotonBunch_free(&event->photon_bunches);
+        (*event) = mliEventIoEvent_init();
 }
 
 int mliEventIoEvent_malloc_from_run(
