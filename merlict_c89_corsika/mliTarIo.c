@@ -7,7 +7,7 @@ struct mliTarIoRun mliTarIoRun_init(void)
 {
         struct mliTarIoRun run;
         run.tar = mliTar_init();
-        memset(run.header, 0.0, 273);
+        memset(run.corsika_run_header, 0.0, 273);
         return run;
 }
 
@@ -17,20 +17,20 @@ int mliTarIoRun_open(struct mliTarIoRun *run, const char *path)
         mli_check(mliTar_open(&run->tar, path, "r"), "Failed to open tar.");
         mli_check(
                 mliTar_read_header(&run->tar, &tarinfo),
-                "Failed to read tarinfo for run-header from tar.");
+                "Failed to read tarinfo for corsika_run_header from tar.");
         mli_check(
                 strcmp(tarinfo.name, "runh.float32") == 0,
                 "Expected first file to be 'runh.float32'.");
         mli_check(
                 tarinfo.size == 273 * sizeof(float),
-                "Expected raw run-header to have size 273*sizeof(float).");
+                "Expected corsika_run_header to have size 273*sizeof(float).");
         mli_check(
                 mliTar_read_data(
-                        &run->tar, (void *)&(run->header), tarinfo.size),
-                "Failed to read raw run-header from tar.");
+                        &run->tar, (void *)&(run->corsika_run_header), tarinfo.size),
+                "Failed to read corsika_run_header from tar.");
         mli_check(
-                run->header[0] == mli_4chars_to_float("RUNH"),
-                "Expected run->header[0] == 'RUNH'");
+                run->corsika_run_header[0] == mli_4chars_to_float("RUNH"),
+                "Expected run->corsika_run_header[0] == 'RUNH'");
 
         return 1;
 error:
@@ -45,7 +45,7 @@ int mliTarIoRun_close(struct mliTarIoRun *run)
 struct mliTarIoEvent mliTarIoEvent_init(void)
 {
         struct mliTarIoEvent event;
-        memset(event.header, 0.0, 273);
+        memset(event.corsika_event_header, 0.0, 273);
         event.photon_bunches = mliDynCorsikaPhotonBunch_init();
         return event;
 }
@@ -160,14 +160,14 @@ int mliTarIoEvent_malloc_from_run(
 
         mli_c(mliTarIoEvent_malloc(event, num_bunches));
 
-        memcpy(event->header, tmp_evth, 273 * sizeof(float));
+        memcpy(event->corsika_event_header, tmp_evth, 273 * sizeof(float));
 
         mli_check(
                 mliTar_read_data(
                         &run->tar,
                         (void *)event->photon_bunches.array,
                         info_bunches.size),
-                "Failed to read evth from tar.");
+                "Failed to read photon_bunches from tar.");
 
         return 1;
 error:

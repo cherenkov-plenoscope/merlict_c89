@@ -12,18 +12,18 @@ CASE("TarIo: read one by one")
                 &run,
                 "merlict_c89_corsika/tests/resources/corsika_primary_run.tar"));
 
-        CHECK(run.header[0] == mli_4chars_to_float("RUNH"));
+        CHECK(run.corsika_run_header[0] == mli_4chars_to_float("RUNH"));
 
         CHECK(mliTarIoEvent_malloc_from_run(&first_evt, &run));
-        CHECK(first_evt.header[0] == mli_4chars_to_float("EVTH"));
+        CHECK(first_evt.corsika_event_header[0] == mli_4chars_to_float("EVTH"));
         mliTarIoEvent_free(&first_evt);
 
         CHECK(mliTarIoEvent_malloc_from_run(&second_evt, &run));
-        CHECK(second_evt.header[0] == mli_4chars_to_float("EVTH"));
+        CHECK(second_evt.corsika_event_header[0] == mli_4chars_to_float("EVTH"));
         mliTarIoEvent_free(&second_evt);
 
         CHECK(mliTarIoEvent_malloc_from_run(&third_evt, &run));
-        CHECK(third_evt.header[0] == mli_4chars_to_float("EVTH"));
+        CHECK(third_evt.corsika_event_header[0] == mli_4chars_to_float("EVTH"));
         mliTarIoEvent_free(&third_evt);
 
         CHECK(!mliTarIoEvent_malloc_from_run(&not_exist_evt, &run));

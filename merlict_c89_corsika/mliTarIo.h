@@ -7,7 +7,7 @@
 
 struct mliTarIoRun {
         struct mliTar tar;
-        float header[273];
+        float corsika_run_header[273];
 };
 
 struct mliTarIoRun mliTarIoRun_init(void);
@@ -15,7 +15,7 @@ int mliTarIoRun_close(struct mliTarIoRun *run);
 int mliTarIoRun_open(struct mliTarIoRun *run, const char *path);
 
 struct mliTarIoEvent {
-        float header[273];
+        float corsika_event_header[273];
         struct mliDynCorsikaPhotonBunch photon_bunches;
 };
 
