@@ -3,31 +3,33 @@
 CASE("TarIo: read one by one")
 {
         struct mliTarIoRun run = mliTarIoRun_init();
-        struct mliTarIoEvent first_evt = mliTarIoEvent_init();
-        struct mliTarIoEvent second_evt = mliTarIoEvent_init();
-        struct mliTarIoEvent third_evt = mliTarIoEvent_init();
-        struct mliTarIoEvent not_exist_evt = mliTarIoEvent_init();
+        struct mliTarIoEvent evt1 = mliTarIoEvent_init();
+        struct mliTarIoEvent evt2 = mliTarIoEvent_init();
+        struct mliTarIoEvent evt3 = mliTarIoEvent_init();
+        struct mliTarIoEvent evt_ = mliTarIoEvent_init();
 
         CHECK(mliTarIoRun_open(
                 &run,
                 "merlict_c89_corsika/tests/resources/corsika_primary_run.tar"));
-
         CHECK(run.corsika_run_header[0] == mli_4chars_to_float("RUNH"));
 
-        CHECK(mliTarIoEvent_malloc_from_run(&first_evt, &run));
-        CHECK(first_evt.corsika_event_header[0] == mli_4chars_to_float("EVTH"));
-        mliTarIoEvent_free(&first_evt);
+        CHECK(mliTarIoRun_has_still_events_left(&run));
+        CHECK(mliTarIoEvent_malloc_from_run(&evt1, &run));
+        CHECK(evt1.corsika_event_header[0] == mli_4chars_to_float("EVTH"));
+        mliTarIoEvent_free(&evt1);
 
-        CHECK(mliTarIoEvent_malloc_from_run(&second_evt, &run));
-        CHECK(second_evt.corsika_event_header[0] ==
-              mli_4chars_to_float("EVTH"));
-        mliTarIoEvent_free(&second_evt);
+        CHECK(mliTarIoRun_has_still_events_left(&run));
+        CHECK(mliTarIoEvent_malloc_from_run(&evt2, &run));
+        CHECK(evt2.corsika_event_header[0] == mli_4chars_to_float("EVTH"));
+        mliTarIoEvent_free(&evt2);
 
-        CHECK(mliTarIoEvent_malloc_from_run(&third_evt, &run));
-        CHECK(third_evt.corsika_event_header[0] == mli_4chars_to_float("EVTH"));
-        mliTarIoEvent_free(&third_evt);
+        CHECK(mliTarIoRun_has_still_events_left(&run));
+        CHECK(mliTarIoEvent_malloc_from_run(&evt3, &run));
+        CHECK(evt3.corsika_event_header[0] == mli_4chars_to_float("EVTH"));
+        mliTarIoEvent_free(&evt3);
 
-        CHECK(!mliTarIoEvent_malloc_from_run(&not_exist_evt, &run));
+        CHECK(!mliTarIoRun_has_still_events_left(&run));
+        CHECK(!mliTarIoEvent_malloc_from_run(&evt_, &run));
 
         CHECK(mliTarIoRun_close(&run));
 }
@@ -40,15 +42,10 @@ CASE("TarIo: while loop")
                 &run,
                 "merlict_c89_corsika/tests/resources/corsika_primary_run.tar"));
 
-        while (1) {
-                uint64_t event_valid;
+        while (mliTarIoRun_has_still_events_left(&run)) {
                 uint64_t i;
                 struct mliTarIoEvent event = mliTarIoEvent_init();
-
-                event_valid = mliTarIoEvent_malloc_from_run(&event, &run);
-                if (!event_valid) {
-                        break;
-                }
+                CHECK(mliTarIoEvent_malloc_from_run(&event, &run));
 
                 for (i = 0; i < event.photon_bunches.size; i++) {
                         struct mliCorsikaPhotonBunch bunch =

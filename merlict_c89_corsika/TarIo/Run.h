@@ -5,12 +5,16 @@
 #include "../../merlict_c89/mliTar.h"
 
 struct mliTarIoRun {
+        int _has_next_head;
+        struct mliTarHeader _next_head;
         struct mliTar tar;
         float corsika_run_header[273];
 };
 
 struct mliTarIoRun mliTarIoRun_init(void);
 int mliTarIoRun_close(struct mliTarIoRun *run);
+int mliTarIoRun_has_still_events_left(struct mliTarIoRun *run);
 int mliTarIoRun_open(struct mliTarIoRun *run, const char *path);
+void _mliTarIoRun_try_read_next_head(struct mliTarIoRun *run);
 
 #endif

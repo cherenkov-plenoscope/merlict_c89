@@ -33,10 +33,7 @@ int mliTarIoEvent_malloc_from_run(
         struct mliTarIoEvent *event,
         struct mliTarIoRun *run)
 {
-        struct mliTarHeader info_header = mliTarHeader_init();
-        struct mliTarHeader info_bunches = mliTarHeader_init();
         float tmp_evth[273];
-        int rc_info_header = 0;
 
         const char *EVENT_HEADER_SUFFIX = ".evth.float32";
         const uint64_t PATH_NUM_DIGITS = 9;
@@ -55,68 +52,62 @@ int mliTarIoEvent_malloc_from_run(
 
         mliTarIoEvent_free(event);
 
-        rc_info_header = mliTar_read_header(&run->tar, &info_header);
-        if (!rc_info_header) {
-                return rc_info_header;
-        }
-
-        chk_msg(strlen(info_header.name) == EVENT_HEADER_PATH_LENGTH,
+        /* corsika_event_header */
+        /* -------------------- */
+        chk_msg(run->_has_next_head, "Expected tarinfo for evth.");
+        chk_msg(strlen(run->_next_head.name) == EVENT_HEADER_PATH_LENGTH,
                 "Expected length of evth path to be "
                 "strlen('012345678.evth.float32').");
-
-        chk_msg(strcmp(&info_header.name[PATH_NUM_DIGITS],
+        chk_msg(strcmp(&run->_next_head.name[PATH_NUM_DIGITS],
                        EVENT_HEADER_SUFFIX) == 0,
                 "Expected evth path to have suffix '.evth.float32'.");
-
         chk_msg(mli_nstring_to_uint(
-                        &evth_event_id, info_header.name, 10, PATH_NUM_DIGITS),
+                        &evth_event_id,
+                        run->_next_head.name,
+                        10,
+                        PATH_NUM_DIGITS),
                 "Failed to parse event-id from evth-path.");
-
         chk_msg(mliTar_read_data(&run->tar, tmp_evth, 273 * sizeof(float)),
                 "Failed to read evth from tar.");
-
         chk_msg(tmp_evth[0] == mli_4chars_to_float("EVTH"),
                 "Expected event->header[0] == 'EVTH'.");
 
-        chk_msg(mliTar_read_header(&run->tar, &info_bunches),
-                "Failed to read tarinfo for photon-bunches from tar.");
-
-        chk_msg(strlen(info_bunches.name) == BUNCH_PATH_LENGTH,
+        /* photon_bunches */
+        /* -------------- */
+        _mliTarIoRun_try_read_next_head(run);
+        chk_msg(run->_has_next_head, "Expected tarinfo for cherenkov_bunches.");
+        chk_msg(strlen(run->_next_head.name) == BUNCH_PATH_LENGTH,
                 "Expected length of photon-bunches-path to be "
                 "strlen('012345678.cherenkov_bunches.Nx8_float32').");
-
-        chk_msg(strcmp(&info_bunches.name[PATH_NUM_DIGITS], BUNCH_SUFFIX) == 0,
+        chk_msg(strcmp(&run->_next_head.name[PATH_NUM_DIGITS], BUNCH_SUFFIX) == 0,
                 "Expected photon-bunches-path to have suffix "
                 "'.cherenkov_bunches.Nx8_float32'.");
-
         chk_msg(mli_nstring_to_uint(
                         &photon_bunches_event_id,
-                        info_bunches.name,
+                        run->_next_head.name,
                         10,
                         PATH_NUM_DIGITS),
                 "Failed to parse event-id from photon-bunches-path.");
-
         chk_msg(photon_bunches_event_id == evth_event_id,
                 "Expected event-id in evth-path == "
                 "event-id in photon-bunches-path.");
-
         SIZE_OF_BUNCH = sizeof(struct mliCorsikaPhotonBunch);
-        size_rest = info_bunches.size % SIZE_OF_BUNCH;
-        num_bunches = info_bunches.size / SIZE_OF_BUNCH;
-
+        size_rest = run->_next_head.size % SIZE_OF_BUNCH;
+        num_bunches = run->_next_head.size / SIZE_OF_BUNCH;
         chk_msg(size_rest == 0,
                 "Expected size of bunches to be an exact multiple of "
                 "sizeof(bunch)");
-
         chk(mliTarIoEvent_malloc(event, num_bunches));
-
         memcpy(event->corsika_event_header, tmp_evth, 273 * sizeof(float));
-
         chk_msg(mliTar_read_data(
                         &run->tar,
                         (void *)event->photon_bunches.array,
-                        info_bunches.size),
+                        run->_next_head.size),
                 "Failed to read photon_bunches from tar.");
+
+        /* next */
+        /* ---- */
+        _mliTarIoRun_try_read_next_head(run);
 
         return 1;
 error:
