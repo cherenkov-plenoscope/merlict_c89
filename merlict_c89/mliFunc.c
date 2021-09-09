@@ -23,8 +23,8 @@ int mliFunc_malloc(struct mliFunc *f, const uint32_t num_points)
 {
         mliFunc_free(f);
         f->num_points = num_points;
-        mli_malloc(f->x, double, f->num_points);
-        mli_malloc(f->y, double, f->num_points);
+        mli_check_malloc(f->x, double, f->num_points);
+        mli_check_malloc(f->y, double, f->num_points);
         return 1;
 error:
         mliFunc_free(f);

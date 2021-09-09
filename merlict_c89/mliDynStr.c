@@ -22,7 +22,7 @@ int mliDynStr_malloc(struct mliDynStr *str, const uint64_t capacity)
         mliDynStr_free(str);
         str->capacity = MLI_MAX2(2, capacity);
         str->length = 0u;
-        mli_malloc(str->c_str, char, str->capacity);
+        mli_check_malloc(str->c_str, char, str->capacity);
         memset(str->c_str, '\0', str->capacity);
         return 1;
 error:

@@ -24,7 +24,7 @@ int mliImage_malloc(
         mliImage_free(img);
         img->num_cols = num_cols;
         img->num_rows = num_rows;
-        mli_malloc(img->raw, struct mliColor, img->num_cols * img->num_rows);
+        mli_check_malloc(img->raw, struct mliColor, img->num_cols * img->num_rows);
         return 1;
 error:
         mliImage_free(img);

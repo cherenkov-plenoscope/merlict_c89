@@ -41,13 +41,13 @@ int mliAccelerator_malloc(
         mliAccelerator_free(accel);
 
         accel->num_objects = num_objects;
-        mli_malloc(accel->object_octrees, struct mliOcTree, accel->num_objects);
+        mli_check_malloc(accel->object_octrees, struct mliOcTree, accel->num_objects);
         for (obj = 0; obj < accel->num_objects; obj++) {
                 accel->object_octrees[obj] = mliOcTree_init();
         }
 
         accel->num_robjects = num_robjects;
-        mli_malloc(accel->robject_obbs, struct mliOBB, accel->num_robjects);
+        mli_check_malloc(accel->robject_obbs, struct mliOBB, accel->num_robjects);
         for (rob = 0; rob < accel->num_robjects; rob++) {
                 accel->robject_obbs[rob] = mliOBB_set(
                         mliVec_set(0.0, 0.0, 0.0), mliVec_set(0.0, 0.0, 0.0));

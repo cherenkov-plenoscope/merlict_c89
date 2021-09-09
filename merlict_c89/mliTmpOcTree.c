@@ -41,7 +41,7 @@ int mliTmpNode_malloc(struct mliTmpNode *n, const uint32_t num_objects)
 {
         mliTmpNode_free(n);
         n->num_objects = num_objects;
-        mli_malloc(n->objects, uint32_t, n->num_objects);
+        mli_check_malloc(n->objects, uint32_t, n->num_objects);
         return 1;
 error:
         return 0;
@@ -111,7 +111,7 @@ int mliTmpNode_add_children(
         }
 
         for (c = 0; c < 8u; c++) {
-                mli_malloc(node->children[c], struct mliTmpNode, 1u);
+                mli_check_malloc(node->children[c], struct mliTmpNode, 1u);
                 (*node->children[c]) = mliTmpNode_init();
                 mli_c(mliTmpNode_malloc(node->children[c], overlap[c].size));
                 mli_uint32_ncpy(

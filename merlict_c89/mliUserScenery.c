@@ -83,7 +83,7 @@ error:
         return 0;
 }
 
-int mli_malloc_materials_form_archive(
+int mli_check_malloc_materials_form_archive(
         struct mliMaterials *materials,
         struct mliNameMap *names,
         const struct mliArchive *archive)
@@ -238,7 +238,7 @@ error:
         return 0;
 }
 
-int mli_malloc_root_frame_from_Archive(
+int mli_check_malloc_root_frame_from_Archive(
         struct mliFrame *root,
         const struct mliArchive *archive,
         const struct mliDynMap *object_names,

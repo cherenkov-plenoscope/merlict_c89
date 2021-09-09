@@ -57,8 +57,8 @@ int _mliGeometry_malloc_objects(
 {
         uint32_t i;
         geometry->num_objects = num_objects;
-        mli_malloc(geometry->objects, struct mliObject, geometry->num_objects);
-        mli_malloc(
+        mli_check_malloc(geometry->objects, struct mliObject, geometry->num_objects);
+        mli_check_malloc(
                 geometry->object_names, struct mliName, geometry->num_objects);
         for (i = 0; i < geometry->num_objects; i++) {
                 geometry->objects[i] = mliObject_init();
@@ -75,9 +75,9 @@ int _mliGeometry_malloc_references(
         const uint32_t num_robjects)
 {
         geometry->num_robjects = num_robjects;
-        mli_malloc(geometry->robjects, uint32_t, geometry->num_robjects);
-        mli_malloc(geometry->robject_ids, uint32_t, geometry->num_robjects);
-        mli_malloc(
+        mli_check_malloc(geometry->robjects, uint32_t, geometry->num_robjects);
+        mli_check_malloc(geometry->robject_ids, uint32_t, geometry->num_robjects);
+        mli_check_malloc(
                 geometry->robject2root,
                 struct mliHomTraComp,
                 geometry->num_robjects);

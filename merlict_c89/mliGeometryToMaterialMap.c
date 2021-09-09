@@ -30,9 +30,9 @@ int mliGeometryToMaterialMap_malloc(
         map->num_robjects = num_robjects;
         map->total_num_boundary_layers = total_num_boundary_layers;
 
-        mli_malloc(
+        mli_check_malloc(
                 map->boundary_layers, uint32_t, map->total_num_boundary_layers);
-        mli_malloc(
+        mli_check_malloc(
                 map->first_boundary_layer_in_robject,
                 uint32_t,
                 map->num_robjects);

@@ -57,12 +57,12 @@ int mliObject_malloc(
         obj->num_vertex_normals = num_vertex_normals;
         obj->num_faces = num_faces;
         obj->num_materials = num_materials;
-        mli_malloc(obj->vertices, struct mliVec, obj->num_vertices);
-        mli_malloc(obj->vertex_normals, struct mliVec, obj->num_vertex_normals);
-        mli_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
-        mli_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
-        mli_malloc(obj->faces_materials, uint16_t, obj->num_faces);
-        mli_malloc(obj->material_names, struct mliName, obj->num_materials);
+        mli_check_malloc(obj->vertices, struct mliVec, obj->num_vertices);
+        mli_check_malloc(obj->vertex_normals, struct mliVec, obj->num_vertex_normals);
+        mli_check_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
+        mli_check_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
+        mli_check_malloc(obj->faces_materials, uint16_t, obj->num_faces);
+        mli_check_malloc(obj->material_names, struct mliName, obj->num_materials);
         for (i = 0; i < obj->num_materials; i++) {
                 obj->material_names[i] = mliName_init();
         }

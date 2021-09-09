@@ -100,12 +100,12 @@ int mliLeafArray_malloc(
         uint64_t i;
         mliLeafArray_free(leafs);
         leafs->num_leafs = num_leafs;
-        mli_malloc(leafs->adresses, struct mliLeafAddress, leafs->num_leafs);
+        mli_check_malloc(leafs->adresses, struct mliLeafAddress, leafs->num_leafs);
         for (i = 0; i < leafs->num_leafs; i++) {
                 leafs->adresses[i] = mliLeafAddress_init();
         }
         leafs->num_object_links = num_object_links;
-        mli_malloc(leafs->object_links, uint32_t, leafs->num_object_links);
+        mli_check_malloc(leafs->object_links, uint32_t, leafs->num_object_links);
         for (i = 0; i < leafs->num_object_links; i++) {
                 leafs->object_links[i] = 0u;
         }
@@ -153,7 +153,7 @@ int mliOcTree_malloc(
         uint64_t i;
         mliOcTree_free(tree);
         tree->num_nodes = num_nodes;
-        mli_malloc(tree->nodes, struct mliNode, tree->num_nodes);
+        mli_check_malloc(tree->nodes, struct mliNode, tree->num_nodes);
         for (i = 0; i < tree->num_nodes; i++)
                 tree->nodes[i] = mliNode_init();
         mli_c(mliLeafArray_malloc(&tree->leafs, num_leafs, num_object_links));

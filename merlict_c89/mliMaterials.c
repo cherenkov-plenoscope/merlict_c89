@@ -76,36 +76,36 @@ int mliMaterials_malloc(
         res->num_media = rescap.num_media;
         res->num_boundary_layers = rescap.num_boundary_layers;
 
-        mli_malloc(res->functions, struct mliFunc, res->num_functions);
-        mli_malloc(res->function_names, struct mliName, res->num_functions);
+        mli_check_malloc(res->functions, struct mliFunc, res->num_functions);
+        mli_check_malloc(res->function_names, struct mliName, res->num_functions);
         for (i = 0; i < res->num_functions; i++) {
                 res->functions[i] = mliFunc_init();
                 res->function_names[i] = mliName_init();
         }
 
-        mli_malloc(res->colors, struct mliColor, res->num_colors);
-        mli_malloc(res->color_names, struct mliName, res->num_colors);
+        mli_check_malloc(res->colors, struct mliColor, res->num_colors);
+        mli_check_malloc(res->color_names, struct mliName, res->num_colors);
         for (i = 0; i < res->num_colors; i++) {
                 res->color_names[i] = mliName_init();
         }
 
-        mli_malloc(res->media, struct mliMedium, res->num_media);
-        mli_malloc(res->medium_names, struct mliName, res->num_media);
+        mli_check_malloc(res->media, struct mliMedium, res->num_media);
+        mli_check_malloc(res->medium_names, struct mliName, res->num_media);
         for (i = 0; i < res->num_media; i++) {
                 res->medium_names[i] = mliName_init();
         }
 
-        mli_malloc(res->surfaces, struct mliSurface, res->num_surfaces);
-        mli_malloc(res->surface_names, struct mliName, res->num_surfaces);
+        mli_check_malloc(res->surfaces, struct mliSurface, res->num_surfaces);
+        mli_check_malloc(res->surface_names, struct mliName, res->num_surfaces);
         for (i = 0; i < res->num_surfaces; i++) {
                 res->surface_names[i] = mliName_init();
         }
 
-        mli_malloc(
+        mli_check_malloc(
                 res->boundary_layers,
                 struct mliBoundaryLayer,
                 res->num_boundary_layers);
-        mli_malloc(
+        mli_check_malloc(
                 res->boundary_layer_names,
                 struct mliName,
                 res->num_boundary_layers);

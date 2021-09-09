@@ -37,7 +37,7 @@
                 goto error;                                                    \
         }
 
-#define mli_malloc(PTR, TYPE, NUM)                                             \
+#define mli_check_malloc(PTR, TYPE, NUM)                                       \
         {                                                                      \
                 PTR = (TYPE *)malloc(NUM * sizeof(TYPE));                      \
                 mli_check_mem(PTR);                                            \

@@ -37,7 +37,7 @@ int mliScenery_malloc_from_Archive(
         struct mliFrame root = mliFrame_init();
 
         mli_check(
-                mli_malloc_materials_form_archive(
+                mli_check_malloc_materials_form_archive(
                         &scenery->materials, &material_names, archive),
                 "Failed to malloc materials.");
 
@@ -56,7 +56,7 @@ int mliScenery_malloc_from_Archive(
                 "Failed to malloc geometry.objects.");
 
         mli_check(
-                mli_malloc_root_frame_from_Archive(
+                mli_check_malloc_root_frame_from_Archive(
                         &root,
                         archive,
                         &object_names,

@@ -49,7 +49,7 @@
                 LIB##Dyn##NAME##_free(dh);                                     \
                 dh->capacity = MLI_MAX2(2, size);                              \
                 dh->size = 0;                                                  \
-                mli_malloc(dh->array, PAYLOAD_TYPE, dh->capacity);             \
+                mli_check_malloc(dh->array, PAYLOAD_TYPE, dh->capacity);             \
                 return 1;                                                      \
         error:                                                                 \
                 return 0;                                                      \

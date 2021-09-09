@@ -76,7 +76,7 @@ error:
 struct mliFrame *mliFrame_add(struct mliFrame *mother, const uint64_t type)
 {
         struct mliFrame *child = NULL;
-        mli_malloc(child, struct mliFrame, 1u);
+        mli_check_malloc(child, struct mliFrame, 1u);
         mli_check(
                 mliFrame_malloc(child, type), "Can not allocate child-frame.");
         mli_check(
