@@ -23,7 +23,7 @@
                 __LINE__,                                                      \
                 chk_clean_errno())
 
-#define chk_msg(A, M)                                                \
+#define chk_msg(A, M)                                                          \
         if (!(A)) {                                                            \
                 chk_log_err(M);                                                \
                 errno = 0;                                                     \
@@ -37,24 +37,24 @@
                 goto error;                                                    \
         }
 
-#define chk_malloc(PTR, TYPE, NUM)                                       \
+#define chk_malloc(PTR, TYPE, NUM)                                             \
         {                                                                      \
                 PTR = (TYPE *)malloc(NUM * sizeof(TYPE));                      \
-                chk_memory(PTR);                                         \
+                chk_memory(PTR);                                               \
         }
 
-#define chk_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                            \
+#define chk_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                                  \
         {                                                                      \
                 const uint64_t num_written =                                   \
                         fwrite(PTR, SIZE_OF_TYPE, NUM, F);                     \
-                chk_msg(                                             \
+                chk_msg(                                                       \
                         num_written == NUM, "Can not write to file.");         \
         }
 
-#define chk_fread(PTR, SIZE_OF_TYPE, NUM, F)                             \
+#define chk_fread(PTR, SIZE_OF_TYPE, NUM, F)                                   \
         {                                                                      \
                 const uint64_t num_read = fread(PTR, SIZE_OF_TYPE, NUM, F);    \
-                chk_msg(num_read == NUM, "Can not read from file."); \
+                chk_msg(num_read == NUM, "Can not read from file.");           \
         }
 
 void chk_eprintf(const char *format, ...);
