@@ -62,34 +62,34 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
 
         /* magic identifier */
         mli_c(mliMagicId_set(&magic, "mliGeometry"));
-        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* payload */
-        mli_fwrite(&geometry->num_objects, sizeof(uint32_t), 1, f);
-        mli_fwrite(&geometry->num_robjects, sizeof(uint32_t), 1, f);
+        mli_check_fwrite(&geometry->num_objects, sizeof(uint32_t), 1, f);
+        mli_check_fwrite(&geometry->num_robjects, sizeof(uint32_t), 1, f);
 
         for (i = 0; i < geometry->num_objects; i++) {
                 mli_check(
                         mliObject_fwrite(&geometry->objects[i], f),
                         "Failed to write objects.");
         }
-        mli_fwrite(
+        mli_check_fwrite(
                 geometry->object_names,
                 sizeof(struct mliName),
                 geometry->num_objects,
                 f);
 
-        mli_fwrite(
+        mli_check_fwrite(
                 geometry->robjects,
                 sizeof(uint32_t),
                 geometry->num_robjects,
                 f);
-        mli_fwrite(
+        mli_check_fwrite(
                 geometry->robject_ids,
                 sizeof(uint32_t),
                 geometry->num_robjects,
                 f);
-        mli_fwrite(
+        mli_check_fwrite(
                 geometry->robject2root,
                 sizeof(struct mliHomTraComp),
                 geometry->num_robjects,

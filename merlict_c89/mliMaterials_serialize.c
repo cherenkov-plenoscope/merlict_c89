@@ -9,45 +9,45 @@ int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
 
         /* magic identifier */
         mli_c(mliMagicId_set(&magic, "mliMaterials"));
-        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
-        mli_fwrite(&res->num_functions, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&res->num_colors, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&res->num_media, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&res->num_surfaces, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&res->num_boundary_layers, sizeof(uint32_t), 1u, f);
+        mli_check_fwrite(&res->num_functions, sizeof(uint32_t), 1u, f);
+        mli_check_fwrite(&res->num_colors, sizeof(uint32_t), 1u, f);
+        mli_check_fwrite(&res->num_media, sizeof(uint32_t), 1u, f);
+        mli_check_fwrite(&res->num_surfaces, sizeof(uint32_t), 1u, f);
+        mli_check_fwrite(&res->num_boundary_layers, sizeof(uint32_t), 1u, f);
 
         for (i = 0; i < res->num_functions; i++) {
                 mliFunc_fwrite(&res->functions[i], f);
         }
-        mli_fwrite(
+        mli_check_fwrite(
                 res->function_names,
                 sizeof(struct mliName),
                 res->num_functions,
                 f);
 
-        mli_fwrite(res->colors, sizeof(struct mliColor), res->num_colors, f);
-        mli_fwrite(
+        mli_check_fwrite(res->colors, sizeof(struct mliColor), res->num_colors, f);
+        mli_check_fwrite(
                 res->color_names, sizeof(struct mliName), res->num_colors, f);
 
-        mli_fwrite(res->media, sizeof(struct mliMedium), res->num_media, f);
-        mli_fwrite(
+        mli_check_fwrite(res->media, sizeof(struct mliMedium), res->num_media, f);
+        mli_check_fwrite(
                 res->medium_names, sizeof(struct mliName), res->num_media, f);
 
-        mli_fwrite(
+        mli_check_fwrite(
                 res->surfaces, sizeof(struct mliSurface), res->num_surfaces, f);
-        mli_fwrite(
+        mli_check_fwrite(
                 res->surface_names,
                 sizeof(struct mliName),
                 res->num_surfaces,
                 f);
 
-        mli_fwrite(
+        mli_check_fwrite(
                 res->boundary_layers,
                 sizeof(struct mliBoundaryLayer),
                 res->num_boundary_layers,
                 f);
-        mli_fwrite(
+        mli_check_fwrite(
                 res->boundary_layer_names,
                 sizeof(struct mliName),
                 res->num_boundary_layers,

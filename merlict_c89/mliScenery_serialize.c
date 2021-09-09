@@ -8,7 +8,7 @@ int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
 {
         struct mliMagicId magic;
         mli_c(mliMagicId_set(&magic, "mliScenery"));
-        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         mli_c(mliGeometry_fwrite(&scenery->geometry, f));
         mli_c(mliAccelerator_fwrite(&scenery->accelerator, f));

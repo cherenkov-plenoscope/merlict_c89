@@ -7,38 +7,38 @@ int mliOcTree_fwrite(const struct mliOcTree *octree, FILE *f)
 
         /* magic identifier */
         mli_c(mliMagicId_set(&magic, "mliOcTree"));
-        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* capacity */
-        mli_fwrite(&octree->num_nodes, sizeof(uint64_t), 1u, f);
-        mli_fwrite(&octree->leafs.num_leafs, sizeof(uint64_t), 1u, f);
-        mli_fwrite(&octree->leafs.num_object_links, sizeof(uint64_t), 1u, f);
+        mli_check_fwrite(&octree->num_nodes, sizeof(uint64_t), 1u, f);
+        mli_check_fwrite(&octree->leafs.num_leafs, sizeof(uint64_t), 1u, f);
+        mli_check_fwrite(&octree->leafs.num_object_links, sizeof(uint64_t), 1u, f);
 
         /* nodes */
-        mli_fwrite(octree->nodes, sizeof(struct mliNode), octree->num_nodes, f);
+        mli_check_fwrite(octree->nodes, sizeof(struct mliNode), octree->num_nodes, f);
 
         /* leaf addresses */
-        mli_fwrite(
+        mli_check_fwrite(
                 octree->leafs.adresses,
                 sizeof(struct mliLeafAddress),
                 octree->leafs.num_leafs,
                 f);
 
         /* leaf links */
-        mli_fwrite(
+        mli_check_fwrite(
                 octree->leafs.object_links,
                 sizeof(uint32_t),
                 octree->leafs.num_object_links,
                 f);
 
         /* mliCube */
-        mli_fwrite(&octree->cube.lower.x, sizeof(double), 1u, f);
-        mli_fwrite(&octree->cube.lower.y, sizeof(double), 1u, f);
-        mli_fwrite(&octree->cube.lower.z, sizeof(double), 1u, f);
-        mli_fwrite(&octree->cube.edge_length, sizeof(double), 1u, f);
+        mli_check_fwrite(&octree->cube.lower.x, sizeof(double), 1u, f);
+        mli_check_fwrite(&octree->cube.lower.y, sizeof(double), 1u, f);
+        mli_check_fwrite(&octree->cube.lower.z, sizeof(double), 1u, f);
+        mli_check_fwrite(&octree->cube.edge_length, sizeof(double), 1u, f);
 
         /* root type */
-        mli_fwrite(&octree->root_type, sizeof(uint8_t), 1u, f);
+        mli_check_fwrite(&octree->root_type, sizeof(uint8_t), 1u, f);
 
         return 1;
 error:

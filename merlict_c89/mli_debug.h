@@ -43,7 +43,7 @@
                 mli_check_mem(PTR);                                            \
         }
 
-#define mli_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                                  \
+#define mli_check_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                                  \
         {                                                                      \
                 const uint64_t num_written =                                   \
                         fwrite(PTR, SIZE_OF_TYPE, NUM, F);                     \

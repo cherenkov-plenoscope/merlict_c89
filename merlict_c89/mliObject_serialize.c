@@ -7,30 +7,30 @@ int mliObject_fwrite(const struct mliObject *obj, FILE *f)
 {
         struct mliMagicId magic;
         mli_c(mliMagicId_set(&magic, "mliObject"));
-        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
-        mli_fwrite(&obj->num_vertices, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&obj->num_vertex_normals, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&obj->num_faces, sizeof(uint32_t), 1u, f);
-        mli_fwrite(&obj->num_materials, sizeof(uint32_t), 1u, f);
+        mli_check_fwrite(&obj->num_vertices, sizeof(uint32_t), 1u, f);
+        mli_check_fwrite(&obj->num_vertex_normals, sizeof(uint32_t), 1u, f);
+        mli_check_fwrite(&obj->num_faces, sizeof(uint32_t), 1u, f);
+        mli_check_fwrite(&obj->num_materials, sizeof(uint32_t), 1u, f);
 
-        mli_fwrite(obj->vertices, sizeof(struct mliVec), obj->num_vertices, f);
+        mli_check_fwrite(obj->vertices, sizeof(struct mliVec), obj->num_vertices, f);
 
-        mli_fwrite(
+        mli_check_fwrite(
                 obj->vertex_normals,
                 sizeof(struct mliVec),
                 obj->num_vertex_normals,
                 f);
 
-        mli_fwrite(
+        mli_check_fwrite(
                 obj->faces_vertices, sizeof(struct mliFace), obj->num_faces, f);
-        mli_fwrite(
+        mli_check_fwrite(
                 obj->faces_vertex_normals,
                 sizeof(struct mliFace),
                 obj->num_faces,
                 f);
-        mli_fwrite(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
-        mli_fwrite(
+        mli_check_fwrite(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
+        mli_check_fwrite(
                 obj->material_names,
                 sizeof(struct mliName),
                 obj->num_materials,

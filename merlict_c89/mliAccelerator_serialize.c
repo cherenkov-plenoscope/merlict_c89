@@ -9,16 +9,16 @@ int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f)
         /* magic identifier */
         struct mliMagicId magic = mliMagicId_init();
         mli_c(mliMagicId_set(&magic, "mliAccelerator"));
-        mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* capacity */
-        mli_fwrite(&accel->num_objects, sizeof(uint32_t), 1, f);
-        mli_fwrite(&accel->num_robjects, sizeof(uint32_t), 1, f);
+        mli_check_fwrite(&accel->num_objects, sizeof(uint32_t), 1, f);
+        mli_check_fwrite(&accel->num_robjects, sizeof(uint32_t), 1, f);
 
         for (i = 0; i < accel->num_objects; i++) {
                 mliOcTree_fwrite(&accel->object_octrees[i], f);
         }
-        mli_fwrite(
+        mli_check_fwrite(
                 accel->robject_obbs,
                 sizeof(struct mliOBB),
                 accel->num_robjects,
