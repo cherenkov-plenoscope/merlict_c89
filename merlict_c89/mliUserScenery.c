@@ -19,11 +19,11 @@ struct mliNameMap mliNameMap_init(void)
 int mliNameMap_malloc(struct mliNameMap *namemap)
 {
         mliNameMap_free(namemap);
-        mli_check_memory(mliDynMap_malloc(&namemap->functions, 0u));
-        mli_check_memory(mliDynMap_malloc(&namemap->colors, 0u));
-        mli_check_memory(mliDynMap_malloc(&namemap->media, 0u));
-        mli_check_memory(mliDynMap_malloc(&namemap->surfaces, 0u));
-        mli_check_memory(mliDynMap_malloc(&namemap->boundary_layers, 0u));
+        chk_memory(mliDynMap_malloc(&namemap->functions, 0u));
+        chk_memory(mliDynMap_malloc(&namemap->colors, 0u));
+        chk_memory(mliDynMap_malloc(&namemap->media, 0u));
+        chk_memory(mliDynMap_malloc(&namemap->surfaces, 0u));
+        chk_memory(mliDynMap_malloc(&namemap->boundary_layers, 0u));
         return 1;
 error:
         return 0;
@@ -54,17 +54,17 @@ int mli_set_geometry_objects_and_names_from_archive(
                             archive->filenames.array[arc_idx].key,
                             "objects/",
                             ".obj")) {
-                        mli_check_message(
+                        chk_msg(
                                 obj_idx < geometry->num_objects,
                                 "Expected less objects in archive.");
 
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(
                                 archive->filenames.array[arc_idx].key, key);
-                        mli_check_message(
+                        chk_msg(
                                 mliDynMap_insert(object_names, key, obj_idx),
                                 "Failed to insert object-filename into map.");
-                        mli_check_message(
+                        chk_msg(
                                 mliObject_malloc_from_wavefront(
                                         &geometry->objects[obj_idx],
                                         archive->textfiles.array[arc_idx]
@@ -102,9 +102,9 @@ int mli_check_malloc_materials_form_archive(
         mliNameMap_free(names);
 
         /* estimate capacity and malloc */
-        mli_check(mliNameMap_malloc(names));
+        chk(mliNameMap_malloc(names));
 
-        mli_check_message(
+        chk_msg(
                 mliArchive_get_malloc_json(
                         archive, "materials.json", &materials_json),
                 "Failed to parse 'materials.json'.");
@@ -112,12 +112,12 @@ int mli_check_malloc_materials_form_archive(
         cap.num_functions = mliArchive_num_filename_prefix_sufix(
                 archive, "functions/", ".csv");
 
-        mli_check_message(
+        chk_msg(
                 __mliMaterialsCapacity_from_materials_json(
                         &cap, &materials_json),
                 "Can not estimate capacity from materials-json.");
 
-        mli_check_message(
+        chk_msg(
                 mliMaterials_malloc(materials, cap),
                 "Can not malloc materials.");
 
@@ -131,7 +131,7 @@ int mli_check_malloc_materials_form_archive(
                             archive->filenames.array[arc_idx].key,
                             "functions/",
                             ".csv")) {
-                        mli_check_message(
+                        chk_msg(
                                 mliFunc_malloc_from_csv(
                                         &materials->functions[fnc_idx],
                                         archive->textfiles.array[arc_idx]
@@ -143,7 +143,7 @@ int mli_check_malloc_materials_form_archive(
                         __mli_strip_key(
                                 archive->filenames.array[arc_idx].key, key);
 
-                        mli_check_message(
+                        chk_msg(
                                 mliDynMap_insert(
                                         &names->functions, key, fnc_idx),
                                 "Failed to insert function-name into map.");
@@ -158,7 +158,7 @@ int mli_check_malloc_materials_form_archive(
 
         /* colors */
 
-        mli_check_message(
+        chk_msg(
                 __mliMaterials_assign_colors_from_json(
                         materials, &names->colors, &materials_json),
                 "Failed to copy colors from materials.json.");
@@ -170,7 +170,7 @@ int mli_check_malloc_materials_form_archive(
 
         /* media */
 
-        mli_check_message(
+        chk_msg(
                 __mliMaterials_assign_media_from_json(
                         materials,
                         &names->media,
@@ -185,7 +185,7 @@ int mli_check_malloc_materials_form_archive(
 
         /* surfaces */
 
-        mli_check_message(
+        chk_msg(
                 __mliMaterials_assign_surfaces_from_json(
                         materials,
                         &names->surfaces,
@@ -201,7 +201,7 @@ int mli_check_malloc_materials_form_archive(
 
         /* boundary_layers */
 
-        mli_check_message(
+        chk_msg(
                 __mliMaterials_assign_boundary_layers_from_json(
                         materials,
                         &names->boundary_layers,
@@ -217,10 +217,10 @@ int mli_check_malloc_materials_form_archive(
 
         /* default medium */
 
-        mli_check_message(
+        chk_msg(
                 mliJson_find_key(&materials_json, 0, "default_medium", &token),
                 "Expected materials.json to have key 'default_medium'.");
-        mli_check_message(
+        chk_msg(
                 _mliDynMap_get_value_for_string_from_json(
                         &names->media,
                         &materials_json,
@@ -247,15 +247,15 @@ int mli_check_malloc_root_frame_from_Archive(
 {
         uint64_t token = 0u;
         struct mliJson tree_json = mliJson_init();
-        mli_check_message(
+        chk_msg(
                 mliArchive_get_malloc_json(archive, "tree.json", &tree_json),
                 "Failed to parse 'tree.json'.");
-        mli_check_message(
+        chk_msg(
                 mliJson_find_key(&tree_json, 0, "children", &token),
                 "Expected 'tree.json' to have key 'children'.");
-        mli_check_message(
+        chk_msg(
                 mliFrame_malloc(root, MLI_FRAME), "Can not malloc root-frame.");
-        mli_check_message(
+        chk_msg(
                 __mliFrame_from_json(
                         root,
                         &tree_json,

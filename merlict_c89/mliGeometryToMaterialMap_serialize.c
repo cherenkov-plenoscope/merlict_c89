@@ -11,23 +11,23 @@ int mliGeometryToMaterialMap_malloc_fread(
         struct mliMagicId magic;
 
         /* magic identifier */
-        mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
-        mli_check(mliMagicId_has_word(&magic, "mliGeometryToMaterialMap"));
+        chk_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk(mliMagicId_has_word(&magic, "mliGeometryToMaterialMap"));
         mliMagicId_warn_version(&magic);
 
         /* payload */
-        mli_check_fread(&num_robjects, sizeof(uint32_t), 1u, f);
-        mli_check_fread(&total_num_boundary_layers, sizeof(uint32_t), 1u, f);
-        mli_check_message(
+        chk_fread(&num_robjects, sizeof(uint32_t), 1u, f);
+        chk_fread(&total_num_boundary_layers, sizeof(uint32_t), 1u, f);
+        chk_msg(
                 mliGeometryToMaterialMap_malloc(
                         geomap, num_robjects, total_num_boundary_layers),
                 "Failed to malloc mliGeometryToMaterialMap.");
-        mli_check_fread(
+        chk_fread(
                 geomap->boundary_layers,
                 sizeof(uint32_t),
                 geomap->total_num_boundary_layers,
                 f);
-        mli_check_fread(
+        chk_fread(
                 geomap->first_boundary_layer_in_robject,
                 sizeof(uint32_t),
                 geomap->num_robjects,
@@ -44,18 +44,18 @@ int mliGeometryToMaterialMap_fwrite(
         struct mliMagicId magic;
 
         /* magic identifier */
-        mli_check(mliMagicId_set(&magic, "mliGeometryToMaterialMap"));
-        mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk(mliMagicId_set(&magic, "mliGeometryToMaterialMap"));
+        chk_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* payload */
-        mli_check_fwrite(&geomap->num_robjects, sizeof(uint32_t), 1, f);
-        mli_check_fwrite(&geomap->total_num_boundary_layers, sizeof(uint32_t), 1, f);
-        mli_check_fwrite(
+        chk_fwrite(&geomap->num_robjects, sizeof(uint32_t), 1, f);
+        chk_fwrite(&geomap->total_num_boundary_layers, sizeof(uint32_t), 1, f);
+        chk_fwrite(
                 geomap->boundary_layers,
                 sizeof(uint32_t),
                 geomap->total_num_boundary_layers,
                 f);
-        mli_check_fwrite(
+        chk_fwrite(
                 geomap->first_boundary_layer_in_robject,
                 sizeof(uint32_t),
                 geomap->num_robjects,

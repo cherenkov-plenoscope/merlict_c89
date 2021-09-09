@@ -8,19 +8,19 @@ int mliGeometryToMaterialMap_equal(
         const struct mliGeometryToMaterialMap *b)
 {
         uint32_t i = 0u;
-        mli_check_message(
+        chk_msg(
                 a->num_robjects == b->num_robjects,
                 "Expected num_robjects to be equal.");
-        mli_check_message(
+        chk_msg(
                 a->total_num_boundary_layers == b->total_num_boundary_layers,
                 "Expected total_num_boundary_layers to be equal.");
         for (i = 0u; i < a->total_num_boundary_layers; i++) {
-                mli_check_message(
+                chk_msg(
                         a->boundary_layers[i] == b->boundary_layers[i],
                         "Expected all boundary_layers to be equal.");
         }
         for (i = 0u; i < a->num_robjects; i++) {
-                mli_check_message(
+                chk_msg(
                         a->first_boundary_layer_in_robject[i] ==
                                 b->first_boundary_layer_in_robject[i],
                         "Expected all first_boundary_layer_in_robject "

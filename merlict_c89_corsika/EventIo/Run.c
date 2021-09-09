@@ -15,9 +15,9 @@ struct mliEventIoRun mliEventIoRun_init(void)
 int _read_273_block(FILE *f, float *block)
 {
         int32_t block_size;
-        mli_check_fread(&block_size, sizeof(int32_t), 1, f);
-        mli_check_message(block_size == 273, "Expected block-size to be 273.");
-        mli_check_fread(block, sizeof(float), (uint64_t)block_size, f);
+        chk_fread(&block_size, sizeof(int32_t), 1, f);
+        chk_msg(block_size == 273, "Expected block-size to be 273.");
+        chk_fread(block, sizeof(float), (uint64_t)block_size, f);
         return 1;
 error:
         return 0;
@@ -40,16 +40,16 @@ int _read_input_card(
         char _unknown[8];
         uint64_t input_card_length;
 
-        mli_check_message(
+        chk_msg(
                 mliDynStr_malloc(input_card, length + 1),
                 "Failed to malloc c_str for input-card.");
 
-        mli_check_fread(_unknown, sizeof(_unknown), 1, f);
-        mli_check_message(
+        chk_fread(_unknown, sizeof(_unknown), 1, f);
+        chk_msg(
                 length >= sizeof(_unknown),
                 "Expected at least 8bytes payload.");
         input_card_length = length - sizeof(_unknown);
-        mli_check_fread(input_card->c_str, sizeof(char), input_card_length, f);
+        chk_fread(input_card->c_str, sizeof(char), input_card_length, f);
         return 1;
 error:
         return 0;
@@ -63,15 +63,15 @@ int _read_telescope_positions(
         int32_t ntel;
         int num_following_arrays;
 
-        mli_check_fread(&ntel, sizeof(int32_t), 1, f);
+        chk_fread(&ntel, sizeof(int32_t), 1, f);
 
         num_following_arrays = (int)((length - 4) / ntel / 4);
 
-        mli_check_message(num_following_arrays == 4, "Expected exactly four arrays.")
+        chk_msg(num_following_arrays == 4, "Expected exactly four arrays.")
 
-                mli_check(mliDynEventIoTelescopePosition_malloc_set_size(
+                chk(mliDynEventIoTelescopePosition_malloc_set_size(
                         telescope_positions, ntel));
-        mli_check_fread(
+        chk_fread(
                 telescope_positions->array,
                 sizeof(struct mliEventIoTelescopePosition),
                 (uint64_t)ntel,
@@ -83,7 +83,7 @@ error:
 
 int _mliEventIoRun_next_block(struct mliEventIoRun *run, const int level)
 {
-        mli_check_message(
+        chk_msg(
                 mliEventIoHeader_read(&run->_next_block, run->_f, level),
                 "Failed to read EventIo-block-header.");
         return 1;
@@ -94,21 +94,21 @@ error:
 int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
 {
         run->_f = fopen(path, "rb");
-        mli_check_message(run->_f, "Can not open EventIo-file.");
+        chk_msg(run->_f, "Can not open EventIo-file.");
 
         /* corsika_run_header */
         /* ------------------ */
-        mli_check(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
-        mli_check_message(run->_next_block.type == 1200, "Expected type 1200.");
-        mli_check_message(
+        chk(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        chk_msg(run->_next_block.type == 1200, "Expected type 1200.");
+        chk_msg(
                 _read_273_block(run->_f, run->corsika_run_header),
                 "Failed to read corsika_run_header 273 float block.");
 
         /* corsika_input_card */
         /* ------------------ */
-        mli_check(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
-        mli_check_message(run->_next_block.type == 1212, "Expected type 1212.");
-        mli_check_message(
+        chk(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        chk_msg(run->_next_block.type == 1212, "Expected type 1212.");
+        chk_msg(
                 _read_input_card(
                         run->_f,
                         &run->corsika_input_card,
@@ -117,9 +117,9 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
 
         /* telescope_positions */
         /* ------------------- */
-        mli_check(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
-        mli_check_message(run->_next_block.type == 1201, "Expected type 1201.");
-        mli_check_message(
+        chk(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        chk_msg(run->_next_block.type == 1201, "Expected type 1201.");
+        chk_msg(
                 _read_telescope_positions(
                         run->_f,
                         &run->telescope_positions,
@@ -128,7 +128,7 @@ int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
 
         /* next */
         /* ---- */
-        mli_check(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        chk(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
 
         return 1;
 error:

@@ -12,7 +12,7 @@ int __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.size; c++) {
-                        mli_check(__mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+                        chk(__mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
                                 frame->children.array[c],
                                 num_robjects,
                                 total_num_boundary_layers));
@@ -23,7 +23,7 @@ int __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
                 (*total_num_boundary_layers) += frame->boundary_layers.size;
                 break;
         default:
-                mli_sentinel("Expected either type 'frame' or 'object'.");
+                chk_sentinel("Expected either type 'frame' or 'object'.");
                 break;
         }
         return 1;
@@ -38,7 +38,7 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
 {
         (*num_robjects) = 0u;
         (*total_num_boundary_layers) = 0u;
-        mli_check_message(
+        chk_msg(
                 __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
                         frame, num_robjects, total_num_boundary_layers),
                 "Failed to walk tree of frames to estimate "
@@ -61,7 +61,7 @@ int __mliFrame_set_robjects_and_material_map(
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.size; c++) {
-                        mli_check(__mliFrame_set_robjects_and_material_map(
+                        chk(__mliFrame_set_robjects_and_material_map(
                                 frame->children.array[c],
                                 geometry,
                                 geomap,
@@ -72,7 +72,7 @@ int __mliFrame_set_robjects_and_material_map(
         case MLI_OBJECT:
                 robject_idx = (*num_robjects);
 
-                mli_check_message(
+                chk_msg(
                         frame->object < geometry->num_objects,
                         "Expected frame->object < num_objects.");
                 /* geometry */
@@ -81,7 +81,7 @@ int __mliFrame_set_robjects_and_material_map(
                 geometry->robject_ids[robject_idx] = frame->id;
 
                 /* materials map */
-                mli_check_message(
+                chk_msg(
                         frame->boundary_layers.size ==
                                 geometry->objects[frame->object].num_materials,
                         "Expected Frame to have same "
@@ -103,7 +103,7 @@ int __mliFrame_set_robjects_and_material_map(
                 (*num_robjects) += 1;
                 break;
         default:
-                mli_sentinel("Expected either type 'frame' or 'object'.");
+                chk_sentinel("Expected either type 'frame' or 'object'.");
                 break;
         }
         return 1;
@@ -118,7 +118,7 @@ int mliFrame_set_robjects_and_material_map(
 {
         uint64_t num_robjects = 0u;
         uint64_t total_num_boundary_layers = 0u;
-        mli_check_message(
+        chk_msg(
                 __mliFrame_set_robjects_and_material_map(
                         frame,
                         geometry,

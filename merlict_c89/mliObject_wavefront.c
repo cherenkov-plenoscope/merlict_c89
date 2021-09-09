@@ -37,7 +37,7 @@ int mliBuff_to_uint(
         uint32_t *out)
 {
         int64_t tmp = -1;
-        mli_check_message(
+        chk_msg(
                 buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
                 "Integer-buff is full.");
         if (state == toggle_State) {
@@ -49,10 +49,10 @@ int mliBuff_to_uint(
                         buff->buff[buff->b] = '\0';
                 }
                 buff->b = 0;
-                mli_check_message(
+                chk_msg(
                         mli_string_to_int(&tmp, buff->buff, 10),
                         "Can not parse face index");
-                mli_check_message(tmp > 0, "Expected object's index > 0.");
+                chk_msg(tmp > 0, "Expected object's index > 0.");
                 *out = tmp;
         }
 
@@ -69,7 +69,7 @@ int mliBuff_to_double(
         const int old_state,
         double *out)
 {
-        mli_check_message(
+        chk_msg(
                 buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
                 "Integer-buff is full.");
         if (state == toggle_State) {
@@ -81,7 +81,7 @@ int mliBuff_to_double(
                         buff->buff[buff->b] = '\0';
                 }
                 buff->b = 0;
-                mli_check_message(
+                chk_msg(
                         mli_string_to_float(out, buff->buff),
                         "Can not parse face index");
         }
@@ -247,14 +247,14 @@ int _mliObject_parse_face_line(
         struct _mliBuff buff = _mliBuff_init();
 
         while (state != final_state) {
-                mli_check_message(i <= MAX_NUM_CHARS, "Expected less chars in line.");
+                chk_msg(i <= MAX_NUM_CHARS, "Expected less chars in line.");
                 c = line[i];
 
                 /* printf("i: %d, c:%c state: %d \n", i, c, state); */
 
                 if (state == error_state) {
                         *line_mode = -1;
-                        mli_sentinel("Can not parse line.");
+                        chk_sentinel("Can not parse line.");
                 }
 
                 /* next state */
@@ -286,36 +286,36 @@ int _mliObject_parse_face_line(
                 }
                 /* mode MLI_WAVEFRONT_FACE_LINE_V */
 
-                mli_check(mliBuff_to_uint(c, &buff, 3, state, old_state, &v->a));
-                mli_check(mliBuff_to_uint(c, &buff, 5, state, old_state, &v->b));
-                mli_check(mliBuff_to_uint(c, &buff, 7, state, old_state, &v->c));
+                chk(mliBuff_to_uint(c, &buff, 3, state, old_state, &v->a));
+                chk(mliBuff_to_uint(c, &buff, 5, state, old_state, &v->b));
+                chk(mliBuff_to_uint(c, &buff, 7, state, old_state, &v->c));
 
                 /* mode MLI_WAVEFRONT_FACE_LINE_V_VN */
 
-                /*mli_check(mliBuff_to_uint(c, &buff, 3, state, old_state,
+                /*chk(mliBuff_to_uint(c, &buff, 3, state, old_state,
                  * &v->a));*/
-                mli_check(mliBuff_to_uint(c, &buff, 27, state, old_state, &vn->a));
+                chk(mliBuff_to_uint(c, &buff, 27, state, old_state, &vn->a));
 
-                mli_check(mliBuff_to_uint(c, &buff, 29, state, old_state, &v->b));
-                mli_check(mliBuff_to_uint(c, &buff, 32, state, old_state, &vn->b));
+                chk(mliBuff_to_uint(c, &buff, 29, state, old_state, &v->b));
+                chk(mliBuff_to_uint(c, &buff, 32, state, old_state, &vn->b));
 
-                mli_check(mliBuff_to_uint(c, &buff, 34, state, old_state, &v->c));
-                mli_check(mliBuff_to_uint(c, &buff, 37, state, old_state, &vn->c));
+                chk(mliBuff_to_uint(c, &buff, 34, state, old_state, &v->c));
+                chk(mliBuff_to_uint(c, &buff, 37, state, old_state, &vn->c));
 
                 /* mode MLI_WAVEFRONT_FACE_LINE_V_VT_VN */
 
-                /*mli_check(mliBuff_to_uint(c, &buff, 3, state, old_state,
+                /*chk(mliBuff_to_uint(c, &buff, 3, state, old_state,
                  * &v->a));*/
-                mli_check(mliBuff_to_uint(c, &buff, 11, state, old_state, &vt->a));
-                mli_check(mliBuff_to_uint(c, &buff, 13, state, old_state, &vn->a));
+                chk(mliBuff_to_uint(c, &buff, 11, state, old_state, &vt->a));
+                chk(mliBuff_to_uint(c, &buff, 13, state, old_state, &vn->a));
 
-                mli_check(mliBuff_to_uint(c, &buff, 15, state, old_state, &v->b));
-                mli_check(mliBuff_to_uint(c, &buff, 17, state, old_state, &vt->b));
-                mli_check(mliBuff_to_uint(c, &buff, 19, state, old_state, &vn->b));
+                chk(mliBuff_to_uint(c, &buff, 15, state, old_state, &v->b));
+                chk(mliBuff_to_uint(c, &buff, 17, state, old_state, &vt->b));
+                chk(mliBuff_to_uint(c, &buff, 19, state, old_state, &vn->b));
 
-                mli_check(mliBuff_to_uint(c, &buff, 21, state, old_state, &v->c));
-                mli_check(mliBuff_to_uint(c, &buff, 23, state, old_state, &vt->c));
-                mli_check(mliBuff_to_uint(c, &buff, 25, state, old_state, &vn->c));
+                chk(mliBuff_to_uint(c, &buff, 21, state, old_state, &v->c));
+                chk(mliBuff_to_uint(c, &buff, 23, state, old_state, &vt->c));
+                chk(mliBuff_to_uint(c, &buff, 25, state, old_state, &vn->c));
 
                 old_state = state;
                 i++;
@@ -384,7 +384,7 @@ int _mliObject_parse_three_float_line(const char *line, struct mliVec *v)
         struct _mliBuff buff = _mliBuff_init();
 
         while (state != final_state) {
-                mli_check_message(i <= MAX_NUM_CHARS, "Expected less chars in line.");
+                chk_msg(i <= MAX_NUM_CHARS, "Expected less chars in line.");
                 c = line[i];
 
                 if (state == error_state) {
@@ -392,7 +392,7 @@ int _mliObject_parse_three_float_line(const char *line, struct mliVec *v)
                                 "[ERROR] Can not parse line '%s'\n",
                                 line);
                 }
-                mli_check_message(
+                chk_msg(
                         state != error_state,
                         "Can not parse three float line.");
 
@@ -408,9 +408,9 @@ int _mliObject_parse_three_float_line(const char *line, struct mliVec *v)
                         state = error_state;
                 }
 
-                mli_check(mliBuff_to_double(c, &buff, 2, state, old_state, &v->x));
-                mli_check(mliBuff_to_double(c, &buff, 4, state, old_state, &v->y));
-                mli_check(mliBuff_to_double(c, &buff, 6, state, old_state, &v->z));
+                chk(mliBuff_to_double(c, &buff, 2, state, old_state, &v->x));
+                chk(mliBuff_to_double(c, &buff, 4, state, old_state, &v->y));
+                chk(mliBuff_to_double(c, &buff, 6, state, old_state, &v->z));
 
                 old_state = state;
                 i++;
@@ -450,19 +450,19 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         memset(line, '\0', sizeof(line));
 
         /* malloc dyn */
-        mli_check(mliDynVec_malloc(&v, 0u));
-        mli_check(mliDynVec_malloc(&vn, 0u));
+        chk(mliDynVec_malloc(&v, 0u));
+        chk(mliDynVec_malloc(&vn, 0u));
 
-        mli_check(mliDynFace_malloc(&fv, 0u));
-        mli_check(mliDynFace_malloc(&fvn, 0u));
-        mli_check(mliDynUint32_malloc(&fm, 0u));
+        chk(mliDynFace_malloc(&fv, 0u));
+        chk(mliDynFace_malloc(&fvn, 0u));
+        chk(mliDynUint32_malloc(&fm, 0u));
 
-        mli_check(mliDynMap_malloc(&material_names, 0u));
+        chk(mliDynMap_malloc(&material_names, 0u));
 
         /* parse wavefront into dyn */
         while (1) {
                 line_number += 1;
-                mli_check_message(
+                chk_msg(
                         line_number < 1000 * 1000 * 1000,
                         "Expected less than 1e9 lines in wavefront-file. "
                         "Something went wrong.");
@@ -470,26 +470,26 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                 line_length =
                         mli_string_split(&str[p], '\n', line, sizeof(line));
 
-                mli_check_message(line_length < sizeof(line), "Line is too long.");
+                chk_msg(line_length < sizeof(line), "Line is too long.");
 
                 if (line_length > 0) {
                         if (line[0] == 'v' && line[1] == 'n' &&
                             line[2] == ' ') {
                                 /* vertex-normal-line*/
                                 struct mliVec tmp_vn;
-                                mli_check_message(
+                                chk_msg(
                                         _mliObject_parse_three_float_line(
                                                 &line[2], &tmp_vn),
                                         "Can not parse vertex-normal-line.");
-                                mli_check(mliDynVec_push_back(&vn, tmp_vn));
+                                chk(mliDynVec_push_back(&vn, tmp_vn));
                         } else if (line[0] == 'v' && line[1] == ' ') {
                                 /* vertex line */
                                 struct mliVec tmp_v;
-                                mli_check_message(
+                                chk_msg(
                                         _mliObject_parse_three_float_line(
                                                 &line[1], &tmp_v),
                                         "Can not parse vertex-line.");
-                                mli_check(mliDynVec_push_back(&v, tmp_v));
+                                chk(mliDynVec_push_back(&v, tmp_v));
                         } else if (line[0] == 'f' && line[1] == ' ') {
                                 /* face-line */
                                 int line_mode = -1;
@@ -497,12 +497,12 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 struct mliFace tmp_fvt;
                                 struct mliFace tmp_fvn;
 
-                                mli_check_message(
+                                chk_msg(
                                         material_names.size > 0,
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
 
-                                mli_check_message(
+                                chk_msg(
                                         _mliObject_parse_face_line(
                                                 line,
                                                 &tmp_fv,
@@ -511,27 +511,27 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                                 &line_mode),
                                         "Can not parse face-line.");
 
-                                mli_check_message(tmp_fv.a >= 1, "Expected fv.a >= 1");
-                                mli_check_message(tmp_fv.b >= 1, "Expected fv.b >= 1");
-                                mli_check_message(tmp_fv.c >= 1, "Expected fv.c >= 1");
+                                chk_msg(tmp_fv.a >= 1, "Expected fv.a >= 1");
+                                chk_msg(tmp_fv.b >= 1, "Expected fv.b >= 1");
+                                chk_msg(tmp_fv.c >= 1, "Expected fv.c >= 1");
                                 tmp_fv.a -= 1;
                                 tmp_fv.b -= 1;
                                 tmp_fv.c -= 1;
 
-                                mli_check_message(
+                                chk_msg(
                                         tmp_fvn.a >= 1, "Expected fvn.a >= 1");
-                                mli_check_message(
+                                chk_msg(
                                         tmp_fvn.b >= 1, "Expected fvn.b >= 1");
-                                mli_check_message(
+                                chk_msg(
                                         tmp_fvn.c >= 1, "Expected fvn.c >= 1");
                                 tmp_fvn.a -= 1;
                                 tmp_fvn.b -= 1;
                                 tmp_fvn.c -= 1;
 
-                                mli_check(mliDynFace_push_back(&fv, tmp_fv));
-                                mli_check(mliDynFace_push_back(&fvn, tmp_fvn));
-                                mli_check(mliDynUint32_push_back(&fm, mtl));
-                                mli_check_message(
+                                chk(mliDynFace_push_back(&fv, tmp_fv));
+                                chk(mliDynFace_push_back(&fvn, tmp_fvn));
+                                chk(mliDynUint32_push_back(&fm, mtl));
+                                chk_msg(
                                         (line_mode ==
                                          MLI_WAVEFRONT_FACE_LINE_V_VT_VN) ||
                                                 (line_mode ==
@@ -541,10 +541,10 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                         } else if (_mli_line_is_usemtl(line, line_length)) {
                                 const char *mtl_key = &line[7];
                                 if (!mliDynMap_has(&material_names, mtl_key)) {
-                                        mli_check(mliDynMap_insert(
+                                        chk(mliDynMap_insert(
                                                 &material_names, mtl_key, 0));
                                 }
-                                mli_check(mliDynMap_find(
+                                chk(mliDynMap_find(
                                         &material_names, mtl_key, &mtl));
                         }
                 } /* line_length > 0 */
@@ -556,10 +556,10 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         }
 
         /* copy dyn into static mliObject */
-        mli_check_message(
+        chk_msg(
                 fv.size == fvn.size,
                 "Expected num. vertex-indices == num. vertex-normal-indices.");
-        mli_check_message(
+        chk_msg(
                 mliObject_malloc(
                         obj, v.size, vn.size, fv.size, material_names.size),
                 "Failed to malloc mliObject from file.");
@@ -585,7 +585,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                        MLI_NAME_CAPACITY);
         }
 
-        mli_check_message(mliObject_is_valid(obj), "Expected object to be valid.");
+        chk_msg(mliObject_is_valid(obj), "Expected object to be valid.");
 
         /* free dyn */
         mliDynVec_free(&v);
@@ -622,9 +622,9 @@ error:
 int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
 {
         uint32_t i, mtl, face;
-        mli_check(fprintf(f, "# vertices\n"));
+        chk(fprintf(f, "# vertices\n"));
         for (i = 0; i < obj->num_vertices; i++) {
-                mli_check(
+                chk(
                         fprintf(f,
                                 "v %.6f %.6f %.6f\n",
                                 obj->vertices[i].x,
@@ -632,9 +632,9 @@ int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
                                 obj->vertices[i].z));
         }
 
-        mli_check(fprintf(f, "# vertex normals\n"));
+        chk(fprintf(f, "# vertex normals\n"));
         for (i = 0; i < obj->num_vertex_normals; i++) {
-                mli_check(
+                chk(
                         fprintf(f,
                                 "vn %.6f %.6f %.6f\n",
                                 obj->vertex_normals[i].x,
@@ -642,17 +642,17 @@ int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
                                 obj->vertex_normals[i].z));
         }
 
-        mli_check(fprintf(f, "# faces\n"));
+        chk(fprintf(f, "# faces\n"));
         for (face = 0; face < obj->num_faces; face++) {
                 if ((face == 0) || (mtl != obj->faces_materials[face])) {
                         mtl = obj->faces_materials[face];
-                        mli_check(
+                        chk(
                                 fprintf(f,
                                         "usemtl %s\n",
                                         obj->material_names[mtl].c_str));
                 }
 
-                mli_check(
+                chk(
                         fprintf(f,
                                 "f %d//%d %d//%d %d//%d\n",
                                 obj->faces_vertices[face].a + 1,

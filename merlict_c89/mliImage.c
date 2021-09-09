@@ -24,7 +24,7 @@ int mliImage_malloc(
         mliImage_free(img);
         img->num_cols = num_cols;
         img->num_rows = num_rows;
-        mli_check_malloc(img->raw, struct mliColor, img->num_cols * img->num_rows);
+        chk_malloc(img->raw, struct mliColor, img->num_cols * img->num_rows);
         return 1;
 error:
         mliImage_free(img);
@@ -75,10 +75,10 @@ int mliImage_scale_down_twice(
         struct mliImage *destination)
 {
         uint64_t row, col, sr, sc;
-        mli_check_message(
+        chk_msg(
                 destination->num_cols * 2u == source->num_cols,
                 "Expected destination.num_cols*2u == source.num_cols");
-        mli_check_message(
+        chk_msg(
                 destination->num_rows * 2u == source->num_rows,
                 "Expected destination.num_rows*2u == source.num_rows");
         for (row = 0; row < destination->num_rows; row++) {

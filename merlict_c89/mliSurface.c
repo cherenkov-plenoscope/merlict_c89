@@ -25,7 +25,7 @@ int mli_material_type_to_string(const uint32_t type, char *s)
                 sprintf(s, "transparent");
                 break;
         default:
-                mli_sentinel("material-type-id is unknown.");
+                chk_sentinel("material-type-id is unknown.");
         }
         return 1;
 error:
@@ -41,7 +41,7 @@ int mli_material_type_from_string(const char *s, uint32_t *id)
                 (*id) = MLI_MATERIAL_TRANSPARENT;
                 return 1;
         } else {
-                mli_sentinel("material-type-string is unknown.");
+                chk_sentinel("material-type-string is unknown.");
         }
         return 1;
 error:

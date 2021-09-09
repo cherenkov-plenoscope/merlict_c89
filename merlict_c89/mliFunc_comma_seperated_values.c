@@ -24,12 +24,12 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
 
         struct mliDynDouble xs = mliDynDouble_init();
         struct mliDynDouble ys = mliDynDouble_init();
-        mli_check_message(mliDynDouble_malloc(&xs, 0u), "Failed to malloc xs.");
-        mli_check_message(mliDynDouble_malloc(&ys, 0u), "Failed to malloc ys.");
+        chk_msg(mliDynDouble_malloc(&xs, 0u), "Failed to malloc xs.");
+        chk_msg(mliDynDouble_malloc(&ys, 0u), "Failed to malloc ys.");
 
         while (1) {
                 line_number += 1;
-                mli_check_message(
+                chk_msg(
                         line_number < 1000 * 1000 * 1000,
                         "Expected less than 1e9 lines in "
                         "comma-seperated-value-file. "
@@ -40,7 +40,7 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
                         line_delimiter,
                         line,
                         MLI_CSV_BUFF_CAPACITY);
-                mli_check_message(
+                chk_msg(
                         line_length < MLI_CSV_BUFF_CAPACITY, "Line too long.");
 
                 if (line_length == 0) {
@@ -61,7 +61,7 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
                                 token_delimiter,
                                 token,
                                 MLI_CSV_BUFF_CAPACITY);
-                        mli_check_message(
+                        chk_msg(
                                 token_length < MLI_CSV_BUFF_CAPACITY,
                                 "Token too long.");
                         if (token_length == 0) {
@@ -70,33 +70,33 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
                         lpos = lpos + token_length + 1;
                         num_tokens++;
 
-                        mli_check_message(
+                        chk_msg(
                                 num_tokens <= 2,
                                 "Expected only two tokens per line.");
                         if (num_tokens == 1) {
-                                mli_check_message(
+                                chk_msg(
                                         mli_string_to_float(&_x, token),
                                         "Failed to parse x-value.");
                         } else if (num_tokens == 2) {
-                                mli_check_message(
+                                chk_msg(
                                         mli_string_to_float(&_y, token),
                                         "Failed to parse y-value.");
                                 break;
                         }
                 }
-                mli_check_message(num_tokens == 2, "Expected two tokens per line.");
+                chk_msg(num_tokens == 2, "Expected two tokens per line.");
 
-                mli_check_message(mliDynDouble_push_back(&xs, _x), "Failed to grow x.");
-                mli_check_message(mliDynDouble_push_back(&ys, _y), "Failed to grow y.");
+                chk_msg(mliDynDouble_push_back(&xs, _x), "Failed to grow x.");
+                chk_msg(mliDynDouble_push_back(&ys, _y), "Failed to grow y.");
         }
 
-        mli_check_message(mliFunc_malloc(func, xs.size), "Failed to malloc func.");
+        chk_msg(mliFunc_malloc(func, xs.size), "Failed to malloc func.");
         for (i = 0; i < xs.size; i++) {
                 func->x[i] = xs.array[i];
                 func->y[i] = ys.array[i];
         }
 
-        mli_check_message(
+        chk_msg(
                 mliFunc_is_valid(func),
                 "Expected function from csv to be valid.");
 

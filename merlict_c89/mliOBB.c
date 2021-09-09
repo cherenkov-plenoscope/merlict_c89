@@ -30,17 +30,17 @@ struct mliVec mliOBB_center(const struct mliOBB a)
 
 int mliOBB_valid(const struct mliOBB obb)
 {
-        mli_check_message(!MLI_IS_NAN(obb.lower.x), "obb.lower.x is 'nan'.");
-        mli_check_message(!MLI_IS_NAN(obb.lower.y), "obb.lower.y is 'nan'.");
-        mli_check_message(!MLI_IS_NAN(obb.lower.z), "obb.lower.z is 'nan'.");
+        chk_msg(!MLI_IS_NAN(obb.lower.x), "obb.lower.x is 'nan'.");
+        chk_msg(!MLI_IS_NAN(obb.lower.y), "obb.lower.y is 'nan'.");
+        chk_msg(!MLI_IS_NAN(obb.lower.z), "obb.lower.z is 'nan'.");
 
-        mli_check_message(!MLI_IS_NAN(obb.upper.x), "obb.upper.x is 'nan'.");
-        mli_check_message(!MLI_IS_NAN(obb.upper.y), "obb.upper.y is 'nan'.");
-        mli_check_message(!MLI_IS_NAN(obb.upper.z), "obb.upper.z is 'nan'.");
+        chk_msg(!MLI_IS_NAN(obb.upper.x), "obb.upper.x is 'nan'.");
+        chk_msg(!MLI_IS_NAN(obb.upper.y), "obb.upper.y is 'nan'.");
+        chk_msg(!MLI_IS_NAN(obb.upper.z), "obb.upper.z is 'nan'.");
 
-        mli_check_message(obb.lower.x <= obb.upper.x, "Expected lower.x <= upper.x");
-        mli_check_message(obb.lower.y <= obb.upper.y, "Expected lower.y <= upper.y");
-        mli_check_message(obb.lower.z <= obb.upper.z, "Expected lower.z <= upper.z");
+        chk_msg(obb.lower.x <= obb.upper.x, "Expected lower.x <= upper.x");
+        chk_msg(obb.lower.y <= obb.upper.y, "Expected lower.y <= upper.y");
+        chk_msg(obb.lower.z <= obb.upper.z, "Expected lower.z <= upper.z");
         return 1;
 error:
         return 0;
@@ -48,10 +48,10 @@ error:
 
 int mliOBB_equal(const struct mliOBB a, const struct mliOBB b)
 {
-        mli_check_message(
+        chk_msg(
                 mliVec_equal(a.lower, b.lower),
                 "Expected 'lower'-corner to be equal.");
-        mli_check_message(
+        chk_msg(
                 mliVec_equal(a.upper, b.upper),
                 "Expected 'upper'-corner to be equal.");
         return 1;

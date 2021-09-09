@@ -118,7 +118,7 @@ int _mlivr_export_image(
         const double image_ratio =
                 ((double)config.export_num_cols /
                  (double)config.export_num_rows);
-        mli_check_memory(mliImage_malloc(
+        chk_memory(mliImage_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
         camera2root_comp = mliView_to_HomTraComp(view);
         apcam.focal_length =
@@ -133,7 +133,7 @@ int _mlivr_export_image(
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
                 apcam, camera2root_comp, scenery, &full, tracer_config, prng);
-        mli_check_message(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
+        chk_msg(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
 error:
@@ -179,9 +179,9 @@ int mlivr_run_interactive_viewer(
         struct mliIntersectionSurfaceNormal probing_intersection;
 
         mlivr_timestamp_now_19chars(timestamp);
-        mli_check_memory(mliImage_malloc(
+        chk_memory(mliImage_malloc(
                 &img, config.preview_num_cols, config.preview_num_rows));
-        mli_check_memory(mliImage_malloc(
+        chk_memory(mliImage_malloc(
                 &img2,
                 config.preview_num_cols * 2u,
                 config.preview_num_rows * 2u));
@@ -225,7 +225,7 @@ int mlivr_run_interactive_viewer(
                                         timestamp,
                                         num_screenshots);
                                 num_screenshots++;
-                                mli_check(_mlivr_export_image(
+                                chk(_mlivr_export_image(
                                         scenery,
                                         config,
                                         view,

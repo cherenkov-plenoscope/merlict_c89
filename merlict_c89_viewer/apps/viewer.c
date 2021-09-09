@@ -19,28 +19,28 @@ int main(int argc, char *argv[])
 
         if (argc >= 2) {
                 if (mli_string_ends_with(argv[1], ".tar")) {
-                        mli_check_message(
+                        chk_msg(
                                 mliScenery_malloc_from_tar(
                                         &scenery, argv[1]),
                                 "Can not read scenery from '.tar'.");
                 } else if (mli_string_ends_with(argv[1], ".mli")) {
-                        mli_check_message(
+                        chk_msg(
                                 mliScenery_malloc_from_path(
                                         &scenery, argv[1]),
                                 "Can not read scenery from '.mli'.");
                 } else if (mli_string_ends_with(argv[1], ".obj")) {
-                        mli_check_message(
+                        chk_msg(
                                 mliScenery_malloc_minimal_from_wavefront(
                                         &scenery, argv[1]),
                                 "Can not read scenery from '.obj'.");
                 } else {
-                        mli_sentinel("Scenery-format has to be either of "
+                        chk_sentinel("Scenery-format has to be either of "
                                 "('.tar', '.mli', '.obj').");
                 }
         }
 
         if (argc == 3) {
-                mli_check_message(
+                chk_msg(
                         mli_string_to_float(&config.step_length, argv[2]),
                         "Can not parse step_length from argv[2].");
                 config.aperture_camera_image_sensor_width *= config.step_length;
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
                 goto error;
         }
 
-        mli_check_message(
+        chk_msg(
                 mlivr_run_interactive_viewer_try_non_canonical_stdin(
                         &scenery, config),
                 "Failure in viewer");

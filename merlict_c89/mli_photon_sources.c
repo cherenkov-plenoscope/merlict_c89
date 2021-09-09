@@ -16,7 +16,7 @@ int mli_photon_source_parallel_towards_z_from_xy_disc(
                 ph.ray.direction = direction;
                 ph.wavelength = wavelength;
                 ph.id = i;
-                mli_check(mliDynPhoton_push_back(out_photons, ph));
+                chk(mliDynPhoton_push_back(out_photons, ph));
         }
         return 1;
 error:
@@ -44,7 +44,7 @@ int point_like_towards_z_opening_angle_num_photons(
                 ph.ray.direction = direction;
                 ph.wavelength = wavelength;
                 ph.id = i;
-                mli_check(mliDynPhoton_push_back(out_photons, ph));
+                chk(mliDynPhoton_push_back(out_photons, ph));
         }
         return 1;
 error:

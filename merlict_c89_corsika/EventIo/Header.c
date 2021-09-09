@@ -99,26 +99,26 @@ int mliEventIoHeader_read(struct mliEventIoHeader *header, FILE *f, int level)
         /* sub level headers do not have the 'sync' field. */
 
         if (level == MLI_EVENTIO_TOP_LEVEL) {
-                mli_check_fread(&first_four.sync, sizeof(first_four.sync), 1, f);
+                chk_fread(&first_four.sync, sizeof(first_four.sync), 1, f);
                 length_read += sizeof(first_four.sync);
                 header->is_sync = EXPECTED_SYNC == first_four.sync;
         } else {
-                mli_check_message(
+                chk_msg(
                         level == MLI_EVENTIO_SUB_LEVEL,
                         "Level must be either 'top' or 'sub'.");
                 header->is_sync = 1;
         }
-        mli_check_fread(&first_four.type, sizeof(first_four.type), 1, f);
+        chk_fread(&first_four.type, sizeof(first_four.type), 1, f);
         length_read += sizeof(first_four.type);
-        mli_check_fread(&first_four.id, sizeof(first_four.id), 1, f);
+        chk_fread(&first_four.id, sizeof(first_four.id), 1, f);
         length_read += sizeof(first_four.id);
-        mli_check_fread(&first_four.length, sizeof(first_four.length), 1, f);
+        chk_fread(&first_four.length, sizeof(first_four.length), 1, f);
         length_read += sizeof(first_four.length);
 
         type_info = _TypeInfo_init(first_four.type);
         length_info = _LengthInfo_init(first_four.length);
 
-        mli_check_message(
+        chk_msg(
                 header->is_sync,
                 "Expected EventIo-Header to be in sync, but its not.");
 
@@ -134,7 +134,7 @@ int mliEventIoHeader_read(struct mliEventIoHeader *header, FILE *f, int level)
                 header->length = length_info.length;
         } else {
                 int32_t extended;
-                mli_check_fread(&extended, sizeof(int32_t), 1, f);
+                chk_fread(&extended, sizeof(int32_t), 1, f);
                 length_read += sizeof(int32_t);
                 header->length = _extend_length(extended, length_info);
         }

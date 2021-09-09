@@ -26,7 +26,7 @@ int mli_photoninteraction_type_to_string(const int32_t type, char *s)
                 sprintf(s, "diffuse reflection");
                 break;
         default:
-                mli_sentinel("PhotonInteraction.type is unknown.");
+                chk_sentinel("PhotonInteraction.type is unknown.");
                 break;
         }
         return 1;
@@ -41,7 +41,7 @@ int mli_time_of_flight(
         double *time_of_flight)
 {
         double refractive_index;
-        mli_check_message(
+        chk_msg(
                 mliFunc_evaluate(
                         &materials->functions[phisec->refraction_coming_from],
                         photon->wavelength,

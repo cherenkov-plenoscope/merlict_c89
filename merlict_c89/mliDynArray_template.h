@@ -49,7 +49,7 @@
                 LIB##Dyn##NAME##_free(dh);                                     \
                 dh->capacity = MLI_MAX2(2, size);                              \
                 dh->size = 0;                                                  \
-                mli_check_malloc(dh->array, PAYLOAD_TYPE, dh->capacity);             \
+                chk_malloc(dh->array, PAYLOAD_TYPE, dh->capacity);             \
                 return 1;                                                      \
         error:                                                                 \
                 return 0;                                                      \
@@ -58,7 +58,7 @@
         int LIB##Dyn##NAME##_malloc_set_size(                                  \
                 struct LIB##Dyn##NAME *dh, const uint64_t size)                \
         {                                                                      \
-                mli_check(LIB##Dyn##NAME##_malloc(dh, size));                      \
+                chk(LIB##Dyn##NAME##_malloc(dh, size));                      \
                 dh->size = size;                                               \
                 return 1;                                                      \
         error:                                                                 \
@@ -73,7 +73,7 @@
                         dh->array = (PAYLOAD_TYPE *)realloc(                   \
                                 (void *)dh->array,                             \
                                 dh->capacity * sizeof(PAYLOAD_TYPE));          \
-                        mli_check_memory(dh->array);                              \
+                        chk_memory(dh->array);                              \
                 }                                                              \
                                                                                \
                 dh->array[dh->size] = item;                                    \
@@ -97,9 +97,9 @@
                                                                                \
         int LIB##Dyn##NAME##_test_init(struct LIB##Dyn##NAME *dh)              \
         {                                                                      \
-                mli_check(dh->capacity == 0u);                                     \
-                mli_check(dh->size == 0u);                                         \
-                mli_check(dh->array == NULL);                                      \
+                chk(dh->capacity == 0u);                                     \
+                chk(dh->size == 0u);                                         \
+                chk(dh->array == NULL);                                      \
                 return 1;                                                      \
         error:                                                                 \
                 return 0;                                                      \
@@ -108,13 +108,13 @@
         int LIB##Dyn##NAME##_test_malloc(                                      \
                 struct LIB##Dyn##NAME *dh, const uint64_t capacity)            \
         {                                                                      \
-                mli_check(dh->capacity >= dh->size);                               \
+                chk(dh->capacity >= dh->size);                               \
                 if (capacity < 2) {                                            \
-                        mli_check(dh->capacity == 2);                              \
+                        chk(dh->capacity == 2);                              \
                 } else {                                                       \
-                        mli_check(dh->capacity == capacity);                       \
+                        chk(dh->capacity == capacity);                       \
                 }                                                              \
-                mli_check(dh->array != NULL);                                      \
+                chk(dh->array != NULL);                                      \
                 return 1;                                                      \
         error:                                                                 \
                 return 0;                                                      \

@@ -13,17 +13,17 @@ int mli_nstring_to_int(
         char *end;
         uint64_t actual_num_chars = 0u;
         int64_t l;
-        mli_check_message(
+        chk_msg(
                 !(s[0] == '\0' || isspace(s[0])),
                 "Can not convert string to int64, bad string.");
         errno = 0;
         l = strtol(s, &end, base);
-        mli_check_message(
+        chk_msg(
                 errno != ERANGE,
                 "Can not convert string to int64, over-, under-flow.");
-        mli_check_message(end != NULL, "Can not convert string to int64, bad string.");
+        chk_msg(end != NULL, "Can not convert string to int64, bad string.");
         actual_num_chars = end - s;
-        mli_check_message(
+        chk_msg(
                 actual_num_chars == expected_num_chars,
                 "Integer has not the expected number of chars.");
         *out = l;
@@ -39,8 +39,8 @@ int mli_nstring_to_uint(
         const uint64_t expected_num_chars)
 {
         int64_t tmp;
-        mli_check(mli_nstring_to_int(&tmp, s, base, expected_num_chars));
-        mli_check_message(tmp >= 0, "Expected a positive integer.");
+        chk(mli_nstring_to_int(&tmp, s, base, expected_num_chars));
+        chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
         return 1;
 error:
@@ -49,7 +49,7 @@ error:
 
 int mli_string_to_int(int64_t *out, const char *s, const uint64_t base)
 {
-        mli_check_message(
+        chk_msg(
                 mli_nstring_to_int(out, s, base, strlen(s)),
                 "Can not convert string to int64.");
         return 1;
@@ -60,8 +60,8 @@ error:
 int mli_string_to_uint(uint64_t *out, const char *s, const uint64_t base)
 {
         int64_t tmp;
-        mli_check(mli_string_to_int(&tmp, s, base));
-        mli_check_message(tmp >= 0, "Expected a positive integer.");
+        chk(mli_string_to_int(&tmp, s, base));
+        chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
         return 1;
 error:
@@ -76,18 +76,18 @@ int mli_nstring_to_float(
         char *end;
         uint64_t actual_num_chars = 0u;
         double l;
-        mli_check_message(
+        chk_msg(
                 !(s[0] == '\0' || isspace(s[0])),
                 "Can not convert string to float64, bad string.");
         errno = 0;
         l = strtod(s, &end);
-        mli_check_message(
+        chk_msg(
                 errno != ERANGE,
                 "Can not convert string to float64, over-, under-flow.");
-        mli_check_message(end != NULL, "Can not convert string to float64.");
+        chk_msg(end != NULL, "Can not convert string to float64.");
 
         actual_num_chars = end - s;
-        mli_check_message(
+        chk_msg(
                 actual_num_chars == expected_num_chars,
                 "float64 has not the expected number of chars.");
         *out = l;
@@ -98,7 +98,7 @@ error:
 
 int mli_string_to_float(double *out, const char *s)
 {
-        mli_check_message(
+        chk_msg(
                 mli_nstring_to_float(out, s, strlen(s)),
                 "Can not convert string to float64.");
         return 1;
@@ -214,7 +214,7 @@ int mli_string_assert_only_NUL_LF_TAB_controls(const char *str)
                                 /* fine */
                         } else {
                                 if (MLI_PRINT_LEVEL) {
-                                        mli_eprintf(
+                                        chk_eprintf(
                                                 "Control code %u "
                                                 "at column %ld in string.\n",
                                                 (uint8_t)str[pos],
@@ -261,10 +261,10 @@ int mli_uint_to_string(
         int64_t i = 0;
         int64_t num_leading_zeors = 0;
 
-        mli_check_message(base <= 10, "Expected base <= 10");
-        mli_check_message(base > 1, "Expected base > 1");
-        mli_check_message(max_num_chars < sizeof(tmp), "Exceeded max num. chars.");
-        mli_check_message(min_num_digits < max_num_chars, "Exceeded max num. chars.");
+        chk_msg(base <= 10, "Expected base <= 10");
+        chk_msg(base > 1, "Expected base > 1");
+        chk_msg(max_num_chars < sizeof(tmp), "Exceeded max num. chars.");
+        chk_msg(min_num_digits < max_num_chars, "Exceeded max num. chars.");
 
         do {
                 remainder = quotient % base;
@@ -272,7 +272,7 @@ int mli_uint_to_string(
                 remainder32 = (uint32_t)remainder;
                 tmp[digs] = literals[remainder32];
                 digs++;
-                mli_check_message(
+                chk_msg(
                         digs < (int64_t)sizeof(tmp),
                         "Exceeded max num. chars.");
         } while (quotient > 0u);
@@ -283,7 +283,7 @@ int mli_uint_to_string(
         }
 
         for (i = 0; i < num_leading_zeors; i++) {
-                mli_check_message(
+                chk_msg(
                         pos < (int64_t)max_num_chars,
                         "Exceeded max num. chars.");
                 s[pos] = '0';
@@ -291,14 +291,14 @@ int mli_uint_to_string(
         }
 
         for (i = 0; i < digs; i++) {
-                mli_check_message(
+                chk_msg(
                         pos < (int64_t)max_num_chars,
                         "Exceeded max num. chars.");
                 s[pos] = tmp[digs - i - 1];
                 pos++;
         }
 
-        mli_check_message(pos < (int64_t)max_num_chars, "Exceeded max num. chars.");
+        chk_msg(pos < (int64_t)max_num_chars, "Exceeded max num. chars.");
         s[pos] = '\0';
 
         return 1;
@@ -311,11 +311,11 @@ int _mli_fprint_line_match(
         const int64_t line,
         const int64_t line_number)
 {
-        mli_check(fprintf(f, "% 6d", (int32_t)line));
+        chk(fprintf(f, "% 6d", (int32_t)line));
         if (line == line_number) {
-                mli_check(fprintf(f, "->|  "));
+                chk(fprintf(f, "->|  "));
         } else {
-                mli_check(fprintf(f, "  |  "));
+                chk(fprintf(f, "  |  "));
         }
         return 1;
 error:
@@ -335,10 +335,10 @@ int mli_lines_info_fprint(
         int64_t line = 1;
         int64_t i = 0;
 
-        mli_check_message(line_radius > 1, "Expected line_radius > 1.");
+        chk_msg(line_radius > 1, "Expected line_radius > 1.");
 
-        mli_check(fprintf(f, "  line     text\n"));
-        mli_check(fprintf(f, "        |\n"));
+        chk(fprintf(f, "  line     text\n"));
+        chk(fprintf(f, "        |\n"));
 
         while (text[i]) {
                 int prefix = (line + 1 >= line_start) && (line < line_stop);
@@ -347,17 +347,17 @@ int mli_lines_info_fprint(
                         line++;
                 }
                 if (prefix && i == 0) {
-                        mli_check(_mli_fprint_line_match(f, line, _line_number));
+                        chk(_mli_fprint_line_match(f, line, _line_number));
                 }
                 if (valid) {
-                        mli_check(putc(text[i], f));
+                        chk(putc(text[i], f));
                 }
                 if (prefix && text[i] == '\n') {
-                        mli_check(_mli_fprint_line_match(f, line, _line_number));
+                        chk(_mli_fprint_line_match(f, line, _line_number));
                 }
                 i++;
         }
-        mli_check(putc('\n', f));
+        chk(putc('\n', f));
 
         return 1;
 error:

@@ -17,20 +17,20 @@ int _read_telescope_offsets(
         struct mliDynFloat yoff = mliDynFloat_init();
         struct mliDynFloat weight = mliDynFloat_init();
 
-        mli_check_fread(&_narray, sizeof(int32_t), 1, f);
-        mli_check_message(_narray >= 0, "Expected num. of arrays to be positive.");
+        chk_fread(&_narray, sizeof(int32_t), 1, f);
+        chk_msg(_narray >= 0, "Expected num. of arrays to be positive.");
         narray = (uint64_t)_narray;
 
-        mli_check_fread(&toff, sizeof(float), 1, f);
+        chk_fread(&toff, sizeof(float), 1, f);
 
-        mli_check(mliDynFloat_malloc_set_size(&xoff, narray));
-        mli_check(mliDynFloat_malloc_set_size(&yoff, narray));
-        mli_check(mliDynFloat_malloc_set_size(&weight, narray));
+        chk(mliDynFloat_malloc_set_size(&xoff, narray));
+        chk(mliDynFloat_malloc_set_size(&yoff, narray));
+        chk(mliDynFloat_malloc_set_size(&weight, narray));
 
         num_following_arrays = (int)((length - length_first_two) / narray / 4);
 
-        mli_check_fread(xoff.array, sizeof(float), narray, f);
-        mli_check_fread(yoff.array, sizeof(float), narray, f);
+        chk_fread(xoff.array, sizeof(float), narray, f);
+        chk_fread(yoff.array, sizeof(float), narray, f);
         memset(weight.array, 1.0, narray);
 
         switch (num_following_arrays) {
@@ -38,14 +38,14 @@ int _read_telescope_offsets(
                 /* do nothing, we already read the 2 arrays xoff and yoff. */
                 break;
         case 3:
-                mli_check_fread(weight.array, sizeof(float), narray, f);
+                chk_fread(weight.array, sizeof(float), narray, f);
                 break;
         default:
-                mli_sentinel(
+                chk_sentinel(
                         "Expected num_following_arrays to be either 2, or 3.");
         }
 
-        mli_check_message(
+        chk_msg(
                 mliDynEventIoTelescopeOffset_malloc_set_size(
                         telescope_offsets, narray),
                 "Failed to malloc telescope_offsets.");
@@ -83,14 +83,14 @@ int _read_photon_bunches(
         int is_compact = 0;
         uint64_t row, field;
 
-        mli_check_fread(&b_head->array_id, sizeof(b_head->array_id), 1, f);
-        mli_check_fread(&b_head->telescope_id, sizeof(b_head->telescope_id), 1, f);
-        mli_check_fread(&b_head->photons, sizeof(b_head->photons), 1, f);
-        mli_check_fread(&b_head->num_bunches, sizeof(b_head->num_bunches), 1, f);
+        chk_fread(&b_head->array_id, sizeof(b_head->array_id), 1, f);
+        chk_fread(&b_head->telescope_id, sizeof(b_head->telescope_id), 1, f);
+        chk_fread(&b_head->photons, sizeof(b_head->photons), 1, f);
+        chk_fread(&b_head->num_bunches, sizeof(b_head->num_bunches), 1, f);
 
         is_compact = (int)(version / 1000 == 1);
 
-        mli_check_message(
+        chk_msg(
                 mliDynCorsikaPhotonBunch_malloc_set_size(
                         bunches, b_head->num_bunches),
                 "Failed to malloc bunches.");
@@ -98,7 +98,7 @@ int _read_photon_bunches(
         if (is_compact) {
                 int16_t buff[8];
                 for (row = 0; row < bunches->size; row++) {
-                        mli_check_fread(buff, sizeof(int16_t), 8, f);
+                        chk_fread(buff, sizeof(int16_t), 8, f);
 
                         for (field = 0; field < 8; field++) {
                                 tmp[field] = (float)buff[field];
@@ -116,7 +116,7 @@ int _read_photon_bunches(
                 }
         } else {
                 for (row = 0; row < bunches->size; row++) {
-                        mli_check_fread(tmp, sizeof(float), 8, f);
+                        chk_fread(tmp, sizeof(float), 8, f);
 
                         bunches->array[row].x_cm = tmp[0];
                         bunches->array[row].y_cm = tmp[1];
@@ -167,32 +167,32 @@ int mliEventIoEvent_malloc_from_run(
 
         /* corsika_event_header */
         /* -------------------- */
-        mli_check_message(run->_next_block.type == 1202, "Expected type 1202.");
-        mli_check_message(
+        chk_msg(run->_next_block.type == 1202, "Expected type 1202.");
+        chk_msg(
                 _read_273_block(run->_f, event->corsika_event_header),
                 "Failed to read corsika_event_header 273 float block.");
 
         /* telescope_offsets */
         /* ----------------- */
-        mli_check(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
-        mli_check_message(run->_next_block.type == 1203, "Expected type 1203.");
-        mli_check_message(
+        chk(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        chk_msg(run->_next_block.type == 1203, "Expected type 1203.");
+        chk_msg(
                 _read_telescope_offsets(
                         run->_f, &tmp_offsets, run->_next_block.length),
                 "Failed to read telescope_offsets.");
 
         /* array_header */
         /* ------------ */
-        mli_check(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
-        mli_check_message(run->_next_block.type == 1204, "Expected type 1204.");
-        mli_check_message(
+        chk(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        chk_msg(run->_next_block.type == 1204, "Expected type 1204.");
+        chk_msg(
                 run->_next_block.only_sub_objects,
                 "Expected telescope-array-block to only contain sub-blocks.");
         remaining_length = run->_next_block.length;
 
         /* telescopes */
         /* ---------- */
-        mli_check_message(
+        chk_msg(
                 mliDynEventIoTelescope_malloc_set_size(
                         &event->telescopes, tmp_offsets.size),
                 "Failed to malloc telescpes");
@@ -212,18 +212,18 @@ int mliEventIoEvent_malloc_from_run(
 
                 header_length = mliEventIoHeader_read(
                         &run->_next_block, run->_f, MLI_EVENTIO_SUB_LEVEL);
-                mli_check_message(
+                chk_msg(
                         header_length,
                         "Failed to read EventIo-SUB-block-header.");
                 remaining_length -= header_length;
 
-                mli_check_message(
+                chk_msg(
                         run->_next_block.type == 1205,
                         "Expected subheader type 1205");
 
                 telescope->array_id = b_head.array_id;
                 telescope->telescope_id = b_head.telescope_id;
-                mli_check_message(
+                chk_msg(
                         _read_photon_bunches(
                                 run->_f,
                                 &b_head,
@@ -234,22 +234,22 @@ int mliEventIoEvent_malloc_from_run(
                 num_sub_blocks += 1;
         }
 
-        mli_check_message(remaining_length == 0, "Expected remaining_length == 0.");
-        mli_check_message(
+        chk_msg(remaining_length == 0, "Expected remaining_length == 0.");
+        chk_msg(
                 num_sub_blocks == event->telescopes.size,
                 "Expected every telescope to have photon_bunches.");
 
         /* corsika_event_end */
         /* ----------------- */
-        mli_check(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
-        mli_check_message(run->_next_block.type == 1209, "Expected type 1209.");
-        mli_check_message(
+        chk(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        chk_msg(run->_next_block.type == 1209, "Expected type 1209.");
+        chk_msg(
                 _read_273_block(run->_f, event->corsika_event_end),
                 "Failed to read corsika_event_end 273 float block.");
 
         /* next */
         /* ---- */
-        mli_check(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
+        chk(_mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
 
         return 1;
 error:

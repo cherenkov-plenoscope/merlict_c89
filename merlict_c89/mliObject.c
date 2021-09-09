@@ -40,15 +40,15 @@ int mliObject_malloc(
         const uint64_t num_materials)
 {
         uint32_t i;
-        mli_check_message(num_vertices < UINT32_MAX, "Expected num_vertices < uint32");
-        mli_check_message(
+        chk_msg(num_vertices < UINT32_MAX, "Expected num_vertices < uint32");
+        chk_msg(
                 num_vertex_normals < UINT32_MAX,
                 "Expected num_vertex_normals < uint32");
-        mli_check_message(num_faces < UINT32_MAX, "Expected num_faces < uint32");
-        mli_check_message(
+        chk_msg(num_faces < UINT32_MAX, "Expected num_faces < uint32");
+        chk_msg(
                 num_materials < UINT32_MAX, "Expected num_materials < uint32");
-        mli_check_message(num_materials > 0, "Expected num_materials > 0");
-        mli_check_message(
+        chk_msg(num_materials > 0, "Expected num_materials > 0");
+        chk_msg(
                 num_materials <= num_faces,
                 "Expected num_materials <= num_faces");
 
@@ -57,12 +57,12 @@ int mliObject_malloc(
         obj->num_vertex_normals = num_vertex_normals;
         obj->num_faces = num_faces;
         obj->num_materials = num_materials;
-        mli_check_malloc(obj->vertices, struct mliVec, obj->num_vertices);
-        mli_check_malloc(obj->vertex_normals, struct mliVec, obj->num_vertex_normals);
-        mli_check_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
-        mli_check_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
-        mli_check_malloc(obj->faces_materials, uint16_t, obj->num_faces);
-        mli_check_malloc(obj->material_names, struct mliName, obj->num_materials);
+        chk_malloc(obj->vertices, struct mliVec, obj->num_vertices);
+        chk_malloc(obj->vertex_normals, struct mliVec, obj->num_vertex_normals);
+        chk_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
+        chk_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
+        chk_malloc(obj->faces_materials, uint16_t, obj->num_faces);
+        chk_malloc(obj->material_names, struct mliName, obj->num_materials);
         for (i = 0; i < obj->num_materials; i++) {
                 obj->material_names[i] = mliName_init();
         }
@@ -74,27 +74,27 @@ error:
 int mliObject_equal(const struct mliObject *a, const struct mliObject *b)
 {
         uint64_t i;
-        mli_check(a->num_vertices == b->num_vertices);
-        mli_check(a->num_vertex_normals == b->num_vertex_normals);
-        mli_check(a->num_faces == b->num_faces);
-        mli_check(a->num_materials == b->num_materials);
+        chk(a->num_vertices == b->num_vertices);
+        chk(a->num_vertex_normals == b->num_vertex_normals);
+        chk(a->num_faces == b->num_faces);
+        chk(a->num_materials == b->num_materials);
 
         for (i = 0; i < a->num_vertices; i++) {
-                mli_check(mliVec_equal(a->vertices[i], b->vertices[i]));
+                chk(mliVec_equal(a->vertices[i], b->vertices[i]));
         }
         for (i = 0; i < a->num_vertex_normals; i++) {
-                mli_check(mliVec_equal(a->vertex_normals[i], b->vertex_normals[i]));
+                chk(mliVec_equal(a->vertex_normals[i], b->vertex_normals[i]));
         }
         for (i = 0; i < a->num_faces; i++) {
-                mli_check(mliFace_equal(
+                chk(mliFace_equal(
                         a->faces_vertices[i], b->faces_vertices[i]));
-                mli_check(mliFace_equal(
+                chk(mliFace_equal(
                         a->faces_vertex_normals[i],
                         b->faces_vertex_normals[i]));
-                mli_check(a->faces_materials[i] == b->faces_materials[i]);
+                chk(a->faces_materials[i] == b->faces_materials[i]);
         }
         for (i = 0; i < a->num_materials; i++) {
-                mli_check(mliName_equal(
+                chk(mliName_equal(
                         &a->material_names[i], &b->material_names[i]));
         }
         return 1;
