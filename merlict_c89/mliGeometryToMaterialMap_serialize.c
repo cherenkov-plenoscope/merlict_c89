@@ -48,8 +48,8 @@ int mliGeometryToMaterialMap_fwrite(
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* payload */
-        mli_write_type(uint32_t, geomap->num_robjects, f);
-        mli_write_type(uint32_t, geomap->total_num_boundary_layers, f);
+        mli_fwrite(&geomap->num_robjects, sizeof(uint32_t), 1, f);
+        mli_fwrite(&geomap->total_num_boundary_layers, sizeof(uint32_t), 1, f);
         mli_fwrite(
                 geomap->boundary_layers,
                 sizeof(uint32_t),

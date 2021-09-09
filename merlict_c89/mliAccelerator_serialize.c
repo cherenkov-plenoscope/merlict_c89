@@ -12,8 +12,8 @@ int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f)
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* capacity */
-        mli_write_type(uint32_t, accel->num_objects, f);
-        mli_write_type(uint32_t, accel->num_robjects, f);
+        mli_fwrite(&accel->num_objects, sizeof(uint32_t), 1, f);
+        mli_fwrite(&accel->num_robjects, sizeof(uint32_t), 1, f);
 
         for (i = 0; i < accel->num_objects; i++) {
                 mliOcTree_fwrite(&accel->object_octrees[i], f);

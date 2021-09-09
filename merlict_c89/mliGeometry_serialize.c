@@ -65,8 +65,8 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
         mli_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* payload */
-        mli_write_type(uint32_t, geometry->num_objects, f);
-        mli_write_type(uint32_t, geometry->num_robjects, f);
+        mli_fwrite(&geometry->num_objects, sizeof(uint32_t), 1, f);
+        mli_fwrite(&geometry->num_robjects, sizeof(uint32_t), 1, f);
 
         for (i = 0; i < geometry->num_objects; i++) {
                 mli_check(
