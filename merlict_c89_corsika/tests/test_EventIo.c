@@ -72,7 +72,7 @@ CASE("EventIoHeader_fails_empty_file")
         fclose(fempty);
 }
 
-CASE("EventIoFile_telescope_dat__telescope_positions")
+CASE("EventIoRun_telescope_dat__telescope_positions")
 {
         struct mliEventIoRun run = mliEventIoRun_init();
         CHECK(mliEventIoRun_open(
@@ -89,7 +89,7 @@ CASE("EventIoFile_telescope_dat__telescope_positions")
         mliEventIoRun_close(&run);
 }
 
-CASE("EventIoFile_telescope_dat__corsika_input_card")
+CASE("EventIoRun_telescope_dat__corsika_input_card")
 {
         struct mliEventIoRun run = mliEventIoRun_init();
         CHECK(mliEventIoRun_open(
@@ -104,7 +104,7 @@ CASE("EventIoFile_telescope_dat__corsika_input_card")
         mliEventIoRun_close(&run);
 }
 
-CASE("EventIoFile_telescope_dat__corsika_run_header")
+CASE("EventIoRun_telescope_dat__corsika_run_header")
 {
         float runh[273];
         struct mliEventIoRun run = mliEventIoRun_init();
@@ -125,7 +125,7 @@ CASE("EventIoFile_telescope_dat__corsika_run_header")
         mliEventIoRun_close(&run);
 }
 
-CASE("EventIoFile_telescope_dat__next_call")
+CASE("EventIoRun_telescope_dat__next_call")
 {
         struct mliEventIoRun run = mliEventIoRun_init();
         struct mliEventIoEvent event = mliEventIoEvent_init();
@@ -138,7 +138,7 @@ CASE("EventIoFile_telescope_dat__next_call")
         mliEventIoRun_close(&run);
 }
 
-CASE("EventIoFile_telescope_dat__corsika_event_header")
+CASE("EventIoRun_telescope_dat__corsika_event_header")
 {
         struct mliEventIoRun run = mliEventIoRun_init();
         struct mliEventIoEvent event = mliEventIoEvent_init();
@@ -164,7 +164,7 @@ CASE("EventIoFile_telescope_dat__corsika_event_header")
         mliEventIoRun_close(&run);
 }
 
-CASE("EventIoFile_telescope_dat__photon_bundle_size")
+CASE("EventIoRun_telescope_dat__photon_bundle_size")
 {
         uint64_t i;
         struct mliEventIoRun run = mliEventIoRun_init();
@@ -186,7 +186,7 @@ CASE("EventIoFile_telescope_dat__photon_bundle_size")
         mliEventIoEvent_free(&event);
 }
 
-CASE("EventIoFile_telescope_dat__photon_bundle_values")
+CASE("EventIoRun_telescope_dat__photon_bundle_values")
 {
         int j;
         struct mliCorsikaPhotonBunch some[5] = {{161.90000915527344,
@@ -258,7 +258,7 @@ CASE("EventIoFile_telescope_dat__photon_bundle_values")
         mliEventIoRun_close(&run);
 }
 
-CASE("EventIoFile_telescope_dat_run_time")
+CASE("EventIoRun_telescope_dat_run_time")
 {
         struct mliEventIoRun run = mliEventIoRun_init();
 
