@@ -24,19 +24,15 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         mliScenery_free(scenery);
 
-        chk_msg(
-                mliGeometry_malloc(&scenery->geometry, 1u, 1u),
+        chk_msg(mliGeometry_malloc(&scenery->geometry, 1u, 1u),
                 "Failed to malloc geometry.");
 
         /* set object */
-        chk_msg(
-                mliDynStr_malloc_from_path(&str, path), "Failed to read file.");
-        chk_msg(
-                mli_string_assert_only_NUL_LF_TAB_controls(str.c_str),
+        chk_msg(mliDynStr_malloc_from_path(&str, path), "Failed to read file.");
+        chk_msg(mli_string_assert_only_NUL_LF_TAB_controls(str.c_str),
                 "Expected object-wavefront file to be free of "
                 "control characters, except [NUL, TAB, LF].");
-        chk_msg(
-                mliObject_malloc_from_wavefront(
+        chk_msg(mliObject_malloc_from_wavefront(
                         &scenery->geometry.objects[0], str.c_str),
                 "Failed to malloc wavefront-object from string.");
         mliDynStr_free(&str);
@@ -58,13 +54,11 @@ int mliScenery_malloc_minimal_from_wavefront(
         mtlcap.num_colors = total_num_boundary_layers;
         mtlcap.num_surfaces = total_num_boundary_layers;
 
-        chk_msg(
-                mliMaterials_malloc(&scenery->materials, mtlcap),
+        chk_msg(mliMaterials_malloc(&scenery->materials, mtlcap),
                 "Failed to malloc materials.");
 
         scenery->materials.functions[0] = mliFunc_init();
-        chk_msg(
-                mliFunc_malloc(&scenery->materials.functions[0], 2),
+        chk_msg(mliFunc_malloc(&scenery->materials.functions[0], 2),
                 "Failed to malloc zero function.");
         scenery->materials.functions[0].x[0] = 200e-9;
         scenery->materials.functions[0].x[1] = 1200e-9;
@@ -73,8 +67,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         sprintf(scenery->materials.function_names[0].c_str, "zero");
 
         scenery->materials.functions[1] = mliFunc_init();
-        chk_msg(
-                mliFunc_malloc(&scenery->materials.functions[1], 2),
+        chk_msg(mliFunc_malloc(&scenery->materials.functions[1], 2),
                 "Failed to malloc unity function.");
         scenery->materials.functions[1].x[0] = 200e-9;
         scenery->materials.functions[1].x[1] = 1200e-9;
@@ -108,8 +101,7 @@ int mliScenery_malloc_minimal_from_wavefront(
                         i);
         }
 
-        chk_msg(
-                mliGeometryToMaterialMap_malloc(
+        chk_msg(mliGeometryToMaterialMap_malloc(
                         &scenery->geomap,
                         scenery->geometry.num_robjects,
                         total_num_boundary_layers),
@@ -120,8 +112,7 @@ int mliScenery_malloc_minimal_from_wavefront(
                 mliGeometryToMaterialMap_set(&scenery->geomap, 0u, i, i);
         }
 
-        chk_msg(
-                mliAccelerator_malloc_from_Geometry(
+        chk_msg(mliAccelerator_malloc_from_Geometry(
                         &scenery->accelerator, &scenery->geometry),
                 "Failed to malloc accelerator from geometry.");
 

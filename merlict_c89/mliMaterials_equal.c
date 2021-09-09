@@ -59,8 +59,7 @@ int _mliMaterials_surfaces_equal(
         chk(a->num_surfaces == b->num_surfaces);
         for (i = 0; i < a->num_surfaces; i++) {
                 chk(mliSurface_equal(a->surfaces[i], b->surfaces[i]));
-                chk(mliName_equal(
-                        &a->surface_names[i], &b->surface_names[i]));
+                chk(mliName_equal(&a->surface_names[i], &b->surface_names[i]));
         }
         return 1;
 error:

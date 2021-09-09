@@ -25,8 +25,7 @@ int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value)
 {
         struct _mliMapItem item;
         if (map->size == 0u) {
-                chk_msg(
-                        mliDynMap_malloc(map, 0u),
+                chk_msg(mliDynMap_malloc(map, 0u),
                         "Failed to initially malloc dyn-map.");
         }
         chk_msg(strlen(key) < MLI_NAME_CAPACITY, "Key too long.");

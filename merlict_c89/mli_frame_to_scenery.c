@@ -38,8 +38,7 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
 {
         (*num_robjects) = 0u;
         (*total_num_boundary_layers) = 0u;
-        chk_msg(
-                __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+        chk_msg(__mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
                         frame, num_robjects, total_num_boundary_layers),
                 "Failed to walk tree of frames to estimate "
                 "num_robjects and total_num_boundary_layers.");
@@ -72,8 +71,7 @@ int __mliFrame_set_robjects_and_material_map(
         case MLI_OBJECT:
                 robject_idx = (*num_robjects);
 
-                chk_msg(
-                        frame->object < geometry->num_objects,
+                chk_msg(frame->object < geometry->num_objects,
                         "Expected frame->object < num_objects.");
                 /* geometry */
                 geometry->robjects[robject_idx] = frame->object;
@@ -81,8 +79,7 @@ int __mliFrame_set_robjects_and_material_map(
                 geometry->robject_ids[robject_idx] = frame->id;
 
                 /* materials map */
-                chk_msg(
-                        frame->boundary_layers.size ==
+                chk_msg(frame->boundary_layers.size ==
                                 geometry->objects[frame->object].num_materials,
                         "Expected Frame to have same "
                         "num boundary_layers as object.");
@@ -118,8 +115,7 @@ int mliFrame_set_robjects_and_material_map(
 {
         uint64_t num_robjects = 0u;
         uint64_t total_num_boundary_layers = 0u;
-        chk_msg(
-                __mliFrame_set_robjects_and_material_map(
+        chk_msg(__mliFrame_set_robjects_and_material_map(
                         frame,
                         geometry,
                         geomap,

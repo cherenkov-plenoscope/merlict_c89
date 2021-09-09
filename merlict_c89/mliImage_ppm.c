@@ -13,10 +13,8 @@ int mliImage_malloc_from_ppm(struct mliImage *img, const char *path)
         FILE *fin;
         fin = fopen(path, "rb");
         chk_msg(fin, "Can not open ppm.");
-        chk_msg(fgets(line, 1024, fin), "Can not read header-line.")
-                chk_msg(
-                        strcmp(line, "P6\n") == 0,
-                        "Expected starts with 'P6'.");
+        chk_msg(fgets(line, 1024, fin), "Can not read header-line.") chk_msg(
+                strcmp(line, "P6\n") == 0, "Expected starts with 'P6'.");
         while (1) {
                 chk_msg(num_commen_lines < 1024, "Expected < 1024 lines.");
                 chk_msg(fgets(line, 1024, fin), "Can not read header-line.");

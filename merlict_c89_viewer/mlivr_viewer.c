@@ -68,11 +68,10 @@ void mlivr_print_info_line(
                mli_rad2deg(view.rotation.z),
                mli_rad2deg(view.field_of_view));
         printf("Sun: lat % 3.0fdeg, %02d:%02dh, alt % 3.1fkm",
-                mli_rad2deg(tracer_config.atmosphere.sunLatitude),
-                (int)(tracer_config.atmosphere.sunHourAngle),
-                (int)(tracer_config.atmosphere.sunHourAngle*60)%60,
-                tracer_config.atmosphere.altitude * 1e-3
-        );
+               mli_rad2deg(tracer_config.atmosphere.sunLatitude),
+               (int)(tracer_config.atmosphere.sunHourAngle),
+               (int)(tracer_config.atmosphere.sunHourAngle * 60) % 60,
+               tracer_config.atmosphere.altitude * 1e-3);
         if (cursor.active) {
                 printf(", Cursor[%3ld, %3ld]pix", cursor.col, cursor.row);
         }
@@ -312,7 +311,6 @@ int mlivr_run_interactive_viewer(
                                 print_scenery_info = 1;
                                 update_image = 0;
                                 break;
-
 
                         case '4':
                                 mliAtmosphere_decrease_altitude(

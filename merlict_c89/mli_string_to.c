@@ -13,18 +13,15 @@ int mli_nstring_to_int(
         char *end;
         uint64_t actual_num_chars = 0u;
         int64_t l;
-        chk_msg(
-                !(s[0] == '\0' || isspace(s[0])),
+        chk_msg(!(s[0] == '\0' || isspace(s[0])),
                 "Can not convert string to int64, bad string.");
         errno = 0;
         l = strtol(s, &end, base);
-        chk_msg(
-                errno != ERANGE,
+        chk_msg(errno != ERANGE,
                 "Can not convert string to int64, over-, under-flow.");
         chk_msg(end != NULL, "Can not convert string to int64, bad string.");
         actual_num_chars = end - s;
-        chk_msg(
-                actual_num_chars == expected_num_chars,
+        chk_msg(actual_num_chars == expected_num_chars,
                 "Integer has not the expected number of chars.");
         *out = l;
         return 1;
@@ -49,8 +46,7 @@ error:
 
 int mli_string_to_int(int64_t *out, const char *s, const uint64_t base)
 {
-        chk_msg(
-                mli_nstring_to_int(out, s, base, strlen(s)),
+        chk_msg(mli_nstring_to_int(out, s, base, strlen(s)),
                 "Can not convert string to int64.");
         return 1;
 error:
@@ -76,19 +72,16 @@ int mli_nstring_to_float(
         char *end;
         uint64_t actual_num_chars = 0u;
         double l;
-        chk_msg(
-                !(s[0] == '\0' || isspace(s[0])),
+        chk_msg(!(s[0] == '\0' || isspace(s[0])),
                 "Can not convert string to float64, bad string.");
         errno = 0;
         l = strtod(s, &end);
-        chk_msg(
-                errno != ERANGE,
+        chk_msg(errno != ERANGE,
                 "Can not convert string to float64, over-, under-flow.");
         chk_msg(end != NULL, "Can not convert string to float64.");
 
         actual_num_chars = end - s;
-        chk_msg(
-                actual_num_chars == expected_num_chars,
+        chk_msg(actual_num_chars == expected_num_chars,
                 "float64 has not the expected number of chars.");
         *out = l;
         return 1;
@@ -98,8 +91,7 @@ error:
 
 int mli_string_to_float(double *out, const char *s)
 {
-        chk_msg(
-                mli_nstring_to_float(out, s, strlen(s)),
+        chk_msg(mli_nstring_to_float(out, s, strlen(s)),
                 "Can not convert string to float64.");
         return 1;
 error:
@@ -201,7 +193,8 @@ int _mli_is_CR_line_break(const char *s)
         return 0;
 }
 
-int mli_string_assert_only_NUL_LF_TAB_controls(const char *str) {
+int mli_string_assert_only_NUL_LF_TAB_controls(const char *str)
+{
         return mli_string_assert_only_NUL_LF_TAB_controls_dbg(str, 1);
 }
 
@@ -278,8 +271,7 @@ int mli_uint_to_string(
                 remainder32 = (uint32_t)remainder;
                 tmp[digs] = literals[remainder32];
                 digs++;
-                chk_msg(
-                        digs < (int64_t)sizeof(tmp),
+                chk_msg(digs < (int64_t)sizeof(tmp),
                         "Exceeded max num. chars.");
         } while (quotient > 0u);
 
@@ -289,16 +281,14 @@ int mli_uint_to_string(
         }
 
         for (i = 0; i < num_leading_zeors; i++) {
-                chk_msg(
-                        pos < (int64_t)max_num_chars,
+                chk_msg(pos < (int64_t)max_num_chars,
                         "Exceeded max num. chars.");
                 s[pos] = '0';
                 pos++;
         }
 
         for (i = 0; i < digs; i++) {
-                chk_msg(
-                        pos < (int64_t)max_num_chars,
+                chk_msg(pos < (int64_t)max_num_chars,
                         "Exceeded max num. chars.");
                 s[pos] = tmp[digs - i - 1];
                 pos++;

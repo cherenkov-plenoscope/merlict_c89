@@ -64,14 +64,11 @@ int mliJson_malloc_from_string(struct mliJson *json, const char *json_str)
                 json->c_str_capacity,
                 json->tokens,
                 json->num_tokens);
-        chk_msg(
-                num_tokens_parsed != JSMN_ERROR_NOMEM,
+        chk_msg(num_tokens_parsed != JSMN_ERROR_NOMEM,
                 "Not enough tokens were provided.");
-        chk_msg(
-                num_tokens_parsed != JSMN_ERROR_INVAL,
+        chk_msg(num_tokens_parsed != JSMN_ERROR_INVAL,
                 "Invalid character inside JSON string.");
-        chk_msg(
-                num_tokens_parsed != JSMN_ERROR_PART,
+        chk_msg(num_tokens_parsed != JSMN_ERROR_PART,
                 "The string is not a full JSON packet, more "
                 "bytes expected.");
         chk_msg(num_tokens_parsed >= 0, "Can not parse Json-string");
@@ -85,11 +82,9 @@ error:
 int mliJson_malloc_from_path(struct mliJson *json, const char *path)
 {
         struct mliDynStr str = mliDynStr_init();
-        chk_msg(
-                mliDynStr_malloc_from_path(&str, path),
+        chk_msg(mliDynStr_malloc_from_path(&str, path),
                 "Failed to read file into string.");
-        chk_msg(
-                mliJson_malloc_from_string(json, str.c_str),
+        chk_msg(mliJson_malloc_from_string(json, str.c_str),
                 "Failed to parse json-string read from path.");
         mliDynStr_free(&str);
         return 1;
@@ -106,8 +101,7 @@ int mliJson_as_string(
 {
         const struct jsmntok_t t = json->tokens[token_idx];
         const uint64_t actual_length = t.end - t.start;
-        chk_msg(
-                actual_length < return_string_size,
+        chk_msg(actual_length < return_string_size,
                 "Expected return_string_size to be sufficiently large for "
                 "json-string, but it is not.")
                 memcpy(return_string, json->c_str + t.start, actual_length);
@@ -124,11 +118,9 @@ int mliJson_as_int64(
 {
         const struct jsmntok_t t = json->tokens[token_idx];
         const uint64_t token_length = t.end - t.start;
-        chk_msg(
-                t.type == JSMN_PRIMITIVE,
+        chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
-        chk_msg(
-                mli_nstring_to_int(
+        chk_msg(mli_nstring_to_int(
                         return_int64, &json->c_str[t.start], 10, token_length),
                 "Can not parse int.");
         return 1;
@@ -143,11 +135,9 @@ int mliJson_as_float64(
 {
         const struct jsmntok_t t = json->tokens[token_idx];
         const uint64_t token_length = t.end - t.start;
-        chk_msg(
-                t.type == JSMN_PRIMITIVE,
+        chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json float64 expected json-token-to be JSMN_PRIMITIVE.");
-        chk_msg(
-                mli_nstring_to_float(
+        chk_msg(mli_nstring_to_float(
                         return_float64, &json->c_str[t.start], token_length),
                 "Can not parse float.");
         return 1;
@@ -242,8 +232,7 @@ int mliJson_debug_token_fprint(
         chk(fprintf(f, "token: %u, ", (uint32_t)token));
         chk(fprintf(f, "type: %d, ", t.type));
         chk(fprintf(f, "children: %d, ", t.size));
-        chk(fprintf(
-                f, "chars: (%d -> %d, %d)\n", t.start, t.end, token_size));
+        chk(fprintf(f, "chars: (%d -> %d, %d)\n", t.start, t.end, token_size));
         for (i = 0; i < token_size; i++) {
                 chk(fputc(json->c_str[t.start + i], f));
         }
@@ -257,8 +246,7 @@ int mliJson_debug_fprint(FILE *f, const struct mliJson *json)
 {
         uint64_t i;
         for (i = 0; i < json->num_tokens; i++) {
-                chk_msg(
-                        mliJson_debug_token_fprint(f, json, i),
+                chk_msg(mliJson_debug_token_fprint(f, json, i),
                         "Failed to write json-token debug-info to file.");
         }
         return 1;

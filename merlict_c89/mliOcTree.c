@@ -281,46 +281,38 @@ int _mliOcTree_equal_payload(
                 /* leaf */
                 uint64_t leaf_idx;
                 uint64_t obj;
-                chk_msg(
-                        mliTmpNode_num_children(tmp_node) == 0,
+                chk_msg(mliTmpNode_num_children(tmp_node) == 0,
                         "Expect tmp_node to have 0 children when "
                         "node_type == LEAF.");
                 leaf_idx = node_idx;
-                chk_msg(
-                        leaf_idx < tree->leafs.num_leafs,
+                chk_msg(leaf_idx < tree->leafs.num_leafs,
                         "The leaf_idx is out of range.");
-                chk_msg(
-                        tree->leafs.adresses[leaf_idx].num_object_links ==
+                chk_msg(tree->leafs.adresses[leaf_idx].num_object_links ==
                                 tmp_node->num_objects,
                         "Expected leafs to have equal num_object_links.");
                 for (obj = 0; obj < tmp_node->num_objects; obj++) {
                         uint64_t l = obj + tree->leafs.adresses[leaf_idx]
                                                    .first_object_link;
-                        chk_msg(
-                                tree->leafs.object_links[l] ==
+                        chk_msg(tree->leafs.object_links[l] ==
                                         tmp_node->objects[obj],
                                 "Expected object_links in leaf to be equal.");
                 }
-                chk_msg(
-                        tree->leafs.adresses[leaf_idx].num_object_links ==
+                chk_msg(tree->leafs.adresses[leaf_idx].num_object_links ==
                                 tmp_node->num_objects,
                         "Expected leafs to have equal num_object_links.");
         } else if (node_type == MLI_OCTREE_TYPE_NODE) {
                 /* node */
                 uint64_t c;
-                chk_msg(
-                        node_idx >= 0,
+                chk_msg(node_idx >= 0,
                         "This node_idx is expected to point to a node.");
                 for (c = 0; c < 8u; c++) {
                         if (tmp_node->children[c] == NULL) {
-                                chk_msg(
-                                        tree->nodes[node_idx].children[c] == 0,
+                                chk_msg(tree->nodes[node_idx].children[c] == 0,
                                         "Expected node's child == "
                                         "0 when tmp_node's child == NULL");
                         } else {
                                 if (tmp_node->children[c]->num_objects == 0) {
-                                        chk_msg(
-                                                tree->nodes[node_idx]
+                                        chk_msg(tree->nodes[node_idx]
                                                                 .children[c] ==
                                                         0,
                                                 "Expected node's child != "
@@ -336,8 +328,7 @@ int _mliOcTree_equal_payload(
                                         tree->nodes[node_idx].children[c];
                                 int32_t child_node_type =
                                         tree->nodes[node_idx].types[c];
-                                chk_msg(
-                                        _mliOcTree_equal_payload(
+                                chk_msg(_mliOcTree_equal_payload(
                                                 tree,
                                                 child_node_idx,
                                                 child_node_type,
@@ -363,11 +354,9 @@ int mliOcTree_equal_payload(
 {
         int32_t root_node_idx = 0;
         int32_t root_node_type = MLI_OCTREE_TYPE_NODE;
-        chk_msg(
-                mliCube_equal(tree->cube, tmp_octree->cube),
+        chk_msg(mliCube_equal(tree->cube, tmp_octree->cube),
                 "Cubes are not equal");
-        chk_msg(
-                _mliOcTree_equal_payload(
+        chk_msg(_mliOcTree_equal_payload(
                         tree, root_node_idx, root_node_type, &tmp_octree->root),
                 "Tree is not equal");
         return 1;
@@ -452,8 +441,7 @@ int mliOcTree_malloc_from_object_wavefront(
         uint64_t num_leafs = 0;
         uint64_t num_object_links = 0;
         struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
-        chk_msg(
-                mliTmpOcTree_malloc_from_bundle(
+        chk_msg(mliTmpOcTree_malloc_from_bundle(
                         &tmp_octree,
                         (const void *)object_wavefront,
                         object_wavefront->num_faces,
@@ -466,8 +454,7 @@ int mliOcTree_malloc_from_object_wavefront(
                 &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);
 
         mliOcTree_free(octree);
-        chk_msg(
-                mliOcTree_malloc(
+        chk_msg(mliOcTree_malloc(
                         octree, num_nodes, num_leafs, num_object_links),
                 "Failed to allocate cache-aware octree from dynamic octree.");
         mliOcTree_set(octree, &tmp_octree);
@@ -487,8 +474,7 @@ int mliOcTree_malloc_from_Geometry(
         uint64_t num_leafs = 0;
         uint64_t num_object_links = 0;
         struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
-        chk_msg(
-                mliTmpOcTree_malloc_from_bundle(
+        chk_msg(mliTmpOcTree_malloc_from_bundle(
                         &tmp_octree,
                         (const void *)geometry,
                         geometry->num_robjects,
@@ -501,8 +487,7 @@ int mliOcTree_malloc_from_Geometry(
                 &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);
 
         mliOcTree_free(octree);
-        chk_msg(
-                mliOcTree_malloc(
+        chk_msg(mliOcTree_malloc(
                         octree, num_nodes, num_leafs, num_object_links),
                 "Failed to allocate cache-aware octree from dynamic octree.");
         mliOcTree_set(octree, &tmp_octree);

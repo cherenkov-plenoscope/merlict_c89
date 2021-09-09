@@ -75,8 +75,7 @@ int mliFunc_fold_numeric(
         chk_msg(a->num_points >= 2u, "Expect a->num_points >= 2.");
         chk_msg(b->num_points >= 2u, "Expect b->num_points >= 2.");
         chk_msg(a->x[0] == b->x[0], "Expect a->x[0] == b->x[0].");
-        chk_msg(
-                a->x[a->num_points - 1] == b->x[b->num_points - 1],
+        chk_msg(a->x[a->num_points - 1] == b->x[b->num_points - 1],
                 "Expect a->x[:-1] == b->x[:-1].");
         (*fold) = 0.0;
         for (i = 0; i < NUM_STEPS; i++) {
@@ -109,25 +108,21 @@ int mliFunc_equal(const struct mliFunc a, const struct mliFunc b)
 int mliFunc_is_valid(const struct mliFunc *func)
 {
         uint64_t i;
-        chk_msg(
-                func->num_points >= 2,
+        chk_msg(func->num_points >= 2,
                 "Expected function to have at least two points. "
                 "Evaluation is not possible when there is no valid range "
                 "between two points.");
 
         for (i = 0; i < func->num_points; i++) {
-                chk_msg(
-                        !MLI_IS_NAN(func->x[i]),
+                chk_msg(!MLI_IS_NAN(func->x[i]),
                         "Expected x-argument to be a real number, "
                         "but it is 'nan'.");
-                chk_msg(
-                        !MLI_IS_NAN(func->y[i]),
+                chk_msg(!MLI_IS_NAN(func->y[i]),
                         "Expected y-value to be a real number, "
                         "but it is 'nan'.");
         }
 
-        chk_msg(
-                mliFunc_x_is_strictly_increasing(func),
+        chk_msg(mliFunc_x_is_strictly_increasing(func),
                 "Expected x-arguments to be strictly increasing, "
                 "but they do not.");
 

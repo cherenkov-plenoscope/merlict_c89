@@ -44,35 +44,28 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 
                 _mli_strip_this_dir(tarh_name, tarh.name);
 
-                chk_msg(
-                        mliDynMap_insert(&arc->filenames, tarh_name, next),
+                chk_msg(mliDynMap_insert(&arc->filenames, tarh_name, next),
                         "Can not insert key.");
-                chk_msg(
-                        mliDynTextFiles_push_back(
+                chk_msg(mliDynTextFiles_push_back(
                                 &arc->textfiles, mliDynStr_init()),
                         "Can not push back mliString.");
-                chk_msg(
-                        mliDynStr_malloc(&tmp_payload, tarh.size + 1),
+                chk_msg(mliDynStr_malloc(&tmp_payload, tarh.size + 1),
                         "Can not allocate tmp-string-buffer.");
 
                 payload = &arc->textfiles.array[next];
                 (*payload) = mliDynStr_init();
 
-                chk_msg(
-                        mliDynStr_malloc(payload, 0),
+                chk_msg(mliDynStr_malloc(payload, 0),
                         "Can not allocate string-buffer.");
-                chk_msg(
-                        mliTar_read_data(
+                chk_msg(mliTar_read_data(
                                 &tar, (void *)tmp_payload.c_str, tarh.size),
                         "Failed to read payload from tar into "
                         "tmp-string-buffer.");
-                chk_msg(
-                        mliDynStr_convert_line_break_CRLF_CR_to_LF(
+                chk_msg(mliDynStr_convert_line_break_CRLF_CR_to_LF(
                                 payload, &tmp_payload),
                         "Failed to replace CRLF and CR linebreaks.");
                 mliDynStr_free(&tmp_payload);
-                chk_msg(
-                        mli_string_assert_only_NUL_LF_TAB_controls(
+                chk_msg(mli_string_assert_only_NUL_LF_TAB_controls(
                                 payload->c_str),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
@@ -115,12 +108,10 @@ int mliArchive_get_malloc_json(
 {
         struct mliDynStr *text = NULL;
 
-        chk_msg(
-                mliArchive_get(arc, filename, &text),
+        chk_msg(mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
 
-        chk_msg(
-                mliJson_malloc_from_string(json, text->c_str),
+        chk_msg(mliJson_malloc_from_string(json, text->c_str),
                 "Can not parse requested json.");
 
         return 1;

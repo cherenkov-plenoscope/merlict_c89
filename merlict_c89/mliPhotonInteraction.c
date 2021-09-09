@@ -41,8 +41,7 @@ int mli_time_of_flight(
         double *time_of_flight)
 {
         double refractive_index;
-        chk_msg(
-                mliFunc_evaluate(
+        chk_msg(mliFunc_evaluate(
                         &materials->functions[phisec->refraction_coming_from],
                         photon->wavelength,
                         &refractive_index),

@@ -103,8 +103,7 @@ int mliEventIoHeader_read(struct mliEventIoHeader *header, FILE *f, int level)
                 length_read += sizeof(first_four.sync);
                 header->is_sync = EXPECTED_SYNC == first_four.sync;
         } else {
-                chk_msg(
-                        level == MLI_EVENTIO_SUB_LEVEL,
+                chk_msg(level == MLI_EVENTIO_SUB_LEVEL,
                         "Level must be either 'top' or 'sub'.");
                 header->is_sync = 1;
         }
@@ -118,8 +117,7 @@ int mliEventIoHeader_read(struct mliEventIoHeader *header, FILE *f, int level)
         type_info = _TypeInfo_init(first_four.type);
         length_info = _LengthInfo_init(first_four.length);
 
-        chk_msg(
-                header->is_sync,
+        chk_msg(header->is_sync,
                 "Expected EventIo-Header to be in sync, but its not.");
 
         header->id = first_four.id;

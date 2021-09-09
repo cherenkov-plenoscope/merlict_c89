@@ -4,16 +4,12 @@
 
 int mliObject_is_valid(const struct mliObject *obj)
 {
-        chk_msg(
-                mliObject_has_valid_vertices(obj),
+        chk_msg(mliObject_has_valid_vertices(obj),
                 "Expected vertices to be valid.");
-        chk_msg(
-                mliObject_has_valid_faces(obj), "Expected faces to be valid.");
-        chk_msg(
-                mliObject_has_valid_normals(obj, MLI_EPSILON),
+        chk_msg(mliObject_has_valid_faces(obj), "Expected faces to be valid.");
+        chk_msg(mliObject_has_valid_normals(obj, MLI_EPSILON),
                 "Expected vertex-normals to be normalized.");
-        chk_msg(
-                mliObject_has_valid_materials(obj),
+        chk_msg(mliObject_has_valid_materials(obj),
                 "Expected materials to be valid.");
         return 1;
 error:
@@ -24,33 +20,26 @@ int mliObject_has_valid_faces(const struct mliObject *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_faces; i++) {
-                chk_msg(
-                        obj->faces_vertices[i].a <= obj->num_vertices,
+                chk_msg(obj->faces_vertices[i].a <= obj->num_vertices,
                         "Expected face.a <= num_vertices");
-                chk_msg(
-                        obj->faces_vertices[i].b <= obj->num_vertices,
+                chk_msg(obj->faces_vertices[i].b <= obj->num_vertices,
                         "Expected face.b <= num_vertices");
-                chk_msg(
-                        obj->faces_vertices[i].c <= obj->num_vertices,
+                chk_msg(obj->faces_vertices[i].c <= obj->num_vertices,
                         "Expected face.c <= num_vertices");
 
-                chk_msg(
-                        obj->faces_vertex_normals[i].a <=
+                chk_msg(obj->faces_vertex_normals[i].a <=
                                 obj->num_vertex_normals,
                         "Expected faces_vertex_normals.a <= "
                         "num_vertex_normals");
-                chk_msg(
-                        obj->faces_vertex_normals[i].b <=
+                chk_msg(obj->faces_vertex_normals[i].b <=
                                 obj->num_vertex_normals,
                         "Expected faces_vertex_normals.b <= "
                         "num_vertex_normals");
-                chk_msg(
-                        obj->faces_vertex_normals[i].c <=
+                chk_msg(obj->faces_vertex_normals[i].c <=
                                 obj->num_vertex_normals,
                         "Expected faces_vertex_normals.c <= "
                         "num_vertex_normals");
-                chk_msg(
-                        obj->faces_materials[i] < obj->num_materials,
+                chk_msg(obj->faces_materials[i] < obj->num_materials,
                         "Expected faces_materials < "
                         "num_materials");
         }
@@ -86,8 +75,7 @@ int mliObject_has_valid_normals(
                 chk_msg(!MLI_IS_NAN(obj->vertex_normals[i].z), "Z is 'nan'.");
 
                 norm = mliVec_norm(obj->vertex_normals[i]);
-                chk_msg(
-                        fabs(norm - 1.0) <= epsilon,
+                chk_msg(fabs(norm - 1.0) <= epsilon,
                         "Expected vertex_normals to be normalized.");
         }
         return 1;
@@ -100,11 +88,9 @@ int mliObject_has_valid_materials(const struct mliObject *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_materials; i++) {
-                chk_msg(
-                        mliName_valid(&obj->material_names[i]),
+                chk_msg(mliName_valid(&obj->material_names[i]),
                         "Expected material_name to be '\\0' terminated.");
-                chk_msg(
-                        strlen(obj->material_names[i].c_str) > 0,
+                chk_msg(strlen(obj->material_names[i].c_str) > 0,
                         "Expected strlen(material_name) > 0.");
         }
         return 1;

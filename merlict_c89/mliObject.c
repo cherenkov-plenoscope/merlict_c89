@@ -41,15 +41,12 @@ int mliObject_malloc(
 {
         uint32_t i;
         chk_msg(num_vertices < UINT32_MAX, "Expected num_vertices < uint32");
-        chk_msg(
-                num_vertex_normals < UINT32_MAX,
+        chk_msg(num_vertex_normals < UINT32_MAX,
                 "Expected num_vertex_normals < uint32");
         chk_msg(num_faces < UINT32_MAX, "Expected num_faces < uint32");
-        chk_msg(
-                num_materials < UINT32_MAX, "Expected num_materials < uint32");
+        chk_msg(num_materials < UINT32_MAX, "Expected num_materials < uint32");
         chk_msg(num_materials > 0, "Expected num_materials > 0");
-        chk_msg(
-                num_materials <= num_faces,
+        chk_msg(num_materials <= num_faces,
                 "Expected num_materials <= num_faces");
 
         mliObject_free(obj);
@@ -86,8 +83,7 @@ int mliObject_equal(const struct mliObject *a, const struct mliObject *b)
                 chk(mliVec_equal(a->vertex_normals[i], b->vertex_normals[i]));
         }
         for (i = 0; i < a->num_faces; i++) {
-                chk(mliFace_equal(
-                        a->faces_vertices[i], b->faces_vertices[i]));
+                chk(mliFace_equal(a->faces_vertices[i], b->faces_vertices[i]));
                 chk(mliFace_equal(
                         a->faces_vertex_normals[i],
                         b->faces_vertex_normals[i]));

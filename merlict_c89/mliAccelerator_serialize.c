@@ -51,8 +51,7 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f)
         chk_mem(mliAccelerator_malloc(accel, num_objects, num_robjects));
 
         for (i = 0; i < accel->num_objects; i++) {
-                chk_mem(
-                        mliOcTree_malloc_fread(&accel->object_octrees[i], f));
+                chk_mem(mliOcTree_malloc_fread(&accel->object_octrees[i], f));
         }
 
         chk_fread(

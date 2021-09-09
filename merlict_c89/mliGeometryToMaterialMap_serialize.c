@@ -18,8 +18,7 @@ int mliGeometryToMaterialMap_malloc_fread(
         /* payload */
         chk_fread(&num_robjects, sizeof(uint32_t), 1u, f);
         chk_fread(&total_num_boundary_layers, sizeof(uint32_t), 1u, f);
-        chk_msg(
-                mliGeometryToMaterialMap_malloc(
+        chk_msg(mliGeometryToMaterialMap_malloc(
                         geomap, num_robjects, total_num_boundary_layers),
                 "Failed to malloc mliGeometryToMaterialMap.");
         chk_fread(

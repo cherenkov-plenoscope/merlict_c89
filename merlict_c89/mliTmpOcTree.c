@@ -154,8 +154,7 @@ int mliTmpNode_malloc_tree_from_bundle(
         max_depth = mli_guess_octree_depth_based_on_num_objects(
                 num_items_in_bundle);
 
-        chk_msg(
-                mliTmpNode_malloc(root_node, num_items_in_bundle),
+        chk_msg(mliTmpNode_malloc(root_node, num_items_in_bundle),
                 "Failed to allocate root-node in dynamic octree.");
 
         for (idx = 0; idx < root_node->num_objects; idx++) {
@@ -365,8 +364,7 @@ int mliTmpOcTree_malloc_from_bundle(
 {
         mliTmpOcTree_free(octree);
         octree->cube = mliCube_outermost_cube(bundle_obb);
-        chk_msg(
-                mliTmpNode_malloc_tree_from_bundle(
+        chk_msg(mliTmpNode_malloc_tree_from_bundle(
                         &octree->root,
                         bundle,
                         num_items_in_bundle,

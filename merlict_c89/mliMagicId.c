@@ -17,8 +17,7 @@ int mliMagicId_set(struct mliMagicId *magic, const char *word)
 {
         uint64_t i, len;
         (*magic) = mliMagicId_init();
-        chk_msg(
-                strlen(word) < sizeof(magic->word),
+        chk_msg(strlen(word) < sizeof(magic->word),
                 "Expected magic word to be shorter.");
 
         len = MLI_MIN2(strlen(word), sizeof(magic->word));
@@ -38,8 +37,7 @@ error:
 int mliMagicId_has_word(const struct mliMagicId *magic, const char *word)
 {
         uint64_t i, len;
-        chk_msg(
-                strlen(word) < sizeof(magic->word),
+        chk_msg(strlen(word) < sizeof(magic->word),
                 "Expected magic word to be shorter.");
 
         len = MLI_MIN2(strlen(word), sizeof(magic->word));

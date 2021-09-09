@@ -9,30 +9,23 @@
 int mliScenery_valid(const struct mliScenery *scenery)
 {
         /* check in itself */
-        chk_msg(
-                mliMaterials_valid(&scenery->materials),
+        chk_msg(mliMaterials_valid(&scenery->materials),
                 "Expected materials to be valid.");
-        chk_msg(
-                mliGeometry_valid(&scenery->geometry),
+        chk_msg(mliGeometry_valid(&scenery->geometry),
                 "Expected geometry to be valid.");
-        chk_msg(
-                mliAccelerator_valid(&scenery->accelerator),
+        chk_msg(mliAccelerator_valid(&scenery->accelerator),
                 "Expected accelerator to be valid");
-        chk_msg(
-                mliGeometryToMaterialMap_valid(&scenery->geomap),
+        chk_msg(mliGeometryToMaterialMap_valid(&scenery->geomap),
                 "Expected geometry-to-materials-map to be valid.");
 
         /* check interplay */
-        chk_msg(
-                mliAccelerator_valid_wrt_Geometry(
+        chk_msg(mliAccelerator_valid_wrt_Geometry(
                         &scenery->accelerator, &scenery->geometry),
                 "Expected accelerator to be valid w.r.t. geometry.");
-        chk_msg(
-                mliGeometryToMaterialMap_valid_wrt_Geometry(
+        chk_msg(mliGeometryToMaterialMap_valid_wrt_Geometry(
                         &scenery->geomap, &scenery->geometry),
                 "Expected geomap to be valid w.r.t. geometry.");
-        chk_msg(
-                mliGeometryToMaterialMap_valid_wrt_Materials(
+        chk_msg(mliGeometryToMaterialMap_valid_wrt_Materials(
                         &scenery->geomap, &scenery->materials),
                 "Expected geomap to be valid w.r.t. materials.");
         return 1;

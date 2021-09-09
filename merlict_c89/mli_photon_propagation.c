@@ -46,15 +46,13 @@ int _mli_phong(
         surface_coming_from =
                 env->scenery->materials.surfaces[side_coming_from.surface];
 
-        chk_msg(
-                mliFunc_evaluate(
+        chk_msg(mliFunc_evaluate(
                         &env->scenery->materials.functions
                                  [surface_coming_from.diffuse_reflection],
                         env->photon->wavelength,
                         &diffuse),
                 "Failed to eval. diffuse reflection for wavelength.");
-        chk_msg(
-                mliFunc_evaluate(
+        chk_msg(mliFunc_evaluate(
                         &env->scenery->materials.functions
                                  [surface_coming_from.specular_reflection],
                         env->photon->wavelength,
@@ -82,8 +80,7 @@ int _mli_phong(
                         isec->position,
                         mli_draw_lambertian_direction_wrt_surface_normal(
                                 env->prng, isec->surface_normal));
-                chk_msg(
-                        _mli_propagate_photon(env),
+                chk_msg(_mli_propagate_photon(env),
                         "Failed to continue after diffuse reflection phong.");
         } else if (rnd < (specular + diffuse)) {
                 chk(mliDynPhotonInteraction_push_back(
@@ -97,8 +94,7 @@ int _mli_phong(
                         mliVec_mirror(
                                 env->photon->ray.direction,
                                 isec->surface_normal));
-                chk_msg(
-                        _mli_propagate_photon(env),
+                chk_msg(_mli_propagate_photon(env),
                         "Failed to continue after specular reflection phong.");
         } else {
                 chk(mliDynPhotonInteraction_push_back(
@@ -122,8 +118,7 @@ int _mli_pass_boundary_layer(
                         MLI_PHOTON_REFRACTION, env->scenery, isec)));
         env->photon->ray = mliRay_set(
                 isec->position, mliFresnel_refraction_direction(fresnel));
-        chk_msg(
-                _mli_propagate_photon(env),
+        chk_msg(_mli_propagate_photon(env),
                 "Failed to continue after passing boundary layer");
         return 1;
 error:
@@ -141,8 +136,7 @@ int _mli_probability_passing_medium_coming_from(
         const struct mliSide side_coming_from =
                 _mli_side_coming_from(scenery, isec);
         medium_coming_from = scenery->materials.media[side_coming_from.medium];
-        chk_msg(
-                mliFunc_evaluate(
+        chk_msg(mliFunc_evaluate(
                         &scenery->materials
                                  .functions[medium_coming_from.absorbtion],
                         photon->wavelength,
@@ -164,14 +158,12 @@ int _mli_fresnel_refraction_and_reflection(
         double n_coming_from;
         double reflection_propability;
         struct mliVec facing_surface_normal;
-        chk_msg(
-                mliFunc_evaluate(
+        chk_msg(mliFunc_evaluate(
                         _mli_refractive_index_going_to(env->scenery, isec),
                         env->photon->wavelength,
                         &n_going_to),
                 "Failed to eval. refraction going to for wavelength.");
-        chk_msg(
-                mliFunc_evaluate(
+        chk_msg(mliFunc_evaluate(
                         _mli_refractive_index_coming_from(env->scenery, isec),
                         env->photon->wavelength,
                         &n_coming_from),
@@ -196,12 +188,10 @@ int _mli_fresnel_refraction_and_reflection(
                 env->photon->ray = mliRay_set(
                         isec->position,
                         mliFresnel_reflection_direction(fresnel));
-                chk_msg(
-                        _mli_propagate_photon(env),
+                chk_msg(_mli_propagate_photon(env),
                         "Failed to continue after reflection");
         } else {
-                chk_msg(
-                        _mli_pass_boundary_layer(env, isec, fresnel),
+                chk_msg(_mli_pass_boundary_layer(env, isec, fresnel),
                         "Failed to pass boundary");
         }
         return 1;
@@ -220,8 +210,7 @@ int _mli_interact_with_object(
                 env->scenery->materials.surfaces[side_coming_from.surface];
         switch (surface_coming_from.material) {
         case MLI_MATERIAL_TRANSPARENT:
-                chk_msg(
-                        _mli_fresnel_refraction_and_reflection(env, isec),
+                chk_msg(_mli_fresnel_refraction_and_reflection(env, isec),
                         "Failed Fresnel.");
                 break;
         case MLI_MATERIAL_PHONG:
@@ -243,8 +232,7 @@ int _mli_distance_until_absorbtion(
         double *distance_until_absorbtion)
 {
         double one_over_e_way;
-        chk_msg(
-                mliFunc_evaluate(
+        chk_msg(mliFunc_evaluate(
                         absorbtion_in_medium_passing_through,
                         wavelength,
                         &one_over_e_way),
@@ -334,8 +322,7 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                         chk(mliDynPhotonInteraction_push_back(
                                 env->history, phia));
                 } else {
-                        chk_msg(
-                                _mli_interact_with_object(
+                        chk_msg(_mli_interact_with_object(
                                         env, &next_intersection),
                                 "Failed to interact photon with object "
                                 "surface.");
@@ -400,8 +387,7 @@ error:
 int _mli_propagate_photon(struct mliEnv *env)
 {
         if (env->max_interactions > env->history->size) {
-                chk_msg(
-                        _mli_work_on_causal_intersection(env),
+                chk_msg(_mli_work_on_causal_intersection(env),
                         "Failed to work on intersection.");
         }
         return 1;

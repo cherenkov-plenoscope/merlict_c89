@@ -37,8 +37,7 @@ int mliBuff_to_uint(
         uint32_t *out)
 {
         int64_t tmp = -1;
-        chk_msg(
-                buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
+        chk_msg(buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
                 "Integer-buff is full.");
         if (state == toggle_State) {
                 buff->buff[buff->b] = c;
@@ -49,8 +48,7 @@ int mliBuff_to_uint(
                         buff->buff[buff->b] = '\0';
                 }
                 buff->b = 0;
-                chk_msg(
-                        mli_string_to_int(&tmp, buff->buff, 10),
+                chk_msg(mli_string_to_int(&tmp, buff->buff, 10),
                         "Can not parse face index");
                 chk_msg(tmp > 0, "Expected object's index > 0.");
                 *out = tmp;
@@ -69,8 +67,7 @@ int mliBuff_to_double(
         const int old_state,
         double *out)
 {
-        chk_msg(
-                buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
+        chk_msg(buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
                 "Integer-buff is full.");
         if (state == toggle_State) {
                 buff->buff[buff->b] = c;
@@ -81,8 +78,7 @@ int mliBuff_to_double(
                         buff->buff[buff->b] = '\0';
                 }
                 buff->b = 0;
-                chk_msg(
-                        mli_string_to_float(out, buff->buff),
+                chk_msg(mli_string_to_float(out, buff->buff),
                         "Can not parse face index");
         }
 
@@ -392,8 +388,7 @@ int _mliObject_parse_three_float_line(const char *line, struct mliVec *v)
                                 "[ERROR] Can not parse line '%s'\n",
                                 line);
                 }
-                chk_msg(
-                        state != error_state,
+                chk_msg(state != error_state,
                         "Can not parse three float line.");
 
                 /* next state */
@@ -426,7 +421,6 @@ int _mli_line_is_usemtl(const char *line, const uint64_t line_length)
                line[2] == 'e' && line[3] == 'm' && line[4] == 't' &&
                line[5] == 'l' && line[6] == ' ';
 }
-
 
 int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 {
@@ -463,8 +457,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         /* parse wavefront into dyn */
         while (1) {
                 line_number += 1;
-                chk_msg(
-                        line_number < 1000 * 1000 * 1000,
+                chk_msg(line_number < 1000 * 1000 * 1000,
                         "Expected less than 1e9 lines in wavefront-file. "
                         "Something went wrong.");
 
@@ -478,16 +471,14 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                             line[2] == ' ') {
                                 /* vertex-normal-line*/
                                 struct mliVec tmp_vn;
-                                chk_msg(
-                                        _mliObject_parse_three_float_line(
+                                chk_msg(_mliObject_parse_three_float_line(
                                                 &line[2], &tmp_vn),
                                         "Can not parse vertex-normal-line.");
                                 chk(mliDynVec_push_back(&vn, tmp_vn));
                         } else if (line[0] == 'v' && line[1] == ' ') {
                                 /* vertex line */
                                 struct mliVec tmp_v;
-                                chk_msg(
-                                        _mliObject_parse_three_float_line(
+                                chk_msg(_mliObject_parse_three_float_line(
                                                 &line[1], &tmp_v),
                                         "Can not parse vertex-line.");
                                 chk(mliDynVec_push_back(&v, tmp_v));
@@ -498,13 +489,11 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 struct mliFace tmp_fvt;
                                 struct mliFace tmp_fvn;
 
-                                chk_msg(
-                                        material_names.size > 0,
+                                chk_msg(material_names.size > 0,
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
 
-                                chk_msg(
-                                        _mliObject_parse_face_line(
+                                chk_msg(_mliObject_parse_face_line(
                                                 line,
                                                 &tmp_fv,
                                                 &tmp_fvt,
@@ -519,12 +508,9 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 tmp_fv.b -= 1;
                                 tmp_fv.c -= 1;
 
-                                chk_msg(
-                                        tmp_fvn.a >= 1, "Expected fvn.a >= 1");
-                                chk_msg(
-                                        tmp_fvn.b >= 1, "Expected fvn.b >= 1");
-                                chk_msg(
-                                        tmp_fvn.c >= 1, "Expected fvn.c >= 1");
+                                chk_msg(tmp_fvn.a >= 1, "Expected fvn.a >= 1");
+                                chk_msg(tmp_fvn.b >= 1, "Expected fvn.b >= 1");
+                                chk_msg(tmp_fvn.c >= 1, "Expected fvn.c >= 1");
                                 tmp_fvn.a -= 1;
                                 tmp_fvn.b -= 1;
                                 tmp_fvn.c -= 1;
@@ -532,8 +518,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 chk(mliDynFace_push_back(&fv, tmp_fv));
                                 chk(mliDynFace_push_back(&fvn, tmp_fvn));
                                 chk(mliDynUint32_push_back(&fm, mtl));
-                                chk_msg(
-                                        (line_mode ==
+                                chk_msg((line_mode ==
                                          MLI_WAVEFRONT_FACE_LINE_V_VT_VN) ||
                                                 (line_mode ==
                                                  MLI_WAVEFRONT_FACE_LINE_V_VN),
@@ -557,11 +542,9 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         }
 
         /* copy dyn into static mliObject */
-        chk_msg(
-                fv.size == fvn.size,
+        chk_msg(fv.size == fvn.size,
                 "Expected num. vertex-indices == num. vertex-normal-indices.");
-        chk_msg(
-                mliObject_malloc(
+        chk_msg(mliObject_malloc(
                         obj, v.size, vn.size, fv.size, material_names.size),
                 "Failed to malloc mliObject from file.");
 

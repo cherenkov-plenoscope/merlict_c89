@@ -6,16 +6,13 @@ int _mliGeometry_objects_equal(
         const struct mliGeometry *b)
 {
         uint32_t i = 0u;
-        chk_msg(
-                a->num_objects == b->num_objects,
+        chk_msg(a->num_objects == b->num_objects,
                 "Expected num_objects to be equal.");
 
         for (i = 0; i < a->num_objects; i++) {
-                chk_msg(
-                        mliObject_equal(&a->objects[i], &b->objects[i]),
+                chk_msg(mliObject_equal(&a->objects[i], &b->objects[i]),
                         "Expected object to be equal.");
-                chk_msg(
-                        mliName_equal(&a->object_names[i], &b->object_names[i]),
+                chk_msg(mliName_equal(&a->object_names[i], &b->object_names[i]),
                         "Expected object_name to be equal.");
         }
         return 1;
@@ -29,24 +26,19 @@ int _mliGeometry_object_references_equal(
         const struct mliGeometry *b)
 {
         uint64_t rob = 0u;
-        chk_msg(
-                a->num_robjects == b->num_robjects,
+        chk_msg(a->num_robjects == b->num_robjects,
                 "Expected num_robjects to be equal.");
 
         for (rob = 0; rob < a->num_robjects; rob++) {
-                chk_msg(
-                        a->robjects[rob] == b->robjects[rob],
+                chk_msg(a->robjects[rob] == b->robjects[rob],
                         "Expected object-references to be equal.");
-                chk_msg(
-                        a->robject_ids[rob] == b->robject_ids[rob],
+                chk_msg(a->robject_ids[rob] == b->robject_ids[rob],
                         "Expected the users object-ids to be equal.");
 
-                chk_msg(
-                        a->robject_ids[rob] == b->robject_ids[rob],
+                chk_msg(a->robject_ids[rob] == b->robject_ids[rob],
                         "Expected the users object-ids to be equal.");
 
-                chk_msg(
-                        mliHomTraComp_equal(
+                chk_msg(mliHomTraComp_equal(
                                 a->robject2root[rob], b->robject2root[rob]),
                         "Expected homogenous transformation of "
                         "object-references to be equal");
@@ -59,11 +51,9 @@ error:
 
 int mliGeometry_equal(const struct mliGeometry *a, const struct mliGeometry *b)
 {
-        chk_msg(
-                _mliGeometry_objects_equal(a, b),
+        chk_msg(_mliGeometry_objects_equal(a, b),
                 "Expected objects to be equal.");
-        chk_msg(
-                _mliGeometry_object_references_equal(a, b),
+        chk_msg(_mliGeometry_object_references_equal(a, b),
                 "Expected object-references to be equal.");
         return 1;
 error:

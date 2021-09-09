@@ -62,8 +62,7 @@ int mliOcTree_malloc_fread(struct mliOcTree *octree, FILE *f)
         chk_fread(&num_leafs, sizeof(uint64_t), 1u, f);
         chk_fread(&num_object_links, sizeof(uint64_t), 1u, f);
 
-        chk_msg(
-                mliOcTree_malloc(
+        chk_msg(mliOcTree_malloc(
                         octree, num_nodes, num_leafs, num_object_links),
                 "Can not malloc octree from file.");
 
@@ -116,8 +115,7 @@ int mliOcTree_malloc_from_path(struct mliOcTree *octree, const char *path)
         f = fopen(path, "r");
         chk_msg(f != NULL, "Can not open octree-file for reading.");
 
-        chk_msg(
-                mliOcTree_malloc_fread(octree, f),
+        chk_msg(mliOcTree_malloc_fread(octree, f),
                 "Can not read octree to file.");
 
         fclose(f);

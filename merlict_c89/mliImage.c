@@ -75,11 +75,9 @@ int mliImage_scale_down_twice(
         struct mliImage *destination)
 {
         uint64_t row, col, sr, sc;
-        chk_msg(
-                destination->num_cols * 2u == source->num_cols,
+        chk_msg(destination->num_cols * 2u == source->num_cols,
                 "Expected destination.num_cols*2u == source.num_cols");
-        chk_msg(
-                destination->num_rows * 2u == source->num_rows,
+        chk_msg(destination->num_rows * 2u == source->num_rows,
                 "Expected destination.num_rows*2u == source.num_rows");
         for (row = 0; row < destination->num_rows; row++) {
                 for (col = 0; col < destination->num_cols; col++) {

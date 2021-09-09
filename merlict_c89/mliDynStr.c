@@ -65,8 +65,7 @@ int mliDynStr_malloc_from_path(struct mliDynStr *str, const char *path)
         str_length = ftell(f);
         str_capacity = str_length + 1;
         chk_msg(fseek(f, 0, SEEK_SET) == 0, "Can not seek to begin of file");
-        chk_msg(
-                mliDynStr_malloc(str, str_capacity), "Can not malloc string.");
+        chk_msg(mliDynStr_malloc(str, str_capacity), "Can not malloc string.");
         chk_fread(str->c_str, sizeof(char), str_length, f);
         fclose(f);
         return 1;

@@ -9,8 +9,7 @@ int mliColor_from_json_token(
         const uint64_t token)
 {
         struct mliVec v;
-        chk_msg(
-                mliVec_from_json_token(&v, json, token),
+        chk_msg(mliVec_from_json_token(&v, json, token),
                 "Can not parse json-float-triple to color.");
         c->r = v.x;
         c->g = v.y;

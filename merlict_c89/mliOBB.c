@@ -48,11 +48,9 @@ error:
 
 int mliOBB_equal(const struct mliOBB a, const struct mliOBB b)
 {
-        chk_msg(
-                mliVec_equal(a.lower, b.lower),
+        chk_msg(mliVec_equal(a.lower, b.lower),
                 "Expected 'lower'-corner to be equal.");
-        chk_msg(
-                mliVec_equal(a.upper, b.upper),
+        chk_msg(mliVec_equal(a.upper, b.upper),
                 "Expected 'upper'-corner to be equal.");
         return 1;
 error:
