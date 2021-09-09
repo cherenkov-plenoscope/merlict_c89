@@ -6,7 +6,6 @@
 
 #include "mliTar.h"
 #include <string.h>
-#include "mli_debug.h"
 
 #define MLITAR_OCTAL 8u
 

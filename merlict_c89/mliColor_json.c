@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliColor_json.h"
 #include "mliVec_json.h"
-#include "mli_debug.h"
 
 int mliColor_from_json_token(
         struct mliColor *c,

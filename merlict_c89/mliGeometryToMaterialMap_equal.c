@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometryToMaterialMap_equal.h"
 #include <stdint.h>
-#include "mli_debug.h"
 
 int mliGeometryToMaterialMap_equal(
         const struct mliGeometryToMaterialMap *a,

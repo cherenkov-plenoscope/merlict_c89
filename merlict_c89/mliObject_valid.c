@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject_valid.h"
-#include "mli_debug.h"
 
 int mliObject_is_valid(const struct mliObject *obj)
 {

@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliImage_ppm.h"
-#include "mli_debug.h"
 
 int mliImage_malloc_from_ppm(struct mliImage *img, const char *path)
 {

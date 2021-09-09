@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliUserScenery_json.h"
-#include "mli_debug.h"
 #include "mliVec_json.h"
 #include "mliColor_json.h"
 

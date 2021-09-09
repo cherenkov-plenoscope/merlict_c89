@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials.h"
-#include "mli_debug.h"
 
 struct mliMaterialsCapacity mliMaterialsCapacity_init(void)
 {

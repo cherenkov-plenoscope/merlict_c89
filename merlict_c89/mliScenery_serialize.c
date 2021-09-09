@@ -2,7 +2,6 @@
 #include "mliScenery_serialize.h"
 #include <math.h>
 #include <stdint.h>
-#include "mli_debug.h"
 
 int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
 {

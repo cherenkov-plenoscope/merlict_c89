@@ -3,7 +3,6 @@
 #include "mliScenery_valid.h"
 #include <math.h>
 #include <stdint.h>
-#include "mli_debug.h"
 
 int mliScenery_malloc_from_tar(struct mliScenery *scenery, const char *path)
 {

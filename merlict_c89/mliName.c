@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliName.h"
-#include "mli_debug.h"
 
 struct mliName mliName_init(void)
 {

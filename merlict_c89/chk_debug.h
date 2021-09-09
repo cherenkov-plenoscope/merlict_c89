@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_DEBUG_H_
-#define MERLICT_C89_MLI_DEBUG_H_
+#ifndef MERLICT_C89_CHK_DEBUG_H_
+#define MERLICT_C89_CHK_DEBUG_H_
 
 #include <stdio.h>
 #include <errno.h>

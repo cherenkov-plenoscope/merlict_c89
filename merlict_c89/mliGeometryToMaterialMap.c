@@ -2,7 +2,6 @@
 #include "mliGeometryToMaterialMap.h"
 #include <math.h>
 #include <stdint.h>
-#include "mli_debug.h"
 
 struct mliGeometryToMaterialMap mliGeometryToMaterialMap_init(void)
 {

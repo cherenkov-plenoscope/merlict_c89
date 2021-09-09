@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator_equal.h"
-#include "mli_debug.h"
 
 int mliAccelerator_equal(
         const struct mliAccelerator *a,

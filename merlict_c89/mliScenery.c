@@ -2,7 +2,6 @@
 #include "mliScenery.h"
 #include <math.h>
 #include <stdint.h>
-#include "mli_debug.h"
 
 struct mliScenery mliScenery_init(void)
 {

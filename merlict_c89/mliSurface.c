@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSurface.h"
-#include "mli_debug.h"
 
 int mliSurface_equal(const struct mliSurface a, const struct mliSurface b)
 {

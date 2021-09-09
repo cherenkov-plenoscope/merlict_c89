@@ -1,7 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_frame_to_scenery.h"
 #include <math.h>
-#include "mli_debug.h"
 
 int __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         const struct mliFrame *frame,

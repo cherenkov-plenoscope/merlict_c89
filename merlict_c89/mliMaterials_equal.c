@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials_equal.h"
-#include "mli_debug.h"
 
 int _mliMaterials_functions_equal(
         const struct mliMaterials *a,
