@@ -368,7 +368,6 @@ CASE("mliObject, read wavefront file")
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, str.c_str));
-        CHECK(strlen(str.c_str) == str.capacity - 1);
         mliDynStr_free(&str);
 
         CHECK(obj.num_faces == 600);

@@ -29,14 +29,13 @@ error:
         return 0;
 }
 
-int mliDynStr_push_back(struct mliDynStr *str, const char *s)
+int mliDynStr_push_back_char(struct mliDynStr *str, const char c)
 {
-        const uint64_t slen = strlen(s);
-        const uint64_t new_size = str->length + slen;
+        const uint64_t new_length = str->length + 1;
 
-        if (new_size >= str->capacity) {
+        if (new_length >= str->capacity) {
                 const uint64_t min_new_capacity =
-                        MLI_MAX2(new_size, 2 * str->capacity);
+                        MLI_MAX2(new_length, 2 * str->capacity);
 
                 str->capacity = min_new_capacity * 2;
                 str->c_str = (char *)realloc(
@@ -46,10 +45,22 @@ int mliDynStr_push_back(struct mliDynStr *str, const char *s)
                        str->capacity - str->length);
                 chk_mem(str->c_str);
         }
+        str->c_str[str->length] = c;
+        str->length = new_length;
 
-        memcpy(&str->c_str[str->length], &s[0], slen);
-        str->length += slen;
+        return 1;
+error:
+        return 0;
+}
 
+int mliDynStr_push_back_c_str(struct mliDynStr *str, const char *s)
+{
+        const uint64_t slen = strlen(s);
+        uint64_t i;
+        for(i = 0; i < slen; i++) {
+                chk_msg(mliDynStr_push_back_char(str, s[i]),
+                        "Failed to push back char");
+        }
         return 1;
 error:
         return 0;
@@ -57,16 +68,16 @@ error:
 
 int mliDynStr_malloc_from_path(struct mliDynStr *str, const char *path)
 {
-        uint64_t str_length = 0u;
-        uint64_t str_capacity = 0u;
+        int c = EOF;
         FILE *f = fopen(path, "rt");
-        chk_msg(f != NULL, "Can not read string from path.");
-        chk_msg(fseek(f, 0, SEEK_END) == 0, "Can not seek to end of file.");
-        str_length = ftell(f);
-        str_capacity = str_length + 1;
-        chk_msg(fseek(f, 0, SEEK_SET) == 0, "Can not seek to begin of file");
-        chk_msg(mliDynStr_malloc(str, str_capacity), "Can not malloc string.");
-        chk_fread(str->c_str, sizeof(char), str_length, f);
+        chk_msg(f, "Failed to open file.");
+        chk_msg(mliDynStr_malloc(str, 0), "Can not malloc string.");
+        c = getc(f);
+        while (c != EOF) {
+                chk_msg(mliDynStr_push_back_char(str, c),
+                        "Failed to push back char.");
+                c = getc(f);
+        }
         fclose(f);
         return 1;
 error:
@@ -80,22 +91,19 @@ int mliDynStr_convert_line_break_CRLF_CR_to_LF(
         struct mliDynStr *dst,
         const struct mliDynStr *src)
 {
-        char buff[2];
         uint64_t i = 0;
         mliDynStr_free(dst);
         chk(mliDynStr_malloc(dst, src->capacity));
 
         while (i < src->capacity) {
                 if (_mli_is_CRLF_line_break(&src->c_str[i])) {
-                        chk(mliDynStr_push_back(dst, "\n"));
+                        chk(mliDynStr_push_back_char(dst, '\n'));
                         i += 2;
                 } else if (_mli_is_CR_line_break(&src->c_str[i])) {
-                        chk(mliDynStr_push_back(dst, "\n"));
+                        chk(mliDynStr_push_back_char(dst, '\n'));
                         i += 1;
                 } else {
-                        buff[0] = src->c_str[i];
-                        buff[1] = '\0';
-                        chk(mliDynStr_push_back(dst, buff));
+                        chk(mliDynStr_push_back_char(dst, src->c_str[i]));
                         i += 1;
                 }
         }

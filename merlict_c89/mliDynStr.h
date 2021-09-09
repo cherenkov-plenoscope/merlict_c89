@@ -10,7 +10,8 @@ struct mliDynStr {
 struct mliDynStr mliDynStr_init(void);
 void mliDynStr_free(struct mliDynStr *str);
 int mliDynStr_malloc(struct mliDynStr *str, const uint64_t capacity);
-int mliDynStr_push_back(struct mliDynStr *str, const char *s);
+int mliDynStr_push_back_char(struct mliDynStr *str, const char c);
+int mliDynStr_push_back_c_str(struct mliDynStr *str, const char *s);
 int mliDynStr_malloc_from_path(struct mliDynStr *str, const char *path);
 int mliDynStr_convert_line_break_CRLF_CR_to_LF(
         struct mliDynStr *dst,
