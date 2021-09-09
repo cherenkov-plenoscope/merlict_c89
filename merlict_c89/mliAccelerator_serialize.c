@@ -48,10 +48,10 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f)
         chk_fread(&num_robjects, sizeof(uint32_t), 1u, f);
 
         /* malloc */
-        chk_memory(mliAccelerator_malloc(accel, num_objects, num_robjects));
+        chk_mem(mliAccelerator_malloc(accel, num_objects, num_robjects));
 
         for (i = 0; i < accel->num_objects; i++) {
-                chk_memory(
+                chk_mem(
                         mliOcTree_malloc_fread(&accel->object_octrees[i], f));
         }
 
@@ -61,7 +61,7 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f)
                 accel->num_robjects,
                 f);
 
-        chk_memory(mliOcTree_malloc_fread(&accel->scenery_octree, f));
+        chk_mem(mliOcTree_malloc_fread(&accel->scenery_octree, f));
 
         return 1;
 error:

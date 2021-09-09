@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
                                         &scenery, argv[1]),
                                 "Can not read scenery from '.obj'.");
                 } else {
-                        chk_sentinel("Scenery-format has to be either of "
+                        chk_bad("Scenery-format has to be either of "
                                 "('.tar', '.mli', '.obj').");
                 }
         }

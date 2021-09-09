@@ -26,7 +26,7 @@ int mli_photoninteraction_type_to_string(const int32_t type, char *s)
                 sprintf(s, "diffuse reflection");
                 break;
         default:
-                chk_sentinel("PhotonInteraction.type is unknown.");
+                chk_bad("PhotonInteraction.type is unknown.");
                 break;
         }
         return 1;

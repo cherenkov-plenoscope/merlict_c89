@@ -19,11 +19,11 @@ struct mliNameMap mliNameMap_init(void)
 int mliNameMap_malloc(struct mliNameMap *namemap)
 {
         mliNameMap_free(namemap);
-        chk_memory(mliDynMap_malloc(&namemap->functions, 0u));
-        chk_memory(mliDynMap_malloc(&namemap->colors, 0u));
-        chk_memory(mliDynMap_malloc(&namemap->media, 0u));
-        chk_memory(mliDynMap_malloc(&namemap->surfaces, 0u));
-        chk_memory(mliDynMap_malloc(&namemap->boundary_layers, 0u));
+        chk_mem(mliDynMap_malloc(&namemap->functions, 0u));
+        chk_mem(mliDynMap_malloc(&namemap->colors, 0u));
+        chk_mem(mliDynMap_malloc(&namemap->media, 0u));
+        chk_mem(mliDynMap_malloc(&namemap->surfaces, 0u));
+        chk_mem(mliDynMap_malloc(&namemap->boundary_layers, 0u));
         return 1;
 error:
         return 0;

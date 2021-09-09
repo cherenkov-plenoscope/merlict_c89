@@ -38,7 +38,7 @@ int mliOcTree_valid(const struct mliOcTree *octree)
                                         "Expected the address of a 'LEAF' "
                                         "child to be < leafs.num_leafs.");
                         } else {
-                                chk_sentinel(
+                                chk_bad(
                                         "Expected octree->nodes[n].type[c] "
                                         "to be either NONE, NODE, or LEAF.");
                         }

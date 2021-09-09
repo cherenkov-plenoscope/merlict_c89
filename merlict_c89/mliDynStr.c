@@ -44,7 +44,7 @@ int mliDynStr_push_back(struct mliDynStr *str, const char *s)
                 memset(&str->c_str[str->length],
                        '\0',
                        str->capacity - str->length);
-                chk_memory(str->c_str);
+                chk_mem(str->c_str);
         }
 
         memcpy(&str->c_str[str->length], &s[0], slen);

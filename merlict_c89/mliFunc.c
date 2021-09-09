@@ -47,9 +47,9 @@ int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
         double y1, y0, x1, x0;
         uint32_t idx = mli_upper_compare_double(f->x, f->num_points, xarg);
         if (idx == 0) {
-                chk_sentinel("mliFunc argument below lower bound.");
+                chk_bad("mliFunc argument below lower bound.");
         } else if (idx == f->num_points) {
-                chk_sentinel("mliFunc argument above upper bound.");
+                chk_bad("mliFunc argument above upper bound.");
         } else {
                 y1 = f->y[idx];
                 y0 = f->y[idx - 1u];

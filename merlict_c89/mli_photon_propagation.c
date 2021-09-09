@@ -228,7 +228,7 @@ int _mli_interact_with_object(
                 chk_msg(_mli_phong(env, isec), "Failed Phong-material.");
                 break;
         default:
-                chk_sentinel("Unkown material of surface.");
+                chk_bad("Unkown material of surface.");
                 break;
         }
         return 1;

@@ -201,7 +201,13 @@ int _mli_is_CR_line_break(const char *s)
         return 0;
 }
 
-int mli_string_assert_only_NUL_LF_TAB_controls(const char *str)
+int mli_string_assert_only_NUL_LF_TAB_controls(const char *str) {
+        return mli_string_assert_only_NUL_LF_TAB_controls_dbg(str, 1);
+}
+
+int mli_string_assert_only_NUL_LF_TAB_controls_dbg(
+        const char *str,
+        const int dbg)
 {
         uint64_t pos = 0;
         while (str[pos] != '\0') {
@@ -213,7 +219,7 @@ int mli_string_assert_only_NUL_LF_TAB_controls(const char *str)
                         } else if (str[pos] == '\t') {
                                 /* fine */
                         } else {
-                                if (MLI_PRINT_LEVEL) {
+                                if (dbg) {
                                         chk_eprintf(
                                                 "Control code %u "
                                                 "at column %ld in string.\n",

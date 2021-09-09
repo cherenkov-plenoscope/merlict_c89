@@ -41,7 +41,7 @@ int _read_telescope_offsets(
                 chk_fread(weight.array, sizeof(float), narray, f);
                 break;
         default:
-                chk_sentinel(
+                chk_bad(
                         "Expected num_following_arrays to be either 2, or 3.");
         }
 

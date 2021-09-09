@@ -6,6 +6,14 @@
 
 int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
 {
+        return mliFunc_malloc_from_csv_dbg(func, str, 1);
+}
+
+int mliFunc_malloc_from_csv_dbg(
+        struct mliFunc *func,
+        const char *str,
+        const int dbg)
+{
         char line_delimiter = '\n';
         char token_delimiter = ',';
         char line[MLI_CSV_BUFF_CAPACITY];
@@ -108,7 +116,7 @@ error:
         mliDynDouble_free(&xs);
         mliFunc_free(func);
 
-        if (MLI_PRINT_LEVEL) {
+        if (dbg) {
                 mli_lines_info_fprint(
                         stderr, str, line_number, debug_line_radius);
         }

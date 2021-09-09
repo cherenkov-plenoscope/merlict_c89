@@ -73,7 +73,7 @@
                         dh->array = (PAYLOAD_TYPE *)realloc(                   \
                                 (void *)dh->array,                             \
                                 dh->capacity * sizeof(PAYLOAD_TYPE));          \
-                        chk_memory(dh->array);                              \
+                        chk_mem(dh->array);                              \
                 }                                                              \
                                                                                \
                 dh->array[dh->size] = item;                                    \

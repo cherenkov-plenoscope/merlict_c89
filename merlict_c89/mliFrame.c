@@ -97,7 +97,7 @@ int mli_type_to_string(const uint64_t type, char *s)
                 sprintf(s, "object");
                 break;
         default:
-                chk_sentinel("Type is unknown.");
+                chk_bad("Type is unknown.");
                 break;
         }
         return 1;
@@ -112,7 +112,7 @@ int mli_string_to_type(const char *s, uint64_t *type)
         } else if (strcmp(s, "object") == 0) {
                 *type = MLI_OBJECT;
         } else {
-                chk_sentinel("Type is unknown.");
+                chk_bad("Type is unknown.");
         }
         return 1;
 error:

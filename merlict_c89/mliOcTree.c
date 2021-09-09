@@ -349,7 +349,7 @@ int _mliOcTree_equal_payload(
         } else if (node_type == MLI_OCTREE_TYPE_NONE) {
 
         } else {
-                chk_sentinel("node_idx must be either node, leaf or none");
+                chk_bad("node_idx must be either node, leaf or none");
         }
 
         return 1;

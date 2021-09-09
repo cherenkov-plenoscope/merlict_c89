@@ -424,17 +424,17 @@ int __mliFrame_type_from_json(
         int has_children = mliJson_find_key(json, token, "children", &_t);
 
         if (has_obj && has_children) {
-                chk_sentinel(
+                chk_bad(
                         "Frame must not have both keys 'obj', and 'children'.");
         } else if (!has_obj && !has_children) {
-                chk_sentinel(
+                chk_bad(
                         "Frame must have either of keys 'obj', or 'children'.");
         } else if (has_obj && !has_children) {
                 (*type) = MLI_OBJECT;
         } else if (!has_obj && has_children) {
                 (*type) = MLI_FRAME;
         } else {
-                chk_sentinel("Not expected to happen");
+                chk_bad("Not expected to happen");
         }
 
         return 1;
@@ -719,7 +719,7 @@ int __mliFrame_from_json(
                                 "from json.");
                         break;
                 default:
-                        chk_sentinel("Unknown type of frame.");
+                        chk_bad("Unknown type of frame.");
                         break;
                 }
         }

@@ -254,7 +254,7 @@ int _mliObject_parse_face_line(
 
                 if (state == error_state) {
                         *line_mode = -1;
-                        chk_sentinel("Can not parse line.");
+                        chk_bad("Can not parse line.");
                 }
 
                 /* next state */
@@ -426,6 +426,7 @@ int _mli_line_is_usemtl(const char *line, const uint64_t line_length)
                line[2] == 'e' && line[3] == 'm' && line[4] == 't' &&
                line[5] == 'l' && line[6] == ' ';
 }
+
 
 int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 {
@@ -611,10 +612,7 @@ error:
 
         mliDynMap_free(&material_names);
 
-        if (MLI_PRINT_LEVEL) {
-                mli_lines_info_fprint(
-                        stderr, str, line_number, debug_line_radius);
-        }
+        mli_lines_info_fprint(stderr, str, line_number, debug_line_radius);
 
         return 0;
 }

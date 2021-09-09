@@ -118,7 +118,7 @@ int _mlivr_export_image(
         const double image_ratio =
                 ((double)config.export_num_cols /
                  (double)config.export_num_rows);
-        chk_memory(mliImage_malloc(
+        chk_mem(mliImage_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
         camera2root_comp = mliView_to_HomTraComp(view);
         apcam.focal_length =
@@ -179,9 +179,9 @@ int mlivr_run_interactive_viewer(
         struct mliIntersectionSurfaceNormal probing_intersection;
 
         mlivr_timestamp_now_19chars(timestamp);
-        chk_memory(mliImage_malloc(
+        chk_mem(mliImage_malloc(
                 &img, config.preview_num_cols, config.preview_num_rows));
-        chk_memory(mliImage_malloc(
+        chk_mem(mliImage_malloc(
                 &img2,
                 config.preview_num_cols * 2u,
                 config.preview_num_rows * 2u));

@@ -23,7 +23,7 @@ int __mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
                 (*total_num_boundary_layers) += frame->boundary_layers.size;
                 break;
         default:
-                chk_sentinel("Expected either type 'frame' or 'object'.");
+                chk_bad("Expected either type 'frame' or 'object'.");
                 break;
         }
         return 1;
@@ -103,7 +103,7 @@ int __mliFrame_set_robjects_and_material_map(
                 (*num_robjects) += 1;
                 break;
         default:
-                chk_sentinel("Expected either type 'frame' or 'object'.");
+                chk_bad("Expected either type 'frame' or 'object'.");
                 break;
         }
         return 1;

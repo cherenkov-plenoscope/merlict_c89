@@ -13,26 +13,28 @@
  */
 
 #define chk_clean_errno() (errno == 0 ? "None" : strerror(errno))
-#define chk(A) chk_msg(A, "Not expected.")
-#define chk_memory(A) chk_msg((A), "Out of memory.")
+#define chk(C) chk_msg(C, "Not expected.")
+#define chk_mem(C) chk_msg((C), "Out of memory.")
 
-#define chk_log_err(M)                                                         \
+#define chk_eprint(MSG)                                                        \
         fprintf(stderr,                                                        \
-                "[ERROR] (%s:%d: errno: %s) " M "\n",                          \
+                "[ERROR] (%s:%d: errno: %s) " MSG "\n",                        \
                 __FILE__,                                                      \
                 __LINE__,                                                      \
                 chk_clean_errno())
 
-#define chk_msg(A, M)                                                          \
-        if (!(A)) {                                                            \
-                chk_log_err(M);                                                \
+void chk_eprintf(const char *format, ...);
+
+#define chk_msg(C, MSG)                                                        \
+        if (!(C)) {                                                            \
+                chk_eprint(MSG);                                               \
                 errno = 0;                                                     \
                 goto error;                                                    \
         }
 
-#define chk_sentinel(M)                                                        \
+#define chk_bad(MSG)                                                           \
         {                                                                      \
-                chk_log_err(M);                                                \
+                chk_eprint(MSG);                                               \
                 errno = 0;                                                     \
                 goto error;                                                    \
         }
@@ -40,15 +42,14 @@
 #define chk_malloc(PTR, TYPE, NUM)                                             \
         {                                                                      \
                 PTR = (TYPE *)malloc(NUM * sizeof(TYPE));                      \
-                chk_memory(PTR);                                               \
+                chk_mem(PTR);                                                  \
         }
 
 #define chk_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                                  \
         {                                                                      \
                 const uint64_t num_written =                                   \
                         fwrite(PTR, SIZE_OF_TYPE, NUM, F);                     \
-                chk_msg(                                                       \
-                        num_written == NUM, "Can not write to file.");         \
+                chk_msg(num_written == NUM, "Can not write to file.");         \
         }
 
 #define chk_fread(PTR, SIZE_OF_TYPE, NUM, F)                                   \
@@ -56,9 +57,5 @@
                 const uint64_t num_read = fread(PTR, SIZE_OF_TYPE, NUM, F);    \
                 chk_msg(num_read == NUM, "Can not read from file.");           \
         }
-
-void chk_eprintf(const char *format, ...);
-
-int MLI_PRINT_LEVEL = 1;
 
 #endif

@@ -1,6 +1,5 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 
-MLI_PRINT_LEVEL = 0;
 
 CASE("parse_correct_csv")
 {
@@ -8,7 +7,7 @@ CASE("parse_correct_csv")
         struct mliFunc func = mliFunc_init();
 
         sprintf(text, "#comment\n#units\n0.0,1.0\n1.0,2.0\n");
-        CHECK(mliFunc_malloc_from_csv(&func, text));
+        CHECK(mliFunc_malloc_from_csv_dbg(&func, text, 0));
 
         CHECK(func.num_points == 2);
         CHECK(func.x[0] == 0.0);
@@ -26,7 +25,7 @@ CASE("parse_empty_text")
         struct mliFunc func = mliFunc_init();
 
         memset(text, '\0', 128);
-        CHECK(!mliFunc_malloc_from_csv(&func, text));
+        CHECK(!mliFunc_malloc_from_csv_dbg(&func, text, 0));
         CHECK(func.num_points == 0);
         mliFunc_free(&func);
 }
@@ -37,7 +36,7 @@ CASE("parse_empty_csv")
         struct mliFunc func = mliFunc_init();
 
         sprintf(text, "# only a comment line\n");
-        CHECK(!mliFunc_malloc_from_csv(&func, text));
+        CHECK(!mliFunc_malloc_from_csv_dbg(&func, text, 0));
         CHECK(func.num_points == 0);
         mliFunc_free(&func);
 }
@@ -48,7 +47,7 @@ CASE("parse_empty_csv_no_newline")
         struct mliFunc func = mliFunc_init();
 
         sprintf(text, "# only a comment line");
-        CHECK(!mliFunc_malloc_from_csv(&func, text));
+        CHECK(!mliFunc_malloc_from_csv_dbg(&func, text, 0));
         CHECK(func.num_points == 0);
         mliFunc_free(&func);
 }
@@ -59,7 +58,7 @@ CASE("some_comments")
         struct mliFunc func = mliFunc_init();
 
         sprintf(text, "0.0,1.0\n# inline comment\n1.0,2.0\n# end comment");
-        CHECK(mliFunc_malloc_from_csv(&func, text));
+        CHECK(mliFunc_malloc_from_csv_dbg(&func, text, 0));
 
         CHECK(func.num_points == 2);
         CHECK(func.x[0] == 0.0);
@@ -81,7 +80,7 @@ CASE("exceed_buffer")
                 "000000000000000000000000000000000000000000000000000000000,"
                 "1.00000000000000000000000000000000000000000000000000000000"
                 "0000000000000000000000000000000000000000000000000000000000");
-        CHECK(0 == mliFunc_malloc_from_csv(&func, text));
+        CHECK(0 == mliFunc_malloc_from_csv_dbg(&func, text, 0));
         mliFunc_free(&func);
 }
 
@@ -91,23 +90,21 @@ CASE("do_not_tolerate_whitespaces")
         struct mliFunc func = mliFunc_init();
 
         sprintf(text, " 0.0,1.0\n");
-        CHECK(0 == mliFunc_malloc_from_csv(&func, text));
+        CHECK(0 == mliFunc_malloc_from_csv_dbg(&func, text, 0));
 
         sprintf(text, "0.0 ,1.0\n");
-        CHECK(0 == mliFunc_malloc_from_csv(&func, text));
+        CHECK(0 == mliFunc_malloc_from_csv_dbg(&func, text, 0));
         mliFunc_free(&func);
 
         sprintf(text, "0.0, 1.0\n");
-        CHECK(0 == mliFunc_malloc_from_csv(&func, text));
+        CHECK(0 == mliFunc_malloc_from_csv_dbg(&func, text, 0));
         mliFunc_free(&func);
 
         sprintf(text, "0.0,1.0 \n");
-        CHECK(0 == mliFunc_malloc_from_csv(&func, text));
+        CHECK(0 == mliFunc_malloc_from_csv_dbg(&func, text, 0));
         mliFunc_free(&func);
 
         sprintf(text, "\t0.0,1.0 \n");
-        CHECK(0 == mliFunc_malloc_from_csv(&func, text));
+        CHECK(0 == mliFunc_malloc_from_csv_dbg(&func, text, 0));
         mliFunc_free(&func);
 }
-
-MLI_PRINT_LEVEL = 1;
