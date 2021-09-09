@@ -54,7 +54,7 @@ int mliJson_malloc_from_string(struct mliJson *json, const char *json_str)
         int64_t num_tokens_parsed;
         uint64_t json_strlen = strlen(json_str);
         struct jsmn_parser parser;
-        mli_check_mem(mliJson_malloc(json, json_strlen));
+        mli_check_memory(mliJson_malloc(json, json_strlen));
         strcpy(json->c_str, json_str);
         json->c_str[json_strlen] = '\0';
         jsmn_init(&parser);

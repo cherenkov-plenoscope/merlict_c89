@@ -31,7 +31,7 @@ int mliImage_malloc_from_ppm(struct mliImage *img, const char *path)
         num_rows = atoi(line);
         mli_check_message(fgets(line, 1024, fin), "Can not read header-line.");
         mli_check_message(strcmp(line, "255\n") == 0, "Expected 8bit range '255'.");
-        mli_check_mem(mliImage_malloc(img, num_cols, num_rows));
+        mli_check_memory(mliImage_malloc(img, num_cols, num_rows));
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
                         uint8_t r, g, b;

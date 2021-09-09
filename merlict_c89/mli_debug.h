@@ -14,7 +14,7 @@
 
 #define mli_clean_errno() (errno == 0 ? "None" : strerror(errno))
 #define mli_check(A) mli_check_message(A, "Not expected.")
-#define mli_check_mem(A) mli_check_message((A), "Out of memory.")
+#define mli_check_memory(A) mli_check_message((A), "Out of memory.")
 
 #define mli_log_err(M)                                                         \
         fprintf(stderr,                                                        \
@@ -40,7 +40,7 @@
 #define mli_check_malloc(PTR, TYPE, NUM)                                       \
         {                                                                      \
                 PTR = (TYPE *)malloc(NUM * sizeof(TYPE));                      \
-                mli_check_mem(PTR);                                            \
+                mli_check_memory(PTR);                                         \
         }
 
 #define mli_check_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                            \
