@@ -11,13 +11,13 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
         struct mliMagicId magic;
 
         /* magic identifier */
-        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
         mli_c(mliMagicId_has_word(&magic, "mliGeometry"));
         mliMagicId_warn_version(&magic);
 
         /* payload */
-        mli_fread(&num_objects, sizeof(uint32_t), 1u, f);
-        mli_fread(&num_robjects, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&num_objects, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&num_robjects, sizeof(uint32_t), 1u, f);
 
         mli_check(
                 mliGeometry_malloc(geometry, num_objects, num_robjects),
@@ -28,23 +28,23 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
                         mliObject_malloc_fread(&geometry->objects[i], f),
                         "Failed to read object into geometry.");
         }
-        mli_fread(
+        mli_check_fread(
                 geometry->object_names,
                 sizeof(struct mliName),
                 geometry->num_objects,
                 f);
 
-        mli_fread(
+        mli_check_fread(
                 geometry->robjects,
                 sizeof(uint32_t),
                 geometry->num_robjects,
                 f);
-        mli_fread(
+        mli_check_fread(
                 geometry->robject_ids,
                 sizeof(uint32_t),
                 geometry->num_robjects,
                 f);
-        mli_fread(
+        mli_check_fread(
                 geometry->robject2root,
                 sizeof(struct mliHomTraComp),
                 geometry->num_robjects,

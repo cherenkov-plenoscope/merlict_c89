@@ -48,14 +48,14 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
         uint32_t num_faces;
         uint32_t num_materials;
         struct mliMagicId magic;
-        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
         mli_c(mliMagicId_has_word(&magic, "mliObject"));
         mliMagicId_warn_version(&magic);
 
-        mli_fread(&num_vertices, sizeof(uint32_t), 1u, f);
-        mli_fread(&num_vertex_normals, sizeof(uint32_t), 1u, f);
-        mli_fread(&num_faces, sizeof(uint32_t), 1u, f);
-        mli_fread(&num_materials, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&num_vertices, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&num_vertex_normals, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&num_faces, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&num_materials, sizeof(uint32_t), 1u, f);
 
         mli_c(mliObject_malloc(
                 obj,
@@ -64,22 +64,22 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
                 num_faces,
                 num_materials));
 
-        mli_fread(obj->vertices, sizeof(struct mliVec), obj->num_vertices, f);
-        mli_fread(
+        mli_check_fread(obj->vertices, sizeof(struct mliVec), obj->num_vertices, f);
+        mli_check_fread(
                 obj->vertex_normals,
                 sizeof(struct mliVec),
                 obj->num_vertex_normals,
                 f);
 
-        mli_fread(
+        mli_check_fread(
                 obj->faces_vertices, sizeof(struct mliFace), obj->num_faces, f);
-        mli_fread(
+        mli_check_fread(
                 obj->faces_vertex_normals,
                 sizeof(struct mliFace),
                 obj->num_faces,
                 f);
-        mli_fread(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
-        mli_fread(
+        mli_check_fread(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
+        mli_check_fread(
                 obj->material_names,
                 sizeof(struct mliName),
                 obj->num_materials,

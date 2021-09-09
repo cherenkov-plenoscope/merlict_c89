@@ -15,9 +15,9 @@ struct mliEventIoRun mliEventIoRun_init(void)
 int _read_273_block(FILE *f, float *block)
 {
         int32_t block_size;
-        mli_fread(&block_size, sizeof(int32_t), 1, f);
+        mli_check_fread(&block_size, sizeof(int32_t), 1, f);
         mli_check(block_size == 273, "Expected block-size to be 273.");
-        mli_fread(block, sizeof(float), (uint64_t)block_size, f);
+        mli_check_fread(block, sizeof(float), (uint64_t)block_size, f);
         return 1;
 error:
         return 0;
@@ -44,12 +44,12 @@ int _read_input_card(
                 mliDynStr_malloc(input_card, length + 1),
                 "Failed to malloc c_str for input-card.");
 
-        mli_fread(_unknown, sizeof(_unknown), 1, f);
+        mli_check_fread(_unknown, sizeof(_unknown), 1, f);
         mli_check(
                 length >= sizeof(_unknown),
                 "Expected at least 8bytes payload.");
         input_card_length = length - sizeof(_unknown);
-        mli_fread(input_card->c_str, sizeof(char), input_card_length, f);
+        mli_check_fread(input_card->c_str, sizeof(char), input_card_length, f);
         return 1;
 error:
         return 0;
@@ -63,7 +63,7 @@ int _read_telescope_positions(
         int32_t ntel;
         int num_following_arrays;
 
-        mli_fread(&ntel, sizeof(int32_t), 1, f);
+        mli_check_fread(&ntel, sizeof(int32_t), 1, f);
 
         num_following_arrays = (int)((length - 4) / ntel / 4);
 
@@ -71,7 +71,7 @@ int _read_telescope_positions(
 
                 mli_c(mliDynEventIoTelescopePosition_malloc_set_size(
                         telescope_positions, ntel));
-        mli_fread(
+        mli_check_fread(
                 telescope_positions->array,
                 sizeof(struct mliEventIoTelescopePosition),
                 (uint64_t)ntel,

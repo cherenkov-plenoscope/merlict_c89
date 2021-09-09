@@ -11,23 +11,23 @@ int mliGeometryToMaterialMap_malloc_fread(
         struct mliMagicId magic;
 
         /* magic identifier */
-        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
         mli_c(mliMagicId_has_word(&magic, "mliGeometryToMaterialMap"));
         mliMagicId_warn_version(&magic);
 
         /* payload */
-        mli_fread(&num_robjects, sizeof(uint32_t), 1u, f);
-        mli_fread(&total_num_boundary_layers, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&num_robjects, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&total_num_boundary_layers, sizeof(uint32_t), 1u, f);
         mli_check(
                 mliGeometryToMaterialMap_malloc(
                         geomap, num_robjects, total_num_boundary_layers),
                 "Failed to malloc mliGeometryToMaterialMap.");
-        mli_fread(
+        mli_check_fread(
                 geomap->boundary_layers,
                 sizeof(uint32_t),
                 geomap->total_num_boundary_layers,
                 f);
-        mli_fread(
+        mli_check_fread(
                 geomap->first_boundary_layer_in_robject,
                 sizeof(uint32_t),
                 geomap->num_robjects,

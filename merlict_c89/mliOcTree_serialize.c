@@ -53,40 +53,40 @@ int mliOcTree_malloc_fread(struct mliOcTree *octree, FILE *f)
         struct mliMagicId magic;
 
         /* magic identifier */
-        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
         mli_c(mliMagicId_has_word(&magic, "mliOcTree"));
         mliMagicId_warn_version(&magic);
 
         /* capacity */
-        mli_fread(&num_nodes, sizeof(uint64_t), 1u, f);
-        mli_fread(&num_leafs, sizeof(uint64_t), 1u, f);
-        mli_fread(&num_object_links, sizeof(uint64_t), 1u, f);
+        mli_check_fread(&num_nodes, sizeof(uint64_t), 1u, f);
+        mli_check_fread(&num_leafs, sizeof(uint64_t), 1u, f);
+        mli_check_fread(&num_object_links, sizeof(uint64_t), 1u, f);
 
         mli_check(
                 mliOcTree_malloc(
                         octree, num_nodes, num_leafs, num_object_links),
                 "Can not malloc octree from file.");
 
-        mli_fread(octree->nodes, sizeof(struct mliNode), octree->num_nodes, f);
-        mli_fread(
+        mli_check_fread(octree->nodes, sizeof(struct mliNode), octree->num_nodes, f);
+        mli_check_fread(
                 octree->leafs.adresses,
                 sizeof(struct mliLeafAddress),
                 octree->leafs.num_leafs,
                 f);
-        mli_fread(
+        mli_check_fread(
                 octree->leafs.object_links,
                 sizeof(uint32_t),
                 octree->leafs.num_object_links,
                 f);
 
         /* mliCube */
-        mli_fread(&octree->cube.lower.x, sizeof(double), 1u, f);
-        mli_fread(&octree->cube.lower.y, sizeof(double), 1u, f);
-        mli_fread(&octree->cube.lower.z, sizeof(double), 1u, f);
-        mli_fread(&octree->cube.edge_length, sizeof(double), 1u, f);
+        mli_check_fread(&octree->cube.lower.x, sizeof(double), 1u, f);
+        mli_check_fread(&octree->cube.lower.y, sizeof(double), 1u, f);
+        mli_check_fread(&octree->cube.lower.z, sizeof(double), 1u, f);
+        mli_check_fread(&octree->cube.edge_length, sizeof(double), 1u, f);
 
         /* root type */
-        mli_fread(&octree->root_type, sizeof(uint8_t), 1u, f);
+        mli_check_fread(&octree->root_type, sizeof(uint8_t), 1u, f);
 
         return 1;
 error:

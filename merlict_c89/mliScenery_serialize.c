@@ -25,7 +25,7 @@ int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
 
         mliScenery_free(scenery);
 
-        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
         mli_c(mliMagicId_has_word(&magic, "mliScenery"));
         mliMagicId_warn_version(&magic);
 

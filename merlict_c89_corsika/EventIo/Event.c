@@ -17,11 +17,11 @@ int _read_telescope_offsets(
         struct mliDynFloat yoff = mliDynFloat_init();
         struct mliDynFloat weight = mliDynFloat_init();
 
-        mli_fread(&_narray, sizeof(int32_t), 1, f);
+        mli_check_fread(&_narray, sizeof(int32_t), 1, f);
         mli_check(_narray >= 0, "Expected num. of arrays to be positive.");
         narray = (uint64_t)_narray;
 
-        mli_fread(&toff, sizeof(float), 1, f);
+        mli_check_fread(&toff, sizeof(float), 1, f);
 
         mli_c(mliDynFloat_malloc_set_size(&xoff, narray));
         mli_c(mliDynFloat_malloc_set_size(&yoff, narray));
@@ -29,8 +29,8 @@ int _read_telescope_offsets(
 
         num_following_arrays = (int)((length - length_first_two) / narray / 4);
 
-        mli_fread(xoff.array, sizeof(float), narray, f);
-        mli_fread(yoff.array, sizeof(float), narray, f);
+        mli_check_fread(xoff.array, sizeof(float), narray, f);
+        mli_check_fread(yoff.array, sizeof(float), narray, f);
         memset(weight.array, 1.0, narray);
 
         switch (num_following_arrays) {
@@ -38,7 +38,7 @@ int _read_telescope_offsets(
                 /* do nothing, we already read the 2 arrays xoff and yoff. */
                 break;
         case 3:
-                mli_fread(weight.array, sizeof(float), narray, f);
+                mli_check_fread(weight.array, sizeof(float), narray, f);
                 break;
         default:
                 mli_sentinel(
@@ -83,10 +83,10 @@ int _read_photon_bunches(
         int is_compact = 0;
         uint64_t row, field;
 
-        mli_fread(&b_head->array_id, sizeof(b_head->array_id), 1, f);
-        mli_fread(&b_head->telescope_id, sizeof(b_head->telescope_id), 1, f);
-        mli_fread(&b_head->photons, sizeof(b_head->photons), 1, f);
-        mli_fread(&b_head->num_bunches, sizeof(b_head->num_bunches), 1, f);
+        mli_check_fread(&b_head->array_id, sizeof(b_head->array_id), 1, f);
+        mli_check_fread(&b_head->telescope_id, sizeof(b_head->telescope_id), 1, f);
+        mli_check_fread(&b_head->photons, sizeof(b_head->photons), 1, f);
+        mli_check_fread(&b_head->num_bunches, sizeof(b_head->num_bunches), 1, f);
 
         is_compact = (int)(version / 1000 == 1);
 
@@ -98,7 +98,7 @@ int _read_photon_bunches(
         if (is_compact) {
                 int16_t buff[8];
                 for (row = 0; row < bunches->size; row++) {
-                        mli_fread(buff, sizeof(int16_t), 8, f);
+                        mli_check_fread(buff, sizeof(int16_t), 8, f);
 
                         for (field = 0; field < 8; field++) {
                                 tmp[field] = (float)buff[field];
@@ -116,7 +116,7 @@ int _read_photon_bunches(
                 }
         } else {
                 for (row = 0; row < bunches->size; row++) {
-                        mli_fread(tmp, sizeof(float), 8, f);
+                        mli_check_fread(tmp, sizeof(float), 8, f);
 
                         bunches->array[row].x_cm = tmp[0];
                         bunches->array[row].y_cm = tmp[1];

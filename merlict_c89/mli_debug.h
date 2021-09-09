@@ -50,7 +50,7 @@
                 mli_check(num_written == NUM, "Can not write to file.");       \
         }
 
-#define mli_fread(PTR, SIZE_OF_TYPE, NUM, F)                                   \
+#define mli_check_fread(PTR, SIZE_OF_TYPE, NUM, F)                             \
         {                                                                      \
                 const uint64_t num_read = fread(PTR, SIZE_OF_TYPE, NUM, F);    \
                 mli_check(num_read == NUM, "Can not read from file.");         \

@@ -39,13 +39,13 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f)
         uint32_t num_objects = 0u;
 
         /* magic identifier */
-        mli_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
         mli_c(mliMagicId_has_word(&magic, "mliAccelerator"));
         mliMagicId_warn_version(&magic);
 
         /* capacity */
-        mli_fread(&num_objects, sizeof(uint32_t), 1u, f);
-        mli_fread(&num_robjects, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&num_objects, sizeof(uint32_t), 1u, f);
+        mli_check_fread(&num_robjects, sizeof(uint32_t), 1u, f);
 
         /* malloc */
         mli_check_mem(mliAccelerator_malloc(accel, num_objects, num_robjects));
@@ -55,7 +55,7 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f)
                         mliOcTree_malloc_fread(&accel->object_octrees[i], f));
         }
 
-        mli_fread(
+        mli_check_fread(
                 accel->robject_obbs,
                 sizeof(struct mliOBB),
                 accel->num_robjects,
