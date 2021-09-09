@@ -13,8 +13,8 @@
  */
 
 #define mli_clean_errno() (errno == 0 ? "None" : strerror(errno))
-#define mli_c(A) mli_check(A, "Not expected.")
-#define mli_check_mem(A) mli_check((A), "Out of memory.")
+#define mli_check(A) mli_check_message(A, "Not expected.")
+#define mli_check_mem(A) mli_check_message((A), "Out of memory.")
 
 #define mli_log_err(M)                                                         \
         fprintf(stderr,                                                        \
@@ -23,7 +23,7 @@
                 __LINE__,                                                      \
                 mli_clean_errno())
 
-#define mli_check(A, M)                                                        \
+#define mli_check_message(A, M)                                                \
         if (!(A)) {                                                            \
                 mli_log_err(M);                                                \
                 errno = 0;                                                     \
@@ -43,17 +43,18 @@
                 mli_check_mem(PTR);                                            \
         }
 
-#define mli_check_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                                  \
+#define mli_check_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                            \
         {                                                                      \
                 const uint64_t num_written =                                   \
                         fwrite(PTR, SIZE_OF_TYPE, NUM, F);                     \
-                mli_check(num_written == NUM, "Can not write to file.");       \
+                mli_check_message(                                             \
+                        num_written == NUM, "Can not write to file.");         \
         }
 
 #define mli_check_fread(PTR, SIZE_OF_TYPE, NUM, F)                             \
         {                                                                      \
                 const uint64_t num_read = fread(PTR, SIZE_OF_TYPE, NUM, F);    \
-                mli_check(num_read == NUM, "Can not read from file.");         \
+                mli_check_message(num_read == NUM, "Can not read from file."); \
         }
 
 void mli_eprintf(const char *format, ...);

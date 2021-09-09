@@ -63,7 +63,7 @@ int _mliAccelerator_set_robject_obbs(
         const struct mliGeometry *geometry)
 {
         uint32_t rob;
-        mli_check(
+        mli_check_message(
                 accel->num_robjects == geometry->num_robjects,
                 "Expected num_robjects to be equal, but its not.");
 
@@ -84,12 +84,12 @@ int _mliAccelerator_set_object_octrees(
         const struct mliGeometry *geometry)
 {
         uint32_t obj;
-        mli_check(
+        mli_check_message(
                 accel->num_objects == geometry->num_objects,
                 "Expected num_objects to be equal, but its not.");
 
         for (obj = 0; obj < accel->num_objects; obj++) {
-                mli_check(
+                mli_check_message(
                         mliOcTree_malloc_from_object_wavefront(
                                 &accel->object_octrees[obj],
                                 &geometry->objects[obj]),
@@ -107,23 +107,23 @@ int mliAccelerator_malloc_from_Geometry(
 {
         struct mliOBB outermost_obb;
 
-        mli_check(
+        mli_check_message(
                 mliAccelerator_malloc(
                         accel, geometry->num_objects, geometry->num_robjects),
                 "Failed to malloc mliAccelerator from mliGeometry's "
                 "num_robjects");
 
-        mli_check(
+        mli_check_message(
                 _mliAccelerator_set_robject_obbs(accel, geometry),
                 "Failed to set OBBs of robjects.");
 
-        mli_check(
+        mli_check_message(
                 _mliAccelerator_set_object_octrees(accel, geometry),
                 "Failed to setup object octrees.");
 
         outermost_obb = mliAccelerator_outermost_obb(accel);
 
-        mli_check(
+        mli_check_message(
                 mliOcTree_malloc_from_Geometry(
                         &accel->scenery_octree, geometry, outermost_obb),
                 "Failed to set up octree across all robjects in geometry.");

@@ -6,7 +6,7 @@ int mliOcTree_fwrite(const struct mliOcTree *octree, FILE *f)
         struct mliMagicId magic;
 
         /* magic identifier */
-        mli_c(mliMagicId_set(&magic, "mliOcTree"));
+        mli_check(mliMagicId_set(&magic, "mliOcTree"));
         mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* capacity */
@@ -54,7 +54,7 @@ int mliOcTree_malloc_fread(struct mliOcTree *octree, FILE *f)
 
         /* magic identifier */
         mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
-        mli_c(mliMagicId_has_word(&magic, "mliOcTree"));
+        mli_check(mliMagicId_has_word(&magic, "mliOcTree"));
         mliMagicId_warn_version(&magic);
 
         /* capacity */
@@ -62,7 +62,7 @@ int mliOcTree_malloc_fread(struct mliOcTree *octree, FILE *f)
         mli_check_fread(&num_leafs, sizeof(uint64_t), 1u, f);
         mli_check_fread(&num_object_links, sizeof(uint64_t), 1u, f);
 
-        mli_check(
+        mli_check_message(
                 mliOcTree_malloc(
                         octree, num_nodes, num_leafs, num_object_links),
                 "Can not malloc octree from file.");
@@ -97,9 +97,9 @@ int mliOcTree_write_to_path(const struct mliOcTree *octree, const char *path)
 {
         FILE *f;
         f = fopen(path, "w");
-        mli_check(f != NULL, "Can not open octree-file for writing.");
+        mli_check_message(f != NULL, "Can not open octree-file for writing.");
 
-        mli_check(mliOcTree_fwrite(octree, f), "Can not write octree to file.");
+        mli_check_message(mliOcTree_fwrite(octree, f), "Can not write octree to file.");
 
         fclose(f);
         return 1;
@@ -114,9 +114,9 @@ int mliOcTree_malloc_from_path(struct mliOcTree *octree, const char *path)
 {
         FILE *f;
         f = fopen(path, "r");
-        mli_check(f != NULL, "Can not open octree-file for reading.");
+        mli_check_message(f != NULL, "Can not open octree-file for reading.");
 
-        mli_check(
+        mli_check_message(
                 mliOcTree_malloc_fread(octree, f),
                 "Can not read octree to file.");
 

@@ -81,7 +81,7 @@ int mliTmpNode_add_children(
 
         for (c = 0u; c < 8u; c++) {
                 overlap[c] = mliOctOverlap_init();
-                mli_c(mliOctOverlap_malloc(&overlap[c], node->num_objects));
+                mli_check(mliOctOverlap_malloc(&overlap[c], node->num_objects));
         }
 
         /* sense possible children */
@@ -101,7 +101,7 @@ int mliTmpNode_add_children(
                                                     mliCube_to_obb(
                                                             child_cubes
                                                                     [child]))) {
-                                                mli_c(mliOctOverlap_push_back(
+                                                mli_check(mliOctOverlap_push_back(
                                                         &overlap[child],
                                                         object_idx));
                                         }
@@ -113,7 +113,7 @@ int mliTmpNode_add_children(
         for (c = 0; c < 8u; c++) {
                 mli_check_malloc(node->children[c], struct mliTmpNode, 1u);
                 (*node->children[c]) = mliTmpNode_init();
-                mli_c(mliTmpNode_malloc(node->children[c], overlap[c].size));
+                mli_check(mliTmpNode_malloc(node->children[c], overlap[c].size));
                 mli_uint32_ncpy(
                         overlap[c].array,
                         node->children[c]->objects,
@@ -154,7 +154,7 @@ int mliTmpNode_malloc_tree_from_bundle(
         max_depth = mli_guess_octree_depth_based_on_num_objects(
                 num_items_in_bundle);
 
-        mli_check(
+        mli_check_message(
                 mliTmpNode_malloc(root_node, num_items_in_bundle),
                 "Failed to allocate root-node in dynamic octree.");
 
@@ -365,7 +365,7 @@ int mliTmpOcTree_malloc_from_bundle(
 {
         mliTmpOcTree_free(octree);
         octree->cube = mliCube_outermost_cube(bundle_obb);
-        mli_check(
+        mli_check_message(
                 mliTmpNode_malloc_tree_from_bundle(
                         &octree->root,
                         bundle,

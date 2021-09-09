@@ -93,8 +93,8 @@ int mliGeometry_malloc(
         const uint32_t num_robjects)
 {
         mliGeometry_free(geometry);
-        mli_c(_mliGeometry_malloc_objects(geometry, num_objects));
-        mli_c(_mliGeometry_malloc_references(geometry, num_robjects));
+        mli_check(_mliGeometry_malloc_objects(geometry, num_objects));
+        mli_check(_mliGeometry_malloc_references(geometry, num_robjects));
         return 1;
 error:
         mliGeometry_free(geometry);

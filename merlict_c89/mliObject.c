@@ -40,15 +40,15 @@ int mliObject_malloc(
         const uint64_t num_materials)
 {
         uint32_t i;
-        mli_check(num_vertices < UINT32_MAX, "Expected num_vertices < uint32");
-        mli_check(
+        mli_check_message(num_vertices < UINT32_MAX, "Expected num_vertices < uint32");
+        mli_check_message(
                 num_vertex_normals < UINT32_MAX,
                 "Expected num_vertex_normals < uint32");
-        mli_check(num_faces < UINT32_MAX, "Expected num_faces < uint32");
-        mli_check(
+        mli_check_message(num_faces < UINT32_MAX, "Expected num_faces < uint32");
+        mli_check_message(
                 num_materials < UINT32_MAX, "Expected num_materials < uint32");
-        mli_check(num_materials > 0, "Expected num_materials > 0");
-        mli_check(
+        mli_check_message(num_materials > 0, "Expected num_materials > 0");
+        mli_check_message(
                 num_materials <= num_faces,
                 "Expected num_materials <= num_faces");
 
@@ -74,27 +74,27 @@ error:
 int mliObject_equal(const struct mliObject *a, const struct mliObject *b)
 {
         uint64_t i;
-        mli_c(a->num_vertices == b->num_vertices);
-        mli_c(a->num_vertex_normals == b->num_vertex_normals);
-        mli_c(a->num_faces == b->num_faces);
-        mli_c(a->num_materials == b->num_materials);
+        mli_check(a->num_vertices == b->num_vertices);
+        mli_check(a->num_vertex_normals == b->num_vertex_normals);
+        mli_check(a->num_faces == b->num_faces);
+        mli_check(a->num_materials == b->num_materials);
 
         for (i = 0; i < a->num_vertices; i++) {
-                mli_c(mliVec_equal(a->vertices[i], b->vertices[i]));
+                mli_check(mliVec_equal(a->vertices[i], b->vertices[i]));
         }
         for (i = 0; i < a->num_vertex_normals; i++) {
-                mli_c(mliVec_equal(a->vertex_normals[i], b->vertex_normals[i]));
+                mli_check(mliVec_equal(a->vertex_normals[i], b->vertex_normals[i]));
         }
         for (i = 0; i < a->num_faces; i++) {
-                mli_c(mliFace_equal(
+                mli_check(mliFace_equal(
                         a->faces_vertices[i], b->faces_vertices[i]));
-                mli_c(mliFace_equal(
+                mli_check(mliFace_equal(
                         a->faces_vertex_normals[i],
                         b->faces_vertex_normals[i]));
-                mli_c(a->faces_materials[i] == b->faces_materials[i]);
+                mli_check(a->faces_materials[i] == b->faces_materials[i]);
         }
         for (i = 0; i < a->num_materials; i++) {
-                mli_c(mliName_equal(
+                mli_check(mliName_equal(
                         &a->material_names[i], &b->material_names[i]));
         }
         return 1;

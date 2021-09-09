@@ -25,16 +25,16 @@ int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value)
 {
         struct _mliMapItem item;
         if (map->size == 0u) {
-                mli_check(
+                mli_check_message(
                         mliDynMap_malloc(map, 0u),
                         "Failed to initially malloc dyn-map.");
         }
-        mli_check(strlen(key) < MLI_NAME_CAPACITY, "Key too long.");
-        mli_check(0 == mliDynMap_has(map, key), "Key already in use.");
+        mli_check_message(strlen(key) < MLI_NAME_CAPACITY, "Key too long.");
+        mli_check_message(0 == mliDynMap_has(map, key), "Key already in use.");
         memset(item.key, '\0', MLI_NAME_CAPACITY);
         strcpy(item.key, key);
         item.value = value;
-        mli_check(mliDynMap_push_back(map, item), "Failed to mmaloc item.");
+        mli_check_message(mliDynMap_push_back(map, item), "Failed to mmaloc item.");
         return 1;
 error:
         return 0;
@@ -43,7 +43,7 @@ error:
 int mliDynMap_get(const struct mliDynMap *map, const char *key, uint64_t *value)
 {
         uint64_t idx;
-        mli_check(mliDynMap_find(map, key, &idx), "Key does not exist.");
+        mli_check_message(mliDynMap_find(map, key, &idx), "Key does not exist.");
         (*value) = map->array[idx].value;
         return 1;
 error:

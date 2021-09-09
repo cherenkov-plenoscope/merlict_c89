@@ -8,7 +8,7 @@ int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f)
 
         /* magic identifier */
         struct mliMagicId magic = mliMagicId_init();
-        mli_c(mliMagicId_set(&magic, "mliAccelerator"));
+        mli_check(mliMagicId_set(&magic, "mliAccelerator"));
         mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* capacity */
@@ -40,7 +40,7 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f)
 
         /* magic identifier */
         mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
-        mli_c(mliMagicId_has_word(&magic, "mliAccelerator"));
+        mli_check(mliMagicId_has_word(&magic, "mliAccelerator"));
         mliMagicId_warn_version(&magic);
 
         /* capacity */

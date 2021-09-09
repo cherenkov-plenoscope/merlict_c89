@@ -6,7 +6,7 @@
 int mliObject_fwrite(const struct mliObject *obj, FILE *f)
 {
         struct mliMagicId magic;
-        mli_c(mliMagicId_set(&magic, "mliObject"));
+        mli_check(mliMagicId_set(&magic, "mliObject"));
         mli_check_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         mli_check_fwrite(&obj->num_vertices, sizeof(uint32_t), 1u, f);
@@ -49,7 +49,7 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
         uint32_t num_materials;
         struct mliMagicId magic;
         mli_check_fread(&magic, sizeof(struct mliMagicId), 1u, f);
-        mli_c(mliMagicId_has_word(&magic, "mliObject"));
+        mli_check(mliMagicId_has_word(&magic, "mliObject"));
         mliMagicId_warn_version(&magic);
 
         mli_check_fread(&num_vertices, sizeof(uint32_t), 1u, f);
@@ -57,7 +57,7 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
         mli_check_fread(&num_faces, sizeof(uint32_t), 1u, f);
         mli_check_fread(&num_materials, sizeof(uint32_t), 1u, f);
 
-        mli_c(mliObject_malloc(
+        mli_check(mliObject_malloc(
                 obj,
                 num_vertices,
                 num_vertex_normals,
@@ -85,7 +85,7 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
                 obj->num_materials,
                 f);
 
-        mli_check(
+        mli_check_message(
                 mliObject_has_valid_faces(obj),
                 "A face refers to a not existing vertex/vertex_normal.");
         return 1;

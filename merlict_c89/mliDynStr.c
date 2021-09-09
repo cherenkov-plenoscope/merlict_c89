@@ -60,12 +60,12 @@ int mliDynStr_malloc_from_path(struct mliDynStr *str, const char *path)
         uint64_t str_length = 0u;
         uint64_t str_capacity = 0u;
         FILE *f = fopen(path, "rt");
-        mli_check(f != NULL, "Can not read string from path.");
-        mli_check(fseek(f, 0, SEEK_END) == 0, "Can not seek to end of file.");
+        mli_check_message(f != NULL, "Can not read string from path.");
+        mli_check_message(fseek(f, 0, SEEK_END) == 0, "Can not seek to end of file.");
         str_length = ftell(f);
         str_capacity = str_length + 1;
-        mli_check(fseek(f, 0, SEEK_SET) == 0, "Can not seek to begin of file");
-        mli_check(
+        mli_check_message(fseek(f, 0, SEEK_SET) == 0, "Can not seek to begin of file");
+        mli_check_message(
                 mliDynStr_malloc(str, str_capacity), "Can not malloc string.");
         mli_check_fread(str->c_str, sizeof(char), str_length, f);
         fclose(f);
@@ -84,19 +84,19 @@ int mliDynStr_convert_line_break_CRLF_CR_to_LF(
         char buff[2];
         uint64_t i = 0;
         mliDynStr_free(dst);
-        mli_c(mliDynStr_malloc(dst, src->capacity));
+        mli_check(mliDynStr_malloc(dst, src->capacity));
 
         while (i < src->capacity) {
                 if (_mli_is_CRLF_line_break(&src->c_str[i])) {
-                        mli_c(mliDynStr_push_back(dst, "\n"));
+                        mli_check(mliDynStr_push_back(dst, "\n"));
                         i += 2;
                 } else if (_mli_is_CR_line_break(&src->c_str[i])) {
-                        mli_c(mliDynStr_push_back(dst, "\n"));
+                        mli_check(mliDynStr_push_back(dst, "\n"));
                         i += 1;
                 } else {
                         buff[0] = src->c_str[i];
                         buff[1] = '\0';
-                        mli_c(mliDynStr_push_back(dst, buff));
+                        mli_check(mliDynStr_push_back(dst, buff));
                         i += 1;
                 }
         }

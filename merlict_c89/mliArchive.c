@@ -35,7 +35,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 
         mliArchive_free(arc);
         mliDynTextFiles_malloc(&arc->textfiles, 0u);
-        mli_check(mliTar_open(&tar, path, "r"), "Cant open Tar.");
+        mli_check_message(mliTar_open(&tar, path, "r"), "Cant open Tar.");
 
         while (mliTar_read_header(&tar, &tarh)) {
                 uint64_t next = arc->filenames.size;
@@ -44,34 +44,34 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 
                 _mli_strip_this_dir(tarh_name, tarh.name);
 
-                mli_check(
+                mli_check_message(
                         mliDynMap_insert(&arc->filenames, tarh_name, next),
                         "Can not insert key.");
-                mli_check(
+                mli_check_message(
                         mliDynTextFiles_push_back(
                                 &arc->textfiles, mliDynStr_init()),
                         "Can not push back mliString.");
-                mli_check(
+                mli_check_message(
                         mliDynStr_malloc(&tmp_payload, tarh.size + 1),
                         "Can not allocate tmp-string-buffer.");
 
                 payload = &arc->textfiles.array[next];
                 (*payload) = mliDynStr_init();
 
-                mli_check(
+                mli_check_message(
                         mliDynStr_malloc(payload, 0),
                         "Can not allocate string-buffer.");
-                mli_check(
+                mli_check_message(
                         mliTar_read_data(
                                 &tar, (void *)tmp_payload.c_str, tarh.size),
                         "Failed to read payload from tar into "
                         "tmp-string-buffer.");
-                mli_check(
+                mli_check_message(
                         mliDynStr_convert_line_break_CRLF_CR_to_LF(
                                 payload, &tmp_payload),
                         "Failed to replace CRLF and CR linebreaks.");
                 mliDynStr_free(&tmp_payload);
-                mli_check(
+                mli_check_message(
                         mli_string_assert_only_NUL_LF_TAB_controls(
                                 payload->c_str),
                         "Did not expect control codes other than "
@@ -101,7 +101,7 @@ int mliArchive_get(
         struct mliDynStr **str)
 {
         uint64_t idx;
-        mli_c(mliDynMap_find(&arc->filenames, filename, &idx));
+        mli_check(mliDynMap_find(&arc->filenames, filename, &idx));
         (*str) = &arc->textfiles.array[idx];
         return 1;
 error:
@@ -115,11 +115,11 @@ int mliArchive_get_malloc_json(
 {
         struct mliDynStr *text = NULL;
 
-        mli_check(
+        mli_check_message(
                 mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
 
-        mli_check(
+        mli_check_message(
                 mliJson_malloc_from_string(json, text->c_str),
                 "Can not parse requested json.");
 

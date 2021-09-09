@@ -42,12 +42,12 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type)
         mliFrame_free(f);
         f->type = type;
         if (type == MLI_FRAME) {
-                mli_check(
+                mli_check_message(
                         mliDynFramePtr_malloc(&f->children, 0u),
                         "Can not allocate children of frame.");
         }
         if (type == MLI_OBJECT) {
-                mli_check(
+                mli_check_message(
                         mliDynUint32_malloc(&f->boundary_layers, 0u),
                         "Failed to malloc frame's boundary_layers.");
         }
@@ -60,10 +60,10 @@ int mliFrame_set_mother_and_child(
         struct mliFrame *mother,
         struct mliFrame *child)
 {
-        mli_check(
+        mli_check_message(
                 mother->type == MLI_FRAME,
                 "Expected mother to be of type FRAME");
-        mli_check(
+        mli_check_message(
                 mliDynFramePtr_push_back(&mother->children, child),
                 "Can not push back child-frame.");
 
@@ -77,9 +77,9 @@ struct mliFrame *mliFrame_add(struct mliFrame *mother, const uint64_t type)
 {
         struct mliFrame *child = NULL;
         mli_check_malloc(child, struct mliFrame, 1u);
-        mli_check(
+        mli_check_message(
                 mliFrame_malloc(child, type), "Can not allocate child-frame.");
-        mli_check(
+        mli_check_message(
                 mliFrame_set_mother_and_child(mother, child),
                 "Can not allocate child-pointer.");
         return child;

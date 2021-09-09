@@ -9,29 +9,29 @@
 int mliScenery_valid(const struct mliScenery *scenery)
 {
         /* check in itself */
-        mli_check(
+        mli_check_message(
                 mliMaterials_valid(&scenery->materials),
                 "Expected materials to be valid.");
-        mli_check(
+        mli_check_message(
                 mliGeometry_valid(&scenery->geometry),
                 "Expected geometry to be valid.");
-        mli_check(
+        mli_check_message(
                 mliAccelerator_valid(&scenery->accelerator),
                 "Expected accelerator to be valid");
-        mli_check(
+        mli_check_message(
                 mliGeometryToMaterialMap_valid(&scenery->geomap),
                 "Expected geometry-to-materials-map to be valid.");
 
         /* check interplay */
-        mli_check(
+        mli_check_message(
                 mliAccelerator_valid_wrt_Geometry(
                         &scenery->accelerator, &scenery->geometry),
                 "Expected accelerator to be valid w.r.t. geometry.");
-        mli_check(
+        mli_check_message(
                 mliGeometryToMaterialMap_valid_wrt_Geometry(
                         &scenery->geomap, &scenery->geometry),
                 "Expected geomap to be valid w.r.t. geometry.");
-        mli_check(
+        mli_check_message(
                 mliGeometryToMaterialMap_valid_wrt_Materials(
                         &scenery->geomap, &scenery->materials),
                 "Expected geomap to be valid w.r.t. materials.");

@@ -8,16 +8,16 @@
 
 int mliScenery_equal(const struct mliScenery *a, const struct mliScenery *b)
 {
-        mli_check(
+        mli_check_message(
                 mliGeometry_equal(&a->geometry, &b->geometry),
                 "Expected geometry to be valid.");
-        mli_check(
+        mli_check_message(
                 mliMaterials_equal(&a->materials, &b->materials),
                 "Expected materials to be valid.");
-        mli_check(
+        mli_check_message(
                 mliAccelerator_equal(&a->accelerator, &b->accelerator),
                 "Expected accelerator to be valid.");
-        mli_check(
+        mli_check_message(
                 mliGeometryToMaterialMap_equal(&a->geomap, &b->geomap),
                 "Expected geomap to be valid.");
         return 1;

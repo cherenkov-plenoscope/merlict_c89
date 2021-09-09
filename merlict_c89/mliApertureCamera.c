@@ -245,29 +245,29 @@ int mliApertureCamera_render_image(
         struct mliImage colors = mliImage_init();
         struct mliPixels pixels_to_do = mliPixels_init();
 
-        mli_check(
+        mli_check_message(
                 mliImage_malloc(&sum_image, image->num_cols, image->num_rows),
                 "Failed to malloc sum_image.");
-        mli_check(
+        mli_check_message(
                 mliImage_malloc(
                         &exposure_image, image->num_cols, image->num_rows),
                 "Failed to malloc exposure_image.");
-        mli_check(
+        mli_check_message(
                 mliImage_malloc(&to_do_image, image->num_cols, image->num_rows),
                 "Failed to malloc to_do_image.");
-        mli_check(
+        mli_check_message(
                 mliImage_malloc(&sobel_image, image->num_cols, image->num_rows),
                 "Failed to malloc sobel_image.");
-        mli_check(
+        mli_check_message(
                 mliImage_malloc(
                         &previous_sobel_image,
                         image->num_cols,
                         image->num_rows),
                 "Failed to malloc previous_sobel_image.");
-        mli_check(
+        mli_check_message(
                 mliImage_malloc(&diff_image, image->num_cols, image->num_rows),
                 "Failed to malloc diff_image.");
-        mli_check(
+        mli_check_message(
                 mliImage_malloc(&colors, image->num_cols * image->num_rows, 1),
                 "Failed to malloc colors.");
 
@@ -279,7 +279,7 @@ int mliApertureCamera_render_image(
         mliImage_set_all_pixel(&previous_sobel_image, zero_color);
         mliImage_set_all_pixel(&colors, zero_color);
 
-        mli_check(
+        mli_check_message(
                 mliPixels_malloc(
                         &pixels_to_do, image->num_cols * image->num_rows),
                 "Failed to malloc pixels_to_do.");

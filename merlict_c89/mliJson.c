@@ -64,17 +64,17 @@ int mliJson_malloc_from_string(struct mliJson *json, const char *json_str)
                 json->c_str_capacity,
                 json->tokens,
                 json->num_tokens);
-        mli_check(
+        mli_check_message(
                 num_tokens_parsed != JSMN_ERROR_NOMEM,
                 "Not enough tokens were provided.");
-        mli_check(
+        mli_check_message(
                 num_tokens_parsed != JSMN_ERROR_INVAL,
                 "Invalid character inside JSON string.");
-        mli_check(
+        mli_check_message(
                 num_tokens_parsed != JSMN_ERROR_PART,
                 "The string is not a full JSON packet, more "
                 "bytes expected.");
-        mli_check(num_tokens_parsed >= 0, "Can not parse Json-string");
+        mli_check_message(num_tokens_parsed >= 0, "Can not parse Json-string");
         json->num_tokens = num_tokens_parsed;
         return 1;
 error:
@@ -85,10 +85,10 @@ error:
 int mliJson_malloc_from_path(struct mliJson *json, const char *path)
 {
         struct mliDynStr str = mliDynStr_init();
-        mli_check(
+        mli_check_message(
                 mliDynStr_malloc_from_path(&str, path),
                 "Failed to read file into string.");
-        mli_check(
+        mli_check_message(
                 mliJson_malloc_from_string(json, str.c_str),
                 "Failed to parse json-string read from path.");
         mliDynStr_free(&str);
@@ -106,7 +106,7 @@ int mliJson_as_string(
 {
         const struct jsmntok_t t = json->tokens[token_idx];
         const uint64_t actual_length = t.end - t.start;
-        mli_check(
+        mli_check_message(
                 actual_length < return_string_size,
                 "Expected return_string_size to be sufficiently large for "
                 "json-string, but it is not.")
@@ -124,10 +124,10 @@ int mliJson_as_int64(
 {
         const struct jsmntok_t t = json->tokens[token_idx];
         const uint64_t token_length = t.end - t.start;
-        mli_check(
+        mli_check_message(
                 t.type == JSMN_PRIMITIVE,
                 "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
-        mli_check(
+        mli_check_message(
                 mli_nstring_to_int(
                         return_int64, &json->c_str[t.start], 10, token_length),
                 "Can not parse int.");
@@ -143,10 +143,10 @@ int mliJson_as_float64(
 {
         const struct jsmntok_t t = json->tokens[token_idx];
         const uint64_t token_length = t.end - t.start;
-        mli_check(
+        mli_check_message(
                 t.type == JSMN_PRIMITIVE,
                 "Json float64 expected json-token-to be JSMN_PRIMITIVE.");
-        mli_check(
+        mli_check_message(
                 mli_nstring_to_float(
                         return_float64, &json->c_str[t.start], token_length),
                 "Can not parse float.");
@@ -238,16 +238,16 @@ int mliJson_debug_token_fprint(
         uint32_t token_size = t.end - t.start;
         uint64_t line_number =
                 1u + mli_string_count_chars_up_to(json->c_str, '\n', t.start);
-        mli_c(fprintf(f, "line: %u, ", (uint32_t)line_number));
-        mli_c(fprintf(f, "token: %u, ", (uint32_t)token));
-        mli_c(fprintf(f, "type: %d, ", t.type));
-        mli_c(fprintf(f, "children: %d, ", t.size));
-        mli_c(fprintf(
+        mli_check(fprintf(f, "line: %u, ", (uint32_t)line_number));
+        mli_check(fprintf(f, "token: %u, ", (uint32_t)token));
+        mli_check(fprintf(f, "type: %d, ", t.type));
+        mli_check(fprintf(f, "children: %d, ", t.size));
+        mli_check(fprintf(
                 f, "chars: (%d -> %d, %d)\n", t.start, t.end, token_size));
         for (i = 0; i < token_size; i++) {
-                mli_c(fputc(json->c_str[t.start + i], f));
+                mli_check(fputc(json->c_str[t.start + i], f));
         }
-        mli_c(fprintf(f, "\n"));
+        mli_check(fprintf(f, "\n"));
         return 1;
 error:
         return 0;
@@ -257,7 +257,7 @@ int mliJson_debug_fprint(FILE *f, const struct mliJson *json)
 {
         uint64_t i;
         for (i = 0; i < json->num_tokens; i++) {
-                mli_check(
+                mli_check_message(
                         mliJson_debug_token_fprint(f, json, i),
                         "Failed to write json-token debug-info to file.");
         }
@@ -270,8 +270,8 @@ int mliJson_debug_to_path(const struct mliJson *json, const char *path)
 {
         FILE *f;
         f = fopen(path, "wt");
-        mli_check(f != NULL, "Failed to open file for Json debug output.");
-        mli_check(mliJson_debug_fprint(f, json), "Failed to fprint debug.");
+        mli_check_message(f != NULL, "Failed to open file for Json debug output.");
+        mli_check_message(mliJson_debug_fprint(f, json), "Failed to fprint debug.");
         fclose(f);
         return 1;
 error:

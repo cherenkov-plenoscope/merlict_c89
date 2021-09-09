@@ -24,18 +24,18 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         mliScenery_free(scenery);
 
-        mli_check(
+        mli_check_message(
                 mliGeometry_malloc(&scenery->geometry, 1u, 1u),
                 "Failed to malloc geometry.");
 
         /* set object */
-        mli_check(
+        mli_check_message(
                 mliDynStr_malloc_from_path(&str, path), "Failed to read file.");
-        mli_check(
+        mli_check_message(
                 mli_string_assert_only_NUL_LF_TAB_controls(str.c_str),
                 "Expected object-wavefront file to be free of "
                 "control characters, except [NUL, TAB, LF].");
-        mli_check(
+        mli_check_message(
                 mliObject_malloc_from_wavefront(
                         &scenery->geometry.objects[0], str.c_str),
                 "Failed to malloc wavefront-object from string.");
@@ -58,12 +58,12 @@ int mliScenery_malloc_minimal_from_wavefront(
         mtlcap.num_colors = total_num_boundary_layers;
         mtlcap.num_surfaces = total_num_boundary_layers;
 
-        mli_check(
+        mli_check_message(
                 mliMaterials_malloc(&scenery->materials, mtlcap),
                 "Failed to malloc materials.");
 
         scenery->materials.functions[0] = mliFunc_init();
-        mli_check(
+        mli_check_message(
                 mliFunc_malloc(&scenery->materials.functions[0], 2),
                 "Failed to malloc zero function.");
         scenery->materials.functions[0].x[0] = 200e-9;
@@ -73,7 +73,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         sprintf(scenery->materials.function_names[0].c_str, "zero");
 
         scenery->materials.functions[1] = mliFunc_init();
-        mli_check(
+        mli_check_message(
                 mliFunc_malloc(&scenery->materials.functions[1], 2),
                 "Failed to malloc unity function.");
         scenery->materials.functions[1].x[0] = 200e-9;
@@ -108,7 +108,7 @@ int mliScenery_malloc_minimal_from_wavefront(
                         i);
         }
 
-        mli_check(
+        mli_check_message(
                 mliGeometryToMaterialMap_malloc(
                         &scenery->geomap,
                         scenery->geometry.num_robjects,
@@ -120,12 +120,12 @@ int mliScenery_malloc_minimal_from_wavefront(
                 mliGeometryToMaterialMap_set(&scenery->geomap, 0u, i, i);
         }
 
-        mli_check(
+        mli_check_message(
                 mliAccelerator_malloc_from_Geometry(
                         &scenery->accelerator, &scenery->geometry),
                 "Failed to malloc accelerator from geometry.");
 
-        mli_check(mliScenery_valid(scenery), "Expected scenery to be valid.");
+        mli_check_message(mliScenery_valid(scenery), "Expected scenery to be valid.");
         return 1;
 error:
         return 0;

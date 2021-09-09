@@ -58,7 +58,7 @@
         int LIB##Dyn##NAME##_malloc_set_size(                                  \
                 struct LIB##Dyn##NAME *dh, const uint64_t size)                \
         {                                                                      \
-                mli_c(LIB##Dyn##NAME##_malloc(dh, size));                      \
+                mli_check(LIB##Dyn##NAME##_malloc(dh, size));                      \
                 dh->size = size;                                               \
                 return 1;                                                      \
         error:                                                                 \
@@ -97,9 +97,9 @@
                                                                                \
         int LIB##Dyn##NAME##_test_init(struct LIB##Dyn##NAME *dh)              \
         {                                                                      \
-                mli_c(dh->capacity == 0u);                                     \
-                mli_c(dh->size == 0u);                                         \
-                mli_c(dh->array == NULL);                                      \
+                mli_check(dh->capacity == 0u);                                     \
+                mli_check(dh->size == 0u);                                         \
+                mli_check(dh->array == NULL);                                      \
                 return 1;                                                      \
         error:                                                                 \
                 return 0;                                                      \
@@ -108,13 +108,13 @@
         int LIB##Dyn##NAME##_test_malloc(                                      \
                 struct LIB##Dyn##NAME *dh, const uint64_t capacity)            \
         {                                                                      \
-                mli_c(dh->capacity >= dh->size);                               \
+                mli_check(dh->capacity >= dh->size);                               \
                 if (capacity < 2) {                                            \
-                        mli_c(dh->capacity == 2);                              \
+                        mli_check(dh->capacity == 2);                              \
                 } else {                                                       \
-                        mli_c(dh->capacity == capacity);                       \
+                        mli_check(dh->capacity == capacity);                       \
                 }                                                              \
-                mli_c(dh->array != NULL);                                      \
+                mli_check(dh->array != NULL);                                      \
                 return 1;                                                      \
         error:                                                                 \
                 return 0;                                                      \
