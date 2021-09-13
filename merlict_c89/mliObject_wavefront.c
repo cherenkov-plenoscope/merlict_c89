@@ -17,13 +17,10 @@ struct _mliBuff {
 
 struct _mliBuff _mliBuff_init(void)
 {
-        int i = 0;
         struct _mliBuff bb;
         bb.length = MLI_WAVEFRONT_LINE_BUFF_LENGTH;
         bb.b = 0;
-        for (i = 0; i < bb.length; i++) {
-                bb.buff[i] = '\0';
-        }
+        memset(bb.buff, '\0', bb.length);
         return bb;
 }
 
