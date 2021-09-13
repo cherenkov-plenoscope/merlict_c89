@@ -418,6 +418,39 @@ int _mli_line_is_usemtl(const char *line, const uint64_t line_length)
                line[5] == 'l' && line[6] == ' ';
 }
 
+int _mliObject_parse_face_vertices_and_normals(
+        const char *line,
+        struct mliFace *fv,
+        struct mliFace *fvn)
+{
+        int line_mode = -1;
+        struct mliFace tmp_fvt;
+
+        chk_msg(_mliObject_parse_face_line(line, fv, &tmp_fvt, fvn, &line_mode),
+                "Can not parse face-line.");
+
+        chk_msg((line_mode == MLI_WAVEFRONT_FACE_LINE_V_VT_VN) ||
+                        (line_mode == MLI_WAVEFRONT_FACE_LINE_V_VN),
+                "Expected faces to have vertex-normals.");
+
+        chk_msg(fv->a >= 1, "Expected fv.a >= 1");
+        chk_msg(fv->b >= 1, "Expected fv.b >= 1");
+        chk_msg(fv->c >= 1, "Expected fv.c >= 1");
+        fv->a -= 1;
+        fv->b -= 1;
+        fv->c -= 1;
+
+        chk_msg(fvn->a >= 1, "Expected fvn.a >= 1");
+        chk_msg(fvn->b >= 1, "Expected fvn.b >= 1");
+        chk_msg(fvn->c >= 1, "Expected fvn.c >= 1");
+        fvn->a -= 1;
+        fvn->b -= 1;
+        fvn->c -= 1;
+        return 1;
+error:
+        return 0;
+}
+
 int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 {
         uint64_t i = 0u;
@@ -481,47 +514,19 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 chk(mliDynVec_push_back(&v, tmp_v));
                         } else if (line[0] == 'f' && line[1] == ' ') {
                                 /* face-line */
-                                int line_mode = -1;
                                 struct mliFace tmp_fv;
-                                struct mliFace tmp_fvt;
                                 struct mliFace tmp_fvn;
-
                                 chk_msg(material_names.size > 0,
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
-
-                                chk_msg(_mliObject_parse_face_line(
-                                                line,
-                                                &tmp_fv,
-                                                &tmp_fvt,
-                                                &tmp_fvn,
-                                                &line_mode),
-                                        "Can not parse face-line.");
-
-                                chk_msg(tmp_fv.a >= 1, "Expected fv.a >= 1");
-                                chk_msg(tmp_fv.b >= 1, "Expected fv.b >= 1");
-                                chk_msg(tmp_fv.c >= 1, "Expected fv.c >= 1");
-                                tmp_fv.a -= 1;
-                                tmp_fv.b -= 1;
-                                tmp_fv.c -= 1;
-
-                                chk_msg(tmp_fvn.a >= 1, "Expected fvn.a >= 1");
-                                chk_msg(tmp_fvn.b >= 1, "Expected fvn.b >= 1");
-                                chk_msg(tmp_fvn.c >= 1, "Expected fvn.c >= 1");
-                                tmp_fvn.a -= 1;
-                                tmp_fvn.b -= 1;
-                                tmp_fvn.c -= 1;
-
+                                chk_msg(_mliObject_parse_face_vertices_and_normals(
+                                                line, &tmp_fv, &tmp_fvn),
+                                        "Failed to parse face-line.");
                                 chk(mliDynFace_push_back(&fv, tmp_fv));
                                 chk(mliDynFace_push_back(&fvn, tmp_fvn));
                                 chk(mliDynUint32_push_back(&fm, mtl));
-                                chk_msg((line_mode ==
-                                         MLI_WAVEFRONT_FACE_LINE_V_VT_VN) ||
-                                                (line_mode ==
-                                                 MLI_WAVEFRONT_FACE_LINE_V_VN),
-                                        "Expected faces to have "
-                                        "vertex-normals.");
                         } else if (_mli_line_is_usemtl(line, line_length)) {
+                                /* usemtl-line*/
                                 const char *mtl_key = &line[7];
                                 if (!mliDynMap_has(&material_names, mtl_key)) {
                                         chk(mliDynMap_insert(
