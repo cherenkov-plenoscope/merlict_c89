@@ -473,6 +473,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 chk_msg(_mliObject_parse_three_float_line(
                                                 &line[2], &tmp_vn),
                                         "Can not parse vertex-normal-line.");
+                                tmp_vn = mliVec_normalized(tmp_vn);
                                 chk(mliDynVec_push_back(&vn, tmp_vn));
                         } else if (line[0] == 'v' && line[1] == ' ') {
                                 /* vertex line */
@@ -547,21 +548,11 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                         obj, v.size, vn.size, fv.size, material_names.size),
                 "Failed to malloc mliObject from file.");
 
-        for (i = 0; i < v.size; i++) {
-                obj->vertices[i] = v.array[i];
-        }
-        for (i = 0; i < vn.size; i++) {
-                obj->vertex_normals[i] = mliVec_normalized(vn.array[i]);
-        }
-        for (i = 0; i < fv.size; i++) {
-                obj->faces_vertices[i] = fv.array[i];
-        }
-        for (i = 0; i < fvn.size; i++) {
-                obj->faces_vertex_normals[i] = fvn.array[i];
-        }
-        for (i = 0; i < fvn.size; i++) {
-                obj->faces_materials[i] = fm.array[i];
-        }
+        mli_ncpy(v.array, obj->vertices, v.size);
+        mli_ncpy(vn.array, obj->vertex_normals, vn.size);
+        mli_ncpy(fv.array, obj->faces_vertices, fv.size);
+        mli_ncpy(fvn.array, obj->faces_vertex_normals, fvn.size);
+        mli_ncpy(fm.array, obj->faces_materials, fm.size);
         for (i = 0; i < material_names.size; i++) {
                 memcpy(obj->material_names[i].c_str,
                        material_names.array[i].key,
