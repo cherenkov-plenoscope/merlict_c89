@@ -161,14 +161,3 @@ uint32_t mliVec_octant(const struct mliVec a)
         const uint32_t sz = a.z >= 0.;
         return 4 * sx + 2 * sy + 1 * sz;
 }
-
-void mliVec_ncpy(
-        const struct mliVec *from,
-        struct mliVec *to,
-        const uint64_t num)
-{
-        uint64_t i;
-        for (i = 0; i < num; i++) {
-                to[i] = from[i];
-        }
-}

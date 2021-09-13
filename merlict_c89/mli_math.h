@@ -56,6 +56,14 @@
                 }                                                              \
         } while (0)
 
+#define mli_ncpy(src, dst, num)                                                \
+        do {                                                                   \
+                uint64_t i;                                                    \
+                for (i = 0; i < num; i++) {                                    \
+                        dst[i] = src[i];                                       \
+                }                                                              \
+        } while (0)
+
 double mli_std(
         const double vals[],
         const uint64_t size,
@@ -79,7 +87,6 @@ uint64_t mli_upper_compare_double(
         const double point_arg);
 void mli_zeros_uint64_t(uint64_t *points, const uint64_t num_points);
 void mli_zeros_double(double *points, const uint64_t num_points);
-void mli_uint32_ncpy(const uint32_t *src, uint32_t *dst, const uint64_t num);
 double mli_square(const double a);
 double mli_z_sphere(double x, double curvature_radius);
 double mli_hypot(const double a, const double b);

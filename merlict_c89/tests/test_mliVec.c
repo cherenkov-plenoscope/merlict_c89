@@ -226,7 +226,7 @@ CASE("ncpy")
         a[1] = mliVec_set(3., 4., 5.);
         a[2] = mliVec_set(6., 7., 8.);
 
-        mliVec_ncpy(a, b, 3); /* <--- to be tested */
+        mli_ncpy(a, b, 3); /* <--- to be tested */
 
         for (i = 0; i < 3; i++) {
                 CHECK(a[i].x == b[i].x);

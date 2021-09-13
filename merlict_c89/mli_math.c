@@ -22,14 +22,6 @@ double mli_z_sphere(double x, double curvature_radius)
 
 double mli_square(const double a) { return a * a; }
 
-void mli_uint32_ncpy(const uint32_t *src, uint32_t *dst, const uint64_t num)
-{
-        uint64_t i;
-        for (i = 0; i < num; i++) {
-                dst[i] = src[i];
-        }
-}
-
 void mli_zeros_double(double *points, const uint64_t num_points)
 {
         MLI_ZEROS(points, num_points);
