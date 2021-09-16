@@ -17,7 +17,7 @@ int _mliGeometry_objects_equal(
         }
         return 1;
 error:
-        chk_eprintf("object[%u] is not equal.", i);
+        fprintf(stderr, "In geometry.object[%u]\n", i);
         return 0;
 }
 
@@ -45,7 +45,7 @@ int _mliGeometry_object_references_equal(
         }
         return 1;
 error:
-        chk_eprintf("object_reference[%u] is not equal.", rob);
+        fprintf(stderr, "In geometry.object_reference[%lu]\n", rob);
         return 0;
 }
 

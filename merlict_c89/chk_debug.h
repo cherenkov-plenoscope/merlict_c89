@@ -23,8 +23,6 @@
                 __LINE__,                                                      \
                 chk_clean_errno())
 
-void chk_eprintf(const char *format, ...);
-
 #define chk_msg(C, MSG)                                                        \
         if (!(C)) {                                                            \
                 chk_eprint(MSG);                                               \

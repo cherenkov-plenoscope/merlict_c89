@@ -3,13 +3,11 @@
 
 int mliObject_is_valid(const struct mliObject *obj)
 {
-        chk_msg(mliObject_has_valid_vertices(obj),
-                "Expected vertices to be valid.");
+        chk_msg(mliObject_has_valid_vertices(obj), "Bad vertex.");
         chk_msg(mliObject_has_valid_faces(obj), "Expected faces to be valid.");
         chk_msg(mliObject_has_valid_normals(obj, MLI_EPSILON),
-                "Expected vertex-normals to be normalized.");
-        chk_msg(mliObject_has_valid_materials(obj),
-                "Expected materials to be valid.");
+                "Bad vertex-normal.");
+        chk_msg(mliObject_has_valid_materials(obj), "Bad material.");
         return 1;
 error:
         return 0;
@@ -44,7 +42,7 @@ int mliObject_has_valid_faces(const struct mliObject *obj)
         }
         return 1;
 error:
-        chk_eprintf("faces[%u] is invalid.", i);
+        fprintf(stderr, "In obj.faces[%u]\n", i);
         return 0;
 }
 
@@ -58,7 +56,7 @@ int mliObject_has_valid_vertices(const struct mliObject *obj)
         }
         return 1;
 error:
-        chk_eprintf("vertices[%u] is invalid.", i);
+        fprintf(stderr, "In obj.vertices[%u]\n", i);
         return 0;
 }
 
@@ -79,7 +77,7 @@ int mliObject_has_valid_normals(
         }
         return 1;
 error:
-        chk_eprintf("vertex_normals[%u] is invalid.", i);
+        fprintf(stderr, "In obj.vertex_normals[%u]\n", i);
         return 0;
 }
 
@@ -94,6 +92,6 @@ int mliObject_has_valid_materials(const struct mliObject *obj)
         }
         return 1;
 error:
-        chk_eprintf("materials[%u] is invalid.", i);
+        fprintf(stderr, "In obj.materials[%u]\n", i);
         return 0;
 }

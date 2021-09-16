@@ -14,7 +14,7 @@ int _mliMaterials_functions_equal(
         }
         return 1;
 error:
-        chk_eprintf("In functions[%u].\n", i);
+        fprintf(stderr, "In materials.functions[%u].\n", i);
         return 0;
 }
 
@@ -30,7 +30,7 @@ int _mliMaterials_colors_equal(
         }
         return 1;
 error:
-        chk_eprintf("In colors[%u].\n", i);
+        fprintf(stderr, "In materials.colors[%u].\n", i);
         return 0;
 }
 
@@ -46,7 +46,7 @@ int _mliMaterials_media_equal(
         }
         return 1;
 error:
-        chk_eprintf("In media[%u].\n", i);
+        fprintf(stderr, "In materials.media[%u].\n", i);
         return 0;
 }
 
@@ -62,7 +62,7 @@ int _mliMaterials_surfaces_equal(
         }
         return 1;
 error:
-        chk_eprintf("In surfaces[%u].\n", i);
+        fprintf(stderr, "In materials.surfaces[%u].\n", i);
         return 0;
 }
 
@@ -81,7 +81,7 @@ int _mliMaterials_boundary_layers_equal(
         }
         return 1;
 error:
-        chk_eprintf("In boundary_layers[%u].\n", i);
+        fprintf(stderr, "In materials.boundary_layers[%u].\n", i);
         return 0;
 }
 

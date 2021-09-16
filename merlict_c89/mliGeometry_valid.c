@@ -12,7 +12,7 @@ int _mliGeometry_valid_objects(const struct mliGeometry *geometry)
         }
         return 1;
 error:
-        chk_eprintf("objects[%u] is invalid.", i);
+        fprintf(stderr, "In geometry.objects[%u]\n", i);
         return 0;
 }
 
@@ -34,7 +34,7 @@ int _mliGeometry_valid_robjects_HomTras(const struct mliGeometry *geometry)
         }
         return 1;
 error:
-        chk_eprintf("robject2root[%u] is invalid.", i);
+        fprintf(stderr, "In geometry.robject2root[%u]\n", i);
         return 0;
 }
 
@@ -50,7 +50,7 @@ int _mliGeometry_valid_object_references(const struct mliGeometry *geometry)
                  */
         }
         return 1;
-        chk_eprintf("robject[%u] is invalid.", i);
+        fprintf(stderr, "In geometry.robject[%u]\n", i);
 error:
         return 0;
 }

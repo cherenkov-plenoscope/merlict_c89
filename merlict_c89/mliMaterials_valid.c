@@ -13,7 +13,7 @@ int _mliMaterials_valid_colors(const struct mliMaterials *materials)
         }
         return 1;
 error:
-        chk_eprintf("colors[%u] is invalid.", i);
+        fprintf(stderr, "In materials.colors[%u]\n", i);
         return 0;
 }
 
@@ -28,7 +28,7 @@ int _mliMaterials_valid_functions(const struct mliMaterials *materials)
         }
         return 1;
 error:
-        chk_eprintf("function[%u] is invalid.", i);
+        fprintf(stderr, "In materials.function[%u]\n", i);
         return 0;
 }
 
@@ -47,7 +47,7 @@ int _mliMaterials_valid_media(const struct mliMaterials *materials)
         }
         return 1;
 error:
-        chk_eprintf("media[%u] is invalid.", i);
+        fprintf(stderr, "In materials.media[%u]\n", i);
         return 0;
 }
 
@@ -73,7 +73,7 @@ int _mliMaterials_valid_surfaces(const struct mliMaterials *materials)
         }
         return 1;
 error:
-        chk_eprintf("surface[%u] is invalid.", i);
+        fprintf(stderr, "In materials.surface[%u]\n", i);
         return 0;
 }
 
@@ -99,7 +99,7 @@ int _mliMaterials_valid_boundary_layers(const struct mliMaterials *materials)
         }
         return 1;
 error:
-        chk_eprintf("boundary_layers[%u] is invalid.", i);
+        fprintf(stderr, "In materials.boundary_layers[%u]\n", i);
         return 0;
 }
 

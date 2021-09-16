@@ -494,7 +494,10 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 chk_msg(_mliObject_parse_three_float_line(
                                                 &line[2], &tmp_vn),
                                         "Can not parse vertex-normal-line.");
+                                chk_msg(mliVec_dot(tmp_vn, tmp_vn) > 0.0,
+                                        "vn can not be normalized.")
                                 tmp_vn = mliVec_normalized(tmp_vn);
+
                                 chk(mliDynVec_push_back(&vn, tmp_vn));
                         } else if (mli_string_starts_with(line, "v ")) {
                                 struct mliVec tmp_v;
