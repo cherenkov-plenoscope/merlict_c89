@@ -33,6 +33,7 @@
 #include "mliColor.h"
 #include "mliColor_json.h"
 #include "mliPixels.h"
+#include "mliPixelWalk.h"
 #include "mliImage.h"
 #include "mliImage_ppm.h"
 #include "mliImage_print.h"
