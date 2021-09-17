@@ -93,12 +93,18 @@ void mlivr_timestamp_now_19chars(char *buffer)
                 nowtm->tm_sec);
 }
 
-int mlivr_truncate_8bit(const int key)
+int mlivr_get_key(void)
 {
-        if (key == -1)
+        /* Waits for keystroke and returns ascii-code.
+         */
+        const int key = getchar();
+        if (key == EOF) {
+                /* In case of EOF, return EOF */
                 return key;
-        else
+        } else {
+                /* On some systems we have to truncate. I dont know why. */
                 return key & 255;
+        }
 }
 
 int _mlivr_export_image(
@@ -192,7 +198,7 @@ int mlivr_run_interactive_viewer(
         cursor.num_rows = config.preview_num_rows;
         goto show_image;
 
-        while ((key = mlivr_truncate_8bit(getchar())) != MLIVR_ESCAPE_KEY) {
+        while ((key = mlivr_get_key()) != MLIVR_ESCAPE_KEY) {
                 update_image = 1;
                 print_help = 0;
                 print_scenery_info = 0;

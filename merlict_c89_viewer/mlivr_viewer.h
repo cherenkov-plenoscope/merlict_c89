@@ -23,8 +23,6 @@ void mlivr_print_info_line(
 
 void mlivr_timestamp_now_19chars(char *buffer);
 
-int mlivr_truncate_8bit(const int key);
-
 int _mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mlivrConfig config,
