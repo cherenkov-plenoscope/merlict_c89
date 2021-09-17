@@ -37,6 +37,7 @@ int main(void)
 #include "test_math.c"
 #include "test_mliColor.c"
 #include "test_mliPixels.c"
+#include "test_mliPixelWalk.c"
 #include "test_mliImage.c"
 #include "test_mliVec.c"
 #include "test_linear_interpolation.c"

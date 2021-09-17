@@ -6,6 +6,14 @@
 #include "mliPixels.h"
 
 struct mliPixelWalk {
+        /*
+         * PixelWalk walks over the pixels of a rectangular image in a
+         * cache-aware-way with respect to raytracing.
+         * The goal is to bundle rays that will go to similar directions.
+         * Instead of running fast along one axis of the image, and slow along
+         * the other, PixelWalk spreads the walk among both axis by walking
+         * small quadratic chunks of pixels.
+         */
         uint32_t chunk_size;
         uint32_t num_chunks_row;
         uint32_t num_chunks_col;

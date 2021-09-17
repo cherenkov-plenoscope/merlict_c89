@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliImage.h"
+#include "mliPixelWalk.h"
 
 struct mliImage mliImage_init(void)
 {
@@ -242,38 +243,39 @@ void mliPixels_set_all_from_image(
         struct mliPixels *pixels,
         const struct mliImage *image)
 {
-        uint64_t i, r, c;
+        struct mliPixelWalk walk = mliPixelWalk_set(
+                image->num_cols, image->num_rows, 16u);
+        uint64_t i;
+        const uint64_t num_pixel = image->num_rows * image->num_cols;
+
         assert(image->num_cols * image->num_rows == pixels->num_pixels);
-        i = 0u;
-        for (c = 0u; c < image->num_cols; c++) {
-                for (r = 0u; r < image->num_rows; r++) {
-                        pixels->pixels[i].row = r;
-                        pixels->pixels[i].col = c;
-                        i++;
-                }
+        for (i = 0; i < num_pixel; i++) {
+                pixels->pixels[i] = mliPixelWalk_get(&walk);
+                mliPixelWalk_walk(&walk);
         }
 }
 
 void mliPixels_above_threshold(
-        const struct mliImage *to_do_image,
+        const struct mliImage *image,
         const float threshold,
         struct mliPixels *pixels)
 {
-        uint64_t row, col;
+        struct mliPixelWalk walk = mliPixelWalk_set(
+                image->num_cols, image->num_rows, 16u);
+        uint64_t i;
+        const uint64_t num_pixel = image->num_rows * image->num_cols;
+
         pixels->num_pixels_to_do = 0;
-        for (row = 0; row < to_do_image->num_rows; row++) {
-                for (col = 0; col < to_do_image->num_cols; col++) {
-                        double lum = 0.0;
-                        struct mliColor c = mliImage_at(to_do_image, col, row);
-                        lum = c.r + c.g + c.b;
-                        if (lum > threshold) {
-                                pixels->pixels[pixels->num_pixels_to_do].row =
-                                        row;
-                                pixels->pixels[pixels->num_pixels_to_do].col =
-                                        col;
-                                pixels->num_pixels_to_do += 1;
-                        }
+        for (i = 0; i < num_pixel; i++) {
+                struct mliPixel px = mliPixelWalk_get(&walk);
+                double lum = 0.0;
+                struct mliColor c = mliImage_at(image, px.col, px.row);
+                lum = c.r + c.g + c.b;
+                if (lum > threshold) {
+                        pixels->pixels[pixels->num_pixels_to_do] = px;
+                        pixels->num_pixels_to_do += 1;
                 }
+                mliPixelWalk_walk(&walk);
         }
 }
 
