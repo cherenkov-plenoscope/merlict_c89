@@ -12,8 +12,6 @@
 #include "mliName.h"
 
 struct mliMaterialsCapacity {
-        uint32_t num_functions;
-        uint32_t num_colors;
         uint32_t num_surfaces;
         uint32_t num_media;
         uint32_t num_boundary_layers;
@@ -22,14 +20,6 @@ struct mliMaterialsCapacity {
 struct mliMaterialsCapacity mliMaterialsCapacity_init(void);
 
 struct mliMaterials {
-        uint32_t num_functions;
-        struct mliFunc *functions;
-        struct mliName *function_names;
-
-        uint32_t num_colors;
-        struct mliColor *colors;
-        struct mliName *color_names;
-
         uint32_t num_surfaces;
         struct mliSurface *surfaces;
         struct mliName *surface_names;
