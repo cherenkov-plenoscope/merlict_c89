@@ -17,7 +17,7 @@ int main(void)
                MLI_VERSION_MAYOR,
                MLI_VERSION_MINOR,
                MLI_VERSION_PATCH);
-
+/*
 #include "test_mliMagicId.c"
 #include "test_frame.c"
 #include "test_parsing_from_string.c"
@@ -41,9 +41,13 @@ int main(void)
 #include "test_mliImage.c"
 #include "test_mliVec.c"
 #include "test_linear_interpolation.c"
+*/
 #include "test_mliFunc.c"
+/*
 #include "test_mliRay.c"
+*/
 #include "test_json.c"
+/*
 #include "test_mliFresnel.c"
 #include "test_mliAccelerator.c"
 #include "test_mliApertureCamera.c"
@@ -59,7 +63,7 @@ int main(void)
 
 #include "test_optics_prism.c"
 #include "test_optics_focussing_mirror.c"
-
+*/
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;
 test_failure:

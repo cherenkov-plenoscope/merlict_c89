@@ -47,8 +47,10 @@
 #include "mliMaterials_serialize.c"
 #include "mliMaterials_equal.c"
 #include "mliMaterials_valid.c"
+/*
 #include "mliUserScenery.c"
 #include "mliUserScenery_json.c"
+*/
 #include "mliGeometry.c"
 #include "mliGeometry_equal.c"
 #include "mliGeometry_valid.c"
@@ -62,16 +64,18 @@
 #include "mliGeometryToMaterialMap_equal.c"
 #include "mliGeometryToMaterialMap_valid.c"
 #include "mliGeometryToMaterialMap_serialize.c"
+/*
 #include "mliScenery.c"
 #include "mliScenery_valid.c"
 #include "mliScenery_tar.c"
 #include "mliScenery_serialize.c"
 #include "mliScenery_equal.c"
 #include "mliScenery_minimal_object.c"
+*/
 #include "mliRay_OBB.c"
 #include "mliVec_OBB.c"
 #include "mliTriangle_OBB.c"
-#include "mli_intersection_and_scenery.c"
+/*#include "mli_intersection_and_scenery.c"*/
 #include "mliOctOverlaps.c"
 #include "mliTmpOcTree.c"
 #include "mliOcTree.c"
@@ -81,11 +85,13 @@
 #include "mli_ray_octree_traversal.c"
 #include "mli_ray_scenery_query.c"
 #include "mli_from_outside_to_inside.c"
-#include "mliTracer.c"
+/*#include "mliTracer.c"*/
 #include "mliAtmosphere.c"
 #include "mliView.c"
+/*
 #include "mliPinHoleCamera.c"
 #include "mliApertureCamera.c"
+*/
 #include "mli_string_to.c"
 #include "mliDynStr.c"
 #include "jsmn.c"
@@ -96,10 +102,14 @@
 #include "mliQuaternion_json.c"
 #include "mli_frame_to_scenery.c"
 #include "mliPhoton.c"
+/*
 #include "mliPhotonInteraction.c"
 #include "mliDynPhoton.c"
 #include "mliDynPhotonInteraction.c"
+*/
 #include "mli_lambertian_cosine_law.c"
 #include "mliFresnel.c"
+/*
 #include "mli_photon_sources.c"
 #include "mli_photon_propagation.c"
+*/
