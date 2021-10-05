@@ -1,29 +1,23 @@
 {
-    "colors": [
-        {"rgb": [22, 91, 149], "name": "blue"}
-    ],
-    "media": [
-        {
-            "name": "vacuum",
-            "refraction": "zero",
-            "absorbtion": "zero"
+    "media": {
+        "vacuum": {
+            "refraction": [[200e-9, 0.0], [1.2e-6, 0.0]],
+            "absorbtion": [[200e-9, 0.0], [1.2e-6, 0.0]]
         }
-    ],
+    },
     "default_medium": "vacuum",
-    "surfaces": [
-        {
-            "name": "grass",
+    "surfaces": {
+        "grass": {
             "material": "Phong",
-            "specular_reflection": "zero",
-            "diffuse_reflection": "zero",
-            "color": "grass_green"
+            "specular_reflection": [[200e-9, 0.0], [1.2e-6, 0.0]],
+            "diffuse_reflection": [[200e-9, 0.0], [1.2e-6, 0.0]],
+            "color": [22, 91, 149]
         }
-    ],
-    "boundary_layers": [
-        {
-            "name": "vacu.gras:gras.vacu",
+    },
+    "boundary_layers": {
+        "vacu.gras:gras.vacu": {
             "inner": {"medium": "vacuum", "surface": "grass"},
             "outer": {"medium": "vacuum", "surface": "grass"}
         }
-    ]
+    }
 }
