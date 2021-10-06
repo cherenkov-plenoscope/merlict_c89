@@ -98,13 +98,26 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         fprintf(f, "Materials:\n");
 
         fprintf(f, "    media:\n");
+        fprintf(f, "        ");
+        fprintf(f, "%3s ", "id");
+        fprintf(f, "%16s ", "name");
+        fprintf(f, "%12s ", "absorbtion");
+        fprintf(f, "%12s ", "refraction");
+        fprintf(f, "%12s ", "default");
+        fprintf(f, "\n");
+        fprintf(f, "        ");
+        fprintf(f, "-----------------------------------------------------");
+        fprintf(f, "--------------\n");
         for (i = 0; i < res->num_media; i++) {
                 fprintf(f, "        ");
-                fprintf(f, "% 3d, %-32s  ", i, res->medium_names[i].c_str);
-                fprintf(f,
-                        "absorbtion (%d), refraction (%d)\n",
-                        res->media[i].absorbtion.num_points,
-                        res->media[i].refraction.num_points);
+                fprintf(f, "% 3d ", i);
+                fprintf(f, "%16s ", res->medium_names[i].c_str);
+                fprintf(f, "%12d ", res->media[i].absorbtion.num_points);
+                fprintf(f, "%12d ", res->media[i].refraction.num_points);
+                if (i == res->default_medium) {
+                        fprintf(f, "%12s", "True");
+                }
+                fprintf(f, "\n");
         }
 
         fprintf(f, "    surfaces:\n");
@@ -151,8 +164,4 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                         res->boundary_layers[i].outer.surface);
                 fprintf(f, "\n");
         }
-
-        fprintf(f,
-                "    default medium: %s\n",
-                res->medium_names[res->default_medium].c_str);
 }

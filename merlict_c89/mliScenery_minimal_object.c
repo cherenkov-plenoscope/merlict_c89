@@ -54,6 +54,8 @@ int mliScenery_malloc_minimal_from_wavefront(
         chk_msg(mliMaterials_malloc(&scenery->materials, mtlcap),
                 "Failed to malloc materials.");
 
+        sprintf(scenery->materials.medium_names[0].c_str, "vacuum");
+
         chk(mliFunc_malloc(&scenery->materials.media[0].refraction, 2));
         scenery->materials.media[0].refraction.x[0] = 200e-9;
         scenery->materials.media[0].refraction.x[1] = 1200e-9;
