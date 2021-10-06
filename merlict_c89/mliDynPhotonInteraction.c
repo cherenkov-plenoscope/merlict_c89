@@ -50,13 +50,9 @@ void mliDynPhotonInteraction_print(
 
                 printf("%-12s ", type_string);
 
-                printf("{% 2d,% 2d}  ",
-                       phisec.refraction_coming_from,
-                       phisec.refraction_going_to);
-
-                printf("{% 2d,% 2d}  ",
-                       phisec.absorbtion_coming_from,
-                       phisec.absorbtion_going_to);
+                printf("{% 2ld,% 2ld}  ",
+                       phisec.medium_coming_from,
+                       phisec.medium_going_to);
 
                 if (phisec.type == MLI_PHOTON_CREATION) {
                         printf(" n/a  ");

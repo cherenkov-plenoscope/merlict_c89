@@ -58,7 +58,6 @@ struct mliColor _trace_to_intersection(
 {
         struct mliColor color;
         struct mliSide side;
-        struct mliSurface surface;
         double theta;
         double lambert_factor;
 
@@ -66,8 +65,7 @@ struct mliColor _trace_to_intersection(
                 scenery, intersection->position, config, prng);
 
         side = _mli_side_coming_from(scenery, intersection);
-        surface = scenery->materials.surfaces[side.surface];
-        color = scenery->materials.colors[surface.color];
+        color = scenery->materials.surfaces[side.surface].color;
 
         theta = mliVec_angle_between(
                 config->atmosphere.sunDirection, intersection->surface_normal);
