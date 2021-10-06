@@ -5,6 +5,7 @@
 #include "mliMagicId.h"
 #include "mliGeometryId.h"
 #include "mliFunc.h"
+#include "mliFunc_json.h"
 #include "mliFunc_serialize.h"
 #include "mliMT19937.h"
 #include "mliPCG32.h"
