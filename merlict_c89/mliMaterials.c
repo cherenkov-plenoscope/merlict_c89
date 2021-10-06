@@ -95,23 +95,32 @@ error:
 void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
 {
         uint32_t i = 0;
-        fprintf(f, "Materials:\n");
+        fprintf(f, "materials\n");
+        fprintf(f, "---------\n");
+        fprintf(f, "\n");
 
-        fprintf(f, "    media:\n");
-        fprintf(f, "        ");
-        fprintf(f, "%3s ", "id");
-        fprintf(f, "%16s ", "name");
+        fprintf(f, "    media\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%3s ", "#");
+        fprintf(f, "%24s ", "name");
         fprintf(f, "%12s ", "absorbtion");
         fprintf(f, "%12s ", "refraction");
         fprintf(f, "%12s ", "default");
         fprintf(f, "\n");
-        fprintf(f, "        ");
-        fprintf(f, "-----------------------------------------------------");
-        fprintf(f, "--------------\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
         for (i = 0; i < res->num_media; i++) {
-                fprintf(f, "        ");
+                fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
-                fprintf(f, "%16s ", res->medium_names[i].c_str);
+                fprintf(f, "%24s ", res->medium_names[i].c_str);
                 fprintf(f, "%12d ", res->media[i].absorbtion.num_points);
                 fprintf(f, "%12d ", res->media[i].refraction.num_points);
                 if (i == res->default_medium) {
@@ -119,49 +128,93 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                 }
                 fprintf(f, "\n");
         }
+        fprintf(f, "\n");
 
-        fprintf(f, "    surfaces:\n");
+        fprintf(f, "    surfaces\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%48s ", "spec.");
+        fprintf(f, "%6s ", "diff.");
+        fprintf(f, "%10s ", "color");
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%3s ", "#");
+        fprintf(f, "%24s ", "name");
+        fprintf(f, "%12s ", "material");
+        fprintf(f, "%6s ", "refl.");
+        fprintf(f, "%6s ", "refl.");
+        fprintf(f, "%10s ", "r,g,b");
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
         for (i = 0; i < res->num_surfaces; i++) {
-                fprintf(f,
-                        "        % 3d, %-32s  ",
-                        i,
-                        res->surface_names[i].c_str);
-                fprintf(f, "model: ");
+                fprintf(f, "    ");
+                fprintf(f, "% 3d ", i);
+                fprintf(f, "%24s ", res->surface_names[i].c_str);
                 if (res->surfaces[i].material == MLI_MATERIAL_TRANSPARENT) {
-                        fprintf(f, "transparent,  ");
+                        fprintf(f, "%12s ", "transparent");
                 } else if (res->surfaces[i].material == MLI_MATERIAL_PHONG) {
-                        fprintf(f, "Phong      ,  ");
+                        fprintf(f, "%12s ", "Phong");
                 } else {
-                        fprintf(f, "UNKNOWN    ,  ");
+                        fprintf(f, "%12s ", "UNKNOWN");
                 }
                 fprintf(f,
-                        "specular-refl. (%d),  "
-                        "diffuse-refl. (%d), ",
-                        res->surfaces[i].specular_reflection.num_points,
+                        "%6d ",
+                        res->surfaces[i].specular_reflection.num_points);
+                fprintf(f,
+                        "%6d ",
                         res->surfaces[i].diffuse_reflection.num_points);
                 fprintf(f,
-                        "color: [%1.1f, %1.1f, %1.1f]\n",
-                        res->surfaces[i].color.r,
-                        res->surfaces[i].color.g,
-                        res->surfaces[i].color.b);
+                        "   %3d,%3d,%3d ",
+                        (int)res->surfaces[i].color.r,
+                        (int)res->surfaces[i].color.g,
+                        (int)res->surfaces[i].color.b);
+                fprintf(f, "\n");
         }
+        fprintf(f, "\n");
 
-        fprintf(f, "    boundary_layers:\n");
+        fprintf(f, "    boundary_layers\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%36s ", "inner");
+        fprintf(f, "%17s ", "outer");
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%3s ", "#");
+        fprintf(f, "%24s ", "name");
+        fprintf(f, "%8s ", "medium");
+        fprintf(f, "%8s ", "surface");
+        fprintf(f, "%8s ", "medium");
+        fprintf(f, "%8s ", "surface");
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+
         for (i = 0; i < res->num_boundary_layers; i++) {
-                fprintf(f, "        ");
-                fprintf(f,
-                        "% 3d, %-32s  ",
-                        i,
-                        res->boundary_layer_names[i].c_str);
-                fprintf(f,
-                        "inner (medium: % 3d, surface : % 3d)",
-                        res->boundary_layers[i].inner.medium,
-                        res->boundary_layers[i].inner.surface);
-                fprintf(f, ",  ");
-                fprintf(f,
-                        "outer (medium: % 3d, surface : % 3d)",
-                        res->boundary_layers[i].outer.medium,
-                        res->boundary_layers[i].outer.surface);
+                fprintf(f, "    ");
+                fprintf(f, "% 3d ", i);
+                fprintf(f, "%24s ", res->boundary_layer_names[i].c_str);
+
+                fprintf(f, "%8d ", res->boundary_layers[i].inner.medium);
+                fprintf(f, "%8d ", res->boundary_layers[i].inner.surface);
+
+                fprintf(f, "%8d ", res->boundary_layers[i].outer.medium);
+                fprintf(f, "%8d ", res->boundary_layers[i].outer.surface);
+
                 fprintf(f, "\n");
         }
 }

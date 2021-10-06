@@ -91,23 +91,35 @@ void mliGeometryToMaterialMap_info_fprint(
         FILE *f,
         const struct mliGeometryToMaterialMap *map)
 {
-        uint32_t robj, bdl, bdl_start, num_bdls;
-        fprintf(f, "Geometry to material map:\n");
-        fprintf(f, "%*s", 4, "");
-        fprintf(f, " ref    boundary-layers\n");
-        fprintf(f, "%*s", 4, "");
-        fprintf(f, "--------------------------------\n");
+        uint32_t robj, bdl, bdl_start, num_bdls, i;
+        fprintf(f, "    geometry to material map\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%5s ", "ref");
+        fprintf(f, "%24s ", "boundary-layers");
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+
         for (robj = 0u; robj < map->num_robjects; robj++) {
                 bdl_start =
                         _mliGeometryToMaterialMap_resolve_idx(map, robj, 0u);
                 num_bdls =
                         mliGeometryToMaterialMap_num_boundary_layers_in_robject(
                                 map, robj);
-                fprintf(f, "%*s", 4, "");
-                fprintf(f, "% 4d  [", robj);
+                fprintf(f, "    ");
+                fprintf(f, "% 5d ", robj);
+                fprintf(f, "  [");
                 for (bdl = 0u; bdl < num_bdls; bdl++) {
                         fprintf(f,
-                                "% 2d, ",
+                                "%d,",
                                 map->boundary_layers[bdl_start + bdl]);
                 }
                 fprintf(f, "]\n");
