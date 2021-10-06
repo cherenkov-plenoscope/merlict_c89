@@ -45,8 +45,8 @@ int main(void)
 #include "test_triangle_intersection.c"
 #include "test_object_wavefront.c"
 #include "test_mliRay.c"
-/*
 #include "test_mliUserScenery.c"
+/*
 #include "test_scenery.c"
 */
 #include "test_mliFunc.c"

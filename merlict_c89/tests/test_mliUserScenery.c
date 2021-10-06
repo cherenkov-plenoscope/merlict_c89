@@ -3,39 +3,15 @@
 CASE("mliUserScenery, init")
 {
         struct mliMaterials resources = mliMaterials_init();
-        CHECK(resources.num_functions == 0u);
-        CHECK(resources.functions == NULL);
-        CHECK(resources.num_colors == 0u);
-        CHECK(resources.colors == NULL);
         CHECK(resources.num_surfaces == 0u);
         CHECK(resources.surfaces == NULL);
         CHECK(resources.num_media == 0u);
         CHECK(resources.media == NULL);
 }
 
-CASE("mliMaterials, estimate capacity from json")
+CASE("mliMaterials, estimate capacity from archive")
 {
-        char json_str[256];
-        struct mliJson material_json = mliJson_init();
-        struct mliMaterialsCapacity rescap = mliMaterialsCapacity_init();
 
-        sprintf(json_str,
-                "{\n"
-                "    \"colors\": [1, 2],\n"
-                "    \"surfaces\": [1, 2, 3, 4, 5, 6, 7, 8]\n"
-                "    \"media\": [1],\n"
-                "    \"boundary_layers\": [1, 2, 3, 4],\n"
-                "}\n");
-        CHECK(mliJson_malloc_from_string(&material_json, json_str));
-        CHECK(__mliMaterialsCapacity_from_materials_json(
-                &rescap, &material_json));
-
-        CHECK(rescap.num_colors == 2);
-        CHECK(rescap.num_surfaces == 8);
-        CHECK(rescap.num_media == 1);
-        CHECK(rescap.num_boundary_layers == 4);
-
-        mliJson_free(&material_json);
 }
 
 CASE("mliScenery, malloc from archive")
