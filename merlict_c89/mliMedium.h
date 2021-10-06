@@ -13,6 +13,4 @@ void mliMedium_free(struct mliMedium *medium);
 
 int mliMedium_equal(const struct mliMedium *a, const struct mliMedium *b);
 
-int mliMedium_fwrite(const struct mliMedium *med, FILE *f);
-int mliMedium_malloc_fread(struct mliMedium *med, FILE *f);
 #endif
