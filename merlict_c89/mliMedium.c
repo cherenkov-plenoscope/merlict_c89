@@ -16,19 +16,6 @@ void mliMedium_free(struct mliMedium *medium)
         (*medium) = mliMedium_init();
 }
 
-int mliMedium_malloc(
-        struct mliMedium *medium,
-        const uint32_t num_points_refraction,
-        const uint32_t num_points_absorbtion)
-{
-        mliMedium_free(medium);
-        chk(mliFunc_malloc(&medium->refraction, num_points_refraction));
-        chk(mliFunc_malloc(&medium->absorbtion, num_points_absorbtion));
-        return 1;
-error:
-        return 0;
-}
-
 int mliMedium_equal(const struct mliMedium *a, const struct mliMedium *b)
 {
         if (!mliFunc_equal(a->refraction, b->refraction))
@@ -64,6 +51,41 @@ int mliMedium_malloc_fread(struct mliMedium *med, FILE *f)
         chk(mliFunc_malloc_fread(&med->refraction, f));
         chk(mliFunc_malloc_fread(&med->absorbtion, f));
 
+        return 1;
+error:
+        return 0;
+}
+
+int mliMedium_malloc_from_json_str(struct mliMedium *med, const char *json_str)
+{
+        struct mliJson json = mliJson_init();
+        chk_msg(mliJson_malloc_from_string(&json, json_str),
+                "Failed to read json_str to malloc medium.");
+        chk_msg(mliMedium_malloc_from_json_token(med, &json, 0),
+                "Failed to malloc medium from json.");
+        mliJson_free(&json);
+        return 1;
+error:
+        return 0;
+}
+
+int mliMedium_malloc_from_json_token(
+        struct mliMedium *med,
+        const struct mliJson *json,
+        const uint64_t token)
+{
+        uint64_t refraction_token;
+        uint64_t absorbtion_token;
+        chk_msg(mliJson_find_key(json, token, "refraction", &refraction_token),
+                "Expected medium to have key 'refraction', but it does not.");
+        chk_msg(mliFunc_malloc_from_json_token(
+                        &med->refraction, json, refraction_token + 1),
+                "Failed to read medium's refraction from json.");
+        chk_msg(mliJson_find_key(json, token, "absorbtion", &absorbtion_token),
+                "Expected medium to have key 'absorbtion', but it does not.");
+        chk_msg(mliFunc_malloc_from_json_token(
+                        &med->absorbtion, json, absorbtion_token + 1),
+                "Failed to read medium's absorbtion from json.");
         return 1;
 error:
         return 0;
