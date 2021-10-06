@@ -48,45 +48,40 @@ int mliScenery_malloc_minimal_from_wavefront(
         total_num_boundary_layers = scenery->geometry.objects[0].num_materials;
 
         mtlcap.num_media = 1u;
-        mtlcap.num_functions = 2u;
         mtlcap.num_boundary_layers = total_num_boundary_layers;
-        mtlcap.num_colors = total_num_boundary_layers;
         mtlcap.num_surfaces = total_num_boundary_layers;
 
         chk_msg(mliMaterials_malloc(&scenery->materials, mtlcap),
                 "Failed to malloc materials.");
 
-        scenery->materials.functions[0] = mliFunc_init();
-        chk_msg(mliFunc_malloc(&scenery->materials.functions[0], 2),
-                "Failed to malloc zero function.");
-        scenery->materials.functions[0].x[0] = 200e-9;
-        scenery->materials.functions[0].x[1] = 1200e-9;
-        scenery->materials.functions[0].y[0] = 0.0;
-        scenery->materials.functions[0].y[1] = 0.0;
-        sprintf(scenery->materials.function_names[0].c_str, "zero");
+        chk(mliFunc_malloc(&scenery->materials.media[0].refraction, 2));
+        scenery->materials.media[0].refraction.x[0] = 200e-9;
+        scenery->materials.media[0].refraction.x[1] = 1200e-9;
+        scenery->materials.media[0].refraction.y[0] = 1.0;
+        scenery->materials.media[0].refraction.y[1] = 1.0;
 
-        scenery->materials.functions[1] = mliFunc_init();
-        chk_msg(mliFunc_malloc(&scenery->materials.functions[1], 2),
-                "Failed to malloc unity function.");
-        scenery->materials.functions[1].x[0] = 200e-9;
-        scenery->materials.functions[1].x[1] = 1200e-9;
-        scenery->materials.functions[1].y[0] = 1.0;
-        scenery->materials.functions[1].y[1] = 1.0;
-        sprintf(scenery->materials.function_names[1].c_str, "unity");
-
-        scenery->materials.media[0].refraction = 1u;
-        scenery->materials.media[0].absorbtion = 0u;
+        chk(mliFunc_malloc(&scenery->materials.media[0].absorbtion, 2));
+        scenery->materials.media[0].absorbtion.x[0] = 200e-9;
+        scenery->materials.media[0].absorbtion.x[1] = 1200e-9;
+        scenery->materials.media[0].absorbtion.y[0] = 0.0;
+        scenery->materials.media[0].absorbtion.y[1] = 0.0;
 
         for (i = 0u; i < total_num_boundary_layers; i++) {
-                scenery->materials.colors[i] = mli_random_color(&prng);
-                sprintf(scenery->materials.color_names[i].c_str,
-                        "color_%06u",
-                        i);
-
                 scenery->materials.surfaces[i].material = MLI_MATERIAL_PHONG;
-                scenery->materials.surfaces[i].specular_reflection = 0u;
-                scenery->materials.surfaces[i].diffuse_reflection = 1u;
-                scenery->materials.surfaces[i].color = i;
+                scenery->materials.surfaces[i].color = mli_random_color(&prng);
+
+                chk(mliFunc_malloc(&scenery->materials.surfaces[i].specular_reflection, 2));
+                scenery->materials.surfaces[i].specular_reflection.x[0] = 200e-9;
+                scenery->materials.surfaces[i].specular_reflection.x[1] = 1200e-9;
+                scenery->materials.surfaces[i].specular_reflection.y[0] = 0.0;
+                scenery->materials.surfaces[i].specular_reflection.y[1] = 0.0;
+
+                chk(mliFunc_malloc(&scenery->materials.surfaces[i].diffuse_reflection, 2));
+                scenery->materials.surfaces[i].diffuse_reflection.x[0] = 200e-9;
+                scenery->materials.surfaces[i].diffuse_reflection.x[1] = 1200e-9;
+                scenery->materials.surfaces[i].diffuse_reflection.y[0] = 1.0;
+                scenery->materials.surfaces[i].diffuse_reflection.y[1] = 1.0;
+
                 sprintf(scenery->materials.surface_names[i].c_str,
                         "surface_%06u",
                         i);

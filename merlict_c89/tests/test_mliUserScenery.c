@@ -21,8 +21,8 @@ CASE("mliScenery, malloc from archive")
         uint64_t obj_teapot_idx, obj_hex_idx;
         uint64_t srf_grass, srf_wood, srf_leafs, srf_blue_glass;
         uint64_t med_vacuum;
-        uint64_t fcn_idx;
 
+        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
         CHECK(mliScenery_malloc_from_tar(
                 &scenery,
                 "merlict_c89/"
@@ -30,6 +30,7 @@ CASE("mliScenery, malloc from archive")
                 "resources/"
                 "sceneries/"
                 "001.tar"));
+        fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
 
         CHECK(2 == scenery.geometry.num_objects);
 
@@ -52,19 +53,6 @@ CASE("mliScenery, malloc from archive")
         CHECK(1202 ==
               scenery.geometry.objects[obj_teapot_idx].num_vertex_normals);
 
-        CHECK(2 == scenery.materials.num_functions);
-
-        CHECK(mliName_find_idx(
-                scenery.materials.function_names,
-                scenery.materials.num_functions,
-                "refractive_index_water",
-                &fcn_idx));
-        CHECK(mliName_find_idx(
-                scenery.materials.function_names,
-                scenery.materials.num_functions,
-                "zero",
-                &fcn_idx));
-        CHECK(4 == scenery.materials.num_colors);
         CHECK(4 == scenery.materials.num_surfaces);
         CHECK(2 == scenery.materials.num_media);
 

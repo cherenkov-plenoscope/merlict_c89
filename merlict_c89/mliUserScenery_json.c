@@ -3,27 +3,6 @@
 #include "mliVec_json.h"
 #include "mliColor_json.h"
 
-int __mli_material_type_from_name_token(
-        const struct mliJson *json,
-        const uint64_t token,
-        uint32_t *out_material_type)
-{
-        char buff[MLI_NAME_CAPACITY] = {'\0'};
-        const uint64_t name_strlen =
-                (json->tokens[token + 1].end - json->tokens[token + 1].start);
-        chk_msg(name_strlen < sizeof(buff), "Value of 'name' is too long");
-        chk_msg(json->tokens[token + 1].type == JSMN_STRING,
-                "Expected 'name' to be of type string.");
-        chk_msg(mliJson_as_string(json, token + 1, buff, name_strlen + 1),
-                "Failed to extract string from json.");
-        chk_msg(mli_material_type_from_string(buff, out_material_type),
-                "Failed to parse material type from json-string.");
-        return 1;
-error:
-        mliJson_debug_token_fprint(stderr, json, token + 1);
-        return 0;
-}
-
 int _mliDynMap_insert_key_from_json(
         struct mliDynMap *map,
         const struct mliJson *json,
@@ -32,11 +11,11 @@ int _mliDynMap_insert_key_from_json(
 {
         char buff[MLI_NAME_CAPACITY] = {'\0'};
         const uint64_t name_strlen =
-                (json->tokens[token + 1].end - json->tokens[token + 1].start);
+                (json->tokens[token].end - json->tokens[token].start);
         chk_msg(name_strlen < sizeof(buff), "Key is too long");
-        chk_msg(json->tokens[token + 1].type == JSMN_STRING,
+        chk_msg(json->tokens[token].type == JSMN_STRING,
                 "Expected key to be of type string.");
-        chk_msg(mliJson_as_string(json, token + 1, buff, name_strlen + 1),
+        chk_msg(mliJson_as_string(json, token, buff, name_strlen + 1),
                 "Failed to extract string from json.");
         chk_msg(mliDynMap_insert(map, buff, value),
                 "Failed to insert name and value into map.");
@@ -55,11 +34,11 @@ int _mliDynMap_get_value_for_string_from_json(
         char buff[MLI_NAME_CAPACITY] = {'\0'};
         uint64_t value;
         uint64_t name_strlen =
-                (json->tokens[token + 1].end - json->tokens[token + 1].start);
+                (json->tokens[token].end - json->tokens[token].start);
         chk_msg(name_strlen < sizeof(buff), "Key is too long");
-        chk_msg(json->tokens[token + 1].type == JSMN_STRING,
+        chk_msg(json->tokens[token].type == JSMN_STRING,
                 "Expected token to be of type string to be given to mliMap.");
-        chk_msg(mliJson_as_string(json, token + 1, buff, name_strlen + 1),
+        chk_msg(mliJson_as_string(json, token, buff, name_strlen + 1),
                 "Failed to extract string from json.");
         chk_msg(mliDynMap_get(map, buff, &value),
                 "Failed to get value for json-string-key from map.");
@@ -71,242 +50,6 @@ error:
         return 0;
 }
 
-int __mliMaterialsCapacity_from_materials_json(
-        struct mliMaterialsCapacity *rescap,
-        const struct mliJson *json)
-{
-        uint64_t token = 0u;
-        chk_msg(mliJson_find_key(json, 0, "colors", &token),
-                "Expected materials-json to have key 'colors'.");
-        chk_msg(json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'colors' to point to a json-array.");
-        rescap->num_colors = json->tokens[token + 1].size;
-        chk_msg(mliJson_find_key(json, 0, "media", &token),
-                "Expected materials-json to have key 'media'.");
-        chk_msg(json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'media' to point to a json-array.");
-        rescap->num_media = json->tokens[token + 1].size;
-        chk_msg(mliJson_find_key(json, 0, "surfaces", &token),
-                "Expected materials-json to have key 'surfaces'.");
-        chk_msg(json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'surfaces' to point to a json-array.");
-        rescap->num_surfaces = json->tokens[token + 1].size;
-        chk_msg(mliJson_find_key(json, 0, "boundary_layers", &token),
-                "Expected materials-json to have key 'boundary_layers'.");
-        chk_msg(json->tokens[token + 1].type == JSMN_ARRAY,
-                "Expected key 'boundary_layers' to be a json-array.");
-        rescap->num_boundary_layers = json->tokens[token + 1].size;
-        return 1;
-error:
-        return 0;
-}
-
-int __mliMaterials_assign_colors_from_json(
-        struct mliMaterials *resources,
-        struct mliDynMap *color_names,
-        const struct mliJson *json)
-{
-        uint64_t token;
-        uint64_t token_colors;
-        uint64_t c;
-        chk_msg(mliJson_find_key(json, 0, "colors", &token),
-                "Expected scenery-json to have key 'colors'.");
-        token_colors = token + 1;
-        chk_msg(json->tokens[token_colors].type == JSMN_ARRAY,
-                "Expected key 'colors' to point to a json-array.")
-                chk_msg(resources->num_colors ==
-                                (uint64_t)json->tokens[token_colors].size,
-                        "Expected num_colors in SceneryResources to match "
-                        "json-array.");
-        for (c = 0; c < resources->num_colors; c++) {
-                uint64_t token_c =
-                        mliJson_array_child_token(json, token_colors, c);
-                uint64_t token_c_name;
-                uint64_t token_c_rgb;
-                chk_msg(json->tokens[token_c].type == JSMN_OBJECT,
-                        "Expected color-object with 'name' and 'rgb'.");
-                chk_msg(mliJson_find_key(json, token_c, "name", &token_c_name),
-                        "Expected function to have key 'name'.");
-                chk_msg(mliJson_find_key(json, token_c, "rgb", &token_c_rgb),
-                        "Expected function to have key 'rgb'.");
-                chk_msg(mliColor_from_json_token(
-                                &resources->colors[c], json, token_c_rgb + 1),
-                        "Failed to assign color from json.");
-                chk_msg(_mliDynMap_insert_key_from_json(
-                                color_names, json, token_c_name, c),
-                        "Failed to read and insert color's name into map.");
-        }
-        return 1;
-error:
-        return 0;
-}
-
-int __mliMedium_from_json(
-        struct mliMedium *medium,
-        const struct mliDynMap *function_names,
-        const struct mliJson *json,
-        const uint64_t token)
-{
-        uint64_t token_refr, token_abso;
-        chk_msg(mliJson_find_key(json, token, "refraction", &token_refr),
-                "Expected surface-item to contain key 'refraction'.");
-        chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        function_names, json, token_refr, &medium->refraction),
-                "Failed to get idx from map for string from json");
-
-        chk_msg(mliJson_find_key(json, token, "absorbtion", &token_abso),
-                "Expected surface-item to contain key 'absorbtion'.");
-        chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        function_names, json, token_abso, &medium->absorbtion),
-                "Failed to get idx from map for string from json");
-
-        return 1;
-error:
-        mliJson_debug_token_fprint(stderr, json, token);
-        return 0;
-}
-
-int __mliMaterials_assign_media_from_json(
-        struct mliMaterials *resources,
-        struct mliDynMap *medium_names,
-        const struct mliDynMap *function_names,
-        const struct mliJson *json)
-{
-        uint64_t token;
-        uint64_t token_surfaces;
-        uint64_t m;
-        chk_msg(mliJson_find_key(json, 0, "media", &token),
-                "Expected scenery-json to have key 'media'.");
-        token_surfaces = token + 1;
-        chk_msg(json->tokens[token_surfaces].type == JSMN_ARRAY,
-                "Expected key 'media' to point to a json-array.")
-                chk_msg(resources->num_media ==
-                                (uint64_t)json->tokens[token_surfaces].size,
-                        "Expected num_media in struct mliGeometry to match "
-                        "json-array.");
-        for (m = 0; m < resources->num_media; m++) {
-                uint64_t token_m =
-                        mliJson_array_child_token(json, token_surfaces, m);
-                uint64_t token_m_name;
-                chk_msg(json->tokens[token_m].type == JSMN_OBJECT,
-                        "Expected medium to be a json-object {}.");
-                chk_msg(mliJson_find_key(json, token_m, "name", &token_m_name),
-                        "Expected medium-object to have key 'name'.");
-                chk_msg(__mliMedium_from_json(
-                                &resources->media[m],
-                                function_names,
-                                json,
-                                token_m),
-                        "Failed to copy medium from json.");
-                chk_msg(_mliDynMap_insert_key_from_json(
-                                medium_names, json, token_m_name, m),
-                        "Failed to read and insert medium's name into map.");
-        }
-        return 1;
-error:
-        return 0;
-}
-
-int __mliSurface_from_json(
-        struct mliSurface *surface,
-        const struct mliDynMap *function_names,
-        const struct mliDynMap *color_names,
-        const struct mliJson *json,
-        const uint64_t token_s)
-{
-        uint64_t token_mate, token_spec, token_diff, token_colo;
-
-        chk_msg(mliJson_find_key(json, token_s, "material", &token_mate),
-                "Expected json-surface-item to contain key 'material'.");
-        chk_msg(json->tokens[token_mate].type == JSMN_STRING,
-                "Expected medium's material to be of type string.");
-        chk_msg(__mli_material_type_from_name_token(
-                        json, token_mate, &surface->material),
-                "Failed to get material-idx from map for string from json");
-
-        chk_msg(mliJson_find_key(
-                        json, token_s, "specular_reflection", &token_spec),
-                "Expected json-surface-item to contain key "
-                "'specular_reflection'.");
-        chk_msg(json->tokens[token_spec].type == JSMN_STRING,
-                "Expected medium's specular_reflection to be of type string.");
-        chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        function_names,
-                        json,
-                        token_spec,
-                        &surface->specular_reflection),
-                "Failed to get material-idx from map for string from json");
-
-        chk_msg(mliJson_find_key(
-                        json, token_s, "diffuse_reflection", &token_diff),
-                "Expected json-surface-item to contain key "
-                "'diffuse_reflection'.");
-        chk_msg(json->tokens[token_diff].type == JSMN_STRING,
-                "Expected medium's diffuse_reflection to be of type string.");
-        chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        function_names,
-                        json,
-                        token_diff,
-                        &surface->diffuse_reflection),
-                "Failed to get function-idx from map for diffuse_reflection");
-
-        chk_msg(mliJson_find_key(json, token_s, "color", &token_colo),
-                "Expected json-surface-item to contain key 'color'.");
-        chk_msg(json->tokens[token_colo].type == JSMN_STRING,
-                "Expected medium's diffuse_reflection to be of type string.");
-        chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        color_names, json, token_colo, &surface->color),
-                "Failed to get function-idx from map for color");
-
-        return 1;
-error:
-        mliJson_debug_token_fprint(stderr, json, token_s);
-        return 0;
-}
-
-int __mliMaterials_assign_surfaces_from_json(
-        struct mliMaterials *resources,
-        struct mliDynMap *surface_names,
-        const struct mliDynMap *function_names,
-        const struct mliDynMap *color_names,
-        const struct mliJson *json)
-{
-        uint64_t token;
-        uint64_t token_surfaces;
-        uint64_t s;
-        chk_msg(mliJson_find_key(json, 0, "surfaces", &token),
-                "Expected scenery-json to have key 'surfaces'.");
-        token_surfaces = token + 1;
-        chk_msg(json->tokens[token_surfaces].type == JSMN_ARRAY,
-                "Expected key 'surfaces' to be a json-array.")
-                chk_msg(resources->num_surfaces ==
-                                (uint64_t)json->tokens[token_surfaces].size,
-                        "Expected num_surfaces in materials to match "
-                        "json-array.size.");
-        for (s = 0; s < resources->num_surfaces; s++) {
-                uint64_t token_s =
-                        mliJson_array_child_token(json, token_surfaces, s);
-                uint64_t token_s_name;
-                chk_msg(json->tokens[token_s].type == JSMN_OBJECT,
-                        "Expected surface to be of type object {}.");
-                chk_msg(mliJson_find_key(json, token_s, "name", &token_s_name),
-                        "Expected surface-object to have key 'name'.");
-                chk_msg(_mliDynMap_insert_key_from_json(
-                                surface_names, json, token_s_name, s),
-                        "Failed to insert surface's name into map.");
-                chk_msg(__mliSurface_from_json(
-                                &resources->surfaces[s],
-                                function_names,
-                                color_names,
-                                json,
-                                token_s),
-                        "Failed to copy surface from json.");
-        }
-        return 1;
-error:
-        return 0;
-}
-
 int __mliMaterials_assign_boundary_layers_from_json(
         struct mliMaterials *materials,
         struct mliDynMap *boundary_layer_names,
@@ -314,29 +57,38 @@ int __mliMaterials_assign_boundary_layers_from_json(
         const struct mliDynMap *medium_names,
         const struct mliJson *json)
 {
-        uint64_t token;
-        uint64_t token_layers;
+        uint64_t token = 0;
         uint64_t s;
-        chk_msg(mliJson_find_key(json, 0, "boundary_layers", &token),
-                "Expected scenery-json to have key 'boundary_layers'.");
-        token_layers = token + 1;
-        chk_msg(json->tokens[token_layers].type == JSMN_ARRAY,
-                "Expected key 'boundary_layers' to be a json-array.");
+
+
+        chk_msg(json->tokens[token].type == JSMN_OBJECT,
+                "Expected boundary_layers.json to be a json-object.");
+
+
         chk_msg(materials->num_boundary_layers ==
-                        (uint32_t)json->tokens[token_layers].size,
-                "Expected num_boundary_layers in materials to match "
-                "json-array.size.");
+                        (uint32_t)json->tokens[token].size,
+                "Expected num_boundary_layers to match "
+                "json-object.size.");
+
+
         for (s = 0; s < materials->num_boundary_layers; s++) {
-                uint64_t token_s =
-                        mliJson_array_child_token(json, token_layers, s);
-                uint64_t token_s_name;
-                chk_msg(json->tokens[token_s].type == JSMN_OBJECT,
-                        "Expected boundary_layer to be of type object {}.");
-                chk_msg(mliJson_find_key(json, token_s, "name", &token_s_name),
-                        "Expected boundary_layers-object to have key 'name'.");
+                uint64_t token_s_name = mliJson_array_child_token(json, token, s);
+                uint64_t token_s = token_s_name + 1;
+
+        
+                chk_msg(json->tokens[token_s_name].type == JSMN_STRING,
+                        "Expected boundary_layer to be a String.");
+
+        
                 chk_msg(_mliDynMap_insert_key_from_json(
                                 boundary_layer_names, json, token_s_name, s),
                         "Failed to insert boundary_layer's name into map.");
+
+        
+                chk_msg(json->tokens[token_s].type == JSMN_OBJECT,
+                        "Expected boundary_layer to be of type object {}.");
+
+        
                 chk_msg(__mliBoundaryLayer_from_json(
                                 &materials->boundary_layers[s],
                                 surface_names,
@@ -345,6 +97,8 @@ int __mliMaterials_assign_boundary_layers_from_json(
                                 token_s),
                         "Failed to copy boundary_layer from json.");
         }
+
+
         return 1;
 error:
         mliJson_debug_token_fprint(stderr, json, token);
@@ -435,14 +189,14 @@ int __mliSide_set(
         chk_msg(mliJson_find_key(json, side_token + 1, "medium", &token_medium),
                 "Expected key 'medium' in side.");
         chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        medium_names, json, token_medium, &side->medium),
+                        medium_names, json, token_medium + 1, &side->medium),
                 "Failed to get medium-idx from map");
 
         chk_msg(mliJson_find_key(
                         json, side_token + 1, "surface", &token_surface),
                 "Expected key 'surface' in side.");
         chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        surface_names, json, token_surface, &side->surface),
+                        surface_names, json, token_surface + 1, &side->surface),
                 "Failed to get surface-idx from map");
 
         return 1;
@@ -521,7 +275,7 @@ int __mliFrame_set_boundary_layers(
                 chk_msg(_mliDynMap_get_value_for_string_from_json(
                                 boundary_layer_names,
                                 json,
-                                token_material_key,
+                                token_material_key + 1,
                                 &boundary_layer_idx),
                         "Expected boundary-layer to exist in materials.");
 
@@ -547,7 +301,7 @@ int __mliFrame_set_object_reference(
         chk_msg(mliJson_find_key(json, token, "obj", &token_obj_key),
                 "Expected object to have key 'obj'.");
         chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        object_names, json, token_obj_key, object_reference),
+                        object_names, json, token_obj_key + 1, object_reference),
                 "Failed to get object-reference 'obj' from map");
         return 1;
 error:

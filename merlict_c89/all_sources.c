@@ -51,10 +51,10 @@
 #include "mliMaterials_serialize.c"
 #include "mliMaterials_equal.c"
 #include "mliMaterials_valid.c"
-/*
+
 #include "mliUserScenery.c"
 #include "mliUserScenery_json.c"
-*/
+
 #include "mliGeometry.c"
 #include "mliGeometry_equal.c"
 #include "mliGeometry_valid.c"
@@ -68,14 +68,14 @@
 #include "mliGeometryToMaterialMap_equal.c"
 #include "mliGeometryToMaterialMap_valid.c"
 #include "mliGeometryToMaterialMap_serialize.c"
-/*
+
 #include "mliScenery.c"
 #include "mliScenery_valid.c"
 #include "mliScenery_tar.c"
 #include "mliScenery_serialize.c"
 #include "mliScenery_equal.c"
 #include "mliScenery_minimal_object.c"
-*/
+
 #include "mliRay_OBB.c"
 #include "mliVec_OBB.c"
 #include "mliTriangle_OBB.c"

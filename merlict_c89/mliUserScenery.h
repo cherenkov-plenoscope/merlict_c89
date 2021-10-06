@@ -9,8 +9,6 @@
 
 struct mliNameMap {
         struct mliDynMap objects;
-        struct mliDynMap functions;
-        struct mliDynMap colors;
         struct mliDynMap media;
         struct mliDynMap surfaces;
         struct mliDynMap boundary_layers;
@@ -20,5 +18,6 @@ int mliNameMap_malloc(struct mliNameMap *namemap);
 void mliNameMap_free(struct mliNameMap *namemap);
 
 void __mli_strip_key(const char *filename, char *key);
+void __mli_strip_whitespaces(const char *in, char *out);
 
 #endif

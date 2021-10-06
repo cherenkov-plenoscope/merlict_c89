@@ -1,57 +1,18 @@
 {
-    "media": {
-        "vacuum": {
-            "refraction": [[200e-9, 1.0], [1.2e-6, 1.0]],
-            "absorbtion": [[200e-9, 1e99], [1.2e-6, 1e99]]
-        },
-       "glass": {
-            "refraction": [[200e-9, 1.49], [1.2e-6, 1.49]],
-            "absorbtion": [[200e-9, 1e99], [1.2e-6, 1e99]]
-        }
+    "glas_gblu_gred_vacu": {
+        "inner": {"medium": "glass", "surface": "glass_blue"},
+        "outer": {"medium": "vacuum", "surface": "glass_red"}
     },
-    "default_medium": "vacuum",
-    "surfaces": {
-        "glass_blue": {
-            "material": "transparent",
-            "specular_reflection": [[200e-9, 1.0], [1.2e-6, 1.0]],
-            "diffuse_reflection": [[200e-9, 1.0], [1.2e-6, 1.0]],
-            "color": [22, 9, 255]
-        },
-        "glass_red": {
-            "material": "transparent",
-            "specular_reflection": [[200e-9, 1.0], [1.2e-6, 1.0]],
-            "diffuse_reflection": [[200e-9, 1.0], [1.2e-6, 1.0]],
-            "color": [255, 91, 49]
-        },
-        "specular_mirror": {
-            "material": "Phong",
-            "specular_reflection": [[200e-9, 1.0], [1.2e-6, 1.0]],
-            "diffuse_reflection": [[200e-9, 0.0], [1.2e-6, 0.0]],
-            "color": [16, 255, 0]
-        },
-        "perfect_absorber": {
-            "material": "Phong",
-            "specular_reflection": [[200e-9, 0.0], [1.2e-6, 0.0]],
-            "diffuse_reflection": [[200e-9, 0.0], [1.2e-6, 0.0]],
-            "color": [23, 23, 23]
-        }
+    "vacu_spcm_pabs_vacu": {
+        "inner": {"medium": "vacuum", "surface": "specular_mirror"},
+        "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
     },
-    "boundary_layers": {
-        "glas_gblu_gred_vacu": {
-            "inner": {"medium": "glass", "surface": "glass_blue"},
-            "outer": {"medium": "vacuum", "surface": "glass_red"}
-        },
-        "vacu_spcm_pabs_vacu": {
-            "inner": {"medium": "vacuum", "surface": "specular_mirror"},
-            "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
-        },
-        "vacu_pabs_spcm_vacu": {
-            "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
-            "outer": {"medium": "vacuum", "surface": "specular_mirror"}
-        },
-        "vacu_pabs_pabs_vacu": {
-            "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
-            "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
-        }
+    "vacu_pabs_spcm_vacu": {
+        "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+        "outer": {"medium": "vacuum", "surface": "specular_mirror"}
+    },
+    "vacu_pabs_pabs_vacu": {
+        "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+        "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
     }
 }
