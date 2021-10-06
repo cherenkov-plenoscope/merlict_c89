@@ -43,6 +43,7 @@ int main(void)
 #include "test_linear_interpolation.c"
 */
 #include "test_mliFunc.c"
+#include "test_mliMedium.c"
 /*
 #include "test_mliRay.c"
 */
