@@ -137,7 +137,7 @@ CASE("mliFunc_json")
 {
         uint64_t token = 0;
         uint64_t token_f = 0;
-        struct mliFunc f;
+        struct mliFunc f = mliFunc_init();
         struct mliJson json = mliJson_init();
         char json_str[] = "{\"function\": [[0, 10], [1, 11], [2, 12]]}";
         CHECK(mliJson_malloc_from_string(&json, json_str));
