@@ -44,6 +44,7 @@ int main(void)
 */
 #include "test_mliFunc.c"
 #include "test_mliMedium.c"
+#include "test_mliSurface.c"
 /*
 #include "test_mliRay.c"
 */
