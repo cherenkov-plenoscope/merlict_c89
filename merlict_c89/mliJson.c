@@ -38,7 +38,7 @@ int mliJson_malloc(struct mliJson *json, const uint64_t json_strlen)
 {
         mliJson_free(json);
         json->c_str_capacity = json_strlen + 1u;     /* NULL termination. */
-        json->num_tokens = json->c_str_capacity / 4; /* A rather safe guess. */
+        json->num_tokens = json->c_str_capacity / 2; /* A rather safe guess. */
         chk_malloc(json->c_str, char, json->c_str_capacity);
         chk_malloc(json->tokens, struct jsmntok_t, json->num_tokens);
         _mliJson_set_zero(json);
