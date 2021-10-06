@@ -42,6 +42,7 @@
 #include "mliDynMap.h"
 #include "mliBoundaryLayer.h"
 #include "mliMedium.h"
+#include "mliMedium_json.h"
 #include "mliSurface.h"
 #include "mliFrame.h"
 #include "mliMaterials.h"
