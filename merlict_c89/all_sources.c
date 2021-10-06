@@ -45,6 +45,7 @@
 #include "mliMedium_serialize.c"
 #include "mliMedium_json.c"
 #include "mliSurface.c"
+#include "mliSurface_json.c"
 #include "mliFrame.c"
 #include "mliMaterials.c"
 #include "mliMaterials_serialize.c"
