@@ -15,8 +15,8 @@ CASE("mliArchive, read tar")
                 "000.tar"));
         CHECK(mliArchive_num(&arc) == 12);
 
-        CHECK(1 ==
-              mliArchive_num_filename_prefix_sufix(&arc, "materials/media", ".json"));
+        CHECK(1 == mliArchive_num_filename_prefix_sufix(
+                           &arc, "materials/media", ".json"));
 
         CHECK(1 ==
               mliArchive_num_filename_prefix_sufix(&arc, "objects/", ".obj"));

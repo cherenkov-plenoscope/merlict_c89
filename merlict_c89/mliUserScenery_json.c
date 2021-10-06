@@ -60,35 +60,29 @@ int __mliMaterials_assign_boundary_layers_from_json(
         uint64_t token = 0;
         uint64_t s;
 
-
         chk_msg(json->tokens[token].type == JSMN_OBJECT,
                 "Expected boundary_layers.json to be a json-object.");
-
 
         chk_msg(materials->num_boundary_layers ==
                         (uint32_t)json->tokens[token].size,
                 "Expected num_boundary_layers to match "
                 "json-object.size.");
 
-
         for (s = 0; s < materials->num_boundary_layers; s++) {
-                uint64_t token_s_name = mliJson_array_child_token(json, token, s);
+                uint64_t token_s_name =
+                        mliJson_array_child_token(json, token, s);
                 uint64_t token_s = token_s_name + 1;
 
-        
                 chk_msg(json->tokens[token_s_name].type == JSMN_STRING,
                         "Expected boundary_layer to be a String.");
 
-        
                 chk_msg(_mliDynMap_insert_key_from_json(
                                 boundary_layer_names, json, token_s_name, s),
                         "Failed to insert boundary_layer's name into map.");
 
-        
                 chk_msg(json->tokens[token_s].type == JSMN_OBJECT,
                         "Expected boundary_layer to be of type object {}.");
 
-        
                 chk_msg(__mliBoundaryLayer_from_json(
                                 &materials->boundary_layers[s],
                                 surface_names,
@@ -97,7 +91,6 @@ int __mliMaterials_assign_boundary_layers_from_json(
                                 token_s),
                         "Failed to copy boundary_layer from json.");
         }
-
 
         return 1;
 error:
@@ -301,7 +294,10 @@ int __mliFrame_set_object_reference(
         chk_msg(mliJson_find_key(json, token, "obj", &token_obj_key),
                 "Expected object to have key 'obj'.");
         chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        object_names, json, token_obj_key + 1, object_reference),
+                        object_names,
+                        json,
+                        token_obj_key + 1,
+                        object_reference),
                 "Failed to get object-reference 'obj' from map");
         return 1;
 error:

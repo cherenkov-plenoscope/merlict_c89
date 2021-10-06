@@ -126,7 +126,8 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                         "diffuse-refl. (%d), ",
                         res->surfaces[i].specular_reflection.num_points,
                         res->surfaces[i].diffuse_reflection.num_points);
-                fprintf(f, "color: [%1.1f, %1.1f, %1.1f]\n",
+                fprintf(f,
+                        "color: [%1.1f, %1.1f, %1.1f]\n",
                         res->surfaces[i].color.r,
                         res->surfaces[i].color.g,
                         res->surfaces[i].color.b);

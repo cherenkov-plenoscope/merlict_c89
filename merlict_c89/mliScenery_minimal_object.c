@@ -70,15 +70,21 @@ int mliScenery_malloc_minimal_from_wavefront(
                 scenery->materials.surfaces[i].material = MLI_MATERIAL_PHONG;
                 scenery->materials.surfaces[i].color = mli_random_color(&prng);
 
-                chk(mliFunc_malloc(&scenery->materials.surfaces[i].specular_reflection, 2));
-                scenery->materials.surfaces[i].specular_reflection.x[0] = 200e-9;
-                scenery->materials.surfaces[i].specular_reflection.x[1] = 1200e-9;
+                chk(mliFunc_malloc(
+                        &scenery->materials.surfaces[i].specular_reflection,
+                        2));
+                scenery->materials.surfaces[i].specular_reflection.x[0] =
+                        200e-9;
+                scenery->materials.surfaces[i].specular_reflection.x[1] =
+                        1200e-9;
                 scenery->materials.surfaces[i].specular_reflection.y[0] = 0.0;
                 scenery->materials.surfaces[i].specular_reflection.y[1] = 0.0;
 
-                chk(mliFunc_malloc(&scenery->materials.surfaces[i].diffuse_reflection, 2));
+                chk(mliFunc_malloc(
+                        &scenery->materials.surfaces[i].diffuse_reflection, 2));
                 scenery->materials.surfaces[i].diffuse_reflection.x[0] = 200e-9;
-                scenery->materials.surfaces[i].diffuse_reflection.x[1] = 1200e-9;
+                scenery->materials.surfaces[i].diffuse_reflection.x[1] =
+                        1200e-9;
                 scenery->materials.surfaces[i].diffuse_reflection.y[0] = 1.0;
                 scenery->materials.surfaces[i].diffuse_reflection.y[1] = 1.0;
 

@@ -57,7 +57,7 @@ int mliDynStr_push_back_c_str(struct mliDynStr *str, const char *s)
 {
         const uint64_t slen = strlen(s);
         uint64_t i;
-        for(i = 0; i < slen; i++) {
+        for (i = 0; i < slen; i++) {
                 chk_msg(mliDynStr_push_back_char(str, s[i]),
                         "Failed to push back char");
         }

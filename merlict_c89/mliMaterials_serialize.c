@@ -16,11 +16,19 @@ int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
         chk_fwrite(&res->num_boundary_layers, sizeof(uint64_t), 1u, f);
 
         for (i = 0; i < res->num_media; i++) {
-                chk_fwrite(&res->medium_names[i].c_str, sizeof(char), MLI_NAME_CAPACITY, f);
+                chk_fwrite(
+                        &res->medium_names[i].c_str,
+                        sizeof(char),
+                        MLI_NAME_CAPACITY,
+                        f);
                 chk(mliMedium_fwrite(&res->media[i], f));
         }
         for (i = 0; i < res->num_surfaces; i++) {
-                chk_fwrite(&res->surface_names[i].c_str, sizeof(char), MLI_NAME_CAPACITY, f);
+                chk_fwrite(
+                        &res->surface_names[i].c_str,
+                        sizeof(char),
+                        MLI_NAME_CAPACITY,
+                        f);
                 chk(mliSurface_fwrite(&res->surfaces[i], f));
         }
 
@@ -61,12 +69,20 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
 
         /* payload */
         for (i = 0; i < res->num_media; i++) {
-                chk_fread(&res->medium_names[i].c_str, sizeof(char), MLI_NAME_CAPACITY, f);
+                chk_fread(
+                        &res->medium_names[i].c_str,
+                        sizeof(char),
+                        MLI_NAME_CAPACITY,
+                        f);
                 chk_msg(mliMedium_malloc_fread(&res->media[i], f),
                         "Failed to fread Medium.");
         }
         for (i = 0; i < res->num_surfaces; i++) {
-                chk_fread(&res->surface_names[i].c_str, sizeof(char), MLI_NAME_CAPACITY, f);
+                chk_fread(
+                        &res->surface_names[i].c_str,
+                        sizeof(char),
+                        MLI_NAME_CAPACITY,
+                        f);
                 chk_msg(mliSurface_malloc_fread(&res->surfaces[i], f),
                         "Failed to fread Surface.");
         }

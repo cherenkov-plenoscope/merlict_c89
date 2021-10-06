@@ -84,7 +84,6 @@ int mliMaterials_malloc_form_archive(
         uint64_t arc_idx = 0;
         char key[MLI_NAME_CAPACITY];
 
-
         struct mliDynStr *default_medium_text = NULL;
         struct mliJson boundary_layers_json = mliJson_init();
         struct mliMaterialsCapacity cap = mliMaterialsCapacity_init();
@@ -94,36 +93,32 @@ int mliMaterials_malloc_form_archive(
         mliMaterials_free(materials);
         mliNameMap_free(names);
 
-
         chk(mliNameMap_malloc(names));
 
         /* estimate capacity */
         /* boundary_layers */
 
         chk_msg(mliArchive_get_malloc_json(
-                        archive, "materials/boundary_layers.json", &boundary_layers_json),
+                        archive,
+                        "materials/boundary_layers.json",
+                        &boundary_layers_json),
                 "Failed to parse 'materials/boundary_layers.json'.");
-
 
         chk_msg(boundary_layers_json.tokens[0].type == JSMN_OBJECT,
                 "Expected key 'boundary_layers' to be a json-object.");
         cap.num_boundary_layers = boundary_layers_json.tokens[0].size;
 
-
         cap.num_media = mliArchive_num_filename_prefix_sufix(
                 archive, "materials/media/", ".json");
 
-
         cap.num_surfaces = mliArchive_num_filename_prefix_sufix(
                 archive, "materials/surfaces/", ".json");
-
 
         chk_msg(mliMaterials_malloc(materials, cap),
                 "Can not malloc materials.");
 
         /* set fields */
         /* ---------- */
-
 
         /* media */
         med_idx = 0u;
@@ -144,8 +139,7 @@ int mliMaterials_malloc_form_archive(
                                 archive->filenames.array[arc_idx].key, key);
                         __mli_strip_key(key, key);
 
-                        chk_msg(mliDynMap_insert(
-                                        &names->media, key, med_idx),
+                        chk_msg(mliDynMap_insert(&names->media, key, med_idx),
                                 "Failed to insert media-name into map.");
 
                         memcpy(materials->medium_names[med_idx].c_str,
@@ -155,7 +149,6 @@ int mliMaterials_malloc_form_archive(
                         med_idx += 1u;
                 }
         }
-
 
         /* surfaces */
         srf_idx = 0u;
@@ -188,7 +181,6 @@ int mliMaterials_malloc_form_archive(
                 }
         }
 
-
         /* boundary_layers */
         chk_msg(__mliMaterials_assign_boundary_layers_from_json(
                         materials,
@@ -203,25 +195,21 @@ int mliMaterials_malloc_form_archive(
                        MLI_NAME_CAPACITY);
         }
 
-
         mliJson_free(&boundary_layers_json);
-
 
         /* default medium */
 
-        chk_msg(mliArchive_get(archive, "materials/default_medium.txt", &default_medium_text),
+        chk_msg(mliArchive_get(
+                        archive,
+                        "materials/default_medium.txt",
+                        &default_medium_text),
                 "Can not find 'materials/default_medium.txt' in scenery.");
 
         memset(key, '\0', sizeof(key));
         __mli_strip_whitespaces(default_medium_text->c_str, key);
 
-        chk_msg(mliDynMap_get(
-                        &names->media,
-                        key,
-                        &materials->default_medium),
+        chk_msg(mliDynMap_get(&names->media, key, &materials->default_medium),
                 "Failed to assign the 'default_medium'.");
-
-
 
         return 1;
 error:
@@ -297,13 +285,12 @@ finalize:
         key[o] = '\0';
 }
 
-
 void __mli_strip_whitespaces(const char *in, char *out)
 {
         uint64_t i = 0u;
         uint64_t o = 0u;
         while (in[i] && isspace(in[i])) {
-            i += 1;
+                i += 1;
         }
         while (in[i] && !isspace(in[i])) {
                 out[o] = in[i];

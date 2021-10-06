@@ -243,8 +243,8 @@ void mliPixels_set_all_from_image(
         struct mliPixels *pixels,
         const struct mliImage *image)
 {
-        struct mliPixelWalk walk = mliPixelWalk_set(
-                image->num_cols, image->num_rows, 16u);
+        struct mliPixelWalk walk =
+                mliPixelWalk_set(image->num_cols, image->num_rows, 16u);
         uint64_t i;
         const uint64_t num_pixel = image->num_rows * image->num_cols;
 
@@ -260,8 +260,8 @@ void mliPixels_above_threshold(
         const float threshold,
         struct mliPixels *pixels)
 {
-        struct mliPixelWalk walk = mliPixelWalk_set(
-                image->num_cols, image->num_rows, 16u);
+        struct mliPixelWalk walk =
+                mliPixelWalk_set(image->num_cols, image->num_rows, 16u);
         uint64_t i;
         const uint64_t num_pixel = image->num_rows * image->num_cols;
 

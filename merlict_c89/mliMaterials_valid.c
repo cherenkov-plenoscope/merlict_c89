@@ -26,11 +26,14 @@ int _mliMaterials_valid_surfaces(const struct mliMaterials *materials)
                                 (materials->surfaces[i].material ==
                                  MLI_MATERIAL_TRANSPARENT),
                         "Material-type is unknown.");
-                chk_msg(mliFunc_is_valid(&materials->surfaces[i].specular_reflection),
+                chk_msg(mliFunc_is_valid(
+                                &materials->surfaces[i].specular_reflection),
                         "Expected specular_reflection of surface to be valid.");
-                chk_msg(mliFunc_is_valid(&materials->surfaces[i].diffuse_reflection),
+                chk_msg(mliFunc_is_valid(
+                                &materials->surfaces[i].diffuse_reflection),
                         "Expected diffuse_reflection of surface to be valid.");
-                chk_msg(mliColor_is_valid_8bit_range(materials->surfaces[i].color),
+                chk_msg(mliColor_is_valid_8bit_range(
+                                materials->surfaces[i].color),
                         "Expected 0.0 <= color < 256.0.");
         }
         return 1;

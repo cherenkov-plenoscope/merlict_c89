@@ -9,10 +9,7 @@ CASE("mliUserScenery, init")
         CHECK(resources.media == NULL);
 }
 
-CASE("mliMaterials, estimate capacity from archive")
-{
-
-}
+CASE("mliMaterials, estimate capacity from archive") {}
 
 CASE("mliScenery, malloc from archive")
 {

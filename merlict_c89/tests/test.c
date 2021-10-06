@@ -53,16 +53,16 @@ int main(void)
 #include "test_mliMedium.c"
 #include "test_mliSurface.c"
 #include "test_json.c"
-/*
-#include "test_mliFresnel.c"
-#include "test_mliAccelerator.c"
-#include "test_mliApertureCamera.c"
-#include "test_photon_sources.c"
-#include "test_cache_aware_octree.c"
-#include "test_photon.c"
-#include "test_optics_prism.c"
-#include "test_optics_focussing_mirror.c"
-*/
+        /*
+        #include "test_mliFresnel.c"
+        #include "test_mliAccelerator.c"
+        #include "test_mliApertureCamera.c"
+        #include "test_photon_sources.c"
+        #include "test_cache_aware_octree.c"
+        #include "test_photon.c"
+        #include "test_optics_prism.c"
+        #include "test_optics_focussing_mirror.c"
+        */
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;
 test_failure:
