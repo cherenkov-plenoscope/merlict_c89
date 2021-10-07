@@ -48,6 +48,7 @@
 #include "mliSurface.h"
 #include "mliSurface_json.h"
 #include "mliFrame.h"
+#include "mliFrame_json.h"
 #include "mliMaterials.h"
 #include "mliMaterials_serialize.h"
 #include "mliMaterials_equal.h"
