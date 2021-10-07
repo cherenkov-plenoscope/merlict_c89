@@ -73,16 +73,6 @@ int __mliMaterials_assign_colors_from_json(
         struct mliMaterials *resources,
         struct mliDynMap *color_names,
         const struct mliJson *json);
-int _mliDynMap_get_value_for_string_from_json(
-        const struct mliDynMap *map,
-        const struct mliJson *json,
-        const uint64_t token_name,
-        uint32_t *out_value);
-int _mliDynMap_insert_key_from_json(
-        struct mliDynMap *map,
-        const struct mliJson *json,
-        const uint64_t token_name,
-        const uint64_t value);
 int __mliMaterialsCapacity_from_json(
         struct mliMaterialsCapacity *res_cap,
         const struct mliJson *json);

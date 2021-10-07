@@ -1,54 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliUserScenery_json.h"
+#include "mliDynMap_json.h"
 #include "mliVec_json.h"
 #include "mliColor_json.h"
 
-int _mliDynMap_insert_key_from_json(
-        struct mliDynMap *map,
-        const struct mliJson *json,
-        const uint64_t token,
-        const uint64_t value)
-{
-        char buff[MLI_NAME_CAPACITY] = {'\0'};
-        const uint64_t name_strlen =
-                (json->tokens[token].end - json->tokens[token].start);
-        chk_msg(name_strlen < sizeof(buff), "Key is too long");
-        chk_msg(json->tokens[token].type == JSMN_STRING,
-                "Expected key to be of type string.");
-        chk_msg(mliJson_as_string(json, token, buff, name_strlen + 1),
-                "Failed to extract string from json.");
-        chk_msg(mliDynMap_insert(map, buff, value),
-                "Failed to insert name and value into map.");
-        return 1;
-error:
-        mliJson_debug_token_fprint(stderr, json, token);
-        return 0;
-}
-
-int _mliDynMap_get_value_for_string_from_json(
-        const struct mliDynMap *map,
-        const struct mliJson *json,
-        const uint64_t token,
-        uint32_t *out_value)
-{
-        char buff[MLI_NAME_CAPACITY] = {'\0'};
-        uint64_t value;
-        uint64_t name_strlen =
-                (json->tokens[token].end - json->tokens[token].start);
-        chk_msg(name_strlen < sizeof(buff), "Key is too long");
-        chk_msg(json->tokens[token].type == JSMN_STRING,
-                "Expected token to be of type string to be given to mliMap.");
-        chk_msg(mliJson_as_string(json, token, buff, name_strlen + 1),
-                "Failed to extract string from json.");
-        chk_msg(mliDynMap_get(map, buff, &value),
-                "Failed to get value for json-string-key from map.");
-        (*out_value) = (uint32_t)value;
-
-        return 1;
-error:
-        mliJson_debug_token_fprint(stderr, json, token);
-        return 0;
-}
 
 int __mliMaterials_assign_boundary_layers_from_json(
         struct mliMaterials *materials,
@@ -76,7 +31,7 @@ int __mliMaterials_assign_boundary_layers_from_json(
                 chk_msg(json->tokens[token_s_name].type == JSMN_STRING,
                         "Expected boundary_layer to be a String.");
 
-                chk_msg(_mliDynMap_insert_key_from_json(
+                chk_msg(mliDynMap_insert_key_from_json(
                                 boundary_layer_names, json, token_s_name, s),
                         "Failed to insert boundary_layer's name into map.");
 
@@ -181,14 +136,14 @@ int __mliSide_set(
 
         chk_msg(mliJson_find_key(json, side_token + 1, "medium", &token_medium),
                 "Expected key 'medium' in side.");
-        chk_msg(_mliDynMap_get_value_for_string_from_json(
+        chk_msg(mliDynMap_get_value_for_string_from_json(
                         medium_names, json, token_medium + 1, &side->medium),
                 "Failed to get medium-idx from map");
 
         chk_msg(mliJson_find_key(
                         json, side_token + 1, "surface", &token_surface),
                 "Expected key 'surface' in side.");
-        chk_msg(_mliDynMap_get_value_for_string_from_json(
+        chk_msg(mliDynMap_get_value_for_string_from_json(
                         surface_names, json, token_surface + 1, &side->surface),
                 "Failed to get surface-idx from map");
 
@@ -265,7 +220,7 @@ int __mliFrame_set_boundary_layers(
                         "Expected object's material-key to be in "
                         "object-reference's mtls in tree.json.");
 
-                chk_msg(_mliDynMap_get_value_for_string_from_json(
+                chk_msg(mliDynMap_get_value_for_string_from_json(
                                 boundary_layer_names,
                                 json,
                                 token_material_key + 1,
@@ -293,7 +248,7 @@ int __mliFrame_set_object_reference(
         uint64_t token_obj_key;
         chk_msg(mliJson_find_key(json, token, "obj", &token_obj_key),
                 "Expected object to have key 'obj'.");
-        chk_msg(_mliDynMap_get_value_for_string_from_json(
+        chk_msg(mliDynMap_get_value_for_string_from_json(
                         object_names,
                         json,
                         token_obj_key + 1,

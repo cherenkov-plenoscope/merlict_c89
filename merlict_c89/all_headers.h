@@ -40,6 +40,7 @@
 #include "mliImage_print.h"
 #include "mliDynArray_template.h"
 #include "mliDynMap.h"
+#include "mliDynMap_json.h"
 #include "mliBoundaryLayer.h"
 #include "mliMedium.h"
 #include "mliMedium_serialize.h"
