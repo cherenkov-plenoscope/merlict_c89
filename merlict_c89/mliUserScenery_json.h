@@ -6,31 +6,12 @@
 #include "mliJson.h"
 #include "mliUserScenery.h"
 
-int __mliFrame_from_json(
-        struct mliFrame *mother,
-        const struct mliJson *json,
-        const uint64_t token_children,
-        const struct mliDynMap *object_names,
-        const struct mliObject *objects,
-        const struct mliDynMap *boundary_layer_names);
 int __mliSide_set(
         struct mliSide *side,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names,
         const struct mliJson *json,
         const uint64_t side_token);
-int __mliFrame_set_id(
-        uint32_t *id,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliFrame_set_pos_rot(
-        struct mliFrame *frame,
-        const struct mliJson *json,
-        const uint64_t token);
-int __mliFrame_type_from_json(
-        uint64_t *type,
-        const struct mliJson *json,
-        const uint64_t token_child);
 int __mliBoundaryLayer_from_json(
         struct mliBoundaryLayer *boundary_layer,
         const struct mliDynMap *surface_names,

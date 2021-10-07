@@ -233,7 +233,7 @@ int mli_check_malloc_root_frame_from_Archive(
         chk_msg(mliJson_find_key(&tree_json, 0, "children", &token),
                 "Expected 'tree.json' to have key 'children'.");
         chk_msg(mliFrame_malloc(root, MLI_FRAME), "Can not malloc root-frame.");
-        chk_msg(__mliFrame_from_json(
+        chk_msg(mliFrame_from_json(
                         root,
                         &tree_json,
                         token + 1,
