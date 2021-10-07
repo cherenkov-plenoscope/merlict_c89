@@ -42,7 +42,8 @@ int mli_time_of_flight(
 {
         double refractive_index;
         chk_msg(mliFunc_evaluate(
-                        &materials->functions[phisec->refraction_coming_from],
+                        &materials->media[phisec->medium_coming_from]
+                                 .refraction,
                         photon->wavelength,
                         &refractive_index),
                 "Failed to eval. refraction for wavelength.");

@@ -13,12 +13,6 @@ int _mliMaterials_surfaces_equal(
 int _mliMaterials_media_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b);
-int _mliMaterials_colors_equal(
-        const struct mliMaterials *a,
-        const struct mliMaterials *b);
-int _mliMaterials_functions_equal(
-        const struct mliMaterials *a,
-        const struct mliMaterials *b);
 int _mliMaterials_boundary_layers_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b);

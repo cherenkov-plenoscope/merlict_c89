@@ -13,10 +13,10 @@ CASE("mliArchive, read tar")
                 "resources/"
                 "sceneries/"
                 "000.tar"));
-        CHECK(mliArchive_num(&arc) == 8);
+        CHECK(mliArchive_num(&arc) == 12);
 
-        CHECK(1 ==
-              mliArchive_num_filename_prefix_sufix(&arc, "functions/", ".csv"));
+        CHECK(1 == mliArchive_num_filename_prefix_sufix(
+                           &arc, "materials/media", ".json"));
 
         CHECK(1 ==
               mliArchive_num_filename_prefix_sufix(&arc, "objects/", ".obj"));
@@ -24,9 +24,6 @@ CASE("mliArchive, read tar")
         CHECK(1 == mliArchive_num_filename_prefix_sufix(&arc, NULL, ".md"));
 
         CHECK(mliArchive_has(&arc, "README.md"));
-
-        CHECK(mliArchive_has(&arc, "functions/"));
-        CHECK(mliArchive_has(&arc, "functions/zero.csv"));
 
         CHECK(mliArchive_has(&arc, "objects/"));
         CHECK(mliArchive_has(&arc, "objects/triangle.obj"));

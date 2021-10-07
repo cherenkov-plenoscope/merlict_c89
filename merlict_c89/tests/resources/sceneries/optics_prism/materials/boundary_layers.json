@@ -1,0 +1,10 @@
+{
+    "scho_glas_glas_vacu": {
+        "inner": {"medium": "schott_n_kzfs2", "surface": "glass"},
+        "outer": {"medium": "vacuum", "surface": "glass"}
+    },
+    "vacu_scre_scre_vacu": {
+        "inner": {"medium": "vacuum", "surface": "screen"},
+        "outer": {"medium": "vacuum", "surface": "screen"}
+    }
+}

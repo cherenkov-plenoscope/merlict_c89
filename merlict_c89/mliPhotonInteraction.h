@@ -24,10 +24,8 @@ struct mliPhotonInteraction {
         struct mliVec position_local;
         double distance_of_ray;
 
-        uint32_t refraction_coming_from;
-        uint32_t refraction_going_to;
-        uint32_t absorbtion_coming_from;
-        uint32_t absorbtion_going_to;
+        uint64_t medium_coming_from;
+        uint64_t medium_going_to;
 
         int32_t from_outside_to_inside;
         int32_t type;

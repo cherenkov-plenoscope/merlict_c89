@@ -7,8 +7,6 @@
 struct mliNameMap mliNameMap_init(void)
 {
         struct mliNameMap nm;
-        nm.functions = mliDynMap_init();
-        nm.colors = mliDynMap_init();
         nm.media = mliDynMap_init();
         nm.surfaces = mliDynMap_init();
         nm.boundary_layers = mliDynMap_init();
@@ -18,8 +16,6 @@ struct mliNameMap mliNameMap_init(void)
 int mliNameMap_malloc(struct mliNameMap *namemap)
 {
         mliNameMap_free(namemap);
-        chk_mem(mliDynMap_malloc(&namemap->functions, 0u));
-        chk_mem(mliDynMap_malloc(&namemap->colors, 0u));
         chk_mem(mliDynMap_malloc(&namemap->media, 0u));
         chk_mem(mliDynMap_malloc(&namemap->surfaces, 0u));
         chk_mem(mliDynMap_malloc(&namemap->boundary_layers, 0u));
@@ -30,8 +26,6 @@ error:
 
 void mliNameMap_free(struct mliNameMap *namemap)
 {
-        mliDynMap_free(&namemap->functions);
-        mliDynMap_free(&namemap->colors);
         mliDynMap_free(&namemap->media);
         mliDynMap_free(&namemap->surfaces);
         mliDynMap_free(&namemap->boundary_layers);
@@ -79,37 +73,46 @@ error:
         return 0;
 }
 
-int mli_check_malloc_materials_form_archive(
+int mliMaterials_malloc_form_archive(
         struct mliMaterials *materials,
         struct mliNameMap *names,
         const struct mliArchive *archive)
 {
         uint64_t i = 0u;
-        uint64_t fnc_idx = 0;
+        uint64_t med_idx = 0;
+        uint64_t srf_idx = 0;
         uint64_t arc_idx = 0;
-        uint64_t token = 0u;
         char key[MLI_NAME_CAPACITY];
 
-        struct mliJson materials_json = mliJson_init();
+        struct mliDynStr *default_medium_text = NULL;
+        struct mliJson boundary_layers_json = mliJson_init();
         struct mliMaterialsCapacity cap = mliMaterialsCapacity_init();
 
         /* free */
+
         mliMaterials_free(materials);
         mliNameMap_free(names);
 
-        /* estimate capacity and malloc */
         chk(mliNameMap_malloc(names));
 
+        /* estimate capacity */
+        /* boundary_layers */
+
         chk_msg(mliArchive_get_malloc_json(
-                        archive, "materials.json", &materials_json),
-                "Failed to parse 'materials.json'.");
+                        archive,
+                        "materials/boundary_layers.json",
+                        &boundary_layers_json),
+                "Failed to parse 'materials/boundary_layers.json'.");
 
-        cap.num_functions = mliArchive_num_filename_prefix_sufix(
-                archive, "functions/", ".csv");
+        chk_msg(boundary_layers_json.tokens[0].type == JSMN_OBJECT,
+                "Expected key 'boundary_layers' to be a json-object.");
+        cap.num_boundary_layers = boundary_layers_json.tokens[0].size;
 
-        chk_msg(__mliMaterialsCapacity_from_materials_json(
-                        &cap, &materials_json),
-                "Can not estimate capacity from materials-json.");
+        cap.num_media = mliArchive_num_filename_prefix_sufix(
+                archive, "materials/media/", ".json");
+
+        cap.num_surfaces = mliArchive_num_filename_prefix_sufix(
+                archive, "materials/surfaces/", ".json");
 
         chk_msg(mliMaterials_malloc(materials, cap),
                 "Can not malloc materials.");
@@ -117,84 +120,74 @@ int mli_check_malloc_materials_form_archive(
         /* set fields */
         /* ---------- */
 
-        /* functions */
-        fnc_idx = 0u;
+        /* media */
+        med_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_string_has_prefix_suffix(
                             archive->filenames.array[arc_idx].key,
-                            "functions/",
-                            ".csv")) {
-                        chk_msg(mliFunc_malloc_from_csv(
-                                        &materials->functions[fnc_idx],
+                            "materials/media/",
+                            ".json")) {
+                        chk_msg(mliMedium_malloc_from_json_str(
+                                        &materials->media[med_idx],
                                         archive->textfiles.array[arc_idx]
                                                 .c_str),
-                                "Failed to parse comma-separated-values from "
+                                "Failed to parse media json from "
                                 "file.");
 
                         memset(key, '\0', sizeof(key));
                         __mli_strip_key(
                                 archive->filenames.array[arc_idx].key, key);
+                        __mli_strip_key(key, key);
 
-                        chk_msg(mliDynMap_insert(
-                                        &names->functions, key, fnc_idx),
-                                "Failed to insert function-name into map.");
+                        chk_msg(mliDynMap_insert(&names->media, key, med_idx),
+                                "Failed to insert media-name into map.");
 
-                        memcpy(materials->function_names[fnc_idx].c_str,
-                               names->functions.array[fnc_idx].key,
+                        memcpy(materials->medium_names[med_idx].c_str,
+                               names->media.array[med_idx].key,
                                MLI_NAME_CAPACITY);
 
-                        fnc_idx += 1u;
+                        med_idx += 1u;
                 }
         }
 
-        /* colors */
-
-        chk_msg(__mliMaterials_assign_colors_from_json(
-                        materials, &names->colors, &materials_json),
-                "Failed to copy colors from materials.json.");
-        for (i = 0; i < materials->num_colors; i++) {
-                memcpy(materials->color_names[i].c_str,
-                       names->colors.array[i].key,
-                       MLI_NAME_CAPACITY);
-        }
-
-        /* media */
-
-        chk_msg(__mliMaterials_assign_media_from_json(
-                        materials,
-                        &names->media,
-                        &names->functions,
-                        &materials_json),
-                "Failed to copy media from materials.json.");
-        for (i = 0; i < materials->num_media; i++) {
-                memcpy(materials->medium_names[i].c_str,
-                       names->media.array[i].key,
-                       MLI_NAME_CAPACITY);
-        }
-
         /* surfaces */
+        srf_idx = 0u;
+        for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
+                if (mli_string_has_prefix_suffix(
+                            archive->filenames.array[arc_idx].key,
+                            "materials/surfaces/",
+                            ".json")) {
+                        chk_msg(mliSurface_malloc_from_json_str(
+                                        &materials->surfaces[srf_idx],
+                                        archive->textfiles.array[arc_idx]
+                                                .c_str),
+                                "Failed to parse surface json from "
+                                "file.");
 
-        chk_msg(__mliMaterials_assign_surfaces_from_json(
-                        materials,
-                        &names->surfaces,
-                        &names->functions,
-                        &names->colors,
-                        &materials_json),
-                "Failed to copy surfaces from materials.json.");
-        for (i = 0; i < materials->num_surfaces; i++) {
-                memcpy(materials->surface_names[i].c_str,
-                       names->surfaces.array[i].key,
-                       MLI_NAME_CAPACITY);
+                        memset(key, '\0', sizeof(key));
+                        __mli_strip_key(
+                                archive->filenames.array[arc_idx].key, key);
+                        __mli_strip_key(key, key);
+
+                        chk_msg(mliDynMap_insert(
+                                        &names->surfaces, key, srf_idx),
+                                "Failed to insert surface-name into map.");
+
+                        memcpy(materials->surface_names[srf_idx].c_str,
+                               names->surfaces.array[srf_idx].key,
+                               MLI_NAME_CAPACITY);
+
+                        srf_idx += 1u;
+                }
         }
 
         /* boundary_layers */
-
-        chk_msg(__mliMaterials_assign_boundary_layers_from_json(
+        chk_msg(mliMaterials_assign_boundary_layers_from_json(
                         materials,
                         &names->boundary_layers,
                         &names->surfaces,
                         &names->media,
-                        &materials_json),
+                        &boundary_layers_json),
                 "Failed to copy boundary_layers from materials.json.");
         for (i = 0; i < materials->num_boundary_layers; i++) {
                 memcpy(materials->boundary_layer_names[i].c_str,
@@ -202,22 +195,25 @@ int mli_check_malloc_materials_form_archive(
                        MLI_NAME_CAPACITY);
         }
 
+        mliJson_free(&boundary_layers_json);
+
         /* default medium */
 
-        chk_msg(mliJson_find_key(&materials_json, 0, "default_medium", &token),
-                "Expected materials.json to have key 'default_medium'.");
-        chk_msg(_mliDynMap_get_value_for_string_from_json(
-                        &names->media,
-                        &materials_json,
-                        token,
-                        &materials->default_medium),
-                "Failed to assign the 'default_medium'.");
+        chk_msg(mliArchive_get(
+                        archive,
+                        "materials/default_medium.txt",
+                        &default_medium_text),
+                "Can not find 'materials/default_medium.txt' in scenery.");
 
-        mliJson_free(&materials_json);
+        memset(key, '\0', sizeof(key));
+        __mli_strip_whitespaces(default_medium_text->c_str, key);
+
+        chk_msg(mliDynMap_get(&names->media, key, &materials->default_medium),
+                "Failed to assign the 'default_medium'.");
 
         return 1;
 error:
-        mliJson_free(&materials_json);
+        mliJson_free(&boundary_layers_json);
         mliMaterials_free(materials);
         mliNameMap_free(names);
         return 0;
@@ -237,7 +233,7 @@ int mli_check_malloc_root_frame_from_Archive(
         chk_msg(mliJson_find_key(&tree_json, 0, "children", &token),
                 "Expected 'tree.json' to have key 'children'.");
         chk_msg(mliFrame_malloc(root, MLI_FRAME), "Can not malloc root-frame.");
-        chk_msg(__mliFrame_from_json(
+        chk_msg(mliFrame_from_json(
                         root,
                         &tree_json,
                         token + 1,
@@ -287,4 +283,19 @@ void __mli_strip_key(const char *filename, char *key)
 
 finalize:
         key[o] = '\0';
+}
+
+void __mli_strip_whitespaces(const char *in, char *out)
+{
+        uint64_t i = 0u;
+        uint64_t o = 0u;
+        while (in[i] && isspace(in[i])) {
+                i += 1;
+        }
+        while (in[i] && !isspace(in[i])) {
+                out[o] = in[i];
+                i += 1;
+                o += 1;
+        }
+        out[o] = '\0';
 }

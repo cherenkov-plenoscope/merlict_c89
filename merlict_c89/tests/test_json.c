@@ -179,7 +179,7 @@ CASE("rotation representations")
                 "\"xyz_deg\": [0, 0, 0]"
                 "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
-        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
@@ -190,7 +190,7 @@ CASE("rotation representations")
                 "\"angle_deg\": 0."
                 "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
-        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
@@ -200,7 +200,7 @@ CASE("rotation representations")
                 "\"xyz\": [0, 0, 0]"
                 "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
-        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
@@ -213,7 +213,7 @@ CASE("rotation representations")
                 "\"xyz_deg\": [0, 0, -45]"
                 "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
-        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
@@ -224,7 +224,7 @@ CASE("rotation representations")
                 "\"angle_deg\": 45"
                 "}");
         CHECK(mliJson_malloc_from_string(&json, json_str));
-        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
@@ -235,7 +235,7 @@ CASE("rotation representations")
                 "}",
                 q_expected.z);
         CHECK(mliJson_malloc_from_string(&json, json_str));
-        CHECK(__mliQuaternion_from_json(&q, &json, 0));
+        CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 }

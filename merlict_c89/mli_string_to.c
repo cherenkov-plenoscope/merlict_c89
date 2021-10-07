@@ -213,7 +213,8 @@ int mli_string_assert_only_NUL_LF_TAB_controls_dbg(
                                 /* fine */
                         } else {
                                 if (dbg) {
-                                        fprintf(stderr, "Control code %u "
+                                        fprintf(stderr,
+                                                "Control code %u "
                                                 "at column %ld in string.\n",
                                                 (uint8_t)str[pos],
                                                 pos);

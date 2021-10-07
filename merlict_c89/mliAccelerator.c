@@ -128,37 +128,41 @@ error:
 
 void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
 {
-        uint32_t rob;
-        fprintf(f, "Accelerator:\n");
+        uint32_t rob, i;
+        fprintf(f, "accelerator\n");
+        fprintf(f, "-----------\n");
+        fprintf(f, "\n");
         fprintf(f, "    object-reference-bounding-boxes (OBB)s:\n");
-        fprintf(f,
-                "%*s ref   -x/m   -y/m   -z/m   +x/m   +y/m   +z/m\n",
-                8,
-                "");
-        fprintf(f,
-                "%*s----------------------------------------------\n",
-                8,
-                "");
-        for (rob = 0; rob < accel->num_robjects; rob++) {
-                fprintf(f,
-                        "%*s% 4d "
-                        "% 6.1f "
-                        "% 6.1f "
-                        "% 6.1f "
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%5s ", "ref");
+        fprintf(f, "%9s ", "-x/m");
+        fprintf(f, "%9s ", "-y/m");
+        fprintf(f, "%9s ", "-z/m");
+        fprintf(f, "%9s ", "+x/m");
+        fprintf(f, "%9s ", "+y/m");
+        fprintf(f, "%9s ", "+z/m");
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
 
-                        "% 6.1f "
-                        "% 6.1f "
-                        "% 6.1f "
-                        "\n",
-                        8,
-                        "",
-                        rob,
-                        accel->robject_obbs[rob].lower.x,
-                        accel->robject_obbs[rob].lower.y,
-                        accel->robject_obbs[rob].lower.z,
-                        accel->robject_obbs[rob].upper.x,
-                        accel->robject_obbs[rob].upper.y,
-                        accel->robject_obbs[rob].upper.z);
+        for (rob = 0; rob < accel->num_robjects; rob++) {
+                fprintf(f, "    ");
+                fprintf(f, "%5d ", rob);
+                fprintf(f, "%9.1f ", accel->robject_obbs[rob].lower.x);
+                fprintf(f, "%9.1f ", accel->robject_obbs[rob].lower.y);
+                fprintf(f, "%9.1f ", accel->robject_obbs[rob].lower.z);
+                fprintf(f, "%9.1f ", accel->robject_obbs[rob].upper.x);
+                fprintf(f, "%9.1f ", accel->robject_obbs[rob].upper.y);
+                fprintf(f, "%9.1f ", accel->robject_obbs[rob].upper.z);
+                fprintf(f, "\n");
         }
 }
 

@@ -33,7 +33,7 @@ int mliScenery_malloc_from_Archive(
         struct mliDynMap object_names = mliDynMap_init();
         struct mliFrame root = mliFrame_init();
 
-        chk_msg(mli_check_malloc_materials_form_archive(
+        chk_msg(mliMaterials_malloc_form_archive(
                         &scenery->materials, &material_names, archive),
                 "Failed to malloc materials.");
 

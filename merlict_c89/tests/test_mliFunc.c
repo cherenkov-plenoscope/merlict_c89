@@ -132,3 +132,26 @@ CASE("mliFunc_fold_numeric")
         mliFunc_free(&a);
         mliFunc_free(&b);
 }
+
+CASE("mliFunc_json")
+{
+        uint64_t token = 0;
+        uint64_t token_f = 0;
+        struct mliFunc f = mliFunc_init();
+        struct mliJson json = mliJson_init();
+        char json_str[] = "{\"function\": [[0, 10], [1, 11], [2, 12]]}";
+        CHECK(mliJson_malloc_from_string(&json, json_str));
+
+        CHECK(mliJson_find_key(&json, token, "function", &token_f));
+
+        CHECK(mliFunc_malloc_from_json_token(&f, &json, token_f + 1));
+
+        CHECK(f.num_points == 3);
+        CHECK(f.x[0] == 0.0);
+        CHECK(f.y[0] == 10.0);
+        CHECK(f.x[1] == 1.0);
+        CHECK(f.y[1] == 11.0);
+        CHECK(f.x[2] == 2.0);
+        CHECK(f.y[2] == 12.0);
+        mliJson_free(&json);
+}

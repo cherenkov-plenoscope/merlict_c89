@@ -2,48 +2,14 @@
 #include "mliMaterials_valid.h"
 #include "mliObject.h"
 
-int _mliMaterials_valid_colors(const struct mliMaterials *materials)
-{
-        uint32_t i = 0u;
-        for (i = 0; i < materials->num_colors; i++) {
-                chk_msg(mliColor_is_valid_8bit_range(materials->colors[i]),
-                        "Expected 0.0 <= color < 256.0.");
-                chk_msg(mliName_valid(&materials->color_names[i]),
-                        "Name is invalid.");
-        }
-        return 1;
-error:
-        fprintf(stderr, "In materials.colors[%u]\n", i);
-        return 0;
-}
-
-int _mliMaterials_valid_functions(const struct mliMaterials *materials)
-{
-        uint32_t i = 0u;
-        for (i = 0; i < materials->num_functions; i++) {
-                chk_msg(mliFunc_is_valid(&materials->functions[i]),
-                        "Expected function to be valid.");
-                chk_msg(mliName_valid(&materials->function_names[i]),
-                        "Name is invalid.");
-        }
-        return 1;
-error:
-        fprintf(stderr, "In materials.function[%u]\n", i);
-        return 0;
-}
-
 int _mliMaterials_valid_media(const struct mliMaterials *materials)
 {
         uint32_t i = 0u;
         for (i = 0; i < materials->num_media; i++) {
-                chk_msg(materials->media[i].refraction <
-                                materials->num_functions,
-                        "Refraction-reference is invalid.");
-                chk_msg(materials->media[i].absorbtion <
-                                materials->num_functions,
-                        "Absorbtion-reference is invalid.");
-                chk_msg(mliName_valid(&materials->medium_names[i]),
-                        "Name is invalid.");
+                chk_msg(mliFunc_is_valid(&materials->media[i].refraction),
+                        "Expected refraction of medium to be valid.");
+                chk_msg(mliFunc_is_valid(&materials->media[i].absorbtion),
+                        "Expected refraction of medium to be valid.");
         }
         return 1;
 error:
@@ -60,16 +26,15 @@ int _mliMaterials_valid_surfaces(const struct mliMaterials *materials)
                                 (materials->surfaces[i].material ==
                                  MLI_MATERIAL_TRANSPARENT),
                         "Material-type is unknown.");
-                chk_msg(materials->surfaces[i].color < materials->num_colors,
-                        "Color-reference is invalid.");
-                chk_msg(materials->surfaces[i].specular_reflection <
-                                materials->num_functions,
-                        "Specular-reflection-reference is invalid.");
-                chk_msg(materials->surfaces[i].diffuse_reflection <
-                                materials->num_functions,
-                        "Diffuse-reflection-reference is invalid.");
-                chk_msg(mliName_valid(&materials->surface_names[i]),
-                        "Name is invalid.");
+                chk_msg(mliFunc_is_valid(
+                                &materials->surfaces[i].specular_reflection),
+                        "Expected specular_reflection of surface to be valid.");
+                chk_msg(mliFunc_is_valid(
+                                &materials->surfaces[i].diffuse_reflection),
+                        "Expected diffuse_reflection of surface to be valid.");
+                chk_msg(mliColor_is_valid_8bit_range(
+                                materials->surfaces[i].color),
+                        "Expected 0.0 <= color < 256.0.");
         }
         return 1;
 error:
@@ -107,10 +72,6 @@ int mliMaterials_valid(const struct mliMaterials *materials)
 {
         chk_msg(materials->default_medium <= materials->num_media,
                 "Expected default-medium to reference a valid medium.");
-        chk_msg(_mliMaterials_valid_colors(materials),
-                "Expected colors to be valid.");
-        chk_msg(_mliMaterials_valid_functions(materials),
-                "Expected functions to be valid.");
         chk_msg(_mliMaterials_valid_media(materials),
                 "Expected media to be valid.");
         chk_msg(_mliMaterials_valid_surfaces(materials),

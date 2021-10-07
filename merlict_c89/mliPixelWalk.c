@@ -1,7 +1,6 @@
 /* Copyright 2020-2021 Sebastian Achim Mueller */
 #include "mliPixelWalk.h"
 
-
 struct mliPixelWalk mliPixelWalk_set(
         const uint32_t num_cols,
         const uint32_t num_rows,
@@ -33,7 +32,8 @@ struct mliPixelWalk mliPixelWalk_set(
         return walk;
 }
 
-struct mliPixel mliPixelWalk_get(const struct mliPixelWalk *walk) {
+struct mliPixel mliPixelWalk_get(const struct mliPixelWalk *walk)
+{
         struct mliPixel px;
         px.row = walk->chunk_row * walk->chunk_size + walk->sub_row;
         px.col = walk->chunk_col * walk->chunk_size + walk->sub_col;

@@ -1,0 +1,14 @@
+{
+    "vacu_wood_blue_vacu": {
+        "inner": {"medium": "vacuum", "surface": "wood"},
+        "outer": {"medium": "vacuum", "surface": "blue_glass"}
+    },
+    "vacu_leaf_wood_vacu": {
+        "inner": {"medium": "vacuum", "surface": "leafs"},
+        "outer": {"medium": "vacuum", "surface": "wood"}
+    },
+    "vacu_gras_wood_vacu": {
+        "inner": {"medium": "vacuum", "surface": "grass"},
+        "outer": {"medium": "vacuum", "surface": "wood"}
+    }
+}

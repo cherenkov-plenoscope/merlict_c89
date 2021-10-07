@@ -103,60 +103,80 @@ error:
 void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
 {
         uint32_t rob, i;
-        fprintf(f, "Geometry:\n");
-        fprintf(f, "%*sobjects:\n", 4, "");
+        fprintf(f, "geometry\n");
+        fprintf(f, "--------\n");
+        fprintf(f, "\n");
+        fprintf(f, "    objects\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%5s ", "obj");
+        fprintf(f, "%24s ", "name");
+        fprintf(f, "%8s ", "#v");
+        fprintf(f, "%8s ", "#vn");
+        fprintf(f, "%8s ", "#f");
+        fprintf(f, "%8s ", "#mtl");
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
 
-        fprintf(f,
-                "%*s obj  name                                 #v    #vn     "
-                "#f   #mtl\n",
-                8,
-                "");
-        fprintf(f,
-                "%*s-----------------------------------------------------------"
-                "-------\n",
-                8,
-                "");
         for (i = 0; i < geometry->num_objects; i++) {
-                fprintf(f, "%*s% 4d  ", 8, "", i);
-                fprintf(f, "%-32s  ", geometry->object_names[i].c_str);
-                fprintf(f,
-                        "% 5d  % 5d  % 5d  % 5d",
-                        geometry->objects[i].num_vertices,
-                        geometry->objects[i].num_vertex_normals,
-                        geometry->objects[i].num_faces,
-                        geometry->objects[i].num_materials);
+                fprintf(f, "    ");
+                fprintf(f, "%5d ", i);
+                fprintf(f, "%24s ", geometry->object_names[i].c_str);
+                fprintf(f, "%8d ", geometry->objects[i].num_vertices);
+                fprintf(f, "%8d ", geometry->objects[i].num_vertex_normals);
+                fprintf(f, "%8d ", geometry->objects[i].num_faces);
+                fprintf(f, "%8d ", geometry->objects[i].num_materials);
                 fprintf(f, "\n");
         }
         fprintf(f, "\n");
-        fprintf(f, "%*sobject-references:\n", 4, "");
-        fprintf(f,
-                "%*s ref   obj    id   translation(xyz)/m     rot. "
-                "quarternion(xyz;w)\n",
-                8,
-                "");
-        fprintf(f,
-                "%*s-----------------------------------------------------------"
-                "-"
-                "-----\n",
-                8,
-                "");
+
+        fprintf(f, "\n");
+        fprintf(f, "    object-references\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%6s ", "ref");
+        fprintf(f, "%6s ", "obj");
+        fprintf(f, "%6s ", "id");
+        fprintf(f, "%20s ", "translation(xyz)/m");
+        fprintf(f, "%28s ", "quarternion(xyz;w)");
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+
         for (rob = 0; rob < geometry->num_robjects; rob++) {
+                fprintf(f, "    ");
+                fprintf(f, "%6d ", rob);
+                fprintf(f, "%6d ", geometry->robjects[rob]);
+                fprintf(f, "%6d ", geometry->robject_ids[rob]);
                 fprintf(f,
-                        "%*s% 4d  % 4d  % 4d  "
-                        "(% 5.1f, % 5.1f, % 5.1f)  "
-                        "(% 1.1f, % 1.1f, % 1.1f; % 1.1f) "
-                        "\n",
-                        8,
-                        "",
-                        rob,
-                        geometry->robjects[rob],
-                        geometry->robject_ids[rob],
-                        geometry->robject2root[rob].translation.x,
-                        geometry->robject2root[rob].translation.y,
-                        geometry->robject2root[rob].translation.z,
-                        geometry->robject2root[rob].rotation.x,
-                        geometry->robject2root[rob].rotation.y,
-                        geometry->robject2root[rob].rotation.z,
-                        geometry->robject2root[rob].rotation.w);
+                        "% 6.1f,",
+                        geometry->robject2root[rob].translation.x);
+                fprintf(f,
+                        "% 6.1f,",
+                        geometry->robject2root[rob].translation.y);
+                fprintf(f,
+                        "% 6.1f ",
+                        geometry->robject2root[rob].translation.z);
+                fprintf(f, " ");
+                fprintf(f, "% 6.1f,", geometry->robject2root[rob].rotation.x);
+                fprintf(f, "% 6.1f,", geometry->robject2root[rob].rotation.y);
+                fprintf(f, "% 6.1f;", geometry->robject2root[rob].rotation.z);
+                fprintf(f, "% 6.1f ", geometry->robject2root[rob].rotation.w);
+                fprintf(f, "\n");
         }
 }

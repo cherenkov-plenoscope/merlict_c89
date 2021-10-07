@@ -1,0 +1,6 @@
+{
+    "vacu.gras:gras.vacu": {
+        "inner": {"medium": "vacuum", "surface": "grass"},
+        "outer": {"medium": "vacuum", "surface": "grass"}
+    }
+}

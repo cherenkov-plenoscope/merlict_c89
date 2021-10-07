@@ -47,22 +47,14 @@ const struct mliFunc *_mli_refractive_index_going_to(
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        const struct mliFunc *refractive_index;
         const struct mliSide going_to = _mli_side_going_to(scenery, isec);
-        const struct mliMedium medium =
-                scenery->materials.media[going_to.medium];
-        refractive_index = &scenery->materials.functions[medium.refraction];
-        return refractive_index;
+        return &scenery->materials.media[going_to.medium].refraction;
 }
 
 const struct mliFunc *_mli_refractive_index_coming_from(
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        const struct mliFunc *refractive_index;
         const struct mliSide coming_from = _mli_side_coming_from(scenery, isec);
-        const struct mliMedium medium =
-                scenery->materials.media[coming_from.medium];
-        refractive_index = &scenery->materials.functions[medium.refraction];
-        return refractive_index;
+        return &scenery->materials.media[coming_from.medium].refraction;
 }

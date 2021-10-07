@@ -5,9 +5,12 @@
 #include <stdint.h>
 
 struct mliMedium {
-        uint32_t refraction;
-        uint32_t absorbtion;
+        struct mliFunc refraction;
+        struct mliFunc absorbtion;
 };
+struct mliMedium mliMedium_init(void);
+void mliMedium_free(struct mliMedium *medium);
 
-int mliMedium_equal(const struct mliMedium a, const struct mliMedium b);
+int mliMedium_equal(const struct mliMedium *a, const struct mliMedium *b);
+
 #endif
