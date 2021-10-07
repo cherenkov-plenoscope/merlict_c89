@@ -116,7 +116,7 @@ int __mliFrame_set_pos_rot(
         /* rot */
         chk_msg(mliJson_find_key(json, token, "rot", &token_rot),
                 "Expected Frame to have key 'rot'.");
-        chk_msg(__mliQuaternion_from_json(
+        chk_msg(mliQuaternion_from_json(
                         &frame->frame2mother.rotation, json, token_rot + 1),
                 "Failed to parse Frame's 'rot' from json.");
         return 1;

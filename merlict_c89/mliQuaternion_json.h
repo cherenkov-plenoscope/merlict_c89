@@ -5,19 +5,19 @@
 #include "mliQuaternion.h"
 #include "mliJson.h"
 
-int __mliQuaternion_tait_bryan_from_json(
+int _mliQuaternion_tait_bryan_from_json(
         struct mliQuaternion *quat,
         const struct mliJson *json,
         const uint64_t token);
-int __mliQuaternion_axis_angle_from_json(
+int _mliQuaternion_axis_angle_from_json(
         struct mliQuaternion *quat,
         const struct mliJson *json,
         const uint64_t token);
-int __mliQuaternion_quaternion_from_json(
+int _mliQuaternion_quaternion_from_json(
         struct mliQuaternion *quat,
         const struct mliJson *json,
         const uint64_t token);
-int __mliQuaternion_from_json(
+int mliQuaternion_from_json(
         struct mliQuaternion *quat,
         const struct mliJson *json,
         const uint64_t token);

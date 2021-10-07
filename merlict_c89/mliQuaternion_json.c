@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliQuaternion_json.h"
 
-int __mliQuaternion_tait_bryan_from_json(
+int _mliQuaternion_tait_bryan_from_json(
         struct mliQuaternion *quat,
         const struct mliJson *json,
         const uint64_t token)
@@ -21,7 +21,7 @@ error:
         return 0;
 }
 
-int __mliQuaternion_axis_angle_from_json(
+int _mliQuaternion_axis_angle_from_json(
         struct mliQuaternion *quat,
         const struct mliJson *json,
         const uint64_t token)
@@ -44,7 +44,7 @@ error:
         return 0;
 }
 
-int __mliQuaternion_quaternion_from_json(
+int _mliQuaternion_quaternion_from_json(
         struct mliQuaternion *quat,
         const struct mliJson *json,
         const uint64_t token)
@@ -63,7 +63,7 @@ error:
         return 0;
 }
 
-int __mliQuaternion_from_json(
+int mliQuaternion_from_json(
         struct mliQuaternion *quat,
         const struct mliJson *json,
         const uint64_t token)
@@ -75,13 +75,13 @@ int __mliQuaternion_from_json(
         token_repr_value = token_repr + 1;
 
         if (mliJson_strcmp(json, token_repr_value, "tait_bryan")) {
-                chk_msg(__mliQuaternion_tait_bryan_from_json(quat, json, token),
+                chk_msg(_mliQuaternion_tait_bryan_from_json(quat, json, token),
                         "Failed to parse tait_bryan rotation.");
         } else if (mliJson_strcmp(json, token_repr_value, "axis_angle")) {
-                chk_msg(__mliQuaternion_axis_angle_from_json(quat, json, token),
+                chk_msg(_mliQuaternion_axis_angle_from_json(quat, json, token),
                         "Failed to parse axis_angle rotation.");
         } else if (mliJson_strcmp(json, token_repr_value, "quaternion")) {
-                chk_msg(__mliQuaternion_quaternion_from_json(quat, json, token),
+                chk_msg(_mliQuaternion_quaternion_from_json(quat, json, token),
                         "Failed to parse quaternion rotation.");
         } else {
                 chk_bad("Unknown representation 'repr' in rotation.");
