@@ -182,7 +182,7 @@ int mliMaterials_malloc_form_archive(
         }
 
         /* boundary_layers */
-        chk_msg(__mliMaterials_assign_boundary_layers_from_json(
+        chk_msg(mliMaterials_assign_boundary_layers_from_json(
                         materials,
                         &names->boundary_layers,
                         &names->surfaces,

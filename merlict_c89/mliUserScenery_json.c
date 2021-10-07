@@ -5,7 +5,7 @@
 #include "mliColor_json.h"
 
 
-int __mliMaterials_assign_boundary_layers_from_json(
+int mliMaterials_assign_boundary_layers_from_json(
         struct mliMaterials *materials,
         struct mliDynMap *boundary_layer_names,
         const struct mliDynMap *surface_names,
@@ -38,7 +38,7 @@ int __mliMaterials_assign_boundary_layers_from_json(
                 chk_msg(json->tokens[token_s].type == JSMN_OBJECT,
                         "Expected boundary_layer to be of type object {}.");
 
-                chk_msg(__mliBoundaryLayer_from_json(
+                chk_msg(mliBoundaryLayer_from_json(
                                 &materials->boundary_layers[s],
                                 surface_names,
                                 medium_names,
@@ -53,7 +53,7 @@ error:
         return 0;
 }
 
-int __mliSide_set(
+int mliSide_from_json(
         struct mliSide *side,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names,
@@ -81,7 +81,7 @@ error:
         return 0;
 }
 
-int __mliBoundaryLayer_from_json(
+int mliBoundaryLayer_from_json(
         struct mliBoundaryLayer *boundary_layer,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names,
@@ -96,14 +96,14 @@ int __mliBoundaryLayer_from_json(
                         json, token_surface, "outer", &token_outer_side),
                 "Expected key 'outer' in surface.");
 
-        chk_msg(__mliSide_set(
+        chk_msg(mliSide_from_json(
                         &boundary_layer->inner,
                         surface_names,
                         medium_names,
                         json,
                         token_inner_side),
                 "Failed to parse inner side.");
-        chk_msg(__mliSide_set(
+        chk_msg(mliSide_from_json(
                         &boundary_layer->outer,
                         surface_names,
                         medium_names,
