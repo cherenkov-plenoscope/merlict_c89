@@ -71,17 +71,6 @@ error:
         return 0;
 }
 
-/* seek */
-
-int _mliTar_seek(struct mliTar *tar, const uint64_t offset)
-{
-        chk_msg(0 == fseek(tar->stream, offset, SEEK_CUR), "Failed to seek");
-        tar->pos += offset;
-        return 1;
-error:
-        return 0;
-}
-
 /* close */
 
 int mliTar_close(struct mliTar *tar)
@@ -396,11 +385,16 @@ int mliTar_read_data(struct mliTar *tar, void *ptr, uint64_t size)
         tar->remaining_data -= size;
 
         if (tar->remaining_data == 0) {
+                uint64_t i;
                 const uint64_t next_record = _mliTar_round_up(tar->pos, 512);
                 const uint64_t padding_size = next_record - tar->pos;
+                char padding;
 
-                chk_msg(_mliTar_seek(tar, padding_size),
-                        "Failed to read padding block to reach nect record.");
+                for (i = 0; i < padding_size; i++) {
+                        chk_msg(_mliTar_tread(tar, &padding, 1),
+                                "Failed to read padding-block "
+                                "to reach next record.");
+                }
         }
 
         return 1;
