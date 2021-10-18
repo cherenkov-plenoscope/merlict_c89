@@ -7,9 +7,6 @@
 #include "mliTar.h"
 #include <string.h>
 
-#define MLITAR_OCTAL 8u
-#define MLITAR_MAX_FILESIZE_OCTAL 8589934592lu /* 8^11 */
-
 struct _mliTarRawHeader {
         char name[MLITAR_NAME_LENGTH];
         char mode[8];

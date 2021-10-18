@@ -39,6 +39,8 @@
 #define MLITAR_TDIR '5'
 #define MLITAR_TFIFO '6'
 #define MLITAR_NAME_LENGTH 100
+#define MLITAR_OCTAL 8u
+#define MLITAR_MAX_FILESIZE_OCTAL 8589934592lu /* 8^11 */
 
 struct mliTarHeader {
         uint64_t mode;
