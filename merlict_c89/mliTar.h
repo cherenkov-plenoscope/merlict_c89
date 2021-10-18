@@ -74,4 +74,7 @@ int mliTar_write_dir_header(struct mliTar *tar, const char *name);
 int mliTar_write_data(struct mliTar *tar, const void *data, uint64_t size);
 int mliTar_finalize(struct mliTar *tar);
 
+int mliTar_uint64_to_field12_2001star_base256(uint64_t val, char *field);
+int mliTar_field12_to_uint64_2001star_base256(const char *field, uint64_t *val);
+
 #endif

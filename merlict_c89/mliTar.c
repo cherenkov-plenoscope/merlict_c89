@@ -8,6 +8,7 @@
 #include <string.h>
 
 #define MLITAR_OCTAL 8u
+#define MLITAR_MAX_FILESIZE_OCTAL 8589934592lu /* 8^11 */
 
 struct _mliTarRawHeader {
         char name[MLITAR_NAME_LENGTH];
@@ -133,7 +134,7 @@ void _mli_field_fprintf(
         fprintf(f, "%s:", fieldname);
         for (i = 0; i < size; i++) {
                 if ((i % 16) == 0) {
-                        fprintf(stderr, "\n");
+                        fprintf(f, "\n");
                 }
                 if (isprint(field[i])) {
                         c = field[i];
@@ -202,8 +203,15 @@ int _mliTar_raw_to_header(
                 "bad mode");
         chk_msg(mliTar_field_to_uint(&h->owner, rh->owner, sizeof(rh->owner)),
                 "bad owner");
-        chk_msg(mliTar_field_to_uint(&h->size, rh->size, sizeof(rh->size)),
-                "bad size");
+        if (rh->size[0] == -128) {
+                chk_msg(mliTar_field12_to_uint64_2001star_base256(
+                                rh->size, &h->size),
+                        "bad size, mode: base-256");
+        } else {
+                chk_msg(mliTar_field_to_uint(
+                                &h->size, rh->size, sizeof(rh->size)),
+                        "bad size, mode: base-octal");
+        }
         chk_msg(mliTar_field_to_uint(&h->mtime, rh->mtime, sizeof(rh->mtime)),
                 "bad mtime");
         h->type = rh->type;
@@ -228,6 +236,59 @@ error:
         return 0;
 }
 
+int mliTar_uint64_to_field12_2001star_base256(uint64_t val, char *field)
+{
+        uint8_t tmp[12];
+        int64_t i = 0;
+        for (i = 11; i > 0; i--) {
+                tmp[i] = (uint8_t)(val % 256u);
+                val = val / 256u;
+        }
+
+        chk_msg(val == 0u, "Expected value to be less than 256**11.");
+        /* set highest bit in leftmost byte to 1 */
+        tmp[0] = (uint8_t)128u;
+
+        memcpy(field, tmp, 12);
+        return 1;
+error:
+        return 0;
+}
+
+int mliTar_field12_to_uint64_2001star_base256(const char *field, uint64_t *val)
+{
+        uint8_t tmp[12];
+        uint64_t i = 0u;
+        const uint64_t powers[] = {
+                0x100000000000000,
+                0x1000000000000,
+                0x10000000000,
+                0x100000000,
+                0x1000000,
+                0x10000,
+                0x100,
+                0x1,
+        };
+
+        memcpy(tmp, field, 12);
+        chk_msg(tmp[0] == 128u,
+                "Expected field[0] == 128, indicating 256-base, 2001star.");
+        chk_msg(tmp[1] == 0u,
+                "Expected field[1] == 0, 256**10 exceeds uint64.");
+        chk_msg(tmp[2] == 0u,
+                "Expected field[2] == 0, 256**09 exceeds uint64.");
+        chk_msg(tmp[3] == 0u,
+                "Expected field[3] == 0, 256**08 exceeds uint64.");
+
+        (*val) = 0u;
+        for (i = 4; i < 12; i++) {
+                (*val) = (*val) + powers[i - 4] * (uint64_t)tmp[i];
+        }
+        return 1;
+error:
+        return 0;
+}
+
 int _mliTar_make_raw_header(
         struct _mliTarRawHeader *rh,
         const struct mliTarHeader *h)
@@ -240,8 +301,15 @@ int _mliTar_make_raw_header(
                 "bad mode");
         chk_msg(mliTar_uint_to_field(h->owner, rh->owner, sizeof(rh->owner)),
                 "bad owner");
-        chk_msg(mliTar_uint_to_field(h->size, rh->size, sizeof(rh->size)),
-                "bad size");
+        if (h->size >= MLITAR_MAX_FILESIZE_OCTAL) {
+                chk_msg(mliTar_uint64_to_field12_2001star_base256(
+                                h->size, rh->size),
+                        "bad size, mode: base-256");
+        } else {
+                chk_msg(mliTar_uint_to_field(
+                                h->size, rh->size, sizeof(rh->size)),
+                        "bad size, mode: base-octal");
+        }
         chk_msg(mliTar_uint_to_field(h->mtime, rh->mtime, sizeof(rh->mtime)),
                 "bad mtime");
         rh->type = h->type ? h->type : MLITAR_TREG;
