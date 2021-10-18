@@ -10,3 +10,4 @@
 #include "EventIo/TelescopePosition.h"
 #include "TarIo/Run.h"
 #include "TarIo/Event.h"
+#include "TarIo/writer.h"

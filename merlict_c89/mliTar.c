@@ -6,6 +6,8 @@
 
 #include "mliTar.h"
 #include <string.h>
+#include "chk_debug.h"
+#include "mli_cstr_and_numbers.h"
 
 struct _mliTarRawHeader {
         char name[MLITAR_NAME_LENGTH];
@@ -128,7 +130,7 @@ int mliTar_field_to_uint(
                 buff[field_size - 2] = 0;
         }
 
-        chk(mli_string_to_uint(out, buff, MLITAR_OCTAL));
+        chk(mli_cstr_to_uint64(out, buff, MLITAR_OCTAL));
         return 1;
 error:
         return 0;
@@ -177,7 +179,7 @@ int mliTar_uint_to_field(
         char *field,
         const uint64_t fieldsize)
 {
-        chk(mli_uint_to_string(
+        chk(mli_uint64_to_cstr(
                 val, field, fieldsize, MLITAR_OCTAL, fieldsize - 1));
         return 1;
 error:
@@ -266,7 +268,7 @@ int _mliTar_make_raw_header(
 
         /* Calculate and write checksum */
         chksum = _mliTar_checksum(rh);
-        chk_msg(mli_uint_to_string(
+        chk_msg(mli_uint64_to_cstr(
                         chksum,
                         rh->checksum,
                         sizeof(rh->checksum),

@@ -2,6 +2,8 @@
 #include "mliObject_wavefront.h"
 #include <ctype.h>
 #include "mliDynArray_template.h"
+#include "chk_debug.h"
+#include "mli_cstr_and_numbers.h"
 
 #define MLI_WAVEFRONT_FACE_LINE_V 7
 #define MLI_WAVEFRONT_FACE_LINE_V_VN 37
@@ -44,7 +46,7 @@ int mliBuff_to_uint(
                         buff->buff[buff->b] = '\0';
                 }
                 buff->b = 0;
-                chk_msg(mli_string_to_int(&tmp, buff->buff, 10),
+                chk_msg(mli_cstr_to_int64(&tmp, buff->buff, 10),
                         "Can not parse face index");
                 chk_msg(tmp > 0, "Expected object's index > 0.");
                 *out = tmp;
@@ -74,7 +76,7 @@ int mliBuff_to_double(
                         buff->buff[buff->b] = '\0';
                 }
                 buff->b = 0;
-                chk_msg(mli_string_to_float(out, buff->buff),
+                chk_msg(mli_cstr_to_double(out, buff->buff),
                         "Can not parse face index");
         }
 

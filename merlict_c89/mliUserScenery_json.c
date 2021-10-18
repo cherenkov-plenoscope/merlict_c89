@@ -4,7 +4,6 @@
 #include "mliVec_json.h"
 #include "mliColor_json.h"
 
-
 int mliMaterials_assign_boundary_layers_from_json(
         struct mliMaterials *materials,
         struct mliDynMap *boundary_layer_names,

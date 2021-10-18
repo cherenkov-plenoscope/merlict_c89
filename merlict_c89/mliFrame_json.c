@@ -174,7 +174,7 @@ int mliFrame_from_json(
                 chk_msg(child, "Failed to add child to frame.");
 
                 chk_msg(_mliFrame_pos_rot_from_json(
-                        &child->frame2mother, json, token_child),
+                                &child->frame2mother, json, token_child),
                         "Failed to set pos, and rot of Frame from json.");
 
                 chk_msg(_mliFrame_id_from_json(&child->id, json, token_child),
