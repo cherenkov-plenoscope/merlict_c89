@@ -109,43 +109,6 @@ error:
         return 0;
 }
 
-void _mli_field_fprintf(
-        FILE *f,
-        const char *fieldname,
-        const char *field,
-        const uint64_t size)
-{
-        uint64_t i = 0;
-        char c;
-        fprintf(f, "%s:", fieldname);
-        for (i = 0; i < size; i++) {
-                if ((i % 16) == 0) {
-                        fprintf(f, "\n");
-                }
-                if (isprint(field[i])) {
-                        c = field[i];
-                } else {
-                        c = ' ';
-                }
-                fprintf(f, "%c %03d ", c, field[i]);
-        }
-        fprintf(f, "\n");
-}
-
-void _mliTar_raw_header_info_fprint(FILE *f, const struct _mliTarRawHeader *rh)
-{
-        fprintf(f, "tar-header:\n");
-        _mli_field_fprintf(f, "name", rh->name, sizeof(rh->name));
-        _mli_field_fprintf(f, "mode", rh->mode, sizeof(rh->mode));
-        _mli_field_fprintf(f, "owner", rh->owner, sizeof(rh->owner));
-        _mli_field_fprintf(f, "group", rh->group, sizeof(rh->group));
-        _mli_field_fprintf(f, "size", rh->size, sizeof(rh->size));
-        _mli_field_fprintf(f, "mtime", rh->mtime, sizeof(rh->mtime));
-        _mli_field_fprintf(f, "checksum", rh->checksum, sizeof(rh->checksum));
-        _mli_field_fprintf(f, "type", &rh->type, 1);
-        _mli_field_fprintf(f, "linkname", rh->linkname, sizeof(rh->linkname));
-}
-
 int mliTar_field_to_uint(
         uint64_t *out,
         const char *field,
@@ -206,7 +169,6 @@ int _mliTar_raw_to_header(
 
         return 1;
 error:
-        _mliTar_raw_header_info_fprint(stderr, rh);
         return 0;
 }
 
