@@ -51,7 +51,7 @@ int main(void)
 #include "../../merlict_c89/mli_json_test.c"
 #include "../../merlict_c89/mliFresnel_test.c"
 #include "test_mliAccelerator.c"
-#include "test_mliApertureCamera.c"
+#include "../../merlict_c89/mliApertureCamera_test.c"
 #include "test_photon_sources.c"
 #include "test_cache_aware_octree.c"
 #include "test_photon.c"

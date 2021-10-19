@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliApertureCamera.h"
+
 CASE("pixel-center on image-sensor-plane")
 {
         struct mliVec c;
