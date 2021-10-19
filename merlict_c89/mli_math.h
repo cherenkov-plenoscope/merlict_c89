@@ -31,6 +31,14 @@
                 }                                                              \
         } while (0)
 
+#define mli_array_set(arr, val, num)                                           \
+        do {                                                                   \
+                uint64_t i;                                                    \
+                for (i = 0; i < num; i++) {                                    \
+                        arr[i] = val;                                          \
+                }                                                              \
+        } while (0)
+
 #define mli_upper_compare(points, num_points, point_arg, return_idx)           \
         do {                                                                   \
                 uint64_t first, last, middle;                                  \
@@ -85,8 +93,6 @@ uint64_t mli_upper_compare_double(
         const double *points,
         const uint64_t num_points,
         const double point_arg);
-void mli_zeros_uint64_t(uint64_t *points, const uint64_t num_points);
-void mli_zeros_double(double *points, const uint64_t num_points);
 double mli_square(const double a);
 double mli_z_sphere(double x, double curvature_radius);
 double mli_hypot(const double a, const double b);

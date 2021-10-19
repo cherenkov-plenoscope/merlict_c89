@@ -22,7 +22,7 @@ CASE("uniform population of histogram")
         uint64_t overflow_bin, underflow_bin;
         overflow_bin = 0u;
         underflow_bin = 0u;
-        mli_zeros_uint64_t(bins, num_bins);
+        mli_array_set(bins, 0u, num_bins);
         mli_linspace(0., 1., bin_edges, num_bin_edges);
         for (i = 0; i < 100000u; i++) {
                 mli_histogram(
