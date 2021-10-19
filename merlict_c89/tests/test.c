@@ -54,7 +54,7 @@ int main(void)
 
 #include "../../merlict_c89/mliUserScenery_test.c"
 #include "../../merlict_c89/mliAccelerator_test.c"
-#include "../../merlict_c89/mliScenery_test.c"
+#include "../../merlict_c89/mliGeometry_test.c"
 #include "../../merlict_c89/mli_photon_propagation_test.c"
 #include "test_optics_prism.c"
 #include "test_optics_focussing_mirror.c"
