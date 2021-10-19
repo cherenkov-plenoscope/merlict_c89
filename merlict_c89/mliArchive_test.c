@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliArchive.h"
+
 CASE("mliArchive, read tar")
 {
         struct mliArchive arc = mliArchive_init();
