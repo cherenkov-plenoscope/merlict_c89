@@ -29,7 +29,7 @@ int main(void)
 #include "test_orientated_bounding_box.c"
 #include "test_mliDynArray.c"
 #include "../../merlict_c89/mliQuaternion_test.c"
-#include "test_homogeneous_transformation.c"
+#include "../../merlict_c89/mliHomTra_test.c"
 #include "../../merlict_c89/mli_math_test.c"
 #include "test_mliColor.c"
 #include "../../merlict_c89/mliPixels_test.c"
