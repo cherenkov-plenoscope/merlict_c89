@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mli_triangle_intersection.h"
+
 CASE("intersection")
 {
         const struct mliVec a = {-1.0, 0.0, 0.0};
