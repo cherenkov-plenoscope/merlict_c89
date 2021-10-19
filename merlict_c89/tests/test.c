@@ -18,8 +18,8 @@ int main(void)
                MLI_VERSION_MINOR,
                MLI_VERSION_PATCH);
 
-#include "test_mliMagicId.c"
-#include "test_frame.c"
+#include "../../merlict_c89/mliMagicId_test.c"
+#include "../../merlict_c89/mliFrame_test.c"
 #include "test_parsing_from_string.c"
 #include "../../merlict_c89/mli_cstr_and_numbers_test.c"
 #include "test_tape_archive.c"

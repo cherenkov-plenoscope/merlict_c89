@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliMagicId.h"
+
 CASE("sizeof")
 {
         struct mliMagicId magic = mliMagicId_init();

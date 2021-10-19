@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliFrame.h"
+
 CASE("mliFrame_init, defaults")
 {
         struct mliFrame f = mliFrame_init();
