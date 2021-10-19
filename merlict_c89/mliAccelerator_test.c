@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliAccelerator.h"
+
 CASE("mliAccelerator, init")
 {
         struct mliAccelerator accel = mliAccelerator_init();

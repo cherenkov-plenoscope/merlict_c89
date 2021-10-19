@@ -52,8 +52,8 @@ int main(void)
 #include "../../merlict_c89/mli_photon_sources_test.c"
 #include "../../merlict_c89/mliOcTree_test.c"
 
-#include "test_mliUserScenery.c"
-#include "test_mliAccelerator.c"
+#include "../../merlict_c89/mliUserScenery_test.c"
+#include "../../merlict_c89/mliAccelerator_test.c"
 #include "test_scenery.c"
 #include "test_photon.c"
 #include "test_optics_prism.c"

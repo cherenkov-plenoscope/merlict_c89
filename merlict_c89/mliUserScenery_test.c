@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliUserScenery.h"
+
 CASE("mliUserScenery, init")
 {
         struct mliMaterials resources = mliMaterials_init();
