@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliHomTra.h"
+
 CASE("sequence, unity and unity shall be unity")
 {
         struct mliHomTraComp a;
