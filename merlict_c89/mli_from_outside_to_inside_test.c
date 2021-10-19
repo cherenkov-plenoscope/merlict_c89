@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mli_from_outside_to_inside.h"
+
 CASE("from_outside_to_inside, forward")
 {
         struct mliVec normal = {0., 0., 1.};

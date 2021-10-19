@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliCube.h"
+
 CASE("mliCube_octree_child")
 {
         struct mliCube node;
