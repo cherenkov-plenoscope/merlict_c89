@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mli_quadratic_equation.h"
+
 CASE("b/a=1., c/a=1., no real solutions")
 {
         /* ax**2 + bx + c = 0 */
