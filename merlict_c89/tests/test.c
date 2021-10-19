@@ -42,7 +42,7 @@ int main(void)
 #include "test_lambertian_cosine_law.c"
 #include "test_map.c"
 #include "test_mliArchive.c"
-#include "test_barycentric_coordinates.c"
+#include "../../merlict_c89/mli_barycentric_test.c"
 #include "test_triangle_intersection.c"
 #include "test_object_wavefront.c"
 #include "test_mliRay.c"
