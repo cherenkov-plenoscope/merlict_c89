@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mliFunc.h"
 #include "mliColor.h"
-#include "mliJson.h"
+#include "mli_json.h"
 
 #define MLI_MATERIAL_PHONG 100u
 #define MLI_MATERIAL_TRANSPARENT 102u

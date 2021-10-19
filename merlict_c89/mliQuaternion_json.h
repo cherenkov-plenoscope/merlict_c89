@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIQUATERNION_JSON_H_
 
 #include "mliQuaternion.h"
-#include "mliJson.h"
+#include "mli_json.h"
 
 int _mliQuaternion_tait_bryan_from_json(
         struct mliQuaternion *quat,

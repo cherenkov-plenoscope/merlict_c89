@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIDYNMAP_JSON_H_
 
 #include <stdint.h>
-#include "mliJson.h"
+#include "mli_json.h"
 #include "mliDynMap.h"
 
 int mliDynMap_get_value_for_string_from_json(

@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIVEC_JSON_H_
 
 #include "mliVec.h"
-#include "mliJson.h"
+#include "mli_json.h"
 
 int mliVec_from_json_token(
         struct mliVec *v,

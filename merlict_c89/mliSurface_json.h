@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLISURFACE_JSON_H_
 
 #include "mliSurface.h"
-#include "mliJson.h"
+#include "mli_json.h"
 
 int mliSurface_malloc_from_json_str(
         struct mliSurface *surface,

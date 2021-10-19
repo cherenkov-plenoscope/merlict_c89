@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLI_JSON_H_
 
 #include <stdint.h>
-#include "jsmn.h"
+#include "mli_json_jsmn.h"
 
 struct mliJson {
         uint64_t c_str_capacity;

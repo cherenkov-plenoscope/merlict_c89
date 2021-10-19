@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIUSERSCENERY_JSON_H_
 
 #include <stdint.h>
-#include "mliJson.h"
+#include "mli_json.h"
 #include "mliUserScenery.h"
 
 int mliSide_from_json(

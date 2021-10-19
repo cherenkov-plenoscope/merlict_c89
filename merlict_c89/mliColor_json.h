@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLICOLOR_JSON_H_
 
 #include "mliColor.h"
-#include "mliJson.h"
+#include "mli_json.h"
 
 int mliColor_from_json_token(
         struct mliColor *c,

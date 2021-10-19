@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIFUNC_JSON_H_
 
 #include "mliFunc.h"
-#include "mliJson.h"
+#include "mli_json.h"
 
 int mliFunc_malloc_from_json_token(
         struct mliFunc *func,

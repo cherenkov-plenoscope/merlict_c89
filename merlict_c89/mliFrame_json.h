@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIFRAME_JSON_H_
 
 #include <stdint.h>
-#include "mliJson.h"
+#include "mli_json.h"
 #include "mliFrame.h"
 
 int mliFrame_from_json(

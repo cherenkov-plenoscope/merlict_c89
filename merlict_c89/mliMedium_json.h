@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIMEDIUM_JSON_H_
 
 #include "mliMedium.h"
-#include "mliJson.h"
+#include "mli_json.h"
 
 int mliMedium_malloc_from_json_str(struct mliMedium *med, const char *json_str);
 int mliMedium_malloc_from_json_token(
