@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliOcTree.h"
+
 CASE("init mliCaOctree")
 {
         struct mliOcTree octree = mliOcTree_init();
