@@ -1,5 +1,8 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 
+#include "mli_testing.h"
+#include "mliTar.h"
+
 CASE("Write and read tape-archive")
 {
         struct mliTar tar = mliTar_init();
@@ -9,7 +12,7 @@ CASE("Write and read tape-archive")
         sprintf(payload, "%s", "Hello world!");
 
         CHECK(mliTar_open(
-                &tar, "merlict_c89/tests/resources/123.tar.tmp", "w"));
+                &tar, "merlict_c89/mliTar_test_resources/123.tar.tmp", "w"));
         CHECK(mliTar_write_dir_header(&tar, "resources"));
         CHECK(mliTar_write_file_header(
                 &tar, "resources/hans.txt", strlen(payload)));
@@ -20,7 +23,7 @@ CASE("Write and read tape-archive")
         memset(payload, '\0', sizeof(payload));
 
         CHECK(mliTar_open(
-                &tar, "merlict_c89/tests/resources/123.tar.tmp", "r"));
+                &tar, "merlict_c89/mliTar_test_resources/123.tar.tmp", "r"));
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("resources", tarh.name));

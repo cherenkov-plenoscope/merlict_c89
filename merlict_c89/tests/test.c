@@ -22,7 +22,7 @@ int main(void)
 #include "../../merlict_c89/mliFrame_test.c"
 #include "../../merlict_c89/mli_cstr_test.c"
 #include "../../merlict_c89/mli_cstr_and_numbers_test.c"
-#include "test_tape_archive.c"
+#include "../../merlict_c89/mliTar_test.c"
 #include "../../merlict_c89/mli_quadratic_equation_test.c"
 #include "test_pseudo_random_number_generator.c"
 #include "test_from_outside_to_inside.c"
