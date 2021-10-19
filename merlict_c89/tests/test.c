@@ -23,8 +23,6 @@ int main(void)
 #include "test_parsing_from_string.c"
 #include "../../merlict_c89/mli_cstr_and_numbers_test.c"
 #include "test_tape_archive.c"
-#include "test_upper_bound.c"
-#include "test_histogram.c"
 #include "test_quadratic_equation.c"
 #include "test_pseudo_random_number_generator.c"
 #include "test_from_outside_to_inside.c"
