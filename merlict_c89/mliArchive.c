@@ -30,7 +30,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
         struct mliDynStr tmp_payload = mliDynStr_init();
-        char tarh_name[MLITAR_NAME_LENGTH] = {'\0'};
+        char tarh_name[MLI_TAR_NAME_LENGTH] = {'\0'};
 
         mliArchive_free(arc);
         mliDynTextFiles_malloc(&arc->textfiles, 0u);

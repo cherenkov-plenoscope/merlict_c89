@@ -31,16 +31,16 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define MLITAR_TREG '0'
-#define MLITAR_TLNK '1'
-#define MLITAR_TSYM '2'
-#define MLITAR_TCHR '3'
-#define MLITAR_TBLK '4'
-#define MLITAR_TDIR '5'
-#define MLITAR_TFIFO '6'
-#define MLITAR_NAME_LENGTH 100
-#define MLITAR_OCTAL 8u
-#define MLITAR_MAX_FILESIZE_OCTAL 8589934592lu /* 8^11 */
+#define MLI_TAR_NORMAL_FILE '0'
+#define MLI_TAR_HARD_LINK '1'
+#define MLI_TAR_SYMBOLIC_LINK '2'
+#define MLI_TAR_CHARACTER_SPECIAL '3'
+#define MLI_TAR_BLOCK_SPECIAL '4'
+#define MLI_TAR_DIRECTORY '5'
+#define MLI_TAR_FIFO '6'
+#define MLI_TAR_NAME_LENGTH 100
+#define MLI_TAR_OCTAL 8u
+#define MLI_TAR_MAX_FILESIZE_OCTAL 8589934592lu /* 8^11 */
 
 struct mliTarHeader {
         uint64_t mode;
@@ -48,8 +48,8 @@ struct mliTarHeader {
         uint64_t size;
         uint64_t mtime;
         uint64_t type;
-        char name[MLITAR_NAME_LENGTH];
-        char linkname[MLITAR_NAME_LENGTH];
+        char name[MLI_TAR_NAME_LENGTH];
+        char linkname[MLI_TAR_NAME_LENGTH];
 };
 
 struct mliTarHeader mliTarHeader_init(void);

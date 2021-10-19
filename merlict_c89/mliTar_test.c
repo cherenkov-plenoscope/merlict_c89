@@ -27,7 +27,7 @@ CASE("Write and read tape-archive")
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("resources", tarh.name));
-        CHECK(tarh.type == MLITAR_TDIR);
+        CHECK(tarh.type == MLI_TAR_DIRECTORY);
 
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("resources/hans.txt", tarh.name));

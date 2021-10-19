@@ -10,7 +10,7 @@
 #include "mli_cstr_and_numbers.h"
 
 struct _mliTarRawHeader {
-        char name[MLITAR_NAME_LENGTH];
+        char name[MLI_TAR_NAME_LENGTH];
         char mode[8];
         char owner[8];
         char group[8];
@@ -18,7 +18,7 @@ struct _mliTarRawHeader {
         char mtime[12];
         char checksum[8];
         char type;
-        char linkname[MLITAR_NAME_LENGTH];
+        char linkname[MLI_TAR_NAME_LENGTH];
         char _padding[255];
 };
 
@@ -116,8 +116,8 @@ int mliTar_field_to_uint(
         const char *field,
         const uint64_t field_size)
 {
-        char buff[MLITAR_NAME_LENGTH] = {'\0'};
-        chk(field_size < MLITAR_NAME_LENGTH);
+        char buff[MLI_TAR_NAME_LENGTH] = {'\0'};
+        chk(field_size < MLI_TAR_NAME_LENGTH);
         memcpy(buff, field, field_size);
 
         /* Take care of historic 'space' (32 decimal) termination */
@@ -130,7 +130,7 @@ int mliTar_field_to_uint(
                 buff[field_size - 2] = 0;
         }
 
-        chk(mli_cstr_to_uint64(out, buff, MLITAR_OCTAL));
+        chk(mli_cstr_to_uint64(out, buff, MLI_TAR_OCTAL));
         return 1;
 error:
         return 0;
@@ -180,7 +180,7 @@ int mliTar_uint_to_field(
         const uint64_t fieldsize)
 {
         chk(mli_uint64_to_cstr(
-                val, field, fieldsize, MLITAR_OCTAL, fieldsize - 1));
+                val, field, fieldsize, MLI_TAR_OCTAL, fieldsize - 1));
         return 1;
 error:
         return 0;
@@ -251,7 +251,7 @@ int _mliTar_make_raw_header(
                 "bad mode");
         chk_msg(mliTar_uint_to_field(h->owner, rh->owner, sizeof(rh->owner)),
                 "bad owner");
-        if (h->size >= MLITAR_MAX_FILESIZE_OCTAL) {
+        if (h->size >= MLI_TAR_MAX_FILESIZE_OCTAL) {
                 chk_msg(mliTar_uint64_to_field12_2001star_base256(
                                 h->size, rh->size),
                         "bad size, mode: base-256");
@@ -262,7 +262,7 @@ int _mliTar_make_raw_header(
         }
         chk_msg(mliTar_uint_to_field(h->mtime, rh->mtime, sizeof(rh->mtime)),
                 "bad mtime");
-        rh->type = h->type ? h->type : MLITAR_TREG;
+        rh->type = h->type ? h->type : MLI_TAR_NORMAL_FILE;
         memcpy(rh->name, h->name, sizeof(rh->name));
         memcpy(rh->linkname, h->linkname, sizeof(rh->linkname));
 
@@ -272,7 +272,7 @@ int _mliTar_make_raw_header(
                         chksum,
                         rh->checksum,
                         sizeof(rh->checksum),
-                        MLITAR_OCTAL,
+                        MLI_TAR_OCTAL,
                         sizeof(rh->checksum) - 2),
                 "bad checksum");
 
@@ -384,7 +384,7 @@ int mliTar_write_file_header(
         chk_msg(strlen(name) < sizeof(h.name), "Filename is too long.");
         memcpy(h.name, name, strlen(name));
         h.size = size;
-        h.type = MLITAR_TREG;
+        h.type = MLI_TAR_NORMAL_FILE;
         h.mode = 0664;
         /* Write header */
         chk_msg(mliTar_write_header(tar, &h), "Failed to write file-header.");
@@ -398,7 +398,7 @@ int mliTar_write_dir_header(struct mliTar *tar, const char *name)
         struct mliTarHeader h = mliTarHeader_init();
         chk_msg(strlen(name) < sizeof(h.name), "Dirname is too long.");
         memcpy(h.name, name, strlen(name));
-        h.type = MLITAR_TDIR;
+        h.type = MLI_TAR_DIRECTORY;
         h.mode = 0775;
         chk_msg(mliTar_write_header(tar, &h), "Failed to write dir-header.");
         return 1;
