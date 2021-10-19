@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliDynArray_template.h"
+
 CASE("malloc, and free")
 {
         uint64_t i;

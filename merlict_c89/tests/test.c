@@ -27,7 +27,7 @@ int main(void)
 #include "../../merlict_c89/mli_random_test.c"
 #include "../../merlict_c89/mli_from_outside_to_inside_test.c"
 #include "../../merlict_c89/mliCube_test.c"
-#include "test_mliDynArray.c"
+#include "../../merlict_c89/mliDynArray_template_test.c"
 #include "../../merlict_c89/mliQuaternion_test.c"
 #include "../../merlict_c89/mliHomTra_test.c"
 #include "../../merlict_c89/mli_math_test.c"
