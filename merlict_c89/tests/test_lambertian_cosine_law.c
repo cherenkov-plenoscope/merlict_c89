@@ -15,7 +15,7 @@ CASE("lambertian cosine law, populate histogram, check cosine law")
         double hist_bins_norm[NUM_BINS];
         uint64_t hist_overflow_bin = 0u;
         uint64_t hist_underflow_bin = 0u;
-        mli_array_set(hist_bins, 0, hist_num_bins);
+        MLI_ARRAY_SET(hist_bins, 0, hist_num_bins);
         mli_linspace(0., MLI_PI / 2.0, hist_bin_edges, hist_num_bin_edges);
 
         for (n = 0; n < NUM_TRAILS; n++) {
@@ -64,7 +64,7 @@ CASE("lambertian cosine law, relative to surface normal")
         uint64_t hist_bins[10];
         uint64_t hist_overflow_bin = 0u;
         uint64_t hist_underflow_bin = 0u;
-        mli_array_set(hist_bins, 0, hist_num_bins);
+        MLI_ARRAY_SET(hist_bins, 0, hist_num_bins);
         mli_linspace(0., MLI_PI / 2.0, hist_bin_edges, hist_num_bin_edges);
 
         for (n = 0; n < NUM_NORMALS; n++) {
@@ -74,7 +74,7 @@ CASE("lambertian cosine law, relative to surface normal")
                         mli_random_uniform(&prng) - .5);
                 surface_normal = mliVec_normalized(surface_normal);
 
-                mli_array_set(hist_bins, 0, hist_num_bins);
+                MLI_ARRAY_SET(hist_bins, 0, hist_num_bins);
                 for (m = 0; m < NUM_TRAILS; m++) {
                         struct mliVec lambertian_reflex =
                                 mli_draw_lambertian_direction_wrt_surface_normal(

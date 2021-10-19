@@ -36,34 +36,34 @@ CASE("rad2deg, explicit")
 
 CASE("MAX2")
 {
-        CHECK(mli_max2(3, 4) == 4);
-        CHECK(mli_max2(4, 3) == 4);
+        CHECK(MLI_MAX2(3, 4) == 4);
+        CHECK(MLI_MAX2(4, 3) == 4);
 }
 
 CASE("MIN3")
 {
-        CHECK(mli_min3(4, 5, 6) == 4);
-        CHECK(mli_min3(5, 4, 6) == 4);
-        CHECK(mli_min3(5, 6, 4) == 4);
+        CHECK(MLI_MIN3(4, 5, 6) == 4);
+        CHECK(MLI_MIN3(5, 4, 6) == 4);
+        CHECK(MLI_MIN3(5, 6, 4) == 4);
 }
 
 CASE("MAX3")
 {
-        CHECK(mli_max3(4, 5, 6) == 6);
-        CHECK(mli_max3(5, 4, 6) == 6);
-        CHECK(mli_max3(5, 6, 4) == 6);
+        CHECK(MLI_MAX3(4, 5, 6) == 6);
+        CHECK(MLI_MAX3(5, 4, 6) == 6);
+        CHECK(MLI_MAX3(5, 6, 4) == 6);
 
-        CHECK(mli_max3(4., 5., 6.) == 6.);
-        CHECK(mli_max3(5., 4., 6.) == 6.);
-        CHECK(mli_max3(5., 6., 4.) == 6.);
+        CHECK(MLI_MAX3(4., 5., 6.) == 6.);
+        CHECK(MLI_MAX3(5., 4., 6.) == 6.);
+        CHECK(MLI_MAX3(5., 6., 4.) == 6.);
 }
 
 CASE("NAN")
 {
         float hans = MLI_NAN;
         float peter = 0.;
-        CHECK(mli_is_nan(hans));
-        CHECK(!mli_is_nan(peter));
+        CHECK(MLI_IS_NAN(hans));
+        CHECK(!MLI_IS_NAN(peter));
 }
 
 CASE("round to float")
@@ -71,21 +71,21 @@ CASE("round to float")
         double f;
 
         f = 0.;
-        CHECK(mli_roundf(f) == 0.0);
+        CHECK(MLI_ROUND(f) == 0.0);
         f = 0.1;
-        CHECK(mli_roundf(f) == 0.0);
+        CHECK(MLI_ROUND(f) == 0.0);
         f = 0.5 - 1e-6;
-        CHECK(mli_roundf(f) == 0.0);
+        CHECK(MLI_ROUND(f) == 0.0);
         f = 0.5 + 1e-6;
-        CHECK(mli_roundf(f) == 1.0);
+        CHECK(MLI_ROUND(f) == 1.0);
         f = 0.99;
-        CHECK(mli_roundf(f) == 1.0);
+        CHECK(MLI_ROUND(f) == 1.0);
         f = 1.0;
-        CHECK(mli_roundf(f) == 1.0);
+        CHECK(MLI_ROUND(f) == 1.0);
         f = -0.5 - 1e-9;
-        CHECK(mli_roundf(f) == -1.0);
+        CHECK(MLI_ROUND(f) == -1.0);
         f = -0.4;
-        CHECK_MARGIN(mli_roundf(f), 0.0, 1e-9);
+        CHECK_MARGIN(MLI_ROUND(f), 0.0, 1e-9);
 }
 
 CASE("round to int")
@@ -93,21 +93,21 @@ CASE("round to int")
         double f;
 
         f = 0.;
-        CHECK(mli_near_int(f) == 0);
+        CHECK(MLI_NEAR_INT(f) == 0);
         f = 0.1;
-        CHECK(mli_near_int(f) == 0);
+        CHECK(MLI_NEAR_INT(f) == 0);
         f = 0.5 - 1e-6;
-        CHECK(mli_near_int(f) == 0);
+        CHECK(MLI_NEAR_INT(f) == 0);
         f = 0.5 + 1e-6;
-        CHECK(mli_near_int(f) == 1);
+        CHECK(MLI_NEAR_INT(f) == 1);
         f = 0.99;
-        CHECK(mli_near_int(f) == 1);
+        CHECK(MLI_NEAR_INT(f) == 1);
         f = 1.0;
-        CHECK(mli_near_int(f) == 1);
+        CHECK(MLI_NEAR_INT(f) == 1);
         f = -0.5 - 1e-9;
-        CHECK(mli_near_int(f) == -1);
+        CHECK(MLI_NEAR_INT(f) == -1);
         f = -0.4;
-        CHECK(mli_near_int(f) == 0);
+        CHECK(MLI_NEAR_INT(f) == 0);
 }
 
 CASE("bin centers in linear space")

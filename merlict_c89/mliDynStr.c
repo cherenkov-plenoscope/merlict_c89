@@ -20,7 +20,7 @@ void mliDynStr_free(struct mliDynStr *str)
 int mliDynStr_malloc(struct mliDynStr *str, const uint64_t capacity)
 {
         mliDynStr_free(str);
-        str->capacity = mli_max2(2, capacity);
+        str->capacity = MLI_MAX2(2, capacity);
         str->length = 0u;
         chk_malloc(str->c_str, char, str->capacity);
         memset(str->c_str, '\0', str->capacity);
@@ -35,7 +35,7 @@ int mliDynStr_push_back_char(struct mliDynStr *str, const char c)
 
         if (new_length >= str->capacity) {
                 const uint64_t min_new_capacity =
-                        mli_max2(new_length, 2 * str->capacity);
+                        MLI_MAX2(new_length, 2 * str->capacity);
 
                 str->capacity = min_new_capacity * 2;
                 str->c_str = (char *)realloc(

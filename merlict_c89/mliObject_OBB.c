@@ -95,29 +95,29 @@ struct mliOBB mliObject_obb(
                 const struct mliVec c_root =
                         mliHomTra_pos(&local2root, c_local);
 
-                obb.lower.x = mli_min2(obb.lower.x, a_root.x);
-                obb.lower.y = mli_min2(obb.lower.y, a_root.y);
-                obb.lower.z = mli_min2(obb.lower.z, a_root.z);
+                obb.lower.x = MLI_MIN2(obb.lower.x, a_root.x);
+                obb.lower.y = MLI_MIN2(obb.lower.y, a_root.y);
+                obb.lower.z = MLI_MIN2(obb.lower.z, a_root.z);
 
-                obb.upper.x = mli_max2(obb.upper.x, a_root.x);
-                obb.upper.y = mli_max2(obb.upper.y, a_root.y);
-                obb.upper.z = mli_max2(obb.upper.z, a_root.z);
+                obb.upper.x = MLI_MAX2(obb.upper.x, a_root.x);
+                obb.upper.y = MLI_MAX2(obb.upper.y, a_root.y);
+                obb.upper.z = MLI_MAX2(obb.upper.z, a_root.z);
 
-                obb.lower.x = mli_min2(obb.lower.x, b_root.x);
-                obb.lower.y = mli_min2(obb.lower.y, b_root.y);
-                obb.lower.z = mli_min2(obb.lower.z, b_root.z);
+                obb.lower.x = MLI_MIN2(obb.lower.x, b_root.x);
+                obb.lower.y = MLI_MIN2(obb.lower.y, b_root.y);
+                obb.lower.z = MLI_MIN2(obb.lower.z, b_root.z);
 
-                obb.upper.x = mli_max2(obb.upper.x, b_root.x);
-                obb.upper.y = mli_max2(obb.upper.y, b_root.y);
-                obb.upper.z = mli_max2(obb.upper.z, b_root.z);
+                obb.upper.x = MLI_MAX2(obb.upper.x, b_root.x);
+                obb.upper.y = MLI_MAX2(obb.upper.y, b_root.y);
+                obb.upper.z = MLI_MAX2(obb.upper.z, b_root.z);
 
-                obb.lower.x = mli_min2(obb.lower.x, c_root.x);
-                obb.lower.y = mli_min2(obb.lower.y, c_root.y);
-                obb.lower.z = mli_min2(obb.lower.z, c_root.z);
+                obb.lower.x = MLI_MIN2(obb.lower.x, c_root.x);
+                obb.lower.y = MLI_MIN2(obb.lower.y, c_root.y);
+                obb.lower.z = MLI_MIN2(obb.lower.z, c_root.z);
 
-                obb.upper.x = mli_max2(obb.upper.x, c_root.x);
-                obb.upper.y = mli_max2(obb.upper.y, c_root.y);
-                obb.upper.z = mli_max2(obb.upper.z, c_root.z);
+                obb.upper.x = MLI_MAX2(obb.upper.x, c_root.x);
+                obb.upper.y = MLI_MAX2(obb.upper.y, c_root.y);
+                obb.upper.z = MLI_MAX2(obb.upper.z, c_root.z);
         }
         return obb;
 }

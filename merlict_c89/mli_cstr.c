@@ -171,7 +171,7 @@ int mli_lines_info_fprint(
 {
         int64_t _line_number = (int64_t)line_number;
         int64_t _line_radius = (int64_t)line_radius;
-        int64_t line_start = mli_max2(_line_number - _line_radius, 1);
+        int64_t line_start = MLI_MAX2(_line_number - _line_radius, 1);
         int64_t line_stop = line_number + line_radius;
         int64_t line = 1;
         int64_t i = 0;

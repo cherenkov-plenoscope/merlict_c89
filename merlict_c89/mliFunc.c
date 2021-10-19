@@ -114,10 +114,10 @@ int mliFunc_is_valid(const struct mliFunc *func)
                 "between two points.");
 
         for (i = 0; i < func->num_points; i++) {
-                chk_msg(!mli_is_nan(func->x[i]),
+                chk_msg(!MLI_IS_NAN(func->x[i]),
                         "Expected x-argument to be a real number, "
                         "but it is 'nan'.");
-                chk_msg(!mli_is_nan(func->y[i]),
+                chk_msg(!MLI_IS_NAN(func->y[i]),
                         "Expected y-value to be a real number, "
                         "but it is 'nan'.");
         }

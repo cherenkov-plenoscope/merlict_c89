@@ -4,10 +4,10 @@
 int mliOcTree_valid(const struct mliOcTree *octree)
 {
         uint32_t n, c;
-        chk_msg(!mli_is_nan(octree->cube.lower.x), "cube.lower.x is 'nan'.");
-        chk_msg(!mli_is_nan(octree->cube.lower.y), "cube.lower.y is 'nan'.");
-        chk_msg(!mli_is_nan(octree->cube.lower.z), "cube.lower.z is 'nan'.");
-        chk_msg(!mli_is_nan(octree->cube.edge_length),
+        chk_msg(!MLI_IS_NAN(octree->cube.lower.x), "cube.lower.x is 'nan'.");
+        chk_msg(!MLI_IS_NAN(octree->cube.lower.y), "cube.lower.y is 'nan'.");
+        chk_msg(!MLI_IS_NAN(octree->cube.lower.z), "cube.lower.z is 'nan'.");
+        chk_msg(!MLI_IS_NAN(octree->cube.edge_length),
                 "cube.edge_length is 'nan'.");
         chk_msg(octree->cube.edge_length >= 0.0,
                 "Expected cube.edge_length >= 0.0.");

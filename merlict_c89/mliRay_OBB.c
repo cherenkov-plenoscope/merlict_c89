@@ -17,10 +17,10 @@ int mliRay_has_overlap_obb(
         const double t5 = (obb.lower.z - ray.support.z) * frac_z;
         const double t6 = (obb.upper.z - ray.support.z) * frac_z;
 
-        const double tmin = mli_max2(
-                mli_max2(mli_min2(t1, t2), mli_min2(t3, t4)), mli_min2(t5, t6));
-        const double tmax = mli_min2(
-                mli_min2(mli_max2(t1, t2), mli_max2(t3, t4)), mli_max2(t5, t6));
+        const double tmin = MLI_MAX2(
+                MLI_MAX2(MLI_MIN2(t1, t2), MLI_MIN2(t3, t4)), MLI_MIN2(t5, t6));
+        const double tmax = MLI_MIN2(
+                MLI_MIN2(MLI_MAX2(t1, t2), MLI_MAX2(t3, t4)), MLI_MAX2(t5, t6));
         if (tmax < 0) {
                 (*ray_parameter) = tmax;
                 return 0;

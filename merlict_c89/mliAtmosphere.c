@@ -214,7 +214,7 @@ struct mliColor _mliAtmosphere_hit_earth_body(
                 orig, dir, atmosphere->earthRadius, &t_minus, &t_plus);
 
         if (intersects_earth_body && t_minus > 0) {
-                t_max = mli_max2(0.0, t_minus);
+                t_max = MLI_MAX2(0.0, t_minus);
         }
 
         return _mliAtmosphere_hit_outer_atmosphere(
