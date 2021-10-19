@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliVec.h"
+
 CASE("struct, constructor")
 {
         struct mliVec a = {1., 2., 3.};
