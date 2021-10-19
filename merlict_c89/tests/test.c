@@ -9,7 +9,7 @@
 #include <assert.h>
 #include "../../merlict_c89/all_headers.h"
 #include "../../merlict_c89/all_sources.c"
-#include "mli_testing.h"
+#include "../../merlict_c89/mli_testing.h"
 
 int main(void)
 {
@@ -21,6 +21,7 @@ int main(void)
 #include "test_mliMagicId.c"
 #include "test_frame.c"
 #include "test_parsing_from_string.c"
+#include "../../merlict_c89/mli_cstr_and_numbers_test.c"
 #include "test_tape_archive.c"
 #include "test_upper_bound.c"
 #include "test_histogram.c"
