@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliQuaternion.h"
+
 CASE("mliQuaternion, defaults")
 {
         struct mliQuaternion p = mliQuaternion_set(1., 2., 3., 4.);

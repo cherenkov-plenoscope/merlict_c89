@@ -28,7 +28,7 @@ int main(void)
 #include "test_from_outside_to_inside.c"
 #include "test_orientated_bounding_box.c"
 #include "test_mliDynArray.c"
-#include "test_mliQuaternion.c"
+#include "../../merlict_c89/mliQuaternion_test.c"
 #include "test_homogeneous_transformation.c"
 #include "../../merlict_c89/mli_math_test.c"
 #include "test_mliColor.c"
