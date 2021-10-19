@@ -48,7 +48,7 @@ int main(void)
 #include "../../merlict_c89/mliFunc_test.c"
 #include "test_mliMedium.c"
 #include "test_mliSurface.c"
-#include "test_json.c"
+#include "../../merlict_c89/mli_json_test.c"
 #include "test_mliFresnel.c"
 #include "test_mliAccelerator.c"
 #include "test_mliApertureCamera.c"
