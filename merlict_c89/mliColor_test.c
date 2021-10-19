@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliColor.h"
+
 CASE("mliColor_mix")
 {
         struct mliColor red = {255., 0., 0.};
