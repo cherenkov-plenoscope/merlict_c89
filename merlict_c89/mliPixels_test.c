@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliPixels.h"
+
 CASE("mliPixels")
 {
         uint64_t i;

@@ -1,5 +1,8 @@
 /* Copyright 2020-2021 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliPixelWalk.h"
+
 CASE("mliPixelWalk, no rest")
 {
         /*
