@@ -176,17 +176,17 @@ int64_t __mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
         /* First, a quick bounding-box test:                               */
         /* If P is outside triangle bbox, there cannot be an intersection. */
 
-        if (p.x > MLI_MAX3(t.v1.x, t.v2.x, t.v3.x))
+        if (p.x > mli_max3(t.v1.x, t.v2.x, t.v3.x))
                 return (MLI_OUTSIDE);
-        if (p.y > MLI_MAX3(t.v1.y, t.v2.y, t.v3.y))
+        if (p.y > mli_max3(t.v1.y, t.v2.y, t.v3.y))
                 return (MLI_OUTSIDE);
-        if (p.z > MLI_MAX3(t.v1.z, t.v2.z, t.v3.z))
+        if (p.z > mli_max3(t.v1.z, t.v2.z, t.v3.z))
                 return (MLI_OUTSIDE);
-        if (p.x < MLI_MIN3(t.v1.x, t.v2.x, t.v3.x))
+        if (p.x < mli_min3(t.v1.x, t.v2.x, t.v3.x))
                 return (MLI_OUTSIDE);
-        if (p.y < MLI_MIN3(t.v1.y, t.v2.y, t.v3.y))
+        if (p.y < mli_min3(t.v1.y, t.v2.y, t.v3.y))
                 return (MLI_OUTSIDE);
-        if (p.z < MLI_MIN3(t.v1.z, t.v2.z, t.v3.z))
+        if (p.z < mli_min3(t.v1.z, t.v2.z, t.v3.z))
                 return (MLI_OUTSIDE);
 
         /* For each triangle side, make a vector out of it by subtracting
@@ -406,11 +406,11 @@ struct mliOBB mliTriangle_obb(
         const struct mliVec c)
 {
         struct mliOBB obb;
-        obb.lower.x = MLI_MIN3(a.x, b.x, c.x);
-        obb.lower.y = MLI_MIN3(a.y, b.y, c.y);
-        obb.lower.z = MLI_MIN3(a.z, b.z, c.z);
-        obb.upper.x = MLI_MAX3(a.x, b.x, c.x);
-        obb.upper.y = MLI_MAX3(a.y, b.y, c.y);
-        obb.upper.z = MLI_MAX3(a.z, b.z, c.z);
+        obb.lower.x = mli_min3(a.x, b.x, c.x);
+        obb.lower.y = mli_min3(a.y, b.y, c.y);
+        obb.lower.z = mli_min3(a.z, b.z, c.z);
+        obb.upper.x = mli_max3(a.x, b.x, c.x);
+        obb.upper.y = mli_max3(a.y, b.y, c.y);
+        obb.upper.z = mli_max3(a.z, b.z, c.z);
         return obb;
 }

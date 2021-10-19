@@ -50,9 +50,9 @@ int mliObject_has_valid_vertices(const struct mliObject *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_vertices; i++) {
-                chk_msg(!MLI_IS_NAN(obj->vertices[i].x), "X is 'nan'.");
-                chk_msg(!MLI_IS_NAN(obj->vertices[i].y), "Y is 'nan'.");
-                chk_msg(!MLI_IS_NAN(obj->vertices[i].z), "Z is 'nan'.");
+                chk_msg(!mli_is_nan(obj->vertices[i].x), "X is 'nan'.");
+                chk_msg(!mli_is_nan(obj->vertices[i].y), "Y is 'nan'.");
+                chk_msg(!mli_is_nan(obj->vertices[i].z), "Z is 'nan'.");
         }
         return 1;
 error:
@@ -67,9 +67,9 @@ int mliObject_has_valid_normals(
         uint32_t i = 0;
         for (i = 0; i < obj->num_vertex_normals; i++) {
                 double norm;
-                chk_msg(!MLI_IS_NAN(obj->vertex_normals[i].x), "X is 'nan'.");
-                chk_msg(!MLI_IS_NAN(obj->vertex_normals[i].y), "Y is 'nan'.");
-                chk_msg(!MLI_IS_NAN(obj->vertex_normals[i].z), "Z is 'nan'.");
+                chk_msg(!mli_is_nan(obj->vertex_normals[i].x), "X is 'nan'.");
+                chk_msg(!mli_is_nan(obj->vertex_normals[i].y), "Y is 'nan'.");
+                chk_msg(!mli_is_nan(obj->vertex_normals[i].z), "Z is 'nan'.");
 
                 norm = mliVec_norm(obj->vertex_normals[i]);
                 chk_msg(fabs(norm - 1.0) <= epsilon,

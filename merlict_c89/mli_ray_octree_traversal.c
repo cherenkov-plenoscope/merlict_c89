@@ -339,7 +339,7 @@ void mli_ray_octree_traversal(
         t0.z = (cube.lower.z - ray_wrt_octree.support.z) * div.z;
         t1.z = (cube_upper.z - ray_wrt_octree.support.z) * div.z;
 
-        if (MLI_MAX3(t0.x, t0.y, t0.z) < MLI_MIN3(t1.x, t1.y, t1.z)) {
+        if (mli_max3(t0.x, t0.y, t0.z) < mli_min3(t1.x, t1.y, t1.z)) {
                 _mli_proc_subtree(
                         t0,
                         t1,

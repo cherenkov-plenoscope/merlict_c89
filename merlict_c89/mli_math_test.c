@@ -36,34 +36,34 @@ CASE("rad2deg, explicit")
 
 CASE("MAX2")
 {
-        CHECK(MLI_MAX2(3, 4) == 4);
-        CHECK(MLI_MAX2(4, 3) == 4);
+        CHECK(mli_max2(3, 4) == 4);
+        CHECK(mli_max2(4, 3) == 4);
 }
 
 CASE("MIN3")
 {
-        CHECK(MLI_MIN3(4, 5, 6) == 4);
-        CHECK(MLI_MIN3(5, 4, 6) == 4);
-        CHECK(MLI_MIN3(5, 6, 4) == 4);
+        CHECK(mli_min3(4, 5, 6) == 4);
+        CHECK(mli_min3(5, 4, 6) == 4);
+        CHECK(mli_min3(5, 6, 4) == 4);
 }
 
 CASE("MAX3")
 {
-        CHECK(MLI_MAX3(4, 5, 6) == 6);
-        CHECK(MLI_MAX3(5, 4, 6) == 6);
-        CHECK(MLI_MAX3(5, 6, 4) == 6);
+        CHECK(mli_max3(4, 5, 6) == 6);
+        CHECK(mli_max3(5, 4, 6) == 6);
+        CHECK(mli_max3(5, 6, 4) == 6);
 
-        CHECK(MLI_MAX3(4., 5., 6.) == 6.);
-        CHECK(MLI_MAX3(5., 4., 6.) == 6.);
-        CHECK(MLI_MAX3(5., 6., 4.) == 6.);
+        CHECK(mli_max3(4., 5., 6.) == 6.);
+        CHECK(mli_max3(5., 4., 6.) == 6.);
+        CHECK(mli_max3(5., 6., 4.) == 6.);
 }
 
 CASE("NAN")
 {
         float hans = MLI_NAN;
         float peter = 0.;
-        CHECK(MLI_IS_NAN(hans));
-        CHECK(!MLI_IS_NAN(peter));
+        CHECK(mli_is_nan(hans));
+        CHECK(!mli_is_nan(peter));
 }
 
 CASE("round to float")

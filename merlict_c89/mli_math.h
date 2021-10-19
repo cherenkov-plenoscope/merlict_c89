@@ -11,19 +11,19 @@
 #define MLI_SQRT3_OVER_2 0.8660254037844386
 #define MLI_EPSILON 1e-9
 #define MLI_NAN 0. / 0.
-#define MLI_IS_NAN(a) ((a) != (a))
-#define MLI_MIN2(a, b) (((a) < (b)) ? (a) : (b))
-#define MLI_MAX2(a, b) (((a) > (b)) ? (a) : (b))
+#define mli_is_nan(a) ((a) != (a))
+#define mli_min2(a, b) (((a) < (b)) ? (a) : (b))
+#define mli_max2(a, b) (((a) > (b)) ? (a) : (b))
 #define mli_roundf(num) (num - floor(num) > 0.5) ? ceil(num) : floor(num)
 #define mli_near_int(x) ((x) > 0 ? (int64_t)((x) + 0.5) : (int64_t)((x)-0.5))
 
-#define MLI_MIN3(a, b, c)                                                      \
+#define mli_min3(a, b, c)                                                      \
         ((((a) < (b)) && ((a) < (c))) ? (a) : (((b) < (c)) ? (b) : (c)))
 
-#define MLI_MAX3(a, b, c)                                                      \
+#define mli_max3(a, b, c)                                                      \
         ((((a) > (b)) && ((a) > (c))) ? (a) : (((b) > (c)) ? (b) : (c)))
 
-#define MLI_ZEROS(points, num_points)                                          \
+#define mli_zeros(points, num_points)                                          \
         do {                                                                   \
                 uint64_t i;                                                    \
                 for (i = 0; i < num_points; i++) {                             \
@@ -31,7 +31,7 @@
                 }                                                              \
         } while (0)
 
-#define MLI_UPPER_COMPARE(points, num_points, point_arg, return_idx)           \
+#define mli_upper_compare(points, num_points, point_arg, return_idx)           \
         do {                                                                   \
                 uint64_t first, last, middle;                                  \
                 first = 0u;                                                    \

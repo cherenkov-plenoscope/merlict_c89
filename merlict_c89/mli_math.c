@@ -24,12 +24,12 @@ double mli_square(const double a) { return a * a; }
 
 void mli_zeros_double(double *points, const uint64_t num_points)
 {
-        MLI_ZEROS(points, num_points);
+        mli_zeros(points, num_points);
 }
 
 void mli_zeros_uint64_t(uint64_t *points, const uint64_t num_points)
 {
-        MLI_ZEROS(points, num_points);
+        mli_zeros(points, num_points);
 }
 
 /*
@@ -45,7 +45,7 @@ uint64_t mli_upper_compare_double(
         const double point_arg)
 {
         uint64_t upper_index = 0;
-        MLI_UPPER_COMPARE(points, num_points, point_arg, upper_index);
+        mli_upper_compare(points, num_points, point_arg, upper_index);
         return upper_index;
 }
 

@@ -47,7 +47,7 @@
                 struct LIB##Dyn##NAME *dh, const uint64_t size)                \
         {                                                                      \
                 LIB##Dyn##NAME##_free(dh);                                     \
-                dh->capacity = MLI_MAX2(2, size);                              \
+                dh->capacity = mli_max2(2, size);                              \
                 dh->size = 0;                                                  \
                 chk_malloc(dh->array, PAYLOAD_TYPE, dh->capacity);             \
                 return 1;                                                      \

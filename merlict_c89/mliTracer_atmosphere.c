@@ -29,7 +29,7 @@ struct mliColor _trace_color_tone_of_sun(
                         config->atmosphere.sunDirection);
 
                 double f = config->atmosphere.sunDirection.z;
-                double max = MLI_MAX3(
+                double max = mli_max3(
                         color_close_to_sun.r,
                         color_close_to_sun.g,
                         color_close_to_sun.b);

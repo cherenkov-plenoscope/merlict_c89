@@ -74,11 +74,11 @@ int mliColor_equal(const struct mliColor a, const struct mliColor b)
 
 int mliColor_is_valid_8bit_range(const struct mliColor c)
 {
-        if (MLI_IS_NAN(c.r))
+        if (mli_is_nan(c.r))
                 return 0;
-        if (MLI_IS_NAN(c.g))
+        if (mli_is_nan(c.g))
                 return 0;
-        if (MLI_IS_NAN(c.b))
+        if (mli_is_nan(c.b))
                 return 0;
 
         if (c.r < 0.0 || c.r >= 256.0)
