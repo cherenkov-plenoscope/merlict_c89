@@ -36,7 +36,7 @@ int main(void)
 #include "../../merlict_c89/mliPixelWalk_test.c"
 #include "../../merlict_c89/mliImage_test.c"
 #include "../../merlict_c89/mliVec_test.c"
-#include "test_lambertian_cosine_law.c"
+#include "../../merlict_c89/mli_lambertian_cosine_law_test.c"
 #include "test_map.c"
 #include "test_mliArchive.c"
 #include "../../merlict_c89/mli_barycentric_test.c"

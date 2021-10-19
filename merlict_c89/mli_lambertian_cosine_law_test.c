@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mli_lambertian_cosine_law.h"
+
 CASE("lambertian cosine law, populate histogram, check cosine law")
 {
         uint64_t n;
@@ -7,12 +10,11 @@ CASE("lambertian cosine law, populate histogram, check cosine law")
         struct mliVec unit_z = mliVec_set(0, 0, 1);
         struct mliPrng prng = mliPrng_init_MT19937(0);
 
-#define NUM_BINS 25
-        double hist_bin_edges[NUM_BINS + 1];
-        const uint64_t hist_num_bin_edges = NUM_BINS + 1;
+        double hist_bin_edges[25 + 1];
+        const uint64_t hist_num_bin_edges = 25 + 1;
         const uint64_t hist_num_bins = hist_num_bin_edges - 1u;
-        uint64_t hist_bins[NUM_BINS];
-        double hist_bins_norm[NUM_BINS];
+        uint64_t hist_bins[25];
+        double hist_bins_norm[25];
         uint64_t hist_overflow_bin = 0u;
         uint64_t hist_underflow_bin = 0u;
         MLI_ARRAY_SET(hist_bins, 0, hist_num_bins);
