@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliFresnel.h"
+
 CASE("Fresnel: orthogonal_incident")
 {
         double n_from = 1.0;

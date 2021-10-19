@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliObject_wavefront.h"
+
 CASE("mliObject, init")
 {
         struct mliObject obj = mliObject_init();

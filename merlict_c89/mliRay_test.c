@@ -1,5 +1,10 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliRay.h"
+#include "mliOBB.h"
+#include "mliHomTra.h"
+
 CASE("ray and orientated bounding box")
 {
         struct mliOBB obb;
