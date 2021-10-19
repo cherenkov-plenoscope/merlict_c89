@@ -3,7 +3,7 @@
 #define MERLICT_C89_MLIAPERTURECAMERA_H_
 
 #include <stdint.h>
-#include "mliMT19937.h"
+#include "mli_random.h"
 #include "mliVec.h"
 #include "mliHomTra.h"
 #include "mliTracer.h"

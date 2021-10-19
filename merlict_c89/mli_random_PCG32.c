@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliPCG32.h"
-#include "pcg_variants_32bit_subset.c"
+#include "mli_random_PCG32.h"
+#include "mli_random_pcg_variants_32bit_subset.c"
 
 struct mliPCG32 mliPCG32_init(const uint32_t seed)
 {

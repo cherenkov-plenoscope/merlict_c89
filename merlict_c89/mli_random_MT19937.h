@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIMT19937_H_
-#define MERLICT_C89_MLIMT19937_H_
+#ifndef MERLICT_C89_MLI_RANDOM_MT19937_H_
+#define MERLICT_C89_MLI_RANDOM_MT19937_H_
 
 #include <stdint.h>
 

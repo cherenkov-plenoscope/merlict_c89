@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliMT19937.h"
+#include "mli_random_MT19937.h"
 
 /*
  *      Adopted from https://en.wikipedia.org/wiki/Mersenne_Twister

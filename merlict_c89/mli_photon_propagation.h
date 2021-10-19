@@ -8,7 +8,7 @@
 #include "mliPhotonInteraction.h"
 #include "mliScenery.h"
 #include "mliDynPhotonInteraction.h"
-#include "mliMT19937.h"
+#include "mli_random.h"
 
 struct mliEnv {
         const struct mliScenery *scenery;

@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIRANDOM_H_
-#define MERLICT_C89_MLIRANDOM_H_
+#ifndef MERLICT_C89_MLI_RANDOM_GENERATOR_H_
+#define MERLICT_C89_MLI_RANDOM_GENERATOR_H_
 
 #include <stdint.h>
-#include "mliMT19937.h"
-#include "mliPCG32.h"
+#include "mli_random_MT19937.h"
+#include "mli_random_PCG32.h"
 
 /**
  *      mliPrng is a transparent container to use different

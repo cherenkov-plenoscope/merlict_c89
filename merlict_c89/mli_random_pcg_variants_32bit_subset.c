@@ -21,7 +21,7 @@
  *     http://www.pcg-random.org
  */
 
-#include "pcg_variants_32bit_subset.h"
+#include "mli_random_pcg_variants_32bit_subset.h"
 
 #define PCG_DEFAULT_MULTIPLIER_64 6364136223846793005U
 #define PCG_DEFAULT_INCREMENT_64 1442695040888963407U

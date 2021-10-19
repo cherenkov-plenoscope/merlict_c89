@@ -2,7 +2,7 @@
 #ifndef MERLICT_C89_MLI_RANDOM_H_
 #define MERLICT_C89_MLI_RANDOM_H_
 
-#include "mliPrng.h"
+#include "mli_random_generator.h"
 #include "mliVec.h"
 
 struct mliRandomUniformRange {

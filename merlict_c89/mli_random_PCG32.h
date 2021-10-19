@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIPCG32_H_
-#define MERLICT_C89_MLIPCG32_H_
+#ifndef MERLICT_C89_MLI_RANDOM_PCG32_H_
+#define MERLICT_C89_MLI_RANDOM_PCG32_H_
 
 #include <stdint.h>
-#include "pcg_variants_32bit_subset.h"
+#include "mli_random_pcg_variants_32bit_subset.h"
 
 /*      Wrapping the pcg implementation by Melissa O'Neill in
  *      pcg_variants_32bit_subset.h
