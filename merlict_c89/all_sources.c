@@ -93,7 +93,7 @@
 #include "mliView.c"
 #include "mliPinHoleCamera.c"
 #include "mliApertureCamera.c"
-#include "mli_string_to.c"
+#include "mli_cstr.c"
 #include "mliDynStr.c"
 #include "jsmn.c"
 #include "mliJson.c"

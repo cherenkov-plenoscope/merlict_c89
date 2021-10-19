@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_string_to.h"
+#include "mli_cstr.h"
 #include <stdlib.h>
 
 int mli_string_ends_with(const char *str, const char *sufix)

@@ -20,7 +20,7 @@ int main(void)
 
 #include "../../merlict_c89/mliMagicId_test.c"
 #include "../../merlict_c89/mliFrame_test.c"
-#include "test_parsing_from_string.c"
+#include "../../merlict_c89/mli_cstr_test.c"
 #include "../../merlict_c89/mli_cstr_and_numbers_test.c"
 #include "test_tape_archive.c"
 #include "test_quadratic_equation.c"

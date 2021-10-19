@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliJson.h"
 #include <stdlib.h>
-#include "mli_string_to.h"
+#include "mli_cstr.h"
 
 struct mliJson mliJson_init(void)
 {

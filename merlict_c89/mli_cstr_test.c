@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mli_cstr.h"
+
 CASE("mli_string_ends_with")
 {
         CHECK(mli_string_ends_with("123", ""));
