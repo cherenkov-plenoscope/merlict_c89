@@ -40,7 +40,7 @@ int main(void)
 #include "../../merlict_c89/mliDynMap_test.c"
 #include "../../merlict_c89/mliArchive_test.c"
 #include "../../merlict_c89/mli_barycentric_test.c"
-#include "test_triangle_intersection.c"
+#include "../../merlict_c89/mli_triangle_intersection_test.c"
 #include "test_object_wavefront.c"
 #include "test_mliRay.c"
 #include "test_mliUserScenery.c"

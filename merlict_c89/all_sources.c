@@ -31,7 +31,7 @@
 #include "mliObject_serialize.c"
 #include "mliObject_OBB.c"
 #include "mliObject_wavefront.c"
-#include "mliTriangle_intersection.c"
+#include "mli_triangle_intersection.c"
 #include "mliColor.c"
 #include "mliColor_json.c"
 #include "mliPixels.c"
