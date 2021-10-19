@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliFunc.h"
+
 CASE("mliFunc_malloc")
 {
         struct mliFunc func = mliFunc_init();

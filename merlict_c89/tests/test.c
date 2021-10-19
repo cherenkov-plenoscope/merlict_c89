@@ -45,7 +45,7 @@ int main(void)
 #include "test_mliRay.c"
 #include "test_mliUserScenery.c"
 #include "test_scenery.c"
-#include "test_mliFunc.c"
+#include "../../merlict_c89/mliFunc_test.c"
 #include "test_mliMedium.c"
 #include "test_mliSurface.c"
 #include "test_json.c"
