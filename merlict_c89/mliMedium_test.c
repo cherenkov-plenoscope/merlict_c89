@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliMedium.h"
+
 CASE("mliMedium_json")
 {
         struct mliMedium med = mliMedium_init();

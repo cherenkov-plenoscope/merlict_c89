@@ -1,5 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+#include "mli_testing.h"
+#include "mliSurface.h"
+
 CASE("mliSurface_json")
 {
         struct mliSurface srf = mliSurface_init();
