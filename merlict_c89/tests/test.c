@@ -32,7 +32,7 @@ int main(void)
 #include "test_mliDynArray.c"
 #include "test_mliQuaternion.c"
 #include "test_homogeneous_transformation.c"
-#include "test_math.c"
+#include "../../merlict_c89/mli_math_test.c"
 #include "test_mliColor.c"
 #include "test_mliPixels.c"
 #include "test_mliPixelWalk.c"
