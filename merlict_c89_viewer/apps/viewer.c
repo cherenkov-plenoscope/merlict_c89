@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
         if (argc == 3) {
                 chk_msg(
-                        mli_string_to_float(&config.step_length, argv[2]),
+                        mli_cstr_to_double(&config.step_length, argv[2]),
                         "Can not parse step_length from argv[2].");
                 config.aperture_camera_image_sensor_width *= config.step_length;
         }
