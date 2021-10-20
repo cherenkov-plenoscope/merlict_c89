@@ -118,7 +118,7 @@ int _mlivr_export_image(
 {
         struct mliImage full = mliImage_init();
         struct mliHomTraComp camera2root_comp;
-        struct mliApertureCamera apcam;
+        struct mliAptCam apcam;
 
         const double image_ratio =
                 ((double)config.export_num_cols /
@@ -127,16 +127,16 @@ int _mlivr_export_image(
                 &full, config.export_num_cols, config.export_num_rows));
         camera2root_comp = mliView_to_HomTraComp(view);
         apcam.focal_length =
-                mliApCam_focal_length_given_field_of_view_and_sensor_width(
+                mliAptCam_focal_length_given_field_of_view_and_sensor_width(
                         view.field_of_view,
                         config.aperture_camera_image_sensor_width);
         apcam.aperture_radius = 0.5 * (apcam.focal_length /
                                        config.aperture_camera_f_stop_ratio);
-        apcam.image_sensor_distance = mli_image_given_focal_and_object(
+        apcam.image_sensor_distance = mli_thin_lens_get_image_given_focal_and_object(
                 apcam.focal_length, object_distance);
         apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
-        mliApertureCamera_render_image(
+        mliAptCam_render_image(
                 apcam, camera2root_comp, scenery, &full, tracer_config, prng);
         chk_msg(mliImage_write_to_ppm(&full, path), "Failed to write ppm.");
         mliImage_free(&full);

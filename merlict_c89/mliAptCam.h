@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIAPERTURECAMERA_H_
-#define MERLICT_C89_MLIAPERTURECAMERA_H_
+#ifndef MERLICT_C89_MLIAPTCAM_H_
+#define MERLICT_C89_MLIAPTCAM_H_
 
 #include <stdint.h>
 #include "mli_random.h"
@@ -81,7 +81,7 @@ principal-rays of the thin-lens
 
 */
 
-struct mliVec mliApCam_get_pixel_center_on_image_sensor_plane(
+struct mliVec mliAptCam_pixel_center_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,
         const double image_sensor_distance,
@@ -90,7 +90,7 @@ struct mliVec mliApCam_get_pixel_center_on_image_sensor_plane(
         const uint64_t pixel_x,
         const uint64_t pixel_y);
 
-struct mliVec mliApCam_get_random_pixel_support_on_image_sensor_plane(
+struct mliVec mliAptCam_draw_random_support_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,
         const double image_sensor_distance,
@@ -100,27 +100,27 @@ struct mliVec mliApCam_get_random_pixel_support_on_image_sensor_plane(
         const uint64_t pixel_y,
         struct mliPrng *prng);
 
-struct mliVec mliApCam_get_object_point(
+struct mliVec mliAptCam_get_object_point(
         const double focal_length,
         const struct mliVec pixel_support);
 
-double mli_object_given_focal_and_image(
+double mli_thin_lens_get_object_given_focal_and_image(
         const double focal_length,
         const double image_distance);
 
-double mli_image_given_focal_and_object(
+double mli_thin_lens_get_image_given_focal_and_object(
         const double focal_length,
         const double object_distance);
 
-double mliApCam_focal_length_given_field_of_view_and_sensor_width(
+double mliAptCam_focal_length_given_field_of_view_and_sensor_width(
         const double field_of_view,
         const double image_sensor_width);
 
-struct mliVec mliApCam_ray_support_on_aperture(
+struct mliVec mliAptCam_ray_support_on_aperture(
         const double aperture_radius,
         struct mliPrng *prng);
 
-struct mliRay mliApCam_get_ray_for_pixel(
+struct mliRay mliAptCam_get_ray_for_pixel(
         const double focal_length,
         const double aperture_radius,
         const double image_sensor_distance,
@@ -132,7 +132,7 @@ struct mliRay mliApCam_get_ray_for_pixel(
         const uint64_t pixel_y,
         struct mliPrng *prng);
 
-struct mliApertureCamera {
+struct mliAptCam {
         double focal_length;
         double aperture_radius;
         double image_sensor_distance;
@@ -140,12 +140,28 @@ struct mliApertureCamera {
         double image_sensor_width_y;
 };
 
-int mliApertureCamera_render_image(
-        const struct mliApertureCamera camera,
+int mliAptCam_render_image(
+        const struct mliAptCam camera,
         const struct mliHomTraComp camera2root_comp,
         const struct mliScenery *scenery,
         struct mliImage *image,
         const struct mliTracerCongig *tracer_config,
         struct mliPrng *prng);
+
+void mliAptCam_aquire_pixels(
+        const struct mliAptCam camera,
+        const struct mliImage *image,
+        const struct mliHomTraComp camera2root_comp,
+        const struct mliScenery *scenery,
+        const struct mliPixels *pixels_to_do,
+        struct mliImage *colors,
+        const struct mliTracerCongig *tracer_config,
+        struct mliPrng *prng);
+
+void mliAptCam_assign_pixel_colors_to_sum_and_exposure_image(
+        const struct mliPixels *pixels,
+        const struct mliImage *colors,
+        struct mliImage *sum_image,
+        struct mliImage *exposure_image);
 
 #endif
