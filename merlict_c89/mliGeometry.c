@@ -1,14 +1,14 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry.h"
 
-void _mliGeometry_init_objects(struct mliGeometry *geometry)
+void mliGeometry_init_objects(struct mliGeometry *geometry)
 {
         geometry->num_objects = 0u;
         geometry->objects = NULL;
         geometry->object_names = NULL;
 }
 
-void _mliGeometry_init_references(struct mliGeometry *geometry)
+void mliGeometry_init_references(struct mliGeometry *geometry)
 {
         geometry->num_robjects = 0u;
         geometry->robjects = NULL;
@@ -19,12 +19,12 @@ void _mliGeometry_init_references(struct mliGeometry *geometry)
 struct mliGeometry mliGeometry_init(void)
 {
         struct mliGeometry geometry;
-        _mliGeometry_init_objects(&geometry);
-        _mliGeometry_init_references(&geometry);
+        mliGeometry_init_objects(&geometry);
+        mliGeometry_init_references(&geometry);
         return geometry;
 }
 
-void _mliGeometry_free_objects(struct mliGeometry *geometry)
+void mliGeometry_free_objects(struct mliGeometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_objects; i++) {
@@ -32,25 +32,25 @@ void _mliGeometry_free_objects(struct mliGeometry *geometry)
         }
         free(geometry->objects);
         free(geometry->object_names);
-        _mliGeometry_init_objects(geometry);
+        mliGeometry_init_objects(geometry);
 }
 
-void _mliGeometry_free_references(struct mliGeometry *geometry)
+void mliGeometry_free_references(struct mliGeometry *geometry)
 {
         free(geometry->robjects);
         free(geometry->robject_ids);
         free(geometry->robject2root);
-        _mliGeometry_init_references(geometry);
+        mliGeometry_init_references(geometry);
 }
 
 void mliGeometry_free(struct mliGeometry *geometry)
 {
-        _mliGeometry_free_objects(geometry);
-        _mliGeometry_free_references(geometry);
+        mliGeometry_free_objects(geometry);
+        mliGeometry_free_references(geometry);
         (*geometry) = mliGeometry_init();
 }
 
-int _mliGeometry_malloc_objects(
+int mliGeometry_malloc_objects(
         struct mliGeometry *geometry,
         const uint32_t num_objects)
 {
@@ -65,11 +65,11 @@ int _mliGeometry_malloc_objects(
         }
         return 1;
 error:
-        _mliGeometry_free_objects(geometry);
+        mliGeometry_free_objects(geometry);
         return 0;
 }
 
-int _mliGeometry_malloc_references(
+int mliGeometry_malloc_references(
         struct mliGeometry *geometry,
         const uint32_t num_robjects)
 {
@@ -82,7 +82,7 @@ int _mliGeometry_malloc_references(
                 geometry->num_robjects);
         return 1;
 error:
-        _mliGeometry_free_references(geometry);
+        mliGeometry_free_references(geometry);
         return 0;
 }
 
@@ -92,8 +92,8 @@ int mliGeometry_malloc(
         const uint32_t num_robjects)
 {
         mliGeometry_free(geometry);
-        chk(_mliGeometry_malloc_objects(geometry, num_objects));
-        chk(_mliGeometry_malloc_references(geometry, num_robjects));
+        chk(mliGeometry_malloc_objects(geometry, num_objects));
+        chk(mliGeometry_malloc_references(geometry, num_robjects));
         return 1;
 error:
         mliGeometry_free(geometry);

@@ -43,7 +43,7 @@ error:
         return 0;
 }
 
-uint32_t _mliGeometryToMaterialMap_resolve_idx(
+uint32_t mliGeometryToMaterialMap_resolve_idx(
         const struct mliGeometryToMaterialMap *map,
         const uint32_t robject_idx,
         const uint32_t material_idx)
@@ -58,7 +58,7 @@ uint32_t mliGeometryToMaterialMap_get(
         const uint32_t robject_idx,
         const uint32_t material_idx)
 {
-        return map->boundary_layers[_mliGeometryToMaterialMap_resolve_idx(
+        return map->boundary_layers[mliGeometryToMaterialMap_resolve_idx(
                 map, robject_idx, material_idx)];
 }
 
@@ -68,7 +68,7 @@ void mliGeometryToMaterialMap_set(
         const uint32_t material_idx,
         const uint32_t boundary_layer_idx)
 {
-        map->boundary_layers[_mliGeometryToMaterialMap_resolve_idx(
+        map->boundary_layers[mliGeometryToMaterialMap_resolve_idx(
                 map, robject_idx, material_idx)] = boundary_layer_idx;
 }
 
@@ -77,10 +77,10 @@ uint32_t mliGeometryToMaterialMap_num_boundary_layers_in_robject(
         const uint32_t robject_idx)
 {
         const uint32_t start =
-                _mliGeometryToMaterialMap_resolve_idx(map, robject_idx, 0u);
+                mliGeometryToMaterialMap_resolve_idx(map, robject_idx, 0u);
         uint32_t end = start;
         if (robject_idx + 1 < map->num_robjects) {
-                end = _mliGeometryToMaterialMap_resolve_idx(
+                end = mliGeometryToMaterialMap_resolve_idx(
                         map, robject_idx + 1, 0u);
         } else {
                 end = map->total_num_boundary_layers;
@@ -111,7 +111,7 @@ void mliGeometryToMaterialMap_info_fprint(
 
         for (robj = 0u; robj < map->num_robjects; robj++) {
                 bdl_start =
-                        _mliGeometryToMaterialMap_resolve_idx(map, robj, 0u);
+                        mliGeometryToMaterialMap_resolve_idx(map, robj, 0u);
                 num_bdls =
                         mliGeometryToMaterialMap_num_boundary_layers_in_robject(
                                 map, robj);

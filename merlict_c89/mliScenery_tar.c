@@ -42,7 +42,7 @@ int mliScenery_malloc_from_Archive(
         num_objects = mliArchive_num_filename_prefix_sufix(
                 archive, "objects/", ".obj");
 
-        chk_msg(_mliGeometry_malloc_objects(&scenery->geometry, num_objects),
+        chk_msg(mliGeometry_malloc_objects(&scenery->geometry, num_objects),
                 "Failed to malloc geometry.objects.");
 
         chk_msg(mli_set_geometry_objects_and_names_from_archive(
@@ -67,7 +67,7 @@ int mliScenery_malloc_from_Archive(
                         total_num_boundary_layers),
                 "Failed to malloc geometry to materials map.");
 
-        chk_msg(_mliGeometry_malloc_references(
+        chk_msg(mliGeometry_malloc_references(
                         &scenery->geometry, num_robjects),
                 "Failed to malloc geometry.references.");
 

@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry_equal.h"
 
-int _mliGeometry_objects_equal(
+int mliGeometry_objects_equal(
         const struct mliGeometry *a,
         const struct mliGeometry *b)
 {
@@ -21,7 +21,7 @@ error:
         return 0;
 }
 
-int _mliGeometry_object_references_equal(
+int mliGeometry_object_references_equal(
         const struct mliGeometry *a,
         const struct mliGeometry *b)
 {
@@ -51,9 +51,9 @@ error:
 
 int mliGeometry_equal(const struct mliGeometry *a, const struct mliGeometry *b)
 {
-        chk_msg(_mliGeometry_objects_equal(a, b),
+        chk_msg(mliGeometry_objects_equal(a, b),
                 "Expected objects to be equal.");
-        chk_msg(_mliGeometry_object_references_equal(a, b),
+        chk_msg(mliGeometry_object_references_equal(a, b),
                 "Expected object-references to be equal.");
         return 1;
 error:

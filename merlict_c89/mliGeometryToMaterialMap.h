@@ -19,6 +19,11 @@ int mliGeometryToMaterialMap_malloc(
         const uint32_t total_num_boundary_layers);
 void mliGeometryToMaterialMap_free(struct mliGeometryToMaterialMap *map);
 
+uint32_t mliGeometryToMaterialMap_resolve_idx(
+        const struct mliGeometryToMaterialMap *map,
+        const uint32_t robject_idx,
+        const uint32_t material_idx);
+
 uint32_t mliGeometryToMaterialMap_get(
         const struct mliGeometryToMaterialMap *map,
         const uint32_t robject_idx,

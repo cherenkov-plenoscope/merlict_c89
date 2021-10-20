@@ -478,7 +478,7 @@ int mliOcTree_malloc_from_Geometry(
                         &tmp_octree,
                         (const void *)geometry,
                         geometry->num_robjects,
-                        _mliGeometry_robject_has_overlap_obb,
+                        mliGeometry_robject_has_overlap_obb_void,
                         outermost_obb),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from scenery(Geometry, Accelerator)");

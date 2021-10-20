@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry_valid.h"
 
-int _mliGeometry_valid_objects(const struct mliGeometry *geometry)
+int mliGeometry_valid_objects(const struct mliGeometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_objects; i++) {
@@ -16,7 +16,7 @@ error:
         return 0;
 }
 
-int _mliGeometry_valid_robjects_HomTras(const struct mliGeometry *geometry)
+int mliGeometry_valid_robjects_HomTras(const struct mliGeometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
@@ -38,7 +38,7 @@ error:
         return 0;
 }
 
-int _mliGeometry_valid_object_references(const struct mliGeometry *geometry)
+int mliGeometry_valid_object_references(const struct mliGeometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
@@ -57,11 +57,11 @@ error:
 
 int mliGeometry_valid(const struct mliGeometry *geometry)
 {
-        chk_msg(_mliGeometry_valid_objects(geometry),
+        chk_msg(mliGeometry_valid_objects(geometry),
                 "Expected objects to be valid.");
-        chk_msg(_mliGeometry_valid_robjects_HomTras(geometry),
+        chk_msg(mliGeometry_valid_robjects_HomTras(geometry),
                 "Expected robject transformations to be free of 'nan'.");
-        chk_msg(_mliGeometry_valid_object_references(geometry),
+        chk_msg(mliGeometry_valid_object_references(geometry),
                 "Expected object-references to be valid.");
         return 1;
 error:

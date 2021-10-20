@@ -17,7 +17,7 @@ int mliGeometry_robject_has_overlap_obb(
         return mliObject_has_overlap_obb(obj_ptr, local2root_comp, obb);
 }
 
-int _mliGeometry_robject_has_overlap_obb(
+int mliGeometry_robject_has_overlap_obb_void(
         const void *geometry,
         const uint32_t robject_idx,
         const struct mliOBB obb)
