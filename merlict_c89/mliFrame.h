@@ -26,7 +26,7 @@ struct mliFrame {
 
 void mliFrame_set_frame2root(struct mliFrame *f);
 void mliFrame_print(struct mliFrame *f);
-void _mliFrame_print(const struct mliFrame *f, const uint64_t indention);
+void mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention);
 int mli_string_to_type(const char *s, uint64_t *type);
 int mli_type_to_string(const uint64_t type, char *s);
 struct mliFrame *mliFrame_add(struct mliFrame *mother, const uint64_t type);

@@ -113,7 +113,7 @@ error:
         return 0;
 }
 
-void _mliFrame_print(const struct mliFrame *f, const uint64_t indention)
+void mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention)
 {
         uint64_t c;
         char type_string[1024];
@@ -153,11 +153,11 @@ void _mliFrame_print(const struct mliFrame *f, const uint64_t indention)
         }
         for (c = 0; c < f->children.size; c++) {
                 const struct mliFrame *child = f->children.array[c];
-                _mliFrame_print(child, indention + 4);
+                mliFrame_print_walk(child, indention + 4);
         }
 }
 
-void mliFrame_print(struct mliFrame *f) { _mliFrame_print(f, 0u); }
+void mliFrame_print(struct mliFrame *f) { mliFrame_print_walk(f, 0u); }
 
 void mliFrame_set_frame2root(struct mliFrame *f)
 {
