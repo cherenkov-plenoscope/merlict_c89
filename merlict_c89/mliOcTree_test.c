@@ -69,7 +69,7 @@ CASE("ray parallel to axis")
 
                 isec = mliIntersection_init();
 
-                _mli_query_object_reference(
+                mli_query_object_reference(
                         &scenery.geometry.objects[obj],
                         &scenery.accelerator.object_octrees[obj],
                         scenery.geometry.robject2root[robj],

@@ -1,13 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_ray_scenery_query.h"
 
-void _mli_inner_object_traversal(
+void mli_inner_object_traversal(
         void *_inner,
         const struct mliOcTree *object_octree,
         const uint32_t object_octree_leaf_idx)
 {
         /* traverse faces in an object-wavefront */
-        struct _mliInnerWork *inner = (struct _mliInnerWork *)_inner;
+        struct mliQueryInnerWork *inner = (struct mliQueryInnerWork *)_inner;
 
         uint32_t f;
         const uint32_t num_faces_in_object_leaf = mliOcTree_leaf_num_objects(
@@ -45,7 +45,7 @@ void _mli_inner_object_traversal(
         return;
 }
 
-int _mli_query_object_reference(
+int mli_query_object_reference(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
         const struct mliHomTraComp robject2root_comp,
@@ -55,7 +55,7 @@ int _mli_query_object_reference(
         struct mliHomTra robject2root =
                 mliHomTra_from_compact(robject2root_comp);
 
-        struct _mliInnerWork inner;
+        struct mliQueryInnerWork inner;
         inner.has_intersection = 0;
         inner.intersection = isec;
         inner.ray_object = mliHomTra_ray_inverse(&robject2root, ray_root);
@@ -65,18 +65,18 @@ int _mli_query_object_reference(
                 object_octree,
                 inner.ray_object,
                 (void *)&inner,
-                _mli_inner_object_traversal);
+                mli_inner_object_traversal);
 
         return inner.has_intersection;
 }
 
-void _mli_outer_scenery_traversal(
+void mli_outer_scenery_traversal(
         void *_outer,
         const struct mliOcTree *scenery_octree,
         const uint32_t scenery_octree_leaf_idx)
 {
         /* traverse object-wavefronts in a scenery */
-        struct _mliOuterWork *outer = (struct _mliOuterWork *)_outer;
+        struct mliQueryOuterWork *outer = (struct mliQueryOuterWork *)_outer;
 
         uint32_t ro;
         const uint32_t num_robjects_in_scenery_leaf =
@@ -91,7 +91,7 @@ void _mli_outer_scenery_traversal(
                         scenery_octree, scenery_octree_leaf_idx, ro);
                 uint32_t object_idx = outer->geometry->robjects[robject_idx];
 
-                int32_t hit = _mli_query_object_reference(
+                int32_t hit = mli_query_object_reference(
                         &outer->geometry->objects[object_idx],
                         &outer->accelerator->object_octrees[object_idx],
                         outer->geometry->robject2root[robject_idx],
@@ -115,7 +115,7 @@ int mli_query_intersection(
         const struct mliRay ray_root,
         struct mliIntersection *isec)
 {
-        struct _mliOuterWork outer;
+        struct mliQueryOuterWork outer;
 
         (*isec) = mliIntersection_init();
 
@@ -128,7 +128,7 @@ int mli_query_intersection(
                 &scenery->accelerator.scenery_octree,
                 ray_root,
                 (void *)&outer,
-                _mli_outer_scenery_traversal);
+                mli_outer_scenery_traversal);
 
         if (isec->distance_of_ray == DBL_MAX) {
                 return 0;
