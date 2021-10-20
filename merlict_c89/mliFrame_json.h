@@ -32,4 +32,9 @@ int mliFrame_boundary_layers_form_json(
         const struct mliDynMap *boundary_layer_names,
         const struct mliJson *json,
         const uint64_t token);
+int mliFrame_object_reference_form_json(
+        uint32_t *object_reference,
+        const struct mliJson *json,
+        const uint64_t token,
+        const struct mliDynMap *object_names);
 #endif

@@ -126,7 +126,7 @@ error:
         return 0;
 }
 
-int _mliFrame_object_reference_form_json(
+int mliFrame_object_reference_form_json(
         uint32_t *object_reference,
         const struct mliJson *json,
         const uint64_t token,
@@ -200,7 +200,7 @@ int mliFrame_from_json(
                                 "Frames from json.");
                         break;
                 case MLI_OBJECT:
-                        chk_msg(_mliFrame_object_reference_form_json(
+                        chk_msg(mliFrame_object_reference_form_json(
                                         &child->object,
                                         json,
                                         token_child,
