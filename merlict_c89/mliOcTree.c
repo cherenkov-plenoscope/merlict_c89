@@ -445,7 +445,7 @@ int mliOcTree_malloc_from_object_wavefront(
                         &tmp_octree,
                         (const void *)object_wavefront,
                         object_wavefront->num_faces,
-                        _mliObject_face_in_local_frame_has_overlap_obb,
+                        mliObject_face_in_local_frame_has_overlap_obb_void,
                         mliObject_obb_in_local_frame(object_wavefront)),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from mliObject");

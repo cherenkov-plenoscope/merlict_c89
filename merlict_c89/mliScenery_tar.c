@@ -67,8 +67,7 @@ int mliScenery_malloc_from_Archive(
                         total_num_boundary_layers),
                 "Failed to malloc geometry to materials map.");
 
-        chk_msg(mliGeometry_malloc_references(
-                        &scenery->geometry, num_robjects),
+        chk_msg(mliGeometry_malloc_references(&scenery->geometry, num_robjects),
                 "Failed to malloc geometry.references.");
 
         chk_msg(mliFrame_set_robjects_and_material_map(

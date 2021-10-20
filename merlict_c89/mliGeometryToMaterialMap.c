@@ -110,8 +110,7 @@ void mliGeometryToMaterialMap_info_fprint(
         fprintf(f, "\n");
 
         for (robj = 0u; robj < map->num_robjects; robj++) {
-                bdl_start =
-                        mliGeometryToMaterialMap_resolve_idx(map, robj, 0u);
+                bdl_start = mliGeometryToMaterialMap_resolve_idx(map, robj, 0u);
                 num_bdls =
                         mliGeometryToMaterialMap_num_boundary_layers_in_robject(
                                 map, robj);

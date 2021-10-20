@@ -67,7 +67,7 @@ CASE("mliObject, parse valid obj face lines")
         char line[256];
 
         strcpy(line, "f 1 2 3");
-        CHECK(_mliObject_parse_face_line(
+        CHECK(mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -79,7 +79,7 @@ CASE("mliObject, parse valid obj face lines")
         CHECK(faces_vertices.c == 3);
 
         strcpy(line, "f   2  3   4");
-        CHECK(_mliObject_parse_face_line(
+        CHECK(mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -91,7 +91,7 @@ CASE("mliObject, parse valid obj face lines")
         CHECK(faces_vertices.c == 4);
 
         strcpy(line, "f   12132  2432353   34234");
-        CHECK(_mliObject_parse_face_line(
+        CHECK(mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -103,7 +103,7 @@ CASE("mliObject, parse valid obj face lines")
         CHECK(faces_vertices.c == 34234);
 
         strcpy(line, "f   12132  2432353   34234 NOT_RELEVANT");
-        CHECK(_mliObject_parse_face_line(
+        CHECK(mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -115,7 +115,7 @@ CASE("mliObject, parse valid obj face lines")
         CHECK(faces_vertices.c == 34234);
 
         strcpy(line, "f 2//13 3//14 4//15");
-        CHECK(_mliObject_parse_face_line(
+        CHECK(mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -130,7 +130,7 @@ CASE("mliObject, parse valid obj face lines")
         CHECK(faces_vertex_normals.c == 15);
 
         strcpy(line, "f 2//13 3//14 4//15 WHATEVER");
-        CHECK(_mliObject_parse_face_line(
+        CHECK(mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -145,7 +145,7 @@ CASE("mliObject, parse valid obj face lines")
         CHECK(faces_vertex_normals.c == 15);
 
         strcpy(line, "f 2/3/1 3/4/8 4/6/9");
-        CHECK(_mliObject_parse_face_line(
+        CHECK(mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -163,7 +163,7 @@ CASE("mliObject, parse valid obj face lines")
         CHECK(faces_vertex_normals.c == 9);
 
         strcpy(line, "f  2/3/81   3/4/82   4/6/83");
-        CHECK(_mliObject_parse_face_line(
+        CHECK(mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -181,7 +181,7 @@ CASE("mliObject, parse valid obj face lines")
         CHECK(faces_vertex_normals.c == 83);
 
         strcpy(line, "f  2/3/81   3/4/82   4/6/83 I dont care");
-        CHECK(_mliObject_parse_face_line(
+        CHECK(mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -208,7 +208,7 @@ CASE("mliObject, parse bad obj face lines")
         char line[128];
 
         strcpy(line, "f");
-        CHECK(!_mliObject_parse_face_line(
+        CHECK(!mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -217,7 +217,7 @@ CASE("mliObject, parse bad obj face lines")
         CHECK(line_mode == -1);
 
         strcpy(line, "f 34");
-        CHECK(!_mliObject_parse_face_line(
+        CHECK(!mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -226,7 +226,7 @@ CASE("mliObject, parse bad obj face lines")
         CHECK(line_mode == -1);
 
         strcpy(line, "f 34 242 44/");
-        CHECK(!_mliObject_parse_face_line(
+        CHECK(!mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -235,7 +235,7 @@ CASE("mliObject, parse bad obj face lines")
         CHECK(line_mode == -1);
 
         strcpy(line, "");
-        CHECK(!_mliObject_parse_face_line(
+        CHECK(!mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -249,7 +249,7 @@ CASE("mliObject, parse bad obj face lines")
                "999999999999999999999999999999"
                "999999999999999999999999999999"
                " 0 0");
-        CHECK(!_mliObject_parse_face_line(
+        CHECK(!mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -264,7 +264,7 @@ CASE("mliObject, parse bad obj face lines")
                "9999999999999999999999999999999999999"
                "9999999999999999999999999999999999999"
                " 0 0");
-        CHECK(!_mliObject_parse_face_line(
+        CHECK(!mliObject_parse_face_line(
                 line,
                 &faces_vertices,
                 &faces_texture_points,
@@ -279,61 +279,61 @@ CASE("mliObject, parse valid obj-float-lines")
         char line[128];
 
         strcpy(line, " 0 0 0");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK(v.x == 0.0);
         CHECK(v.y == 0.0);
         CHECK(v.z == 0.0);
 
         strcpy(line, " 0.0 0.0 0.0");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK(v.x == 0.0);
         CHECK(v.y == 0.0);
         CHECK(v.z == 0.0);
 
         strcpy(line, " 0.0   0.0    0.0   whatever");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK(v.x == 0.0);
         CHECK(v.y == 0.0);
         CHECK(v.z == 0.0);
 
         strcpy(line, "     0 0 0");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK(v.x == 0.0);
         CHECK(v.y == 0.0);
         CHECK(v.z == 0.0);
 
         strcpy(line, " 1 2 3");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK(v.x == 1.0);
         CHECK(v.y == 2.0);
         CHECK(v.z == 3.0);
 
         strcpy(line, " 1 -2 3");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK(v.x == 1.0);
         CHECK(v.y == -2.0);
         CHECK(v.z == 3.0);
 
         strcpy(line, " 1.4 2.5 3.6");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK_MARGIN(v.x, 1.4, 1e-9);
         CHECK_MARGIN(v.y, 2.5, 1e-9);
         CHECK_MARGIN(v.z, 3.6, 1e-9);
 
         strcpy(line, " 1.4e0 2.5e1 3.6e2");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK_MARGIN(v.x, 1.4e0, 1e-9);
         CHECK_MARGIN(v.y, 2.5e1, 1e-9);
         CHECK_MARGIN(v.z, 3.6e2, 1e-9);
 
         strcpy(line, " 1.4e-0 2.5e-1 3.6e2 ");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK_MARGIN(v.x, 1.4e0, 1e-9);
         CHECK_MARGIN(v.y, 2.5e-1, 1e-9);
         CHECK_MARGIN(v.z, 3.6e2, 1e-9);
 
         strcpy(line, " 1.4e-0       2.5e-1     3.6e2  do not care");
-        CHECK(_mliObject_parse_three_float_line(line, &v));
+        CHECK(mliObject_parse_three_float_line(line, &v));
         CHECK_MARGIN(v.x, 1.4e0, 1e-9);
         CHECK_MARGIN(v.y, 2.5e-1, 1e-9);
         CHECK_MARGIN(v.z, 3.6e2, 1e-9);
@@ -345,16 +345,16 @@ CASE("mliObject, parse bad obj-float-lines")
         char line[128];
 
         strcpy(line, "");
-        CHECK(!_mliObject_parse_three_float_line(line, &v));
+        CHECK(!mliObject_parse_three_float_line(line, &v));
 
         strcpy(line, " ");
-        CHECK(!_mliObject_parse_three_float_line(line, &v));
+        CHECK(!mliObject_parse_three_float_line(line, &v));
 
         strcpy(line, "0 0 0");
-        CHECK(!_mliObject_parse_three_float_line(line, &v));
+        CHECK(!mliObject_parse_three_float_line(line, &v));
 
         strcpy(line, "abc");
-        CHECK(!_mliObject_parse_three_float_line(line, &v));
+        CHECK(!mliObject_parse_three_float_line(line, &v));
 }
 
 CASE("mliObject, read wavefront file")

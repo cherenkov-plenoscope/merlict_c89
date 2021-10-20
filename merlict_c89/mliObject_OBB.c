@@ -50,7 +50,7 @@ int mliObject_has_overlap_obb(
         return 0;
 }
 
-int _mliObject_face_in_local_frame_has_overlap_obb(
+int mliObject_face_in_local_frame_has_overlap_obb_void(
         const void *obj,
         const uint32_t face_idx,
         const struct mliOBB obb)
