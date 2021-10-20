@@ -2,7 +2,7 @@
 #include "mli_frame_to_scenery.h"
 #include <math.h>
 
-int _mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+int mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
         const struct mliFrame *frame,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers)
@@ -11,7 +11,7 @@ int _mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.size; c++) {
-                        chk(_mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+                        chk(mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
                                 frame->children.array[c],
                                 num_robjects,
                                 total_num_boundary_layers));
@@ -37,7 +37,7 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
 {
         (*num_robjects) = 0u;
         (*total_num_boundary_layers) = 0u;
-        chk_msg(_mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+        chk_msg(mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
                         frame, num_robjects, total_num_boundary_layers),
                 "Failed to walk tree of frames to estimate "
                 "num_robjects and total_num_boundary_layers.");
@@ -46,7 +46,7 @@ error:
         return 0;
 }
 
-int _mliFrame_set_robjects_and_material_map(
+int mliFrame_set_robjects_and_material_map_walk(
         const struct mliFrame *frame,
         struct mliGeometry *geometry,
         struct mliGeometryToMaterialMap *geomap,
@@ -59,7 +59,7 @@ int _mliFrame_set_robjects_and_material_map(
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.size; c++) {
-                        chk(_mliFrame_set_robjects_and_material_map(
+                        chk(mliFrame_set_robjects_and_material_map_walk(
                                 frame->children.array[c],
                                 geometry,
                                 geomap,
@@ -114,7 +114,7 @@ int mliFrame_set_robjects_and_material_map(
 {
         uint64_t num_robjects = 0u;
         uint64_t total_num_boundary_layers = 0u;
-        chk_msg(_mliFrame_set_robjects_and_material_map(
+        chk_msg(mliFrame_set_robjects_and_material_map_walk(
                         frame,
                         geometry,
                         geomap,

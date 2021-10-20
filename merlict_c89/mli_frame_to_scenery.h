@@ -10,8 +10,21 @@ int mliFrame_set_robjects_and_material_map(
         struct mliGeometry *geometry,
         struct mliGeometryToMaterialMap *geomap);
 
+int mliFrame_set_robjects_and_material_map_walk(
+        const struct mliFrame *frame,
+        struct mliGeometry *geometry,
+        struct mliGeometryToMaterialMap *geomap,
+        uint64_t *num_robjects,
+        uint64_t *total_num_boundary_layers);
+
 int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
         const struct mliFrame *frame,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers);
+
+int mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+        const struct mliFrame *frame,
+        uint64_t *num_robjects,
+        uint64_t *total_num_boundary_layers);
+
 #endif
