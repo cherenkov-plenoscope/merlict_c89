@@ -64,7 +64,7 @@ void mliAtmosphere_set_sun_direction(
         }
 }
 
-struct mliColor _mliAtmosphere_compute_depth(
+struct mliColor mliAtmosphere_compute_depth(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,
@@ -177,7 +177,7 @@ struct mliColor _mliAtmosphere_compute_depth(
                 atmosphere->power);
 }
 
-struct mliColor _mliAtmosphere_hit_outer_atmosphere(
+struct mliColor mliAtmosphere_hit_outer_atmosphere(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,
@@ -199,10 +199,10 @@ struct mliColor _mliAtmosphere_hit_outer_atmosphere(
                 tmax = t_plus;
         }
 
-        return _mliAtmosphere_compute_depth(atmosphere, orig, dir, tmin, tmax);
+        return mliAtmosphere_compute_depth(atmosphere, orig, dir, tmin, tmax);
 }
 
-struct mliColor _mliAtmosphere_hit_earth_body(
+struct mliColor mliAtmosphere_hit_earth_body(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir)
@@ -217,7 +217,7 @@ struct mliColor _mliAtmosphere_hit_earth_body(
                 t_max = MLI_MAX2(0.0, t_minus);
         }
 
-        return _mliAtmosphere_hit_outer_atmosphere(
+        return mliAtmosphere_hit_outer_atmosphere(
                 atmosphere, orig, dir, 0.0, t_max);
 }
 
@@ -229,7 +229,7 @@ struct mliColor mliAtmosphere_query(
         struct mliVec orig_up = orig;
         orig_up.z += (atmosphere->earthRadius + atmosphere->altitude);
 
-        return _mliAtmosphere_hit_earth_body(atmosphere, orig_up, dir);
+        return mliAtmosphere_hit_earth_body(atmosphere, orig_up, dir);
 }
 
 void mliAtmosphere_increase_latitude(

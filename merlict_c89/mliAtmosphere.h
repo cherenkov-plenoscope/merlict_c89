@@ -55,19 +55,19 @@ struct mliColor mliAtmosphere_query(
         const struct mliVec orig,
         const struct mliVec dir);
 
-struct mliColor _mliAtmosphere_hit_earth_body(
+struct mliColor mliAtmosphere_hit_earth_body(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir);
 
-struct mliColor _mliAtmosphere_hit_outer_atmosphere(
+struct mliColor mliAtmosphere_hit_outer_atmosphere(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,
         double tmin,
         double tmax);
 
-struct mliColor _mliAtmosphere_compute_depth(
+struct mliColor mliAtmosphere_compute_depth(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,
