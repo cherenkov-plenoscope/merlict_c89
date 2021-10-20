@@ -7,6 +7,8 @@
 #include "mliOcTree.h"
 #include "mliRay.h"
 
+#define MLI_RAY_OCTREE_TRAVERSAL_EPSILON 1.0e-307
+
 void mli_ray_octree_traversal(
         const struct mliOcTree *octree,
         const struct mliRay ray,

@@ -54,9 +54,6 @@
  *      cite{revelles2000efficient}
  */
 
-#define mli_END 8
-#define MLI_MINIMAL 1.0e-307
-
 int mli_ray_octree_traversal_first_octree_node(
         const struct mliVec t0,
         const struct mliVec tm)
@@ -177,7 +174,7 @@ void mli_ray_octree_traversal_sub(
                                 work,
                                 work_on_leaf_node);
                         proc_node = mli_ray_octree_traversal_next_octree_node(
-                                nt1, 5, 3, mli_END);
+                                nt1, 5, 3, 8);
                         break;
                 }
                 case 2: {
@@ -194,7 +191,7 @@ void mli_ray_octree_traversal_sub(
                                 work,
                                 work_on_leaf_node);
                         proc_node = mli_ray_octree_traversal_next_octree_node(
-                                nt1, 6, mli_END, 3);
+                                nt1, 6, 8, 3);
                         break;
                 }
                 case 3: {
@@ -211,7 +208,7 @@ void mli_ray_octree_traversal_sub(
                                 work,
                                 work_on_leaf_node);
                         proc_node = mli_ray_octree_traversal_next_octree_node(
-                                nt1, 7, mli_END, mli_END);
+                                nt1, 7, 8, 8);
                         break;
                 }
                 case 4: {
@@ -228,7 +225,7 @@ void mli_ray_octree_traversal_sub(
                                 work,
                                 work_on_leaf_node);
                         proc_node = mli_ray_octree_traversal_next_octree_node(
-                                nt1, mli_END, 6, 5);
+                                nt1, 8, 6, 5);
                         break;
                 }
                 case 5: {
@@ -245,7 +242,7 @@ void mli_ray_octree_traversal_sub(
                                 work,
                                 work_on_leaf_node);
                         proc_node = mli_ray_octree_traversal_next_octree_node(
-                                nt1, mli_END, 7, mli_END);
+                                nt1, 8, 7, 8);
                         break;
                 }
                 case 6: {
@@ -262,7 +259,7 @@ void mli_ray_octree_traversal_sub(
                                 work,
                                 work_on_leaf_node);
                         proc_node = mli_ray_octree_traversal_next_octree_node(
-                                nt1, mli_END, mli_END, 7);
+                                nt1, 8, 8, 7);
                         break;
                 }
                 case 7: {
@@ -278,11 +275,11 @@ void mli_ray_octree_traversal_sub(
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = mli_END;
+                        proc_node = 8;
                         break;
                 }
                 } /* end switch */
-        } while (proc_node < mli_END);
+        } while (proc_node < 8);
 }
 
 void mli_ray_octree_traversal(
@@ -315,7 +312,7 @@ void mli_ray_octree_traversal(
                 ray_wrt_octree.direction.x = -ray_wrt_octree.direction.x;
                 permutation |= 4;
         } else if (ray_wrt_octree.direction.x == 0.0) {
-                ray_wrt_octree.direction.x = MLI_MINIMAL;
+                ray_wrt_octree.direction.x = MLI_RAY_OCTREE_TRAVERSAL_EPSILON;
         }
 
         if (ray_wrt_octree.direction.y < 0) {
@@ -324,7 +321,7 @@ void mli_ray_octree_traversal(
                 ray_wrt_octree.direction.y = -ray_wrt_octree.direction.y;
                 permutation |= 2;
         } else if (ray_wrt_octree.direction.y == 0.0) {
-                ray_wrt_octree.direction.y = MLI_MINIMAL;
+                ray_wrt_octree.direction.y = MLI_RAY_OCTREE_TRAVERSAL_EPSILON;
         }
 
         if (ray_wrt_octree.direction.z < 0) {
@@ -333,7 +330,7 @@ void mli_ray_octree_traversal(
                 ray_wrt_octree.direction.z = -ray_wrt_octree.direction.z;
                 permutation |= 1;
         } else if (ray_wrt_octree.direction.z == 0.0) {
-                ray_wrt_octree.direction.z = MLI_MINIMAL;
+                ray_wrt_octree.direction.z = MLI_RAY_OCTREE_TRAVERSAL_EPSILON;
         }
 
         div.x = 1.0 / ray_wrt_octree.direction.x;
