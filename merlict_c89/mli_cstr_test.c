@@ -134,46 +134,46 @@ CASE("find CRLF and CR linebreaks")
 {
         char txt[128];
         memset(txt, '\0', sizeof(txt));
-        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
-        CHECK(!_mli_is_CR_line_break(&txt[0]));
+        CHECK(!mli_is_CRLF_line_break(&txt[0]));
+        CHECK(!mli_is_CR_line_break(&txt[0]));
 
         memset(txt, '\0', sizeof(txt));
         sprintf(txt, "\r\n");
-        CHECK(_mli_is_CRLF_line_break(&txt[0]));
-        CHECK(_mli_is_CR_line_break(&txt[0]));
+        CHECK(mli_is_CRLF_line_break(&txt[0]));
+        CHECK(mli_is_CR_line_break(&txt[0]));
 
         memset(txt, '\0', sizeof(txt));
         sprintf(txt, "01\r\n23");
-        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
-        CHECK(!_mli_is_CR_line_break(&txt[0]));
+        CHECK(!mli_is_CRLF_line_break(&txt[0]));
+        CHECK(!mli_is_CR_line_break(&txt[0]));
 
-        CHECK(!_mli_is_CRLF_line_break(&txt[1]));
-        CHECK(!_mli_is_CR_line_break(&txt[1]));
+        CHECK(!mli_is_CRLF_line_break(&txt[1]));
+        CHECK(!mli_is_CR_line_break(&txt[1]));
 
-        CHECK(_mli_is_CRLF_line_break(&txt[2]));
-        CHECK(_mli_is_CR_line_break(&txt[2]));
+        CHECK(mli_is_CRLF_line_break(&txt[2]));
+        CHECK(mli_is_CR_line_break(&txt[2]));
 
-        CHECK(!_mli_is_CRLF_line_break(&txt[3]));
-        CHECK(!_mli_is_CR_line_break(&txt[3]));
+        CHECK(!mli_is_CRLF_line_break(&txt[3]));
+        CHECK(!mli_is_CR_line_break(&txt[3]));
 
-        CHECK(!_mli_is_CRLF_line_break(&txt[4]));
-        CHECK(!_mli_is_CR_line_break(&txt[4]));
+        CHECK(!mli_is_CRLF_line_break(&txt[4]));
+        CHECK(!mli_is_CR_line_break(&txt[4]));
 
         memset(txt, '\0', sizeof(txt));
         sprintf(txt, "\r");
-        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
-        CHECK(_mli_is_CR_line_break(&txt[0]));
+        CHECK(!mli_is_CRLF_line_break(&txt[0]));
+        CHECK(mli_is_CR_line_break(&txt[0]));
 
         memset(txt, '\0', sizeof(txt));
         sprintf(txt, "0\r1");
-        CHECK(!_mli_is_CRLF_line_break(&txt[0]));
-        CHECK(!_mli_is_CR_line_break(&txt[0]));
+        CHECK(!mli_is_CRLF_line_break(&txt[0]));
+        CHECK(!mli_is_CR_line_break(&txt[0]));
 
-        CHECK(!_mli_is_CRLF_line_break(&txt[1]));
-        CHECK(_mli_is_CR_line_break(&txt[1]));
+        CHECK(!mli_is_CRLF_line_break(&txt[1]));
+        CHECK(mli_is_CR_line_break(&txt[1]));
 
-        CHECK(!_mli_is_CRLF_line_break(&txt[2]));
-        CHECK(!_mli_is_CR_line_break(&txt[2]));
+        CHECK(!mli_is_CRLF_line_break(&txt[2]));
+        CHECK(!mli_is_CR_line_break(&txt[2]));
 }
 
 CASE("replace CRLF and CR linebreaks with LF")

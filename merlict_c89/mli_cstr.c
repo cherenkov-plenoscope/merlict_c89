@@ -72,7 +72,7 @@ int mli_string_split(
         return i;
 }
 
-int _mli_is_CRLF_line_break(const char *s)
+int mli_is_CRLF_line_break(const char *s)
 {
         if (s[0] == '\0') {
                 return 0;
@@ -86,7 +86,7 @@ int _mli_is_CRLF_line_break(const char *s)
         return 0;
 }
 
-int _mli_is_CR_line_break(const char *s)
+int mli_is_CR_line_break(const char *s)
 {
         if (s[0] == '\0') {
                 return 0;
@@ -147,7 +147,7 @@ uint64_t mli_string_count_chars_up_to(
         return count;
 }
 
-int _mli_fprint_line_match(
+int mli_fprint_line_match(
         FILE *f,
         const int64_t line,
         const int64_t line_number)
@@ -188,13 +188,13 @@ int mli_lines_info_fprint(
                         line++;
                 }
                 if (prefix && i == 0) {
-                        chk(_mli_fprint_line_match(f, line, _line_number));
+                        chk(mli_fprint_line_match(f, line, _line_number));
                 }
                 if (valid) {
                         chk(putc(text[i], f));
                 }
                 if (prefix && text[i] == '\n') {
-                        chk(_mli_fprint_line_match(f, line, _line_number));
+                        chk(mli_fprint_line_match(f, line, _line_number));
                 }
                 i++;
         }

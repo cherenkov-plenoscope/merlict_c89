@@ -14,8 +14,8 @@ int mli_string_split(
         const char delimiter,
         char *token,
         const uint64_t token_length);
-int _mli_is_CRLF_line_break(const char *s);
-int _mli_is_CR_line_break(const char *s);
+int mli_is_CRLF_line_break(const char *s);
+int mli_is_CR_line_break(const char *s);
 int mli_string_assert_only_NUL_LF_TAB_controls(const char *str);
 int mli_string_assert_only_NUL_LF_TAB_controls_dbg(
         const char *str,
