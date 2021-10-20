@@ -92,7 +92,7 @@
 #include "mliAtmosphere.c"
 #include "mliView.c"
 #include "mliPinHoleCamera.c"
-#include "mliAptCam.c"
+#include "mliApertureCamera.c"
 #include "mli_cstr.c"
 #include "mliDynStr.c"
 #include "mli_json.c"

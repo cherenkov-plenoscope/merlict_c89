@@ -48,7 +48,7 @@ int main(void)
 #include "mliSurface_test.c"
 #include "mli_json_test.c"
 #include "mliFresnel_test.c"
-#include "mliAptCam_test.c"
+#include "mliApertureCamera_test.c"
 #include "mli_photon_sources_test.c"
 #include "mliOcTree_test.c"
 #include "mliUserScenery_test.c"
