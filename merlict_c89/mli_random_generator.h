@@ -22,14 +22,14 @@
  *      If you want to use your own, wrapp it here using mliPrng. See below.
  */
 
-union __mliGeneratorStorage {
+union _mliGeneratorStorage {
         struct mliMT19937 mt19937;
         struct mliPCG32 pcg32;
         /* Add your own prng here */
 };
 
 struct mliPrng {
-        union __mliGeneratorStorage _storage;
+        union _mliGeneratorStorage _storage;
         uint32_t (*generate_uint32)(void *);
         void (*reinit)(void *, const uint32_t);
 };
@@ -42,16 +42,16 @@ void mliPrng_reinit(struct mliPrng *prng, const uint32_t seed);
  *      ----------------------
  */
 struct mliPrng mliPrng_init_MT19937(const uint32_t seed);
-uint32_t __mliMT19937_generate_uint32(void *mt);
-void __mliMT19937_reinit(void *mt, const uint32_t seed);
+uint32_t _mliPrng_mliMT19937_generate_uint32(void *mt);
+void _mliPrng_mliMT19937_reinit(void *mt, const uint32_t seed);
 
 /**
  *      PCG32
  *      -----
  */
 struct mliPrng mliPrng_init_PCG32(const uint32_t seed);
-uint32_t __mliPCG32_generate_uint32(void *pcg);
-void __mliPCG32_reinit(void *pcg, const uint32_t seed);
+uint32_t _mliPrng_mliPCG32_generate_uint32(void *pcg);
+void _mliPrng_mliPCG32_reinit(void *pcg, const uint32_t seed);
 
 /**
  *      Add your own prng here

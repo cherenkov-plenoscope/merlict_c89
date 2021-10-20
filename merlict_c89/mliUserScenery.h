@@ -17,7 +17,7 @@ struct mliNameMap mliNameMap_init(void);
 int mliNameMap_malloc(struct mliNameMap *namemap);
 void mliNameMap_free(struct mliNameMap *namemap);
 
-void __mli_strip_key(const char *filename, char *key);
-void __mli_strip_whitespaces(const char *in, char *out);
+void _mli_strip_key(const char *filename, char *key);
+void _mli_strip_whitespaces(const char *in, char *out);
 
 #endif

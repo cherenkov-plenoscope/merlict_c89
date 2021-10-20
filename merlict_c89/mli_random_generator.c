@@ -19,17 +19,17 @@ struct mliPrng mliPrng_init_MT19937(const uint32_t seed)
 {
         struct mliPrng prng;
         prng._storage.mt19937 = mliMT19937_init(seed);
-        prng.generate_uint32 = __mliMT19937_generate_uint32;
-        prng.reinit = __mliMT19937_reinit;
+        prng.generate_uint32 = _mliPrng_mliMT19937_generate_uint32;
+        prng.reinit = _mliPrng_mliMT19937_reinit;
         return prng;
 }
 
-uint32_t __mliMT19937_generate_uint32(void *mt)
+uint32_t _mliPrng_mliMT19937_generate_uint32(void *mt)
 {
         return mliMT19937_generate_uint32((struct mliMT19937 *)mt);
 }
 
-void __mliMT19937_reinit(void *mt, const uint32_t seed)
+void _mliPrng_mliMT19937_reinit(void *mt, const uint32_t seed)
 {
         _mliMT19937_reinit((struct mliMT19937 *)mt, seed);
 }
@@ -43,17 +43,17 @@ struct mliPrng mliPrng_init_PCG32(const uint32_t seed)
 {
         struct mliPrng prng;
         prng._storage.pcg32 = mliPCG32_init(seed);
-        prng.generate_uint32 = __mliPCG32_generate_uint32;
-        prng.reinit = __mliPCG32_reinit;
+        prng.generate_uint32 = _mliPrng_mliPCG32_generate_uint32;
+        prng.reinit = _mliPrng_mliPCG32_reinit;
         return prng;
 }
 
-uint32_t __mliPCG32_generate_uint32(void *pcg)
+uint32_t _mliPrng_mliPCG32_generate_uint32(void *pcg)
 {
         return mliPCG32_generate_uint32((struct mliPCG32 *)pcg);
 }
 
-void __mliPCG32_reinit(void *pcg, const uint32_t seed)
+void _mliPrng_mliPCG32_reinit(void *pcg, const uint32_t seed)
 {
         mliPCG32_reinit((struct mliPCG32 *)pcg, seed);
 }

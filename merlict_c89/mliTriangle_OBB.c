@@ -28,7 +28,7 @@
 
 /* Which of the six face-plane(s) is point P outside of? */
 
-int64_t __mli_face_plane(struct mliVec p)
+int64_t _mli_face_plane(struct mliVec p)
 {
         int64_t outcode;
         outcode = 0;
@@ -49,7 +49,7 @@ int64_t __mli_face_plane(struct mliVec p)
 
 /* Which of the twelve edge plane(s) is point P outside of? */
 
-int64_t __mli_bevel_2d(struct mliVec p)
+int64_t _mli_bevel_2d(struct mliVec p)
 {
         int64_t outcode;
         outcode = 0;
@@ -82,7 +82,7 @@ int64_t __mli_bevel_2d(struct mliVec p)
 
 /* Which of the eight corner plane(s) is point P outside of? */
 
-int64_t __mli_bevel_3d(struct mliVec p)
+int64_t _mli_bevel_3d(struct mliVec p)
 {
         int64_t outcode;
         outcode = 0;
@@ -109,7 +109,7 @@ int64_t __mli_bevel_3d(struct mliVec p)
 /* See if it is on a face of the cube              */
 /* Consider only faces in "mask"                   */
 
-int64_t __mli_check_point(
+int64_t _mli_check_point(
         struct mliVec p1,
         struct mliVec p2,
         double alpha,
@@ -119,7 +119,7 @@ int64_t __mli_check_point(
         plane_point.x = mli_linear_interpolate_1d(alpha, p1.x, p2.x);
         plane_point.y = mli_linear_interpolate_1d(alpha, p1.y, p2.y);
         plane_point.z = mli_linear_interpolate_1d(alpha, p1.z, p2.z);
-        return (__mli_face_plane(plane_point) & mask);
+        return (_mli_face_plane(plane_point) & mask);
 }
 
 /* Compute intersection of P1 --> P2 line segment with face planes */
@@ -127,38 +127,38 @@ int64_t __mli_check_point(
 /* Consider only face planes in "outcode_diff"                     */
 /* Note: Zero bits in "outcode_diff" means face line is outside of */
 
-int64_t __mli_check_line(
+int64_t _mli_check_line(
         struct mliVec p1,
         struct mliVec p2,
         int64_t outcode_diff)
 {
         if ((0x01 & outcode_diff) != 0)
-                if (__mli_check_point(
+                if (_mli_check_point(
                             p1, p2, (0.5f - p1.x) / (p2.x - p1.x), 0x3e) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x02 & outcode_diff) != 0)
-                if (__mli_check_point(
+                if (_mli_check_point(
                             p1, p2, (-0.5f - p1.x) / (p2.x - p1.x), 0x3d) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x04 & outcode_diff) != 0)
-                if (__mli_check_point(
+                if (_mli_check_point(
                             p1, p2, (0.5f - p1.y) / (p2.y - p1.y), 0x3b) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x08 & outcode_diff) != 0)
-                if (__mli_check_point(
+                if (_mli_check_point(
                             p1, p2, (-0.5f - p1.y) / (p2.y - p1.y), 0x37) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x10 & outcode_diff) != 0)
-                if (__mli_check_point(
+                if (_mli_check_point(
                             p1, p2, (0.5f - p1.z) / (p2.z - p1.z), 0x2f) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x20 & outcode_diff) != 0)
-                if (__mli_check_point(
+                if (_mli_check_point(
                             p1, p2, (-0.5f - p1.z) / (p2.z - p1.z), 0x1f) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
@@ -167,7 +167,7 @@ int64_t __mli_check_line(
 
 /* Test if 3D point is inside 3D triangle */
 
-int64_t __mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
+int64_t _mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
 {
         int64_t sign12, sign23, sign31;
         struct mliVec vect12, vect23, vect31, vect1h, vect2h, vect3h;
@@ -231,7 +231,7 @@ int64_t __mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
 /* intersects or does not intersect the cube. */
 /**********************************************/
 
-int64_t __mli_triangle_cube_intersection(struct mliTriangle t)
+int64_t _mli_triangle_cube_intersection(struct mliTriangle t)
 {
         int64_t v1_test, v2_test, v3_test;
         double d, denom;
@@ -241,11 +241,11 @@ int64_t __mli_triangle_cube_intersection(struct mliTriangle t)
         /* First compare all three vertexes with all six face-planes */
         /* If any vertex is inside the cube, return immediately!     */
 
-        if ((v1_test = __mli_face_plane(t.v1)) == MLI_INSIDE)
+        if ((v1_test = _mli_face_plane(t.v1)) == MLI_INSIDE)
                 return (MLI_INSIDE);
-        if ((v2_test = __mli_face_plane(t.v2)) == MLI_INSIDE)
+        if ((v2_test = _mli_face_plane(t.v2)) == MLI_INSIDE)
                 return (MLI_INSIDE);
-        if ((v3_test = __mli_face_plane(t.v3)) == MLI_INSIDE)
+        if ((v3_test = _mli_face_plane(t.v3)) == MLI_INSIDE)
                 return (MLI_INSIDE);
 
         /* If all three vertexes were outside of one or more face-planes, */
@@ -256,17 +256,17 @@ int64_t __mli_triangle_cube_intersection(struct mliTriangle t)
 
         /* Now do the same trivial rejection test for the 12 edge planes */
 
-        v1_test |= __mli_bevel_2d(t.v1) << 8;
-        v2_test |= __mli_bevel_2d(t.v2) << 8;
-        v3_test |= __mli_bevel_2d(t.v3) << 8;
+        v1_test |= _mli_bevel_2d(t.v1) << 8;
+        v2_test |= _mli_bevel_2d(t.v2) << 8;
+        v3_test |= _mli_bevel_2d(t.v3) << 8;
         if ((v1_test & v2_test & v3_test) != 0)
                 return (MLI_OUTSIDE);
 
         /* Now do the same trivial rejection test for the 8 corner planes */
 
-        v1_test |= __mli_bevel_3d(t.v1) << 24;
-        v2_test |= __mli_bevel_3d(t.v2) << 24;
-        v3_test |= __mli_bevel_3d(t.v3) << 24;
+        v1_test |= _mli_bevel_3d(t.v1) << 24;
+        v2_test |= _mli_bevel_3d(t.v2) << 24;
+        v3_test |= _mli_bevel_3d(t.v3) << 24;
         if ((v1_test & v2_test & v3_test) != 0)
                 return (MLI_OUTSIDE);
 
@@ -278,15 +278,15 @@ int64_t __mli_triangle_cube_intersection(struct mliTriangle t)
         /* each triangle edge need be tested.                         */
 
         if ((v1_test & v2_test) == 0)
-                if (__mli_check_line(t.v1, t.v2, v1_test | v2_test) ==
+                if (_mli_check_line(t.v1, t.v2, v1_test | v2_test) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((v1_test & v3_test) == 0)
-                if (__mli_check_line(t.v1, t.v3, v1_test | v3_test) ==
+                if (_mli_check_line(t.v1, t.v3, v1_test | v3_test) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((v2_test & v3_test) == 0)
-                if (__mli_check_line(t.v2, t.v3, v2_test | v3_test) ==
+                if (_mli_check_line(t.v2, t.v3, v2_test | v3_test) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
 
@@ -324,28 +324,28 @@ int64_t __mli_triangle_cube_intersection(struct mliTriangle t)
         {
                 hitpp.x = hitpp.y = hitpp.z = d / denom;
                 if (fabs(hitpp.x) <= 0.5)
-                        if (__mli_point_triangle_intersection(hitpp, t) ==
+                        if (_mli_point_triangle_intersection(hitpp, t) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
         if (fabs(denom = (norm.x + norm.y - norm.z)) > MLI_EPSILON) {
                 hitpn.z = -(hitpn.x = hitpn.y = d / denom);
                 if (fabs(hitpn.x) <= 0.5)
-                        if (__mli_point_triangle_intersection(hitpn, t) ==
+                        if (_mli_point_triangle_intersection(hitpn, t) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
         if (fabs(denom = (norm.x - norm.y + norm.z)) > MLI_EPSILON) {
                 hitnp.y = -(hitnp.x = hitnp.z = d / denom);
                 if (fabs(hitnp.x) <= 0.5)
-                        if (__mli_point_triangle_intersection(hitnp, t) ==
+                        if (_mli_point_triangle_intersection(hitnp, t) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
         if (fabs(denom = (norm.x - norm.y - norm.z)) > MLI_EPSILON) {
                 hitnn.y = hitnn.z = -(hitnn.x = d / denom);
                 if (fabs(hitnn.x) <= 0.5)
-                        if (__mli_point_triangle_intersection(hitnn, t) ==
+                        if (_mli_point_triangle_intersection(hitnn, t) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
@@ -356,7 +356,7 @@ int64_t __mli_triangle_cube_intersection(struct mliTriangle t)
         return (MLI_OUTSIDE);
 }
 
-void __mliTriangle_transform_into_obb(
+void _mliTriangle_transform_into_obb(
         const struct mliVec a,
         const struct mliVec b,
         const struct mliVec c,
@@ -392,9 +392,9 @@ int mliTriangle_has_overlap_obb(
         const struct mliOBB obb)
 {
         struct mliTriangle tri;
-        __mliTriangle_transform_into_obb(
+        _mliTriangle_transform_into_obb(
                 a, b, c, obb, &tri.v1, &tri.v2, &tri.v3);
-        if (__mli_triangle_cube_intersection(tri) == MLI_INSIDE)
+        if (_mli_triangle_cube_intersection(tri) == MLI_INSIDE)
                 return 1;
         else
                 return 0;
