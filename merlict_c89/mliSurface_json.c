@@ -16,7 +16,7 @@ error:
         return 0;
 }
 
-int _mli_material_type_from_json_token(
+int mli_material_type_from_json_token(
         const struct mliJson *json,
         const uint64_t token,
         uint32_t *material)
@@ -53,7 +53,7 @@ int mliSurface_malloc_from_json_token(
                 "Expected json-surface-item to contain key 'material'.");
         chk_msg(json->tokens[token_material].type == JSMN_STRING,
                 "Expected surface's material to be of type string.");
-        chk_msg(_mli_material_type_from_json_token(
+        chk_msg(mli_material_type_from_json_token(
                         json, token_material, &surface->material),
                 "Failed to get material-idx from map for string from json");
 
