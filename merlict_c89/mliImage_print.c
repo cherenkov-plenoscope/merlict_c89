@@ -16,10 +16,10 @@ void mliImage_print_chars(
         const uint64_t print_mode)
 {
         if (print_mode == MLI_ANSI_ESCAPE_COLOR) {
-                _mliImage_print_ansi_escape_chars(
+                mliImage_print_ansi_escape_chars(
                         img, symbols, rows, cols, num_symbols);
         } else {
-                _mliImage_print_ascii_chars(
+                mliImage_print_ascii_chars(
                         img, symbols, rows, cols, num_symbols);
                 if (print_mode != MLI_ASCII_MONOCHROME) {
                         fprintf(stderr,
@@ -30,7 +30,7 @@ void mliImage_print_chars(
         return;
 }
 
-void _mliImage_print_ansi_escape_chars(
+void mliImage_print_ansi_escape_chars(
         const struct mliImage *img,
         const char *symbols,
         const uint64_t *rows,
@@ -60,7 +60,7 @@ void _mliImage_print_ansi_escape_chars(
         fflush(stdout);
 }
 
-void _mliImage_print_ascii_chars(
+void mliImage_print_ascii_chars(
         const struct mliImage *img,
         const char *symbols,
         const uint64_t *rows,

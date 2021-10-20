@@ -19,7 +19,7 @@ void mliImage_print_chars(
 
 /* Colored ANSI escape sequences */
 
-void _mliImage_print_ansi_escape_chars(
+void mliImage_print_ansi_escape_chars(
         const struct mliImage *img,
         const char *symbols,
         const uint64_t *rows,
@@ -28,7 +28,7 @@ void _mliImage_print_ansi_escape_chars(
 
 /* Monochrome ASCII chars */
 
-void _mliImage_print_ascii_chars(
+void mliImage_print_ascii_chars(
         const struct mliImage *img,
         const char *symbols,
         const uint64_t *rows,
