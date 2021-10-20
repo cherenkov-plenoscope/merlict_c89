@@ -4,7 +4,7 @@
 /*
  *      Adopted from https://en.wikipedia.org/wiki/Mersenne_Twister
  */
-void _mliMT19937_set_constants(struct mliMT19937 *mt)
+void mliMT19937_set_constants(struct mliMT19937 *mt)
 {
         /*
          *      Define MT19937 constants (32-bit RNG)
@@ -25,10 +25,10 @@ void _mliMT19937_set_constants(struct mliMT19937 *mt)
         mt->MASK_UPPER = (1u << mt->R);
 }
 
-void _mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed)
+void mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed)
 {
         uint32_t i;
-        _mliMT19937_set_constants(mt);
+        mliMT19937_set_constants(mt);
         mt->mt[0] = seed;
         for (i = 1; i < mt->N; i++) {
                 mt->mt[i] =
@@ -40,11 +40,11 @@ void _mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed)
 struct mliMT19937 mliMT19937_init(const uint32_t seed)
 {
         struct mliMT19937 mt;
-        _mliMT19937_reinit(&mt, seed);
+        mliMT19937_reinit(&mt, seed);
         return mt;
 }
 
-void _mliMT19937_twist(struct mliMT19937 *mt)
+void mliMT19937_twist(struct mliMT19937 *mt)
 {
         uint32_t i, x, xA;
         for (i = 0; i < mt->N; i++) {
@@ -64,7 +64,7 @@ uint32_t mliMT19937_generate_uint32(struct mliMT19937 *mt)
         uint32_t y;
         int i = mt->index;
         if (mt->index >= mt->N) {
-                _mliMT19937_twist(mt);
+                mliMT19937_twist(mt);
                 i = mt->index;
         }
         y = mt->mt[i];

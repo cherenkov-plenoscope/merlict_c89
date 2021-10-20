@@ -31,7 +31,7 @@ uint32_t _mliPrng_mliMT19937_generate_uint32(void *mt)
 
 void _mliPrng_mliMT19937_reinit(void *mt, const uint32_t seed)
 {
-        _mliMT19937_reinit((struct mliMT19937 *)mt, seed);
+        mliMT19937_reinit((struct mliMT19937 *)mt, seed);
 }
 
 /**

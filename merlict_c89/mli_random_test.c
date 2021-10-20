@@ -268,7 +268,7 @@ CASE("Generator")
         }
 
         mliPrng_reinit(&prng, 1337);
-        _mliMT19937_reinit(&mt_prng, 1337);
+        mliMT19937_reinit(&mt_prng, 1337);
 
         for (i = 0; i < 10; i++) {
                 CHECK(mliPrng_generate_uint32(&prng) ==
