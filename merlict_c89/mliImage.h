@@ -75,4 +75,8 @@ void mliImage_histogram(
         const struct mliColor weight);
 struct mliColor mliImage_max(const struct mliImage *img);
 void mliImage_multiply(struct mliImage *img, const struct mliColor color);
+void mliImage_divide_pixelwise(
+        const struct mliImage *numerator,
+        const struct mliImage *denominator,
+        struct mliImage *out);
 #endif

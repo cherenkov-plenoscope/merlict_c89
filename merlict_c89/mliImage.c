@@ -383,3 +383,16 @@ void mliImage_multiply(struct mliImage *img, const struct mliColor color)
                 img->raw[pix].b *= color.b;
         }
 }
+
+void mliImage_divide_pixelwise(
+        const struct mliImage *numerator,
+        const struct mliImage *denominator,
+        struct mliImage *out)
+{
+        uint64_t p;
+        for (p = 0; p < out->num_rows * out->num_cols; p++) {
+                out->raw[p].r = numerator->raw[p].r / denominator->raw[p].r;
+                out->raw[p].g = numerator->raw[p].g / denominator->raw[p].g;
+                out->raw[p].b = numerator->raw[p].b / denominator->raw[p].b;
+        }
+}

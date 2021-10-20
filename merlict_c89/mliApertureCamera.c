@@ -207,22 +207,6 @@ void _mliApCam_assign_pixel_colors_to_sum_and_exposure_image(
         }
 }
 
-void _mliApCam_image_from_sum_and_exposure(
-        const struct mliImage *sum_image,
-        const struct mliImage *exposure_image,
-        struct mliImage *out)
-{
-        uint64_t pix;
-        for (pix = 0; pix < out->num_rows * out->num_cols; pix++) {
-                out->raw[pix].r =
-                        sum_image->raw[pix].r / exposure_image->raw[pix].r;
-                out->raw[pix].g =
-                        sum_image->raw[pix].g / exposure_image->raw[pix].g;
-                out->raw[pix].b =
-                        sum_image->raw[pix].b / exposure_image->raw[pix].b;
-        }
-}
-
 int mliApertureCamera_render_image(
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
@@ -296,7 +280,7 @@ int mliApertureCamera_render_image(
         _mliApCam_assign_pixel_colors_to_sum_and_exposure_image(
                 &pixels_to_do, &colors, &sum_image, &exposure_image);
 
-        _mliApCam_image_from_sum_and_exposure(
+        mliImage_divide_pixelwise(
                 &sum_image, &exposure_image, image);
 
         mliImage_sobel(image, &sobel_image);
@@ -333,7 +317,7 @@ int mliApertureCamera_render_image(
                 _mliApCam_assign_pixel_colors_to_sum_and_exposure_image(
                         &pixels_to_do, &colors, &sum_image, &exposure_image);
 
-                _mliApCam_image_from_sum_and_exposure(
+                mliImage_divide_pixelwise(
                         &sum_image, &exposure_image, image);
 
                 mliImage_copy(&sobel_image, &previous_sobel_image);
