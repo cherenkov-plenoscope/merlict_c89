@@ -60,22 +60,22 @@ struct mliTar {
         uint64_t remaining_data;
 };
 
+/* API */
 struct mliTar mliTar_init(void);
 int mliTar_open(struct mliTar *tar, const char *filename, const char *mode);
+int mliTar_finalize(struct mliTar *tar);
 int mliTar_close(struct mliTar *tar);
 
 int mliTar_read_header(struct mliTar *tar, struct mliTarHeader *h);
 int mliTar_read_data(struct mliTar *tar, void *ptr, uint64_t size);
 
 int mliTar_write_header(struct mliTar *tar, const struct mliTarHeader *h);
-int mliTar_write_file_header(
-        struct mliTar *tar,
-        const char *name,
-        uint64_t size);
-int mliTar_write_dir_header(struct mliTar *tar, const char *name);
 int mliTar_write_data(struct mliTar *tar, const void *data, uint64_t size);
-int mliTar_finalize(struct mliTar *tar);
 
+int mliTar_write_file_header(struct mliTar *tar, const char *name, uint64_t size);
+int mliTar_write_dir_header(struct mliTar *tar, const char *name);
+
+/* internal */
 int mliTar_uint64_to_field12_2001star_base256(uint64_t val, char *field);
 int mliTar_field12_to_uint64_2001star_base256(const char *field, uint64_t *val);
 
