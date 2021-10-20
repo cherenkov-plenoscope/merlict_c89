@@ -58,7 +58,7 @@ error:
         return 0;
 }
 
-int _mliAccelerator_set_robject_obbs(
+int mliAccelerator_set_robject_obbs(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry)
 {
@@ -78,7 +78,7 @@ error:
         return 0;
 }
 
-int _mliAccelerator_set_object_octrees(
+int mliAccelerator_set_object_octrees(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry)
 {
@@ -109,10 +109,10 @@ int mliAccelerator_malloc_from_Geometry(
                 "Failed to malloc mliAccelerator from mliGeometry's "
                 "num_robjects");
 
-        chk_msg(_mliAccelerator_set_robject_obbs(accel, geometry),
+        chk_msg(mliAccelerator_set_robject_obbs(accel, geometry),
                 "Failed to set OBBs of robjects.");
 
-        chk_msg(_mliAccelerator_set_object_octrees(accel, geometry),
+        chk_msg(mliAccelerator_set_object_octrees(accel, geometry),
                 "Failed to setup object octrees.");
 
         outermost_obb = mliAccelerator_outermost_obb(accel);

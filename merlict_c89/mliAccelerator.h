@@ -29,11 +29,11 @@ int mliAccelerator_malloc_from_Geometry(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry);
 
-int _mliAccelerator_set_robject_obbs(
+int mliAccelerator_set_robject_obbs(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry);
 
-int _mliAccelerator_set_object_octrees(
+int mliAccelerator_set_object_octrees(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry);
 
