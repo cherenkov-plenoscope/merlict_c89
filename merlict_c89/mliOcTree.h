@@ -36,7 +36,7 @@ struct mliOcTree {
 };
 
 void mliOcTree_print(const struct mliOcTree *tree);
-void _mliOcTree_print(
+void mliOcTree_print_walk(
         const struct mliOcTree *tree,
         const int32_t node_idx,
         const uint8_t node_type,
@@ -45,7 +45,7 @@ void _mliOcTree_print(
 int mliOcTree_equal_payload(
         const struct mliOcTree *tree,
         const struct mliTmpOcTree *tmp_octree);
-int _mliOcTree_equal_payload(
+int mliOcTree_equal_payload_walk(
         const struct mliOcTree *tree,
         const int32_t node_idx,
         const int32_t node_type,
@@ -61,15 +61,15 @@ uint64_t mliOcTree_node_num_children(
         const struct mliOcTree *tree,
         const uint64_t node_idx);
 void mliOcTree_set(struct mliOcTree *tree, const struct mliTmpOcTree *dyntree);
-void _mliOcTree_set(
+void mliOcTree_set_walk(
         struct mliOcTree *tree,
         const struct mliTmpNode *dynnode,
         uint64_t *object_link_size);
-void _mliOcTree_set_leaf(
+void mliOcTree_set_leaf(
         struct mliOcTree *tree,
         const struct mliTmpNode *dynnode,
         uint64_t *object_link_size);
-void _mliOcTree_set_node(
+void mliOcTree_set_node(
         struct mliOcTree *tree,
         const struct mliTmpNode *dynnode);
 int mliOcTree_malloc(

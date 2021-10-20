@@ -162,7 +162,7 @@ error:
         return 0;
 }
 
-void _mliOcTree_set_node(
+void mliOcTree_set_node(
         struct mliOcTree *tree,
         const struct mliTmpNode *dynnode)
 {
@@ -190,7 +190,7 @@ void _mliOcTree_set_node(
         }
 }
 
-void _mliOcTree_set_leaf(
+void mliOcTree_set_leaf(
         struct mliOcTree *tree,
         const struct mliTmpNode *dynnode,
         uint64_t *object_link_size)
@@ -208,21 +208,21 @@ void _mliOcTree_set_leaf(
         }
 }
 
-void _mliOcTree_set(
+void mliOcTree_set_walk(
         struct mliOcTree *tree,
         const struct mliTmpNode *dynnode,
         uint64_t *object_link_size)
 {
         uint64_t c;
         if (dynnode->node_index >= 0) {
-                _mliOcTree_set_node(tree, dynnode);
+                mliOcTree_set_node(tree, dynnode);
         } else if (dynnode->leaf_index >= 0) {
-                _mliOcTree_set_leaf(tree, dynnode, object_link_size);
+                mliOcTree_set_leaf(tree, dynnode, object_link_size);
         }
 
         for (c = 0; c < 8u; c++) {
                 if (dynnode->children[c] != NULL) {
-                        _mliOcTree_set(
+                        mliOcTree_set_walk(
                                 tree, dynnode->children[c], object_link_size);
                 }
         }
@@ -238,7 +238,7 @@ void mliOcTree_set(struct mliOcTree *tree, const struct mliTmpOcTree *dyntree)
                 tree->root_type = MLI_OCTREE_TYPE_LEAF;
         }
 
-        _mliOcTree_set(tree, &dyntree->root, &object_link_size);
+        mliOcTree_set_walk(tree, &dyntree->root, &object_link_size);
 }
 
 uint64_t mliOcTree_node_num_children(
@@ -271,7 +271,7 @@ uint32_t mliOcTree_leaf_object_link(
         return tree->leafs.object_links[i];
 }
 
-int _mliOcTree_equal_payload(
+int mliOcTree_equal_payload_walk(
         const struct mliOcTree *tree,
         const int32_t node_idx,
         const int32_t node_type,
@@ -328,7 +328,7 @@ int _mliOcTree_equal_payload(
                                         tree->nodes[node_idx].children[c];
                                 int32_t child_node_type =
                                         tree->nodes[node_idx].types[c];
-                                chk_msg(_mliOcTree_equal_payload(
+                                chk_msg(mliOcTree_equal_payload_walk(
                                                 tree,
                                                 child_node_idx,
                                                 child_node_type,
@@ -356,7 +356,7 @@ int mliOcTree_equal_payload(
         int32_t root_node_type = MLI_OCTREE_TYPE_NODE;
         chk_msg(mliCube_equal(tree->cube, tmp_octree->cube),
                 "Cubes are not equal");
-        chk_msg(_mliOcTree_equal_payload(
+        chk_msg(mliOcTree_equal_payload_walk(
                         tree, root_node_idx, root_node_type, &tmp_octree->root),
                 "Tree is not equal");
         return 1;
@@ -364,7 +364,7 @@ error:
         return 0;
 }
 
-void _mliOcTree_print(
+void mliOcTree_print_walk(
         const struct mliOcTree *tree,
         const int32_t node_idx,
         const uint8_t node_type,
@@ -405,7 +405,7 @@ void _mliOcTree_print(
                         child_node_idx = tree->nodes[node_idx].children[c];
                         child_node_type = tree->nodes[node_idx].types[c];
                         if (child_node_type != MLI_OCTREE_TYPE_NONE) {
-                                _mliOcTree_print(
+                                mliOcTree_print_walk(
                                         tree,
                                         child_node_idx,
                                         child_node_type,
@@ -418,7 +418,7 @@ void _mliOcTree_print(
 
 void mliOcTree_print(const struct mliOcTree *tree)
 {
-        printf("_mliOctree__\n");
+        printf("__ mliOctree __\n");
         printf("- num_nodes %u\n", (uint32_t)tree->num_nodes);
         printf("- num_leafs %u\n", (uint32_t)tree->leafs.num_leafs);
         printf("- root_type %d\n", tree->root_type);
@@ -429,7 +429,7 @@ void mliOcTree_print(const struct mliOcTree *tree)
         printf("- cube.edge_length %.1f\n", tree->cube.edge_length);
         if (tree->num_nodes > 0) {
                 int32_t root_idx = 0;
-                _mliOcTree_print(tree, root_idx, tree->root_type, 0u, 0u);
+                mliOcTree_print_walk(tree, root_idx, tree->root_type, 0u, 0u);
         }
 }
 
