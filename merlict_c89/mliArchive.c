@@ -41,7 +41,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                 struct mliDynStr *payload = NULL;
                 memset(tarh_name, '\0', sizeof(tarh_name));
 
-                _mli_strip_this_dir(tarh_name, tarh.name);
+                mli_strip_this_dir(tarh_name, tarh.name);
 
                 chk_msg(mliDynMap_insert(&arc->filenames, tarh_name, next),
                         "Can not insert key.");
@@ -177,14 +177,4 @@ uint64_t mliArchive_num_filename_prefix_sufix(
                 }
         }
         return num_matches;
-}
-
-void _mli_strip_this_dir(char *dst, const char *src)
-{
-        const char *_src = &src[0];
-        memset(dst, '\0', strlen(src));
-        while (mli_string_starts_with(_src, "./") && _src[0] != '\0') {
-                _src += 2;
-        }
-        strcpy(dst, _src);
 }

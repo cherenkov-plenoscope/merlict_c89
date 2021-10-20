@@ -37,6 +37,5 @@ uint64_t mliArchive_num_filename_prefix_sufix(
         const struct mliArchive *arc,
         const char *prefix,
         const char *sufix);
-void _mli_strip_this_dir(char *dst, const char *src);
 
 #endif

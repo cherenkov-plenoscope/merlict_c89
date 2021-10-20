@@ -31,5 +31,6 @@ int mli_lines_info_fprint(
         const char *str,
         const uint64_t line,
         const uint64_t line_radius);
+void mli_strip_this_dir(char *dst, const char *src);
 
 #endif

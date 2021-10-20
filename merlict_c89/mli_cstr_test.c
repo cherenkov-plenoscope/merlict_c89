@@ -89,41 +89,41 @@ CASE("mli_strip_this_dir")
         memset(dst, '\0', sizeof(dst));
 
         sprintf(src, "/a/b/c");
-        _mli_strip_this_dir(dst, src);
+        mli_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, src));
 
         sprintf(src, "./a/b/c");
-        _mli_strip_this_dir(dst, src);
+        mli_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "a/b/c"));
         CHECK(0 == strcmp(src, "./a/b/c"));
 
         sprintf(src, "./functions/hans.csv");
-        _mli_strip_this_dir(dst, src);
+        mli_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "functions/hans.csv"));
         CHECK(0 == strcmp(src, "./functions/hans.csv"));
 
         sprintf(src, "././././f/h.csv");
-        _mli_strip_this_dir(dst, src);
+        mli_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "f/h.csv"));
         CHECK(0 == strcmp(src, "././././f/h.csv"));
 
         sprintf(src, "a/b");
-        _mli_strip_this_dir(dst, src);
+        mli_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "a/b"));
         CHECK(0 == strcmp(src, "a/b"));
 
         sprintf(src, ".a/b");
-        _mli_strip_this_dir(dst, src);
+        mli_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, ".a/b"));
         CHECK(0 == strcmp(src, ".a/b"));
 
         sprintf(src, "a./b");
-        _mli_strip_this_dir(dst, src);
+        mli_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "a./b"));
         CHECK(0 == strcmp(src, "a./b"));
 
         memset(src, '\0', sizeof(src));
-        _mli_strip_this_dir(dst, src);
+        mli_strip_this_dir(dst, src);
         CHECK(0 == strlen(src));
         CHECK(0 == strlen(dst));
         CHECK(0 == strcmp(dst, ""));
