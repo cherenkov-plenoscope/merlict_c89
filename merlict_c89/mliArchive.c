@@ -127,7 +127,7 @@ void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct _mliMapItem *map_item = &arc->filenames.array[i];
+                struct mliDynMapItem *map_item = &arc->filenames.array[i];
                 fprintf(f,
                         "%u: %s, %u\n",
                         (uint32_t)i,
@@ -145,7 +145,7 @@ void mliArchive_mask_filename_prefix_sufix(
         uint64_t i = 0u;
         uint64_t match = 0u;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct _mliMapItem *map_item = &arc->filenames.array[i];
+                struct mliDynMapItem *map_item = &arc->filenames.array[i];
 
                 match = mli_string_has_prefix_suffix(
                         map_item->key, prefix, sufix);
@@ -167,7 +167,7 @@ uint64_t mliArchive_num_filename_prefix_sufix(
         uint64_t match;
         uint64_t num_matches = 0;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct _mliMapItem *map_item = &arc->filenames.array[i];
+                struct mliDynMapItem *map_item = &arc->filenames.array[i];
 
                 match = mli_string_has_prefix_suffix(
                         map_item->key, prefix, sufix);

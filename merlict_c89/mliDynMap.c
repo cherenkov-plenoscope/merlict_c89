@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliDynMap.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, Map, struct _mliMapItem)
+MLIDYNARRAY_IMPLEMENTATION(mli, Map, struct mliDynMapItem)
 
 int mliDynMap_find(const struct mliDynMap *map, const char *key, uint64_t *idx)
 {
@@ -23,7 +23,7 @@ int mliDynMap_has(const struct mliDynMap *map, const char *key)
 
 int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value)
 {
-        struct _mliMapItem item;
+        struct mliDynMapItem item;
         if (map->size == 0u) {
                 chk_msg(mliDynMap_malloc(map, 0u),
                         "Failed to initially malloc dyn-map.");

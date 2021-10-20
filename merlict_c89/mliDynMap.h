@@ -5,11 +5,11 @@
 #include <stdint.h>
 #include "mliName.h"
 
-struct _mliMapItem {
+struct mliDynMapItem {
         char key[MLI_NAME_CAPACITY];
         uint64_t value;
 };
-MLIDYNARRAY_DEFINITON(mli, Map, struct _mliMapItem)
+MLIDYNARRAY_DEFINITON(mli, Map, struct mliDynMapItem)
 int mliDynMap_has(const struct mliDynMap *map, const char *key);
 int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value);
 int mliDynMap_find(const struct mliDynMap *map, const char *key, uint64_t *idx);
