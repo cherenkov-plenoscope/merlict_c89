@@ -30,9 +30,7 @@ void _mliTriangle_transform_into_obb(
         struct mliVec *b_out,
         struct mliVec *c_out);
 int64_t _mli_triangle_cube_intersection(struct mliTriangle t);
-int64_t _mli_point_triangle_intersection(
-        struct mliVec p,
-        struct mliTriangle t);
+int64_t _mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t);
 int64_t _mli_check_line(
         struct mliVec p1,
         struct mliVec p2,

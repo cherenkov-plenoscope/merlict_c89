@@ -3,7 +3,6 @@
 #include "mli_testing.h"
 #include "mliGeometry.h"
 
-
 CASE("mliGeometry, init")
 {
         struct mliGeometry scenery = mliGeometry_init();

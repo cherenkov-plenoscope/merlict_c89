@@ -55,6 +55,7 @@ const struct mliFunc *mli_get_refractive_index_coming_from(
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        const struct mliSide coming_from = mli_get_side_coming_from(scenery, isec);
+        const struct mliSide coming_from =
+                mli_get_side_coming_from(scenery, isec);
         return &scenery->materials.media[coming_from.medium].refraction;
 }
