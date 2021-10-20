@@ -13,19 +13,19 @@ int mliFrame_from_json(
         const struct mliDynMap *object_names,
         const struct mliObject *objects,
         const struct mliDynMap *boundary_layer_names);
-int _mliFrame_id_from_json(
+int mliFrame_id_from_json(
         uint32_t *id,
         const struct mliJson *json,
         const uint64_t token);
-int _mliFrame_pos_rot_from_json(
+int mliFrame_pos_rot_from_json(
         struct mliHomTraComp *frame2mother,
         const struct mliJson *json,
         const uint64_t token);
-int _mliFrame_type_from_json(
+int mliFrame_type_from_json(
         uint64_t *type,
         const struct mliJson *json,
         const uint64_t token_child);
-int _mliFrame_boundary_layers_form_json(
+int mliFrame_boundary_layers_form_json(
         struct mliDynUint32 *boundary_layers,
         const uint32_t object_idx,
         const struct mliObject *objects,
