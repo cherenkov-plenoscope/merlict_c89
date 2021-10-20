@@ -116,7 +116,7 @@ struct mliColor _trace_to_intersection_atmosphere(
                         config, intersection, scenery, prng);
         }
 
-        side = _mli_side_coming_from(scenery, intersection);
+        side = mli_get_side_coming_from(scenery, intersection);
         color = scenery->materials.surfaces[side.surface].color;
 
         theta = mliVec_angle_between(

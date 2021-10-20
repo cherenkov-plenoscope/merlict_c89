@@ -49,8 +49,8 @@ CASE("simple propagation")
 
         CHECK(scenery.materials.num_media == 2);
 
-        side_coming_from = _mli_side_coming_from(&scenery, &intersection);
-        side_going_to = _mli_side_going_to(&scenery, &intersection);
+        side_coming_from = mli_get_side_coming_from(&scenery, &intersection);
+        side_going_to = mli_get_side_going_to(&scenery, &intersection);
 
         CHECK(side_going_to.medium == MED_GLASS);
         CHECK(scenery.materials.surfaces[side_going_to.surface].material ==

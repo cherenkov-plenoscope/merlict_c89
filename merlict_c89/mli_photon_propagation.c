@@ -12,8 +12,8 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
 
         struct mliSide side_coming_from, side_going_to;
 
-        side_coming_from = _mli_side_coming_from(scenery, isec);
-        side_going_to = _mli_side_going_to(scenery, isec);
+        side_coming_from = mli_get_side_coming_from(scenery, isec);
+        side_going_to = mli_get_side_going_to(scenery, isec);
 
         phia.type = type;
         phia.position = isec->position;
@@ -35,7 +35,7 @@ int _mli_phong(
         double diffuse;
         double rnd;
         struct mliSide side_coming_from =
-                _mli_side_coming_from(env->scenery, isec);
+                mli_get_side_coming_from(env->scenery, isec);
 
         chk_msg(mliFunc_evaluate(
                         &env->scenery->materials
@@ -126,7 +126,7 @@ int _mli_probability_passing_medium_coming_from(
 {
         double one_over_e_way;
         const struct mliSide side_coming_from =
-                _mli_side_coming_from(scenery, isec);
+                mli_get_side_coming_from(scenery, isec);
         chk_msg(mliFunc_evaluate(
                         &scenery->materials.media[side_coming_from.medium]
                                  .absorbtion,
@@ -150,12 +150,12 @@ int _mli_fresnel_refraction_and_reflection(
         double reflection_propability;
         struct mliVec facing_surface_normal;
         chk_msg(mliFunc_evaluate(
-                        _mli_refractive_index_going_to(env->scenery, isec),
+                        mli_get_refractive_index_going_to(env->scenery, isec),
                         env->photon->wavelength,
                         &n_going_to),
                 "Failed to eval. refraction going to for wavelength.");
         chk_msg(mliFunc_evaluate(
-                        _mli_refractive_index_coming_from(env->scenery, isec),
+                        mli_get_refractive_index_coming_from(env->scenery, isec),
                         env->photon->wavelength,
                         &n_coming_from),
                 "Failed to eval. refraction coming from for wavelength.");
@@ -196,7 +196,7 @@ int _mli_interact_with_object(
 {
         struct mliSurface surface_coming_from;
         const struct mliSide side_coming_from =
-                _mli_side_coming_from(env->scenery, isec);
+                mli_get_side_coming_from(env->scenery, isec);
         surface_coming_from =
                 env->scenery->materials.surfaces[side_coming_from.surface];
         switch (surface_coming_from.material) {
@@ -251,7 +251,7 @@ int _mli_work_on_causal_intersection(struct mliEnv *env)
                 struct mliSide side_coming_from;
 
                 side_coming_from =
-                        _mli_side_coming_from(env->scenery, &next_intersection);
+                        mli_get_side_coming_from(env->scenery, &next_intersection);
                 absorbtion_in_medium_passing_through =
                         &env->scenery->materials.media[side_coming_from.medium]
                                  .absorbtion;
