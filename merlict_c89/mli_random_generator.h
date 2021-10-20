@@ -42,16 +42,16 @@ void mliPrng_reinit(struct mliPrng *prng, const uint32_t seed);
  *      ----------------------
  */
 struct mliPrng mliPrng_init_MT19937(const uint32_t seed);
-uint32_t mliPrng_mliMT19937_generate_uint32(void *mt);
-void mliPrng_mliMT19937_reinit(void *mt, const uint32_t seed);
+uint32_t mliPrng_MT19937_generate_uint32(void *mt);
+void mliPrng_MT19937_reinit(void *mt, const uint32_t seed);
 
 /**
  *      PCG32
  *      -----
  */
 struct mliPrng mliPrng_init_PCG32(const uint32_t seed);
-uint32_t mliPrng_mliPCG32_generate_uint32(void *pcg);
-void mliPrng_mliPCG32_reinit(void *pcg, const uint32_t seed);
+uint32_t mliPrng_PCG32_generate_uint32(void *pcg);
+void mliPrng_PCG32_reinit(void *pcg, const uint32_t seed);
 
 /**
  *      Add your own prng here
