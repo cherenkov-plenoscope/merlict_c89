@@ -47,7 +47,6 @@ int mliJson_strcmp(
 int mliJson_malloc_from_path(struct mliJson *json, const char *path);
 int mliJson_malloc_from_string(struct mliJson *json, const char *json_str);
 int mliJson_malloc(struct mliJson *json, const uint64_t json_strlen);
-void _mliJson_set_zero(struct mliJson *json);
 void mliJson_free(struct mliJson *json);
 struct mliJson mliJson_init(void);
 #endif

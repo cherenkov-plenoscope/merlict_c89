@@ -21,28 +21,18 @@ void mliJson_free(struct mliJson *json)
         (*json) = mliJson_init();
 }
 
-void _mliJson_set_zero(struct mliJson *json)
-{
-        uint64_t i;
-        for (i = 0; i < json->c_str_capacity; i++) {
-                json->c_str[i] = '\0';
-        }
-        for (i = 0; i < json->num_tokens; i++) {
-                json->tokens[i].type = JSMN_UNDEFINED;
-                json->tokens[i].start = 0;
-                json->tokens[i].end = 0;
-                json->tokens[i].size = 0;
-        }
-}
-
 int mliJson_malloc(struct mliJson *json, const uint64_t json_strlen)
 {
+        struct jsmntok_t default_token = {JSMN_UNDEFINED, 0, 0, 0};
         mliJson_free(json);
         json->c_str_capacity = json_strlen + 1u;     /* NULL termination. */
         json->num_tokens = json->c_str_capacity / 2; /* A rather safe guess. */
+
         chk_malloc(json->c_str, char, json->c_str_capacity);
         chk_malloc(json->tokens, struct jsmntok_t, json->num_tokens);
-        _mliJson_set_zero(json);
+
+        memset(json->c_str, '\0', json->c_str_capacity);
+        MLI_ARRAY_SET(json->tokens, default_token, json->num_tokens);
         return 1;
 error:
         mliJson_free(json);
