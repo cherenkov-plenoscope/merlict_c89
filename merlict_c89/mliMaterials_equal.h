@@ -7,13 +7,13 @@
 int mliMaterials_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b);
-int _mliMaterials_surfaces_equal(
+int mliMaterials_surfaces_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b);
-int _mliMaterials_media_equal(
+int mliMaterials_media_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b);
-int _mliMaterials_boundary_layers_equal(
+int mliMaterials_boundary_layers_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b);
 #endif

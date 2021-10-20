@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials_equal.h"
 
-int _mliMaterials_media_equal(
+int mliMaterials_media_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b)
 {
@@ -19,7 +19,7 @@ error:
         return 0;
 }
 
-int _mliMaterials_surfaces_equal(
+int mliMaterials_surfaces_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b)
 {
@@ -39,7 +39,7 @@ error:
         return 0;
 }
 
-int _mliMaterials_boundary_layers_equal(
+int mliMaterials_boundary_layers_equal(
         const struct mliMaterials *a,
         const struct mliMaterials *b)
 {
@@ -67,9 +67,9 @@ int mliMaterials_equal(
 {
         chk_msg(a->default_medium == b->default_medium,
                 "Different default_medium.");
-        chk_msg(_mliMaterials_media_equal(a, b), "Different media.");
-        chk_msg(_mliMaterials_surfaces_equal(a, b), "Different surfaces.");
-        chk_msg(_mliMaterials_boundary_layers_equal(a, b),
+        chk_msg(mliMaterials_media_equal(a, b), "Different media.");
+        chk_msg(mliMaterials_surfaces_equal(a, b), "Different surfaces.");
+        chk_msg(mliMaterials_boundary_layers_equal(a, b),
                 "Different boundary_layers.");
         return 1;
 error:

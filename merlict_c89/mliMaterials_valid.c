@@ -2,7 +2,7 @@
 #include "mliMaterials_valid.h"
 #include "mliObject.h"
 
-int _mliMaterials_valid_media(const struct mliMaterials *materials)
+int mliMaterials_valid_media(const struct mliMaterials *materials)
 {
         uint32_t i = 0u;
         for (i = 0; i < materials->num_media; i++) {
@@ -17,7 +17,7 @@ error:
         return 0;
 }
 
-int _mliMaterials_valid_surfaces(const struct mliMaterials *materials)
+int mliMaterials_valid_surfaces(const struct mliMaterials *materials)
 {
         uint32_t i = 0u;
         for (i = 0; i < materials->num_surfaces; i++) {
@@ -42,7 +42,7 @@ error:
         return 0;
 }
 
-int _mliMaterials_valid_boundary_layers(const struct mliMaterials *materials)
+int mliMaterials_valid_boundary_layers(const struct mliMaterials *materials)
 {
         uint32_t i = 0u;
         for (i = 0; i < materials->num_boundary_layers; i++) {
@@ -72,11 +72,11 @@ int mliMaterials_valid(const struct mliMaterials *materials)
 {
         chk_msg(materials->default_medium <= materials->num_media,
                 "Expected default-medium to reference a valid medium.");
-        chk_msg(_mliMaterials_valid_media(materials),
+        chk_msg(mliMaterials_valid_media(materials),
                 "Expected media to be valid.");
-        chk_msg(_mliMaterials_valid_surfaces(materials),
+        chk_msg(mliMaterials_valid_surfaces(materials),
                 "Expected surfaces to be valid.");
-        chk_msg(_mliMaterials_valid_boundary_layers(materials),
+        chk_msg(mliMaterials_valid_boundary_layers(materials),
                 "Expected boundary_layers to be valid.");
         return 1;
 error:

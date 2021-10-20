@@ -5,7 +5,7 @@
 #include "mliMaterials.h"
 
 int mliMaterials_valid(const struct mliMaterials *materials);
-int _mliMaterials_valid_surfaces(const struct mliMaterials *materials);
-int _mliMaterials_valid_media(const struct mliMaterials *materials);
-int _mliMaterials_valid_boundary_layers(const struct mliMaterials *materials);
+int mliMaterials_valid_surfaces(const struct mliMaterials *materials);
+int mliMaterials_valid_media(const struct mliMaterials *materials);
+int mliMaterials_valid_boundary_layers(const struct mliMaterials *materials);
 #endif
