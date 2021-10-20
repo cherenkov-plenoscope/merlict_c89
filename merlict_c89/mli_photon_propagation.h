@@ -24,33 +24,33 @@ int mli_propagate_photon(
         struct mliPhoton *photon,
         struct mliPrng *prng,
         const uint64_t max_interactions);
-int _mli_work_on_causal_intersection(struct mliEnv *env);
-int _mli_distance_until_absorbtion(
+int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env);
+int mli_propagate_photon_distance_until_absorbtion(
         const struct mliFunc *absorbtion_in_medium_passing_through,
         const double wavelength,
         struct mliPrng *prng,
         double *distance_until_absorbtion);
-int _mli_interact_with_object(
+int mli_propagate_photon_interact_with_object(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec);
-int _mli_fresnel_refraction_and_reflection(
+int mli_propagate_photon_fresnel_refraction_and_reflection(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec);
-int _mli_probability_passing_medium_coming_from(
+int mli_propagate_photon_probability_passing_medium_coming_from(
         const struct mliScenery *scenery,
         const struct mliPhoton *photon,
         const struct mliIntersectionSurfaceNormal *isec,
         double *probability_passing);
-int _mli_pass_boundary_layer(
+int mli_propagate_photon_pass_boundary_layer(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec,
         const struct mliFresnel fresnel);
-int _mli_phong(
+int mli_propagate_photon_phong(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec);
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec);
-int _mli_propagate_photon(struct mliEnv *env);
+int mli_propagate_photon_env(struct mliEnv *env);
 #endif
