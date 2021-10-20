@@ -16,7 +16,7 @@ void mli_ray_octree_traversal(
                 const struct mliOcTree *,
                 const uint32_t));
 
-void _mli_proc_subtree(
+void mli_ray_octree_traversal_sub(
         struct mliVec t0,
         struct mliVec t1,
         const struct mliOcTree *octree,
@@ -29,8 +29,14 @@ void _mli_proc_subtree(
                 const struct mliOcTree *,
                 const uint32_t));
 
-int _mli_next_octree_node(const struct mliVec tm, int x, int y, int z);
+int mli_ray_octree_traversal_next_octree_node(
+        const struct mliVec tm,
+        int x,
+        int y,
+        int z);
 
-int _mli_first_octree_node(const struct mliVec t0, const struct mliVec tm);
+int mli_ray_octree_traversal_first_octree_node(
+        const struct mliVec t0,
+        const struct mliVec tm);
 
 #endif
