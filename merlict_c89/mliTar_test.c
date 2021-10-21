@@ -13,9 +13,12 @@ CASE("Write and read tape-archive")
 
         CHECK(mliTar_open(
                 &tar, "merlict_c89/mliTar_test_resources/123.tar.tmp", "w"));
-        CHECK(mliTar_write_dir_header(&tar, "resources"));
-        CHECK(mliTar_write_file_header(
-                &tar, "resources/hans.txt", strlen(payload)));
+        CHECK(mliTarHeader_set_directory(&tarh, "resources"));
+        CHECK(mliTar_write_header(&tar, &tarh));
+
+        CHECK(mliTarHeader_set_normal_file(&tarh, "resources/hans.txt", strlen(payload)));
+        CHECK(mliTar_write_header(&tar, &tarh));
+
         CHECK(mliTar_write_data(&tar, payload, strlen(payload)));
         CHECK(mliTar_finalize(&tar));
         CHECK(mliTar_close(&tar));

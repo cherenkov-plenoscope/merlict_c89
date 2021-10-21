@@ -61,7 +61,7 @@ int mliTarIoEvent_malloc_from_run(
         chk_msg(strcmp(&run->_next_head.name[PATH_NUM_DIGITS],
                        EVENT_HEADER_SUFFIX) == 0,
                 "Expected evth path to have suffix '.evth.float32'.");
-        chk_msg(mli_nstring_to_uint(
+        chk_msg(mli_ncstr_to_uint64(
                         &evth_event_id,
                         run->_next_head.name,
                         10,
@@ -79,10 +79,11 @@ int mliTarIoEvent_malloc_from_run(
         chk_msg(strlen(run->_next_head.name) == BUNCH_PATH_LENGTH,
                 "Expected length of photon-bunches-path to be "
                 "strlen('012345678.cherenkov_bunches.Nx8_float32').");
-        chk_msg(strcmp(&run->_next_head.name[PATH_NUM_DIGITS], BUNCH_SUFFIX) == 0,
+        chk_msg(strcmp(&run->_next_head.name[PATH_NUM_DIGITS], BUNCH_SUFFIX) ==
+                        0,
                 "Expected photon-bunches-path to have suffix "
                 "'.cherenkov_bunches.Nx8_float32'.");
-        chk_msg(mli_nstring_to_uint(
+        chk_msg(mli_ncstr_to_uint64(
                         &photon_bunches_event_id,
                         run->_next_head.name,
                         10,

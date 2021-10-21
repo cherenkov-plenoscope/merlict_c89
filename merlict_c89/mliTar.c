@@ -44,6 +44,34 @@ struct mliTarHeader mliTarHeader_init(void)
         return h;
 }
 
+int mliTarHeader_set_normal_file(
+        struct mliTarHeader *h,
+        const char *name,
+        const uint64_t size)
+{
+        (*h) = mliTarHeader_init();
+        chk_msg(strlen(name) < sizeof(h->name), "Filename is too long.");
+        memcpy(h->name, name, strlen(name));
+        h->size = size;
+        h->type = MLI_TAR_NORMAL_FILE;
+        h->mode = 0664;
+        return 1;
+error:
+        return 0;
+}
+
+int mliTarHeader_set_directory(struct mliTarHeader *h, const char *name)
+{
+        (*h) = mliTarHeader_init();
+        chk_msg(strlen(name) < sizeof(h->name), "Dirname is too long.");
+        memcpy(h->name, name, strlen(name));
+        h->type = MLI_TAR_DIRECTORY;
+        h->mode = 0775;
+        return 1;
+error:
+        return 0;
+}
+
 /* write */
 
 int mliTar_twrite(struct mliTar *tar, const void *data, const uint64_t size)
@@ -370,37 +398,6 @@ int mliTar_write_header(struct mliTar *tar, const struct mliTarHeader *h)
         tar->remaining_data = h->size;
         chk_msg(mliTar_twrite(tar, &rh, sizeof(rh)),
                 "Failed to write header.");
-        return 1;
-error:
-        return 0;
-}
-
-int mliTar_write_file_header(
-        struct mliTar *tar,
-        const char *name,
-        uint64_t size)
-{
-        struct mliTarHeader h = mliTarHeader_init();
-        chk_msg(strlen(name) < sizeof(h.name), "Filename is too long.");
-        memcpy(h.name, name, strlen(name));
-        h.size = size;
-        h.type = MLI_TAR_NORMAL_FILE;
-        h.mode = 0664;
-        /* Write header */
-        chk_msg(mliTar_write_header(tar, &h), "Failed to write file-header.");
-        return 1;
-error:
-        return 0;
-}
-
-int mliTar_write_dir_header(struct mliTar *tar, const char *name)
-{
-        struct mliTarHeader h = mliTarHeader_init();
-        chk_msg(strlen(name) < sizeof(h.name), "Dirname is too long.");
-        memcpy(h.name, name, strlen(name));
-        h.type = MLI_TAR_DIRECTORY;
-        h.mode = 0775;
-        chk_msg(mliTar_write_header(tar, &h), "Failed to write dir-header.");
         return 1;
 error:
         return 0;

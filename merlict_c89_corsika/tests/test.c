@@ -12,7 +12,7 @@
 #include "../../merlict_c89/all_sources.c"
 #include "../../merlict_c89_corsika/all_headers.h"
 #include "../../merlict_c89_corsika/all_sources.c"
-#include "../../merlict_c89/tests/mli_testing.h"
+#include "../../merlict_c89/mli_testing.h"
 
 int main(void)
 {
