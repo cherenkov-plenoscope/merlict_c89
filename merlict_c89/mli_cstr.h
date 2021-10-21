@@ -33,4 +33,7 @@ int mli_lines_info_fprint(
         const uint64_t line_radius);
 void mli_strip_this_dir(char *dst, const char *src);
 
+void mli_cstr_path_basename_without_extension(const char *filename, char *key);
+void mli_cstr_strip_spaces(const char *in, char *out);
+
 #endif

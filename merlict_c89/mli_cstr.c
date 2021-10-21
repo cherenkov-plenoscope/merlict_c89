@@ -214,3 +214,51 @@ void mli_strip_this_dir(char *dst, const char *src)
         }
         strcpy(dst, _src);
 }
+
+void mli_cstr_path_basename_without_extension(const char *filename, char *key)
+{
+        uint64_t i = 0u;
+        uint64_t o = 0u;
+
+        while (1) {
+                if (filename[i] == '\0') {
+                        goto finalize;
+                }
+                if (filename[i] == '/') {
+                        i += 1;
+                        break;
+                }
+                i += 1;
+        }
+
+        while (1) {
+                if (filename[i] == '\0') {
+                        goto finalize;
+                }
+                if (filename[i] == '.') {
+                        i += 1;
+                        break;
+                }
+                key[o] = filename[i];
+                i += 1;
+                o += 1;
+        }
+
+finalize:
+        key[o] = '\0';
+}
+
+void mli_cstr_strip_spaces(const char *in, char *out)
+{
+        uint64_t i = 0u;
+        uint64_t o = 0u;
+        while (in[i] && isspace(in[i])) {
+                i += 1;
+        }
+        while (in[i] && !isspace(in[i])) {
+                out[o] = in[i];
+                i += 1;
+                o += 1;
+        }
+        out[o] = '\0';
+}
