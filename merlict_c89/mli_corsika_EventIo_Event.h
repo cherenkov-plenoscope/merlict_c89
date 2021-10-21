@@ -1,6 +1,6 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
-#ifndef MERLICT_C89_CORSIKA_EVENTIO_EVENT_H_
-#define MERLICT_C89_CORSIKA_EVENTIO_EVENT_H_
+#ifndef MLI_CORSIKA_EVENTIO_EVENT_H_
+#define MLI_CORSIKA_EVENTIO_EVENT_H_
 
 #include <stdint.h>
 #include "mli_corsika_EventIo_TelescopeOffset.h"
