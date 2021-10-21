@@ -151,7 +151,7 @@ int64_t _mli_check_line(
 
 /* Test if 3D point is inside 3D triangle */
 
-int64_t _mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
+int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mliVec p)
 {
         int64_t sign12_bitmask, sign23_bitmask, sign31_bitmask;
         struct mliVec vect12, vect23, vect31, vect1h, vect2h, vect3h;
@@ -218,7 +218,7 @@ int64_t _mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
 /* intersects or does not intersect the cube. */
 /**********************************************/
 
-int64_t _mli_triangle_cube_intersection(struct mliTriangle t)
+int64_t mliTriangle_intersects_norm_obb(struct mliTriangle t)
 {
         int64_t v1_test, v2_test, v3_test;
         double d, denom;
@@ -311,28 +311,28 @@ int64_t _mli_triangle_cube_intersection(struct mliTriangle t)
         {
                 hitpp.x = hitpp.y = hitpp.z = d / denom;
                 if (fabs(hitpp.x) <= 0.5)
-                        if (_mli_point_triangle_intersection(hitpp, t) ==
+                        if (mliTriangle_intersects_point(t, hitpp) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
         if (fabs(denom = (norm.x + norm.y - norm.z)) > MLI_EPSILON) {
                 hitpn.z = -(hitpn.x = hitpn.y = d / denom);
                 if (fabs(hitpn.x) <= 0.5)
-                        if (_mli_point_triangle_intersection(hitpn, t) ==
+                        if (mliTriangle_intersects_point(t, hitpn) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
         if (fabs(denom = (norm.x - norm.y + norm.z)) > MLI_EPSILON) {
                 hitnp.y = -(hitnp.x = hitnp.z = d / denom);
                 if (fabs(hitnp.x) <= 0.5)
-                        if (_mli_point_triangle_intersection(hitnp, t) ==
+                        if (mliTriangle_intersects_point(t, hitnp) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
         if (fabs(denom = (norm.x - norm.y - norm.z)) > MLI_EPSILON) {
                 hitnn.y = hitnn.z = -(hitnn.x = d / denom);
                 if (fabs(hitnn.x) <= 0.5)
-                        if (_mli_point_triangle_intersection(hitnn, t) ==
+                        if (mliTriangle_intersects_point(t, hitnn) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
@@ -380,7 +380,7 @@ int mliTriangle_has_overlap_obb(
         const struct mliOBB obb)
 {
         struct mliTriangle tri = mliTriangle_set_in_norm_obb(a, b, c, obb);
-        if (_mli_triangle_cube_intersection(tri) == MLI_INSIDE)
+        if (mliTriangle_intersects_norm_obb(tri) == MLI_INSIDE)
                 return 1;
         else
                 return 0;

@@ -26,8 +26,8 @@ struct mliTriangle mliTriangle_set_in_norm_obb(
         const struct mliVec b,
         const struct mliVec c,
         const struct mliOBB obb);
-int64_t _mli_triangle_cube_intersection(struct mliTriangle t);
-int64_t _mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t);
+int64_t mliTriangle_intersects_norm_obb(struct mliTriangle t);
+int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mliVec p);
 int64_t _mli_check_line(
         struct mliVec p1,
         struct mliVec p2,
