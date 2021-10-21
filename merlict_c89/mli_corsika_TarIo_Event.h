@@ -2,8 +2,8 @@
 #ifndef MERLICT_C89_CORSIKA_TARIO_EVENT_H_
 #define MERLICT_C89_CORSIKA_TARIO_EVENT_H_
 
-#include "../../merlict_c89_corsika/TarIo/Run.h"
-#include "../../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
+#include "mli_corsika_TarIo_Run.h"
+#include "mli_corsika_CorsikaPhotonBunch.h"
 
 struct mliTarIoEvent {
         float corsika_event_header[273];

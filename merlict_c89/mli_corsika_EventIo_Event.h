@@ -3,10 +3,10 @@
 #define MERLICT_C89_CORSIKA_EVENTIO_EVENT_H_
 
 #include <stdint.h>
-#include "../../merlict_c89_corsika/EventIo/TelescopeOffset.h"
-#include "../../merlict_c89_corsika/EventIo/Run.h"
-#include "../../merlict_c89_corsika/EventIo/Telescope.h"
-#include "../../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
+#include "mli_corsika_EventIo_TelescopeOffset.h"
+#include "mli_corsika_EventIo_Run.h"
+#include "mli_corsika_EventIo_Telescope.h"
+#include "mli_corsika_CorsikaPhotonBunch.h"
 
 struct mliEventIoEvent {
         float corsika_event_header[273];

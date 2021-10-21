@@ -2,7 +2,7 @@
 #ifndef MERLICT_C89_CORSIKA_TARIO_WRITE_H_
 #define MERLICT_C89_CORSIKA_TARIO_WRITE_H_
 
-#include "../../merlict_c89/mliTar.h"
+#include "mliTar.h"
 #include <stdint.h>
 
 #define MLI_TARIO_CORSIKA_BUNCH_SIZE sizeof(float) * 8

@@ -3,8 +3,8 @@
 #define MERLICT_C89_CORSIKA_CORSIKAPHOTONBUNCH_H_
 
 #include <stdint.h>
-#include "../merlict_c89/mliDynArray_template.h"
-#include "../merlict_c89/mliPhoton.h"
+#include "mliDynArray_template.h"
+#include "mliPhoton.h"
 
 struct mliCorsikaPhotonBunch {
         /*

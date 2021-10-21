@@ -3,8 +3,8 @@
 #define MERLICT_C89_CORSIKA_EVENTIO_RUN_H_
 
 #include <stdint.h>
-#include "../../merlict_c89_corsika/EventIo/Header.h"
-#include "../../merlict_c89_corsika/EventIo/TelescopePosition.h"
+#include "mli_corsika_EventIo_Header.h"
+#include "mli_corsika_EventIo_TelescopePosition.h"
 
 struct mliEventIoRun {
         FILE *f;

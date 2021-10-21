@@ -1,7 +1,6 @@
 /* Copyright 2020 Sebastian A. Mueller*/
-#include "../../merlict_c89_corsika/TarIo/Run.h"
-#include "../../merlict_c89_corsika/utils.h"
-#include "../../merlict_c89/mliTar.h"
+#include "mli_corsika_TarIo_Run.h"
+#include "mli_corsika_utils.h"
 
 struct mliTarIoRun mliTarIoRun_init(void)
 {

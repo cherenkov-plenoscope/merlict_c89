@@ -3,9 +3,9 @@
 #define MERLICT_C89_CORSIKA_EVENTIO_TELESCOPE_H_
 
 #include <stdint.h>
-#include "../../merlict_c89/mliDynArray_template.h"
-#include "../../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
-#include "../../merlict_c89_corsika/EventIo/TelescopeOffset.h"
+#include "mliDynArray_template.h"
+#include "mli_corsika_CorsikaPhotonBunch.h"
+#include "mli_corsika_EventIo_TelescopeOffset.h"
 
 struct mliEventIoTelescope {
         int16_t array_id;

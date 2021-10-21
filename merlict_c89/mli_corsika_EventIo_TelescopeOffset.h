@@ -3,7 +3,7 @@
 #define MERLICT_C89_CORSIKA_EVENTIO_TELESCOPEOFFSET_H_
 
 #include <stdint.h>
-#include "../../merlict_c89/mliDynArray_template.h"
+#include "mliDynArray_template.h"
 
 struct mliEventIoTelescopeOffset {
         float toff;

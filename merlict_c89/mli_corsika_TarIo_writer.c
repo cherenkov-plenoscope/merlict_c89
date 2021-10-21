@@ -1,7 +1,7 @@
 /* Copyright 2020 Sebastian A. Mueller */
-#include "../../merlict_c89_corsika/TarIo/writer.h"
-#include "../../merlict_c89_corsika/utils.h"
-#include "../../merlict_c89/mliTar.h"
+#include "mli_corsika_TarIo_writer.h"
+#include "mli_corsika_utils.h"
+#include "mliTar.h"
 
 /* buffer */
 struct mliTarIoCherenkovBunchBuffer mliTarIoCherenkovBunchBuffer_init(void)

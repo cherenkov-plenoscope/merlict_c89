@@ -1,5 +1,5 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
-#include "../../merlict_c89_corsika/EventIo/Event.h"
+#include "mli_corsika_EventIo_Event.h"
 
 int mliEventIo_read_telescope_offsets(
         FILE *f,

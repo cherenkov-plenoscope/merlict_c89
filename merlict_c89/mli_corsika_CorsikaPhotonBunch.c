@@ -1,5 +1,5 @@
 /* Copyright 2016 Sebastian A. Mueller */
-#include "../merlict_c89_corsika/mliCorsikaPhotonBunch.h"
+#include "mli_corsika_CorsikaPhotonBunch.h"
 
 MLIDYNARRAY_IMPLEMENTATION(
         mli,

@@ -1,7 +1,7 @@
 /* Copyright 2020 Sebastian A. Mueller*/
-#include "../../merlict_c89_corsika/TarIo/Event.h"
-#include "../../merlict_c89_corsika/utils.h"
-#include "../../merlict_c89/mliTar.h"
+#include "mli_corsika_TarIo_Event.h"
+#include "mli_corsika_utils.h"
+#include "mliTar.h"
 
 struct mliTarIoEvent mliTarIoEvent_init(void)
 {

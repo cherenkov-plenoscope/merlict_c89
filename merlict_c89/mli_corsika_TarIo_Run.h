@@ -2,7 +2,7 @@
 #ifndef MERLICT_C89_CORSIKA_TARIO_RUN_H_
 #define MERLICT_C89_CORSIKA_TARIO_RUN_H_
 
-#include "../../merlict_c89/mliTar.h"
+#include "mliTar.h"
 
 struct mliTarIoRun {
         int has_next_head;

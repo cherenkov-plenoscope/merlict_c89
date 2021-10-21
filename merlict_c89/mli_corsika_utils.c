@@ -1,5 +1,5 @@
 /* Copyright 2020 Sebastian A. Mueller*/
-#include "utils.h"
+#include "mli_corsika_utils.h"
 
 float mli_4chars_to_float(const char *four_char_word)
 {
