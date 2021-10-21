@@ -343,33 +343,34 @@ int64_t _mli_triangle_cube_intersection(struct mliTriangle t)
         return (MLI_OUTSIDE);
 }
 
-void _mliTriangle_transform_into_obb(
+struct mliTriangle mliTriangle_set_in_norm_obb(
         const struct mliVec a,
         const struct mliVec b,
         const struct mliVec c,
-        const struct mliOBB obb,
-        struct mliVec *a_out,
-        struct mliVec *b_out,
-        struct mliVec *c_out)
+        const struct mliOBB obb)
 {
+        struct mliTriangle tri;
         struct mliVec obb_center = mliOBB_center(obb);
-        const double scale_x = obb.upper.x - obb.lower.x;
-        const double scale_y = obb.upper.y - obb.lower.y;
-        const double scale_z = obb.upper.z - obb.lower.z;
+        const double inv_scale_x = 1.0 / (obb.upper.x - obb.lower.x);
+        const double inv_scale_y = 1.0 / (obb.upper.y - obb.lower.y);
+        const double inv_scale_z = 1.0 / (obb.upper.z - obb.lower.z);
         /* translate */
-        (*a_out) = mliVec_substract(a, obb_center);
-        (*b_out) = mliVec_substract(b, obb_center);
-        (*c_out) = mliVec_substract(c, obb_center);
+        tri.v1 = mliVec_substract(a, obb_center);
+        tri.v2 = mliVec_substract(b, obb_center);
+        tri.v3 = mliVec_substract(c, obb_center);
         /* scale */
-        a_out->x /= scale_x;
-        b_out->x /= scale_x;
-        c_out->x /= scale_x;
-        a_out->y /= scale_y;
-        b_out->y /= scale_y;
-        c_out->y /= scale_y;
-        a_out->z /= scale_z;
-        b_out->z /= scale_z;
-        c_out->z /= scale_z;
+        tri.v1.x *= inv_scale_x;
+        tri.v2.x *= inv_scale_x;
+        tri.v3.x *= inv_scale_x;
+
+        tri.v1.y *= inv_scale_y;
+        tri.v2.y *= inv_scale_y;
+        tri.v3.y *= inv_scale_y;
+
+        tri.v1.z *= inv_scale_z;
+        tri.v2.z *= inv_scale_z;
+        tri.v3.z *= inv_scale_z;
+        return tri;
 }
 
 int mliTriangle_has_overlap_obb(
@@ -378,9 +379,7 @@ int mliTriangle_has_overlap_obb(
         const struct mliVec c,
         const struct mliOBB obb)
 {
-        struct mliTriangle tri;
-        _mliTriangle_transform_into_obb(
-                a, b, c, obb, &tri.v1, &tri.v2, &tri.v3);
+        struct mliTriangle tri = mliTriangle_set_in_norm_obb(a, b, c, obb);
         if (_mli_triangle_cube_intersection(tri) == MLI_INSIDE)
                 return 1;
         else
