@@ -6,17 +6,17 @@
 #include "mli_intersection_and_scenery.h"
 #include "mli_ray_octree_traversal.h"
 
-double _mli_trace_sun_visibility(
+double mli_trace_sun_visibility(
         const struct mliScenery *scenery,
         const struct mliVec position,
         const struct mliTracerCongig *config,
         struct mliPrng *prng)
 {
         return (1.0 -
-                _mli_trace_sun_obstruction(scenery, position, config, prng));
+                mli_trace_sun_obstruction(scenery, position, config, prng));
 }
 
-double _mli_trace_sun_obstruction(
+double mli_trace_sun_obstruction(
         const struct mliScenery *scenery,
         const struct mliVec position,
         const struct mliTracerCongig *config,
@@ -50,7 +50,7 @@ double _mli_trace_sun_obstruction(
         return num_obstructions / config->num_trails_global_light_source;
 }
 
-struct mliColor _trace_to_intersection(
+struct mliColor mli_trace_to_intersection(
         const struct mliTracerCongig *config,
         const struct mliIntersectionSurfaceNormal *intersection,
         const struct mliScenery *scenery,
@@ -61,7 +61,7 @@ struct mliColor _trace_to_intersection(
         double theta;
         double lambert_factor;
 
-        const double sun_visibility = _mli_trace_sun_visibility(
+        const double sun_visibility = mli_trace_sun_visibility(
                 scenery, intersection->position, config, prng);
 
         side = mli_get_side_coming_from(scenery, intersection);
@@ -78,7 +78,7 @@ struct mliColor _trace_to_intersection(
         return color;
 }
 
-struct mliColor _mli_trace(
+struct mliColor mli_trace_without_atmosphere(
         const struct mliScenery *scenery,
         const struct mliRay ray,
         const struct mliTracerCongig *config,
@@ -89,7 +89,7 @@ struct mliColor _mli_trace(
 
         if (mli_query_intersection_with_surface_normal(
                     scenery, ray, &intersection)) {
-                return _trace_to_intersection(
+                return mli_trace_to_intersection(
                         config, &intersection, scenery, prng);
         } else {
                 return config->background_color;
@@ -103,9 +103,9 @@ struct mliColor mli_trace(
         struct mliPrng *prng)
 {
         if (config->have_atmosphere) {
-                return _mli_trace_atmosphere(scenery, ray, config, prng);
+                return mli_trace_with_atmosphere(scenery, ray, config, prng);
         } else {
-                return _mli_trace(scenery, ray, config, prng);
+                return mli_trace_without_atmosphere(scenery, ray, config, prng);
         }
 }
 

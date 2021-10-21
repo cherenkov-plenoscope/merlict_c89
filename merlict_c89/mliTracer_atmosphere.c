@@ -14,7 +14,7 @@ struct mliVec mli_random_direction_in_hemisphere(
         return mliVec_normalized(rnd_dir);
 }
 
-struct mliColor _trace_color_tone_of_sun(
+struct mliColor mli_trace_color_tone_of_sun(
         const struct mliTracerCongig *config,
         const struct mliVec support)
 {
@@ -46,7 +46,7 @@ struct mliColor _trace_color_tone_of_sun(
         }
 }
 
-struct mliColor _trace_color_tone_of_diffuse_sky(
+struct mliColor mli_trace_color_tone_of_diffuse_sky(
         const struct mliTracerCongig *config,
         const struct mliIntersectionSurfaceNormal *intersection,
         const struct mliScenery *scenery,
@@ -93,7 +93,7 @@ struct mliColor _trace_color_tone_of_diffuse_sky(
         return mliColor_multiply(sky, 1.0 / (255.0 * num_samples));
 }
 
-struct mliColor _trace_to_intersection_atmosphere(
+struct mliColor mli_trace_to_intersection_atmosphere(
         const struct mliTracerCongig *config,
         const struct mliIntersectionSurfaceNormal *intersection,
         const struct mliScenery *scenery,
@@ -105,14 +105,14 @@ struct mliColor _trace_to_intersection_atmosphere(
         double theta;
         double lambert_factor;
 
-        const double sun_visibility = _mli_trace_sun_visibility(
+        const double sun_visibility = mli_trace_sun_visibility(
                 scenery, intersection->position, config, prng);
 
         if (sun_visibility > 0.0) {
-                tone = _trace_color_tone_of_sun(config, intersection->position);
+                tone = mli_trace_color_tone_of_sun(config, intersection->position);
                 tone = mliColor_multiply(tone, sun_visibility);
         } else {
-                tone = _trace_color_tone_of_diffuse_sky(
+                tone = mli_trace_color_tone_of_diffuse_sky(
                         config, intersection, scenery, prng);
         }
 
@@ -128,7 +128,7 @@ struct mliColor _trace_to_intersection_atmosphere(
         return mliColor_multiply_elementwise(color, tone);
 }
 
-struct mliColor _mli_trace_atmosphere(
+struct mliColor mli_trace_with_atmosphere(
         const struct mliScenery *scenery,
         const struct mliRay ray,
         const struct mliTracerCongig *config,
@@ -140,7 +140,7 @@ struct mliColor _mli_trace_atmosphere(
 
         if (mli_query_intersection_with_surface_normal(
                     scenery, ray, &intersection)) {
-                out = _trace_to_intersection_atmosphere(
+                out = mli_trace_to_intersection_atmosphere(
                         config, &intersection, scenery, prng);
         } else {
                 out = mliAtmosphere_query(
