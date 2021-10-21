@@ -16,7 +16,8 @@ CASE("Write and read tape-archive")
         CHECK(mliTarHeader_set_directory(&tarh, "resources"));
         CHECK(mliTar_write_header(&tar, &tarh));
 
-        CHECK(mliTarHeader_set_normal_file(&tarh, "resources/hans.txt", strlen(payload)));
+        CHECK(mliTarHeader_set_normal_file(
+                &tarh, "resources/hans.txt", strlen(payload)));
         CHECK(mliTar_write_header(&tar, &tarh));
 
         CHECK(mliTar_write_data(&tar, payload, strlen(payload)));

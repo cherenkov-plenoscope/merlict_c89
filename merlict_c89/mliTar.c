@@ -120,8 +120,7 @@ uint64_t mliTar_checksum(const struct mliTarRawHeader *rh)
         for (i = 0; i < offsetof(struct mliTarRawHeader, checksum); i++) {
                 res += p[i];
         }
-        for (i = offsetof(struct mliTarRawHeader, type); i < sizeof(*rh);
-             i++) {
+        for (i = offsetof(struct mliTarRawHeader, type); i < sizeof(*rh); i++) {
                 res += p[i];
         }
         return res;
@@ -396,8 +395,7 @@ int mliTar_write_header(struct mliTar *tar, const struct mliTarHeader *h)
         struct mliTarRawHeader rh;
         chk_msg(mliTar_make_raw_header(&rh, h), "Failed to make raw-header");
         tar->remaining_data = h->size;
-        chk_msg(mliTar_twrite(tar, &rh, sizeof(rh)),
-                "Failed to write header.");
+        chk_msg(mliTar_twrite(tar, &rh, sizeof(rh)), "Failed to write header.");
         return 1;
 error:
         return 0;

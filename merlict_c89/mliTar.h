@@ -53,9 +53,7 @@ struct mliTarHeader {
 };
 
 struct mliTarHeader mliTarHeader_init(void);
-int mliTarHeader_set_directory(
-        struct mliTarHeader *h,
-        const char *name);
+int mliTarHeader_set_directory(struct mliTarHeader *h, const char *name);
 int mliTarHeader_set_normal_file(
         struct mliTarHeader *h,
         const char *name,

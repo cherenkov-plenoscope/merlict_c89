@@ -232,7 +232,7 @@ void mliTmpNode_print(
  *      0, 1, 2, 3, 4, 5, 6, ...
  */
 
-int _mliTmpNode_exists_and_objects(const struct mliTmpNode *node)
+int mliTmpNode_exists_and_has_objects(const struct mliTmpNode *node)
 {
         if (node != NULL) {
                 if (node->num_objects > 0u) {
@@ -242,7 +242,7 @@ int _mliTmpNode_exists_and_objects(const struct mliTmpNode *node)
         return 0;
 }
 
-void _mliTmpNode_set_flat_index(
+void mliTmpNode_set_flat_index_walk(
         struct mliTmpNode *node,
         int32_t *flat_index,
         int32_t *node_index,
@@ -250,7 +250,7 @@ void _mliTmpNode_set_flat_index(
 {
         uint64_t c;
         for (c = 0u; c < 8u; c++) {
-                if (_mliTmpNode_exists_and_objects(node->children[c])) {
+                if (mliTmpNode_exists_and_has_objects(node->children[c])) {
                         (*flat_index)++;
                         node->children[c]->flat_index = *flat_index;
 
@@ -264,8 +264,8 @@ void _mliTmpNode_set_flat_index(
                 }
         }
         for (c = 0u; c < 8u; c++) {
-                if (_mliTmpNode_exists_and_objects(node->children[c])) {
-                        _mliTmpNode_set_flat_index(
+                if (mliTmpNode_exists_and_has_objects(node->children[c])) {
+                        mliTmpNode_set_flat_index_walk(
                                 node->children[c],
                                 flat_index,
                                 node_index,
@@ -287,7 +287,7 @@ void mliTmpNode_set_flat_index(struct mliTmpNode *root_node)
                 root_node->node_index = node_index;
         }
 
-        _mliTmpNode_set_flat_index(
+        mliTmpNode_set_flat_index_walk(
                 root_node, &flat_index, &node_index, &leaf_index);
 }
 
@@ -295,7 +295,7 @@ void mliTmpNode_set_flat_index(struct mliTmpNode *root_node)
  * Find the number of valid nodes in dynamic tree
  */
 
-void _mliTmpNode_num_nodes_leafs_objects(
+void mliTmpNode_num_nodes_leafs_objects_walk(
         const struct mliTmpNode *node,
         uint64_t *num_nodes,
         uint64_t *num_leafs,
@@ -311,7 +311,7 @@ void _mliTmpNode_num_nodes_leafs_objects(
         }
         for (c = 0; c < 8u; c++) {
                 if (node->children[c] != NULL) {
-                        _mliTmpNode_num_nodes_leafs_objects(
+                        mliTmpNode_num_nodes_leafs_objects_walk(
                                 node->children[c],
                                 num_nodes,
                                 num_leafs,
@@ -329,7 +329,7 @@ void mliTmpNode_num_nodes_leafs_objects(
         *num_nodes = 0;
         *num_leafs = 0;
         *num_object_links = 0;
-        _mliTmpNode_num_nodes_leafs_objects(
+        mliTmpNode_num_nodes_leafs_objects_walk(
                 root_node, num_nodes, num_leafs, num_object_links);
 }
 

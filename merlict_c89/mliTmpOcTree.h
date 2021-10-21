@@ -36,18 +36,18 @@ void mliTmpNode_num_nodes_leafs_objects(
         uint64_t *num_nodes,
         uint64_t *num_leafs,
         uint64_t *num_object_links);
-void _mliTmpNode_num_nodes_leafs_objects(
+void mliTmpNode_num_nodes_leafs_objects_walk(
         const struct mliTmpNode *node,
         uint64_t *num_nodes,
         uint64_t *num_leafs,
         uint64_t *num_object_links);
 void mliTmpNode_set_flat_index(struct mliTmpNode *root_node);
-void _mliTmpNode_set_flat_index(
+void mliTmpNode_set_flat_index_walk(
         struct mliTmpNode *node,
         int32_t *flat_index,
         int32_t *node_index,
         int32_t *leaf_index);
-int _mliTmpNode_exists_and_objects(const struct mliTmpNode *node);
+int mliTmpNode_exists_and_has_objects(const struct mliTmpNode *node);
 void mliTmpNode_print(
         const struct mliTmpNode *node,
         const uint32_t indent,
