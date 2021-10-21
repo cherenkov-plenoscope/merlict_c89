@@ -10,7 +10,7 @@ CASE("TarIo: read one by one")
 
         CHECK(mliTarIoRun_open(
                 &run,
-                "merlict_c89_corsika/tests/resources/corsika_primary_run.tar"));
+                "merlict_c89/mli_corsika_test_resources/corsika_primary_run.tar"));
         CHECK(run.corsika_run_header[0] == mli_4chars_to_float("RUNH"));
 
         CHECK(mliTarIoRun_has_still_events_left(&run));
@@ -40,7 +40,7 @@ CASE("TarIo: while loop")
         struct mliTarIoRun run = mliTarIoRun_init();
         CHECK(mliTarIoRun_open(
                 &run,
-                "merlict_c89_corsika/tests/resources/corsika_primary_run.tar"));
+                "merlict_c89/mli_corsika_test_resources/corsika_primary_run.tar"));
 
         while (mliTarIoRun_has_still_events_left(&run)) {
                 uint64_t i;
