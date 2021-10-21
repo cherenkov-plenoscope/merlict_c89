@@ -107,7 +107,7 @@ int mlivr_get_key(void)
         }
 }
 
-int _mlivr_export_image(
+int mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mlivrConfig config,
         const struct mliView view,
@@ -230,7 +230,7 @@ int mlivr_run_interactive_viewer(
                                         timestamp,
                                         num_screenshots);
                                 num_screenshots++;
-                                chk(_mlivr_export_image(
+                                chk(mlivr_export_image(
                                         scenery,
                                         config,
                                         view,

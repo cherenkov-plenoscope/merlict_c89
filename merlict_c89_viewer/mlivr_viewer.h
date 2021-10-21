@@ -23,7 +23,7 @@ void mlivr_print_info_line(
 
 void mlivr_timestamp_now_19chars(char *buffer);
 
-int _mlivr_export_image(
+int mlivr_export_image(
         const struct mliScenery *scenery,
         const struct mlivrConfig config,
         const struct mliView view,
