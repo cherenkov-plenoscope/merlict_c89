@@ -161,3 +161,20 @@ uint32_t mliVec_octant(const struct mliVec a)
         const uint32_t sz = a.z >= 0.;
         return 4 * sx + 2 * sy + 1 * sz;
 }
+
+int mliVec_sign3_bitmask(const struct mliVec a, const double epsilon)
+{
+        /* bits: 7  6  5  4  3  2  1  0  */
+        /*             xp yp zp xn yn zn */
+
+        const int xn = a.x < epsilon ? 4 : 0;   /* 2**2 */
+        const int xp = a.x > -epsilon ? 32 : 0; /* 2**5 */
+
+        const int yn = a.y < epsilon ? 2 : 0;   /* 2**1 */
+        const int yp = a.y > -epsilon ? 16 : 0; /* 2**4 */
+
+        const int zn = a.z < epsilon ? 1 : 0;  /* 2**0 */
+        const int zp = a.z > -epsilon ? 8 : 0; /* 2**3 */
+
+        return (xn | xp | yn | yp | zn | zp);
+}

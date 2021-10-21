@@ -10,22 +10,6 @@
  * Triangle-Cube Intersection,
  * Graphics Gems III, p. 236-239, code: p. 521-526 */
 
-#define MLI_SIGN3(A)                                                           \
-        (((A).x < MLI_EPSILON)                                                 \
-                 ? 4                                                           \
-                 : 0 | ((A).x > -MLI_EPSILON)                                  \
-                           ? 32                                                \
-                           : 0 | ((A).y < MLI_EPSILON)                         \
-                                     ? 2                                       \
-                                     : 0 | ((A).y > -MLI_EPSILON)              \
-                                               ? 16                            \
-                                               : 0 | ((A).z < MLI_EPSILON)     \
-                                                         ? 1                   \
-                                                         : 0 | ((A).z >        \
-                                                                -MLI_EPSILON)  \
-                                                                   ? 8         \
-                                                                   : 0)
-
 /* Which of the six face-plane(s) is point P outside of? */
 
 int64_t _mli_face_plane(struct mliVec p)
@@ -169,7 +153,7 @@ int64_t _mli_check_line(
 
 int64_t _mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
 {
-        int64_t sign12, sign23, sign31;
+        int64_t sign12_bitmask, sign23_bitmask, sign31_bitmask;
         struct mliVec vect12, vect23, vect31, vect1h, vect2h, vect3h;
         struct mliVec cross12_1p, cross23_2p, cross31_3p;
 
@@ -201,18 +185,19 @@ int64_t _mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
         vect12 = mliVec_substract(t.v1, t.v2);
         vect1h = mliVec_substract(t.v1, p);
         cross12_1p = mliVec_cross(vect12, vect1h);
-        sign12 = MLI_SIGN3(cross12_1p);
+        /*sign12_bitmask = MLI_SIGN3(cross12_1p);*/
+        sign12_bitmask = mliVec_sign3_bitmask(cross12_1p, MLI_EPSILON);
         /* Extract X,Y,Z signs as 0..7 or 0...63 integer */
 
         vect23 = mliVec_substract(t.v2, t.v3);
         vect2h = mliVec_substract(t.v2, p);
         cross23_2p = mliVec_cross(vect23, vect2h);
-        sign23 = MLI_SIGN3(cross23_2p);
+        sign23_bitmask = mliVec_sign3_bitmask(cross23_2p, MLI_EPSILON);
 
         vect31 = mliVec_substract(t.v3, t.v1);
         vect3h = mliVec_substract(t.v3, p);
         cross31_3p = mliVec_cross(vect31, vect3h);
-        sign31 = MLI_SIGN3(cross31_3p);
+        sign31_bitmask = mliVec_sign3_bitmask(cross31_3p, MLI_EPSILON);
 
         /* If all three crossproduct vectors agree in their component signs,  */
         /* then the point must be inside all three.                           */
@@ -220,7 +205,9 @@ int64_t _mli_point_triangle_intersection(struct mliVec p, struct mliTriangle t)
 
         /* this is the old test; with the revised MLI_SIGN3() macro, the test
          * needs to be revised. */
-        return ((sign12 & sign23 & sign31) == 0) ? MLI_OUTSIDE : MLI_INSIDE;
+        return ((sign12_bitmask & sign23_bitmask & sign31_bitmask) == 0)
+                       ? MLI_OUTSIDE
+                       : MLI_INSIDE;
 }
 
 /**********************************************/

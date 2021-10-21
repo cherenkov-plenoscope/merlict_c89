@@ -28,4 +28,5 @@ struct mliVec mliVec_cross(const struct mliVec a, const struct mliVec b);
 struct mliVec mliVec_substract(const struct mliVec a, const struct mliVec b);
 struct mliVec mliVec_add(const struct mliVec a, const struct mliVec b);
 struct mliVec mliVec_set(const double x, const double y, const double z);
+int mliVec_sign3_bitmask(const struct mliVec a, const double epsilon);
 #endif
