@@ -28,16 +28,16 @@ struct mliTriangle mliTriangle_set_in_norm_obb(
         const struct mliOBB obb);
 int64_t mliTriangle_intersects_norm_obb(struct mliTriangle t);
 int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mliVec p);
-int64_t _mli_check_line(
+int64_t mli_triangle_obb_check_line(
         struct mliVec p1,
         struct mliVec p2,
         int64_t outcode_diff);
-int64_t _mli_check_point(
+int64_t mli_triangle_obb_check_point(
         struct mliVec p1,
         struct mliVec p2,
         double alpha,
         int64_t mask);
-int64_t _mli_bevel_3d(struct mliVec p);
-int64_t _mli_bevel_2d(struct mliVec p);
-int64_t _mli_face_plane(struct mliVec p);
+int64_t mli_triangle_obb_bevel_3d(struct mliVec p);
+int64_t mli_triangle_obb_bevel_2d(struct mliVec p);
+int64_t mli_triangle_obb_face_plane(struct mliVec p);
 #endif
