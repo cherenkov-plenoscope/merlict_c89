@@ -62,29 +62,57 @@ CASE("TarIo: while loop")
 CASE("TarIoWriter: make run")
 {
         const uint64_t BUFF_NUM = 64u;
-        const uint64_t NUM_EVENTS = 3u;
+        const uint64_t NUM_EVENTS = 4u;
+        const uint64_t NUM_BUNCHES[] = {128, 23, 0, 117};
         uint64_t e, b;
         struct mliPrng prng = mliPrng_init_MT19937(0u);
-        struct mliTarIoWriter tario = mliTarIoWriter_init();
-        float corsika_header[273];
+        struct mliTarIoWriter taro = mliTarIoWriter_init();
+        struct mliTarIoReader tari = mliTarIoReader_init();
+        float corh[273];
         float bunch[8];
-        memset(corsika_header, 0, sizeof(corsika_header));
+        memset(corh, 0, sizeof(corh));
         memset(bunch, 0, sizeof(bunch));
 
         CHECK(mliTarIoWriter_open(
-                &tario, "merlict_c89/mli_corsika_test_resources/mini.tar", BUFF_NUM));
-        corsika_header[0] = mli_4chars_to_float("RUNH");
-        CHECK(mliTarIoWriter_add_runh(&tario, corsika_header));
+                &taro, "merlict_c89/mli_corsika_test_resources/mini.tar", BUFF_NUM));
+        corh[0] = mli_4chars_to_float("RUNH");
+        CHECK(mliTarIoWriter_add_runh(&taro, corh));
 
         for (e = 0; e < NUM_EVENTS; e ++) {
-                corsika_header[0] = mli_4chars_to_float("EVTH");
-                corsika_header[MLI_CORSIKA_EVTH_EVENT_NUMBER] = 1.0 + (float)e;
-                CHECK(mliTarIoWriter_add_evth(&tario, corsika_header));
-                for (b = 0; b < 64 * 8; b ++) {
+                corh[0] = mli_4chars_to_float("EVTH");
+                corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = 1.0 + (float)e;
+                CHECK(mliTarIoWriter_add_evth(&taro, corh));
+                for (b = 0; b < NUM_BUNCHES[e]; b ++) {
                         memset(bunch, 0, sizeof(bunch));
-                        /* bunch[0] = (float)b;*/
-                        CHECK(mliTarIoWriter_add_cherenkov_bunch(&tario, bunch));
+                        bunch[0] = (float)b;
+                        CHECK(mliTarIoWriter_add_cherenkov_bunch(&taro, bunch));
                 }
         }
-        CHECK(mliTarIoWriter_close(&tario));
+        CHECK(mliTarIoWriter_close(&taro));
+
+        /* read back */
+        CHECK(mliTarIoReader_open(
+                &tari, "merlict_c89/mli_corsika_test_resources/mini.tar"));
+        CHECK(mliTarIoReader_read_runh(&tari, corh));
+        corh[0] = mli_4chars_to_float("RUNH");
+
+        e = 0;
+        CHECK(tari.event_number == e + 1);
+        while (mliTarIoReader_read_evth(&tari, corh)) {
+                CHECK(tari.event_number == e + 1);
+                CHECK(corh[0] == mli_4chars_to_float("EVTH"));
+                CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == 1.0 + (float)e);
+                b = 0;
+                CHECK(tari.bunch_number == b);
+                while (mliTarIoReader_read_cherenkov_bunch(&tari, bunch)) {
+                        CHECK(bunch[0] == (float)b);
+                        b += 1;
+                        CHECK(tari.bunch_number == b);
+                }
+                CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
+                e += 1;
+        }
+        CHECK(!mliTarIoReader_read_evth(&tari, corh));
+
+        CHECK(mliTarIoReader_close(&tari));
 }
