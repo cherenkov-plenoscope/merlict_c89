@@ -38,7 +38,6 @@ int mliTarIoWriter_add_cherenkov_bunch(
         const float *bunch);
 int mliTarIoWriter_finalize_cherenkov_bunch_block(struct mliTarIoWriter *tio);
 
-
 struct mliTarIoReader {
         /* Current event-number */
         uint64_t event_number;
@@ -61,19 +60,20 @@ struct mliTarIoReader {
         /* Next file's tar-header in the underlying tape-archive */
         int has_tarh;
         struct mliTarHeader tarh;
-
 };
 struct mliTarIoReader mliTarIoReader_init(void);
-int mliTarIoReader_open(
-        struct mliTarIoReader *tio,
-        const char *path);
+int mliTarIoReader_open(struct mliTarIoReader *tio, const char *path);
 int mliTarIoReader_close(struct mliTarIoReader *tio);
 int mliTarIoReader_read_runh(struct mliTarIoReader *tio, float *runh);
 int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth);
-int mliTarIoReader_read_cherenkov_bunch(struct mliTarIoReader *tio, float *bunch);
+int mliTarIoReader_read_cherenkov_bunch(
+        struct mliTarIoReader *tio,
+        float *bunch);
 int mliTarIoReader_malloc_buffer(struct mliTarIoReader *tio);
 int mliTarIoReader_read_buffer(struct mliTarIoReader *tio);
-int mliTarIoReader_tarh_is_valid_cherenkov_block(const struct mliTarIoReader *tio);
-int mliTarIoReader_tarh_might_be_valid_cherenkov_block(const struct mliTarIoReader *tio);
+int mliTarIoReader_tarh_is_valid_cherenkov_block(
+        const struct mliTarIoReader *tio);
+int mliTarIoReader_tarh_might_be_valid_cherenkov_block(
+        const struct mliTarIoReader *tio);
 
 #endif

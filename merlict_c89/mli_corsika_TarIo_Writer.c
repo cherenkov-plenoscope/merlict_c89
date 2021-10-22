@@ -26,9 +26,7 @@ int mliTarIoCherenkovBunchBuffer_malloc(
         chk_msg(capacity > 0, "Expected buffer size > 0");
         b->capacity = capacity;
         chk_malloc(
-                b->bunches,
-                float,
-                b->capacity *MLI_TARIO_CORSIKA_BUNCH_SIZE);
+                b->bunches, float, b->capacity *MLI_TARIO_CORSIKA_BUNCH_SIZE);
         return 1;
 error:
         return 0;
@@ -39,7 +37,7 @@ struct mliTarIoWriter mliTarIoWriter_init(void)
 {
         struct mliTarIoWriter tio;
         tio.tar = mliTar_init();
-        tio.event_number = 1;
+        tio.event_number = 0;
         tio.cherenkov_bunch_block_number = 1;
         tio.buffer = mliTarIoCherenkovBunchBuffer_init();
         return tio;
@@ -51,8 +49,7 @@ int mliTarIoWriter_open(
         const int capacity)
 {
         chk_msg(mliTar_open(&tio->tar, path, "w"), "Can't open tar.");
-        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(
-                        &tio->buffer, capacity),
+        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(&tio->buffer, capacity),
                 "Can't malloc cherenkov-bunch-buffer.");
         return 1;
 error:
@@ -96,11 +93,12 @@ int mliTarIoWriter_add_evth(struct mliTarIoWriter *tio, const float *evth)
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
 
         /* finalize previous event */
-        if (tio->buffer.size > 0) {
-                chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
-                        "Can't finalize previous event's cherenkov-bunch-block");
-        }
 
+        if (tio->event_number) {
+                chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
+                        "Can't finalize previous event's "
+                        "cherenkov-bunch-block");
+        }
         tio->event_number = (int)(MLI_ROUND(evth[1]));
         chk_msg(tio->event_number > 0, "Expected event_number > 0.");
 
@@ -118,11 +116,6 @@ int mliTarIoWriter_finalize_cherenkov_bunch_block(struct mliTarIoWriter *tio)
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
         struct mliTarHeader tarh = mliTarHeader_init();
-
-        chk_msg(tio->buffer.size > 0, "Expected cherenkov buffer to")
-        if (tio->buffer.size == 0) {
-            return 1;
-        }
 
         sprintf(path,
                 "%09d/%09d.cherenkov_bunches.Nx8_float32",
@@ -161,7 +154,7 @@ int mliTarIoWriter_add_cherenkov_bunch(
                         "Can't finalize cherenkov-bunch-block.");
                 chk_msg(tio->buffer.size == 0, "Expected buffer to be empty.");
         }
-        for (i = 0; i < 8; i ++) {
+        for (i = 0; i < 8; i++) {
                 tio->buffer.bunches[tio->buffer.size * 8 + i] = bunch[i];
         }
         tio->buffer.size += 1;
@@ -172,7 +165,7 @@ error:
 
 int mliTarIoWriter_close(struct mliTarIoWriter *tio)
 {
-        if (tio->buffer.size > 0) {
+        if (tio->event_number) {
                 chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
                         "Can't finalize final event's cherenkov-bunch-block");
         }
@@ -183,19 +176,6 @@ int mliTarIoWriter_close(struct mliTarIoWriter *tio)
 error:
         return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 struct mliTarIoReader mliTarIoReader_init(void)
 {
@@ -210,9 +190,7 @@ struct mliTarIoReader mliTarIoReader_init(void)
         return tio;
 }
 
-int mliTarIoReader_open(
-        struct mliTarIoReader *tio,
-        const char *path)
+int mliTarIoReader_open(struct mliTarIoReader *tio, const char *path)
 {
         chk_msg(mliTar_open(&tio->tar, path, "r"), "Can't open tar.");
         tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
@@ -220,7 +198,6 @@ int mliTarIoReader_open(
 error:
         return 0;
 }
-
 
 int mliTarIoReader_read_runh(struct mliTarIoReader *tio, float *runh)
 {
@@ -270,36 +247,43 @@ error:
         return 0;
 }
 
-int mliTarIoReader_tarh_might_be_valid_cherenkov_block(const struct mliTarIoReader *tio)
+int mliTarIoReader_tarh_might_be_valid_cherenkov_block(
+        const struct mliTarIoReader *tio)
 {
-        if (strcmp(&tio->tarh.name[9 + 1 + 9], ".cherenkov_bunches.Nx8_float32") == 0) {
+        if (strcmp(&tio->tarh.name[9 + 1 + 9],
+                   ".cherenkov_bunches.Nx8_float32") == 0) {
                 return 1;
         } else {
                 return 0;
         }
 }
 
-int mliTarIoReader_tarh_is_valid_cherenkov_block(const struct mliTarIoReader *tio)
+int mliTarIoReader_tarh_is_valid_cherenkov_block(
+        const struct mliTarIoReader *tio)
 {
         uint64_t event_number_path, block_number_path;
         chk_msg(tio->has_tarh, "Expected a next tar-header.");
         chk_msg(strlen(tio->tarh.name) ==
-                9 + 1 + 9 + strlen(".cherenkov_bunches.Nx8_float32"),
+                        9 + 1 + 9 + strlen(".cherenkov_bunches.Nx8_float32"),
                 "Expected path length.");
-        chk_msg(strcmp(&tio->tarh.name[9 + 1 + 9], ".cherenkov_bunches.Nx8_float32") == 0,
+        chk_msg(strcmp(&tio->tarh.name[9 + 1 + 9],
+                       ".cherenkov_bunches.Nx8_float32") == 0,
                 "Expected path suffix '.cherenkov_bunches.Nx8_float32.'");
 
-        chk_msg(mli_ncstr_to_uint64(&event_number_path, &tio->tarh.name[0], 10, 9),
+        chk_msg(mli_ncstr_to_uint64(
+                        &event_number_path, &tio->tarh.name[0], 10, 9),
                 "Can't parse event-number from path.");
 
         chk_msg(event_number_path == tio->event_number,
                 "Expected same event-number in cherenkov-block-path and EVTH.");
 
-        chk_msg(mli_ncstr_to_uint64(&block_number_path, &tio->tarh.name[10], 10, 9),
+        chk_msg(mli_ncstr_to_uint64(
+                        &block_number_path, &tio->tarh.name[10], 10, 9),
                 "Can't parse cherenkov-block-number from path.");
 
         chk_msg(block_number_path == tio->cherenkov_bunch_block_number,
-                "Expected different cherenkov-bunch-block-number in cherenkov-block-path.");
+                "Expected different cherenkov-bunch-block-number in "
+                "cherenkov-block-path.");
         return 1;
 error:
         return 0;
@@ -313,8 +297,7 @@ int mliTarIoReader_malloc_buffer(struct mliTarIoReader *tio)
         chk_msg(tio->tarh.size % MLI_TARIO_CORSIKA_BUNCH_SIZE == 0,
                 "Expected buffer-size to be multiple of bunch-size.");
         capacity = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
-        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(
-                &tio->buffer, capacity),
+        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(&tio->buffer, capacity),
                 "Can't malloc cherenkov-bunch-buffer.");
         return 1;
 error:
@@ -341,7 +324,9 @@ error:
         return 0;
 }
 
-int mliTarIoReader_read_cherenkov_bunch(struct mliTarIoReader *tio, float *bunch)
+int mliTarIoReader_read_cherenkov_bunch(
+        struct mliTarIoReader *tio,
+        float *bunch)
 {
         int i;
 
@@ -364,7 +349,7 @@ int mliTarIoReader_read_cherenkov_bunch(struct mliTarIoReader *tio, float *bunch
                 if (!tio->has_tarh) {
                         return 0;
                 }
-                if(!mliTarIoReader_tarh_might_be_valid_cherenkov_block(tio)) {
+                if (!mliTarIoReader_tarh_might_be_valid_cherenkov_block(tio)) {
                         return 0;
                 }
                 chk_msg(mliTarIoReader_tarh_is_valid_cherenkov_block(tio),
@@ -395,4 +380,3 @@ int mliTarIoReader_close(struct mliTarIoReader *tio)
 error:
         return 0;
 }
-

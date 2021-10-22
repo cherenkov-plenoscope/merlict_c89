@@ -10,7 +10,8 @@ CASE("TarIo: read one by one")
 
         CHECK(mliTarIoRun_open(
                 &run,
-                "merlict_c89/mli_corsika_test_resources/corsika_primary_run.tar"));
+                "merlict_c89/mli_corsika_test_resources/"
+                "corsika_primary_run.tar"));
         CHECK(run.corsika_run_header[0] == mli_4chars_to_float("RUNH"));
 
         CHECK(mliTarIoRun_has_still_events_left(&run));
@@ -40,7 +41,8 @@ CASE("TarIo: while loop")
         struct mliTarIoRun run = mliTarIoRun_init();
         CHECK(mliTarIoRun_open(
                 &run,
-                "merlict_c89/mli_corsika_test_resources/corsika_primary_run.tar"));
+                "merlict_c89/mli_corsika_test_resources/"
+                "corsika_primary_run.tar"));
 
         while (mliTarIoRun_has_still_events_left(&run)) {
                 uint64_t i;
@@ -62,8 +64,8 @@ CASE("TarIo: while loop")
 CASE("TarIoWriter: make run")
 {
         const uint64_t BUFF_NUM = 64u;
-        const uint64_t NUM_EVENTS = 4u;
-        const uint64_t NUM_BUNCHES[] = {128, 23, 0, 117};
+        const uint64_t NUM_EVENTS = 6u;
+        const uint64_t NUM_BUNCHES[] = {128, 23, 0, 117, 1337, 0};
         uint64_t e, b;
         struct mliPrng prng = mliPrng_init_MT19937(0u);
         struct mliTarIoWriter taro = mliTarIoWriter_init();
@@ -74,15 +76,17 @@ CASE("TarIoWriter: make run")
         memset(bunch, 0, sizeof(bunch));
 
         CHECK(mliTarIoWriter_open(
-                &taro, "merlict_c89/mli_corsika_test_resources/mini.tar", BUFF_NUM));
+                &taro,
+                "merlict_c89/mli_corsika_test_resources/mini.tar",
+                BUFF_NUM));
         corh[0] = mli_4chars_to_float("RUNH");
         CHECK(mliTarIoWriter_add_runh(&taro, corh));
 
-        for (e = 0; e < NUM_EVENTS; e ++) {
+        for (e = 0; e < NUM_EVENTS; e++) {
                 corh[0] = mli_4chars_to_float("EVTH");
                 corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = 1.0 + (float)e;
                 CHECK(mliTarIoWriter_add_evth(&taro, corh));
-                for (b = 0; b < NUM_BUNCHES[e]; b ++) {
+                for (b = 0; b < NUM_BUNCHES[e]; b++) {
                         memset(bunch, 0, sizeof(bunch));
                         bunch[0] = (float)b;
                         CHECK(mliTarIoWriter_add_cherenkov_bunch(&taro, bunch));
