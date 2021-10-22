@@ -39,8 +39,8 @@ struct mliTarIoWriter mliTarIoWriter_init(void)
 {
         struct mliTarIoWriter tio;
         tio.tar = mliTar_init();
-        tio.event_number = 0;
-        tio.cherenkov_bunch_block_number = 0;
+        tio.event_number = 1;
+        tio.cherenkov_bunch_block_number = 1;
         tio.buffer = mliTarIoCherenkovBunchBuffer_init();
         return tio;
 }
@@ -51,10 +51,36 @@ int mliTarIoWriter_open(
         const int num_bunches_capacity)
 {
         struct mliTarHeader tarh = mliTarHeader_init();
-        char readme_md[] = "Tape-Archive-Io\n"
-                          "===============\n";
-        tio->event_number = 0;
-        tio->cherenkov_bunch_block_number = 0;
+        char readme_md[] = "Tape-Archive-Io for CORSIKA\n"
+                           "===========================\n"
+                           "\n"
+                           "Stores the Cherenkov light emitted by airshowers.\n"
+                           "\n"
+                           "Structure\n"
+                           "---------\n"
+                           " |-> auxillary.1          < Files like README\n"
+                           " |-> auxillary.N\n"
+                           " |\n"
+                           " |-> RUNH.float32         < Start run\n"
+                           " +-> 000000001            < Actuall event-number\n"
+                           " | |-> EVTH.float32       < Start event\n"
+                           " | |-> 000000001.float32  < First Cherenkov-block\n"
+                           " | |-> 000000002.float32\n"
+                           " | |-> .\n"
+                           " | |-> .\n"
+                           " | |-> .\n"
+                           " | |-> 123456788.float32\n"
+                           " | |-> 123456789.float32  < Last herenkov-block\n"
+                           " |\n"
+                           " +-> 000000002\n"
+                           "   |-> EVTH.float32\n"
+                           "   |-> 000000001.float32\n"
+                           "   |-> 000000002.float32\n"
+                           "   |-> .\n"
+                           "   |-> .\n"
+                           "   |-> .\n"
+                           "   |-> 123456788.float32\n"
+                           "   |-> 123456789.float32\n";
 
         chk_msg(mliTar_open(&tio->tar, path, "w"), "Can't open tar.");
 
@@ -102,8 +128,8 @@ error:
 
 int mliTarIoWriter_add_runh(struct mliTarIoWriter *tio, const float *runh)
 {
-        chk_msg(mliTarIoWriter_add_corsika_header(tio, "runh.float32", runh),
-                "Can't write 'runh.float32' to tario.");
+        chk_msg(mliTarIoWriter_add_corsika_header(tio, "RUNH.float32", runh),
+                "Can't write 'RUNH.float32' to tario.");
         return 1;
 error:
         return 0;
@@ -122,11 +148,11 @@ int mliTarIoWriter_add_evth(struct mliTarIoWriter *tio, const float *evth)
         tio->event_number = (int)(MLI_ROUND(evth[1]));
         chk_msg(tio->event_number > 0, "Expected event_number > 0.");
 
-        tio->cherenkov_bunch_block_number = 0;
-        sprintf(path, "%09d/evth.float32", tio->event_number);
+        tio->cherenkov_bunch_block_number = 1;
 
+        sprintf(path, "%09d/EVTH.float32", tio->event_number);
         chk_msg(mliTarIoWriter_add_corsika_header(tio, path, evth),
-                "Can't write 'runh.float32' to tario.");
+                "Can't write 'EVTH.float32' to tario.");
         return 1;
 error:
         return 0;
@@ -143,7 +169,7 @@ int mliTarIoWriter_finalize_cherenkov_bunch_block(struct mliTarIoWriter *tio)
         }
 
         sprintf(path,
-                "%09d/cherenkov_bunches/%09d.float32",
+                "%09d/%09d.float32",
                 tio->event_number,
                 tio->cherenkov_bunch_block_number);
 
