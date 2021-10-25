@@ -111,7 +111,7 @@ int mliTarIoWriter_finalize_cherenkov_bunch_block(struct mliTarIoWriter *tio)
         uint64_t i = 0;
 
         sprintf(path,
-                "%09d/%09d.cherenkov_bunches.Nx8_float32",
+                "%09d/cherenkov_bunches/%09d.Nx8_float32",
                 tio->event_number,
                 tio->cherenkov_bunch_block_number);
 
@@ -230,14 +230,24 @@ error:
 int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth)
 {
         uint64_t event_number_path, event_number_evth;
+        uint64_t i;
+        char match[MLI_TAR_NAME_LENGTH] = "000000000/EVTH.float32";
 
         if (!tio->has_tarh) {
                 return 0;
         }
-        chk_msg(strlen(tio->tarh.name) == 9 + 1 + strlen("EVTH.float32"),
+        chk_msg(strlen(tio->tarh.name) == strlen(match),
                 "Expected path length.");
-        chk_msg(strcmp(&tio->tarh.name[10], "EVTH.float32") == 0,
-                "Expected path suffix 'EVTH.float32.'");
+        for (i = 0; i < strlen(match); i ++) {
+                if (match[i] == '0') {
+                        chk_msg(isdigit(tio->tarh.name[i]),
+                                "Expected digit for 9-digit-event-number.");
+                } else {
+                        chk_msg(tio->tarh.name[i] == match[i],
+                            "Expected EVTH's path to match.");
+                }
+        }
+
         chk_msg(tio->tarh.size == MLI_TARIO_CORSIKA_HEADER_SIZE,
                 "Expected EVTH to have size 273*sizeof(float)");
         chk_msg(mliTar_read_data(&tio->tar, (void *)evth, tio->tarh.size),
@@ -271,12 +281,25 @@ error:
 int mliTarIoReader_tarh_might_be_valid_cherenkov_block(
         const struct mliTarIoReader *tio)
 {
-        if (strcmp(&tio->tarh.name[9 + 1 + 9],
-                   ".cherenkov_bunches.Nx8_float32") == 0) {
-                return 1;
-        } else {
+        char match[MLI_TAR_NAME_LENGTH] =
+                "000000000/cherenkov_bunches/000000000.Nx8_float32";
+        uint64_t i;
+        if (strlen(tio->tarh.name) != strlen(match)) {
                 return 0;
         }
+
+        for (i = 0; i < strlen(match); i ++) {
+                if (match[i] == '0') {
+                        if (!isdigit(tio->tarh.name[i])) {
+                                return 0;
+                        }
+                } else {
+                        if (tio->tarh.name[i] != match[i]) {
+                                return 0;
+                        }
+                }
+        }
+        return 1;
 }
 
 int mliTarIoReader_tarh_is_valid_cherenkov_block(
@@ -284,12 +307,9 @@ int mliTarIoReader_tarh_is_valid_cherenkov_block(
 {
         uint64_t event_number_path, block_number_path;
         chk_msg(tio->has_tarh, "Expected a next tar-header.");
-        chk_msg(strlen(tio->tarh.name) ==
-                        9 + 1 + 9 + strlen(".cherenkov_bunches.Nx8_float32"),
-                "Expected path length.");
-        chk_msg(strcmp(&tio->tarh.name[9 + 1 + 9],
-                       ".cherenkov_bunches.Nx8_float32") == 0,
-                "Expected path suffix '.cherenkov_bunches.Nx8_float32.'");
+
+        chk_msg(mliTarIoReader_tarh_might_be_valid_cherenkov_block(tio),
+                "Expected cherenkov-bunch-block-name to be valid.");
 
         chk_msg(mli_ncstr_to_uint64(
                         &event_number_path, &tio->tarh.name[0], 10, 9),
@@ -299,7 +319,7 @@ int mliTarIoReader_tarh_is_valid_cherenkov_block(
                 "Expected same event-number in cherenkov-block-path and EVTH.");
 
         chk_msg(mli_ncstr_to_uint64(
-                        &block_number_path, &tio->tarh.name[10], 10, 9),
+                        &block_number_path, &tio->tarh.name[28], 10, 9),
                 "Can't parse cherenkov-block-number from path.");
 
         chk_msg(block_number_path == tio->cherenkov_bunch_block_number,
