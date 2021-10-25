@@ -386,3 +386,35 @@ int mliTarIoReader_close(struct mliTarIoReader *tio)
 error:
         return 0;
 }
+
+/* testing */
+/* ======= */
+
+void mliTarIo_testing_mark_bunch(float *bunch, const uint64_t marker)
+{
+        const float markerf = (float)marker;
+        bunch[0] = markerf * (1.0);
+        bunch[1] = markerf * (-1.0);
+        bunch[2] = markerf * (0.5);
+        bunch[3] = markerf * (-0.5);
+        bunch[4] = markerf * (2.0);
+        bunch[5] = markerf * (-2.0);
+        bunch[6] = markerf * (1.0);
+        bunch[7] = markerf * (-1.0);
+}
+
+int mliTarIo_testing_bunch_has_mark(const float *bunch, const uint64_t marker)
+{
+        const float markerf = (float)marker;
+        chk_msg(bunch[0] == markerf * (1.0), "bunch[0]");
+        chk_msg(bunch[1] == markerf * (-1.0), "bunch[1]");
+        chk_msg(bunch[2] == markerf * (0.5), "bunch[2]");
+        chk_msg(bunch[3] == markerf * (-0.5), "bunch[3]");
+        chk_msg(bunch[4] == markerf * (2.0), "bunch[4]");
+        chk_msg(bunch[5] == markerf * (-2.0), "bunch[5]");
+        chk_msg(bunch[6] == markerf * (1.0), "bunch[6]");
+        chk_msg(bunch[7] == markerf * (-1.0), "bunch[7]");
+        return 1;
+error:
+        return 0;
+}
