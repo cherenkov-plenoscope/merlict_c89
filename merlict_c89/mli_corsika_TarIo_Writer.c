@@ -177,13 +177,16 @@ error:
         return 0;
 }
 
+/* reader */
+/* ====== */
+
 struct mliTarIoReader mliTarIoReader_init(void)
 {
         struct mliTarIoReader tio;
         tio.tar = mliTar_init();
         tio.tarh = mliTarHeader_init();
         tio.event_number = 0;
-        tio.cherenkov_bunch_block_number = 1;
+        tio.cherenkov_bunch_block_number = 0;
         tio.buffer = mliTarIoCherenkovBunchBuffer_init();
         tio.buffer_at = 0;
         tio.bunch_number = 0;
