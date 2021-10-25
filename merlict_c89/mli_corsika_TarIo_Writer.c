@@ -3,36 +3,6 @@
 #include "mli_corsika_utils.h"
 #include "mliTar.h"
 
-/* buffer */
-/* ====== */
-struct mliTarIoCherenkovBunchBuffer mliTarIoCherenkovBunchBuffer_init(void)
-{
-        struct mliTarIoCherenkovBunchBuffer buffer;
-        buffer.capacity = 0;
-        buffer.size = 0;
-        buffer.bunches = NULL;
-        return buffer;
-}
-void mliTarIoCherenkovBunchBuffer_free(struct mliTarIoCherenkovBunchBuffer *b)
-{
-        free(b->bunches);
-        (*b) = mliTarIoCherenkovBunchBuffer_init();
-}
-
-int mliTarIoCherenkovBunchBuffer_malloc(
-        struct mliTarIoCherenkovBunchBuffer *b,
-        const uint64_t capacity)
-{
-        mliTarIoCherenkovBunchBuffer_free(b);
-        chk_msg(capacity > 0, "Expected buffer size > 0");
-        b->capacity = capacity;
-        chk_malloc(
-                b->bunches, float, b->capacity *MLI_TARIO_CORSIKA_BUNCH_SIZE);
-        return 1;
-error:
-        return 0;
-}
-
 /* writer */
 /* ====== */
 struct mliTarIoWriter mliTarIoWriter_init(void)
@@ -41,7 +11,7 @@ struct mliTarIoWriter mliTarIoWriter_init(void)
         tio.tar = mliTar_init();
         tio.event_number = 0;
         tio.cherenkov_bunch_block_number = 1;
-        tio.buffer = mliTarIoCherenkovBunchBuffer_init();
+        tio.buffer = mliDynCorsikaPhotonBunch_init();
         return tio;
 }
 
@@ -55,7 +25,7 @@ int mliTarIoWriter_close(struct mliTarIoWriter *tio)
                 chk_msg(mliTar_finalize(&tio->tar), "Can't finalize tar-file.");
                 chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
         }
-        mliTarIoCherenkovBunchBuffer_free(&tio->buffer);
+        mliDynCorsikaPhotonBunch_free(&tio->buffer);
         (*tio) = mliTarIoWriter_init();
         return 1;
 error:
@@ -70,7 +40,7 @@ int mliTarIoWriter_open(
         chk_msg(mliTarIoWriter_close(tio),
                 "Can't close and free previous tar-io-writer.");
         chk_msg(mliTar_open(&tio->tar, path, "w"), "Can't open tar.");
-        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(&tio->buffer, num_bunches_buffer),
+        chk_msg(mliDynCorsikaPhotonBunch_malloc(&tio->buffer, num_bunches_buffer),
                 "Can't malloc cherenkov-bunch-buffer.");
         return 1;
 error:
@@ -137,6 +107,8 @@ int mliTarIoWriter_finalize_cherenkov_bunch_block(struct mliTarIoWriter *tio)
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
         struct mliTarHeader tarh = mliTarHeader_init();
+        float bunch_raw[8] = {0.0};
+        uint64_t i = 0;
 
         sprintf(path,
                 "%09d/%09d.cherenkov_bunches.Nx8_float32",
@@ -152,11 +124,15 @@ int mliTarIoWriter_finalize_cherenkov_bunch_block(struct mliTarIoWriter *tio)
         chk_msg(mliTar_write_header(&tio->tar, &tarh),
                 "Can't write tar-header for cherenkov-bunch-block to tar.");
 
-        chk_msg(mliTar_write_data(
-                        &tio->tar,
-                        tio->buffer.bunches,
-                        tio->buffer.size * MLI_TARIO_CORSIKA_BUNCH_SIZE),
-                "Can't write cherenkov-bunch-block to tar-file.");
+        for (i = 0; i < tio->buffer.size; i ++) {
+                mliCorsikaPhotonBunch_to_raw(&tio->buffer.array[i], bunch_raw);
+                chk_msg(mliTar_write_data(
+                                &tio->tar,
+                                bunch_raw,
+                                MLI_TARIO_CORSIKA_BUNCH_SIZE),
+                        "Can't write cherenkov-bunch-block to tar-file.");
+        }
+
         tio->buffer.size = 0;
 
         tio->cherenkov_bunch_block_number += 1;
@@ -167,18 +143,28 @@ error:
 
 int mliTarIoWriter_add_cherenkov_bunch(
         struct mliTarIoWriter *tio,
-        const float bunch[8])
+        const struct mliCorsikaPhotonBunch bunch)
 {
-        uint64_t i;
         if (tio->buffer.size == tio->buffer.capacity) {
                 chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
                         "Can't finalize cherenkov-bunch-block.");
                 chk_msg(tio->buffer.size == 0, "Expected buffer to be empty.");
         }
-        for (i = 0; i < 8; i++) {
-                tio->buffer.bunches[tio->buffer.size * 8 + i] = bunch[i];
-        }
+        tio->buffer.array[tio->buffer.size] = bunch;
         tio->buffer.size += 1;
+        return 1;
+error:
+        return 0;
+}
+
+int mliTarIoWriter_add_cherenkov_bunch_raw(
+        struct mliTarIoWriter *tio,
+        const float *bunch_raw)
+{
+        struct mliCorsikaPhotonBunch bunch;
+        mliCorsikaPhotonBunch_set_from_raw(&bunch, bunch_raw);
+        chk_msg(mliTarIoWriter_add_cherenkov_bunch(tio, bunch),
+                "Can't add raw-bunch to tar-io.");
         return 1;
 error:
         return 0;
@@ -273,7 +259,8 @@ int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth)
                 "Cherenkov-bunch-block's tar-header doesn't match.");
 
         chk_msg(tio->tarh.size % MLI_TARIO_CORSIKA_BUNCH_SIZE == 0,
-                "Expected buffer-size to be multiple of bunch-size.");
+                "Expected cherenkov-bunch-block-size "
+                "to be multiple of bunch-size.");
         tio->block_size = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
         tio->block_at = 0;
         return 1;
@@ -325,7 +312,21 @@ error:
 
 int mliTarIoReader_read_cherenkov_bunch(
         struct mliTarIoReader *tio,
-        float *bunch)
+        struct mliCorsikaPhotonBunch *bunch)
+{
+        float raw[8];
+        int rc = mliTarIoReader_read_cherenkov_bunch_raw(tio, raw);
+        if (rc == 1) {
+                mliCorsikaPhotonBunch_set_from_raw(bunch, raw);
+                return 1;
+        } else {
+                return 0;
+        }
+}
+
+int mliTarIoReader_read_cherenkov_bunch_raw(
+        struct mliTarIoReader *tio,
+        float *bunch_raw)
 {
         if (tio->block_at == tio->block_size) {
                 tio->cherenkov_bunch_block_number += 1;
@@ -341,7 +342,8 @@ int mliTarIoReader_read_cherenkov_bunch(
                         "Cherenkov-bunch-block's tar-header doesn't match.");
 
                 chk_msg(tio->tarh.size % MLI_TARIO_CORSIKA_BUNCH_SIZE == 0,
-                        "Expected buffer-size to be multiple of bunch-size.");
+                        "Expected cherenkov-bunch-block-size "
+                        "to be multiple of bunch-size.");
                 tio->block_size = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
                 tio->block_at = 0;
         }
@@ -353,7 +355,7 @@ int mliTarIoReader_read_cherenkov_bunch(
 
         chk_msg(mliTar_read_data(
                         &tio->tar,
-                        (void *)(bunch),
+                        (void *)(bunch_raw),
                         MLI_TARIO_CORSIKA_BUNCH_SIZE),
                 "Failed to read cherenkov_bunch.");
 
@@ -367,30 +369,34 @@ error:
 /* testing */
 /* ======= */
 
-void mliTarIo_testing_mark_bunch(float *bunch, const uint64_t marker)
+void mliTarIo_testing_mark_bunch(
+        struct mliCorsikaPhotonBunch *bunch,
+        const uint64_t marker)
 {
         const float markerf = (float)marker;
-        bunch[0] = markerf * (1.0);
-        bunch[1] = markerf * (-1.0);
-        bunch[2] = markerf * (0.5);
-        bunch[3] = markerf * (-0.5);
-        bunch[4] = markerf * (2.0);
-        bunch[5] = markerf * (-2.0);
-        bunch[6] = markerf * (1.0);
-        bunch[7] = markerf * (-1.0);
+        bunch->x_cm = markerf * (1.0);
+        bunch->y_cm = markerf * (-1.0);
+        bunch->cx_rad = markerf * (0.5);
+        bunch->cy_rad = markerf * (-0.5);
+        bunch->time_ns = markerf * (2.0);
+        bunch->z_emission_cm = markerf * (-2.0);
+        bunch->weight_photons = markerf * (1.0);
+        bunch->wavelength_nm = markerf * (-1.0);
 }
 
-int mliTarIo_testing_bunch_has_mark(const float *bunch, const uint64_t marker)
+int mliTarIo_testing_bunch_has_mark(
+        const struct mliCorsikaPhotonBunch bunch,
+        const uint64_t marker)
 {
         const float markerf = (float)marker;
-        chk_msg(bunch[0] == markerf * (1.0), "bunch[0]");
-        chk_msg(bunch[1] == markerf * (-1.0), "bunch[1]");
-        chk_msg(bunch[2] == markerf * (0.5), "bunch[2]");
-        chk_msg(bunch[3] == markerf * (-0.5), "bunch[3]");
-        chk_msg(bunch[4] == markerf * (2.0), "bunch[4]");
-        chk_msg(bunch[5] == markerf * (-2.0), "bunch[5]");
-        chk_msg(bunch[6] == markerf * (1.0), "bunch[6]");
-        chk_msg(bunch[7] == markerf * (-1.0), "bunch[7]");
+        chk_msg(bunch.x_cm == markerf * (1.0), "x_cm");
+        chk_msg(bunch.y_cm == markerf * (-1.0), "y_cm");
+        chk_msg(bunch.cx_rad == markerf * (0.5), "cx_rad");
+        chk_msg(bunch.cy_rad == markerf * (-0.5), "cy_rad");
+        chk_msg(bunch.time_ns == markerf * (2.0), "time_ns");
+        chk_msg(bunch.z_emission_cm == markerf * (-2.0), "z_emission_cm");
+        chk_msg(bunch.weight_photons == markerf * (1.0), "weight_photons");
+        chk_msg(bunch.wavelength_nm == markerf * (-1.0), "wavelength_nm");
         return 1;
 error:
         return 0;

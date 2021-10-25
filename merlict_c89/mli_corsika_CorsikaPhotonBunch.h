@@ -29,6 +29,13 @@ struct mliCorsikaPhotonBunch {
 
 MLIDYNARRAY_DEFINITON(mli, CorsikaPhotonBunch, struct mliCorsikaPhotonBunch)
 
+void mliCorsikaPhotonBunch_set_from_raw(
+        struct mliCorsikaPhotonBunch *bunch,
+        const float *raw);
+void mliCorsikaPhotonBunch_to_raw(
+        const struct mliCorsikaPhotonBunch *bunch,
+        float *raw);
+
 struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
         const struct mliCorsikaPhotonBunch bunch,
         const double production_distance_offset,

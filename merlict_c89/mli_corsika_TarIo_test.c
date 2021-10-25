@@ -71,7 +71,7 @@ CASE("TarIoWriter: run normal")
         struct mliTarIoWriter taro = mliTarIoWriter_init();
         struct mliTarIoReader tari = mliTarIoReader_init();
         float corh[273] = {0.0};
-        float bunch[8] = {0.0};
+        struct mliCorsikaPhotonBunch bunch;
 
         /* write */
         /* ----- */
@@ -89,7 +89,7 @@ CASE("TarIoWriter: run normal")
                 corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = EVENT_NUMBERS[e];
                 CHECK(mliTarIoWriter_add_evth(&taro, corh));
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
-                        mliTarIo_testing_mark_bunch(bunch, b);
+                        mliTarIo_testing_mark_bunch(&bunch, b);
                         CHECK(mliTarIoWriter_add_cherenkov_bunch(&taro, bunch));
                 }
         }
@@ -113,10 +113,10 @@ CASE("TarIoWriter: run normal")
                 CHECK(corh[0] == mli_4chars_to_float("EVTH"));
                 CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == EVENT_NUMBERS[e]);
                 for (b = 0; b < NUM_BUNCHES[e]; b ++) {
-                        CHECK(mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
+                        CHECK(mliTarIoReader_read_cherenkov_bunch(&tari, &bunch));
                         CHECK(mliTarIo_testing_bunch_has_mark(bunch, b));
                 }
-                CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
+                CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, &bunch));
         }
         CHECK(!mliTarIoReader_read_evth(&tari, corh));
         CHECK(mliTarIoReader_close(&tari));
@@ -151,7 +151,7 @@ CASE("TarIoWriter: no events")
         corh[0] = mli_4chars_to_float("RUNH");
 
         CHECK(!mliTarIoReader_read_evth(&tari, corh));
-        CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
+        CHECK(!mliTarIoReader_read_cherenkov_bunch_raw(&tari, bunch));
         CHECK(mliTarIoReader_close(&tari));
 }
 
@@ -193,6 +193,6 @@ CASE("TarIoWriter: first event no bunches")
         CHECK(mliTarIoReader_read_evth(&tari, corh));
         CHECK(corh[0] == mli_4chars_to_float("EVTH"));
         CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == 1337.0);
-        CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
+        CHECK(!mliTarIoReader_read_cherenkov_bunch_raw(&tari, bunch));
         CHECK(mliTarIoReader_close(&tari));
 }

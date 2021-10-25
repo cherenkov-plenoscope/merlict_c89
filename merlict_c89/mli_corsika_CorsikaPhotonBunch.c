@@ -6,6 +6,35 @@ MLIDYNARRAY_IMPLEMENTATION(
         CorsikaPhotonBunch,
         struct mliCorsikaPhotonBunch)
 
+void mliCorsikaPhotonBunch_set_from_raw(
+        struct mliCorsikaPhotonBunch *bunch,
+        const float *raw)
+{
+        bunch->x_cm = raw[0];
+        bunch->y_cm = raw[1];
+        bunch->cx_rad = raw[2];
+        bunch->cy_rad = raw[3];
+        bunch->time_ns = raw[4];
+        bunch->z_emission_cm = raw[5];
+        bunch->weight_photons = raw[6];
+        bunch->wavelength_nm = raw[7];
+}
+
+void mliCorsikaPhotonBunch_to_raw(
+        const struct mliCorsikaPhotonBunch *bunch,
+        float *raw)
+{
+        raw[0] = bunch->x_cm;
+        raw[1] = bunch->y_cm;
+        raw[2] = bunch->cx_rad;
+        raw[3] = bunch->cy_rad;
+        raw[4] = bunch->time_ns;
+        raw[5] = bunch->z_emission_cm;
+        raw[6] = bunch->weight_photons;
+        raw[7] = bunch->wavelength_nm;
+}
+
+
 struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
         const struct mliCorsikaPhotonBunch bunch,
         const double production_distance_offset,
