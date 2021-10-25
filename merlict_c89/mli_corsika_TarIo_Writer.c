@@ -4,6 +4,7 @@
 #include "mliTar.h"
 
 /* buffer */
+/* ====== */
 struct mliTarIoCherenkovBunchBuffer mliTarIoCherenkovBunchBuffer_init(void)
 {
         struct mliTarIoCherenkovBunchBuffer buffer;
@@ -32,7 +33,8 @@ error:
         return 0;
 }
 
-/* file structure */
+/* writer */
+/* ====== */
 struct mliTarIoWriter mliTarIoWriter_init(void)
 {
         struct mliTarIoWriter tio;
