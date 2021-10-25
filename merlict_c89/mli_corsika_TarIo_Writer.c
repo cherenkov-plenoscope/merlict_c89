@@ -47,12 +47,14 @@ struct mliTarIoWriter mliTarIoWriter_init(void)
 
 int mliTarIoWriter_close(struct mliTarIoWriter *tio)
 {
-        if (tio->event_number) {
-                chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
-                        "Can't finalize final event's cherenkov-bunch-block");
+        if (tio->tar.stream) {
+                if (tio->event_number) {
+                        chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
+                                "Can't finalize final event's cherenkov-bunch-block");
+                }
+                chk_msg(mliTar_finalize(&tio->tar), "Can't finalize tar-file.");
+                chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
         }
-        chk_msg(mliTar_finalize(&tio->tar), "Can't finalize tar-file.");
-        chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
         mliTarIoCherenkovBunchBuffer_free(&tio->buffer);
         (*tio) = mliTarIoWriter_init();
         return 1;
@@ -65,6 +67,8 @@ int mliTarIoWriter_open(
         const char *path,
         const uint64_t num_bunches_buffer)
 {
+        chk_msg(mliTarIoWriter_close(tio),
+                "Can't close and free previous tar-io-writer.");
         chk_msg(mliTar_open(&tio->tar, path, "w"), "Can't open tar.");
         chk_msg(mliTarIoCherenkovBunchBuffer_malloc(&tio->buffer, num_bunches_buffer),
                 "Can't malloc cherenkov-bunch-buffer.");
@@ -198,8 +202,11 @@ struct mliTarIoReader mliTarIoReader_init(void)
 
 int mliTarIoReader_close(struct mliTarIoReader *tio)
 {
+        if (tio->tar.stream) {
+                chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
+        }
         mliTarIoCherenkovBunchBuffer_free(&tio->buffer);
-        chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
+
         (*tio) = mliTarIoReader_init();
         return 1;
 error:
@@ -211,6 +218,8 @@ int mliTarIoReader_open(
     const char *path,
     const uint64_t num_bunches_buffer)
 {
+        chk_msg(mliTarIoReader_close(tio),
+                "Can't close and free previous tar-io-reader.");
         chk_msg(mliTar_open(&tio->tar, path, "r"), "Can't open tar.");
         tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
 
