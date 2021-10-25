@@ -113,4 +113,31 @@ CASE("TarIoWriter: make run")
                 CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
         }
         CHECK(!mliTarIoReader_read_evth(&tari, corh));
+        CHECK(mliTarIoReader_close(&tari));
+}
+
+CASE("TarIoWriter: no events")
+{
+        struct mliTarIoWriter taro = mliTarIoWriter_init();
+        struct mliTarIoReader tari = mliTarIoReader_init();
+        float corh[273] = {0.0};
+        float bunch[8] = {0.0};
+
+        CHECK(mliTarIoWriter_open(
+                &taro,
+                "merlict_c89/mli_corsika_test_resources/run_no_events.tar",
+                128));
+        corh[0] = mli_4chars_to_float("RUNH");
+        CHECK(mliTarIoWriter_add_runh(&taro, corh));
+        CHECK(mliTarIoWriter_close(&taro));
+
+        /* read back */
+        CHECK(mliTarIoReader_open(
+                &tari, "merlict_c89/mli_corsika_test_resources/run_no_events.tar"));
+        CHECK(mliTarIoReader_read_runh(&tari, corh));
+        corh[0] = mli_4chars_to_float("RUNH");
+
+        CHECK(!mliTarIoReader_read_evth(&tari, corh));
+        CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
+        CHECK(mliTarIoReader_close(&tari));
 }
