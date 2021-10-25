@@ -45,6 +45,21 @@ struct mliTarIoWriter mliTarIoWriter_init(void)
         return tio;
 }
 
+int mliTarIoWriter_close(struct mliTarIoWriter *tio)
+{
+        if (tio->event_number) {
+                chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
+                        "Can't finalize final event's cherenkov-bunch-block");
+        }
+        chk_msg(mliTar_finalize(&tio->tar), "Can't finalize tar-file.");
+        chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
+        mliTarIoCherenkovBunchBuffer_free(&tio->buffer);
+        (*tio) = mliTarIoWriter_init();
+        return 1;
+error:
+        return 0;
+}
+
 int mliTarIoWriter_open(
         struct mliTarIoWriter *tio,
         const char *path,
@@ -165,20 +180,6 @@ error:
         return 0;
 }
 
-int mliTarIoWriter_close(struct mliTarIoWriter *tio)
-{
-        if (tio->event_number) {
-                chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
-                        "Can't finalize final event's cherenkov-bunch-block");
-        }
-        chk_msg(mliTar_finalize(&tio->tar), "Can't finalize tar-file.");
-        chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
-        mliTarIoCherenkovBunchBuffer_free(&tio->buffer);
-        return 1;
-error:
-        return 0;
-}
-
 /* reader */
 /* ====== */
 
@@ -193,6 +194,16 @@ struct mliTarIoReader mliTarIoReader_init(void)
         tio.buffer_at = 0;
         tio.bunch_number = 0;
         return tio;
+}
+
+int mliTarIoReader_close(struct mliTarIoReader *tio)
+{
+        mliTarIoCherenkovBunchBuffer_free(&tio->buffer);
+        chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
+        (*tio) = mliTarIoReader_init();
+        return 1;
+error:
+        return 0;
 }
 
 int mliTarIoReader_open(
@@ -355,15 +366,6 @@ int mliTarIoReader_read_cherenkov_bunch(
         tio->buffer_at += 1;
         tio->bunch_number += 1;
 
-        return 1;
-error:
-        return 0;
-}
-
-int mliTarIoReader_close(struct mliTarIoReader *tio)
-{
-        mliTarIoCherenkovBunchBuffer_free(&tio->buffer);
-        chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
         return 1;
 error:
         return 0;
