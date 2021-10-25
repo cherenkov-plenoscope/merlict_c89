@@ -70,10 +70,8 @@ CASE("TarIoWriter: make run")
         uint64_t e, b;
         struct mliTarIoWriter taro = mliTarIoWriter_init();
         struct mliTarIoReader tari = mliTarIoReader_init();
-        float corh[273];
-        float bunch[8];
-        memset(corh, 0, sizeof(corh));
-        memset(bunch, 0, sizeof(bunch));
+        float corh[273] = {0.0};
+        float bunch[8] = {0.0};
 
         CHECK(mliTarIoWriter_open(
                 &taro,
