@@ -227,6 +227,7 @@ int mliTarIoReader_open(
                 &tio->buffer,
                 num_bunches_buffer),
                 "Can't malloc bunch-buffer.");
+        tio->buffer.size = 0;
         tio->buffer_at = 0;
         tio->bunch_number = 0;
         return 1;
@@ -326,13 +327,20 @@ error:
 
 int mliTarIoReader_read_buffer(struct mliTarIoReader *tio)
 {
+        uint64_t num_bunches_to_read;
         chk_msg(tio->has_tarh, "Expected a next tar-header.");
         chk_msg(tio->tarh.size % MLI_TARIO_CORSIKA_BUNCH_SIZE == 0,
                 "Expected buffer-size to be multiple of bunch-size.");
-        tio->buffer.size = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
+        num_bunches_to_read = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
 
-        chk_msg(tio->buffer.size <= tio->buffer.capacity,
-                "Expected less bunches. Buffer is not expected to grow.");
+        if (num_bunches_to_read > tio->buffer.capacity) {
+                chk_msg(mliTarIoCherenkovBunchBuffer_malloc(
+                        &tio->buffer,
+                        num_bunches_to_read),
+                        "Can't grow cherenkov-bunch-buffer.");
+        }
+        tio->buffer.size = num_bunches_to_read;
+
         chk_msg(mliTar_read_data(
                         &tio->tar,
                         (void *)(tio->buffer.bunches),

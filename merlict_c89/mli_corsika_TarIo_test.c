@@ -65,7 +65,7 @@ CASE("TarIoWriter: make run")
 {
         const uint64_t BUFF_NUM = 64u;
         const uint64_t NUM_EVENTS = 6u;
-        const uint64_t NUM_BUNCHES[] = {23, 23, 0, 9, 7, 0};
+        const uint64_t NUM_BUNCHES[] = {23, 65, 0, 9, 7, 0};
         const float EVENT_NUMBERS[] = {1, 2, 3, 4, 5, 6};
         uint64_t e, b;
         struct mliTarIoWriter taro = mliTarIoWriter_init();
