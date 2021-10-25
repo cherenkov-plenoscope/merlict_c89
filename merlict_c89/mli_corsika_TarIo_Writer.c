@@ -182,7 +182,7 @@ struct mliTarIoReader mliTarIoReader_init(void)
         struct mliTarIoReader tio;
         tio.tar = mliTar_init();
         tio.tarh = mliTarHeader_init();
-        tio.event_number = 1;
+        tio.event_number = 0;
         tio.cherenkov_bunch_block_number = 1;
         tio.buffer = mliTarIoCherenkovBunchBuffer_init();
         tio.buffer_at = 0;
@@ -307,7 +307,6 @@ error:
 int mliTarIoReader_read_buffer(struct mliTarIoReader *tio)
 {
         chk_msg(tio->has_tarh, "Expected a next tar-header.");
-        chk_msg(tio->tarh.size > 0, "Expected buffer-size > 0.");
         chk_msg(tio->tarh.size % MLI_TARIO_CORSIKA_BUNCH_SIZE == 0,
                 "Expected buffer-size to be multiple of bunch-size.");
         tio->buffer.size = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
@@ -359,6 +358,10 @@ int mliTarIoReader_read_cherenkov_bunch(
                 tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
                 tio->cherenkov_bunch_block_number += 1;
                 tio->buffer_at = 0;
+        }
+
+        if (tio->buffer.size == 0) {
+                return 0;
         }
 
         for (i = 0; i < 8; i++) {

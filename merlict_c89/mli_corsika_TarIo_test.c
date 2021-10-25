@@ -65,7 +65,8 @@ CASE("TarIoWriter: make run")
 {
         const uint64_t BUFF_NUM = 64u;
         const uint64_t NUM_EVENTS = 6u;
-        const uint64_t NUM_BUNCHES[] = {128, 23, 0, 117, 1337, 0};
+        const uint64_t NUM_BUNCHES[] = {23, 23, 0, 9, 7, 0};
+        const float EVENT_NUMBERS[] = {1, 2, 3, 4, 5, 6};
         uint64_t e, b;
         struct mliPrng prng = mliPrng_init_MT19937(0u);
         struct mliTarIoWriter taro = mliTarIoWriter_init();
@@ -84,7 +85,7 @@ CASE("TarIoWriter: make run")
 
         for (e = 0; e < NUM_EVENTS; e++) {
                 corh[0] = mli_4chars_to_float("EVTH");
-                corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = 1.0 + (float)e;
+                corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = EVENT_NUMBERS[e];
                 CHECK(mliTarIoWriter_add_evth(&taro, corh));
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
                         memset(bunch, 0, sizeof(bunch));
@@ -101,22 +102,19 @@ CASE("TarIoWriter: make run")
         corh[0] = mli_4chars_to_float("RUNH");
 
         e = 0;
-        CHECK(tari.event_number == e + 1);
-        while (mliTarIoReader_read_evth(&tari, corh)) {
-                CHECK(tari.event_number == e + 1);
+        CHECK(tari.event_number == 0);
+        for (e = 0; e < NUM_EVENTS; e ++) {
+                CHECK(mliTarIoReader_read_evth(&tari, corh));
+                CHECK(tari.event_number == EVENT_NUMBERS[e]);
                 CHECK(corh[0] == mli_4chars_to_float("EVTH"));
-                CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == 1.0 + (float)e);
-                b = 0;
-                CHECK(tari.bunch_number == b);
-                while (mliTarIoReader_read_cherenkov_bunch(&tari, bunch)) {
-                        CHECK(bunch[0] == (float)b);
-                        b += 1;
+                CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == EVENT_NUMBERS[e]);
+                CHECK(tari.bunch_number == 0);
+                for (b = 0; b < NUM_BUNCHES[e]; b ++) {
                         CHECK(tari.bunch_number == b);
+                        CHECK(mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
+                        CHECK(bunch[0] == (float)b);
                 }
                 CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
-                e += 1;
         }
         CHECK(!mliTarIoReader_read_evth(&tari, corh));
-
-        CHECK(mliTarIoReader_close(&tari));
 }
