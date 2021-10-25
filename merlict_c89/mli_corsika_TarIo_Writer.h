@@ -7,6 +7,7 @@
 
 #define MLI_TARIO_CORSIKA_BUNCH_SIZE (sizeof(float) * 8)
 #define MLI_TARIO_CORSIKA_HEADER_SIZE (sizeof(float) * 273)
+#define MLI_TARIO_DEFAULT_BUNCH_BUFFER_CAPACITY 1048576
 
 struct mliTarIoCherenkovBunchBuffer {
         uint64_t capacity;
@@ -29,7 +30,7 @@ struct mliTarIoWriter mliTarIoWriter_init(void);
 int mliTarIoWriter_open(
         struct mliTarIoWriter *tio,
         const char *path,
-        const int capacity);
+        const uint64_t num_bunches_buffer);
 int mliTarIoWriter_close(struct mliTarIoWriter *tio);
 int mliTarIoWriter_add_runh(struct mliTarIoWriter *tio, const float *runh);
 int mliTarIoWriter_add_evth(struct mliTarIoWriter *tio, const float *evth);
@@ -62,14 +63,16 @@ struct mliTarIoReader {
         struct mliTarHeader tarh;
 };
 struct mliTarIoReader mliTarIoReader_init(void);
-int mliTarIoReader_open(struct mliTarIoReader *tio, const char *path);
+int mliTarIoReader_open(
+        struct mliTarIoReader *tio,
+        const char *path,
+        const uint64_t num_bunches_buffer);
 int mliTarIoReader_close(struct mliTarIoReader *tio);
 int mliTarIoReader_read_runh(struct mliTarIoReader *tio, float *runh);
 int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth);
 int mliTarIoReader_read_cherenkov_bunch(
         struct mliTarIoReader *tio,
         float *bunch);
-int mliTarIoReader_malloc_buffer(struct mliTarIoReader *tio);
 int mliTarIoReader_read_buffer(struct mliTarIoReader *tio);
 int mliTarIoReader_tarh_is_valid_cherenkov_block(
         const struct mliTarIoReader *tio);

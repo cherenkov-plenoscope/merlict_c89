@@ -48,10 +48,10 @@ struct mliTarIoWriter mliTarIoWriter_init(void)
 int mliTarIoWriter_open(
         struct mliTarIoWriter *tio,
         const char *path,
-        const int capacity)
+        const uint64_t num_bunches_buffer)
 {
         chk_msg(mliTar_open(&tio->tar, path, "w"), "Can't open tar.");
-        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(&tio->buffer, capacity),
+        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(&tio->buffer, num_bunches_buffer),
                 "Can't malloc cherenkov-bunch-buffer.");
         return 1;
 error:
@@ -195,10 +195,20 @@ struct mliTarIoReader mliTarIoReader_init(void)
         return tio;
 }
 
-int mliTarIoReader_open(struct mliTarIoReader *tio, const char *path)
+int mliTarIoReader_open(
+    struct mliTarIoReader *tio,
+    const char *path,
+    const uint64_t num_bunches_buffer)
 {
         chk_msg(mliTar_open(&tio->tar, path, "r"), "Can't open tar.");
         tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
+
+        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(
+                &tio->buffer,
+                num_bunches_buffer),
+                "Can't malloc bunch-buffer.");
+        tio->buffer_at = 0;
+        tio->bunch_number = 0;
         return 1;
 error:
         return 0;
@@ -294,21 +304,6 @@ error:
         return 0;
 }
 
-int mliTarIoReader_malloc_buffer(struct mliTarIoReader *tio)
-{
-        uint64_t capacity;
-        chk_msg(tio->has_tarh, "Expected a next tar-header.");
-        chk_msg(tio->tarh.size > 0, "Expected buffer-size > 0.");
-        chk_msg(tio->tarh.size % MLI_TARIO_CORSIKA_BUNCH_SIZE == 0,
-                "Expected buffer-size to be multiple of bunch-size.");
-        capacity = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
-        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(&tio->buffer, capacity),
-                "Can't malloc cherenkov-bunch-buffer.");
-        return 1;
-error:
-        return 0;
-}
-
 int mliTarIoReader_read_buffer(struct mliTarIoReader *tio)
 {
         chk_msg(tio->has_tarh, "Expected a next tar-header.");
@@ -333,21 +328,6 @@ int mliTarIoReader_read_cherenkov_bunch(
         float *bunch)
 {
         int i;
-
-        if (tio->buffer.bunches == NULL) {
-                if (!tio->has_tarh) {
-                        return 0;
-                }
-                chk_msg(mliTarIoReader_tarh_is_valid_cherenkov_block(tio),
-                        "Cherenkov-bunch-block's tar-header doesn't match.");
-                chk_msg(mliTarIoReader_malloc_buffer(tio),
-                        "Can't malloc cherenkov-bunch-block-bluffer.");
-                chk_msg(mliTarIoReader_read_buffer(tio),
-                        "Can't read first cherenkov-bunch-block.");
-                tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
-                tio->cherenkov_bunch_block_number += 1;
-                tio->buffer_at = 0;
-        }
 
         if (tio->buffer_at == tio->buffer.size) {
                 if (!tio->has_tarh) {
