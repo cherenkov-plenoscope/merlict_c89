@@ -43,17 +43,12 @@ struct mliTarIoReader {
         /* Current event-number */
         uint64_t event_number;
 
-        /* Current bunch-number inside the current event */
-        uint64_t bunch_number;
-
         /* Current cherenkov-block-number inside the current event */
         uint64_t cherenkov_bunch_block_number;
 
         /* Current bunch-number inside the current cherenkov-block */
-        uint64_t buffer_at;
-
-        /* Buffer. Capacity is determined by first cherenkov-block in run */
-        struct mliTarIoCherenkovBunchBuffer buffer;
+        uint64_t block_at;
+        uint64_t block_size;
 
         /* Underlying tape-archive */
         struct mliTar tar;
@@ -65,15 +60,13 @@ struct mliTarIoReader {
 struct mliTarIoReader mliTarIoReader_init(void);
 int mliTarIoReader_open(
         struct mliTarIoReader *tio,
-        const char *path,
-        const uint64_t num_bunches_buffer);
+        const char *path);
 int mliTarIoReader_close(struct mliTarIoReader *tio);
 int mliTarIoReader_read_runh(struct mliTarIoReader *tio, float *runh);
 int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth);
 int mliTarIoReader_read_cherenkov_bunch(
         struct mliTarIoReader *tio,
         float *bunch);
-int mliTarIoReader_read_buffer(struct mliTarIoReader *tio);
 int mliTarIoReader_tarh_is_valid_cherenkov_block(
         const struct mliTarIoReader *tio);
 int mliTarIoReader_tarh_might_be_valid_cherenkov_block(

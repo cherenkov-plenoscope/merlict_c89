@@ -61,7 +61,7 @@ CASE("TarIo: while loop")
         CHECK(mliTarIoRun_close(&run));
 }
 
-CASE("TarIoWriter: make run")
+CASE("TarIoWriter: run normal")
 {
         const uint64_t BUFF_NUM = 64u;
         const uint64_t NUM_EVENTS = 6u;
@@ -101,8 +101,7 @@ CASE("TarIoWriter: make run")
                 &tari,
                 "merlict_c89/"
                 "mli_corsika_test_resources/"
-                "run_normal.tar",
-                32));
+                "run_normal.tar"));
         CHECK(mliTarIoReader_read_runh(&tari, corh));
         corh[0] = mli_4chars_to_float("RUNH");
 
@@ -113,9 +112,7 @@ CASE("TarIoWriter: make run")
                 CHECK(tari.event_number == EVENT_NUMBERS[e]);
                 CHECK(corh[0] == mli_4chars_to_float("EVTH"));
                 CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == EVENT_NUMBERS[e]);
-                CHECK(tari.bunch_number == 0);
                 for (b = 0; b < NUM_BUNCHES[e]; b ++) {
-                        CHECK(tari.bunch_number == b);
                         CHECK(mliTarIoReader_read_cherenkov_bunch(&tari, bunch));
                         CHECK(mliTarIo_testing_bunch_has_mark(bunch, b));
                 }
@@ -149,8 +146,7 @@ CASE("TarIoWriter: no events")
         CHECK(mliTarIoReader_open(
                 &tari, "merlict_c89/"
                 "mli_corsika_test_resources/"
-                "run_no_events.tar",
-                64));
+                "run_no_events.tar"));
         CHECK(mliTarIoReader_read_runh(&tari, corh));
         corh[0] = mli_4chars_to_float("RUNH");
 
@@ -173,7 +169,7 @@ CASE("TarIoWriter: first event no bunches")
                 "merlict_c89/"
                 "mli_corsika_test_resources/"
                 "run_first_event_no_bunches.tar",
-                128));
+                64));
         corh[0] = mli_4chars_to_float("RUNH");
         CHECK(mliTarIoWriter_add_runh(&taro, corh));
 
@@ -190,8 +186,7 @@ CASE("TarIoWriter: first event no bunches")
                 &tari,
                 "merlict_c89/"
                 "mli_corsika_test_resources/"
-                "run_first_event_no_bunches.tar",
-                64));
+                "run_first_event_no_bunches.tar"));
         CHECK(mliTarIoReader_read_runh(&tari, corh));
         CHECK(corh[0] == mli_4chars_to_float("RUNH"));
 

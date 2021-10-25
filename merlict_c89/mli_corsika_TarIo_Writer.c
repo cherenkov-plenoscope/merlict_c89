@@ -194,9 +194,8 @@ struct mliTarIoReader mliTarIoReader_init(void)
         tio.tarh = mliTarHeader_init();
         tio.event_number = 0;
         tio.cherenkov_bunch_block_number = 0;
-        tio.buffer = mliTarIoCherenkovBunchBuffer_init();
-        tio.buffer_at = 0;
-        tio.bunch_number = 0;
+        tio.block_at = 0;
+        tio.block_size = 0;
         return tio;
 }
 
@@ -205,7 +204,6 @@ int mliTarIoReader_close(struct mliTarIoReader *tio)
         if (tio->tar.stream) {
                 chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
         }
-        mliTarIoCherenkovBunchBuffer_free(&tio->buffer);
 
         (*tio) = mliTarIoReader_init();
         return 1;
@@ -215,21 +213,12 @@ error:
 
 int mliTarIoReader_open(
     struct mliTarIoReader *tio,
-    const char *path,
-    const uint64_t num_bunches_buffer)
+    const char *path)
 {
         chk_msg(mliTarIoReader_close(tio),
                 "Can't close and free previous tar-io-reader.");
         chk_msg(mliTar_open(&tio->tar, path, "r"), "Can't open tar.");
         tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
-
-        chk_msg(mliTarIoCherenkovBunchBuffer_malloc(
-                &tio->buffer,
-                num_bunches_buffer),
-                "Can't malloc bunch-buffer.");
-        tio->buffer.size = 0;
-        tio->buffer_at = 0;
-        tio->bunch_number = 0;
         return 1;
 error:
         return 0;
@@ -276,8 +265,17 @@ int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth)
                 "Expected same event-number in path and EVTH.");
         tio->event_number = event_number_evth;
         tio->cherenkov_bunch_block_number = 1;
-        tio->bunch_number = 0;
+
+        /* now there must follow a cherenkov-bunch-block */
         tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
+        chk_msg(tio->has_tarh, "Expected cherenkov-bunch-block after EVTH.");
+        chk_msg(mliTarIoReader_tarh_is_valid_cherenkov_block(tio),
+                "Cherenkov-bunch-block's tar-header doesn't match.");
+
+        chk_msg(tio->tarh.size % MLI_TARIO_CORSIKA_BUNCH_SIZE == 0,
+                "Expected buffer-size to be multiple of bunch-size.");
+        tio->block_size = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
+        tio->block_at = 0;
         return 1;
 error:
         return 0;
@@ -325,39 +323,14 @@ error:
         return 0;
 }
 
-int mliTarIoReader_read_buffer(struct mliTarIoReader *tio)
-{
-        uint64_t num_bunches_to_read;
-        chk_msg(tio->has_tarh, "Expected a next tar-header.");
-        chk_msg(tio->tarh.size % MLI_TARIO_CORSIKA_BUNCH_SIZE == 0,
-                "Expected buffer-size to be multiple of bunch-size.");
-        num_bunches_to_read = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
-
-        if (num_bunches_to_read > tio->buffer.capacity) {
-                chk_msg(mliTarIoCherenkovBunchBuffer_malloc(
-                        &tio->buffer,
-                        num_bunches_to_read),
-                        "Can't grow cherenkov-bunch-buffer.");
-        }
-        tio->buffer.size = num_bunches_to_read;
-
-        chk_msg(mliTar_read_data(
-                        &tio->tar,
-                        (void *)(tio->buffer.bunches),
-                        tio->tarh.size),
-                "Failed to read cherenkov_bunches from block into buffer.");
-        return 1;
-error:
-        return 0;
-}
-
 int mliTarIoReader_read_cherenkov_bunch(
         struct mliTarIoReader *tio,
         float *bunch)
 {
-        int i;
+        if (tio->block_at == tio->block_size) {
+                tio->cherenkov_bunch_block_number += 1;
+                tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
 
-        if (tio->buffer_at == tio->buffer.size) {
                 if (!tio->has_tarh) {
                         return 0;
                 }
@@ -366,22 +339,25 @@ int mliTarIoReader_read_cherenkov_bunch(
                 }
                 chk_msg(mliTarIoReader_tarh_is_valid_cherenkov_block(tio),
                         "Cherenkov-bunch-block's tar-header doesn't match.");
-                chk_msg(mliTarIoReader_read_buffer(tio),
-                        "Can't read first cherenkov-bunch-block.");
-                tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
-                tio->cherenkov_bunch_block_number += 1;
-                tio->buffer_at = 0;
+
+                chk_msg(tio->tarh.size % MLI_TARIO_CORSIKA_BUNCH_SIZE == 0,
+                        "Expected buffer-size to be multiple of bunch-size.");
+                tio->block_size = tio->tarh.size / MLI_TARIO_CORSIKA_BUNCH_SIZE;
+                tio->block_at = 0;
         }
 
-        if (tio->buffer.size == 0) {
+        if (tio->block_size == 0) {
+                tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
                 return 0;
         }
 
-        for (i = 0; i < 8; i++) {
-                bunch[i] = tio->buffer.bunches[tio->buffer_at * 8 + i];
-        }
-        tio->buffer_at += 1;
-        tio->bunch_number += 1;
+        chk_msg(mliTar_read_data(
+                        &tio->tar,
+                        (void *)(bunch),
+                        MLI_TARIO_CORSIKA_BUNCH_SIZE),
+                "Failed to read cherenkov_bunch.");
+
+        tio->block_at += 1;
 
         return 1;
 error:
