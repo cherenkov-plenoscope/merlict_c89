@@ -68,7 +68,6 @@ CASE("TarIoWriter: make run")
         const uint64_t NUM_BUNCHES[] = {23, 23, 0, 9, 7, 0};
         const float EVENT_NUMBERS[] = {1, 2, 3, 4, 5, 6};
         uint64_t e, b;
-        struct mliPrng prng = mliPrng_init_MT19937(0u);
         struct mliTarIoWriter taro = mliTarIoWriter_init();
         struct mliTarIoReader tari = mliTarIoReader_init();
         float corh[273];
