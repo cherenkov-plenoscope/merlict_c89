@@ -21,15 +21,15 @@ CASE("EventTape: run normal")
                 "run_normal.tar",
                 BUFF_NUM));
         corh[0] = mli_4chars_to_float("RUNH");
-        CHECK(mliEventTapeWriter_add_runh(&taro, corh));
+        CHECK(mliEventTapeWriter_write_runh(&taro, corh));
 
         for (e = 0; e < NUM_EVENTS; e++) {
                 corh[0] = mli_4chars_to_float("EVTH");
                 corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = EVENT_NUMBERS[e];
-                CHECK(mliEventTapeWriter_add_evth(&taro, corh));
+                CHECK(mliEventTapeWriter_write_evth(&taro, corh));
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
                         mliCorsikaPhotonBunch_testing_mark_bunch(&bunch, b);
-                        CHECK(mliEventTapeWriter_add_cherenkov_bunch(&taro, bunch));
+                        CHECK(mliEventTapeWriter_write_cherenkov_bunch(&taro, bunch));
                 }
         }
         CHECK(mliEventTapeWriter_close(&taro));
@@ -79,7 +79,7 @@ CASE("EventTape: no events")
                 "run_no_events.tar",
                 128));
         corh[0] = mli_4chars_to_float("RUNH");
-        CHECK(mliEventTapeWriter_add_runh(&taro, corh));
+        CHECK(mliEventTapeWriter_write_runh(&taro, corh));
         CHECK(mliEventTapeWriter_close(&taro));
 
         /* read back */
@@ -113,11 +113,11 @@ CASE("EventTape: first event no bunches")
                 "run_first_event_no_bunches.tar",
                 64));
         corh[0] = mli_4chars_to_float("RUNH");
-        CHECK(mliEventTapeWriter_add_runh(&taro, corh));
+        CHECK(mliEventTapeWriter_write_runh(&taro, corh));
 
         corh[0] = mli_4chars_to_float("EVTH");
         corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = 1337.0;
-        CHECK(mliEventTapeWriter_add_evth(&taro, corh));
+        CHECK(mliEventTapeWriter_write_evth(&taro, corh));
         CHECK(mliEventTapeWriter_close(&taro));
 
         memset(corh, 0.0, sizeof(corh));

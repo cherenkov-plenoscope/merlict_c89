@@ -22,12 +22,12 @@ int mliEventTapeWriter_open(
         const char *path,
         const uint64_t num_bunches_buffer);
 int mliEventTapeWriter_close(struct mliEventTapeWriter *tio);
-int mliEventTapeWriter_add_runh(struct mliEventTapeWriter *tio, const float *runh);
-int mliEventTapeWriter_add_evth(struct mliEventTapeWriter *tio, const float *evth);
-int mliEventTapeWriter_add_cherenkov_bunch(
+int mliEventTapeWriter_write_runh(struct mliEventTapeWriter *tio, const float *runh);
+int mliEventTapeWriter_write_evth(struct mliEventTapeWriter *tio, const float *evth);
+int mliEventTapeWriter_write_cherenkov_bunch(
         struct mliEventTapeWriter *tio,
         const struct mliCorsikaPhotonBunch bunch);
-int mliEventTapeWriter_add_cherenkov_bunch_raw(
+int mliEventTapeWriter_write_cherenkov_bunch_raw(
         struct mliEventTapeWriter *tio,
         const float *bunch_raw);
 int mliEventTapeWriter_flush_cherenkov_bunch_block(struct mliEventTapeWriter *tio);

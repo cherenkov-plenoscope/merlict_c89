@@ -49,7 +49,7 @@ error:
         return 0;
 }
 
-int mliEventTapeWriter_add_corsika_header(
+int mliEventTapeWriter_write_corsika_header(
         struct mliEventTapeWriter *tio,
         const char *path,
         const float *corsika_header)
@@ -72,16 +72,16 @@ error:
         return 0;
 }
 
-int mliEventTapeWriter_add_runh(struct mliEventTapeWriter *tio, const float *runh)
+int mliEventTapeWriter_write_runh(struct mliEventTapeWriter *tio, const float *runh)
 {
-        chk_msg(mliEventTapeWriter_add_corsika_header(tio, "RUNH.float32", runh),
+        chk_msg(mliEventTapeWriter_write_corsika_header(tio, "RUNH.float32", runh),
                 "Can't write 'RUNH.float32' to tario.");
         return 1;
 error:
         return 0;
 }
 
-int mliEventTapeWriter_add_evth(struct mliEventTapeWriter *tio, const float *evth)
+int mliEventTapeWriter_write_evth(struct mliEventTapeWriter *tio, const float *evth)
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
 
@@ -98,7 +98,7 @@ int mliEventTapeWriter_add_evth(struct mliEventTapeWriter *tio, const float *evt
         tio->cherenkov_bunch_block_number = 1;
 
         sprintf(path, "%09d/EVTH.float32", tio->event_number);
-        chk_msg(mliEventTapeWriter_add_corsika_header(tio, path, evth),
+        chk_msg(mliEventTapeWriter_write_corsika_header(tio, path, evth),
                 "Can't write 'EVTH.float32' to tario.");
         return 1;
 error:
@@ -143,7 +143,7 @@ error:
         return 0;
 }
 
-int mliEventTapeWriter_add_cherenkov_bunch(
+int mliEventTapeWriter_write_cherenkov_bunch(
         struct mliEventTapeWriter *tio,
         const struct mliCorsikaPhotonBunch bunch)
 {
@@ -159,13 +159,13 @@ error:
         return 0;
 }
 
-int mliEventTapeWriter_add_cherenkov_bunch_raw(
+int mliEventTapeWriter_write_cherenkov_bunch_raw(
         struct mliEventTapeWriter *tio,
         const float *bunch_raw)
 {
         struct mliCorsikaPhotonBunch bunch;
         mliCorsikaPhotonBunch_set_from_raw(&bunch, bunch_raw);
-        chk_msg(mliEventTapeWriter_add_cherenkov_bunch(tio, bunch),
+        chk_msg(mliEventTapeWriter_write_cherenkov_bunch(tio, bunch),
                 "Can't add raw-bunch to tar-io.");
         return 1;
 error:

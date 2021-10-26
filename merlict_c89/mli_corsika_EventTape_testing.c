@@ -118,17 +118,17 @@ int mliEventTape_testing_write_and_read(
                 "Can't open writer.");
         /* set RUNH */
         mliEventTape_testing_set_random_RUNH(corho, &prng);
-        chk_msg(mliEventTapeWriter_add_runh(&taro, corho), "Can't write RUNH.");
+        chk_msg(mliEventTapeWriter_write_runh(&taro, corho), "Can't write RUNH.");
 
         for (e = 0; e < num_events; e++) {
                 /* set EVTH */
                 mliEventTape_testing_set_random_EVTH(
                         corho, event_numbers[e], &prng);
-                chk_msg(mliEventTapeWriter_add_evth(&taro, corho),
+                chk_msg(mliEventTapeWriter_write_evth(&taro, corho),
                         "Can't write EVTH.");
                 for (b = 0; b < num_bunches[e]; b++) {
                         mliEventTape_testing_set_random_bunch(&buncho, &prng);
-                        chk_msg(mliEventTapeWriter_add_cherenkov_bunch(
+                        chk_msg(mliEventTapeWriter_write_cherenkov_bunch(
                                         &taro, buncho),
                                 "Can't write bunch.");
                 }
