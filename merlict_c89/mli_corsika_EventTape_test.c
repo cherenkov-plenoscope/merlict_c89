@@ -29,7 +29,8 @@ CASE("EventTape: run normal")
                 CHECK(mliEventTapeWriter_write_evth(&taro, corh));
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
                         mliCorsikaPhotonBunch_testing_mark_bunch(&bunch, b);
-                        CHECK(mliEventTapeWriter_write_cherenkov_bunch(&taro, bunch));
+                        CHECK(mliEventTapeWriter_write_cherenkov_bunch(
+                                &taro, bunch));
                 }
         }
         CHECK(mliEventTapeWriter_close(&taro));

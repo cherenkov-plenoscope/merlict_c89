@@ -80,7 +80,9 @@ int mliEventTape_testing_bunches_are_equal(
         return 1;
 }
 
-int mliEventTape_testing_corsika_headers_are_equal(const float *h1, const float *h2)
+int mliEventTape_testing_corsika_headers_are_equal(
+        const float *h1,
+        const float *h2)
 {
         int i;
         for (i = 0; i < 273; i++) {
@@ -118,7 +120,8 @@ int mliEventTape_testing_write_and_read(
                 "Can't open writer.");
         /* set RUNH */
         mliEventTape_testing_set_random_RUNH(corho, &prng);
-        chk_msg(mliEventTapeWriter_write_runh(&taro, corho), "Can't write RUNH.");
+        chk_msg(mliEventTapeWriter_write_runh(&taro, corho),
+                "Can't write RUNH.");
 
         for (e = 0; e < num_events; e++) {
                 /* set EVTH */
@@ -176,7 +179,8 @@ int mliEventTape_testing_write_and_read(
                                         &bunchi, &buncho),
                                 "Expected bunch to be equal.");
                 }
-                chk_msg(!mliEventTapeReader_read_cherenkov_bunch(&tari, &buncho),
+                chk_msg(!mliEventTapeReader_read_cherenkov_bunch(
+                                &tari, &buncho),
                         "Did not expect another cherenkov-bunch.");
         }
         chk_msg(!mliEventTapeReader_read_evth(&tari, corho),

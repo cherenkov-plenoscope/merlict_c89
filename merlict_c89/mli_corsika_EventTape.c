@@ -19,7 +19,8 @@ int mliEventTapeWriter_close(struct mliEventTapeWriter *tio)
 {
         if (tio->tar.stream) {
                 if (tio->event_number) {
-                        chk_msg(mliEventTapeWriter_flush_cherenkov_bunch_block(tio),
+                        chk_msg(mliEventTapeWriter_flush_cherenkov_bunch_block(
+                                        tio),
                                 "Can't finalize final event's "
                                 "cherenkov-bunch-block");
                 }
@@ -72,16 +73,21 @@ error:
         return 0;
 }
 
-int mliEventTapeWriter_write_runh(struct mliEventTapeWriter *tio, const float *runh)
+int mliEventTapeWriter_write_runh(
+        struct mliEventTapeWriter *tio,
+        const float *runh)
 {
-        chk_msg(mliEventTapeWriter_write_corsika_header(tio, "RUNH.float32", runh),
+        chk_msg(mliEventTapeWriter_write_corsika_header(
+                        tio, "RUNH.float32", runh),
                 "Can't write 'RUNH.float32' to tario.");
         return 1;
 error:
         return 0;
 }
 
-int mliEventTapeWriter_write_evth(struct mliEventTapeWriter *tio, const float *evth)
+int mliEventTapeWriter_write_evth(
+        struct mliEventTapeWriter *tio,
+        const float *evth)
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
 
@@ -105,7 +111,8 @@ error:
         return 0;
 }
 
-int mliEventTapeWriter_flush_cherenkov_bunch_block(struct mliEventTapeWriter *tio)
+int mliEventTapeWriter_flush_cherenkov_bunch_block(
+        struct mliEventTapeWriter *tio)
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
         struct mliTarHeader tarh = mliTarHeader_init();
@@ -328,7 +335,8 @@ int mliEventTapeReader_read_cherenkov_bunch_raw(
                 if (!tio->has_tarh) {
                         return 0;
                 }
-                if (!mliEventTapeReader_tarh_might_be_valid_cherenkov_block(tio)) {
+                if (!mliEventTapeReader_tarh_might_be_valid_cherenkov_block(
+                            tio)) {
                         return 0;
                 }
                 chk_msg(mliEventTapeReader_tarh_is_valid_cherenkov_block(tio),
@@ -337,7 +345,8 @@ int mliEventTapeReader_read_cherenkov_bunch_raw(
                 chk_msg(tio->tarh.size % MLI_EVENTTAPE_CORSIKA_BUNCH_SIZE == 0,
                         "Expected cherenkov-bunch-block-size "
                         "to be multiple of bunch-size.");
-                tio->block_size = tio->tarh.size / MLI_EVENTTAPE_CORSIKA_BUNCH_SIZE;
+                tio->block_size =
+                        tio->tarh.size / MLI_EVENTTAPE_CORSIKA_BUNCH_SIZE;
                 tio->block_at = 0;
         }
 
