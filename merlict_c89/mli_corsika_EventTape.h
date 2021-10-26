@@ -8,7 +8,6 @@
 #include "mli_corsika_CorsikaPhotonBunch.h"
 
 #define MLI_EVENTTAPE_CORSIKA_BUNCH_SIZE (sizeof(float) * 8)
-#define MLI_EVENTTAPE_CORSIKA_HEADER_SIZE (sizeof(float) * 273)
 
 struct mliEventTapeWriter {
         struct mliTar tar;

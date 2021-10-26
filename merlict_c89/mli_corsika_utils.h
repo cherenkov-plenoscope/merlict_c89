@@ -4,6 +4,9 @@
 
 float mli_4chars_to_float(const char *four_char_word);
 
+#define MLI_CORSIKA_HEADER_SIZE (sizeof(float) * 273)
+#define MLI_CORSIKA_BUNCH_SIZE (sizeof(float) * 8)
+
 #define MLI_CORSIKA_RUNH_RUN_NUMBER 1
 #define MLI_CORSIKA_RUNH_SLOPE_OF_ENERGY_SPECTRUM 15
 #define MLI_CORSIKA_RUNH_ENERGY_RANGE_START 16
