@@ -61,146 +61,146 @@ CASE("TarIo: while loop")
         CHECK(mliTarIoRun_close(&run));
 }
 
-CASE("TarIoWriter: run normal")
+CASE("EventTape: run normal")
 {
         const uint64_t BUFF_NUM = 64u;
         const uint64_t NUM_EVENTS = 6u;
         const uint64_t NUM_BUNCHES[] = {23, 65, 0, 9, 7, 0};
         const float EVENT_NUMBERS[] = {1, 2, 3, 4, 5, 6};
         uint64_t e, b;
-        struct mliTarIoWriter taro = mliTarIoWriter_init();
-        struct mliTarIoReader tari = mliTarIoReader_init();
+        struct mliEventTapeWriter taro = mliEventTapeWriter_init();
+        struct mliEventTapeReader tari = mliEventTapeReader_init();
         float corh[273] = {0.0};
         struct mliCorsikaPhotonBunch bunch;
 
         /* write */
         /* ----- */
-        CHECK(mliTarIoWriter_open(
+        CHECK(mliEventTapeWriter_open(
                 &taro,
                 "merlict_c89/"
                 "mli_corsika_test_resources/"
                 "run_normal.tar",
                 BUFF_NUM));
         corh[0] = mli_4chars_to_float("RUNH");
-        CHECK(mliTarIoWriter_add_runh(&taro, corh));
+        CHECK(mliEventTapeWriter_add_runh(&taro, corh));
 
         for (e = 0; e < NUM_EVENTS; e++) {
                 corh[0] = mli_4chars_to_float("EVTH");
                 corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = EVENT_NUMBERS[e];
-                CHECK(mliTarIoWriter_add_evth(&taro, corh));
+                CHECK(mliEventTapeWriter_add_evth(&taro, corh));
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
                         mliCorsikaPhotonBunch_testing_mark_bunch(&bunch, b);
-                        CHECK(mliTarIoWriter_add_cherenkov_bunch(&taro, bunch));
+                        CHECK(mliEventTapeWriter_add_cherenkov_bunch(&taro, bunch));
                 }
         }
-        CHECK(mliTarIoWriter_close(&taro));
+        CHECK(mliEventTapeWriter_close(&taro));
 
         /* read back */
         /* --------- */
-        CHECK(mliTarIoReader_open(
+        CHECK(mliEventTapeReader_open(
                 &tari,
                 "merlict_c89/"
                 "mli_corsika_test_resources/"
                 "run_normal.tar"));
-        CHECK(mliTarIoReader_read_runh(&tari, corh));
+        CHECK(mliEventTapeReader_read_runh(&tari, corh));
         corh[0] = mli_4chars_to_float("RUNH");
 
         e = 0;
         CHECK(tari.event_number == 0);
         for (e = 0; e < NUM_EVENTS; e++) {
-                CHECK(mliTarIoReader_read_evth(&tari, corh));
+                CHECK(mliEventTapeReader_read_evth(&tari, corh));
                 CHECK(tari.event_number == EVENT_NUMBERS[e]);
                 CHECK(corh[0] == mli_4chars_to_float("EVTH"));
                 CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == EVENT_NUMBERS[e]);
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
-                        CHECK(mliTarIoReader_read_cherenkov_bunch(
+                        CHECK(mliEventTapeReader_read_cherenkov_bunch(
                                 &tari, &bunch));
                         CHECK(mliCorsikaPhotonBunch_testing_bunch_has_mark(
                                 bunch, b));
                 }
-                CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, &bunch));
+                CHECK(!mliEventTapeReader_read_cherenkov_bunch(&tari, &bunch));
         }
-        CHECK(!mliTarIoReader_read_evth(&tari, corh));
-        CHECK(mliTarIoReader_close(&tari));
+        CHECK(!mliEventTapeReader_read_evth(&tari, corh));
+        CHECK(mliEventTapeReader_close(&tari));
 }
 
-CASE("TarIoWriter: no events")
+CASE("EventTape: no events")
 {
-        struct mliTarIoWriter taro = mliTarIoWriter_init();
-        struct mliTarIoReader tari = mliTarIoReader_init();
+        struct mliEventTapeWriter taro = mliEventTapeWriter_init();
+        struct mliEventTapeReader tari = mliEventTapeReader_init();
         float corh[273] = {0.0};
         float bunch[8] = {0.0};
 
         /* write */
         /* ----- */
-        CHECK(mliTarIoWriter_open(
+        CHECK(mliEventTapeWriter_open(
                 &taro,
                 "merlict_c89/"
                 "mli_corsika_test_resources/"
                 "run_no_events.tar",
                 128));
         corh[0] = mli_4chars_to_float("RUNH");
-        CHECK(mliTarIoWriter_add_runh(&taro, corh));
-        CHECK(mliTarIoWriter_close(&taro));
+        CHECK(mliEventTapeWriter_add_runh(&taro, corh));
+        CHECK(mliEventTapeWriter_close(&taro));
 
         /* read back */
         /* --------- */
-        CHECK(mliTarIoReader_open(
+        CHECK(mliEventTapeReader_open(
                 &tari,
                 "merlict_c89/"
                 "mli_corsika_test_resources/"
                 "run_no_events.tar"));
-        CHECK(mliTarIoReader_read_runh(&tari, corh));
+        CHECK(mliEventTapeReader_read_runh(&tari, corh));
         corh[0] = mli_4chars_to_float("RUNH");
 
-        CHECK(!mliTarIoReader_read_evth(&tari, corh));
-        CHECK(!mliTarIoReader_read_cherenkov_bunch_raw(&tari, bunch));
-        CHECK(mliTarIoReader_close(&tari));
+        CHECK(!mliEventTapeReader_read_evth(&tari, corh));
+        CHECK(!mliEventTapeReader_read_cherenkov_bunch_raw(&tari, bunch));
+        CHECK(mliEventTapeReader_close(&tari));
 }
 
-CASE("TarIoWriter: first event no bunches")
+CASE("EventTape: first event no bunches")
 {
-        struct mliTarIoWriter taro = mliTarIoWriter_init();
-        struct mliTarIoReader tari = mliTarIoReader_init();
+        struct mliEventTapeWriter taro = mliEventTapeWriter_init();
+        struct mliEventTapeReader tari = mliEventTapeReader_init();
         float corh[273] = {0.0};
         float bunch[8] = {0.0};
 
         /* write */
         /* ----- */
-        CHECK(mliTarIoWriter_open(
+        CHECK(mliEventTapeWriter_open(
                 &taro,
                 "merlict_c89/"
                 "mli_corsika_test_resources/"
                 "run_first_event_no_bunches.tar",
                 64));
         corh[0] = mli_4chars_to_float("RUNH");
-        CHECK(mliTarIoWriter_add_runh(&taro, corh));
+        CHECK(mliEventTapeWriter_add_runh(&taro, corh));
 
         corh[0] = mli_4chars_to_float("EVTH");
         corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = 1337.0;
-        CHECK(mliTarIoWriter_add_evth(&taro, corh));
-        CHECK(mliTarIoWriter_close(&taro));
+        CHECK(mliEventTapeWriter_add_evth(&taro, corh));
+        CHECK(mliEventTapeWriter_close(&taro));
 
         memset(corh, 0.0, sizeof(corh));
 
         /* read back */
         /* --------- */
-        CHECK(mliTarIoReader_open(
+        CHECK(mliEventTapeReader_open(
                 &tari,
                 "merlict_c89/"
                 "mli_corsika_test_resources/"
                 "run_first_event_no_bunches.tar"));
-        CHECK(mliTarIoReader_read_runh(&tari, corh));
+        CHECK(mliEventTapeReader_read_runh(&tari, corh));
         CHECK(corh[0] == mli_4chars_to_float("RUNH"));
 
-        CHECK(mliTarIoReader_read_evth(&tari, corh));
+        CHECK(mliEventTapeReader_read_evth(&tari, corh));
         CHECK(corh[0] == mli_4chars_to_float("EVTH"));
         CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == 1337.0);
-        CHECK(!mliTarIoReader_read_cherenkov_bunch_raw(&tari, bunch));
-        CHECK(mliTarIoReader_close(&tari));
+        CHECK(!mliEventTapeReader_read_cherenkov_bunch_raw(&tari, bunch));
+        CHECK(mliEventTapeReader_close(&tari));
 }
 
-CASE("TarIoWriter: run_no_events")
+CASE("EventTape: run_no_events")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -220,7 +220,7 @@ CASE("TarIoWriter: run_no_events")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_one_event_no_bunches")
+CASE("EventTape: run_one_event_no_bunches")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -240,7 +240,7 @@ CASE("TarIoWriter: run_one_event_no_bunches")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_one_event_few_bunches")
+CASE("EventTape: run_one_event_few_bunches")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -260,7 +260,7 @@ CASE("TarIoWriter: run_one_event_few_bunches")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_one_event_num_bunches_equals_buffer")
+CASE("EventTape: run_one_event_num_bunches_equals_buffer")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -280,7 +280,7 @@ CASE("TarIoWriter: run_one_event_num_bunches_equals_buffer")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_one_event_many_bunches")
+CASE("EventTape: run_one_event_many_bunches")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -300,7 +300,7 @@ CASE("TarIoWriter: run_one_event_many_bunches")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_many_events_first_event_no_bunches")
+CASE("EventTape: run_many_events_first_event_no_bunches")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -320,7 +320,7 @@ CASE("TarIoWriter: run_many_events_first_event_no_bunches")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_many_events_last_event_no_bunches")
+CASE("EventTape: run_many_events_last_event_no_bunches")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -340,7 +340,7 @@ CASE("TarIoWriter: run_many_events_last_event_no_bunches")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_many_events_all_events_many_bunches")
+CASE("EventTape: run_many_events_all_events_many_bunches")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -360,7 +360,7 @@ CASE("TarIoWriter: run_many_events_all_events_many_bunches")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_many_events_all_events_no_bunches")
+CASE("EventTape: run_many_events_all_events_no_bunches")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -380,7 +380,7 @@ CASE("TarIoWriter: run_many_events_all_events_no_bunches")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_many_events_all_events_num_bunches_equal_buffer")
+CASE("EventTape: run_many_events_all_events_num_bunches_equal_buffer")
 {
         const char path[] =
                 "merlict_c89/"
@@ -401,7 +401,7 @@ CASE("TarIoWriter: run_many_events_all_events_num_bunches_equal_buffer")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_many_events_event_numbers_do_not_start_at_one")
+CASE("EventTape: run_many_events_event_numbers_do_not_start_at_one")
 {
         const char path[] =
                 "merlict_c89/"
@@ -422,7 +422,7 @@ CASE("TarIoWriter: run_many_events_event_numbers_do_not_start_at_one")
                 random_seed));
 }
 
-CASE("TarIoWriter: run_many_events_buffer_set_to_one")
+CASE("EventTape: run_many_events_buffer_set_to_one")
 {
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"

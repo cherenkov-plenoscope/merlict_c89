@@ -1,38 +1,38 @@
 /* Copyright 2020 Sebastian A. Mueller */
-#ifndef MLI_CORSIKA_TARIO_H_
-#define MLI_CORSIKA_TARIO_H_
+#ifndef MLI_CORSIKA_EVENTTAPE_H_
+#define MLI_CORSIKA_EVENTTAPE_H_
 
 #include <stdint.h>
 #include "mliTar.h"
 #include "mli_corsika_utils.h"
 #include "mli_corsika_CorsikaPhotonBunch.h"
 
-#define MLI_TARIO_CORSIKA_BUNCH_SIZE (sizeof(float) * 8)
-#define MLI_TARIO_CORSIKA_HEADER_SIZE (sizeof(float) * 273)
+#define MLI_EVENTTAPE_CORSIKA_BUNCH_SIZE (sizeof(float) * 8)
+#define MLI_EVENTTAPE_CORSIKA_HEADER_SIZE (sizeof(float) * 273)
 
-struct mliTarIoWriter {
+struct mliEventTapeWriter {
         struct mliTar tar;
         int event_number;
         int cherenkov_bunch_block_number;
         struct mliDynCorsikaPhotonBunch buffer;
 };
-struct mliTarIoWriter mliTarIoWriter_init(void);
-int mliTarIoWriter_open(
-        struct mliTarIoWriter *tio,
+struct mliEventTapeWriter mliEventTapeWriter_init(void);
+int mliEventTapeWriter_open(
+        struct mliEventTapeWriter *tio,
         const char *path,
         const uint64_t num_bunches_buffer);
-int mliTarIoWriter_close(struct mliTarIoWriter *tio);
-int mliTarIoWriter_add_runh(struct mliTarIoWriter *tio, const float *runh);
-int mliTarIoWriter_add_evth(struct mliTarIoWriter *tio, const float *evth);
-int mliTarIoWriter_add_cherenkov_bunch(
-        struct mliTarIoWriter *tio,
+int mliEventTapeWriter_close(struct mliEventTapeWriter *tio);
+int mliEventTapeWriter_add_runh(struct mliEventTapeWriter *tio, const float *runh);
+int mliEventTapeWriter_add_evth(struct mliEventTapeWriter *tio, const float *evth);
+int mliEventTapeWriter_add_cherenkov_bunch(
+        struct mliEventTapeWriter *tio,
         const struct mliCorsikaPhotonBunch bunch);
-int mliTarIoWriter_add_cherenkov_bunch_raw(
-        struct mliTarIoWriter *tio,
+int mliEventTapeWriter_add_cherenkov_bunch_raw(
+        struct mliEventTapeWriter *tio,
         const float *bunch_raw);
-int mliTarIoWriter_flush_cherenkov_bunch_block(struct mliTarIoWriter *tio);
+int mliEventTapeWriter_flush_cherenkov_bunch_block(struct mliEventTapeWriter *tio);
 
-struct mliTarIoReader {
+struct mliEventTapeReader {
         /* Current event-number */
         uint64_t event_number;
 
@@ -50,21 +50,21 @@ struct mliTarIoReader {
         int has_tarh;
         struct mliTarHeader tarh;
 };
-struct mliTarIoReader mliTarIoReader_init(void);
-int mliTarIoReader_open(struct mliTarIoReader *tio, const char *path);
-int mliTarIoReader_close(struct mliTarIoReader *tio);
-int mliTarIoReader_read_runh(struct mliTarIoReader *tio, float *runh);
-int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth);
-int mliTarIoReader_read_cherenkov_bunch(
-        struct mliTarIoReader *tio,
+struct mliEventTapeReader mliEventTapeReader_init(void);
+int mliEventTapeReader_open(struct mliEventTapeReader *tio, const char *path);
+int mliEventTapeReader_close(struct mliEventTapeReader *tio);
+int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh);
+int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth);
+int mliEventTapeReader_read_cherenkov_bunch(
+        struct mliEventTapeReader *tio,
         struct mliCorsikaPhotonBunch *bunch);
-int mliTarIoReader_read_cherenkov_bunch_raw(
-        struct mliTarIoReader *tio,
+int mliEventTapeReader_read_cherenkov_bunch_raw(
+        struct mliEventTapeReader *tio,
         float *bunch_raw);
 
-int mliTarIoReader_tarh_is_valid_cherenkov_block(
-        const struct mliTarIoReader *tio);
-int mliTarIoReader_tarh_might_be_valid_cherenkov_block(
-        const struct mliTarIoReader *tio);
+int mliEventTapeReader_tarh_is_valid_cherenkov_block(
+        const struct mliEventTapeReader *tio);
+int mliEventTapeReader_tarh_might_be_valid_cherenkov_block(
+        const struct mliEventTapeReader *tio);
 
 #endif

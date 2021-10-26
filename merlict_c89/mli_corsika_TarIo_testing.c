@@ -106,45 +106,45 @@ int mliTarIo_testing_write_and_read(
         struct mliCorsikaPhotonBunch buncho;
         struct mliCorsikaPhotonBunch bunchi;
 
-        struct mliTarIoWriter taro = mliTarIoWriter_init();
-        struct mliTarIoReader tari = mliTarIoReader_init();
+        struct mliEventTapeWriter taro = mliEventTapeWriter_init();
+        struct mliEventTapeReader tari = mliEventTapeReader_init();
 
         struct mliPrng prng = mliPrng_init_PCG32(random_seed);
         mliPrng_reinit(&prng, random_seed);
 
         /* write RUN */
         /* ========= */
-        chk_msg(mliTarIoWriter_open(&taro, path, buffer_size),
+        chk_msg(mliEventTapeWriter_open(&taro, path, buffer_size),
                 "Can't open writer.");
         /* set RUNH */
         mliTarIo_testing_set_random_RUNH(corho, &prng);
-        chk_msg(mliTarIoWriter_add_runh(&taro, corho), "Can't write RUNH.");
+        chk_msg(mliEventTapeWriter_add_runh(&taro, corho), "Can't write RUNH.");
 
         for (e = 0; e < num_events; e++) {
                 /* set EVTH */
                 mliTarIo_testing_set_random_EVTH(
                         corho, event_numbers[e], &prng);
-                chk_msg(mliTarIoWriter_add_evth(&taro, corho),
+                chk_msg(mliEventTapeWriter_add_evth(&taro, corho),
                         "Can't write EVTH.");
                 for (b = 0; b < num_bunches[e]; b++) {
                         mliTarIo_testing_set_random_bunch(&buncho, &prng);
-                        chk_msg(mliTarIoWriter_add_cherenkov_bunch(
+                        chk_msg(mliEventTapeWriter_add_cherenkov_bunch(
                                         &taro, buncho),
                                 "Can't write bunch.");
                 }
         }
 
-        chk_msg(mliTarIoWriter_close(&taro), "Can't close writer.");
+        chk_msg(mliEventTapeWriter_close(&taro), "Can't close writer.");
 
         /* read RUN */
         /* ======== */
         mliPrng_reinit(&prng, random_seed);
 
-        chk_msg(mliTarIoReader_open(&tari, path), "Can't open reader.");
+        chk_msg(mliEventTapeReader_open(&tari, path), "Can't open reader.");
 
         /* check RUNH */
         mliTarIo_testing_set_random_RUNH(corho, &prng);
-        chk_msg(mliTarIoReader_read_runh(&tari, corhi), "Can't read RUNH.");
+        chk_msg(mliEventTapeReader_read_runh(&tari, corhi), "Can't read RUNH.");
         chk_msg(mliTarIo_testing_corsika_headers_are_equal(corho, corhi),
                 "Expected RUNH to be equal.");
 
@@ -153,7 +153,7 @@ int mliTarIo_testing_write_and_read(
                 "before first EVTH is read.");
 
         for (e = 0; e < num_events; e++) {
-                chk_msg(mliTarIoReader_read_evth(&tari, corhi),
+                chk_msg(mliEventTapeReader_read_evth(&tari, corhi),
                         "Can't read EVTH.");
                 /* check EVTH */
                 mliTarIo_testing_set_random_EVTH(
@@ -168,7 +168,7 @@ int mliTarIo_testing_write_and_read(
                         "Expected a different event-number.");
 
                 for (b = 0; b < num_bunches[e]; b++) {
-                        chk_msg(mliTarIoReader_read_cherenkov_bunch(
+                        chk_msg(mliEventTapeReader_read_cherenkov_bunch(
                                         &tari, &bunchi),
                                 "Can't read bunch.");
                         mliTarIo_testing_set_random_bunch(&buncho, &prng);
@@ -176,13 +176,13 @@ int mliTarIo_testing_write_and_read(
                                         &bunchi, &buncho),
                                 "Expected bunch to be equal.");
                 }
-                chk_msg(!mliTarIoReader_read_cherenkov_bunch(&tari, &buncho),
+                chk_msg(!mliEventTapeReader_read_cherenkov_bunch(&tari, &buncho),
                         "Did not expect another cherenkov-bunch.");
         }
-        chk_msg(!mliTarIoReader_read_evth(&tari, corho),
+        chk_msg(!mliEventTapeReader_read_evth(&tari, corho),
                 "Did not expect another EVTH.");
 
-        chk_msg(mliTarIoReader_close(&tari), "Can't close reader.");
+        chk_msg(mliEventTapeReader_close(&tari), "Can't close reader.");
         return 1;
 error:
         return 0;
