@@ -29,6 +29,7 @@ int main(void)
 
 #include "mli_corsika_EventIo_test.c"
 #include "mli_corsika_TarIo_test.c"
+#include "mli_corsika_EventTape_test.c"
 
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;
