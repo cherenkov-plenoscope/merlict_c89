@@ -19,7 +19,7 @@ int mliTarIoWriter_close(struct mliTarIoWriter *tio)
 {
         if (tio->tar.stream) {
                 if (tio->event_number) {
-                        chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(
+                        chk_msg(mliTarIoWriter_flush_cherenkov_bunch_block(
                                         tio),
                                 "Can't finalize final event's "
                                 "cherenkov-bunch-block");
@@ -89,7 +89,7 @@ int mliTarIoWriter_add_evth(struct mliTarIoWriter *tio, const float *evth)
         /* finalize previous event */
 
         if (tio->event_number) {
-                chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
+                chk_msg(mliTarIoWriter_flush_cherenkov_bunch_block(tio),
                         "Can't finalize previous event's "
                         "cherenkov-bunch-block");
         }
@@ -106,7 +106,7 @@ error:
         return 0;
 }
 
-int mliTarIoWriter_finalize_cherenkov_bunch_block(struct mliTarIoWriter *tio)
+int mliTarIoWriter_flush_cherenkov_bunch_block(struct mliTarIoWriter *tio)
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
         struct mliTarHeader tarh = mliTarHeader_init();
@@ -149,7 +149,7 @@ int mliTarIoWriter_add_cherenkov_bunch(
         const struct mliCorsikaPhotonBunch bunch)
 {
         if (tio->buffer.size == tio->buffer.capacity) {
-                chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
+                chk_msg(mliTarIoWriter_flush_cherenkov_bunch_block(tio),
                         "Can't finalize cherenkov-bunch-block.");
                 chk_msg(tio->buffer.size == 0, "Expected buffer to be empty.");
         }

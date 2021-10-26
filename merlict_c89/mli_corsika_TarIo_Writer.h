@@ -30,7 +30,7 @@ int mliTarIoWriter_add_cherenkov_bunch(
 int mliTarIoWriter_add_cherenkov_bunch_raw(
         struct mliTarIoWriter *tio,
         const float *bunch_raw);
-int mliTarIoWriter_finalize_cherenkov_bunch_block(struct mliTarIoWriter *tio);
+int mliTarIoWriter_flush_cherenkov_bunch_block(struct mliTarIoWriter *tio);
 
 struct mliTarIoReader {
         /* Current event-number */
