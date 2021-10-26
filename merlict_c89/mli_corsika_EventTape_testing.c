@@ -1,7 +1,7 @@
 /* Copyright 2020 Sebastian A. Mueller */
-#include "mli_corsika_TarIo_testing.h"
+#include "mli_corsika_EventTape_testing.h"
 
-void mliTarIo_testing_set_random_RUNH(float *runh, struct mliPrng *prng)
+void mliEventTape_testing_set_random_RUNH(float *runh, struct mliPrng *prng)
 {
         uint64_t i;
         runh[0] = mli_4chars_to_float("RUNH");
@@ -12,7 +12,7 @@ void mliTarIo_testing_set_random_RUNH(float *runh, struct mliPrng *prng)
         }
 }
 
-void mliTarIo_testing_set_random_EVTH(
+void mliEventTape_testing_set_random_EVTH(
         float *evth,
         const float event_number,
         struct mliPrng *prng)
@@ -27,7 +27,7 @@ void mliTarIo_testing_set_random_EVTH(
         }
 }
 
-void mliTarIo_testing_set_random_bunch(
+void mliEventTape_testing_set_random_bunch(
         struct mliCorsikaPhotonBunch *bunch,
         struct mliPrng *prng)
 {
@@ -41,7 +41,7 @@ void mliTarIo_testing_set_random_bunch(
         bunch->wavelength_nm = (float)mli_random_uniform(prng);
 }
 
-int mliTarIo_testing_bunches_are_equal(
+int mliEventTape_testing_bunches_are_equal(
         struct mliCorsikaPhotonBunch *b1,
         struct mliCorsikaPhotonBunch *b2)
 {
@@ -80,7 +80,7 @@ int mliTarIo_testing_bunches_are_equal(
         return 1;
 }
 
-int mliTarIo_testing_corsika_headers_are_equal(const float *h1, const float *h2)
+int mliEventTape_testing_corsika_headers_are_equal(const float *h1, const float *h2)
 {
         int i;
         for (i = 0; i < 273; i++) {
@@ -92,7 +92,7 @@ int mliTarIo_testing_corsika_headers_are_equal(const float *h1, const float *h2)
         return 1;
 }
 
-int mliTarIo_testing_write_and_read(
+int mliEventTape_testing_write_and_read(
         const char *path,
         const uint64_t num_events,
         const uint64_t buffer_size,
@@ -117,17 +117,17 @@ int mliTarIo_testing_write_and_read(
         chk_msg(mliEventTapeWriter_open(&taro, path, buffer_size),
                 "Can't open writer.");
         /* set RUNH */
-        mliTarIo_testing_set_random_RUNH(corho, &prng);
+        mliEventTape_testing_set_random_RUNH(corho, &prng);
         chk_msg(mliEventTapeWriter_add_runh(&taro, corho), "Can't write RUNH.");
 
         for (e = 0; e < num_events; e++) {
                 /* set EVTH */
-                mliTarIo_testing_set_random_EVTH(
+                mliEventTape_testing_set_random_EVTH(
                         corho, event_numbers[e], &prng);
                 chk_msg(mliEventTapeWriter_add_evth(&taro, corho),
                         "Can't write EVTH.");
                 for (b = 0; b < num_bunches[e]; b++) {
-                        mliTarIo_testing_set_random_bunch(&buncho, &prng);
+                        mliEventTape_testing_set_random_bunch(&buncho, &prng);
                         chk_msg(mliEventTapeWriter_add_cherenkov_bunch(
                                         &taro, buncho),
                                 "Can't write bunch.");
@@ -143,9 +143,9 @@ int mliTarIo_testing_write_and_read(
         chk_msg(mliEventTapeReader_open(&tari, path), "Can't open reader.");
 
         /* check RUNH */
-        mliTarIo_testing_set_random_RUNH(corho, &prng);
+        mliEventTape_testing_set_random_RUNH(corho, &prng);
         chk_msg(mliEventTapeReader_read_runh(&tari, corhi), "Can't read RUNH.");
-        chk_msg(mliTarIo_testing_corsika_headers_are_equal(corho, corhi),
+        chk_msg(mliEventTape_testing_corsika_headers_are_equal(corho, corhi),
                 "Expected RUNH to be equal.");
 
         chk_msg(tari.event_number == 0,
@@ -156,9 +156,9 @@ int mliTarIo_testing_write_and_read(
                 chk_msg(mliEventTapeReader_read_evth(&tari, corhi),
                         "Can't read EVTH.");
                 /* check EVTH */
-                mliTarIo_testing_set_random_EVTH(
+                mliEventTape_testing_set_random_EVTH(
                         corho, event_numbers[e], &prng);
-                chk_msg(mliTarIo_testing_corsika_headers_are_equal(
+                chk_msg(mliEventTape_testing_corsika_headers_are_equal(
                                 corho, corhi),
                         "Expected EVTH to be equal.");
                 chk_msg(corhi[MLI_CORSIKA_EVTH_EVENT_NUMBER] ==
@@ -171,8 +171,8 @@ int mliTarIo_testing_write_and_read(
                         chk_msg(mliEventTapeReader_read_cherenkov_bunch(
                                         &tari, &bunchi),
                                 "Can't read bunch.");
-                        mliTarIo_testing_set_random_bunch(&buncho, &prng);
-                        chk_msg(mliTarIo_testing_bunches_are_equal(
+                        mliEventTape_testing_set_random_bunch(&buncho, &prng);
+                        chk_msg(mliEventTape_testing_bunches_are_equal(
                                         &bunchi, &buncho),
                                 "Expected bunch to be equal.");
                 }

@@ -13,8 +13,8 @@
 #include "mli_testing.h"
 #include "mli_corsika.h"
 #include "mli_corsika.c"
-#include "mli_corsika_TarIo_testing.h"
-#include "mli_corsika_TarIo_testing.c"
+#include "mli_corsika_EventTape_testing.h"
+#include "mli_corsika_EventTape_testing.c"
 
 int main(void)
 {

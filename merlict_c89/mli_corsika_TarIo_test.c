@@ -211,7 +211,7 @@ CASE("EventTape: run_no_events")
         const uint64_t *num_bunches;
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -231,7 +231,7 @@ CASE("EventTape: run_one_event_no_bunches")
         const uint64_t num_bunches[] = {0};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -251,7 +251,7 @@ CASE("EventTape: run_one_event_few_bunches")
         const uint64_t num_bunches[] = {120};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -271,7 +271,7 @@ CASE("EventTape: run_one_event_num_bunches_equals_buffer")
         const uint64_t num_bunches[] = {128};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -291,7 +291,7 @@ CASE("EventTape: run_one_event_many_bunches")
         const uint64_t num_bunches[] = {150};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -311,7 +311,7 @@ CASE("EventTape: run_many_events_first_event_no_bunches")
         const uint64_t num_bunches[] = {0, 200, 30, 10, 18};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -331,7 +331,7 @@ CASE("EventTape: run_many_events_last_event_no_bunches")
         const uint64_t num_bunches[] = {18, 200, 30, 10, 0};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -351,7 +351,7 @@ CASE("EventTape: run_many_events_all_events_many_bunches")
         const uint64_t num_bunches[] = {260, 200, 129, 500, 220};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -371,7 +371,7 @@ CASE("EventTape: run_many_events_all_events_no_bunches")
         const uint64_t num_bunches[] = {0, 0, 0, 0, 0};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -392,7 +392,7 @@ CASE("EventTape: run_many_events_all_events_num_bunches_equal_buffer")
         const uint64_t num_bunches[] = {128, 128, 128, 128, 128};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -413,7 +413,7 @@ CASE("EventTape: run_many_events_event_numbers_do_not_start_at_one")
         const uint64_t num_bunches[] = {110, 105, 244, 191, 131};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
@@ -433,7 +433,7 @@ CASE("EventTape: run_many_events_buffer_set_to_one")
         const uint64_t num_bunches[] = {5, 6, 10, 19, 0};
         const uint32_t random_seed = 0;
 
-        CHECK(mliTarIo_testing_write_and_read(
+        CHECK(mliEventTape_testing_write_and_read(
                 path,
                 num_events,
                 buffer_size,
