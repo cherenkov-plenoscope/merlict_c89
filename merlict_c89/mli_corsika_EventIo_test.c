@@ -27,7 +27,8 @@ CASE("EventIoHeader_fails_wrong_sync_marker")
 
         /* break a file */
         /* ------------ */
-        fin = fopen("merlict_c89/mli_corsika_test_resources/telescope.dat", "rb");
+        fin = fopen(
+                "merlict_c89/mli_corsika_test_resources/telescope.dat", "rb");
         CHECK(fin);
         ftmp =
                 fopen("merlict_c89/mli_corsika_test_resources/"

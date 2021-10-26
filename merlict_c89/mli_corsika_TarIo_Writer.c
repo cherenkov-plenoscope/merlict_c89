@@ -19,8 +19,7 @@ int mliTarIoWriter_close(struct mliTarIoWriter *tio)
 {
         if (tio->tar.stream) {
                 if (tio->event_number) {
-                        chk_msg(mliTarIoWriter_flush_cherenkov_bunch_block(
-                                        tio),
+                        chk_msg(mliTarIoWriter_flush_cherenkov_bunch_block(tio),
                                 "Can't finalize final event's "
                                 "cherenkov-bunch-block");
                 }

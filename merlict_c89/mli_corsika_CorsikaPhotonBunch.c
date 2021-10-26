@@ -34,7 +34,6 @@ void mliCorsikaPhotonBunch_to_raw(
         raw[7] = bunch->wavelength_nm;
 }
 
-
 struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
         const struct mliCorsikaPhotonBunch bunch,
         const double production_distance_offset,

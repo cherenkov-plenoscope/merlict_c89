@@ -200,7 +200,6 @@ CASE("TarIoWriter: first event no bunches")
         CHECK(mliTarIoReader_close(&tari));
 }
 
-
 CASE("TarIoWriter: run_no_events")
 {
         const char path[] = "merlict_c89/"
@@ -383,9 +382,10 @@ CASE("TarIoWriter: run_many_events_all_events_no_bunches")
 
 CASE("TarIoWriter: run_many_events_all_events_num_bunches_equal_buffer")
 {
-        const char path[] = "merlict_c89/"
-                            "mli_corsika_test_resources/"
-                            "run_many_events_all_events_num_bunches_equal_buffer.tar";
+        const char path[] =
+                "merlict_c89/"
+                "mli_corsika_test_resources/"
+                "run_many_events_all_events_num_bunches_equal_buffer.tar";
         const uint64_t num_events = 5;
         const uint64_t buffer_size = 128;
         const float event_numbers[] = {1, 2, 3, 4, 5};
@@ -403,9 +403,10 @@ CASE("TarIoWriter: run_many_events_all_events_num_bunches_equal_buffer")
 
 CASE("TarIoWriter: run_many_events_event_numbers_do_not_start_at_one")
 {
-        const char path[] = "merlict_c89/"
-                            "mli_corsika_test_resources/"
-                            "run_many_events_event_numbers_do_not_start_at_one.tar";
+        const char path[] =
+                "merlict_c89/"
+                "mli_corsika_test_resources/"
+                "run_many_events_event_numbers_do_not_start_at_one.tar";
         const uint64_t num_events = 5;
         const uint64_t buffer_size = 128;
         const float event_numbers[] = {3, 4, 5, 6, 7};

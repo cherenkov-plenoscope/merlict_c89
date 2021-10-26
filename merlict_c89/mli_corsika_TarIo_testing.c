@@ -1,10 +1,11 @@
 /* Copyright 2020 Sebastian A. Mueller */
 #include "mli_corsika_TarIo_testing.h"
 
-void mliTarIo_testing_set_random_RUNH(float *runh, struct mliPrng *prng) {
+void mliTarIo_testing_set_random_RUNH(float *runh, struct mliPrng *prng)
+{
         uint64_t i;
         runh[0] = mli_4chars_to_float("RUNH");
-        for (i = 0; i < 273; i ++) {
+        for (i = 0; i < 273; i++) {
                 if (i != 0) {
                         runh[i] = (float)mli_random_uniform(prng);
                 }
@@ -19,7 +20,7 @@ void mliTarIo_testing_set_random_EVTH(
         uint64_t i;
         evth[0] = mli_4chars_to_float("EVTH");
         evth[MLI_CORSIKA_EVTH_EVENT_NUMBER] = event_number;
-        for (i = 0; i < 273; i ++) {
+        for (i = 0; i < 273; i++) {
                 if (i != 0 && i != MLI_CORSIKA_EVTH_EVENT_NUMBER) {
                         evth[i] = (float)mli_random_uniform(prng);
                 }
@@ -45,46 +46,44 @@ int mliTarIo_testing_bunches_are_equal(
         struct mliCorsikaPhotonBunch *b2)
 {
         if (b1->x_cm != b2->x_cm) {
-            fprintf(stderr, "Bunch missmatch x_cm.\n");
-            return 0;
+                fprintf(stderr, "Bunch missmatch x_cm.\n");
+                return 0;
         }
         if (b1->y_cm != b2->y_cm) {
-            fprintf(stderr, "Bunch missmatch y_cm.\n");
-            return 0;
+                fprintf(stderr, "Bunch missmatch y_cm.\n");
+                return 0;
         }
         if (b1->cx_rad != b2->cx_rad) {
-            fprintf(stderr, "Bunch missmatch cx_rad.\n");
-            return 0;
+                fprintf(stderr, "Bunch missmatch cx_rad.\n");
+                return 0;
         }
         if (b1->cy_rad != b2->cy_rad) {
-            fprintf(stderr, "Bunch missmatch cy_rad.\n");
-            return 0;
+                fprintf(stderr, "Bunch missmatch cy_rad.\n");
+                return 0;
         }
         if (b1->time_ns != b2->time_ns) {
-            fprintf(stderr, "Bunch missmatch time_ns.\n");
-            return 0;
+                fprintf(stderr, "Bunch missmatch time_ns.\n");
+                return 0;
         }
         if (b1->z_emission_cm != b2->z_emission_cm) {
-            fprintf(stderr, "Bunch missmatch z_emission_cm.\n");
-            return 0;
+                fprintf(stderr, "Bunch missmatch z_emission_cm.\n");
+                return 0;
         }
         if (b1->weight_photons != b2->weight_photons) {
-            fprintf(stderr, "Bunch missmatch weight_photons.\n");
-            return 0;
+                fprintf(stderr, "Bunch missmatch weight_photons.\n");
+                return 0;
         }
         if (b1->wavelength_nm != b2->wavelength_nm) {
-            fprintf(stderr, "Bunch missmatch wavelength_nm.\n");
-            return 0;
+                fprintf(stderr, "Bunch missmatch wavelength_nm.\n");
+                return 0;
         }
         return 1;
 }
 
-int mliTarIo_testing_corsika_headers_are_equal(
-        const float *h1,
-        const float *h2)
+int mliTarIo_testing_corsika_headers_are_equal(const float *h1, const float *h2)
 {
         int i;
-        for (i = 0; i < 273; i ++) {
+        for (i = 0; i < 273; i++) {
                 if (h1[i] != h2[i]) {
                         fprintf(stderr, "Corsika-header missmatch at %d.\n", i);
                         return 0;
@@ -123,14 +122,14 @@ int mliTarIo_testing_write_and_read(
 
         for (e = 0; e < num_events; e++) {
                 /* set EVTH */
-                mliTarIo_testing_set_random_EVTH(corho, event_numbers[e], &prng);
+                mliTarIo_testing_set_random_EVTH(
+                        corho, event_numbers[e], &prng);
                 chk_msg(mliTarIoWriter_add_evth(&taro, corho),
                         "Can't write EVTH.");
                 for (b = 0; b < num_bunches[e]; b++) {
                         mliTarIo_testing_set_random_bunch(&buncho, &prng);
                         chk_msg(mliTarIoWriter_add_cherenkov_bunch(
-                                &taro,
-                                buncho),
+                                        &taro, buncho),
                                 "Can't write bunch.");
                 }
         }
@@ -157,26 +156,27 @@ int mliTarIo_testing_write_and_read(
                 chk_msg(mliTarIoReader_read_evth(&tari, corhi),
                         "Can't read EVTH.");
                 /* check EVTH */
-                mliTarIo_testing_set_random_EVTH(corho, event_numbers[e], &prng);
-                chk_msg(mliTarIo_testing_corsika_headers_are_equal(corho, corhi),
+                mliTarIo_testing_set_random_EVTH(
+                        corho, event_numbers[e], &prng);
+                chk_msg(mliTarIo_testing_corsika_headers_are_equal(
+                                corho, corhi),
                         "Expected EVTH to be equal.");
-                chk_msg(corhi[MLI_CORSIKA_EVTH_EVENT_NUMBER] == event_numbers[e],
+                chk_msg(corhi[MLI_CORSIKA_EVTH_EVENT_NUMBER] ==
+                                event_numbers[e],
                         "Expected reader's event-number to match last EVTH.");
                 chk_msg(tari.event_number == event_numbers[e],
                         "Expected a different event-number.");
 
                 for (b = 0; b < num_bunches[e]; b++) {
                         chk_msg(mliTarIoReader_read_cherenkov_bunch(
-                                &tari, &bunchi), "Can't read bunch.");
+                                        &tari, &bunchi),
+                                "Can't read bunch.");
                         mliTarIo_testing_set_random_bunch(&buncho, &prng);
                         chk_msg(mliTarIo_testing_bunches_are_equal(
-                                &bunchi,
-                                &buncho),
+                                        &bunchi, &buncho),
                                 "Expected bunch to be equal.");
                 }
-                chk_msg(!mliTarIoReader_read_cherenkov_bunch(
-                        &tari,
-                        &buncho),
+                chk_msg(!mliTarIoReader_read_cherenkov_bunch(&tari, &buncho),
                         "Did not expect another cherenkov-bunch.");
         }
         chk_msg(!mliTarIoReader_read_evth(&tari, corho),
