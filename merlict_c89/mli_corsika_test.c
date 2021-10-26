@@ -8,11 +8,11 @@
 #include <math.h>
 #include <assert.h>
 #include <stdlib.h>
+#include "mli.h"
+#include "mli.c"
 #include "mli_testing.h"
-#include "all_headers.h"
-#include "all_sources.c"
-#include "mli_corsika_all_headers.h"
-#include "mli_corsika_all_sources.c"
+#include "mli_corsika.h"
+#include "mli_corsika.c"
 #include "mli_corsika_TarIo_testing.h"
 #include "mli_corsika_TarIo_testing.c"
 
