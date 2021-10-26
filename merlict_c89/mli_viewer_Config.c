@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mlivrConfig.h"
+#include "mli_viewer_Config.h"
 
 struct mlivrConfig mlivrConfig_default(void)
 {

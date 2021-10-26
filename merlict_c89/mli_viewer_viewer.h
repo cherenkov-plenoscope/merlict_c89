@@ -1,13 +1,13 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-#ifndef MERLICT_C89_VIWER_MLIVR_VIEWER_H_
-#define MERLICT_C89_VIWER_MLIVR_VIEWER_H_
+#ifndef MLI_VIEWER_VIEWER_H_
+#define MLI_VIEWER_VIEWER_H_
 
-#include "../merlict_c89/mliImage.h"
-#include "../merlict_c89/mliView.h"
-#include "../merlict_c89/mliScenery.h"
+#include "mliImage.h"
+#include "mliView.h"
+#include "mliScenery.h"
 
-#include "mlivrCursor.h"
-#include "mlivrConfig.h"
+#include "mli_viewer_Cursor.h"
+#include "mli_viewer_Config.h"
 
 #define MLIVR_ESCAPE_KEY 27
 #define MLIVR_SPACE_KEY 32

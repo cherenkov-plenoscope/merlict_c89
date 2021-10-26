@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_VIWER_MLIVR_TOGGLE_STDIN_H_
-#define MERLICT_C89_VIWER_MLIVR_TOGGLE_STDIN_H_
+#ifndef MLI_VIEWER_TOGGLE_STDIN_H_
+#define MLI_VIEWER_TOGGLE_STDIN_H_
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #define HAVE_TERMIOS_H 1

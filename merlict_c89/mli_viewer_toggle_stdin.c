@@ -1,4 +1,4 @@
-#include "mlivr_toggle_stdin.h"
+#include "mli_viewer_toggle_stdin.h"
 
 #ifdef __unix__
 

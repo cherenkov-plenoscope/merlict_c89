@@ -1,10 +1,10 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-#include "mlivr_viewer.h"
+#include "mli_viewer_viewer.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
 #include <time.h>
-#include "mlivr_toggle_stdin.h"
+#include "mli_viewer_toggle_stdin.h"
 
 void mlivr_clear_screen(void)
 {

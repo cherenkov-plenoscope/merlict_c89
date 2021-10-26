@@ -1,4 +1,4 @@
-#include "mlivr_toggle_stdin.c"
-#include "mlivr_viewer.c"
-#include "mlivrCursor.c"
-#include "mlivrConfig.c"
+#include "mli_viewer_toggle_stdin.c"
+#include "mli_viewer_viewer.c"
+#include "mli_viewer_Cursor.c"
+#include "mli_viewer_Config.c"

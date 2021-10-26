@@ -2,15 +2,15 @@
 
 /*
  *  Compile with:
- *  gcc merlict_c89_viewer/apps/viewer.c -o viewer -lm
+ *  gcc merlict_c89/mli_viewer_app.c -o viewer -lm
  */
 
 #include <stdio.h>
 
-#include "../../merlict_c89/all_headers.h"
-#include "../../merlict_c89/all_sources.c"
-#include "../../merlict_c89_viewer/all_headers.h"
-#include "../../merlict_c89_viewer/all_sources.c"
+#include "mli.h"
+#include "mli.c"
+#include "mli_viewer.h"
+#include "mli_viewer.c"
 
 int main(int argc, char *argv[])
 {
