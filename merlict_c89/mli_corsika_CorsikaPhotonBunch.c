@@ -164,3 +164,39 @@ double mli_corsika_photon_relative_arrival_time_on_observation_level(
 {
         return (double)bunch.time_ns * 1e-9;
 }
+
+/* testing */
+/* ======= */
+
+void mliCorsikaPhotonBunch_testing_mark_bunch(
+        struct mliCorsikaPhotonBunch *bunch,
+        const uint64_t marker)
+{
+        const float markerf = (float)marker;
+        bunch->x_cm = markerf * (1.0);
+        bunch->y_cm = markerf * (-1.0);
+        bunch->cx_rad = markerf * (0.5);
+        bunch->cy_rad = markerf * (-0.5);
+        bunch->time_ns = markerf * (2.0);
+        bunch->z_emission_cm = markerf * (-2.0);
+        bunch->weight_photons = markerf * (1.0);
+        bunch->wavelength_nm = markerf * (-1.0);
+}
+
+int mliCorsikaPhotonBunch_testing_bunch_has_mark(
+        const struct mliCorsikaPhotonBunch bunch,
+        const uint64_t marker)
+{
+        const float markerf = (float)marker;
+        chk_msg(bunch.x_cm == markerf * (1.0), "x_cm");
+        chk_msg(bunch.y_cm == markerf * (-1.0), "y_cm");
+        chk_msg(bunch.cx_rad == markerf * (0.5), "cx_rad");
+        chk_msg(bunch.cy_rad == markerf * (-0.5), "cy_rad");
+        chk_msg(bunch.time_ns == markerf * (2.0), "time_ns");
+        chk_msg(bunch.z_emission_cm == markerf * (-2.0), "z_emission_cm");
+        chk_msg(bunch.weight_photons == markerf * (1.0), "weight_photons");
+        chk_msg(bunch.wavelength_nm == markerf * (-1.0), "wavelength_nm");
+        return 1;
+error:
+        return 0;
+}

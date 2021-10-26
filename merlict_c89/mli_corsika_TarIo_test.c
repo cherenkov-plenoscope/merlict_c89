@@ -89,7 +89,7 @@ CASE("TarIoWriter: run normal")
                 corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = EVENT_NUMBERS[e];
                 CHECK(mliTarIoWriter_add_evth(&taro, corh));
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
-                        mliTarIo_testing_mark_bunch(&bunch, b);
+                        mliCorsikaPhotonBunch_testing_mark_bunch(&bunch, b);
                         CHECK(mliTarIoWriter_add_cherenkov_bunch(&taro, bunch));
                 }
         }
@@ -115,7 +115,8 @@ CASE("TarIoWriter: run normal")
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
                         CHECK(mliTarIoReader_read_cherenkov_bunch(
                                 &tari, &bunch));
-                        CHECK(mliTarIo_testing_bunch_has_mark(bunch, b));
+                        CHECK(mliCorsikaPhotonBunch_testing_bunch_has_mark(
+                                bunch, b));
                 }
                 CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, &bunch));
         }

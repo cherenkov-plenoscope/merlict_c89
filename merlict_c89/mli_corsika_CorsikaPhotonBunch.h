@@ -35,6 +35,12 @@ void mliCorsikaPhotonBunch_set_from_raw(
 void mliCorsikaPhotonBunch_to_raw(
         const struct mliCorsikaPhotonBunch *bunch,
         float *raw);
+void mliCorsikaPhotonBunch_testing_mark_bunch(
+        struct mliCorsikaPhotonBunch *bunch,
+        const uint64_t marker);
+int mliCorsikaPhotonBunch_testing_bunch_has_mark(
+        const struct mliCorsikaPhotonBunch bunch,
+        const uint64_t marker);
 
 struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
         const struct mliCorsikaPhotonBunch bunch,
@@ -54,5 +60,7 @@ double mli_corsika_photon_emission_height(
 
 double mli_corsika_photon_relative_arrival_time_on_observation_level(
         const struct mliCorsikaPhotonBunch bunch);
+
+
 
 #endif

@@ -67,11 +67,4 @@ int mliTarIoReader_tarh_is_valid_cherenkov_block(
 int mliTarIoReader_tarh_might_be_valid_cherenkov_block(
         const struct mliTarIoReader *tio);
 
-void mliTarIo_testing_mark_bunch(
-        struct mliCorsikaPhotonBunch *bunch,
-        const uint64_t marker);
-int mliTarIo_testing_bunch_has_mark(
-        const struct mliCorsikaPhotonBunch bunch,
-        const uint64_t marker);
-
 #endif
