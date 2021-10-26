@@ -7,8 +7,8 @@
 
 #include <math.h>
 #include <assert.h>
-#include "all_headers.h"
-#include "all_sources.c"
+#include "mli.h"
+#include "mli.c"
 #include "mli_testing.h"
 
 int main(void)

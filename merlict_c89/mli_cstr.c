@@ -264,21 +264,21 @@ void mli_cstr_strip_spaces(const char *in, char *out)
 }
 
 int mli_cstr_match_templeate(
-        const char *str,
-        const char *template,
+        const char *s,
+        const char *t,
         const char digit_wildcard)
 {
         uint64_t i;
-        if (strlen(str) != strlen(template)) {
+        if (strlen(s) != strlen(t)) {
                 return 0;
         }
-        for (i = 0; i < strlen(str); i++) {
-                if (template[i] == digit_wildcard) {
-                        if (!isdigit(str[i])) {
+        for (i = 0; i < strlen(s); i++) {
+                if (t[i] == digit_wildcard) {
+                        if (!isdigit(s[i])) {
                                 return 0;
                         }
                 } else {
-                        if (str[i] != template[i]) {
+                        if (s[i] != t[i]) {
                                 return 0;
                         }
                 }
