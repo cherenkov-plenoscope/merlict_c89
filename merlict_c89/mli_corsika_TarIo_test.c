@@ -107,13 +107,14 @@ CASE("TarIoWriter: run normal")
 
         e = 0;
         CHECK(tari.event_number == 0);
-        for (e = 0; e < NUM_EVENTS; e ++) {
+        for (e = 0; e < NUM_EVENTS; e++) {
                 CHECK(mliTarIoReader_read_evth(&tari, corh));
                 CHECK(tari.event_number == EVENT_NUMBERS[e]);
                 CHECK(corh[0] == mli_4chars_to_float("EVTH"));
                 CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == EVENT_NUMBERS[e]);
-                for (b = 0; b < NUM_BUNCHES[e]; b ++) {
-                        CHECK(mliTarIoReader_read_cherenkov_bunch(&tari, &bunch));
+                for (b = 0; b < NUM_BUNCHES[e]; b++) {
+                        CHECK(mliTarIoReader_read_cherenkov_bunch(
+                                &tari, &bunch));
                         CHECK(mliTarIo_testing_bunch_has_mark(bunch, b));
                 }
                 CHECK(!mliTarIoReader_read_cherenkov_bunch(&tari, &bunch));
@@ -144,7 +145,8 @@ CASE("TarIoWriter: no events")
         /* read back */
         /* --------- */
         CHECK(mliTarIoReader_open(
-                &tari, "merlict_c89/"
+                &tari,
+                "merlict_c89/"
                 "mli_corsika_test_resources/"
                 "run_no_events.tar"));
         CHECK(mliTarIoReader_read_runh(&tari, corh));

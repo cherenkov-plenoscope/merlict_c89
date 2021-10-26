@@ -51,9 +51,7 @@ struct mliTarIoReader {
         struct mliTarHeader tarh;
 };
 struct mliTarIoReader mliTarIoReader_init(void);
-int mliTarIoReader_open(
-        struct mliTarIoReader *tio,
-        const char *path);
+int mliTarIoReader_open(struct mliTarIoReader *tio, const char *path);
 int mliTarIoReader_close(struct mliTarIoReader *tio);
 int mliTarIoReader_read_runh(struct mliTarIoReader *tio, float *runh);
 int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth);

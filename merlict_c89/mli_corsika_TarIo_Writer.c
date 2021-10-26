@@ -19,8 +19,10 @@ int mliTarIoWriter_close(struct mliTarIoWriter *tio)
 {
         if (tio->tar.stream) {
                 if (tio->event_number) {
-                        chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(tio),
-                                "Can't finalize final event's cherenkov-bunch-block");
+                        chk_msg(mliTarIoWriter_finalize_cherenkov_bunch_block(
+                                        tio),
+                                "Can't finalize final event's "
+                                "cherenkov-bunch-block");
                 }
                 chk_msg(mliTar_finalize(&tio->tar), "Can't finalize tar-file.");
                 chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
@@ -40,7 +42,8 @@ int mliTarIoWriter_open(
         chk_msg(mliTarIoWriter_close(tio),
                 "Can't close and free previous tar-io-writer.");
         chk_msg(mliTar_open(&tio->tar, path, "w"), "Can't open tar.");
-        chk_msg(mliDynCorsikaPhotonBunch_malloc(&tio->buffer, num_bunches_buffer),
+        chk_msg(mliDynCorsikaPhotonBunch_malloc(
+                        &tio->buffer, num_bunches_buffer),
                 "Can't malloc cherenkov-bunch-buffer.");
         return 1;
 error:
@@ -124,7 +127,7 @@ int mliTarIoWriter_finalize_cherenkov_bunch_block(struct mliTarIoWriter *tio)
         chk_msg(mliTar_write_header(&tio->tar, &tarh),
                 "Can't write tar-header for cherenkov-bunch-block to tar.");
 
-        for (i = 0; i < tio->buffer.size; i ++) {
+        for (i = 0; i < tio->buffer.size; i++) {
                 mliCorsikaPhotonBunch_to_raw(&tio->buffer.array[i], bunch_raw);
                 chk_msg(mliTar_write_data(
                                 &tio->tar,
@@ -197,9 +200,7 @@ error:
         return 0;
 }
 
-int mliTarIoReader_open(
-    struct mliTarIoReader *tio,
-    const char *path)
+int mliTarIoReader_open(struct mliTarIoReader *tio, const char *path)
 {
         chk_msg(mliTarIoReader_close(tio),
                 "Can't close and free previous tar-io-reader.");
@@ -238,13 +239,13 @@ int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth)
         }
         chk_msg(strlen(tio->tarh.name) == strlen(match),
                 "Expected path length.");
-        for (i = 0; i < strlen(match); i ++) {
+        for (i = 0; i < strlen(match); i++) {
                 if (match[i] == '0') {
                         chk_msg(isdigit(tio->tarh.name[i]),
                                 "Expected digit for 9-digit-event-number.");
                 } else {
                         chk_msg(tio->tarh.name[i] == match[i],
-                            "Expected EVTH's path to match.");
+                                "Expected EVTH's path to match.");
                 }
         }
 
@@ -288,7 +289,7 @@ int mliTarIoReader_tarh_might_be_valid_cherenkov_block(
                 return 0;
         }
 
-        for (i = 0; i < strlen(match); i ++) {
+        for (i = 0; i < strlen(match); i++) {
                 if (match[i] == '0') {
                         if (!isdigit(tio->tarh.name[i])) {
                                 return 0;
