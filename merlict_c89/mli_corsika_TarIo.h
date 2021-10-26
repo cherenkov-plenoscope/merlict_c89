@@ -1,6 +1,6 @@
 /* Copyright 2020 Sebastian A. Mueller */
-#ifndef MLI_CORSIKA_TARIO_WRITE_H_
-#define MLI_CORSIKA_TARIO_WRITE_H_
+#ifndef MLI_CORSIKA_TARIO_H_
+#define MLI_CORSIKA_TARIO_H_
 
 #include <stdint.h>
 #include "mliTar.h"

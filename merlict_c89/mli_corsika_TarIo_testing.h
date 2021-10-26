@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_TARIO_TESTING_H_
 
 #include <stdint.h>
-#include "mli_corsika_TarIo_Writer.h"
+#include "mli_corsika_TarIo.h"
 
 void mliTarIo_testing_set_random_RUNH(float *runh, struct mliPrng *prng);
 void mliTarIo_testing_set_random_EVTH(
