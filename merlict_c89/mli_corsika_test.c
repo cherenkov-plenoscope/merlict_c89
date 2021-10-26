@@ -13,6 +13,8 @@
 #include "all_sources.c"
 #include "mli_corsika_all_headers.h"
 #include "mli_corsika_all_sources.c"
+#include "mli_corsika_TarIo_testing.h"
+#include "mli_corsika_TarIo_testing.c"
 
 int main(void)
 {

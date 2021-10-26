@@ -61,6 +61,4 @@ double mli_corsika_photon_emission_height(
 double mli_corsika_photon_relative_arrival_time_on_observation_level(
         const struct mliCorsikaPhotonBunch bunch);
 
-
-
 #endif

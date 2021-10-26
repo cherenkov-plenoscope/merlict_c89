@@ -199,3 +199,244 @@ CASE("TarIoWriter: first event no bunches")
         CHECK(!mliTarIoReader_read_cherenkov_bunch_raw(&tari, bunch));
         CHECK(mliTarIoReader_close(&tari));
 }
+
+
+CASE("TarIoWriter: run_no_events")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_no_events.tar";
+        const uint64_t num_events = 0;
+        const uint64_t buffer_size = 128;
+        const float *event_numbers;
+        const uint64_t *num_bunches;
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_one_event_no_bunches")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_one_event_no_bunches.tar";
+        const uint64_t num_events = 1;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {1.0f};
+        const uint64_t num_bunches[] = {0};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_one_event_few_bunches")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_one_event_few_bunches.tar";
+        const uint64_t num_events = 1;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {1.0f};
+        const uint64_t num_bunches[] = {120};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_one_event_num_bunches_equals_buffer")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_one_event_num_bunches_equals_buffer.tar";
+        const uint64_t num_events = 1;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {1.0f};
+        const uint64_t num_bunches[] = {128};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_one_event_many_bunches")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_one_event_many_bunches.tar";
+        const uint64_t num_events = 1;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {1.0f};
+        const uint64_t num_bunches[] = {150};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_many_events_first_event_no_bunches")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_many_events_first_event_no_bunches.tar";
+        const uint64_t num_events = 5;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {1, 2, 3, 4, 5};
+        const uint64_t num_bunches[] = {0, 200, 30, 10, 18};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_many_events_last_event_no_bunches")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_many_events_last_event_no_bunches.tar";
+        const uint64_t num_events = 5;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {1, 2, 3, 4, 5};
+        const uint64_t num_bunches[] = {18, 200, 30, 10, 0};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_many_events_all_events_many_bunches")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_many_events_all_events_many_bunches.tar";
+        const uint64_t num_events = 5;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {1, 2, 3, 4, 5};
+        const uint64_t num_bunches[] = {260, 200, 129, 500, 220};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_many_events_all_events_no_bunches")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_many_events_all_events_no_bunches.tar";
+        const uint64_t num_events = 5;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {1, 2, 3, 4, 5};
+        const uint64_t num_bunches[] = {0, 0, 0, 0, 0};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_many_events_all_events_num_bunches_equal_buffer")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_many_events_all_events_num_bunches_equal_buffer.tar";
+        const uint64_t num_events = 5;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {1, 2, 3, 4, 5};
+        const uint64_t num_bunches[] = {128, 128, 128, 128, 128};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_many_events_event_numbers_do_not_start_at_one")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_many_events_event_numbers_do_not_start_at_one.tar";
+        const uint64_t num_events = 5;
+        const uint64_t buffer_size = 128;
+        const float event_numbers[] = {3, 4, 5, 6, 7};
+        const uint64_t num_bunches[] = {110, 105, 244, 191, 131};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
+
+CASE("TarIoWriter: run_many_events_buffer_set_to_one")
+{
+        const char path[] = "merlict_c89/"
+                            "mli_corsika_test_resources/"
+                            "run_many_events_buffer_set_to_one.tar";
+        const uint64_t num_events = 5;
+        const uint64_t buffer_size = 1;
+        const float event_numbers[] = {3, 4, 5, 6, 7};
+        const uint64_t num_bunches[] = {5, 6, 10, 19, 0};
+        const uint32_t random_seed = 0;
+
+        CHECK(mliTarIo_testing_write_and_read(
+                path,
+                num_events,
+                buffer_size,
+                event_numbers,
+                num_bunches,
+                random_seed));
+}
