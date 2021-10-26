@@ -231,24 +231,13 @@ error:
 int mliTarIoReader_read_evth(struct mliTarIoReader *tio, float *evth)
 {
         uint64_t event_number_path, event_number_evth;
-        uint64_t i;
-        char match[MLI_TAR_NAME_LENGTH] = "000000000/EVTH.float32";
+        char match[MLI_TAR_NAME_LENGTH] = "ddddddddd/EVTH.float32";
 
         if (!tio->has_tarh) {
                 return 0;
         }
-        chk_msg(strlen(tio->tarh.name) == strlen(match),
-                "Expected path length.");
-        for (i = 0; i < strlen(match); i++) {
-                if (match[i] == '0') {
-                        chk_msg(isdigit(tio->tarh.name[i]),
-                                "Expected digit for 9-digit-event-number.");
-                } else {
-                        chk_msg(tio->tarh.name[i] == match[i],
-                                "Expected EVTH's path to match.");
-                }
-        }
-
+        chk_msg(mli_cstr_match_templeate(tio->tarh.name, match, 'd'),
+                "Expected EVTH filename to match 'ddddddddd/EVTH.float32'.");
         chk_msg(tio->tarh.size == MLI_TARIO_CORSIKA_HEADER_SIZE,
                 "Expected EVTH to have size 273*sizeof(float)");
         chk_msg(mliTar_read_data(&tio->tar, (void *)evth, tio->tarh.size),
@@ -283,24 +272,8 @@ int mliTarIoReader_tarh_might_be_valid_cherenkov_block(
         const struct mliTarIoReader *tio)
 {
         char match[MLI_TAR_NAME_LENGTH] =
-                "000000000/cherenkov_bunches/000000000.Nx8_float32";
-        uint64_t i;
-        if (strlen(tio->tarh.name) != strlen(match)) {
-                return 0;
-        }
-
-        for (i = 0; i < strlen(match); i++) {
-                if (match[i] == '0') {
-                        if (!isdigit(tio->tarh.name[i])) {
-                                return 0;
-                        }
-                } else {
-                        if (tio->tarh.name[i] != match[i]) {
-                                return 0;
-                        }
-                }
-        }
-        return 1;
+                "ddddddddd/cherenkov_bunches/ddddddddd.Nx8_float32";
+        return mli_cstr_match_templeate(tio->tarh.name, match, 'd');
 }
 
 int mliTarIoReader_tarh_is_valid_cherenkov_block(

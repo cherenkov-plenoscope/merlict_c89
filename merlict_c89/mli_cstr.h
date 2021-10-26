@@ -36,4 +36,9 @@ void mli_strip_this_dir(char *dst, const char *src);
 void mli_cstr_path_basename_without_extension(const char *filename, char *key);
 void mli_cstr_strip_spaces(const char *in, char *out);
 
+int mli_cstr_match_templeate(
+        const char *str,
+        const char *template,
+        const char digit_wilfcard);
+
 #endif

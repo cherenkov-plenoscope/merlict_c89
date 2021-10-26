@@ -262,3 +262,26 @@ void mli_cstr_strip_spaces(const char *in, char *out)
         }
         out[o] = '\0';
 }
+
+int mli_cstr_match_templeate(
+        const char *str,
+        const char *template,
+        const char digit_wildcard)
+{
+        uint64_t i;
+        if (strlen(str) != strlen(template)) {
+                return 0;
+        }
+        for (i = 0; i < strlen(str); i++) {
+                if (template[i] == digit_wildcard) {
+                        if (!isdigit(str[i])) {
+                                return 0;
+                        }
+                } else {
+                        if (str[i] != template[i]) {
+                                return 0;
+                        }
+                }
+        }
+        return 1;
+}
