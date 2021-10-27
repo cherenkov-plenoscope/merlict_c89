@@ -40,7 +40,7 @@ CASE("string to int")
         CHECK(!mli_cstr_to_int64(&i, s, 10));
         sprintf(s, "1 ");
         CHECK(!mli_cstr_to_int64(&i, s, 10));
-        CHECK(mli_ncstr_to_int64(&i, s, 10, 1));
+        CHECK(mli_cstr_nto_int64(&i, s, 10, 1));
         CHECK(i == 1);
 
         /* Trash characters. */
@@ -48,7 +48,7 @@ CASE("string to int")
         CHECK(!mli_cstr_to_int64(&i, s, 10));
         sprintf(s, "10a ");
         CHECK(!mli_cstr_to_int64(&i, s, 10));
-        CHECK(mli_ncstr_to_int64(&i, s, 10, 2));
+        CHECK(mli_cstr_nto_int64(&i, s, 10, 2));
         CHECK(i == 10);
 
         /* long overflow */

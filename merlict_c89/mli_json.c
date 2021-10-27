@@ -110,7 +110,7 @@ int mliJson_as_int64(
         const uint64_t token_length = t.end - t.start;
         chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
-        chk_msg(mli_ncstr_to_int64(
+        chk_msg(mli_cstr_nto_int64(
                         return_int64, &json->c_str[t.start], 10, token_length),
                 "Can not parse int.");
         return 1;

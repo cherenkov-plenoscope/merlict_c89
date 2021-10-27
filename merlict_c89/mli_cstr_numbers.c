@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "chk_debug.h"
 
-int mli_ncstr_to_int64(
+int mli_cstr_nto_int64(
         int64_t *out,
         const char *s,
         const uint64_t base,
@@ -34,7 +34,7 @@ error:
 
 int mli_cstr_to_int64(int64_t *out, const char *s, const uint64_t base)
 {
-        chk_msg(mli_ncstr_to_int64(out, s, base, strlen(s)),
+        chk_msg(mli_cstr_nto_int64(out, s, base, strlen(s)),
                 "Can not convert string to int64.");
         return 1;
 error:
@@ -48,7 +48,7 @@ int mli_cstr_nto_uint64(
         const uint64_t expected_num_chars)
 {
         int64_t tmp;
-        chk(mli_ncstr_to_int64(&tmp, s, base, expected_num_chars));
+        chk(mli_cstr_nto_int64(&tmp, s, base, expected_num_chars));
         chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
         return 1;
