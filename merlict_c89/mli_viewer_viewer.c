@@ -132,8 +132,9 @@ int mlivr_export_image(
                         config.aperture_camera_image_sensor_width);
         apcam.aperture_radius = 0.5 * (apcam.focal_length /
                                        config.aperture_camera_f_stop_ratio);
-        apcam.image_sensor_distance = mli_thin_lens_get_image_given_focal_and_object(
-                apcam.focal_length, object_distance);
+        apcam.image_sensor_distance =
+                mli_thin_lens_get_image_given_focal_and_object(
+                        apcam.focal_length, object_distance);
         apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(

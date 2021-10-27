@@ -217,7 +217,7 @@ int mliJson_debug_token_fprint(
         struct jsmntok_t t = json->tokens[token];
         uint32_t token_size = t.end - t.start;
         uint64_t line_number =
-                1u + mli_string_count_chars_up_to(json->c_str, '\n', t.start);
+                1u + mli_cstr_count_chars_up_to(json->c_str, '\n', t.start);
         chk(fprintf(f, "line: %u, ", (uint32_t)line_number));
         chk(fprintf(f, "token: %u, ", (uint32_t)token));
         chk(fprintf(f, "type: %d, ", t.type));

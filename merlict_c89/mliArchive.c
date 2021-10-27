@@ -41,7 +41,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                 struct mliDynStr *payload = NULL;
                 memset(tarh_name, '\0', sizeof(tarh_name));
 
-                mli_strip_this_dir(tarh_name, tarh.name);
+                mli_cstr_path_strip_this_dir(tarh_name, tarh.name);
 
                 chk_msg(mliDynMap_insert(&arc->filenames, tarh_name, next),
                         "Can not insert key.");
@@ -64,7 +64,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                                 payload, &tmp_payload),
                         "Failed to replace CRLF and CR linebreaks.");
                 mliDynStr_free(&tmp_payload);
-                chk_msg(mli_string_assert_only_NUL_LF_TAB_controls(
+                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(
                                 payload->c_str),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
@@ -147,7 +147,7 @@ void mliArchive_mask_filename_prefix_sufix(
         for (i = 0; i < arc->textfiles.size; i++) {
                 struct mliDynMapItem *map_item = &arc->filenames.array[i];
 
-                match = mli_string_has_prefix_suffix(
+                match = mli_cstr_has_prefix_suffix(
                         map_item->key, prefix, sufix);
 
                 if (match) {
@@ -169,7 +169,7 @@ uint64_t mliArchive_num_filename_prefix_sufix(
         for (i = 0; i < arc->textfiles.size; i++) {
                 struct mliDynMapItem *map_item = &arc->filenames.array[i];
 
-                match = mli_string_has_prefix_suffix(
+                match = mli_cstr_has_prefix_suffix(
                         map_item->key, prefix, sufix);
 
                 if (match) {

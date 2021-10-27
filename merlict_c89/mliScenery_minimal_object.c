@@ -28,7 +28,7 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         /* set object */
         chk_msg(mliDynStr_malloc_from_path(&str, path), "Failed to read file.");
-        chk_msg(mli_string_assert_only_NUL_LF_TAB_controls(str.c_str),
+        chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(str.c_str),
                 "Expected object-wavefront file to be free of "
                 "control characters, except [NUL, TAB, LF].");
         chk_msg(mliObject_malloc_from_wavefront(

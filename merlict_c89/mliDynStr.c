@@ -96,10 +96,10 @@ int mliDynStr_convert_line_break_CRLF_CR_to_LF(
         chk(mliDynStr_malloc(dst, src->capacity));
 
         while (i < src->capacity) {
-                if (mli_is_CRLF_line_break(&src->c_str[i])) {
+                if (mli_cstr_is_CRLF(&src->c_str[i])) {
                         chk(mliDynStr_push_back_char(dst, '\n'));
                         i += 2;
-                } else if (mli_is_CR_line_break(&src->c_str[i])) {
+                } else if (mli_cstr_is_CR(&src->c_str[i])) {
                         chk(mliDynStr_push_back_char(dst, '\n'));
                         i += 1;
                 } else {

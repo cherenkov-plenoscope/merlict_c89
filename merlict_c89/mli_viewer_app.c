@@ -18,19 +18,14 @@ int main(int argc, char *argv[])
         struct mliScenery scenery = mliScenery_init();
 
         if (argc >= 2) {
-                if (mli_string_ends_with(argv[1], ".tar")) {
-                        chk_msg(
-                                mliScenery_malloc_from_tar(
-                                        &scenery, argv[1]),
+                if (mli_cstr_ends_with(argv[1], ".tar")) {
+                        chk_msg(mliScenery_malloc_from_tar(&scenery, argv[1]),
                                 "Can not read scenery from '.tar'.");
-                } else if (mli_string_ends_with(argv[1], ".mli")) {
-                        chk_msg(
-                                mliScenery_malloc_from_path(
-                                        &scenery, argv[1]),
+                } else if (mli_cstr_ends_with(argv[1], ".mli")) {
+                        chk_msg(mliScenery_malloc_from_path(&scenery, argv[1]),
                                 "Can not read scenery from '.mli'.");
-                } else if (mli_string_ends_with(argv[1], ".obj")) {
-                        chk_msg(
-                                mliScenery_malloc_minimal_from_wavefront(
+                } else if (mli_cstr_ends_with(argv[1], ".obj")) {
+                        chk_msg(mliScenery_malloc_minimal_from_wavefront(
                                         &scenery, argv[1]),
                                 "Can not read scenery from '.obj'.");
                 } else {
@@ -40,8 +35,7 @@ int main(int argc, char *argv[])
         }
 
         if (argc == 3) {
-                chk_msg(
-                        mli_cstr_to_double(&config.step_length, argv[2]),
+                chk_msg(mli_cstr_to_double(&config.step_length, argv[2]),
                         "Can not parse step_length from argv[2].");
                 config.aperture_camera_image_sensor_width *= config.step_length;
         }
@@ -53,8 +47,7 @@ int main(int argc, char *argv[])
                 goto error;
         }
 
-        chk_msg(
-                mlivr_run_interactive_viewer_try_non_canonical_stdin(
+        chk_msg(mlivr_run_interactive_viewer_try_non_canonical_stdin(
                         &scenery, config),
                 "Failure in viewer");
 

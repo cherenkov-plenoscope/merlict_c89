@@ -109,7 +109,8 @@ struct mliColor mli_trace_to_intersection_atmosphere(
                 scenery, intersection->position, config, prng);
 
         if (sun_visibility > 0.0) {
-                tone = mli_trace_color_tone_of_sun(config, intersection->position);
+                tone = mli_trace_color_tone_of_sun(
+                        config, intersection->position);
                 tone = mliColor_multiply(tone, sun_visibility);
         } else {
                 tone = mli_trace_color_tone_of_diffuse_sky(

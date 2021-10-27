@@ -43,7 +43,7 @@ int mli_set_geometry_objects_and_names_from_archive(
         /* objects */
         obj_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
-                if (mli_string_has_prefix_suffix(
+                if (mli_cstr_has_prefix_suffix(
                             archive->filenames.array[arc_idx].key,
                             "objects/",
                             ".obj")) {
@@ -123,7 +123,7 @@ int mliMaterials_malloc_form_archive(
         /* media */
         med_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
-                if (mli_string_has_prefix_suffix(
+                if (mli_cstr_has_prefix_suffix(
                             archive->filenames.array[arc_idx].key,
                             "materials/media/",
                             ".json")) {
@@ -153,7 +153,7 @@ int mliMaterials_malloc_form_archive(
         /* surfaces */
         srf_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
-                if (mli_string_has_prefix_suffix(
+                if (mli_cstr_has_prefix_suffix(
                             archive->filenames.array[arc_idx].key,
                             "materials/surfaces/",
                             ".json")) {

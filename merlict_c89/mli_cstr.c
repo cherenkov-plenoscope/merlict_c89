@@ -2,7 +2,7 @@
 #include "mli_cstr.h"
 #include <stdlib.h>
 
-int mli_string_ends_with(const char *str, const char *sufix)
+int mli_cstr_ends_with(const char *str, const char *sufix)
 {
         uint64_t len_str, len_sufix;
         if (!str || !sufix) {
@@ -16,7 +16,7 @@ int mli_string_ends_with(const char *str, const char *sufix)
         return strncmp(str + len_str - len_sufix, sufix, len_sufix) == 0;
 }
 
-int mli_string_starts_with(const char *str, const char *prefix)
+int mli_cstr_starts_with(const char *str, const char *prefix)
 {
         uint64_t len_str, len_prefix;
         if (!str || !prefix) {
@@ -30,7 +30,7 @@ int mli_string_starts_with(const char *str, const char *prefix)
         return strncmp(str, prefix, len_prefix) == 0;
 }
 
-int mli_string_has_prefix_suffix(
+int mli_cstr_has_prefix_suffix(
         const char *str,
         const char *prefix,
         const char *sufix)
@@ -38,11 +38,11 @@ int mli_string_has_prefix_suffix(
         uint64_t has_pre = 1;
         uint64_t has_suf = 1;
         if (prefix != NULL) {
-                has_pre = mli_string_starts_with(str, prefix);
+                has_pre = mli_cstr_starts_with(str, prefix);
         }
 
         if (sufix != NULL) {
-                has_suf = mli_string_ends_with(str, sufix);
+                has_suf = mli_cstr_ends_with(str, sufix);
         }
 
         if (has_pre == 1 && has_suf == 1) {
@@ -52,7 +52,7 @@ int mli_string_has_prefix_suffix(
         }
 }
 
-int mli_string_split(
+int mli_cstr_split(
         const char *str,
         const char delimiter,
         char *token,
@@ -72,7 +72,7 @@ int mli_string_split(
         return i;
 }
 
-int mli_is_CRLF_line_break(const char *s)
+int mli_cstr_is_CRLF(const char *s)
 {
         if (s[0] == '\0') {
                 return 0;
@@ -86,7 +86,7 @@ int mli_is_CRLF_line_break(const char *s)
         return 0;
 }
 
-int mli_is_CR_line_break(const char *s)
+int mli_cstr_is_CR(const char *s)
 {
         if (s[0] == '\0') {
                 return 0;
@@ -97,14 +97,12 @@ int mli_is_CR_line_break(const char *s)
         return 0;
 }
 
-int mli_string_assert_only_NUL_LF_TAB_controls(const char *str)
+int mli_cstr_assert_only_NUL_LF_TAB_controls(const char *str)
 {
-        return mli_string_assert_only_NUL_LF_TAB_controls_dbg(str, 1);
+        return mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(str, 1);
 }
 
-int mli_string_assert_only_NUL_LF_TAB_controls_dbg(
-        const char *str,
-        const int dbg)
+int mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(const char *str, const int dbg)
 {
         uint64_t pos = 0;
         while (str[pos] != '\0') {
@@ -131,7 +129,7 @@ int mli_string_assert_only_NUL_LF_TAB_controls_dbg(
         return 1;
 }
 
-uint64_t mli_string_count_chars_up_to(
+uint64_t mli_cstr_count_chars_up_to(
         const char *str,
         const char c,
         const uint64_t num_chars_to_scan)
@@ -163,7 +161,7 @@ error:
         return 0;
 }
 
-int mli_lines_info_fprint(
+int mli_cstr_lines_fprint(
         FILE *f,
         const char *text,
         const uint64_t line_number,
@@ -205,11 +203,11 @@ error:
         return 0;
 }
 
-void mli_strip_this_dir(char *dst, const char *src)
+void mli_cstr_path_strip_this_dir(char *dst, const char *src)
 {
         const char *_src = &src[0];
         memset(dst, '\0', strlen(src));
-        while (mli_string_starts_with(_src, "./") && _src[0] != '\0') {
+        while (mli_cstr_starts_with(_src, "./") && _src[0] != '\0') {
                 _src += 2;
         }
         strcpy(dst, _src);
