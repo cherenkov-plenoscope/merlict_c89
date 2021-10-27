@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIMATERIALS_VALID_H_
-#define MERLICT_C89_MLIMATERIALS_VALID_H_
+#ifndef MLIMATERIALS_VALID_H_
+#define MLIMATERIALS_VALID_H_
 
 #include "mliMaterials.h"
 

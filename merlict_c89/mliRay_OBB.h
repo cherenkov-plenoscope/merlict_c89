@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIRAY_OBB_H_
-#define MERLICT_C89_MLIRAY_OBB_H_
+#ifndef MLIRAY_OBB_H_
+#define MLIRAY_OBB_H_
 
 #include "mliRay.h"
 #include "mliOBB.h"

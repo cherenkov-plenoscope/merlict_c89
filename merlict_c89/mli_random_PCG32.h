@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_RANDOM_PCG32_H_
-#define MERLICT_C89_MLI_RANDOM_PCG32_H_
+#ifndef MLI_RANDOM_PCG32_H_
+#define MLI_RANDOM_PCG32_H_
 
 #include <stdint.h>
 #include "mli_random_pcg_variants_32bit_subset.h"

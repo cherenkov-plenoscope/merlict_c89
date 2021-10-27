@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLINAME_H_
-#define MERLICT_C89_MLINAME_H_
+#ifndef MLINAME_H_
+#define MLINAME_H_
 
 #define MLI_NAME_CAPACITY 128
 

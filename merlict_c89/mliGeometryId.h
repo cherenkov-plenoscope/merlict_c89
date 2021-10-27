@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIGEOMETRYID_H_
-#define MERLICT_C89_MLIGEOMETRYID_H_
+#ifndef MLIGEOMETRYID_H_
+#define MLIGEOMETRYID_H_
 
 #include <stdint.h>
 

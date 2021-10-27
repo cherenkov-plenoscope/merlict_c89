@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIDYNARRAY_TEMPLATE_H_
-#define MERLICT_C89_MLIDYNARRAY_TEMPLATE_H_
+#ifndef MLIDYNARRAY_TEMPLATE_H_
+#define MLIDYNARRAY_TEMPLATE_H_
 
 #include <stdint.h>
 #include "mliColor.h"

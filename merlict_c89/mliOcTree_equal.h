@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIOCTREE_EQUAL_H_
-#define MERLICT_C89_MLIOCTREE_EQUAL_H_
+#ifndef MLIOCTREE_EQUAL_H_
+#define MLIOCTREE_EQUAL_H_
 
 #include "mliOcTree.h"
 

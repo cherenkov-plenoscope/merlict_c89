@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIIMAGE_PRINT_H_
-#define MERLICT_C89_MLIIMAGE_PRINT_H_
+#ifndef MLIIMAGE_PRINT_H_
+#define MLIIMAGE_PRINT_H_
 
 #include <stdint.h>
 #include "mliImage.h"

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_STRING_TO_H_
-#define MERLICT_C89_MLI_STRING_TO_H_
+#ifndef MLI_STRING_TO_H_
+#define MLI_STRING_TO_H_
 
 int mli_string_ends_with(const char *str, const char *sufix);
 int mli_string_starts_with(const char *str, const char *prefix);

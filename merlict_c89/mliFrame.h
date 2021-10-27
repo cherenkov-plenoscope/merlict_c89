@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIFRAME_H_
-#define MERLICT_C89_MLIFRAME_H_
+#ifndef MLIFRAME_H_
+#define MLIFRAME_H_
 
 #include <stdint.h>
 #include "mliHomTra.h"

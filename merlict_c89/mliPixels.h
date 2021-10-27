@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIPIXELS_H_
-#define MERLICT_C89_MLIPIXELS_H_
+#ifndef MLIPIXELS_H_
+#define MLIPIXELS_H_
 
 #include <stdint.h>
 

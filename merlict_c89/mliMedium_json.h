@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIMEDIUM_JSON_H_
-#define MERLICT_C89_MLIMEDIUM_JSON_H_
+#ifndef MLIMEDIUM_JSON_H_
+#define MLIMEDIUM_JSON_H_
 
 #include "mliMedium.h"
 #include "mli_json.h"

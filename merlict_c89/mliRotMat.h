@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIROTMAT_H_
-#define MERLICT_C89_MLIROTMAT_H_
+#ifndef MLIROTMAT_H_
+#define MLIROTMAT_H_
 
 #include "mliVec.h"
 

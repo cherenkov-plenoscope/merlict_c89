@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISCENERY_TAR_H_
-#define MERLICT_C89_MLISCENERY_TAR_H_
+#ifndef MLISCENERY_TAR_H_
+#define MLISCENERY_TAR_H_
 
 #include "mliScenery.h"
 #include "mliArchive.h"

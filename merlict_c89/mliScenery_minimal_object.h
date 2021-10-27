@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISCENERY_MINIMAL_OBJECT_H_
-#define MERLICT_C89_MLISCENERY_MINIMAL_OBJECT_H_
+#ifndef MLISCENERY_MINIMAL_OBJECT_H_
+#define MLISCENERY_MINIMAL_OBJECT_H_
 
 #include "mliScenery.h"
 

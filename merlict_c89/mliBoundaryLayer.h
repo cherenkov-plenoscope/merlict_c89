@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIBOUNDARYLAYER_H_
-#define MERLICT_C89_MLIBOUNDARYLAYER_H_
+#ifndef MLIBOUNDARYLAYER_H_
+#define MLIBOUNDARYLAYER_H_
 
 #include <stdint.h>
 

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIOCTOVERLAPS_H_
-#define MERLICT_C89_MLIOCTOVERLAPS_H_
+#ifndef MLIOCTOVERLAPS_H_
+#define MLIOCTOVERLAPS_H_
 
 #include "mliDynArray_template.h"
 

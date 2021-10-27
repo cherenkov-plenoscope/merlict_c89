@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIVEC_H_
-#define MERLICT_C89_MLIVEC_H_
+#ifndef MLIVEC_H_
+#define MLIVEC_H_
 
 #include <stdint.h>
 

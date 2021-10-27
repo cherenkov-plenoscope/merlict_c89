@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIMATERIALS_H_
-#define MERLICT_C89_MLIMATERIALS_H_
+#ifndef MLIMATERIALS_H_
+#define MLIMATERIALS_H_
 
 #include <stdint.h>
 #include "mliObject.h"

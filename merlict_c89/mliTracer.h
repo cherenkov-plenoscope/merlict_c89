@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLITRACER_H_
-#define MERLICT_C89_MLITRACER_H_
+#ifndef MLITRACER_H_
+#define MLITRACER_H_
 
 #include "mliScenery.h"
 #include "mliAtmosphere.h"

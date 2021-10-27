@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIFRESNEL_H_
-#define MERLICT_C89_MLIFRESNEL_H_
+#ifndef MLIFRESNEL_H_
+#define MLIFRESNEL_H_
 
 struct mliFresnel {
         struct mliVec incident;

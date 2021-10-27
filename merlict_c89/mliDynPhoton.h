@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIDYNPHOTON_H_
-#define MERLICT_C89_MLIDYNPHOTON_H_
+#ifndef MLIDYNPHOTON_H_
+#define MLIDYNPHOTON_H_
 
 #include "mliDynArray_template.h"
 #include "mliPhoton.h"

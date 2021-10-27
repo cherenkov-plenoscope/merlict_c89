@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_TESTING_H_
-#define MERLICT_TESTING_H_
+#ifndef MLI_TESTING_H_
+#define MLI_TESTING_H_
 
 #include <math.h>
 #include <stdio.h>

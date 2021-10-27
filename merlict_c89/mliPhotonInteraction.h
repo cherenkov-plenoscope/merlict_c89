@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIPHOTONINTERACTION_H_
-#define MERLICT_C89_MLIPHOTONINTERACTION_H_
+#ifndef MLIPHOTONINTERACTION_H_
+#define MLIPHOTONINTERACTION_H_
 
 #include <stdint.h>
 #include "mliIntersectionSurfaceNormal.h"

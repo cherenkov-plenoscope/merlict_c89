@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISCENERY_SERIALIZE_H_
-#define MERLICT_C89_MLISCENERY_SERIALIZE_H_
+#ifndef MLISCENERY_SERIALIZE_H_
+#define MLISCENERY_SERIALIZE_H_
 
 #include "mliScenery.h"
 

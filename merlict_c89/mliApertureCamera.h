@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIAPTCAM_H_
-#define MERLICT_C89_MLIAPTCAM_H_
+#ifndef MLIAPTCAM_H_
+#define MLIAPTCAM_H_
 
 #include <stdint.h>
 #include "mli_random.h"

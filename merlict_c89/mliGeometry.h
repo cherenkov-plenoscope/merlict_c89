@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIGEOMETRY_H_
-#define MERLICT_C89_MLIGEOMETRY_H_
+#ifndef MLIGEOMETRY_H_
+#define MLIGEOMETRY_H_
 
 #include <stdint.h>
 #include "mliHomTra.h"

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLITRIANGLE_INTERSECTION_H_
-#define MERLICT_C89_MLITRIANGLE_INTERSECTION_H_
+#ifndef MLITRIANGLE_INTERSECTION_H_
+#define MLITRIANGLE_INTERSECTION_H_
 
 #include "mliVec.h"
 #include "mliRay.h"

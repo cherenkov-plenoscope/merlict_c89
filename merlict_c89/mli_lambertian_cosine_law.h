@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_LAMBERTIAN_COSINE_LAW_H_
-#define MERLICT_C89_MLI_LAMBERTIAN_COSINE_LAW_H_
+#ifndef MLI_LAMBERTIAN_COSINE_LAW_H_
+#define MLI_LAMBERTIAN_COSINE_LAW_H_
 
 #include "mliVec.h"
 #include "mli_random.h"

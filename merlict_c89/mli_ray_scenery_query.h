@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_RAY_SCENERY_QUERY_H_
-#define MERLICT_C89_MLI_RAY_SCENERY_QUERY_H_
+#ifndef MLI_RAY_SCENERY_QUERY_H_
+#define MLI_RAY_SCENERY_QUERY_H_
 
 #include "mli_ray_octree_traversal.h"
 #include "mliScenery.h"

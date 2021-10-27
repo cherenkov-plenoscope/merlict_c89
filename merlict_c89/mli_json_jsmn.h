@@ -23,8 +23,8 @@
  * SOFTWARE.
  */
 
-#ifndef MERLICT_C89_JSMN_H_
-#define MERLICT_C89_JSMN_H_
+#ifndef JSMN_H_
+#define JSMN_H_
 
 #include <stddef.h>
 

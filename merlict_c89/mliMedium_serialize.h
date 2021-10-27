@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIMEDIUM_SERIALIZE_H_
-#define MERLICT_C89_MLIMEDIUM_SERIALIZE_H_
+#ifndef MLIMEDIUM_SERIALIZE_H_
+#define MLIMEDIUM_SERIALIZE_H_
 
 #include "mliMedium.h"
 

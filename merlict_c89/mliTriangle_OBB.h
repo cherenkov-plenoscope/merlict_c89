@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLITRIANGLE_OBB_H_
-#define MERLICT_C89_MLITRIANGLE_OBB_H_
+#ifndef MLITRIANGLE_OBB_H_
+#define MLITRIANGLE_OBB_H_
 
 #include <stdint.h>
 #include "mliVec.h"

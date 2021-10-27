@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_PIN_HOLE_CAMERA_H_
-#define MERLICT_C89_MLI_PIN_HOLE_CAMERA_H_
+#ifndef MLI_PIN_HOLE_CAMERA_H_
+#define MLI_PIN_HOLE_CAMERA_H_
 
 #include <stdint.h>
 #include "mliTracer.h"

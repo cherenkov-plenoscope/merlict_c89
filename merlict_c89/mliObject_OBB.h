@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIOBJECT_OBB_H_
-#define MERLICT_C89_MLIOBJECT_OBB_H_
+#ifndef MLIOBJECT_OBB_H_
+#define MLIOBJECT_OBB_H_
 
 #include "mliHomTra.h"
 #include "mliObject.h"

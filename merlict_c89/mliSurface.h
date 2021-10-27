@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISURFACE_H_
-#define MERLICT_C89_MLISURFACE_H_
+#ifndef MLISURFACE_H_
+#define MLISURFACE_H_
 
 #include <stdint.h>
 #include "mliFunc.h"

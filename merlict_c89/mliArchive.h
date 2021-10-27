@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_ARCHIVE_H_
-#define MERLICT_C89_ARCHIVE_H_
+#ifndef ARCHIVE_H_
+#define ARCHIVE_H_
 
 #include "mliDynStr.h"
 #include "mli_json.h"

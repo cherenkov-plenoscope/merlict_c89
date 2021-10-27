@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLICOLOR_JSON_H_
-#define MERLICT_C89_MLICOLOR_JSON_H_
+#ifndef MLICOLOR_JSON_H_
+#define MLICOLOR_JSON_H_
 
 #include "mliColor.h"
 #include "mli_json.h"

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIHOMTRA_H_
-#define MERLICT_C89_MLIHOMTRA_H_
+#ifndef MLIHOMTRA_H_
+#define MLIHOMTRA_H_
 
 #include "mliVec.h"
 #include "mliRay.h"

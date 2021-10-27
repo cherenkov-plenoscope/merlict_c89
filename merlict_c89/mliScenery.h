@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISCENERY_H_
-#define MERLICT_C89_MLISCENERY_H_
+#ifndef MLISCENERY_H_
+#define MLISCENERY_H_
 
 #include "mliGeometry.h"
 #include "mliMaterials.h"

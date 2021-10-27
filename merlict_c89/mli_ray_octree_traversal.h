@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_RAY_OCTREE_TRAVERSAL_H_
-#define MERLICT_C89_MLI_RAY_OCTREE_TRAVERSAL_H_
+#ifndef MLI_RAY_OCTREE_TRAVERSAL_H_
+#define MLI_RAY_OCTREE_TRAVERSAL_H_
 
 #include <stdint.h>
 

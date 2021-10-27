@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIOCTREE_H_
-#define MERLICT_C89_MLIOCTREE_H_
+#ifndef MLIOCTREE_H_
+#define MLIOCTREE_H_
 
 #include <stdint.h>
 #include "mliAccelerator.h"

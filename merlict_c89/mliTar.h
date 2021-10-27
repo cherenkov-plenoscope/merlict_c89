@@ -25,8 +25,8 @@
  * IN THE SOFTWARE.
  */
 
-#ifndef MERLICT_C89_MLITAR_H_
-#define MERLICT_C89_MLITAR_H_
+#ifndef MLITAR_H_
+#define MLITAR_H_
 
 #include <stdio.h>
 #include <stdint.h>

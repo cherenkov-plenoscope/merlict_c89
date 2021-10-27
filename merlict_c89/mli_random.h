@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_RANDOM_H_
-#define MERLICT_C89_MLI_RANDOM_H_
+#ifndef MLI_RANDOM_H_
+#define MLI_RANDOM_H_
 
 #include "mli_random_generator.h"
 #include "mliVec.h"

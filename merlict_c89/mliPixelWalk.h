@@ -1,6 +1,6 @@
 /* Copyright 2020-2021 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIPIXELWALK_H_
-#define MERLICT_C89_MLIPIXELWALK_H_
+#ifndef MLIPIXELWALK_H_
+#define MLIPIXELWALK_H_
 
 #include <stdint.h>
 #include "mliPixels.h"

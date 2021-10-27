@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLISURFACE_JSON_H_
-#define MERLICT_C89_MLISURFACE_JSON_H_
+#ifndef MLISURFACE_JSON_H_
+#define MLISURFACE_JSON_H_
 
 #include "mliSurface.h"
 #include "mli_json.h"

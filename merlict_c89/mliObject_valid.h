@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIOBJECT_VALID_H_
-#define MERLICT_C89_MLIOBJECT_VALID_H_
+#ifndef MLIOBJECT_VALID_H_
+#define MLIOBJECT_VALID_H_
 
 #include "mliObject.h"
 

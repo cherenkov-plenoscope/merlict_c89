@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIACCELERATOR_SERIALIZE_H_
-#define MERLICT_C89_MLIACCELERATOR_SERIALIZE_H_
+#ifndef MLIACCELERATOR_SERIALIZE_H_
+#define MLIACCELERATOR_SERIALIZE_H_
 
 #include <stdio.h>
 #include "mliAccelerator.h"

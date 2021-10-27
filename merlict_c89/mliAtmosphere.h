@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIATMOSPHERE_H_
-#define MERLICT_C89_MLIATMOSPHERE_H_
+#ifndef MLIATMOSPHERE_H_
+#define MLIATMOSPHERE_H_
 
 struct mliAtmosphere {
         double sunLatitude;

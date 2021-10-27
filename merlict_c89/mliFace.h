@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIFACE_H_
-#define MERLICT_C89_MLIFACE_H_
+#ifndef MLIFACE_H_
+#define MLIFACE_H_
 
 #include <stdint.h>
 

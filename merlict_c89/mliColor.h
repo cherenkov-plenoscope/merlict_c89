@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLICOLOR_H_
-#define MERLICT_C89_MLICOLOR_H_
+#ifndef MLICOLOR_H_
+#define MLICOLOR_H_
 
 #include <stdint.h>
 

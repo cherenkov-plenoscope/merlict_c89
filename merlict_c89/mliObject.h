@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIOBJECT_H_
-#define MERLICT_C89_MLIOBJECT_H_
+#ifndef MLIOBJECT_H_
+#define MLIOBJECT_H_
 
 #include <stdint.h>
 #include "mliVec.h"

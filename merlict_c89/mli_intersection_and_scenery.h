@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_INTERSECTION_AND_SCENERY_H_
-#define MERLICT_C89_MLI_INTERSECTION_AND_SCENERY_H_
+#ifndef MLI_INTERSECTION_AND_SCENERY_H_
+#define MLI_INTERSECTION_AND_SCENERY_H_
 
 #include "mliIntersectionSurfaceNormal.h"
 #include "mliScenery.h"

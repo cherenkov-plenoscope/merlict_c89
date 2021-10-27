@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIFUNC_JSON_H_
-#define MERLICT_C89_MLIFUNC_JSON_H_
+#ifndef MLIFUNC_JSON_H_
+#define MLIFUNC_JSON_H_
 
 #include "mliFunc.h"
 #include "mli_json.h"

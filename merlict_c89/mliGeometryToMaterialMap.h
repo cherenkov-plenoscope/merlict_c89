@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIGEOMETRYTOMATERIALMAP_H_
-#define MERLICT_C89_MLIGEOMETRYTOMATERIALMAP_H_
+#ifndef MLIGEOMETRYTOMATERIALMAP_H_
+#define MLIGEOMETRYTOMATERIALMAP_H_
 
 #include "mliGeometry.h"
 #include "mliMaterials.h"

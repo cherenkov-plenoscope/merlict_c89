@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLI_FRAME_TO_SCENERY_H_
-#define MERLICT_C89_MLI_FRAME_TO_SCENERY_H_
+#ifndef MLI_FRAME_TO_SCENERY_H_
+#define MLI_FRAME_TO_SCENERY_H_
 
 #include <stdint.h>
 #include "mliGeometry.h"

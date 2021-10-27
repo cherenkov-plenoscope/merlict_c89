@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIDYNPHOTONINTERACTION_H_
-#define MERLICT_C89_MLIDYNPHOTONINTERACTION_H_
+#ifndef MLIDYNPHOTONINTERACTION_H_
+#define MLIDYNPHOTONINTERACTION_H_
 
 #include "mliPhotonInteraction.h"
 #include "mliGeometry.h"

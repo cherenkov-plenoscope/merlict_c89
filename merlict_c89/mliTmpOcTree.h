@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLITMPOCTREE_H_
-#define MERLICT_C89_MLITMPOCTREE_H_
+#ifndef MLITMPOCTREE_H_
+#define MLITMPOCTREE_H_
 
 #include <stdint.h>
 #include "mliGeometry.h"

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIGEOMETRY_OBB_H_
-#define MERLICT_C89_MLIGEOMETRY_OBB_H_
+#ifndef MLIGEOMETRY_OBB_H_
+#define MLIGEOMETRY_OBB_H_
 
 #include "mliGeometry.h"
 #include "mliOBB.h"

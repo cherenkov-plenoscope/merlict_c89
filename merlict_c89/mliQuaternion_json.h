@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIQUATERNION_JSON_H_
-#define MERLICT_C89_MLIQUATERNION_JSON_H_
+#ifndef MLIQUATERNION_JSON_H_
+#define MLIQUATERNION_JSON_H_
 
 #include "mliQuaternion.h"
 #include "mli_json.h"

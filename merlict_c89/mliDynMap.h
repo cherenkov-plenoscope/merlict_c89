@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MERLICT_C89_MLIMAP_H_
-#define MERLICT_C89_MLIMAP_H_
+#ifndef MLIMAP_H_
+#define MLIMAP_H_
 
 #include <stdint.h>
 #include "mliName.h"
