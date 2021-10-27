@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_cstr_and_numbers.h"
+#include "mli_cstr_numbers.h"
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>

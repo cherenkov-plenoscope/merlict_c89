@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_version.h"
 #include "chk_debug.h"
-#include "mli_cstr_and_numbers.h"
+#include "mli_cstr_numbers.h"
 #include "mli_math.h"
 #include "mliMagicId.h"
 #include "mliGeometryId.h"

@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include "mliDynArray_template.h"
 #include "chk_debug.h"
-#include "mli_cstr_and_numbers.h"
+#include "mli_cstr_numbers.h"
 
 #define MLI_WAVEFRONT_FACE_LINE_V 7
 #define MLI_WAVEFRONT_FACE_LINE_V_VN 37

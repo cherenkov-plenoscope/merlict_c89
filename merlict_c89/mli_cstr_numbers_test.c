@@ -1,8 +1,5 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-#include "mli_testing.h"
-#include "mli_cstr_and_numbers.h"
-
 CASE("string to int")
 {
         int64_t i;

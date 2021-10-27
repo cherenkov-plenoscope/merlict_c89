@@ -21,7 +21,7 @@ int main(void)
 #include "mliMagicId_test.c"
 #include "mliFrame_test.c"
 #include "mli_cstr_test.c"
-#include "mli_cstr_and_numbers_test.c"
+#include "mli_cstr_numbers_test.c"
 #include "mliTar_test.c"
 #include "mli_quadratic_equation_test.c"
 #include "mli_random_test.c"
