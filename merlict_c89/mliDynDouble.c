@@ -1,3 +1,3 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliDynArrayDouble.h"
+#include "mliDynDouble.h"
 MLIDYNARRAY_IMPLEMENTATION(mli, Double, double)
