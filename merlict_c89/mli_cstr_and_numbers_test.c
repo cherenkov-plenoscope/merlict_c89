@@ -68,41 +68,41 @@ CASE("uint to string")
         char s[64] = {'\0'};
 
         memset(s, '\0', sizeof(s));
-        CHECK(mli_uint64_to_cstr(0, s, sizeof(s), 10u, 0u));
+        CHECK(mli_cstr_print_uint64(0, s, sizeof(s), 10u, 0u));
         CHECK(strcmp(s, "0") == 0);
 
         memset(s, '\0', sizeof(s));
-        CHECK(mli_uint64_to_cstr(123, s, sizeof(s), 10u, 0u));
+        CHECK(mli_cstr_print_uint64(123, s, sizeof(s), 10u, 0u));
         CHECK(strcmp(s, "123") == 0);
 
         memset(s, '\0', sizeof(s));
-        CHECK(mli_uint64_to_cstr(1233456789, s, sizeof(s), 10u, 0u));
+        CHECK(mli_cstr_print_uint64(1233456789, s, sizeof(s), 10u, 0u));
         CHECK(strcmp(s, "1233456789") == 0);
 
         /* octal */
         memset(s, '\0', sizeof(s));
-        CHECK(mli_uint64_to_cstr(0, s, sizeof(s), 8u, 0u));
+        CHECK(mli_cstr_print_uint64(0, s, sizeof(s), 8u, 0u));
         CHECK(strcmp(s, "0") == 0);
 
         memset(s, '\0', sizeof(s));
-        CHECK(mli_uint64_to_cstr(1337, s, sizeof(s), 8u, 0u));
+        CHECK(mli_cstr_print_uint64(1337, s, sizeof(s), 8u, 0u));
         CHECK(strcmp(s, "2471") == 0);
 
         memset(s, '\0', sizeof(s));
-        CHECK(mli_uint64_to_cstr(42, s, sizeof(s), 8u, 0u));
+        CHECK(mli_cstr_print_uint64(42, s, sizeof(s), 8u, 0u));
         CHECK(strcmp(s, "52") == 0);
 
         /* binary */
         memset(s, '\0', sizeof(s));
-        CHECK(mli_uint64_to_cstr(13, s, sizeof(s), 2u, 0u));
+        CHECK(mli_cstr_print_uint64(13, s, sizeof(s), 2u, 0u));
         CHECK(strcmp(s, "1101") == 0);
 
-        CHECK(!mli_uint64_to_cstr(13, s, sizeof(s), 1u, 0u));
-        CHECK(!mli_uint64_to_cstr(13, s, sizeof(s), 11u, 0u));
+        CHECK(!mli_cstr_print_uint64(13, s, sizeof(s), 1u, 0u));
+        CHECK(!mli_cstr_print_uint64(13, s, sizeof(s), 11u, 0u));
 
         /* leading zeros */
         memset(s, '\0', sizeof(s));
-        CHECK(mli_uint64_to_cstr(123, s, sizeof(s), 10u, 9u));
+        CHECK(mli_cstr_print_uint64(123, s, sizeof(s), 10u, 9u));
         CHECK(strcmp(s,
                      "000"
                      "000"
@@ -144,7 +144,7 @@ CASE("string to float")
         CHECK(!mli_cstr_to_double(&i, s));
         sprintf(s, "1 ");
         CHECK(!mli_cstr_to_double(&i, s));
-        CHECK(mli_ncstr_to_double(&i, s, 1));
+        CHECK(mli_cstr_nto_double(&i, s, 1));
         CHECK(i == 1.0);
 
         /* Trash characters. */
@@ -152,7 +152,7 @@ CASE("string to float")
         CHECK(!mli_cstr_to_double(&i, s));
         sprintf(s, "10a");
         CHECK(!mli_cstr_to_double(&i, s));
-        CHECK(mli_ncstr_to_double(&i, s, 2));
+        CHECK(mli_cstr_nto_double(&i, s, 2));
         CHECK(i == 10.0);
 
         /* long overflow */

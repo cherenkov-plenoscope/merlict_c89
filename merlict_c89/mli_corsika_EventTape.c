@@ -327,7 +327,7 @@ int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth)
                 "Can't read EVTH from tar.");
         chk_msg(evth[0] == mli_4chars_to_float("EVTH"),
                 "Expected EVTH[0] == 'EVTH'");
-        chk_msg(mli_ncstr_to_uint64(
+        chk_msg(mli_cstr_nto_uint64(
                         &event_number_path, &tio->tarh.name[7], 10, 9),
                 "Can't parse event-number from path.");
         event_number_evth = (uint64_t)evth[MLI_CORSIKA_EVTH_EVENT_NUMBER];
@@ -369,14 +369,14 @@ int mliEventTapeReader_tarh_is_valid_cherenkov_block(
         chk_msg(mliEventTapeReader_tarh_might_be_valid_cherenkov_block(tio),
                 "Expected cherenkov-bunch-block-name to be valid.");
 
-        chk_msg(mli_ncstr_to_uint64(
+        chk_msg(mli_cstr_nto_uint64(
                         &event_number_path, &tio->tarh.name[7], 10, 9),
                 "Can't parse event-number from path.");
 
         chk_msg(event_number_path == tio->event_number,
                 "Expected same event-number in cherenkov-block-path and EVTH.");
 
-        chk_msg(mli_ncstr_to_uint64(
+        chk_msg(mli_cstr_nto_uint64(
                         &block_number_path, &tio->tarh.name[28 + 7], 10, 9),
                 "Can't parse cherenkov-block-number from path.");
 

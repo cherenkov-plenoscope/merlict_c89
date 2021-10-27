@@ -206,7 +206,7 @@ int mliTar_uint_to_field(
         char *field,
         const uint64_t fieldsize)
 {
-        chk(mli_uint64_to_cstr(
+        chk(mli_cstr_print_uint64(
                 val, field, fieldsize, MLI_TAR_OCTAL, fieldsize - 1));
         return 1;
 error:
@@ -295,7 +295,7 @@ int mliTar_make_raw_header(
 
         /* Calculate and write checksum */
         chksum = mliTar_checksum(rh);
-        chk_msg(mli_uint64_to_cstr(
+        chk_msg(mli_cstr_print_uint64(
                         chksum,
                         rh->checksum,
                         sizeof(rh->checksum),

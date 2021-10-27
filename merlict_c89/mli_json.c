@@ -127,7 +127,7 @@ int mliJson_as_float64(
         const uint64_t token_length = t.end - t.start;
         chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json float64 expected json-token-to be JSMN_PRIMITIVE.");
-        chk_msg(mli_ncstr_to_double(
+        chk_msg(mli_cstr_nto_double(
                         return_float64, &json->c_str[t.start], token_length),
                 "Can not parse float.");
         return 1;

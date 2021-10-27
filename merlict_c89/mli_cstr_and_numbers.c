@@ -41,7 +41,7 @@ error:
         return 0;
 }
 
-int mli_ncstr_to_uint64(
+int mli_cstr_nto_uint64(
         uint64_t *out,
         const char *s,
         const uint64_t base,
@@ -67,7 +67,7 @@ error:
         return 0;
 }
 
-int mli_ncstr_to_double(
+int mli_cstr_nto_double(
         double *out,
         const char *s,
         const uint64_t expected_num_chars)
@@ -94,14 +94,14 @@ error:
 
 int mli_cstr_to_double(double *out, const char *s)
 {
-        chk_msg(mli_ncstr_to_double(out, s, strlen(s)),
+        chk_msg(mli_cstr_nto_double(out, s, strlen(s)),
                 "Can not convert string to float64.");
         return 1;
 error:
         return 0;
 }
 
-int mli_uint64_to_cstr(
+int mli_cstr_print_uint64(
         uint64_t u,
         char *s,
         const uint64_t max_num_chars,
