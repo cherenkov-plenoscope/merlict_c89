@@ -23,7 +23,7 @@ error:
         return 0;
 }
 
-int point_like_towards_z_opening_angle_num_photons(
+int mli_photon_source_point_like_opening_cone_towards_z(
         struct mliDynPhoton *out_photons,
         const double wavelength,
         const double opening_angle,

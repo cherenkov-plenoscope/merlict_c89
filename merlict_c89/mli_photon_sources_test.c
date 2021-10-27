@@ -41,7 +41,7 @@ CASE("point_like_towards_z")
         uint64_t i;
         CHECK(mliDynPhoton_malloc(&photons, 0));
 
-        CHECK(point_like_towards_z_opening_angle_num_photons(
+        CHECK(mli_photon_source_point_like_opening_cone_towards_z(
                 &photons, wavelength, opening_angle, num_photons, &prng));
 
         for (i = 0; i < photons.size; i++) {
