@@ -39,6 +39,6 @@ void mli_cstr_strip_spaces(const char *in, char *out);
 int mli_cstr_match_templeate(
         const char *s,
         const char *t,
-        const char digit_wilfcard);
+        const char digit_wildcard);
 
 #endif

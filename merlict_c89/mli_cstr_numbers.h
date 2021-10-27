@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLI_CSTR_AND_NUMBERS_H_
-#define MLI_CSTR_AND_NUMBERS_H_
+#ifndef MLI_CSTR_NUMBERS_H_
+#define MLI_CSTR_NUMBERS_H_
 
 #include <stdint.h>
 
