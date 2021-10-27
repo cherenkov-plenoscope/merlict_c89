@@ -1,7 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 #include "mli_testing.h"
-#include "mliDynArray_template.h"
+#include "mliDynArray.h"
+#include "mliDynArray_testing.h"
 
 CASE("malloc, and free")
 {

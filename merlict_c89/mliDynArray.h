@@ -1,9 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIDYNARRAY_TEMPLATE_H_
-#define MLIDYNARRAY_TEMPLATE_H_
+#ifndef MLIDYNARRAY_H_
+#define MLIDYNARRAY_H_
 
 #include <stdint.h>
-#include "mliColor.h"
 
 #define MLIDYNARRAY_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                         \
                                                                                \
@@ -83,55 +82,5 @@
         error:                                                                 \
                 return 0;                                                      \
         }
-
-#define MLIDYNARRAY_TEST_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                    \
-                                                                               \
-        int LIB##Dyn##NAME##_test_init(struct LIB##Dyn##NAME *dh);             \
-                                                                               \
-        int LIB##Dyn##NAME##_test_malloc(                                      \
-                struct LIB##Dyn##NAME *dh, const uint64_t capacity);           \
-                                                                               \
-        int LIB##Dyn##NAME##_test_free(struct LIB##Dyn##NAME *dh);
-
-#define MLIDYNARRAY_TEST_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)               \
-                                                                               \
-        int LIB##Dyn##NAME##_test_init(struct LIB##Dyn##NAME *dh)              \
-        {                                                                      \
-                chk(dh->capacity == 0u);                                       \
-                chk(dh->size == 0u);                                           \
-                chk(dh->array == NULL);                                        \
-                return 1;                                                      \
-        error:                                                                 \
-                return 0;                                                      \
-        }                                                                      \
-                                                                               \
-        int LIB##Dyn##NAME##_test_malloc(                                      \
-                struct LIB##Dyn##NAME *dh, const uint64_t capacity)            \
-        {                                                                      \
-                chk(dh->capacity >= dh->size);                                 \
-                if (capacity < 2) {                                            \
-                        chk(dh->capacity == 2);                                \
-                } else {                                                       \
-                        chk(dh->capacity == capacity);                         \
-                }                                                              \
-                chk(dh->array != NULL);                                        \
-                return 1;                                                      \
-        error:                                                                 \
-                return 0;                                                      \
-        }                                                                      \
-                                                                               \
-        int LIB##Dyn##NAME##_test_free(struct LIB##Dyn##NAME *dh)              \
-        {                                                                      \
-                return LIB##Dyn##NAME##_test_init(dh);                         \
-        }
-
-MLIDYNARRAY_DEFINITON(mli, Uint32, uint32_t)
-MLIDYNARRAY_DEFINITON(mli, Float, float)
-MLIDYNARRAY_DEFINITON(mli, Double, double)
-MLIDYNARRAY_DEFINITON(mli, Color, struct mliColor)
-MLIDYNARRAY_TEST_DEFINITON(mli, Color, struct mliColor)
-MLIDYNARRAY_DEFINITON(mli, ColorPtr, struct mliColor *)
-MLIDYNARRAY_DEFINITON(mli, Vec, struct mliVec)
-MLIDYNARRAY_DEFINITON(mli, Face, struct mliFace)
 
 #endif

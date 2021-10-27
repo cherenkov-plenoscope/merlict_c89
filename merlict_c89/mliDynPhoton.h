@@ -2,9 +2,7 @@
 #ifndef MLIDYNPHOTON_H_
 #define MLIDYNPHOTON_H_
 
-#include "mliDynArray_template.h"
+#include "mliDynArray.h"
 #include "mliPhoton.h"
-
 MLIDYNARRAY_DEFINITON(mli, Photon, struct mliPhoton)
-
 #endif

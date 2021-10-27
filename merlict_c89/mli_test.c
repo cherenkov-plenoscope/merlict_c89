@@ -27,7 +27,7 @@ int main(void)
 #include "mli_random_test.c"
 #include "mli_from_outside_to_inside_test.c"
 #include "mliCube_test.c"
-#include "mliDynArray_template_test.c"
+#include "mliDynArray_test.c"
 #include "mliQuaternion_test.c"
 #include "mliHomTra_test.c"
 #include "mli_math_test.c"

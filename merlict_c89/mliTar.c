@@ -6,6 +6,7 @@
 
 #include "mliTar.h"
 #include <string.h>
+#include <stddef.h>
 #include "chk_debug.h"
 #include "mli_cstr_numbers.h"
 

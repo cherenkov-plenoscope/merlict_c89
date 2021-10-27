@@ -2,6 +2,8 @@
 #ifndef MLIPHOTON_H_
 #define MLIPHOTON_H_
 
+#include "mliRay.h"
+
 struct mliPhoton {
         struct mliRay ray;
         double wavelength;

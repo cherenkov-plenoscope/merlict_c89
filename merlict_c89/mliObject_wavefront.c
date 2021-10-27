@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject_wavefront.h"
 #include <ctype.h>
-#include "mliDynArray_template.h"
+#include "mliDynArray.h"
 #include "chk_debug.h"
 #include "mli_cstr_numbers.h"
 

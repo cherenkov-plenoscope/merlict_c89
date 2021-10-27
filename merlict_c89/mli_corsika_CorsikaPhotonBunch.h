@@ -3,7 +3,8 @@
 #define MLI_CORSIKA_CORSIKAPHOTONBUNCH_H_
 
 #include <stdint.h>
-#include "mliDynArray_template.h"
+#include "mliDynArray.h"
+#include "mliVec.h"
 #include "mliPhoton.h"
 
 struct mliCorsikaPhotonBunch {

@@ -2,7 +2,7 @@
 #ifndef MLIOCTOVERLAPS_H_
 #define MLIOCTOVERLAPS_H_
 
-#include "mliDynArray_template.h"
+#include "mliDynArray.h"
 
 #define mliOctOverlap mliDynUint32
 #define mliOctOverlap_init mliDynUint32_init

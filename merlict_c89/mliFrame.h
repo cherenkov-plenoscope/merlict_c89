@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliHomTra.h"
-#include "mliDynArray_template.h"
+#include "mliDynArray.h"
 
 #define MLI_FRAME 1000u
 #define MLI_OBJECT 1001u

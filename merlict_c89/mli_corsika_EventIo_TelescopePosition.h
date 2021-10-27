@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_EVENTIO_TELESCOPEPOSITION_H_
 
 #include <stdint.h>
-#include "mliDynArray_template.h"
+#include "mliDynArray.h"
 
 struct mliEventIoTelescopePosition {
         float x;
