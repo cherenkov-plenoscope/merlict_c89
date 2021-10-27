@@ -178,62 +178,62 @@ CASE("find CRLF and CR linebreaks")
 
 CASE("replace CRLF and CR linebreaks with LF")
 {
-        struct mliDynStr src = mliDynStr_init();
-        struct mliDynStr dst = mliDynStr_init();
+        struct mliStr src = mliStr_init();
+        struct mliStr dst = mliStr_init();
 
-        CHECK(mliDynStr_malloc(&src, 32));
-        CHECK(mliDynStr_malloc(&dst, 32));
+        CHECK(mliStr_malloc(&src, 32));
+        CHECK(mliStr_malloc(&dst, 32));
 
         /* all '\0' */
         /* -------- */
         CHECK(src.c_str[0] == '\0');
-        CHECK(mliDynStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(dst.c_str[0] == '\0');
 
         /* minimal CR */
         /* ---------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "\r");
-        CHECK(mliDynStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "\n"));
 
         /* minimal CRLF */
         /* ------------ */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "\r\n");
-        CHECK(mliDynStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "\n"));
 
         /* minimal text CRLF */
         /* ----------------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "hans\r\npeter");
-        CHECK(mliDynStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
 
         /* minimal text CR */
         /* ----------------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "hans\rpeter");
-        CHECK(mliDynStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
 
         /* complex text CRLF */
         /* ----------------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
-        CHECK(mliDynStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
 
         /* complex text CR */
         /* ----------------- */
         memset(src.c_str, '\0', src.capacity);
         sprintf(src.c_str, "\rflower\rcar\r\rhouse\r");
-        CHECK(mliDynStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
 
-        mliDynStr_free(&src);
-        mliDynStr_free(&dst);
+        mliStr_free(&src);
+        mliStr_free(&dst);
 }
 
 CASE("assert no unexpected control codes in ascii-text.")
@@ -286,9 +286,9 @@ CASE("assert no unexpected control codes in ascii-text.")
 
 CASE("line info fprint")
 {
-        struct mliDynStr s = mliDynStr_init();
+        struct mliStr s = mliStr_init();
         FILE *f;
-        CHECK(mliDynStr_malloc_from_path(
+        CHECK(mliStr_malloc_from_path(
                 &s,
                 "merlict_c89/"
                 "tests/"
@@ -304,24 +304,24 @@ CASE("line info fprint")
         CHECK(mli_cstr_lines_fprint(f, s.c_str, 35, 3));
         fclose(f);
 
-        mliDynStr_free(&s);
+        mliStr_free(&s);
 }
 
 CASE("DynStr")
 {
         uint64_t i;
-        struct mliDynStr s = mliDynStr_init();
+        struct mliStr s = mliStr_init();
         CHECK(s.capacity == 0u);
         CHECK(s.length == 0u);
         CHECK(s.c_str == NULL);
 
-        CHECK(mliDynStr_malloc(&s, 0u));
+        CHECK(mliStr_malloc(&s, 0u));
         CHECK(s.length == 0);
         CHECK(s.capacity == 2);
         CHECK(s.c_str[0] == '\0');
         CHECK(s.c_str[1] == '\0');
 
-        CHECK(mliDynStr_push_back_c_str(&s, "012"));
+        CHECK(mliStr_push_back_c_str(&s, "012"));
 
         CHECK(s.capacity > s.length);
         CHECK(s.length == 3);
@@ -333,7 +333,7 @@ CASE("DynStr")
                 CHECK(s.c_str[i] == '\0');
         }
 
-        CHECK(mliDynStr_push_back_c_str(&s, "\n"));
+        CHECK(mliStr_push_back_c_str(&s, "\n"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 4);
         CHECK(s.c_str[3] == '\n');
@@ -342,7 +342,7 @@ CASE("DynStr")
                 CHECK(s.c_str[i] == '\0');
         }
 
-        CHECK(mliDynStr_push_back_c_str(&s, "456"));
+        CHECK(mliStr_push_back_c_str(&s, "456"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
         CHECK(s.c_str[4] == '4');
@@ -353,21 +353,21 @@ CASE("DynStr")
                 CHECK(s.c_str[i] == '\0');
         }
 
-        CHECK(mliDynStr_push_back_c_str(&s, ""));
+        CHECK(mliStr_push_back_c_str(&s, ""));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
         for (i = s.length; i < s.capacity; i++) {
                 CHECK(s.c_str[i] == '\0');
         }
 
-        CHECK(mliDynStr_push_back_c_str(&s, "\0"));
+        CHECK(mliStr_push_back_c_str(&s, "\0"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
         for (i = s.length; i < s.capacity; i++) {
                 CHECK(s.c_str[i] == '\0');
         }
 
-        mliDynStr_free(&s);
+        mliStr_free(&s);
         CHECK(s.capacity == 0u);
         CHECK(s.length == 0u);
         CHECK(s.c_str == NULL);

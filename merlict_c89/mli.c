@@ -100,7 +100,7 @@
 #include "mliPinHoleCamera.c"
 #include "mliApertureCamera.c"
 #include "mli_cstr.c"
-#include "mliDynStr.c"
+#include "mliStr.c"
 #include "mli_json.c"
 #include "mliArchive.c"
 #include "mliTar.c"

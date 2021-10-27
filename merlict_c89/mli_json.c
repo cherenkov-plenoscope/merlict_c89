@@ -71,12 +71,12 @@ error:
 
 int mliJson_malloc_from_path(struct mliJson *json, const char *path)
 {
-        struct mliDynStr str = mliDynStr_init();
-        chk_msg(mliDynStr_malloc_from_path(&str, path),
+        struct mliStr str = mliStr_init();
+        chk_msg(mliStr_malloc_from_path(&str, path),
                 "Failed to read file into string.");
         chk_msg(mliJson_malloc_from_string(json, str.c_str),
                 "Failed to parse json-string read from path.");
-        mliDynStr_free(&str);
+        mliStr_free(&str);
         return 1;
 error:
         mliJson_free(json);

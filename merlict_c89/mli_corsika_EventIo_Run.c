@@ -7,7 +7,7 @@ struct mliEventIoRun mliEventIoRun_init(void)
         run.f = NULL;
         run.next_block = mliEventIoHeader_init();
         memset(run.corsika_run_header, 0.0, 273);
-        run.corsika_input_card = mliDynStr_init();
+        run.corsika_input_card = mliStr_init();
         run.telescope_positions = mliDynEventIoTelescopePosition_init();
         return run;
 }
@@ -34,13 +34,13 @@ error:
 
 int mliEventIoRun_read_input_card(
         FILE *f,
-        struct mliDynStr *input_card,
+        struct mliStr *input_card,
         const uint64_t length)
 {
         char _unknown[8];
         uint64_t input_card_length;
 
-        chk_msg(mliDynStr_malloc(input_card, length + 1),
+        chk_msg(mliStr_malloc(input_card, length + 1),
                 "Failed to malloc c_str for input-card.");
 
         chk_fread(_unknown, sizeof(_unknown), 1, f);
@@ -138,7 +138,7 @@ int mliEventIoRun_has_still_events_left(struct mliEventIoRun *run)
 
 void mliEventIoRun_close(struct mliEventIoRun *run)
 {
-        mliDynStr_free(&run->corsika_input_card);
+        mliStr_free(&run->corsika_input_card);
         mliDynEventIoTelescopePosition_free(&run->telescope_positions);
         fclose(run->f);
 }

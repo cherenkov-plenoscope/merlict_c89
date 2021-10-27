@@ -1,25 +1,25 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliDynStr.h"
+#include "mliStr.h"
 #include <stdio.h>
 
-struct mliDynStr mliDynStr_init(void)
+struct mliStr mliStr_init(void)
 {
-        struct mliDynStr str;
+        struct mliStr str;
         str.capacity = 0u;
         str.length = 0u;
         str.c_str = NULL;
         return str;
 }
 
-void mliDynStr_free(struct mliDynStr *str)
+void mliStr_free(struct mliStr *str)
 {
         free(str->c_str);
-        (*str) = mliDynStr_init();
+        (*str) = mliStr_init();
 }
 
-int mliDynStr_malloc(struct mliDynStr *str, const uint64_t capacity)
+int mliStr_malloc(struct mliStr *str, const uint64_t capacity)
 {
-        mliDynStr_free(str);
+        mliStr_free(str);
         str->capacity = MLI_MAX2(2, capacity);
         str->length = 0u;
         chk_malloc(str->c_str, char, str->capacity);
@@ -29,7 +29,7 @@ error:
         return 0;
 }
 
-int mliDynStr_push_back_char(struct mliDynStr *str, const char c)
+int mliStr_push_back_char(struct mliStr *str, const char c)
 {
         const uint64_t new_length = str->length + 1;
 
@@ -53,12 +53,12 @@ error:
         return 0;
 }
 
-int mliDynStr_push_back_c_str(struct mliDynStr *str, const char *s)
+int mliStr_push_back_c_str(struct mliStr *str, const char *s)
 {
         const uint64_t slen = strlen(s);
         uint64_t i;
         for (i = 0; i < slen; i++) {
-                chk_msg(mliDynStr_push_back_char(str, s[i]),
+                chk_msg(mliStr_push_back_char(str, s[i]),
                         "Failed to push back char");
         }
         return 1;
@@ -66,15 +66,15 @@ error:
         return 0;
 }
 
-int mliDynStr_malloc_from_path(struct mliDynStr *str, const char *path)
+int mliStr_malloc_from_path(struct mliStr *str, const char *path)
 {
         int c = EOF;
         FILE *f = fopen(path, "rt");
         chk_msg(f, "Failed to open file.");
-        chk_msg(mliDynStr_malloc(str, 0), "Can not malloc string.");
+        chk_msg(mliStr_malloc(str, 0), "Can not malloc string.");
         c = getc(f);
         while (c != EOF) {
-                chk_msg(mliDynStr_push_back_char(str, c),
+                chk_msg(mliStr_push_back_char(str, c),
                         "Failed to push back char.");
                 c = getc(f);
         }
@@ -83,27 +83,27 @@ int mliDynStr_malloc_from_path(struct mliDynStr *str, const char *path)
 error:
         if (f != NULL)
                 fclose(f);
-        mliDynStr_free(str);
+        mliStr_free(str);
         return 0;
 }
 
-int mliDynStr_convert_line_break_CRLF_CR_to_LF(
-        struct mliDynStr *dst,
-        const struct mliDynStr *src)
+int mliStr_convert_line_break_CRLF_CR_to_LF(
+        struct mliStr *dst,
+        const struct mliStr *src)
 {
         uint64_t i = 0;
-        mliDynStr_free(dst);
-        chk(mliDynStr_malloc(dst, src->capacity));
+        mliStr_free(dst);
+        chk(mliStr_malloc(dst, src->capacity));
 
         while (i < src->capacity) {
                 if (mli_cstr_is_CRLF(&src->c_str[i])) {
-                        chk(mliDynStr_push_back_char(dst, '\n'));
+                        chk(mliStr_push_back_char(dst, '\n'));
                         i += 2;
                 } else if (mli_cstr_is_CR(&src->c_str[i])) {
-                        chk(mliDynStr_push_back_char(dst, '\n'));
+                        chk(mliStr_push_back_char(dst, '\n'));
                         i += 1;
                 } else {
-                        chk(mliDynStr_push_back_char(dst, src->c_str[i]));
+                        chk(mliStr_push_back_char(dst, src->c_str[i]));
                         i += 1;
                 }
         }

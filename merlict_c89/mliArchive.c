@@ -4,7 +4,7 @@
 #include "mli_json.h"
 #include "mliTar.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, TextFiles, struct mliDynStr)
+MLIDYNARRAY_IMPLEMENTATION(mli, TextFiles, struct mliStr)
 
 struct mliArchive mliArchive_init(void)
 {
@@ -18,7 +18,7 @@ void mliArchive_free(struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
-                mliDynStr_free(&arc->textfiles.array[i]);
+                mliStr_free(&arc->textfiles.array[i]);
         }
         mliDynTextFiles_free(&arc->textfiles);
         mliDynMap_free(&arc->filenames);
@@ -29,7 +29,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
-        struct mliDynStr tmp_payload = mliDynStr_init();
+        struct mliStr tmp_payload = mliStr_init();
         char tarh_name[MLI_TAR_NAME_LENGTH] = {'\0'};
 
         mliArchive_free(arc);
@@ -38,7 +38,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 
         while (mliTar_read_header(&tar, &tarh)) {
                 uint64_t next = arc->filenames.size;
-                struct mliDynStr *payload = NULL;
+                struct mliStr *payload = NULL;
                 memset(tarh_name, '\0', sizeof(tarh_name));
 
                 mli_cstr_path_strip_this_dir(tarh_name, tarh.name);
@@ -46,24 +46,24 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                 chk_msg(mliDynMap_insert(&arc->filenames, tarh_name, next),
                         "Can not insert key.");
                 chk_msg(mliDynTextFiles_push_back(
-                                &arc->textfiles, mliDynStr_init()),
+                                &arc->textfiles, mliStr_init()),
                         "Can not push back mliString.");
-                chk_msg(mliDynStr_malloc(&tmp_payload, tarh.size + 1),
+                chk_msg(mliStr_malloc(&tmp_payload, tarh.size + 1),
                         "Can not allocate tmp-string-buffer.");
 
                 payload = &arc->textfiles.array[next];
-                (*payload) = mliDynStr_init();
+                (*payload) = mliStr_init();
 
-                chk_msg(mliDynStr_malloc(payload, 0),
+                chk_msg(mliStr_malloc(payload, 0),
                         "Can not allocate string-buffer.");
                 chk_msg(mliTar_read_data(
                                 &tar, (void *)tmp_payload.c_str, tarh.size),
                         "Failed to read payload from tar into "
                         "tmp-string-buffer.");
-                chk_msg(mliDynStr_convert_line_break_CRLF_CR_to_LF(
+                chk_msg(mliStr_convert_line_break_CRLF_CR_to_LF(
                                 payload, &tmp_payload),
                         "Failed to replace CRLF and CR linebreaks.");
-                mliDynStr_free(&tmp_payload);
+                mliStr_free(&tmp_payload);
                 chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(
                                 payload->c_str),
                         "Did not expect control codes other than "
@@ -74,7 +74,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
         return 1;
 error:
         fprintf(stderr, "tar '%s', filename: '%s'.\n", path, tarh_name);
-        mliDynStr_free(&tmp_payload);
+        mliStr_free(&tmp_payload);
         mliArchive_free(arc);
         if (tar.stream) {
                 mliTar_close(&tar);
@@ -90,7 +90,7 @@ int mliArchive_has(const struct mliArchive *arc, const char *filename)
 int mliArchive_get(
         const struct mliArchive *arc,
         const char *filename,
-        struct mliDynStr **str)
+        struct mliStr **str)
 {
         uint64_t idx;
         chk(mliDynMap_find(&arc->filenames, filename, &idx));
@@ -105,7 +105,7 @@ int mliArchive_get_malloc_json(
         const char *filename,
         struct mliJson *json)
 {
-        struct mliDynStr *text = NULL;
+        struct mliStr *text = NULL;
 
         chk_msg(mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
