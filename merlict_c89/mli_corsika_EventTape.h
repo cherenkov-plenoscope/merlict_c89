@@ -28,7 +28,7 @@ int mliEventTapeWriter_write_evth(
         const float *evth);
 int mliEventTapeWriter_write_cherenkov_bunch(
         struct mliEventTapeWriter *tio,
-        const struct mliCorsikaPhotonBunch bunch);
+        const struct mliCorsikaPhotonBunch *bunch);
 int mliEventTapeWriter_write_cherenkov_bunch_raw(
         struct mliEventTapeWriter *tio,
         const float *bunch_raw);

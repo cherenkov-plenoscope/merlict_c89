@@ -132,7 +132,7 @@ int mliEventTape_testing_write_and_read(
                 for (b = 0; b < num_bunches[e]; b++) {
                         mliEventTape_testing_set_random_bunch(&buncho, &prng);
                         chk_msg(mliEventTapeWriter_write_cherenkov_bunch(
-                                        &taro, buncho),
+                                        &taro, &buncho),
                                 "Can't write bunch.");
                 }
         }

@@ -152,14 +152,14 @@ error:
 
 int mliEventTapeWriter_write_cherenkov_bunch(
         struct mliEventTapeWriter *tio,
-        const struct mliCorsikaPhotonBunch bunch)
+        const struct mliCorsikaPhotonBunch *bunch)
 {
         if (tio->buffer.size == tio->buffer.capacity) {
                 chk_msg(mliEventTapeWriter_flush_cherenkov_bunch_block(tio),
                         "Can't finalize cherenkov-bunch-block.");
                 chk_msg(tio->buffer.size == 0, "Expected buffer to be empty.");
         }
-        tio->buffer.array[tio->buffer.size] = bunch;
+        tio->buffer.array[tio->buffer.size] = (*bunch);
         tio->buffer.size += 1;
         return 1;
 error:
@@ -172,7 +172,7 @@ int mliEventTapeWriter_write_cherenkov_bunch_raw(
 {
         struct mliCorsikaPhotonBunch bunch;
         mliCorsikaPhotonBunch_set_from_raw(&bunch, bunch_raw);
-        chk_msg(mliEventTapeWriter_write_cherenkov_bunch(tio, bunch),
+        chk_msg(mliEventTapeWriter_write_cherenkov_bunch(tio, &bunch),
                 "Can't add raw-bunch to tar-io.");
         return 1;
 error:

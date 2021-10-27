@@ -35,12 +35,6 @@ void mliCorsikaPhotonBunch_set_from_raw(
 void mliCorsikaPhotonBunch_to_raw(
         const struct mliCorsikaPhotonBunch *bunch,
         float *raw);
-void mliCorsikaPhotonBunch_testing_mark_bunch(
-        struct mliCorsikaPhotonBunch *bunch,
-        const uint64_t marker);
-int mliCorsikaPhotonBunch_testing_bunch_has_mark(
-        const struct mliCorsikaPhotonBunch bunch,
-        const uint64_t marker);
 
 struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
         const struct mliCorsikaPhotonBunch bunch,
