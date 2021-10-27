@@ -18,14 +18,18 @@
 
 int main(void)
 {
-        printf("MERLICT %d.%d.%d\n",
+        printf("MLI %d.%d.%d\n",
                MLI_VERSION_MAYOR,
                MLI_VERSION_MINOR,
                MLI_VERSION_PATCH);
-        printf("MERLICT_CORSIKA %d.%d.%d\n",
+        printf("MLI_CORSIKA %d.%d.%d\n",
                MLI_CORSIKA_VERSION_MAYOR,
                MLI_CORSIKA_VERSION_MINOR,
                MLI_CORSIKA_VERSION_PATCH);
+        printf("MLI_CORSIKA_EVENTTAPE %d.%d.%d\n",
+               MLI_CORSIKA_EVENTTAPE_VERSION_MAYOR,
+               MLI_CORSIKA_EVENTTAPE_VERSION_MINOR,
+               MLI_CORSIKA_EVENTTAPE_VERSION_PATCH);
 
 #include "mli_corsika_EventIo_test.c"
 #include "mli_corsika_TarIo_test.c"

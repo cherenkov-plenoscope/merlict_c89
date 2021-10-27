@@ -7,6 +7,9 @@
 #include "mli_corsika_utils.h"
 #include "mli_corsika_CorsikaPhotonBunch.h"
 
+#define MLI_CORSIKA_EVENTTAPE_VERSION_MAYOR 0
+#define MLI_CORSIKA_EVENTTAPE_VERSION_MINOR 1
+#define MLI_CORSIKA_EVENTTAPE_VERSION_PATCH 0
 
 struct mliEventTapeWriter {
         struct mliTar tar;
@@ -34,6 +37,7 @@ int mliEventTapeWriter_write_cherenkov_bunch_raw(
         const float *bunch_raw);
 int mliEventTapeWriter_flush_cherenkov_bunch_block(
         struct mliEventTapeWriter *tio);
+int mliEventTapeWriter_write_readme(struct mliEventTapeWriter *tio);
 
 struct mliEventTapeReader {
         /* Current event-number */
@@ -69,5 +73,6 @@ int mliEventTapeReader_tarh_is_valid_cherenkov_block(
         const struct mliEventTapeReader *tio);
 int mliEventTapeReader_tarh_might_be_valid_cherenkov_block(
         const struct mliEventTapeReader *tio);
+int mliEventTapeReader_read_readme_until_runh(struct mliEventTapeReader *tio);
 
 #endif
