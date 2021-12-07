@@ -37,7 +37,6 @@ CASE("TarIo: read one by one")
 
 CASE("TarIo: while loop")
 {
-        struct mliPrng prng = mliPrng_init_MT19937(0u);
         struct mliTarIoRun run = mliTarIoRun_init();
         CHECK(mliTarIoRun_open(
                 &run,

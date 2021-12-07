@@ -273,7 +273,7 @@ int mliEventTapeReader_read_readme_until_runh(struct mliEventTapeReader *tio)
                                 break;
                         } else {
                                 /* read readme's payload */
-                                int c;
+                                uint64_t c;
                                 char payload;
                                 for (c = 0; c < tio->tarh.size; c++) {
                                         chk_msg(mliTar_read_data(
