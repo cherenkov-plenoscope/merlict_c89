@@ -2,6 +2,8 @@
 #ifndef MLI_CORSIKA_UTILS_H_
 #define MLI_CORSIKA_UTILS_H_
 
+#include <assert.h>
+
 float mli_4chars_to_float(const char *four_char_word);
 
 #define MLI_CORSIKA_HEADER_SIZE (sizeof(float) * 273)
