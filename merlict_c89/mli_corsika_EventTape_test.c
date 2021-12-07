@@ -10,9 +10,10 @@ CASE("EventTape: run_normal")
         uint64_t e, b;
         struct mliEventTapeWriter taro = mliEventTapeWriter_init();
         struct mliEventTapeReader tari = mliEventTapeReader_init();
-        float corh[273] = {0.0};
-        struct mliCorsikaPhotonBunch bunch;
-        struct mliCorsikaPhotonBunch bunch_expected;
+        float corho[273] = {0.0};
+        float corhi[273] = {0.0};
+        float bunch[8] = {0.0};
+        float bunch_expected[8] = {0.0};
         struct mliPrng prng = mliPrng_init_PCG32(random_seed);
         const char path[] = "merlict_c89/"
                             "mli_corsika_test_resources/"
@@ -21,19 +22,28 @@ CASE("EventTape: run_normal")
         /* write */
         /* ----- */
         CHECK(mliEventTapeWriter_open(&taro, path, BUFFER_SIZE));
-        corh[0] = mli_4chars_to_float("RUNH");
-        CHECK(mliEventTapeWriter_write_runh(&taro, corh));
+        mliEventTape_testing_set_random_RUNH(corho, 42.0, &prng);
+        CHECK(mliEventTapeWriter_write_runh(&taro, corho));
 
         for (e = 0; e < NUM_EVENTS; e++) {
-                corh[0] = mli_4chars_to_float("EVTH");
-                corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] = EVENT_NUMBERS[e];
-                CHECK(mliEventTapeWriter_write_evth(&taro, corh));
+                mliEventTape_testing_set_random_EVTH(
+                    corho,
+                    EVENT_NUMBERS[e],
+                    42.0,
+                    &prng);
+                CHECK(mliEventTapeWriter_write_evth(&taro, corho));
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
-                        mliEventTape_testing_set_random_bunch(&bunch, &prng);
+                        mliEventTape_testing_set_random_bunch(bunch, &prng);
                         CHECK(mliEventTapeWriter_write_cherenkov_bunch(
-                                &taro, &bunch));
+                                &taro, bunch));
                 }
+
+                mliEventTape_testing_set_random_EVTE(corho, &prng);
+                CHECK(mliEventTapeWriter_write_evte(&taro, corho));
         }
+        mliEventTape_testing_set_random_RUNE(corho, &prng);
+        CHECK(mliEventTapeWriter_write_rune(&taro, corho));
+
         CHECK(mliEventTapeWriter_close(&taro));
 
         /* read back */
@@ -41,47 +51,48 @@ CASE("EventTape: run_normal")
         mliPrng_reinit(&prng, random_seed);
 
         CHECK(mliEventTapeReader_open(&tari, path));
-        CHECK(mliEventTapeReader_read_runh(&tari, corh));
 
         /* work on RUNH */
-        CHECK(corh[0] == mli_4chars_to_float("RUNH"));
+        CHECK(mliEventTapeReader_read_runh(&tari, corhi));
+        mliEventTape_testing_set_random_RUNH(corho, 42.0, &prng);
+        CHECK(mliEventTape_testing_corsika_headers_are_equal(corho, corhi));
 
-        while (mliEventTapeReader_read_evth(&tari, corh)) {
+        e = 0;
+        while (mliEventTapeReader_read_evth(&tari, corhi)) {
                 /* work on EVTH */
-                CHECK(corh[0] == mli_4chars_to_float("EVTH"));
-                CHECK(corh[MLI_CORSIKA_EVTH_EVENT_NUMBER] == tari.event_number);
+                mliEventTape_testing_set_random_EVTH(
+                        corho, EVENT_NUMBERS[e], 42.0, &prng);
+                CHECK(mliEventTape_testing_corsika_headers_are_equal(
+                        corho, corhi));
+                CHECK(corhi[MLI_CORSIKA_EVTH_EVENT_NUMBER]
+                        == tari.event_number);
 
-                while (mliEventTapeReader_read_cherenkov_bunch(&tari, &bunch)) {
+                while (mliEventTapeReader_read_cherenkov_bunch(&tari, bunch)) {
                         /* work on photon bunch */
                         mliEventTape_testing_set_random_bunch(
-                                &bunch_expected, &prng);
+                                bunch_expected, &prng);
                         CHECK(mliEventTape_testing_bunches_are_equal(
-                                &bunch, &bunch_expected));
+                                bunch, bunch_expected));
                 }
-                CHECK(!mliEventTapeReader_read_cherenkov_bunch(&tari, &bunch));
+                CHECK(!mliEventTapeReader_read_cherenkov_bunch(&tari, bunch));
+
+                /* work on EVTE */
+                mliEventTape_testing_set_random_EVTE(corho, &prng);
+                CHECK(mliEventTapeReader_read_evte(&tari, corhi));
+                CHECK(mliEventTape_testing_corsika_headers_are_equal(
+                        corho, corhi));
+
+                e ++;
         }
-        CHECK(!mliEventTapeReader_read_evth(&tari, corh));
+        CHECK(!mliEventTapeReader_read_evth(&tari, corhi));
+
+        /* RUNE */
+        mliEventTape_testing_set_random_RUNE(corho, &prng);
+        CHECK(mliEventTapeReader_read_rune(&tari, corhi));
+        CHECK(mliEventTape_testing_corsika_headers_are_equal(
+                        corho, corhi));
+
         CHECK(mliEventTapeReader_close(&tari));
-}
-
-CASE("EventTape: run_no_events")
-{
-        const char path[] = "merlict_c89/"
-                            "mli_corsika_test_resources/"
-                            "run_no_events.tar";
-        const uint64_t num_events = 0;
-        const uint64_t buffer_size = 128;
-        const float *event_numbers;
-        const uint64_t *num_bunches;
-        const uint32_t random_seed = 0;
-
-        CHECK(mliEventTape_testing_write_and_read(
-                path,
-                num_events,
-                buffer_size,
-                event_numbers,
-                num_bunches,
-                random_seed));
 }
 
 CASE("EventTape: run_one_event_no_bunches")

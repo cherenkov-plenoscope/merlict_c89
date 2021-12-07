@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
                MLI_CORSIKA_EVENTTAPE_VERSION_PATCH);
 
         struct mliEventTapeReader tari = mliEventTapeReader_init();
-        struct mliCorsikaPhotonBunch bunch;
+        float bunch[8];
         float corh[273];
 
         chk_msg(argc == 2, "Expected path to evt.tar.");
@@ -33,11 +33,11 @@ int main(int argc, char *argv[])
                 int b = 0;
                 printf("event-number %f\n",
                        corh[MLI_CORSIKA_EVTH_EVENT_NUMBER]);
-                while (mliEventTapeReader_read_cherenkov_bunch(&tari, &bunch)) {
+                while (mliEventTapeReader_read_cherenkov_bunch(&tari, bunch)) {
                         printf("bunch %d: x %fcm, y %fcm\n",
                                b,
-                               bunch.x_cm,
-                               bunch.y_cm);
+                               bunch[0],
+                               bunch[1]);
                         b += 1;
                 }
                 printf("total bunches %d\n", b);

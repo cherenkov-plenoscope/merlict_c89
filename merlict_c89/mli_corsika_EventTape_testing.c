@@ -1,79 +1,101 @@
 /* Copyright 2020 Sebastian A. Mueller */
 #include "mli_corsika_EventTape_testing.h"
 
-void mliEventTape_testing_set_random_RUNH(float *runh, struct mliPrng *prng)
+void mliEventTape_testing_set_random_corsika_header(
+        float *head,
+        struct mliPrng *prng)
 {
         uint64_t i;
-        runh[0] = mli_4chars_to_float("RUNH");
         for (i = 0; i < 273; i++) {
-                if (i != 0) {
-                        runh[i] = (float)mli_random_uniform(prng);
-                }
+                head[i] = (float)mli_random_uniform(prng);
         }
+}
+
+void mliEventTape_testing_set_random_RUNH(
+        float *runh,
+        const float run_number,
+        struct mliPrng *prng)
+{
+        mliEventTape_testing_set_random_corsika_header(runh, prng);
+        runh[0] = mli_chars_to_float("RUNH");
+        runh[MLI_CORSIKA_RUNH_RUN_NUMBER] = run_number;
+}
+
+void mliEventTape_testing_set_random_RUNE(
+        float *rune,
+        struct mliPrng *prng)
+{
+        mliEventTape_testing_set_random_corsika_header(rune, prng);
+        rune[0] = mli_chars_to_float("RUNE");
 }
 
 void mliEventTape_testing_set_random_EVTH(
         float *evth,
         const float event_number,
+        const float run_number,
         struct mliPrng *prng)
 {
-        uint64_t i;
-        evth[0] = mli_4chars_to_float("EVTH");
+        mliEventTape_testing_set_random_corsika_header(evth, prng);
+        evth[0] = mli_chars_to_float("EVTH");
         evth[MLI_CORSIKA_EVTH_EVENT_NUMBER] = event_number;
-        for (i = 0; i < 273; i++) {
-                if (i != 0 && i != MLI_CORSIKA_EVTH_EVENT_NUMBER) {
-                        evth[i] = (float)mli_random_uniform(prng);
-                }
-        }
+        evth[MLI_CORSIKA_EVTH_RUN_NUMBER] = run_number;
+}
+
+void mliEventTape_testing_set_random_EVTE(
+        float *evte,
+        struct mliPrng *prng)
+{
+        mliEventTape_testing_set_random_corsika_header(evte, prng);
+        evte[0] = mli_chars_to_float("EVTE");
 }
 
 void mliEventTape_testing_set_random_bunch(
-        struct mliCorsikaPhotonBunch *bunch,
+        float *bunch,
         struct mliPrng *prng)
 {
-        bunch->x_cm = (float)mli_random_uniform(prng);
-        bunch->y_cm = (float)mli_random_uniform(prng);
-        bunch->cx_rad = (float)mli_random_uniform(prng);
-        bunch->cy_rad = (float)mli_random_uniform(prng);
-        bunch->time_ns = (float)mli_random_uniform(prng);
-        bunch->z_emission_cm = (float)mli_random_uniform(prng);
-        bunch->weight_photons = (float)mli_random_uniform(prng);
-        bunch->wavelength_nm = (float)mli_random_uniform(prng);
+        bunch[0] = (float)mli_random_uniform(prng);
+        bunch[1] = (float)mli_random_uniform(prng);
+        bunch[2] = (float)mli_random_uniform(prng);
+        bunch[3] = (float)mli_random_uniform(prng);
+        bunch[4] = (float)mli_random_uniform(prng);
+        bunch[5] = (float)mli_random_uniform(prng);
+        bunch[6] = (float)mli_random_uniform(prng);
+        bunch[7] = (float)mli_random_uniform(prng);
 }
 
 int mliEventTape_testing_bunches_are_equal(
-        struct mliCorsikaPhotonBunch *b1,
-        struct mliCorsikaPhotonBunch *b2)
+        float *b1,
+        float *b2)
 {
-        if (b1->x_cm != b2->x_cm) {
+        if (b1[0] != b2[0]) {
                 fprintf(stderr, "Bunch missmatch x_cm.\n");
                 return 0;
         }
-        if (b1->y_cm != b2->y_cm) {
+        if (b1[1] != b2[1]) {
                 fprintf(stderr, "Bunch missmatch y_cm.\n");
                 return 0;
         }
-        if (b1->cx_rad != b2->cx_rad) {
+        if (b1[2] != b2[2]) {
                 fprintf(stderr, "Bunch missmatch cx_rad.\n");
                 return 0;
         }
-        if (b1->cy_rad != b2->cy_rad) {
+        if (b1[3] != b2[3]) {
                 fprintf(stderr, "Bunch missmatch cy_rad.\n");
                 return 0;
         }
-        if (b1->time_ns != b2->time_ns) {
+        if (b1[4] != b2[4]) {
                 fprintf(stderr, "Bunch missmatch time_ns.\n");
                 return 0;
         }
-        if (b1->z_emission_cm != b2->z_emission_cm) {
+        if (b1[5] != b2[5]) {
                 fprintf(stderr, "Bunch missmatch z_emission_cm.\n");
                 return 0;
         }
-        if (b1->weight_photons != b2->weight_photons) {
+        if (b1[6] != b2[6]) {
                 fprintf(stderr, "Bunch missmatch weight_photons.\n");
                 return 0;
         }
-        if (b1->wavelength_nm != b2->wavelength_nm) {
+        if (b1[7] != b2[7]) {
                 fprintf(stderr, "Bunch missmatch wavelength_nm.\n");
                 return 0;
         }
@@ -105,8 +127,8 @@ int mliEventTape_testing_write_and_read(
         uint64_t e, b;
         float corho[273] = {0.0};
         float corhi[273] = {0.0};
-        struct mliCorsikaPhotonBunch buncho;
-        struct mliCorsikaPhotonBunch bunchi;
+        float buncho[8] = {0.0};
+        float bunchi[8] = {0.0};
 
         struct mliEventTapeWriter taro = mliEventTapeWriter_init();
         struct mliEventTapeReader tari = mliEventTapeReader_init();
@@ -119,23 +141,29 @@ int mliEventTape_testing_write_and_read(
         chk_msg(mliEventTapeWriter_open(&taro, path, buffer_size),
                 "Can't open writer.");
         /* set RUNH */
-        mliEventTape_testing_set_random_RUNH(corho, &prng);
+        mliEventTape_testing_set_random_RUNH(corho, 18.0, &prng);
         chk_msg(mliEventTapeWriter_write_runh(&taro, corho),
                 "Can't write RUNH.");
 
         for (e = 0; e < num_events; e++) {
                 /* set EVTH */
                 mliEventTape_testing_set_random_EVTH(
-                        corho, event_numbers[e], &prng);
+                        corho, event_numbers[e], 18.0, &prng);
                 chk_msg(mliEventTapeWriter_write_evth(&taro, corho),
                         "Can't write EVTH.");
                 for (b = 0; b < num_bunches[e]; b++) {
-                        mliEventTape_testing_set_random_bunch(&buncho, &prng);
+                        mliEventTape_testing_set_random_bunch(buncho, &prng);
                         chk_msg(mliEventTapeWriter_write_cherenkov_bunch(
-                                        &taro, &buncho),
+                                        &taro, buncho),
                                 "Can't write bunch.");
                 }
+                mliEventTape_testing_set_random_EVTE(corho, &prng);
+                chk_msg(mliEventTapeWriter_write_evte(&taro, corho),
+                        "Can't write EVTE.");
         }
+        mliEventTape_testing_set_random_RUNE(corho, &prng);
+        chk_msg(mliEventTapeWriter_write_rune(&taro, corho),
+                "Can't write RUNE.");
 
         chk_msg(mliEventTapeWriter_close(&taro), "Can't close writer.");
 
@@ -146,7 +174,7 @@ int mliEventTape_testing_write_and_read(
         chk_msg(mliEventTapeReader_open(&tari, path), "Can't open reader.");
 
         /* check RUNH */
-        mliEventTape_testing_set_random_RUNH(corho, &prng);
+        mliEventTape_testing_set_random_RUNH(corho, 18.0, &prng);
         chk_msg(mliEventTapeReader_read_runh(&tari, corhi), "Can't read RUNH.");
         chk_msg(mliEventTape_testing_corsika_headers_are_equal(corho, corhi),
                 "Expected RUNH to be equal.");
@@ -160,7 +188,7 @@ int mliEventTape_testing_write_and_read(
                         "Can't read EVTH.");
                 /* check EVTH */
                 mliEventTape_testing_set_random_EVTH(
-                        corho, event_numbers[e], &prng);
+                        corho, event_numbers[e], 18.0, &prng);
                 chk_msg(mliEventTape_testing_corsika_headers_are_equal(
                                 corho, corhi),
                         "Expected EVTH to be equal.");
@@ -172,16 +200,24 @@ int mliEventTape_testing_write_and_read(
 
                 for (b = 0; b < num_bunches[e]; b++) {
                         chk_msg(mliEventTapeReader_read_cherenkov_bunch(
-                                        &tari, &bunchi),
+                                        &tari, bunchi),
                                 "Can't read bunch.");
-                        mliEventTape_testing_set_random_bunch(&buncho, &prng);
+                        mliEventTape_testing_set_random_bunch(buncho, &prng);
                         chk_msg(mliEventTape_testing_bunches_are_equal(
-                                        &bunchi, &buncho),
+                                        bunchi, buncho),
                                 "Expected bunch to be equal.");
                 }
                 chk_msg(!mliEventTapeReader_read_cherenkov_bunch(
-                                &tari, &buncho),
+                                &tari, buncho),
                         "Did not expect another cherenkov-bunch.");
+
+                /* check EVTE */
+                mliEventTape_testing_set_random_EVTE(corho, &prng);
+                chk_msg(mliEventTapeReader_read_evte(&tari, corhi),
+                        "Expected EVTE.")
+                chk_msg(mliEventTape_testing_corsika_headers_are_equal(
+                                corho, corhi),
+                        "Expected EVTE to be equal.");
         }
         chk_msg(!mliEventTapeReader_read_evth(&tari, corho),
                 "Did not expect another EVTH.");

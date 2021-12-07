@@ -79,7 +79,7 @@ CASE("EventIoRun_telescope_dat__telescope_positions")
         CHECK(mliEventIoRun_open(
                 &run, "merlict_c89/mli_corsika_test_resources/telescope.dat"));
 
-        CHECK(run.corsika_run_header[0] == mli_4chars_to_float("RUNH"));
+        CHECK(run.corsika_run_header[0] == mli_chars_to_float("RUNH"));
 
         CHECK(run.telescope_positions.size == 1u);
         CHECK(run.telescope_positions.array[0].x == 0.);

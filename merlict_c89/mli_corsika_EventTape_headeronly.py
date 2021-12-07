@@ -8,15 +8,11 @@ headers = [
     "mli_math.h",
     "mli_cstr.h",
     "mli_cstr_numbers.h",
-    "mli_quadratic_equation.h",
-    "mliVec.h",
-    "mliRay.h",
-    "mliPhoton.h",
     "mliTar.h",
     "mliDynArray.h",
+    "mliDynFloat.h",
     "mli_corsika_version.h",
     "mli_corsika_utils.h",
-    "mli_corsika_CorsikaPhotonBunch.h",
     "mli_corsika_EventTape.h",
 ]
 

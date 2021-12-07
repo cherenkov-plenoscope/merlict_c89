@@ -2,12 +2,10 @@
 #ifndef MLI_CORSIKA_UTILS_H_
 #define MLI_CORSIKA_UTILS_H_
 
-#include <assert.h>
+float mli_chars_to_float(const char *four_char_word);
 
-float mli_4chars_to_float(const char *four_char_word);
-
-#define MLI_CORSIKA_HEADER_SIZE (sizeof(float) * 273)
-#define MLI_CORSIKA_BUNCH_SIZE (sizeof(float) * 8)
+#define MLI_CORSIKA_HEADER_SIZE_BYTES (sizeof(float) * 273)
+#define MLI_CORSIKA_BUNCH_SIZE_BYTES (sizeof(float) * 8)
 
 #define MLI_CORSIKA_RUNH_RUN_NUMBER 1
 #define MLI_CORSIKA_RUNH_SLOPE_OF_ENERGY_SPECTRUM 15
@@ -16,6 +14,7 @@ float mli_4chars_to_float(const char *four_char_word);
 #define MLI_CORSIKA_RUNH_NUM_OBSERVATION_LEVELS 4
 
 #define MLI_CORSIKA_EVTH_EVENT_NUMBER 1
+#define MLI_CORSIKA_EVTH_RUN_NUMBER 43
 #define MLI_CORSIKA_EVTH_PARTICLE_ID 2
 #define MLI_CORSIKA_EVTH_ENERGY_GEV 3
 #define MLI_CORSIKA_EVTH_ZENITH_RAD 10

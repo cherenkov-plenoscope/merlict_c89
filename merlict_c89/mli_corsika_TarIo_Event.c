@@ -69,7 +69,7 @@ int mliTarIoEvent_malloc_from_run(
                 "Failed to parse event-id from evth-path.");
         chk_msg(mliTar_read_data(&run->tar, tmp_evth, 273 * sizeof(float)),
                 "Failed to read evth from tar.");
-        chk_msg(tmp_evth[0] == mli_4chars_to_float("EVTH"),
+        chk_msg(tmp_evth[0] == mli_chars_to_float("EVTH"),
                 "Expected event->header[0] == 'EVTH'.");
 
         /* photon_bunches */
