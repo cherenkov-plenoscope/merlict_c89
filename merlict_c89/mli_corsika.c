@@ -8,6 +8,4 @@
 #include "mli_corsika_EventIo_Telescope.c"
 #include "mli_corsika_EventIo_TelescopeOffset.c"
 #include "mli_corsika_EventIo_TelescopePosition.c"
-#include "mli_corsika_TarIo_Run.c"
-#include "mli_corsika_TarIo_Event.c"
 #include "mli_corsika_EventTape.c"
