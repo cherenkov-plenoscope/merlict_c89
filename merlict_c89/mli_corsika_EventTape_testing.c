@@ -21,14 +21,6 @@ void mliEventTape_testing_set_random_RUNH(
         runh[MLI_CORSIKA_RUNH_RUN_NUMBER] = run_number;
 }
 
-void mliEventTape_testing_set_random_RUNE(
-        float *rune,
-        struct mliPrng *prng)
-{
-        mliEventTape_testing_set_random_corsika_header(rune, prng);
-        rune[0] = mli_chars_to_float("RUNE");
-}
-
 void mliEventTape_testing_set_random_EVTH(
         float *evth,
         const float event_number,
@@ -39,14 +31,6 @@ void mliEventTape_testing_set_random_EVTH(
         evth[0] = mli_chars_to_float("EVTH");
         evth[MLI_CORSIKA_EVTH_EVENT_NUMBER] = event_number;
         evth[MLI_CORSIKA_EVTH_RUN_NUMBER] = run_number;
-}
-
-void mliEventTape_testing_set_random_EVTE(
-        float *evte,
-        struct mliPrng *prng)
-{
-        mliEventTape_testing_set_random_corsika_header(evte, prng);
-        evte[0] = mli_chars_to_float("EVTE");
 }
 
 void mliEventTape_testing_set_random_bunch(
@@ -157,13 +141,7 @@ int mliEventTape_testing_write_and_read(
                                         &taro, buncho),
                                 "Can't write bunch.");
                 }
-                mliEventTape_testing_set_random_EVTE(corho, &prng);
-                chk_msg(mliEventTapeWriter_write_evte(&taro, corho),
-                        "Can't write EVTE.");
         }
-        mliEventTape_testing_set_random_RUNE(corho, &prng);
-        chk_msg(mliEventTapeWriter_write_rune(&taro, corho),
-                "Can't write RUNE.");
 
         chk_msg(mliEventTapeWriter_close(&taro), "Can't close writer.");
 
@@ -210,14 +188,6 @@ int mliEventTape_testing_write_and_read(
                 chk_msg(!mliEventTapeReader_read_cherenkov_bunch(
                                 &tari, buncho),
                         "Did not expect another cherenkov-bunch.");
-
-                /* check EVTE */
-                mliEventTape_testing_set_random_EVTE(corho, &prng);
-                chk_msg(mliEventTapeReader_read_evte(&tari, corhi),
-                        "Expected EVTE.")
-                chk_msg(mliEventTape_testing_corsika_headers_are_equal(
-                                corho, corhi),
-                        "Expected EVTE to be equal.");
         }
         chk_msg(!mliEventTapeReader_read_evth(&tari, corho),
                 "Did not expect another EVTH.");

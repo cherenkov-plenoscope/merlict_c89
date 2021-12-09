@@ -37,13 +37,7 @@ CASE("EventTape: run_normal")
                         CHECK(mliEventTapeWriter_write_cherenkov_bunch(
                                 &taro, bunch));
                 }
-
-                mliEventTape_testing_set_random_EVTE(corho, &prng);
-                CHECK(mliEventTapeWriter_write_evte(&taro, corho));
         }
-        mliEventTape_testing_set_random_RUNE(corho, &prng);
-        CHECK(mliEventTapeWriter_write_rune(&taro, corho));
-
         CHECK(mliEventTapeWriter_close(&taro));
 
         /* read back */
@@ -76,22 +70,9 @@ CASE("EventTape: run_normal")
                 }
                 CHECK(!mliEventTapeReader_read_cherenkov_bunch(&tari, bunch));
 
-                /* work on EVTE */
-                mliEventTape_testing_set_random_EVTE(corho, &prng);
-                CHECK(mliEventTapeReader_read_evte(&tari, corhi));
-                CHECK(mliEventTape_testing_corsika_headers_are_equal(
-                        corho, corhi));
-
                 e ++;
         }
         CHECK(!mliEventTapeReader_read_evth(&tari, corhi));
-
-        /* RUNE */
-        mliEventTape_testing_set_random_RUNE(corho, &prng);
-        CHECK(mliEventTapeReader_read_rune(&tari, corhi));
-        CHECK(mliEventTape_testing_corsika_headers_are_equal(
-                        corho, corhi));
-
         CHECK(mliEventTapeReader_close(&tari));
 }
 

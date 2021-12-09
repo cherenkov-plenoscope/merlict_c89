@@ -12,16 +12,10 @@ void mliEventTape_testing_set_random_RUNH(
         float *runh,
         const float run_number,
         struct mliPrng *prng);
-void mliEventTape_testing_set_random_RUNE(
-        float *rune,
-        struct mliPrng *prng);
 void mliEventTape_testing_set_random_EVTH(
         float *evth,
         const float event_number,
         const float run_number,
-        struct mliPrng *prng);
-void mliEventTape_testing_set_random_EVTE(
-        float *evte,
         struct mliPrng *prng);
 void mliEventTape_testing_set_random_bunch(
         float *bunch,
