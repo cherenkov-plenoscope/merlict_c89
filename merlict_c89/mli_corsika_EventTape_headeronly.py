@@ -33,11 +33,10 @@ for header in headers:
     if os.path.exists(source):
         sources.append(source)
 
-fout = io.StringIO()
-
+fheader = io.StringIO()
 for header in headers:
     with open(header, "rt") as fin:
-        fout.write("/* {:s} */\n".format(header))
+        fheader.write("/* {:s} */\n".format(header))
         for line in fin.readlines():
             if line_is_include_std(line):
                 include_path = get_include_path_from_line(line)
@@ -45,14 +44,17 @@ for header in headers:
             elif line_is_include(line):
                 include_path = get_include_path_from_line(line)
                 if include_path not in headers:
-                    fout.write(line)
+                    fheader.write(line)
             else:
-                fout.write(line)
-        fout.write("\n\n\n")
+                fheader.write(line)
+        fheader.write("\n\n\n")
+fheader.seek(0)
+header_str = fheader.read()
 
+fsource = io.StringIO()
 for source in sources:
     with open(source, "rt") as fin:
-        fout.write("/* {:s} */\n".format(source))
+        fsource.write("/* {:s} */\n".format(source))
         for line in fin.readlines():
             if line_is_include_std(line):
                 include_path = get_include_path_from_line(line)
@@ -60,18 +62,37 @@ for source in sources:
             elif line_is_include(line):
                 include_path = get_include_path_from_line(line)
                 if include_path not in headers:
-                    fout.write(line)
+                    fsource.write(line)
             else:
-                fout.write(line)
-        fout.write("\n\n\n")
-
+                fsource.write(line)
+        fsource.write("\n\n\n")
+fsource.seek(0)
+source_str = fsource.read()
 
 std_includes = list(set(std_includes))
-out_path = "mli_corsika_EventTape_headeronly.h"
-fout.seek(0)
 
-with open(out_path, "wt") as f:
+# headeronly
+# ----------
+headeronly_path = "mli_corsika_EventTape_standalone_headeronly.h"
+
+with open(headeronly_path, "wt") as f:
     for std_include in std_includes:
         f.write("#include <{:s}>\n".format(std_include))
     f.write("\n\n\n")
-    f.write(fout.read())
+    f.write(header_str)
+    f.write(source_str)
+
+# header and source
+# -----------------
+header_path = "mli_corsika_EventTape_standalone.h"
+source_path = "mli_corsika_EventTape_standalone.c"
+with open(header_path, "wt") as f:
+    for std_include in std_includes:
+        f.write("#include <{:s}>\n".format(std_include))
+    f.write("\n\n\n")
+    f.write(header_str)
+
+with open(source_path, "wt") as f:
+    f.write('#include "{:s}"\n'.format(header_path))
+    f.write("\n\n\n")
+    f.write(source_str)
