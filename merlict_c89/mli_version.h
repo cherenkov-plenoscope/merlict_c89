@@ -6,7 +6,7 @@
 
 #define MLI_VERSION_MAYOR 1
 #define MLI_VERSION_MINOR 5
-#define MLI_VERSION_PATCH 2
+#define MLI_VERSION_PATCH 3
 
 void mli_logo_fprint(FILE *f);
 void mli_authors_and_affiliations_fprint(FILE *f);

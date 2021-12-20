@@ -165,7 +165,7 @@ void mliFrame_set_frame2root(struct mliFrame *f)
                 f->frame2root = f->frame2mother;
         } else {
                 f->frame2root = mliHomTraComp_sequence(
-                        f->mother->frame2root, f->frame2mother);
+                        f->frame2mother, f->mother->frame2root);
         }
         if (f->type == MLI_FRAME) {
                 uint64_t c;
