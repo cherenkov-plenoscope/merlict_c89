@@ -140,6 +140,8 @@ struct mliApertureCamera {
         double image_sensor_width_y;
 };
 
+struct mliApertureCamera mliApertureCamera_init(void);
+
 int mliApertureCamera_render_image(
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,

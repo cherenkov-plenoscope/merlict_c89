@@ -3,6 +3,19 @@
 #include <math.h>
 #include <assert.h>
 
+struct mliApertureCamera mliApertureCamera_init(void)
+{
+        const double mm = 1e-3;
+        struct mliApertureCamera apcam;
+        apcam.focal_length = 50.0 * mm;
+        apcam.aperture_radius = apcam.focal_length / 2.0;
+        apcam.image_sensor_distance = apcam.focal_length;
+        apcam.image_sensor_width_x = 36.0 * mm;
+        apcam.image_sensor_width_y = 24.0 * mm;
+        return apcam;
+}
+
+
 struct mliVec mliApertureCamera_pixel_center_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,

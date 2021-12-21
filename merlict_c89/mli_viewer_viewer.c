@@ -118,7 +118,7 @@ int mlivr_export_image(
 {
         struct mliImage full = mliImage_init();
         struct mliHomTraComp camera2root_comp;
-        struct mliApertureCamera apcam;
+        struct mliApertureCamera apcam = mliApertureCamera_init();
 
         const double image_ratio =
                 ((double)config.export_num_cols /
