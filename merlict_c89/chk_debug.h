@@ -18,10 +18,11 @@
 
 #define chk_eprint(MSG)                                                        \
         fprintf(stderr,                                                        \
-                "[ERROR] (%s:%d: errno: %s) " MSG "\n",                        \
+                "[ERROR] (%s:%d: errno: %s) %s\n",                             \
                 __FILE__,                                                      \
                 __LINE__,                                                      \
-                chk_clean_errno())
+                chk_clean_errno(),                                             \
+                MSG)
 
 #define chk_msg(C, MSG)                                                        \
         if (!(C)) {                                                            \
