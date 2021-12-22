@@ -63,18 +63,11 @@ CASE("mliJson_as_string")
 CASE("mliJson_init, defaults")
 {
         struct mliJson json = mliJson_init();
-        CHECK(json.c_str_capacity == 0u);
-        CHECK(json.c_str == NULL);
+        CHECK(json.raw.capacity == 0u);
+        CHECK(json.raw.length == 0u);
+        CHECK(json.raw.c_str == NULL);
         CHECK(json.num_tokens == 0u);
         CHECK(json.tokens == NULL);
-}
-
-CASE("struct mliJson malloc, and free")
-{
-        uint64_t json_strlen = 10;
-        struct mliJson json = mliJson_init();
-        CHECK(mliJson_malloc(&json, json_strlen));
-        mliJson_free(&json);
 }
 
 CASE("mliJson_malloc_from_path")

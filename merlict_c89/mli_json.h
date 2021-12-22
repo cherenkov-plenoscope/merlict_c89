@@ -4,10 +4,10 @@
 
 #include <stdint.h>
 #include "mli_json_jsmn.h"
+#include "mliStr.h"
 
 struct mliJson {
-        uint64_t c_str_capacity;
-        char *c_str;
+        struct mliStr raw;
         uint64_t num_tokens;
         struct jsmntok_t *tokens;
 };
@@ -61,7 +61,7 @@ int mliJson_strcmp(
         const char *str);
 int mliJson_malloc_from_path(struct mliJson *json, const char *path);
 int mliJson_malloc_from_string(struct mliJson *json, const char *json_str);
-int mliJson_malloc(struct mliJson *json, const uint64_t json_strlen);
+int mliJson_malloc_tokens__(struct mliJson *json);
 void mliJson_free(struct mliJson *json);
 struct mliJson mliJson_init(void);
 #endif
