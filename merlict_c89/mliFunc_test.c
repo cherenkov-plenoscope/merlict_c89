@@ -143,9 +143,9 @@ CASE("mliFunc_json")
         struct mliFunc f = mliFunc_init();
         struct mliJson json = mliJson_init();
         char json_str[] = "{\"function\": [[0, 10], [1, 11], [2, 12]]}";
-        CHECK(mliJson_malloc_from_string(&json, json_str));
+        CHECK(mliJson_malloc_from_c_str(&json, json_str));
 
-        CHECK(mliJson_find_key(&json, token, "function", &token_f));
+        CHECK(mliJson_token_by_key(&json, token, "function", &token_f));
 
         CHECK(mliFunc_malloc_from_json_token(&f, &json, token_f + 1));
 

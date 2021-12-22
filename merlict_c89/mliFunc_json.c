@@ -19,9 +19,9 @@ int mliFunc_malloc_from_json_token(
                 chk_msg(json->tokens[point_token].size == 2,
                         "Expected function-x-y-pair to contain exactly 2 "
                         "tokens (x and y).");
-                chk_msg(mliJson_as_float64(json, point_token + 1, &f->x[p]),
+                chk_msg(mliJson_double_by_token(json, point_token + 1, &f->x[p]),
                         "Can not parse function-x-value.");
-                chk_msg(mliJson_as_float64(json, point_token + 2, &f->y[p]),
+                chk_msg(mliJson_double_by_token(json, point_token + 2, &f->y[p]),
                         "Can not parse function-y-value.");
                 point_token += 3;
         }

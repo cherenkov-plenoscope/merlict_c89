@@ -10,11 +10,11 @@ int mliVec_from_json_token(
                 "Expected vec-token to be a json-array.");
         chk_msg(json->tokens[token].size == 3,
                 "Expected vec-token to contain exactly 3 tokens.");
-        chk_msg(mliJson_as_float64(json, token + 1, &v->x),
+        chk_msg(mliJson_double_by_token(json, token + 1, &v->x),
                 "Can not parse mliVec-x-value.");
-        chk_msg(mliJson_as_float64(json, token + 2, &v->y),
+        chk_msg(mliJson_double_by_token(json, token + 2, &v->y),
                 "Can not parse mliVec y-value.");
-        chk_msg(mliJson_as_float64(json, token + 3, &v->z),
+        chk_msg(mliJson_double_by_token(json, token + 3, &v->z),
                 "Can not parse mliVec z-value.");
         return 1;
 error:

@@ -13,7 +13,7 @@ int mliDynMap_insert_key_from_json(
         chk_msg(name_strlen < sizeof(buff), "Key is too long");
         chk_msg(json->tokens[token].type == JSMN_STRING,
                 "Expected key to be of type string.");
-        chk_msg(mliJson_as_string(json, token, buff, name_strlen + 1),
+        chk_msg(mliJson_c_str_by_token(json, token, buff, name_strlen + 1),
                 "Failed to extract string from json.");
         chk_msg(mliDynMap_insert(map, buff, value),
                 "Failed to insert name and value into map.");
@@ -36,7 +36,7 @@ int mliDynMap_get_value_for_string_from_json(
         chk_msg(name_strlen < sizeof(buff), "Key is too long");
         chk_msg(json->tokens[token].type == JSMN_STRING,
                 "Expected token to be of type string to be given to mliMap.");
-        chk_msg(mliJson_as_string(json, token, buff, name_strlen + 1),
+        chk_msg(mliJson_c_str_by_token(json, token, buff, name_strlen + 1),
                 "Failed to extract string from json.");
         chk_msg(mliDynMap_get(map, buff, &value),
                 "Failed to get value for json-string-key from map.");

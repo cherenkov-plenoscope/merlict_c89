@@ -24,7 +24,7 @@ int mliMaterials_assign_boundary_layers_from_json(
 
         for (s = 0; s < materials->num_boundary_layers; s++) {
                 uint64_t token_s_name =
-                        mliJson_array_child_token(json, token, s);
+                        mliJson_token_by_index(json, token, s);
                 uint64_t token_s = token_s_name + 1;
 
                 chk_msg(json->tokens[token_s_name].type == JSMN_STRING,
@@ -61,13 +61,13 @@ int mliSide_from_json(
 {
         uint64_t token_medium, token_surface;
 
-        chk_msg(mliJson_find_key(json, side_token + 1, "medium", &token_medium),
+        chk_msg(mliJson_token_by_key(json, side_token + 1, "medium", &token_medium),
                 "Expected key 'medium' in side.");
         chk_msg(mliDynMap_get_value_for_string_from_json(
                         medium_names, json, token_medium + 1, &side->medium),
                 "Failed to get medium-idx from map");
 
-        chk_msg(mliJson_find_key(
+        chk_msg(mliJson_token_by_key(
                         json, side_token + 1, "surface", &token_surface),
                 "Expected key 'surface' in side.");
         chk_msg(mliDynMap_get_value_for_string_from_json(
@@ -88,10 +88,10 @@ int mliBoundaryLayer_from_json(
         const uint64_t token_surface)
 {
         uint64_t token_inner_side, token_outer_side;
-        chk_msg(mliJson_find_key(
+        chk_msg(mliJson_token_by_key(
                         json, token_surface, "inner", &token_inner_side),
                 "Expected key 'inner' in surface.");
-        chk_msg(mliJson_find_key(
+        chk_msg(mliJson_token_by_key(
                         json, token_surface, "outer", &token_outer_side),
                 "Expected key 'outer' in surface.");
 
