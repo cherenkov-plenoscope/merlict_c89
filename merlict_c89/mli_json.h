@@ -27,10 +27,20 @@ int mliJson_find_key(
         const uint64_t start_token_idx,
         const char *key,
         uint64_t *return_idx);
+int mliJson_find_expected_key(
+        const struct mliJson *json,
+        const uint64_t token,
+        const char *key,
+        uint64_t *ret_token);
 int mliJson_as_float64(
         const struct mliJson *json,
         const uint64_t token_idx,
         double *return_float64);
+int mliJson_double_by_key(
+        const struct mliJson *json,
+        const uint64_t token,
+        double *val,
+        const char *key);
 int mliJson_as_int64(
         const struct mliJson *json,
         const uint64_t token_idx,
@@ -40,6 +50,11 @@ int mliJson_as_string(
         const uint64_t token_idx,
         char *return_string,
         const uint64_t return_string_size);
+int mliJson_int64_by_key(
+        const struct mliJson *json,
+        const uint64_t token_idx,
+        int64_t *return_int64,
+        const char *key);
 int mliJson_strcmp(
         const struct mliJson *json,
         const uint64_t token_idx,

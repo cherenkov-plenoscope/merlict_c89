@@ -2,6 +2,7 @@
 #include "mli_json.h"
 #include <stdlib.h>
 #include "mli_cstr.h"
+#include "mliStr.h"
 #include "mli_json_jsmn.c"
 
 struct mliJson mliJson_init(void)
@@ -118,6 +119,30 @@ error:
         return 0;
 }
 
+int mliJson_int64_by_key(
+        const struct mliJson *json,
+        const uint64_t token,
+        int64_t *val,
+        const char *key)
+{
+        uint64_t token_n;
+        chk(mliJson_find_expected_key(json, token, key, &token_n));
+        if (!mliJson_as_int64(json, token_n + 1, val)) {
+                struct mliStr msg = mliStr_init();
+                chk(mliStr_malloc(&msg, 0));
+                chk(mliStr_push_back_c_str(&msg, "Can't parse key '"));
+                chk(mliStr_push_back_c_str(&msg, key));
+                chk(mliStr_push_back_c_str(&msg, "' into int64."));
+                chk_eprint(msg.c_str);
+                mliStr_free(&msg);
+                errno = 0;
+                goto error;
+        }
+        return 1;
+error:
+        return 0;
+}
+
 int mliJson_as_float64(
         const struct mliJson *json,
         const uint64_t token_idx,
@@ -130,6 +155,30 @@ int mliJson_as_float64(
         chk_msg(mli_cstr_nto_double(
                         return_float64, &json->c_str[t.start], token_length),
                 "Can not parse float.");
+        return 1;
+error:
+        return 0;
+}
+
+int mliJson_double_by_key(
+        const struct mliJson *json,
+        const uint64_t token,
+        double *val,
+        const char *key)
+{
+        uint64_t token_n;
+        chk(mliJson_find_expected_key(json, token, key, &token_n));
+        if (!mliJson_as_float64(json, token_n + 1, val)) {
+                struct mliStr msg = mliStr_init();
+                chk(mliStr_malloc(&msg, 0));
+                chk(mliStr_push_back_c_str(&msg, "Can't parse key '"));
+                chk(mliStr_push_back_c_str(&msg, key));
+                chk(mliStr_push_back_c_str(&msg, "' into double."));
+                chk_eprint(msg.c_str);
+                mliStr_free(&msg);
+                errno = 0;
+                goto error;
+        }
         return 1;
 error:
         return 0;
@@ -184,6 +233,28 @@ int mliJson_find_key(
                 child += 1;
         }
         return found;
+}
+
+int mliJson_find_expected_key(
+        const struct mliJson *json,
+        const uint64_t token,
+        const char *key,
+        uint64_t *ret_token)
+{
+        if (!mliJson_find_key(json, token, key, ret_token)) {
+                struct mliStr msg = mliStr_init();
+                chk(mliStr_malloc(&msg, 0));
+                chk(mliStr_push_back_c_str(&msg, "Expected key '"));
+                chk(mliStr_push_back_c_str(&msg, key));
+                chk(mliStr_push_back_c_str(&msg, "'."));
+                chk_eprint(msg.c_str);
+                mliStr_free(&msg);
+                errno = 0;
+                goto error;
+        }
+        return 1;
+error:
+        return 0;
 }
 
 uint64_t mliJson_array_child_token(

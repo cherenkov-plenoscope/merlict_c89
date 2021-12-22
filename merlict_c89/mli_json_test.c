@@ -131,6 +131,21 @@ CASE("mliJson_malloc_from_string")
         mliJson_free(&json);
 }
 
+CASE("mliJson_int64_by_key")
+{
+        struct mliJson json = mliJson_init();
+        char json_str[1024];
+        int64_t int_val = 0;
+        double dbl_val = 0.0;
+        sprintf(json_str, "{\"aaa\": 1337, \"bbb\": 4.2}");
+        CHECK(mliJson_malloc_from_string(&json, json_str));
+        CHECK(mliJson_int64_by_key(&json, 0, &int_val, "aaa"));
+        CHECK(mliJson_double_by_key(&json, 0, &dbl_val, "bbb"));
+        CHECK(int_val == 1337);
+        CHECK(dbl_val == 4.2);
+        mliJson_free(&json);
+}
+
 CASE("parse mliVec and mliColor")
 {
         uint64_t token;
