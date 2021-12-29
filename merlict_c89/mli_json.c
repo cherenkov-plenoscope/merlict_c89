@@ -45,14 +45,15 @@ int mliJson_parse_tokens__(struct mliJson *json)
                 json->raw.length,
                 json->tokens,
                 json->num_tokens);
-        chk_msg(num_tokens_parsed != JSMN_ERROR_NOMEM,
-                "Not enough tokens were provided.");
+        chk_msgf(
+                num_tokens_parsed != JSMN_ERROR_NOMEM,
+                ("Not enough tokens. Only got " PRIu64, json->num_tokens));
         chk_msg(num_tokens_parsed != JSMN_ERROR_INVAL,
                 "Invalid character inside JSON string.");
         chk_msg(num_tokens_parsed != JSMN_ERROR_PART,
                 "The string is not a full JSON packet, more "
                 "bytes expected.");
-        chk_msg(num_tokens_parsed >= 0, "Can not parse Json-string");
+        chk_msg(num_tokens_parsed >= 0, "Can't parse Json-string");
         json->num_tokens = num_tokens_parsed;
         return 1;
 error:
@@ -87,16 +88,16 @@ error:
 
 int mliJson_c_str_by_token(
         const struct mliJson *json,
-        const uint64_t token_idx,
+        const uint64_t token,
         char *return_string,
         const uint64_t return_string_size)
 {
-        const struct jsmntok_t t = json->tokens[token_idx];
+        const struct jsmntok_t t = json->tokens[token];
         const uint64_t actual_length = t.end - t.start;
         chk_msg(actual_length < return_string_size,
                 "Expected return_string_size to be sufficiently large for "
-                "json-string, but it is not.")
-                memcpy(return_string, json->raw.c_str + t.start, actual_length);
+                "json-string, but it is not.");
+        memcpy(return_string, json->raw.c_str + t.start, actual_length);
         return_string[actual_length] = '\0';
         return 1;
 error:
@@ -105,16 +106,33 @@ error:
 
 int mliJson_int64_by_token(
         const struct mliJson *json,
-        const uint64_t token_idx,
+        const uint64_t token,
         int64_t *return_int64)
 {
-        const struct jsmntok_t t = json->tokens[token_idx];
+        const struct jsmntok_t t = json->tokens[token];
         const uint64_t token_length = t.end - t.start;
         chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
         chk_msg(mli_cstr_nto_int64(
-                        return_int64, &json->raw.c_str[t.start], 10, token_length),
-                "Can not parse int.");
+                        return_int64,
+                        &json->raw.c_str[t.start],
+                        10,
+                        token_length),
+                "Can't parse int64.");
+        return 1;
+error:
+        return 0;
+}
+
+int mliJson_uint64_by_token(
+        const struct mliJson *json,
+        const uint64_t token,
+        uint64_t *val)
+{
+        int64_t tmp;
+        chk(mliJson_int64_by_token(json, token, &tmp));
+        chk_msg(tmp >= 0, "Expected value to be unsigned.");
+        (*val) = (uint64_t)tmp;
         return 1;
 error:
         return 0;
@@ -128,17 +146,24 @@ int mliJson_int64_by_key(
 {
         uint64_t token_n;
         chk(mliJson_token_by_key_eprint(json, token, key, &token_n));
-        if (!mliJson_int64_by_token(json, token_n + 1, val)) {
-                struct mliStr msg = mliStr_init();
-                chk(mliStr_malloc(&msg, 0));
-                chk(mliStr_push_back_c_str(&msg, "Can't parse key '"));
-                chk(mliStr_push_back_c_str(&msg, key));
-                chk(mliStr_push_back_c_str(&msg, "' into int64."));
-                chk_eprint(msg.c_str);
-                mliStr_free(&msg);
-                errno = 0;
-                goto error;
-        }
+        chk_msgf(
+                mliJson_int64_by_token(json, token_n + 1, val),
+                ("Can't parse value of '%s' into int64.", key));
+        return 1;
+error:
+        return 0;
+}
+
+int mliJson_uint64_by_key(
+        const struct mliJson *json,
+        const uint64_t token,
+        uint64_t *val,
+        const char *key)
+{
+        int64_t tmp;
+        chk(mliJson_int64_by_key(json, token, &tmp, key));
+        chk_msg(tmp >= 0, "Expected value to be unsigned.");
+        (*val) = (uint64_t)tmp;
         return 1;
 error:
         return 0;
@@ -155,7 +180,7 @@ int mliJson_double_by_token(
                 "Json float64 expected json-token-to be JSMN_PRIMITIVE.");
         chk_msg(mli_cstr_nto_double(
                         val, &json->raw.c_str[t.start], token_length),
-                "Can not parse float.");
+                "Can't parse double.");
         return 1;
 error:
         return 0;
@@ -169,17 +194,10 @@ int mliJson_double_by_key(
 {
         uint64_t token_n;
         chk(mliJson_token_by_key_eprint(json, token, key, &token_n));
-        if (!mliJson_double_by_token(json, token_n + 1, val)) {
-                struct mliStr msg = mliStr_init();
-                chk(mliStr_malloc(&msg, 0));
-                chk(mliStr_push_back_c_str(&msg, "Can't parse key '"));
-                chk(mliStr_push_back_c_str(&msg, key));
-                chk(mliStr_push_back_c_str(&msg, "' into double."));
-                chk_eprint(msg.c_str);
-                mliStr_free(&msg);
-                errno = 0;
-                goto error;
-        }
+        chk_msgf(
+                mliJson_double_by_token(json, token_n + 1, val),
+                ("Can't parse value of '%s' into double.", key));
+
         return 1;
 error:
         return 0;
@@ -242,17 +260,9 @@ int mliJson_token_by_key_eprint(
         const char *key,
         uint64_t *key_token)
 {
-        if (!mliJson_token_by_key(json, token, key, key_token)) {
-                struct mliStr msg = mliStr_init();
-                chk(mliStr_malloc(&msg, 0));
-                chk(mliStr_push_back_c_str(&msg, "Expected key '"));
-                chk(mliStr_push_back_c_str(&msg, key));
-                chk(mliStr_push_back_c_str(&msg, "'."));
-                chk_eprint(msg.c_str);
-                mliStr_free(&msg);
-                errno = 0;
-                goto error;
-        }
+        chk_msgf(
+                mliJson_token_by_key(json, token, key, key_token),
+                ("Expected key '%s' in json.", key));
         return 1;
 error:
         return 0;

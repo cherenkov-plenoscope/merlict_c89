@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_version.c"
-
+#include "chk_debug.c"
 #include "mli_cstr_numbers.c"
 #include "mli_math.c"
 #include "mliMagicId.c"
