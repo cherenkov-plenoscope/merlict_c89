@@ -9,7 +9,7 @@ struct mliRenderConfig mliRenderConfig_init(void)
         c.camera = mliApertureCamera_init();
         c.camera_to_root.translation = mliVec_set(0.0, 0.0, 0.0);
         c.camera_to_root.rotation = mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0);
-        c.tracer = mliTracerCongig_init();
+        c.tracer = mliTracerConfig_init();
         c.num_pixel_x = 64;
         c.num_pixel_y = 48;
         c.random_seed = 0;
@@ -75,7 +75,7 @@ error:
 }
 
 int mliRenderConfig_tracer_from_json(
-        struct mliTracerCongig *tc,
+        struct mliTracerConfig *tc,
         const struct mliJson *json,
         const uint64_t tkn)
 {

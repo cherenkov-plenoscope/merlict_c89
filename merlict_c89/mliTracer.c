@@ -9,7 +9,7 @@
 double mli_trace_sun_visibility(
         const struct mliScenery *scenery,
         const struct mliVec position,
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
         return (1.0 -
@@ -19,7 +19,7 @@ double mli_trace_sun_visibility(
 double mli_trace_sun_obstruction(
         const struct mliScenery *scenery,
         const struct mliVec position,
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
         uint64_t i;
@@ -51,7 +51,7 @@ double mli_trace_sun_obstruction(
 }
 
 struct mliColor mli_trace_to_intersection(
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         const struct mliIntersectionSurfaceNormal *intersection,
         const struct mliScenery *scenery,
         struct mliPrng *prng)
@@ -81,7 +81,7 @@ struct mliColor mli_trace_to_intersection(
 struct mliColor mli_trace_without_atmosphere(
         const struct mliScenery *scenery,
         const struct mliRay ray,
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
         struct mliIntersectionSurfaceNormal intersection =
@@ -99,7 +99,7 @@ struct mliColor mli_trace_without_atmosphere(
 struct mliColor mli_trace(
         const struct mliScenery *scenery,
         const struct mliRay ray,
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
         if (config->have_atmosphere) {
@@ -109,9 +109,9 @@ struct mliColor mli_trace(
         }
 }
 
-struct mliTracerCongig mliTracerCongig_init(void)
+struct mliTracerConfig mliTracerConfig_init(void)
 {
-        struct mliTracerCongig config;
+        struct mliTracerConfig config;
         config.background_color = mliColor_set(128.0, 128.0, 128.0);
         config.num_trails_global_light_source = 3;
         config.have_atmosphere = 0;

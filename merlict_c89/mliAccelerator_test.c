@@ -15,7 +15,7 @@ CASE("mliAccelerator, init")
         struct mliColor color;
         struct mliRay ray;
         struct mliPrng prng = mliPrng_init_MT19937(0);
-        struct mliTracerCongig tracer_config = mliTracerCongig_init();
+        struct mliTracerConfig tracer_config = mliTracerConfig_init();
 
         CHECK(mliScenery_malloc_from_tar(
                 &scenery,

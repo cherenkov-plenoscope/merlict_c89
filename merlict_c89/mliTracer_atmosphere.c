@@ -15,7 +15,7 @@ struct mliVec mli_random_direction_in_hemisphere(
 }
 
 struct mliColor mli_trace_color_tone_of_sun(
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         const struct mliVec support)
 {
         struct mliColor sun_color = mliColor_set(1.0, 1.0, 1.0);
@@ -47,7 +47,7 @@ struct mliColor mli_trace_color_tone_of_sun(
 }
 
 struct mliColor mli_trace_color_tone_of_diffuse_sky(
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         const struct mliIntersectionSurfaceNormal *intersection,
         const struct mliScenery *scenery,
         struct mliPrng *prng)
@@ -94,7 +94,7 @@ struct mliColor mli_trace_color_tone_of_diffuse_sky(
 }
 
 struct mliColor mli_trace_to_intersection_atmosphere(
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         const struct mliIntersectionSurfaceNormal *intersection,
         const struct mliScenery *scenery,
         struct mliPrng *prng)
@@ -132,7 +132,7 @@ struct mliColor mli_trace_to_intersection_atmosphere(
 struct mliColor mli_trace_with_atmosphere(
         const struct mliScenery *scenery,
         const struct mliRay ray,
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
         struct mliIntersectionSurfaceNormal intersection =

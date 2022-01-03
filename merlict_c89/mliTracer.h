@@ -5,7 +5,7 @@
 #include "mliScenery.h"
 #include "mliAtmosphere.h"
 
-struct mliTracerCongig {
+struct mliTracerConfig {
         uint64_t num_trails_global_light_source;
 
         int have_atmosphere;
@@ -14,24 +14,24 @@ struct mliTracerCongig {
         struct mliColor background_color;
 };
 
-struct mliTracerCongig mliTracerCongig_init(void);
+struct mliTracerConfig mliTracerConfig_init(void);
 
 struct mliColor mli_trace(
         const struct mliScenery *scenery,
         const struct mliRay ray,
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         struct mliPrng *prng);
 
 double mli_trace_sun_obstruction(
         const struct mliScenery *scenery,
         const struct mliVec position,
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         struct mliPrng *prng);
 
 double mli_trace_sun_visibility(
         const struct mliScenery *scenery,
         const struct mliVec position,
-        const struct mliTracerCongig *config,
+        const struct mliTracerConfig *config,
         struct mliPrng *prng);
 
 #endif

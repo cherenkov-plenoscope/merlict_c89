@@ -10,7 +10,7 @@
 struct mliRenderConfig {
         struct mliApertureCamera camera;
         struct mliHomTraComp camera_to_root;
-        struct mliTracerCongig tracer;
+        struct mliTracerConfig tracer;
         uint64_t num_pixel_x;
         uint64_t num_pixel_y;
         uint64_t random_seed;
