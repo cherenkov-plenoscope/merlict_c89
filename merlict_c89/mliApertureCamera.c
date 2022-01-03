@@ -304,7 +304,7 @@ int mliApertureCamera_render_image(
         mliImage_luminance_threshold_dilatation(
                 &sobel_image, 128.0, &to_do_image);
 
-        printf("\n");
+        /*printf("\n");*/
         while (1) {
                 if (iteration >= MAX_ITERATIONS)
                         break;
@@ -315,11 +315,11 @@ int mliApertureCamera_render_image(
                     image->num_rows * image->num_cols / 100.0)
                         break;
 
-                printf("loop %3u / %3u, %d,%03d pixel left\n",
+                /*printf("loop %3u / %3u, %d,%03d pixel left\n",
                        (uint32_t)iteration + 1,
                        (uint32_t)MAX_ITERATIONS,
                        pixels_to_do.num_pixels_to_do / 1000,
-                       pixels_to_do.num_pixels_to_do % 1000);
+                       pixels_to_do.num_pixels_to_do % 1000);*/
                 mliApertureCamera_aquire_pixels(
                         camera,
                         image,
