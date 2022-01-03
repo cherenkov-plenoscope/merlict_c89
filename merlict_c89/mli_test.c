@@ -57,6 +57,7 @@ int main(void)
 #include "mli_photon_propagation_test.c"
 #include "mli_photon_propagation_prism_test.c"
 #include "mli_photon_propagation_focussing_mirror_test.c"
+#include "mliCameraControl_test.c"
 
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;
