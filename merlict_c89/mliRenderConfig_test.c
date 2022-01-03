@@ -1,13 +1,13 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 #include "mli_testing.h"
-#include "mliCameraControl.h"
+#include "mliRenderConfig.h"
 
 CASE("Parse_from_jsonline")
 {
         struct mliJson json = mliJson_init();
         struct mliStr ss = mliStr_init();
-        struct mliCameraControl cc = mliCameraControl_init();
+        struct mliRenderConfig cc = mliRenderConfig_init();
 
         mliStr_malloc(&ss, 0);
         mliStr_push_back_c_str(&ss, "{");
@@ -52,7 +52,7 @@ CASE("Parse_from_jsonline")
         mliStr_push_back_c_str(&ss, "}");
 
         CHECK(mliJson_malloc_from_c_str(&json, ss.c_str));
-        CHECK(mliCameraControl_from_json(&cc, &json, 0));
+        CHECK(mliRenderConfig_from_json(&cc, &json, 0));
         mliJson_free(&json);
         mliStr_free(&ss);
 

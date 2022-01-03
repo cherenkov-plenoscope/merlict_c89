@@ -1,13 +1,13 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
-#ifndef MLICAMERACONTROL_H_
-#define MLICAMERACONTROL_H_
+#ifndef MLIRENDERCONFIG_H_
+#define MLIRENDERCONFIG_H_
 
 #include "mliApertureCamera.h"
 #include "mliHomTra.h"
 #include "mliTracer.h"
 #include "mli_json.h"
 
-struct mliCameraControl {
+struct mliRenderConfig {
         struct mliApertureCamera camera;
         struct mliHomTraComp camera_to_root;
         struct mliTracerCongig tracer_config;
@@ -16,10 +16,10 @@ struct mliCameraControl {
         uint64_t random_seed;
 };
 
-struct mliCameraControl mliCameraControl_init(void);
+struct mliRenderConfig mliRenderConfig_init(void);
 
-int mliCameraControl_from_json_token(
-        struct mliCameraControl *cc,
+int mliRenderConfig_from_json_token(
+        struct mliRenderConfig *cc,
         const struct mliJson *json,
         const uint64_t token);
 

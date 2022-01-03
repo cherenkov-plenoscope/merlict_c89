@@ -1,10 +1,10 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
-#include "mliCameraControl.h"
+#include "mliRenderConfig.h"
 #include "mliFrame_json.h"
 
-struct mliCameraControl mliCameraControl_init(void)
+struct mliRenderConfig mliRenderConfig_init(void)
 {
-        struct mliCameraControl c;
+        struct mliRenderConfig c;
         c.camera = mliApertureCamera_init();
         c.camera_to_root.translation = mliVec_set(0.0, 0.0, 0.0);
         c.camera_to_root.rotation = mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0);
@@ -15,8 +15,8 @@ struct mliCameraControl mliCameraControl_init(void)
         return c;
 }
 
-int mliCameraControl_Camera_from_json(
-        struct mliCameraControl *cc,
+int mliRenderConfig_Camera_from_json(
+        struct mliRenderConfig *cc,
         const struct mliJson *json,
         const uint64_t tkn)
 {
@@ -59,8 +59,8 @@ error:
         return 0;
 }
 
-int mliCameraControl_Image_from_json(
-        struct mliCameraControl *cc,
+int mliRenderConfig_Image_from_json(
+        struct mliRenderConfig *cc,
         const struct mliJson *json,
         const uint64_t tkn)
 {
@@ -139,7 +139,7 @@ error:
         return 0;
 }
 
-int mliCameraControl_Tracer_from_json(
+int mliRenderConfig_Tracer_from_json(
         struct mliTracerCongig *tc,
         const struct mliJson *json,
         const uint64_t tkn)
@@ -170,8 +170,8 @@ error:
         return 0;
 }
 
-int mliCameraControl_from_json(
-        struct mliCameraControl *cc,
+int mliRenderConfig_from_json(
+        struct mliRenderConfig *cc,
         const struct mliJson *json,
         const uint64_t tkn)
 {
@@ -183,9 +183,9 @@ int mliCameraControl_from_json(
         chk(mliJson_token_by_key_eprint(json, tkn, "image", &imgtkn));
         chk(mliJson_token_by_key_eprint(json, tkn, "tracer", &tratkn));
 
-        chk(mliCameraControl_Camera_from_json(cc, json, camtkn + 1));
-        chk(mliCameraControl_Image_from_json(cc, json, imgtkn + 1));
-        chk(mliCameraControl_Tracer_from_json(
+        chk(mliRenderConfig_Camera_from_json(cc, json, camtkn + 1));
+        chk(mliRenderConfig_Image_from_json(cc, json, imgtkn + 1));
+        chk(mliRenderConfig_Tracer_from_json(
                 &cc->tracer_config, json, tratkn + 1));
 
         return 1;

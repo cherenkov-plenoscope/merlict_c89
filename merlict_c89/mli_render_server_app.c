@@ -10,8 +10,8 @@
 #include "mli.c"
 
 
-int mliCameraControl_from_channel(
-        struct mliCameraControl *control,
+int mliRenderConfig_from_channel(
+        struct mliRenderConfig *control,
         FILE *fin,
         FILE *fout)
 {
@@ -26,7 +26,7 @@ int mliCameraControl_from_channel(
                 "Can't parse line into json-tokens.");
         mliStr_free(&jsonlstr);
 
-        chk_msg(mliCameraControl_from_json(control, &json, 0),
+        chk_msg(mliRenderConfig_from_json(control, &json, 0),
                 "Can't parse json-tokens into camera-control.");
         mliJson_free(&json);
 
@@ -65,10 +65,10 @@ int main(int argc, char *argv[])
         setbuf(stdout, NULL);
         while (1) {
                 struct mliPrng prng = mliPrng_init_PCG32(0);
-                struct mliCameraControl control = mliCameraControl_init();
+                struct mliRenderConfig control = mliRenderConfig_init();
                 struct mliImage image = mliImage_init();
 
-                chk_msg(mliCameraControl_from_channel(&control, stdin, stdout),
+                chk_msg(mliRenderConfig_from_channel(&control, stdin, stdout),
                         "Can't communicate camera-control.");
 
                 mliPrng_reinit(&prng, control.random_seed);
