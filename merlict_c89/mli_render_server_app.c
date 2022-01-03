@@ -17,7 +17,7 @@ int mliRenderConfig_from_channel(
 {
         struct mliStr jsonlstr = mliStr_init();
         struct mliJson json = mliJson_init();
-        chk(mliStr_malloc(&jsonlstr, 0));
+        chk(mliStr_malloc(&jsonlstr));
 
         chk_msg(mliStr_push_back_line_from_file(&jsonlstr, fin, '\n'),
                 "Can't read line from fin.");

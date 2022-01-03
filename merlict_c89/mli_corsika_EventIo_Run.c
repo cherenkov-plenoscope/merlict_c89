@@ -40,7 +40,7 @@ int mliEventIoRun_read_input_card(
         char _unknown[8];
         uint64_t input_card_length;
 
-        chk_msg(mliStr_malloc(input_card, length + 1),
+        chk_msg(mliStr_malloc_capacity(input_card, length + 1),
                 "Failed to malloc c_str for input-card.");
 
         chk_fread(_unknown, sizeof(_unknown), 1, f);

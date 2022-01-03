@@ -63,7 +63,7 @@ error:
 int mliJson_malloc_from_c_str(struct mliJson *json, const char *c_str)
 {
         mliJson_free(json);
-        chk_msg(mliStr_malloc(&json->raw, 0), "Can't malloc raw Json's Str.");
+        chk_msg(mliStr_malloc(&json->raw), "Can't malloc raw Json's Str.");
         chk_msg(mliStr_push_back_c_str(&json->raw, c_str), "Can't copy c_str.");
         chk_msg(mliJson_malloc_tokens__(json), "Can't malloc Json's tokens.");
         chk_msg(mliJson_parse_tokens__(json), "Can't parse Json into tokens.");

@@ -9,7 +9,8 @@ struct mliStr {
 };
 struct mliStr mliStr_init(void);
 void mliStr_free(struct mliStr *str);
-int mliStr_malloc(struct mliStr *str, const uint64_t capacity);
+int mliStr_malloc(struct mliStr *str);
+int mliStr_malloc_capacity(struct mliStr *str, const uint64_t capacity);
 int mliStr_push_back_char(struct mliStr *str, const char c);
 int mliStr_push_back_c_str(struct mliStr *str, const char *s);
 int mliStr_push_back_line_from_file(struct mliStr *str, FILE *stream, const char newline);

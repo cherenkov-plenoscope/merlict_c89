@@ -9,7 +9,7 @@ CASE("Parse_from_jsonline")
         struct mliStr ss = mliStr_init();
         struct mliRenderConfig cc = mliRenderConfig_init();
 
-        mliStr_malloc(&ss, 0);
+        mliStr_malloc(&ss);
         mliStr_push_back_c_str(&ss, "{");
         mliStr_push_back_c_str(&ss, "    \"camera\": {");
         mliStr_push_back_c_str(&ss, "        \"pos\": [1,2,3],");

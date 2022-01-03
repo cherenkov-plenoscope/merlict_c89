@@ -181,8 +181,8 @@ CASE("replace CRLF and CR linebreaks with LF")
         struct mliStr src = mliStr_init();
         struct mliStr dst = mliStr_init();
 
-        CHECK(mliStr_malloc(&src, 32));
-        CHECK(mliStr_malloc(&dst, 32));
+        CHECK(mliStr_malloc_capacity(&src, 32));
+        CHECK(mliStr_malloc_capacity(&dst, 32));
 
         /* all '\0' */
         /* -------- */
@@ -315,7 +315,7 @@ CASE("DynStr")
         CHECK(s.length == 0u);
         CHECK(s.c_str == NULL);
 
-        CHECK(mliStr_malloc(&s, 0u));
+        CHECK(mliStr_malloc(&s));
         CHECK(s.length == 0);
         CHECK(s.capacity == 2);
         CHECK(s.c_str[0] == '\0');

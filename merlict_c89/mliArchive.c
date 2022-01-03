@@ -48,13 +48,13 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                 chk_msg(mliDynTextFiles_push_back(
                                 &arc->textfiles, mliStr_init()),
                         "Can not push back mliString.");
-                chk_msg(mliStr_malloc(&tmp_payload, tarh.size + 1),
+                chk_msg(mliStr_malloc_capacity(&tmp_payload, tarh.size + 1),
                         "Can not allocate tmp-string-buffer.");
 
                 payload = &arc->textfiles.array[next];
                 (*payload) = mliStr_init();
 
-                chk_msg(mliStr_malloc(payload, 0),
+                chk_msg(mliStr_malloc(payload),
                         "Can not allocate string-buffer.");
                 chk_msg(mliTar_read_data(
                                 &tar, (void *)tmp_payload.c_str, tarh.size),

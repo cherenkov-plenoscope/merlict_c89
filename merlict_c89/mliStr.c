@@ -17,13 +17,21 @@ void mliStr_free(struct mliStr *str)
         (*str) = mliStr_init();
 }
 
-int mliStr_malloc(struct mliStr *str, const uint64_t capacity)
+int mliStr_malloc_capacity(struct mliStr *str, const uint64_t capacity)
 {
         mliStr_free(str);
         str->capacity = MLI_MAX2(2, capacity);
         str->length = 0u;
         chk_malloc(str->c_str, char, str->capacity);
         memset(str->c_str, '\0', str->capacity);
+        return 1;
+error:
+        return 0;
+}
+
+int mliStr_malloc(struct mliStr *str)
+{
+        chk(mliStr_malloc_capacity(str, 0));
         return 1;
 error:
         return 0;
@@ -71,7 +79,7 @@ int mliStr_malloc_from_path(struct mliStr *str, const char *path)
         int c = EOF;
         FILE *f = fopen(path, "rt");
         chk_msg(f, "Failed to open file.");
-        chk_msg(mliStr_malloc(str, 0), "Can not malloc string.");
+        chk_msg(mliStr_malloc(str), "Can not malloc string.");
         c = getc(f);
         while (c != EOF) {
                 chk_msg(mliStr_push_back_char(str, c),
@@ -111,7 +119,7 @@ int mliStr_convert_line_break_CRLF_CR_to_LF(
 {
         uint64_t i = 0;
         mliStr_free(dst);
-        chk(mliStr_malloc(dst, src->capacity));
+        chk(mliStr_malloc_capacity(dst, src->capacity));
 
         while (i < src->capacity) {
                 if (mli_cstr_is_CRLF(&src->c_str[i])) {
