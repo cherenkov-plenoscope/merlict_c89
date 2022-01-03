@@ -20,7 +20,7 @@ int mliRenderConfig_Camera_from_json(
         const struct mliJson *json,
         const uint64_t tkn)
 {
-        chk(mliFrame_pos_rot_from_json(&cc->camera_to_root, json, tkn));
+        chk(mliFrame_pos_rot_from_json_token(&cc->camera_to_root, json, tkn));
         chk(mliJson_double_by_key(
                 json,
                 tkn,
@@ -73,7 +73,7 @@ error:
         return 0;
 }
 
-int mliAtmosphere_from_json(
+int mliAtmosphere_from_json_token(
         struct mliAtmosphere *atm,
         const struct mliJson *json,
         const uint64_t tkn)
@@ -163,7 +163,7 @@ int mliRenderConfig_Tracer_from_json(
         chk(mliColor_from_json_token(&tc->background_color, json, bgctkn + 1));
 
         chk(mliJson_token_by_key(json, tkn, "atmosphere", &atmtkn));
-        chk(mliAtmosphere_from_json(&tc->atmosphere, json, atmtkn + 1));
+        chk(mliAtmosphere_from_json_token(&tc->atmosphere, json, atmtkn + 1));
 
         return 1;
 error:

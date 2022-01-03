@@ -3,7 +3,7 @@
 #include "mliDynMap_json.h"
 #include "mliVec_json.h"
 
-int mliFrame_type_from_json(
+int mliFrame_type_from_json_token(
         uint64_t *type,
         const struct mliJson *json,
         const uint64_t token)
@@ -30,7 +30,7 @@ error:
         return 0;
 }
 
-int mliFrame_id_from_json(
+int mliFrame_id_from_json_token(
         uint32_t *id,
         const struct mliJson *json,
         const uint64_t token)
@@ -50,7 +50,7 @@ error:
         return 0;
 }
 
-int mliFrame_pos_rot_from_json(
+int mliFrame_pos_rot_from_json_token(
         struct mliHomTraComp *frame2mother,
         const struct mliJson *json,
         const uint64_t token)
@@ -75,7 +75,7 @@ error:
         return 0;
 }
 
-int mliFrame_boundary_layers_form_json(
+int mliFrame_boundary_layers_form_json_token(
         struct mliDynUint32 *boundary_layers,
         const uint32_t object_idx,
         const struct mliObject *objects,
@@ -126,7 +126,7 @@ error:
         return 0;
 }
 
-int mliFrame_object_reference_form_json(
+int mliFrame_object_reference_form_json_token(
         uint32_t *object_reference,
         const struct mliJson *json,
         const uint64_t token,
@@ -167,17 +167,17 @@ int mliFrame_from_json(
                 uint64_t type;
                 uint64_t token_grandchildren;
 
-                chk_msg(mliFrame_type_from_json(&type, json, token_child),
+                chk_msg(mliFrame_type_from_json_token(&type, json, token_child),
                         "Failed to read type of Frame.");
 
                 child = mliFrame_add(mother, type);
                 chk_msg(child, "Failed to add child to frame.");
 
-                chk_msg(mliFrame_pos_rot_from_json(
+                chk_msg(mliFrame_pos_rot_from_json_token(
                                 &child->frame2mother, json, token_child),
                         "Failed to set pos, and rot of Frame from json.");
 
-                chk_msg(mliFrame_id_from_json(&child->id, json, token_child),
+                chk_msg(mliFrame_id_from_json_token(&child->id, json, token_child),
                         "Failed to set id of Frame from json.");
 
                 switch (type) {
@@ -200,14 +200,14 @@ int mliFrame_from_json(
                                 "Frames from json.");
                         break;
                 case MLI_OBJECT:
-                        chk_msg(mliFrame_object_reference_form_json(
+                        chk_msg(mliFrame_object_reference_form_json_token(
                                         &child->object,
                                         json,
                                         token_child,
                                         object_names),
                                 "Failed to parse object-reference "
                                 "from json.");
-                        chk_msg(mliFrame_boundary_layers_form_json(
+                        chk_msg(mliFrame_boundary_layers_form_json_token(
                                         &child->boundary_layers,
                                         child->object,
                                         objects,
