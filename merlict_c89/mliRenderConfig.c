@@ -9,14 +9,14 @@ struct mliRenderConfig mliRenderConfig_init(void)
         c.camera = mliApertureCamera_init();
         c.camera_to_root.translation = mliVec_set(0.0, 0.0, 0.0);
         c.camera_to_root.rotation = mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0);
-        c.tracer_config = mliTracerCongig_init();
+        c.tracer = mliTracerCongig_init();
         c.num_pixel_x = 64;
         c.num_pixel_y = 48;
         c.random_seed = 0;
         return c;
 }
 
-int mliRenderConfig_Camera_from_json(
+int mliRenderConfig_camera_from_json(
         struct mliRenderConfig *cc,
         const struct mliJson *json,
         const uint64_t tkn)
@@ -60,7 +60,7 @@ error:
         return 0;
 }
 
-int mliRenderConfig_Image_from_json(
+int mliRenderConfig_image_from_json(
         struct mliRenderConfig *cc,
         const struct mliJson *json,
         const uint64_t tkn)
@@ -74,7 +74,7 @@ error:
         return 0;
 }
 
-int mliRenderConfig_Tracer_from_json(
+int mliRenderConfig_tracer_from_json(
         struct mliTracerCongig *tc,
         const struct mliJson *json,
         const uint64_t tkn)
@@ -118,10 +118,9 @@ int mliRenderConfig_from_json(
         chk(mliJson_token_by_key_eprint(json, tkn, "image", &imgtkn));
         chk(mliJson_token_by_key_eprint(json, tkn, "tracer", &tratkn));
 
-        chk(mliRenderConfig_Camera_from_json(cc, json, camtkn + 1));
-        chk(mliRenderConfig_Image_from_json(cc, json, imgtkn + 1));
-        chk(mliRenderConfig_Tracer_from_json(
-                &cc->tracer_config, json, tratkn + 1));
+        chk(mliRenderConfig_camera_from_json(cc, json, camtkn + 1));
+        chk(mliRenderConfig_image_from_json(cc, json, imgtkn + 1));
+        chk(mliRenderConfig_tracer_from_json(&cc->tracer, json, tratkn + 1));
 
         return 1;
 error:

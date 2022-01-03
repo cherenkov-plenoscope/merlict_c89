@@ -65,9 +65,9 @@ CASE("Parse_from_jsonline")
         CHECK(cc.num_pixel_x == 192);
         CHECK(cc.num_pixel_y == 108);
 
-        CHECK(cc.tracer_config.num_trails_global_light_source = 3);
-        CHECK_MARGIN(cc.tracer_config.background_color.r, 110.0, 0.1);
-        CHECK_MARGIN(cc.tracer_config.background_color.g, 120.0, 0.1);
-        CHECK_MARGIN(cc.tracer_config.background_color.b, 130.0, 0.1);
-        CHECK(cc.tracer_config.have_atmosphere == 1);
+        CHECK(cc.tracer.num_trails_global_light_source = 3);
+        CHECK_MARGIN(cc.tracer.background_color.r, 110.0, 0.1);
+        CHECK_MARGIN(cc.tracer.background_color.g, 120.0, 0.1);
+        CHECK_MARGIN(cc.tracer.background_color.b, 130.0, 0.1);
+        CHECK(cc.tracer.have_atmosphere == 1);
 }

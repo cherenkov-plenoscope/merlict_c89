@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
                         control.camera_to_root,
                         &scenery,
                         &image,
-                        &control.tracer_config,
+                        &control.tracer,
                         &prng);
 
                 chk_msg(mliImage_write_ppm_to_file(&image, stdout),
