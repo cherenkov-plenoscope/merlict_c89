@@ -37,9 +37,34 @@ error:
         return 0;
 }
 
-int mliStr_push_back_char(struct mliStr *str, const char c)
+int mliStr_malloc_from_path(struct mliStr *str, const char *path)
+{
+        int c = EOF;
+        FILE *f = fopen(path, "rt");
+        chk_msg(f, "Failed to open file.");
+        chk_msg(mliStr_malloc(str), "Can not malloc string.");
+        c = getc(f);
+        while (c != EOF) {
+                chk_msg(mliStr_add_char(str, c),
+                        "Failed to push back char.");
+                c = getc(f);
+        }
+        fclose(f);
+        return 1;
+error:
+        if (f != NULL)
+                fclose(f);
+        mliStr_free(str);
+        return 0;
+}
+
+int mliStr_add_char(struct mliStr *str, const char c)
 {
         const uint64_t new_length = str->length + 1;
+
+        if (str->c_str == NULL) {
+                chk(mliStr_malloc(str));
+        }
 
         if (new_length >= str->capacity) {
                 const uint64_t min_new_capacity =
@@ -61,12 +86,12 @@ error:
         return 0;
 }
 
-int mliStr_push_back_c_str(struct mliStr *str, const char *s)
+int mliStr_add_c_str(struct mliStr *str, const char *s)
 {
         const uint64_t slen = strlen(s);
         uint64_t i;
         for (i = 0; i < slen; i++) {
-                chk_msg(mliStr_push_back_char(str, s[i]),
+                chk_msg(mliStr_add_char(str, s[i]),
                         "Failed to push back char");
         }
         return 1;
@@ -74,28 +99,7 @@ error:
         return 0;
 }
 
-int mliStr_malloc_from_path(struct mliStr *str, const char *path)
-{
-        int c = EOF;
-        FILE *f = fopen(path, "rt");
-        chk_msg(f, "Failed to open file.");
-        chk_msg(mliStr_malloc(str), "Can not malloc string.");
-        c = getc(f);
-        while (c != EOF) {
-                chk_msg(mliStr_push_back_char(str, c),
-                        "Failed to push back char.");
-                c = getc(f);
-        }
-        fclose(f);
-        return 1;
-error:
-        if (f != NULL)
-                fclose(f);
-        mliStr_free(str);
-        return 0;
-}
-
-int mliStr_push_back_line_from_file(
+int mliStr_add_line_from_file(
         struct mliStr *str,
         FILE *f,
         const char newline)
@@ -106,7 +110,7 @@ int mliStr_push_back_line_from_file(
                 if (cc == newline) {
                         break;
                 }
-                chk(mliStr_push_back_char(str, cc));
+                chk(mliStr_add_char(str, cc));
         }
         return 1;
 error:
@@ -123,13 +127,13 @@ int mliStr_convert_line_break_CRLF_CR_to_LF(
 
         while (i < src->capacity) {
                 if (mli_cstr_is_CRLF(&src->c_str[i])) {
-                        chk(mliStr_push_back_char(dst, '\n'));
+                        chk(mliStr_add_char(dst, '\n'));
                         i += 2;
                 } else if (mli_cstr_is_CR(&src->c_str[i])) {
-                        chk(mliStr_push_back_char(dst, '\n'));
+                        chk(mliStr_add_char(dst, '\n'));
                         i += 1;
                 } else {
-                        chk(mliStr_push_back_char(dst, src->c_str[i]));
+                        chk(mliStr_add_char(dst, src->c_str[i]));
                         i += 1;
                 }
         }

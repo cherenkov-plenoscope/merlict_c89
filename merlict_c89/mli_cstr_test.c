@@ -321,7 +321,7 @@ CASE("DynStr")
         CHECK(s.c_str[0] == '\0');
         CHECK(s.c_str[1] == '\0');
 
-        CHECK(mliStr_push_back_c_str(&s, "012"));
+        CHECK(mliStr_add_c_str(&s, "012"));
 
         CHECK(s.capacity > s.length);
         CHECK(s.length == 3);
@@ -333,7 +333,7 @@ CASE("DynStr")
                 CHECK(s.c_str[i] == '\0');
         }
 
-        CHECK(mliStr_push_back_c_str(&s, "\n"));
+        CHECK(mliStr_add_c_str(&s, "\n"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 4);
         CHECK(s.c_str[3] == '\n');
@@ -342,7 +342,7 @@ CASE("DynStr")
                 CHECK(s.c_str[i] == '\0');
         }
 
-        CHECK(mliStr_push_back_c_str(&s, "456"));
+        CHECK(mliStr_add_c_str(&s, "456"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
         CHECK(s.c_str[4] == '4');
@@ -353,14 +353,14 @@ CASE("DynStr")
                 CHECK(s.c_str[i] == '\0');
         }
 
-        CHECK(mliStr_push_back_c_str(&s, ""));
+        CHECK(mliStr_add_c_str(&s, ""));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
         for (i = s.length; i < s.capacity; i++) {
                 CHECK(s.c_str[i] == '\0');
         }
 
-        CHECK(mliStr_push_back_c_str(&s, "\0"));
+        CHECK(mliStr_add_c_str(&s, "\0"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
         for (i = s.length; i < s.capacity; i++) {
