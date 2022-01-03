@@ -96,6 +96,7 @@
 #include "mli_from_outside_to_inside.c"
 #include "mliTracer.c"
 #include "mliAtmosphere.c"
+#include "mliAtmosphere_json.c"
 #include "mliView.c"
 #include "mliPinHoleCamera.c"
 #include "mliApertureCamera.c"
