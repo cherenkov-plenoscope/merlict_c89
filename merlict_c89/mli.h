@@ -95,6 +95,7 @@
 #include "mli_ray_scenery_query.h"
 #include "mli_from_outside_to_inside.h"
 #include "mliTracer.h"
+#include "mliTracerConfig_json.h"
 #include "mliAtmosphere.h"
 #include "mliAtmosphere_json.h"
 #include "mliView.h"
