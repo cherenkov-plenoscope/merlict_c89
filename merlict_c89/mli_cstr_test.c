@@ -307,7 +307,7 @@ CASE("line info fprint")
         mliStr_free(&s);
 }
 
-CASE("DynStr")
+CASE("mliStr")
 {
         uint64_t i;
         struct mliStr s = mliStr_init();
