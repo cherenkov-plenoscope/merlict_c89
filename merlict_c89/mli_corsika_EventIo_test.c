@@ -95,13 +95,13 @@ CASE("EventIoRun_telescope_dat__corsika_input_card")
         struct mliEventIoRun run = mliEventIoRun_init();
         CHECK(mliEventIoRun_open(
                 &run, "merlict_c89/mli_corsika_test_resources/telescope.dat"));
-        CHECK(run.corsika_input_card.c_str[0] == 'C');
-        CHECK(run.corsika_input_card.c_str[1] == 'O');
-        CHECK(run.corsika_input_card.c_str[2] == 'R');
-        CHECK(run.corsika_input_card.c_str[3] == 'S');
-        CHECK(run.corsika_input_card.c_str[4] == 'I');
-        CHECK(run.corsika_input_card.c_str[5] == 'K');
-        CHECK(run.corsika_input_card.c_str[6] == 'A');
+        CHECK(run.corsika_input_card.cstr[0] == 'C');
+        CHECK(run.corsika_input_card.cstr[1] == 'O');
+        CHECK(run.corsika_input_card.cstr[2] == 'R');
+        CHECK(run.corsika_input_card.cstr[3] == 'S');
+        CHECK(run.corsika_input_card.cstr[4] == 'I');
+        CHECK(run.corsika_input_card.cstr[5] == 'K');
+        CHECK(run.corsika_input_card.cstr[6] == 'A');
         mliEventIoRun_close(&run);
 }
 

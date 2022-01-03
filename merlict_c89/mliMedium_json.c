@@ -4,7 +4,7 @@
 int mliMedium_malloc_from_json_str(struct mliMedium *med, const char *json_str)
 {
         struct mliJson json = mliJson_init();
-        chk_msg(mliJson_malloc_from_c_str(&json, json_str),
+        chk_msg(mliJson_malloc_from_cstr(&json, json_str),
                 "Failed to read json_str to malloc medium.");
         chk_msg(mliMedium_malloc_from_json_token(med, &json, 0),
                 "Failed to malloc medium from json.");

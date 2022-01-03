@@ -22,7 +22,7 @@ int mliRenderConfig_from_channel(
         chk_msg(mliStr_add_line_from_file(&jsonlstr, fin, '\n'),
                 "Can't read line from fin.");
 
-        chk_msg(mliJson_malloc_from_c_str(&json, jsonlstr.c_str),
+        chk_msg(mliJson_malloc_from_cstr(&json, jsonlstr.cstr),
                 "Can't parse line into json-tokens.");
         mliStr_free(&jsonlstr);
 

@@ -567,7 +567,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         MLI_NCPY(fvn.array, obj->faces_vertex_normals, fvn.size);
         MLI_NCPY(fm.array, obj->faces_materials, fm.size);
         for (i = 0; i < material_names.size; i++) {
-                memcpy(obj->material_names[i].c_str,
+                memcpy(obj->material_names[i].cstr,
                        material_names.array[i].key,
                        MLI_NAME_CAPACITY);
         }
@@ -633,7 +633,7 @@ int mliObject_fprint_to_wavefront(FILE *f, const struct mliObject *obj)
                         chk(
                                 fprintf(f,
                                         "usemtl %s\n",
-                                        obj->material_names[mtl].c_str));
+                                        obj->material_names[mtl].cstr));
                 }
 
                 chk(

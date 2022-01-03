@@ -87,7 +87,7 @@ int mliObject_has_valid_materials(const struct mliObject *obj)
         for (i = 0; i < obj->num_materials; i++) {
                 chk_msg(mliName_valid(&obj->material_names[i]),
                         "Expected material_name to be '\\0' terminated.");
-                chk_msg(strlen(obj->material_names[i].c_str) > 0,
+                chk_msg(strlen(obj->material_names[i].cstr) > 0,
                         "Expected strlen(material_name) > 0.");
         }
         return 1;

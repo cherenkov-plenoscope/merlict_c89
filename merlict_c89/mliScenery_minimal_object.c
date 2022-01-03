@@ -28,14 +28,14 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         /* set object */
         chk_msg(mliStr_malloc_from_path(&str, path), "Failed to read file.");
-        chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(str.c_str),
+        chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(str.cstr),
                 "Expected object-wavefront file to be free of "
                 "control characters, except [NUL, TAB, LF].");
         chk_msg(mliObject_malloc_from_wavefront(
-                        &scenery->geometry.objects[0], str.c_str),
+                        &scenery->geometry.objects[0], str.cstr),
                 "Failed to malloc wavefront-object from string.");
         mliStr_free(&str);
-        sprintf(scenery->geometry.object_names[0].c_str, "default-object");
+        sprintf(scenery->geometry.object_names[0].cstr, "default-object");
 
         /* set reference */
         scenery->geometry.robjects[0] = 0u;
@@ -54,7 +54,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         chk_msg(mliMaterials_malloc(&scenery->materials, mtlcap),
                 "Failed to malloc materials.");
 
-        sprintf(scenery->materials.medium_names[0].c_str, "vacuum");
+        sprintf(scenery->materials.medium_names[0].cstr, "vacuum");
 
         chk(mliFunc_malloc(&scenery->materials.media[0].refraction, 2));
         scenery->materials.media[0].refraction.x[0] = 200e-9;
@@ -90,7 +90,7 @@ int mliScenery_malloc_minimal_from_wavefront(
                 scenery->materials.surfaces[i].diffuse_reflection.y[0] = 1.0;
                 scenery->materials.surfaces[i].diffuse_reflection.y[1] = 1.0;
 
-                sprintf(scenery->materials.surface_names[i].c_str,
+                sprintf(scenery->materials.surface_names[i].cstr,
                         "surface_%06u",
                         i);
 
@@ -98,7 +98,7 @@ int mliScenery_malloc_minimal_from_wavefront(
                 scenery->materials.boundary_layers[i].outer.medium = 0u;
                 scenery->materials.boundary_layers[i].inner.surface = i;
                 scenery->materials.boundary_layers[i].outer.surface = i;
-                sprintf(scenery->materials.boundary_layer_names[i].c_str,
+                sprintf(scenery->materials.boundary_layer_names[i].cstr,
                         "boundary_layer_%06u",
                         i);
         }

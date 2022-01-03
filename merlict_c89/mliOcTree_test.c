@@ -60,7 +60,7 @@ CASE("ray parallel to axis")
                 "001.tar"));
 
         obj = scenery.geometry.robjects[robj];
-        CHECK(strcmp("teapot", scenery.geometry.object_names[obj].c_str) == 0);
+        CHECK(strcmp("teapot", scenery.geometry.object_names[obj].cstr) == 0);
 
         for (i = 0; i < 6; i++) {
                 struct mliRay ray;

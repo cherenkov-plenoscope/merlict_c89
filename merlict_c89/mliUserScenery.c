@@ -58,9 +58,9 @@ int mli_set_geometry_objects_and_names_from_archive(
                         chk_msg(mliObject_malloc_from_wavefront(
                                         &geometry->objects[obj_idx],
                                         archive->textfiles.array[arc_idx]
-                                                .c_str),
+                                                .cstr),
                                 "Failed to parse wave-front-object.");
-                        memcpy(geometry->object_names[obj_idx].c_str,
+                        memcpy(geometry->object_names[obj_idx].cstr,
                                key,
                                MLI_NAME_CAPACITY);
 
@@ -130,7 +130,7 @@ int mliMaterials_malloc_form_archive(
                         chk_msg(mliMedium_malloc_from_json_str(
                                         &materials->media[med_idx],
                                         archive->textfiles.array[arc_idx]
-                                                .c_str),
+                                                .cstr),
                                 "Failed to parse media json from "
                                 "file.");
 
@@ -142,7 +142,7 @@ int mliMaterials_malloc_form_archive(
                         chk_msg(mliDynMap_insert(&names->media, key, med_idx),
                                 "Failed to insert media-name into map.");
 
-                        memcpy(materials->medium_names[med_idx].c_str,
+                        memcpy(materials->medium_names[med_idx].cstr,
                                names->media.array[med_idx].key,
                                MLI_NAME_CAPACITY);
 
@@ -160,7 +160,7 @@ int mliMaterials_malloc_form_archive(
                         chk_msg(mliSurface_malloc_from_json_str(
                                         &materials->surfaces[srf_idx],
                                         archive->textfiles.array[arc_idx]
-                                                .c_str),
+                                                .cstr),
                                 "Failed to parse surface json from "
                                 "file.");
 
@@ -173,7 +173,7 @@ int mliMaterials_malloc_form_archive(
                                         &names->surfaces, key, srf_idx),
                                 "Failed to insert surface-name into map.");
 
-                        memcpy(materials->surface_names[srf_idx].c_str,
+                        memcpy(materials->surface_names[srf_idx].cstr,
                                names->surfaces.array[srf_idx].key,
                                MLI_NAME_CAPACITY);
 
@@ -190,7 +190,7 @@ int mliMaterials_malloc_form_archive(
                         &boundary_layers_json),
                 "Failed to copy boundary_layers from materials.json.");
         for (i = 0; i < materials->num_boundary_layers; i++) {
-                memcpy(materials->boundary_layer_names[i].c_str,
+                memcpy(materials->boundary_layer_names[i].cstr,
                        names->boundary_layers.array[i].key,
                        MLI_NAME_CAPACITY);
         }
@@ -206,7 +206,7 @@ int mliMaterials_malloc_form_archive(
                 "Can not find 'materials/default_medium.txt' in scenery.");
 
         memset(key, '\0', sizeof(key));
-        mli_cstr_strip_spaces(default_medium_text->c_str, key);
+        mli_cstr_strip_spaces(default_medium_text->cstr, key);
 
         chk_msg(mliDynMap_get(&names->media, key, &materials->default_medium),
                 "Failed to assign the 'default_medium'.");

@@ -120,7 +120,7 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         for (i = 0; i < res->num_media; i++) {
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
-                fprintf(f, "%24s ", res->medium_names[i].c_str);
+                fprintf(f, "%24s ", res->medium_names[i].cstr);
                 fprintf(f, "%12d ", res->media[i].absorbtion.num_points);
                 fprintf(f, "%12d ", res->media[i].refraction.num_points);
                 if (i == res->default_medium) {
@@ -157,7 +157,7 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         for (i = 0; i < res->num_surfaces; i++) {
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
-                fprintf(f, "%24s ", res->surface_names[i].c_str);
+                fprintf(f, "%24s ", res->surface_names[i].cstr);
                 if (res->surfaces[i].material == MLI_MATERIAL_TRANSPARENT) {
                         fprintf(f, "%12s ", "transparent");
                 } else if (res->surfaces[i].material == MLI_MATERIAL_PHONG) {
@@ -207,7 +207,7 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         for (i = 0; i < res->num_boundary_layers; i++) {
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
-                fprintf(f, "%24s ", res->boundary_layer_names[i].c_str);
+                fprintf(f, "%24s ", res->boundary_layer_names[i].cstr);
 
                 fprintf(f, "%8d ", res->boundary_layers[i].inner.medium);
                 fprintf(f, "%8d ", res->boundary_layers[i].inner.surface);

@@ -129,7 +129,7 @@ void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
         for (i = 0; i < geometry->num_objects; i++) {
                 fprintf(f, "    ");
                 fprintf(f, "%5d ", i);
-                fprintf(f, "%24s ", geometry->object_names[i].c_str);
+                fprintf(f, "%24s ", geometry->object_names[i].cstr);
                 fprintf(f, "%8d ", geometry->objects[i].num_vertices);
                 fprintf(f, "%8d ", geometry->objects[i].num_vertex_normals);
                 fprintf(f, "%8d ", geometry->objects[i].num_faces);

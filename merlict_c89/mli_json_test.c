@@ -43,20 +43,20 @@ CASE("Tokenize json-literal")
         CHECK(end == s + t[7].end);
 }
 
-CASE("mliJson_c_str_by_token")
+CASE("mliJson_cstr_by_token")
 {
         struct mliJson json = mliJson_init();
         char json_str[] = "{\"hans\": 1337}";
         char buff[] = "abcde";
-        CHECK(mliJson_malloc_from_c_str(&json, json_str));
-        CHECK(mliJson_c_str_by_token(&json, 1, buff, 5));
+        CHECK(mliJson_malloc_from_cstr(&json, json_str));
+        CHECK(mliJson_cstr_by_token(&json, 1, buff, 5));
         CHECK(buff[0] == 'h');
         CHECK(buff[1] == 'a');
         CHECK(buff[2] == 'n');
         CHECK(buff[3] == 's');
         CHECK(buff[4] == '\0');
 
-        CHECK(!mliJson_c_str_by_token(&json, 1, buff, 4));
+        CHECK(!mliJson_cstr_by_token(&json, 1, buff, 4));
         mliJson_free(&json);
 }
 
@@ -65,7 +65,7 @@ CASE("mliJson_init, defaults")
         struct mliJson json = mliJson_init();
         CHECK(json.raw.capacity == 0u);
         CHECK(json.raw.length == 0u);
-        CHECK(json.raw.c_str == NULL);
+        CHECK(json.raw.cstr == NULL);
         CHECK(json.num_tokens == 0u);
         CHECK(json.tokens == NULL);
 }
@@ -110,14 +110,14 @@ CASE("mliJson_malloc_from_path")
         mliJson_free(&json);
 }
 
-CASE("mliJson_malloc_from_c_str")
+CASE("mliJson_malloc_from_cstr")
 {
         struct mliJson json = mliJson_init();
         char json_str[1024];
         uint64_t token = 0u;
         int64_t value = 0;
         sprintf(json_str, "{\"key\": 1337}");
-        CHECK(mliJson_malloc_from_c_str(&json, json_str));
+        CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliJson_token_by_key(&json, 0, "key", &token));
         CHECK(mliJson_int64_by_token(&json, token + 1, &value));
         CHECK(value == 1337);
@@ -131,7 +131,7 @@ CASE("mliJson_int64_by_key")
         int64_t int_val = 0;
         double dbl_val = 0.0;
         sprintf(json_str, "{\"aaa\": 1337, \"bbb\": 4.2}");
-        CHECK(mliJson_malloc_from_c_str(&json, json_str));
+        CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliJson_int64_by_key(&json, 0, &int_val, "aaa"));
         CHECK(mliJson_double_by_key(&json, 0, &dbl_val, "bbb"));
         CHECK(int_val == 1337);
@@ -187,7 +187,7 @@ CASE("rotation representations")
                 "\"repr\": \"tait_bryan\", "
                 "\"xyz_deg\": [0, 0, 0]"
                 "}");
-        CHECK(mliJson_malloc_from_c_str(&json, json_str));
+        CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
@@ -198,7 +198,7 @@ CASE("rotation representations")
                 "\"axis\": [0, 0, 0], "
                 "\"angle_deg\": 0."
                 "}");
-        CHECK(mliJson_malloc_from_c_str(&json, json_str));
+        CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
@@ -208,7 +208,7 @@ CASE("rotation representations")
                 "\"repr\": \"quaternion\", "
                 "\"xyz\": [0, 0, 0]"
                 "}");
-        CHECK(mliJson_malloc_from_c_str(&json, json_str));
+        CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
@@ -221,7 +221,7 @@ CASE("rotation representations")
                 "\"repr\": \"tait_bryan\", "
                 "\"xyz_deg\": [0, 0, -45]"
                 "}");
-        CHECK(mliJson_malloc_from_c_str(&json, json_str));
+        CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
@@ -232,7 +232,7 @@ CASE("rotation representations")
                 "\"axis\": [0, 0, 1], "
                 "\"angle_deg\": 45"
                 "}");
-        CHECK(mliJson_malloc_from_c_str(&json, json_str));
+        CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
@@ -243,7 +243,7 @@ CASE("rotation representations")
                 "\"xyz\": [0, 0, %f]"
                 "}",
                 q_expected.z);
-        CHECK(mliJson_malloc_from_c_str(&json, json_str));
+        CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));

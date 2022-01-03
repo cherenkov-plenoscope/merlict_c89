@@ -5,7 +5,7 @@
 #define MLI_NAME_CAPACITY 128
 
 struct mliName {
-        char c_str[MLI_NAME_CAPACITY];
+        char cstr[MLI_NAME_CAPACITY];
 };
 
 struct mliName mliName_init(void);

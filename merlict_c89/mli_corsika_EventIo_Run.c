@@ -41,13 +41,13 @@ int mliEventIoRun_read_input_card(
         uint64_t input_card_length;
 
         chk_msg(mliStr_malloc_capacity(input_card, length + 1),
-                "Failed to malloc c_str for input-card.");
+                "Failed to malloc cstr for input-card.");
 
         chk_fread(_unknown, sizeof(_unknown), 1, f);
         chk_msg(length >= sizeof(_unknown),
                 "Expected at least 8bytes payload.");
         input_card_length = length - sizeof(_unknown);
-        chk_fread(input_card->c_str, sizeof(char), input_card_length, f);
+        chk_fread(input_card->cstr, sizeof(char), input_card_length, f);
         return 1;
 error:
         return 0;

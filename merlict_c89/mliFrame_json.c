@@ -95,7 +95,7 @@ int mliFrame_boundary_layers_form_json_token(
              material_idx < objects[object_idx].num_materials;
              material_idx++) {
                 const char *material_key_in_object =
-                        objects[object_idx].material_names[material_idx].c_str;
+                        objects[object_idx].material_names[material_idx].cstr;
 
                 uint64_t token_material_key = 0u;
                 uint32_t boundary_layer_idx = 0u;

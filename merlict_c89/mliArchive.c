@@ -57,7 +57,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                 chk_msg(mliStr_malloc(payload),
                         "Can not allocate string-buffer.");
                 chk_msg(mliTar_read_data(
-                                &tar, (void *)tmp_payload.c_str, tarh.size),
+                                &tar, (void *)tmp_payload.cstr, tarh.size),
                         "Failed to read payload from tar into "
                         "tmp-string-buffer.");
                 chk_msg(mliStr_convert_line_break_CRLF_CR_to_LF(
@@ -65,7 +65,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         "Failed to replace CRLF and CR linebreaks.");
                 mliStr_free(&tmp_payload);
                 chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(
-                                payload->c_str),
+                                payload->cstr),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
         }
@@ -110,7 +110,7 @@ int mliArchive_get_malloc_json(
         chk_msg(mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
 
-        chk_msg(mliJson_malloc_from_c_str(json, text->c_str),
+        chk_msg(mliJson_malloc_from_cstr(json, text->cstr),
                 "Can not parse requested json.");
 
         return 1;

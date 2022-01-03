@@ -17,7 +17,7 @@ int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
 
         for (i = 0; i < res->num_media; i++) {
                 chk_fwrite(
-                        &res->medium_names[i].c_str,
+                        &res->medium_names[i].cstr,
                         sizeof(char),
                         MLI_NAME_CAPACITY,
                         f);
@@ -25,7 +25,7 @@ int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
         }
         for (i = 0; i < res->num_surfaces; i++) {
                 chk_fwrite(
-                        &res->surface_names[i].c_str,
+                        &res->surface_names[i].cstr,
                         sizeof(char),
                         MLI_NAME_CAPACITY,
                         f);
@@ -70,7 +70,7 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
         /* payload */
         for (i = 0; i < res->num_media; i++) {
                 chk_fread(
-                        &res->medium_names[i].c_str,
+                        &res->medium_names[i].cstr,
                         sizeof(char),
                         MLI_NAME_CAPACITY,
                         f);
@@ -79,7 +79,7 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
         }
         for (i = 0; i < res->num_surfaces; i++) {
                 chk_fread(
-                        &res->surface_names[i].c_str,
+                        &res->surface_names[i].cstr,
                         sizeof(char),
                         MLI_NAME_CAPACITY,
                         f);

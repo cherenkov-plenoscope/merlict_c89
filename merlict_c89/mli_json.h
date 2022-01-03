@@ -49,7 +49,7 @@ int mliJson_uint64_by_token(
         const struct mliJson *json,
         const uint64_t token,
         uint64_t *return_uint64);
-int mliJson_c_str_by_token(
+int mliJson_cstr_by_token(
         const struct mliJson *json,
         const uint64_t token,
         char *return_string,
@@ -64,12 +64,12 @@ int mliJson_uint64_by_key(
         const uint64_t token,
         uint64_t *val,
         const char *key);
-int mliJson_c_strcmp(
+int mliJson_cstrcmp(
         const struct mliJson *json,
         const uint64_t token,
         const char *str);
 int mliJson_malloc_from_path(struct mliJson *json, const char *path);
-int mliJson_malloc_from_c_str(struct mliJson *json, const char *c_str);
+int mliJson_malloc_from_cstr(struct mliJson *json, const char *cstr);
 int mliJson_malloc_tokens__(struct mliJson *json);
 int mliJson_parse_tokens__(struct mliJson *json);
 void mliJson_free(struct mliJson *json);

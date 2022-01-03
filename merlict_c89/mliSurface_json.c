@@ -6,7 +6,7 @@ int mliSurface_malloc_from_json_str(
         const char *json_str)
 {
         struct mliJson json = mliJson_init();
-        chk_msg(mliJson_malloc_from_c_str(&json, json_str),
+        chk_msg(mliJson_malloc_from_cstr(&json, json_str),
                 "Failed to read json_str to malloc surface.");
         chk_msg(mliSurface_malloc_from_json_token(surface, &json, 0),
                 "Failed to malloc surface from json.");
@@ -27,7 +27,7 @@ int mli_material_type_from_json_token(
         chk_msg(name_strlen < sizeof(buff), "Value of 'name' is too long");
         chk_msg(json->tokens[token + 1].type == JSMN_STRING,
                 "Expected 'name' to be of type string.");
-        chk_msg(mliJson_c_str_by_token(json, token + 1, buff, name_strlen + 1),
+        chk_msg(mliJson_cstr_by_token(json, token + 1, buff, name_strlen + 1),
                 "Failed to extract string from json.");
         chk_msg(mli_material_type_from_string(buff, material),
                 "Failed to parse material type from json-string.");

@@ -186,51 +186,51 @@ CASE("replace CRLF and CR linebreaks with LF")
 
         /* all '\0' */
         /* -------- */
-        CHECK(src.c_str[0] == '\0');
+        CHECK(src.cstr[0] == '\0');
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(dst.c_str[0] == '\0');
+        CHECK(dst.cstr[0] == '\0');
 
         /* minimal CR */
         /* ---------- */
-        memset(src.c_str, '\0', src.capacity);
-        sprintf(src.c_str, "\r");
+        memset(src.cstr, '\0', src.capacity);
+        sprintf(src.cstr, "\r");
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp(dst.c_str, "\n"));
+        CHECK(0 == strcmp(dst.cstr, "\n"));
 
         /* minimal CRLF */
         /* ------------ */
-        memset(src.c_str, '\0', src.capacity);
-        sprintf(src.c_str, "\r\n");
+        memset(src.cstr, '\0', src.capacity);
+        sprintf(src.cstr, "\r\n");
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp(dst.c_str, "\n"));
+        CHECK(0 == strcmp(dst.cstr, "\n"));
 
         /* minimal text CRLF */
         /* ----------------- */
-        memset(src.c_str, '\0', src.capacity);
-        sprintf(src.c_str, "hans\r\npeter");
+        memset(src.cstr, '\0', src.capacity);
+        sprintf(src.cstr, "hans\r\npeter");
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
+        CHECK(0 == strcmp(dst.cstr, "hans\npeter"));
 
         /* minimal text CR */
         /* ----------------- */
-        memset(src.c_str, '\0', src.capacity);
-        sprintf(src.c_str, "hans\rpeter");
+        memset(src.cstr, '\0', src.capacity);
+        sprintf(src.cstr, "hans\rpeter");
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp(dst.c_str, "hans\npeter"));
+        CHECK(0 == strcmp(dst.cstr, "hans\npeter"));
 
         /* complex text CRLF */
         /* ----------------- */
-        memset(src.c_str, '\0', src.capacity);
-        sprintf(src.c_str, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
+        memset(src.cstr, '\0', src.capacity);
+        sprintf(src.cstr, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
+        CHECK(0 == strcmp(dst.cstr, "\nflower\ncar\n\nhouse\n"));
 
         /* complex text CR */
         /* ----------------- */
-        memset(src.c_str, '\0', src.capacity);
-        sprintf(src.c_str, "\rflower\rcar\r\rhouse\r");
+        memset(src.cstr, '\0', src.capacity);
+        sprintf(src.cstr, "\rflower\rcar\r\rhouse\r");
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp(dst.c_str, "\nflower\ncar\n\nhouse\n"));
+        CHECK(0 == strcmp(dst.cstr, "\nflower\ncar\n\nhouse\n"));
 
         mliStr_free(&src);
         mliStr_free(&dst);
@@ -299,9 +299,9 @@ CASE("line info fprint")
                 "cube_with_materials.obj"));
         f = fopen("merlict_c89/tests/resources/lines_info.tmp", "w");
         CHECK(f);
-        CHECK(mli_cstr_lines_fprint(f, s.c_str, 1, 3));
-        CHECK(mli_cstr_lines_fprint(f, s.c_str, 10, 3));
-        CHECK(mli_cstr_lines_fprint(f, s.c_str, 35, 3));
+        CHECK(mli_cstr_lines_fprint(f, s.cstr, 1, 3));
+        CHECK(mli_cstr_lines_fprint(f, s.cstr, 10, 3));
+        CHECK(mli_cstr_lines_fprint(f, s.cstr, 35, 3));
         fclose(f);
 
         mliStr_free(&s);
@@ -313,62 +313,62 @@ CASE("DynStr")
         struct mliStr s = mliStr_init();
         CHECK(s.capacity == 0u);
         CHECK(s.length == 0u);
-        CHECK(s.c_str == NULL);
+        CHECK(s.cstr == NULL);
 
         CHECK(mliStr_malloc(&s));
         CHECK(s.length == 0);
         CHECK(s.capacity == 2);
-        CHECK(s.c_str[0] == '\0');
-        CHECK(s.c_str[1] == '\0');
+        CHECK(s.cstr[0] == '\0');
+        CHECK(s.cstr[1] == '\0');
 
-        CHECK(mliStr_add_c_str(&s, "012"));
+        CHECK(mliStr_add_cstr(&s, "012"));
 
         CHECK(s.capacity > s.length);
         CHECK(s.length == 3);
-        CHECK(s.c_str[0] == '0');
-        CHECK(s.c_str[1] == '1');
-        CHECK(s.c_str[2] == '2');
-        CHECK(s.c_str[3] == '\0');
+        CHECK(s.cstr[0] == '0');
+        CHECK(s.cstr[1] == '1');
+        CHECK(s.cstr[2] == '2');
+        CHECK(s.cstr[3] == '\0');
         for (i = s.length; i < s.capacity; i++) {
-                CHECK(s.c_str[i] == '\0');
+                CHECK(s.cstr[i] == '\0');
         }
 
-        CHECK(mliStr_add_c_str(&s, "\n"));
+        CHECK(mliStr_add_cstr(&s, "\n"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 4);
-        CHECK(s.c_str[3] == '\n');
-        CHECK(s.c_str[4] == '\0');
+        CHECK(s.cstr[3] == '\n');
+        CHECK(s.cstr[4] == '\0');
         for (i = s.length; i < s.capacity; i++) {
-                CHECK(s.c_str[i] == '\0');
+                CHECK(s.cstr[i] == '\0');
         }
 
-        CHECK(mliStr_add_c_str(&s, "456"));
+        CHECK(mliStr_add_cstr(&s, "456"));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
-        CHECK(s.c_str[4] == '4');
-        CHECK(s.c_str[5] == '5');
-        CHECK(s.c_str[6] == '6');
-        CHECK(s.c_str[7] == '\0');
+        CHECK(s.cstr[4] == '4');
+        CHECK(s.cstr[5] == '5');
+        CHECK(s.cstr[6] == '6');
+        CHECK(s.cstr[7] == '\0');
         for (i = s.length; i < s.capacity; i++) {
-                CHECK(s.c_str[i] == '\0');
+                CHECK(s.cstr[i] == '\0');
         }
 
-        CHECK(mliStr_add_c_str(&s, ""));
-        CHECK(s.capacity > s.length);
-        CHECK(s.length == 7);
-        for (i = s.length; i < s.capacity; i++) {
-                CHECK(s.c_str[i] == '\0');
-        }
-
-        CHECK(mliStr_add_c_str(&s, "\0"));
+        CHECK(mliStr_add_cstr(&s, ""));
         CHECK(s.capacity > s.length);
         CHECK(s.length == 7);
         for (i = s.length; i < s.capacity; i++) {
-                CHECK(s.c_str[i] == '\0');
+                CHECK(s.cstr[i] == '\0');
+        }
+
+        CHECK(mliStr_add_cstr(&s, "\0"));
+        CHECK(s.capacity > s.length);
+        CHECK(s.length == 7);
+        for (i = s.length; i < s.capacity; i++) {
+                CHECK(s.cstr[i] == '\0');
         }
 
         mliStr_free(&s);
         CHECK(s.capacity == 0u);
         CHECK(s.length == 0u);
-        CHECK(s.c_str == NULL);
+        CHECK(s.cstr == NULL);
 }

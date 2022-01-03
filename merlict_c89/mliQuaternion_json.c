@@ -74,13 +74,13 @@ int mliQuaternion_from_json(
                 "Expected 'rot' to have key 'repr'.");
         token_repr_value = token_repr + 1;
 
-        if (mliJson_c_strcmp(json, token_repr_value, "tait_bryan")) {
+        if (mliJson_cstrcmp(json, token_repr_value, "tait_bryan")) {
                 chk_msg(mliQuaternion_tait_bryan_from_json(quat, json, token),
                         "Failed to parse tait_bryan rotation.");
-        } else if (mliJson_c_strcmp(json, token_repr_value, "axis_angle")) {
+        } else if (mliJson_cstrcmp(json, token_repr_value, "axis_angle")) {
                 chk_msg(mliQuaternion_axis_angle_from_json(quat, json, token),
                         "Failed to parse axis_angle rotation.");
-        } else if (mliJson_c_strcmp(json, token_repr_value, "quaternion")) {
+        } else if (mliJson_cstrcmp(json, token_repr_value, "quaternion")) {
                 chk_msg(mliQuaternion_quaternion_from_json(quat, json, token),
                         "Failed to parse quaternion rotation.");
         } else {
