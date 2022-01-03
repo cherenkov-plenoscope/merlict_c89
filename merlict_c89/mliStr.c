@@ -87,6 +87,24 @@ error:
         return 0;
 }
 
+int mliStr_push_back_line_from_file(
+        struct mliStr *str,
+        FILE *f,
+        const char newline)
+{
+        char cc;
+        while (1) {
+                chk_fread(&cc, sizeof(char), 1, f);
+                if (cc == newline) {
+                        break;
+                }
+                chk(mliStr_push_back_char(str, cc));
+        }
+        return 1;
+error:
+        return 0;
+}
+
 int mliStr_convert_line_break_CRLF_CR_to_LF(
         struct mliStr *dst,
         const struct mliStr *src)
