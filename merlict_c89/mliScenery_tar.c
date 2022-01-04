@@ -8,7 +8,7 @@ int mliScenery_malloc_from_tar(struct mliScenery *scenery, const char *path)
 {
         struct mliArchive archive = mliArchive_init();
 
-        chk_msg(mliArchive_malloc_from_tar(&archive, path),
+        chk_msg(mliArchive_malloc_from_path(&archive, path),
                 "Can not read tape-archive to malloc mliScenery.");
 
         chk_msg(mliScenery_malloc_from_Archive(scenery, &archive),

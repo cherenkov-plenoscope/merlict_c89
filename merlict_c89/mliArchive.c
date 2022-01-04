@@ -25,7 +25,7 @@ void mliArchive_free(struct mliArchive *arc)
         (*arc) = mliArchive_init();
 }
 
-int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
+int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
@@ -34,7 +34,7 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
 
         mliArchive_free(arc);
         mliDynTextFiles_malloc(&arc->textfiles, 0u);
-        chk_msg(mliTar_open(&tar, path, "r"), "Cant open Tar.");
+        chk_msg(mliTar_begin(&tar, f), "Can't begin tar.");
 
         while (mliTar_read_header(&tar, &tarh)) {
                 uint64_t next = arc->filenames.size;
@@ -70,15 +70,23 @@ int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path)
                         "('\\n', '\\t', '\\0') in textfiles.");
         }
 
-        mliTar_close(&tar);
         return 1;
 error:
-        fprintf(stderr, "tar '%s', filename: '%s'.\n", path, tarh_name);
+        fprintf(stderr, "tar->filename: '%s'.\n",  tarh_name);
         mliStr_free(&tmp_payload);
         mliArchive_free(arc);
-        if (tar.stream) {
-                mliTar_close(&tar);
-        }
+        return 0;
+}
+
+int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path)
+{
+        FILE *f = fopen(path, "rb");
+        chk_msgf(f != NULL, ("Can't open path '%s'.", path))
+        chk_msg(mliArchive_malloc_fread(arc, f),
+                "Can't fread Archive from file.");
+        fclose(f);
+        return 1;
+error:
         return 0;
 }
 

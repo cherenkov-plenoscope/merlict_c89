@@ -9,7 +9,7 @@ CASE("mliArchive, read tar")
         struct mliStr *data = NULL;
         struct mliObject triangle = mliObject_init();
 
-        CHECK(mliArchive_malloc_from_tar(
+        CHECK(mliArchive_malloc_from_path(
                 &arc,
                 "merlict_c89/"
                 "tests/"

@@ -15,7 +15,8 @@ struct mliArchive {
 struct mliArchive mliArchive_init(void);
 
 void mliArchive_free(struct mliArchive *arc);
-int mliArchive_malloc_from_tar(struct mliArchive *arc, const char *path);
+int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f);
+int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path);
 
 int mliArchive_has(const struct mliArchive *arc, const char *filename);
 int mliArchive_get(
