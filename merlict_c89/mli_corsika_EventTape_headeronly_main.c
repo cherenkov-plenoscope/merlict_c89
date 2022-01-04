@@ -1,7 +1,7 @@
 #include <math.h>
 #include <assert.h>
 #include <stdlib.h>
-#include "mli_corsika_EventTape_headeronly.h"
+#include "mli_corsika_EventTape_standalone_headeronly.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,27 +22,27 @@ int main(int argc, char *argv[])
         float bunch[8];
         float corh[273];
 
-        chk_msg(argc == 2, "Expected path to evt.tar.");
-        chk(mliEventTapeReader_open(&tari, argv[1]));
+        chk_msg(argc == 1, "Expected no arguments.");
+        chk(mliEventTapeReader_begin(&tari, stdin));
         chk(mliEventTapeReader_read_runh(&tari, corh));
 
-        printf("run-number %f\n", corh[MLI_CORSIKA_RUNH_RUN_NUMBER]);
+        fprintf(stdout, "run-number %f\n", corh[MLI_CORSIKA_RUNH_RUN_NUMBER]);
 
         while (mliEventTapeReader_read_evth(&tari, corh)) {
                 /* work on EVTH */
                 int b = 0;
-                printf("event-number %f\n",
+                 fprintf(stdout, "event-number %f\n",
                        corh[MLI_CORSIKA_EVTH_EVENT_NUMBER]);
                 while (mliEventTapeReader_read_cherenkov_bunch(&tari, bunch)) {
-                        printf("bunch %d: x %fcm, y %fcm\n",
+                         fprintf(stdout, "bunch %d: x %fcm, y %fcm\n",
                                b,
                                bunch[0],
                                bunch[1]);
                         b += 1;
                 }
-                printf("total bunches %d\n", b);
+                 fprintf(stdout, "total bunches %d\n", b);
         }
-        chk(mliEventTapeReader_close(&tari));
+        chk(mliEventTapeReader_finalize(&tari));
         return EXIT_SUCCESS;
 error:
         return EXIT_FAILURE;
