@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
 
         if (argc >= 2) {
                 if (mli_cstr_ends_with(argv[1], ".tar")) {
-                        chk_msg(mliScenery_malloc_from_tar(&scenery, argv[1]),
+                        chk_msg(mliScenery_malloc_from_path_tar(
+                                &scenery, argv[1]),
                                 "Can not read scenery from '.tar'.");
                 } else if (mli_cstr_ends_with(argv[1], ".mli")) {
                         chk_msg(mliScenery_malloc_from_path(&scenery, argv[1]),

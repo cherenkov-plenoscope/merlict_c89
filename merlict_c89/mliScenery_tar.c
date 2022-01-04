@@ -4,18 +4,26 @@
 #include <math.h>
 #include <stdint.h>
 
-int mliScenery_malloc_from_tar(struct mliScenery *scenery, const char *path)
+int mliScenery_malloc_fread_tar(struct mliScenery *scenery, FILE *f)
 {
         struct mliArchive archive = mliArchive_init();
-
-        chk_msg(mliArchive_malloc_from_path(&archive, path),
-                "Can not read tape-archive to malloc mliScenery.");
-
+        chk_msg(mliArchive_malloc_fread(&archive, f),
+                "Can't read archive from file.");
         chk_msg(mliScenery_malloc_from_Archive(scenery, &archive),
-                "Can not malloc mliUsergeometry from archive.");
-
+                "Can't malloc Scenery from Archive.");
         mliArchive_free(&archive);
+        return 1;
+error:
+        return 0;
+}
 
+int mliScenery_malloc_from_path_tar(struct mliScenery *scenery, const char *path)
+{
+        FILE *f = fopen(path, "rb");
+        chk_msgf(f != NULL, ("Can't open path '%s'.", path))
+        chk_msg(mliScenery_malloc_fread_tar(scenery, f),
+                "Can't fread Scenery from file.");
+        fclose(f);
         return 1;
 error:
         return 0;

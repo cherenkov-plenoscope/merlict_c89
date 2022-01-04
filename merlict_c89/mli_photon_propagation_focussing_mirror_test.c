@@ -28,7 +28,7 @@ CASE("focussing_a_parallel_beam")
         mli_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
         wavelength_range = mliRandomUniformRange_set(380e-9, 700e-9);
 
-        CHECK(mliScenery_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
                 "merlict_c89/"
                 "tests/"

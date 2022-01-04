@@ -51,7 +51,7 @@ CASE("ray parallel to axis")
         sups[5] = mliVec_set(0, 10, 0);
         dirs[5] = mliVec_set(N, -1, N);
 
-        CHECK(mliScenery_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
                 "merlict_c89/"
                 "tests/"

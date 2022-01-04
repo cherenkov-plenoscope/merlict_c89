@@ -23,7 +23,7 @@ CASE("mliScenery, malloc from archive")
         uint64_t med_vacuum;
 
         fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);
-        CHECK(mliScenery_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
                 "merlict_c89/"
                 "tests/"
@@ -103,7 +103,7 @@ CASE("mliScenery, read, write")
         struct mliScenery back = mliScenery_init();
         FILE *f = NULL;
 
-        CHECK(mliScenery_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_path_tar(
                 &orig,
                 "merlict_c89/"
                 "tests/"

@@ -17,7 +17,7 @@ CASE("simple propagation")
         photon.wavelength = 600e-9;
         photon.id = 0;
 
-        CHECK(mliScenery_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
                 "merlict_c89/"
                 "tests/"

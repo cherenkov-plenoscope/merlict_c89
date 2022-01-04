@@ -34,7 +34,7 @@ CASE("refraction_in_prism")
 
         mli_linspace(0.375, 0.44, screen_bin_edges, 33);
 
-        CHECK(mliScenery_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
                 "merlict_c89/"
                 "tests/"

@@ -17,7 +17,7 @@ CASE("mliAccelerator, init")
         struct mliPrng prng = mliPrng_init_MT19937(0);
         struct mliTracerConfig tracer_config = mliTracerConfig_init();
 
-        CHECK(mliScenery_malloc_from_tar(
+        CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
                 "merlict_c89/"
                 "tests/"
