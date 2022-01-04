@@ -9,7 +9,7 @@
 
 
 #define MLI_CORSIKA_EVENTTAPE_VERSION_MAYOR 2
-#define MLI_CORSIKA_EVENTTAPE_VERSION_MINOR 0
+#define MLI_CORSIKA_EVENTTAPE_VERSION_MINOR 1
 #define MLI_CORSIKA_EVENTTAPE_VERSION_PATCH 0
 
 struct mliEventTapeWriter {
@@ -20,11 +20,13 @@ struct mliEventTapeWriter {
         struct mliDynFloat buffer;
 };
 struct mliEventTapeWriter mliEventTapeWriter_init(void);
-int mliEventTapeWriter_open(
+
+int mliEventTapeWriter_begin(
         struct mliEventTapeWriter *tio,
-        const char *path,
+        FILE *stream,
         const uint64_t num_bunches_buffer);
-int mliEventTapeWriter_close(struct mliEventTapeWriter *tio);
+int mliEventTapeWriter_finalize(struct mliEventTapeWriter *tio);
+
 int mliEventTapeWriter_write_runh(
         struct mliEventTapeWriter *tio,
         const float *runh);
@@ -59,8 +61,10 @@ struct mliEventTapeReader {
         struct mliTarHeader tarh;
 };
 struct mliEventTapeReader mliEventTapeReader_init(void);
-int mliEventTapeReader_open(struct mliEventTapeReader *tio, const char *path);
-int mliEventTapeReader_close(struct mliEventTapeReader *tio);
+
+int mliEventTapeReader_begin(struct mliEventTapeReader *tio, FILE *stream);
+int mliEventTapeReader_finalize(struct mliEventTapeReader *tio);
+
 int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh);
 int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth);
 int mliEventTapeReader_read_cherenkov_bunch(

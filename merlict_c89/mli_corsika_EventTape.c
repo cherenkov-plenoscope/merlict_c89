@@ -16,13 +16,12 @@ struct mliEventTapeWriter mliEventTapeWriter_init(void)
         return tio;
 }
 
-int mliEventTapeWriter_close(struct mliEventTapeWriter *tio)
+int mliEventTapeWriter_finalize(struct mliEventTapeWriter *tio)
 {
         if (tio->tar.stream) {
                 chk_msg(mliEventTapeWriter_flush_cherenkov_bunch_block(tio),
                         "Can't finalize cherenkov-bunch-block.");
                 chk_msg(mliTar_finalize(&tio->tar), "Can't finalize tar-file.");
-                chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
         }
         mliDynFloat_free(&tio->buffer);
         (*tio) = mliEventTapeWriter_init();
@@ -31,14 +30,14 @@ error:
         return 0;
 }
 
-int mliEventTapeWriter_open(
+int mliEventTapeWriter_begin(
         struct mliEventTapeWriter *tio,
-        const char *path,
+        FILE *stream,
         const uint64_t num_bunches_buffer)
 {
-        chk_msg(mliEventTapeWriter_close(tio),
+        chk_msg(mliEventTapeWriter_finalize(tio),
                 "Can't close and free previous tar-io-writer.");
-        chk_msg(mliTar_open(&tio->tar, path, "w"), "Can't open tar.");
+        chk_msg(mliTar_begin(&tio->tar, stream), "Can't begin tar.");
         chk_msg(mliDynFloat_malloc(&tio->buffer, 8 * num_bunches_buffer),
                 "Can't malloc cherenkov-bunch-buffer.");
         return 1;
@@ -175,22 +174,19 @@ struct mliEventTapeReader mliEventTapeReader_init(void)
         return tio;
 }
 
-int mliEventTapeReader_close(struct mliEventTapeReader *tio)
+int mliEventTapeReader_finalize(struct mliEventTapeReader *tio)
 {
-        if (tio->tar.stream) {
-                chk_msg(mliTar_close(&tio->tar), "Can't close tar-file.");
-        }
         (*tio) = mliEventTapeReader_init();
         return 1;
 error:
         return 0;
 }
 
-int mliEventTapeReader_open(struct mliEventTapeReader *tio, const char *path)
+int mliEventTapeReader_begin(struct mliEventTapeReader *tio, FILE *stream)
 {
-        chk_msg(mliEventTapeReader_close(tio),
+        chk_msg(mliEventTapeReader_finalize(tio),
                 "Can't close and free previous tar-io-reader.");
-        chk_msg(mliTar_open(&tio->tar, path, "r"), "Can't open tar.");
+        chk_msg(mliTar_begin(&tio->tar, stream), "Can't begin tar.");
         tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
         return 1;
 error:

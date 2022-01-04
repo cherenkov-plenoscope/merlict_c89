@@ -114,6 +114,8 @@ int mliEventTape_testing_write_and_read(
         float buncho[8] = {0.0};
         float bunchi[8] = {0.0};
 
+        FILE *ostream = NULL;
+        FILE *istream = NULL;
         struct mliEventTapeWriter taro = mliEventTapeWriter_init();
         struct mliEventTapeReader tari = mliEventTapeReader_init();
 
@@ -122,8 +124,9 @@ int mliEventTape_testing_write_and_read(
 
         /* write RUN */
         /* ========= */
-        chk_msg(mliEventTapeWriter_open(&taro, path, buffer_size),
-                "Can't open writer.");
+        ostream = fopen(path, "wb");
+        chk_msg(mliEventTapeWriter_begin(&taro, ostream, buffer_size),
+                "Can't begin writer.");
         /* set RUNH */
         mliEventTape_testing_set_random_RUNH(corho, 18.0, &prng);
         chk_msg(mliEventTapeWriter_write_runh(&taro, corho),
@@ -143,13 +146,15 @@ int mliEventTape_testing_write_and_read(
                 }
         }
 
-        chk_msg(mliEventTapeWriter_close(&taro), "Can't close writer.");
+        chk_msg(mliEventTapeWriter_finalize(&taro), "Can't finalize writer.");
+        fclose(ostream);
 
         /* read RUN */
         /* ======== */
         mliPrng_reinit(&prng, random_seed);
 
-        chk_msg(mliEventTapeReader_open(&tari, path), "Can't open reader.");
+        istream = fopen(path, "rb");
+        chk_msg(mliEventTapeReader_begin(&tari, istream), "Can't begin reader.");
 
         /* check RUNH */
         mliEventTape_testing_set_random_RUNH(corho, 18.0, &prng);
@@ -192,7 +197,8 @@ int mliEventTape_testing_write_and_read(
         chk_msg(!mliEventTapeReader_read_evth(&tari, corho),
                 "Did not expect another EVTH.");
 
-        chk_msg(mliEventTapeReader_close(&tari), "Can't close reader.");
+        chk_msg(mliEventTapeReader_finalize(&tari), "Can't finalize reader.");
+        fclose(istream);
         return 1;
 error:
         return 0;
