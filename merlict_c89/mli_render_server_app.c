@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
                         &control.tracer,
                         &prng);
 
-                chk_msg(mliImage_write_ppm_to_file(&image, stdout),
+                chk_msg(mliImage_fwrite(&image, stdout),
                         "Can't write image to stdout.");
 
                 mliImage_free(&image);

@@ -81,9 +81,9 @@ CASE("mliImage_write_to_ppm, mliImage_malloc_from_ppm")
                         mliImage_set(&img, col, row, color);
                 }
         }
-        mliImage_write_ppm_to_path(&img, path);
+        mliImage_write_to_path(&img, path);
 
-        CHECK(mliImage_malloc_ppm_from_path(&back, path));
+        CHECK(mliImage_malloc_from_path(&back, path));
         CHECK(back.num_cols == 3u);
         CHECK(back.num_rows == 2u);
 
