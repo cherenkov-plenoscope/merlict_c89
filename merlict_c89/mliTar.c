@@ -10,6 +10,9 @@
 #include "chk_debug.h"
 #include "mli_cstr_numbers.h"
 
+/* TarHeader */
+/* ========= */
+
 struct mliTarRawHeader {
         char name[MLI_TAR_NAME_LENGTH];
         char mode[8];
@@ -22,15 +25,6 @@ struct mliTarRawHeader {
         char linkname[MLI_TAR_NAME_LENGTH];
         char _padding[255];
 };
-
-struct mliTar mliTar_init(void)
-{
-        struct mliTar out;
-        out.stream = NULL;
-        out.pos = 0u;
-        out.remaining_data = 0u;
-        return out;
-}
 
 struct mliTarHeader mliTarHeader_init(void)
 {
@@ -73,7 +67,64 @@ error:
         return 0;
 }
 
-/* write */
+/* Tar */
+/* === */
+
+struct mliTar mliTar_init(void)
+{
+        struct mliTar out;
+        out.stream = NULL;
+        out.pos = 0u;
+        out.remaining_data = 0u;
+        return out;
+}
+
+int mliTar_begin(struct mliTar *tar, FILE *stream)
+{
+        *tar = mliTar_init();
+        tar->stream = stream;
+        chk_msg(tar->stream, "tar->stream is not ready.");
+        return 1;
+error:
+        return 0;
+}
+
+int mliTar_finalize(struct mliTar *tar)
+{
+        chk_msg(mliTar_write_null_bytes(
+                        tar, sizeof(struct mliTarRawHeader) * 2),
+                "Failed to write two final null records.");
+        return 1;
+error:
+        return 0;
+}
+
+int mliTar_open(struct mliTar *tar, const char *path, const char *mode)
+{
+        FILE *stream;
+        /* Assure mode is always binary */
+        if (strchr(mode, 'r')) {
+                mode = "rb";
+        }
+        if (strchr(mode, 'w')) {
+                mode = "wb";
+        }
+        if (strchr(mode, 'a')) {
+                mode = "ab";
+        }
+        stream = fopen(path, mode);
+        chk_msg(mliTar_begin(tar, stream), "Can't begin tar.")
+        return 1;
+error:
+        return 0;
+}
+
+int mliTar_close(struct mliTar *tar)
+{
+        fclose(tar->stream);
+        (*tar) = mliTar_init();
+        return 1;
+}
 
 int mliTar_twrite(struct mliTar *tar, const void *data, const uint64_t size)
 {
@@ -86,8 +137,6 @@ error:
         return 0;
 }
 
-/* read */
-
 int mliTar_tread(struct mliTar *tar, void *data, const uint64_t size)
 {
         int64_t res = fread(data, 1, size, tar->stream);
@@ -97,15 +146,6 @@ int mliTar_tread(struct mliTar *tar, void *data, const uint64_t size)
         return 1;
 error:
         return 0;
-}
-
-/* close */
-
-int mliTar_close(struct mliTar *tar)
-{
-        fclose(tar->stream);
-        (*tar) = mliTar_init();
-        return 1;
 }
 
 uint64_t mliTar_round_up(uint64_t n, uint64_t incr)
@@ -316,26 +356,6 @@ error:
         return 0;
 }
 
-int mliTar_open(struct mliTar *tar, const char *filename, const char *mode)
-{
-        *tar = mliTar_init();
-
-        /* Assure mode is always binary */
-        if (strchr(mode, 'r'))
-                mode = "rb";
-        if (strchr(mode, 'w'))
-                mode = "wb";
-        if (strchr(mode, 'a'))
-                mode = "ab";
-
-        tar->stream = fopen(filename, mode);
-        chk_msg(tar->stream, "Failed to open tar-file.");
-
-        return 1;
-error:
-        return 0;
-}
-
 int mliTar_raw_header_is_null(const struct mliTarRawHeader *rh)
 {
         uint64_t i = 0u;
@@ -416,16 +436,6 @@ int mliTar_write_data(struct mliTar *tar, const void *data, uint64_t size)
                 chk_msg(mliTar_write_null_bytes(tar, padding_size),
                         "Failed to write padding zeros.");
         }
-        return 1;
-error:
-        return 0;
-}
-
-int mliTar_finalize(struct mliTar *tar)
-{
-        chk_msg(mliTar_write_null_bytes(
-                        tar, sizeof(struct mliTarRawHeader) * 2),
-                "Failed to write two final null records.");
         return 1;
 error:
         return 0;

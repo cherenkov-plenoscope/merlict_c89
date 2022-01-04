@@ -66,8 +66,11 @@ struct mliTar {
 };
 
 struct mliTar mliTar_init(void);
-int mliTar_open(struct mliTar *tar, const char *filename, const char *mode);
+
+int mliTar_begin(struct mliTar *tar, FILE *file);
 int mliTar_finalize(struct mliTar *tar);
+
+int mliTar_open(struct mliTar *tar, const char *path, const char *mode);
 int mliTar_close(struct mliTar *tar);
 
 int mliTar_read_header(struct mliTar *tar, struct mliTarHeader *h);
@@ -79,5 +82,6 @@ int mliTar_write_data(struct mliTar *tar, const void *data, uint64_t size);
 /* internal */
 int mliTar_uint64_to_field12_2001star_base256(uint64_t val, char *field);
 int mliTar_field12_to_uint64_2001star_base256(const char *field, uint64_t *val);
+int mliTar_write_null_bytes(struct mliTar *tar, uint64_t n);
 
 #endif
