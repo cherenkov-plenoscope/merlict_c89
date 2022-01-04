@@ -88,10 +88,10 @@ error:
         return 0;
 }
 
-int mliEventIoRun_open(struct mliEventIoRun *run, const char *path)
+int mliEventIoRun_begin(struct mliEventIoRun *run, FILE *stream)
 {
-        run->f = fopen(path, "rb");
-        chk_msg(run->f, "Can not open EventIo-file.");
+        run->f = stream;
+        chk_msg(run->f, "Expected EventIo.f to be open.");
 
         /* corsika_run_header */
         /* ------------------ */
@@ -136,9 +136,9 @@ int mliEventIoRun_has_still_events_left(struct mliEventIoRun *run)
         return run->next_block.type != CORSIKA_RUN_END_TYPE;
 }
 
-void mliEventIoRun_close(struct mliEventIoRun *run)
+void mliEventIoRun_finalize(struct mliEventIoRun *run)
 {
         mliStr_free(&run->corsika_input_card);
         mliDynEventIoTelescopePosition_free(&run->telescope_positions);
-        fclose(run->f);
+        (*run) = mliEventIoRun_init();
 }

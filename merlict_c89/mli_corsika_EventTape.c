@@ -178,8 +178,6 @@ int mliEventTapeReader_finalize(struct mliEventTapeReader *tio)
 {
         (*tio) = mliEventTapeReader_init();
         return 1;
-error:
-        return 0;
 }
 
 int mliEventTapeReader_begin(struct mliEventTapeReader *tio, FILE *stream)
