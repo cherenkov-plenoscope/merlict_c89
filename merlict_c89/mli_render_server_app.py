@@ -6,25 +6,25 @@ from skimage import io
 import io
 import json
 
-def read_ascii_line(fstream):
+def readline_ascii(fstream):
     return fstream.readline().decode(encoding="ascii")
 
 
 def read_ppm_image(fstream):
-    magic_line = read_ascii_line(fstream)
+    magic_line = readline_ascii(fstream)
     assert magic_line[0] == "P"
     assert magic_line[1] == "6"
 
-    line = read_ascii_line(fstream)
+    line = readline_ascii(fstream)
     while line[0] == "#":
-        line = read_ascii_line(fstream)
+        line = readline_ascii(fstream)
 
     num_columns_line = line
     num_columns = int(num_columns_line)
-    num_rows_line = read_ascii_line(fstream)
+    num_rows_line = readline_ascii(fstream)
     num_rows = int(num_rows_line)
 
-    max_color_line = read_ascii_line(fstream)
+    max_color_line = readline_ascii(fstream)
     max_color = int(max_color_line)
 
     assert max_color == 255
@@ -59,8 +59,8 @@ CAMERA = {
 }
 
 IMAGE = {
-    "num_pixel_x": 256,
-    "num_pixel_y": 144,
+    "num_pixel_x": 128,
+    "num_pixel_y": 72,
 }
 
 TRACER = {
@@ -92,7 +92,6 @@ EXAMPLE = {
     "image": IMAGE,
 }
 
-
 def communicate_control(server, control):
     jsonl_str = json.dumps(control, indent=None) + "\n"
     jsonl_bytes = str.encode(jsonl_str, encoding="ascii")
@@ -100,7 +99,7 @@ def communicate_control(server, control):
     server.stdin.write(jsonl_bytes)
     server.stdin.flush()
 
-    response_str = read_ascii_line(server.stdout)
+    response_str = readline_ascii(server.stdout)
     response = json.loads(response_str)
     assert response["status"] == 1, "Server did not understand command."
 
@@ -111,12 +110,10 @@ def request_image(server, control):
 
 
 class RenderServer:
-    def __init__(self, server_path, scenery_path):
-        self.server = sp.Popen(
-            [server_path, scenery_path],
-            stdin=sp.PIPE,
-            stdout=sp.PIPE,
-        )
+    def __init__(self, server_path, scenery_tar_bytes):
+        self.server = sp.Popen(server_path, stdin=sp.PIPE, stdout=sp.PIPE)
+        self.server.stdin.write(scenery_tar_bytes)
+        self.server.stdin.write(b"\n")
 
     def render_image(self, control):
         return request_image(server=self.server, control=control)
@@ -126,7 +123,13 @@ class RenderServer:
         skimage.io.imsave(path, image)
 
 
-server = RenderServer(server_path=server_path, scenery_path=scenery_path)
+with open(scenery_path, "rb") as f:
+    scenery_tar_bytes = f.read()
+
+server = RenderServer(
+    server_path=server_path,
+    scenery_tar_bytes=scenery_tar_bytes
+)
 
 os.makedirs(outdir, exist_ok=True)
 for i, x in enumerate(np.linspace(-0.5, 0.5, 30)):

@@ -36,7 +36,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
         mliDynTextFiles_malloc(&arc->textfiles, 0u);
         chk_msg(mliTar_begin(&tar, f), "Can't begin tar.");
 
-        while (mliTar_read_header(&tar, &tarh)) {
+        while (mliTar_read_header(&tar, &tarh) != MLI_TAR_HEADER_ONLY_ZEROS) {
                 uint64_t next = arc->filenames.size;
                 struct mliStr *payload = NULL;
                 memset(tarh_name, '\0', sizeof(tarh_name));
@@ -70,6 +70,8 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
                         "('\\n', '\\t', '\\0') in textfiles.");
         }
 
+        chk_msg(mliTar_read_final_zeros(&tar),
+                "Expected at least a 2nd block of zeros at end of tar.");
         return 1;
 error:
         fprintf(stderr, "tar->filename: '%s'.\n",  tarh_name);

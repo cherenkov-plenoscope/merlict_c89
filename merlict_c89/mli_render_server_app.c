@@ -37,39 +37,42 @@ error:
         return 0;
 }
 
+int fread_until_next_newline(
+        FILE *fstream,
+        const char newline,
+        const uint64_t max_num_bytes)
+{
+        char c = '\0';
+        uint64_t num_bytes = 0u;
+        do {
+                chk_fread(&c, sizeof(char), 1, fstream);
+                num_bytes ++;
+                chk_msg(num_bytes < max_num_bytes, "Too many bytes.");
+        } while (c != newline);
+
+        return 1;
+error:
+        return 0;
+}
 
 int main(int argc, char *argv[])
 {
         struct mliScenery scenery = mliScenery_init();
-
-        if (argc == 2) {
-                if (mli_cstr_ends_with(argv[1], ".tar")) {
-                        chk_msg(mliScenery_malloc_from_tar(&scenery, argv[1]),
-                                "Can not read scenery from '.tar'.");
-                } else if (mli_cstr_ends_with(argv[1], ".mli")) {
-                        chk_msg(mliScenery_malloc_from_path(&scenery, argv[1]),
-                                "Can not read scenery from '.mli'.");
-                } else if (mli_cstr_ends_with(argv[1], ".obj")) {
-                        chk_msg(mliScenery_malloc_minimal_from_wavefront(
-                                        &scenery, argv[1]),
-                                "Can not read scenery from '.obj'.");
-                } else {
-                        chk_bad("Scenery-format has to be either of "
-                                "('.tar', '.mli', '.obj').");
-                }
-        } else {
-                fprintf(stderr, "Usage: %s <scenery-path>\n", argv[0]);
-                goto error;
-        }
-
         setbuf(stdout, NULL);
+
+        chk_msg(mliScenery_malloc_fread_tar(&scenery, stdin),
+                "Can't malloc scenery from stdin tar.");
+
+        chk_msg(fread_until_next_newline(stdin, '\n', 1000*1000),
+                "Can't reach next newline.");
+
         while (1) {
                 struct mliPrng prng = mliPrng_init_PCG32(0);
                 struct mliRenderConfig control = mliRenderConfig_init();
                 struct mliImage image = mliImage_init();
 
                 chk_msg(mliRenderConfig_from_channel(&control, stdin, stdout),
-                        "Can't communicate camera-control.");
+                        "Can't communicate RenderConfig.");
 
                 mliPrng_reinit(&prng, control.random_seed);
                 chk_msg(mliImage_malloc(

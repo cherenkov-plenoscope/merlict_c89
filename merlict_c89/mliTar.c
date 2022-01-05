@@ -99,6 +99,16 @@ error:
         return 0;
 }
 
+int mliTar_read_final_zeros(struct mliTar *tar)
+{
+        struct mliTarHeader rh = mliTarHeader_init();
+        chk_msg(mliTar_read_header(tar, &rh) == MLI_TAR_HEADER_ONLY_ZEROS,
+                "Failed to read the final block of zeros.");
+        return 1;
+error:
+        return 0;
+}
+
 int mliTar_open(struct mliTar *tar, const char *path, const char *mode)
 {
         FILE *stream;
@@ -376,7 +386,7 @@ int mliTar_read_header(struct mliTar *tar, struct mliTarHeader *h)
                 "Failed to read raw header");
 
         if (mliTar_raw_header_is_null(&rh)) {
-                return 0;
+                return MLI_TAR_HEADER_ONLY_ZEROS;
         }
 
         chk_msg(mliTar_raw_to_header(h, &rh), "Failed to parse raw header.");

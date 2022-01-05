@@ -31,6 +31,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#define MLI_TAR_VERSION_MAYOR 0
+#define MLI_TAR_VERSION_MINOR 1
+#define MLI_TAR_VERSION_PATCH 0
+
 #define MLI_TAR_NORMAL_FILE '0'
 #define MLI_TAR_HARD_LINK '1'
 #define MLI_TAR_SYMBOLIC_LINK '2'
@@ -39,8 +43,10 @@
 #define MLI_TAR_DIRECTORY '5'
 #define MLI_TAR_FIFO '6'
 #define MLI_TAR_NAME_LENGTH 100
+
 #define MLI_TAR_OCTAL 8u
 #define MLI_TAR_MAX_FILESIZE_OCTAL 8589934592lu /* 8^11 */
+#define MLI_TAR_HEADER_ONLY_ZEROS -100
 
 struct mliTarHeader {
         uint64_t mode;
@@ -69,6 +75,7 @@ struct mliTar mliTar_init(void);
 
 int mliTar_begin(struct mliTar *tar, FILE *file);
 int mliTar_finalize(struct mliTar *tar);
+int mliTar_read_final_zeros(struct mliTar *tar);
 
 int mliTar_open(struct mliTar *tar, const char *path, const char *mode);
 int mliTar_close(struct mliTar *tar);
