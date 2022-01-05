@@ -10,243 +10,35 @@
 #include "chk_debug.h"
 #include "mli_cstr_numbers.h"
 
-/* TarHeader */
-/* ========= */
 
-struct mliTarRawHeader {
-        char name[MLI_TAR_NAME_LENGTH];
-        char mode[8];
-        char owner[8];
-        char group[8];
-        char size[12];
-        char mtime[12];
-        char checksum[8];
-        char type;
-        char linkname[MLI_TAR_NAME_LENGTH];
-        char _padding[255];
-};
-
-struct mliTarHeader mliTarHeader_init(void)
-{
-        struct mliTarHeader h;
-        h.mode = 0;
-        h.owner = 0;
-        h.size = 0;
-        h.mtime = 0;
-        h.type = 0;
-        memset(h.name, '\0', sizeof(h.name));
-        memset(h.linkname, '\0', sizeof(h.linkname));
-        return h;
-}
-
-int mliTarHeader_set_normal_file(
-        struct mliTarHeader *h,
-        const char *name,
-        const uint64_t size)
-{
-        (*h) = mliTarHeader_init();
-        chk_msg(strlen(name) < sizeof(h->name), "Filename is too long.");
-        memcpy(h->name, name, strlen(name));
-        h->size = size;
-        h->type = MLI_TAR_NORMAL_FILE;
-        h->mode = 0664;
-        return 1;
-error:
-        return 0;
-}
-
-int mliTarHeader_set_directory(struct mliTarHeader *h, const char *name)
-{
-        (*h) = mliTarHeader_init();
-        chk_msg(strlen(name) < sizeof(h->name), "Dirname is too long.");
-        memcpy(h->name, name, strlen(name));
-        h->type = MLI_TAR_DIRECTORY;
-        h->mode = 0775;
-        return 1;
-error:
-        return 0;
-}
-
-/* Tar */
-/* === */
-
-struct mliTar mliTar_init(void)
-{
-        struct mliTar out;
-        out.stream = NULL;
-        out.pos = 0u;
-        out.remaining_data = 0u;
-        return out;
-}
-
-int mliTar_begin(struct mliTar *tar, FILE *stream)
-{
-        *tar = mliTar_init();
-        tar->stream = stream;
-        chk_msg(tar->stream, "tar->stream is not ready.");
-        return 1;
-error:
-        return 0;
-}
-
-int mliTar_finalize(struct mliTar *tar)
-{
-        chk_msg(mliTar_write_null_bytes(
-                        tar, sizeof(struct mliTarRawHeader) * 2),
-                "Failed to write two final null records.");
-        return 1;
-error:
-        return 0;
-}
-
-int mliTar_read_final_zeros(struct mliTar *tar)
-{
-        struct mliTarHeader rh = mliTarHeader_init();
-        chk_msg(mliTar_read_header(tar, &rh) == MLI_TAR_HEADER_ONLY_ZEROS,
-                "Failed to read the final block of zeros.");
-        return 1;
-error:
-        return 0;
-}
-
-int mliTar_open(struct mliTar *tar, const char *path, const char *mode)
-{
-        FILE *stream;
-        /* Assure mode is always binary */
-        if (strchr(mode, 'r')) {
-                mode = "rb";
-        }
-        if (strchr(mode, 'w')) {
-                mode = "wb";
-        }
-        if (strchr(mode, 'a')) {
-                mode = "ab";
-        }
-        stream = fopen(path, mode);
-        chk_msg(mliTar_begin(tar, stream), "Can't begin tar.")
-        return 1;
-error:
-        return 0;
-}
-
-int mliTar_close(struct mliTar *tar)
-{
-        fclose(tar->stream);
-        (*tar) = mliTar_init();
-        return 1;
-}
-
-int mliTar_twrite(struct mliTar *tar, const void *data, const uint64_t size)
-{
-        int64_t res = fwrite(data, 1, size, tar->stream);
-        chk_msg(res >= 0, "Failed writing to tar.");
-        chk_msg((uint64_t)res == size, "Failed writing to tar.");
-        tar->pos += size;
-        return 1;
-error:
-        return 0;
-}
-
-int mliTar_tread(struct mliTar *tar, void *data, const uint64_t size)
-{
-        int64_t res = fread(data, 1, size, tar->stream);
-        chk_msg(res >= 0, "Failed reading from tar.");
-        chk_msg((uint64_t)res == size, "Failed reading from tar.");
-        tar->pos += size;
-        return 1;
-error:
-        return 0;
-}
+/*                             basics                                         */
+/* ========================================================================== */
 
 uint64_t mliTar_round_up(uint64_t n, uint64_t incr)
 {
         return n + (incr - n % incr) % incr;
 }
 
-uint64_t mliTar_checksum(const struct mliTarRawHeader *rh)
-{
-        uint64_t i;
-        unsigned char *p = (unsigned char *)rh;
-        uint64_t res = 256;
-        for (i = 0; i < offsetof(struct mliTarRawHeader, checksum); i++) {
-                res += p[i];
-        }
-        for (i = offsetof(struct mliTarRawHeader, type); i < sizeof(*rh); i++) {
-                res += p[i];
-        }
-        return res;
-}
-
-int mliTar_write_null_bytes(struct mliTar *tar, uint64_t n)
-{
-        uint64_t i;
-        char nul = '\0';
-        for (i = 0; i < n; i++) {
-                chk_msg(mliTar_twrite(tar, &nul, 1), "Failed to write nulls");
-        }
-        return 1;
-error:
-        return 0;
-}
-
 int mliTar_field_to_uint(
         uint64_t *out,
         const char *field,
-        const uint64_t field_size)
+        const uint64_t fieldsize)
 {
         char buff[MLI_TAR_NAME_LENGTH] = {'\0'};
-        chk(field_size < MLI_TAR_NAME_LENGTH);
-        memcpy(buff, field, field_size);
+        chk(fieldsize < MLI_TAR_NAME_LENGTH);
+        memcpy(buff, field, fieldsize);
 
         /* Take care of historic 'space' (32 decimal) termination */
         /* Convert all 'space' terminations to '\0' terminations. */
 
-        if (buff[field_size - 1] == 32) {
-                buff[field_size - 1] = 0;
+        if (buff[fieldsize - 1] == 32) {
+                buff[fieldsize - 1] = 0;
         }
-        if (buff[field_size - 2] == 32) {
-                buff[field_size - 2] = 0;
+        if (buff[fieldsize - 2] == 32) {
+                buff[fieldsize - 2] = 0;
         }
 
         chk(mli_cstr_to_uint64(out, buff, MLI_TAR_OCTAL));
-        return 1;
-error:
-        return 0;
-}
-
-int mliTar_raw_to_header(
-        struct mliTarHeader *h,
-        const struct mliTarRawHeader *rh)
-{
-        uint64_t chksum_actual, chksum_expected;
-        chksum_actual = mliTar_checksum(rh);
-
-        /* Build and compare checksum */
-        chk_msg(mliTar_field_to_uint(
-                        &chksum_expected, rh->checksum, sizeof(rh->checksum)),
-                "bad checksum string.");
-        chk_msg(chksum_actual == chksum_expected, "bad checksum.");
-
-        /* Load raw header into header */
-        chk_msg(mliTar_field_to_uint(&h->mode, rh->mode, sizeof(rh->mode)),
-                "bad mode");
-        chk_msg(mliTar_field_to_uint(&h->owner, rh->owner, sizeof(rh->owner)),
-                "bad owner");
-        if (rh->size[0] == -128) {
-                chk_msg(mliTar_field12_to_uint64_2001star_base256(
-                                rh->size, &h->size),
-                        "bad size, mode: base-256");
-        } else {
-                chk_msg(mliTar_field_to_uint(
-                                &h->size, rh->size, sizeof(rh->size)),
-                        "bad size, mode: base-octal");
-        }
-        chk_msg(mliTar_field_to_uint(&h->mtime, rh->mtime, sizeof(rh->mtime)),
-                "bad mtime");
-        h->type = rh->type;
-        memcpy(h->name, rh->name, sizeof(h->name));
-        memcpy(h->linkname, rh->linkname, sizeof(h->linkname));
-
         return 1;
 error:
         return 0;
@@ -317,7 +109,36 @@ error:
         return 0;
 }
 
-int mliTar_make_raw_header(
+/*                               raw header                                   */
+/* ========================================================================== */
+
+uint64_t mliTarRawHeader_checksum(const struct mliTarRawHeader *rh)
+{
+        uint64_t i;
+        unsigned char *p = (unsigned char *)rh;
+        uint64_t res = 256;
+        for (i = 0; i < offsetof(struct mliTarRawHeader, checksum); i++) {
+                res += p[i];
+        }
+        for (i = offsetof(struct mliTarRawHeader, type); i < sizeof(*rh); i++) {
+                res += p[i];
+        }
+        return res;
+}
+
+int mliTarRawHeader_is_null(const struct mliTarRawHeader *rh)
+{
+        uint64_t i = 0u;
+        unsigned char *p = (unsigned char *)rh;
+        for (i = 0; i < sizeof(struct mliTarRawHeader); i++) {
+                if (p[i] != '\0') {
+                        return 0;
+                }
+        }
+        return 1;
+}
+
+int mliTarRawHeader_from_header(
         struct mliTarRawHeader *rh,
         const struct mliTarHeader *h)
 {
@@ -345,7 +166,7 @@ int mliTar_make_raw_header(
         memcpy(rh->linkname, h->linkname, sizeof(rh->linkname));
 
         /* Calculate and write checksum */
-        chksum = mliTar_checksum(rh);
+        chksum = mliTarRawHeader_checksum(rh);
         chk_msg(mli_cstr_print_uint64(
                         chksum,
                         rh->checksum,
@@ -366,16 +187,126 @@ error:
         return 0;
 }
 
-int mliTar_raw_header_is_null(const struct mliTarRawHeader *rh)
+/*                                  header                                    */
+/* ========================================================================== */
+
+struct mliTarHeader mliTarHeader_init(void)
 {
-        uint64_t i = 0u;
-        unsigned char *p = (unsigned char *)rh;
-        for (i = 0; i < sizeof(struct mliTarRawHeader); i++) {
-                if (p[i] != '\0') {
-                        return 0;
-                }
-        }
+        struct mliTarHeader h;
+        h.mode = 0;
+        h.owner = 0;
+        h.size = 0;
+        h.mtime = 0;
+        h.type = 0;
+        memset(h.name, '\0', sizeof(h.name));
+        memset(h.linkname, '\0', sizeof(h.linkname));
+        return h;
+}
+
+int mliTarHeader_set_directory(struct mliTarHeader *h, const char *name)
+{
+        (*h) = mliTarHeader_init();
+        chk_msg(strlen(name) < sizeof(h->name), "Dirname is too long.");
+        memcpy(h->name, name, strlen(name));
+        h->type = MLI_TAR_DIRECTORY;
+        h->mode = 0775;
         return 1;
+error:
+        return 0;
+}
+
+int mliTarHeader_set_normal_file(
+        struct mliTarHeader *h,
+        const char *name,
+        const uint64_t size)
+{
+        (*h) = mliTarHeader_init();
+        chk_msg(strlen(name) < sizeof(h->name), "Filename is too long.");
+        memcpy(h->name, name, strlen(name));
+        h->size = size;
+        h->type = MLI_TAR_NORMAL_FILE;
+        h->mode = 0664;
+        return 1;
+error:
+        return 0;
+}
+
+int mliTarHeader_from_raw(
+        struct mliTarHeader *h,
+        const struct mliTarRawHeader *rh)
+{
+        uint64_t chksum_actual, chksum_expected;
+        chksum_actual = mliTarRawHeader_checksum(rh);
+
+        /* Build and compare checksum */
+        chk_msg(mliTar_field_to_uint(
+                        &chksum_expected, rh->checksum, sizeof(rh->checksum)),
+                "bad checksum string.");
+        chk_msg(chksum_actual == chksum_expected, "bad checksum.");
+
+        /* Load raw header into header */
+        chk_msg(mliTar_field_to_uint(&h->mode, rh->mode, sizeof(rh->mode)),
+                "bad mode");
+        chk_msg(mliTar_field_to_uint(&h->owner, rh->owner, sizeof(rh->owner)),
+                "bad owner");
+        if (rh->size[0] == -128) {
+                chk_msg(mliTar_field12_to_uint64_2001star_base256(
+                                rh->size, &h->size),
+                        "bad size, mode: base-256");
+        } else {
+                chk_msg(mliTar_field_to_uint(
+                                &h->size, rh->size, sizeof(rh->size)),
+                        "bad size, mode: base-octal");
+        }
+        chk_msg(mliTar_field_to_uint(&h->mtime, rh->mtime, sizeof(rh->mtime)),
+                "bad mtime");
+        h->type = rh->type;
+        memcpy(h->name, rh->name, sizeof(h->name));
+        memcpy(h->linkname, rh->linkname, sizeof(h->linkname));
+
+        return 1;
+error:
+        return 0;
+}
+
+/* tar */
+/* === */
+
+struct mliTar mliTar_init(void)
+{
+        struct mliTar out;
+        out.stream = NULL;
+        out.pos = 0u;
+        out.remaining_data = 0u;
+        return out;
+}
+
+/*                                 read                                       */
+/* ========================================================================== */
+
+int mliTar_read_begin(struct mliTar *tar, FILE *stream)
+{
+        chk_msg(tar->stream == NULL,
+                "Can't begin reading tar. "
+                "tar is either still open or not initialized.");
+        (*tar) = mliTar_init();
+        tar->stream = stream;
+        chk_msg(tar->stream,
+                "Can't begin reading tar. Tar->stream is NULL.");
+        return 1;
+error:
+        return 0;
+}
+
+int mliTar_tread(struct mliTar *tar, void *data, const uint64_t size)
+{
+        int64_t res = fread(data, 1, size, tar->stream);
+        chk_msg(res >= 0, "Failed reading from tar.");
+        chk_msg((uint64_t)res == size, "Failed reading from tar.");
+        tar->pos += size;
+        return 1;
+error:
+        return 0;
 }
 
 int mliTar_read_header(struct mliTar *tar, struct mliTarHeader *h)
@@ -385,11 +316,12 @@ int mliTar_read_header(struct mliTar *tar, struct mliTarHeader *h)
         chk_msg(mliTar_tread(tar, &rh, sizeof(rh)),
                 "Failed to read raw header");
 
-        if (mliTar_raw_header_is_null(&rh)) {
-                return MLI_TAR_HEADER_ONLY_ZEROS;
+        if (mliTarRawHeader_is_null(&rh)) {
+                (*h) = mliTarHeader_init();
+                return 0;
         }
 
-        chk_msg(mliTar_raw_to_header(h, &rh), "Failed to parse raw header.");
+        chk_msg(mliTarHeader_from_raw(h, &rh), "Failed to parse raw header.");
         tar->remaining_data = h->size;
         return 1;
 error:
@@ -421,12 +353,69 @@ error:
         return 0;
 }
 
+int mliTar_read_finalize(struct mliTar *tar)
+{
+        struct mliTarHeader h = mliTarHeader_init();
+        chk_msg(mliTar_read_header(tar, &h) == 0,
+                "Failed to read the 2nd final block of zeros.");
+        chk(h.mode == 0);
+        chk(h.owner == 0);
+        chk(h.size == 0);
+        chk(h.mtime == 0);
+        chk(h.type == 0);
+        chk(h.name[0] == '\0');
+        chk(h.linkname[0] == '\0');
+        return 1;
+error:
+        return 0;
+}
+
+/*                                  write                                     */
+/* ========================================================================== */
+
+int mliTar_write_begin(struct mliTar *tar, FILE *stream)
+{
+        chk_msg(tar->stream == NULL,
+                "Can't begin writing tar. "
+                "tar is either still open or not initialized.");
+        (*tar) = mliTar_init();
+        tar->stream = stream;
+        chk_msg(tar->stream,
+                "Can't begin writing tar. Tar->stream is NULL.");
+        return 1;
+error:
+        return 0;
+}
+
+int mliTar_twrite(struct mliTar *tar, const void *data, const uint64_t size)
+{
+        int64_t res = fwrite(data, 1, size, tar->stream);
+        chk_msg(res >= 0, "Failed writing to tar.");
+        chk_msg((uint64_t)res == size, "Failed writing to tar.");
+        tar->pos += size;
+        return 1;
+error:
+        return 0;
+}
+
 int mliTar_write_header(struct mliTar *tar, const struct mliTarHeader *h)
 {
         struct mliTarRawHeader rh;
-        chk_msg(mliTar_make_raw_header(&rh, h), "Failed to make raw-header");
+        chk_msg(mliTarRawHeader_from_header(&rh, h), "Failed to make raw-header");
         tar->remaining_data = h->size;
         chk_msg(mliTar_twrite(tar, &rh, sizeof(rh)), "Failed to write header.");
+        return 1;
+error:
+        return 0;
+}
+
+int mliTar_write_null_bytes(struct mliTar *tar, uint64_t n)
+{
+        uint64_t i;
+        char nul = '\0';
+        for (i = 0; i < n; i++) {
+                chk_msg(mliTar_twrite(tar, &nul, 1), "Failed to write nulls");
+        }
         return 1;
 error:
         return 0;
@@ -446,6 +435,16 @@ int mliTar_write_data(struct mliTar *tar, const void *data, uint64_t size)
                 chk_msg(mliTar_write_null_bytes(tar, padding_size),
                         "Failed to write padding zeros.");
         }
+        return 1;
+error:
+        return 0;
+}
+
+int mliTar_write_finalize(struct mliTar *tar)
+{
+        chk_msg(mliTar_write_null_bytes(
+                        tar, sizeof(struct mliTarRawHeader) * 2),
+                "Failed to write two final null records.");
         return 1;
 error:
         return 0;

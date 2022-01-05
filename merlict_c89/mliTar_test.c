@@ -5,40 +5,38 @@
 
 CASE("Write and read tape-archive")
 {
+        FILE *f = NULL;
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
         char payload[1024] = {'\0'};
 
         sprintf(payload, "%s", "Hello world!");
 
-        CHECK(mliTar_open(
-                &tar, "merlict_c89/mliTar_test_resources/123.tar.tmp", "w"));
+        f = fopen("merlict_c89/mliTar_test_resources/123.tar.tmp", "wb");
+        CHECK(mliTar_write_begin(&tar, f));
         CHECK(mliTarHeader_set_directory(&tarh, "resources"));
         CHECK(mliTar_write_header(&tar, &tarh));
-
         CHECK(mliTarHeader_set_normal_file(
                 &tarh, "resources/hans.txt", strlen(payload)));
         CHECK(mliTar_write_header(&tar, &tarh));
-
         CHECK(mliTar_write_data(&tar, payload, strlen(payload)));
-        CHECK(mliTar_finalize(&tar));
-        CHECK(mliTar_close(&tar));
+        CHECK(mliTar_write_finalize(&tar));
+        fclose(f);
 
         memset(payload, '\0', sizeof(payload));
 
-        CHECK(mliTar_open(
-                &tar, "merlict_c89/mliTar_test_resources/123.tar.tmp", "r"));
-
+        f = fopen("merlict_c89/mliTar_test_resources/123.tar.tmp", "rb");
+        tar = mliTar_init();
+        CHECK(mliTar_read_begin(&tar, f));
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("resources", tarh.name));
         CHECK(tarh.type == MLI_TAR_DIRECTORY);
-
         CHECK(mliTar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("resources/hans.txt", tarh.name));
         CHECK(mliTar_read_data(&tar, payload, tarh.size));
         CHECK(0 == strcmp("Hello world!", payload));
-
-        CHECK(mliTar_close(&tar));
+        CHECK(mliTar_read_finalize(&tar));
+        fclose(f);
 }
 
 CASE("ustar2001_size_base_256_init")
