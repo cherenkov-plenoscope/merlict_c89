@@ -66,15 +66,6 @@ int main(int argc, char *argv[])
         chk_msg(fread_until_next_newline(stdin, '\n', 1000*1000),
                 "Can't reach next newline.");
 
-        if (0) {
-                fprintf(stderr, "FOOOO 0\n");
-        }
-        if (-1) {
-                fprintf(stderr, "FOOOO -1\n");
-        }
-        if (1) {
-                fprintf(stderr, "FOOOO 1\n");
-        }
         while (1) {
                 struct mliPrng prng = mliPrng_init_PCG32(0);
                 struct mliRenderConfig control = mliRenderConfig_init();
