@@ -34,7 +34,7 @@ struct mliPhotonInteraction {
 int mli_time_of_flight(
         const struct mliMaterials *materials,
         const struct mliPhotonInteraction *phisec,
-        const struct mliPhoton *photon,
+        const double wavelength,
         double *time_of_flight);
 int mli_photoninteraction_type_to_string(const int32_t type, char *s);
 #endif

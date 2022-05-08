@@ -37,14 +37,14 @@ error:
 int mli_time_of_flight(
         const struct mliMaterials *materials,
         const struct mliPhotonInteraction *phisec,
-        const struct mliPhoton *photon,
+        const double wavelength,
         double *time_of_flight)
 {
         double refractive_index;
         chk_msg(mliFunc_evaluate(
                         &materials->media[phisec->medium_coming_from]
                                  .refraction,
-                        photon->wavelength,
+                        wavelength,
                         &refractive_index),
                 "Failed to eval. refraction for wavelength.");
 

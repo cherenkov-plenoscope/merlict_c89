@@ -3,6 +3,31 @@
 
 MLIDYNARRAY_IMPLEMENTATION(mli, PhotonInteraction, struct mliPhotonInteraction)
 
+int mliDynPhotonInteraction_time_of_flight(
+        const struct mliDynPhotonInteraction *history,
+        const struct mliScenery *scenery,
+        const double wavelength,
+        double *total_time_of_flight)
+{
+        uint64_t i;
+        (*total_time_of_flight) = 0.0;
+        for (i = 0; i < history->size; i++) {
+                double time_of_flight = 0.0;
+                chk_msg(mli_time_of_flight(
+                                &scenery->materials,
+                                &history->array[i],
+                                wavelength,
+                                &time_of_flight),
+                        "Can't estimate time-of-flight."
+                );
+                (*total_time_of_flight) += time_of_flight;
+        }
+        return 1;
+error:
+        return 0;
+}
+
+
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,
         const struct mliGeometry *scenery)
