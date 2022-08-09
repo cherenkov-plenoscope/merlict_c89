@@ -82,7 +82,7 @@ error:
 int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path)
 {
         FILE *f = fopen(path, "rb");
-        chk_msgf(f != NULL, ("Can't open path '%s'.", path))
+        chk_msgf(f != NULL, "Can't open path '%s'.", path)
         chk_msg(mliArchive_malloc_fread(arc, f),
                 "Can't fread Archive from file.");
         fclose(f);

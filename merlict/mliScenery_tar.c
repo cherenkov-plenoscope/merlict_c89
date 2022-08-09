@@ -20,7 +20,7 @@ error:
 int mliScenery_malloc_from_path_tar(struct mliScenery *scenery, const char *path)
 {
         FILE *f = fopen(path, "rb");
-        chk_msgf(f != NULL, ("Can't open path '%s'.", path))
+        chk_msgf(f != NULL, "Can't open path '%s'.", path)
         chk_msg(mliScenery_malloc_fread_tar(scenery, f),
                 "Can't fread Scenery from file.");
         fclose(f);

@@ -49,7 +49,7 @@ int mliImage_malloc_from_path(struct mliImage *img, const char *path)
 {
         FILE *f;
         f = fopen(path, "rb");
-        chk_msgf(f, ("Can't open path '%s'.", path));
+        chk_msgf(f, "Can't open path '%s'.", path);
         chk_msg(mliImage_malloc_fread(img, f), "Can't read ppm from file.");
         chk_msg(!feof(f), "Unexpected end-of-file.");
         chk_msg(!ferror(f), "File error.");
@@ -97,7 +97,7 @@ int mliImage_write_to_path(const struct mliImage *img, const char *path)
 {
         FILE *f;
         f = fopen(path, "wb");
-        chk_msgf(f, ("Can't open path '%s'.", path));
+        chk_msgf(f, "Can't open path '%s'.", path);
         chk_msg(mliImage_fwrite(img, f), "Can't write ppm to file.");
         chk_msg(!feof(f), "Unexpected end-of-file.");
         chk_msg(!ferror(f), "File error.");
