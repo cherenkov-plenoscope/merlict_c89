@@ -53,7 +53,7 @@ CASE("ray parallel to axis")
 
         CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
-                "merlict_c89/"
+                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"

@@ -36,7 +36,7 @@ def read_ppm_image(fstream):
 
 
 server_path = "./camsrv"
-scenery_path = "merlict_c89/tests/resources/sceneries/optics_focussing_mirror.tar"
+scenery_path = "merlict/tests/resources/sceneries/optics_focussing_mirror.tar"
 outdir = 'fly'
 
 def image_sensor_distance(focal_length, object_distance):

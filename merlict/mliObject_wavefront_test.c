@@ -363,7 +363,7 @@ CASE("mliObject, read wavefront file")
         struct mliObject obj = mliObject_init();
         CHECK(mliStr_malloc_from_path(
                 &str,
-                "merlict_c89/"
+                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -389,7 +389,7 @@ CASE("mliObject, write and read binary-string")
         FILE *f;
         CHECK(mliStr_malloc_from_path(
                 &str,
-                "merlict_c89/"
+                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -400,14 +400,14 @@ CASE("mliObject, write and read binary-string")
         mliStr_free(&str);
 
         f = fopen(
-                "merlict_c89/tests/resources/hexagonal_mirror_facet.bin.tmp",
+                "merlict/tests/resources/hexagonal_mirror_facet.bin.tmp",
                 "w");
         CHECK(f != NULL);
         mliObject_fwrite(&obj, f);
         fclose(f);
 
         f = fopen(
-                "merlict_c89/tests/resources/hexagonal_mirror_facet.bin.tmp",
+                "merlict/tests/resources/hexagonal_mirror_facet.bin.tmp",
                 "r");
         CHECK(f != NULL);
         mliObject_malloc_fread(&obj_back, f);
@@ -447,7 +447,7 @@ CASE("mliObject, write and read ascii-text-string")
         FILE *f;
         CHECK(mliStr_malloc_from_path(
                 &str,
-                "merlict_c89/"
+                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -458,7 +458,7 @@ CASE("mliObject, write and read ascii-text-string")
         mliStr_free(&str);
 
         f = fopen(
-                "merlict_c89/tests/resources/hexagonal_mirror_facet.obj.tmp",
+                "merlict/tests/resources/hexagonal_mirror_facet.obj.tmp",
                 "w");
         CHECK(f != NULL);
         mliObject_fprint_to_wavefront(f, &obj);
@@ -466,7 +466,7 @@ CASE("mliObject, write and read ascii-text-string")
 
         CHECK(mliStr_malloc_from_path(
                 &str,
-                "merlict_c89/tests/resources/hexagonal_mirror_facet.obj.tmp"));
+                "merlict/tests/resources/hexagonal_mirror_facet.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, str.cstr));
         mliStr_free(&str);
 
@@ -506,7 +506,7 @@ CASE("mliObject, read and write multiple materials")
         struct mliObject obj_back = mliObject_init();
         CHECK(mliStr_malloc_from_path(
                 &str,
-                "merlict_c89/"
+                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -521,14 +521,14 @@ CASE("mliObject, read and write multiple materials")
         CHECK(obj_orig.num_materials == 6);
 
         f = fopen(
-                "merlict_c89/tests/resources/cube_with_materials.obj.tmp", "w");
+                "merlict/tests/resources/cube_with_materials.obj.tmp", "w");
         CHECK(f != NULL);
         mliObject_fprint_to_wavefront(f, &obj_orig);
         fclose(f);
 
         CHECK(mliStr_malloc_from_path(
                 &str,
-                "merlict_c89/"
+                "merlict/"
                 "tests/"
                 "resources/"
                 "cube_with_materials.obj.tmp"));
@@ -570,7 +570,7 @@ CASE("mliObject, read and write repeating materials")
         struct mliObject obj_back = mliObject_init();
         CHECK(mliStr_malloc_from_path(
                 &str,
-                "merlict_c89/"
+                "merlict/"
                 "tests/"
                 "resources/"
                 "repeating_material.obj"));
@@ -582,14 +582,14 @@ CASE("mliObject, read and write repeating materials")
         CHECK(obj_orig.num_materials == 2);
 
         f = fopen(
-                "merlict_c89/tests/resources/repeating_material.obj.tmp", "w");
+                "merlict/tests/resources/repeating_material.obj.tmp", "w");
         CHECK(f != NULL);
         mliObject_fprint_to_wavefront(f, &obj_orig);
         fclose(f);
 
         CHECK(mliStr_malloc_from_path(
                 &str,
-                "merlict_c89/"
+                "merlict/"
                 "tests/"
                 "resources/"
                 "repeating_material.obj.tmp"));

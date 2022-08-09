@@ -26,13 +26,13 @@ Merlict would not exist without the author's past and present affiliations:
 To involve merlict in your project
 
 ```c
-#include "merlict_c89/mli.h"
+#include "merlict/mli.h"
 ```
 
 in your headers, and
 
 ```c
-#include "merlict_c89/mli.c"
+#include "merlict/mli.c"
 ```
 
 in your sources. Thats it. :checkered_flag:
