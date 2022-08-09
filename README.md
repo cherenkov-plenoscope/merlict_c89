@@ -1,9 +1,9 @@
-![merlict c89 logo](/readme/merlict_c89_logo_wide_32by9_low.jpg)
+![merlict c99 logo](/readme/merlict_logo_wide_32by9.png)
 
 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Merlict simulates light. It finds the intersections of a ray and a complex 3D geometry with special emphasis on surface-normals. Merlict can propagate photons based on geometric optics according to Fresnel. Merlict comes with its own interactive viewer for the terminal. Merlict is a library written in ```c89```.
+Merlict simulates light. It finds the intersections of a ray and a complex 3D geometry with special emphasis on surface-normals. Merlict can propagate photons based on geometric optics according to Fresnel. Merlict comes with its own interactive viewer for the terminal. Merlict is a library written in ```c99```.
 
 Merlict reads your scenery from text-files which describe your objects, the geometric relations between them, their materials, and their sourrounding media. Merlict can read a subset of the popular [object-wavefront format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```.
 You define photons with a creation-position, direction, and wavelength.
@@ -13,7 +13,7 @@ Merlict would not exist without the author's past and present affiliations:
 
 - Max-Planck-Institute for Nuclear Physics,
   Saupfercheckweg 1, 69117 Heidelberg, Germany
- 
+
 - Institute for Particle Physics and Astrophysics,
   ETH-Zurich, Otto-Stern-Weg 5, 8093 Zurich, Switzerland
 
@@ -36,10 +36,10 @@ in your headers, and
 ```
 
 in your sources. Thats it. :checkered_flag:
-See ```./merlict_c89/mli_test.c``` and run ```./compile_and_test.sh``` for a minimal example.
+See ```./merlict/mli_test.c``` and run ```./compile_and_test.sh``` for a minimal example.
 
 ### Your Buildsystem
-Merlict is structured into pairs of ```./merlict_c89/mli*.h```, and ```./merlict_c89/mli*.c``` files which you can put into your buildsystem.
+Merlict is structured into pairs of ```./merlict/mli*.h```, and ```./merlict/mli*.c``` files which you can put into your buildsystem.
 
 # Viewer :eyes:
 Merlict's viewer runs in the terminal and reads three formats:
@@ -54,12 +54,12 @@ Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical 
 
 #### Build :hammer:
 ```bash
-gcc ./merlict_c89/mli_viewer_app.c -o viewer -lm
+gcc ./merlict/mli_viewer_app.c -o viewer -lm
 ```
 
 #### Run
 ```bash
-./viewer ./merlict_c89/tests/resources/sceneries/001.tar
+./viewer ./merlict/tests/resources/sceneries/001.tar
 ```
 
  ASCII-art                 | ANSI-escape-codes
@@ -160,7 +160,7 @@ Open an issue and describe your problem or wish.
 Then its the core developer's job to:
 - Write unit-tests.
 - Credit and acknowledge original authors.
-- Obey ```std=c89``` standard.
+- Obey ```std=c99``` standard.
 - Keep the header's namespace clean. No ```typedef```s! Merlict uses ```mli``` prefix.
 - Avoid all Warnings in```gcc``` and ```clang``` in both ```c``` and ```c++``` mode.
 - Format ```c``` according to ```./.clang-format```.
