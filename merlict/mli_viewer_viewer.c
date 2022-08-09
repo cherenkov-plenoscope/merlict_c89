@@ -83,7 +83,8 @@ void mlivr_timestamp_now_19chars(char *buffer)
         time_t now = time(0);
         struct tm *nowtm;
         nowtm = localtime(&now);
-        chk(snprintf(buffer,
+        chk(snprintf(
+                buffer,
                 19,
                 "%04u-%02u-%02u_%02u-%02u-%02u",
                 nowtm->tm_year + 1900,
@@ -92,9 +93,9 @@ void mlivr_timestamp_now_19chars(char *buffer)
                 nowtm->tm_hour,
                 nowtm->tm_min,
                 nowtm->tm_sec));
-    return 1;
+        return 1;
 error:
-    return 0;
+        return 0;
 }
 
 int mlivr_get_key(void)
@@ -143,8 +144,7 @@ int mlivr_export_image(
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
                 apcam, camera2root_comp, scenery, &full, tracer_config, prng);
-        chk_msg(mliImage_write_to_path(&full, path),
-                "Failed to write ppm.");
+        chk_msg(mliImage_write_to_path(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
 error:
@@ -232,7 +232,8 @@ int mlivr_run_interactive_viewer(
                                 print_help = 1;
                                 break;
                         case MLIVR_SPACE_KEY:
-                                chk(snprintf(path,
+                                chk(snprintf(
+                                        path,
                                         1023,
                                         "%s_%06lu.ppm",
                                         timestamp,

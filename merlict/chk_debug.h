@@ -15,14 +15,12 @@
 #define chk_clean_errno() (errno == 0 ? "None" : strerror(errno))
 
 #define chk_eprintf(M, ...)                                                    \
-        fprintf(                                                               \
-                stderr,                                                        \
+        fprintf(stderr,                                                        \
                 "[ERROR] (%s:%d: errno: %s) " M "\n",                          \
                 __FILE__,                                                      \
                 __LINE__,                                                      \
                 chk_clean_errno(),                                             \
-                __VA_ARGS__                                                    \
-        )
+                __VA_ARGS__)
 
 #define chk_eprint(M) chk_eprintf(M "%s", "")
 

@@ -80,8 +80,7 @@ CASE("mliJson_malloc_from_path")
         CHECK(mliJson_malloc_from_path(
                 &json, "merlict/mli_json_test_resources/example.json"));
         CHECK(mliJson_debug_to_path(
-                &json,
-                "merlict/mli_json_test_resources/example.debug.tmp"));
+                &json, "merlict/mli_json_test_resources/example.debug.tmp"));
 
         CHECK(mliJson_token_by_key(&json, 0, "name", &return_idx));
         CHECK(return_idx == 1);
@@ -182,7 +181,8 @@ CASE("rotation representations")
         /* unity */
         q_expected = mliQuaternion_set_tait_bryan(0., 0., 0.);
 
-        CHECK(snprintf(json_str,
+        CHECK(snprintf(
+                json_str,
                 1023,
                 "{"
                 "\"repr\": \"tait_bryan\", "
@@ -193,7 +193,8 @@ CASE("rotation representations")
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
-        CHECK(snprintf(json_str,
+        CHECK(snprintf(
+                json_str,
                 1023,
                 "{"
                 "\"repr\": \"axis_angle\", "
@@ -205,7 +206,8 @@ CASE("rotation representations")
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
-        CHECK(snprintf(json_str,
+        CHECK(snprintf(
+                json_str,
                 1023,
                 "{"
                 "\"repr\": \"quaternion\", "
@@ -219,7 +221,8 @@ CASE("rotation representations")
         /* z-axis, 45deg */
         q_expected = mliQuaternion_set_tait_bryan(0., 0., -mli_deg2rad(45.));
 
-        CHECK(snprintf(json_str,
+        CHECK(snprintf(
+                json_str,
                 1023,
                 "{"
                 "\"repr\": \"tait_bryan\", "
@@ -230,7 +233,8 @@ CASE("rotation representations")
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
-        CHECK(snprintf(json_str,
+        CHECK(snprintf(
+                json_str,
                 1023,
                 "{"
                 "\"repr\": \"axis_angle\", "
@@ -242,7 +246,8 @@ CASE("rotation representations")
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
-        CHECK(snprintf(json_str,
+        CHECK(snprintf(
+                json_str,
                 1023,
                 "{"
                 "\"repr\": \"quaternion\", "

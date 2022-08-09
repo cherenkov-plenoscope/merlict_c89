@@ -112,51 +112,51 @@ CASE("string to float")
         char s[256];
 
         /* Simple case. */
-        CHECK(snprintf(s, 255,"11."));
+        CHECK(snprintf(s, 255, "11."));
         CHECK(mli_cstr_to_double(&i, s));
         CHECK(i == 11.);
 
         /* Negative number . */
-        CHECK(snprintf(s, 255,"-11."));
+        CHECK(snprintf(s, 255, "-11."));
         CHECK(mli_cstr_to_double(&i, s));
         CHECK(i == -11);
 
-        CHECK(snprintf(s, 255,".11"));
+        CHECK(snprintf(s, 255, ".11"));
         CHECK(mli_cstr_to_double(&i, s));
         CHECK(i == .11);
 
         /* 0 */
-        CHECK(snprintf(s, 255,"0"));
+        CHECK(snprintf(s, 255, "0"));
         CHECK(mli_cstr_to_double(&i, s));
         CHECK(i == 0);
-        CHECK(snprintf(s, 255,"0."));
+        CHECK(snprintf(s, 255, "0."));
         CHECK(mli_cstr_to_double(&i, s));
         CHECK(i == 0);
-        CHECK(snprintf(s, 255,".0"));
+        CHECK(snprintf(s, 255, ".0"));
         CHECK(mli_cstr_to_double(&i, s));
         CHECK(i == 0);
 
         /* Leading and trailing space. */
-        CHECK(snprintf(s, 255," 1"));
+        CHECK(snprintf(s, 255, " 1"));
         CHECK(!mli_cstr_to_double(&i, s));
-        CHECK(snprintf(s, 255,"1 "));
+        CHECK(snprintf(s, 255, "1 "));
         CHECK(!mli_cstr_to_double(&i, s));
         CHECK(mli_cstr_nto_double(&i, s, 1));
         CHECK(i == 1.0);
 
         /* Trash characters. */
-        CHECK(snprintf(s, 255,"a10"));
+        CHECK(snprintf(s, 255, "a10"));
         CHECK(!mli_cstr_to_double(&i, s));
-        CHECK(snprintf(s, 255,"10a"));
+        CHECK(snprintf(s, 255, "10a"));
         CHECK(!mli_cstr_to_double(&i, s));
         CHECK(mli_cstr_nto_double(&i, s, 2));
         CHECK(i == 10.0);
 
         /* long overflow */
-        CHECK(snprintf(s, 255,"9.9e9999"));
+        CHECK(snprintf(s, 255, "9.9e9999"));
         CHECK(!mli_cstr_to_double(&i, s));
 
         /* long underflow */
-        CHECK(snprintf(s, 255,"-9.9e9999"));
+        CHECK(snprintf(s, 255, "-9.9e9999"));
         CHECK(!mli_cstr_to_double(&i, s));
 }

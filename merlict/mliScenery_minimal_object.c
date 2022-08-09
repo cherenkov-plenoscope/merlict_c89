@@ -35,7 +35,8 @@ int mliScenery_malloc_minimal_from_wavefront(
                         &scenery->geometry.objects[0], str.cstr),
                 "Failed to malloc wavefront-object from string.");
         mliStr_free(&str);
-        chk(snprintf(scenery->geometry.object_names[0].cstr,
+        chk(snprintf(
+                scenery->geometry.object_names[0].cstr,
                 MLI_NAME_CAPACITY - 1,
                 "default-object"));
 
@@ -56,7 +57,8 @@ int mliScenery_malloc_minimal_from_wavefront(
         chk_msg(mliMaterials_malloc(&scenery->materials, mtlcap),
                 "Failed to malloc materials.");
 
-        chk(snprintf(scenery->materials.medium_names[0].cstr,
+        chk(snprintf(
+                scenery->materials.medium_names[0].cstr,
                 MLI_NAME_CAPACITY - 1,
                 "vacuum"));
 
@@ -94,7 +96,8 @@ int mliScenery_malloc_minimal_from_wavefront(
                 scenery->materials.surfaces[i].diffuse_reflection.y[0] = 1.0;
                 scenery->materials.surfaces[i].diffuse_reflection.y[1] = 1.0;
 
-                chk(snprintf(scenery->materials.surface_names[i].cstr,
+                chk(snprintf(
+                        scenery->materials.surface_names[i].cstr,
                         MLI_NAME_CAPACITY - 1,
                         "surface_%06u",
                         i));
@@ -103,7 +106,8 @@ int mliScenery_malloc_minimal_from_wavefront(
                 scenery->materials.boundary_layers[i].outer.medium = 0u;
                 scenery->materials.boundary_layers[i].inner.surface = i;
                 scenery->materials.boundary_layers[i].outer.surface = i;
-                chk(snprintf(scenery->materials.boundary_layer_names[i].cstr,
+                chk(snprintf(
+                        scenery->materials.boundary_layer_names[i].cstr,
                         MLI_NAME_CAPACITY - 1,
                         "boundary_layer_%06u",
                         i));

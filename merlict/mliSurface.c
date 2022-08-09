@@ -46,7 +46,10 @@ int mliSurface_equal(const struct mliSurface *a, const struct mliSurface *b)
         return 1;
 }
 
-int mli_material_type_to_string(const uint32_t type, char *s, const uint64_t s_capacity)
+int mli_material_type_to_string(
+        const uint32_t type,
+        char *s,
+        const uint64_t s_capacity)
 {
         switch (type) {
         case MLI_MATERIAL_PHONG:

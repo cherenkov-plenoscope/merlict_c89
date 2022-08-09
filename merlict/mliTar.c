@@ -10,7 +10,6 @@
 #include "chk_debug.h"
 #include "mli_cstr_numbers.h"
 
-
 /*                             basics                                         */
 /* ========================================================================== */
 
@@ -291,8 +290,7 @@ int mliTar_read_begin(struct mliTar *tar, FILE *stream)
                 "tar is either still open or not initialized.");
         (*tar) = mliTar_init();
         tar->stream = stream;
-        chk_msg(tar->stream,
-                "Can't begin reading tar. Tar->stream is NULL.");
+        chk_msg(tar->stream, "Can't begin reading tar. Tar->stream is NULL.");
         return 1;
 error:
         return 0;
@@ -380,8 +378,7 @@ int mliTar_write_begin(struct mliTar *tar, FILE *stream)
                 "tar is either still open or not initialized.");
         (*tar) = mliTar_init();
         tar->stream = stream;
-        chk_msg(tar->stream,
-                "Can't begin writing tar. Tar->stream is NULL.");
+        chk_msg(tar->stream, "Can't begin writing tar. Tar->stream is NULL.");
         return 1;
 error:
         return 0;
@@ -401,7 +398,8 @@ error:
 int mliTar_write_header(struct mliTar *tar, const struct mliTarHeader *h)
 {
         struct mliTarRawHeader rh;
-        chk_msg(mliTarRawHeader_from_header(&rh, h), "Failed to make raw-header");
+        chk_msg(mliTarRawHeader_from_header(&rh, h),
+                "Failed to make raw-header");
         tar->remaining_data = h->size;
         chk_msg(mliTar_twrite(tar, &rh, sizeof(rh)), "Failed to write header.");
         return 1;

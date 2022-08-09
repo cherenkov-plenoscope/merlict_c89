@@ -1,7 +1,6 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
 #include "mliAtmosphere_json.h"
 
-
 int mliAtmosphere_from_json_token(
         struct mliAtmosphere *atm,
         const struct mliJson *json,

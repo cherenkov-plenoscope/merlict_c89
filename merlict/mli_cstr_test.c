@@ -221,7 +221,10 @@ CASE("replace CRLF and CR linebreaks with LF")
         /* complex text CRLF */
         /* ----------------- */
         memset(src.cstr, '\0', src.capacity);
-        CHECK(snprintf(src.cstr, src.capacity - 1, "\r\nflower\r\ncar\r\n\r\nhouse\r\n"));
+        CHECK(snprintf(
+                src.cstr,
+                src.capacity - 1,
+                "\r\nflower\r\ncar\r\n\r\nhouse\r\n"));
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.cstr, "\nflower\ncar\n\nhouse\n"));
 

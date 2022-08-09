@@ -1,7 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliPhotonInteraction.h"
 
-int mli_photoninteraction_type_to_string(const int32_t type, char *s, const uint64_t s_capacity)
+int mli_photoninteraction_type_to_string(
+        const int32_t type,
+        char *s,
+        const uint64_t s_capacity)
 {
         switch (type) {
         case MLI_PHOTON_CREATION:

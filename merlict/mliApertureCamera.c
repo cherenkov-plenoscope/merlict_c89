@@ -15,7 +15,6 @@ struct mliApertureCamera mliApertureCamera_init(void)
         return apcam;
 }
 
-
 struct mliVec mliApertureCamera_pixel_center_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,

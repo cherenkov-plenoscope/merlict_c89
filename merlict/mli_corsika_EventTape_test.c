@@ -30,10 +30,7 @@ CASE("EventTape: run_normal")
 
         for (e = 0; e < NUM_EVENTS; e++) {
                 mliEventTape_testing_set_random_EVTH(
-                    corho,
-                    EVENT_NUMBERS[e],
-                    42.0,
-                    &prng);
+                        corho, EVENT_NUMBERS[e], 42.0, &prng);
                 CHECK(mliEventTapeWriter_write_evth(&taro, corho));
                 for (b = 0; b < NUM_BUNCHES[e]; b++) {
                         mliEventTape_testing_set_random_bunch(bunch, &prng);
@@ -63,8 +60,8 @@ CASE("EventTape: run_normal")
                         corho, EVENT_NUMBERS[e], 42.0, &prng);
                 CHECK(mliEventTape_testing_corsika_headers_are_equal(
                         corho, corhi));
-                CHECK(corhi[MLI_CORSIKA_EVTH_EVENT_NUMBER]
-                        == tari.event_number);
+                CHECK(corhi[MLI_CORSIKA_EVTH_EVENT_NUMBER] ==
+                      tari.event_number);
 
                 while (mliEventTapeReader_read_cherenkov_bunch(&tari, bunch)) {
                         /* work on photon bunch */
@@ -75,7 +72,7 @@ CASE("EventTape: run_normal")
                 }
                 CHECK(!mliEventTapeReader_read_cherenkov_bunch(&tari, bunch));
 
-                e ++;
+                e++;
         }
         CHECK(!mliEventTapeReader_read_evth(&tari, corhi));
         CHECK(mliEventTapeReader_finalize(&tari));

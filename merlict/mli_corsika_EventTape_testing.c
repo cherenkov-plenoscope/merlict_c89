@@ -33,9 +33,7 @@ void mliEventTape_testing_set_random_EVTH(
         evth[MLI_CORSIKA_EVTH_RUN_NUMBER] = run_number;
 }
 
-void mliEventTape_testing_set_random_bunch(
-        float *bunch,
-        struct mliPrng *prng)
+void mliEventTape_testing_set_random_bunch(float *bunch, struct mliPrng *prng)
 {
         bunch[0] = (float)mli_random_uniform(prng);
         bunch[1] = (float)mli_random_uniform(prng);
@@ -47,9 +45,7 @@ void mliEventTape_testing_set_random_bunch(
         bunch[7] = (float)mli_random_uniform(prng);
 }
 
-int mliEventTape_testing_bunches_are_equal(
-        float *b1,
-        float *b2)
+int mliEventTape_testing_bunches_are_equal(float *b1, float *b2)
 {
         if (b1[0] != b2[0]) {
                 fprintf(stderr, "Bunch missmatch x_cm.\n");
@@ -154,7 +150,8 @@ int mliEventTape_testing_write_and_read(
         mliPrng_reinit(&prng, random_seed);
 
         istream = fopen(path, "rb");
-        chk_msg(mliEventTapeReader_begin(&tari, istream), "Can't begin reader.");
+        chk_msg(mliEventTapeReader_begin(&tari, istream),
+                "Can't begin reader.");
 
         /* check RUNH */
         mliEventTape_testing_set_random_RUNH(corho, 18.0, &prng);
@@ -190,8 +187,7 @@ int mliEventTape_testing_write_and_read(
                                         bunchi, buncho),
                                 "Expected bunch to be equal.");
                 }
-                chk_msg(!mliEventTapeReader_read_cherenkov_bunch(
-                                &tari, buncho),
+                chk_msg(!mliEventTapeReader_read_cherenkov_bunch(&tari, buncho),
                         "Did not expect another cherenkov-bunch.");
         }
         chk_msg(!mliEventTapeReader_read_evth(&tari, corho),

@@ -47,7 +47,8 @@ int mliJson_parse_tokens__(struct mliJson *json)
                 json->num_tokens);
         chk_msgf(
                 num_tokens_parsed != JSMN_ERROR_NOMEM,
-                "Not enough tokens. Only got %ld", json->num_tokens);
+                "Not enough tokens. Only got %ld",
+                json->num_tokens);
         chk_msg(num_tokens_parsed != JSMN_ERROR_INVAL,
                 "Invalid character inside JSON string.");
         chk_msg(num_tokens_parsed != JSMN_ERROR_PART,
@@ -148,7 +149,8 @@ int mliJson_int64_by_key(
         chk(mliJson_token_by_key_eprint(json, token, key, &token_n));
         chk_msgf(
                 mliJson_int64_by_token(json, token_n + 1, val),
-                "Can't parse value of '%s' into int64.", key);
+                "Can't parse value of '%s' into int64.",
+                key);
         return 1;
 error:
         return 0;
@@ -196,7 +198,8 @@ int mliJson_double_by_key(
         chk(mliJson_token_by_key_eprint(json, token, key, &token_n));
         chk_msgf(
                 mliJson_double_by_token(json, token_n + 1, val),
-                "Can't parse value of '%s' into double.", key);
+                "Can't parse value of '%s' into double.",
+                key);
 
         return 1;
 error:
@@ -262,7 +265,8 @@ int mliJson_token_by_key_eprint(
 {
         chk_msgf(
                 mliJson_token_by_key(json, token, key, key_token),
-                "Expected key '%s' in json.", key);
+                "Expected key '%s' in json.",
+                key);
         return 1;
 error:
         return 0;

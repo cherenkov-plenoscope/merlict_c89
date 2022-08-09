@@ -18,15 +18,13 @@ int mliDynPhotonInteraction_time_of_flight(
                                 &history->array[i],
                                 wavelength,
                                 &time_of_flight),
-                        "Can't estimate time-of-flight."
-                );
+                        "Can't estimate time-of-flight.");
                 (*total_time_of_flight) += time_of_flight;
         }
         return 1;
 error:
         return 0;
 }
-
 
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,
@@ -67,13 +65,12 @@ void mliDynPhotonInteraction_print(
                 }
 
                 printf("[% -.1e,% -.1e,% -.1e]  ",
-                        phisec.position.x,
-                        phisec.position.y,
-                        phisec.position.z);
+                       phisec.position.x,
+                       phisec.position.y,
+                       phisec.position.z);
 
-                mli_photoninteraction_type_to_string(phisec.type,
-                        type_string,
-                        1024);
+                mli_photoninteraction_type_to_string(
+                        phisec.type, type_string, 1024);
 
                 printf("%-12s ", type_string);
 

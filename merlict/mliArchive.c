@@ -64,8 +64,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
                                 payload, &tmp_payload),
                         "Failed to replace CRLF and CR linebreaks.");
                 mliStr_free(&tmp_payload);
-                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(
-                                payload->cstr),
+                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(payload->cstr),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
         }
@@ -73,7 +72,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
         chk_msg(mliTar_read_finalize(&tar), "Can't finalize reading tar.");
         return 1;
 error:
-        fprintf(stderr, "tar->filename: '%s'.\n",  tarh_name);
+        fprintf(stderr, "tar->filename: '%s'.\n", tarh_name);
         mliStr_free(&tmp_payload);
         mliArchive_free(arc);
         return 0;
@@ -82,7 +81,7 @@ error:
 int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path)
 {
         FILE *f = fopen(path, "rb");
-        chk_msgf(f != NULL, "Can't open path '%s'.", path)
+        chk_msgf(f != NULL, "Can't open path '%s'.", path);
         chk_msg(mliArchive_malloc_fread(arc, f),
                 "Can't fread Archive from file.");
         fclose(f);
