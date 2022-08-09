@@ -10,7 +10,7 @@ CASE("Write and read tape-archive")
         struct mliTarHeader tarh = mliTarHeader_init();
         char payload[1024] = {'\0'};
 
-        sprintf(payload, "%s", "Hello world!");
+        CHECK(snprintf(payload, 1023, "%s", "Hello world!"));
 
         f = fopen("merlict/mliTar_test_resources/123.tar.tmp", "wb");
         CHECK(mliTar_write_begin(&tar, f));

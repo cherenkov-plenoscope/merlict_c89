@@ -116,7 +116,7 @@ CASE("mliJson_malloc_from_cstr")
         char json_str[1024];
         uint64_t token = 0u;
         int64_t value = 0;
-        sprintf(json_str, "{\"key\": 1337}");
+        CHECK(snprintf(json_str, 1023, "{\"key\": 1337}"));
         CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliJson_token_by_key(&json, 0, "key", &token));
         CHECK(mliJson_int64_by_token(&json, token + 1, &value));
@@ -130,7 +130,7 @@ CASE("mliJson_int64_by_key")
         char json_str[1024];
         int64_t int_val = 0;
         double dbl_val = 0.0;
-        sprintf(json_str, "{\"aaa\": 1337, \"bbb\": 4.2}");
+        CHECK(snprintf(json_str, 1023, "{\"aaa\": 1337, \"bbb\": 4.2}"));
         CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliJson_int64_by_key(&json, 0, &int_val, "aaa"));
         CHECK(mliJson_double_by_key(&json, 0, &dbl_val, "bbb"));
@@ -182,32 +182,35 @@ CASE("rotation representations")
         /* unity */
         q_expected = mliQuaternion_set_tait_bryan(0., 0., 0.);
 
-        sprintf(json_str,
+        CHECK(snprintf(json_str,
+                1023,
                 "{"
                 "\"repr\": \"tait_bryan\", "
                 "\"xyz_deg\": [0, 0, 0]"
-                "}");
+                "}"));
         CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
-        sprintf(json_str,
+        CHECK(snprintf(json_str,
+                1023,
                 "{"
                 "\"repr\": \"axis_angle\", "
                 "\"axis\": [0, 0, 0], "
                 "\"angle_deg\": 0."
-                "}");
+                "}"));
         CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
-        sprintf(json_str,
+        CHECK(snprintf(json_str,
+                1023,
                 "{"
                 "\"repr\": \"quaternion\", "
                 "\"xyz\": [0, 0, 0]"
-                "}");
+                "}"));
         CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
@@ -216,33 +219,36 @@ CASE("rotation representations")
         /* z-axis, 45deg */
         q_expected = mliQuaternion_set_tait_bryan(0., 0., -mli_deg2rad(45.));
 
-        sprintf(json_str,
+        CHECK(snprintf(json_str,
+                1023,
                 "{"
                 "\"repr\": \"tait_bryan\", "
                 "\"xyz_deg\": [0, 0, -45]"
-                "}");
+                "}"));
         CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
-        sprintf(json_str,
+        CHECK(snprintf(json_str,
+                1023,
                 "{"
                 "\"repr\": \"axis_angle\", "
                 "\"axis\": [0, 0, 1], "
                 "\"angle_deg\": 45"
-                "}");
+                "}"));
         CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);
         CHECK(mliQuaternion_equal_margin(q, q_expected, 1e-6));
 
-        sprintf(json_str,
+        CHECK(snprintf(json_str,
+                1023,
                 "{"
                 "\"repr\": \"quaternion\", "
                 "\"xyz\": [0, 0, %f]"
                 "}",
-                q_expected.z);
+                q_expected.z));
         CHECK(mliJson_malloc_from_cstr(&json, json_str));
         CHECK(mliQuaternion_from_json(&q, &json, 0));
         mliJson_free(&json);

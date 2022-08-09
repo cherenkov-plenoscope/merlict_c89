@@ -67,11 +67,13 @@ void mliDynPhotonInteraction_print(
                 }
 
                 printf("[% -.1e,% -.1e,% -.1e]  ",
-                       phisec.position.x,
-                       phisec.position.y,
-                       phisec.position.z);
+                        phisec.position.x,
+                        phisec.position.y,
+                        phisec.position.z);
 
-                mli_photoninteraction_type_to_string(phisec.type, type_string);
+                mli_photoninteraction_type_to_string(phisec.type,
+                        type_string,
+                        1024);
 
                 printf("%-12s ", type_string);
 

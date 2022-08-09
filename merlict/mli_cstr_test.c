@@ -42,7 +42,7 @@ CASE("mli_cstr_split_valid")
         int token_size;
         int p = 0;
 
-        sprintf(str, "first\nsecond\n\nthird");
+        CHECK(snprintf(str, 127, "first\nsecond\n\nthird"));
         token_size = mli_cstr_split(&str[p], delimiter, token, 128);
         CHECK(token_size == 5);
         CHECK(0 == strcmp(token, "first"));
@@ -88,36 +88,36 @@ CASE("mli_cstr_path_strip_this_dir")
         memset(src, '\0', sizeof(src));
         memset(dst, '\0', sizeof(dst));
 
-        sprintf(src, "/a/b/c");
+        CHECK(snprintf(src, 127, "/a/b/c"));
         mli_cstr_path_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, src));
 
-        sprintf(src, "./a/b/c");
+        CHECK(snprintf(src, 127, "./a/b/c"));
         mli_cstr_path_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "a/b/c"));
         CHECK(0 == strcmp(src, "./a/b/c"));
 
-        sprintf(src, "./functions/hans.csv");
+        CHECK(snprintf(src, 127, "./functions/hans.csv"));
         mli_cstr_path_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "functions/hans.csv"));
         CHECK(0 == strcmp(src, "./functions/hans.csv"));
 
-        sprintf(src, "././././f/h.csv");
+        CHECK(snprintf(src, 127, "././././f/h.csv"));
         mli_cstr_path_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "f/h.csv"));
         CHECK(0 == strcmp(src, "././././f/h.csv"));
 
-        sprintf(src, "a/b");
+        CHECK(snprintf(src, 127, "a/b"));
         mli_cstr_path_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "a/b"));
         CHECK(0 == strcmp(src, "a/b"));
 
-        sprintf(src, ".a/b");
+        CHECK(snprintf(src, 127, ".a/b"));
         mli_cstr_path_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, ".a/b"));
         CHECK(0 == strcmp(src, ".a/b"));
 
-        sprintf(src, "a./b");
+        CHECK(snprintf(src, 127, "a./b"));
         mli_cstr_path_strip_this_dir(dst, src);
         CHECK(0 == strcmp(dst, "a./b"));
         CHECK(0 == strcmp(src, "a./b"));
@@ -138,12 +138,12 @@ CASE("find CRLF and CR linebreaks")
         CHECK(!mli_cstr_is_CR(&txt[0]));
 
         memset(txt, '\0', sizeof(txt));
-        sprintf(txt, "\r\n");
+        CHECK(snprintf(txt, 127, "\r\n"));
         CHECK(mli_cstr_is_CRLF(&txt[0]));
         CHECK(mli_cstr_is_CR(&txt[0]));
 
         memset(txt, '\0', sizeof(txt));
-        sprintf(txt, "01\r\n23");
+        CHECK(snprintf(txt, 127, "01\r\n23"));
         CHECK(!mli_cstr_is_CRLF(&txt[0]));
         CHECK(!mli_cstr_is_CR(&txt[0]));
 
@@ -160,12 +160,12 @@ CASE("find CRLF and CR linebreaks")
         CHECK(!mli_cstr_is_CR(&txt[4]));
 
         memset(txt, '\0', sizeof(txt));
-        sprintf(txt, "\r");
+        CHECK(snprintf(txt, 127, "\r"));
         CHECK(!mli_cstr_is_CRLF(&txt[0]));
         CHECK(mli_cstr_is_CR(&txt[0]));
 
         memset(txt, '\0', sizeof(txt));
-        sprintf(txt, "0\r1");
+        CHECK(snprintf(txt, 127, "0\r1"));
         CHECK(!mli_cstr_is_CRLF(&txt[0]));
         CHECK(!mli_cstr_is_CR(&txt[0]));
 
@@ -193,42 +193,42 @@ CASE("replace CRLF and CR linebreaks with LF")
         /* minimal CR */
         /* ---------- */
         memset(src.cstr, '\0', src.capacity);
-        sprintf(src.cstr, "\r");
+        CHECK(snprintf(src.cstr, src.capacity - 1, "\r"));
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.cstr, "\n"));
 
         /* minimal CRLF */
         /* ------------ */
         memset(src.cstr, '\0', src.capacity);
-        sprintf(src.cstr, "\r\n");
+        CHECK(snprintf(src.cstr, src.capacity - 1, "\r\n"));
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.cstr, "\n"));
 
         /* minimal text CRLF */
         /* ----------------- */
         memset(src.cstr, '\0', src.capacity);
-        sprintf(src.cstr, "hans\r\npeter");
+        CHECK(snprintf(src.cstr, src.capacity - 1, "hans\r\npeter"));
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.cstr, "hans\npeter"));
 
         /* minimal text CR */
         /* ----------------- */
         memset(src.cstr, '\0', src.capacity);
-        sprintf(src.cstr, "hans\rpeter");
+        CHECK(snprintf(src.cstr, src.capacity - 1, "hans\rpeter"));
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.cstr, "hans\npeter"));
 
         /* complex text CRLF */
         /* ----------------- */
         memset(src.cstr, '\0', src.capacity);
-        sprintf(src.cstr, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
+        CHECK(snprintf(src.cstr, src.capacity - 1, "\r\nflower\r\ncar\r\n\r\nhouse\r\n"));
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.cstr, "\nflower\ncar\n\nhouse\n"));
 
         /* complex text CR */
         /* ----------------- */
         memset(src.cstr, '\0', src.capacity);
-        sprintf(src.cstr, "\rflower\rcar\r\rhouse\r");
+        CHECK(snprintf(src.cstr, src.capacity - 1, "\rflower\rcar\r\rhouse\r"));
         CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp(dst.cstr, "\nflower\ncar\n\nhouse\n"));
 
@@ -250,36 +250,36 @@ CASE("assert no unexpected control codes in ascii-text.")
         CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg("\r", 0));
 
         memset(txt, '\0', sizeof(txt));
-        sprintf(txt, "%c", 0);
+        CHECK(snprintf(txt, 31, "%c", 0));
         CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
 
         for (i = 1; i < 9; i++) {
                 memset(txt, '\0', sizeof(txt));
-                sprintf(txt, "%c", i);
+                CHECK(snprintf(txt, 31, "%c", i));
                 CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
         }
 
         memset(txt, '\0', sizeof(txt));
-        sprintf(txt, "%c", 9);
+        CHECK(snprintf(txt, 31, "%c", 9));
         CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
 
         memset(txt, '\0', sizeof(txt));
-        sprintf(txt, "%c", 10);
+        CHECK(snprintf(txt, 31, "%c", 10));
         CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
 
         for (i = 11; i < 32; i++) {
                 memset(txt, '\0', sizeof(txt));
-                sprintf(txt, "%c", i);
+                CHECK(snprintf(txt, 31, "%c", i));
                 CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
         }
 
         memset(txt, '\0', sizeof(txt));
-        sprintf(txt, "%c", 127);
+        CHECK(snprintf(txt, 31, "%c", 127));
         CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
 
         for (i = 128; i < 255; i++) {
                 memset(txt, '\0', sizeof(txt));
-                sprintf(txt, "%c", i);
+                CHECK(snprintf(txt, 31, "%c", i));
                 CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
         }
 }

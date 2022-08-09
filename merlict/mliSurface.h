@@ -34,7 +34,10 @@ int mliSurface_equal(const struct mliSurface *a, const struct mliSurface *b);
 int mliSurface_fwrite(const struct mliSurface *srf, FILE *f);
 int mliSurface_malloc_fread(struct mliSurface *srf, FILE *f);
 
-int mli_material_type_to_string(const uint32_t type, char *s);
+int mli_material_type_to_string(
+        const uint32_t type,
+        char *s,
+        const uint64_t s_capacity);
 int mli_material_type_from_string(const char *s, uint32_t *id);
 
 int mliSurface_malloc_from_json_str(

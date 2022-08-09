@@ -74,7 +74,7 @@ int mliEventTapeWriter_write_runh(
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
         tio->run_number = (int)(MLI_ROUND(runh[1]));
         chk_msg(tio->run_number >= 1, "Expected run_number >= 1.");
-        sprintf(path, "%09d/RUNH.float32", tio->run_number);
+        chk(snprintf(path, MLI_TAR_NAME_LENGTH - 1, "%09d/RUNH.float32", tio->run_number));
         chk_msg(mliEventTapeWriter_write_corsika_header(tio, path, runh),
                 "Can't write 'RUNH.float32' to event-tape.");
         return 1;
@@ -102,10 +102,11 @@ int mliEventTapeWriter_write_evth(
                 MLI_ROUND(evth[MLI_CORSIKA_EVTH_EVENT_NUMBER]));
         chk_msg(tio->event_number > 0, "Expected event_number > 0.");
         tio->cherenkov_bunch_block_number = 1;
-        sprintf(path,
+        chk(snprintf(path,
+                MLI_TAR_NAME_LENGTH - 1,
                 "%09d/%09d/EVTH.float32",
                 tio->run_number,
-                tio->event_number);
+                tio->event_number));
         chk_msg(mliEventTapeWriter_write_corsika_header(tio, path, evth),
                 "Can't write 'EVTH.float32' to event-tape.");
         return 1;
@@ -118,11 +119,12 @@ int mliEventTapeWriter_flush_cherenkov_bunch_block(
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
         struct mliTarHeader tarh = mliTarHeader_init();
-        sprintf(path,
+        chk(snprintf(path,
+                MLI_TAR_NAME_LENGTH - 1,
                 "%09d/%09d/%09d.cer.x8.float32",
                 tio->run_number,
                 tio->event_number,
-                tio->cherenkov_bunch_block_number);
+                tio->cherenkov_bunch_block_number));
         chk_msg(mliTarHeader_set_normal_file(
                         &tarh, path, tio->buffer.size * sizeof(float)),
                 "Can't set cherenkov-bunch-block's tar-header.");

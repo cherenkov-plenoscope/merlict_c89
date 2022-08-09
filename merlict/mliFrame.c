@@ -81,14 +81,14 @@ error:
         return NULL;
 }
 
-int mli_type_to_string(const uint64_t type, char *s)
+int mli_type_to_string(const uint64_t type, char *s, const uint64_t s_capacity)
 {
         switch (type) {
         case MLI_FRAME:
-                sprintf(s, "frame");
+                chk(snprintf(s, s_capacity - 1, "frame"));
                 break;
         case MLI_OBJECT:
-                sprintf(s, "object");
+                chk(snprintf(s, s_capacity - 1, "object"));
                 break;
         default:
                 chk_bad("Type is unknown.");
@@ -113,11 +113,11 @@ error:
         return 0;
 }
 
-void mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention)
+int mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention)
 {
         uint64_t c;
         char type_string[1024];
-        mli_type_to_string(f->type, type_string);
+        chk(mli_type_to_string(f->type, type_string, 1024));
         printf("%*s", (int)indention, "");
         printf(" __%s__ id:%u, at:%p\n", type_string, f->id, (void *)f);
         printf("%*s", (int)indention, "");
@@ -155,6 +155,9 @@ void mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention)
                 const struct mliFrame *child = f->children.array[c];
                 mliFrame_print_walk(child, indention + 4);
         }
+        return 1;
+error:
+        return 0;
 }
 
 void mliFrame_print(struct mliFrame *f) { mliFrame_print_walk(f, 0u); }

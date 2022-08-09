@@ -83,14 +83,18 @@ void mlivr_timestamp_now_19chars(char *buffer)
         time_t now = time(0);
         struct tm *nowtm;
         nowtm = localtime(&now);
-        sprintf(buffer,
+        chk(snprintf(buffer,
+                19,
                 "%04u-%02u-%02u_%02u-%02u-%02u",
                 nowtm->tm_year + 1900,
                 nowtm->tm_mon + 1,
                 nowtm->tm_mday,
                 nowtm->tm_hour,
                 nowtm->tm_min,
-                nowtm->tm_sec);
+                nowtm->tm_sec));
+    return 1;
+error:
+    return 0;
 }
 
 int mlivr_get_key(void)
@@ -185,7 +189,8 @@ int mlivr_run_interactive_viewer(
         int has_probing_intersection;
         struct mliIntersectionSurfaceNormal probing_intersection;
 
-        mlivr_timestamp_now_19chars(timestamp);
+        chk_msg(mlivr_timestamp_now_19chars(timestamp),
+                "Can not make timestamp");
         chk_mem(mliImage_malloc(
                 &img, config.preview_num_cols, config.preview_num_rows));
         chk_mem(mliImage_malloc(
@@ -227,10 +232,11 @@ int mlivr_run_interactive_viewer(
                                 print_help = 1;
                                 break;
                         case MLIVR_SPACE_KEY:
-                                sprintf(path,
+                                chk(snprintf(path,
+                                        1023,
                                         "%s_%06lu.ppm",
                                         timestamp,
-                                        num_screenshots);
+                                        num_screenshots));
                                 num_screenshots++;
                                 chk(mlivr_export_image(
                                         scenery,

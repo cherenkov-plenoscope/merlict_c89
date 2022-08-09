@@ -124,7 +124,7 @@ CASE("mapping frame-type-string to uint64")
         char type_string[1024];
         CHECK(!mli_string_to_type("Wtf?", &type));
         for (i = 0; i < 2; i++) {
-                mli_type_to_string(types[i], type_string);
+                mli_type_to_string(types[i], type_string, 1024);
                 CHECK(mli_string_to_type(type_string, &type));
                 CHECK(type == types[i]);
         }

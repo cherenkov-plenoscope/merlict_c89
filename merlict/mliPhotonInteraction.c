@@ -1,29 +1,29 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliPhotonInteraction.h"
 
-int mli_photoninteraction_type_to_string(const int32_t type, char *s)
+int mli_photoninteraction_type_to_string(const int32_t type, char *s, const uint64_t s_capacity)
 {
         switch (type) {
         case MLI_PHOTON_CREATION:
-                sprintf(s, "creation");
+                chk(snprintf(s, s_capacity - 1, "creation"));
                 break;
         case MLI_PHOTON_ABSORBTION:
-                sprintf(s, "absorbtion");
+                chk(snprintf(s, s_capacity - 1, "absorbtion"));
                 break;
         case MLI_PHOTON_ABSORBTION_MEDIUM:
-                sprintf(s, "absorbtion in medium");
+                chk(snprintf(s, s_capacity - 1, "absorbtion in medium"));
                 break;
         case MLI_PHOTON_FRESNEL_REFLECTION:
-                sprintf(s, "Fresnel reflection");
+                chk(snprintf(s, s_capacity - 1, "Fresnel reflection"));
                 break;
         case MLI_PHOTON_REFRACTION:
-                sprintf(s, "refraction");
+                chk(snprintf(s, s_capacity - 1, "refraction"));
                 break;
         case MLI_PHOTON_SPECULAR_REFLECTION:
-                sprintf(s, "specular reflection");
+                chk(snprintf(s, s_capacity - 1, "specular reflection"));
                 break;
         case MLI_PHOTON_DIFFUSE_REFLECTION:
-                sprintf(s, "diffuse reflection");
+                chk(snprintf(s, s_capacity - 1, "diffuse reflection"));
                 break;
         default:
                 chk_bad("PhotonInteraction.type is unknown.");
