@@ -8,9 +8,9 @@ scenery_ids=( 000 001 002 optics_prism optics_focussing_mirror )
 for scenery_id in "${scenery_ids[@]}";
 do
     tar -cvf \
-    "./merlict_c89/tests/resources/sceneries/$scenery_id.tar"\
+    "./merlict/tests/resources/sceneries/$scenery_id.tar"\
     --directory \
-    "./merlict_c89/tests/resources/sceneries/$scenery_id"\
+    "./merlict/tests/resources/sceneries/$scenery_id"\
     .\
     > "./build/tar_$scenery_id.o" 2>&1
 
@@ -20,22 +20,22 @@ done
 printf "\n"
 
 
-printf "gcc c89     "
-gcc merlict_c89/mli_test.c\
-        -o build/test_gcc_c89\
-        -std=c89\
+printf "gcc c99     "
+gcc merlict/mli_test.c\
+        -o build/test_gcc_c99\
+        -std=c99\
         -lm\
         -Wall\
         -pedantic\
         -Wextra\
         -Wstrict-prototypes
-gcc_c89_rc=$?
-./build/test_gcc_c89 > ./build/test_gcc_c89.o 2>&1
-gcc_c89_test_rc=$?
-printf "%d %d\n" $gcc_c89_rc $gcc_c89_test_rc
+gcc_c99_rc=$?
+./build/test_gcc_c99 > ./build/test_gcc_c99.o 2>&1
+gcc_c99_test_rc=$?
+printf "%d %d\n" $gcc_c99_rc $gcc_c99_test_rc
 
 printf "gcc         "
-gcc merlict_c89/mli_test.c\
+gcc merlict/mli_test.c\
         -o build/test_gcc\
         -lm\
         -Wall\
@@ -48,7 +48,7 @@ gcc_test_rc=$?
 printf "%d %d\n" $gcc_rc $gcc_test_rc
 
 printf "g++         "
-g++ merlict_c89/mli_test.c\
+g++ merlict/mli_test.c\
         -o build/test_g++\
         -lm\
         -Wall\
@@ -59,22 +59,22 @@ gpp_rc=$?
 gpp_test_rc=$?
 printf "%d %d\n" $gpp_rc $gpp_test_rc
 
-printf "clang c89   "
-clang merlict_c89/mli_test.c\
-        -o build/test_clang_c89\
-        -std=c89\
+printf "clang c99   "
+clang merlict/mli_test.c\
+        -o build/test_clang_c99\
+        -std=c99\
         -lm\
         -Wall\
         -pedantic\
         -Wextra\
         -Wstrict-prototypes
-clang_c89_rc=$?
-./build/test_clang_c89 > ./build/test_clang_c89.o 2>&1
-clang_c89_test_rc=$?
-printf "%d %d\n" $clang_c89_rc $clang_c89_test_rc
+clang_c99_rc=$?
+./build/test_clang_c99 > ./build/test_clang_c99.o 2>&1
+clang_c99_test_rc=$?
+printf "%d %d\n" $clang_c99_rc $clang_c99_test_rc
 
 printf "clang       "
-clang merlict_c89/mli_test.c\
+clang merlict/mli_test.c\
         -o build/test_clang\
         -lm\
         -Wall\
@@ -86,10 +86,10 @@ clang_test_rc=$?
 printf "%d %d\n" $clang_rc $clang_test_rc
 
 
-if      [ $gcc_c89_test_rc -ne 0 ]
+if      [ $gcc_c99_test_rc -ne 0 ]
 then
         printf "\n"
-        cat "./build/test_gcc_c89.o"
+        cat "./build/test_gcc_c99.o"
 fi
 
 if      [ $gcc_test_rc -ne 0 ]
@@ -104,10 +104,10 @@ then
         cat "./build/test_gpp.o"
 fi
 
-if      [ $clang_c89_test_rc -ne 0 ]
+if      [ $clang_c99_test_rc -ne 0 ]
 then
         printf "\n"
-        cat "./build/test_clang_c89.o"
+        cat "./build/test_clang_c99.o"
 fi
 
 if      [ $clang_test_rc -ne 0 ]
@@ -117,14 +117,14 @@ then
 fi
 
 if      [ $tar_rc -ne 0 ] ||\
-        [ $gcc_c89_rc -ne 0 ] ||\
-        [ $gcc_c89_test_rc -ne 0 ]||\
+        [ $gcc_c99_rc -ne 0 ] ||\
+        [ $gcc_c99_test_rc -ne 0 ]||\
         [ $gcc_rc -ne 0 ] ||\
         [ $gcc_test_rc -ne 0 ]||\
         [ $gpp_rc -ne 0 ] ||\
         [ $gpp_test_rc -ne 0 ]||\
-        [ $clang_c89_rc -ne 0 ] ||\
-        [ $clang_c89_test_rc -ne 0 ]||\
+        [ $clang_c99_rc -ne 0 ] ||\
+        [ $clang_c99_test_rc -ne 0 ]||\
         [ $clang_rc -ne 0 ] ||\
         [ $clang_test_rc -ne 0 ]
 then
