@@ -2,7 +2,7 @@
 
 /*
  *  Compile with e.g.:
- *  gcc merlict_c89/mli_corsika_test.c -o build/mli_corsika_test -lm
+ *  gcc merlict/mli_corsika_test.c -o build/mli_corsika_test -lm
  */
 
 #include <math.h>

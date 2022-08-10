@@ -67,7 +67,7 @@ int mliImage_fwrite(const struct mliImage *img, FILE *f)
         uint32_t col;
         uint32_t row;
         chk(fprintf(f, "P6\n"));
-        chk(fprintf(f, "# merlict_c89\n"));
+        chk(fprintf(f, "# merlict\n"));
         chk(
                 fprintf(f,
                         "# MLI_VERSION %d.%d.%d\n",

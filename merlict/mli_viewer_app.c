@@ -2,7 +2,7 @@
 
 /*
  *  Compile with:
- *  gcc merlict_c89/mli_viewer_app.c -o viewer -lm
+ *  gcc merlict/mli_viewer_app.c -o viewer -lm
  */
 
 #include <stdio.h>

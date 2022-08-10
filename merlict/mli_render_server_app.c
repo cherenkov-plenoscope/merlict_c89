@@ -2,7 +2,7 @@
 
 /*
  *  Compile with:
- *  gcc merlict_c89/mli_camera_server_app.c -o camera_server -lm
+ *  gcc merlict/mli_camera_server_app.c -o camera_server -lm
  */
 
 #include <stdio.h>
