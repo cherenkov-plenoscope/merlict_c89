@@ -78,7 +78,7 @@ void mlivr_print_info_line(
         printf(".\n");
 }
 
-void mlivr_timestamp_now_19chars(char *buffer)
+int mlivr_timestamp_now_19chars(char *buffer)
 {
         time_t now = time(0);
         struct tm *nowtm;

@@ -21,7 +21,7 @@ void mlivr_print_info_line(
         const struct mlivrCursor cursor,
         const struct mliTracerConfig tracer_config);
 
-void mlivr_timestamp_now_19chars(char *buffer);
+int mlivr_timestamp_now_19chars(char *buffer);
 
 int mlivr_export_image(
         const struct mliScenery *scenery,
