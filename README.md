@@ -13,7 +13,7 @@ Merlict would not exist without the author's past and present affiliations:
 
 - Max-Planck-Institute for Nuclear Physics,
   Saupfercheckweg 1, 69117 Heidelberg, Germany
- 
+
 - Institute for Particle Physics and Astrophysics,
   ETH-Zurich, Otto-Stern-Weg 5, 8093 Zurich, Switzerland
 
