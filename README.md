@@ -26,20 +26,20 @@ Merlict would not exist without the author's past and present affiliations:
 To involve merlict in your project
 
 ```c
-#include "merlict_c89/mli.h"
+#include "merlict/mli.h"
 ```
 
 in your headers, and
 
 ```c
-#include "merlict_c89/mli.c"
+#include "merlict/mli.c"
 ```
 
 in your sources. Thats it. :checkered_flag:
-See ```./merlict_c89/mli_test.c``` and run ```./compile_and_test.sh``` for a minimal example.
+See ```./merlict/mli_test.c``` and run ```./compile_and_test.sh``` for a minimal example.
 
 ### Your Buildsystem
-Merlict is structured into pairs of ```./merlict_c89/mli*.h```, and ```./merlict_c89/mli*.c``` files which you can put into your buildsystem.
+Merlict is structured into pairs of ```./merlict/mli*.h```, and ```./merlict/mli*.c``` files which you can put into your buildsystem.
 
 # Viewer :eyes:
 Merlict's viewer runs in the terminal and reads three formats:
@@ -54,12 +54,12 @@ Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical 
 
 #### Build :hammer:
 ```bash
-gcc ./merlict_c89/mli_viewer_app.c -o viewer -lm
+gcc ./merlict/mli_viewer_app.c -o viewer -lm
 ```
 
 #### Run
 ```bash
-./viewer ./merlict_c89/tests/resources/sceneries/001.tar
+./viewer ./merlict/tests/resources/sceneries/001.tar
 ```
 
  ASCII-art                 | ANSI-escape-codes

@@ -8,9 +8,9 @@ scenery_ids=( 000 001 002 optics_prism optics_focussing_mirror )
 for scenery_id in "${scenery_ids[@]}";
 do
     tar -cvf \
-    "./merlict_c89/tests/resources/sceneries/$scenery_id.tar"\
+    "./merlict/tests/resources/sceneries/$scenery_id.tar"\
     --directory \
-    "./merlict_c89/tests/resources/sceneries/$scenery_id"\
+    "./merlict/tests/resources/sceneries/$scenery_id"\
     .\
     > "./build/tar_$scenery_id.o" 2>&1
 
@@ -21,7 +21,7 @@ printf "\n"
 
 
 printf "gcc c89     "
-gcc merlict_c89/mli_test.c\
+gcc merlict/mli_test.c\
         -o build/test_gcc_c89\
         -std=c89\
         -lm\
@@ -35,7 +35,7 @@ gcc_c89_test_rc=$?
 printf "%d %d\n" $gcc_c89_rc $gcc_c89_test_rc
 
 printf "gcc         "
-gcc merlict_c89/mli_test.c\
+gcc merlict/mli_test.c\
         -o build/test_gcc\
         -lm\
         -Wall\
@@ -48,7 +48,7 @@ gcc_test_rc=$?
 printf "%d %d\n" $gcc_rc $gcc_test_rc
 
 printf "g++         "
-g++ merlict_c89/mli_test.c\
+g++ merlict/mli_test.c\
         -o build/test_g++\
         -lm\
         -Wall\
@@ -60,7 +60,7 @@ gpp_test_rc=$?
 printf "%d %d\n" $gpp_rc $gpp_test_rc
 
 printf "clang c89   "
-clang merlict_c89/mli_test.c\
+clang merlict/mli_test.c\
         -o build/test_clang_c89\
         -std=c89\
         -lm\
@@ -74,7 +74,7 @@ clang_c89_test_rc=$?
 printf "%d %d\n" $clang_c89_rc $clang_c89_test_rc
 
 printf "clang       "
-clang merlict_c89/mli_test.c\
+clang merlict/mli_test.c\
         -o build/test_clang\
         -lm\
         -Wall\

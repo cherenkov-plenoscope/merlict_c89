@@ -2,7 +2,7 @@
 
 /*
  *  Compile with e.g.:
- *  gcc merlict_c89/mli_test.c -o test -lm
+ *  gcc merlict/mli_test.c -o test -lm
  */
 
 #include <math.h>
