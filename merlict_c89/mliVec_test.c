@@ -237,3 +237,28 @@ CASE("ncpy")
                 CHECK(a[i].z == b[i].z);
         }
 }
+
+CASE("mean")
+{
+        int i;
+        struct mliVec a[10];
+        struct mliVec m = {0.0, 0.0, 0.0};
+        for (i = 0; i < 10; i++) {
+                double j = (double)i;
+                a[i] = mliVec_set(j, -j, j*j);
+        }
+        m = mliVec_mean(a, 10);
+        CHECK_MARGIN(m.x, 4.5, MLI_EPSILON);
+        CHECK_MARGIN(m.y, -4.5, MLI_EPSILON);
+        CHECK_MARGIN(m.z, 28.5, MLI_EPSILON);
+}
+
+CASE("mean_of_zero_samples")
+{
+        struct mliVec a[1];
+        struct mliVec m = {0.0, 0.0, 0.0};
+        m = mliVec_mean(a, 0);
+        CHECK(MLI_IS_NAN(m.x));
+        CHECK(MLI_IS_NAN(m.y));
+        CHECK(MLI_IS_NAN(m.z));
+}

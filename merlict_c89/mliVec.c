@@ -178,3 +178,13 @@ int mliVec_sign3_bitmask(const struct mliVec a, const double epsilon)
 
         return (xn | xp | yn | yp | zn | zp);
 }
+
+struct mliVec mliVec_mean(const struct mliVec *vecs, const uint64_t num_vecs)
+{
+        uint64_t i;
+        struct mliVec mean = mliVec_set(0.0, 0.0, 0.0);
+        for (i = 0; i < num_vecs; i++) {
+                mean = mliVec_add(mean, vecs[i]);
+        }
+        return mliVec_multiply(mean, (1.0 / num_vecs));
+}
