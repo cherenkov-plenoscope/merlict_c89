@@ -37,8 +37,11 @@ CASE("Parse_from_jsonline")
         mliStr_add_cstr(&ss, "            \"atmosphereRadius\": 6420e3, ");
         mliStr_add_cstr(&ss, "            \"Height_Rayleigh\": 7994.0, ");
         mliStr_add_cstr(&ss, "            \"Height_Mie\": 1200.0, ");
-        mliStr_add_cstr(&ss, "            \"beta_Rayleigh\": [3.8e-6, 13.5e-6, 33.1e-6], ");
-        mliStr_add_cstr(&ss, "            \"beta_Mie\": [41e-6, 41e-6, 41e-6], ");
+        mliStr_add_cstr(
+                &ss,
+                "            \"beta_Rayleigh\": [3.8e-6, 13.5e-6, 33.1e-6], ");
+        mliStr_add_cstr(
+                &ss, "            \"beta_Mie\": [41e-6, 41e-6, 41e-6], ");
         mliStr_add_cstr(&ss, "            \"numSamples\": 16, ");
         mliStr_add_cstr(&ss, "            \"numSamplesLight\": 8, ");
         mliStr_add_cstr(&ss, "            \"power\": 3.6e3, ");

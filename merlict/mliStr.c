@@ -45,8 +45,7 @@ int mliStr_malloc_from_path(struct mliStr *str, const char *path)
         chk_msg(mliStr_malloc(str), "Can not malloc string.");
         c = getc(f);
         while (c != EOF) {
-                chk_msg(mliStr_add_char(str, c),
-                        "Failed to push back char.");
+                chk_msg(mliStr_add_char(str, c), "Failed to push back char.");
                 c = getc(f);
         }
         fclose(f);
@@ -91,18 +90,14 @@ int mliStr_add_cstr(struct mliStr *str, const char *s)
         const uint64_t slen = strlen(s);
         uint64_t i;
         for (i = 0; i < slen; i++) {
-                chk_msg(mliStr_add_char(str, s[i]),
-                        "Failed to push back char");
+                chk_msg(mliStr_add_char(str, s[i]), "Failed to push back char");
         }
         return 1;
 error:
         return 0;
 }
 
-int mliStr_add_line_from_file(
-        struct mliStr *str,
-        FILE *f,
-        const char newline)
+int mliStr_add_line_from_file(struct mliStr *str, FILE *f, const char newline)
 {
         char cc;
         while (1) {

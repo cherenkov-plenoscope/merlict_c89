@@ -68,11 +68,12 @@ int mliImage_fwrite(const struct mliImage *img, FILE *f)
         uint32_t row;
         chk(fprintf(f, "P6\n"));
         chk(fprintf(f, "# merlict_c89\n"));
-        chk(fprintf(f,
-                "# MLI_VERSION %d.%d.%d\n",
-                MLI_VERSION_MAYOR,
-                MLI_VERSION_MINOR,
-                MLI_VERSION_PATCH));
+        chk(
+                fprintf(f,
+                        "# MLI_VERSION %d.%d.%d\n",
+                        MLI_VERSION_MAYOR,
+                        MLI_VERSION_MINOR,
+                        MLI_VERSION_PATCH));
         chk(fprintf(f, "%d\n", img->num_cols));
         chk(fprintf(f, "%d\n", img->num_rows));
         chk(fprintf(f, "255\n"));

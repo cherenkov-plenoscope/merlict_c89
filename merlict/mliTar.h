@@ -50,7 +50,8 @@
 /* basics */
 /* ====== */
 uint64_t mliTar_round_up(uint64_t n, uint64_t incr);
-int mliTar_field_to_uint(uint64_t *out,
+int mliTar_field_to_uint(
+        uint64_t *out,
         const char *field,
         const uint64_t fieldsize);
 int mliTar_uint_to_field(

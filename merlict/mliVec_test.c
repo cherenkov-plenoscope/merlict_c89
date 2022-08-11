@@ -245,7 +245,7 @@ CASE("mean")
         struct mliVec m = {0.0, 0.0, 0.0};
         for (i = 0; i < 10; i++) {
                 double j = (double)i;
-                a[i] = mliVec_set(j, -j, j*j);
+                a[i] = mliVec_set(j, -j, j * j);
         }
         m = mliVec_mean(a, 10);
         CHECK_MARGIN(m.x, 4.5, MLI_EPSILON);

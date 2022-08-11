@@ -31,16 +31,18 @@ int main(int argc, char *argv[])
         while (mliEventTapeReader_read_evth(&tari, corh)) {
                 /* work on EVTH */
                 int b = 0;
-                 fprintf(stdout, "event-number %f\n",
-                       corh[MLI_CORSIKA_EVTH_EVENT_NUMBER]);
+                fprintf(stdout,
+                        "event-number %f\n",
+                        corh[MLI_CORSIKA_EVTH_EVENT_NUMBER]);
                 while (mliEventTapeReader_read_cherenkov_bunch(&tari, bunch)) {
-                         fprintf(stdout, "bunch %d: x %fcm, y %fcm\n",
-                               b,
-                               bunch[0],
-                               bunch[1]);
+                        fprintf(stdout,
+                                "bunch %d: x %fcm, y %fcm\n",
+                                b,
+                                bunch[0],
+                                bunch[1]);
                         b += 1;
                 }
-                 fprintf(stdout, "total bunches %d\n", b);
+                fprintf(stdout, "total bunches %d\n", b);
         }
         chk(mliEventTapeReader_finalize(&tari));
         return EXIT_SUCCESS;

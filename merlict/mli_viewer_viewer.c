@@ -139,8 +139,7 @@ int mlivr_export_image(
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
                 apcam, camera2root_comp, scenery, &full, tracer_config, prng);
-        chk_msg(mliImage_write_to_path(&full, path),
-                "Failed to write ppm.");
+        chk_msg(mliImage_write_to_path(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
 error:

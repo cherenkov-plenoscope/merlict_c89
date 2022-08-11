@@ -9,7 +9,6 @@
 #include "mli.h"
 #include "mli.c"
 
-
 int mliRenderConfig_from_channel(
         struct mliRenderConfig *control,
         FILE *fin,
@@ -46,7 +45,7 @@ int fread_until_next_newline(
         uint64_t num_bytes = 0u;
         do {
                 chk_fread(&c, sizeof(char), 1, fstream);
-                num_bytes ++;
+                num_bytes++;
                 chk_msg(num_bytes < max_num_bytes, "Too many bytes.");
         } while (c != newline);
 
@@ -63,7 +62,7 @@ int main(int argc, char *argv[])
         chk_msg(mliScenery_malloc_fread_tar(&scenery, stdin),
                 "Can't malloc scenery from stdin tar.");
 
-        chk_msg(fread_until_next_newline(stdin, '\n', 1000*1000),
+        chk_msg(fread_until_next_newline(stdin, '\n', 1000 * 1000),
                 "Can't reach next newline.");
 
         while (1) {
@@ -76,9 +75,9 @@ int main(int argc, char *argv[])
 
                 mliPrng_reinit(&prng, control.random_seed);
                 chk_msg(mliImage_malloc(
-                        &image,
-                        control.num_pixel_x,
-                        control.num_pixel_y),
+                                &image,
+                                control.num_pixel_x,
+                                control.num_pixel_y),
                         "Can't malloc image.");
 
                 mliApertureCamera_render_image(

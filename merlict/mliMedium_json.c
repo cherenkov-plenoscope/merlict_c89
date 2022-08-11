@@ -21,12 +21,14 @@ int mliMedium_malloc_from_json_token(
 {
         uint64_t refraction_token;
         uint64_t absorbtion_token;
-        chk_msg(mliJson_token_by_key(json, token, "refraction", &refraction_token),
+        chk_msg(mliJson_token_by_key(
+                        json, token, "refraction", &refraction_token),
                 "Expected medium to have key 'refraction', but it does not.");
         chk_msg(mliFunc_malloc_from_json_token(
                         &med->refraction, json, refraction_token + 1),
                 "Failed to read medium's refraction from json.");
-        chk_msg(mliJson_token_by_key(json, token, "absorbtion", &absorbtion_token),
+        chk_msg(mliJson_token_by_key(
+                        json, token, "absorbtion", &absorbtion_token),
                 "Expected medium to have key 'absorbtion', but it does not.");
         chk_msg(mliFunc_malloc_from_json_token(
                         &med->absorbtion, json, absorbtion_token + 1),

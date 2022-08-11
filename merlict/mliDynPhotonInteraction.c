@@ -18,15 +18,13 @@ int mliDynPhotonInteraction_time_of_flight(
                                 &history->array[i],
                                 wavelength,
                                 &time_of_flight),
-                        "Can't estimate time-of-flight."
-                );
+                        "Can't estimate time-of-flight.");
                 (*total_time_of_flight) += time_of_flight;
         }
         return 1;
 error:
         return 0;
 }
-
 
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,

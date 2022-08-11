@@ -23,8 +23,7 @@ int mliMaterials_assign_boundary_layers_from_json(
                 "json-object.size.");
 
         for (s = 0; s < materials->num_boundary_layers; s++) {
-                uint64_t token_s_name =
-                        mliJson_token_by_index(json, token, s);
+                uint64_t token_s_name = mliJson_token_by_index(json, token, s);
                 uint64_t token_s = token_s_name + 1;
 
                 chk_msg(json->tokens[token_s_name].type == JSMN_STRING,
@@ -61,7 +60,8 @@ int mliSide_from_json(
 {
         uint64_t token_medium, token_surface;
 
-        chk_msg(mliJson_token_by_key(json, side_token + 1, "medium", &token_medium),
+        chk_msg(mliJson_token_by_key(
+                        json, side_token + 1, "medium", &token_medium),
                 "Expected key 'medium' in side.");
         chk_msg(mliDynMap_get_value_for_string_from_json(
                         medium_names, json, token_medium + 1, &side->medium),

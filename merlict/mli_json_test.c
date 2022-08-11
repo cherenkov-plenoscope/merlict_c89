@@ -80,8 +80,7 @@ CASE("mliJson_malloc_from_path")
         CHECK(mliJson_malloc_from_path(
                 &json, "merlict/mli_json_test_resources/example.json"));
         CHECK(mliJson_debug_to_path(
-                &json,
-                "merlict/mli_json_test_resources/example.debug.tmp"));
+                &json, "merlict/mli_json_test_resources/example.debug.tmp"));
 
         CHECK(mliJson_token_by_key(&json, 0, "name", &return_idx));
         CHECK(return_idx == 1);

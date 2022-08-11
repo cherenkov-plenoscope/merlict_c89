@@ -17,12 +17,8 @@ void mliEventTape_testing_set_random_EVTH(
         const float event_number,
         const float run_number,
         struct mliPrng *prng);
-void mliEventTape_testing_set_random_bunch(
-        float *bunch,
-        struct mliPrng *prng);
-int mliEventTape_testing_bunches_are_equal(
-        float *b1,
-        float *b2);
+void mliEventTape_testing_set_random_bunch(float *bunch, struct mliPrng *prng);
+int mliEventTape_testing_bunches_are_equal(float *b1, float *b2);
 int mliEventTape_testing_corsika_headers_are_equal(
         const float *h1,
         const float *h2);
