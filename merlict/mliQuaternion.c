@@ -120,9 +120,9 @@ struct mliQuaternion mliQuaternion_set_rotaxis_and_angle(
         return quat;
 }
 
-struct mliRotMat mliQuaternion_to_matrix(const struct mliQuaternion quat)
+struct mliMat mliQuaternion_to_matrix(const struct mliQuaternion quat)
 {
-        struct mliRotMat o;
+        struct mliMat o;
         const double w2 = quat.w * quat.w;
         const double x2 = quat.x * quat.x;
         const double y2 = quat.y * quat.y;

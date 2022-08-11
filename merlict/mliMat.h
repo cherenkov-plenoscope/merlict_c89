@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIROTMAT_H_
-#define MLIROTMAT_H_
+#ifndef MLIMAT_H_
+#define MLIMAT_H_
 
 #include "mliVec.h"
 
-struct mliRotMat {
+struct mliMat {
         double r00;
         double r01;
         double r02;
@@ -16,15 +16,15 @@ struct mliRotMat {
         double r22;
 };
 
-int mliRotMat_equal_margin(
-        const struct mliRotMat a,
-        const struct mliRotMat b,
+int mliMat_equal_margin(
+        const struct mliMat a,
+        const struct mliMat b,
         const double margin);
-void mliRotMat_print(const struct mliRotMat rot);
-struct mliRotMat mliRotMat_init_axis(
+void mliMat_print(const struct mliMat rot);
+struct mliMat mliMat_init_axis(
         const struct mliVec rot_axis,
         const double rot_angle);
-struct mliRotMat mliRotMat_init_tait_bryan(
+struct mliMat mliMat_init_tait_bryan(
         const double rx,
         const double ry,
         const double rz);

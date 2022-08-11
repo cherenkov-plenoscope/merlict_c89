@@ -20,7 +20,7 @@ struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo)
 }
 
 struct mliVec mli_transform_orientation(
-        const struct mliRotMat *rotation,
+        const struct mliMat *rotation,
         const struct mliVec ori)
 {
         struct mliVec out;
@@ -37,7 +37,7 @@ struct mliVec mli_transform_orientation(
 }
 
 struct mliVec mli_transform_orientation_inverse(
-        const struct mliRotMat *rotation,
+        const struct mliMat *rotation,
         const struct mliVec ori)
 {
         struct mliVec out;
@@ -54,7 +54,7 @@ struct mliVec mli_transform_orientation_inverse(
 }
 
 struct mliVec mli_transform_position(
-        const struct mliRotMat *rotation,
+        const struct mliMat *rotation,
         const struct mliVec translation,
         const struct mliVec pos)
 {
@@ -72,7 +72,7 @@ struct mliVec mli_transform_position(
 }
 
 struct mliVec mli_transform_position_inverse(
-        const struct mliRotMat *rotation,
+        const struct mliMat *rotation,
         const struct mliVec translation,
         const struct mliVec pos)
 {
@@ -93,7 +93,7 @@ struct mliVec mli_transform_position_inverse(
 }
 
 struct mliRay mli_transform_ray(
-        const struct mliRotMat *rotation,
+        const struct mliMat *rotation,
         const struct mliVec translation,
         const struct mliRay in)
 {
@@ -104,7 +104,7 @@ struct mliRay mli_transform_ray(
 }
 
 struct mliRay mli_transform_ray_inverse(
-        const struct mliRotMat *rotation,
+        const struct mliMat *rotation,
         const struct mliVec translation,
         const struct mliRay in)
 {

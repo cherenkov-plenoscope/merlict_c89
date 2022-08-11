@@ -1,13 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliRotMat.h"
+#include "mliMat.h"
 #include <math.h>
 
-struct mliRotMat mliRotMat_init_tait_bryan(
+struct mliMat mliMat_init_tait_bryan(
         const double rx,
         const double ry,
         const double rz)
 {
-        struct mliRotMat rot;
+        struct mliMat rot;
         const double cosRx = cos(rx);
         const double cosRy = cos(ry);
         const double cosRz = cos(rz);
@@ -26,11 +26,11 @@ struct mliRotMat mliRotMat_init_tait_bryan(
         return rot;
 }
 
-struct mliRotMat mliRotMat_init_axis(
+struct mliMat mliMat_init_axis(
         const struct mliVec rot_axis,
         const double rot_angle)
 {
-        struct mliRotMat rot;
+        struct mliMat rot;
         const double norm = mliVec_norm(rot_axis);
         const double rx = rot_axis.x / norm;
         const double ry = rot_axis.y / norm;
@@ -49,9 +49,9 @@ struct mliRotMat mliRotMat_init_axis(
         return rot;
 }
 
-int mliRotMat_equal_margin(
-        const struct mliRotMat a,
-        const struct mliRotMat b,
+int mliMat_equal_margin(
+        const struct mliMat a,
+        const struct mliMat b,
         const double margin)
 {
         if (fabs(a.r00 - b.r00) > margin)

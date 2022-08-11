@@ -16,7 +16,7 @@
 #include "mliVec.c"
 #include "mliVec_json.c"
 #include "mliRay.c"
-#include "mliRotMat.c"
+#include "mliMat.c"
 #include "mliQuaternion.c"
 #include "mliHomTra.c"
 #include "mliOBB.c"
