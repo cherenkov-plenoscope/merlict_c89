@@ -21,9 +21,9 @@ int mliMat_equal_margin(
         const struct mliMat b,
         const double margin);
 void mliMat_print(const struct mliMat rot);
-struct mliMat mliMat_init_axis(
-        const struct mliVec rot_axis,
-        const double rot_angle);
+struct mliMat mliMat_init_axis_angle(
+        const struct mliVec axis,
+        const double angle);
 struct mliMat mliMat_init_tait_bryan(
         const double rx,
         const double ry,

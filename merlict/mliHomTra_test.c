@@ -228,11 +228,11 @@ CASE("mliMat_init_tait_bryan")
          */
 }
 
-CASE("mliMat_init_axis")
+CASE("mliMat_init_axis_angle")
 {
         struct mliMat rotation;
         struct mliVec axis = {0., 0., 1.};
-        rotation = mliMat_init_axis(axis, 0.);
+        rotation = mliMat_init_axis_angle(axis, 0.);
         CHECK_MARGIN(rotation.r00, 1., 1e-9);
         CHECK_MARGIN(rotation.r01, 0., 1e-9);
         CHECK_MARGIN(rotation.r02, 0., 1e-9);
@@ -245,7 +245,7 @@ CASE("mliMat_init_axis")
         CHECK_MARGIN(rotation.r21, 0., 1e-9);
         CHECK_MARGIN(rotation.r22, 1., 1e-9);
 
-        rotation = mliMat_init_axis(axis, mli_deg2rad(90.));
+        rotation = mliMat_init_axis_angle(axis, mli_deg2rad(90.));
         CHECK_MARGIN(rotation.r00, 0., 1e-9);
         CHECK_MARGIN(rotation.r01, 1., 1e-9);
         CHECK_MARGIN(rotation.r02, 0., 1e-9);

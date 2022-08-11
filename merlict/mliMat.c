@@ -26,17 +26,17 @@ struct mliMat mliMat_init_tait_bryan(
         return rot;
 }
 
-struct mliMat mliMat_init_axis(
-        const struct mliVec rot_axis,
-        const double rot_angle)
+struct mliMat mliMat_init_axis_angle(
+        const struct mliVec axis,
+        const double angle)
 {
         struct mliMat rot;
-        const double norm = mliVec_norm(rot_axis);
-        const double rx = rot_axis.x / norm;
-        const double ry = rot_axis.y / norm;
-        const double rz = rot_axis.z / norm;
-        const double sinR = sin(-rot_angle);
-        const double cosR = cos(-rot_angle);
+        const double norm = mliVec_norm(axis);
+        const double rx = axis.x / norm;
+        const double ry = axis.y / norm;
+        const double rz = axis.z / norm;
+        const double sinR = sin(-angle);
+        const double cosR = cos(-angle);
         rot.r00 = cosR + rx * rx * (1. - cosR);
         rot.r01 = rx * ry * (1. - cosR) - rz * sinR;
         rot.r02 = rx * rz * (1. - cosR) + ry * sinR;
