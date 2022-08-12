@@ -1,12 +1,12 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIOBB_H_
-#define MLIOBB_H_
+#ifndef MLIAABB_H_
+#define MLIAABB_H_
 
 #include "mliVec.h"
 
-struct mliOBB {
+struct mliAABB {
         /*
-         * Rectangular Oriented-Bounding-Box
+         * Rectangular (A)xis-(A)ligned-(B)ounding-(B)ox
          * oriented w.r.t. the unit-vectors.
          *
          *                     O----------------------O
@@ -30,9 +30,13 @@ struct mliOBB {
         struct mliVec upper;
 };
 
-struct mliOBB mliOBB_set(const struct mliVec lower, const struct mliVec upper);
-struct mliVec mliOBB_center(const struct mliOBB a);
-struct mliOBB mliOBB_outermost(const struct mliOBB a, const struct mliOBB b);
-int mliOBB_valid(const struct mliOBB obb);
-int mliOBB_equal(const struct mliOBB a, const struct mliOBB b);
+struct mliAABB mliAABB_set(
+        const struct mliVec lower,
+        const struct mliVec upper);
+struct mliVec mliAABB_center(const struct mliAABB a);
+struct mliAABB mliAABB_outermost(
+        const struct mliAABB a,
+        const struct mliAABB b);
+int mliAABB_valid(const struct mliAABB a);
+int mliAABB_equal(const struct mliAABB a, const struct mliAABB b);
 #endif

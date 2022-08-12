@@ -10,8 +10,8 @@ int mliAccelerator_valid(const struct mliAccelerator *accel)
                         "Expected object_octrees[i] to be valid.");
         }
         for (i = 0u; i < accel->num_robjects; i++) {
-                chk_msg(mliOBB_valid(accel->robject_obbs[i]),
-                        "Expected robject_obbs[i] to be valid.");
+                chk_msg(mliAABB_valid(accel->robject_aabbs[i]),
+                        "Expected robject_aabbs[i] to be valid.");
         }
         chk_msg(mliOcTree_valid(&accel->scenery_octree),
                 "Expected scenery_octree to be valid.");

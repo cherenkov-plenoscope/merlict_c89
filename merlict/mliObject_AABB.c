@@ -1,30 +1,30 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliObject_OBB.h"
+#include "mliObject_AABB.h"
 
-int mliObject_face_in_local_frame_has_overlap_obb(
+int mliObject_face_in_local_frame_has_overlap_aabb(
         const struct mliObject *obj,
         const uint64_t face_idx,
-        const struct mliOBB obb)
+        const struct mliAABB aabb)
 {
         struct mliFace face;
         if (face_idx >= obj->num_faces) {
                 return 0;
         }
         face = obj->faces_vertices[face_idx];
-        if (mliTriangle_has_overlap_obb(
+        if (mliTriangle_has_overlap_aabb(
                     obj->vertices[face.a],
                     obj->vertices[face.b],
                     obj->vertices[face.c],
-                    obb)) {
+                    aabb)) {
                 return 1;
         }
         return 0;
 }
 
-int mliObject_has_overlap_obb(
+int mliObject_has_overlap_aabb(
         const struct mliObject *obj,
         const struct mliHomTraComp local2root_comp,
-        const struct mliOBB obb)
+        const struct mliAABB aabb)
 {
         struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
 
@@ -43,27 +43,28 @@ int mliObject_has_overlap_obb(
                 const struct mliVec c_root =
                         mliHomTra_pos(&local2root, c_local);
 
-                if (mliTriangle_has_overlap_obb(a_root, b_root, c_root, obb)) {
+                if (mliTriangle_has_overlap_aabb(
+                            a_root, b_root, c_root, aabb)) {
                         return 1;
                 }
         }
         return 0;
 }
 
-int mliObject_face_in_local_frame_has_overlap_obb_void(
+int mliObject_face_in_local_frame_has_overlap_aabb_void(
         const void *obj,
         const uint32_t face_idx,
-        const struct mliOBB obb)
+        const struct mliAABB aabb)
 {
-        return mliObject_face_in_local_frame_has_overlap_obb(
-                (const struct mliObject *)obj, (uint64_t)face_idx, obb);
+        return mliObject_face_in_local_frame_has_overlap_aabb(
+                (const struct mliObject *)obj, (uint64_t)face_idx, aabb);
 }
 
-struct mliOBB mliObject_obb(
+struct mliAABB mliObject_aabb(
         const struct mliObject *obj,
         const struct mliHomTraComp local2root_comp)
 {
-        struct mliOBB obb;
+        struct mliAABB aabb;
         struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
 
         struct mliVec seed_vertex_local;
@@ -72,17 +73,17 @@ struct mliOBB mliObject_obb(
         uint64_t face_idx;
 
         if (obj->num_faces == 0) {
-                obb.lower = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
-                obb.upper = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
-                return obb;
+                aabb.lower = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                aabb.upper = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                return aabb;
         }
 
         seed_face = obj->faces_vertices[0];
         seed_vertex_local = obj->vertices[seed_face.a];
         seed_vertex_root = mliHomTra_pos(&local2root, seed_vertex_local);
 
-        obb.lower = seed_vertex_root;
-        obb.upper = seed_vertex_root;
+        aabb.lower = seed_vertex_root;
+        aabb.upper = seed_vertex_root;
         for (face_idx = 0; face_idx < obj->num_faces; face_idx++) {
                 const struct mliFace face = obj->faces_vertices[face_idx];
                 const struct mliVec a_local = obj->vertices[face.a];
@@ -95,37 +96,37 @@ struct mliOBB mliObject_obb(
                 const struct mliVec c_root =
                         mliHomTra_pos(&local2root, c_local);
 
-                obb.lower.x = MLI_MIN2(obb.lower.x, a_root.x);
-                obb.lower.y = MLI_MIN2(obb.lower.y, a_root.y);
-                obb.lower.z = MLI_MIN2(obb.lower.z, a_root.z);
+                aabb.lower.x = MLI_MIN2(aabb.lower.x, a_root.x);
+                aabb.lower.y = MLI_MIN2(aabb.lower.y, a_root.y);
+                aabb.lower.z = MLI_MIN2(aabb.lower.z, a_root.z);
 
-                obb.upper.x = MLI_MAX2(obb.upper.x, a_root.x);
-                obb.upper.y = MLI_MAX2(obb.upper.y, a_root.y);
-                obb.upper.z = MLI_MAX2(obb.upper.z, a_root.z);
+                aabb.upper.x = MLI_MAX2(aabb.upper.x, a_root.x);
+                aabb.upper.y = MLI_MAX2(aabb.upper.y, a_root.y);
+                aabb.upper.z = MLI_MAX2(aabb.upper.z, a_root.z);
 
-                obb.lower.x = MLI_MIN2(obb.lower.x, b_root.x);
-                obb.lower.y = MLI_MIN2(obb.lower.y, b_root.y);
-                obb.lower.z = MLI_MIN2(obb.lower.z, b_root.z);
+                aabb.lower.x = MLI_MIN2(aabb.lower.x, b_root.x);
+                aabb.lower.y = MLI_MIN2(aabb.lower.y, b_root.y);
+                aabb.lower.z = MLI_MIN2(aabb.lower.z, b_root.z);
 
-                obb.upper.x = MLI_MAX2(obb.upper.x, b_root.x);
-                obb.upper.y = MLI_MAX2(obb.upper.y, b_root.y);
-                obb.upper.z = MLI_MAX2(obb.upper.z, b_root.z);
+                aabb.upper.x = MLI_MAX2(aabb.upper.x, b_root.x);
+                aabb.upper.y = MLI_MAX2(aabb.upper.y, b_root.y);
+                aabb.upper.z = MLI_MAX2(aabb.upper.z, b_root.z);
 
-                obb.lower.x = MLI_MIN2(obb.lower.x, c_root.x);
-                obb.lower.y = MLI_MIN2(obb.lower.y, c_root.y);
-                obb.lower.z = MLI_MIN2(obb.lower.z, c_root.z);
+                aabb.lower.x = MLI_MIN2(aabb.lower.x, c_root.x);
+                aabb.lower.y = MLI_MIN2(aabb.lower.y, c_root.y);
+                aabb.lower.z = MLI_MIN2(aabb.lower.z, c_root.z);
 
-                obb.upper.x = MLI_MAX2(obb.upper.x, c_root.x);
-                obb.upper.y = MLI_MAX2(obb.upper.y, c_root.y);
-                obb.upper.z = MLI_MAX2(obb.upper.z, c_root.z);
+                aabb.upper.x = MLI_MAX2(aabb.upper.x, c_root.x);
+                aabb.upper.y = MLI_MAX2(aabb.upper.y, c_root.y);
+                aabb.upper.z = MLI_MAX2(aabb.upper.z, c_root.z);
         }
-        return obb;
+        return aabb;
 }
 
-struct mliOBB mliObject_obb_in_local_frame(const struct mliObject *obj)
+struct mliAABB mliObject_aabb_in_local_frame(const struct mliObject *obj)
 {
         const struct mliHomTraComp unity_comp = mliHomTraComp_set(
                 mliVec_init(0.0, 0.0, 0.0),
                 mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0));
-        return mliObject_obb(obj, unity_comp);
+        return mliObject_aabb(obj, unity_comp);
 }

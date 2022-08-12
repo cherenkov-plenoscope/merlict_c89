@@ -95,6 +95,6 @@ int mliOcTree_malloc_from_object_wavefront(
 int mliOcTree_malloc_from_Geometry(
         struct mliOcTree *octree,
         const struct mliGeometry *geometry,
-        const struct mliOBB outermost_obb);
+        const struct mliAABB outermost_aabb);
 
 #endif

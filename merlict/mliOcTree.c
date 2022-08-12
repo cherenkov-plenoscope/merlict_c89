@@ -445,8 +445,8 @@ int mliOcTree_malloc_from_object_wavefront(
                         &tmp_octree,
                         (const void *)object_wavefront,
                         object_wavefront->num_faces,
-                        mliObject_face_in_local_frame_has_overlap_obb_void,
-                        mliObject_obb_in_local_frame(object_wavefront)),
+                        mliObject_face_in_local_frame_has_overlap_aabb_void,
+                        mliObject_aabb_in_local_frame(object_wavefront)),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from mliObject");
         mliTmpNode_set_flat_index(&tmp_octree.root);
@@ -468,7 +468,7 @@ error:
 int mliOcTree_malloc_from_Geometry(
         struct mliOcTree *octree,
         const struct mliGeometry *geometry,
-        const struct mliOBB outermost_obb)
+        const struct mliAABB outermost_aabb)
 {
         uint64_t num_nodes = 0;
         uint64_t num_leafs = 0;
@@ -478,8 +478,8 @@ int mliOcTree_malloc_from_Geometry(
                         &tmp_octree,
                         (const void *)geometry,
                         geometry->num_robjects,
-                        mliGeometry_robject_has_overlap_obb_void,
-                        outermost_obb),
+                        mliGeometry_robject_has_overlap_aabb_void,
+                        outermost_aabb),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from scenery(Geometry, Accelerator)");
         mliTmpNode_set_flat_index(&tmp_octree.root);

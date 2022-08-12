@@ -2,12 +2,12 @@
 
 #include "mli_testing.h"
 #include "mliRay.h"
-#include "mliOBB.h"
+#include "mliAABB.h"
 #include "mliHomTra.h"
 
 CASE("ray and orientated bounding box")
 {
-        struct mliOBB obb;
+        struct mliAABB aabb;
         /*
          *         (-1, -2,  0)                         (-1, -1,  0)
          *                     O----------------------O
@@ -28,34 +28,34 @@ CASE("ray and orientated bounding box")
          */
 
         double ray_parameter;
-        obb.lower = mliVec_init(-1., -2, -3);
-        obb.upper = mliVec_init(1., -1, 0);
+        aabb.lower = mliVec_init(-1., -2, -3);
+        aabb.upper = mliVec_init(1., -1, 0);
 
         /* ray starts below the box */
-        CHECK(mliRay_has_overlap_obb(
+        CHECK(mliRay_has_overlap_aabb(
                 mliRay_set(mliVec_init(0., -1.5, -4.), mliVec_init(0., 0., 1.)),
-                obb,
+                aabb,
                 &ray_parameter));
         CHECK_MARGIN(ray_parameter, 1., 1e-6);
 
         /* ray starts above the box */
-        CHECK(!mliRay_has_overlap_obb(
+        CHECK(!mliRay_has_overlap_aabb(
                 mliRay_set(mliVec_init(0., -1.5, +4.), mliVec_init(0., 0., 1.)),
-                obb,
+                aabb,
                 &ray_parameter));
 
         /* ray starts inside the box */
-        CHECK(mliRay_has_overlap_obb(
+        CHECK(mliRay_has_overlap_aabb(
                 mliRay_set(
                         mliVec_init(0., -1.5, -1.5), mliVec_init(0., 0., 1.)),
-                obb,
+                aabb,
                 &ray_parameter));
         CHECK_MARGIN(ray_parameter, -1.5, 1e-6);
 
         /* ray starts beside the box */
-        CHECK(!mliRay_has_overlap_obb(
+        CHECK(!mliRay_has_overlap_aabb(
                 mliRay_set(mliVec_init(10, 10, -5), mliVec_init(0., 0., 1.)),
-                obb,
+                aabb,
                 &ray_parameter));
 }
 

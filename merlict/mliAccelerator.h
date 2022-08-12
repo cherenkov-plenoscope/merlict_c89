@@ -11,7 +11,7 @@ struct mliAccelerator {
         struct mliOcTree *object_octrees;
 
         uint32_t num_robjects;
-        struct mliOBB *robject_obbs;
+        struct mliAABB *robject_aabbs;
 
         struct mliOcTree scenery_octree;
 };
@@ -29,7 +29,7 @@ int mliAccelerator_malloc_from_Geometry(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry);
 
-int mliAccelerator_set_robject_obbs(
+int mliAccelerator_set_robject_aabbs(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry);
 
@@ -39,6 +39,7 @@ int mliAccelerator_set_object_octrees(
 
 void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel);
 
-struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel);
+struct mliAABB mliAccelerator_outermost_aabb(
+        const struct mliAccelerator *accel);
 
 #endif

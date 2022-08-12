@@ -17,8 +17,8 @@ int mliAccelerator_equal(
         chk_msg(a->num_robjects == b->num_robjects,
                 "Expected num_robjects to be equal.");
         for (i = 0; i < a->num_robjects; i++) {
-                chk_msg(mliOBB_equal(a->robject_obbs[i], b->robject_obbs[i]),
-                        "Expected robject_obbs[i] to be equal.");
+                chk_msg(mliAABB_equal(a->robject_aabbs[i], b->robject_aabbs[i]),
+                        "Expected robject_aabbs[i] to be equal.");
         }
 
         chk_msg(mliOcTree_equal(&a->scenery_octree, &b->scenery_octree),

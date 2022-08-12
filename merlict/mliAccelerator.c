@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator.h"
-#include "mliObject_OBB.h"
+#include "mliObject_AABB.h"
 
 struct mliAccelerator mliAccelerator_init(void)
 {
@@ -10,7 +10,7 @@ struct mliAccelerator mliAccelerator_init(void)
         accel.object_octrees = NULL;
 
         accel.num_robjects = 0u;
-        accel.robject_obbs = NULL;
+        accel.robject_aabbs = NULL;
 
         accel.scenery_octree = mliOcTree_init();
 
@@ -28,7 +28,7 @@ void mliAccelerator_free(struct mliAccelerator *accel)
         }
         free(accel->object_octrees);
 
-        free(accel->robject_obbs);
+        free(accel->robject_aabbs);
         (*accel) = mliAccelerator_init();
 }
 
@@ -47,9 +47,9 @@ int mliAccelerator_malloc(
         }
 
         accel->num_robjects = num_robjects;
-        chk_malloc(accel->robject_obbs, struct mliOBB, accel->num_robjects);
+        chk_malloc(accel->robject_aabbs, struct mliAABB, accel->num_robjects);
         for (rob = 0; rob < accel->num_robjects; rob++) {
-                accel->robject_obbs[rob] = mliOBB_set(
+                accel->robject_aabbs[rob] = mliAABB_set(
                         mliVec_init(0.0, 0.0, 0.0), mliVec_init(0.0, 0.0, 0.0));
         }
 
@@ -58,7 +58,7 @@ error:
         return 0;
 }
 
-int mliAccelerator_set_robject_obbs(
+int mliAccelerator_set_robject_aabbs(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry)
 {
@@ -69,7 +69,7 @@ int mliAccelerator_set_robject_obbs(
         for (rob = 0; rob < accel->num_robjects; rob++) {
                 uint32_t robject;
                 robject = geometry->robjects[rob];
-                accel->robject_obbs[rob] = mliObject_obb(
+                accel->robject_aabbs[rob] = mliObject_aabb(
                         &geometry->objects[robject],
                         geometry->robject2root[rob]);
         }
@@ -102,23 +102,23 @@ int mliAccelerator_malloc_from_Geometry(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry)
 {
-        struct mliOBB outermost_obb;
+        struct mliAABB outermost_aabb;
 
         chk_msg(mliAccelerator_malloc(
                         accel, geometry->num_objects, geometry->num_robjects),
                 "Failed to malloc mliAccelerator from mliGeometry's "
                 "num_robjects");
 
-        chk_msg(mliAccelerator_set_robject_obbs(accel, geometry),
-                "Failed to set OBBs of robjects.");
+        chk_msg(mliAccelerator_set_robject_aabbs(accel, geometry),
+                "Failed to set AABBs of robjects.");
 
         chk_msg(mliAccelerator_set_object_octrees(accel, geometry),
                 "Failed to setup object octrees.");
 
-        outermost_obb = mliAccelerator_outermost_obb(accel);
+        outermost_aabb = mliAccelerator_outermost_aabb(accel);
 
         chk_msg(mliOcTree_malloc_from_Geometry(
-                        &accel->scenery_octree, geometry, outermost_obb),
+                        &accel->scenery_octree, geometry, outermost_aabb),
                 "Failed to set up octree across all robjects in geometry.");
 
         return 1;
@@ -132,7 +132,7 @@ void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
         fprintf(f, "accelerator\n");
         fprintf(f, "-----------\n");
         fprintf(f, "\n");
-        fprintf(f, "    object-reference-bounding-boxes (OBB)s:\n");
+        fprintf(f, "    object-references bounding-boxes (AABB)s:\n");
         fprintf(f, "    ");
         for (i = 0; i < 70; i++) {
                 fprintf(f, "-");
@@ -156,29 +156,29 @@ void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
         for (rob = 0; rob < accel->num_robjects; rob++) {
                 fprintf(f, "    ");
                 fprintf(f, "%5d ", rob);
-                fprintf(f, "%9.1f ", accel->robject_obbs[rob].lower.x);
-                fprintf(f, "%9.1f ", accel->robject_obbs[rob].lower.y);
-                fprintf(f, "%9.1f ", accel->robject_obbs[rob].lower.z);
-                fprintf(f, "%9.1f ", accel->robject_obbs[rob].upper.x);
-                fprintf(f, "%9.1f ", accel->robject_obbs[rob].upper.y);
-                fprintf(f, "%9.1f ", accel->robject_obbs[rob].upper.z);
+                fprintf(f, "%9.1f ", accel->robject_aabbs[rob].lower.x);
+                fprintf(f, "%9.1f ", accel->robject_aabbs[rob].lower.y);
+                fprintf(f, "%9.1f ", accel->robject_aabbs[rob].lower.z);
+                fprintf(f, "%9.1f ", accel->robject_aabbs[rob].upper.x);
+                fprintf(f, "%9.1f ", accel->robject_aabbs[rob].upper.y);
+                fprintf(f, "%9.1f ", accel->robject_aabbs[rob].upper.z);
                 fprintf(f, "\n");
         }
 }
 
-struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel)
+struct mliAABB mliAccelerator_outermost_aabb(const struct mliAccelerator *accel)
 {
         uint32_t rob;
-        struct mliOBB obb;
+        struct mliAABB aabb;
         if (accel->num_robjects == 0) {
-                obb.lower = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
-                obb.upper = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
-                return obb;
+                aabb.lower = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                aabb.upper = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                return aabb;
         }
-        obb.lower = accel->robject_obbs[0].lower;
-        obb.upper = accel->robject_obbs[0].upper;
+        aabb.lower = accel->robject_aabbs[0].lower;
+        aabb.upper = accel->robject_aabbs[0].upper;
         for (rob = 0; rob < accel->num_robjects; rob++) {
-                obb = mliOBB_outermost(obb, accel->robject_obbs[rob]);
+                aabb = mliAABB_outermost(aabb, accel->robject_aabbs[rob]);
         }
-        return obb;
+        return aabb;
 }

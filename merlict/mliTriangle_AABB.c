@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliTriangle_OBB.h"
+#include "mliTriangle_AABB.h"
 #include <math.h>
 #include "mli_math.h"
 
@@ -12,7 +12,7 @@
 
 /* Which of the six face-plane(s) is point P outside of? */
 
-int64_t mli_triangle_obb_face_plane(struct mliVec p)
+int64_t mli_triangle_aabb_face_plane(struct mliVec p)
 {
         int64_t outcode;
         outcode = 0;
@@ -33,7 +33,7 @@ int64_t mli_triangle_obb_face_plane(struct mliVec p)
 
 /* Which of the twelve edge plane(s) is point P outside of? */
 
-int64_t mli_triangle_obb_bevel_2d(struct mliVec p)
+int64_t mli_triangle_aabb_bevel_2d(struct mliVec p)
 {
         int64_t outcode;
         outcode = 0;
@@ -66,7 +66,7 @@ int64_t mli_triangle_obb_bevel_2d(struct mliVec p)
 
 /* Which of the eight corner plane(s) is point P outside of? */
 
-int64_t mli_triangle_obb_bevel_3d(struct mliVec p)
+int64_t mli_triangle_aabb_bevel_3d(struct mliVec p)
 {
         int64_t outcode;
         outcode = 0;
@@ -93,7 +93,7 @@ int64_t mli_triangle_obb_bevel_3d(struct mliVec p)
 /* See if it is on a face of the cube              */
 /* Consider only faces in "mask"                   */
 
-int64_t mli_triangle_obb_check_point(
+int64_t mli_triangle_aabb_check_point(
         struct mliVec p1,
         struct mliVec p2,
         double alpha,
@@ -103,7 +103,7 @@ int64_t mli_triangle_obb_check_point(
         plane_point.x = mli_linear_interpolate_1d(alpha, p1.x, p2.x);
         plane_point.y = mli_linear_interpolate_1d(alpha, p1.y, p2.y);
         plane_point.z = mli_linear_interpolate_1d(alpha, p1.z, p2.z);
-        return (mli_triangle_obb_face_plane(plane_point) & mask);
+        return (mli_triangle_aabb_face_plane(plane_point) & mask);
 }
 
 /* Compute intersection of P1 --> P2 line segment with face planes */
@@ -111,38 +111,38 @@ int64_t mli_triangle_obb_check_point(
 /* Consider only face planes in "outcode_diff"                     */
 /* Note: Zero bits in "outcode_diff" means face line is outside of */
 
-int64_t mli_triangle_obb_check_line(
+int64_t mli_triangle_aabb_check_line(
         struct mliVec p1,
         struct mliVec p2,
         int64_t outcode_diff)
 {
         if ((0x01 & outcode_diff) != 0)
-                if (mli_triangle_obb_check_point(
+                if (mli_triangle_aabb_check_point(
                             p1, p2, (0.5f - p1.x) / (p2.x - p1.x), 0x3e) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x02 & outcode_diff) != 0)
-                if (mli_triangle_obb_check_point(
+                if (mli_triangle_aabb_check_point(
                             p1, p2, (-0.5f - p1.x) / (p2.x - p1.x), 0x3d) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x04 & outcode_diff) != 0)
-                if (mli_triangle_obb_check_point(
+                if (mli_triangle_aabb_check_point(
                             p1, p2, (0.5f - p1.y) / (p2.y - p1.y), 0x3b) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x08 & outcode_diff) != 0)
-                if (mli_triangle_obb_check_point(
+                if (mli_triangle_aabb_check_point(
                             p1, p2, (-0.5f - p1.y) / (p2.y - p1.y), 0x37) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x10 & outcode_diff) != 0)
-                if (mli_triangle_obb_check_point(
+                if (mli_triangle_aabb_check_point(
                             p1, p2, (0.5f - p1.z) / (p2.z - p1.z), 0x2f) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((0x20 & outcode_diff) != 0)
-                if (mli_triangle_obb_check_point(
+                if (mli_triangle_aabb_check_point(
                             p1, p2, (-0.5f - p1.z) / (p2.z - p1.z), 0x1f) ==
                     MLI_INSIDE)
                         return (MLI_INSIDE);
@@ -218,7 +218,7 @@ int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mliVec p)
 /* intersects or does not intersect the cube. */
 /**********************************************/
 
-int64_t mliTriangle_intersects_norm_obb(struct mliTriangle t)
+int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
 {
         int64_t v1_test, v2_test, v3_test;
         double d, denom;
@@ -228,11 +228,11 @@ int64_t mliTriangle_intersects_norm_obb(struct mliTriangle t)
         /* First compare all three vertexes with all six face-planes */
         /* If any vertex is inside the cube, return immediately!     */
 
-        if ((v1_test = mli_triangle_obb_face_plane(t.v1)) == MLI_INSIDE)
+        if ((v1_test = mli_triangle_aabb_face_plane(t.v1)) == MLI_INSIDE)
                 return (MLI_INSIDE);
-        if ((v2_test = mli_triangle_obb_face_plane(t.v2)) == MLI_INSIDE)
+        if ((v2_test = mli_triangle_aabb_face_plane(t.v2)) == MLI_INSIDE)
                 return (MLI_INSIDE);
-        if ((v3_test = mli_triangle_obb_face_plane(t.v3)) == MLI_INSIDE)
+        if ((v3_test = mli_triangle_aabb_face_plane(t.v3)) == MLI_INSIDE)
                 return (MLI_INSIDE);
 
         /* If all three vertexes were outside of one or more face-planes, */
@@ -243,17 +243,17 @@ int64_t mliTriangle_intersects_norm_obb(struct mliTriangle t)
 
         /* Now do the same trivial rejection test for the 12 edge planes */
 
-        v1_test |= mli_triangle_obb_bevel_2d(t.v1) << 8;
-        v2_test |= mli_triangle_obb_bevel_2d(t.v2) << 8;
-        v3_test |= mli_triangle_obb_bevel_2d(t.v3) << 8;
+        v1_test |= mli_triangle_aabb_bevel_2d(t.v1) << 8;
+        v2_test |= mli_triangle_aabb_bevel_2d(t.v2) << 8;
+        v3_test |= mli_triangle_aabb_bevel_2d(t.v3) << 8;
         if ((v1_test & v2_test & v3_test) != 0)
                 return (MLI_OUTSIDE);
 
         /* Now do the same trivial rejection test for the 8 corner planes */
 
-        v1_test |= mli_triangle_obb_bevel_3d(t.v1) << 24;
-        v2_test |= mli_triangle_obb_bevel_3d(t.v2) << 24;
-        v3_test |= mli_triangle_obb_bevel_3d(t.v3) << 24;
+        v1_test |= mli_triangle_aabb_bevel_3d(t.v1) << 24;
+        v2_test |= mli_triangle_aabb_bevel_3d(t.v2) << 24;
+        v3_test |= mli_triangle_aabb_bevel_3d(t.v3) << 24;
         if ((v1_test & v2_test & v3_test) != 0)
                 return (MLI_OUTSIDE);
 
@@ -265,15 +265,15 @@ int64_t mliTriangle_intersects_norm_obb(struct mliTriangle t)
         /* each triangle edge need be tested.                         */
 
         if ((v1_test & v2_test) == 0)
-                if (mli_triangle_obb_check_line(
+                if (mli_triangle_aabb_check_line(
                             t.v1, t.v2, v1_test | v2_test) == MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((v1_test & v3_test) == 0)
-                if (mli_triangle_obb_check_line(
+                if (mli_triangle_aabb_check_line(
                             t.v1, t.v3, v1_test | v3_test) == MLI_INSIDE)
                         return (MLI_INSIDE);
         if ((v2_test & v3_test) == 0)
-                if (mli_triangle_obb_check_line(
+                if (mli_triangle_aabb_check_line(
                             t.v2, t.v3, v2_test | v3_test) == MLI_INSIDE)
                         return (MLI_INSIDE);
 
@@ -343,21 +343,21 @@ int64_t mliTriangle_intersects_norm_obb(struct mliTriangle t)
         return (MLI_OUTSIDE);
 }
 
-struct mliTriangle mliTriangle_set_in_norm_obb(
+struct mliTriangle mliTriangle_set_in_norm_aabb(
         const struct mliVec a,
         const struct mliVec b,
         const struct mliVec c,
-        const struct mliOBB obb)
+        const struct mliAABB aabb)
 {
         struct mliTriangle tri;
-        struct mliVec obb_center = mliOBB_center(obb);
-        const double inv_scale_x = 1.0 / (obb.upper.x - obb.lower.x);
-        const double inv_scale_y = 1.0 / (obb.upper.y - obb.lower.y);
-        const double inv_scale_z = 1.0 / (obb.upper.z - obb.lower.z);
+        struct mliVec aabb_center = mliAABB_center(aabb);
+        const double inv_scale_x = 1.0 / (aabb.upper.x - aabb.lower.x);
+        const double inv_scale_y = 1.0 / (aabb.upper.y - aabb.lower.y);
+        const double inv_scale_z = 1.0 / (aabb.upper.z - aabb.lower.z);
         /* translate */
-        tri.v1 = mliVec_substract(a, obb_center);
-        tri.v2 = mliVec_substract(b, obb_center);
-        tri.v3 = mliVec_substract(c, obb_center);
+        tri.v1 = mliVec_substract(a, aabb_center);
+        tri.v2 = mliVec_substract(b, aabb_center);
+        tri.v3 = mliVec_substract(c, aabb_center);
         /* scale */
         tri.v1.x *= inv_scale_x;
         tri.v2.x *= inv_scale_x;
@@ -373,30 +373,30 @@ struct mliTriangle mliTriangle_set_in_norm_obb(
         return tri;
 }
 
-int mliTriangle_has_overlap_obb(
+int mliTriangle_has_overlap_aabb(
         const struct mliVec a,
         const struct mliVec b,
         const struct mliVec c,
-        const struct mliOBB obb)
+        const struct mliAABB aabb)
 {
-        struct mliTriangle tri = mliTriangle_set_in_norm_obb(a, b, c, obb);
-        if (mliTriangle_intersects_norm_obb(tri) == MLI_INSIDE)
+        struct mliTriangle tri = mliTriangle_set_in_norm_aabb(a, b, c, aabb);
+        if (mliTriangle_intersects_norm_aabb(tri) == MLI_INSIDE)
                 return 1;
         else
                 return 0;
 }
 
-struct mliOBB mliTriangle_obb(
+struct mliAABB mliTriangle_aabb(
         const struct mliVec a,
         const struct mliVec b,
         const struct mliVec c)
 {
-        struct mliOBB obb;
-        obb.lower.x = MLI_MIN3(a.x, b.x, c.x);
-        obb.lower.y = MLI_MIN3(a.y, b.y, c.y);
-        obb.lower.z = MLI_MIN3(a.z, b.z, c.z);
-        obb.upper.x = MLI_MAX3(a.x, b.x, c.x);
-        obb.upper.y = MLI_MAX3(a.y, b.y, c.y);
-        obb.upper.z = MLI_MAX3(a.z, b.z, c.z);
-        return obb;
+        struct mliAABB aabb;
+        aabb.lower.x = MLI_MIN3(a.x, b.x, c.x);
+        aabb.lower.y = MLI_MIN3(a.y, b.y, c.y);
+        aabb.lower.z = MLI_MIN3(a.z, b.z, c.z);
+        aabb.upper.x = MLI_MAX3(a.x, b.x, c.x);
+        aabb.upper.y = MLI_MAX3(a.y, b.y, c.y);
+        aabb.upper.z = MLI_MAX3(a.z, b.z, c.z);
+        return aabb;
 }

@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTmpOcTree.h"
 #include "mli_math.h"
-#include "mliObject_OBB.h"
+#include "mliObject_AABB.h"
 
 uint64_t mli_guess_octree_depth_based_on_num_objects(const uint64_t num_objects)
 {
@@ -58,10 +58,10 @@ uint32_t mliTmpNode_signs_to_child(
 int mliTmpNode_add_children(
         struct mliTmpNode *node,
         const void *bundle,
-        int (*item_in_bundle_has_overlap_obb)(
+        int (*item_in_bundle_has_overlap_aabb)(
                 const void *,
                 const uint32_t,
-                const struct mliOBB),
+                const struct mliAABB),
         const struct mliCube cube,
         const uint64_t depth,
         const uint64_t max_depth)
@@ -95,10 +95,10 @@ int mliTmpNode_add_children(
                                 for (obj = 0u; obj < node->num_objects; obj++) {
                                         const uint32_t object_idx =
                                                 node->objects[obj];
-                                        if (item_in_bundle_has_overlap_obb(
+                                        if (item_in_bundle_has_overlap_aabb(
                                                     bundle,
                                                     object_idx,
-                                                    mliCube_to_obb(
+                                                    mliCube_to_aabb(
                                                             child_cubes
                                                                     [child]))) {
                                                 chk(mliOctOverlap_push_back(
@@ -128,7 +128,7 @@ int mliTmpNode_add_children(
                 mliTmpNode_add_children(
                         node->children[c],
                         bundle,
-                        item_in_bundle_has_overlap_obb,
+                        item_in_bundle_has_overlap_aabb,
                         child_cubes[c],
                         depth + 1u,
                         max_depth);
@@ -143,10 +143,10 @@ int mliTmpNode_malloc_tree_from_bundle(
         struct mliTmpNode *root_node,
         const void *bundle,
         const uint32_t num_items_in_bundle,
-        int (*item_in_bundle_has_overlap_obb)(
+        int (*item_in_bundle_has_overlap_aabb)(
                 const void *,
                 const uint32_t,
-                const struct mliOBB),
+                const struct mliAABB),
         const struct mliCube bundle_cube)
 {
         uint32_t idx, start_depth, max_depth;
@@ -163,7 +163,7 @@ int mliTmpNode_malloc_tree_from_bundle(
         mliTmpNode_add_children(
                 root_node,
                 bundle,
-                item_in_bundle_has_overlap_obb,
+                item_in_bundle_has_overlap_aabb,
                 bundle_cube,
                 start_depth,
                 max_depth);
@@ -356,19 +356,19 @@ int mliTmpOcTree_malloc_from_bundle(
         struct mliTmpOcTree *octree,
         const void *bundle,
         const uint32_t num_items_in_bundle,
-        int (*item_in_bundle_has_overlap_obb)(
+        int (*item_in_bundle_has_overlap_aabb)(
                 const void *,
                 const uint32_t,
-                const struct mliOBB),
-        struct mliOBB bundle_obb)
+                const struct mliAABB),
+        struct mliAABB bundle_aabb)
 {
         mliTmpOcTree_free(octree);
-        octree->cube = mliCube_outermost_cube(bundle_obb);
+        octree->cube = mliCube_outermost_cube(bundle_aabb);
         chk_msg(mliTmpNode_malloc_tree_from_bundle(
                         &octree->root,
                         bundle,
                         num_items_in_bundle,
-                        item_in_bundle_has_overlap_obb,
+                        item_in_bundle_has_overlap_aabb,
                         octree->cube),
                 "Failed to allocate dynamic octree from bundle.");
         return 1;
