@@ -60,7 +60,7 @@ CASE("object-point")
         double object_distance = mli_thin_lens_get_object_given_focal_and_image(
                 focal_length, fabs(image_sensor_distance));
         struct mliVec obj = mliApertureCamera_get_object_point(
-                focal_length, mliVec_set(0.1, 0.1, image_sensor_distance));
+                focal_length, mliVec_init(0.1, 0.1, image_sensor_distance));
         CHECK_MARGIN(object_distance, 11.0, 1e-6);
         CHECK_MARGIN(obj.x, -1.0, 1e-6);
         CHECK_MARGIN(obj.y, -1.0, 1e-6);

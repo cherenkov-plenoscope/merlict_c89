@@ -3,7 +3,7 @@
 #include <math.h>
 #include <float.h>
 
-struct mliVec mliVec_set(const double x, const double y, const double z)
+struct mliVec mliVec_init(const double x, const double y, const double z)
 {
         struct mliVec out;
         out.x = x;
@@ -182,9 +182,45 @@ int mliVec_sign3_bitmask(const struct mliVec a, const double epsilon)
 struct mliVec mliVec_mean(const struct mliVec *vecs, const uint64_t num_vecs)
 {
         uint64_t i;
-        struct mliVec mean = mliVec_set(0.0, 0.0, 0.0);
+        struct mliVec mean = mliVec_init(0.0, 0.0, 0.0);
         for (i = 0; i < num_vecs; i++) {
                 mean = mliVec_add(mean, vecs[i]);
         }
         return mliVec_multiply(mean, (1.0 / num_vecs));
+}
+
+void mliVec_set(struct mliVec *a, const uint64_t dim, const double v)
+{
+        switch (dim) {
+        case 0:
+                a->x = v;
+                break;
+        case 1:
+                a->y = v;
+                break;
+        case 2:
+                a->z = v;
+                break;
+        default:
+                assert(0);
+                break;
+        }
+}
+
+double mliVec_get(const struct mliVec *a, const uint64_t dim)
+{
+        switch (dim) {
+        case 0:
+                return a->x;
+                break;
+        case 1:
+                return a->y;
+                break;
+        case 2:
+                return a->z;
+                break;
+        default:
+                assert(0);
+                break;
+        }
 }

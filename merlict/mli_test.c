@@ -36,6 +36,7 @@ int main(void)
 #include "mliPixelWalk_test.c"
 #include "mliImage_test.c"
 #include "mliVec_test.c"
+#include "mliMat_test.c"
 #include "mli_lambertian_cosine_law_test.c"
 #include "mliDynMap_test.c"
 #include "mliArchive_test.c"

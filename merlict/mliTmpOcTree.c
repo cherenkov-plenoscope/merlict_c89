@@ -341,7 +341,7 @@ void mliTmpNode_num_nodes_leafs_objects(
 struct mliTmpOcTree mliTmpOcTree_init(void)
 {
         struct mliTmpOcTree octree;
-        octree.cube.lower = mliVec_set(0., 0., 0.);
+        octree.cube.lower = mliVec_init(0., 0., 0.);
         octree.cube.edge_length = 0.;
         octree.root = mliTmpNode_init();
         return octree;

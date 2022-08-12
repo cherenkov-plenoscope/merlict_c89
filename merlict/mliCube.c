@@ -5,7 +5,7 @@ struct mliVec mliCube_upper(const struct mliCube a)
 {
         return mliVec_add(
                 a.lower,
-                mliVec_set(a.edge_length, a.edge_length, a.edge_length));
+                mliVec_init(a.edge_length, a.edge_length, a.edge_length));
 }
 
 struct mliOBB mliCube_to_obb(const struct mliCube a)
@@ -18,7 +18,7 @@ struct mliOBB mliCube_to_obb(const struct mliCube a)
 
 struct mliVec mliCube_center(const struct mliCube a)
 {
-        return mliVec_set(
+        return mliVec_init(
                 a.lower.x + a.edge_length * .5,
                 a.lower.y + a.edge_length * .5,
                 a.lower.z + a.edge_length * .5);

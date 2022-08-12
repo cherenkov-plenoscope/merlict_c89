@@ -72,8 +72,8 @@ struct mliOBB mliObject_obb(
         uint64_t face_idx;
 
         if (obj->num_faces == 0) {
-                obb.lower = mliVec_set(MLI_NAN, MLI_NAN, MLI_NAN);
-                obb.upper = mliVec_set(MLI_NAN, MLI_NAN, MLI_NAN);
+                obb.lower = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                obb.upper = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
                 return obb;
         }
 
@@ -125,7 +125,7 @@ struct mliOBB mliObject_obb(
 struct mliOBB mliObject_obb_in_local_frame(const struct mliObject *obj)
 {
         const struct mliHomTraComp unity_comp = mliHomTraComp_set(
-                mliVec_set(0.0, 0.0, 0.0),
+                mliVec_init(0.0, 0.0, 0.0),
                 mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0));
         return mliObject_obb(obj, unity_comp);
 }

@@ -8,21 +8,21 @@ struct mliVec mliView_optical_axis(const struct mliView cam)
 {
         struct mliMat rotation = mliMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rotation, mliVec_set(0., 0., 1.));
+        return mli_transform_orientation(&rotation, mliVec_init(0., 0., 1.));
 }
 
 struct mliVec mliView_direction_right(const struct mliView cam)
 {
         struct mliMat rotation = mliMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rotation, mliVec_set(1., 0., 0.));
+        return mli_transform_orientation(&rotation, mliVec_init(1., 0., 0.));
 }
 
 struct mliVec mliView_direction_up(const struct mliView cam)
 {
         struct mliMat rotation = mliMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rotation, mliVec_set(0., 1., 0.));
+        return mli_transform_orientation(&rotation, mliVec_init(0., 1., 0.));
 }
 
 struct mliView mliView_move_forward(

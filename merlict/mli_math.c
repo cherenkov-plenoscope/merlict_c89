@@ -129,3 +129,8 @@ double mli_linear_interpolate_2d(
         const double b = y0 - m * x0;
         return m * xarg + b;
 }
+
+double mli_relative_ratio(const double a, const double b)
+{
+        return fabs(a - b) / (0.5 * (a + b));
+}

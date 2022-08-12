@@ -8,7 +8,7 @@ struct mliRenderConfig mliRenderConfig_init(void)
 {
         struct mliRenderConfig c;
         c.camera = mliApertureCamera_init();
-        c.camera_to_root.translation = mliVec_set(0.0, 0.0, 0.0);
+        c.camera_to_root.translation = mliVec_init(0.0, 0.0, 0.0);
         c.camera_to_root.rotation = mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0);
         c.tracer = mliTracerConfig_init();
         c.num_pixel_x = 64;

@@ -128,7 +128,7 @@ struct mliNode mliNode_init(void)
 struct mliOcTree mliOcTree_init(void)
 {
         struct mliOcTree tree;
-        tree.cube.lower = mliVec_set(0., 0., 0.);
+        tree.cube.lower = mliVec_init(0., 0., 0.);
         tree.cube.edge_length = 0.;
         tree.num_nodes = 0u;
         tree.nodes = NULL;

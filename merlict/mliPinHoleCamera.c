@@ -14,9 +14,9 @@ struct mliPinHoleCamera mliPinHoleCamera_init(
         assert(field_of_view > 0.);
         assert(field_of_view < mli_deg2rad(180.));
 
-        sensor.optical_axis = mliVec_set(0.0, 0.0, 1.0);
-        sensor.col_axis = mliVec_set(1.0, 0.0, 0.0);
-        sensor.row_axis = mliVec_set(0.0, row_over_column_pixel_ratio, 0.0);
+        sensor.optical_axis = mliVec_init(0.0, 0.0, 1.0);
+        sensor.col_axis = mliVec_init(1.0, 0.0, 0.0);
+        sensor.row_axis = mliVec_init(0.0, row_over_column_pixel_ratio, 0.0);
 
         sensor.distance_to_principal_point =
                 ((0.5 * image->num_cols) / tan(0.5 * field_of_view));
@@ -31,7 +31,7 @@ struct mliRay mliPinHoleCamera_ray_at_row_col(
         const uint32_t row,
         const uint32_t col)
 {
-        struct mliVec pin_hole_position = mliVec_set(0.0, 0.0, 0.0);
+        struct mliVec pin_hole_position = mliVec_init(0.0, 0.0, 0.0);
         int row_idx_on_sensor = row - image->num_rows / 2;
         int col_idx_on_sensor = col - image->num_cols / 2;
         struct mliVec s_row =

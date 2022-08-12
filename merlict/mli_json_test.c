@@ -142,8 +142,8 @@ CASE("parse mliVec and mliColor")
 {
         uint64_t token;
         struct mliJson json = mliJson_init();
-        struct mliVec vec1 = mliVec_set(0., 0., 0.);
-        struct mliVec vec2 = mliVec_set(0., 0., 0.);
+        struct mliVec vec1 = mliVec_init(0., 0., 0.);
+        struct mliVec vec2 = mliVec_init(0., 0., 0.);
         struct mliColor col = mliColor_set(0., 0., 0.);
         CHECK(mliJson_malloc_from_path(
                 &json, "merlict/tests/resources/vec.json"));

@@ -9,7 +9,7 @@ struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliPrng *prng)
         azimuth = MLI_2PI * mli_random_uniform(prng);
         sin_theta = mli_random_uniform(prng);
         cos_theta = sqrt(1.0 - sin_theta * sin_theta);
-        return mliVec_set(
+        return mliVec_init(
                 sin_theta * cos(azimuth), sin_theta * sin(azimuth), cos_theta);
 }
 
@@ -17,7 +17,7 @@ struct mliVec mli_draw_lambertian_direction_wrt_surface_normal(
         struct mliPrng *prng,
         const struct mliVec surface_normal)
 {
-        const struct mliVec z = mliVec_set(0, 0, 1);
+        const struct mliVec z = mliVec_init(0, 0, 1);
         const struct mliVec lambertian_wrt_z =
                 mli_draw_lambertian_direction_wrt_z(prng);
         const double rho = mliVec_angle_between(z, surface_normal);

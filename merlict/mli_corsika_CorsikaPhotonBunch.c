@@ -137,13 +137,13 @@ struct mliVec mli_corsika_photon_direction_of_motion(
         const double cz_rad =
                 sqrt(1.0 - bunch.cx_rad * bunch.cx_rad -
                      bunch.cy_rad * bunch.cy_rad);
-        return mliVec_set(bunch.cx_rad, bunch.cy_rad, -cz_rad);
+        return mliVec_init(bunch.cx_rad, bunch.cy_rad, -cz_rad);
 }
 
 struct mliVec mli_corsika_photon_support_on_observation_level(
         const struct mliCorsikaPhotonBunch bunch)
 {
-        return mliVec_set(
+        return mliVec_init(
                 (double)bunch.x_cm * 1e-2, (double)bunch.y_cm * 1e-2, 0.0);
 }
 

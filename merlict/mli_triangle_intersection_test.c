@@ -12,7 +12,8 @@ CASE("intersection")
 
         CHECK(mliRay_intersects_triangle(
                 mliRay_set(
-                        mliVec_set(0.0, 0.0, 1.0), mliVec_set(0.0, 0.0, -1.0)),
+                        mliVec_init(0.0, 0.0, 1.0),
+                        mliVec_init(0.0, 0.0, -1.0)),
                 a,
                 b,
                 c,
@@ -21,8 +22,8 @@ CASE("intersection")
 
         CHECK(mliRay_intersects_triangle(
                 mliRay_set(
-                        mliVec_set(-0.99, 0.01, 1.0),
-                        mliVec_set(0.0, 0.0, -1.0)),
+                        mliVec_init(-0.99, 0.01, 1.0),
+                        mliVec_init(0.0, 0.0, -1.0)),
                 a,
                 b,
                 c,
@@ -31,8 +32,8 @@ CASE("intersection")
 
         CHECK(!mliRay_intersects_triangle(
                 mliRay_set(
-                        mliVec_set(-1.01, 0.01, 1.0),
-                        mliVec_set(0.0, 0.0, -1.0)),
+                        mliVec_init(-1.01, 0.01, 1.0),
+                        mliVec_init(0.0, 0.0, -1.0)),
                 a,
                 b,
                 c,
@@ -40,7 +41,8 @@ CASE("intersection")
 
         CHECK(mliRay_intersects_triangle(
                 mliRay_set(
-                        mliVec_set(0.0, 1.99, 1.0), mliVec_set(0.0, 0.0, -1.0)),
+                        mliVec_init(0.0, 1.99, 1.0),
+                        mliVec_init(0.0, 0.0, -1.0)),
                 a,
                 b,
                 c,
@@ -49,7 +51,8 @@ CASE("intersection")
 
         CHECK(!mliRay_intersects_triangle(
                 mliRay_set(
-                        mliVec_set(0.0, 2.01, 1.0), mliVec_set(0.0, 0.0, -1.0)),
+                        mliVec_init(0.0, 2.01, 1.0),
+                        mliVec_init(0.0, 0.0, -1.0)),
                 a,
                 b,
                 c,
@@ -69,8 +72,8 @@ CASE("ray parameter")
 
                 CHECK(mliRay_intersects_triangle(
                         mliRay_set(
-                                mliVec_set(0.0, 1.0, float_i),
-                                mliVec_set(0.0, 0.0, 1.0)),
+                                mliVec_init(0.0, 1.0, float_i),
+                                mliVec_init(0.0, 0.0, 1.0)),
                         a,
                         b,
                         c,
@@ -88,7 +91,8 @@ CASE("causality")
 
         double z = 1.0;
         CHECK(!mliRay_intersects_triangle(
-                mliRay_set(mliVec_set(0.0, 1.0, z), mliVec_set(0.0, 0.0, 1.0)),
+                mliRay_set(
+                        mliVec_init(0.0, 1.0, z), mliVec_init(0.0, 0.0, 1.0)),
                 a,
                 b,
                 c,
@@ -96,7 +100,8 @@ CASE("causality")
 
         z = -1.0;
         CHECK(mliRay_intersects_triangle(
-                mliRay_set(mliVec_set(0.0, 1.0, z), mliVec_set(0.0, 0.0, 1.0)),
+                mliRay_set(
+                        mliVec_init(0.0, 1.0, z), mliVec_init(0.0, 0.0, 1.0)),
                 a,
                 b,
                 c,

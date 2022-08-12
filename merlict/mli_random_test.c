@@ -128,7 +128,7 @@ CASE("full_sphere")
                 mliRandomUniformRange_set(0.0, 2.0 * MLI_PI);
         const struct mliRandomZenithRange zenith =
                 mliRandomZenithRange_set(0.0, MLI_PI);
-        struct mliVec mean_position = mliVec_set(0., 0., 0.);
+        struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -1.0, 1e-6);
 
@@ -153,7 +153,7 @@ CASE("octo_sphere")
                 mliRandomUniformRange_set(0.0, MLI_PI / 2.0);
         const struct mliRandomZenithRange zenith =
                 mliRandomZenithRange_set(0., MLI_PI / 2.0);
-        struct mliVec mean_position = mliVec_set(0., 0., 0.);
+        struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
         for (i = 0; i < n; i++) {
@@ -177,7 +177,7 @@ CASE("octo_sphere_minus_z")
                 mliRandomUniformRange_set(0.0, MLI_PI / 2.0);
         const struct mliRandomZenithRange zenith =
                 mliRandomZenithRange_set(MLI_PI / 2.0, MLI_PI);
-        struct mliVec mean_position = mliVec_set(0., 0., 0.);
+        struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 0.5, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
         for (i = 0; i < n; i++) {
@@ -212,7 +212,7 @@ CASE("position_on_disc")
                         mli_random_position_on_disc(disc_radius, &prng)));
 
         /* mean position */
-        mean = mliVec_set(0., 0., 0.);
+        mean = mliVec_init(0., 0., 0.);
         for (i = 0; i < points.size; i++)
                 mean = mliVec_add(mean, points.array[i]);
         mean = mliVec_multiply(mean, 1.0 / (double)points.size);
@@ -229,7 +229,7 @@ CASE("position_on_disc")
                 for (phi = 0; phi < 2.0 * MLI_PI; phi = phi + MLI_PI / 3.0) {
                         double counts_in_evaluation_bin = 0.0;
                         struct mliVec eval_disc_pos =
-                                mliVec_set(r * cos(phi), r * sin(phi), 0.0);
+                                mliVec_init(r * cos(phi), r * sin(phi), 0.0);
                         for (i = 0; i < points.size; i++) {
                                 if (mliVec_norm_between(
                                             eval_disc_pos, points.array[i]) <=

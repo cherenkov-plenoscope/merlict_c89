@@ -104,4 +104,5 @@ double mli_linear_interpolate_2d(
         const double y0,
         const double x1,
         const double y1);
+double mli_relative_ratio(const double a, const double b);
 #endif

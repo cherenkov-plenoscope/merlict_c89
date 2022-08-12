@@ -50,7 +50,7 @@ int mliAccelerator_malloc(
         chk_malloc(accel->robject_obbs, struct mliOBB, accel->num_robjects);
         for (rob = 0; rob < accel->num_robjects; rob++) {
                 accel->robject_obbs[rob] = mliOBB_set(
-                        mliVec_set(0.0, 0.0, 0.0), mliVec_set(0.0, 0.0, 0.0));
+                        mliVec_init(0.0, 0.0, 0.0), mliVec_init(0.0, 0.0, 0.0));
         }
 
         return 1;
@@ -171,8 +171,8 @@ struct mliOBB mliAccelerator_outermost_obb(const struct mliAccelerator *accel)
         uint32_t rob;
         struct mliOBB obb;
         if (accel->num_robjects == 0) {
-                obb.lower = mliVec_set(MLI_NAN, MLI_NAN, MLI_NAN);
-                obb.upper = mliVec_set(MLI_NAN, MLI_NAN, MLI_NAN);
+                obb.lower = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                obb.upper = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
                 return obb;
         }
         obb.lower = accel->robject_obbs[0].lower;

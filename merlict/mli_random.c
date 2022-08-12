@@ -92,7 +92,7 @@ struct mliVec mli_random_draw_direction_in_zenith_azimuth_range(
         const double az = mli_random_draw_uniform(azimuth, prng);
         const double zd = mli_random_draw_zenith(zenith, prng);
         const double sin_zd = sin(zd);
-        return mliVec_set(sin_zd * cos(az), sin_zd * sin(az), cos(zd));
+        return mliVec_init(sin_zd * cos(az), sin_zd * sin(az), cos(zd));
 }
 
 struct mliVec mli_random_position_on_disc(
@@ -101,7 +101,7 @@ struct mliVec mli_random_position_on_disc(
 {
         const double r = sqrt(mli_random_uniform(prng)) * radius;
         const double azimuth = mli_random_uniform(prng) * MLI_2PI;
-        return mliVec_set(r * cos(azimuth), r * sin(azimuth), 0.0);
+        return mliVec_init(r * cos(azimuth), r * sin(azimuth), 0.0);
 }
 
 struct mliVec mli_random_position_inside_unit_sphere(struct mliPrng *prng)

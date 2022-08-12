@@ -41,7 +41,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         scenery->geometry.robjects[0] = 0u;
         scenery->geometry.robject_ids[0] = 0u;
         scenery->geometry.robject2root[0] = mliHomTraComp_set(
-                mliVec_set(0.0, 0.0, 0.0),
+                mliVec_init(0.0, 0.0, 0.0),
                 mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0));
 
         /* materials */

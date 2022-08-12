@@ -25,7 +25,8 @@ CASE("mliAccelerator, init")
                 "sceneries/"
                 "001.tar"));
 
-        ray = mliRay_set(mliVec_set(0.0, 0.0, -5.0), mliVec_set(0.0, 0.0, 1.0));
+        ray = mliRay_set(
+                mliVec_init(0.0, 0.0, -5.0), mliVec_init(0.0, 0.0, 1.0));
 
         color = mli_trace(&scenery, ray, &tracer_config, &prng);
 

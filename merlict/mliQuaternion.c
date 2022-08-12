@@ -85,8 +85,8 @@ struct mliQuaternion mliQuaternion_product(
         const struct mliQuaternion q)
 {
         struct mliQuaternion pq;
-        const struct mliVec P = mliVec_set(p.x, p.y, p.z);
-        const struct mliVec Q = mliVec_set(q.x, q.y, q.z);
+        const struct mliVec P = mliVec_init(p.x, p.y, p.z);
+        const struct mliVec Q = mliVec_init(q.x, q.y, q.z);
         const struct mliVec P_cross_Q = mliVec_cross(P, Q);
         pq.w = p.w * q.w - mliVec_dot(P, Q);
         pq.x = p.w * Q.x + q.w * P.x + P_cross_Q.x;
@@ -154,11 +154,11 @@ struct mliQuaternion mliQuaternion_set_tait_bryan(
         const double rz)
 {
         const struct mliQuaternion qz =
-                mliQuaternion_set_rotaxis_and_angle(mliVec_set(0, 0, 1), -rz);
+                mliQuaternion_set_rotaxis_and_angle(mliVec_init(0, 0, 1), -rz);
         const struct mliQuaternion qy =
-                mliQuaternion_set_rotaxis_and_angle(mliVec_set(0, 1, 0), -ry);
+                mliQuaternion_set_rotaxis_and_angle(mliVec_init(0, 1, 0), -ry);
         const struct mliQuaternion qx =
-                mliQuaternion_set_rotaxis_and_angle(mliVec_set(1, 0, 0), -rx);
+                mliQuaternion_set_rotaxis_and_angle(mliVec_init(1, 0, 0), -rx);
         const struct mliQuaternion qz_qy = mliQuaternion_product(qz, qy);
         return mliQuaternion_product(qz_qy, qx);
 }

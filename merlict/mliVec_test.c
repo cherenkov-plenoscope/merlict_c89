@@ -225,9 +225,9 @@ CASE("ncpy")
         int i;
         struct mliVec a[3];
         struct mliVec b[3];
-        a[0] = mliVec_set(0., 1., 2.);
-        a[1] = mliVec_set(3., 4., 5.);
-        a[2] = mliVec_set(6., 7., 8.);
+        a[0] = mliVec_init(0., 1., 2.);
+        a[1] = mliVec_init(3., 4., 5.);
+        a[2] = mliVec_init(6., 7., 8.);
 
         MLI_NCPY(a, b, 3); /* <--- to be tested */
 
@@ -245,7 +245,7 @@ CASE("mean")
         struct mliVec m = {0.0, 0.0, 0.0};
         for (i = 0; i < 10; i++) {
                 double j = (double)i;
-                a[i] = mliVec_set(j, -j, j * j);
+                a[i] = mliVec_init(j, -j, j * j);
         }
         m = mliVec_mean(a, 10);
         CHECK_MARGIN(m.x, 4.5, MLI_EPSILON);

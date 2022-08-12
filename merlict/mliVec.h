@@ -27,7 +27,9 @@ double mliVec_dot(const struct mliVec a, const struct mliVec b);
 struct mliVec mliVec_cross(const struct mliVec a, const struct mliVec b);
 struct mliVec mliVec_substract(const struct mliVec a, const struct mliVec b);
 struct mliVec mliVec_add(const struct mliVec a, const struct mliVec b);
-struct mliVec mliVec_set(const double x, const double y, const double z);
+struct mliVec mliVec_init(const double x, const double y, const double z);
 int mliVec_sign3_bitmask(const struct mliVec a, const double epsilon);
 struct mliVec mliVec_mean(const struct mliVec *vecs, const uint64_t num_vecs);
+void mliVec_set(struct mliVec *a, const uint64_t dim, const double val);
+double mliVec_get(const struct mliVec *a, const uint64_t dim);
 #endif
