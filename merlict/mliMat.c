@@ -496,6 +496,8 @@ int mliMat_lup_decompose(struct mliMat *A, int *P, const double tolerance)
                 The last element P[N]=S+N,
                 where S is the number of row exchanges needed for determinant
                 computation, det(P)=(-1)^S
+
+        Inspired by https://en.wikipedia.org/wiki/LU_decomposition
         */
         int i, j, k, imax;
         double maxA, absA;
