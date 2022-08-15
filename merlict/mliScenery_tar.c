@@ -93,6 +93,9 @@ int mliScenery_malloc_from_Archive(
                 "Failed to malloc accelerator from geometry.");
 
         chk_msg(mliScenery_valid(scenery), "Expected scenery to be valid.");
+        chk_msg(mliGeometry_warn_objects(&scenery->geometry),
+                "Failed to warn about objects.");
+
         return 1;
 error:
         return 0;

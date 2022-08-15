@@ -41,5 +41,5 @@ void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry);
 struct mliBoundaryLayer mliGeometry_object_surfaces(
         const struct mliGeometry *geometry,
         const uint32_t object_idx);
-
+int mliGeometry_warn_objects(const struct mliGeometry *geometry);
 #endif

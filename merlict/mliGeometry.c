@@ -180,3 +180,37 @@ void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
                 fprintf(f, "\n");
         }
 }
+
+int mliGeometry_warn_objects(const struct mliGeometry *geometry)
+{
+        uint32_t o;
+        for (o = 0; o < geometry->num_objects; o++) {
+                uint32_t v, vn, mtl;
+                chk_msg(mliObject_num_unused(
+                                &(geometry->objects)[o], &v, &vn, &mtl),
+                        "Can't estimate num unused v/vn/mtl in object.");
+                if (v > 0 || vn > 0 || mtl > 0) {
+                        fprintf(stderr,
+                                "[WARNING] Object '%s' at [%u] ",
+                                geometry->object_names[o].cstr,
+                                o);
+                }
+                if (v > 0) {
+                        fprintf(stderr, "has %u unused vertices (v).\n", v);
+                }
+                if (vn > 0) {
+                        fprintf(stderr,
+                                "has %u unused vertex-normals (vn).\n",
+                                vn);
+                }
+                if (mtl > 0) {
+                        fprintf(stderr,
+                                "has %u unused materials (mtl).\n",
+                                mtl);
+                }
+        }
+
+        return 1;
+error:
+        return 0;
+}

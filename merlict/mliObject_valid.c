@@ -95,3 +95,65 @@ error:
         fprintf(stderr, "In obj.materials[%u]\n", i);
         return 0;
 }
+
+int mliObject_num_unused(
+        const struct mliObject *obj,
+        uint32_t *num_unused_vertices,
+        uint32_t *num_unused_vertex_normals,
+        uint32_t *num_unused_materials)
+{
+        uint64_t *v = NULL;
+        uint64_t *vn = NULL;
+        uint64_t *mtl = NULL;
+        uint64_t i, f;
+
+        (*num_unused_vertices) = 0;
+        (*num_unused_vertex_normals) = 0;
+        (*num_unused_materials) = 0;
+
+        chk_malloc(v, uint64_t, obj->num_vertices);
+        MLI_ARRAY_SET(v, 0, obj->num_vertices);
+
+        chk_malloc(vn, uint64_t, obj->num_vertex_normals);
+        MLI_ARRAY_SET(vn, 0, obj->num_vertex_normals);
+
+        chk_malloc(mtl, uint64_t, obj->num_materials);
+        MLI_ARRAY_SET(mtl, 0, obj->num_materials);
+
+        for (f = 0; f < obj->num_faces; f++) {
+                v[obj->faces_vertices[f].a] += 1;
+                v[obj->faces_vertices[f].b] += 1;
+                v[obj->faces_vertices[f].c] += 1;
+
+                vn[obj->faces_vertex_normals[f].a] += 1;
+                vn[obj->faces_vertex_normals[f].b] += 1;
+                vn[obj->faces_vertex_normals[f].c] += 1;
+
+                mtl[obj->faces_materials[f]] += 1;
+        }
+
+        for (i = 0; i < obj->num_vertices; i++) {
+                if (v[i] == 0) {
+                        (*num_unused_vertices) += 1;
+                }
+        }
+
+        for (i = 0; i < obj->num_vertex_normals; i++) {
+                if (vn[i] == 0) {
+                        (*num_unused_vertex_normals) += 1;
+                }
+        }
+
+        for (i = 0; i < obj->num_materials; i++) {
+                if (mtl[i] == 0) {
+                        (*num_unused_materials) += 1;
+                }
+        }
+
+        free(v);
+        free(vn);
+        free(mtl);
+        return 1;
+error:
+        return 0;
+}

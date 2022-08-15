@@ -11,4 +11,9 @@ int mliObject_has_valid_normals(
         const struct mliObject *obj,
         const double epsilon);
 int mliObject_has_valid_materials(const struct mliObject *obj);
+int mliObject_num_unused(
+        const struct mliObject *obj,
+        uint32_t *num_unused_vertices,
+        uint32_t *num_unused_vertex_normals,
+        uint32_t *num_unused_materials);
 #endif
