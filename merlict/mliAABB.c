@@ -55,3 +55,40 @@ int mliAABB_equal(const struct mliAABB a, const struct mliAABB b)
 error:
         return 0;
 }
+
+struct mliAABB mliAABB_from_vertices(
+        const struct mliVec *vertices,
+        const uint64_t num,
+        const struct mliHomTra local2root)
+{
+        struct mliAABB aabb;
+        struct mliVec seed_vertex_local;
+        struct mliVec seed_vertex_root;
+        struct mliFace seed_face;
+        uint64_t i;
+
+        if (num == 0) {
+                aabb.lower = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                aabb.upper = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                return aabb;
+        }
+
+        seed_vertex_local = vertices[0];
+        seed_vertex_root = mliHomTra_pos(&local2root, seed_vertex_local);
+
+        aabb.lower = seed_vertex_root;
+        aabb.upper = seed_vertex_root;
+        for (i = 0; i < num; i++) {
+                const struct mliVec v_local = vertices[i];
+                const struct mliVec v_root =
+                        mliHomTra_pos(&local2root, v_local);
+                aabb.lower.x = MLI_MIN2(aabb.lower.x, v_root.x);
+                aabb.lower.y = MLI_MIN2(aabb.lower.y, v_root.y);
+                aabb.lower.z = MLI_MIN2(aabb.lower.z, v_root.z);
+
+                aabb.upper.x = MLI_MAX2(aabb.upper.x, v_root.x);
+                aabb.upper.y = MLI_MAX2(aabb.upper.y, v_root.y);
+                aabb.upper.z = MLI_MAX2(aabb.upper.z, v_root.z);
+        }
+        return aabb;
+}

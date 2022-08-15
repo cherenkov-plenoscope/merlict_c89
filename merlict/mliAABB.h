@@ -39,4 +39,8 @@ struct mliAABB mliAABB_outermost(
         const struct mliAABB b);
 int mliAABB_valid(const struct mliAABB a);
 int mliAABB_equal(const struct mliAABB a, const struct mliAABB b);
+struct mliAABB mliAABB_from_vertices(
+        const struct mliVec *vertices,
+        const uint64_t num,
+        const struct mliHomTra local2root);
 #endif

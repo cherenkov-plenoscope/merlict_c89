@@ -20,6 +20,7 @@
 #include "mliQuaternion.h"
 #include "mliHomTra.h"
 #include "mliAABB.h"
+#include "mliOOBB.h"
 #include "mliCube.h"
 #include "mliIntersection.h"
 #include "mliIntersectionSurfaceNormal.h"
