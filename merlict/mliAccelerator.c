@@ -67,11 +67,11 @@ int mliAccelerator_set_robject_aabbs(
                 "Expected num_robjects to be equal, but its not.");
 
         for (rob = 0; rob < accel->num_robjects; rob++) {
-                uint32_t robject;
-                robject = geometry->robjects[rob];
+                const uint32_t robject = geometry->robjects[rob];
                 accel->robject_aabbs[rob] = mliObject_aabb(
                         &geometry->objects[robject],
-                        geometry->robject2root[rob]);
+                        mliHomTra_from_compact(
+                                geometry->robject2root[rob]));
         }
         return 1;
 error:

@@ -8,12 +8,12 @@
 
 int mliObject_has_overlap_aabb(
         const struct mliObject *obj,
-        const struct mliHomTraComp local2root_comp,
+        const struct mliHomTra local2root,
         const struct mliAABB aabb);
 
 struct mliAABB mliObject_aabb(
         const struct mliObject *obj,
-        const struct mliHomTraComp local2root_comp);
+        const struct mliHomTra local2root);
 
 int mliObject_face_in_local_frame_has_overlap_aabb(
         const struct mliObject *obj,

@@ -23,11 +23,9 @@ int mliObject_face_in_local_frame_has_overlap_aabb(
 
 int mliObject_has_overlap_aabb(
         const struct mliObject *obj,
-        const struct mliHomTraComp local2root_comp,
+        const struct mliHomTra local2root,
         const struct mliAABB aabb)
 {
-        struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-
         uint64_t face_idx;
         for (face_idx = 0; face_idx < obj->num_faces; face_idx++) {
                 const struct mliFace face = obj->faces_vertices[face_idx];
@@ -62,11 +60,9 @@ int mliObject_face_in_local_frame_has_overlap_aabb_void(
 
 struct mliAABB mliObject_aabb(
         const struct mliObject *obj,
-        const struct mliHomTraComp local2root_comp)
+        const struct mliHomTra local2root)
 {
         struct mliAABB aabb;
-        struct mliHomTra local2root = mliHomTra_from_compact(local2root_comp);
-
         struct mliVec seed_vertex_local;
         struct mliVec seed_vertex_root;
         struct mliFace seed_face;
@@ -125,8 +121,8 @@ struct mliAABB mliObject_aabb(
 
 struct mliAABB mliObject_aabb_in_local_frame(const struct mliObject *obj)
 {
-        const struct mliHomTraComp unity_comp = mliHomTraComp_set(
-                mliVec_init(0.0, 0.0, 0.0),
-                mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0));
-        return mliObject_aabb(obj, unity_comp);
+        struct mliHomTra unity;
+        unity.translation = mliVec_init(0.0, 0.0, 0.0);
+        unity.rotation = mliMat_unity();
+        return mliObject_aabb(obj, unity);
 }
