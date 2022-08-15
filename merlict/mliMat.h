@@ -30,6 +30,10 @@ struct mliMat mliMat_init_tait_bryan(
         const double rx,
         const double ry,
         const double rz);
+struct mliMat mliMat_init_columns(
+        const struct mliVec c0,
+        const struct mliVec c1,
+        const struct mliVec c2);
 struct mliMat mliMat_covariance(
         const struct mliVec *vecs,
         const uint64_t num_vecs,

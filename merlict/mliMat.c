@@ -196,6 +196,24 @@ struct mliMat mliMat_init_axis_angle(
         return rot;
 }
 
+struct mliMat mliMat_init_columns(
+        const struct mliVec c0,
+        const struct mliVec c1,
+        const struct mliVec c2)
+{
+        struct mliMat m;
+        m.r00 = c0.x;
+        m.r01 = c1.x;
+        m.r02 = c2.x;
+        m.r10 = c0.y;
+        m.r11 = c1.y;
+        m.r12 = c2.y;
+        m.r20 = c0.z;
+        m.r21 = c1.z;
+        m.r22 = c2.z;
+        return m;
+}
+
 struct mliMat mliMat_covariance(
         const struct mliVec *vecs,
         const uint64_t num_vecs,
