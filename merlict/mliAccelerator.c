@@ -70,8 +70,7 @@ int mliAccelerator_set_robject_aabbs(
                 const uint32_t robject = geometry->robjects[rob];
                 accel->robject_aabbs[rob] = mliObject_aabb(
                         &geometry->objects[robject],
-                        mliHomTra_from_compact(
-                                geometry->robject2root[rob]));
+                        mliHomTra_from_compact(geometry->robject2root[rob]));
         }
         return 1;
 error:
