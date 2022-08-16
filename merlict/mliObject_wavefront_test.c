@@ -368,6 +368,7 @@ CASE("mliObject, read wavefront file")
                 "resources/"
                 "sceneries/"
                 "001/"
+                "geometry/"
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, str.cstr));
@@ -394,6 +395,7 @@ CASE("mliObject, write and read binary-string")
                 "resources/"
                 "sceneries/"
                 "001/"
+                "geometry/"
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, str.cstr));
@@ -450,6 +452,7 @@ CASE("mliObject, write and read ascii-text-string")
                 "resources/"
                 "sceneries/"
                 "001/"
+                "geometry/"
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, str.cstr));
@@ -508,6 +511,7 @@ CASE("mliObject, read and write multiple materials")
                 "resources/"
                 "sceneries/"
                 "002/"
+                "geometry/"
                 "objects/"
                 "cube_with_materials.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj_orig, str.cstr));

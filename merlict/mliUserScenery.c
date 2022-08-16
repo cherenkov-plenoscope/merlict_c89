@@ -45,7 +45,7 @@ int mli_set_geometry_objects_and_names_from_archive(
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_cstr_has_prefix_suffix(
                             archive->filenames.array[arc_idx].key,
-                            "objects/",
+                            "geometry/objects/",
                             ".obj")) {
                         chk_msg(obj_idx < geometry->num_objects,
                                 "Expected less objects in archive.");
@@ -53,6 +53,7 @@ int mli_set_geometry_objects_and_names_from_archive(
                         memset(key, '\0', sizeof(key));
                         mli_cstr_path_basename_without_extension(
                                 archive->filenames.array[arc_idx].key, key);
+                        mli_cstr_path_basename_without_extension(key, key);
                         chk_msg(mliDynMap_insert(object_names, key, obj_idx),
                                 "Failed to insert object-filename into map.");
                         chk_msg(mliObject_malloc_from_wavefront(
@@ -225,8 +226,9 @@ int mli_check_malloc_root_frame_from_Archive(
 {
         uint64_t token = 0u;
         struct mliJson tree_json = mliJson_init();
-        chk_msg(mliArchive_get_malloc_json(archive, "tree.json", &tree_json),
-                "Failed to parse 'tree.json'.");
+        chk_msg(mliArchive_get_malloc_json(
+                        archive, "geometry/relations.json", &tree_json),
+                "Failed to parse 'geometry/relations.json'.");
         chk_msg(mliJson_token_by_key(&tree_json, 0, "children", &token),
                 "Expected 'tree.json' to have key 'children'.");
         chk_msg(mliFrame_malloc(root, MLI_FRAME), "Can not malloc root-frame.");

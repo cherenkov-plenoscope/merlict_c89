@@ -295,6 +295,7 @@ CASE("line info fprint")
                 "resources/"
                 "sceneries/"
                 "002/"
+                "geometry/"
                 "objects/"
                 "cube_with_materials.obj"));
         f = fopen("merlict/tests/resources/lines_info.tmp", "w");
@@ -305,6 +306,19 @@ CASE("line info fprint")
         fclose(f);
 
         mliStr_free(&s);
+}
+
+CASE("basename")
+{
+        char filename[256] = {'\0'};
+        char key[256] = {'\0'};
+        char expected[256] = {'\0'};
+        sprintf(filename, "geometry/objects/rale.obj");
+        sprintf(expected, "rale");
+        mli_cstr_path_basename_without_extension(filename, key);
+        mli_cstr_path_basename_without_extension(key, key);
+        fprintf(stderr, "%s vs %s\n", key, expected);
+        CHECK(strcmp(key, expected) == 0);
 }
 
 CASE("mliStr")

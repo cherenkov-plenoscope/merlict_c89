@@ -16,21 +16,21 @@ CASE("mliArchive, read tar")
                 "resources/"
                 "sceneries/"
                 "000.tar"));
-        CHECK(mliArchive_num(&arc) == 12);
+        CHECK(mliArchive_num(&arc) == 13);
 
         CHECK(1 == mliArchive_num_filename_prefix_sufix(
                            &arc, "materials/media", ".json"));
 
-        CHECK(1 ==
-              mliArchive_num_filename_prefix_sufix(&arc, "objects/", ".obj"));
+        CHECK(1 == mliArchive_num_filename_prefix_sufix(
+                           &arc, "geometry/objects/", ".obj"));
 
         CHECK(1 == mliArchive_num_filename_prefix_sufix(&arc, NULL, ".md"));
 
         CHECK(mliArchive_has(&arc, "README.md"));
 
-        CHECK(mliArchive_has(&arc, "objects/"));
-        CHECK(mliArchive_has(&arc, "objects/triangle.obj"));
-        CHECK(mliArchive_get(&arc, "objects/triangle.obj", &data));
+        CHECK(mliArchive_has(&arc, "geometry/objects/"));
+        CHECK(mliArchive_has(&arc, "geometry/objects/triangle.obj"));
+        CHECK(mliArchive_get(&arc, "geometry/objects/triangle.obj", &data));
         /*CHECK(data->capacity == 119 + 1);*/
 
         CHECK(mliObject_malloc_from_wavefront(&triangle, data->cstr));

@@ -50,7 +50,7 @@ int mliScenery_malloc_from_Archive(
         chk(mliDynMap_malloc(&object_names, 0u));
 
         num_objects = mliArchive_num_filename_prefix_sufix(
-                archive, "objects/", ".obj");
+                archive, "geometry/objects/", ".obj");
 
         chk_msg(mliGeometry_malloc_objects(&scenery->geometry, num_objects),
                 "Failed to malloc geometry.objects.");
