@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator.h"
 #include "mliObject_AABB.h"
+#include "mliGeometryAndAccelerator.h"
 
 struct mliAccelerator mliAccelerator_init(void)
 {
@@ -102,6 +103,9 @@ int mliAccelerator_malloc_from_Geometry(
         const struct mliGeometry *geometry)
 {
         struct mliAABB outermost_aabb;
+        struct mliGeometryAndAccelerator accgeo;
+        accgeo.accelerator = accel;
+        accgeo.geometry = geometry;
 
         chk_msg(mliAccelerator_malloc(
                         accel, geometry->num_objects, geometry->num_robjects),
@@ -117,7 +121,7 @@ int mliAccelerator_malloc_from_Geometry(
         outermost_aabb = mliAccelerator_outermost_aabb(accel);
 
         chk_msg(mliOcTree_malloc_from_Geometry(
-                        &accel->scenery_octree, geometry, outermost_aabb),
+                        &accel->scenery_octree, &accgeo, outermost_aabb),
                 "Failed to set up octree across all robjects in geometry.");
 
         return 1;

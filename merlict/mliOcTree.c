@@ -466,7 +466,7 @@ error:
 
 int mliOcTree_malloc_from_Geometry(
         struct mliOcTree *octree,
-        const struct mliGeometry *geometry,
+        const struct mliGeometryAndAccelerator *accgeo,
         const struct mliAABB outermost_aabb)
 {
         uint64_t num_nodes = 0;
@@ -475,8 +475,8 @@ int mliOcTree_malloc_from_Geometry(
         struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
         chk_msg(mliTmpOcTree_malloc_from_bundle(
                         &tmp_octree,
-                        (const void *)geometry,
-                        geometry->num_robjects,
+                        (const void *)accgeo,
+                        accgeo->geometry->num_robjects,
                         mliGeometry_robject_has_overlap_aabb_void,
                         outermost_aabb),
                 "Failed to create dynamic, and temporary TmpOcTree "

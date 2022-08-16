@@ -55,3 +55,11 @@ int mliAABB_equal(const struct mliAABB a, const struct mliAABB b)
 error:
         return 0;
 }
+
+int mliAABB_is_overlapping(const struct mliAABB a, const struct mliAABB b)
+{
+        const int over_x = (a.upper.x >= b.lower.x) && (b.upper.x >= a.lower.x);
+        const int over_y = (a.upper.y >= b.lower.y) && (b.upper.y >= a.lower.y);
+        const int over_z = (a.upper.z >= b.lower.z) && (b.upper.z >= a.lower.z);
+        return (over_x && over_y) && over_z;
+}

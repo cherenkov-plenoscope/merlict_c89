@@ -3,15 +3,16 @@
 #define MLIGEOMETRY_AABB_H_
 
 #include "mliGeometry.h"
+#include "mliAccelerator.h"
 #include "mliAABB.h"
 
 int mliGeometry_robject_has_overlap_aabb_void(
-        const void *geometry,
+        const void *accgeo,
         const uint32_t robject_idx,
         const struct mliAABB aabb);
 
 int mliGeometry_robject_has_overlap_aabb(
-        const struct mliGeometry *geometry,
+        const struct mliGeometryAndAccelerator *accgeo,
         const uint32_t robject_idx,
         const struct mliAABB aabb);
 

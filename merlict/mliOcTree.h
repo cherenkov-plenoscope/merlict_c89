@@ -3,7 +3,7 @@
 #define MLIOCTREE_H_
 
 #include <stdint.h>
-#include "mliAccelerator.h"
+#include "mliGeometryAndAccelerator.h"
 #include "mliTmpOcTree.h"
 
 #define MLI_OCTREE_TYPE_NONE 0
@@ -94,7 +94,7 @@ int mliOcTree_malloc_from_object_wavefront(
 
 int mliOcTree_malloc_from_Geometry(
         struct mliOcTree *octree,
-        const struct mliGeometry *geometry,
+        const struct mliGeometryAndAccelerator *accgeo,
         const struct mliAABB outermost_aabb);
 
 #endif

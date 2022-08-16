@@ -72,6 +72,7 @@
 #include "mliAccelerator_serialize.c"
 #include "mliAccelerator_valid.c"
 #include "mliAccelerator_equal.c"
+#include "mliGeometryAndAccelerator.c"
 #include "mliGeometryToMaterialMap.c"
 #include "mliGeometryToMaterialMap_equal.c"
 #include "mliGeometryToMaterialMap_valid.c"
