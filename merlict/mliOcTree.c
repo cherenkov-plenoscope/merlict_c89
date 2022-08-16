@@ -453,7 +453,6 @@ int mliOcTree_malloc_from_object_wavefront(
         mliTmpNode_num_nodes_leafs_objects(
                 &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);
 
-        mliOcTree_free(octree);
         chk_msg(mliOcTree_malloc(
                         octree, num_nodes, num_leafs, num_object_links),
                 "Failed to allocate cache-aware octree from dynamic octree.");
@@ -486,7 +485,6 @@ int mliOcTree_malloc_from_Geometry(
         mliTmpNode_num_nodes_leafs_objects(
                 &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);
 
-        mliOcTree_free(octree);
         chk_msg(mliOcTree_malloc(
                         octree, num_nodes, num_leafs, num_object_links),
                 "Failed to allocate cache-aware octree from dynamic octree.");
