@@ -9,10 +9,11 @@
 
 #define MLI_CORSIKA_EVENTTAPE_VERSION_MAYOR 2
 #define MLI_CORSIKA_EVENTTAPE_VERSION_MINOR 1
-#define MLI_CORSIKA_EVENTTAPE_VERSION_PATCH 1
+#define MLI_CORSIKA_EVENTTAPE_VERSION_PATCH 2
 
 struct mliEventTapeWriter {
         struct mliTar tar;
+        int flush_tar_stream_after_each_file;
         int run_number;
         int event_number;
         int cherenkov_bunch_block_number;

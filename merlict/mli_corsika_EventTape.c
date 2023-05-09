@@ -9,6 +9,7 @@ struct mliEventTapeWriter mliEventTapeWriter_init(void)
 {
         struct mliEventTapeWriter tio;
         tio.tar = mliTar_init();
+        tio.flush_tar_stream_after_each_file = 1;
         tio.run_number = 0;
         tio.event_number = 0;
         tio.cherenkov_bunch_block_number = 1;
@@ -62,6 +63,9 @@ int mliEventTapeWriter_write_corsika_header(
                         corsika_header,
                         MLI_CORSIKA_HEADER_SIZE_BYTES),
                 "Can't write data of corsika-header to tar.");
+        if (tio->flush_tar_stream_after_each_file) {
+                fflush(tio->tar.stream);
+        }
         return 1;
 error:
         return 0;
@@ -133,6 +137,9 @@ int mliEventTapeWriter_flush_cherenkov_bunch_block(
                         tio->buffer.array,
                         tio->buffer.size * sizeof(float)),
                 "Can't write cherenkov-bunch-block to tar-file.");
+        if (tio->flush_tar_stream_after_each_file) {
+                fflush(tio->tar.stream);
+        }
         tio->buffer.size = 0;
         tio->cherenkov_bunch_block_number += 1;
         return 1;
