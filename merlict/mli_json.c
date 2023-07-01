@@ -64,7 +64,7 @@ int mliJson_malloc_from_cstr(struct mliJson *json, const char *cstr)
 {
         mliJson_free(json);
         chk_msg(mliIo_malloc(&json->raw), "Can't malloc raw Json's Str.");
-        chk_msg(mliIo_writec(&json->raw, cstr), "Can't copy cstr.");
+        chk_msg(mliIo_malloc_cstr(&json->raw, cstr), "Can't copy cstr.");
         chk_msg(mliJson_malloc_tokens__(json), "Can't malloc Json's tokens.");
         chk_msg(mliJson_parse_tokens__(json), "Can't parse Json into tokens.");
         return 1;

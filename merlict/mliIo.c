@@ -200,7 +200,7 @@ error:
         return 0;
 }
 
-int64_t mliIo_writec(struct mliIo *byt, const char *s)
+int64_t mliIo_malloc_cstr(struct mliIo *byt, const char *s)
 {
         const uint64_t slen = strlen(s);
         uint64_t i;
