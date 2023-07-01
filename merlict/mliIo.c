@@ -200,6 +200,22 @@ error:
         return 0;
 }
 
+int mliIo_read_to_path(struct mliIo *byt, const char *path)
+{
+        int c = 1;
+        FILE *f = fopen(path, "w");
+        chk_msg(f != NULL, "Failed to open path.");
+        while (c != EOF) {
+                c = mliIo_getc(byt);
+                chk(fputc(c, f));
+        }
+        fclose(f);
+        return 1;
+error:
+        fclose(f);
+        return 0;
+}
+
 int64_t mliIo_malloc_cstr(struct mliIo *byt, const char *s)
 {
         const uint64_t slen = strlen(s);

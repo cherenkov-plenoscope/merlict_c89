@@ -441,10 +441,10 @@ CASE("mliObject, write and read binary-string")
 CASE("mliObject, write and read ascii-text-string")
 {
         uint64_t i;
+        struct mliIo f = mliIo_init();
         struct mliIo str = mliIo_init();
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        FILE *f;
         CHECK(mliIo_malloc_from_path(
                 &str,
                 "merlict/"
@@ -458,11 +458,11 @@ CASE("mliObject, write and read ascii-text-string")
         CHECK(mliObject_malloc_from_wavefront(&obj, (char *)str.cstr));
         mliIo_free(&str);
 
-        f = fopen(
-                "merlict/tests/resources/hexagonal_mirror_facet.obj.tmp", "w");
-        CHECK(f != NULL);
-        mliObject_fprint_to_wavefront(f, &obj);
-        fclose(f);
+        mliObject_fprint_to_wavefront(&f, &obj);
+        mliIo_rewind(&f);
+        mliIo_read_to_path(
+                &f, "merlict/tests/resources/hexagonal_mirror_facet.obj.tmp");
+        mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
                 &str,
@@ -500,7 +500,7 @@ CASE("mliObject, write and read ascii-text-string")
 
 CASE("mliObject, read and write multiple materials")
 {
-        FILE *f;
+        struct mliIo f = mliIo_init();
         struct mliIo str = mliIo_init();
         struct mliObject obj_orig = mliObject_init();
         struct mliObject obj_back = mliObject_init();
@@ -521,10 +521,11 @@ CASE("mliObject, read and write multiple materials")
         CHECK(obj_orig.num_faces == 12);
         CHECK(obj_orig.num_materials == 6);
 
-        f = fopen("merlict/tests/resources/cube_with_materials.obj.tmp", "w");
-        CHECK(f != NULL);
-        mliObject_fprint_to_wavefront(f, &obj_orig);
-        fclose(f);
+        mliObject_fprint_to_wavefront(&f, &obj_orig);
+        mliIo_rewind(&f);
+        mliIo_read_to_path(
+                &f, "merlict/tests/resources/cube_with_materials.obj.tmp");
+        mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
                 &str,
@@ -564,7 +565,7 @@ CASE("mliObject, read and write multiple materials")
 
 CASE("mliObject, read and write repeating materials")
 {
-        FILE *f;
+        struct mliIo f = mliIo_init();
         struct mliIo str = mliIo_init();
         struct mliObject obj_orig = mliObject_init();
         struct mliObject obj_back = mliObject_init();
@@ -581,10 +582,11 @@ CASE("mliObject, read and write repeating materials")
         CHECK(obj_orig.num_faces == 3);
         CHECK(obj_orig.num_materials == 2);
 
-        f = fopen("merlict/tests/resources/repeating_material.obj.tmp", "w");
-        CHECK(f != NULL);
-        mliObject_fprint_to_wavefront(f, &obj_orig);
-        fclose(f);
+        mliObject_fprint_to_wavefront(&f, &obj_orig);
+        mliIo_rewind(&f);
+        mliIo_read_to_path(
+                &f, "merlict/tests/resources/repeating_material.obj.tmp");
+        mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
                 &str,
