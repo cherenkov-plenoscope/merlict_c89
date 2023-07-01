@@ -104,6 +104,7 @@
 #include "mliApertureCamera.h"
 #include "mli_cstr.h"
 #include "mliRenderConfig.h"
+#include "mliStr.h"
 #include "mliIo.h"
 #include "mli_json.h"
 #include "mliArchive.h"

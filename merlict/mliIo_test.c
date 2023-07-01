@@ -123,3 +123,39 @@ CASE("BytesIo_printf")
 
         mliIo_free(&byt);
 }
+
+CASE("mli_readline")
+{
+        struct mliIo file = mliIo_init();
+        struct mliStr line = mliStr_init();
+
+        mliIo_printf(&file, "first-line\nsecond-line\n\nfourth-line\n");
+        mliIo_rewind(&file);
+
+        CHECK(mli_readline(&file, &line, '\n'));
+        CHECK(0 == strcmp((char *)line.cstr, "first-line"));
+
+        CHECK(mli_readline(&file, &line, '\n'));
+        CHECK(0 == strcmp((char *)line.cstr, "second-line"));
+
+        CHECK(mli_readline(&file, &line, '\n'));
+        CHECK(line.length == 0);
+
+        CHECK(mli_readline(&file, &line, '\n'));
+        CHECK(0 == strcmp((char *)line.cstr, "fourth-line"));
+
+        mliIo_free(&file);
+        mliStr_free(&line);
+}
+
+CASE("mli_readline_empty")
+{
+        struct mliIo file = mliIo_init();
+        struct mliStr line = mliStr_init();
+
+        CHECK(mli_readline(&file, &line, '\n'));
+        CHECK(line.length == 0);
+
+        mliIo_free(&file);
+        mliStr_free(&line);
+}

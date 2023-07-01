@@ -211,3 +211,44 @@ int64_t mliIo_writec(struct mliIo *byt, const char *s)
 error:
         return 0;
 }
+
+int64_t mliIo_setf(struct mliIo *str, const char *format, ...)
+{
+        va_list args;
+        va_start(args, format);
+        chk(mliIo_malloc(str));
+        chk(mliIo_printf(str, format, args) >= 0);
+        va_end(args);
+        mliIo_rewind(str);
+        return 1;
+error:
+        va_end(args);
+        return 0;
+}
+
+int mli_readline(struct mliIo *stream, struct mliStr *line, const char delimiter)
+{
+        struct mliIo buf = mliIo_init();
+        chk(mliIo_malloc(&buf));
+
+        while (stream->pos < stream->size) {
+                const int c = mliIo_getc(stream);
+                if (c == '\0') {
+                        break;
+                } else if (c == delimiter) {
+                        break;
+                } else {
+                        chk(mliIo_putchar(&buf, c));
+                }
+        }
+
+        mliIo_rewind(&buf);
+        chk(mliStr_malloc(line, buf.size));
+        strcpy(line->cstr, (char *)buf.cstr);
+
+        mliIo_free(&buf);
+        return 1;
+error:
+        mliIo_free(&buf);
+        return 0;
+}

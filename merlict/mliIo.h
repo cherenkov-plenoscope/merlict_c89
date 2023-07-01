@@ -3,6 +3,8 @@
 #define mliIo_H_
 #include <stdint.h>
 #include <stdarg.h>
+#include "mliStr.h"
+
 
 struct mliIo {
         /* memory */
@@ -35,6 +37,7 @@ int64_t mliIo_read(
         const void *ptr,
         const uint64_t size,
         const uint64_t count);
+
 uint64_t mliIo_ftell(struct mliIo *byt);
 void mliIo_rewind(struct mliIo *byt);
 int64_t mliIo_printf(struct mliIo *byt, const char *format, ...);
@@ -45,5 +48,9 @@ int mliIo_convert_line_break_CRLF_CR_to_LF(
 
 int mliIo_malloc_from_path(struct mliIo *byt, const char *path);
 int64_t mliIo_writec(struct mliIo *byt, const char *s);
+
+int64_t mliIo_setf(struct mliIo *str, const char *format, ...);
+
+int mli_readline(struct mliIo *stream, struct mliStr *line, const char delimiter);
 
 #endif

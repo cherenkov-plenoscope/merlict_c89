@@ -59,6 +59,7 @@ int main(void)
 #include "mli_photon_propagation_prism_test.c"
 #include "mli_photon_propagation_focussing_mirror_test.c"
 #include "mliRenderConfig_test.c"
+#include "mliStr_test.c"
 #include "mliIo_test.c"
 
         printf("__SUCCESS__\n");
