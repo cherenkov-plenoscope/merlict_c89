@@ -28,6 +28,16 @@ error:
         return 0;
 }
 
+int mliStr_malloc_copy(struct mliStr *str, const struct mliStr *src)
+{
+        chk_msg(src->cstr != NULL, "Expctes str to copy from to be allocated");
+        mliStr_malloc(str, src->length);
+        strncpy(str->cstr, src->cstr, str->length);
+        return 1;
+error:
+        return 0;
+}
+
 int mliStr_mallocf(struct mliStr *str, const char *format, ...)
 {
         struct mliStr tmp = mliStr_init();
@@ -37,7 +47,7 @@ int mliStr_mallocf(struct mliStr *str, const char *format, ...)
         va_start(args, format);
         vsprintf(tmp.cstr, format, args);
         chk(mliStr_malloc(str, strlen(tmp.cstr)));
-        strcpy(str->cstr, tmp.cstr);
+        strncpy(str->cstr, tmp.cstr, str->length);
         va_end(args);
         mliStr_free(&tmp);
         return 1;
@@ -93,4 +103,30 @@ int mliStr_has_prefix_suffix(
         } else {
                 return 0;
         }
+}
+
+int64_t mliStr_rfind(const struct mliStr *str, const char c)
+{
+        int64_t i;
+        for (i = str->length - 1; i >= 0; i--) {
+                if (str->cstr[i] == '\0') {
+                        return -1;
+                } else if (str->cstr[i] == c) {
+                        return i;
+                }
+        }
+        return -1;
+}
+
+int64_t mliStr_find(const struct mliStr *str, const char c)
+{
+        int64_t i;
+        for (i = 0; i < (int64_t)str->length; i++) {
+                if (str->cstr[i] == '\0') {
+                        return -1;
+                } else if (str->cstr[i] == c) {
+                        return i;
+                }
+        }
+        return -1;
 }

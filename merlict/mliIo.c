@@ -252,3 +252,78 @@ error:
         mliIo_free(&buf);
         return 0;
 }
+
+int mli_path_strip_this_dir(struct mliStr *dst, const struct mliStr *src)
+{
+        uint64_t i = 0;
+        mliStr_free(dst);
+        if (src->cstr == NULL) {
+                return 1;
+        }
+
+        while (i + 1 < src->length) {
+                if (src->cstr[i] == '.' && src->cstr[i + 1] == '/') {
+                        i += 2;
+                } else {
+                        break;
+                }
+        }
+        chk(mliStr_malloc(dst, src->length - i));
+        strcpy(dst->cstr, &src->cstr[i]);
+        return 1;
+error:
+        mliStr_free(dst);
+        return 0;
+}
+
+int mli_path_basename(const struct mliStr *src, struct mliStr *dst)
+{
+        int64_t pos_last_del = -1;
+        mliStr_free(dst);
+        chk_msg(src->cstr != NULL, "Expected src-path to be allocated");
+
+        pos_last_del = mliStr_rfind(src, '/');
+
+        if (pos_last_del < 0) {
+                chk(mliStr_mallocf(dst, src->cstr));
+        } else {
+                chk(mliStr_mallocf(dst, &src->cstr[pos_last_del + 1]));
+        }
+        return 1;
+error:
+        mliStr_free(dst);
+        return 0;
+}
+
+int mli_path_splitext(const struct mliStr *src, struct mliStr *dst, struct mliStr *ext)
+{
+        int64_t p = -1;
+        int64_t d = -1;
+        struct mliStr tmp = mliStr_init();
+        chk_msg(src->cstr != NULL, "Expected src-path to be allocated");
+        chk(mliStr_malloc_copy(&tmp, src));
+
+        mliStr_free(dst);
+        mliStr_free(ext);
+
+        p = mliStr_rfind(&tmp, '.');
+        d = mliStr_rfind(&tmp, '/');
+
+        if (p <= 0 || d > p || ((d + 1 == p) && (p + 1 < (int64_t)tmp.length))) {
+                chk(mliStr_mallocf(dst, tmp.cstr));
+                chk(mliStr_mallocf(ext, ""));
+        } else {
+                chk(mliStr_malloc(dst, p));
+                strncpy(dst->cstr, tmp.cstr, p);
+                chk(mliStr_malloc(ext, tmp.length - p));
+                strncpy(ext->cstr, &tmp.cstr[p + 1], tmp.length - p);
+        }
+
+        mliStr_free(&tmp);
+        return 1;
+error:
+        mliStr_free(&tmp);
+        mliStr_free(dst);
+        mliStr_free(ext);
+        return 0;
+}

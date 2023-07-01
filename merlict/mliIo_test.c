@@ -159,3 +159,149 @@ CASE("mli_readline_empty")
         mliIo_free(&file);
         mliStr_free(&line);
 }
+
+CASE("mli_path_strip_this_dir")
+{
+        struct mliStr src = mliStr_init();
+        struct mliStr dst = mliStr_init();
+
+        CHECK(mliStr_mallocf(&src, "/a/b/c"));
+        mli_path_strip_this_dir(&dst, &src);
+        CHECK(0 == strcmp(dst.cstr, src.cstr));
+
+        CHECK(mliStr_mallocf(&src, "./a/b/c"));
+        mli_path_strip_this_dir(&dst, &src);
+        CHECK(0 == strcmp(dst.cstr, "a/b/c"));
+
+        CHECK(mliStr_mallocf(&src, "./functions/hans.csv"));
+        mli_path_strip_this_dir(&dst, &src);
+        CHECK(0 == strcmp(dst.cstr, "functions/hans.csv"));
+
+        CHECK(mliStr_mallocf(&src, "././././f/h.csv"));
+        mli_path_strip_this_dir(&dst, &src);
+        CHECK(0 == strcmp(dst.cstr, "f/h.csv"));
+
+        CHECK(mliStr_mallocf(&src, "a/b"));
+        mli_path_strip_this_dir(&dst, &src);
+        CHECK(0 == strcmp(dst.cstr, "a/b"));
+
+        CHECK(mliStr_mallocf(&src, ".a/b"));
+        mli_path_strip_this_dir(&dst, &src);
+        CHECK(0 == strcmp(dst.cstr, ".a/b"));
+
+        CHECK(mliStr_mallocf(&src, "a./b"));
+        mli_path_strip_this_dir(&dst, &src);
+        CHECK(0 == strcmp(dst.cstr, "a./b"));
+
+        mliStr_free(&src);
+        mli_path_strip_this_dir(&dst, &src);
+        CHECK(0 == src.length);
+        CHECK(0 == dst.length);
+        CHECK(NULL == dst.cstr);
+
+        mliStr_free(&src);
+        mliStr_free(&dst);
+}
+
+CASE("mli_path_basename")
+{
+        struct mliStr path = mliStr_init();
+        struct mliStr base = mliStr_init();
+
+        mliStr_free(&path);
+        CHECK(!mli_path_basename(&path, &base));
+
+        CHECK(mliStr_mallocf(&path, ""));
+        CHECK(mli_path_basename(&path, &base));
+        CHECK(0 == strcmp(base.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "/"));
+        CHECK(mli_path_basename(&path, &base));
+        CHECK(0 == strcmp(base.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "//"));
+        CHECK(mli_path_basename(&path, &base));
+        CHECK(0 == strcmp(base.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "a/b/"));
+        CHECK(mli_path_basename(&path, &base));
+        CHECK(0 == strcmp(base.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "a/b/c"));
+        CHECK(mli_path_basename(&path, &base));
+        CHECK(0 == strcmp(base.cstr, "c"));
+
+        mliStr_free(&path);
+        mliStr_free(&base);
+}
+
+CASE("mli_path_splitext")
+{
+        struct mliStr path = mliStr_init();
+        struct mliStr base = mliStr_init();
+        struct mliStr ext = mliStr_init();
+
+        mliStr_free(&path);
+        CHECK(!mli_path_splitext(&path, &base, &ext));
+
+        CHECK(mliStr_mallocf(&path, ""));
+        CHECK(mli_path_splitext(&path, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, ""));
+        CHECK(0 == strcmp(ext.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "a.b"));
+        CHECK(mli_path_splitext(&path, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "a"));
+        CHECK(0 == strcmp(ext.cstr, "b"));
+
+        CHECK(mliStr_mallocf(&path, ".a"));
+        CHECK(mli_path_splitext(&path, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, ".a"));
+        CHECK(0 == strcmp(ext.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "."));
+        CHECK(mli_path_splitext(&path, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "."));
+        CHECK(0 == strcmp(ext.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "./"));
+        CHECK(mli_path_splitext(&path, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "./"));
+        CHECK(0 == strcmp(ext.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "./."));
+        CHECK(mli_path_splitext(&path, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "./"));
+        CHECK(0 == strcmp(ext.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "./.abc"));
+        CHECK(mli_path_splitext(&path, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "./.abc"));
+        CHECK(0 == strcmp(ext.cstr, ""));
+
+        CHECK(mliStr_mallocf(&path, "./.abc.json.tmp"));
+        CHECK(mli_path_splitext(&path, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "./.abc.json"));
+        CHECK(0 == strcmp(ext.cstr, "tmp"));
+
+        CHECK(mliStr_mallocf(&path, "./name.1.2.3"));
+        CHECK(mli_path_splitext(&path, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "./name.1.2"));
+        CHECK(0 == strcmp(ext.cstr, "3"));
+
+        CHECK(mli_path_splitext(&base, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "./name.1"));
+        CHECK(0 == strcmp(ext.cstr, "2"));
+
+        CHECK(mli_path_splitext(&base, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "./name"));
+        CHECK(0 == strcmp(ext.cstr, "1"));
+
+        CHECK(mli_path_splitext(&base, &base, &ext));
+        CHECK(0 == strcmp(base.cstr, "./name"));
+        CHECK(0 == strcmp(ext.cstr, ""));
+
+        mliStr_free(&path);
+        mliStr_free(&base);
+        mliStr_free(&ext);
+}

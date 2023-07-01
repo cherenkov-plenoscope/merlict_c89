@@ -53,4 +53,6 @@ int64_t mliIo_setf(struct mliIo *str, const char *format, ...);
 
 int mli_readline(struct mliIo *stream, struct mliStr *line, const char delimiter);
 
+int mli_path_strip_this_dir(struct mliStr *dst, const struct mliStr *src);
+int mli_path_basename(const struct mliStr *src, struct mliStr *dst);
 #endif
