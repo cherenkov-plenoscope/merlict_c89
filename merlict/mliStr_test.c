@@ -3,7 +3,6 @@
 #include "mli_testing.h"
 #include "mliStr.h"
 
-
 CASE("mliStr_rfind")
 {
         struct mliStr str = mliStr_init();
@@ -35,7 +34,6 @@ CASE("mliStr_rfind")
 
         mliStr_free(&str);
 }
-
 
 CASE("mliStr_ends_with")
 {
@@ -172,7 +170,6 @@ CASE("mliStr_strip")
 {
         struct mliStr src = mliStr_init();
         struct mliStr dst = mliStr_init();
-
 
         CHECK(mliStr_mallocf(&src, ""));
         CHECK(mliStr_strip(&src, &dst));

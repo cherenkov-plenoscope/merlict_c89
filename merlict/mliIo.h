@@ -5,7 +5,6 @@
 #include <stdarg.h>
 #include "mliStr.h"
 
-
 struct mliIo {
         /* memory */
         unsigned char *cstr;
@@ -45,11 +44,17 @@ int64_t mliIo_printf(struct mliIo *byt, const char *format, ...);
 
 int mliIo_malloc_from_path(struct mliIo *byt, const char *path);
 
-int mli_readline(struct mliIo *stream, struct mliStr *line, const char delimiter);
+int mli_readline(
+        struct mliIo *stream,
+        struct mliStr *line,
+        const char delimiter);
 
 int mli_path_strip_this_dir(const struct mliStr *src, struct mliStr *dst);
 int mli_path_basename(const struct mliStr *src, struct mliStr *dst);
-int mli_path_splitext(const struct mliStr *src, struct mliStr *dst, struct mliStr *ext);
+int mli_path_splitext(
+        const struct mliStr *src,
+        struct mliStr *dst,
+        struct mliStr *ext);
 
 int mliIo_convert_line_break_CRLF_CR_to_LF(
         struct mliIo *dst,

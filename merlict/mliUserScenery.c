@@ -58,7 +58,9 @@ int mli_set_geometry_objects_and_names_from_archive(
                                 "Failed to insert object-filename into map.");
                         chk_msg(mliObject_malloc_from_wavefront(
                                         &geometry->objects[obj_idx],
-                                        (char *)archive->textfiles.array[arc_idx].cstr),
+                                        (char *)archive->textfiles
+                                                .array[arc_idx]
+                                                .cstr),
                                 "Failed to parse wave-front-object.");
                         memcpy(geometry->object_names[obj_idx].cstr,
                                key,
@@ -129,7 +131,9 @@ int mliMaterials_malloc_form_archive(
                             ".json")) {
                         chk_msg(mliMedium_malloc_from_json_str(
                                         &materials->media[med_idx],
-                                        (char *)archive->textfiles.array[arc_idx].cstr),
+                                        (char *)archive->textfiles
+                                                .array[arc_idx]
+                                                .cstr),
                                 "Failed to parse media json from "
                                 "file.");
 
@@ -158,7 +162,9 @@ int mliMaterials_malloc_form_archive(
                             ".json")) {
                         chk_msg(mliSurface_malloc_from_json_str(
                                         &materials->surfaces[srf_idx],
-                                        (char *)archive->textfiles.array[arc_idx].cstr),
+                                        (char *)archive->textfiles
+                                                .array[arc_idx]
+                                                .cstr),
                                 "Failed to parse surface json from "
                                 "file.");
 

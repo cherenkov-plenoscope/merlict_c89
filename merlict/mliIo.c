@@ -2,7 +2,6 @@
 #include "mliIo.h"
 #include <stdio.h>
 
-
 struct mliIo mliIo_init(void)
 {
         struct mliIo byt;
@@ -213,7 +212,10 @@ error:
         return 0;
 }
 
-int mli_readline(struct mliIo *stream, struct mliStr *line, const char delimiter)
+int mli_readline(
+        struct mliIo *stream,
+        struct mliStr *line,
+        const char delimiter)
 {
         struct mliIo buf = mliIo_init();
         chk(mliIo_malloc(&buf));
@@ -282,7 +284,10 @@ error:
         return 0;
 }
 
-int mli_path_splitext(const struct mliStr *src, struct mliStr *dst, struct mliStr *ext)
+int mli_path_splitext(
+        const struct mliStr *src,
+        struct mliStr *dst,
+        struct mliStr *ext)
 {
         int64_t p = -1;
         int64_t d = -1;
@@ -296,7 +301,8 @@ int mli_path_splitext(const struct mliStr *src, struct mliStr *dst, struct mliSt
         p = mliStr_rfind(&tmp, '.');
         d = mliStr_rfind(&tmp, '/');
 
-        if (p <= 0 || d > p || ((d + 1 == p) && (p + 1 < (int64_t)tmp.length))) {
+        if (p <= 0 || d > p ||
+            ((d + 1 == p) && (p + 1 < (int64_t)tmp.length))) {
                 chk(mliStr_mallocf(dst, tmp.cstr));
                 chk(mliStr_mallocf(ext, ""));
         } else {

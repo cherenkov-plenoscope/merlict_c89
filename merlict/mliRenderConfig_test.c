@@ -40,8 +40,7 @@ CASE("Parse_from_jsonline")
         mliIo_printf(
                 &ss,
                 "            \"beta_Rayleigh\": [3.8e-6, 13.5e-6, 33.1e-6], ");
-        mliIo_printf(
-                &ss, "            \"beta_Mie\": [41e-6, 41e-6, 41e-6], ");
+        mliIo_printf(&ss, "            \"beta_Mie\": [41e-6, 41e-6, 41e-6], ");
         mliIo_printf(&ss, "            \"numSamples\": 16, ");
         mliIo_printf(&ss, "            \"numSamplesLight\": 8, ");
         mliIo_printf(&ss, "            \"power\": 3.6e3, ");

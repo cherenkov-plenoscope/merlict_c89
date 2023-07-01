@@ -76,8 +76,10 @@ int mliJson_malloc_from_path(struct mliJson *json, const char *path)
 {
         struct mliIo ff = mliIo_init();
         mliJson_free(json);
-        chk_msg(mliIo_malloc_from_path(&ff, path), "Failed to read file into Json's Str.");
-        chk_msg(mliStr_malloc_cstr(&json->raw, (char *)ff.cstr), "Failed to copy cstr.");
+        chk_msg(mliIo_malloc_from_path(&ff, path),
+                "Failed to read file into Json's Str.");
+        chk_msg(mliStr_malloc_cstr(&json->raw, (char *)ff.cstr),
+                "Failed to copy cstr.");
         mliIo_free(&ff);
         chk_msg(mliJson_malloc_tokens__(json), "Can't malloc Json's tokens.");
         chk_msg(mliJson_parse_tokens__(json), "Can't parse Json into tokens.");

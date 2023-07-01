@@ -13,7 +13,6 @@ CASE("BytesIo_init")
         CHECK(byt.pos == 0u);
 }
 
-
 CASE("BytesIo_malloc")
 {
         struct mliIo byt = mliIo_init();
@@ -26,7 +25,6 @@ CASE("BytesIo_malloc")
 
         mliIo_free(&byt);
 }
-
 
 CASE("BytesIo_putc")
 {
@@ -53,7 +51,6 @@ CASE("BytesIo_putc")
         CHECK(byt.size == 0u);
         CHECK(byt.pos == 0u);
 }
-
 
 CASE("BytesIo_putc_rewind_getc")
 {

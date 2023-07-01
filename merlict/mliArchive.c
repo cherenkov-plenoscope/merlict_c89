@@ -64,7 +64,8 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
                                 payload, &tmp_payload),
                         "Failed to replace CRLF and CR linebreaks.");
                 mliIo_free(&tmp_payload);
-                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls((char *)payload->cstr),
+                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(
+                                (char *)payload->cstr),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
         }

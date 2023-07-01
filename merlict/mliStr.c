@@ -2,7 +2,6 @@
 #include "mliStr.h"
 #include <stdio.h>
 
-
 struct mliStr mliStr_init(void)
 {
         struct mliStr str;
@@ -74,11 +73,9 @@ int mliStr_ends_with(const struct mliStr *str, const struct mliStr *suffix)
         if (suffix->length > str->length) {
                 return 0;
         }
-        return strncmp(
-                str->cstr + str->length - suffix->length,
-                suffix->cstr,
-                suffix->length
-        ) == 0;
+        return strncmp(str->cstr + str->length - suffix->length,
+                       suffix->cstr,
+                       suffix->length) == 0;
 }
 
 int mliStr_starts_with(const struct mliStr *str, const struct mliStr *prefix)
@@ -176,7 +173,7 @@ int mliStr_strip(const struct mliStr *src, struct mliStr *dst)
         }
 
         stop = src->length - 1;
-        while (stop >= 0  && isspace(src->cstr[stop])) {
+        while (stop >= 0 && isspace(src->cstr[stop])) {
                 stop -= 1;
         }
 

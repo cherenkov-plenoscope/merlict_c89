@@ -26,6 +26,9 @@ int mliStr_has_prefix_suffix(
 int64_t mliStr_rfind(const struct mliStr *str, const char c);
 int64_t mliStr_find(const struct mliStr *str, const char c);
 int mliStr_strip(const struct mliStr *src, struct mliStr *dst);
-uint64_t mliStr_countn(const struct mliStr *str, const char c, const uint64_t num_chars_to_scan);
+uint64_t mliStr_countn(
+        const struct mliStr *str,
+        const char c,
+        const uint64_t num_chars_to_scan);
 
 #endif
