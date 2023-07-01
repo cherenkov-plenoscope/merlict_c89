@@ -4,7 +4,7 @@
 #include "mli_json.h"
 #include "mliTar.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, TextFiles, struct mliStr)
+MLIDYNARRAY_IMPLEMENTATION(mli, TextFiles, struct mliIo)
 
 struct mliArchive mliArchive_init(void)
 {
@@ -18,7 +18,7 @@ void mliArchive_free(struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
-                mliStr_free(&arc->textfiles.array[i]);
+                mliIo_free(&arc->textfiles.array[i]);
         }
         mliDynTextFiles_free(&arc->textfiles);
         mliDynMap_free(&arc->filenames);
@@ -29,7 +29,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
-        struct mliStr tmp_payload = mliStr_init();
+        struct mliIo tmp_payload = mliIo_init();
         char tarh_name[MLI_TAR_NAME_LENGTH] = {'\0'};
 
         mliArchive_free(arc);
@@ -38,7 +38,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 
         while (mliTar_read_header(&tar, &tarh)) {
                 uint64_t next = arc->filenames.size;
-                struct mliStr *payload = NULL;
+                struct mliIo *payload = NULL;
                 memset(tarh_name, '\0', sizeof(tarh_name));
 
                 mli_cstr_path_strip_this_dir(tarh_name, tarh.name);
@@ -46,25 +46,25 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
                 chk_msg(mliDynMap_insert(&arc->filenames, tarh_name, next),
                         "Can not insert key.");
                 chk_msg(mliDynTextFiles_push_back(
-                                &arc->textfiles, mliStr_init()),
-                        "Can not push back mliString.");
-                chk_msg(mliStr_malloc_capacity(&tmp_payload, tarh.size + 1),
+                                &arc->textfiles, mliIo_init()),
+                        "Can not push back mliIoing.");
+                chk_msg(mliIo_malloc_capacity(&tmp_payload, tarh.size + 1),
                         "Can not allocate tmp-string-buffer.");
 
                 payload = &arc->textfiles.array[next];
-                (*payload) = mliStr_init();
+                (*payload) = mliIo_init();
 
-                chk_msg(mliStr_malloc(payload),
+                chk_msg(mliIo_malloc(payload),
                         "Can not allocate string-buffer.");
                 chk_msg(mliTar_read_data(
                                 &tar, (void *)tmp_payload.cstr, tarh.size),
                         "Failed to read payload from tar into "
                         "tmp-string-buffer.");
-                chk_msg(mliStr_convert_line_break_CRLF_CR_to_LF(
+                chk_msg(mliIo_convert_line_break_CRLF_CR_to_LF(
                                 payload, &tmp_payload),
                         "Failed to replace CRLF and CR linebreaks.");
-                mliStr_free(&tmp_payload);
-                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(payload->cstr),
+                mliIo_free(&tmp_payload);
+                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls((char *)payload->cstr),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
         }
@@ -73,7 +73,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
         return 1;
 error:
         fprintf(stderr, "tar->filename: '%s'.\n", tarh_name);
-        mliStr_free(&tmp_payload);
+        mliIo_free(&tmp_payload);
         mliArchive_free(arc);
         return 0;
 }
@@ -98,7 +98,7 @@ int mliArchive_has(const struct mliArchive *arc, const char *filename)
 int mliArchive_get(
         const struct mliArchive *arc,
         const char *filename,
-        struct mliStr **str)
+        struct mliIo **str)
 {
         uint64_t idx;
         chk(mliDynMap_find(&arc->filenames, filename, &idx));
@@ -113,12 +113,12 @@ int mliArchive_get_malloc_json(
         const char *filename,
         struct mliJson *json)
 {
-        struct mliStr *text = NULL;
+        struct mliIo *text = NULL;
 
         chk_msg(mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
 
-        chk_msg(mliJson_malloc_from_cstr(json, text->cstr),
+        chk_msg(mliJson_malloc_from_cstr(json, (char *)text->cstr),
                 "Can not parse requested json.");
 
         return 1;

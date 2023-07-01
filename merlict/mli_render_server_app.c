@@ -14,16 +14,16 @@ int mliRenderConfig_from_channel(
         FILE *fin,
         FILE *fout)
 {
-        struct mliStr jsonlstr = mliStr_init();
+        struct mliIo jsonlstr = mliIo_init();
         struct mliJson json = mliJson_init();
-        chk(mliStr_malloc(&jsonlstr));
+        chk(mliIo_malloc(&jsonlstr));
 
-        chk_msg(mliStr_add_line_from_file(&jsonlstr, fin, '\n'),
+        chk_msg(mliIo_add_line_from_file(&jsonlstr, fin, '\n'),
                 "Can't read line from fin.");
 
         chk_msg(mliJson_malloc_from_cstr(&json, jsonlstr.cstr),
                 "Can't parse line into json-tokens.");
-        mliStr_free(&jsonlstr);
+        mliIo_free(&jsonlstr);
 
         chk_msg(mliRenderConfig_from_json(control, &json, 0),
                 "Can't parse json-tokens into camera-control.");

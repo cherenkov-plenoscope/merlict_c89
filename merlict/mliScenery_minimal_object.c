@@ -18,7 +18,7 @@ int mliScenery_malloc_minimal_from_wavefront(
 {
         uint32_t i, total_num_boundary_layers;
         struct mliPrng prng = mliPrng_init_MT19937(1u);
-        struct mliStr str = mliStr_init();
+        struct mliIo str = mliIo_init();
         struct mliMaterialsCapacity mtlcap = mliMaterialsCapacity_init();
 
         mliScenery_free(scenery);
@@ -27,14 +27,14 @@ int mliScenery_malloc_minimal_from_wavefront(
                 "Failed to malloc geometry.");
 
         /* set object */
-        chk_msg(mliStr_malloc_from_path(&str, path), "Failed to read file.");
-        chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(str.cstr),
+        chk_msg(mliIo_malloc_from_path(&str, path), "Failed to read file.");
+        chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls((char *)str.cstr),
                 "Expected object-wavefront file to be free of "
                 "control characters, except [NUL, TAB, LF].");
         chk_msg(mliObject_malloc_from_wavefront(
-                        &scenery->geometry.objects[0], str.cstr),
+                        &scenery->geometry.objects[0], (char *)str.cstr),
                 "Failed to malloc wavefront-object from string.");
-        mliStr_free(&str);
+        mliIo_free(&str);
         sprintf(scenery->geometry.object_names[0].cstr, "default-object");
 
         /* set reference */

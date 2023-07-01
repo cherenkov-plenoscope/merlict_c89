@@ -6,58 +6,58 @@
 CASE("Parse_from_jsonline")
 {
         struct mliJson json = mliJson_init();
-        struct mliStr ss = mliStr_init();
+        struct mliIo ss = mliIo_init();
         struct mliRenderConfig cc = mliRenderConfig_init();
 
-        mliStr_malloc(&ss);
-        mliStr_add_cstr(&ss, "{");
-        mliStr_add_cstr(&ss, "    \"camera\": {");
-        mliStr_add_cstr(&ss, "        \"pos\": [1,2,3],");
-        mliStr_add_cstr(&ss, "        \"rot\": {");
-        mliStr_add_cstr(&ss, "            \"repr\": \"tait_bryan\", ");
-        mliStr_add_cstr(&ss, "            \"xyz_deg\": [0, 0, 90], ");
-        mliStr_add_cstr(&ss, "        }, ");
-        mliStr_add_cstr(&ss, "        \"focal_length\": 50e-3, ");
-        mliStr_add_cstr(&ss, "        \"aperture_radius\": 12.5e-3, ");
-        mliStr_add_cstr(&ss, "        \"image_sensor_distance\": 50e-3, ");
-        mliStr_add_cstr(&ss, "        \"image_sensor_width_x\": 36e-3, ");
-        mliStr_add_cstr(&ss, "        \"image_sensor_width_y\": 24e-3, ");
-        mliStr_add_cstr(&ss, "    }, ");
-        mliStr_add_cstr(&ss, "    \"tracer\": {");
-        mliStr_add_cstr(&ss, "        \"num_trails_global_light_source\": 3, ");
-        mliStr_add_cstr(&ss, "        \"background_color\": [110, 120, 130], ");
-        mliStr_add_cstr(&ss, "        \"have_atmosphere\": 1, ");
-        mliStr_add_cstr(&ss, "        \"atmosphere\": {");
-        mliStr_add_cstr(&ss, "            \"sunLatitude\": 0.0, ");
-        mliStr_add_cstr(&ss, "            \"sunHourAngle\": 12.0, ");
-        mliStr_add_cstr(&ss, "            \"sunDistance\": 1.5e11, ");
-        mliStr_add_cstr(&ss, "            \"sunRadius\": 7e8, ");
-        mliStr_add_cstr(&ss, "            \"altitude\": 2.3e3, ");
-        mliStr_add_cstr(&ss, "            \"earthRadius\": 6360e3, ");
-        mliStr_add_cstr(&ss, "            \"atmosphereRadius\": 6420e3, ");
-        mliStr_add_cstr(&ss, "            \"Height_Rayleigh\": 7994.0, ");
-        mliStr_add_cstr(&ss, "            \"Height_Mie\": 1200.0, ");
-        mliStr_add_cstr(
+        mliIo_malloc(&ss);
+        mliIo_writec(&ss, "{");
+        mliIo_writec(&ss, "    \"camera\": {");
+        mliIo_writec(&ss, "        \"pos\": [1,2,3],");
+        mliIo_writec(&ss, "        \"rot\": {");
+        mliIo_writec(&ss, "            \"repr\": \"tait_bryan\", ");
+        mliIo_writec(&ss, "            \"xyz_deg\": [0, 0, 90], ");
+        mliIo_writec(&ss, "        }, ");
+        mliIo_writec(&ss, "        \"focal_length\": 50e-3, ");
+        mliIo_writec(&ss, "        \"aperture_radius\": 12.5e-3, ");
+        mliIo_writec(&ss, "        \"image_sensor_distance\": 50e-3, ");
+        mliIo_writec(&ss, "        \"image_sensor_width_x\": 36e-3, ");
+        mliIo_writec(&ss, "        \"image_sensor_width_y\": 24e-3, ");
+        mliIo_writec(&ss, "    }, ");
+        mliIo_writec(&ss, "    \"tracer\": {");
+        mliIo_writec(&ss, "        \"num_trails_global_light_source\": 3, ");
+        mliIo_writec(&ss, "        \"background_color\": [110, 120, 130], ");
+        mliIo_writec(&ss, "        \"have_atmosphere\": 1, ");
+        mliIo_writec(&ss, "        \"atmosphere\": {");
+        mliIo_writec(&ss, "            \"sunLatitude\": 0.0, ");
+        mliIo_writec(&ss, "            \"sunHourAngle\": 12.0, ");
+        mliIo_writec(&ss, "            \"sunDistance\": 1.5e11, ");
+        mliIo_writec(&ss, "            \"sunRadius\": 7e8, ");
+        mliIo_writec(&ss, "            \"altitude\": 2.3e3, ");
+        mliIo_writec(&ss, "            \"earthRadius\": 6360e3, ");
+        mliIo_writec(&ss, "            \"atmosphereRadius\": 6420e3, ");
+        mliIo_writec(&ss, "            \"Height_Rayleigh\": 7994.0, ");
+        mliIo_writec(&ss, "            \"Height_Mie\": 1200.0, ");
+        mliIo_writec(
                 &ss,
                 "            \"beta_Rayleigh\": [3.8e-6, 13.5e-6, 33.1e-6], ");
-        mliStr_add_cstr(
+        mliIo_writec(
                 &ss, "            \"beta_Mie\": [41e-6, 41e-6, 41e-6], ");
-        mliStr_add_cstr(&ss, "            \"numSamples\": 16, ");
-        mliStr_add_cstr(&ss, "            \"numSamplesLight\": 8, ");
-        mliStr_add_cstr(&ss, "            \"power\": 3.6e3, ");
-        mliStr_add_cstr(&ss, "        },");
-        mliStr_add_cstr(&ss, "    }, ");
-        mliStr_add_cstr(&ss, "    \"image\": {");
-        mliStr_add_cstr(&ss, "        \"num_pixel_x\": 192, ");
-        mliStr_add_cstr(&ss, "        \"num_pixel_y\": 108, ");
-        mliStr_add_cstr(&ss, "    }, ");
-        mliStr_add_cstr(&ss, "    \"random_seed\": 1337");
-        mliStr_add_cstr(&ss, "}");
+        mliIo_writec(&ss, "            \"numSamples\": 16, ");
+        mliIo_writec(&ss, "            \"numSamplesLight\": 8, ");
+        mliIo_writec(&ss, "            \"power\": 3.6e3, ");
+        mliIo_writec(&ss, "        },");
+        mliIo_writec(&ss, "    }, ");
+        mliIo_writec(&ss, "    \"image\": {");
+        mliIo_writec(&ss, "        \"num_pixel_x\": 192, ");
+        mliIo_writec(&ss, "        \"num_pixel_y\": 108, ");
+        mliIo_writec(&ss, "    }, ");
+        mliIo_writec(&ss, "    \"random_seed\": 1337");
+        mliIo_writec(&ss, "}");
 
-        CHECK(mliJson_malloc_from_cstr(&json, ss.cstr));
+        CHECK(mliJson_malloc_from_cstr(&json, (char *)ss.cstr));
         CHECK(mliRenderConfig_from_json(&cc, &json, 0));
         mliJson_free(&json);
-        mliStr_free(&ss);
+        mliIo_free(&ss);
 
         CHECK(cc.random_seed == 1337);
 

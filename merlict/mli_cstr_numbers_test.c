@@ -95,7 +95,18 @@ CASE("uint to string")
         CHECK(strcmp(s, "1101") == 0);
 
         CHECK(!mli_cstr_print_uint64(13, s, sizeof(s), 1u, 0u));
-        CHECK(!mli_cstr_print_uint64(13, s, sizeof(s), 11u, 0u));
+
+        /* hex */
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_cstr_print_uint64(10, s, sizeof(s), 16u, 0u));
+        CHECK(strcmp(s, "A") == 0);
+
+        memset(s, '\0', sizeof(s));
+        CHECK(mli_cstr_print_uint64(255, s, sizeof(s), 16u, 0u));
+        CHECK(strcmp(s, "FF") == 0);
+
+        /* base too large */
+        CHECK(!mli_cstr_print_uint64(13, s, sizeof(s), 17u, 0u));
 
         /* leading zeros */
         memset(s, '\0', sizeof(s));

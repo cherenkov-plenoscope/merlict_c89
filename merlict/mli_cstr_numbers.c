@@ -108,7 +108,7 @@ int mli_cstr_print_uint64(
         const uint64_t base,
         const uint64_t min_num_digits)
 {
-        char literals[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        char literals[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         char tmp[128] = {'\0'};
         uint64_t remainder = 0u;
         uint32_t remainder32 = 0u;
@@ -118,7 +118,7 @@ int mli_cstr_print_uint64(
         int64_t i = 0;
         int64_t num_leading_zeors = 0;
 
-        chk_msg(base <= 10, "Expected base <= 10");
+        chk_msg(base <= 16, "Expected base <= 16");
         chk_msg(base > 1, "Expected base > 1");
         chk_msg(max_num_chars < sizeof(tmp), "Exceeded max num. chars.");
         chk_msg(min_num_digits < max_num_chars, "Exceeded max num. chars.");

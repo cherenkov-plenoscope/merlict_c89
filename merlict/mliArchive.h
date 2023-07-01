@@ -2,10 +2,10 @@
 #ifndef ARCHIVE_H_
 #define ARCHIVE_H_
 
-#include "mliStr.h"
+#include "mliIo.h"
 #include "mli_json.h"
 
-MLIDYNARRAY_DEFINITON(mli, TextFiles, struct mliStr)
+MLIDYNARRAY_DEFINITON(mli, TextFiles, struct mliIo)
 
 struct mliArchive {
         struct mliDynTextFiles textfiles;
@@ -22,7 +22,7 @@ int mliArchive_has(const struct mliArchive *arc, const char *filename);
 int mliArchive_get(
         const struct mliArchive *arc,
         const char *filename,
-        struct mliStr **str);
+        struct mliIo **str);
 int mliArchive_get_malloc_json(
         const struct mliArchive *arc,
         const char *filename,
