@@ -14,6 +14,7 @@ int mliStr_malloc_copy(struct mliStr *str, const struct mliStr *src);
 int mliStr_malloc(struct mliStr *str, const uint64_t length);
 void mliStr_free(struct mliStr *str);
 int mliStr_mallocf(struct mliStr *str, const char *format, ...);
+int mliStr_malloc_cstr(struct mliStr *str, const char *s);
 
 int mliStr_ends_with(const struct mliStr *str, const struct mliStr *suffix);
 int mliStr_starts_with(const struct mliStr *str, const struct mliStr *prefix);
@@ -24,5 +25,7 @@ int mliStr_has_prefix_suffix(
 
 int64_t mliStr_rfind(const struct mliStr *str, const char c);
 int64_t mliStr_find(const struct mliStr *str, const char c);
+int mliStr_strip(const struct mliStr *src, struct mliStr *dst);
+uint64_t mliStr_countn(const struct mliStr *str, const char c, const uint64_t num_chars_to_scan);
 
 #endif

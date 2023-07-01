@@ -167,3 +167,55 @@ CASE("mliStr_malloc_copy")
         mliStr_free(&src);
         mliStr_free(&dst);
 }
+
+CASE("mliStr_strip")
+{
+        struct mliStr src = mliStr_init();
+        struct mliStr dst = mliStr_init();
+
+
+        CHECK(mliStr_mallocf(&src, ""));
+        CHECK(mliStr_strip(&src, &dst));
+        CHECK(0 == strcmp(dst.cstr, ""));
+
+        CHECK(mliStr_mallocf(&src, "abb"));
+        CHECK(mliStr_strip(&src, &dst));
+        CHECK(0 == strcmp(dst.cstr, "abb"));
+
+        CHECK(mliStr_mallocf(&src, "  abb"));
+        CHECK(mliStr_strip(&src, &dst));
+        CHECK(0 == strcmp(dst.cstr, "abb"));
+
+        CHECK(mliStr_mallocf(&src, "abb  "));
+        CHECK(mliStr_strip(&src, &dst));
+        CHECK(0 == strcmp(dst.cstr, "abb"));
+
+        CHECK(mliStr_mallocf(&src, "   abb  "));
+        CHECK(mliStr_strip(&src, &dst));
+        CHECK(0 == strcmp(dst.cstr, "abb"));
+
+        CHECK(mliStr_mallocf(&src, "   a b  b  "));
+        CHECK(mliStr_strip(&src, &dst));
+        CHECK(0 == strcmp(dst.cstr, "a b  b"));
+
+        mliStr_free(&src);
+        CHECK(!mliStr_strip(&src, &dst));
+
+        mliStr_free(&src);
+        mliStr_free(&dst);
+}
+
+CASE("mliStr_strip")
+{
+        struct mliStr src = mliStr_init();
+
+        mliStr_countn(&src, 'a', 100);
+
+        CHECK(mliStr_mallocf(&src, "   a b  b  "));
+        CHECK(2 == mliStr_countn(&src, 'b', src.length));
+
+        CHECK(mliStr_mallocf(&src, "a b  b  "));
+        CHECK(1 == mliStr_countn(&src, 'b', 3));
+
+        mliStr_free(&src);
+}

@@ -177,6 +177,7 @@ int mliIo_convert_line_break_CRLF_CR_to_LF(
 
         return 1;
 error:
+        mliIo_free(dst);
         return 0;
 }
 

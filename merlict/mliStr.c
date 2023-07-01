@@ -57,6 +57,15 @@ error:
         return 0;
 }
 
+int mliStr_malloc_cstr(struct mliStr *str, const char *s)
+{
+        chk(mliStr_malloc(str, strlen(s)));
+        strncpy(str->cstr, s, str->length);
+        return 1;
+error:
+        return 0;
+}
+
 int mliStr_ends_with(const struct mliStr *str, const struct mliStr *suffix)
 {
         if (!str->cstr || !suffix->cstr) {
@@ -129,4 +138,74 @@ int64_t mliStr_find(const struct mliStr *str, const char c)
                 }
         }
         return -1;
+}
+
+int mliStr_match_templeate(
+        const struct mliStr *s,
+        const struct mliStr *t,
+        const char digit_wildcard)
+{
+        uint64_t i;
+        if (s->length != t->length) {
+                return 0;
+        }
+        for (i = 0; i < s->length; i++) {
+                if (t->cstr[i] == digit_wildcard) {
+                        if (!isdigit(s->cstr[i])) {
+                                return 0;
+                        }
+                } else {
+                        if (s->cstr[i] != t->cstr[i]) {
+                                return 0;
+                        }
+                }
+        }
+        return 1;
+}
+
+int mliStr_strip(const struct mliStr *src, struct mliStr *dst)
+{
+        int64_t start = 0;
+        int64_t stop = 0;
+        int64_t len = -1;
+        chk_msg(src->cstr, "Expected src-string to be allocated.");
+        mliStr_free(dst);
+
+        while (start < (int64_t)src->length && isspace(src->cstr[start])) {
+                start += 1;
+        }
+
+        stop = src->length - 1;
+        while (stop >= 0  && isspace(src->cstr[stop])) {
+                stop -= 1;
+        }
+
+        len = stop - start;
+
+        if (len < 0) {
+                chk(mliStr_mallocf(dst, ""));
+        } else {
+                chk(mliStr_malloc(dst, len + 1));
+                strncpy(dst->cstr, &src->cstr[start], len + 1);
+        }
+        return 1;
+error:
+        mliStr_free(dst);
+        return 0;
+}
+
+uint64_t mliStr_countn(
+        const struct mliStr *str,
+        const char match,
+        const uint64_t num_chars_to_scan)
+{
+        uint64_t i = 0;
+        uint64_t count = 0u;
+        while (i < str->length && i < num_chars_to_scan) {
+                if (str->cstr[i] == match) {
+                        count++;
+                }
+                i++;
+        }
+        return count;
 }

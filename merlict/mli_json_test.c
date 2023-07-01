@@ -63,8 +63,7 @@ CASE("mliJson_cstr_by_token")
 CASE("mliJson_init, defaults")
 {
         struct mliJson json = mliJson_init();
-        CHECK(json.raw.capacity == 0u);
-        CHECK(json.raw.pos == 0u);
+        CHECK(json.raw.length == 0u);
         CHECK(json.raw.cstr == NULL);
         CHECK(json.num_tokens == 0u);
         CHECK(json.tokens == NULL);

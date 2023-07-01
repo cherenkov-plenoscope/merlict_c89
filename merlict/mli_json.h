@@ -5,9 +5,10 @@
 #include <stdint.h>
 #include "mli_json_jsmn.h"
 #include "mliIo.h"
+#include "mliStr.h"
 
 struct mliJson {
-        struct mliIo raw;
+        struct mliStr raw;
         uint64_t num_tokens;
         struct jsmntok_t *tokens;
 };
