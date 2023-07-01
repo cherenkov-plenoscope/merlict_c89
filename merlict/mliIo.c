@@ -239,7 +239,7 @@ error:
         return 0;
 }
 
-int mli_path_strip_this_dir(struct mliStr *dst, const struct mliStr *src)
+int mli_path_strip_this_dir(const struct mliStr *src, struct mliStr *dst)
 {
         uint64_t i = 0;
         mliStr_free(dst);

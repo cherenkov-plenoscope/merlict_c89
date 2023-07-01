@@ -166,35 +166,35 @@ CASE("mli_path_strip_this_dir")
         struct mliStr dst = mliStr_init();
 
         CHECK(mliStr_mallocf(&src, "/a/b/c"));
-        mli_path_strip_this_dir(&dst, &src);
+        mli_path_strip_this_dir(&src, &dst);
         CHECK(0 == strcmp(dst.cstr, src.cstr));
 
         CHECK(mliStr_mallocf(&src, "./a/b/c"));
-        mli_path_strip_this_dir(&dst, &src);
+        mli_path_strip_this_dir(&src, &dst);
         CHECK(0 == strcmp(dst.cstr, "a/b/c"));
 
         CHECK(mliStr_mallocf(&src, "./functions/hans.csv"));
-        mli_path_strip_this_dir(&dst, &src);
+        mli_path_strip_this_dir(&src, &dst);
         CHECK(0 == strcmp(dst.cstr, "functions/hans.csv"));
 
         CHECK(mliStr_mallocf(&src, "././././f/h.csv"));
-        mli_path_strip_this_dir(&dst, &src);
+        mli_path_strip_this_dir(&src, &dst);
         CHECK(0 == strcmp(dst.cstr, "f/h.csv"));
 
         CHECK(mliStr_mallocf(&src, "a/b"));
-        mli_path_strip_this_dir(&dst, &src);
+        mli_path_strip_this_dir(&src, &dst);
         CHECK(0 == strcmp(dst.cstr, "a/b"));
 
         CHECK(mliStr_mallocf(&src, ".a/b"));
-        mli_path_strip_this_dir(&dst, &src);
+        mli_path_strip_this_dir(&src, &dst);
         CHECK(0 == strcmp(dst.cstr, ".a/b"));
 
         CHECK(mliStr_mallocf(&src, "a./b"));
-        mli_path_strip_this_dir(&dst, &src);
+        mli_path_strip_this_dir(&src, &dst);
         CHECK(0 == strcmp(dst.cstr, "a./b"));
 
         mliStr_free(&src);
-        mli_path_strip_this_dir(&dst, &src);
+        mli_path_strip_this_dir(&src, &dst);
         CHECK(0 == src.length);
         CHECK(0 == dst.length);
         CHECK(NULL == dst.cstr);
