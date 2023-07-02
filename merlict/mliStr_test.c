@@ -217,7 +217,6 @@ CASE("mliStr_strip")
         mliStr_free(&src);
 }
 
-
 CASE("mliStr_malloc_copyn")
 {
         struct mliStr src = mliStr_init();
