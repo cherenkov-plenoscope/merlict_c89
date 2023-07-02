@@ -4,6 +4,8 @@
 
 #include "mliIo.h"
 #include "mli_json.h"
+#include "mliDynArray.h"
+#include "mliDynMap.h"
 
 MLIDYNARRAY_DEFINITON(mli, TextFiles, struct mliIo)
 

@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliArchive.h"
+#include "chk_debug.h"
 #include "mli_cstr.h"
 #include "mli_json.h"
 #include "mliTar.h"

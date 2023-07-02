@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_ray_scenery_query.h"
+#include "mli_from_outside_to_inside.h"
 
 void mli_inner_object_traversal(
         void *_inner,

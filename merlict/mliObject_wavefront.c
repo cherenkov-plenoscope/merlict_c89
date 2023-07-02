@@ -2,8 +2,14 @@
 #include "mliObject_wavefront.h"
 #include <ctype.h>
 #include "mliDynArray.h"
+#include "mliDynMap.h"
+#include "mliDynFace.h"
+#include "mliDynVec.h"
+#include "mliDynUint32.h"
+#include "mliDynDouble.h"
 #include "chk_debug.h"
 #include "mli_cstr_numbers.h"
+#include "mli_cstr.h"
 
 #define MLI_WAVEFRONT_FACE_LINE_V 7
 #define MLI_WAVEFRONT_FACE_LINE_V_VN 37

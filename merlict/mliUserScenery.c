@@ -2,7 +2,10 @@
 #include "mliUserScenery.h"
 #include <math.h>
 #include <stdint.h>
+#include "mliGeometry.h"
 #include "mli_json.h"
+#include "mli_cstr.h"
+#include "mliUserScenery_json.h"
 
 struct mliNameMap mliNameMap_init(void)
 {

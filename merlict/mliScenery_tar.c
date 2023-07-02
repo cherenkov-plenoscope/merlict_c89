@@ -1,8 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_tar.h"
-#include "mliScenery_valid.h"
 #include <math.h>
 #include <stdint.h>
+#include "chk_debug.h"
+#include "mliScenery_valid.h"
+#include "mli_frame_to_scenery.h"
 
 int mliScenery_malloc_fread_tar(struct mliScenery *scenery, FILE *f)
 {

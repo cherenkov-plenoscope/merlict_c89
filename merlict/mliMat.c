@@ -61,17 +61,18 @@ void mliMat_set(struct mliMat *a, uint64_t col, uint64_t row, const double v)
 
 double mliMat_get(const struct mliMat *a, uint64_t col, uint64_t row)
 {
+        double o;
         switch (col) {
         case 0:
                 switch (row) {
                 case 0:
-                        return a->r00;
+                        o = a->r00;
                         break;
                 case 1:
-                        return a->r01;
+                        o = a->r01;
                         break;
                 case 2:
-                        return a->r02;
+                        o = a->r02;
                         break;
                 default:
                         assert(0);
@@ -81,13 +82,13 @@ double mliMat_get(const struct mliMat *a, uint64_t col, uint64_t row)
         case 1:
                 switch (row) {
                 case 0:
-                        return a->r10;
+                        o = a->r10;
                         break;
                 case 1:
-                        return a->r11;
+                        o = a->r11;
                         break;
                 case 2:
-                        return a->r12;
+                        o = a->r12;
                         break;
                 default:
                         assert(0);
@@ -97,13 +98,13 @@ double mliMat_get(const struct mliMat *a, uint64_t col, uint64_t row)
         case 2:
                 switch (row) {
                 case 0:
-                        return a->r20;
+                        o = a->r20;
                         break;
                 case 1:
-                        return a->r21;
+                        o = a->r21;
                         break;
                 case 2:
-                        return a->r22;
+                        o = a->r22;
                         break;
                 default:
                         assert(0);
@@ -114,6 +115,7 @@ double mliMat_get(const struct mliMat *a, uint64_t col, uint64_t row)
                 assert(0);
                 break;
         }
+        return o;
 }
 
 struct mliMat mliMat_unity(void)

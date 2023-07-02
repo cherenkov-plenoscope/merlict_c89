@@ -209,18 +209,20 @@ void mliVec_set(struct mliVec *a, const uint64_t dim, const double v)
 
 double mliVec_get(const struct mliVec *a, const uint64_t dim)
 {
+        double o;
         switch (dim) {
         case 0:
-                return a->x;
+                o = a->x;
                 break;
         case 1:
-                return a->y;
+                o = a->y;
                 break;
         case 2:
-                return a->z;
+                o = a->z;
                 break;
         default:
                 assert(0);
                 break;
         }
+        return o;
 }

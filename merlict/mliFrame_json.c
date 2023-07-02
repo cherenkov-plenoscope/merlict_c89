@@ -2,6 +2,7 @@
 #include "mliFrame_json.h"
 #include "mliDynMap_json.h"
 #include "mliVec_json.h"
+#include "mliQuaternion_json.h"
 
 int mliFrame_type_from_json_token(
         uint64_t *type,
