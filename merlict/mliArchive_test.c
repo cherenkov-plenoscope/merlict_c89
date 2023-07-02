@@ -6,7 +6,7 @@
 CASE("mliArchive, read tar")
 {
         struct mliArchive arc = mliArchive_init();
-        struct mliIo *data = NULL;
+        struct mliStr *data = NULL;
         struct mliObject triangle = mliObject_init();
 
         CHECK(mliArchive_malloc_from_path(
@@ -31,7 +31,7 @@ CASE("mliArchive, read tar")
         CHECK(mliArchive_has(&arc, "geometry/objects/"));
         CHECK(mliArchive_has(&arc, "geometry/objects/triangle.obj"));
         CHECK(mliArchive_get(&arc, "geometry/objects/triangle.obj", &data));
-        /*CHECK(data->capacity == 119 + 1);*/
+        /*CHECK(data->length == 119 + 1);*/
 
         CHECK(mliObject_malloc_from_wavefront(&triangle, (char *)data->cstr));
         CHECK(triangle.num_vertices == 3u);

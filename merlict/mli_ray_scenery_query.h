@@ -11,7 +11,6 @@
 #include "mliScenery.h"
 #include "mliIntersection.h"
 
-
 int mli_query_intersection(
         const struct mliScenery *scenery,
         const struct mliRay ray_root,

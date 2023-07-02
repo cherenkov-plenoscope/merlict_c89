@@ -16,7 +16,6 @@
 #include "mli_ray_scenery_query.h"
 #include "mli_version.h"
 
-
 void mlivr_clear_screen(void)
 {
         uint64_t n = 20;

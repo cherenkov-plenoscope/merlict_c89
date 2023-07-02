@@ -154,30 +154,36 @@ error:
         return -1;
 }
 
-int mliIo_convert_line_break_CRLF_CR_to_LF(
-        struct mliIo *dst,
-        const struct mliIo *src)
+int mliStr_convert_line_break_CRLF_CR_to_LF(
+        struct mliStr *dst,
+        const struct mliStr *src)
 {
         uint64_t i = 0;
-        mliIo_free(dst);
-        chk(mliIo_malloc_capacity(dst, src->capacity));
+        struct mliIo sdst = mliIo_init();
+        ;
+        mliStr_free(dst);
 
-        while (i < src->capacity) {
+        while (i < src->length) {
                 if (mli_cstr_is_CRLF((char *)&src->cstr[i])) {
-                        chk(mliIo_putchar(dst, '\n'));
+                        chk(mliIo_putchar(&sdst, '\n'));
                         i += 2;
                 } else if (mli_cstr_is_CR((char *)&src->cstr[i])) {
-                        chk(mliIo_putchar(dst, '\n'));
+                        chk(mliIo_putchar(&sdst, '\n'));
                         i += 1;
                 } else {
-                        chk(mliIo_putchar(dst, src->cstr[i]));
+                        chk(mliIo_putchar(&sdst, src->cstr[i]));
                         i += 1;
                 }
         }
 
+        chk(mliStr_malloc(dst, sdst.size));
+        strncpy(dst->cstr, (char *)sdst.cstr, sdst.size);
+
+        mliIo_free(&sdst);
         return 1;
 error:
-        mliIo_free(dst);
+        mliIo_free(&sdst);
+        mliStr_free(dst);
         return 0;
 }
 

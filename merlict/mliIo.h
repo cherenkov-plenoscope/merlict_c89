@@ -56,9 +56,9 @@ int mli_path_splitext(
         struct mliStr *dst,
         struct mliStr *ext);
 
-int mliIo_convert_line_break_CRLF_CR_to_LF(
-        struct mliIo *dst,
-        const struct mliIo *src);
+int mliStr_convert_line_break_CRLF_CR_to_LF(
+        struct mliStr *dst,
+        const struct mliStr *src);
 
 int mli_line_viewer_write(
         struct mliIo *f,
