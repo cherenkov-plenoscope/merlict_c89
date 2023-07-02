@@ -11,6 +11,7 @@ struct mliStr {
 
 struct mliStr mliStr_init(void);
 int mliStr_malloc_copy(struct mliStr *str, const struct mliStr *src);
+int mliStr_malloc_copyn(struct mliStr *str, const struct mliStr *src, const uint64_t start, const uint64_t length);
 int mliStr_malloc(struct mliStr *str, const uint64_t length);
 void mliStr_free(struct mliStr *str);
 int mliStr_mallocf(struct mliStr *str, const char *format, ...);

@@ -30,9 +30,15 @@ error:
 
 int mliStr_malloc_copy(struct mliStr *str, const struct mliStr *src)
 {
-        chk_msg(src->cstr != NULL, "Expctes str to copy from to be allocated");
-        mliStr_malloc(str, src->length);
-        strncpy(str->cstr, src->cstr, str->length);
+        return mliStr_malloc_copyn(str, src, 0, src->length);
+}
+
+int mliStr_malloc_copyn(struct mliStr *str, const struct mliStr *src, const uint64_t start, const uint64_t length)
+{
+        chk_msg(src->cstr != NULL, "Expected src to be allocated");
+        chk_msg(start + length <= src->length, "Expected start + length < src->length.")
+        mliStr_malloc(str, length);
+        strncpy(str->cstr, &src->cstr[start], length);
         return 1;
 error:
         return 0;

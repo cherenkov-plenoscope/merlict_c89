@@ -216,3 +216,29 @@ CASE("mliStr_strip")
 
         mliStr_free(&src);
 }
+
+
+CASE("mliStr_malloc_copyn")
+{
+        struct mliStr src = mliStr_init();
+        struct mliStr dst = mliStr_init();
+
+        CHECK(mliStr_mallocf(&src, "123456789.json"));
+
+        CHECK(mliStr_malloc_copyn(&dst, &src, 0, src.length));
+        CHECK(0 == strcmp(dst.cstr, "123456789.json"));
+
+        CHECK(!mliStr_malloc_copyn(&dst, &src, 0, src.length + 1));
+
+        CHECK(mliStr_malloc_copyn(&dst, &src, 0, 3));
+        CHECK(0 == strcmp(dst.cstr, "123"));
+
+        CHECK(mliStr_malloc_copyn(&dst, &src, 8, 3));
+        CHECK(0 == strcmp(dst.cstr, "9.j"));
+
+        CHECK(mliStr_malloc_copyn(&dst, &src, 8, 0));
+        CHECK(0 == strcmp(dst.cstr, ""));
+
+        mliStr_free(&dst);
+        mliStr_free(&src);
+}
