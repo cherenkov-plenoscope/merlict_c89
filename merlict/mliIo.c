@@ -336,3 +336,63 @@ error:
         mliStr_free(ext);
         return 0;
 }
+
+int mli_line_viewer_write_line_match(
+        struct mliIo *f,
+        const int64_t line_number,
+        const int64_t line_number_of_interest)
+{
+        chk(mliIo_printf(f, "% 6d", (int32_t)line_number));
+        if (line_number == line_number_of_interest) {
+                chk(mliIo_printf(f, "->|  "));
+        } else {
+                chk(mliIo_printf(f, "  |  "));
+        }
+        return 1;
+error:
+        return 0;
+}
+
+int mli_line_viewer_write(
+        struct mliIo *f,
+        const struct mliStr *text,
+        const uint64_t line_number,
+        const uint64_t line_radius)
+{
+        int64_t _line_number = (int64_t)line_number;
+        int64_t _line_radius = (int64_t)line_radius;
+        int64_t line_start = MLI_MAX2(_line_number - _line_radius, 1);
+        int64_t line_stop = line_number + line_radius;
+        int64_t line = 1;
+        uint64_t i = 0;
+
+        chk_msg(line_radius > 1, "Expected line_radius > 1.");
+
+        chk(mliIo_printf(f, "  line     text\n"));
+        chk(mliIo_printf(f, "        |\n"));
+
+        while (i < text->length && text->cstr[i]) {
+                int prefix = (line + 1 >= line_start) && (line < line_stop);
+                int valid = (line >= line_start) && (line <= line_stop);
+                if (text->cstr[i] == '\n') {
+                        line++;
+                }
+                if (prefix && i == 0) {
+                        chk(mli_line_viewer_write_line_match(
+                                f, line, _line_number));
+                }
+                if (valid) {
+                        chk(mliIo_putchar(f, text->cstr[i]));
+                }
+                if (prefix && text->cstr[i] == '\n') {
+                        chk(mli_line_viewer_write_line_match(
+                                f, line, _line_number));
+                }
+                i++;
+        }
+        chk(mliIo_putchar(f, '\n'));
+
+        return 1;
+error:
+        return 0;
+}

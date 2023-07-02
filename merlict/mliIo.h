@@ -60,4 +60,10 @@ int mliIo_convert_line_break_CRLF_CR_to_LF(
         struct mliIo *dst,
         const struct mliIo *src);
 
+int mli_line_viewer_write(
+        struct mliIo *f,
+        const struct mliStr *text,
+        const uint64_t line_number,
+        const uint64_t line_radius);
+
 #endif

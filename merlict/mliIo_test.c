@@ -302,3 +302,37 @@ CASE("mli_path_splitext")
         mliStr_free(&base);
         mliStr_free(&ext);
 }
+
+CASE("mli_line_viewer_write")
+{
+        struct mliIo f = mliIo_init();
+        struct mliStr text = mliStr_init();
+
+        CHECK(mliIo_printf(&f, "TEXT\n"));
+        CHECK(mliIo_printf(&f, "====\n"));
+        CHECK(mliIo_printf(&f, "auto hirsch flasche bat\n"));
+        CHECK(mliIo_printf(&f, "tisch rad wein\n"));
+        CHECK(mliIo_printf(&f, "\n"));
+        CHECK(mliIo_printf(&f, "Ausserdem: Stuhl\n"));
+        CHECK(mliIo_printf(&f, "1.)\n"));
+        CHECK(mliIo_printf(&f, " - soziooekonomisch\n"));
+        CHECK(mliIo_printf(&f, "ENDE\n"));
+        mliIo_rewind(&f);
+
+        CHECK(mliStr_malloc_cstr(&text, (char *)f.cstr));
+        mliIo_free(&f);
+
+        CHECK(mli_line_viewer_write(&f, &text, 1, 3));
+        CHECK(mliIo_printf(&f, "\n---\n\n"));
+
+        CHECK(mli_line_viewer_write(&f, &text, 4, 5));
+        CHECK(mliIo_printf(&f, "\n---\n\n"));
+
+        CHECK(mli_line_viewer_write(&f, &text, 7, 2));
+
+        mliIo_rewind(&f);
+        CHECK(mliIo_read_to_path(&f, "merlict/tests/resources/lines_info.tmp"));
+
+        mliIo_free(&f);
+        mliStr_free(&text);
+}
