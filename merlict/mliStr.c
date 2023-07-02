@@ -206,3 +206,102 @@ uint64_t mliStr_countn(
         }
         return count;
 }
+
+int mliStr_nto_double(
+        double *out,
+        const struct mliStr *str,
+        const uint64_t expected_num_chars)
+{
+        char *end;
+        uint64_t actual_num_chars = 0u;
+        double l;
+        chk_msg(str->cstr != NULL, "Expected str to be allocated.");
+        chk_msg(!(str->cstr[0] == '\0' || isspace(str->cstr[0])),
+                "Can not convert string to double, bad string.");
+        errno = 0;
+        l = strtod(str->cstr, &end);
+        chk_msg(errno != ERANGE,
+                "Can not convert string to double, over-, under-flow.");
+        chk_msg(end != NULL, "Can not convert string to double.");
+
+        actual_num_chars = end - str->cstr;
+        chk_msg(actual_num_chars == expected_num_chars,
+                "double has not the expected number of chars.");
+        *out = l;
+        return 1;
+error:
+        return 0;
+}
+
+int mliStr_to_double(double *out, const struct mliStr *str)
+{
+        chk_msg(mliStr_nto_double(out, str, str->length),
+                "Can not convert mliStr to double.");
+        return 1;
+error:
+        return 0;
+}
+
+int mliStr_nto_int64(
+        int64_t *out,
+        const struct mliStr *str,
+        const uint64_t base,
+        const uint64_t expected_num_chars)
+{
+        char *end;
+        uint64_t actual_num_chars = 0u;
+        int64_t l;
+        chk_msg(str->cstr != NULL, "Expected str to be allocated.");
+        chk_msg(!(str->cstr[0] == '\0' || isspace(str->cstr[0])),
+                "Can not convert string to int64, bad string.");
+        errno = 0;
+        l = strtol(str->cstr, &end, base);
+        chk_msg(errno != ERANGE,
+                "Can not convert string to int64, over-, under-flow.");
+        chk_msg(end != NULL, "Can not convert string to int64, bad string.");
+        actual_num_chars = end - str->cstr;
+        chk_msg(actual_num_chars == expected_num_chars,
+                "Integer has not the expected number of chars.");
+        *out = l;
+        return 1;
+error:
+        return 0;
+}
+
+int mliStr_to_int64(int64_t *out, const struct mliStr *str, const uint64_t base)
+{
+        chk_msg(mliStr_nto_int64(out, str, base, str->length),
+                "Can not convert string to int64.");
+        return 1;
+error:
+        return 0;
+}
+
+int mliStr_nto_uint64(
+        uint64_t *out,
+        const struct mliStr *str,
+        const uint64_t base,
+        const uint64_t expected_num_chars)
+{
+        int64_t tmp;
+        chk(mliStr_nto_int64(&tmp, str, base, expected_num_chars));
+        chk_msg(tmp >= 0, "Expected a positive integer.");
+        (*out) = tmp;
+        return 1;
+error:
+        return 0;
+}
+
+int mliStr_to_uint64(
+        uint64_t *out,
+        const struct mliStr *str,
+        const uint64_t base)
+{
+        int64_t tmp;
+        chk(mliStr_to_int64(&tmp, str, base));
+        chk_msg(tmp >= 0, "Expected a positive integer.");
+        (*out) = tmp;
+        return 1;
+error:
+        return 0;
+}
