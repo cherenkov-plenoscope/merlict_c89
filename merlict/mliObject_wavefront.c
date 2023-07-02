@@ -11,75 +11,38 @@
 
 #define MLI_WAVEFRONT_LINE_BUFF_LENGTH 64
 
-struct mliWavefrontLine {
-        int length;
-        int b;
-        char buff[MLI_WAVEFRONT_LINE_BUFF_LENGTH];
-};
-
-struct mliWavefrontLine mliWavefrontLine_init(void)
+int mliObject_is_face_line_toggle(const int state)
 {
-        struct mliWavefrontLine bb;
-        bb.length = MLI_WAVEFRONT_LINE_BUFF_LENGTH;
-        bb.b = 0;
-        memset(bb.buff, '\0', bb.length);
-        return bb;
-}
+        switch (state) {
+        case 3:
+        case 5:
+        case 7:
 
-int mliWavefrontLine_to_uint32(
-        const char c,
-        struct mliWavefrontLine *buff,
-        const int toggle_State,
-        const int state,
-        const int old_state,
-        uint32_t *out)
-{
-        int64_t tmp = -1;
-        chk_msg(buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
-                "Integer-buff is full.");
-        if (state == toggle_State) {
-                buff->buff[buff->b] = c;
-                buff->b++;
-        }
-        if (old_state == toggle_State && state != toggle_State) {
-                for (; buff->b < buff->length; buff->b++) {
-                        buff->buff[buff->b] = '\0';
-                }
-                buff->b = 0;
-                chk_msg(mli_cstr_to_int64(&tmp, buff->buff, 10),
-                        "Can not parse face index");
-                chk_msg(tmp > 0, "Expected object's index > 0.");
-                *out = tmp;
-        }
+        case 27:
+        case 29:
+        case 32:
+        case 34:
+        case 37:
 
-        return 1;
-error:
+        case 11:
+        case 13:
+        case 15:
+        case 17:
+        case 19:
+        case 21:
+        case 23:
+        case 25:
+                return 1;
+                break;
+        }
         return 0;
 }
 
-int mliWavefrontLine_to_double(
-        const char c,
-        struct mliWavefrontLine *buff,
-        const int toggle_State,
-        const int state,
-        const int old_state,
-        double *out)
+int mliStr_to_uint32(uint32_t *out, const struct mliStr *str)
 {
-        chk_msg(buff->b < MLI_WAVEFRONT_LINE_BUFF_LENGTH,
-                "Integer-buff is full.");
-        if (state == toggle_State) {
-                buff->buff[buff->b] = c;
-                buff->b++;
-        }
-        if (old_state == toggle_State && state != toggle_State) {
-                for (; buff->b < buff->length; buff->b++) {
-                        buff->buff[buff->b] = '\0';
-                }
-                buff->b = 0;
-                chk_msg(mli_cstr_to_double(out, buff->buff),
-                        "Can not parse face index");
-        }
-
+        uint64_t u = 0;
+        chk(mliStr_to_uint64(&u, str, 10));
+        (*out) = (uint32_t)u;
         return 1;
 error:
         return 0;
@@ -234,11 +197,13 @@ int mliObject_parse_face_line(
 
         int state = 0;
         int old_state = state;
-        const int MAX_NUM_CHARS = 256;
-        int i = 0;
+        const uint64_t MAX_NUM_CHARS = 256;
+        uint64_t i = 0;
         char c;
 
-        struct mliWavefrontLine buff = mliWavefrontLine_init();
+        struct mliStr wuff = mliStr_init();
+        chk(mliStr_malloc(&wuff, MAX_NUM_CHARS));
+        wuff.length = 0;
 
         while (state != final_state) {
                 chk_msg(i <= MAX_NUM_CHARS, "Expected less chars in line.");
@@ -278,60 +243,98 @@ int mliObject_parse_face_line(
                 if (state == MLI_WAVEFRONT_FACE_LINE_V_VT_VN) {
                         *line_mode = MLI_WAVEFRONT_FACE_LINE_V_VT_VN;
                 }
-                /* mode MLI_WAVEFRONT_FACE_LINE_V */
 
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 3, state, old_state, &v->a));
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 5, state, old_state, &v->b));
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 7, state, old_state, &v->c));
+                if (mliObject_is_face_line_toggle(state)) {
+                        wuff.cstr[wuff.length] = c;
+                        wuff.length++;
+                } else if (mliObject_is_face_line_toggle(old_state)) {
+                        uint64_t r;
+                        for (r = wuff.length; r < MAX_NUM_CHARS; r++) {
+                                wuff.cstr[r] = '\0';
+                        }
 
-                /* mode MLI_WAVEFRONT_FACE_LINE_V_VN */
+                        switch (old_state) {
+                        /* MLI_WAVEFRONT_FACE_LINE_V                          */
+                        case 3:
+                                chk(mliStr_to_uint32(&v->a, &wuff));
+                                break;
+                        case 5:
+                                chk(mliStr_to_uint32(&v->b, &wuff));
+                                break;
+                        case 7:
+                                chk(mliStr_to_uint32(&v->c, &wuff));
+                                break;
 
-                /*chk(mliWavefrontLine_to_uint32(c, &buff, 3, state, old_state,
-                 * &v->a));*/
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 27, state, old_state, &vn->a));
+                        /* MLI_WAVEFRONT_FACE_LINE_V_VN                       */
+                        /*    3                        v->a                   */
+                        case 27:
+                                chk(mliStr_to_uint32(&vn->a, &wuff));
+                                break;
+                        case 29:
+                                chk(mliStr_to_uint32(&v->b, &wuff));
+                                break;
+                        case 32:
+                                chk(mliStr_to_uint32(&vn->b, &wuff));
+                                break;
+                        case 34:
+                                chk(mliStr_to_uint32(&v->c, &wuff));
+                                break;
+                        case 37:
+                                chk(mliStr_to_uint32(&vn->c, &wuff));
+                                break;
 
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 29, state, old_state, &v->b));
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 32, state, old_state, &vn->b));
+                        /* MLI_WAVEFRONT_FACE_LINE_V_VT_VN                    */
+                        /*    3                        v->a                   */
+                        case 11:
+                                chk(mliStr_to_uint32(&vt->a, &wuff));
+                                break;
+                        case 13:
+                                chk(mliStr_to_uint32(&vn->a, &wuff));
+                                break;
+                        case 15:
+                                chk(mliStr_to_uint32(&v->b, &wuff));
+                                break;
+                        case 17:
+                                chk(mliStr_to_uint32(&vt->b, &wuff));
+                                break;
+                        case 19:
+                                chk(mliStr_to_uint32(&vn->b, &wuff));
+                                break;
+                        case 21:
+                                chk(mliStr_to_uint32(&v->c, &wuff));
+                                break;
+                        case 23:
+                                chk(mliStr_to_uint32(&vt->c, &wuff));
+                                break;
+                        case 25:
+                                chk(mliStr_to_uint32(&vn->c, &wuff));
+                                break;
 
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 34, state, old_state, &v->c));
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 37, state, old_state, &vn->c));
-
-                /* mode MLI_WAVEFRONT_FACE_LINE_V_VT_VN */
-
-                /*chk(mliWavefrontLine_to_uint32(c, &buff, 3, state, old_state,
-                 * &v->a));*/
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 11, state, old_state, &vt->a));
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 13, state, old_state, &vn->a));
-
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 15, state, old_state, &v->b));
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 17, state, old_state, &vt->b));
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 19, state, old_state, &vn->b));
-
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 21, state, old_state, &v->c));
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 23, state, old_state, &vt->c));
-                chk(mliWavefrontLine_to_uint32(
-                        c, &buff, 25, state, old_state, &vn->c));
+                        default:
+                                break;
+                        }
+                        wuff.length = 0;
+                }
 
                 old_state = state;
                 i++;
         }
+        mliStr_free(&wuff);
         return 1;
 error:
+        mliStr_free(&wuff);
+        return 0;
+}
+
+int mliObject_is_vert_line_toggle(const int state)
+{
+        switch (state) {
+        case 2:
+        case 4:
+        case 6:
+                return 1;
+                break;
+        }
         return 0;
 }
 
@@ -387,11 +390,13 @@ int mliObject_parse_three_float_line(const char *line, struct mliVec *v)
 
         int state = 0;
         int old_state = state;
-        const int MAX_NUM_CHARS = 256;
-        int i = 0;
+        const uint64_t MAX_NUM_CHARS = 256;
+        uint64_t i = 0;
         char c;
 
-        struct mliWavefrontLine buff = mliWavefrontLine_init();
+        struct mliStr wuff = mliStr_init();
+        chk(mliStr_malloc(&wuff, MAX_NUM_CHARS));
+        wuff.length = 0;
 
         while (state != final_state) {
                 chk_msg(i <= MAX_NUM_CHARS, "Expected less chars in line.");
@@ -417,12 +422,30 @@ int mliObject_parse_three_float_line(const char *line, struct mliVec *v)
                         state = error_state;
                 }
 
-                chk(mliWavefrontLine_to_double(
-                        c, &buff, 2, state, old_state, &v->x));
-                chk(mliWavefrontLine_to_double(
-                        c, &buff, 4, state, old_state, &v->y));
-                chk(mliWavefrontLine_to_double(
-                        c, &buff, 6, state, old_state, &v->z));
+                if (mliObject_is_vert_line_toggle(state)) {
+                        wuff.cstr[wuff.length] = c;
+                        wuff.length++;
+                } else if (mliObject_is_vert_line_toggle(old_state)) {
+                        uint64_t r;
+                        for (r = wuff.length; r < MAX_NUM_CHARS; r++) {
+                                wuff.cstr[r] = '\0';
+                        }
+
+                        switch (old_state) {
+                        case 2:
+                                chk(mliStr_to_double(&v->x, &wuff));
+                                break;
+                        case 4:
+                                chk(mliStr_to_double(&v->y, &wuff));
+                                break;
+                        case 6:
+                                chk(mliStr_to_double(&v->z, &wuff));
+                                break;
+                        default:
+                                break;
+                        }
+                        wuff.length = 0;
+                }
 
                 old_state = state;
                 i++;
