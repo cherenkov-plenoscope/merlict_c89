@@ -31,28 +31,4 @@ uint64_t mliStr_countn(
         const char c,
         const uint64_t num_chars_to_scan);
 
-int mliStr_nto_double(
-        double *out,
-        const struct mliStr *str,
-        const uint64_t expected_num_chars);
-int mliStr_to_double(double *out, const struct mliStr *str);
-int mliStr_nto_int64(
-        int64_t *out,
-        const struct mliStr *str,
-        const uint64_t base,
-        const uint64_t expected_num_chars);
-int mliStr_to_int64(
-        int64_t *out,
-        const struct mliStr *str,
-        const uint64_t base);
-int mliStr_nto_uint64(
-        uint64_t *out,
-        const struct mliStr *str,
-        const uint64_t base,
-        const uint64_t expected_num_chars);
-int mliStr_to_uint64(
-        uint64_t *out,
-        const struct mliStr *str,
-        const uint64_t base);
-
 #endif

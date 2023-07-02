@@ -22,6 +22,7 @@ int main(void)
 #include "mliFrame_test.c"
 #include "mli_cstr_test.c"
 #include "mli_cstr_numbers_test.c"
+#include "mliStr_numbers_test.c"
 #include "mliTar_test.c"
 #include "mli_quadratic_equation_test.c"
 #include "mli_random_test.c"
