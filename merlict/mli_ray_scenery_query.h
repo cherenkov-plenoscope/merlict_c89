@@ -10,6 +10,7 @@
 #include "mliAccelerator.h"
 #include "mliScenery.h"
 #include "mliIntersection.h"
+#include "mliIntersectionSurfaceNormal.h"
 
 int mli_query_intersection(
         const struct mliScenery *scenery,
