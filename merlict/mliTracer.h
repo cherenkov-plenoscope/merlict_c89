@@ -2,6 +2,9 @@
 #ifndef MLITRACER_H_
 #define MLITRACER_H_
 
+#include <stdint.h>
+#include "mliRay.h"
+#include "mli_random_generator.h"
 #include "mliScenery.h"
 #include "mliAtmosphere.h"
 

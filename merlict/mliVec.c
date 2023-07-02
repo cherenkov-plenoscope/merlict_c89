@@ -209,7 +209,7 @@ void mliVec_set(struct mliVec *a, const uint64_t dim, const double v)
 
 double mliVec_get(const struct mliVec *a, const uint64_t dim)
 {
-        double o;
+        double o = 0.0;
         switch (dim) {
         case 0:
                 o = a->x;

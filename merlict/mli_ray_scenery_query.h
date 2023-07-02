@@ -3,7 +3,14 @@
 #define MLI_RAY_SCENERY_QUERY_H_
 
 #include "mli_ray_octree_traversal.h"
+#include "mliRay.h"
+#include "mliHomTra.h"
+#include "mliObject.h"
+#include "mliOcTree.h"
+#include "mliAccelerator.h"
 #include "mliScenery.h"
+#include "mliIntersection.h"
+
 
 int mli_query_intersection(
         const struct mliScenery *scenery,

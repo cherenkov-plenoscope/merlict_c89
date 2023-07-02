@@ -61,7 +61,7 @@ void mliMat_set(struct mliMat *a, uint64_t col, uint64_t row, const double v)
 
 double mliMat_get(const struct mliMat *a, uint64_t col, uint64_t row)
 {
-        double o;
+        double o = 0;
         switch (col) {
         case 0:
                 switch (row) {

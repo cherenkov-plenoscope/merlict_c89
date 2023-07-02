@@ -140,11 +140,13 @@ int mliStr_reverse_print_uint64(
                 remainder32 = (uint32_t)remainder;
                 tmp[digs] = literals[remainder32];
                 digs++;
-                chk_msg(digs < (int64_t)sizeof(tmp), "Exceeded max_num_chars.");
+                chk_msg(digs < 127, "Exceeded max_num_chars.");
         } while (quotient > 0u);
 
         chk(mliStr_malloc(str, digs));
-        strncpy(str->cstr, tmp, digs);
+        for (digs = 0; digs < 127; digs ++) {
+                str->cstr[digs] = tmp[digs];
+        }
         return 1;
 error:
         mliStr_free(str);
