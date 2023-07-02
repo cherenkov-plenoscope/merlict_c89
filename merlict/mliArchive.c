@@ -56,7 +56,9 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
-        struct mliStr tmp_payload = mliStr_init();
+        struct mliStr payload = mliStr_init();
+        struct mliStr filename = mliStr_init();
+
         char tarh_name[MLI_TAR_NAME_LENGTH] = {'\0'};
 
         mliArchive_free(arc);
@@ -64,44 +66,33 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
         chk_msg(mliTar_read_begin(&tar, f), "Can't begin tar.");
 
         while (mliTar_read_header(&tar, &tarh)) {
-                uint64_t next = arc->filenames.size;
-                struct mliStr *payload = NULL;
-                memset(tarh_name, '\0', sizeof(tarh_name));
 
-                mli_cstr_path_strip_this_dir(tarh_name, tarh.name);
+                chk(mliStr_malloc_cstr(&filename, tarh.name));
+                chk(mliStr_strip(&filename, &filename));
+                chk(mli_path_strip_this_dir(&filename, &filename));
 
-                chk_msg(mliDynMap_insert(&arc->filenames, tarh_name, next),
-                        "Can not insert key.");
-                chk_msg(mliDynTextFiles_push_back(
-                                &arc->textfiles, mliStr_init()),
-                        "Can not push back mliStr.");
-                chk_msg(mliStr_malloc(&tmp_payload, tarh.size + 1),
-                        "Can not allocate tmp-string-buffer.");
-
-                payload = &arc->textfiles.array[next];
-                (*payload) = mliStr_init();
-
-                chk_msg(mliStr_malloc(payload, tarh.size),
+                chk_msg(mliStr_malloc(&payload, tarh.size),
                         "Can not allocate payload.");
-                chk_msg(mliTar_read_data(
-                                &tar, (void *)tmp_payload.cstr, tarh.size),
-                        "Failed to read payload from tar into "
-                        "tmp-string-buffer.");
+                chk_msg(mliTar_read_data(&tar, (void *)payload.cstr, tarh.size),
+                        "Failed to read payload from tar into payload.");
                 chk_msg(mliStr_convert_line_break_CRLF_CR_to_LF(
-                                payload, &tmp_payload),
+                                &payload, &payload),
                         "Failed to replace CRLF and CR linebreaks.");
-                mliStr_free(&tmp_payload);
-                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(
-                                (char *)payload->cstr),
+                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(payload.cstr),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
+                chk_msg(mliArchive_push_back(arc, &filename, &payload),
+                        "Can not push back file into archive.");
         }
 
         chk_msg(mliTar_read_finalize(&tar), "Can't finalize reading tar.");
+        mliStr_free(&payload);
+        mliStr_free(&filename);
         return 1;
 error:
         fprintf(stderr, "tar->filename: '%s'.\n", tarh_name);
-        mliStr_free(&tmp_payload);
+        mliStr_free(&payload);
+        mliStr_free(&filename);
         mliArchive_free(arc);
         return 0;
 }
