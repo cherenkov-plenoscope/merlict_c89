@@ -26,6 +26,16 @@ void mliArchive_free(struct mliArchive *arc)
         (*arc) = mliArchive_init();
 }
 
+int mliArchive_malloc(struct mliArchive *arc)
+{
+        mliArchive_free(arc);
+        chk(mliDynTextFiles_malloc(&arc->textfiles, 0u));
+        chk(mliDynMap_malloc(&arc->filenames, 0u));
+        return 1;
+error:
+        return 0;
+}
+
 int mliArchive_push_back(
         struct mliArchive *arc,
         const struct mliStr *filename,
@@ -61,8 +71,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 
         char tarh_name[MLI_TAR_NAME_LENGTH] = {'\0'};
 
-        mliArchive_free(arc);
-        mliDynTextFiles_malloc(&arc->textfiles, 0u);
+        chk_msg(mliArchive_malloc(arc), "Can not malloc archive.");
         chk_msg(mliTar_read_begin(&tar, f), "Can't begin tar.");
 
         while (mliTar_read_header(&tar, &tarh)) {
