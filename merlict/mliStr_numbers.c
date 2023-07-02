@@ -144,9 +144,7 @@ int mliStr_reverse_print_uint64(
         } while (quotient > 0u);
 
         chk(mliStr_malloc(str, digs));
-        for (digs = 0; digs < 127; digs ++) {
-                str->cstr[digs] = tmp[digs];
-        }
+        strncpy(str->cstr, tmp, digs);
         return 1;
 error:
         mliStr_free(str);
