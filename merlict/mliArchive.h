@@ -4,8 +4,10 @@
 
 #include "mliIo.h"
 #include "mli_json.h"
+#include "mliDynArray.h"
+#include "mliDynMap.h"
 
-MLIDYNARRAY_DEFINITON(mli, TextFiles, struct mliIo)
+MLIDYNARRAY_DEFINITON(mli, TextFiles, struct mliStr)
 
 struct mliArchive {
         struct mliDynTextFiles textfiles;
@@ -15,14 +17,20 @@ struct mliArchive {
 struct mliArchive mliArchive_init(void);
 
 void mliArchive_free(struct mliArchive *arc);
+int mliArchive_malloc(struct mliArchive *arc);
 int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f);
 int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path);
+
+int mliArchive_push_back(
+        struct mliArchive *arc,
+        const struct mliStr *filename,
+        const struct mliStr *payload);
 
 int mliArchive_has(const struct mliArchive *arc, const char *filename);
 int mliArchive_get(
         const struct mliArchive *arc,
         const char *filename,
-        struct mliIo **str);
+        struct mliStr **str);
 int mliArchive_get_malloc_json(
         const struct mliArchive *arc,
         const char *filename,

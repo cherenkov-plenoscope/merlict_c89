@@ -5,7 +5,8 @@
 #include "mliImage.h"
 #include "mliView.h"
 #include "mliScenery.h"
-
+#include "mliTracer.h"
+#include "mli_random_generator.h"
 #include "mli_viewer_Cursor.h"
 #include "mli_viewer_Config.h"
 

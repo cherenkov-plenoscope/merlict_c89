@@ -3,6 +3,7 @@
 #define MLISCENERY_H_
 
 #include "mliGeometry.h"
+#include "mliGeometryToMaterialMap.h"
 #include "mliMaterials.h"
 #include "mliAccelerator.h"
 

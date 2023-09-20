@@ -178,62 +178,62 @@ CASE("find CRLF and CR linebreaks")
 
 CASE("replace CRLF and CR linebreaks with LF")
 {
-        struct mliIo src = mliIo_init();
-        struct mliIo dst = mliIo_init();
+        struct mliStr src = mliStr_init();
+        struct mliStr dst = mliStr_init();
 
-        CHECK(mliIo_malloc_capacity(&src, 32));
-        CHECK(mliIo_malloc_capacity(&dst, 32));
+        CHECK(mliStr_malloc(&src, 32));
+        CHECK(mliStr_malloc(&dst, 32));
 
         /* all '\0' */
         /* -------- */
         CHECK(src.cstr[0] == '\0');
-        CHECK(mliIo_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(dst.cstr[0] == '\0');
 
         /* minimal CR */
         /* ---------- */
-        memset((char *)src.cstr, '\0', src.capacity);
+        memset((char *)src.cstr, '\0', src.length);
         sprintf((char *)src.cstr, "\r");
-        CHECK(mliIo_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp((char *)dst.cstr, "\n"));
 
         /* minimal CRLF */
         /* ------------ */
-        memset((char *)src.cstr, '\0', src.capacity);
+        memset((char *)src.cstr, '\0', src.length);
         sprintf((char *)src.cstr, "\r\n");
-        CHECK(mliIo_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp((char *)dst.cstr, "\n"));
 
         /* minimal text CRLF */
         /* ----------------- */
-        memset((char *)src.cstr, '\0', src.capacity);
+        memset((char *)src.cstr, '\0', src.length);
         sprintf((char *)src.cstr, "hans\r\npeter");
-        CHECK(mliIo_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp((char *)dst.cstr, "hans\npeter"));
 
         /* minimal text CR */
         /* ----------------- */
-        memset((char *)src.cstr, '\0', src.capacity);
+        memset((char *)src.cstr, '\0', src.length);
         sprintf((char *)src.cstr, "hans\rpeter");
-        CHECK(mliIo_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp((char *)dst.cstr, "hans\npeter"));
 
         /* complex text CRLF */
         /* ----------------- */
-        memset((char *)src.cstr, '\0', src.capacity);
+        memset((char *)src.cstr, '\0', src.length);
         sprintf((char *)src.cstr, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
-        CHECK(mliIo_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp((char *)dst.cstr, "\nflower\ncar\n\nhouse\n"));
 
         /* complex text CR */
         /* ----------------- */
-        memset((char *)src.cstr, '\0', src.capacity);
+        memset((char *)src.cstr, '\0', src.length);
         sprintf((char *)src.cstr, "\rflower\rcar\r\rhouse\r");
-        CHECK(mliIo_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
         CHECK(0 == strcmp((char *)dst.cstr, "\nflower\ncar\n\nhouse\n"));
 
-        mliIo_free(&src);
-        mliIo_free(&dst);
+        mliStr_free(&src);
+        mliStr_free(&dst);
 }
 
 CASE("assert no unexpected control codes in ascii-text.")

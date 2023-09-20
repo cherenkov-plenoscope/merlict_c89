@@ -1,8 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFrame_json.h"
+#include "chk_debug.h"
 #include "mliDynMap_json.h"
 #include "mliVec_json.h"
-#include "chk_debug.h"
+#include "mliQuaternion_json.h"
 
 int mliFrame_type_from_json_token(
         uint64_t *type,

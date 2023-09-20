@@ -2,6 +2,7 @@
 #include "mliIo.h"
 #include <stdio.h>
 #include "chk_debug.h"
+#include "mli_cstr.h"
 
 struct mliIo mliIo_init(void)
 {
@@ -154,30 +155,35 @@ error:
         return -1;
 }
 
-int mliIo_convert_line_break_CRLF_CR_to_LF(
-        struct mliIo *dst,
-        const struct mliIo *src)
+int mliStr_convert_line_break_CRLF_CR_to_LF(
+        struct mliStr *dst,
+        const struct mliStr *src)
 {
         uint64_t i = 0;
-        mliIo_free(dst);
-        chk(mliIo_malloc_capacity(dst, src->capacity));
+        struct mliIo sdst = mliIo_init();
+        chk(mliIo_malloc(&sdst));
 
-        while (i < src->capacity) {
+        while (i < src->length) {
                 if (mli_cstr_is_CRLF((char *)&src->cstr[i])) {
-                        chk(mliIo_putchar(dst, '\n'));
+                        chk(mliIo_putchar(&sdst, '\n'));
                         i += 2;
                 } else if (mli_cstr_is_CR((char *)&src->cstr[i])) {
-                        chk(mliIo_putchar(dst, '\n'));
+                        chk(mliIo_putchar(&sdst, '\n'));
                         i += 1;
                 } else {
-                        chk(mliIo_putchar(dst, src->cstr[i]));
+                        chk(mliIo_putchar(&sdst, src->cstr[i]));
                         i += 1;
                 }
         }
 
+        chk(mliStr_malloc(dst, sdst.size));
+        strncpy(dst->cstr, (char *)sdst.cstr, sdst.size);
+
+        mliIo_free(&sdst);
         return 1;
 error:
-        mliIo_free(dst);
+        mliIo_free(&sdst);
+        mliStr_free(dst);
         return 0;
 }
 
@@ -262,22 +268,28 @@ error:
 int mli_path_strip_this_dir(const struct mliStr *src, struct mliStr *dst)
 {
         uint64_t i = 0;
+        struct mliStr cpysrc = mliStr_init();
+        chk_msg(src->cstr, "Expected src-string to be allocated.");
+        chk_msg(mliStr_malloc_copy(&cpysrc, src), "Can not copy input.");
         mliStr_free(dst);
-        if (src->cstr == NULL) {
+
+        if (cpysrc.cstr == NULL) {
                 return 1;
         }
 
-        while (i + 1 < src->length) {
-                if (src->cstr[i] == '.' && src->cstr[i + 1] == '/') {
+        while (i + 1 < cpysrc.length) {
+                if (cpysrc.cstr[i] == '.' && cpysrc.cstr[i + 1] == '/') {
                         i += 2;
                 } else {
                         break;
                 }
         }
-        chk(mliStr_malloc(dst, src->length - i));
-        strcpy(dst->cstr, &src->cstr[i]);
+        chk(mliStr_malloc(dst, cpysrc.length - i));
+        strcpy(dst->cstr, &cpysrc.cstr[i]);
+        mliStr_free(&cpysrc);
         return 1;
 error:
+        mliStr_free(&cpysrc);
         mliStr_free(dst);
         return 0;
 }

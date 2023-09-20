@@ -1,7 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator_valid.h"
-#include "mliMagicId.h"
 #include "chk_debug.h"
+#include "mliMagicId.h"
+#include "mliOcTree_valid.h"
 
 int mliAccelerator_valid(const struct mliAccelerator *accel)
 {

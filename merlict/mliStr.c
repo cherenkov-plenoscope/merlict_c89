@@ -178,15 +178,18 @@ int mliStr_strip(const struct mliStr *src, struct mliStr *dst)
         int64_t start = 0;
         int64_t stop = 0;
         int64_t len = -1;
+        struct mliStr cpysrc = mliStr_init();
+
         chk_msg(src->cstr, "Expected src-string to be allocated.");
+        chk_msg(mliStr_malloc_copy(&cpysrc, src), "Can not copy input.");
         mliStr_free(dst);
 
-        while (start < (int64_t)src->length && isspace(src->cstr[start])) {
+        while (start < (int64_t)cpysrc.length && isspace(cpysrc.cstr[start])) {
                 start += 1;
         }
 
-        stop = src->length - 1;
-        while (stop >= 0 && isspace(src->cstr[stop])) {
+        stop = cpysrc.length - 1;
+        while (stop >= 0 && isspace(cpysrc.cstr[stop])) {
                 stop -= 1;
         }
 
@@ -196,10 +199,12 @@ int mliStr_strip(const struct mliStr *src, struct mliStr *dst)
                 chk(mliStr_mallocf(dst, ""));
         } else {
                 chk(mliStr_malloc(dst, len + 1));
-                strncpy(dst->cstr, &src->cstr[start], len + 1);
+                strncpy(dst->cstr, &cpysrc.cstr[start], len + 1);
         }
+        mliStr_free(&cpysrc);
         return 1;
 error:
+        mliStr_free(&cpysrc);
         mliStr_free(dst);
         return 0;
 }

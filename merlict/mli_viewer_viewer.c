@@ -4,8 +4,17 @@
 #include <stdint.h>
 #include <assert.h>
 #include <time.h>
-#include "mli_viewer_toggle_stdin.h"
 #include "chk_debug.h"
+#include "mli_math.h"
+#include "mli_viewer_toggle_stdin.h"
+#include "mliIntersectionSurfaceNormal.h"
+#include "mliImage.h"
+#include "mliImage_print.h"
+#include "mliImage_ppm.h"
+#include "mliPinHoleCamera.h"
+#include "mliApertureCamera.h"
+#include "mli_ray_scenery_query.h"
+#include "mli_version.h"
 
 void mlivr_clear_screen(void)
 {
@@ -182,7 +191,7 @@ int mlivr_run_interactive_viewer(
         int update_image = 1;
         int print_help = 0;
         int print_scenery_info = 0;
-        int has_probing_intersection;
+        int has_probing_intersection = 0;
         struct mliIntersectionSurfaceNormal probing_intersection;
 
         mlivr_timestamp_now_19chars(timestamp);
