@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMagicId.h"
 #include <assert.h>
+#include "chk_debug.h"
 
 struct mliMagicId mliMagicId_init(void)
 {

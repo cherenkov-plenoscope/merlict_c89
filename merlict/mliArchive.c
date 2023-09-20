@@ -3,6 +3,7 @@
 #include "mli_cstr.h"
 #include "mli_json.h"
 #include "mliTar.h"
+#include "chk_debug.h"
 
 MLIDYNARRAY_IMPLEMENTATION(mli, TextFiles, struct mliIo)
 

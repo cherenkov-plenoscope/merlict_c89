@@ -1,6 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMat.h"
 #include <math.h>
+#include <assert.h>
+#include "chk_debug.h"
 
 void mliMat_set(struct mliMat *a, uint64_t col, uint64_t row, const double v)
 {

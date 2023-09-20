@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject_serialize.h"
 #include "mliMagicId.h"
+#include "chk_debug.h"
 
 int mliObject_fwrite(const struct mliObject *obj, FILE *f)
 {

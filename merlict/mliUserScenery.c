@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 #include "mli_json.h"
+#include "chk_debug.h"
 
 struct mliNameMap mliNameMap_init(void)
 {

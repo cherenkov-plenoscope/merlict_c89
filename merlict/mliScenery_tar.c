@@ -3,6 +3,7 @@
 #include "mliScenery_valid.h"
 #include <math.h>
 #include <stdint.h>
+#include "chk_debug.h"
 
 int mliScenery_malloc_fread_tar(struct mliScenery *scenery, FILE *f)
 {

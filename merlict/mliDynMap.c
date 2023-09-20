@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliDynMap.h"
+#include "chk_debug.h"
 
 MLIDYNARRAY_IMPLEMENTATION(mli, Map, struct mliDynMapItem)
 

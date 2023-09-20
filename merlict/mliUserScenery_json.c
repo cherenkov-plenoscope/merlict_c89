@@ -3,6 +3,7 @@
 #include "mliDynMap_json.h"
 #include "mliVec_json.h"
 #include "mliColor_json.h"
+#include "chk_debug.h"
 
 int mliMaterials_assign_boundary_layers_from_json(
         struct mliMaterials *materials,

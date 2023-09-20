@@ -1,6 +1,7 @@
 /* Copyright 2018-2023 Sebastian Achim Mueller */
 #include "mliIo.h"
 #include <stdio.h>
+#include "chk_debug.h"
 
 struct mliIo mliIo_init(void)
 {

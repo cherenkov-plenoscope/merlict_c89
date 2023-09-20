@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliVec.h"
+#include <assert.h>
 #include <math.h>
 #include <float.h>
 

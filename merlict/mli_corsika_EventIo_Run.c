@@ -1,5 +1,6 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
 #include "mli_corsika_EventIo_Run.h"
+#include "chk_debug.h"
 
 struct mliEventIoRun mliEventIoRun_init(void)
 {

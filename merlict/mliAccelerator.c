@@ -2,6 +2,7 @@
 #include "mliAccelerator.h"
 #include "mliObject_AABB.h"
 #include "mliGeometryAndAccelerator.h"
+#include "chk_debug.h"
 
 struct mliAccelerator mliAccelerator_init(void)
 {

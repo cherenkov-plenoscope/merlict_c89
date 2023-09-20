@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator_serialize.h"
 #include "mliMagicId.h"
+#include "chk_debug.h"
 
 int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f)
 {

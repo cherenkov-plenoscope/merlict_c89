@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMedium_serialize.h"
+#include "chk_debug.h"
 
 int mliMedium_fwrite(const struct mliMedium *med, FILE *f)
 {

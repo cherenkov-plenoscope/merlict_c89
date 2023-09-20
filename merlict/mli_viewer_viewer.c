@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <time.h>
 #include "mli_viewer_toggle_stdin.h"
+#include "chk_debug.h"
 
 void mlivr_clear_screen(void)
 {

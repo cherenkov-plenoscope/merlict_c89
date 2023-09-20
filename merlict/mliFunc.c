@@ -2,6 +2,7 @@
 #include "mliFunc.h"
 #include <stdlib.h>
 #include "mliMagicId.h"
+#include "chk_debug.h"
 
 struct mliFunc mliFunc_init(void)
 {

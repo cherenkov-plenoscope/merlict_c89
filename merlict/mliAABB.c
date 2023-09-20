@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAABB.h"
+#include "chk_debug.h"
 
 struct mliAABB mliAABB_set(const struct mliVec lower, const struct mliVec upper)
 {

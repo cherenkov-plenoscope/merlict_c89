@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree_valid.h"
+#include "chk_debug.h"
 
 int mliOcTree_valid(const struct mliOcTree *octree)
 {

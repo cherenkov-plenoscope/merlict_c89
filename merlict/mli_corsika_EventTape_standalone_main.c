@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "mli_corsika_EventTape_standalone_headeronly.h"
+#include "chk_debug.h"
 
 int main(int argc, char *argv[])
 {

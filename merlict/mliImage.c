@@ -1,6 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliImage.h"
+#include <assert.h>
 #include "mliPixelWalk.h"
+#include "chk_debug.h"
 
 struct mliImage mliImage_init(void)
 {

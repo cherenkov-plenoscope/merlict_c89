@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "mli.h"
 #include "mli.c"
+#include "chk_debug.h"
 
 int mliRenderConfig_from_channel(
         struct mliRenderConfig *control,
