@@ -8,7 +8,7 @@
 struct mliRay {
         struct mliVec support;
         struct mliVec direction;
-} mliRay;
+};
 
 struct mliVec mliRay_at(const struct mliRay *ray, const double t);
 struct mliRay mliRay_set(
