@@ -6,6 +6,7 @@ from skimage import io
 import io
 import json
 
+
 def readline_ascii(fstream):
     return fstream.readline().decode(encoding="ascii")
 
@@ -28,7 +29,7 @@ def read_ppm_image(fstream):
     max_color = int(max_color_line)
 
     assert max_color == 255
-    size_bytes = num_columns*num_rows*3
+    size_bytes = num_columns * num_rows * 3
 
     raw = np.frombuffer(fstream.read(size_bytes), dtype=np.uint8)
     img = raw.reshape((num_rows, num_columns, 3))
@@ -37,17 +38,18 @@ def read_ppm_image(fstream):
 
 server_path = "./camsrv"
 scenery_path = "merlict/tests/resources/sceneries/optics_focussing_mirror.tar"
-outdir = 'fly'
+outdir = "fly"
+
 
 def image_sensor_distance(focal_length, object_distance):
     # 1/f = 1/b + 1/g
-    b = (1.0) / (1/focal_length - 1/object_distance)
+    b = (1.0) / (1 / focal_length - 1 / object_distance)
     return b
 
 
 CAMERA = {
     "pos": [0, -8.9e-1, 2.62e-1],
-    "rot": {"repr": "tait_bryan", "xyz_deg": [110,0,0]},
+    "rot": {"repr": "tait_bryan", "xyz_deg": [110, 0, 0]},
     "focal_length": 5e-3,
     "aperture_radius": 1.25e-3,
     "image_sensor_distance": image_sensor_distance(
@@ -92,6 +94,7 @@ EXAMPLE = {
     "image": IMAGE,
 }
 
+
 def communicate_control(server, control):
     jsonl_str = json.dumps(control, indent=None) + "\n"
     jsonl_bytes = str.encode(jsonl_str, encoding="ascii")
@@ -127,8 +130,7 @@ with open(scenery_path, "rb") as f:
     scenery_tar_bytes = f.read()
 
 server = RenderServer(
-    server_path=server_path,
-    scenery_tar_bytes=scenery_tar_bytes
+    server_path=server_path, scenery_tar_bytes=scenery_tar_bytes
 )
 
 os.makedirs(outdir, exist_ok=True)
@@ -138,9 +140,9 @@ for i, x in enumerate(np.linspace(-0.5, 0.5, 30)):
     EXAMPLE["random_seed"] = int(i)
     EXAMPLE["camera"]["pos"][0] = x
     EXAMPLE["tracer"]["atmosphere"]["sunLatitude"] = np.deg2rad(5)
-    EXAMPLE["tracer"]["atmosphere"]["sunHourAngle"] = (x*2) + 12
+    EXAMPLE["tracer"]["atmosphere"]["sunHourAngle"] = (x * 2) + 12
 
     server.save_image(
         control=EXAMPLE,
-        path=os.path.join(outdir, '{:06d}.png'.format(i)),
+        path=os.path.join(outdir, "{:06d}.png".format(i)),
     )

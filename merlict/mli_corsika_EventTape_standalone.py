@@ -16,14 +16,18 @@ headers = [
     "mli_corsika_EventTape.h",
 ]
 
+
 def line_is_include_std(line):
-    return line[0:10] == '#include <'
+    return line[0:10] == "#include <"
+
 
 def line_is_include(line):
     return line[0:10] == '#include "'
 
+
 def get_include_path_from_line(line):
-    return line[10: -2]
+    return line[10:-2]
+
 
 std_includes = []
 
