@@ -36,7 +36,6 @@ CASE("refraction_in_prism")
 
         CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"

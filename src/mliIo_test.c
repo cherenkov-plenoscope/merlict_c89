@@ -331,7 +331,7 @@ CASE("mli_line_viewer_write")
         CHECK(mli_line_viewer_write(&f, &text, 7, 2));
 
         mliIo_rewind(&f);
-        CHECK(mliIo_read_to_path(&f, "merlict/tests/resources/lines_info.tmp"));
+        CHECK(mliIo_read_to_path(&f, "tests/resources/lines_info.tmp"));
 
         mliIo_free(&f);
         mliStr_free(&text);

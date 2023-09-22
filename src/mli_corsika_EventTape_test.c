@@ -17,8 +17,7 @@ CASE("EventTape: run_normal")
         float bunch[8] = {0.0};
         float bunch_expected[8] = {0.0};
         struct mliPrng prng = mliPrng_init_PCG32(random_seed);
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_normal.tar";
 
         /* write */
@@ -81,8 +80,7 @@ CASE("EventTape: run_normal")
 
 CASE("EventTape: run_one_event_no_bunches")
 {
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_one_event_no_bunches.tar";
         const uint64_t num_events = 1;
         const uint64_t buffer_size = 128;
@@ -101,8 +99,7 @@ CASE("EventTape: run_one_event_no_bunches")
 
 CASE("EventTape: run_one_event_few_bunches")
 {
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_one_event_few_bunches.tar";
         const uint64_t num_events = 1;
         const uint64_t buffer_size = 128;
@@ -121,8 +118,7 @@ CASE("EventTape: run_one_event_few_bunches")
 
 CASE("EventTape: run_one_event_num_bunches_equals_buffer")
 {
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_one_event_num_bunches_equals_buffer.tar";
         const uint64_t num_events = 1;
         const uint64_t buffer_size = 128;
@@ -141,8 +137,7 @@ CASE("EventTape: run_one_event_num_bunches_equals_buffer")
 
 CASE("EventTape: run_one_event_many_bunches")
 {
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_one_event_many_bunches.tar";
         const uint64_t num_events = 1;
         const uint64_t buffer_size = 128;
@@ -161,8 +156,7 @@ CASE("EventTape: run_one_event_many_bunches")
 
 CASE("EventTape: run_many_events_first_event_no_bunches")
 {
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_many_events_first_event_no_bunches.tar";
         const uint64_t num_events = 5;
         const uint64_t buffer_size = 128;
@@ -181,8 +175,7 @@ CASE("EventTape: run_many_events_first_event_no_bunches")
 
 CASE("EventTape: run_many_events_last_event_no_bunches")
 {
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_many_events_last_event_no_bunches.tar";
         const uint64_t num_events = 5;
         const uint64_t buffer_size = 128;
@@ -201,8 +194,7 @@ CASE("EventTape: run_many_events_last_event_no_bunches")
 
 CASE("EventTape: run_many_events_all_events_many_bunches")
 {
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_many_events_all_events_many_bunches.tar";
         const uint64_t num_events = 5;
         const uint64_t buffer_size = 128;
@@ -221,8 +213,7 @@ CASE("EventTape: run_many_events_all_events_many_bunches")
 
 CASE("EventTape: run_many_events_all_events_no_bunches")
 {
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_many_events_all_events_no_bunches.tar";
         const uint64_t num_events = 5;
         const uint64_t buffer_size = 128;
@@ -242,8 +233,7 @@ CASE("EventTape: run_many_events_all_events_no_bunches")
 CASE("EventTape: run_many_events_all_events_num_bunches_equal_buffer")
 {
         const char path[] =
-                "merlict/"
-                "mli_corsika_test_resources/"
+                "tests/resources/mli_corsika/"
                 "run_many_events_all_events_num_bunches_equal_buffer.tar";
         const uint64_t num_events = 5;
         const uint64_t buffer_size = 128;
@@ -263,8 +253,7 @@ CASE("EventTape: run_many_events_all_events_num_bunches_equal_buffer")
 CASE("EventTape: run_many_events_event_numbers_do_not_start_at_one")
 {
         const char path[] =
-                "merlict/"
-                "mli_corsika_test_resources/"
+                "tests/resources/mli_corsika/"
                 "run_many_events_event_numbers_do_not_start_at_one.tar";
         const uint64_t num_events = 5;
         const uint64_t buffer_size = 128;
@@ -283,8 +272,7 @@ CASE("EventTape: run_many_events_event_numbers_do_not_start_at_one")
 
 CASE("EventTape: run_many_events_buffer_set_to_one")
 {
-        const char path[] = "merlict/"
-                            "mli_corsika_test_resources/"
+        const char path[] = "tests/resources/mli_corsika/"
                             "run_many_events_buffer_set_to_one.tar";
         const uint64_t num_events = 5;
         const uint64_t buffer_size = 1;

@@ -30,7 +30,6 @@ CASE("focussing_a_parallel_beam")
 
         CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -93,7 +92,6 @@ CASE("focussing_a_parallel_beam")
                 mliColor_set(1.0, 255.0 / max_color.g, 255.0 / max_color.b));
         CHECK(mliImage_write_to_path(
                 &screen_img,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "optics_focussing_mirror-psf.ppm.tmp"));

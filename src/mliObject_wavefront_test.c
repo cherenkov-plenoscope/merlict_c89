@@ -363,7 +363,6 @@ CASE("mliObject, read wavefront file")
         struct mliObject obj = mliObject_init();
         CHECK(mliIo_malloc_from_path(
                 &str,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -390,7 +389,6 @@ CASE("mliObject, write and read binary-string")
         FILE *f;
         CHECK(mliIo_malloc_from_path(
                 &str,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -402,13 +400,13 @@ CASE("mliObject, write and read binary-string")
         mliIo_free(&str);
 
         f = fopen(
-                "merlict/tests/resources/hexagonal_mirror_facet.bin.tmp", "w");
+                "tests/resources/hexagonal_mirror_facet.bin.tmp", "w");
         CHECK(f != NULL);
         mliObject_fwrite(&obj, f);
         fclose(f);
 
         f = fopen(
-                "merlict/tests/resources/hexagonal_mirror_facet.bin.tmp", "r");
+                "tests/resources/hexagonal_mirror_facet.bin.tmp", "r");
         CHECK(f != NULL);
         mliObject_malloc_fread(&obj_back, f);
         fclose(f);
@@ -447,7 +445,6 @@ CASE("mliObject, write and read ascii-text-string")
         struct mliObject obj_back = mliObject_init();
         CHECK(mliIo_malloc_from_path(
                 &str,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -461,12 +458,12 @@ CASE("mliObject, write and read ascii-text-string")
         mliObject_fprint_to_wavefront(&f, &obj);
         mliIo_rewind(&f);
         mliIo_read_to_path(
-                &f, "merlict/tests/resources/hexagonal_mirror_facet.obj.tmp");
+                &f, "tests/resources/hexagonal_mirror_facet.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
                 &str,
-                "merlict/tests/resources/hexagonal_mirror_facet.obj.tmp"));
+                "tests/resources/hexagonal_mirror_facet.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, (char *)str.cstr));
         mliIo_free(&str);
 
@@ -506,7 +503,6 @@ CASE("mliObject, read and write multiple materials")
         struct mliObject obj_back = mliObject_init();
         CHECK(mliIo_malloc_from_path(
                 &str,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -524,12 +520,11 @@ CASE("mliObject, read and write multiple materials")
         mliObject_fprint_to_wavefront(&f, &obj_orig);
         mliIo_rewind(&f);
         mliIo_read_to_path(
-                &f, "merlict/tests/resources/cube_with_materials.obj.tmp");
+                &f, "tests/resources/cube_with_materials.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
                 &str,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "cube_with_materials.obj.tmp"));
@@ -571,7 +566,6 @@ CASE("mliObject, read and write repeating materials")
         struct mliObject obj_back = mliObject_init();
         CHECK(mliIo_malloc_from_path(
                 &str,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "repeating_material.obj"));
@@ -585,12 +579,11 @@ CASE("mliObject, read and write repeating materials")
         mliObject_fprint_to_wavefront(&f, &obj_orig);
         mliIo_rewind(&f);
         mliIo_read_to_path(
-                &f, "merlict/tests/resources/repeating_material.obj.tmp");
+                &f, "tests/resources/repeating_material.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
                 &str,
-                "merlict/"
                 "tests/"
                 "resources/"
                 "repeating_material.obj.tmp"));

@@ -8,9 +8,9 @@ scenery_ids=( 000 001 002 optics_prism optics_focussing_mirror )
 for scenery_id in "${scenery_ids[@]}";
 do
     tar -cvf \
-    "./src/tests/resources/sceneries/$scenery_id.tar"\
+    "./tests/resources/sceneries/$scenery_id.tar"\
     --directory \
-    "./src/tests/resources/sceneries/$scenery_id"\
+    "./tests/resources/sceneries/$scenery_id"\
     .\
     > "./build/tar_$scenery_id.o" 2>&1
 
