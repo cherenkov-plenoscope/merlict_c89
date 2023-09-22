@@ -2,6 +2,8 @@
 #ifndef MLIATMOSPHERE_H_
 #define MLIATMOSPHERE_H_
 
+#include <stdint.h>
+
 struct mliAtmosphere {
         double sunLatitude;
         double sunHourAngle;

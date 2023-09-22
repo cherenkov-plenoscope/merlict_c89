@@ -2,6 +2,7 @@
 #ifndef MLISURFACE_JSON_H_
 #define MLISURFACE_JSON_H_
 
+#include <stdint.h>
 #include "mliSurface.h"
 #include "mli_json.h"
 

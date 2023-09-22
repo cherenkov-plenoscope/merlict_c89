@@ -2,6 +2,8 @@
 #ifndef MLI_CSTR_H_
 #define MLI_CSTR_H_
 
+#include <stdint.h>
+
 int mli_cstr_ends_with(const char *str, const char *sufix);
 int mli_cstr_starts_with(const char *str, const char *prefix);
 int mli_cstr_has_prefix_suffix(

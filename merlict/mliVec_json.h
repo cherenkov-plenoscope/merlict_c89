@@ -2,6 +2,7 @@
 #ifndef MLIVEC_JSON_H_
 #define MLIVEC_JSON_H_
 
+#include <stdint.h>
 #include "mliVec.h"
 #include "mli_json.h"
 

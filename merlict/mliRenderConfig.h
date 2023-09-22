@@ -2,6 +2,7 @@
 #ifndef MLIRENDERCONFIG_H_
 #define MLIRENDERCONFIG_H_
 
+#include <stdint.h>
 #include "mliApertureCamera.h"
 #include "mliHomTra.h"
 #include "mliTracer.h"

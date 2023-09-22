@@ -2,6 +2,7 @@
 #ifndef MLIPHOTON_H_
 #define MLIPHOTON_H_
 
+#include <stdint.h>
 #include "mliRay.h"
 
 struct mliPhoton {

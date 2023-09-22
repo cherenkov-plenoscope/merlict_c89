@@ -2,6 +2,7 @@
 #ifndef MLI_PHOTON_SOURCES_H_
 #define MLI_PHOTON_SOURCES_H_
 
+#include <stdint.h>
 #include "mliDynPhoton.h"
 
 int mli_photon_source_point_like_opening_cone_towards_z(

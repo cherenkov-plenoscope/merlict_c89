@@ -2,6 +2,7 @@
 #ifndef MLIOCTREE_VALID_H_
 #define MLIOCTREE_VALID_H_
 
+#include <stdint.h>
 #include "mliOcTree.h"
 
 int mliOcTree_valid(const struct mliOcTree *octree);

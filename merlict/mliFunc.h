@@ -2,6 +2,7 @@
 #ifndef MLIFUNC_H_
 #define MLIFUNC_H_
 
+#include <stdint.h>
 #include <stdio.h>
 
 struct mliFunc {

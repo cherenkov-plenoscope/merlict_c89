@@ -2,6 +2,7 @@
 #ifndef MLIMAT_H_
 #define MLIMAT_H_
 
+#include <stdint.h>
 #include "mliVec.h"
 
 struct mliMat {

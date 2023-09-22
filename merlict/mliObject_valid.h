@@ -2,6 +2,7 @@
 #ifndef MLIOBJECT_VALID_H_
 #define MLIOBJECT_VALID_H_
 
+#include <stdint.h>
 #include "mliObject.h"
 
 int mliObject_is_valid(const struct mliObject *obj);

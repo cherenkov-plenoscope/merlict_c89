@@ -2,6 +2,8 @@
 #ifndef MLI_VIEWER_CURSOR_H_
 #define MLI_VIEWER_CURSOR_H_
 
+#include <stdint.h>
+
 struct mlivrCursor {
         int64_t active;
         uint64_t col;

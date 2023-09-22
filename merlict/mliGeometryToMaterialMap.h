@@ -2,6 +2,7 @@
 #ifndef MLIGEOMETRYTOMATERIALMAP_H_
 #define MLIGEOMETRYTOMATERIALMAP_H_
 
+#include <stdint.h>
 #include "mliGeometry.h"
 #include "mliMaterials.h"
 

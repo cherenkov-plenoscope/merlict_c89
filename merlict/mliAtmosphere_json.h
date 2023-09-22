@@ -2,6 +2,7 @@
 #ifndef MLIATMOSPHERE_JSON_H_
 #define MLIATMOSPHERE_JSON_H_
 
+#include <stdint.h>
 #include "mliAtmosphere.h"
 #include "mli_json.h"
 

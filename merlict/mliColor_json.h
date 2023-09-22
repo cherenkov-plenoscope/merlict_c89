@@ -2,6 +2,7 @@
 #ifndef MLICOLOR_JSON_H_
 #define MLICOLOR_JSON_H_
 
+#include <stdint.h>
 #include "mliColor.h"
 #include "mli_json.h"
 

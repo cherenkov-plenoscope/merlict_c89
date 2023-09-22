@@ -2,6 +2,7 @@
 #ifndef MLIOBJECT_AABB_H_
 #define MLIOBJECT_AABB_H_
 
+#include <stdint.h>
 #include "mliHomTra.h"
 #include "mliObject.h"
 #include "mliAABB.h"

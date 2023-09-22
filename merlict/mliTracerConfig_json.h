@@ -2,6 +2,7 @@
 #ifndef MLITRACERCONFIG_JSON_H_
 #define MLITRACERCONFIG_JSON_H_
 
+#include <stdint.h>
 #include "mliAtmosphere.h"
 #include "mli_json.h"
 

@@ -2,6 +2,8 @@
 #ifndef MLINAME_H_
 #define MLINAME_H_
 
+#include <stdint.h>
+
 #define MLI_NAME_CAPACITY 128
 
 struct mliName {

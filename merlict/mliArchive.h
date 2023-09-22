@@ -2,6 +2,7 @@
 #ifndef ARCHIVE_H_
 #define ARCHIVE_H_
 
+#include <stdint.h>
 #include "mliIo.h"
 #include "mli_json.h"
 #include "mliDynArray.h"

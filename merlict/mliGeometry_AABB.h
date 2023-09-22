@@ -2,6 +2,7 @@
 #ifndef MLIGEOMETRY_AABB_H_
 #define MLIGEOMETRY_AABB_H_
 
+#include <stdint.h>
 #include "mliGeometry.h"
 #include "mliAccelerator.h"
 #include "mliAABB.h"

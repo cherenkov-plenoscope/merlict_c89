@@ -2,6 +2,7 @@
 #ifndef MLIFUNC_JSON_H_
 #define MLIFUNC_JSON_H_
 
+#include <stdint.h>
 #include "mliFunc.h"
 #include "mli_json.h"
 

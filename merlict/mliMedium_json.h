@@ -2,6 +2,7 @@
 #ifndef MLIMEDIUM_JSON_H_
 #define MLIMEDIUM_JSON_H_
 
+#include <stdint.h>
 #include "mliMedium.h"
 #include "mli_json.h"
 

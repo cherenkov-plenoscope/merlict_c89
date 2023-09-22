@@ -2,6 +2,7 @@
 #ifndef MLICUBE_H_
 #define MLICUBE_H_
 
+#include <stdint.h>
 #include "mliVec.h"
 #include "mliAABB.h"
 
