@@ -167,6 +167,8 @@ Then its the core developer's job to:
 
 But of course the author will happily recive pull-requests that meet such expectations :wink:.
 
+Merlict tries to migrate towards a physical layout according to the 'The Pitchfork Layout' in 'merged Header Placement'. The merged headers are prefered as there are only public headers anyhow.
+
 # Suggested Tools
 - [Blender](https://www.blender.org/) to inspect and manipulate objects. It is especially useful to visualize surface-normals.
 
