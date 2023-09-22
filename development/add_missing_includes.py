@@ -1,14 +1,14 @@
 import os
 import glob
 
-cpaths = glob.glob(os.path.join("merlict", "*.c"))
+cpaths = glob.glob(os.path.join("src", "*.c"))
 cpaths = sorted(cpaths)
 ccode = {}
 for cpath in cpaths:
     with open(cpath) as f:
         ccode[cpath] = f.read()
 
-hpaths = glob.glob(os.path.join("merlict", "*.h"))
+hpaths = glob.glob(os.path.join("src", "*.h"))
 hpaths = sorted(hpaths)
 hcode = {}
 for hpath in hpaths:

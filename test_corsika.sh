@@ -1,6 +1,6 @@
 mv ./build/corsika/test_clang_c89 ./build/corsika/test_clang_c89.old
 
-clang merlict/mli_corsika_test.c\
+clang src/mli_corsika_test.c\
         -o build/corsika/test_clang_c89\
         -std=c89\
         -lm\
