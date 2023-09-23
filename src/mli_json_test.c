@@ -144,10 +144,8 @@ CASE("parse mliVec and mliColor")
         struct mliVec vec1 = mliVec_init(0., 0., 0.);
         struct mliVec vec2 = mliVec_init(0., 0., 0.);
         struct mliColor col = mliColor_set(0., 0., 0.);
-        CHECK(mliJson_malloc_from_path(
-                &json, "tests/resources/vec.json"));
-        CHECK(mliJson_debug_to_path(
-                &json, "tests/resources/vec.debug.tmp"));
+        CHECK(mliJson_malloc_from_path(&json, "tests/resources/vec.json"));
+        CHECK(mliJson_debug_to_path(&json, "tests/resources/vec.debug.tmp"));
 
         CHECK(mliJson_token_by_key(&json, 0, "vec1", &token));
         CHECK(mliVec_from_json_token(&vec1, &json, token + 1));

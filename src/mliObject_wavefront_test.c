@@ -399,14 +399,12 @@ CASE("mliObject, write and read binary-string")
         CHECK(mliObject_malloc_from_wavefront(&obj, (char *)str.cstr));
         mliIo_free(&str);
 
-        f = fopen(
-                "tests/resources/hexagonal_mirror_facet.bin.tmp", "w");
+        f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "w");
         CHECK(f != NULL);
         mliObject_fwrite(&obj, f);
         fclose(f);
 
-        f = fopen(
-                "tests/resources/hexagonal_mirror_facet.bin.tmp", "r");
+        f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "r");
         CHECK(f != NULL);
         mliObject_malloc_fread(&obj_back, f);
         fclose(f);
@@ -462,8 +460,7 @@ CASE("mliObject, write and read ascii-text-string")
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
-                &str,
-                "tests/resources/hexagonal_mirror_facet.obj.tmp"));
+                &str, "tests/resources/hexagonal_mirror_facet.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, (char *)str.cstr));
         mliIo_free(&str);
 
@@ -519,8 +516,7 @@ CASE("mliObject, read and write multiple materials")
 
         mliObject_fprint_to_wavefront(&f, &obj_orig);
         mliIo_rewind(&f);
-        mliIo_read_to_path(
-                &f, "tests/resources/cube_with_materials.obj.tmp");
+        mliIo_read_to_path(&f, "tests/resources/cube_with_materials.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
@@ -578,8 +574,7 @@ CASE("mliObject, read and write repeating materials")
 
         mliObject_fprint_to_wavefront(&f, &obj_orig);
         mliIo_rewind(&f);
-        mliIo_read_to_path(
-                &f, "tests/resources/repeating_material.obj.tmp");
+        mliIo_read_to_path(&f, "tests/resources/repeating_material.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(

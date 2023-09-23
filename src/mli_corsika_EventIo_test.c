@@ -61,8 +61,7 @@ CASE("EventIoHeader_fails_empty_file")
         FILE *fempty;
         int tmp;
         struct mliEventIoHeader my_header;
-        fempty =
-                fopen("tests/resources/mli_corsika/telescope.dat", "rb");
+        fempty = fopen("tests/resources/mli_corsika/telescope.dat", "rb");
         CHECK(fempty);
         tmp = getc(fempty);
         while (tmp != EOF) {
@@ -74,8 +73,7 @@ CASE("EventIoHeader_fails_empty_file")
 
 CASE("EventIoRun_telescope_dat__telescope_positions")
 {
-        FILE *f =
-                fopen("tests/resources/mli_corsika/telescope.dat", "rb");
+        FILE *f = fopen("tests/resources/mli_corsika/telescope.dat", "rb");
         struct mliEventIoRun run = mliEventIoRun_init();
         CHECK(mliEventIoRun_begin(&run, f));
         CHECK(run.corsika_run_header[0] == mli_chars_to_float("RUNH"));
@@ -91,8 +89,7 @@ CASE("EventIoRun_telescope_dat__telescope_positions")
 
 CASE("EventIoRun_telescope_dat__corsika_input_card")
 {
-        FILE *f =
-                fopen("tests/resources/mli_corsika/telescope.dat", "rb");
+        FILE *f = fopen("tests/resources/mli_corsika/telescope.dat", "rb");
         struct mliEventIoRun run = mliEventIoRun_init();
         CHECK(mliEventIoRun_begin(&run, f));
         CHECK(run.corsika_input_card.cstr[0] == 'C');
@@ -108,8 +105,7 @@ CASE("EventIoRun_telescope_dat__corsika_input_card")
 
 CASE("EventIoRun_telescope_dat__corsika_run_header")
 {
-        FILE *f =
-                fopen("tests/resources/mli_corsika/telescope.dat", "rb");
+        FILE *f = fopen("tests/resources/mli_corsika/telescope.dat", "rb");
         float runh[273];
         struct mliEventIoRun run = mliEventIoRun_init();
         CHECK(mliEventIoRun_begin(&run, f));
@@ -131,8 +127,7 @@ CASE("EventIoRun_telescope_dat__corsika_run_header")
 
 CASE("EventIoRun_telescope_dat__next_call")
 {
-        FILE *f =
-                fopen("tests/resources/mli_corsika/telescope.dat", "rb");
+        FILE *f = fopen("tests/resources/mli_corsika/telescope.dat", "rb");
         struct mliEventIoRun run = mliEventIoRun_init();
         struct mliEventIoEvent event = mliEventIoEvent_init();
         CHECK(mliEventIoRun_begin(&run, f));
@@ -146,8 +141,7 @@ CASE("EventIoRun_telescope_dat__next_call")
 
 CASE("EventIoRun_telescope_dat__corsika_event_header")
 {
-        FILE *f =
-                fopen("tests/resources/mli_corsika/telescope.dat", "rb");
+        FILE *f = fopen("tests/resources/mli_corsika/telescope.dat", "rb");
         struct mliEventIoRun run = mliEventIoRun_init();
         struct mliEventIoEvent event = mliEventIoEvent_init();
         float evth[273];
@@ -175,8 +169,7 @@ CASE("EventIoRun_telescope_dat__corsika_event_header")
 CASE("EventIoRun_telescope_dat__photon_bundle_size")
 {
         uint64_t i;
-        FILE *f =
-                fopen("tests/resources/mli_corsika/telescope.dat", "rb");
+        FILE *f = fopen("tests/resources/mli_corsika/telescope.dat", "rb");
         struct mliEventIoRun run = mliEventIoRun_init();
         struct mliEventIoEvent event = mliEventIoEvent_init();
         CHECK(mliEventIoRun_begin(&run, f));
@@ -240,8 +233,7 @@ CASE("EventIoRun_telescope_dat__photon_bundle_values")
                                                  0.9899999499320984,
                                                  -523.0}};
 
-        FILE *f =
-                fopen("tests/resources/mli_corsika/telescope.dat", "rb");
+        FILE *f = fopen("tests/resources/mli_corsika/telescope.dat", "rb");
         struct mliEventIoRun run = mliEventIoRun_init();
         struct mliEventIoEvent event = mliEventIoEvent_init();
         CHECK(mliEventIoRun_begin(&run, f));
@@ -272,8 +264,7 @@ CASE("EventIoRun_telescope_dat__photon_bundle_values")
 
 CASE("EventIoRun_telescope_dat_run_time")
 {
-        FILE *f =
-                fopen("tests/resources/mli_corsika/telescope.dat", "rb");
+        FILE *f = fopen("tests/resources/mli_corsika/telescope.dat", "rb");
 
         struct mliEventIoRun run = mliEventIoRun_init();
         CHECK(mliEventIoRun_begin(&run, f));

@@ -16,7 +16,6 @@ for hpath in hpaths:
         hcode[hpath] = f.read()
 
 
-
 # assert
 for cpath in ccode:
     if "assert(" in ccode[cpath]:
@@ -24,7 +23,10 @@ for cpath in ccode:
             print("Expected #include <assert.h> in {:s}.".format(cpath))
 
 stdint_keys = [
-    "int8_t", "int16_t", "int32_t", "int64_t",
+    "int8_t",
+    "int16_t",
+    "int32_t",
+    "int64_t",
 ]
 
 
@@ -32,8 +34,15 @@ stdint_keys = [
 for p in hcode:
     for key in stdint_keys:
         if key in hcode[p]:
-            if not "#include <stdint.h>" in hcode[p] and not "#include <inttypes.h>" in hcode[p]:
-                print("Expected #include <stdint.h> / <inttypes.h> in {:s}.".format(p))
+            if (
+                not "#include <stdint.h>" in hcode[p]
+                and not "#include <inttypes.h>" in hcode[p]
+            ):
+                print(
+                    "Expected #include <stdint.h> / <inttypes.h> in {:s}.".format(
+                        p
+                    )
+                )
 
 
 # chk_debug
