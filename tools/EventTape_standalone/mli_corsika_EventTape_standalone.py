@@ -3,17 +3,17 @@ import os
 import io
 
 headers = [
-    "chk_debug.h",
-    "mli_version.h",
-    "mli_math.h",
-    "mli_cstr.h",
-    "mli_cstr_numbers.h",
-    "mliTar.h",
-    "mliDynArray.h",
-    "mliDynFloat.h",
-    "mli_corsika_version.h",
-    "mli_corsika_utils.h",
-    "mli_corsika_EventTape.h",
+    os.path.join("..", "..", "src", "chk_debug.h"),
+    os.path.join("..", "..", "src", "mli_version.h"),
+    os.path.join("..", "..", "src", "mli_math.h"),
+    os.path.join("..", "..", "src", "mli_cstr.h"),
+    os.path.join("..", "..", "src", "mli_cstr_numbers.h"),
+    os.path.join("..", "..", "src", "mliTar.h"),
+    os.path.join("..", "..", "src", "mliDynArray.h"),
+    os.path.join("..", "..", "src", "mliDynFloat.h"),
+    os.path.join("..", "..", "src", "mli_corsika_version.h"),
+    os.path.join("..", "..", "src", "mli_corsika_utils.h"),
+    os.path.join("..", "..", "src", "mli_corsika_EventTape.h"),
 ]
 
 
