@@ -21,7 +21,7 @@ printf "\n"
 
 
 printf "gcc c89     "
-gcc tests/mli_test.c\
+gcc tests/mli_core/tests/main_entry_point.c\
         -o build/test_gcc_c89\
         -std=c89\
         -lm\
@@ -35,7 +35,7 @@ gcc_c89_test_rc=$?
 printf "%d %d\n" $gcc_c89_rc $gcc_c89_test_rc
 
 printf "gcc         "
-gcc tests/mli_test.c\
+gcc tests/mli_core/tests/main_entry_point.c\
         -o build/test_gcc\
         -lm\
         -Wall\
@@ -48,7 +48,7 @@ gcc_test_rc=$?
 printf "%d %d\n" $gcc_rc $gcc_test_rc
 
 printf "g++         "
-g++ tests/mli_test.c\
+g++ tests/mli_core/tests/main_entry_point.c\
         -o build/test_g++\
         -lm\
         -Wall\
@@ -60,7 +60,7 @@ gpp_test_rc=$?
 printf "%d %d\n" $gpp_rc $gpp_test_rc
 
 printf "clang c89   "
-clang tests/mli_test.c\
+clang tests/mli_core/tests/main_entry_point.c\
         -o build/test_clang_c89\
         -std=c89\
         -lm\
@@ -74,7 +74,7 @@ clang_c89_test_rc=$?
 printf "%d %d\n" $clang_c89_rc $clang_c89_test_rc
 
 printf "clang       "
-clang tests/mli_test.c\
+clang tests/mli_core/tests/main_entry_point.c\
         -o build/test_clang\
         -lm\
         -Wall\
