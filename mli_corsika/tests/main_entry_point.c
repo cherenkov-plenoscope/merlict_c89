@@ -9,6 +9,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src.c"
+
 #include "../../mli_testing/include/mli_testing.h"
 #include "../../mli_testing/src.c"
 
