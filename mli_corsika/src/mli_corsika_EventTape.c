@@ -2,7 +2,7 @@
 #include "mli_corsika_EventTape.h"
 #include "mli_corsika_utils.h"
 #include "mliTar.h"
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 /* writer */
 /* ====== */

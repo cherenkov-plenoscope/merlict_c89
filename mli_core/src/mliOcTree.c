@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree.h"
 #include <assert.h>
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 /*
  * mliOcTree

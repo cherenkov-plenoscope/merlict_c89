@@ -6,7 +6,7 @@
  */
 
 #include <stdio.h>
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 #include "mli.h"
 #include "mli.c"

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliQuaternion_json.h"
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 int mliQuaternion_tait_bryan_from_json(
         struct mliQuaternion *quat,

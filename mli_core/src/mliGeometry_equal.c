@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry_equal.h"
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 int mliGeometry_objects_equal(
         const struct mliGeometry *a,

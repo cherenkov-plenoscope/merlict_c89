@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliDynMap_json.h"
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 int mliDynMap_insert_key_from_json(
         struct mliDynMap *map,

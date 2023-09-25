@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry_valid.h"
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 int mliGeometry_valid_objects(const struct mliGeometry *geometry)
 {

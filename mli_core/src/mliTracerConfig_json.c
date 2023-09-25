@@ -2,7 +2,7 @@
 #include "mliRenderConfig.h"
 #include "mliFrame_json.h"
 #include "mliAtmosphere_json.h"
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 int mliTracerConfig_from_json_token(
         struct mliTracerConfig *tc,

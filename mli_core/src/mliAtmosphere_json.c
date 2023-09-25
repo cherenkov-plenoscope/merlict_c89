@@ -1,6 +1,6 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
 #include "mliAtmosphere_json.h"
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 int mliAtmosphere_from_json_token(
         struct mliAtmosphere *atm,

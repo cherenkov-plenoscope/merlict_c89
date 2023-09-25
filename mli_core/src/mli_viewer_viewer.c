@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include <time.h>
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 #include "mli_math.h"
 #include "mli_viewer_toggle_stdin.h"
 #include "mliIntersectionSurfaceNormal.h"

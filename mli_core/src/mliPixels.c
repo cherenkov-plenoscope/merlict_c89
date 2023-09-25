@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliPixels.h"
-#include "chk_debug.h"
+#include "../../chk_debug/include/chk_debug.h"
 
 struct mliPixels mliPixels_init(void)
 {
