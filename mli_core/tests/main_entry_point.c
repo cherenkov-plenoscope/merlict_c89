@@ -7,6 +7,10 @@
 
 #include <math.h>
 #include <assert.h>
+
+#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src_chk_debug.c"
+
 #include "../include/mli_core.h"
 #include "../src_mli_core.c"
 
