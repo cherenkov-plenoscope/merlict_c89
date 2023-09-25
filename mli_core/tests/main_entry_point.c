@@ -7,8 +7,8 @@
 
 #include <math.h>
 #include <assert.h>
-#include "mli_poor_mans_build_system.h"
-#include "mli_poor_mans_build_system.c"
+#include "../include/mli_core.h"
+#include "../src_mli_core.c"
 
 int main(void)
 {

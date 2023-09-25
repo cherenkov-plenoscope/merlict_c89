@@ -1,6 +1,6 @@
 mv ./build/corsika/test_clang_c89 ./build/corsika/test_clang_c89.old
 
-clang corsika/tests/mli_corsika_tests_entry_point.c\
+clang corsika/tests/main_entry_point.c\
         -o build/corsika/test_clang_c89\
         -std=c89\
         -lm\
