@@ -6,12 +6,15 @@
  */
 
 #include <stdio.h>
-#include "../../chk_debug/include/chk_debug.h"
 
-#include "mli.h"
-#include "mli.c"
-#include "mli_viewer.h"
-#include "mli_viewer.c"
+#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src.c"
+
+#include "../../mli_core/include/mli_core.h"
+#include "../../mli_core/src.c"
+
+#include "../include/mli_viewer.h"
+#include "../src.c"
 
 int main(int argc, char *argv[])
 {
