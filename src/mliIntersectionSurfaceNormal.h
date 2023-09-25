@@ -2,6 +2,7 @@
 #ifndef MLIINTERSECTIONSURFACENORMAL_H_
 #define MLIINTERSECTIONSURFACENORMAL_H_
 
+#include <stdint.h>
 #include "mliVec.h"
 #include "mliGeometryId.h"
 
@@ -12,7 +13,7 @@ struct mliIntersectionSurfaceNormal {
         struct mliVec position_local;
         struct mliVec surface_normal_local;
         double distance_of_ray;
-        int from_outside_to_inside;
+        int64_t from_outside_to_inside;
 };
 
 struct mliIntersectionSurfaceNormal mliIntersectionSurfaceNormal_init(void);
