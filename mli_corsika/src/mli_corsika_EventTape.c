@@ -1,7 +1,7 @@
 /* Copyright 2020 Sebastian A. Mueller */
 #include "mli_corsika_EventTape.h"
 #include "mli_corsika_utils.h"
-#include "mliTar.h"
+#include "../../mli_core/src/mliTar.h"
 #include "../../chk_debug/include/chk_debug.h"
 
 /* writer */

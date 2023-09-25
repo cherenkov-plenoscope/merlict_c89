@@ -8,13 +8,18 @@
 #include <math.h>
 #include <assert.h>
 #include <stdlib.h>
+
+#include "../../mli_testing/include/mli_testing.h"
+#include "../../mli_testing/src.c"
+
 #include "../../mli_core/include/mli_core.h"
-#include "../../mli_core/src_mli_core.c"
-#include "mli_testing.h"
+#include "../../mli_core/src.c"
+
 #include "../include/mli_corsika.h"
-#include "../src_mli_corsika.c"
-#include "mli_corsika_EventTape_testing.h"
-#include "mli_corsika_EventTape_testing.c"
+#include "../src.c"
+
+#include "../src/mli_corsika_EventTape_testing.h"
+#include "../src/mli_corsika_EventTape_testing.c"
 
 int main(void)
 {

@@ -3,9 +3,10 @@
 #define MLI_CORSIKA_EVENTTAPE_H_
 
 #include <stdint.h>
-#include "mliTar.h"
+#include "../../mli_core/src/mliTar.h"
+#include "../../mli_core/src/mliDynFloat.h"
 #include "mli_corsika_utils.h"
-#include "mliDynFloat.h"
+
 
 #define MLI_CORSIKA_EVENTTAPE_VERSION_MAYOR 2
 #define MLI_CORSIKA_EVENTTAPE_VERSION_MINOR 1

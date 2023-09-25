@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_EVENTIO_TELESCOPE_H_
 
 #include <stdint.h>
-#include "mliDynArray.h"
+#include "../../mli_core/src/mliDynArray.h"
 #include "mli_corsika_CorsikaPhotonBunch.h"
 #include "mli_corsika_EventIo_TelescopeOffset.h"
 
