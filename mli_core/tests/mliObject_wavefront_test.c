@@ -363,6 +363,7 @@ CASE("mliObject, read wavefront file")
         struct mliObject obj = mliObject_init();
         CHECK(mliIo_malloc_from_path(
                 &str,
+                "mli_core/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -389,6 +390,7 @@ CASE("mliObject, write and read binary-string")
         FILE *f;
         CHECK(mliIo_malloc_from_path(
                 &str,
+                "mli_core/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -399,12 +401,22 @@ CASE("mliObject, write and read binary-string")
         CHECK(mliObject_malloc_from_wavefront(&obj, (char *)str.cstr));
         mliIo_free(&str);
 
-        f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "w");
+        f =
+                fopen("mli_core/"
+                      "tests/"
+                      "resources/"
+                      "hexagonal_mirror_facet.bin.tmp",
+                      "w");
         CHECK(f != NULL);
         mliObject_fwrite(&obj, f);
         fclose(f);
 
-        f = fopen("tests/resources/hexagonal_mirror_facet.bin.tmp", "r");
+        f =
+                fopen("mli_core/"
+                      "tests/"
+                      "resources/"
+                      "hexagonal_mirror_facet.bin.tmp",
+                      "r");
         CHECK(f != NULL);
         mliObject_malloc_fread(&obj_back, f);
         fclose(f);
@@ -443,6 +455,7 @@ CASE("mliObject, write and read ascii-text-string")
         struct mliObject obj_back = mliObject_init();
         CHECK(mliIo_malloc_from_path(
                 &str,
+                "mli_core/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -456,11 +469,12 @@ CASE("mliObject, write and read ascii-text-string")
         mliObject_fprint_to_wavefront(&f, &obj);
         mliIo_rewind(&f);
         mliIo_read_to_path(
-                &f, "tests/resources/hexagonal_mirror_facet.obj.tmp");
+                &f, "mli_core/tests/resources/hexagonal_mirror_facet.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
-                &str, "tests/resources/hexagonal_mirror_facet.obj.tmp"));
+                &str,
+                "mli_core/tests/resources/hexagonal_mirror_facet.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, (char *)str.cstr));
         mliIo_free(&str);
 
@@ -500,6 +514,7 @@ CASE("mliObject, read and write multiple materials")
         struct mliObject obj_back = mliObject_init();
         CHECK(mliIo_malloc_from_path(
                 &str,
+                "mli_core/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -516,11 +531,13 @@ CASE("mliObject, read and write multiple materials")
 
         mliObject_fprint_to_wavefront(&f, &obj_orig);
         mliIo_rewind(&f);
-        mliIo_read_to_path(&f, "tests/resources/cube_with_materials.obj.tmp");
+        mliIo_read_to_path(
+                &f, "mli_core/tests/resources/cube_with_materials.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
                 &str,
+                "mli_core/"
                 "tests/"
                 "resources/"
                 "cube_with_materials.obj.tmp"));
@@ -562,6 +579,7 @@ CASE("mliObject, read and write repeating materials")
         struct mliObject obj_back = mliObject_init();
         CHECK(mliIo_malloc_from_path(
                 &str,
+                "mli_core/"
                 "tests/"
                 "resources/"
                 "repeating_material.obj"));
@@ -574,11 +592,13 @@ CASE("mliObject, read and write repeating materials")
 
         mliObject_fprint_to_wavefront(&f, &obj_orig);
         mliIo_rewind(&f);
-        mliIo_read_to_path(&f, "tests/resources/repeating_material.obj.tmp");
+        mliIo_read_to_path(
+                &f, "mli_core/tests/resources/repeating_material.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
                 &str,
+                "mli_core/"
                 "tests/"
                 "resources/"
                 "repeating_material.obj.tmp"));

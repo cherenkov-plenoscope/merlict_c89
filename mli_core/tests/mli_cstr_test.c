@@ -290,6 +290,7 @@ CASE("line info fprint")
         FILE *f;
         CHECK(mliIo_malloc_from_path(
                 &s,
+                "mli_core/"
                 "tests/"
                 "resources/"
                 "sceneries/"
