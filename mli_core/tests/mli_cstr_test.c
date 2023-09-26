@@ -298,7 +298,7 @@ CASE("line info fprint")
                 "geometry/"
                 "objects/"
                 "cube_with_materials.obj"));
-        f = fopen("tests/resources/lines_info.tmp", "w");
+        f = fopen("mli_core/tests/resources/lines_info.tmp", "w");
         CHECK(f);
         CHECK(mli_cstr_lines_fprint(f, (char *)s.cstr, 1, 3));
         CHECK(mli_cstr_lines_fprint(f, (char *)s.cstr, 10, 3));
