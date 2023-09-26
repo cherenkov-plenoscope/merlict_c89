@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "mliName.h"
+#include "mliDynArray.h"
 
 struct mliDynMapItem {
         char key[MLI_NAME_CAPACITY];

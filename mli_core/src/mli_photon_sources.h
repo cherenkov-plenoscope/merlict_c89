@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "mliDynPhoton.h"
+#include "mli_random_generator.h"
 
 int mli_photon_source_point_like_opening_cone_towards_z(
         struct mliDynPhoton *out_photons,

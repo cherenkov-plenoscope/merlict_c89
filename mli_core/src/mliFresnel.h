@@ -2,6 +2,8 @@
 #ifndef MLIFRESNEL_H_
 #define MLIFRESNEL_H_
 
+#include "mliVec.h"
+
 struct mliFresnel {
         struct mliVec incident;
         struct mliVec normal;

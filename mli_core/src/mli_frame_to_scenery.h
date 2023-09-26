@@ -3,7 +3,9 @@
 #define MLI_FRAME_TO_SCENERY_H_
 
 #include <stdint.h>
-#include "mliGeometry.h"
+struct mliFrame;
+struct mliGeometry;
+struct mliGeometryToMaterialMap;
 
 int mliFrame_set_robjects_and_material_map(
         const struct mliFrame *frame,

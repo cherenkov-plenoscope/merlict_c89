@@ -3,7 +3,7 @@
 #define MLITRACERCONFIG_JSON_H_
 
 #include <stdint.h>
-#include "mliAtmosphere.h"
+#include "mliTracer.h"
 #include "mli_json.h"
 
 int mliTracerConfig_from_json_token(

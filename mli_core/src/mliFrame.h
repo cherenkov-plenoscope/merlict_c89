@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "mliHomTra.h"
 #include "mliDynArray.h"
+#include "mliDynUint32.h"
 
 #define MLI_FRAME 1000u
 #define MLI_OBJECT 1001u

@@ -3,6 +3,8 @@
 #define MLIMEDIUM_H_
 
 #include <stdint.h>
+#include "mliFunc.h"
+
 
 struct mliMedium {
         struct mliFunc refraction;

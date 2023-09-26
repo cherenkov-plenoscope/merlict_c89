@@ -3,6 +3,8 @@
 #define MLIATMOSPHERE_H_
 
 #include <stdint.h>
+#include "mliColor.h"
+#include "mliVec.h"
 
 struct mliAtmosphere {
         double sunLatitude;

@@ -42,25 +42,9 @@ def read_lib(path):
 def strip_non_std_includes(source):
     source_out_lines = []
     for line in str.splitlines(source):
-        if not line_is_include(line):
+        if not line_is_include(line) and not line_is_include_std(line):
             source_out_lines.append(line)
     return str.join("\n", source_out_lines)
-
-
-def write_single_source(path, libs, source_type="h", header=""):
-    so = io.StringIO()
-    so.write(header)
-    so.write("\n")
-    for libname in libs:
-        for spath in libs[libname][source_type]:
-            so.write("/* {:s} */\n".format(spath))
-            so.write("/* " + "-" * len(spath) + " */\n\n")
-            so.write(strip_non_std_includes(libs[libname][source_type][spath]))
-            so.write("\n")
-            so.write("\n")
-    so.seek(0)
-    with open(path, "wt") as fout:
-        fout.write(so.read())
 
 
 def gather_includes(source, include_type):
@@ -81,17 +65,7 @@ def gather_includes(source, include_type):
     return list(set(includes))
 
 
-def all_includes_from(libs, source_type, include_type):
-    all_includes = []
-    for libname in libs:
-        for hpath in libs[libname][source_type]:
-            all_includes += libs[libname][source_type][hpath]["includes"][
-                include_type
-            ]
-    return list(set(all_includes))
 
-
-"""
 def main():
     parser = argparse.ArgumentParser(
         prog="mli_almagamate.py",
@@ -116,100 +90,116 @@ def main():
     args = parser.parse_args()
     outdir = args.outdir
     libpaths = args.libpaths
-"""
 
-outdir = "."
-libpaths = ["chk_debug", "mli_core", "mli_viewer"]
+    """
+    outdir = "."
+    libpaths = ["chk_debug", "mli_core", "mli_viewer"]
+    """
 
-sources = {"c": {}, "h": {}}
-for libpath in libpaths:
-    libname = os.path.basename(libpath)
-    lib = read_lib(os.path.join(libpath, "src"))
+    sources = {"c": {}, "h": {}}
+    for libpath in libpaths:
+        libname = os.path.basename(libpath)
+        lib = read_lib(os.path.join(libpath, "src"))
+        for source_type in ["h", "c"]:
+            for filename in lib[source_type]:
+                assert filename not in sources[source_type]
+                sources[source_type][filename] = lib[source_type][filename]
+
     for source_type in ["h", "c"]:
-        for filename in lib[source_type]:
-            assert filename not in sources[source_type]
-            sources[source_type][filename] = lib[source_type][filename]
+        for filename in sources[source_type]:
+            source = sources[source_type][filename]["source"]
+            istd = gather_includes(source, include_type="std")
+            ireg = gather_includes(source, include_type="reg")
+            ireg = [os.path.basename(p) for p in ireg]
+            ireg = [os.path.splitext(p)[0] for p in ireg]
+            sources[source_type][filename]["includes"] = {"std": istd, "reg": ireg}
 
-for source_type in ["h", "c"]:
-    for filename in sources[source_type]:
-        source = sources[source_type][filename]["source"]
-        istd = gather_includes(source, include_type="std")
-        ireg = gather_includes(source, include_type="reg")
-        #ireg = [os.path.basename(p) for p in ireg]
-        sources[source_type][filename]["includes"] = {"std": istd, "reg": ireg}
 
-for filename in sources["h"]:
-    print(sources[source_type][filename]["includes"]["reg"])
+    all_includes_from_std = {}
+    for source_type in ["h", "c"]:
+        all_includes_from_std[source_type] = []
+        for filename in sources[source_type]:
+            for incl in sources[source_type][filename]["includes"]["std"]:
+                all_includes_from_std[source_type].append(incl)
+        all_includes_from_std[source_type] = list(set(all_includes_from_std[source_type]))
 
-"""
-libs = {}
-for libpath in libpaths:
-    libname = os.path.basename(libpath)
-    libs[libname] = read_lib(os.path.join(libpath, "src"))
-libnames = list(libs.keys())
+    all_includes_from_std["c"] = list(
+        set(all_includes_from_std["c"]).difference(set(all_includes_from_std["h"]))
+    )
 
-for libname in libs:
-    for hpath in libs[libname]["h"]:
-        source = libs[libname]["h"][hpath]["source"]
-        libs[libname]["h"][hpath]["includes"] = {}
-        libs[libname]["h"][hpath]["includes"]["std"] = gather_includes(
-            source, include_type="std"
+    libnames = [os.path.basename(p) for p in libpaths]
+    name = str.join("_", libnames)
+    name_h = name + ".h"
+    name_c = name + ".c"
+
+
+    so = io.StringIO()
+    for incl in all_includes_from_std["h"]:
+        so.write("#include <{:s}>\n".format(incl))
+    so.write("\n")
+
+    ii = 0
+    initial_num_sources = len(sources["h"])
+
+    insources = set(sources["h"].keys())
+    inheader = set()
+
+    while True:
+
+        filenames_not_yet_in_header = insources.difference(inheader)
+        if len(filenames_not_yet_in_header) == 0:
+            break
+
+        ii += 1
+        assert ii < initial_num_sources ** 2, (
+            "Dependencies can nor be resolved in {:s}".format(
+                str(filenames_not_yet_in_header)
+            )
         )
-        libs[libname]["h"][hpath]["includes"]["reg"] = gather_includes(
-            source, include_type="reg"
-        )
-
-    for cpath in libs[libname]["c"]:
-        source = libs[libname]["c"][cpath]["source"]
-        libs[libname]["c"][cpath]["includes"] = {}
-        libs[libname]["c"][cpath]["includes"]["std"] = gather_includes(
-            source, include_type="std"
-        )
-        libs[libname]["c"][cpath]["includes"]["reg"] = gather_includes(
-            source, include_type="reg"
-        )
 
 
-all_includes_from_std_in_h = all_includes_from(
-    libs=libs, source_type="h", include_type="std"
-)
-all_includes_from_std_in_c = all_includes_from(
-    libs=libs, source_type="c", include_type="std"
-)
+        for filename in filenames_not_yet_in_header:
+
+            depends = False
+            for dep in sources["h"][filename]["includes"]["reg"]:
+                if dep not in inheader:
+                    depends = True
+
+            if not depends:
+                so.write("/* {:s} */\n".format(filename))
+                so.write("/* " + "-" * len(filename) + " */\n\n")
+                so.write(strip_non_std_includes(sources["h"][filename]["source"]))
+                so.write("\n")
+                so.write("\n")
+                inheader.add(filename)
+
+    so.seek(0)
+    with open(name_h, "wt") as fout:
+        fout.write(so.read())
 
 
-name = str.join("_", libnames)
-name_h = name + ".h"
-name_c = name + ".c"
+    # sources
+    # -------
+    so = io.StringIO()
+    so.write('#include "{:s}"\n'.format(name_h))
+    so.write("\n")
 
+    for incl in all_includes_from_std["c"]:
+        so.write("#include <{:s}>\n".format(incl))
+    so.write("\n")
 
-
-so = io.StringIO()
-for std_include in all_includes_from_std_in_h:
-    so.write("#include <{:s}>\n".format(std_include))
-so.write("\n")
-
-for libname in libs:
-    for spath in libs[libname][source_type]:
-        so.write("/* {:s} */\n".format(spath))
-        so.write("/* " + "-" * len(spath) + " */\n\n")
-        so.write(strip_non_std_includes(libs[libname][source_type][spath]))
+    for filename in sources["c"]:
+        so.write("/* {:s} */\n".format(filename))
+        so.write("/* " + "-" * len(filename) + " */\n\n")
+        so.write(strip_non_std_includes(sources["c"][filename]["source"]))
         so.write("\n")
         so.write("\n")
-so.seek(0)
-with open(path, "wt") as fout:
-    fout.write(so.read())
+        inheader.add(filename)
 
-
-write_single_source(path=os.path.join(outdir, name_h), libs=libs, source_type="h")
-write_single_source(
-    path=os.path.join(outdir, name_c),
-    libs=libs,
-    source_type="c",
-    header='#include "{:s}"'.format(name_h),
-)
+    so.seek(0)
+    with open(name_c, "wt") as fout:
+        fout.write(so.read())
 
 
 if __name__ == "__main__":
     main()
-"""

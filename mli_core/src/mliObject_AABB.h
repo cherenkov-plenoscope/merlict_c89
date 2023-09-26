@@ -26,6 +26,6 @@ int mliObject_face_in_local_frame_has_overlap_aabb_void(
         const uint32_t face_idx,
         const struct mliAABB aabb);
 
-struct mliAABB mliObject_aabb_lin_local_frame(const struct mliObject *obj);
+struct mliAABB mliObject_aabb_in_local_frame(const struct mliObject *obj);
 
 #endif

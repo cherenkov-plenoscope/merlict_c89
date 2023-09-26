@@ -4,6 +4,7 @@
 
 #include "mliVec.h"
 #include "mliRay.h"
+#include "mli_barycentric.h"
 
 struct mliVec mliTriangle_interpolate_surface_normal(
         const struct mliVec vertex_normal_a,

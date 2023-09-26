@@ -6,6 +6,7 @@
 #include "mliIntersectionSurfaceNormal.h"
 #include "mliVec.h"
 #include "mliPhoton.h"
+#include "mliMaterials.h"
 
 #define MLI_VACUUM_SPPED_OF_LIGHT 299792458.0
 #define MLI_PHOTON_CREATION 101u
