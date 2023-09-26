@@ -1,6 +1,4 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-
-#include "../../mli_testing/include/mli_testing.h"
 #include "mli_barycentric.h"
 
 struct mliBarycentrigWeights mli_barycentric_weights(
