@@ -65,7 +65,6 @@ def gather_includes(source, include_type):
     return list(set(includes))
 
 
-
 def main():
     parser = argparse.ArgumentParser(
         prog="mli_almagamate.py",
@@ -112,8 +111,10 @@ def main():
             ireg = gather_includes(source, include_type="reg")
             ireg = [os.path.basename(p) for p in ireg]
             ireg = [os.path.splitext(p)[0] for p in ireg]
-            sources[source_type][filename]["includes"] = {"std": istd, "reg": ireg}
-
+            sources[source_type][filename]["includes"] = {
+                "std": istd,
+                "reg": ireg,
+            }
 
     all_includes_from_std = {}
     for source_type in ["h", "c"]:
@@ -121,17 +122,20 @@ def main():
         for filename in sources[source_type]:
             for incl in sources[source_type][filename]["includes"]["std"]:
                 all_includes_from_std[source_type].append(incl)
-        all_includes_from_std[source_type] = list(set(all_includes_from_std[source_type]))
+        all_includes_from_std[source_type] = list(
+            set(all_includes_from_std[source_type])
+        )
 
     all_includes_from_std["c"] = list(
-        set(all_includes_from_std["c"]).difference(set(all_includes_from_std["h"]))
+        set(all_includes_from_std["c"]).difference(
+            set(all_includes_from_std["h"])
+        )
     )
 
     libnames = [os.path.basename(p) for p in libpaths]
     name = str.join("_", libnames)
     name_h = name + ".h"
     name_c = name + ".c"
-
 
     so = io.StringIO()
     for incl in all_includes_from_std["h"]:
@@ -145,21 +149,18 @@ def main():
     inheader = set()
 
     while True:
-
         filenames_not_yet_in_header = insources.difference(inheader)
         if len(filenames_not_yet_in_header) == 0:
             break
 
         ii += 1
-        assert ii < initial_num_sources ** 2, (
-            "Dependencies can nor be resolved in {:s}".format(
-                str(filenames_not_yet_in_header)
-            )
+        assert (
+            ii < initial_num_sources**2
+        ), "Dependencies can nor be resolved in {:s}".format(
+            str(filenames_not_yet_in_header)
         )
 
-
         for filename in filenames_not_yet_in_header:
-
             depends = False
             for dep in sources["h"][filename]["includes"]["reg"]:
                 if dep not in inheader:
@@ -168,7 +169,9 @@ def main():
             if not depends:
                 so.write("/* {:s} */\n".format(filename))
                 so.write("/* " + "-" * len(filename) + " */\n\n")
-                so.write(strip_non_std_includes(sources["h"][filename]["source"]))
+                so.write(
+                    strip_non_std_includes(sources["h"][filename]["source"])
+                )
                 so.write("\n")
                 so.write("\n")
                 inheader.add(filename)
@@ -176,7 +179,6 @@ def main():
     so.seek(0)
     with open(name_h, "wt") as fout:
         fout.write(so.read())
-
 
     # sources
     # -------
