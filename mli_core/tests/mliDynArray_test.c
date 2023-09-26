@@ -2,7 +2,7 @@
 
 #include "../../mli_testing/include/mli_testing.h"
 #include "../src/mliDynArray.h"
-#include "../src/mliDynArray_testing.h"
+
 
 CASE("malloc, and free")
 {

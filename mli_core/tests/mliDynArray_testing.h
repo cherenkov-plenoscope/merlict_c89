@@ -2,7 +2,6 @@
 #ifndef MLIDYNARRAY_TESTING_H_
 #define MLIDYNARRAY_TESTING_H_
 
-#include "mliDynArray.h"
 #include <stdint.h>
 
 #define MLIDYNARRAY_TEST_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                    \

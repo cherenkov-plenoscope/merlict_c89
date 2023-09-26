@@ -14,6 +14,10 @@
 #include "../include/mli_core.h"
 #include "../src.c"
 
+#include "mliDynArray_testing.h"
+#include "mliDynArray_color_testing.h"
+#include "mliDynArray_color_testing.c"
+
 int main(void)
 {
         printf("MLI_VERSION %d.%d.%d\n",
