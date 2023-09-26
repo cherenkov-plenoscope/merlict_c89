@@ -12,7 +12,7 @@ CASE("Write and read tape-archive")
 
         sprintf(payload, "%s", "Hello world!");
 
-        f = fopen("tests/resources/mliTar/123.tar.tmp", "wb");
+        f = fopen("mli_core/tests/resources/mliTar/123.tar.tmp", "wb");
         CHECK(mliTar_write_begin(&tar, f));
         CHECK(mliTarHeader_set_directory(&tarh, "resources"));
         CHECK(mliTar_write_header(&tar, &tarh));
@@ -25,7 +25,7 @@ CASE("Write and read tape-archive")
 
         memset(payload, '\0', sizeof(payload));
 
-        f = fopen("tests/resources/mliTar/123.tar.tmp", "rb");
+        f = fopen("mli_core/tests/resources/mliTar/123.tar.tmp", "rb");
         tar = mliTar_init();
         CHECK(mliTar_read_begin(&tar, f));
         CHECK(mliTar_read_header(&tar, &tarh));
