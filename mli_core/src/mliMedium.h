@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include "mliFunc.h"
 
-
 struct mliMedium {
         struct mliFunc refraction;
         struct mliFunc absorbtion;
