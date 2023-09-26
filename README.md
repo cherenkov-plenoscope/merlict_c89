@@ -22,6 +22,30 @@ Merlict would not exist without the author's past and present affiliations:
 
 # Build :hammer:
 
+Merlict is organized into little libraries which have the 'The Pitchfork Layout' with a 'merged Header Placement' so that you hava a reasonable chance to wrap your build-system around it.
+Merlict itself has no build-system.
+
+For example the library ```mli_core```:
+
+```
+    merlict_c89
+    |
+    |-> mli_core
+        |
+        |-> src
+        |   |
+        |   |-> mliVec.h
+        |   |-> mliVec.c
+        |   ...
+        |
+        |-> include
+            |
+            | -> mli_core.h
+```
+
+All sources and headers are in ```mli_core/src```. For compatibility there is also ```mli_core/include/mli_core.h``` which just includes all the headers in ```mli_core/src/*.h```.
+
+
 ## Single Header / Single Source
 To involve merlict in your project
 
@@ -37,9 +61,6 @@ in your headers, and
 
 in your sources. Thats it. :checkered_flag:
 See ```./merlict/mli_test.c``` and run ```./compile_and_test.sh``` for a minimal example.
-
-### Your Buildsystem
-Merlict is structured into pairs of ```./merlict/mli*.h```, and ```./merlict/mli*.c``` files which you can put into your buildsystem.
 
 # Viewer :eyes:
 Merlict's viewer runs in the terminal and reads three formats:
