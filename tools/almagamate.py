@@ -127,6 +127,11 @@ def main():
         )
     )
 
+    for source_type in ["h", "c"]:
+        all_includes_from_std[source_type] = sorted(
+            all_includes_from_std[source_type]
+        )
+
     libnames = [os.path.basename(p) for p in libpaths]
     name = str.join("_", libnames)
     name_h = name + ".h"
