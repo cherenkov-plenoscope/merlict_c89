@@ -67,27 +67,34 @@ def gather_includes(source, include_type):
 
 def main():
     parser = argparse.ArgumentParser(
-        prog="mli_almagamate.py",
+        prog="almagamate.py",
         description=(
             "Makes a single header-file and a single source-file "
-            "out of the requested libraries."
+            "out of the requested libraries from merlict_c89."
         ),
     )
     parser.add_argument(
-        "outdir",
+        "--header",
         metavar="PATH",
         type=str,
-        help=("The directory to write the source-files to."),
+        help=("Output-path of the almagamated header."),
+    )
+    parser.add_argument(
+        "--source",
+        metavar="PATH",
+        type=str,
+        help=("Output-path of the almagamated source."),
     )
     parser.add_argument(
         "libpaths",
-        metavar="PATH",
+        metavar="PATHS",
         nargs="+",
         type=str,
-        help=("A list of the required libraries e.g.: chk_debug mli_core."),
+        help=("A list of the libs to be almagamated e.g. chk_debug mli_core."),
     )
     args = parser.parse_args()
-    outdir = args.outdir
+    header_path = args.header
+    source_path = args.source
     libpaths = args.libpaths
 
     sources = {"c": {}, "h": {}}
@@ -131,11 +138,6 @@ def main():
         all_includes_from_std[source_type] = sorted(
             all_includes_from_std[source_type]
         )
-
-    libnames = [os.path.basename(p) for p in libpaths]
-    name = str.join("_", libnames)
-    name_h = name + ".h"
-    name_c = name + ".c"
 
     # write header
     # ------------
@@ -181,13 +183,15 @@ def main():
                 inheader.add(filename)
 
     so.seek(0)
-    with open(name_h, "wt") as fout:
+    with open(header_path, "wt") as fout:
         fout.write(so.read())
+
+    header_filename = os.path.basename(header_path)
 
     # write source
     # ------------
     so = io.StringIO()
-    so.write('#include "{:s}"\n'.format(name_h))
+    so.write('#include "{:s}"\n'.format(header_filename))
     so.write("\n")
 
     for incl in all_includes_from_std["c"]:
@@ -204,7 +208,7 @@ def main():
         inheader.add(filename)
 
     so.seek(0)
-    with open(name_c, "wt") as fout:
+    with open(source_path, "wt") as fout:
         fout.write(so.read())
 
 
