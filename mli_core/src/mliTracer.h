@@ -4,9 +4,11 @@
 
 #include <stdint.h>
 #include "mliRay.h"
-#include "mli_random_generator.h"
-#include "mliScenery.h"
+#include "mliColor.h"
 #include "mliAtmosphere.h"
+
+struct mliScenery;
+struct mliPrng;
 
 struct mliTracerConfig {
         uint64_t num_trails_global_light_source;
@@ -20,6 +22,18 @@ struct mliTracerConfig {
 struct mliTracerConfig mliTracerConfig_init(void);
 
 struct mliColor mli_trace(
+        const struct mliScenery *scenery,
+        const struct mliRay ray,
+        const struct mliTracerConfig *config,
+        struct mliPrng *prng);
+
+struct mliColor mli_trace_with_atmosphere(
+        const struct mliScenery *scenery,
+        const struct mliRay ray,
+        const struct mliTracerConfig *config,
+        struct mliPrng *prng);
+
+struct mliColor mli_trace_without_atmosphere(
         const struct mliScenery *scenery,
         const struct mliRay ray,
         const struct mliTracerConfig *config,

@@ -46,6 +46,9 @@ void mliImage_set(
         const uint32_t col,
         const uint32_t row,
         const struct mliColor color);
+void mliImage_set_all_pixel(
+        const struct mliImage *img,
+        const struct mliColor color);
 void mliPixels_set_all_from_image(
         struct mliPixels *pixels,
         const struct mliImage *image);
