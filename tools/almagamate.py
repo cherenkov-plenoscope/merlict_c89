@@ -90,11 +90,6 @@ def main():
     outdir = args.outdir
     libpaths = args.libpaths
 
-    """
-    outdir = "."
-    libpaths = ["chk_debug", "mli_core", "mli_viewer"]
-    """
-
     sources = {"c": {}, "h": {}}
     for libpath in libpaths:
         libname = os.path.basename(libpath)
@@ -137,6 +132,8 @@ def main():
     name_h = name + ".h"
     name_c = name + ".c"
 
+    # write header
+    # ------------
     so = io.StringIO()
     for incl in all_includes_from_std["h"]:
         so.write("#include <{:s}>\n".format(incl))
@@ -149,14 +146,16 @@ def main():
     inheader = set()
 
     while True:
-        filenames_not_yet_in_header = insources.difference(inheader)
+        filenames_not_yet_in_header = list(insources.difference(inheader))
+        filenames_not_yet_in_header = sorted(filenames_not_yet_in_header)
+
         if len(filenames_not_yet_in_header) == 0:
             break
 
         ii += 1
         assert (
             ii < initial_num_sources**2
-        ), "Dependencies can nor be resolved in {:s}".format(
+        ), "Dependencies can not be resolved in {:s}".format(
             str(filenames_not_yet_in_header)
         )
 
@@ -180,8 +179,8 @@ def main():
     with open(name_h, "wt") as fout:
         fout.write(so.read())
 
-    # sources
-    # -------
+    # write source
+    # ------------
     so = io.StringIO()
     so.write('#include "{:s}"\n'.format(name_h))
     so.write("\n")
@@ -190,7 +189,8 @@ def main():
         so.write("#include <{:s}>\n".format(incl))
     so.write("\n")
 
-    for filename in sources["c"]:
+    sorted_c_sources_filenames = sorted(list(sources["c"].keys()))
+    for filename in sorted_c_sources_filenames:
         so.write("/* {:s} */\n".format(filename))
         so.write("/* " + "-" * len(filename) + " */\n\n")
         so.write(strip_non_std_includes(sources["c"][filename]["source"]))
