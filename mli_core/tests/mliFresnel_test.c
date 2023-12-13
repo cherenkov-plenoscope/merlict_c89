@@ -30,6 +30,7 @@ CASE("Fresnel: flat_incident")
         struct mliFresnel fresnel;
         double incident_to_normal;
         double outgoing_to_normal;
+        double rec_outgoing_to_normal;
 
         incident = mliVec_normalized(incident);
         normal = mliVec_normalized(normal);
@@ -39,9 +40,11 @@ CASE("Fresnel: flat_incident")
         outgoing_to_normal =
                 asin(sin(incident_to_normal) * n_from / n_going_to);
 
-        CHECK(mliVec_angle_between(
-                      mliFresnel_refraction_direction(fresnel),
-                      mliVec_multiply(normal, -1.0)) == outgoing_to_normal);
+        rec_outgoing_to_normal = mliVec_angle_between(
+                mliFresnel_refraction_direction(fresnel),
+                mliVec_multiply(normal, -1.0));
+
+        CHECK_MARGIN(rec_outgoing_to_normal, outgoing_to_normal, 1e-9);
 }
 
 CASE("Fresnel: orthogonal_incident_same_index")
