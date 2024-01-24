@@ -77,9 +77,9 @@ CASE("mliJson_malloc_from_path")
         double myfloat;
 
         CHECK(mliJson_malloc_from_path(
-                &json, "mli_core/tests/resources/mliJson/example.json"));
+                &json, "libs/mli_core/tests/resources/mliJson/example.json"));
         CHECK(mliJson_debug_to_path(
-                &json, "mli_core/tests/resources/mliJson/example.debug.tmp"));
+                &json, "libs/mli_core/tests/resources/mliJson/example.debug.tmp"));
 
         CHECK(mliJson_token_by_key(&json, 0, "name", &return_idx));
         CHECK(return_idx == 1);
@@ -145,9 +145,9 @@ CASE("parse mliVec and mliColor")
         struct mliVec vec2 = mliVec_init(0., 0., 0.);
         struct mliColor col = mliColor_set(0., 0., 0.);
         CHECK(mliJson_malloc_from_path(
-                &json, "mli_core/tests/resources/mliJson/vec.json"));
+                &json, "libs/mli_core/tests/resources/mliJson/vec.json"));
         CHECK(mliJson_debug_to_path(
-                &json, "mli_core/tests/resources/mliJson/vec.debug.tmp"));
+                &json, "libs/mli_core/tests/resources/mliJson/vec.debug.tmp"));
 
         CHECK(mliJson_token_by_key(&json, 0, "vec1", &token));
         CHECK(mliVec_from_json_token(&vec1, &json, token + 1));

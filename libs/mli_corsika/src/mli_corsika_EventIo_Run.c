@@ -7,7 +7,7 @@ struct mliEventIoRun mliEventIoRun_init(void)
         struct mliEventIoRun run;
         run.f = NULL;
         run.next_block = mliEventIoHeader_init();
-        memset(run.corsika_run_header, 0.0, 273);
+        memset(run.corsika_run_header, 0.0, 273 * sizeof(float));
         run.corsika_input_card = mliIo_init();
         run.telescope_positions = mliDynEventIoTelescopePosition_init();
         return run;

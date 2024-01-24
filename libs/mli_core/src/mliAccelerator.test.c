@@ -19,6 +19,7 @@ CASE("mliAccelerator, init")
 
         CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
+                "libs/"
                 "mli_core/"
                 "tests/"
                 "resources/"

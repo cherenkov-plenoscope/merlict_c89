@@ -135,8 +135,8 @@ error:
 struct mliEventIoEvent mliEventIoEvent_init(void)
 {
         struct mliEventIoEvent event;
-        memset(event.corsika_event_header, 0.0, 273);
-        memset(event.corsika_event_end, 0.0, 273);
+        memset(event.corsika_event_header, 0.0, 273 * sizeof(float));
+        memset(event.corsika_event_end, 0.0, 273 * sizeof(float));
         event.telescopes = mliDynEventIoTelescope_init();
         return event;
 }
