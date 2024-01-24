@@ -1,0 +1,14 @@
+name: test
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+      - name: Test with pytest
+        run: |
+          ./tools/compile_and_test_core.sh
+          ./tools/compile_and_test_corsika.sh
