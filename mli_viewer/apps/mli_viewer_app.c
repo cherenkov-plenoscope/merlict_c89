@@ -2,19 +2,19 @@
 
 /*
  *  Compile with:
- *  gcc merlict/mli_viewer_app.c -o viewer -lm
+ *  gcc mli_viewer_app.c -o viewer -lm
  */
 
 #include <stdio.h>
 
-#include "../../chk_debug/src/chk_debug.h"
-#include "../../chk_debug/src.c"
+#include "../../chk_debug/tools/include.h"
+#include "../../chk_debug/tools/src.c"
 
-#include "../../mli_core/include/mli_core.h"
-#include "../../mli_core/src.c"
+#include "../../mli_core/tools/include.h"
+#include "../../mli_core/tools/src.c"
 
-#include "../include/mli_viewer.h"
-#include "../src.c"
+#include "../tools/include.h"
+#include "../tools/src.c"
 
 int main(int argc, char *argv[])
 {
