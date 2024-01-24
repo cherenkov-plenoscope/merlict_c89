@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "../../mli_testing/include/mli_testing.h"
+#include "../../mli_testing/src/mli_testing.h"
+
 
 CASE("EventIoHeader_works")
 {

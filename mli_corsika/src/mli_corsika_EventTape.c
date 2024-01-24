@@ -2,6 +2,8 @@
 #include "mli_corsika_EventTape.h"
 #include "mli_corsika_utils.h"
 #include "../../mli_core/src/mliTar.h"
+#include "../../mli_core/src/mli_cstr.h"
+#include "../../mli_core/src/mli_cstr_numbers.h"
 #include "../../chk_debug/include/chk_debug.h"
 
 /* writer */

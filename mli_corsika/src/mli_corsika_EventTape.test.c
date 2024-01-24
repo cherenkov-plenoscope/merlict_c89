@@ -1,5 +1,5 @@
 /* Copyright 2021 Sebastian A. Mueller */
-#include "../../mli_testing/include/mli_testing.h"
+#include "../../mli_testing/src/mli_testing.h"
 
 CASE("EventTape: run_normal")
 {
