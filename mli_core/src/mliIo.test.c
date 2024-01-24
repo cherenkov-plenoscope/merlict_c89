@@ -1,6 +1,6 @@
 /* Copyright 2018-2023 Sebastian Achim Mueller */
 
-#include "../../mli_testing/include/mli_testing.h"
+#include "../../mli_testing/src/mli_testing.h"
 #include "../src/mliIo.h"
 
 CASE("BytesIo_init")

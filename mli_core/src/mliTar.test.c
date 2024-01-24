@@ -1,6 +1,6 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 
-#include "../../mli_testing/include/mli_testing.h"
+#include "../../mli_testing/src/mli_testing.h"
 #include "../src/mliTar.h"
 
 CASE("Write and read tape-archive")

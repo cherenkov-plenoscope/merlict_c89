@@ -1,6 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-#include "../../mli_testing/include/mli_testing.h"
+#include "../../mli_testing/src/mli_testing.h"
 #include "../src/mli_lambertian_cosine_law.h"
 
 CASE("lambertian cosine law, populate histogram, check cosine law")
