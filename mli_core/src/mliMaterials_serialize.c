@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials_serialize.h"
 #include "mliMagicId.h"
-#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src/chk_debug.h"
 
 int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
 {

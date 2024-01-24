@@ -9,8 +9,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "../../chk_debug/include/chk_debug.h"
-#include "../../chk_debug/src.c"
+#include "../../chk_debug/tools/include.h"
+#include "../../chk_debug/tools/src.c"
 
 #include "../../mli_core/tools/include.h"
 #include "../../mli_core/tools/src.c"

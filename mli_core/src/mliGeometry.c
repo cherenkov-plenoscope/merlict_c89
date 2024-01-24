@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry.h"
-#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src/chk_debug.h"
 
 void mliGeometry_init_objects(struct mliGeometry *geometry)
 {

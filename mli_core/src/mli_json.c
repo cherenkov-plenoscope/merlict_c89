@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "mli_cstr.h"
 #include "mli_json_jsmn.c"
-#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src/chk_debug.h"
 
 struct mliJson mliJson_init(void)
 {

@@ -8,8 +8,8 @@
 #include <math.h>
 #include <assert.h>
 
-#include "../../chk_debug/include/chk_debug.h"
-#include "../../chk_debug/src.c"
+#include "../../chk_debug/tools/include.h"
+#include "../../chk_debug/tools/src.c"
 
 #include "../tools/include.h"
 #include "../tools/src.c"

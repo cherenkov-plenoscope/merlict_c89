@@ -5,7 +5,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdlib.h>
-#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src/chk_debug.h"
 
 int mli_cstr_nto_int64(
         int64_t *out,

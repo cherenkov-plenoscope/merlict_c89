@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_cstr.h"
 #include <stdlib.h>
-#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src/chk_debug.h"
 
 int mli_cstr_ends_with(const char *str, const char *sufix)
 {

@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src/chk_debug.h"
 #include "../../chk_debug/src.c"
 
 #include "../../mli_core/include/mli_core.h"

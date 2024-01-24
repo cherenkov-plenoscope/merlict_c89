@@ -2,7 +2,7 @@
 #include "mliUserScenery.h"
 #include <math.h>
 #include <stdint.h>
-#include "../../chk_debug/include/chk_debug.h"
+#include "../../chk_debug/src/chk_debug.h"
 #include "mliGeometry.h"
 #include "mli_json.h"
 #include "mli_cstr.h"
