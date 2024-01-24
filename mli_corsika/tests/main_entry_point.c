@@ -12,8 +12,8 @@
 #include "../../chk_debug/include/chk_debug.h"
 #include "../../chk_debug/src.c"
 
-#include "../../mli_core/include/mli_core.h"
-#include "../../mli_core/src.c"
+#include "../../mli_core/tools/include.h"
+#include "../../mli_core/tools/src.c"
 
 
 #include "../tools/include.h"

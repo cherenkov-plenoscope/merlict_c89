@@ -11,8 +11,8 @@
 #include "../../chk_debug/include/chk_debug.h"
 #include "../../chk_debug/src.c"
 
-#include "../include/mli_core.h"
-#include "../src.c"
+#include "../tools/include.h"
+#include "../tools/src.c"
 
 #include "mliDynArray_testing.h"
 #include "mliDynArray_color_testing.h"
