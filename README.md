@@ -22,7 +22,9 @@ Merlict would not exist without the author's past and present affiliations:
 
 # Build :hammer:
 
-Merlict is organized into little libraries which have the ['The Pitchfork Layout'](https://api.csswg.org/bikeshed/?force=1&url=https://raw.githubusercontent.com/vector-of-bool/pitchfork/develop/data/spec.bs) with a 'merged Header Placement' so that you hava a reasonable chance to wrap your build-system around it.
+Merlict is organized in ['The Pitchfork Layout'](https://api.csswg.org/bikeshed/?force=1&url=https://raw.githubusercontent.com/vector-of-bool/pitchfork/develop/data/spec.bs).
+It uses the 'merged Header Placement' because it has no private headers and it uses the 'merged Tests Placement'.
+This hopefully gives you a reasonable chance to wrap your build-system around it.
 Merlict itself has no build-system.
 
 For example the library ```mli_core```:

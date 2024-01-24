@@ -39,8 +39,9 @@ int main(void)
                MLI_CORSIKA_EVENTTAPE_VERSION_MINOR,
                MLI_CORSIKA_EVENTTAPE_VERSION_PATCH);
 
-#include "mli_corsika_EventIo_test.c"
-#include "mli_corsika_EventTape_test.c"
+#include "mli_corsika_EventIo.test.c"
+#include "mli_corsika_EventTape.test.c"
+/*#include "mli_corsika_test_photon_production.test.c"*/
 
         printf("__SUCCESS__\n");
         return EXIT_SUCCESS;
