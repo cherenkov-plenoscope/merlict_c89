@@ -1,4 +1,4 @@
-![merlict c89 logo](/readme/merlict_c89_logo_wide_32by9_low.jpg)
+![merlict c89 logo](/docs/merlict_c89_logo_wide_32by9_low.jpg)
 
 [![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -87,9 +87,9 @@ gcc ./merlict/mli_viewer_app.c -o viewer -lm
 
  ASCII-art                 | ANSI-escape-codes
 :-------------------------:|:-------------------------:
-![viewer-ascii-art](/readme/viewer/teapot_ascii_v1-0-0.png)  |  ![viewer-ansi-escape](/readme/viewer/teapot_ansi_v1-0-0.png)
+![viewer-ascii-art](/docs/viewer/teapot_ascii_v1-0-0.png)  |  ![viewer-ansi-escape](/docs/viewer/teapot_ansi_v1-0-0.png)
 
-![viewer-rendering-ppm](/readme/viewer/teapot_full_v1-0-0.png)
+![viewer-rendering-ppm](/docs/viewer/teapot_full_v1-0-0.png)
 
 # Interface
 
