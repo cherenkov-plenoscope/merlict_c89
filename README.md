@@ -186,7 +186,7 @@ Then its the core developer's job to:
 - Obey ```std=c89``` standard.
 - Keep the header's namespace clean. No ```typedef```s! Merlict uses ```mli``` prefix.
 - Avoid all Warnings in```gcc``` and ```clang``` in both ```c``` and ```c++``` mode.
-- Format ```c``` according to ```./.clang-format```.
+- Format ```c``` according to ```./tools/.clang-format```.
 
 But of course the author will happily recive pull-requests that meet such expectations :wink:.
 
