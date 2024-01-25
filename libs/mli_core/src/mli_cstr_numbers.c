@@ -108,22 +108,23 @@ int mli_cstr_print_uint64(
         const uint64_t base,
         const uint64_t min_num_digits)
 {
-        char literals[] = {'0',
-                           '1',
-                           '2',
-                           '3',
-                           '4',
-                           '5',
-                           '6',
-                           '7',
-                           '8',
-                           '9',
-                           'A',
-                           'B',
-                           'C',
-                           'D',
-                           'E',
-                           'F'};
+        char literals[] = {
+                '0',
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+                '7',
+                '8',
+                '9',
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+                'F'};
         char tmp[128] = {'\0'};
         uint64_t remainder = 0u;
         uint32_t remainder32 = 0u;

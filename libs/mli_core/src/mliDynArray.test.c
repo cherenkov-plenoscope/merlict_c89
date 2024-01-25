@@ -3,7 +3,6 @@
 #include "../../mli_testing/src/mli_testing.h"
 #include "../src/mliDynArray.h"
 
-
 CASE("malloc, and free")
 {
         uint64_t i;

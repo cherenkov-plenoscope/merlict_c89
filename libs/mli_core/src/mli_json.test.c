@@ -79,7 +79,8 @@ CASE("mliJson_malloc_from_path")
         CHECK(mliJson_malloc_from_path(
                 &json, "libs/mli_core/tests/resources/mliJson/example.json"));
         CHECK(mliJson_debug_to_path(
-                &json, "libs/mli_core/tests/resources/mliJson/example.debug.tmp"));
+                &json,
+                "libs/mli_core/tests/resources/mliJson/example.debug.tmp"));
 
         CHECK(mliJson_token_by_key(&json, 0, "name", &return_idx));
         CHECK(return_idx == 1);

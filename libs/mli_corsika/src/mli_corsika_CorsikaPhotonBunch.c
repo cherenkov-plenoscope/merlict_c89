@@ -2,7 +2,6 @@
 #include "mli_corsika_CorsikaPhotonBunch.h"
 #include "../../mli_core/src/mli_math.h"
 
-
 MLIDYNARRAY_IMPLEMENTATION(
         mli,
         CorsikaPhotonBunch,
