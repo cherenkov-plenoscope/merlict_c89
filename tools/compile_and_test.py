@@ -63,18 +63,13 @@ def tar_sceneries(scenery_name):
     )
 
 
-
 def almagamate_sources():
     return run_and_save_sdtout(
         call=[
             "python",
             os.path.join("tools", "almagamate.py"),
-            mli_submodules,
-            "--header",
-            hpath,
-            "--source",
-            cpath
-        ],
+            outdir,
+        ] + mli_submodules,
         stdout_path=stdout_path,
     )
 
