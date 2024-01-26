@@ -70,7 +70,7 @@ def main():
         prog="almagamate.py",
         description=(
             "Makes a single header-file and a single source-file "
-            "out of the requested libraries from merlict_c89."
+            "out of the requested submodules from merlict_c89/libs/."
         ),
     )
     parser.add_argument(
@@ -90,7 +90,9 @@ def main():
         metavar="PATHS",
         nargs="+",
         type=str,
-        help=("A list of the libs to be almagamated e.g. chk_debug mli_core."),
+        help=(
+            "A list of the libs to be almagamated e.g. 'mli', 'mli_corsika'."
+        ),
     )
     args = parser.parse_args()
     header_path = args.header
