@@ -34,7 +34,8 @@ def read_lib(path):
             if source_ext == ".h":
                 hs[source_name] = {"source": source_text}
             elif source_ext == ".c":
-                cs[source_name] = {"source": source_text}
+                if "test" not in source_name and "testing" not in source_name:
+                    cs[source_name] = {"source": source_text}
 
     return {"h": hs, "c": cs}
 

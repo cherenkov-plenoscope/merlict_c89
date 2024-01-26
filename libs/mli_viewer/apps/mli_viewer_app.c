@@ -1,20 +1,24 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 
-/*
- *  Compile with:
- *  gcc mli_viewer_app.c -o viewer -lm
- */
-
 #include <stdio.h>
+#include <stdlib.h>
 
-#include "../../chk_debug/tools/include.h"
-#include "../../chk_debug/tools/src.c"
+/*
+        1) Almagamate
+        -------------
+        python ./tools/almagamate libs/mli libs/mli_viewer \
+                --header build/mli-mli_viewer.h \
+                --source build/mli-mli_viewer.c
 
-#include "../../mli/tools/include.h"
-#include "../../mli/tools/src.c"
-
-#include "../tools/include.h"
-#include "../tools/src.c"
+        2) Compile
+        ----------
+        gcc \
+                -include build/mli-mli_viewer.h \
+                -include build/mli-mli_viewer.c \
+                libs/mli_viewer/apps/mli_viewer_app.c \
+                -o build/viewer \
+                -lm
+*/
 
 int main(int argc, char *argv[])
 {
@@ -49,7 +53,7 @@ int main(int argc, char *argv[])
                 fprintf(stderr,
                         "Usage: %s <scenery-path> [step_length]\n",
                         argv[0]);
-                goto error;
+                goto chk_error;
         }
 
         chk_msg(mlivr_run_interactive_viewer_try_non_canonical_stdin(
