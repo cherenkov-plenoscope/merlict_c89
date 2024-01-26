@@ -1,6 +1,6 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
 #include "mli_corsika_EventIo_Header.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "../../mli_core/src/chk.h"
 
 #define EXPECTED_SYNC -736130505
 

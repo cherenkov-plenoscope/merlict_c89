@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliImage_ppm.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 
 int mliImage_malloc_fread(struct mliImage *img, FILE *f)
 {

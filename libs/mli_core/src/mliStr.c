@@ -2,7 +2,7 @@
 #include "mliStr.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 
 struct mliStr mliStr_init(void)
 {

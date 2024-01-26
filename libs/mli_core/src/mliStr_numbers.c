@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mliIo.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 
 int mliStr_nto_double(
         double *out,

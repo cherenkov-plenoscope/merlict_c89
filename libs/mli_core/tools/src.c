@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "../src/mli_version.c"
+#include "../src/chk.c"
 #include "../src/mli_cstr_numbers.c"
 #include "../src/mli_math.c"
 #include "../src/mliStr.c"

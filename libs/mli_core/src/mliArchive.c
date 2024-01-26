@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliArchive.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 #include "mli_cstr.h"
 #include "mli_json.h"
 #include "mliTar.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 
 MLIDYNARRAY_IMPLEMENTATION(mli, TextFiles, struct mliStr)
 

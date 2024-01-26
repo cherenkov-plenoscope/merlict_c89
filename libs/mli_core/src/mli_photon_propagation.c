@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_photon_propagation.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,

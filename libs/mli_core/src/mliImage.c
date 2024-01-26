@@ -2,7 +2,7 @@
 #include "mliImage.h"
 #include <assert.h>
 #include "mliPixelWalk.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 
 struct mliImage mliImage_init(void)
 {

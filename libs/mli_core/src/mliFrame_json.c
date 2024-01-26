@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFrame_json.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 #include "mliDynMap_json.h"
 #include "mliVec_json.h"
 #include "mliQuaternion_json.h"

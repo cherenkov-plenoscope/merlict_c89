@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometryToMaterialMap_serialize.h"
 #include "mliMagicId.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 
 int mliGeometryToMaterialMap_malloc_fread(
         struct mliGeometryToMaterialMap *geomap,

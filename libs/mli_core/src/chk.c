@@ -1,5 +1,5 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
-#include "chk_debug.h"
+#include "chk.h"
 #include <stdarg.h>
 #include <stdio.h>
 

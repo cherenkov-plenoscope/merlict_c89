@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree_serialize.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 
 int mliOcTree_fwrite(const struct mliOcTree *octree, FILE *f)
 {

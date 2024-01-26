@@ -1,7 +1,7 @@
 /* Copyright 2018-2023 Sebastian Achim Mueller */
 #include "mliIo.h"
 #include <stdio.h>
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 #include "mli_cstr.h"
 
 struct mliIo mliIo_init(void)

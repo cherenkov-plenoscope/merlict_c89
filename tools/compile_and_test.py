@@ -28,7 +28,7 @@ parser = argparse.ArgumentParser(
     ),
 )
 args = parser.parse_args()
-submodule_name = "mli_corsika"
+submodule_name = "mli_core"
 
 def print_file(path):
     with open(path, "rt") as f:

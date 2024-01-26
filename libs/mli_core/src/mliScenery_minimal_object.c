@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_minimal_object.h"
-#include "../../chk_debug/src/chk_debug.h"
+#include "chk.h"
 
 struct mliColor mli_random_color(struct mliPrng *prng)
 {
