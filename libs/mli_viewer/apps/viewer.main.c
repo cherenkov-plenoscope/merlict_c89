@@ -15,7 +15,7 @@
         gcc \
                 -include build/mli-mli_viewer.h \
                 -include build/mli-mli_viewer.c \
-                libs/mli_viewer/apps/mli_viewer_app.c \
+                libs/mli_viewer/apps/viewer.main.c \
                 -o build/viewer \
                 -lm
 */
