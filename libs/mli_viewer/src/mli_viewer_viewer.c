@@ -5,15 +5,15 @@
 #include <assert.h>
 #include <time.h>
 #include "../../chk_debug/src/chk_debug.h"
-#include "../../mli_core/src/mli_math.h"
-#include "../../mli_core/src/mliIntersectionSurfaceNormal.h"
-#include "../../mli_core/src/mliImage.h"
-#include "../../mli_core/src/mliImage_print.h"
-#include "../../mli_core/src/mliImage_ppm.h"
-#include "../../mli_core/src/mliPinHoleCamera.h"
-#include "../../mli_core/src/mliApertureCamera.h"
-#include "../../mli_core/src/mli_ray_scenery_query.h"
-#include "../../mli_core/src/mli_version.h"
+#include "../../mli/src/mli_math.h"
+#include "../../mli/src/mliIntersectionSurfaceNormal.h"
+#include "../../mli/src/mliImage.h"
+#include "../../mli/src/mliImage_print.h"
+#include "../../mli/src/mliImage_ppm.h"
+#include "../../mli/src/mliPinHoleCamera.h"
+#include "../../mli/src/mliApertureCamera.h"
+#include "../../mli/src/mli_ray_scenery_query.h"
+#include "../../mli/src/mli_version.h"
 #include "mli_viewer_toggle_stdin.h"
 
 void mlivr_clear_screen(void)

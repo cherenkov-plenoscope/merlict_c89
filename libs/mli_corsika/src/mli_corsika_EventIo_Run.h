@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_EVENTIO_RUN_H_
 
 #include <stdint.h>
-#include "../../mli_core/src/mliIo.h"
+#include "../../mli/src/mliIo.h"
 #include "mli_corsika_EventIo_Header.h"
 #include "mli_corsika_EventIo_TelescopePosition.h"
 

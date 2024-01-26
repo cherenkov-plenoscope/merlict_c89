@@ -3,9 +3,9 @@
 #define MLI_CORSIKA_CORSIKAPHOTONBUNCH_H_
 
 #include <stdint.h>
-#include "../../mli_core/src/mliDynArray.h"
-#include "../../mli_core/src/mliVec.h"
-#include "../../mli_core/src/mliPhoton.h"
+#include "../../mli/src/mliDynArray.h"
+#include "../../mli/src/mliVec.h"
+#include "../../mli/src/mliPhoton.h"
 
 struct mliCorsikaPhotonBunch {
         /*

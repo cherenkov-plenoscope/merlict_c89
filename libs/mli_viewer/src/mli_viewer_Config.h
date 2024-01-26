@@ -3,7 +3,7 @@
 #define MLI_VIEWER_CONFIG_H_
 
 #include <stdint.h>
-#include "../../mli_core/src/mliView.h"
+#include "../../mli/src/mliView.h"
 
 struct mlivrConfig {
         uint32_t random_seed;

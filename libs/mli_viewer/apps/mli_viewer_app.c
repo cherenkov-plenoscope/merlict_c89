@@ -10,8 +10,8 @@
 #include "../../chk_debug/tools/include.h"
 #include "../../chk_debug/tools/src.c"
 
-#include "../../mli_core/tools/include.h"
-#include "../../mli_core/tools/src.c"
+#include "../../mli/tools/include.h"
+#include "../../mli/tools/src.c"
 
 #include "../tools/include.h"
 #include "../tools/src.c"

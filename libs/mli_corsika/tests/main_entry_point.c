@@ -9,8 +9,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "../../mli_core/tools/include.h"
-#include "../../mli_core/tools/src.c"
+#include "../../mli/tools/include.h"
+#include "../../mli/tools/src.c"
 
 #include "../tools/include.h"
 #include "../tools/src.c"

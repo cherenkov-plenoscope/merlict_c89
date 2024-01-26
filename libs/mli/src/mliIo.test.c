@@ -332,7 +332,7 @@ CASE("mli_line_viewer_write")
 
         mliIo_rewind(&f);
         CHECK(mliIo_read_to_path(
-                &f, "libs/mli_core/tests/resources/lines_info.tmp"));
+                &f, "libs/mli/tests/resources/lines_info.tmp"));
 
         mliIo_free(&f);
         mliStr_free(&text);

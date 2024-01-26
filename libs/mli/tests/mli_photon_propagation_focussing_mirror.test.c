@@ -31,7 +31,7 @@ CASE("focussing_a_parallel_beam")
         CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
                 "libs/"
-                "mli_core/"
+                "mli/"
                 "tests/"
                 "resources/"
                 "sceneries/"
@@ -95,7 +95,7 @@ CASE("focussing_a_parallel_beam")
         CHECK(mliImage_write_to_path(
                 &screen_img,
                 "libs/"
-                "mli_core/"
+                "mli/"
                 "tests/"
                 "resources/"
                 "optics_focussing_mirror-psf.ppm.tmp"));

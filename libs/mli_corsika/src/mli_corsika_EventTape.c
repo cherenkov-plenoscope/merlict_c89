@@ -1,10 +1,10 @@
 /* Copyright 2020 Sebastian A. Mueller */
 #include "mli_corsika_EventTape.h"
 #include "mli_corsika_utils.h"
-#include "../../mli_core/src/mliTar.h"
-#include "../../mli_core/src/mli_cstr.h"
-#include "../../mli_core/src/mli_cstr_numbers.h"
-#include "../../mli_core/src/chk.h"
+#include "../../mli/src/mliTar.h"
+#include "../../mli/src/mli_cstr.h"
+#include "../../mli/src/mli_cstr_numbers.h"
+#include "../../mli/src/chk.h"
 
 /* writer */
 /* ====== */

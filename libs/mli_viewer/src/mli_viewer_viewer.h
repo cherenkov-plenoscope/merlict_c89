@@ -2,11 +2,11 @@
 #ifndef MLI_VIEWER_VIEWER_H_
 #define MLI_VIEWER_VIEWER_H_
 
-#include "../../mli_core/src/mliImage.h"
-#include "../../mli_core/src/mliScenery.h"
-#include "../../mli_core/src/mliTracer.h"
-#include "../../mli_core/src/mli_random_generator.h"
-#include "../../mli_core/src/mliView.h"
+#include "../../mli/src/mliImage.h"
+#include "../../mli/src/mliScenery.h"
+#include "../../mli/src/mliTracer.h"
+#include "../../mli/src/mli_random_generator.h"
+#include "../../mli/src/mliView.h"
 #include "mli_viewer_Cursor.h"
 #include "mli_viewer_Config.h"
 

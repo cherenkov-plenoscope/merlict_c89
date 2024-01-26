@@ -4,8 +4,8 @@
 
 #include <stdint.h>
 #include "mli_corsika_EventTape.h"
-#include "../../mli_core/src/mli_random.h"
-#include "../../mli_core/src/mli_random_generator.h"
+#include "../../mli/src/mli_random.h"
+#include "../../mli/src/mli_random_generator.h"
 
 void mliEventTape_testing_set_random_corsika_header(
         float *head,

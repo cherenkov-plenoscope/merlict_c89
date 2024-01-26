@@ -28,7 +28,7 @@ parser = argparse.ArgumentParser(
     ),
 )
 args = parser.parse_args()
-submodule_name = "mli_core"
+submodule_name = "mli"
 
 def print_file(path):
     with open(path, "rt") as f:
@@ -52,7 +52,7 @@ def run_and_save_sdtout(call, stdout_path):
 
 def tar_sceneries(scenery_name):
     in_path = os.path.join(
-        "libs", "mli_core", "tests", "resources", "sceneries", scenery_name
+        "libs", "mli", "tests", "resources", "sceneries", scenery_name
     )
     out_path = in_path + ".tar"
     call = ["tar", "-cvf", out_path, "--directory", in_path, "."]
