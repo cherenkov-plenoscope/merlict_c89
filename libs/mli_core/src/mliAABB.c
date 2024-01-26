@@ -42,7 +42,7 @@ int mliAABB_valid(const struct mliAABB a)
         chk_msg(a.lower.y <= a.upper.y, "Expected lower.y <= upper.y");
         chk_msg(a.lower.z <= a.upper.z, "Expected lower.z <= upper.z");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -53,7 +53,7 @@ int mliAABB_equal(const struct mliAABB a, const struct mliAABB b)
         chk_msg(mliVec_equal(a.upper, b.upper),
                 "Expected 'upper'-corner to be equal.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 

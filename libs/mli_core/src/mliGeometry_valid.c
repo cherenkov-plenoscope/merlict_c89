@@ -12,7 +12,7 @@ int mliGeometry_valid_objects(const struct mliGeometry *geometry)
                         "Expected object_name to be valid.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In geometry.objects[%u]\n", i);
         return 0;
 }
@@ -34,7 +34,7 @@ int mliGeometry_valid_robjects_HomTras(const struct mliGeometry *geometry)
                 chk_msg(!MLI_IS_NAN(q.z), "quaternion.z is 'nan'.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In geometry.robject2root[%u]\n", i);
         return 0;
 }
@@ -52,7 +52,7 @@ int mliGeometry_valid_object_references(const struct mliGeometry *geometry)
         }
         return 1;
         fprintf(stderr, "In geometry.robject[%u]\n", i);
-error:
+chk_error:
         return 0;
 }
 
@@ -65,6 +65,6 @@ int mliGeometry_valid(const struct mliGeometry *geometry)
         chk_msg(mliGeometry_valid_object_references(geometry),
                 "Expected object-references to be valid.");
         return 1;
-error:
+chk_error:
         return 0;
 }

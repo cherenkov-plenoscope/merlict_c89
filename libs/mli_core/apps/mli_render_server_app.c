@@ -32,7 +32,7 @@ int mliRenderConfig_from_channel(
 
         fprintf(fout, "{\"status\": 1}\n");
         return 1;
-error:
+chk_error:
         fprintf(fout, "{\"status\": 0}\n");
         return 0;
 }
@@ -51,7 +51,7 @@ int fread_until_next_newline(
         } while (c != newline);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -96,6 +96,6 @@ int main(int argc, char *argv[])
         }
         mliScenery_free(&scenery);
         return EXIT_SUCCESS;
-error:
+chk_error:
         return EXIT_FAILURE;
 }

@@ -25,7 +25,7 @@ int mliStr_malloc(struct mliStr *str, const uint64_t length)
         chk_malloc(str->cstr, char, str->length + 1);
         memset(str->cstr, '\0', str->length + 1);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -46,7 +46,7 @@ int mliStr_malloc_copyn(
                 mliStr_malloc(str, length);
         strncpy(str->cstr, &src->cstr[start], length);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -63,7 +63,7 @@ int mliStr_mallocf(struct mliStr *str, const char *format, ...)
         va_end(args);
         mliStr_free(&tmp);
         return 1;
-error:
+chk_error:
         va_end(args);
         mliStr_free(&tmp);
         return 0;
@@ -74,7 +74,7 @@ int mliStr_malloc_cstr(struct mliStr *str, const char *s)
         chk(mliStr_malloc(str, strlen(s)));
         strncpy(str->cstr, s, str->length);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -203,7 +203,7 @@ int mliStr_strip(const struct mliStr *src, struct mliStr *dst)
         }
         mliStr_free(&cpysrc);
         return 1;
-error:
+chk_error:
         mliStr_free(&cpysrc);
         mliStr_free(dst);
         return 0;

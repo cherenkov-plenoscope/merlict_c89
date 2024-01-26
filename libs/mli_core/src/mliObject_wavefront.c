@@ -50,7 +50,7 @@ int mliStr_to_uint32(uint32_t *out, const struct mliStr *str)
         chk(mliStr_to_uint64(&u, str, 10));
         (*out) = (uint32_t)u;
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -327,7 +327,7 @@ int mliObject_parse_face_line(
         }
         mliStr_free(&wuff);
         return 1;
-error:
+chk_error:
         mliStr_free(&wuff);
         return 0;
 }
@@ -457,7 +457,7 @@ int mliObject_parse_three_float_line(const char *line, struct mliVec *v)
                 i++;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -490,7 +490,7 @@ int mliObject_parse_face_vertices_and_normals(
         fvn->b -= 1;
         fvn->c -= 1;
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -614,7 +614,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         mliDynMap_free(&material_names);
 
         return 1;
-error:
+chk_error:
         mliObject_free(obj);
 
         /* free dyn */
@@ -677,6 +677,6 @@ int mliObject_fprint_to_wavefront(struct mliIo *f, const struct mliObject *obj)
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }

@@ -65,7 +65,7 @@ int mliGeometry_malloc_objects(
                 geometry->object_names[i] = mliName_init();
         }
         return 1;
-error:
+chk_error:
         mliGeometry_free_objects(geometry);
         return 0;
 }
@@ -82,7 +82,7 @@ int mliGeometry_malloc_references(
                 struct mliHomTraComp,
                 geometry->num_robjects);
         return 1;
-error:
+chk_error:
         mliGeometry_free_references(geometry);
         return 0;
 }
@@ -96,7 +96,7 @@ int mliGeometry_malloc(
         chk(mliGeometry_malloc_objects(geometry, num_objects));
         chk(mliGeometry_malloc_references(geometry, num_robjects));
         return 1;
-error:
+chk_error:
         mliGeometry_free(geometry);
         return 0;
 }
@@ -212,6 +212,6 @@ int mliGeometry_warn_objects(const struct mliGeometry *geometry)
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }

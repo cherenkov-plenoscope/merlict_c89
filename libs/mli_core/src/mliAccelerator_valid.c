@@ -18,7 +18,7 @@ int mliAccelerator_valid(const struct mliAccelerator *accel)
         chk_msg(mliOcTree_valid(&accel->scenery_octree),
                 "Expected scenery_octree to be valid.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -44,6 +44,6 @@ int mliAccelerator_valid_wrt_Geometry(
                 "Expected scenery_octree to be valid w.r.t. to "
                 "geometry's num_robjects.");
         return 1;
-error:
+chk_error:
         return 0;
 }

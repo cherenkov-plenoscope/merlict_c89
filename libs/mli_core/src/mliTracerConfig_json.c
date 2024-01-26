@@ -31,6 +31,6 @@ int mliTracerConfig_from_json_token(
         chk(mliAtmosphere_from_json_token(&tc->atmosphere, json, atmtkn + 1));
 
         return 1;
-error:
+chk_error:
         return 0;
 }

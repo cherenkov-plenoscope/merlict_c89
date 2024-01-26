@@ -15,7 +15,7 @@ int mliMaterials_media_equal(
                         "Different medium-name.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In materials.media[%u].\n", i);
         return 0;
 }
@@ -35,7 +35,7 @@ int mliMaterials_surfaces_equal(
                         "Different surface-name.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In materials.surfaces[%u].\n", i);
         return 0;
 }
@@ -57,7 +57,7 @@ int mliMaterials_boundary_layers_equal(
                         "Different boundary_layer-name.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In materials.boundary_layers[%u].\n", i);
         return 0;
 }
@@ -73,6 +73,6 @@ int mliMaterials_equal(
         chk_msg(mliMaterials_boundary_layers_equal(a, b),
                 "Different boundary_layers.");
         return 1;
-error:
+chk_error:
         return 0;
 }

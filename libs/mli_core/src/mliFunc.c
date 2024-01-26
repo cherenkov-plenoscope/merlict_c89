@@ -27,7 +27,7 @@ int mliFunc_malloc(struct mliFunc *f, const uint32_t num_points)
         chk_malloc(f->x, double, f->num_points);
         chk_malloc(f->y, double, f->num_points);
         return 1;
-error:
+chk_error:
         mliFunc_free(f);
         return 0;
 }
@@ -59,7 +59,7 @@ int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
                 (*out) = mli_linear_interpolate_2d(xarg, x0, y0, x1, y1);
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -88,7 +88,7 @@ int mliFunc_fold_numeric(
                 (*fold) += (ra * rb) * step_size;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -128,6 +128,6 @@ int mliFunc_is_valid(const struct mliFunc *func)
                 "but they do not.");
 
         return 1;
-error:
+chk_error:
         return 0;
 }

@@ -112,7 +112,7 @@ int mliLeafArray_malloc(
                 leafs->object_links[i] = 0u;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -160,7 +160,7 @@ int mliOcTree_malloc(
                 tree->nodes[i] = mliNode_init();
         chk(mliLeafArray_malloc(&tree->leafs, num_leafs, num_object_links));
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -346,7 +346,7 @@ int mliOcTree_equal_payload_walk(
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -362,7 +362,7 @@ int mliOcTree_equal_payload(
                         tree, root_node_idx, root_node_type, &tmp_octree->root),
                 "Tree is not equal");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -462,7 +462,7 @@ int mliOcTree_malloc_from_object_wavefront(
         mliTmpOcTree_free(&tmp_octree);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -494,6 +494,6 @@ int mliOcTree_malloc_from_Geometry(
         mliTmpOcTree_free(&tmp_octree);
 
         return 1;
-error:
+chk_error:
         return 0;
 }

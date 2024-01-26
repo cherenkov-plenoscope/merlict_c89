@@ -31,7 +31,7 @@ int mli_photoninteraction_type_to_string(const int32_t type, char *s)
                 break;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -52,6 +52,6 @@ int mli_time_of_flight(
         (*time_of_flight) = (refractive_index * phisec->distance_of_ray) /
                             MLI_VACUUM_SPPED_OF_LIGHT;
         return 1;
-error:
+chk_error:
         return 0;
 }

@@ -20,7 +20,7 @@ int mliEventIoRun_read_273float32_block(FILE *f, float *block)
         chk_msg(block_size == 273, "Expected block-size to be 273.");
         chk_fread(block, sizeof(float), (uint64_t)block_size, f);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -50,7 +50,7 @@ int mliEventIoRun_read_input_card(
         input_card_length = length - sizeof(_unknown);
         chk_fread(input_card->cstr, sizeof(char), input_card_length, f);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -76,7 +76,7 @@ int mliEventIoRun_read_telescope_positions(
                 (uint64_t)ntel,
                 f);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -85,7 +85,7 @@ int mliEventIoRun_next_block(struct mliEventIoRun *run, const int level)
         chk_msg(mliEventIoHeader_read(&run->next_block, run->f, level),
                 "Failed to read EventIo-block-header.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -127,7 +127,7 @@ int mliEventIoRun_begin(struct mliEventIoRun *run, FILE *stream)
         chk(mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 

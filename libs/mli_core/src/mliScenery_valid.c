@@ -29,6 +29,6 @@ int mliScenery_valid(const struct mliScenery *scenery)
                         &scenery->geomap, &scenery->materials),
                 "Expected geomap to be valid w.r.t. materials.");
         return 1;
-error:
+chk_error:
         return 0;
 }

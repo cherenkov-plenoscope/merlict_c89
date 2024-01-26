@@ -58,7 +58,7 @@ int mliRenderConfig_camera_from_json(
                 "Expected "
                 "camera.image_sensor_distance >= camera.focal_length.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -72,7 +72,7 @@ int mliRenderConfig_image_from_json(
         chk_msg(cc->num_pixel_x > 0, "Expected image.num_pixel_x > 0.");
         chk_msg(cc->num_pixel_y > 0, "Expected image.num_pixel_y > 0.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -94,6 +94,6 @@ int mliRenderConfig_from_json(
         chk(mliTracerConfig_from_json_token(&cc->tracer, json, tratkn + 1));
 
         return 1;
-error:
+chk_error:
         return 0;
 }

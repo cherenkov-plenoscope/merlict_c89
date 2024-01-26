@@ -15,7 +15,7 @@ int mliScenery_malloc_fread_tar(struct mliScenery *scenery, FILE *f)
                 "Can't malloc Scenery from Archive.");
         mliArchive_free(&archive);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -29,7 +29,7 @@ int mliScenery_malloc_from_path_tar(
                         "Can't fread Scenery from file.");
         fclose(f);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -99,6 +99,6 @@ int mliScenery_malloc_from_Archive(
                 "Failed to warn about objects.");
 
         return 1;
-error:
+chk_error:
         return 0;
 }

@@ -121,6 +121,6 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         chk_msg(mliScenery_valid(scenery), "Expected scenery to be valid.");
         return 1;
-error:
+chk_error:
         return 0;
 }

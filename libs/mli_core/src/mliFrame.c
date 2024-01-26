@@ -51,7 +51,7 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type)
                         "Failed to malloc frame's boundary_layers.");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -66,7 +66,7 @@ int mliFrame_set_mother_and_child(
 
         child->mother = (struct mliFrame *)mother;
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -78,7 +78,7 @@ struct mliFrame *mliFrame_add(struct mliFrame *mother, const uint64_t type)
         chk_msg(mliFrame_set_mother_and_child(mother, child),
                 "Can not allocate child-pointer.");
         return child;
-error:
+chk_error:
         return NULL;
 }
 
@@ -96,7 +96,7 @@ int mli_type_to_string(const uint64_t type, char *s)
                 break;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -110,7 +110,7 @@ int mli_string_to_type(const char *s, uint64_t *type)
                 chk_bad("Type is unknown.");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 

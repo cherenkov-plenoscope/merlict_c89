@@ -158,7 +158,7 @@ int mli_fprint_line_match(
                 chk(fprintf(f, "  |  "));
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -200,7 +200,7 @@ int mli_cstr_lines_fprint(
         chk(putc('\n', f));
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 

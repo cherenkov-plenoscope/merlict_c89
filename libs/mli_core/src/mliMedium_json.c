@@ -11,7 +11,7 @@ int mliMedium_malloc_from_json_str(struct mliMedium *med, const char *json_str)
                 "Failed to malloc medium from json.");
         mliJson_free(&json);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -35,6 +35,6 @@ int mliMedium_malloc_from_json_token(
                         &med->absorbtion, json, absorbtion_token + 1),
                 "Failed to read medium's absorbtion from json.");
         return 1;
-error:
+chk_error:
         return 0;
 }

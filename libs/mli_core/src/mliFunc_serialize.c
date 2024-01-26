@@ -13,7 +13,7 @@ int mliFunc_fwrite(const struct mliFunc *func, FILE *f)
         chk_fwrite(func->x, sizeof(double), func->num_points, f);
         chk_fwrite(func->y, sizeof(double), func->num_points, f);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -31,7 +31,7 @@ int mliFunc_malloc_fread(struct mliFunc *func, FILE *f)
         chk_fread(func->y, sizeof(double), func->num_points, f);
         chk_msg(mliFunc_is_valid(func), "Expected function to be valid.");
         return 1;
-error:
+chk_error:
         mliFunc_free(func);
         return 0;
 }

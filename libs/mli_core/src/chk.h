@@ -34,7 +34,7 @@ int chk_eprintf(const char *format, ...);
         if (!(C)) {                                                            \
                 chk_eprint_line(MSG);                                          \
                 errno = 0;                                                     \
-                goto error;                                                    \
+                goto chk_error;                                                \
         }
 
 #define chk_msgf(C, MSGFMT)                                                    \
@@ -43,14 +43,14 @@ int chk_eprintf(const char *format, ...);
                 chk_eprintf MSGFMT;                                            \
                 chk_eprintf("\n");                                             \
                 errno = 0;                                                     \
-                goto error;                                                    \
+                goto chk_error;                                                \
         }
 
 #define chk_bad(MSG)                                                           \
         {                                                                      \
                 chk_eprint_line(MSG);                                          \
                 errno = 0;                                                     \
-                goto error;                                                    \
+                goto chk_error;                                                \
         }
 
 #define chk(C) chk_msg(C, "Not expected.")

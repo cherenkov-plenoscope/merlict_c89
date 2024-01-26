@@ -23,7 +23,7 @@ int mliDynPhotonInteraction_time_of_flight(
                 (*total_time_of_flight) += time_of_flight;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 

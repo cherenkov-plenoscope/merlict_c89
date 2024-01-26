@@ -40,7 +40,7 @@ int mliOcTree_valid(const struct mliOcTree *octree)
                 }
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -54,6 +54,6 @@ int mliOcTree_valid_wrt_links(
                         "Expected object_links[n] <  num_links.");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }

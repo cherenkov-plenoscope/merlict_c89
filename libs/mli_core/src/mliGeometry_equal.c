@@ -17,7 +17,7 @@ int mliGeometry_objects_equal(
                         "Expected object_name to be equal.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In geometry.object[%u]\n", i);
         return 0;
 }
@@ -45,7 +45,7 @@ int mliGeometry_object_references_equal(
                         "object-references to be equal");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In geometry.object_reference[%lu]\n", rob);
         return 0;
 }
@@ -57,6 +57,6 @@ int mliGeometry_equal(const struct mliGeometry *a, const struct mliGeometry *b)
         chk_msg(mliGeometry_object_references_equal(a, b),
                 "Expected object-references to be equal.");
         return 1;
-error:
+chk_error:
         return 0;
 }

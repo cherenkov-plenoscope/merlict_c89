@@ -41,7 +41,7 @@ int mliImage_malloc_fread(struct mliImage *img, FILE *f)
                 }
         }
         return 1;
-error:
+chk_error:
         mliImage_free(img);
         return 0;
 }
@@ -56,7 +56,7 @@ int mliImage_malloc_from_path(struct mliImage *img, const char *path)
         chk_msg(!ferror(f), "File error.");
         fclose(f);
         return 1;
-error:
+chk_error:
         mliImage_free(img);
         fclose(f);
         return 0;
@@ -91,7 +91,7 @@ int mliImage_fwrite(const struct mliImage *img, FILE *f)
                 }
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -105,7 +105,7 @@ int mliImage_write_to_path(const struct mliImage *img, const char *path)
         chk_msg(!ferror(f), "File error.");
         fclose(f);
         return 1;
-error:
+chk_error:
         fclose(f);
         return 0;
 }

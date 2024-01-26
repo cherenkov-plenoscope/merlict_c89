@@ -31,7 +31,7 @@ int mliEventTapeWriter_finalize(struct mliEventTapeWriter *tio)
         mliDynFloat_free(&tio->buffer);
         (*tio) = mliEventTapeWriter_init();
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -46,7 +46,7 @@ int mliEventTapeWriter_begin(
         chk_msg(mliDynFloat_malloc(&tio->buffer, 8 * num_bunches_buffer),
                 "Can't malloc cherenkov-bunch-buffer.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -70,7 +70,7 @@ int mliEventTapeWriter_write_corsika_header(
                 fflush(tio->tar.stream);
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -85,7 +85,7 @@ int mliEventTapeWriter_write_runh(
         chk_msg(mliEventTapeWriter_write_corsika_header(tio, path, runh),
                 "Can't write 'RUNH.float32' to event-tape.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -116,7 +116,7 @@ int mliEventTapeWriter_write_evth(
         chk_msg(mliEventTapeWriter_write_corsika_header(tio, path, evth),
                 "Can't write 'EVTH.float32' to event-tape.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -146,7 +146,7 @@ int mliEventTapeWriter_flush_cherenkov_bunch_block(
         tio->buffer.size = 0;
         tio->cherenkov_bunch_block_number += 1;
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -164,7 +164,7 @@ int mliEventTapeWriter_write_cherenkov_bunch(
                 tio->buffer.size += 1;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -193,7 +193,7 @@ int mliEventTapeReader_finalize(struct mliEventTapeReader *tio)
         }
         (*tio) = mliEventTapeReader_init();
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -204,7 +204,7 @@ int mliEventTapeReader_begin(struct mliEventTapeReader *tio, FILE *stream)
         chk_msg(mliTar_read_begin(&tio->tar, stream), "Can't begin tar.");
         tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -233,7 +233,7 @@ int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh)
                 "to match run_number in RUNH.");
         tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -295,7 +295,7 @@ int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth)
         tio->has_still_bunches_in_event = 1;
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -345,7 +345,7 @@ int mliEventTapeReader_tarh_is_valid_cherenkov_block(
                 "Expected different cherenkov-bunch-block-number in "
                 "cherenkov-block-path.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -384,6 +384,6 @@ int mliEventTapeReader_read_cherenkov_bunch(
 
         tio->block_at += 1;
         return 1;
-error:
+chk_error:
         return 0;
 }

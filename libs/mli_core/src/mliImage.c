@@ -29,7 +29,7 @@ int mliImage_malloc(
         img->num_rows = num_rows;
         chk_malloc(img->raw, struct mliColor, img->num_cols * img->num_rows);
         return 1;
-error:
+chk_error:
         mliImage_free(img);
         return 0;
 }
@@ -96,7 +96,7 @@ int mliImage_scale_down_twice(
                 }
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 

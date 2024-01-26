@@ -95,7 +95,7 @@ int mli_propagate_photon_phong(
                                 MLI_PHOTON_ABSORBTION, env->scenery, isec)));
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -113,7 +113,7 @@ int mli_propagate_photon_pass_boundary_layer(
         chk_msg(mli_propagate_photon_env(env),
                 "Failed to continue after passing boundary layer");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -135,7 +135,7 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
                 "evaluate absorbtion in medium coming from");
         (*probability_passing) = exp(-isec->distance_of_ray / one_over_e_way);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -187,7 +187,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
                         "Failed to pass boundary");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -215,7 +215,7 @@ int mli_propagate_photon_interact_with_object(
                 break;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -234,7 +234,7 @@ int mli_propagate_photon_distance_until_absorbtion(
         (*distance_until_absorbtion) =
                 mli_random_expovariate(prng, 1. / one_over_e_way);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -355,7 +355,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -366,7 +366,7 @@ int mli_propagate_photon_env(struct mliEnv *env)
                         "Failed to work on intersection.");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -385,6 +385,6 @@ int mli_propagate_photon(
         env.max_interactions = max_interactions;
         chk(mli_propagate_photon_env(&env));
         return 1;
-error:
+chk_error:
         return 0;
 }

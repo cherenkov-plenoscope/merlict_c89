@@ -30,7 +30,7 @@ int mliSurface_malloc(
         chk(mliFunc_malloc(
                 &surface->diffuse_reflection, num_points_diffuse_reflection));
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -60,7 +60,7 @@ int mli_material_type_to_string(const uint32_t type, char *s)
                 chk_bad("material-type-id is unknown.");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -76,7 +76,7 @@ int mli_material_type_from_string(const char *s, uint32_t *id)
                 chk_bad("material-type-string is unknown.");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -93,7 +93,7 @@ int mliSurface_fwrite(const struct mliSurface *srf, FILE *f)
         chk_fwrite(&srf->color, sizeof(struct mliColor), 1u, f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -112,6 +112,6 @@ int mliSurface_malloc_fread(struct mliSurface *srf, FILE *f)
         chk_fread(&srf->color, sizeof(struct mliColor), 1u, f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }

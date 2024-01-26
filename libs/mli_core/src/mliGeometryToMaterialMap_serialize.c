@@ -33,7 +33,7 @@ int mliGeometryToMaterialMap_malloc_fread(
                 geomap->num_robjects,
                 f);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -61,6 +61,6 @@ int mliGeometryToMaterialMap_fwrite(
                 geomap->num_robjects,
                 f);
         return 1;
-error:
+chk_error:
         return 0;
 }

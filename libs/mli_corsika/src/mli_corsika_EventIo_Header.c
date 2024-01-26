@@ -139,7 +139,7 @@ int mliEventIoHeader_read(struct mliEventIoHeader *header, FILE *f, int level)
         }
 
         return length_read;
-error:
+chk_error:
         return 0;
 }
 

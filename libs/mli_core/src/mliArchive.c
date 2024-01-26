@@ -33,7 +33,7 @@ int mliArchive_malloc(struct mliArchive *arc)
         chk(mliDynTextFiles_malloc(&arc->textfiles, 0u));
         chk(mliDynMap_malloc(&arc->filenames, 0u));
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -59,7 +59,7 @@ int mliArchive_push_back(
         chk_msg(mliStr_malloc_copy(&arc->textfiles.array[next], payload),
                 "Can not copy payload.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -99,7 +99,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
         mliStr_free(&payload);
         mliStr_free(&filename);
         return 1;
-error:
+chk_error:
         fprintf(stderr, "tar->filename: '%s'.\n", tarh_name);
         mliStr_free(&payload);
         mliStr_free(&filename);
@@ -115,7 +115,7 @@ int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path)
                         "Can't fread Archive from file.");
         fclose(f);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -133,7 +133,7 @@ int mliArchive_get(
         chk(mliDynMap_find(&arc->filenames, filename, &idx));
         (*str) = &arc->textfiles.array[idx];
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -151,7 +151,7 @@ int mliArchive_get_malloc_json(
                 "Can not parse requested json.");
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 

@@ -10,7 +10,7 @@ int mliObject_is_valid(const struct mliObject *obj)
                 "Bad vertex-normal.");
         chk_msg(mliObject_has_valid_materials(obj), "Bad material.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -42,7 +42,7 @@ int mliObject_has_valid_faces(const struct mliObject *obj)
                         "num_materials");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In obj.faces[%u]\n", i);
         return 0;
 }
@@ -56,7 +56,7 @@ int mliObject_has_valid_vertices(const struct mliObject *obj)
                 chk_msg(!MLI_IS_NAN(obj->vertices[i].z), "Z is 'nan'.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In obj.vertices[%u]\n", i);
         return 0;
 }
@@ -77,7 +77,7 @@ int mliObject_has_valid_normals(
                         "Expected vertex_normals to be normalized.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In obj.vertex_normals[%u]\n", i);
         return 0;
 }
@@ -92,7 +92,7 @@ int mliObject_has_valid_materials(const struct mliObject *obj)
                         "Expected strlen(material_name) > 0.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In obj.materials[%u]\n", i);
         return 0;
 }
@@ -155,6 +155,6 @@ int mliObject_num_unused(
         free(vn);
         free(mtl);
         return 1;
-error:
+chk_error:
         return 0;
 }

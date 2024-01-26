@@ -30,7 +30,7 @@ int mliMagicId_set(struct mliMagicId *magic, const char *word)
                 i += 1;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -54,7 +54,7 @@ int mliMagicId_has_word(const struct mliMagicId *magic, const char *word)
                 i += 1;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 

@@ -50,7 +50,7 @@
                 dh->size = 0;                                                  \
                 chk_malloc(dh->array, PAYLOAD_TYPE, dh->capacity);             \
                 return 1;                                                      \
-        error:                                                                 \
+        chk_error:                                                             \
                 return 0;                                                      \
         }                                                                      \
                                                                                \
@@ -60,7 +60,7 @@
                 chk(LIB##Dyn##NAME##_malloc(dh, size));                        \
                 dh->size = size;                                               \
                 return 1;                                                      \
-        error:                                                                 \
+        chk_error:                                                             \
                 return 0;                                                      \
         }                                                                      \
                                                                                \
@@ -79,7 +79,7 @@
                 dh->size += 1;                                                 \
                                                                                \
                 return 1;                                                      \
-        error:                                                                 \
+        chk_error:                                                             \
                 return 0;                                                      \
         }
 

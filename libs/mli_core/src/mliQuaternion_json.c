@@ -18,7 +18,7 @@ int mliQuaternion_tait_bryan_from_json(
                 mli_deg2rad(xyz_deg.y),
                 mli_deg2rad(xyz_deg.z));
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -41,7 +41,7 @@ int mliQuaternion_axis_angle_from_json(
         *quat = mliQuaternion_set_rotaxis_and_angle(
                 axis, mli_deg2rad(angle_deg));
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -60,7 +60,7 @@ int mliQuaternion_quaternion_from_json(
         chk_msg(fabs(mliQuaternion_norm(*quat) - 1.) < 1e-6,
                 "Expected norm(quaternion) < 1e-6. Expected unit-quaternion.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -88,6 +88,6 @@ int mliQuaternion_from_json(
                 chk_bad("Unknown representation 'repr' in rotation.");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }

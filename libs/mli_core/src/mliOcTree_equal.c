@@ -43,6 +43,6 @@ int mliOcTree_equal(const struct mliOcTree *a, const struct mliOcTree *b)
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }

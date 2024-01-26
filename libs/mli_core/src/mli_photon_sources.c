@@ -20,7 +20,7 @@ int mli_photon_source_parallel_towards_z_from_xy_disc(
                 chk(mliDynPhoton_push_back(out_photons, ph));
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -48,6 +48,6 @@ int mli_photon_source_point_like_opening_cone_towards_z(
                 chk(mliDynPhoton_push_back(out_photons, ph));
         }
         return 1;
-error:
+chk_error:
         return 0;
 }

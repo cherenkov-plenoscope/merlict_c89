@@ -13,7 +13,7 @@ int mliMedium_fwrite(const struct mliMedium *med, FILE *f)
         chk(mliFunc_fwrite(&med->absorbtion, f));
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -29,6 +29,6 @@ int mliMedium_malloc_fread(struct mliMedium *med, FILE *f)
         chk(mliFunc_malloc_fread(&med->absorbtion, f));
 
         return 1;
-error:
+chk_error:
         return 0;
 }

@@ -24,7 +24,7 @@ int mliNameMap_malloc(struct mliNameMap *namemap)
         chk_mem(mliDynMap_malloc(&namemap->surfaces, 0u));
         chk_mem(mliDynMap_malloc(&namemap->boundary_layers, 0u));
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -75,7 +75,7 @@ int mli_set_geometry_objects_and_names_from_archive(
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -220,7 +220,7 @@ int mliMaterials_malloc_form_archive(
                 "Failed to assign the 'default_medium'.");
 
         return 1;
-error:
+chk_error:
         mliJson_free(&boundary_layers_json);
         mliMaterials_free(materials);
         mliNameMap_free(names);
@@ -256,7 +256,7 @@ int mli_check_malloc_root_frame_from_Archive(
         mliFrame_set_frame2root(root);
 
         return 1;
-error:
+chk_error:
         mliJson_free(&tree_json);
         return 0;
 }

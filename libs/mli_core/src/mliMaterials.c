@@ -88,7 +88,7 @@ int mliMaterials_malloc(
         }
 
         return 1;
-error:
+chk_error:
         mliMaterials_free(res);
         return 0;
 }

@@ -27,7 +27,7 @@ int mliFrame_type_from_json_token(
         }
 
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
@@ -47,7 +47,7 @@ int mliFrame_id_from_json_token(
         (*id) = _id;
 
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
@@ -72,7 +72,7 @@ int mliFrame_pos_rot_from_json_token(
                         &frame2mother->rotation, json, token_rot + 1),
                 "Failed to parse Frame's 'rot' from json.");
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
@@ -123,7 +123,7 @@ int mliFrame_boundary_layers_form_json_token(
         }
 
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
@@ -144,7 +144,7 @@ int mliFrame_object_reference_form_json_token(
                         object_reference),
                 "Failed to get object-reference 'obj' from map");
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
@@ -226,6 +226,6 @@ int mliFrame_from_json(
                 }
         }
         return 1;
-error:
+chk_error:
         return 0;
 }

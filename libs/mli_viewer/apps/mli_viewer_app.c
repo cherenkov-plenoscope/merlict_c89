@@ -58,6 +58,6 @@ int main(int argc, char *argv[])
 
         mliScenery_free(&scenery);
         return EXIT_SUCCESS;
-error:
+chk_error:
         return EXIT_FAILURE;
 }

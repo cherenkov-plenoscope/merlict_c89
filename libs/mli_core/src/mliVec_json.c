@@ -18,6 +18,6 @@ int mliVec_from_json_token(
         chk_msg(mliJson_double_by_token(json, token + 3, &v->z),
                 "Can not parse mliVec z-value.");
         return 1;
-error:
+chk_error:
         return 0;
 }

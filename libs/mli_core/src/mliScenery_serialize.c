@@ -15,7 +15,7 @@ int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
         chk(mliMaterials_fwrite(&scenery->materials, f));
         chk(mliGeometryToMaterialMap_fwrite(&scenery->geomap, f));
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -34,7 +34,7 @@ int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
         chk(mliMaterials_malloc_fread(&scenery->materials, f));
         chk(mliGeometryToMaterialMap_malloc_fread(&scenery->geomap, f));
         return 1;
-error:
+chk_error:
         mliScenery_free(scenery);
         return 0;
 }
@@ -47,7 +47,7 @@ int mliScenery_malloc_from_path(struct mliScenery *scenery, const char *path)
         chk_msg(mliScenery_malloc_fread(scenery, f), "Can not read file.");
         fclose(f);
         return 1;
-error:
+chk_error:
         if (f != NULL) {
                 fclose(f);
         }
@@ -63,7 +63,7 @@ int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
         chk_msg(mliScenery_fwrite(scenery, f), "Failed to write to file.");
         fclose(f);
         return 1;
-error:
+chk_error:
         if (f != NULL) {
                 fclose(f);
         }

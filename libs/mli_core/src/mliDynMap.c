@@ -36,7 +36,7 @@ int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value)
         item.value = value;
         chk_msg(mliDynMap_push_back(map, item), "Failed to mmaloc item.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -46,6 +46,6 @@ int mliDynMap_get(const struct mliDynMap *map, const char *key, uint64_t *value)
         chk_msg(mliDynMap_find(map, key, &idx), "Key does not exist.");
         (*value) = map->array[idx].value;
         return 1;
-error:
+chk_error:
         return 0;
 }

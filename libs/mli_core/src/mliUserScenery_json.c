@@ -47,7 +47,7 @@ int mliMaterials_assign_boundary_layers_from_json(
         }
 
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
@@ -76,7 +76,7 @@ int mliSide_from_json(
                 "Failed to get surface-idx from map");
 
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, side_token + 1);
         return 0;
 }
@@ -111,7 +111,7 @@ int mliBoundaryLayer_from_json(
                         token_outer_side),
                 "Failed to parse outer side.");
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token_surface);
         return 0;
 }

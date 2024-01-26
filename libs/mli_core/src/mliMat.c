@@ -492,7 +492,7 @@ int mliMat_find_eigenvector_for_eigenvalue(
         (*eigen_vector) = mliVec_normalized(*eigen_vector);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 

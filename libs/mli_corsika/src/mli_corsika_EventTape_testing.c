@@ -197,6 +197,6 @@ int mliEventTape_testing_write_and_read(
         chk_msg(mliEventTapeReader_finalize(&tari), "Can't finalize reader.");
         fclose(istream);
         return 1;
-error:
+chk_error:
         return 0;
 }

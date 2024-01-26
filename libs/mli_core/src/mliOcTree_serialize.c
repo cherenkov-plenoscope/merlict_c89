@@ -42,7 +42,7 @@ int mliOcTree_fwrite(const struct mliOcTree *octree, FILE *f)
         chk_fwrite(&octree->root_type, sizeof(uint8_t), 1u, f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -89,7 +89,7 @@ int mliOcTree_malloc_fread(struct mliOcTree *octree, FILE *f)
         chk_fread(&octree->root_type, sizeof(uint8_t), 1u, f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -103,7 +103,7 @@ int mliOcTree_write_to_path(const struct mliOcTree *octree, const char *path)
 
         fclose(f);
         return 1;
-error:
+chk_error:
         if (f != NULL) {
                 fclose(f);
         }
@@ -121,7 +121,7 @@ int mliOcTree_malloc_from_path(struct mliOcTree *octree, const char *path)
 
         fclose(f);
         return 1;
-error:
+chk_error:
         if (f != NULL) {
                 fclose(f);
         }

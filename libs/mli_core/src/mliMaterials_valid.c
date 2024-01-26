@@ -13,7 +13,7 @@ int mliMaterials_valid_media(const struct mliMaterials *materials)
                         "Expected refraction of medium to be valid.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In materials.media[%u]\n", i);
         return 0;
 }
@@ -38,7 +38,7 @@ int mliMaterials_valid_surfaces(const struct mliMaterials *materials)
                         "Expected 0.0 <= color < 256.0.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In materials.surface[%u]\n", i);
         return 0;
 }
@@ -64,7 +64,7 @@ int mliMaterials_valid_boundary_layers(const struct mliMaterials *materials)
                         "Name is invalid.");
         }
         return 1;
-error:
+chk_error:
         fprintf(stderr, "In materials.boundary_layers[%u]\n", i);
         return 0;
 }
@@ -80,6 +80,6 @@ int mliMaterials_valid(const struct mliMaterials *materials)
         chk_msg(mliMaterials_valid_boundary_layers(materials),
                 "Expected boundary_layers to be valid.");
         return 1;
-error:
+chk_error:
         return 0;
 }

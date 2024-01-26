@@ -61,7 +61,7 @@ int mliEventIo_read_telescope_offsets(
         mliDynFloat_free(&weight);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -128,7 +128,7 @@ int mliEventIo_read_photon_bunches(
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -243,6 +243,6 @@ int mliEventIoEvent_malloc_from_run(
         chk(mliEventIoRun_next_block(run, MLI_EVENTIO_TOP_LEVEL));
 
         return 1;
-error:
+chk_error:
         return 0;
 }

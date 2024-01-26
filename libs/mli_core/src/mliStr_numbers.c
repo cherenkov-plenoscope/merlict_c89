@@ -27,7 +27,7 @@ int mliStr_nto_double(
                 "double has not the expected number of chars.");
         *out = l;
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -36,7 +36,7 @@ int mliStr_to_double(double *out, const struct mliStr *str)
         chk_msg(mliStr_nto_double(out, str, str->length),
                 "Can not convert mliStr to double.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -62,7 +62,7 @@ int mliStr_nto_int64(
                 "Integer has not the expected number of chars.");
         *out = l;
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -71,7 +71,7 @@ int mliStr_to_int64(int64_t *out, const struct mliStr *str, const uint64_t base)
         chk_msg(mliStr_nto_int64(out, str, base, str->length),
                 "Can not convert string to int64.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -86,7 +86,7 @@ int mliStr_nto_uint64(
         chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -100,7 +100,7 @@ int mliStr_to_uint64(
         chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -148,7 +148,7 @@ int mliStr_reverse_print_uint64(
         chk(mliStr_malloc(str, digs));
         strncpy(str->cstr, tmp, digs);
         return 1;
-error:
+chk_error:
         mliStr_free(str);
         return 0;
 }
@@ -193,7 +193,7 @@ int mliStr_print_uint64(
 
         mliStr_free(&tmp);
         return 1;
-error:
+chk_error:
         mliStr_free(&tmp);
         return 0;
 }

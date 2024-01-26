@@ -28,7 +28,7 @@ int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f)
         mliOcTree_fwrite(&accel->scenery_octree, f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -65,6 +65,6 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f)
         chk_mem(mliOcTree_malloc_fread(&accel->scenery_octree, f));
 
         return 1;
-error:
+chk_error:
         return 0;
 }

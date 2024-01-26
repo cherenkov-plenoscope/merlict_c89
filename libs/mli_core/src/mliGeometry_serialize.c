@@ -50,7 +50,7 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
                 f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -94,6 +94,6 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
                 f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }

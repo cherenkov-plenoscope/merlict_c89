@@ -13,7 +13,7 @@ int mliSurface_malloc_from_json_str(
                 "Failed to malloc surface from json.");
         mliJson_free(&json);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -33,7 +33,7 @@ int mli_material_type_from_json_token(
         chk_msg(mli_material_type_from_string(buff, material),
                 "Failed to parse material type from json-string.");
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token + 1);
         return 0;
 }
@@ -85,6 +85,6 @@ int mliSurface_malloc_from_json_token(
                 "Failed to read surface's color from json.");
 
         return 1;
-error:
+chk_error:
         return 0;
 }

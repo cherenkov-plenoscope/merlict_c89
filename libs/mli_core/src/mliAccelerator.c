@@ -56,7 +56,7 @@ int mliAccelerator_malloc(
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -75,7 +75,7 @@ int mliAccelerator_set_robject_aabbs(
                         mliHomTra_from_compact(geometry->robject2root[rob]));
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -95,7 +95,7 @@ int mliAccelerator_set_object_octrees(
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -126,7 +126,7 @@ int mliAccelerator_malloc_from_Geometry(
                 "Failed to set up octree across all robjects in geometry.");
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 

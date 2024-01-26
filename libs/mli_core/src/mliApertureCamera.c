@@ -358,7 +358,7 @@ int mliApertureCamera_render_image(
         mliImage_free(&colors);
         mliPixels_free(&pixels_to_do);
         return 1;
-error:
+chk_error:
         mliImage_free(&sum_image);
         mliImage_free(&exposure_image);
         mliImage_free(&to_do_image);

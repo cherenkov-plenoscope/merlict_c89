@@ -23,7 +23,7 @@ int mliPixels_malloc(struct mliPixels *pix, const uint32_t num_pixels)
         pix->num_pixels = num_pixels;
         chk_malloc(pix->pixels, struct mliPixel, pix->num_pixels);
         return 1;
-error:
+chk_error:
         mliPixels_free(pix);
         return 0;
 }

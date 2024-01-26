@@ -17,6 +17,6 @@ int mliScenery_equal(const struct mliScenery *a, const struct mliScenery *b)
         chk_msg(mliGeometryToMaterialMap_equal(&a->geomap, &b->geomap),
                 "Expected geomap to be valid.");
         return 1;
-error:
+chk_error:
         return 0;
 }

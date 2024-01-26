@@ -27,7 +27,7 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
                 break;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -43,7 +43,7 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
                 "Failed to walk tree of frames to estimate "
                 "num_robjects and total_num_boundary_layers.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -104,7 +104,7 @@ int mliFrame_set_robjects_and_material_map_walk(
                 break;
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -124,6 +124,6 @@ int mliFrame_set_robjects_and_material_map(
                 "Failed to walk tree of frames to set "
                 "robjects and material map.");
         return 1;
-error:
+chk_error:
         return 0;
 }

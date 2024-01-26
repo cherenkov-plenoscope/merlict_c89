@@ -28,7 +28,7 @@ int mliIo_malloc_capacity(struct mliIo *byt, const uint64_t capacity)
         chk_malloc(byt->cstr, unsigned char, byt->capacity);
         memset(byt->cstr, '\0', byt->capacity);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -36,7 +36,7 @@ int mliIo_malloc(struct mliIo *byt)
 {
         chk(mliIo_malloc_capacity(byt, 0u));
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -64,7 +64,7 @@ int mliIo_putc(struct mliIo *byt, const unsigned char c)
         byt->pos += 1;
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -98,7 +98,7 @@ int64_t mliIo_write(
                 chk_msg(mliIo_putc(byt, block[i]), "Failed to put byte");
         }
         return (i + 1u) / size;
-error:
+chk_error:
         return -1;
 }
 
@@ -150,7 +150,7 @@ int64_t mliIo_printf(struct mliIo *byt, const char *format, ...)
         }
         va_end(args);
         return (int64_t)i;
-error:
+chk_error:
         va_end(args);
         return -1;
 }
@@ -181,7 +181,7 @@ int mliStr_convert_line_break_CRLF_CR_to_LF(
 
         mliIo_free(&sdst);
         return 1;
-error:
+chk_error:
         mliIo_free(&sdst);
         mliStr_free(dst);
         return 0;
@@ -200,7 +200,7 @@ int mliIo_malloc_from_path(struct mliIo *byt, const char *path)
         }
         fclose(f);
         return 1;
-error:
+chk_error:
         if (f != NULL)
                 fclose(f);
         mliIo_free(byt);
@@ -218,7 +218,7 @@ int mliIo_read_to_path(struct mliIo *byt, const char *path)
         }
         fclose(f);
         return 1;
-error:
+chk_error:
         fclose(f);
         return 0;
 }
@@ -231,7 +231,7 @@ int64_t mliIo_malloc_cstr(struct mliIo *byt, const char *s)
                 chk_msg(mliIo_putchar(byt, s[i]), "Failed to push back char");
         }
         return i;
-error:
+chk_error:
         return 0;
 }
 
@@ -260,7 +260,7 @@ int mli_readline(
 
         mliIo_free(&buf);
         return 1;
-error:
+chk_error:
         mliIo_free(&buf);
         return 0;
 }
@@ -288,7 +288,7 @@ int mli_path_strip_this_dir(const struct mliStr *src, struct mliStr *dst)
         strcpy(dst->cstr, &cpysrc.cstr[i]);
         mliStr_free(&cpysrc);
         return 1;
-error:
+chk_error:
         mliStr_free(&cpysrc);
         mliStr_free(dst);
         return 0;
@@ -308,7 +308,7 @@ int mli_path_basename(const struct mliStr *src, struct mliStr *dst)
                 chk(mliStr_mallocf(dst, &src->cstr[pos_last_del + 1]));
         }
         return 1;
-error:
+chk_error:
         mliStr_free(dst);
         return 0;
 }
@@ -343,7 +343,7 @@ int mli_path_splitext(
 
         mliStr_free(&tmp);
         return 1;
-error:
+chk_error:
         mliStr_free(&tmp);
         mliStr_free(dst);
         mliStr_free(ext);
@@ -362,7 +362,7 @@ int mli_line_viewer_write_line_match(
                 chk(mliIo_printf(f, "  |  "));
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -406,6 +406,6 @@ int mli_line_viewer_write(
         chk(mliIo_putchar(f, '\n'));
 
         return 1;
-error:
+chk_error:
         return 0;
 }

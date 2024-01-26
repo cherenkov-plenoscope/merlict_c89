@@ -44,7 +44,7 @@ int mliTmpNode_malloc(struct mliTmpNode *n, const uint32_t num_objects)
         n->num_objects = num_objects;
         chk_malloc(n->objects, uint32_t, n->num_objects);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -136,7 +136,7 @@ int mliTmpNode_add_children(
         }
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -169,7 +169,7 @@ int mliTmpNode_malloc_tree_from_bundle(
                 start_depth,
                 max_depth);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -373,7 +373,7 @@ int mliTmpOcTree_malloc_from_bundle(
                         octree->cube),
                 "Failed to allocate dynamic octree from bundle.");
         return 1;
-error:
+chk_error:
         return 0;
 }
 

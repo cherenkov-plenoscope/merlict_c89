@@ -15,6 +15,6 @@ int mliColor_from_json_token(
         c->g = v.y;
         c->b = v.z;
         return 1;
-error:
+chk_error:
         return 0;
 }

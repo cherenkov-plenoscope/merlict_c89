@@ -47,7 +47,7 @@ int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
         chk_fwrite(&res->default_medium, sizeof(uint64_t), 1, f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -102,6 +102,6 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
         chk_fread(&res->default_medium, sizeof(uint64_t), 1, f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }

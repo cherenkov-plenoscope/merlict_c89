@@ -37,7 +37,7 @@ int mliObject_fwrite(const struct mliObject *obj, FILE *f)
                 f);
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -88,7 +88,7 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
         chk_msg(mliObject_has_valid_faces(obj),
                 "A face refers to a not existing vertex/vertex_normal.");
         return 1;
-error:
+chk_error:
         mliObject_free(obj);
         return 0;
 }

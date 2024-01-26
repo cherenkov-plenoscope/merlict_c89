@@ -21,7 +21,7 @@
                 chk(dh->size == 0u);                                           \
                 chk(dh->array == NULL);                                        \
                 return 1;                                                      \
-        error:                                                                 \
+        chk_error:                                                             \
                 return 0;                                                      \
         }                                                                      \
                                                                                \
@@ -36,7 +36,7 @@
                 }                                                              \
                 chk(dh->array != NULL);                                        \
                 return 1;                                                      \
-        error:                                                                 \
+        chk_error:                                                             \
                 return 0;                                                      \
         }                                                                      \
                                                                                \

@@ -23,6 +23,6 @@ int mliGeometryToMaterialMap_equal(
                         "to be equal.");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }

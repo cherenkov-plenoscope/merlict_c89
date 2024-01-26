@@ -65,7 +65,7 @@ int mliObject_malloc(
                 obj->material_names[i] = mliName_init();
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -95,7 +95,7 @@ int mliObject_equal(const struct mliObject *a, const struct mliObject *b)
                         &a->material_names[i], &b->material_names[i]));
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 

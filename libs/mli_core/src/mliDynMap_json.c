@@ -19,7 +19,7 @@ int mliDynMap_insert_key_from_json(
         chk_msg(mliDynMap_insert(map, buff, value),
                 "Failed to insert name and value into map.");
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }
@@ -44,7 +44,7 @@ int mliDynMap_get_value_for_string_from_json(
         (*out_value) = (uint32_t)value;
 
         return 1;
-error:
+chk_error:
         mliJson_debug_token_fprint(stderr, json, token);
         return 0;
 }

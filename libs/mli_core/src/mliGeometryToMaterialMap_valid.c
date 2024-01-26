@@ -17,7 +17,7 @@ int mliGeometryToMaterialMap_valid(
                         "total_num_boundary_layers");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -43,7 +43,7 @@ int mliGeometryToMaterialMap_valid_wrt_Geometry(
                 "Expected total_num_boundary_layers to match the Geometry.");
 
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -59,6 +59,6 @@ int mliGeometryToMaterialMap_valid_wrt_Materials(
                         "a valid boundary_layer in Materials.");
         }
         return 1;
-error:
+chk_error:
         return 0;
 }

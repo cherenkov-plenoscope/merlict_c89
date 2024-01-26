@@ -152,7 +152,7 @@ int mlivr_export_image(
         chk_msg(mliImage_write_to_path(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
-error:
+chk_error:
         return 0;
 }
 
@@ -490,7 +490,7 @@ int mlivr_run_interactive_viewer(
         mliImage_free(&img);
         mliImage_free(&img2);
         return 1;
-error:
+chk_error:
         mliImage_free(&img);
         mliImage_free(&img2);
         return 0;

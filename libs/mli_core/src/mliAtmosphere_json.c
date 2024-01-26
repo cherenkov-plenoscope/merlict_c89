@@ -64,6 +64,6 @@ int mliAtmosphere_from_json_token(
         chk_msg(atm->altitude > 0, "Expected atmosphere->altitude > 0.");
 
         return 1;
-error:
+chk_error:
         return 0;
 }
