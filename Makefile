@@ -7,9 +7,9 @@ TARGET      := viewer
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := libs
 INCDIR      := $(SRCDIR)
-BUILDDIR    := obj
-TARGETDIR   := bin
-#RESDIR      := res
+BUILDDIR    := build/obj
+TARGETDIR   := build/bin
+RESDIR      := res
 SRCEXT      := c
 TESTSRCEXT  := test.c
 DEPEXT      := d
@@ -34,7 +34,7 @@ all: resources $(TARGET)
 remake: cleaner all
 
 #Copy Resources from Resources Directory to Target Directory
-#resources: directories
+resources: directories
 #	@cp $(RESDIR)/* $(TARGETDIR)/
 
 #Make the Directories
