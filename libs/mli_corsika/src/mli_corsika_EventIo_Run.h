@@ -19,5 +19,6 @@ void mliEventIoRun_finalize(struct mliEventIoRun *run);
 int mliEventIoRun_begin(struct mliEventIoRun *run, FILE *stream);
 int mliEventIoRun_has_still_events_left(struct mliEventIoRun *run);
 int mliEventIoRun_next_block(struct mliEventIoRun *run, const int level);
+int mliEventIoRun_read_273float32_block(FILE *f, float *block);
 
 #endif

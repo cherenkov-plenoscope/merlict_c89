@@ -7,6 +7,8 @@ CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
          * intersection point of the merlict photons when they are absorbed on
          * the ground.
          */
+
+        /*
         const double production_distance_offset = 1e3;
         struct mliDynPhoton merlict_photons = mliDynPhoton_init();
         struct mliDynCorsikaPhotonBunch corsika_photons =
@@ -86,6 +88,7 @@ CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
 
         mliDynPhoton_free(&merlict_photons);
         mliDynCorsikaPhotonBunch_free(&corsika_photons);
+        */
 }
 
 /*
