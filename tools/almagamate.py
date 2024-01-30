@@ -45,7 +45,9 @@ def read_lib(path, source_types=SOURCE_TYPES):
             matching_ext = "." + matching_key
             mfilename = filename.replace(matching_ext, "")
 
-            out[matching_key][mfilename] = {"source": source_text}
+            out[matching_key][mfilename] = {
+                "source": source_text, "path": source_path,
+            }
     return out
 
 
@@ -95,7 +97,8 @@ parser.add_argument(
     nargs="+",
     type=str,
     help=(
-        "A list of the libs to be almagamated e.g. 'libs/mli', 'libs/mli_corsika'."
+        "A list of the libs to be almagamated e.g. "
+        "'libs/mli', 'libs/mli_corsika'."
     ),
 )
 parser.add_argument(
@@ -109,6 +112,10 @@ args = parser.parse_args()
 libpaths = args.libs
 outdir = args.outdir
 dotest = args.test
+
+if dotest:
+    if "libs/mli_testing" not in libpaths:
+        libpaths.append("libs/mli_testing")
 
 os.makedirs(outdir, exist_ok=True)
 libnames = str.join("-", [os.path.basename(lp) for lp in libpaths])
@@ -163,6 +170,7 @@ for source_type in SOURCE_TYPES:
 
 # write header
 # ------------
+list_headers = []
 so = io.StringIO()
 for incl in all_includes_from_std["h"]:
     so.write("#include <{:s}>\n".format(incl))
@@ -203,16 +211,19 @@ while True:
             so.write("\n")
             so.write("\n")
             inheader.add(filename)
+            list_headers.append(sources["h"][filename]["path"])
 
 so.seek(0)
 with open(header_path, "wt") as fout:
     fout.write(so.read())
 
-header_filename = os.path.basename(header_path)
+
+list_sources = []
 
 # write source
 # ------------
 so = io.StringIO()
+header_filename = os.path.basename(header_path)
 so.write('#include "{:s}"\n'.format(header_filename))
 so.write("\n")
 
@@ -228,32 +239,48 @@ for filename in sorted_c_sources_filenames:
     so.write("\n")
     so.write("\n")
     inheader.add(filename)
+    list_sources.append(sources["c"][filename]["path"])
 
 so.seek(0)
 with open(source_path, "wt") as fout:
     fout.write(so.read())
 
-# write test
-# ----------
-so = io.StringIO()
 
-for incl in all_includes_from_std["test.c"]:
-    so.write("#include <{:s}>\n".format(incl))
-so.write("\n")
-
+list_tests = []
 sorted_c_sources_filenames = sorted(list(sources["test.c"].keys()))
 for filename in sorted_c_sources_filenames:
-    so.write("/* {:s} */\n".format(filename))
-    so.write("/* " + "-" * len(filename) + " */\n\n")
-    so.write(strip_non_std_includes(sources["test.c"][filename]["source"]))
-    so.write("\n")
-    so.write("\n")
-    inheader.add(filename)
+    list_tests.append(sources["test.c"][filename]["path"])
 
-so.seek(0)
-with open(test_path, "wt") as fout:
-    fout.write(so.read())
 
+if dotest:
+    o = ""
+    o += "#include <stdlib.h>\n"
+    o += "\n"
+    for hpath in list_headers:
+        o += '#include "{:s}"\n'.format(hpath)
+    o += "\n"
+    for cpath in list_sources:
+        o += '#include "{:s}"\n'.format(cpath)
+    o += "\n"
+    o += "int main(void)\n"
+    o += "{\n"
+    o += '        printf("MLI_VERSION %d.%d.%d\\n",\n'
+    o += '               MLI_VERSION_MAYOR,\n'
+    o += '               MLI_VERSION_MINOR,\n'
+    o += '               MLI_VERSION_PATCH);\n'
+    o += "\n"
+    for path in list_tests:
+        o += '#include "{:s}"\n'.format(path)
+    o += "\n"
+    o += '        printf("__SUCCESS__\\n");\n'
+    o += '        return EXIT_SUCCESS;\n'
+    o += 'test_failure:\n'
+    o += '        printf("__FAILURE__\\n");\n'
+    o += '        return EXIT_FAILURE;\n'
+    o += "}\n"
+    test_main_path = os.path.join(outdir, libnames + ".test.main.c")
+    with open(test_main_path, "wt") as f:
+        f.write(o)
 
 
 """
