@@ -45,6 +45,7 @@ def run_and_save_sdtout(call, stdout_path):
     p.wait()
     o = p.stdout.read().decode()
     rc = int(p.returncode)
+    print(o)
 
     with open(stdout_path, "wt") as f:
         f.write(o)
@@ -116,13 +117,13 @@ almagamate_sources(
 for scenery_name in scenery_names:
     rc = tar_sceneries(scenery_name=scenery_name)
 
+os.makedirs(os.path.join("build", "tests", submodule_name), exist_ok=True)
 
 for comkey in com:
     print(comkey)
     out_path = os.path.join(
         "build", "tests", submodule_name, "test_{:s}".format(comkey)
     )
-    os.makedirs(os.path.join("build", "tests", submodule_name), exist_ok=True)
     rc = compile_sources(
         compiler=com[comkey]["compiler"],
         target=os.path.join(
