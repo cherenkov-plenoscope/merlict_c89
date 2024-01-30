@@ -1,6 +1,7 @@
 import argparse
 import os
 import io
+import numpy as np
 
 
 def line_is_include(line):
@@ -248,16 +249,18 @@ sorted_c_sources_filenames = sorted(list(sources["test.c"].keys()))
 for filename in sorted_c_sources_filenames:
     list_tests.append(sources["test.c"][filename]["path"])
 
+relpath_outdir_to_libs = os.path.relpath(".", start=outdir)
+ro2l = relpath_outdir_to_libs
 
 if dotest:
     o = ""
     o += "#include <stdlib.h>\n"
     o += "\n"
     for hpath in list_headers:
-        o += '#include "{:s}"\n'.format(hpath)
+        o += '#include "{:s}"\n'.format(os.path.join(ro2l, hpath))
     o += "\n"
     for cpath in list_sources:
-        o += '#include "{:s}"\n'.format(cpath)
+        o += '#include "{:s}"\n'.format(os.path.join(ro2l, cpath))
     o += "\n"
     o += "int main(void)\n"
     o += "{\n"
@@ -267,7 +270,7 @@ if dotest:
     o += "               MLI_VERSION_PATCH);\n"
     o += "\n"
     for path in list_tests:
-        o += '#include "{:s}"\n'.format(path)
+        o += '#include "{:s}"\n'.format(os.path.join(ro2l, path))
     o += "\n"
     o += '        printf("__SUCCESS__\\n");\n'
     o += "        return EXIT_SUCCESS;\n"

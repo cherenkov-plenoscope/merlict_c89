@@ -30,6 +30,7 @@ parser = argparse.ArgumentParser(
 args = parser.parse_args()
 submodule_name = "mli"
 
+
 def print_file(path):
     with open(path, "rt") as f:
         print(f.read())
@@ -63,13 +64,19 @@ def tar_sceneries(scenery_name):
     )
 
 
-def almagamate_sources():
+def almagamate_sources(
+    outdir,
+    libpath,
+):
+    stdout_path = os.path.join(outdir, "compile_and_test.o")
     return run_and_save_sdtout(
         call=[
             "python",
             os.path.join("tools", "almagamate.py"),
+            "--test",
             outdir,
-        ] + mli_submodules,
+            libpath,
+        ],
         stdout_path=stdout_path,
     )
 
@@ -93,7 +100,17 @@ def run_tests(test_executable_path, stdout_path):
     )
 
 
+os.makedirs("build", exist_ok=True)
+os.makedirs(os.path.join("build", "almagamate"), exist_ok=True)
+os.makedirs(os.path.join("build", "tests"), exist_ok=True)
+
 scenery_names = ["000", "001", "002", "optics_prism optics_focussing_mirror"]
+
+
+almagamate_sources(
+    outdir=os.path.join("build", "almagamate"),
+    libpath=os.path.join("libs", submodule_name),
+)
 
 
 for scenery_name in scenery_names:
@@ -108,7 +125,11 @@ for comkey in com:
     os.makedirs(os.path.join("build", "tests", submodule_name), exist_ok=True)
     rc = compile_sources(
         compiler=com[comkey]["compiler"],
-        target=os.path.join("libs", submodule_name, "tests", "main_entry_point.c"),
+        target=os.path.join(
+            "build",
+            "almagamate",
+            "{:s}-mli_testing.test.main.c".format(submodule_name),
+        ),
         out_path=out_path + ".exe",
         flags=com[comkey]["flags"],
         stdout_path=out_path + ".o",
