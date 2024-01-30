@@ -255,6 +255,18 @@ parser.add_argument(
     help="Output directory for header and source.",
 )
 parser.add_argument(
+    "--header_path",
+    metavar="PATH",
+    type=str,
+    help="Path of header.",
+)
+parser.add_argument(
+    "--source_path",
+    metavar="PATH",
+    type=str,
+    help="Path of source.",
+)
+parser.add_argument(
     "libs",
     metavar="PATHS",
     nargs="+",
@@ -317,6 +329,11 @@ header_path = os.path.join(outdir, libnames + ".h")
 source_path = os.path.join(outdir, libnames + ".c")
 test_path = os.path.join(outdir, libnames + ".test.c")
 
+if args.header_path:
+    header_path = args.header_path
+
+if args.source_path:
+    source_path = args.source_path
 
 header_txt, list_headers = make_header_txt(
     h_source=sources["h"], h_includes_from_std=includes_from_std["h"]
