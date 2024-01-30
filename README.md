@@ -24,65 +24,109 @@ Merlict would not exist without the author's past and present affiliations:
 
 Merlict is organized in ['The Pitchfork Layout'](https://api.csswg.org/bikeshed/?force=1&url=https://raw.githubusercontent.com/vector-of-bool/pitchfork/develop/data/spec.bs).
 It uses the 'merged Header Placement' because it has no private headers and it uses the 'merged Tests Placement'.
-This hopefully gives you a reasonable chance to wrap your build-system around it.
-Merlict itself has no build-system.
-
-For example the library ```mli_core```:
+This hopefully gives you a reasonable chance to wrap your build system around it.
+Merlict is split in what the pitch fork layout calls 'submodules'.
+The submodules are ```mli```, ```mli_viewer```, ```mli_corsika```, and ```mli_testing```.
+The ```mli``` is mandatory. It is the core of merlict. But the other submodules are optional and you might not want all of them.
 
 ```
     merlict_c89
     |
-    |-> mli_core
+    |-> libs
         |
-        |-> src
+        |-> mli
         |   |
-        |   |-> mliVec.h
-        |   |-> mliVec.c
-        |   ...
+        |   |-> src
+        |       |-> mliVec.h
+        |       |-> mliVec.c
+        |       ...
         |
-        |-> include
-            |
-            | -> mli_core.h
+        |-> mli_viewer
+        ...
 ```
 
-All sources and headers are in ```mli_core/src```. For compatibility there is also ```mli_core/include/mli_core.h``` which just includes all the headers in ```mli_core/src/*.h```.
+## Submodules
 
+### mli
+The core of merlict. It contains the geometry, the linear algebra, and all the
+basic infrastucture.
 
-## Single Header / Single Source
-To involve merlict in your project
+### mli_viewer
+An interactive viewer for merlict that runs on the command line.
+
+### mli_corsika
+Tools to read the photon output creadted by the CORSIKA simulation.
+
+### mli_testing
+Only need for merlict's own unit tests.
+
+## Almagamate into a single header and a single source
+
+Merlict has ```tool/almagamate.py``` which can combine the headers and sources into a single file.
+This is a poor man's build system which is primarily used to almagamate the sources for a ```python``` (```cython```) build.
+But you can use the almagamated sources for your build system as well.
+This way you only have to:
 
 ```c
-#include "merlict/mli.h"
+#include "mli.h"
 ```
 
 in your headers, and
 
 ```c
-#include "merlict/mli.c"
+#include "mli.c"
 ```
 
 in your sources. Thats it. :checkered_flag:
-See ```./merlict/mli_test.c``` and run ```./compile_and_test.sh``` for a minimal example.
+
+With the ```--test``` flag the ```tool/almagamate.py``` further creates the ```main()``` for unit testing.
+See ```./compile_and_test.sh``` for a minimal example.
+The test's main does not use the almagamated sources but includes the source files directly.
+This is done to ease debugging so that filenames and linenumberr match the original sources.
+
 
 # Viewer :eyes:
 Merlict's viewer runs in the terminal and reads three formats:
 
+- a standalone object-wavefront ```.obj```
 - merlict's own ```scenery.tar```
 - merlict's own ```scenery.bin```
-- a standalone object-wavefront ```.obj```
 
-Control your viewing-direction and position via the keyboard. You can inspect the scenery and render high resolution images.
+Control your viewing direction and position via the keyboard. You can inspect the scenery and render high resolution images.
 The viewer prints into the terminal using ASCII-art. When your terminal supports [```ANSI-escape-code```](https://en.wikipedia.org/wiki/ANSI_escape_code) you can switch to 24-bit true color. The viewer is especially useful when you run merlict on a remote computer via ```ssh``` without an ```X```-server.
 Merlict's viewer will try to set your terminal's ```stdin``` to a non canonical mode so that you do not have to press [Enter] after each keypress.
 
 #### Build :hammer:
+
+When using ```tools/almagamate.py```:
+
+First run almagamate:
+
 ```bash
-gcc ./merlict/mli_viewer_app.c -o viewer -lm
+python ./tools/almagamate.py \
+        build/almagamate \
+        libs/mli \
+        libs/mli_viewer \
+        --header_path build/almagamate/mli-mli_viewer.h \
+        --source_path build/almagamate/mli-mli_viewer.c
 ```
+
+Second build the viewer:
+
+```bash
+gcc \
+        -include build/almagamate/mli-mli_viewer.h \
+        -include build/almagamate/mli-mli_viewer.c \
+        libs/mli_viewer/apps/viewer.main.c \
+        -o build/viewer \
+        -lm
+```
+
+See also ```libs/mli_viewer/apps/viewer.main.c```.
 
 #### Run
 ```bash
-./viewer ./merlict/tests/resources/sceneries/001.tar
+build/viewer libs/mli/tests/resources/sceneries/001.tar
 ```
 
  ASCII-art                 | ANSI-escape-codes

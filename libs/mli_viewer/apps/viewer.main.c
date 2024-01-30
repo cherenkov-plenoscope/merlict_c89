@@ -6,15 +6,18 @@
 /*
         1) Almagamate
         -------------
-        python ./tools/almagamate libs/mli libs/mli_viewer \
-                --header build/mli-mli_viewer.h \
-                --source build/mli-mli_viewer.c
+        python ./tools/almagamate.py \
+                build/almagamate \
+                libs/mli \
+                libs/mli_viewer \
+                --header_path build/almagamate/mli-mli_viewer.h \
+                --source_path build/almagamate/mli-mli_viewer.c
 
         2) Compile
         ----------
         gcc \
-                -include build/mli-mli_viewer.h \
-                -include build/mli-mli_viewer.c \
+                -include build/almagamate/mli-mli_viewer.h \
+                -include build/almagamate/mli-mli_viewer.c \
                 libs/mli_viewer/apps/viewer.main.c \
                 -o build/viewer \
                 -lm
