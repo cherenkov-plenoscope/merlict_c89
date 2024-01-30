@@ -1,8 +1,7 @@
 #include <math.h>
 #include <assert.h>
 #include <stdlib.h>
-#include "mli_corsika_EventTape_standalone_headeronly.h"
-#include "chk_debug.h"
+#include "../../build/almagamate/mli-mli_corsika-EventTape_standalone_headeronly.h"
 
 int main(int argc, char *argv[])
 {
@@ -47,6 +46,6 @@ int main(int argc, char *argv[])
         }
         chk(mliEventTapeReader_finalize(&tari));
         return EXIT_SUCCESS;
-error:
+chk_error:
         return EXIT_FAILURE;
 }

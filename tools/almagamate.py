@@ -79,6 +79,164 @@ def gather_includes(source, include_type):
     return list(set(includes))
 
 
+def limit_sources(sources, source_paths):
+    spaths = set([os.path.splitext(p)[0] for p in source_paths])
+    out = {}
+    for source_type in SOURCE_TYPES:
+        out[source_type] = {}
+        for filename in sources[source_type]:
+            srcpath = os.path.splitext(sources[source_type][filename]["path"])[
+                0
+            ]
+            if srcpath in spaths:
+                out[source_type][filename] = sources[source_type][filename]
+    return out
+
+
+def make_test_main(
+    relpath_outdir_to_libs, header_paths, source_paths, test_paths
+):
+    ro2l = relpath_outdir_to_libs
+    o = ""
+    o += "#include <stdlib.h>\n"
+    o += "\n"
+    for hpath in header_paths:
+        o += '#include "{:s}"\n'.format(os.path.join(ro2l, hpath))
+    o += "\n"
+    for cpath in source_paths:
+        o += '#include "{:s}"\n'.format(os.path.join(ro2l, cpath))
+    o += "\n"
+    o += "int main(void)\n"
+    o += "{\n"
+    o += '        printf("MLI_VERSION %d.%d.%d\\n",\n'
+    o += "               MLI_VERSION_MAYOR,\n"
+    o += "               MLI_VERSION_MINOR,\n"
+    o += "               MLI_VERSION_PATCH);\n"
+    o += "\n"
+    for tpath in test_paths:
+        o += '#include "{:s}"\n'.format(os.path.join(ro2l, tpath))
+    o += "\n"
+    o += '        printf("__SUCCESS__\\n");\n'
+    o += "        return EXIT_SUCCESS;\n"
+    o += "test_failure:\n"
+    o += '        printf("__FAILURE__\\n");\n'
+    o += "        return EXIT_FAILURE;\n"
+    o += "}\n"
+    return o
+
+
+def gather_sources(libpaths, source_types=SOURCE_TYPES):
+    sources = {}
+    for source_type in source_types:
+        sources[source_type] = {}
+
+    for libpath in libpaths:
+        libname = os.path.basename(libpath)
+        lib = read_lib(os.path.join(libpath, "src"))
+        for source_type in source_types:
+            for filename in lib[source_type]:
+                assert filename not in sources[source_type]
+                sources[source_type][filename] = lib[source_type][filename]
+
+    for source_type in source_types:
+        for filename in sources[source_type]:
+            source = sources[source_type][filename]["source"]
+            istd = gather_includes(source, include_type="std")
+            ireg = gather_includes(source, include_type="reg")
+            ireg = [os.path.basename(p) for p in ireg]
+            ireg = [os.path.splitext(p)[0] for p in ireg]
+            sources[source_type][filename]["includes"] = {
+                "std": istd,
+                "reg": ireg,
+            }
+
+    includes_from_std = {}
+    for source_type in source_types:
+        includes_from_std[source_type] = []
+        for filename in sources[source_type]:
+            for incl in sources[source_type][filename]["includes"]["std"]:
+                includes_from_std[source_type].append(incl)
+        includes_from_std[source_type] = list(
+            set(includes_from_std[source_type])
+        )
+
+    includes_from_std["c"] = list(
+        set(includes_from_std["c"]).difference(set(includes_from_std["h"]))
+    )
+
+    for source_type in source_types:
+        includes_from_std[source_type] = sorted(includes_from_std[source_type])
+
+    return sources, includes_from_std
+
+
+def make_source_txt(c_sources, c_includes_from_std):
+    list_sources = []
+    so = io.StringIO()
+
+    for incl in c_includes_from_std:
+        so.write("#include <{:s}>\n".format(incl))
+    so.write("\n")
+
+    sorted_c_sources_filenames = sorted(list(c_sources.keys()))
+    for filename in sorted_c_sources_filenames:
+        so.write("/* {:s} */\n".format(filename))
+        so.write("/* " + "-" * len(filename) + " */\n\n")
+        so.write(strip_non_std_includes(c_sources[filename]["source"]))
+        so.write("\n")
+        so.write("\n")
+        list_sources.append(c_sources[filename]["path"])
+    so.seek(0)
+    return so.read(), list_sources
+
+
+def make_header_txt(h_source, h_includes_from_std):
+    list_headers = []
+    so = io.StringIO()
+    for incl in h_includes_from_std:
+        so.write("#include <{:s}>\n".format(incl))
+    so.write("\n")
+
+    ii = 0
+    initial_num_sources = len(h_source)
+
+    insources = set(sources["h"].keys())
+    inheader = set()
+
+    while True:
+        filenames_not_yet_in_header = list(insources.difference(inheader))
+        filenames_not_yet_in_header = sorted(filenames_not_yet_in_header)
+
+        if len(filenames_not_yet_in_header) == 0:
+            break
+
+        ii += 1
+        assert (
+            ii <= initial_num_sources**2
+        ), "Dependencies can not be resolved in {:s}".format(
+            str(filenames_not_yet_in_header)
+        )
+
+        for filename in filenames_not_yet_in_header:
+            depends = False
+            for dep in h_source[filename]["includes"]["reg"]:
+                if dep not in inheader:
+                    depends = True
+
+            if not depends:
+                so.write("/* {:s} */\n".format(filename))
+                so.write("/* " + "-" * len(filename) + " */\n\n")
+                so.write(strip_non_std_includes(h_source[filename]["source"]))
+                so.write("\n")
+                so.write("\n")
+                inheader.add(filename)
+                list_headers.append(h_source[filename]["path"])
+
+    so.seek(0)
+
+    return so.read(), list_headers
+
+
 # def main():
 parser = argparse.ArgumentParser(
     prog="almagamate.py",
@@ -109,175 +267,93 @@ parser.add_argument(
     help="make test.main.c",
     action="store_true",
 )
+parser.add_argument(
+    "-c",
+    "--cherry_pick",
+    metavar="PATH",
+    type=str,
+    help="Cherry pick from a limited list of source files.",
+)
+parser.add_argument(
+    "--header_only",
+    help="no seperate source '.c', will append source to header.",
+    action="store_true",
+)
 
 args = parser.parse_args()
 libpaths = args.libs
 outdir = args.outdir
-dotest = args.test
+cherrypickpath = args.cherry_pick
 
-if dotest:
-    if "libs/mli_testing" not in libpaths:
-        libpaths.append("libs/mli_testing")
+if args.test:
+    if os.path.join("libs", "mli_testing") not in libpaths:
+        libpaths.append(os.path.join("libs", "mli_testing"))
 
 os.makedirs(outdir, exist_ok=True)
 libnames = str.join("-", [os.path.basename(lp) for lp in libpaths])
+
+sources, includes_from_std = gather_sources(
+    libpaths=libpaths, source_types=SOURCE_TYPES
+)
+
+if cherrypickpath:
+    cherrypick = {
+        "path": cherrypickpath,
+        "src": [],
+        "name": os.path.splitext(os.path.basename(cherrypickpath))[0],
+    }
+    with open(cherrypickpath, "rt") as f:
+        cherrypick["src"] = f.read().splitlines()
+    sources = limit_sources(sources=sources, source_paths=cherrypick["src"])
+    libnames = libnames + "-" + cherrypick["name"]
+
+if args.header_only:
+    libnames = libnames + "-headeronly"
+
 header_path = os.path.join(outdir, libnames + ".h")
 source_path = os.path.join(outdir, libnames + ".c")
 test_path = os.path.join(outdir, libnames + ".test.c")
 
-sources = {}
-for source_type in SOURCE_TYPES:
-    sources[source_type] = {}
 
-for libpath in libpaths:
-    libname = os.path.basename(libpath)
-    lib = read_lib(os.path.join(libpath, "src"))
-    for source_type in SOURCE_TYPES:
-        for filename in lib[source_type]:
-            assert filename not in sources[source_type]
-            sources[source_type][filename] = lib[source_type][filename]
-
-for source_type in SOURCE_TYPES:
-    for filename in sources[source_type]:
-        source = sources[source_type][filename]["source"]
-        istd = gather_includes(source, include_type="std")
-        ireg = gather_includes(source, include_type="reg")
-        ireg = [os.path.basename(p) for p in ireg]
-        ireg = [os.path.splitext(p)[0] for p in ireg]
-        sources[source_type][filename]["includes"] = {
-            "std": istd,
-            "reg": ireg,
-        }
-
-all_includes_from_std = {}
-for source_type in SOURCE_TYPES:
-    all_includes_from_std[source_type] = []
-    for filename in sources[source_type]:
-        for incl in sources[source_type][filename]["includes"]["std"]:
-            all_includes_from_std[source_type].append(incl)
-    all_includes_from_std[source_type] = list(
-        set(all_includes_from_std[source_type])
-    )
-
-all_includes_from_std["c"] = list(
-    set(all_includes_from_std["c"]).difference(set(all_includes_from_std["h"]))
+header_txt, list_headers = make_header_txt(
+    h_source=sources["h"], h_includes_from_std=includes_from_std["h"]
 )
 
-for source_type in SOURCE_TYPES:
-    all_includes_from_std[source_type] = sorted(
-        all_includes_from_std[source_type]
-    )
-
-# write header
-# ------------
-list_headers = []
-so = io.StringIO()
-for incl in all_includes_from_std["h"]:
-    so.write("#include <{:s}>\n".format(incl))
-so.write("\n")
-
-ii = 0
-initial_num_sources = len(sources["h"])
-
-insources = set(sources["h"].keys())
-inheader = set()
-
-while True:
-    filenames_not_yet_in_header = list(insources.difference(inheader))
-    filenames_not_yet_in_header = sorted(filenames_not_yet_in_header)
-
-    if len(filenames_not_yet_in_header) == 0:
-        break
-
-    ii += 1
-    assert (
-        ii <= initial_num_sources**2
-    ), "Dependencies can not be resolved in {:s}".format(
-        str(filenames_not_yet_in_header)
-    )
-
-    for filename in filenames_not_yet_in_header:
-        depends = False
-        for dep in sources["h"][filename]["includes"]["reg"]:
-            if dep not in inheader:
-                depends = True
-
-        if not depends:
-            so.write("/* {:s} */\n".format(filename))
-            so.write("/* " + "-" * len(filename) + " */\n\n")
-            so.write(strip_non_std_includes(sources["h"][filename]["source"]))
-            so.write("\n")
-            so.write("\n")
-            inheader.add(filename)
-            list_headers.append(sources["h"][filename]["path"])
-
-so.seek(0)
 with open(header_path, "wt") as fout:
-    fout.write(so.read())
+    fout.write(header_txt)
+
+source_txt, list_sources = make_source_txt(
+    c_sources=sources["c"], c_includes_from_std=includes_from_std["c"]
+)
+
+if args.header_only:
+    with open(header_path, "at") as fout:
+        fout.write("#ifndef MLI_SOURCE_H_\n")
+        fout.write("#define MLI_SOURCE_H_\n")
+        fout.write("\n")
+        fout.write(source_txt)
+        fout.write("\n")
+        fout.write("#endif /* MLI_SOURCE_H_ */\n")
+else:
+    header_filename = os.path.basename(header_path)
+    with open(source_path, "wt") as fout:
+        fout.write('#include "{:s}"\n'.format(header_filename))
+        fout.write("\n")
+        fout.write(source_txt)
 
 
-list_sources = []
+if args.test:
+    list_tests = []
+    sorted_test_filenames = sorted(list(sources["test.c"].keys()))
+    for filename in sorted_test_filenames:
+        list_tests.append(sources["test.c"][filename]["path"])
 
-# write source
-# ------------
-so = io.StringIO()
-header_filename = os.path.basename(header_path)
-so.write('#include "{:s}"\n'.format(header_filename))
-so.write("\n")
-
-for incl in all_includes_from_std["c"]:
-    so.write("#include <{:s}>\n".format(incl))
-so.write("\n")
-
-sorted_c_sources_filenames = sorted(list(sources["c"].keys()))
-for filename in sorted_c_sources_filenames:
-    so.write("/* {:s} */\n".format(filename))
-    so.write("/* " + "-" * len(filename) + " */\n\n")
-    so.write(strip_non_std_includes(sources["c"][filename]["source"]))
-    so.write("\n")
-    so.write("\n")
-    inheader.add(filename)
-    list_sources.append(sources["c"][filename]["path"])
-
-so.seek(0)
-with open(source_path, "wt") as fout:
-    fout.write(so.read())
-
-
-list_tests = []
-sorted_c_sources_filenames = sorted(list(sources["test.c"].keys()))
-for filename in sorted_c_sources_filenames:
-    list_tests.append(sources["test.c"][filename]["path"])
-
-relpath_outdir_to_libs = os.path.relpath(".", start=outdir)
-ro2l = relpath_outdir_to_libs
-
-if dotest:
-    o = ""
-    o += "#include <stdlib.h>\n"
-    o += "\n"
-    for hpath in list_headers:
-        o += '#include "{:s}"\n'.format(os.path.join(ro2l, hpath))
-    o += "\n"
-    for cpath in list_sources:
-        o += '#include "{:s}"\n'.format(os.path.join(ro2l, cpath))
-    o += "\n"
-    o += "int main(void)\n"
-    o += "{\n"
-    o += '        printf("MLI_VERSION %d.%d.%d\\n",\n'
-    o += "               MLI_VERSION_MAYOR,\n"
-    o += "               MLI_VERSION_MINOR,\n"
-    o += "               MLI_VERSION_PATCH);\n"
-    o += "\n"
-    for path in list_tests:
-        o += '#include "{:s}"\n'.format(os.path.join(ro2l, path))
-    o += "\n"
-    o += '        printf("__SUCCESS__\\n");\n'
-    o += "        return EXIT_SUCCESS;\n"
-    o += "test_failure:\n"
-    o += '        printf("__FAILURE__\\n");\n'
-    o += "        return EXIT_FAILURE;\n"
-    o += "}\n"
+    o = make_test_main(
+        relpath_outdir_to_libs=os.path.relpath(".", start=outdir),
+        header_paths=list_headers,
+        source_paths=list_sources,
+        test_paths=list_tests,
+    )
     test_main_path = os.path.join(outdir, libnames + ".test.main.c")
     with open(test_main_path, "wt") as f:
         f.write(o)
