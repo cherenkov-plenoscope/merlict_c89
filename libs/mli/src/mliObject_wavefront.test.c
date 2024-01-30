@@ -474,8 +474,7 @@ CASE("mliObject, write and read ascii-text-string")
         mliObject_fprint_to_wavefront(&f, &obj);
         mliIo_rewind(&f);
         mliIo_read_to_path(
-                &f,
-                "libs/mli/tests/resources/hexagonal_mirror_facet.obj.tmp");
+                &f, "libs/mli/tests/resources/hexagonal_mirror_facet.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
@@ -540,8 +539,7 @@ CASE("mliObject, read and write multiple materials")
         mliObject_fprint_to_wavefront(&f, &obj_orig);
         mliIo_rewind(&f);
         mliIo_read_to_path(
-                &f,
-                "libs/mli/tests/resources/cube_with_materials.obj.tmp");
+                &f, "libs/mli/tests/resources/cube_with_materials.obj.tmp");
         mliIo_free(&f);
 
         CHECK(mliIo_malloc_from_path(
