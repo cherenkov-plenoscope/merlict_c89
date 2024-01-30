@@ -1,14 +1,33 @@
 import os
 import glob
+import argparse
 
-cpaths = glob.glob(os.path.join("src", "*.c"))
+parser = argparse.ArgumentParser(
+    prog="identify_missing_includes.py",
+    description=(
+        "Raise awareness of missing includes in '.c' and '.h' files."
+    ),
+)
+parser.add_argument(
+    "lib",
+    metavar="PATH",
+    type=str,
+    help=(
+        "e.g. 'libs/mli' or 'libs/mli_corsika'."
+    ),
+)
+
+args = parser.parse_args()
+libpaths = args.lib
+
+cpaths = glob.glob(os.path.join(libpaths, "src", "*.c"))
 cpaths = sorted(cpaths)
 ccode = {}
 for cpath in cpaths:
     with open(cpath) as f:
         ccode[cpath] = f.read()
 
-hpaths = glob.glob(os.path.join("src", "*.h"))
+hpaths = glob.glob(os.path.join(libpaths, "src", "*.h"))
 hpaths = sorted(hpaths)
 hcode = {}
 for hpath in hpaths:
@@ -45,25 +64,8 @@ for p in hcode:
                 )
 
 
-# chk_debug
+# chk
 for cpath in ccode:
     if "error:" in ccode[cpath]:
-        if not '#include "chk_debug.h"' in ccode[cpath]:
-            print('Expected #include "chk_debug.h" in {:s}.'.format(cpath))
-
-            lines = str.splitlines(ccode[cpath])
-
-            armed = False
-            for l in range(len(lines)):
-                if "include" in lines[l]:
-                    armed = True
-                if armed and not "include" in lines[l]:
-                    break
-
-            lines.insert(l, '#include "chk_debug.h"')
-
-            ccode[cpath] = str.join("\n", lines)
-
-            with open(cpath, "wt") as f:
-                f.write(ccode[cpath])
-                f.write("\n")
+        if not '#include "chk.h"' in ccode[cpath]:
+            print('Expected #include "chk.h" in {:s}.'.format(cpath))
