@@ -5,6 +5,9 @@
 #include "chk.h"
 #include "mliScenery_valid.h"
 #include "mli_frame_to_scenery.h"
+#include "mliUserScenery.h"
+#include "mliFrame.h"
+
 
 int mliScenery_malloc_fread_tar(struct mliScenery *scenery, FILE *f)
 {

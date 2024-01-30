@@ -1,10 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTracer.h"
-#include "mliTracer_atmosphere.h"
 #include <math.h>
 #include <stdint.h>
+#include "mliTracer_atmosphere.h"
 #include "mli_intersection_and_scenery.h"
 #include "mli_ray_octree_traversal.h"
+#include "mli_random.h"
+#include "mliIntersection.h"
+#include "mli_ray_scenery_query.h"
 
 double mli_trace_sun_visibility(
         const struct mliScenery *scenery,

@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject_wavefront.h"
+#include "mliObject.h"
+#include "mliObject_valid.h"
 #include <ctype.h>
 #include "mliDynArray.h"
 #include "mliDynMap.h"
@@ -10,6 +12,8 @@
 #include "chk.h"
 #include "mli_cstr_numbers.h"
 #include "mli_cstr.h"
+#include "mliStr_numbers.h"
+
 
 #define MLI_WAVEFRONT_FACE_LINE_V 7
 #define MLI_WAVEFRONT_FACE_LINE_V_VN 37

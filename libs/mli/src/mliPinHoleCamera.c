@@ -3,6 +3,9 @@
 #include <math.h>
 #include <assert.h>
 #include "mliPixelWalk.h"
+#include "mli_math.h"
+#include "mliHomTra.h"
+
 
 struct mliPinHoleCamera mliPinHoleCamera_init(
         const double field_of_view,

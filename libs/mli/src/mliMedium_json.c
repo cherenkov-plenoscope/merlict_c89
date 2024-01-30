@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMedium_json.h"
+#include "mliFunc_json.h"
 #include "chk.h"
 
 int mliMedium_malloc_from_json_str(struct mliMedium *med, const char *json_str)

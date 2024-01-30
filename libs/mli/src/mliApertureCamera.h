@@ -7,6 +7,7 @@
 #include "mliVec.h"
 #include "mliHomTra.h"
 #include "mliTracer.h"
+#include "mliImage.h"
 
 /*
 principal-rays of the thin-lens

@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliBoundaryLayer.h"
+#include <stdio.h>
 
 int mliBoundaryLayer_equal(
         const struct mliBoundaryLayer a,

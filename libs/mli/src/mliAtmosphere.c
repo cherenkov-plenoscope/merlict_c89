@@ -8,6 +8,8 @@
 #include "mliAtmosphere.h"
 #include <assert.h>
 #include <float.h>
+#include "mli_math.h"
+#include "mliHomTra.h"
 
 struct mliAtmosphere mliAtmosphere_init(void)
 {

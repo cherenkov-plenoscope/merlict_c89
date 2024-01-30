@@ -1,5 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSurface_json.h"
+#include "mliName.h"
+#include "mliFunc_json.h"
+#include "mliColor_json.h"
 #include "chk.h"
 
 int mliSurface_malloc_from_json_str(

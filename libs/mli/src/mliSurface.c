@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSurface.h"
+#include "mliMagicId.h"
+#include "mliFunc_serialize.h"
 #include "chk.h"
 
 struct mliSurface mliSurface_init(void)

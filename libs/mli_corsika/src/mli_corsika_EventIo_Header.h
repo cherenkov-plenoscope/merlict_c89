@@ -3,6 +3,7 @@
 #define MLI_CORSIKA_EVENTIOHEADER_H_
 
 #include <stdint.h>
+#include <stdio.h>
 
 #define MLI_EVENTIO_TOP_LEVEL 1
 #define MLI_EVENTIO_SUB_LEVEL 0

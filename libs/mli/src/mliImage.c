@@ -2,7 +2,9 @@
 #include "mliImage.h"
 #include <assert.h>
 #include "mliPixelWalk.h"
+#include "mli_math.h"
 #include "chk.h"
+#include <float.h>
 
 struct mliImage mliImage_init(void)
 {

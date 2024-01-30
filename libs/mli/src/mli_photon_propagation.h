@@ -9,6 +9,7 @@
 #include "mliScenery.h"
 #include "mliDynPhotonInteraction.h"
 #include "mli_random.h"
+#include "mliFresnel.h"
 
 struct mliEnv {
         const struct mliScenery *scenery;

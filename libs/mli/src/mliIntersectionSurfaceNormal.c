@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliIntersectionSurfaceNormal.h"
+#include <float.h>
 
 struct mliIntersectionSurfaceNormal mliIntersectionSurfaceNormal_init(void)
 {

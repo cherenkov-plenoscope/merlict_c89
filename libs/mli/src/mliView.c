@@ -3,6 +3,10 @@
 #include <math.h>
 #include <assert.h>
 #include <stdint.h>
+#include "mliMat.h"
+#include "mliHomTra.h"
+#include "mli_math.h"
+
 
 struct mliVec mliView_optical_axis(const struct mliView cam)
 {

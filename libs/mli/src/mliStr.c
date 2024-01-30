@@ -2,6 +2,7 @@
 #include "mliStr.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "chk.h"
 
 struct mliStr mliStr_init(void)

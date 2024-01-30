@@ -2,6 +2,12 @@
 #include "mliTracer.h"
 #include <math.h>
 #include <stdint.h>
+#include "mli_random.h"
+#include "mli_math.h"
+#include "mliIntersectionSurfaceNormal.h"
+#include "mliIntersection.h"
+#include "mli_ray_scenery_query.h"
+#include "mli_intersection_and_scenery.h"
 
 struct mliVec mli_random_direction_in_hemisphere(
         struct mliPrng *prng,

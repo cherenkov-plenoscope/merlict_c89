@@ -40,4 +40,5 @@ struct mliAABB mliAABB_outermost(
 int mliAABB_valid(const struct mliAABB a);
 int mliAABB_equal(const struct mliAABB a, const struct mliAABB b);
 int mliAABB_overlapp_aabb(const struct mliAABB a, const struct mliAABB b);
+int mliAABB_is_overlapping(const struct mliAABB a, const struct mliAABB b);
 #endif

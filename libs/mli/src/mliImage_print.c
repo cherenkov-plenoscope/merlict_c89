@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliImage_print.h"
+#include <stddef.h>
+#include <stdio.h>
 
 void mliImage_print(const struct mliImage *img, const uint64_t print_mode)
 {

@@ -1,5 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_photon_propagation.h"
+#include "mli_intersection_and_scenery.h"
+#include "mli_lambertian_cosine_law.h"
+#include "mli_ray_scenery_query.h"
 #include "chk.h"
 
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(

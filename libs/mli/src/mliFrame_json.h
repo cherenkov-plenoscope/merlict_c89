@@ -5,6 +5,9 @@
 #include <stdint.h>
 #include "mli_json.h"
 #include "mliFrame.h"
+#include "mliObject.h"
+#include "mliDynMap.h"
+
 
 int mliFrame_from_json(
         struct mliFrame *mother,

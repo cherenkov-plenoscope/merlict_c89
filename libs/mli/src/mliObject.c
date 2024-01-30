@@ -2,6 +2,7 @@
 #include "mliObject.h"
 #include <assert.h>
 #include "chk.h"
+#include <stdlib.h>
 
 struct mliObject mliObject_init(void)
 {

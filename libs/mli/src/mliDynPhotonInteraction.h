@@ -4,10 +4,18 @@
 
 #include "mliPhotonInteraction.h"
 #include "mliGeometry.h"
+#include "mliScenery.h"
+#include "mliDynArray.h"
 
 MLIDYNARRAY_DEFINITON(mli, PhotonInteraction, struct mliPhotonInteraction)
 
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,
         const struct mliGeometry *scenery);
+
+int mliDynPhotonInteraction_time_of_flight(
+        const struct mliDynPhotonInteraction *history,
+        const struct mliScenery *scenery,
+        const double wavelength,
+        double *total_time_of_flight);
 #endif

@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry.h"
+#include "mliObject_valid.h"
 #include "chk.h"
 
 void mliGeometry_init_objects(struct mliGeometry *geometry)

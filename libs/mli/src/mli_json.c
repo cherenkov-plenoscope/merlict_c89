@@ -2,7 +2,9 @@
 #include "mli_json.h"
 #include <stdlib.h>
 #include "mli_cstr.h"
+#include "mli_cstr_numbers.h"
 #include "mli_json_jsmn.h"
+#include "mli_math.h"
 #include "chk.h"
 
 struct mliJson mliJson_init(void)

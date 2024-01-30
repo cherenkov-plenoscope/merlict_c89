@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAABB.h"
 #include "chk.h"
+#include "mli_math.h"
 
 struct mliAABB mliAABB_set(const struct mliVec lower, const struct mliVec upper)
 {

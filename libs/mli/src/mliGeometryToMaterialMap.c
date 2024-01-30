@@ -2,7 +2,9 @@
 #include "mliGeometryToMaterialMap.h"
 #include <math.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "chk.h"
+#include "mli_math.h"
 
 struct mliGeometryToMaterialMap mliGeometryToMaterialMap_init(void)
 {

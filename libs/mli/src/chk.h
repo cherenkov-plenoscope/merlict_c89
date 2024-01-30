@@ -6,6 +6,7 @@
 #include <inttypes.h>
 #include <errno.h>
 #include <string.h>
+#include <stdlib.h>
 
 /*
  *  Based on Zed Shawn's awesome Debug Macros from his book:

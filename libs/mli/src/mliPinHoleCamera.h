@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "mliTracer.h"
 #include "mliView.h"
+#include "mliImage.h"
 
 struct mliPinHoleCamera {
         struct mliVec optical_axis;

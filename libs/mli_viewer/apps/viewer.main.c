@@ -2,6 +2,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "../src/mli_viewer_Config.h"
+#include "../src/mli_viewer_viewer.h"
+#include "../../mli/src/chk.h"
+#include "../../mli/src/mliScenery.h"
+#include "../../mli/src/mliScenery_tar.h"
+#include "../../mli/src/mliScenery_minimal_object.h"
+#include "../../mli/src/mliScenery_serialize.h"
+#include "../../mli/src/mli_cstr.h"
+#include "../../mli/src/mli_cstr_numbers.h"
 
 /*
         1) Almagamate

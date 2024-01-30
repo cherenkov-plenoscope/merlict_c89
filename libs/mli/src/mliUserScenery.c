@@ -7,6 +7,11 @@
 #include "mli_json.h"
 #include "mli_cstr.h"
 #include "mliUserScenery_json.h"
+#include "mliArchive.h"
+#include "mliObject_wavefront.h"
+#include "mliMedium_json.h"
+#include "mliFrame.h"
+#include "mliFrame_json.h"
 
 struct mliNameMap mliNameMap_init(void)
 {

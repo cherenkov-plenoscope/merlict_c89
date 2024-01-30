@@ -2,8 +2,10 @@
 #include "mliStr_numbers.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "mliIo.h"
 #include "chk.h"
+
 
 int mliStr_nto_double(
         double *out,

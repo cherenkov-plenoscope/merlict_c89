@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliRay_AABB.h"
+#include "mli_math.h"
 
 int mliRay_has_overlap_aabb(
         const struct mliRay ray,

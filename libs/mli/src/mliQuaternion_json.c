@@ -1,5 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliQuaternion_json.h"
+#include "mliVec_json.h"
+#include "mli_math.h"
 #include "chk.h"
 
 int mliQuaternion_tait_bryan_from_json(

@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliColor.h"
+#include "mli_math.h"
 
 struct mliColor mliColor_set(const float r, const float g, const float b)
 {

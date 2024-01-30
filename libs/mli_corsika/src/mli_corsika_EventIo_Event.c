@@ -2,6 +2,7 @@
 #include "mli_corsika_EventIo_Event.h"
 #include "mli_corsika_EventIo_Run.h"
 #include "../../mli/src/chk.h"
+#include "../../mli/src/mliDynFloat.h"
 
 int mliEventIo_read_telescope_offsets(
         FILE *f,

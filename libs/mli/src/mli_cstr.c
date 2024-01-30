@@ -1,7 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_cstr.h"
 #include <stdlib.h>
+#include <ctype.h>
 #include "chk.h"
+#include "mli_math.h"
+
 
 int mli_cstr_ends_with(const char *str, const char *sufix)
 {

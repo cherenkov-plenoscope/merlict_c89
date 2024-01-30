@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials.h"
+#include <stdlib.h>
 #include "chk.h"
 
 struct mliMaterialsCapacity mliMaterialsCapacity_init(void)

@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliIntersection.h"
+#include <float.h>
 
 struct mliIntersection mliIntersection_init(void)
 {

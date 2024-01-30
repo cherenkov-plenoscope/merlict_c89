@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_photon_sources.h"
 #include "chk.h"
+#include "mli_random.h"
 
 int mli_photon_source_parallel_towards_z_from_xy_disc(
         struct mliDynPhoton *out_photons,

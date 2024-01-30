@@ -1,6 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_minimal_object.h"
 #include "chk.h"
+#include "mliColor.h"
+#include "mli_random.h"
+#include "mli_random_generator.h"
+#include "mli_cstr.h"
+#include "mliObject_wavefront.h"
+#include "mliScenery_valid.h"
+
 
 struct mliColor mli_random_color(struct mliPrng *prng)
 {

@@ -3,6 +3,7 @@
 #define MLI_JSON_H_
 
 #include <stdint.h>
+#include <stdio.h>
 #include "mli_json_jsmn.h"
 #include "mliIo.h"
 #include "mliStr.h"

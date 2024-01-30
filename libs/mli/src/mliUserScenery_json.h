@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "mli_json.h"
 #include "mliUserScenery.h"
+#include "mliBoundaryLayer.h"
 
 int mliSide_from_json(
         struct mliSide *side,
