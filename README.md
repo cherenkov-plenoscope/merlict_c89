@@ -58,13 +58,22 @@ An interactive viewer for merlict that runs on the command line.
 Tools to read the photon output creadted by the CORSIKA simulation.
 
 ### mli_testing
-Only need for merlict's own unit tests.
+Only needed for merlict's own unit tests.
+
+## Makefile
+
+A ```Makefile``` will build the interactive viewer in ```build/bin/viewer```.
+Take a look here for what a makefile based build system might look like.
+
+```bash
+make
+```
 
 ## Almagamate into a single header and a single source
 
 Merlict has ```tool/almagamate.py``` which can combine the headers and sources into a single file.
-This is a poor man's build system which is primarily used to almagamate the sources for a ```python``` (```cython```) build.
-But you can use the almagamated sources for your build system as well.
+This is a poor man's build system which is primarily used to almagamate the sources for a ```python``` (```cython```) build. It makes the ```cython``` side of things very easy.
+Also it builds very fast. It builds much faster than individual objects ```.o``` which are linked together later. You can use the almagamated sources for your build system as well.
 This way you only have to:
 
 ```c
@@ -162,7 +171,7 @@ During propagation, merlict writes the history of the photon bouncing around in 
 Merlict supports a subset of the [```obj``` format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) in ASCII-text. An object-wavefront defines a mesh of triangle-faces in a 3D space with special emphasis on the meshe's surface-normal. Each face ```f``` references its three vertices ```v```. The surface-normal of a face ```f``` will be interpolated between the face's three vertex-normals ```vn``` using the barycentrig weight of the intersection-position w.r.t the face.
 
 - ```#``` comment-line. Any text in this line.
-- ```v``` vertex-line. Three real numbers define one vertex in the mesh. 
+- ```v``` vertex-line. Three real numbers define one vertex in the mesh.
 - ```vn``` vertex-normal-line. Three reel numbers define one surface-normal in the mesh.
 - ```f``` face-line. Exactly __three__ integer references to vertices define a face. And __three__ integer references to vertex-normals define the surface-normals on this face. References must be positive, backwards referencing with negative integers is not supported.
 - ```usemtl``` material-reference. All following faces are assigned the same material. There must be __at least one__ ```usemtl``` before the first face.
