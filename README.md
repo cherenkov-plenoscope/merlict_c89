@@ -1,6 +1,6 @@
 ![merlict c89 logo](/docs/merlict_c89_logo_wide_32by9_low.jpg)
 
-[![Build Status](https://travis-ci.org/cherenkov-plenoscope/merlict_development_kit.svg?branch=master)](https://travis-ci.org/cherenkov-plenoscope/merlict_c89)
+[![Build Status](https://github.com/cherenkov-plenoscope/json_utils/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/cherenkov-plenoscope/json_utils/actions/workflows/test.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Merlict simulates light. It finds the intersections of a ray and a complex 3D geometry with special emphasis on surface-normals. Merlict can propagate photons based on geometric optics according to Fresnel. Merlict comes with its own interactive viewer for the terminal. Merlict is a library written in ```c89```.
