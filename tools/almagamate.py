@@ -98,11 +98,18 @@ parser.add_argument(
         "A list of the libs to be almagamated e.g. 'libs/mli', 'libs/mli_corsika'."
     ),
 )
-
+parser.add_argument(
+    "-t",
+    "--test",
+    help="make test.main.c",
+    action="store_true",
+)
 
 args = parser.parse_args()
 libpaths = args.libs
 outdir = args.outdir
+dotest = args.test
+
 os.makedirs(outdir, exist_ok=True)
 libnames = str.join("-", [os.path.basename(lp) for lp in libpaths])
 header_path = os.path.join(outdir, libnames + ".h")
