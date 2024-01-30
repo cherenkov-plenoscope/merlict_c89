@@ -1,7 +1,6 @@
 import argparse
 import os
 import io
-import numpy as np
 
 
 def line_is_include(line):
@@ -26,6 +25,10 @@ def get_include_path_from_line(line, include_type):
 SOURCE_TYPES = ["c", "h", "test.c"]
 
 
+def argmax(iterable):
+    return max(enumerate(iterable), key=lambda x: x[1])[0]
+
+
 def read_lib(path, source_types=SOURCE_TYPES):
     out = {}
     for key in source_types:
@@ -41,7 +44,7 @@ def read_lib(path, source_types=SOURCE_TYPES):
                 if ext in filename:
                     matching_keys.append(key)
             matching_key = matching_keys[
-                np.argmax([len(i) for i in matching_keys])
+                argmax([len(i) for i in matching_keys])
             ]
             matching_ext = "." + matching_key
             mfilename = filename.replace(matching_ext, "")
