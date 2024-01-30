@@ -46,7 +46,8 @@ def read_lib(path, source_types=SOURCE_TYPES):
             mfilename = filename.replace(matching_ext, "")
 
             out[matching_key][mfilename] = {
-                "source": source_text, "path": source_path,
+                "source": source_text,
+                "path": source_path,
             }
     return out
 
@@ -77,7 +78,7 @@ def gather_includes(source, include_type):
     return list(set(includes))
 
 
-#def main():
+# def main():
 parser = argparse.ArgumentParser(
     prog="almagamate.py",
     description=(
@@ -158,9 +159,7 @@ for source_type in SOURCE_TYPES:
     )
 
 all_includes_from_std["c"] = list(
-    set(all_includes_from_std["c"]).difference(
-        set(all_includes_from_std["h"])
-    )
+    set(all_includes_from_std["c"]).difference(set(all_includes_from_std["h"]))
 )
 
 for source_type in SOURCE_TYPES:
@@ -205,9 +204,7 @@ while True:
         if not depends:
             so.write("/* {:s} */\n".format(filename))
             so.write("/* " + "-" * len(filename) + " */\n\n")
-            so.write(
-                strip_non_std_includes(sources["h"][filename]["source"])
-            )
+            so.write(strip_non_std_includes(sources["h"][filename]["source"]))
             so.write("\n")
             so.write("\n")
             inheader.add(filename)
@@ -265,18 +262,18 @@ if dotest:
     o += "int main(void)\n"
     o += "{\n"
     o += '        printf("MLI_VERSION %d.%d.%d\\n",\n'
-    o += '               MLI_VERSION_MAYOR,\n'
-    o += '               MLI_VERSION_MINOR,\n'
-    o += '               MLI_VERSION_PATCH);\n'
+    o += "               MLI_VERSION_MAYOR,\n"
+    o += "               MLI_VERSION_MINOR,\n"
+    o += "               MLI_VERSION_PATCH);\n"
     o += "\n"
     for path in list_tests:
         o += '#include "{:s}"\n'.format(path)
     o += "\n"
     o += '        printf("__SUCCESS__\\n");\n'
-    o += '        return EXIT_SUCCESS;\n'
-    o += 'test_failure:\n'
+    o += "        return EXIT_SUCCESS;\n"
+    o += "test_failure:\n"
     o += '        printf("__FAILURE__\\n");\n'
-    o += '        return EXIT_FAILURE;\n'
+    o += "        return EXIT_FAILURE;\n"
     o += "}\n"
     test_main_path = os.path.join(outdir, libnames + ".test.main.c")
     with open(test_main_path, "wt") as f:

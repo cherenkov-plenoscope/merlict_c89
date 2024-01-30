@@ -12,9 +12,7 @@ parser.add_argument(
     "lib",
     metavar="PATH",
     type=str,
-    help=(
-        "e.g. 'libs/mli' or 'libs/mli_corsika'."
-    ),
+    help=("e.g. 'libs/mli' or 'libs/mli_corsika'."),
 )
 
 args = parser.parse_args()
