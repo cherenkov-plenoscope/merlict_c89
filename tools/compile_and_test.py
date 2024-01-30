@@ -28,7 +28,13 @@ parser = argparse.ArgumentParser(
     ),
 )
 args = parser.parse_args()
-submodule_name = "mli"
+libpaths = [
+    os.path.join("libs", "mli_testing"),
+    os.path.join("libs", "mli"),
+    os.path.join("libs", "mli_corsika"),
+    os.path.join("libs", "mli_viewer"),
+]
+libnames = str.join("-", [os.path.basename(lp) for lp in libpaths])
 
 
 def print_file(path):
@@ -45,7 +51,6 @@ def run_and_save_sdtout(call, stdout_path):
     p.wait()
     o = p.stdout.read().decode()
     rc = int(p.returncode)
-    print(o)
 
     with open(stdout_path, "wt") as f:
         f.write(o)
@@ -67,7 +72,7 @@ def tar_sceneries(scenery_name):
 
 def almagamate_sources(
     outdir,
-    libpath,
+    libpaths,
 ):
     stdout_path = os.path.join(outdir, "compile_and_test.o")
     return run_and_save_sdtout(
@@ -76,8 +81,8 @@ def almagamate_sources(
             os.path.join("tools", "almagamate.py"),
             "--test",
             outdir,
-            libpath,
-        ],
+        ]
+        + libpaths,
         stdout_path=stdout_path,
     )
 
@@ -107,29 +112,29 @@ os.makedirs(os.path.join("build", "tests"), exist_ok=True)
 
 scenery_names = ["000", "001", "002", "optics_prism optics_focussing_mirror"]
 
-
-almagamate_sources(
-    outdir=os.path.join("build", "almagamate"),
-    libpath=os.path.join("libs", submodule_name),
-)
-
-
 for scenery_name in scenery_names:
     rc = tar_sceneries(scenery_name=scenery_name)
 
-os.makedirs(os.path.join("build", "tests", submodule_name), exist_ok=True)
+
+almagamate_sources(
+    outdir=os.path.join("build", "almagamate"),
+    libpaths=libpaths,
+)
+
+
+os.makedirs(os.path.join("build", "tests", libnames), exist_ok=True)
 
 for comkey in com:
     print(comkey)
     out_path = os.path.join(
-        "build", "tests", submodule_name, "test_{:s}".format(comkey)
+        "build", "tests", libnames, "test_{:s}".format(comkey)
     )
     rc = compile_sources(
         compiler=com[comkey]["compiler"],
         target=os.path.join(
             "build",
             "almagamate",
-            "{:s}-mli_testing.test.main.c".format(submodule_name),
+            "{:s}.test.main.c".format(libnames),
         ),
         out_path=out_path + ".exe",
         flags=com[comkey]["flags"],
