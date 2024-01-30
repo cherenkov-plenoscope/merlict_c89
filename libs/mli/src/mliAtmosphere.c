@@ -7,6 +7,7 @@
 
 #include "mliAtmosphere.h"
 #include <assert.h>
+#include <float.h>
 
 struct mliAtmosphere mliAtmosphere_init(void)
 {

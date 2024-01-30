@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTracer.h"
-#include "mliTracer_atmosphere.c"
+#include "mliTracer_atmosphere.h"
 #include <math.h>
 #include <stdint.h>
 #include "mli_intersection_and_scenery.h"
