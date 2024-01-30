@@ -22,33 +22,31 @@ def get_include_path_from_line(line, include_type):
         return line[start:-1]
 
 
-def read_lib(path):
-    cs = {}
-    hs = {}
-    testing_h = {}
-    testing_c = {}
-    test_c = {}
+SOURCE_TYPES = ["c", "h", "test.c"]
+
+
+def read_lib(path, source_types=SOURCE_TYPES):
+    out = {}
+    for key in source_types:
+        out[key] = {}
     for ooo in os.walk(path):
         for filename in ooo[2]:
             source_path = os.path.join(ooo[0], filename)
-            source_name, source_ext = os.path.splitext(filename)
             with open(source_path, "rt") as fin:
                 source_text = fin.read()
-            if source_ext == ".h":
-                if ".testing" in source_name:
-                    testing_h[source_name] = {"source": source_text}
-                else:
-                    hs[source_name] = {"source": source_text}
+            matching_keys = []
+            for key in source_types:
+                ext = "." + key
+                if ext in filename:
+                    matching_keys.append(key)
+            matching_key = matching_keys[
+                np.argmax([len(i) for i in matching_keys])
+            ]
+            matching_ext = "." + matching_key
+            mfilename = filename.replace(matching_ext, "")
 
-            elif source_ext == ".c":
-                if ".testing" in source_name:
-                    testing_c[source_name] = {"source": source_text}
-                elif  ".test" in source_name:
-                    test_c[source_name] = {"source": source_text}
-                else:
-                    cs[source_name] = {"source": source_text}
-
-    return {"h": hs, "testing.h": testing_h, "c": cs, "testing.c": testing_c, "test.c": test_c}
+            out[matching_key][mfilename] = {"source": source_text}
+    return out
 
 
 def strip_non_std_includes(source):
@@ -101,7 +99,6 @@ parser.add_argument(
     ),
 )
 
-SOURCE_TYPES = ["c", "h", "testing.h", "testing.c", "test.c"]
 
 args = parser.parse_args()
 libpaths = args.libs
@@ -110,6 +107,7 @@ os.makedirs(outdir, exist_ok=True)
 libnames = str.join("-", [os.path.basename(lp) for lp in libpaths])
 header_path = os.path.join(outdir, libnames + ".h")
 source_path = os.path.join(outdir, libnames + ".c")
+test_path = os.path.join(outdir, libnames + ".test.c")
 
 sources = {}
 for source_type in SOURCE_TYPES:
@@ -178,7 +176,7 @@ while True:
 
     ii += 1
     assert (
-        ii < initial_num_sources**2
+        ii <= initial_num_sources**2
     ), "Dependencies can not be resolved in {:s}".format(
         str(filenames_not_yet_in_header)
     )
@@ -227,6 +225,29 @@ for filename in sorted_c_sources_filenames:
 so.seek(0)
 with open(source_path, "wt") as fout:
     fout.write(so.read())
+
+# write test
+# ----------
+so = io.StringIO()
+
+for incl in all_includes_from_std["test.c"]:
+    so.write("#include <{:s}>\n".format(incl))
+so.write("\n")
+
+sorted_c_sources_filenames = sorted(list(sources["test.c"].keys()))
+for filename in sorted_c_sources_filenames:
+    so.write("/* {:s} */\n".format(filename))
+    so.write("/* " + "-" * len(filename) + " */\n\n")
+    so.write(strip_non_std_includes(sources["test.c"][filename]["source"]))
+    so.write("\n")
+    so.write("\n")
+    inheader.add(filename)
+
+so.seek(0)
+with open(test_path, "wt") as fout:
+    fout.write(so.read())
+
+
 
 """
 if __name__ == "__main__":
