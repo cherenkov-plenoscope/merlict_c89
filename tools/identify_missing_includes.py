@@ -63,7 +63,16 @@ for p in hcode:
 
 
 # chk
+if libpaths == os.path.join("libs", "mli"):
+    chk_include_path = "chk.h"
+else:
+    chk_include_path = "../../mli/src/chk.h"
+
 for cpath in ccode:
-    if "error:" in ccode[cpath]:
-        if not '#include "chk.h"' in ccode[cpath]:
-            print('Expected #include "chk.h" in {:s}.'.format(cpath))
+    if "chk_error:" in ccode[cpath]:
+        if not '#include "{:s}"'.format(chk_include_path) in ccode[cpath]:
+            print(
+                'Expected #include "{:s}" in {:s}.'.format(
+                    chk_include_path, cpath
+                )
+            )
