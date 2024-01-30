@@ -6,9 +6,19 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7"]
+
     steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
+        run: |
+          python -m pip install pip --upgrade
       - name: Test with pytest
         run: |
-          ./tools/compile_and_test_core.sh
-          ./tools/compile_and_test_corsika.sh
+          python tools/compile_and_test.py
