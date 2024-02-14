@@ -2,7 +2,7 @@
 CC          := gcc
 
 #The Target Binary Program
-TARGET      := viewer
+TARGET      := ground_grid
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := libs
@@ -12,6 +12,7 @@ TARGETDIR   := build/bin
 RESDIR      := res
 SRCEXT      := c
 TESTSRCEXT  := test.c
+MAINSRCEXT  := main.c
 DEPEXT      := d
 OBJEXT      := o
 
@@ -24,11 +25,15 @@ INCDEP      := -I$(INCDIR)
 #---------------------------------------------------------------------------------
 #DO NOT EDIT BELOW THIS LINE
 #---------------------------------------------------------------------------------
-SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT) | grep -v $(TESTSRCEXT))
+SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT) | grep -v $(TESTSRCEXT) | grep -v $(MAINSRCEXT))
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
 #Defauilt Make
 all: resources $(TARGET)
+
+viewer: $(SRCDIR)/mli_viewer/apps/viewer.main.c
+
+ground_grid: $(SRCDIR)/mli_corsika/apps/ground_grid.main.c
 
 #Remake
 remake: cleaner all
