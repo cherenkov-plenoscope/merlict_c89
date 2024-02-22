@@ -11,17 +11,60 @@ struct mliCorsikaPhotonBunch {
         /*
          * x in cm
          * y in cm
-         * cx
-         * cy
+         * ux = sin(theta) * cos(phi)
+         * vy = sin(theta) * sin(phi)
          * time in nanoseconds since first interaction.
          * zem
          * photons
          * wavelength is in nanometer negative if scattered ?!
+         *
+         * KIT-CORSIKA coordinate-system
+         *                /\ z-axis                                            *
+         *                |                                                    *
+         *                |\ p                                                 *
+         *                | \ a                                                *
+         *                |  \ r                                               *
+         *                |   \ t                                              *
+         *                |    \ i                                             *
+         *                |     \ c                                            *
+         *                |      \ l                                           *
+         *                |       \ e                                          *
+         *                |        \                                           *
+         *                |  theta  \ m                                        *
+         *                |       ___\ o                                       *
+         *                |___----    \ m      ___                             *
+         *                |            \ e       /| y-axis (west)              *
+         *                |             \ n    /                               *
+         *                |              \ t /                                 *
+         *                |               \/u                                  *
+         *                |              / \ m                                 *
+         *                |            /    \                                  *
+         *                |          /       \                                 *
+         *                |        /__________\                                *
+         *                |      /      ___---/                                *
+         *                |    /   __---    /                                  *
+         *                |  /__--- phi \ /                                    *
+         * _______________|/--__________/______\ x-axis (north)                *
+         *               /|                    /                               *
+         *             /  |                                                    *
+         *           /    |                                                    *
+         *         /                                                           *
+         *                                                                     *
+         *                                                                     *
+         * Extensive Air Shower Simulation with CORSIKA, Figure 1, page 114
+         * (Version 7.6400 from December 27, 2017)
+         *
+         * Direction-cosines:
+         *      ux = sin(theta) * cos(phi)
+         *      vy = sin(theta) * sin(phi)
+         * The zenith-angle theta opens relative to the negative z-axis.
+         * It is the momentum of the Cherenkov-photon, which is pointing
+         * down towards the observation-plane.
          */
         float x_cm;
         float y_cm;
-        float cx_rad;
-        float cy_rad;
+        float ux;
+        float vy;
         float time_ns;
         float z_emission_cm;
         float weight_photons;

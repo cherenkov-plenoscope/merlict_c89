@@ -57,11 +57,11 @@ int mliEventTape_testing_bunches_are_equal(float *b1, float *b2)
                 return 0;
         }
         if (b1[2] != b2[2]) {
-                fprintf(stderr, "Bunch missmatch cx_rad.\n");
+                fprintf(stderr, "Bunch missmatch ux.\n");
                 return 0;
         }
         if (b1[3] != b2[3]) {
-                fprintf(stderr, "Bunch missmatch cy_rad.\n");
+                fprintf(stderr, "Bunch missmatch vy.\n");
                 return 0;
         }
         if (b1[4] != b2[4]) {

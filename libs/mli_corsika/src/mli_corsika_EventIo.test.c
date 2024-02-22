@@ -250,8 +250,8 @@ CASE("EventIoRun_telescope_dat__photon_bundle_values")
 
                 CHECK_MARGIN(b.x_cm, some[j].x_cm, 1e-6);
                 CHECK_MARGIN(b.y_cm, some[j].y_cm, 1e-6);
-                CHECK_MARGIN(b.cx_rad, some[j].cx_rad, 1e-6);
-                CHECK_MARGIN(b.cy_rad, some[j].cy_rad, 1e-6);
+                CHECK_MARGIN(b.ux, some[j].ux, 1e-6);
+                CHECK_MARGIN(b.vy, some[j].vy, 1e-6);
                 CHECK_MARGIN(b.time_ns, some[j].time_ns, 1e-6);
                 CHECK_MARGIN(b.z_emission_cm, some[j].z_emission_cm, 10.0);
                 /* the height can sometimes be way off! */

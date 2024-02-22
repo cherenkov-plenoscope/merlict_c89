@@ -19,16 +19,16 @@ CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
         int64_t id = 0;
         for (float x = -1e4; x < 1e4; x = x + 1495.0) {
                 for (float y = -1e4; y < 1e4; y = y + 1495.0) {
-                        for (float cx = -0.5; cx < 0.5; cx = cx + 0.11) {
-                                for (float cy = -0.5; cy < 0.5;
-                                     cy = cy + 0.11) {
+                        for (float ux = -0.5; ux < 0.5; ux = ux + 0.11) {
+                                for (float vy = -0.5; vy < 0.5;
+                                     vy = vy + 0.11) {
                                         struct mliPhoton merlict_photon;
                                         struct mliCorsikaPhotonBunch
                                                 corsika_photon;
                                         corsika_photon.x_cm = x;
                                         corsika_photon.y_cm = y;
-                                        corsika_photon.cx_rad = cx;
-                                        corsika_photon.cy_rad = cy;
+                                        corsika_photon.ux = ux;
+                                        corsika_photon.vy = vy;
                                         corsika_photon.time_ns = 0.0;
                                         corsika_photon.z_emission_cm = 1e5;
                                         corsika_photon.weight_photons = 1.0;

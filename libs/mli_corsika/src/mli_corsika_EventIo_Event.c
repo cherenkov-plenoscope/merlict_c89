@@ -106,8 +106,8 @@ int mliEventIo_read_photon_bunches(
 
                         bunches->array[row].x_cm = tmp[0] * 0.1;
                         bunches->array[row].y_cm = tmp[1] * 0.1;
-                        bunches->array[row].cx_rad = tmp[2] / 30000;
-                        bunches->array[row].cy_rad = tmp[3] / 30000;
+                        bunches->array[row].ux = tmp[2] / 30000;
+                        bunches->array[row].vy = tmp[3] / 30000;
                         bunches->array[row].time_ns = tmp[4] * 0.1;
                         bunches->array[row].z_emission_cm =
                                 pow(10, tmp[5] * 0.001);
@@ -120,8 +120,8 @@ int mliEventIo_read_photon_bunches(
 
                         bunches->array[row].x_cm = tmp[0];
                         bunches->array[row].y_cm = tmp[1];
-                        bunches->array[row].cx_rad = tmp[2];
-                        bunches->array[row].cy_rad = tmp[3];
+                        bunches->array[row].ux = tmp[2];
+                        bunches->array[row].vy = tmp[3];
                         bunches->array[row].time_ns = tmp[4];
                         bunches->array[row].z_emission_cm = tmp[5];
                         bunches->array[row].weight_photons = tmp[6];

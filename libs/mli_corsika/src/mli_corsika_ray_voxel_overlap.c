@@ -263,6 +263,7 @@ void mli_corsika_overlap_of_ray_with_voxels(
 {
         double support[3];
         double direction[3];
+        struct mliVec _direction = {0};
 
         unsigned int number_overlaps = 0u;
         unsigned int x_range[2];
@@ -273,11 +274,10 @@ void mli_corsika_overlap_of_ray_with_voxels(
         support[1] = bunch->y_cm;
         support[2] = 0.0;
 
-        direction[0] = bunch->cx_rad;
-        direction[1] = bunch->cy_rad;
-        direction[2] =
-                sqrt(1.0 - bunch->cx_rad * bunch->cx_rad -
-                     bunch->cy_rad * bunch->cy_rad);
+        _direction = mli_corsika_photon_direction_of_motion(*bunch);
+        direction[0] = _direction.x;
+        direction[1] = _direction.y;
+        direction[2] = _direction.z;
 
         x_range[0] = 0u;
         x_range[1] = x_bin_edges->size - 1u;

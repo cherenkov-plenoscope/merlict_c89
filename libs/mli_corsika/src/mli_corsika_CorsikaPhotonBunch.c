@@ -13,8 +13,8 @@ void mliCorsikaPhotonBunch_set_from_raw(
 {
         bunch->x_cm = raw[0];
         bunch->y_cm = raw[1];
-        bunch->cx_rad = raw[2];
-        bunch->cy_rad = raw[3];
+        bunch->ux = raw[2];
+        bunch->vy = raw[3];
         bunch->time_ns = raw[4];
         bunch->z_emission_cm = raw[5];
         bunch->weight_photons = raw[6];
@@ -27,8 +27,8 @@ void mliCorsikaPhotonBunch_to_raw(
 {
         raw[0] = bunch->x_cm;
         raw[1] = bunch->y_cm;
-        raw[2] = bunch->cx_rad;
-        raw[3] = bunch->cy_rad;
+        raw[2] = bunch->ux;
+        raw[3] = bunch->vy;
         raw[4] = bunch->time_ns;
         raw[5] = bunch->z_emission_cm;
         raw[6] = bunch->weight_photons;
@@ -135,10 +135,8 @@ struct mliVec mli_corsika_photon_direction_of_motion(
           It is the momentum of the Cherenkov-photon, which is pointing
           down towards the observation-plane.
   */
-        const double cz_rad =
-                sqrt(1.0 - bunch.cx_rad * bunch.cx_rad -
-                     bunch.cy_rad * bunch.cy_rad);
-        return mliVec_init(bunch.cx_rad, bunch.cy_rad, -cz_rad);
+        const double z = sqrt(1.0 - bunch.ux * bunch.ux - bunch.vy * bunch.vy);
+        return mliVec_init(bunch.ux, bunch.vy, -z);
 }
 
 struct mliVec mli_corsika_photon_support_on_observation_level(
