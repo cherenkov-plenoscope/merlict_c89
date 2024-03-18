@@ -31,7 +31,7 @@ chk_error:
 
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,
-        const struct mliGeometry *scenery)
+        const struct mliScenery *scenery)
 {
         uint64_t i;
         char type_string[1024];
@@ -59,9 +59,9 @@ void mliDynPhotonInteraction_print(
 
                 if (phisec.on_geometry_surface == 1) {
                         printf("(% 5d;% 5d,% 5d,% 5d)  ",
-                               scenery->robject_ids[phisec.geometry_id.robj],
+                               scenery->geometry.robject_ids[phisec.geometry_id.robj],
                                phisec.geometry_id.robj,
-                               scenery->robjects[phisec.geometry_id.robj],
+                               scenery->geometry.robjects[phisec.geometry_id.robj],
                                phisec.geometry_id.face);
                 } else {
                         printf("            n/a            ");
@@ -74,11 +74,12 @@ void mliDynPhotonInteraction_print(
 
                 mli_photoninteraction_type_to_string(phisec.type, type_string);
 
-                printf("%-12s ", type_string);
+                printf("%-24s ", type_string);
 
-                printf("{% 2ld,% 2ld}  ",
-                       phisec.medium_coming_from,
-                       phisec.medium_going_to);
+                printf("{%-12s,%-12s}  ",
+                        scenery->materials.medium_names[phisec.medium_coming_from].cstr,
+                        scenery->materials.medium_names[phisec.medium_going_to].cstr
+                );
 
                 if (phisec.type == MLI_PHOTON_CREATION) {
                         printf(" n/a  ");
@@ -93,7 +94,7 @@ void mliDynPhotonInteraction_print(
                                 printf("%s", in_out);
                         }
                 } else {
-                        printf("n/a  ");
+                        printf("n/a");
                 }
                 printf("\n");
         }

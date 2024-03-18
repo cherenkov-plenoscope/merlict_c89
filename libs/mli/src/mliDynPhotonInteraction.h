@@ -11,7 +11,7 @@ MLIDYNARRAY_DEFINITON(mli, PhotonInteraction, struct mliPhotonInteraction)
 
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,
-        const struct mliGeometry *scenery);
+        const struct mliScenery *scenery);
 
 int mliDynPhotonInteraction_time_of_flight(
         const struct mliDynPhotonInteraction *history,
