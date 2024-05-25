@@ -263,7 +263,7 @@ void mli_corsika_overlap_of_ray_with_voxels(
 {
         double support[3];
         double direction[3];
-        struct mliVec _direction = {0};
+        struct mliVec _direction = mliVec_init(0.0, 0.0, 0.0);
 
         unsigned int number_overlaps = 0u;
         unsigned int x_range[2];

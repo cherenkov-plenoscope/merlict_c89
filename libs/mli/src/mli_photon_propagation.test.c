@@ -68,7 +68,7 @@ CASE("simple propagation")
 
         CHECK(history.size >= 1);
 
-        mliDynPhotonInteraction_print(&history, &scenery.geometry);
+        mliDynPhotonInteraction_print(&history, &scenery);
 
         mliScenery_free(&scenery);
         mliDynPhotonInteraction_free(&history);
