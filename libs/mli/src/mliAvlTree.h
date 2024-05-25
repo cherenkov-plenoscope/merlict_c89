@@ -2,6 +2,7 @@
 #ifndef MLIAVLTREE_H_
 #define MLIAVLTREE_H_
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <ctype.h>
 
