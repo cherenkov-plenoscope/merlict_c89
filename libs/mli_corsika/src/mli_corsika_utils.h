@@ -4,6 +4,16 @@
 
 float mli_chars_to_float(const char *four_char_word);
 
+double mli_corsika_ux_to_cx(const double ux);
+double mli_corsika_vy_to_cy(const double vy);
+double mli_corsika_wz_to_cz(const double wz);
+
+double mli_corsika_cx_to_ux(const double cx);
+double mli_corsika_cy_to_vy(const double cy);
+double mli_corsika_cz_to_wz(const double cz);
+
+double mli_corsika_restore_direction_z_component(const double x, const double y);
+
 #define MLI_CORSIKA_HEADER_SIZE_BYTES (sizeof(float) * 273)
 #define MLI_CORSIKA_BUNCH_SIZE_BYTES (sizeof(float) * 8)
 
