@@ -1,5 +1,13 @@
+/* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "mli_ray_grid_traversal.h"
 
+/* Inspired by:
+ * A Fast Voxel Traversal Algorithm for Ray Tracing
+ * John Amanatides and Andrew Woo
+ * Dept. of Computer Science
+ * University of Toronto
+ * Toronto, Ontario, Canada M5S 1A4
+ */
 
 struct mliIdx3 mliIdx3_set(const int64_t x, const int64_t y, const int64_t z)
 {

@@ -288,3 +288,6 @@ Writing and reading tape-archives (```.tar```)
 
 Controlling stdin buffer using ```termios```
 - Edwin, Buck;
+
+A fast voxel traversal algorithm for ray tracing
+- John Amanatides and Andrew Woo, Dept. of Computer Science University of Toronto, Toronto, Ontario, Canada M5S 1A4
