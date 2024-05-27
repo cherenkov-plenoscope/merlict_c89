@@ -216,3 +216,35 @@ CASE("ray and grid traversal simple")
         CHECK(rc == traversal.valid);
         CHECK(!traversal.valid);
 }
+
+
+CASE("Actual example from simulated shower")
+{
+        int rc = 10;
+        struct mliAxisAlignedGrid grid;
+        struct mliAxisAlignedGridTraversal traversal;
+        struct mliRay ray;
+
+        grid = mliAxisAlignedGrid_set(
+                mliAABB_set(
+                        mliVec_init(-5119268.215672, -5119974.912158, -5000.000000),
+                        mliVec_init(5120731.784328, 5120025.087842, 5000.000000)
+                ),
+                mliIdx3_set(1024, 1024, 1)
+        );
+
+        ray.support = mliVec_init(4.171968e+03, 4.857704e+03, 0.000000e+00);
+        ray.direction = mliVec_init(-3.894984e-02, -6.049007e-01, 7.953478e-01);
+
+        traversal = mliAxisAlignedGridTraversal_start(
+                &grid,
+                &ray
+        );
+        mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
+
+        while (traversal.valid && rc > 0) {
+                rc -= 1;
+                mliAxisAlignedGridTraversal_next(&traversal);
+                mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
+        }
+}

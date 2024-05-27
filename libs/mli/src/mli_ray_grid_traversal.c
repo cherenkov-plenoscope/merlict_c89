@@ -1,5 +1,7 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "mli_ray_grid_traversal.h"
+#include "mli_math.h"
+#include <assert.h>
 
 /* Inspired by:
  * A Fast Voxel Traversal Algorithm for Ray Tracing
@@ -117,17 +119,17 @@ struct mliVec mliAxisAlignedGridTraversal_first_plane(
 
 double calc_t_for_x_plane(const double x_plane, const struct mliRay* ray)
 {
-        return  (ray->support.x + x_plane) / (ray->direction.x);
+        return (ray->support.x + x_plane) / (ray->direction.x);
 }
 
 double calc_t_for_y_plane(const double y_plane, const struct mliRay* ray)
 {
-        return  (ray->support.y + y_plane) / (ray->direction.y);
+        return (ray->support.y + y_plane) / (ray->direction.y);
 }
 
 double calc_t_for_z_plane(const double z_plane, const struct mliRay* ray)
 {
-        return  (ray->support.z + z_plane) / (ray->direction.z);
+        return (ray->support.z + z_plane) / (ray->direction.z);
 }
 
 struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
@@ -155,9 +157,9 @@ struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
                 traversal.tMax.y = calc_t_for_y_plane(first_plane.y, ray);
                 traversal.tMax.z = calc_t_for_z_plane(first_plane.z, ray);
 
-                traversal.tDelta.x = grid->bin_width.x / ray->direction.x;
-                traversal.tDelta.y = grid->bin_width.y / ray->direction.y;
-                traversal.tDelta.z = grid->bin_width.z / ray->direction.z;
+                traversal.tDelta.x = fabs(grid->bin_width.x / ray->direction.x);
+                traversal.tDelta.y = fabs(grid->bin_width.y / ray->direction.y);
+                traversal.tDelta.z = fabs(grid->bin_width.z / ray->direction.z);
         }
         return traversal;
 }
@@ -208,8 +210,10 @@ void mliAxisAlignedGridTraversal_fprint(FILE* f, struct mliAxisAlignedGridTraver
 {
         struct mliAxisAlignedGridTraversal* t = traversal;
         fprintf(f, "  grid.bounds.upper: [%f, %f, %f]\n", t->grid->bounds.upper.x, t->grid->bounds.upper.y, t->grid->bounds.upper.z);
-        fprintf(f, "  grid.bounds.lower: [%f, %f, %f]\n", t->grid->bounds.lower.x, t->grid->bounds.lower.y, t->grid->bounds.upper.z);
+        fprintf(f, "  grid.bounds.lower: [%f, %f, %f]\n", t->grid->bounds.lower.x, t->grid->bounds.lower.y, t->grid->bounds.lower.z);
+        fprintf(f, "  grid.num_bins: [%ld, %ld, %ld]\n", t->grid->num_bins.x, t->grid->num_bins.y, t->grid->num_bins.z);
 
+        fprintf(f, "  valid: %d\n", t->valid);
         fprintf(f, "  voxel: [%ld, %ld, %ld]\n", t->voxel.x, t->voxel.y, t->voxel.z);
         fprintf(f, "  step: [%f, %f, %f]\n", t->step.x, t->step.y, t->step.z);
         fprintf(f, "  tMax: [%f, %f, %f]\n", t->tMax.x, t->tMax.y, t->tMax.z);

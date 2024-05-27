@@ -4,7 +4,8 @@
 
 #include <stdint.h>
 #include "mliVec.h"
-#include "mliRay_AABB.h"
+#include "mliAABB.h"
+#include "mliRay.h"
 
 struct mliIdx3 {
         int64_t x;

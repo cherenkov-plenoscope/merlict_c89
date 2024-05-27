@@ -9,6 +9,14 @@
 #include "../../mli/src/mliIo.h"
 #include "../../mli/src/mliStr_numbers.h"
 #include "../../mli/src/mliDynArray.h"
+#include "../../mli/src/mli_ray_grid_traversal.h"
+#include <time.h>
+
+
+double clock2second(const clock_t t)
+{
+        return ((double)t) / CLOCKS_PER_SEC;
+}
 
 
 int read_config(
@@ -75,39 +83,50 @@ int main(int argc, char *argv[])
         float runh[273] = {0.0};
         float evth[273] = {0.0};
         float raw[8] = {0.0};
-        double xystart = -500 * 50e2;
-        double xystop = 500 * 50e2;
-
-        unsigned int num_bins_each_axis = 1000;
-        uint64_t numover = (uint64_t)(1.5 * (double)num_bins_each_axis);
 
         struct mliCorsikaHistogram2d hist = mliCorsikaHistogram2d_init();
 
         struct mliCorsikaPhotonBunch bunch;
+        struct mliAxisAlignedGrid grid;
+        struct mliAxisAlignedGridTraversal traversal;
 
         struct mliDynDouble x_bin_edges = mliDynDouble_init();
         struct mliDynDouble y_bin_edges = mliDynDouble_init();
         struct mliDynDouble z_bin_edges = mliDynDouble_init();
-
-        struct mliDynUint32 x_idxs = mliDynUint32_init();
-        struct mliDynUint32 y_idxs = mliDynUint32_init();
-        struct mliDynUint32 z_idxs = mliDynUint32_init();
-        struct mliDynDouble overlaps = mliDynDouble_init();
-
-        mli_linspace(xystart, xystop, x_bin_edges.array, x_bin_edges.size);
-        mli_linspace(xystart, xystop, y_bin_edges.array, y_bin_edges.size);
-        mli_linspace(-50e2, 50e2, z_bin_edges.array, z_bin_edges.size);
-
-        mliDynUint32_malloc(&x_idxs, numover);
-        mliDynUint32_malloc(&y_idxs, numover);
-        mliDynUint32_malloc(&z_idxs, numover);
-        mliDynDouble_malloc(&overlaps, numover);
 
         chk_msg(argc == 4,
                 "Usage: ground_grid event_tape_path out_path config_path");
 
         chk_msg(read_config(argv[3], &x_bin_edges, &y_bin_edges, &z_bin_edges),
                 "Can not read config with bin edges.");
+
+        chk_msg(z_bin_edges.size == 2, "Expected z_bin_edges.size == 2.");
+        chk_msg(z_bin_edges.array[0] < 0, "Expected z_bin_edges[0] < 0");
+        chk_msg(z_bin_edges.array[1] > 0, "Expected z_bin_edges[1] > 0");
+
+        grid = mliAxisAlignedGrid_set(
+                mliAABB_set(
+                        mliVec_init(
+                                x_bin_edges.array[0],
+                                y_bin_edges.array[0],
+                                z_bin_edges.array[0]
+                        ),
+                        mliVec_init(
+                                x_bin_edges.array[x_bin_edges.size - 1],
+                                y_bin_edges.array[y_bin_edges.size - 1],
+                                z_bin_edges.array[z_bin_edges.size - 1]
+                        )
+                ),
+                mliIdx3_set(
+                        x_bin_edges.size - 1,
+                        y_bin_edges.size - 1,
+                        z_bin_edges.size - 1
+                )
+        );
+
+        mliDynDouble_free(&x_bin_edges);
+        mliDynDouble_free(&y_bin_edges);
+        mliDynDouble_free(&z_bin_edges);
 
         istream = fopen(argv[1], "rb");
         ostream = fopen(argv[2], "wt");
@@ -118,7 +137,8 @@ int main(int argc, char *argv[])
         chk(mliIo_malloc_capacity(&buff, 10 * 1000));
 
         while (mliEventTapeReader_read_evth(&arc, evth)) {
-                uint64_t bunch_index = 0;
+                clock_t t_ray_voxel = 0;
+                clock_t t_avl_histogram = 0;
                 uint64_t xx, yy, ii, jj = 0;
 
                 if (hist.dict.capacity > 10 * 1000 * 1000) {
@@ -135,31 +155,47 @@ int main(int argc, char *argv[])
                 }
 
                 while (mliEventTapeReader_read_cherenkov_bunch(&arc, raw)) {
-                        unsigned int oo;
+                        clock_t t1, t2, t3, t4, t5;
+                        int num_overlaps = 0;
+                        struct mliRay ray;
                         mliCorsikaPhotonBunch_set_from_raw(&bunch, raw);
-                        mli_corsika_overlap_of_ray_with_voxels(
-                                &bunch,
-                                &x_bin_edges,
-                                &y_bin_edges,
-                                &z_bin_edges,
-                                &x_idxs,
-                                &y_idxs,
-                                &z_idxs,
-                                &overlaps);
+                        ray.support.x = bunch.x_cm;
+                        ray.support.y = bunch.y_cm;
+                        ray.support.z = 0.0;
+                        ray.direction.x = mli_corsika_ux_to_cx(bunch.ux);
+                        ray.direction.y = mli_corsika_vy_to_cy(bunch.vy);
+                        ray.direction.z = mli_corsika_restore_direction_z_component(
+                                ray.direction.x,
+                                ray.direction.y
+                        );
 
-                        for (oo = 0; oo < overlaps.size; oo ++)
-                        {
+                        t1 = clock();
+                        traversal = mliAxisAlignedGridTraversal_start(
+                                &grid,
+                                &ray
+                        );
+                        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
+
+                        t2 = clock();
+                        t_ray_voxel += (t2 - t1);
+
+                        while (traversal.valid) {
+                                num_overlaps += 1;
+                                t3 = clock();
                                 chk(
                                         mliCorsikaHistogram2d_assign(
                                                 &hist,
-                                                x_idxs.array[oo],
-                                                y_idxs.array[oo],
+                                                traversal.voxel.x,
+                                                traversal.voxel.y,
                                                 bunch.weight_photons
                                         )
                                 );
+                                t4 = clock();
+                                t_avl_histogram += (t4 - t3);
+                                mliAxisAlignedGridTraversal_next(&traversal);
+                                t5 = clock();
+                                t_ray_voxel += (t5 - t4);
                         }
-
-                        bunch_index += 1;
                 }
                 chk(mliCorsikaHistogram2d_dumps(&hist, &buff));
                 buff.pos = 0;
@@ -169,21 +205,16 @@ int main(int argc, char *argv[])
                         buff.size,
                         ostream
                 );
+
+                fprintf(stdout, "t_ray_voxel: %es\n", clock2second(t_ray_voxel));
+                fprintf(stdout, "t_avl_histogram: %es\n", clock2second(t_avl_histogram));
+
         }
         mliCorsikaHistogram2d_free(&hist);
 
         chk(mliEventTapeReader_finalize(&arc));
         fclose(istream);
         fclose(ostream);
-
-        mliDynDouble_free(&x_bin_edges);
-        mliDynDouble_free(&y_bin_edges);
-        mliDynDouble_free(&z_bin_edges);
-
-        mliDynUint32_free(&x_idxs);
-        mliDynUint32_free(&y_idxs);
-        mliDynUint32_free(&z_idxs);
-        mliDynDouble_free(&overlaps);
 
         return EXIT_SUCCESS;
 chk_error:
