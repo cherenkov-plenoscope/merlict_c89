@@ -1,4 +1,4 @@
-#include "mliAvlTree.h"
+#include "mliAvlDict.h"
 #include "chk.h"
 #include "mli_math.h"
 
@@ -209,4 +209,11 @@ int mliAvlDict_get(struct mliAvlDict* dict, const int64_t key, int64_t* value)
                 (*value) = nn->value;
                 return 1;
         }
+}
+
+void mliAvlDict_reset(struct mliAvlDict* dict)
+{
+        dict->tree.root = NULL;
+        dict->back = 0;
+        dict->len = 0;
 }

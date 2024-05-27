@@ -3,6 +3,7 @@
 #include "../src/mli_corsika_ray_voxel_overlap.h"
 #include "../src/mli_corsika_CorsikaPhotonBunch.h"
 #include "../src/mli_corsika_EventTape.h"
+#include "../src/mli_corsika_Histogram2d.h"
 #include "../../mli/src/chk.h"
 #include "../../mli/src/mli_math.h"
 #include "../../mli/src/mliIo.h"
@@ -251,6 +252,7 @@ int main(int argc, char *argv[])
 {
         FILE *istream = NULL;
         FILE *ostream = NULL;
+        struct mliIo buff = mliIo_init();
 
         struct mliEventTapeReader arc = mliEventTapeReader_init();
         float runh[273] = {0.0};
@@ -262,7 +264,8 @@ int main(int argc, char *argv[])
         unsigned int num_bins_each_axis = 1000;
         uint64_t numover = (uint64_t)(1.5 * (double)num_bins_each_axis);
 
-        struct mliGroundGrid grid = mliGroundGrid_init();
+        /*struct mliGroundGrid grid = mliGroundGrid_init();*/
+        struct mliCorsikaHistogram2d hist = mliCorsikaHistogram2d_init();
 
         struct mliCorsikaPhotonBunch bunch;
 
@@ -295,12 +298,27 @@ int main(int argc, char *argv[])
         chk(mliEventTapeReader_begin(&arc, istream));
         chk(mliEventTapeReader_read_runh(&arc, runh));
 
-        chk(mliGroundGrid_malloc(&grid, x_bin_edges.size, y_bin_edges.size));
+        /* chk(mliGroundGrid_malloc(&grid, x_bin_edges.size, y_bin_edges.size));*/
+        chk(mliCorsikaHistogram2d_malloc(&hist, 10*1000));
+        chk(mliIo_malloc_capacity(&buff, 10 * 1000));
 
         while (mliEventTapeReader_read_evth(&arc, evth)) {
                 uint64_t bunch_index = 0;
                 uint64_t xx, yy, ii, jj = 0;
-                mliGroundGrid_reset(&grid);
+                /* mliGroundGrid_reset(&grid); */
+
+                if (hist.dict.capacity > 10 * 1000 * 1000) {
+                        chk(mliCorsikaHistogram2d_malloc(&hist, 10*1000));
+                } else {
+                        mliCorsikaHistogram2d_reset(&hist);
+                }
+
+                if (buff.capacity > 1000 * 1000) {
+                        chk(mliIo_malloc_capacity(&buff, 1000 * 1000));
+                } else {
+                        buff.pos = 0;
+                        buff.size = 0;
+                }
 
                 while (mliEventTapeReader_read_cherenkov_bunch(&arc, raw)) {
                         unsigned int oo;
@@ -315,18 +333,41 @@ int main(int argc, char *argv[])
                                 &z_idxs,
                                 &overlaps);
 
+                        /*
                         chk(mliGroundGrid_assign_overlap(
                                 &grid,
                                 &x_idxs,
                                 &y_idxs,
                                 bunch_index,
                                 bunch.weight_photons));
+                        */
+                        for (oo = 0; oo < overlaps.size; oo ++)
+                        {
+                                chk(
+                                        mliCorsikaHistogram2d_assign(
+                                                &hist,
+                                                x_idxs.array[oo],
+                                                y_idxs.array[oo],
+                                                bunch.weight_photons
+                                        )
+                                );
+                        }
 
                         bunch_index += 1;
                 }
-                chk(mliGroundGrid_fprint_jsonl(&grid, ostream));
+                /*chk(mliGroundGrid_fprint_jsonl(&grid, ostream));*/
+                chk(mliCorsikaHistogram2d_dumps(&hist, &buff));
+                buff.pos = 0;
+                chk_fwrite(
+                        buff.cstr,
+                        sizeof(unsigned char),
+                        buff.size,
+                        ostream
+                );
         }
-        mliGroundGrid_free(&grid);
+        /* mliGroundGrid_free(&grid); */
+        mliCorsikaHistogram2d_free(&hist);
+
         chk(mliEventTapeReader_finalize(&arc));
         fclose(istream);
         fclose(ostream);
