@@ -41,4 +41,5 @@ int mliAABB_valid(const struct mliAABB a);
 int mliAABB_equal(const struct mliAABB a, const struct mliAABB b);
 int mliAABB_overlapp_aabb(const struct mliAABB a, const struct mliAABB b);
 int mliAABB_is_overlapping(const struct mliAABB a, const struct mliAABB b);
+int mliAABB_is_point_inside(const struct mliAABB a, const struct mliVec point);
 #endif

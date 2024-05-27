@@ -18,9 +18,9 @@ CASE("mliAvlTree_basics")
         ints.compare = mliAvlNode_compare;
         ints.root=0;
         for (i = 0; i < 20; i++) {
-                printf("-------------\n");
+                /*printf("-------------\n");*/
                 mliAvlTree_insert(&ints, (struct mliAvl*)&myint[i]);
-                mliAvlNode_print(ints.root, 0);
+                /*mliAvlNode_print(ints.root, 0);*/
         }
 
         probe.key = 15;
@@ -33,8 +33,8 @@ CASE("mliAvlTree_basics")
         CHECK(out == NULL);
 
         for (i = 0; i < 20; i++) {
-                printf("++++++++++++++\n");
+                /*printf("++++++++++++++\n");*/
                 mliAvlTree_remove(&ints, (struct mliAvl*)&myint[i]);
-                mliAvlNode_print(ints.root, 0);
+                /*mliAvlNode_print(ints.root, 0);*/
         }
 }
