@@ -5,7 +5,6 @@
 #include "mliMat.h"
 #include "mliHomTra.h"
 
-
 struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliPrng *prng)
 {
         double azimuth;

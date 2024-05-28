@@ -13,20 +13,18 @@ CASE("ray and grid")
         grid = mliAxisAlignedGrid_set(
                 mliAABB_set(
                         mliVec_init(-0.5, -0.5, -0.5),
-                        mliVec_init(0.5, 0.5, 0.5)
-                ),
-                mliIdx3_set(3, 3, 3)
-        );
+                        mliVec_init(0.5, 0.5, 0.5)),
+                mliIdx3_set(3, 3, 3));
         CHECK_MARGIN(grid.bin_width.x, 0.333, 0.01);
         CHECK_MARGIN(grid.bin_width.y, 0.333, 0.01);
         CHECK_MARGIN(grid.bin_width.z, 0.333, 0.01);
 
-        ray = mliRay_set(mliVec_init(0, 0 ,2), mliVec_init(0, 0, 1));
+        ray = mliRay_set(mliVec_init(0, 0, 2), mliVec_init(0, 0, 1));
         rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
         CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_DOES_NOT_INTERSECT_GRID);
 
-        ray = mliRay_set(mliVec_init(0, 0 ,0), mliVec_init(0, 0, 1));
+        ray = mliRay_set(mliVec_init(0, 0, 0), mliVec_init(0, 0, 1));
         rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
         CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_STARTS_INSIDE_GRID);
@@ -34,51 +32,52 @@ CASE("ray and grid")
         CHECK(bin.y == 1);
         CHECK(bin.z == 1);
 
-        ray = mliRay_set(mliVec_init(-2, 0 ,0), mliVec_init(1, 0, 0));
+        ray = mliRay_set(mliVec_init(-2, 0, 0), mliVec_init(1, 0, 0));
         rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc ==
+              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 0);
         CHECK(bin.y == 1);
         CHECK(bin.z == 1);
 
-        ray = mliRay_set(mliVec_init(2, 0 ,0), mliVec_init(-1, 0, 0));
+        ray = mliRay_set(mliVec_init(2, 0, 0), mliVec_init(-1, 0, 0));
         rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc ==
+              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 2);
         CHECK(bin.y == 1);
         CHECK(bin.z == 1);
 
-
-        ray = mliRay_set(mliVec_init(-2, -2 ,-2), mliVec_init(-1, -1, -1));
+        ray = mliRay_set(mliVec_init(-2, -2, -2), mliVec_init(-1, -1, -1));
         rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
         CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_DOES_NOT_INTERSECT_GRID);
 
-
-        ray = mliRay_set(mliVec_init(-2, -2 ,-2), mliVec_init(1, 1, 1));
+        ray = mliRay_set(mliVec_init(-2, -2, -2), mliVec_init(1, 1, 1));
         rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc ==
+              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 0);
         CHECK(bin.y == 0);
         CHECK(bin.z == 0);
 
-
-        ray = mliRay_set(mliVec_init(2, 2 ,2), mliVec_init(-1, -1, -1));
+        ray = mliRay_set(mliVec_init(2, 2, 2), mliVec_init(-1, -1, -1));
         rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc ==
+              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 2);
         CHECK(bin.y == 2);
         CHECK(bin.z == 2);
 
-
-        ray = mliRay_set(mliVec_init(0, 2 ,2), mliVec_init(0, -1, -1));
+        ray = mliRay_set(mliVec_init(0, 2, 2), mliVec_init(0, -1, -1));
         rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc ==
+              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 1);
         CHECK(bin.y == 2);
         CHECK(bin.z == 2);
@@ -93,17 +92,14 @@ CASE("ray and grid traversal simple")
 
         grid = mliAxisAlignedGrid_set(
                 mliAABB_set(
-                        mliVec_init(-2.5, -1.5, -1),
-                        mliVec_init(2.5, 1.5, 1)
-                ),
-                mliIdx3_set(5, 3, 2)
-        );
+                        mliVec_init(-2.5, -1.5, -1), mliVec_init(2.5, 1.5, 1)),
+                mliIdx3_set(5, 3, 2));
         CHECK_MARGIN(grid.bin_width.x, 1.0, 0.01);
         CHECK_MARGIN(grid.bin_width.y, 1.0, 0.01);
         CHECK_MARGIN(grid.bin_width.z, 1.0, 0.01);
 
         /* X-AXIS */
-        ray = mliRay_set(mliVec_init(-3, 0.2 ,0.1), mliVec_init(1, 0, 0));
+        ray = mliRay_set(mliVec_init(-3, 0.2, 0.1), mliVec_init(1, 0, 0));
         traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 0);
@@ -144,7 +140,7 @@ CASE("ray and grid traversal simple")
         CHECK(!traversal.valid);
 
         /* Y-AXIS */
-        ray = mliRay_set(mliVec_init(0.2, 8.3 ,0.1), mliVec_init(0, -1, 0));
+        ray = mliRay_set(mliVec_init(0.2, 8.3, 0.1), mliVec_init(0, -1, 0));
         traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 2);
@@ -218,7 +214,6 @@ CASE("ray and grid traversal simple")
         CHECK(!traversal.valid);
 }
 
-
 CASE("Actual example from simulated shower")
 {
         int not_too_often = 4;
@@ -228,11 +223,11 @@ CASE("Actual example from simulated shower")
 
         grid = mliAxisAlignedGrid_set(
                 mliAABB_set(
-                        mliVec_init(-5119268.215672, -5119974.912158, -5000.000000),
-                        mliVec_init(5120731.784328, 5120025.087842, 5000.000000)
-                ),
-                mliIdx3_set(1024, 1024, 1)
-        );
+                        mliVec_init(
+                                -5119268.215672, -5119974.912158, -5000.000000),
+                        mliVec_init(
+                                5120731.784328, 5120025.087842, 5000.000000)),
+                mliIdx3_set(1024, 1024, 1));
 
         /* okayish
         ray.support = mliVec_init(4.171968e+03, 4.857704e+03, 0.000000e+00);
@@ -242,10 +237,7 @@ CASE("Actual example from simulated shower")
         ray.support = mliVec_init(8.808299e+04, 3.914948e+04, 0.000000e+00);
         ray.direction = mliVec_init(-1.900087e-02, 2.265741e-01, 9.738086e-01);
 
-        traversal = mliAxisAlignedGridTraversal_start(
-                &grid,
-                &ray
-        );
+        traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
         mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
 
         while (traversal.valid) {
@@ -255,7 +247,6 @@ CASE("Actual example from simulated shower")
                 mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
         }
 }
-
 
 CASE("Elaborated example")
 {
@@ -268,30 +259,23 @@ CASE("Elaborated example")
         struct mliRandomUniformRange range;
 
         grid = mliAxisAlignedGrid_set(
-                mliAABB_set(
-                        mliVec_init(-3, -3, -3),
-                        mliVec_init(3, 3, 3)
-                ),
-                mliIdx3_set(10, 10, 10)
-        );
+                mliAABB_set(mliVec_init(-3, -3, -3), mliVec_init(3, 3, 3)),
+                mliIdx3_set(10, 10, 10));
         prng = mliPrng_init_MT19937(0u);
         num_overlaps = 0;
         num_rays = 10000;
         range.start = -1.0;
         range.range = 2.0;
 
-        for (i = 0; i < num_rays; i ++) {
+        for (i = 0; i < num_rays; i++) {
                 struct mliVec ppp;
                 struct mliVec ddd = mliVec_init(
                         mli_random_draw_uniform(range, &prng),
                         mli_random_draw_uniform(range, &prng),
-                        mli_random_draw_uniform(range, &prng)
-                );
+                        mli_random_draw_uniform(range, &prng));
                 ddd = mliVec_normalized(ddd);
                 ray = mliRay_set(
-                        mliVec_multiply(ddd, 20),
-                        mliVec_multiply(ddd, -1.0)
-                );
+                        mliVec_multiply(ddd, 20), mliVec_multiply(ddd, -1.0));
 
                 /*
                 fprintf(stderr,
@@ -316,8 +300,7 @@ CASE("Elaborated example")
                         ray.direction,
                         3.0,
                         &minus_solution,
-                        &plus_solution
-                );
+                        &plus_solution);
 
                 CHECK(rc_sphere);
 
@@ -334,7 +317,8 @@ CASE("Elaborated example")
                 while (traversal.valid) {
                         num_overlaps += 1;
                         mliAxisAlignedGridTraversal_next(&traversal);
-                        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
+                        /*mliAxisAlignedGridTraversal_fprint(stderr,
+                         * &traversal);*/
                 }
         }
 

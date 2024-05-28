@@ -8,7 +8,6 @@
 #include "mliObject_wavefront.h"
 #include "mliScenery_valid.h"
 
-
 struct mliColor mli_random_color(struct mliPrng *prng)
 {
         struct mliRandomUniformRange uniform_8bit_range;

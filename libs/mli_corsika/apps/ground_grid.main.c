@@ -12,12 +12,7 @@
 #include "../../mli/src/mli_ray_grid_traversal.h"
 #include <time.h>
 
-
-double clock2second(const clock_t t)
-{
-        return ((double)t) / CLOCKS_PER_SEC;
-}
-
+double clock2second(const clock_t t) { return ((double)t) / CLOCKS_PER_SEC; }
 
 int read_config(
         const char *path,
@@ -109,20 +104,15 @@ int main(int argc, char *argv[])
                         mliVec_init(
                                 x_bin_edges.array[0],
                                 y_bin_edges.array[0],
-                                z_bin_edges.array[0]
-                        ),
+                                z_bin_edges.array[0]),
                         mliVec_init(
                                 x_bin_edges.array[x_bin_edges.size - 1],
                                 y_bin_edges.array[y_bin_edges.size - 1],
-                                z_bin_edges.array[z_bin_edges.size - 1]
-                        )
-                ),
+                                z_bin_edges.array[z_bin_edges.size - 1])),
                 mliIdx3_set(
                         x_bin_edges.size - 1,
                         y_bin_edges.size - 1,
-                        z_bin_edges.size - 1
-                )
-        );
+                        z_bin_edges.size - 1));
 
         mliDynDouble_free(&x_bin_edges);
         mliDynDouble_free(&y_bin_edges);
@@ -133,7 +123,7 @@ int main(int argc, char *argv[])
         chk(mliEventTapeReader_begin(&arc, istream));
         chk(mliEventTapeReader_read_runh(&arc, runh));
 
-        chk(mliCorsikaHistogram2d_malloc(&hist, 10*1000));
+        chk(mliCorsikaHistogram2d_malloc(&hist, 10 * 1000));
         chk(mliIo_malloc_capacity(&buff, 10 * 1000));
 
         while (mliEventTapeReader_read_evth(&arc, evth)) {
@@ -142,7 +132,7 @@ int main(int argc, char *argv[])
                 uint64_t xx, yy, ii, jj = 0;
 
                 if (hist.dict.capacity > 10 * 1000 * 1000) {
-                        chk(mliCorsikaHistogram2d_malloc(&hist, 10*1000));
+                        chk(mliCorsikaHistogram2d_malloc(&hist, 10 * 1000));
                 } else {
                         mliCorsikaHistogram2d_reset(&hist);
                 }
@@ -164,30 +154,24 @@ int main(int argc, char *argv[])
                         ray.support.z = 0.0;
                         ray.direction.x = mli_corsika_ux_to_cx(bunch.ux);
                         ray.direction.y = mli_corsika_vy_to_cy(bunch.vy);
-                        ray.direction.z = mli_corsika_restore_direction_z_component(
-                                ray.direction.x,
-                                ray.direction.y
-                        );
+                        ray.direction.z =
+                                mli_corsika_restore_direction_z_component(
+                                        ray.direction.x, ray.direction.y);
 
                         t1 = clock();
-                        traversal = mliAxisAlignedGridTraversal_start(
-                                &grid,
-                                &ray
-                        );
+                        traversal =
+                                mliAxisAlignedGridTraversal_start(&grid, &ray);
                         t2 = clock();
                         t_ray_voxel += (t2 - t1);
 
                         while (traversal.valid) {
                                 num_overlaps += 1;
                                 t3 = clock();
-                                chk(
-                                        mliCorsikaHistogram2d_assign(
-                                                &hist,
-                                                traversal.voxel.x,
-                                                traversal.voxel.y,
-                                                bunch.weight_photons
-                                        )
-                                );
+                                chk(mliCorsikaHistogram2d_assign(
+                                        &hist,
+                                        traversal.voxel.x,
+                                        traversal.voxel.y,
+                                        bunch.weight_photons));
                                 t4 = clock();
                                 t_avl_histogram += (t4 - t3);
                                 mliAxisAlignedGridTraversal_next(&traversal);
@@ -198,15 +182,14 @@ int main(int argc, char *argv[])
                 chk(mliCorsikaHistogram2d_dumps(&hist, &buff));
                 buff.pos = 0;
                 chk_fwrite(
-                        buff.cstr,
-                        sizeof(unsigned char),
-                        buff.size,
-                        ostream
-                );
+                        buff.cstr, sizeof(unsigned char), buff.size, ostream);
 
-                fprintf(stdout, "t_ray_voxel: %es\n", clock2second(t_ray_voxel));
-                fprintf(stdout, "t_avl_histogram: %es\n", clock2second(t_avl_histogram));
-
+                fprintf(stdout,
+                        "t_ray_voxel: %es\n",
+                        clock2second(t_ray_voxel));
+                fprintf(stdout,
+                        "t_avl_histogram: %es\n",
+                        clock2second(t_avl_histogram));
         }
         mliCorsikaHistogram2d_free(&hist);
 

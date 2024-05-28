@@ -7,7 +7,6 @@
 #include "mliHomTra.h"
 #include "mli_math.h"
 
-
 struct mliVec mliView_optical_axis(const struct mliView cam)
 {
         struct mliMat rotation = mliMat_init_tait_bryan(

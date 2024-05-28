@@ -10,7 +10,6 @@ CASE("mliAvlDict_basics")
         mliAvlDict_free(&dict);
 }
 
-
 CASE("mliAvlDict_fill")
 {
         struct mliAvlDict dict = mliAvlDict_init();
@@ -31,7 +30,6 @@ CASE("mliAvlDict_fill")
         mliAvlDict_free(&dict);
 }
 
-
 CASE("mliAvlDict_hammer")
 {
         int64_t back;
@@ -42,7 +40,7 @@ CASE("mliAvlDict_hammer")
         CHECK(mliAvlDict_malloc(&dict, 10));
 
         for (i = 0; i < 100; i++) {
-                CHECK(mliAvlDict_set(&dict, i, 2*i));
+                CHECK(mliAvlDict_set(&dict, i, 2 * i));
         }
 
         CHECK(dict.len == 100);
@@ -51,7 +49,7 @@ CASE("mliAvlDict_hammer")
 
         for (i = 0; i < 100; i++) {
                 CHECK(mliAvlDict_get(&dict, i, &back));
-                CHECK(2*i == back);
+                CHECK(2 * i == back);
         }
 
         for (i = 800; i < 900; i++) {

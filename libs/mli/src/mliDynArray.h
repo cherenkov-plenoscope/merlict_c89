@@ -7,7 +7,6 @@
 #include "chk.h"
 #include "mli_math.h"
 
-
 #define MLIDYNARRAY_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                         \
                                                                                \
         struct LIB##Dyn##NAME {                                                \

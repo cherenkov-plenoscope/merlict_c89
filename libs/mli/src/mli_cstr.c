@@ -5,7 +5,6 @@
 #include "chk.h"
 #include "mli_math.h"
 
-
 int mli_cstr_ends_with(const char *str, const char *sufix)
 {
         uint64_t len_str, len_sufix;

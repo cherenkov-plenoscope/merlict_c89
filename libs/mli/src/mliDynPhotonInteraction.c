@@ -3,7 +3,6 @@
 #include "chk.h"
 #include <stdlib.h>
 
-
 MLIDYNARRAY_IMPLEMENTATION(mli, PhotonInteraction, struct mliPhotonInteraction)
 
 int mliDynPhotonInteraction_time_of_flight(
@@ -59,9 +58,11 @@ void mliDynPhotonInteraction_print(
 
                 if (phisec.on_geometry_surface == 1) {
                         printf("(% 5d;% 5d,% 5d,% 5d)  ",
-                               scenery->geometry.robject_ids[phisec.geometry_id.robj],
+                               scenery->geometry
+                                       .robject_ids[phisec.geometry_id.robj],
                                phisec.geometry_id.robj,
-                               scenery->geometry.robjects[phisec.geometry_id.robj],
+                               scenery->geometry
+                                       .robjects[phisec.geometry_id.robj],
                                phisec.geometry_id.face);
                 } else {
                         printf("            n/a            ");
@@ -77,9 +78,11 @@ void mliDynPhotonInteraction_print(
                 printf("%-24s ", type_string);
 
                 printf("{%-12s,%-12s}  ",
-                        scenery->materials.medium_names[phisec.medium_coming_from].cstr,
-                        scenery->materials.medium_names[phisec.medium_going_to].cstr
-                );
+                       scenery->materials
+                               .medium_names[phisec.medium_coming_from]
+                               .cstr,
+                       scenery->materials.medium_names[phisec.medium_going_to]
+                               .cstr);
 
                 if (phisec.type == MLI_PHOTON_CREATION) {
                         printf(" n/a  ");

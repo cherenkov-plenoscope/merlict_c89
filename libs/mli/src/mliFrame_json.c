@@ -5,7 +5,6 @@
 #include "mliVec_json.h"
 #include "mliQuaternion_json.h"
 
-
 int mliFrame_type_from_json_token(
         uint64_t *type,
         const struct mliJson *json,

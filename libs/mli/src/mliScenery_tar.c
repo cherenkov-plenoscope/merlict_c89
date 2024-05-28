@@ -8,7 +8,6 @@
 #include "mliUserScenery.h"
 #include "mliFrame.h"
 
-
 int mliScenery_malloc_fread_tar(struct mliScenery *scenery, FILE *f)
 {
         struct mliArchive archive = mliArchive_init();

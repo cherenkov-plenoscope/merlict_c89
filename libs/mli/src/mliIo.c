@@ -6,7 +6,6 @@
 #include "mli_cstr.h"
 #include "mli_math.h"
 
-
 struct mliIo mliIo_init(void)
 {
         struct mliIo byt;

@@ -13,7 +13,6 @@ CASE("mli_corsika_Histogram2d: init,malloc,free")
         CHECK(hist.dict.capacity == 0);
 }
 
-
 CASE("mli_corsika_Histogram2d: assign to same bin multiple times.")
 {
         uint64_t i = 0;
@@ -25,11 +24,10 @@ CASE("mli_corsika_Histogram2d: assign to same bin multiple times.")
         struct mliCorsikaHistogram2d hist = mliCorsikaHistogram2d_init();
         struct mliIo buff = mliIo_init();
 
-
         CHECK(mliCorsikaHistogram2d_malloc(&hist, 10));
         CHECK(mliIo_malloc(&buff));
 
-        for (i = 0; i < 20; i ++) {
+        for (i = 0; i < 20; i++) {
                 CHECK(mliCorsikaHistogram2d_assign(&hist, 42, 13, 0.5));
         }
 

@@ -5,7 +5,6 @@
 #include "chk.h"
 #include "mliColor_json.h"
 
-
 int mliTracerConfig_from_json_token(
         struct mliTracerConfig *tc,
         const struct mliJson *json,

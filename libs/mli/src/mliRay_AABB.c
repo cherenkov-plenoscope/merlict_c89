@@ -28,14 +28,14 @@ int mliRay_has_overlap_aabb(
          *  but the whole AABB is behind us
          */
         if (tmax < 0) {
-            (*ray_parameter) = tmax;
-            return 0;
+                (*ray_parameter) = tmax;
+                return 0;
         }
 
         /* if tmin > tmax, ray doesn't intersect AABB */
         if (tmin > tmax) {
-            (*ray_parameter) = tmax;
-            return 1;
+                (*ray_parameter) = tmax;
+                return 1;
         }
 
         (*ray_parameter) = tmin;

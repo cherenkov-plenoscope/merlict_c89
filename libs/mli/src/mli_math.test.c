@@ -65,7 +65,6 @@ CASE("MLI_SIGN")
         CHECK(MLI_SIGN(-4.3) == -1);
 }
 
-
 CASE("NAN")
 {
         float hans = MLI_NAN;

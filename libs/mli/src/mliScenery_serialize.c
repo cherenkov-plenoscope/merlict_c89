@@ -9,7 +9,6 @@
 #include "mliMaterials_serialize.h"
 #include "mliGeometryToMaterialMap_serialize.h"
 
-
 int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
 {
         struct mliMagicId magic;

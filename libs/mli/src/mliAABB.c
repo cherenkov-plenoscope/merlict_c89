@@ -68,8 +68,11 @@ int mliAABB_is_overlapping(const struct mliAABB a, const struct mliAABB b)
 
 int mliAABB_is_point_inside(const struct mliAABB a, const struct mliVec point)
 {
-        if (a.lower.x >  point.x || a.upper.x <= point.x) return 0;
-        if (a.lower.y >  point.y || a.upper.y <= point.y) return 0;
-        if (a.lower.z >  point.z || a.upper.z <= point.z) return 0;
+        if (a.lower.x > point.x || a.upper.x <= point.x)
+                return 0;
+        if (a.lower.y > point.y || a.upper.y <= point.y)
+                return 0;
+        if (a.lower.z > point.z || a.upper.z <= point.z)
+                return 0;
         return 1;
 }

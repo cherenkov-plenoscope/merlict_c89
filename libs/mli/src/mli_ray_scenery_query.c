@@ -4,7 +4,6 @@
 #include "mli_from_outside_to_inside.h"
 #include "mli_triangle_intersection.h"
 
-
 void mli_inner_object_traversal(
         void *_inner,
         const struct mliOcTree *object_octree,

@@ -5,7 +5,6 @@
 #include "mli_math.h"
 #include "chk.h"
 
-
 struct mliMagicId mliMagicId_init(void)
 {
         struct mliMagicId magic;

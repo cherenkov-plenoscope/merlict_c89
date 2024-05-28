@@ -6,7 +6,6 @@
 #include "mliIo.h"
 #include "chk.h"
 
-
 int mliStr_nto_double(
         double *out,
         const struct mliStr *str,

@@ -8,7 +8,6 @@
 #include "mliObject.h"
 #include "mliDynMap.h"
 
-
 int mliFrame_from_json(
         struct mliFrame *mother,
         const struct mliJson *json,

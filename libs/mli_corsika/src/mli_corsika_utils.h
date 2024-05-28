@@ -12,7 +12,9 @@ double mli_corsika_cx_to_ux(const double cx);
 double mli_corsika_cy_to_vy(const double cy);
 double mli_corsika_cz_to_wz(const double cz);
 
-double mli_corsika_restore_direction_z_component(const double x, const double y);
+double mli_corsika_restore_direction_z_component(
+        const double x,
+        const double y);
 
 #define MLI_CORSIKA_HEADER_SIZE_BYTES (sizeof(float) * 273)
 #define MLI_CORSIKA_BUNCH_SIZE_BYTES (sizeof(float) * 8)

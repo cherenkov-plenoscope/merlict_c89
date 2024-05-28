@@ -68,55 +68,37 @@ CASE("ray inside aabb")
 
         /* ray starts inside the box */
         CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(
-                        mliVec_init(0., 0., 0.),
-                        mliVec_init(1., 0., 0.)
-                ),
+                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(1., 0., 0.)),
                 aabb,
                 &ray_parameter));
         CHECK_MARGIN(ray_parameter, -1., 1e-6);
 
         CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(
-                        mliVec_init(0., 0., 0.),
-                        mliVec_init(-1., 0., 0.)
-                ),
+                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(-1., 0., 0.)),
                 aabb,
                 &ray_parameter));
         CHECK_MARGIN(ray_parameter, -1., 1e-6);
 
         CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(
-                        mliVec_init(0., 0., 0.),
-                        mliVec_init(0., 1., 0.)
-                ),
+                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(0., 1., 0.)),
                 aabb,
                 &ray_parameter));
         CHECK_MARGIN(ray_parameter, -1., 1e-6);
 
         CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(
-                        mliVec_init(0., 0., 0.),
-                        mliVec_init(0., -1., 0.)
-                ),
+                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(0., -1., 0.)),
                 aabb,
                 &ray_parameter));
         CHECK_MARGIN(ray_parameter, -1., 1e-6);
 
         CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(
-                        mliVec_init(0., 0., 0.),
-                        mliVec_init(0., 0., 1.)
-                ),
+                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(0., 0., 1.)),
                 aabb,
                 &ray_parameter));
         CHECK_MARGIN(ray_parameter, -1., 1e-6);
 
         CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(
-                        mliVec_init(0., 0., 0.),
-                        mliVec_init(0., 0., -1.)
-                ),
+                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(0., 0., -1.)),
                 aabb,
                 &ray_parameter));
         CHECK_MARGIN(ray_parameter, -1., 1e-6);

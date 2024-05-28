@@ -5,7 +5,6 @@
 #include "chk.h"
 #include "mli_math.h"
 
-
 struct mliFunc mliFunc_init(void)
 {
         struct mliFunc f;

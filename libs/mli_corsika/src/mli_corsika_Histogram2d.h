@@ -6,8 +6,7 @@
 #include "../../mli/src/mliAvlDict.h"
 #include "../../mli/src/mliIo.h"
 
-
-struct mliCorsikaHistogram2d{
+struct mliCorsikaHistogram2d {
         struct mliAvlDict dict;
 };
 
@@ -27,7 +26,7 @@ int mliCorsikaHistogram2d_assign(
 
 int mliCorsikaHistogram2d_dumps(
         const struct mliCorsikaHistogram2d *hist,
-        struct mliIo* f);
+        struct mliIo *f);
 
 void mliCorsikaHistogram2d_reset(struct mliCorsikaHistogram2d *hist);
 
