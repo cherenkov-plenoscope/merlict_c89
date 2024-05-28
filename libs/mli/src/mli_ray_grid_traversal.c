@@ -1,7 +1,9 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "mli_ray_grid_traversal.h"
 #include "mli_math.h"
+#include "mliRay_AABB.h"
 #include <assert.h>
+#include <math.h>
 
 /* Inspired by:
  * A Fast Voxel Traversal Algorithm for Ray Tracing
@@ -71,8 +73,8 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
                         &ray_parameter
                 );
                 if (has_intersection) {
-                        struct mliVec inter = mliRay_at(ray, ray_parameter);
-                        (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, inter);
+                        struct mliVec inner = mliRay_at(ray, ray_parameter);
+                        (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, inner);
 
                         if (bin->x >= grid->num_bins.x) {
                                 bin->x -= 1;
@@ -96,40 +98,56 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
 struct mliVec mliAxisAlignedGridTraversal_first_plane(
         const struct mliAxisAlignedGrid* grid,
         const struct mliIdx3 voxel,
-        const struct mliVec step)
+        const struct mliVec ray_direction)
 {
         struct mliVec voxel_lower = mliVec_init(
                 grid->bounds.lower.x + (double)voxel.x * grid->bin_width.x,
                 grid->bounds.lower.y + (double)voxel.y * grid->bin_width.y,
                 grid->bounds.lower.z + (double)voxel.z * grid->bin_width.z
         );
-        struct mliVec first = voxel_lower;
-        if (step.x > 0) {
-                first.x += grid->bin_width.x;
+        struct mliVec voxel_upper = mliVec_init(
+                grid->bounds.lower.x + (double)(voxel.x + 1) * grid->bin_width.x,
+                grid->bounds.lower.y + (double)(voxel.y + 1) * grid->bin_width.y,
+                grid->bounds.lower.z + (double)(voxel.z + 1) * grid->bin_width.z
+        );
+
+        struct mliVec first;
+
+        if (ray_direction.x >= 0.0) {
+                first.x = voxel_upper.x;
+        } else {
+                first.x = voxel_lower.x;
         }
-        if (step.y > 0) {
-                first.y += grid->bin_width.y;
+
+        if (ray_direction.y >= 0.0) {
+                first.y = voxel_upper.y;
+        } else {
+                first.y = voxel_lower.y;
         }
-        if (step.z > 0) {
-                first.z += grid->bin_width.z;
+
+        if (ray_direction.z >= 0.0) {
+                first.z = voxel_upper.z;
+        } else {
+                first.z = voxel_lower.z;
         }
+
         return first;
 }
 
 
 double calc_t_for_x_plane(const double x_plane, const struct mliRay* ray)
 {
-        return (ray->support.x + x_plane) / (ray->direction.x);
+        return -(ray->support.x - x_plane) / (ray->direction.x);
 }
 
 double calc_t_for_y_plane(const double y_plane, const struct mliRay* ray)
 {
-        return (ray->support.y + y_plane) / (ray->direction.y);
+        return -(ray->support.y - y_plane) / (ray->direction.y);
 }
 
 double calc_t_for_z_plane(const double z_plane, const struct mliRay* ray)
 {
-        return (ray->support.z + z_plane) / (ray->direction.z);
+        return -(ray->support.z - z_plane) / (ray->direction.z);
 }
 
 struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
@@ -137,6 +155,7 @@ struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
         const struct mliRay* ray)
 {
         struct mliAxisAlignedGridTraversal traversal;
+
         traversal.grid = grid;
         traversal.valid = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 grid,
@@ -151,15 +170,15 @@ struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
                 first_plane = mliAxisAlignedGridTraversal_first_plane(
                         grid,
                         traversal.voxel,
-                        traversal.step);
+                        ray->direction);
 
                 traversal.tMax.x = calc_t_for_x_plane(first_plane.x, ray);
                 traversal.tMax.y = calc_t_for_y_plane(first_plane.y, ray);
                 traversal.tMax.z = calc_t_for_z_plane(first_plane.z, ray);
 
-                traversal.tDelta.x = fabs(grid->bin_width.x / ray->direction.x);
-                traversal.tDelta.y = fabs(grid->bin_width.y / ray->direction.y);
-                traversal.tDelta.z = fabs(grid->bin_width.z / ray->direction.z);
+                traversal.tDelta.x = grid->bin_width.x / fabs(ray->direction.x);
+                traversal.tDelta.y = grid->bin_width.y / fabs(ray->direction.y);
+                traversal.tDelta.z = grid->bin_width.z / fabs(ray->direction.z);
         }
         return traversal;
 }

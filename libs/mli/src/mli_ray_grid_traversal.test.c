@@ -111,6 +111,7 @@ CASE("ray and grid traversal simple")
         CHECK(traversal.voxel.z == 1);
 
         rc = mliAxisAlignedGridTraversal_next(&traversal);
+        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 1);
@@ -195,9 +196,9 @@ CASE("ray and grid traversal simple")
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
+        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
         rc = mliAxisAlignedGridTraversal_next(&traversal);
-        mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
+        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
 
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
@@ -220,7 +221,7 @@ CASE("ray and grid traversal simple")
 
 CASE("Actual example from simulated shower")
 {
-        int rc = 10;
+        int not_too_often = 4;
         struct mliAxisAlignedGrid grid;
         struct mliAxisAlignedGridTraversal traversal;
         struct mliRay ray;
@@ -233,8 +234,13 @@ CASE("Actual example from simulated shower")
                 mliIdx3_set(1024, 1024, 1)
         );
 
+        /* okayish
         ray.support = mliVec_init(4.171968e+03, 4.857704e+03, 0.000000e+00);
         ray.direction = mliVec_init(-3.894984e-02, -6.049007e-01, 7.953478e-01);
+        */
+        /* oddish */
+        ray.support = mliVec_init(8.808299e+04, 3.914948e+04, 0.000000e+00);
+        ray.direction = mliVec_init(-1.900087e-02, 2.265741e-01, 9.738086e-01);
 
         traversal = mliAxisAlignedGridTraversal_start(
                 &grid,
@@ -242,9 +248,97 @@ CASE("Actual example from simulated shower")
         );
         mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
 
-        while (traversal.valid && rc > 0) {
-                rc -= 1;
+        while (traversal.valid) {
+                not_too_often -= 1;
+                CHECK(not_too_often > 0);
                 mliAxisAlignedGridTraversal_next(&traversal);
                 mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
         }
+}
+
+
+CASE("Elaborated example")
+{
+        int i, num_overlaps, num_rays, rc_aabb, rc_sphere;
+        double overlaps_per_ray, para, minus_solution, plus_solution;
+        struct mliAxisAlignedGrid grid;
+        struct mliAxisAlignedGridTraversal traversal;
+        struct mliRay ray;
+        struct mliPrng prng;
+        struct mliRandomUniformRange range;
+
+        grid = mliAxisAlignedGrid_set(
+                mliAABB_set(
+                        mliVec_init(-3, -3, -3),
+                        mliVec_init(3, 3, 3)
+                ),
+                mliIdx3_set(10, 10, 10)
+        );
+        prng = mliPrng_init_MT19937(0u);
+        num_overlaps = 0;
+        num_rays = 10000;
+        range.start = -1.0;
+        range.range = 2.0;
+
+        for (i = 0; i < num_rays; i ++) {
+                struct mliVec ppp;
+                struct mliVec ddd = mliVec_init(
+                        mli_random_draw_uniform(range, &prng),
+                        mli_random_draw_uniform(range, &prng),
+                        mli_random_draw_uniform(range, &prng)
+                );
+                ddd = mliVec_normalized(ddd);
+                ray = mliRay_set(
+                        mliVec_multiply(ddd, 20),
+                        mliVec_multiply(ddd, -1.0)
+                );
+
+                /*
+                fprintf(stderr,
+                        "i %d, s[%e, %e, %e] d[%e, %e, %e]\n",
+                        i,
+                        ray.support.x,
+                        ray.support.y,
+                        ray.support.z,
+                        ray.direction.x,
+                        ray.direction.y,
+                        ray.direction.z
+                );
+                */
+
+                ppp = mliRay_at(&ray, 20.0);
+
+                CHECK_MARGIN(mliVec_norm(ppp), 0.0, 1e-3);
+
+                rc_aabb = mliRay_has_overlap_aabb(ray, grid.bounds, &para);
+                rc_sphere = mliRay_sphere_intersection(
+                        ray.support,
+                        ray.direction,
+                        3.0,
+                        &minus_solution,
+                        &plus_solution
+                );
+
+                CHECK(rc_sphere);
+
+                /*fprintf(stderr, "para: %e, %d\n", para, rc_aabb);*/
+                CHECK(rc_aabb);
+
+                traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
+
+                /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
+
+                CHECK(traversal.valid);
+                num_overlaps += 1;
+
+                while (traversal.valid) {
+                        num_overlaps += 1;
+                        mliAxisAlignedGridTraversal_next(&traversal);
+                        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
+                }
+        }
+
+        overlaps_per_ray = ((double)num_overlaps / (double)num_rays);
+        CHECK(overlaps_per_ray >= 20);
+        CHECK(overlaps_per_ray <= 23);
 }
