@@ -59,6 +59,69 @@ CASE("ray and orientated bounding box")
                 &ray_parameter));
 }
 
+CASE("ray inside aabb")
+{
+        struct mliAABB aabb;
+        double ray_parameter;
+        aabb.lower = mliVec_init(-1, -1, -1);
+        aabb.upper = mliVec_init(1, 1, 1);
+
+        /* ray starts inside the box */
+        CHECK(mliRay_has_overlap_aabb(
+                mliRay_set(
+                        mliVec_init(0., 0., 0.),
+                        mliVec_init(1., 0., 0.)
+                ),
+                aabb,
+                &ray_parameter));
+        CHECK_MARGIN(ray_parameter, -1., 1e-6);
+
+        CHECK(mliRay_has_overlap_aabb(
+                mliRay_set(
+                        mliVec_init(0., 0., 0.),
+                        mliVec_init(-1., 0., 0.)
+                ),
+                aabb,
+                &ray_parameter));
+        CHECK_MARGIN(ray_parameter, -1., 1e-6);
+
+        CHECK(mliRay_has_overlap_aabb(
+                mliRay_set(
+                        mliVec_init(0., 0., 0.),
+                        mliVec_init(0., 1., 0.)
+                ),
+                aabb,
+                &ray_parameter));
+        CHECK_MARGIN(ray_parameter, -1., 1e-6);
+
+        CHECK(mliRay_has_overlap_aabb(
+                mliRay_set(
+                        mliVec_init(0., 0., 0.),
+                        mliVec_init(0., -1., 0.)
+                ),
+                aabb,
+                &ray_parameter));
+        CHECK_MARGIN(ray_parameter, -1., 1e-6);
+
+        CHECK(mliRay_has_overlap_aabb(
+                mliRay_set(
+                        mliVec_init(0., 0., 0.),
+                        mliVec_init(0., 0., 1.)
+                ),
+                aabb,
+                &ray_parameter));
+        CHECK_MARGIN(ray_parameter, -1., 1e-6);
+
+        CHECK(mliRay_has_overlap_aabb(
+                mliRay_set(
+                        mliVec_init(0., 0., 0.),
+                        mliVec_init(0., 0., -1.)
+                ),
+                aabb,
+                &ray_parameter));
+        CHECK_MARGIN(ray_parameter, -1., 1e-6);
+}
+
 CASE("mliHomTraComp, transform direction")
 {
         struct mliHomTraComp Tcomp;
