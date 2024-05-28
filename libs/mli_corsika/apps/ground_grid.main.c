@@ -10,9 +10,6 @@
 #include "../../mli/src/mliStr_numbers.h"
 #include "../../mli/src/mliDynArray.h"
 #include "../../mli/src/mli_ray_grid_traversal.h"
-#include <time.h>
-
-double clock2second(const clock_t t) { return ((double)t) / CLOCKS_PER_SEC; }
 
 int read_config(
         const char *path,
@@ -145,7 +142,6 @@ int main(int argc, char *argv[])
                 }
 
                 while (mliEventTapeReader_read_cherenkov_bunch(&arc, raw)) {
-                        clock_t t1, t2, t3, t4, t5;
                         int num_overlaps = 0;
                         struct mliRay ray;
                         mliCorsikaPhotonBunch_set_from_raw(&bunch, raw);
@@ -158,38 +154,23 @@ int main(int argc, char *argv[])
                                 mli_corsika_restore_direction_z_component(
                                         ray.direction.x, ray.direction.y);
 
-                        t1 = clock();
                         traversal =
                                 mliAxisAlignedGridTraversal_start(&grid, &ray);
-                        t2 = clock();
-                        t_ray_voxel += (t2 - t1);
 
                         while (traversal.valid) {
                                 num_overlaps += 1;
-                                t3 = clock();
                                 chk(mliCorsikaHistogram2d_assign(
                                         &hist,
                                         traversal.voxel.x,
                                         traversal.voxel.y,
                                         bunch.weight_photons));
-                                t4 = clock();
-                                t_avl_histogram += (t4 - t3);
                                 mliAxisAlignedGridTraversal_next(&traversal);
-                                t5 = clock();
-                                t_ray_voxel += (t5 - t4);
                         }
                 }
                 chk(mliCorsikaHistogram2d_dumps(&hist, &buff));
                 buff.pos = 0;
                 chk_fwrite(
                         buff.cstr, sizeof(unsigned char), buff.size, ostream);
-
-                fprintf(stdout,
-                        "t_ray_voxel: %es\n",
-                        clock2second(t_ray_voxel));
-                fprintf(stdout,
-                        "t_avl_histogram: %es\n",
-                        clock2second(t_avl_histogram));
         }
         mliCorsikaHistogram2d_free(&hist);
 
