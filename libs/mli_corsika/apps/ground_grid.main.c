@@ -174,8 +174,6 @@ int main(int argc, char *argv[])
                                 &grid,
                                 &ray
                         );
-                        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
-
                         t2 = clock();
                         t_ray_voxel += (t2 - t1);
 
