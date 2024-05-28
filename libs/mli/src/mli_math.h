@@ -16,7 +16,7 @@
 #define MLI_MAX2(a, b) (((a) > (b)) ? (a) : (b))
 #define MLI_ROUND(num) (num - floor(num) > 0.5) ? ceil(num) : floor(num)
 #define MLI_NEAR_INT(x) ((x) > 0 ? (int64_t)((x) + 0.5) : (int64_t)((x)-0.5))
-#define MLI_SIGN(x) ((x) >= 0 ? 1 : -1)
+#define MLI_SIGN(x) ((x) == 0 ? 0 : ((x) > 0 ? 1 : -1))
 
 #define MLI_MIN3(a, b, c)                                                      \
         ((((a) < (b)) && ((a) < (c))) ? (a) : (((b) < (c)) ? (b) : (c)))

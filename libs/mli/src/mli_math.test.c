@@ -58,6 +58,14 @@ CASE("MAX3")
         CHECK(MLI_MAX3(5., 6., 4.) == 6.);
 }
 
+CASE("MLI_SIGN")
+{
+        CHECK(MLI_SIGN(2.3) == 1);
+        CHECK(MLI_SIGN(0.0) == 0);
+        CHECK(MLI_SIGN(-4.3) == -1);
+}
+
+
 CASE("NAN")
 {
         float hans = MLI_NAN;
