@@ -13,11 +13,10 @@
 
 int read_config(
         const char *path,
-        struct mliDynDouble *x_bin_edges,
-        struct mliDynDouble *y_bin_edges,
-        struct mliDynDouble *z_bin_edges)
+        struct mliVec *lower,
+        struct mliVec *upper,
+        struct mliIdx3 *num_bins)
 {
-        uint64_t nx, ny, nz, i;
         struct mliIo buff = mliIo_init();
         struct mliStr line = mliStr_init();
 
@@ -26,36 +25,27 @@ int read_config(
 
         /* X */
         chk(mli_readline(&buff, &line, '\n'));
-        chk(mliStr_to_uint64(&nx, &line, 10));
-        chk(mliDynDouble_malloc_set_size(x_bin_edges, nx));
-        for (i = 0; i < nx; i++) {
-                double val;
-                chk(mli_readline(&buff, &line, '\n'));
-                chk(mliStr_to_double(&val, &line));
-                x_bin_edges->array[i] = val;
-        }
+        chk(mliStr_to_int64(&(num_bins->x), &line, 10));
+        chk(mli_readline(&buff, &line, '\n'));
+        chk(mliStr_to_double(&(lower->x), &line)); /* cm */
+        chk(mli_readline(&buff, &line, '\n'));
+        chk(mliStr_to_double(&(upper->x), &line)); /* cm */
 
         /* Y */
         chk(mli_readline(&buff, &line, '\n'));
-        chk(mliStr_to_uint64(&ny, &line, 10));
-        chk(mliDynDouble_malloc_set_size(y_bin_edges, ny));
-        for (i = 0; i < ny; i++) {
-                double val;
-                chk(mli_readline(&buff, &line, '\n'));
-                chk(mliStr_to_double(&val, &line));
-                y_bin_edges->array[i] = val;
-        }
+        chk(mliStr_to_int64(&(num_bins->y), &line, 10));
+        chk(mli_readline(&buff, &line, '\n'));
+        chk(mliStr_to_double(&(lower->y), &line)); /* cm */
+        chk(mli_readline(&buff, &line, '\n'));
+        chk(mliStr_to_double(&(upper->y), &line)); /* cm */
 
         /* Z */
         chk(mli_readline(&buff, &line, '\n'));
-        chk(mliStr_to_uint64(&nz, &line, 10));
-        chk(mliDynDouble_malloc_set_size(z_bin_edges, nz));
-        for (i = 0; i < nz; i++) {
-                double val;
-                chk(mli_readline(&buff, &line, '\n'));
-                chk(mliStr_to_double(&val, &line));
-                z_bin_edges->array[i] = val;
-        }
+        chk(mliStr_to_int64(&(num_bins->z), &line, 10));
+        chk(mli_readline(&buff, &line, '\n'));
+        chk(mliStr_to_double(&(lower->z), &line)); /* cm */
+        chk(mli_readline(&buff, &line, '\n'));
+        chk(mliStr_to_double(&(upper->z), &line)); /* cm */
 
         mliStr_free(&line);
         mliIo_free(&buff);
@@ -78,42 +68,20 @@ int main(int argc, char *argv[])
 
         struct mliCorsikaHistogram2d hist = mliCorsikaHistogram2d_init();
 
+        struct mliVec lower;
+        struct mliVec upper;
+        struct mliIdx3 num_bins;
         struct mliCorsikaPhotonBunch bunch;
         struct mliAxisAlignedGrid grid;
         struct mliAxisAlignedGridTraversal traversal;
 
-        struct mliDynDouble x_bin_edges = mliDynDouble_init();
-        struct mliDynDouble y_bin_edges = mliDynDouble_init();
-        struct mliDynDouble z_bin_edges = mliDynDouble_init();
-
         chk_msg(argc == 4,
                 "Usage: ground_grid event_tape_path out_path config_path");
 
-        chk_msg(read_config(argv[3], &x_bin_edges, &y_bin_edges, &z_bin_edges),
+        chk_msg(read_config(argv[3], &lower, &upper, &num_bins),
                 "Can not read config with bin edges.");
 
-        chk_msg(z_bin_edges.size == 2, "Expected z_bin_edges.size == 2.");
-        chk_msg(z_bin_edges.array[0] < 0, "Expected z_bin_edges[0] < 0");
-        chk_msg(z_bin_edges.array[1] > 0, "Expected z_bin_edges[1] > 0");
-
-        grid = mliAxisAlignedGrid_set(
-                mliAABB_set(
-                        mliVec_init(
-                                x_bin_edges.array[0],
-                                y_bin_edges.array[0],
-                                z_bin_edges.array[0]),
-                        mliVec_init(
-                                x_bin_edges.array[x_bin_edges.size - 1],
-                                y_bin_edges.array[y_bin_edges.size - 1],
-                                z_bin_edges.array[z_bin_edges.size - 1])),
-                mliIdx3_set(
-                        x_bin_edges.size - 1,
-                        y_bin_edges.size - 1,
-                        z_bin_edges.size - 1));
-
-        mliDynDouble_free(&x_bin_edges);
-        mliDynDouble_free(&y_bin_edges);
-        mliDynDouble_free(&z_bin_edges);
+        grid = mliAxisAlignedGrid_set(mliAABB_set(lower, upper), num_bins);
 
         istream = fopen(argv[1], "rb");
         ostream = fopen(argv[2], "wt");
