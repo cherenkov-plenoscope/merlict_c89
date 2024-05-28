@@ -92,10 +92,6 @@ int main(int argc, char *argv[])
         chk(mliIo_malloc_capacity(&buff, 10 * 1000));
 
         while (mliEventTapeReader_read_evth(&arc, evth)) {
-                clock_t t_ray_voxel = 0;
-                clock_t t_avl_histogram = 0;
-                uint64_t xx, yy, ii, jj = 0;
-
                 if (hist.dict.capacity > 10 * 1000 * 1000) {
                         chk(mliCorsikaHistogram2d_malloc(&hist, 10 * 1000));
                 } else {
@@ -110,7 +106,6 @@ int main(int argc, char *argv[])
                 }
 
                 while (mliEventTapeReader_read_cherenkov_bunch(&arc, raw)) {
-                        int num_overlaps = 0;
                         struct mliRay ray;
                         mliCorsikaPhotonBunch_set_from_raw(&bunch, raw);
                         ray.support.x = bunch.x_cm;
@@ -126,7 +121,6 @@ int main(int argc, char *argv[])
                                 mliAxisAlignedGridTraversal_start(&grid, &ray);
 
                         while (traversal.valid) {
-                                num_overlaps += 1;
                                 chk(mliCorsikaHistogram2d_assign(
                                         &hist,
                                         traversal.voxel.x,
