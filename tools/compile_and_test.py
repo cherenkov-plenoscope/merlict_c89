@@ -43,17 +43,12 @@ def print_file(path):
 
 
 def run_and_save_sdtout(call, stdout_path):
-    p = subprocess.Popen(
-        call,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE,
-    )
-    p.wait()
-    o = p.stdout.read().decode()
-    rc = int(p.returncode)
-
     with open(stdout_path, "wt") as f:
-        f.write(o)
+        rc = subprocess.call(
+            call,
+            stderr=subprocess.STDOUT,
+            stdout=f,
+        )
     return rc
 
 
