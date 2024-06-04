@@ -17,7 +17,10 @@ struct mliCorsikaHistogram2dBin {
         double value;
 };
 
-MLIDYNARRAY_DEFINITON(mli, CorsikaHistogram2dBin, struct mliCorsikaHistogram2dBin)
+MLIDYNARRAY_DEFINITON(
+        mli,
+        CorsikaHistogram2dBin,
+        struct mliCorsikaHistogram2dBin)
 
 struct mliCorsikaHistogram2d mliCorsikaHistogram2d_init(void);
 

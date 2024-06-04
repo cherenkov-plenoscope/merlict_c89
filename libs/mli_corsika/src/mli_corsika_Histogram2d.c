@@ -5,7 +5,10 @@
 #include "../../mli/src/chk.h"
 #include "../../mli/src/mli_math.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, CorsikaHistogram2dBin, struct mliCorsikaHistogram2dBin)
+MLIDYNARRAY_IMPLEMENTATION(
+        mli,
+        CorsikaHistogram2dBin,
+        struct mliCorsikaHistogram2dBin)
 
 struct key {
         int32_t x;
@@ -80,20 +83,20 @@ int mliCorsikaHistogram2d_flatten__(
                 bin.y = key.i4i4.y;
                 bin.value = mli_interpret_int64_as_double(node->value);
 
-                chk_msg(
-                        mliDynCorsikaHistogram2dBin_push_back(f, bin),
-                        "Failed to push back bin-node."
-                );
-
+                chk_msg(mliDynCorsikaHistogram2dBin_push_back(f, bin),
+                        "Failed to push back bin-node.");
 
                 if (node->avl.left != NULL) {
-                        struct mliAvlNode *left = (struct mliAvlNode *)(node->avl.left);
-                        chk_msg(mliCorsikaHistogram2d_flatten__(left, f), "Failed left");
+                        struct mliAvlNode *left =
+                                (struct mliAvlNode *)(node->avl.left);
+                        chk_msg(mliCorsikaHistogram2d_flatten__(left, f),
+                                "Failed left");
                 }
                 if (node->avl.right != NULL) {
                         struct mliAvlNode *right =
                                 (struct mliAvlNode *)(node->avl.right);
-                        chk_msg(mliCorsikaHistogram2d_flatten__(right, f), "Failed right");
+                        chk_msg(mliCorsikaHistogram2d_flatten__(right, f),
+                                "Failed right");
                 }
                 return 1;
         }
@@ -106,13 +109,9 @@ int mliCorsikaHistogram2d_flatten(
         const struct mliCorsikaHistogram2d *hist,
         struct mliDynCorsikaHistogram2dBin *f)
 {
-        chk_msg(
-                mliCorsikaHistogram2d_flatten__(
-                        (const struct mliAvlNode *)hist->dict.tree.root,
-                        f
-                ),
-                "Failed to write dict."
-        );
+        chk_msg(mliCorsikaHistogram2d_flatten__(
+                        (const struct mliAvlNode *)hist->dict.tree.root, f),
+                "Failed to write dict.");
 
         return 1;
 chk_error:

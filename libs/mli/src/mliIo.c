@@ -412,7 +412,7 @@ chk_error:
         return 0;
 }
 
-int mliIo_write_from_file(struct mliIo *byt, FILE* f, const uint64_t size)
+int mliIo_write_from_file(struct mliIo *byt, FILE *f, const uint64_t size)
 {
         chk_msg(f, "Expected file to be open.");
         chk_msg(byt->cstr != NULL, "Expected buffer to be allocated.");
@@ -427,8 +427,7 @@ chk_error:
         return 0;
 }
 
-
-int mliIo_read_to_file(struct mliIo *byt, FILE* f, const uint64_t size)
+int mliIo_read_to_file(struct mliIo *byt, FILE *f, const uint64_t size)
 {
         chk_msg(f, "Expected file to be open.");
         chk_msg(byt->cstr != NULL, "Expected buffer to be allocated.");

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include "chk.h"
 
-
 int mliTar_read_data_to_io(
         struct mliTar *tar,
         struct mliIo *buff,
@@ -23,7 +22,9 @@ chk_error:
 }
 
 int mliTar_write_data_from_io(
-        struct mliTar *tar, struct mliIo *buff, const uint64_t size)
+        struct mliTar *tar,
+        struct mliIo *buff,
+        const uint64_t size)
 {
         uint64_t i;
         chk_msg(tar->stream, "tar is not open.");
@@ -32,7 +33,7 @@ int mliTar_write_data_from_io(
                 unsigned char c;
                 chk(rc != EOF);
                 c = (char)(rc);
-                chk(mliTar_write_data(tar, (void*)(&c), 1));
+                chk(mliTar_write_data(tar, (void *)(&c), 1));
         }
 
         return 1;
