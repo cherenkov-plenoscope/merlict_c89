@@ -106,4 +106,7 @@ double mli_linear_interpolate_2d(
         const double x1,
         const double y1);
 double mli_relative_ratio(const double a, const double b);
+
+double mli_interpret_int64_as_double(int64_t i);
+int64_t mli_interpret_double_as_int64(double d);
 #endif

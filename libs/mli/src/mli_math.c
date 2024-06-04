@@ -134,3 +134,17 @@ double mli_relative_ratio(const double a, const double b)
 {
         return fabs(a - b) / (0.5 * (a + b));
 }
+
+double mli_interpret_int64_as_double(int64_t i)
+{
+        double f;
+        memcpy(&f, &i, sizeof(double));
+        return f;
+}
+
+int64_t mli_interpret_double_as_int64(double d)
+{
+        int64_t i;
+        memcpy(&i, &d, sizeof(int64_t));
+        return i;
+}

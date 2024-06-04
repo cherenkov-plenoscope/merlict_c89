@@ -3,6 +3,7 @@
 #include "mli_corsika_Histogram2d.h"
 #include <string.h>
 #include "../../mli/src/chk.h"
+#include "../../mli/src/mli_math.h"
 
 struct key {
         int32_t x;
@@ -19,20 +20,6 @@ struct mliCorsikaHistogram2d mliCorsikaHistogram2d_init(void)
         struct mliCorsikaHistogram2d hist;
         hist.dict = mliAvlDict_init();
         return hist;
-}
-
-double interpret_int64_as_double(int64_t i)
-{
-        double f;
-        memcpy(&f, &i, sizeof(double));
-        return f;
-}
-
-int64_t interpret_double_as_int64(double d)
-{
-        int64_t i;
-        memcpy(&i, &d, sizeof(int64_t));
-        return i;
 }
 
 void mliCorsikaHistogram2d_free(struct mliCorsikaHistogram2d *hist)
@@ -61,12 +48,12 @@ int mliCorsikaHistogram2d_assign(
 
         has = mliAvlDict_get(&hist->dict, key.i8, &ival);
         if (has) {
-                double dval = interpret_int64_as_double(ival);
+                double dval = mli_interpret_int64_as_double(ival);
                 dval += weight;
-                ival = interpret_double_as_int64(dval);
+                ival = mli_interpret_double_as_int64(dval);
 
         } else {
-                ival = interpret_double_as_int64(weight);
+                ival = mli_interpret_double_as_int64(weight);
         }
         return mliAvlDict_set(&hist->dict, key.i8, ival);
 }
@@ -84,7 +71,7 @@ int mliCorsikaHistogram2d_dumps__(
         }
 
         key.i8 = node->key;
-        dval = interpret_int64_as_double(node->value);
+        dval = mli_interpret_int64_as_double(node->value);
 
         count = mliIo_write(
                 f, (const void *)(&key.i4i4.x), sizeof(uint32_t), 1);
@@ -99,12 +86,12 @@ int mliCorsikaHistogram2d_dumps__(
 
         if (node->avl.left != NULL) {
                 struct mliAvlNode *left = (struct mliAvlNode *)(node->avl.left);
-                chk_msg(mliCorsikaHistogram2d_dumps__(left, f), "1");
+                chk_msg(mliCorsikaHistogram2d_dumps__(left, f), "Failed left");
         }
         if (node->avl.right != NULL) {
                 struct mliAvlNode *right =
                         (struct mliAvlNode *)(node->avl.right);
-                chk_msg(mliCorsikaHistogram2d_dumps__(right, f), "2");
+                chk_msg(mliCorsikaHistogram2d_dumps__(right, f), "Failed right");
         }
 
         return 1;
@@ -122,11 +109,15 @@ int mliCorsikaHistogram2d_dumps(
                 f, (const void *)(&hist->dict.len), sizeof(uint64_t), 1);
         chk_msg(count == 1, "Failed to write dict->len.");
 
-        chk_msg(mliCorsikaHistogram2d_dumps__(
-                        (const struct mliAvlNode *)hist->dict.tree.root, f),
-                "woot?")
+        chk_msg(
+                mliCorsikaHistogram2d_dumps__(
+                        (const struct mliAvlNode *)hist->dict.tree.root,
+                        f
+                ),
+                "Failed to write dict."
+        );
 
-                return 1;
+        return 1;
 chk_error:
         return 0;
 }
