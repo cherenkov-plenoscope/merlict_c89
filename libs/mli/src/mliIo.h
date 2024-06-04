@@ -3,6 +3,7 @@
 #define mliIo_H_
 #include <stdint.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include "mliStr.h"
 
 struct mliIo {
@@ -25,6 +26,8 @@ int mliIo_malloc_capacity(struct mliIo *byt, const uint64_t capacity);
 int mliIo_malloc(struct mliIo *byt);
 int64_t mliIo_malloc_cstr(struct mliIo *byt, const char *s);
 int mliIo_malloc_from_path(struct mliIo *byt, const char *path);
+int mliIo_write_from_file(struct mliIo *byt, FILE* f, const uint64_t size);
+int mliIo_read_to_file(struct mliIo *byt, FILE* f, const uint64_t size);
 int mliIo_read_to_path(struct mliIo *byt, const char *path);
 int mliIo_putc(struct mliIo *byt, const unsigned char c);
 int mliIo_putchar(struct mliIo *byt, const char c);

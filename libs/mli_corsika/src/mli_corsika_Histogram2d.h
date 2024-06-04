@@ -5,10 +5,19 @@
 #include <stdint.h>
 #include "../../mli/src/mliAvlDict.h"
 #include "../../mli/src/mliIo.h"
+#include "../../mli/src/mliDynArray.h"
 
 struct mliCorsikaHistogram2d {
         struct mliAvlDict dict;
 };
+
+struct mliCorsikaHistogram2dBin {
+        int32_t x;
+        int32_t y;
+        double value;
+};
+
+MLIDYNARRAY_DEFINITON(mli, CorsikaHistogram2dBin, struct mliCorsikaHistogram2dBin)
 
 struct mliCorsikaHistogram2d mliCorsikaHistogram2d_init(void);
 
@@ -24,10 +33,11 @@ int mliCorsikaHistogram2d_assign(
         const int32_t y,
         const double weight);
 
-int mliCorsikaHistogram2d_dumps(
+int mliCorsikaHistogram2d_flatten(
         const struct mliCorsikaHistogram2d *hist,
-        struct mliIo *f);
+        struct mliDynCorsikaHistogram2dBin *dump);
 
 void mliCorsikaHistogram2d_reset(struct mliCorsikaHistogram2d *hist);
+uint64_t mliCorsikaHistogram2d_len(const struct mliCorsikaHistogram2d *hist);
 
 #endif

@@ -5,6 +5,8 @@
 #include "../../mli/src/chk.h"
 #include "../../mli/src/mli_math.h"
 
+MLIDYNARRAY_IMPLEMENTATION(mli, CorsikaHistogram2dBin, struct mliCorsikaHistogram2dBin)
+
 struct key {
         int32_t x;
         int32_t y;
@@ -58,59 +60,54 @@ int mliCorsikaHistogram2d_assign(
         return mliAvlDict_set(&hist->dict, key.i8, ival);
 }
 
-int mliCorsikaHistogram2d_dumps__(
-        const struct mliAvlNode *node,
-        struct mliIo *f)
+uint64_t mliCorsikaHistogram2d_len(const struct mliCorsikaHistogram2d *hist)
 {
-        int64_t count = 0;
-        union i4i4_to_i8 key;
-        double dval = 0.0;
+        return hist->dict.len;
+}
 
+int mliCorsikaHistogram2d_flatten__(
+        const struct mliAvlNode *node,
+        struct mliDynCorsikaHistogram2dBin *f)
+{
         if (node == NULL) {
                 return 1;
+        } else {
+                union i4i4_to_i8 key;
+                struct mliCorsikaHistogram2dBin bin;
+                key.i8 = node->key;
+
+                bin.x = key.i4i4.x;
+                bin.y = key.i4i4.y;
+                bin.value = mli_interpret_int64_as_double(node->value);
+
+                chk_msg(
+                        mliDynCorsikaHistogram2dBin_push_back(f, bin),
+                        "Failed to push back bin-node."
+                );
+
+
+                if (node->avl.left != NULL) {
+                        struct mliAvlNode *left = (struct mliAvlNode *)(node->avl.left);
+                        chk_msg(mliCorsikaHistogram2d_flatten__(left, f), "Failed left");
+                }
+                if (node->avl.right != NULL) {
+                        struct mliAvlNode *right =
+                                (struct mliAvlNode *)(node->avl.right);
+                        chk_msg(mliCorsikaHistogram2d_flatten__(right, f), "Failed right");
+                }
+                return 1;
         }
-
-        key.i8 = node->key;
-        dval = mli_interpret_int64_as_double(node->value);
-
-        count = mliIo_write(
-                f, (const void *)(&key.i4i4.x), sizeof(uint32_t), 1);
-        chk_msg(count == 1, "Failed to write x.");
-
-        count = mliIo_write(
-                f, (const void *)(&key.i4i4.y), sizeof(uint32_t), 1);
-        chk_msg(count == 1, "Failed to write y.");
-
-        count = mliIo_write(f, (const void *)(&dval), sizeof(double), 1);
-        chk_msg(count == 1, "Failed to write weight.");
-
-        if (node->avl.left != NULL) {
-                struct mliAvlNode *left = (struct mliAvlNode *)(node->avl.left);
-                chk_msg(mliCorsikaHistogram2d_dumps__(left, f), "Failed left");
-        }
-        if (node->avl.right != NULL) {
-                struct mliAvlNode *right =
-                        (struct mliAvlNode *)(node->avl.right);
-                chk_msg(mliCorsikaHistogram2d_dumps__(right, f), "Failed right");
-        }
-
         return 1;
 chk_error:
         return 0;
 }
 
-int mliCorsikaHistogram2d_dumps(
+int mliCorsikaHistogram2d_flatten(
         const struct mliCorsikaHistogram2d *hist,
-        struct mliIo *f)
+        struct mliDynCorsikaHistogram2dBin *f)
 {
-        int64_t count = 0;
-
-        count = mliIo_write(
-                f, (const void *)(&hist->dict.len), sizeof(uint64_t), 1);
-        chk_msg(count == 1, "Failed to write dict->len.");
-
         chk_msg(
-                mliCorsikaHistogram2d_dumps__(
+                mliCorsikaHistogram2d_flatten__(
                         (const struct mliAvlNode *)hist->dict.tree.root,
                         f
                 ),
