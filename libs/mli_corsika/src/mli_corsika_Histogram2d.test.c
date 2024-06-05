@@ -15,42 +15,24 @@ CASE("mli_corsika_Histogram2d: init,malloc,free")
 
 CASE("mli_corsika_Histogram2d: assign to same bin multiple times.")
 {
-        uint64_t i = 0;
-        uint64_t a = 0;
-        int32_t b = 0;
-        double c = 0;
-        int64_t rc = 0;
-
+        uint64_t i;
         struct mliCorsikaHistogram2d hist = mliCorsikaHistogram2d_init();
-        struct mliIo buff = mliIo_init();
+        struct mliDynCorsikaHistogram2dBin bins = mliDynCorsikaHistogram2dBin_init();
 
         CHECK(mliCorsikaHistogram2d_malloc(&hist, 10));
-        CHECK(mliIo_malloc(&buff));
+        CHECK(mliDynCorsikaHistogram2dBin_malloc(&bins, 1));
 
         for (i = 0; i < 20; i++) {
                 CHECK(mliCorsikaHistogram2d_assign(&hist, 42, 13, 0.5));
         }
 
-        CHECK(mliCorsikaHistogram2d_dumps(&hist, &buff));
+        CHECK(mliCorsikaHistogram2d_flatten(&hist, &bins));
         mliCorsikaHistogram2d_free(&hist);
 
-        buff.pos = 0;
+        CHECK(bins.size == 1);
+        CHECK(bins.array[0].x == 42);
+        CHECK(bins.array[0].y == 13);
+        CHECK_MARGIN(bins.array[0].value, 20 * 0.5, 1e-6);
 
-        rc = mliIo_read(&buff, (const void *)(&a), sizeof(uint64_t), 1);
-        CHECK(rc == 1);
-        CHECK(a == 1);
-
-        rc = mliIo_read(&buff, (const void *)(&b), sizeof(int32_t), 1);
-        CHECK(rc == 1);
-        CHECK(b == 42);
-
-        rc = mliIo_read(&buff, (const void *)(&b), sizeof(int32_t), 1);
-        CHECK(rc == 1);
-        CHECK(b == 13);
-
-        rc = mliIo_read(&buff, (const void *)(&c), sizeof(double), 1);
-        CHECK(rc == 1);
-        CHECK_MARGIN(c, 20 * 0.5, 1e-6);
-
-        mliIo_free(&buff);
+        mliDynCorsikaHistogram2dBin_free(&bins);
 }

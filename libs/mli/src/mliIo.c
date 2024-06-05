@@ -414,9 +414,9 @@ chk_error:
 
 int mliIo_write_from_file(struct mliIo *byt, FILE *f, const uint64_t size)
 {
+        uint64_t i;
         chk_msg(f, "Expected file to be open.");
         chk_msg(byt->cstr != NULL, "Expected buffer to be allocated.");
-        uint64_t i;
         for (i = 0; i < size; i++) {
                 char c = getc(f);
                 chk(mliIo_putc(byt, c))
@@ -429,16 +429,15 @@ chk_error:
 
 int mliIo_read_to_file(struct mliIo *byt, FILE *f, const uint64_t size)
 {
+        uint64_t i;
         chk_msg(f, "Expected file to be open.");
         chk_msg(byt->cstr != NULL, "Expected buffer to be allocated.");
-        uint64_t i;
-
         for (i = 0; i < size; i++) {
                 int rc = mliIo_getc(byt);
                 unsigned char c;
                 chk(rc != EOF);
                 c = (unsigned char)(rc);
-                chk_fwrite(c, sizeof(unsigned char), 1, f);
+                chk_fwrite(&c, sizeof(unsigned char), 1, f);
         }
 
         return 1;

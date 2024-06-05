@@ -13,8 +13,9 @@
 #include "../../mli/src/mliDynArray.h"
 #include "../../mli/src/mli_ray_grid_traversal.h"
 
-
-int mliAxisAlignedGrid_set_from_config(struct mliAxisAlignedGrid *grid, struct mliIo *text)
+int mliAxisAlignedGrid_set_from_config(
+        struct mliAxisAlignedGrid *grid,
+        struct mliIo *text)
 {
         struct mliVec lower;
         struct mliVec upper;
@@ -53,7 +54,6 @@ int mliAxisAlignedGrid_set_from_config(struct mliAxisAlignedGrid *grid, struct m
         return 1;
 chk_error:
         return 0;
-
 }
 
 #define HIST_TARGET_SIZE 10000
@@ -76,45 +76,44 @@ int main(int argc, char *argv[])
         chk(mliCorsikaHistogram2d_malloc(&hist, HIST_TARGET_SIZE));
 
         while (mliTar_read_header(&arc, &arch)) {
-                /*fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);*/
-
                 if (strcmp(arch.name, "init.txt") == 0) {
                         struct mliIo config_text = mliIo_init();
 
-                        /*fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);*/
-
                         if (hist.dict.capacity > 10 * HIST_TARGET_SIZE) {
-                                chk(mliCorsikaHistogram2d_malloc(&hist, HIST_TARGET_SIZE));
+                                chk(mliCorsikaHistogram2d_malloc(
+                                        &hist, HIST_TARGET_SIZE));
                         } else {
                                 mliCorsikaHistogram2d_reset(&hist);
                         }
                         chk(mliIo_malloc(&config_text));
-                        chk(mliTar_read_data_to_io(&arc, &config_text, arch.size));
-                        chk(mliAxisAlignedGrid_set_from_config(&grid, &config_text));
+                        chk(mliTar_read_data_to_io(
+                                &arc, &config_text, arch.size));
+                        chk(mliAxisAlignedGrid_set_from_config(
+                                &grid, &config_text));
                         mliIo_free(&config_text);
                 } else if (strcmp(arch.name, "cer.x8.float32") == 0) {
                         const int num_bunches = arch.size / 32;
                         int num = 0;
 
-                        /*fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);*/
-
                         for (i = 0; i < num_bunches; i++) {
-                                chk_msg(
-                                        mliTar_read_data(&arc, (void *)raw, sizeof(raw)),
-                                        "Failed to read 'cer.x8.float32'."
-                                );
+                                chk_msg(mliTar_read_data(
+                                                &arc, (void *)raw, sizeof(raw)),
+                                        "Failed to read 'cer.x8.float32'.");
                                 mliCorsikaPhotonBunch_set_from_raw(&bunch, raw);
                                 ray.support.x = bunch.x_cm;
                                 ray.support.y = bunch.y_cm;
                                 ray.support.z = 0.0;
-                                ray.direction.x = mli_corsika_ux_to_cx(bunch.ux);
-                                ray.direction.y = mli_corsika_vy_to_cy(bunch.vy);
+                                ray.direction.x =
+                                        mli_corsika_ux_to_cx(bunch.ux);
+                                ray.direction.y =
+                                        mli_corsika_vy_to_cy(bunch.vy);
                                 ray.direction.z =
                                         mli_corsika_restore_direction_z_component(
-                                                ray.direction.x, ray.direction.y);
+                                                ray.direction.x,
+                                                ray.direction.y);
 
-                                traversal =
-                                        mliAxisAlignedGridTraversal_start(&grid, &ray);
+                                traversal = mliAxisAlignedGridTraversal_start(
+                                        &grid, &ray);
 
                                 while (traversal.valid) {
                                         num += 1;
@@ -123,56 +122,31 @@ int main(int argc, char *argv[])
                                                 traversal.voxel.x,
                                                 traversal.voxel.y,
                                                 bunch.weight_photons));
-                                        mliAxisAlignedGridTraversal_next(&traversal);
+                                        mliAxisAlignedGridTraversal_next(
+                                                &traversal);
                                 }
                         }
-                        /*fprintf(stderr, "%s:%d [%d]\n", __FILE__, __LINE__, num);*/
-
                 } else if (strcmp(arch.name, "export.txt") == 0) {
-                        struct mliDynCorsikaHistogram2dBin bins = mliDynCorsikaHistogram2dBin_init();
+                        struct mliDynCorsikaHistogram2dBin bins =
+                                mliDynCorsikaHistogram2dBin_init();
 
-                        /*fprintf(stderr, "%s:%d\n", __FILE__, __LINE__);*/
                         chk_msg(arch.size == 0, "Expected zero size.")
-
-                        chk(
-                                mliDynCorsikaHistogram2dBin_malloc(
+                                chk(mliDynCorsikaHistogram2dBin_malloc(
                                         &bins,
-                                        mliCorsikaHistogram2d_len(&hist)
-                                )
-                        );
+                                        mliCorsikaHistogram2d_len(&hist)));
                         chk(mliCorsikaHistogram2d_flatten(&hist, &bins));
-
-                        fprintf(stderr, "==================================\n");
-                        for (i = 0; i < bins.size; i++) {
-                                fprintf(
-                                        stderr,
-                                        "[%d, %d](%e)\n",
-                                        bins.array[i].x,
-                                        bins.array[i].y,
-                                        bins.array[i].value
-                                );
-                        }
-
-                        chk_fwrite(
-                                &(bins.size),
-                                sizeof(uint64_t),
-                                1,
-                                stdout
-                        );
+                        chk_fwrite(&(bins.size), sizeof(uint64_t), 1, stdout);
                         chk_fwrite(
                                 &(bins.array[0]),
                                 sizeof(struct mliCorsikaHistogram2dBin),
                                 bins.size,
-                                stdout
-                        )
-                        mliDynCorsikaHistogram2dBin_free(&bins);
+                                stdout) mliDynCorsikaHistogram2dBin_free(&bins);
                         fflush(stdout);
 
                 } else {
-                        chk_bad(
-                                "Expected one of "
-                                "['init.txt', 'cer.x8.float32', 'export.txt']."
-                        );
+                        chk_bad("Expected one of "
+                                "['init.txt', 'cer.x8.float32', "
+                                "'export.txt'].");
                 }
         }
 
