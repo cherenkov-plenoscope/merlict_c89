@@ -66,11 +66,19 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, ray->support);
                 return MLI_AXIS_ALIGNED_GRID_RAY_STARTS_INSIDE_GRID;
         } else {
-                double ray_parameter;
-                int has_intersection = mliRay_has_overlap_aabb(
-                        (*ray), grid->bounds, &ray_parameter);
+                double ray_parameter_near, ray_parameter_far;
+                int has_intersection;
+                mliRay_aabb_intersections(
+                        (*ray),
+                        grid->bounds,
+                        &ray_parameter_near,
+                        &ray_parameter_far);
+                has_intersection =
+                        mliRay_aabb_intersections_is_valid_given_near_and_far(
+                                ray_parameter_near, ray_parameter_far);
                 if (has_intersection) {
-                        struct mliVec inner = mliRay_at(ray, ray_parameter);
+                        struct mliVec inner =
+                                mliRay_at(ray, ray_parameter_near);
                         (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, inner);
 
                         if (bin->x >= grid->num_bins.x) {
@@ -255,4 +263,16 @@ void mliAxisAlignedGridTraversal_fprint(
                 t->tDelta.x,
                 t->tDelta.y,
                 t->tDelta.z);
+}
+
+void mliRay_fprint(FILE *f, struct mliRay *ray)
+{
+        fprintf(f,
+                "[%f, %f, %f] + lam*[%f, %f, %f]",
+                ray->support.x,
+                ray->support.y,
+                ray->support.z,
+                ray->direction.x,
+                ray->direction.y,
+                ray->direction.z);
 }

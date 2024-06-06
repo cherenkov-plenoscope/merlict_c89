@@ -251,7 +251,7 @@ CASE("Actual example from simulated shower")
 CASE("Elaborated example")
 {
         int i, num_overlaps, num_rays, rc_aabb, rc_sphere;
-        double overlaps_per_ray, para, minus_solution, plus_solution;
+        double overlaps_per_ray, minus_solution, plus_solution;
         struct mliAxisAlignedGrid grid;
         struct mliAxisAlignedGridTraversal traversal;
         struct mliRay ray;
@@ -294,7 +294,7 @@ CASE("Elaborated example")
 
                 CHECK_MARGIN(mliVec_norm(ppp), 0.0, 1e-3);
 
-                rc_aabb = mliRay_has_overlap_aabb(ray, grid.bounds, &para);
+                rc_aabb = mliRay_has_overlap_aabb(ray, grid.bounds);
                 rc_sphere = mliRay_sphere_intersection(
                         ray.support,
                         ray.direction,

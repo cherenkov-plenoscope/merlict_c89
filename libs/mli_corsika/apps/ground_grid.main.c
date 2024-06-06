@@ -61,6 +61,7 @@ chk_error:
 int main(int argc, char *argv[])
 {
         struct mliTar arc = mliTar_init();
+        struct mliTar out = mliTar_init();
         struct mliTarHeader arch = mliTarHeader_init();
 
         struct mliCorsikaHistogram2d hist = mliCorsikaHistogram2d_init();
@@ -73,6 +74,7 @@ int main(int argc, char *argv[])
         int i;
 
         chk(mliTar_read_begin(&arc, stdin));
+        chk(mliTar_write_begin(&out, stdout));
         chk(mliCorsikaHistogram2d_malloc(&hist, HIST_TARGET_SIZE));
 
         while (mliTar_read_header(&arc, &arch)) {
@@ -116,6 +118,26 @@ int main(int argc, char *argv[])
                                         &grid, &ray);
 
                                 while (traversal.valid) {
+                                        int odd = 0;
+                                        if (traversal.voxel.x < 0 ||
+                                            traversal.voxel.x >=
+                                                    grid.num_bins.x) {
+                                                odd = 1;
+                                        }
+                                        if (traversal.voxel.y < 0 ||
+                                            traversal.voxel.y >=
+                                                    grid.num_bins.y) {
+                                                odd = 1;
+                                        }
+                                        if (odd) {
+                                                fprintf(stderr,
+                                                        "-------------------"
+                                                        "\n");
+                                                mliRay_fprint(stderr, &ray);
+                                                fprintf(stderr, "\n");
+                                                mliAxisAlignedGridTraversal_fprint(
+                                                        stderr, &traversal);
+                                        }
                                         num += 1;
                                         chk(mliCorsikaHistogram2d_assign(
                                                 &hist,
@@ -127,22 +149,24 @@ int main(int argc, char *argv[])
                                 }
                         }
                 } else if (strcmp(arch.name, "export.txt") == 0) {
+                        struct mliTarHeader outh = mliTarHeader_init();
                         struct mliDynCorsikaHistogram2dBin bins =
                                 mliDynCorsikaHistogram2dBin_init();
-
-                        chk_msg(arch.size == 0, "Expected zero size.")
-                                chk(mliDynCorsikaHistogram2dBin_malloc(
-                                        &bins,
-                                        mliCorsikaHistogram2d_len(&hist)));
+                        chk_msg(arch.size == 0, "Expected zero size.");
+                        chk(mliDynCorsikaHistogram2dBin_malloc(
+                                &bins, mliCorsikaHistogram2d_len(&hist)));
                         chk(mliCorsikaHistogram2d_flatten(&hist, &bins));
-                        chk_fwrite(&(bins.size), sizeof(uint64_t), 1, stdout);
-                        chk_fwrite(
-                                &(bins.array[0]),
-                                sizeof(struct mliCorsikaHistogram2dBin),
-                                bins.size,
-                                stdout) mliDynCorsikaHistogram2dBin_free(&bins);
-                        fflush(stdout);
-
+                        strcpy(outh.name, "histogram.int32_int32_float64");
+                        outh.size = bins.size *
+                                    sizeof(struct mliCorsikaHistogram2dBin);
+                        chk_msg(mliTar_write_header(&out, &outh),
+                                "Failed to write tar header to stdout");
+                        chk_msg(mliTar_write_data(
+                                        &out,
+                                        (const void *)&(bins.array[0]),
+                                        outh.size),
+                                "Failed to write histogram to tar in stdout.");
+                        fflush(out.stream);
                 } else {
                         chk_bad("Expected one of "
                                 "['init.txt', 'cer.x8.float32', "
@@ -152,6 +176,8 @@ int main(int argc, char *argv[])
 
         mliCorsikaHistogram2d_free(&hist);
         mliTar_read_finalize(&arc);
+        mliTar_write_finalize(&out);
+        fflush(out.stream);
 
         return EXIT_SUCCESS;
 chk_error:

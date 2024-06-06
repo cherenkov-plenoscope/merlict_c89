@@ -52,5 +52,5 @@ int mliAxisAlignedGridTraversal_next(
 void mliAxisAlignedGridTraversal_fprint(
         FILE *f,
         struct mliAxisAlignedGridTraversal *traversal);
-
+void mliRay_fprint(FILE *f, struct mliRay *ray);
 #endif

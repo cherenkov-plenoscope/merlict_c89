@@ -27,81 +27,93 @@ CASE("ray and orientated bounding box")
          *     ( 1, -2, -3)                       ( 1, -1, -3)
          */
 
-        double ray_parameter;
+        double near, far;
         aabb.lower = mliVec_init(-1., -2, -3);
         aabb.upper = mliVec_init(1., -1, 0);
 
         /* ray starts below the box */
-        CHECK(mliRay_has_overlap_aabb(
+        mliRay_aabb_intersections(
                 mliRay_set(mliVec_init(0., -1.5, -4.), mliVec_init(0., 0., 1.)),
                 aabb,
-                &ray_parameter));
-        CHECK_MARGIN(ray_parameter, 1., 1e-6);
+                &near,
+                &far);
+        CHECK(mliRay_aabb_intersections_is_valid_given_near_and_far(near, far));
+        CHECK_MARGIN(near, 1., 1e-6);
+        CHECK_MARGIN(far, 4., 1e-6);
 
         /* ray starts above the box */
-        CHECK(!mliRay_has_overlap_aabb(
+        mliRay_aabb_intersections(
                 mliRay_set(mliVec_init(0., -1.5, +4.), mliVec_init(0., 0., 1.)),
                 aabb,
-                &ray_parameter));
+                &near,
+                &far);
+        CHECK(!mliRay_aabb_intersections_is_valid_given_near_and_far(
+                near, far));
 
         /* ray starts inside the box */
-        CHECK(mliRay_has_overlap_aabb(
+        mliRay_aabb_intersections(
                 mliRay_set(
                         mliVec_init(0., -1.5, -1.5), mliVec_init(0., 0., 1.)),
                 aabb,
-                &ray_parameter));
-        CHECK_MARGIN(ray_parameter, -1.5, 1e-6);
+                &near,
+                &far);
+        CHECK(mliRay_aabb_intersections_is_valid_given_near_and_far(near, far));
+        CHECK_MARGIN(near, -1.5, 1e-6);
+        CHECK_MARGIN(far, 1.5, 1e-6);
 
         /* ray starts beside the box */
-        CHECK(!mliRay_has_overlap_aabb(
+        mliRay_aabb_intersections(
                 mliRay_set(mliVec_init(10, 10, -5), mliVec_init(0., 0., 1.)),
                 aabb,
-                &ray_parameter));
+                &near,
+                &far);
+        CHECK(!mliRay_aabb_intersections_is_valid_given_near_and_far(
+                near, far));
 }
 
 CASE("ray inside aabb")
 {
         struct mliAABB aabb;
-        double ray_parameter;
+        struct mliVec direction;
+        double near, far;
+        int i;
         aabb.lower = mliVec_init(-1, -1, -1);
         aabb.upper = mliVec_init(1, 1, 1);
 
         /* ray starts inside the box */
-        CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(1., 0., 0.)),
-                aabb,
-                &ray_parameter));
-        CHECK_MARGIN(ray_parameter, -1., 1e-6);
-
-        CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(-1., 0., 0.)),
-                aabb,
-                &ray_parameter));
-        CHECK_MARGIN(ray_parameter, -1., 1e-6);
-
-        CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(0., 1., 0.)),
-                aabb,
-                &ray_parameter));
-        CHECK_MARGIN(ray_parameter, -1., 1e-6);
-
-        CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(0., -1., 0.)),
-                aabb,
-                &ray_parameter));
-        CHECK_MARGIN(ray_parameter, -1., 1e-6);
-
-        CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(0., 0., 1.)),
-                aabb,
-                &ray_parameter));
-        CHECK_MARGIN(ray_parameter, -1., 1e-6);
-
-        CHECK(mliRay_has_overlap_aabb(
-                mliRay_set(mliVec_init(0., 0., 0.), mliVec_init(0., 0., -1.)),
-                aabb,
-                &ray_parameter));
-        CHECK_MARGIN(ray_parameter, -1., 1e-6);
+        for (i = 0; i < 6; i++) {
+                switch (i) {
+                case 0:
+                        direction = mliVec_init(-1, 0, 0);
+                        break;
+                case 1:
+                        direction = mliVec_init(1, 0, 0);
+                        break;
+                case 2:
+                        direction = mliVec_init(0, -1, 0);
+                        break;
+                case 3:
+                        direction = mliVec_init(0, 1, 0);
+                        break;
+                case 4:
+                        direction = mliVec_init(0, 0, -1);
+                        break;
+                case 5:
+                        direction = mliVec_init(0, 0, 1);
+                        break;
+                default:
+                        CHECK(0);
+                }
+                mliRay_aabb_intersections(
+                        mliRay_set(mliVec_init(0., 0., 0.), direction),
+                        aabb,
+                        &near,
+                        &far);
+                CHECK(mliRay_aabb_intersections_is_valid_given_near_and_far(
+                        near, far));
+                CHECK_MARGIN(near, -1., 1e-6);
+                CHECK_MARGIN(far, 1., 1e-6);
+        }
 }
 
 CASE("mliHomTraComp, transform direction")

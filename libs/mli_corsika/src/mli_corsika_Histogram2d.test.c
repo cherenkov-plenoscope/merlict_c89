@@ -17,7 +17,8 @@ CASE("mli_corsika_Histogram2d: assign to same bin multiple times.")
 {
         uint64_t i;
         struct mliCorsikaHistogram2d hist = mliCorsikaHistogram2d_init();
-        struct mliDynCorsikaHistogram2dBin bins = mliDynCorsikaHistogram2dBin_init();
+        struct mliDynCorsikaHistogram2dBin bins =
+                mliDynCorsikaHistogram2dBin_init();
 
         CHECK(mliCorsikaHistogram2d_malloc(&hist, 10));
         CHECK(mliDynCorsikaHistogram2dBin_malloc(&bins, 1));

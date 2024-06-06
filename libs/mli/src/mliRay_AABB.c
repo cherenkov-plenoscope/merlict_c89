@@ -2,42 +2,60 @@
 #include "mliRay_AABB.h"
 #include "mli_math.h"
 
-#define MIN2 MLI_MIN2
-#define MAX2 MLI_MAX2
-
-int mliRay_has_overlap_aabb(
+void mliRay_aabb_intersections(
         const struct mliRay ray,
         const struct mliAABB aabb,
-        double *ray_parameter)
+        double *t_near,
+        double *t_far)
 {
-        const double frac_x = 1. / ray.direction.x;
-        const double frac_y = 1. / ray.direction.y;
-        const double frac_z = 1. / ray.direction.z;
+        struct mliVec frac;
+        struct mliVec lower, upper;
+        struct mliVec t1, t2;
 
-        const double xl = (aabb.lower.x - ray.support.x) * frac_x;
-        const double xu = (aabb.upper.x - ray.support.x) * frac_x;
-        const double yl = (aabb.lower.y - ray.support.y) * frac_y;
-        const double yu = (aabb.upper.y - ray.support.y) * frac_y;
-        const double zl = (aabb.lower.z - ray.support.z) * frac_z;
-        const double zu = (aabb.upper.z - ray.support.z) * frac_z;
+        frac.x = 1. / ray.direction.x;
+        frac.y = 1. / ray.direction.y;
+        frac.z = 1. / ray.direction.z;
 
-        const double tmin = MLI_MAX3(MIN2(xl, xu), MIN2(yl, yu), MIN2(zl, zu));
-        const double tmax = MLI_MIN3(MAX2(xl, xu), MAX2(yl, yu), MAX2(zl, zu));
+        lower.x = (aabb.lower.x - ray.support.x) * frac.x;
+        lower.y = (aabb.lower.y - ray.support.y) * frac.y;
+        lower.z = (aabb.lower.z - ray.support.z) * frac.z;
 
-        /*  if tmax < 0, ray (line) is intersecting AABB
-         *  but the whole AABB is behind us
-         */
-        if (tmax < 0) {
-                (*ray_parameter) = tmax;
+        upper.x = (aabb.upper.x - ray.support.x) * frac.x;
+        upper.y = (aabb.upper.y - ray.support.y) * frac.y;
+        upper.z = (aabb.upper.z - ray.support.z) * frac.z;
+
+        t1.x = MLI_MIN2(lower.x, upper.x);
+        t1.y = MLI_MIN2(lower.y, upper.y);
+        t1.z = MLI_MIN2(lower.z, upper.z);
+
+        t2.x = MLI_MAX2(lower.x, upper.x);
+        t2.y = MLI_MAX2(lower.y, upper.y);
+        t2.z = MLI_MAX2(lower.z, upper.z);
+
+        (*t_near) = MLI_MAX3(t1.x, t1.y, t1.z);
+        (*t_far) = MLI_MIN3(t2.x, t2.y, t2.z);
+}
+
+int mliRay_aabb_intersections_is_valid_given_near_and_far(
+        const double t_near,
+        const double t_far)
+{
+        if (t_far < 0) {
                 return 0;
         }
 
-        /* if tmin > tmax, ray doesn't intersect AABB */
-        if (tmin > tmax) {
-                (*ray_parameter) = tmax;
+        /* if t_near > t_far, ray doesn't intersect AABB */
+        if (t_near > t_far) {
                 return 1;
         }
 
-        (*ray_parameter) = tmin;
         return 1;
+}
+
+int mliRay_has_overlap_aabb(const struct mliRay ray, const struct mliAABB aabb)
+{
+        double t_near, t_far;
+        mliRay_aabb_intersections(ray, aabb, &t_near, &t_far);
+        return mliRay_aabb_intersections_is_valid_given_near_and_far(
+                t_near, t_far);
 }

@@ -1,5 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_math.h"
+#include <string.h>
 
 double mli_rad2deg(const double angle_in_rad)
 {
