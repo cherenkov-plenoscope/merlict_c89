@@ -116,6 +116,33 @@ CASE("ray inside aabb")
         }
 }
 
+CASE("ray aabb actual test cases")
+{
+        struct mliAABB aabb;
+        /*struct mliVec aabbextent;*/
+        struct mliRay ray;
+        /*struct mliVec vn, vf;*/
+        double near, far;
+        aabb.lower = mliVec_init(-5124735.0, -5120543.0, -5000.0);
+        aabb.upper = mliVec_init(5115265.0, 5119457.0, 5000.0);
+        /*aabbextent = mliVec_substract(aabb.upper, aabb.lower);*/
+        ray = mliRay_set(
+                mliVec_init(-15220843.0, -16454620.0, 0.0),
+                mliVec_init(0.678895, 0.734165, 0.010214));
+
+        mliRay_aabb_intersections(ray, aabb, &near, &far);
+        CHECK(!mliRay_aabb_intersections_is_valid_given_near_and_far(
+                near, far));
+        /*
+        vn = mliRay_at(&ray, near);
+        vf = mliRay_at(&ray, far);
+        fprintf(stderr, "n:%e, f:%e\n", near, far);
+        fprintf(stderr, "vn:(%f, %f, %f), vf:(%f, %f, %f)\n",
+                vn.x/aabbextent.x, vn.y/aabbextent.y, vn.z/aabbextent.z,
+                vf.x/aabbextent.x, vf.y/aabbextent.y, vf.z/aabbextent.z);
+        */
+}
+
 CASE("mliHomTraComp, transform direction")
 {
         struct mliHomTraComp Tcomp;

@@ -77,8 +77,8 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
                         mliRay_aabb_intersections_is_valid_given_near_and_far(
                                 ray_parameter_near, ray_parameter_far);
                 if (has_intersection) {
-                        struct mliVec inner =
-                                mliRay_at(ray, ray_parameter_near);
+                        struct mliVec inner;
+                        inner = mliRay_at(ray, ray_parameter_near);
                         (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, inner);
 
                         if (bin->x >= grid->num_bins.x) {

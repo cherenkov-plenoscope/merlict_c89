@@ -43,12 +43,9 @@ int mliRay_aabb_intersections_is_valid_given_near_and_far(
         if (t_far < 0) {
                 return 0;
         }
-
-        /* if t_near > t_far, ray doesn't intersect AABB */
         if (t_near > t_far) {
-                return 1;
+                return 0;
         }
-
         return 1;
 }
 
