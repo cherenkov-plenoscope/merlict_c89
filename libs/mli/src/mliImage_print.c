@@ -44,7 +44,8 @@ void mliImage_print_ansi_escape_chars(
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
                         struct mliColor color = mliImage_at(img, col, row);
-                        struct mliColor out = mliColor_truncate_to_uint8(color);
+                        struct mliColor out =
+                                mliColor_truncate(color, 0., 255.);
                         uint8_t r = (uint8_t)out.r;
                         uint8_t g = (uint8_t)out.g;
                         uint8_t b = (uint8_t)out.b;
@@ -91,7 +92,8 @@ void mliImage_print_ascii_chars(
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
                         struct mliColor color = mliImage_at(img, col, row);
-                        struct mliColor out = mliColor_truncate_to_uint8(color);
+                        struct mliColor out =
+                                mliColor_truncate(color, 0., 255.);
                         float lum = 1.0 / 3.0 * (out.r + out.g + out.b);
                         int64_t l = lum / 16.0;
                         if (l < 0) {

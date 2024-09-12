@@ -33,29 +33,29 @@ CASE("mliColor 8bit range")
 {
         struct mliColor c;
         c = mliColor_set(0.0, 0.0, 0.0);
-        CHECK(mliColor_is_valid_8bit_range(c));
+        CHECK(mliColor_is_in_range(c, 0., 256.));
 
         c = mliColor_set(-MLI_EPSILON, 0.0, 0.0);
-        CHECK(!mliColor_is_valid_8bit_range(c));
+        CHECK(!mliColor_is_in_range(c, 0., 256.));
 
         c = mliColor_set(0.0, -MLI_EPSILON, 0.0);
-        CHECK(!mliColor_is_valid_8bit_range(c));
+        CHECK(!mliColor_is_in_range(c, 0., 256.));
 
         c = mliColor_set(0.0, 0.0, -MLI_EPSILON);
-        CHECK(!mliColor_is_valid_8bit_range(c));
+        CHECK(!mliColor_is_in_range(c, 0., 256.));
 
         c = mliColor_set(255.9, 255.9, 255.9);
-        CHECK(mliColor_is_valid_8bit_range(c));
+        CHECK(mliColor_is_in_range(c, 0., 256.));
 
         c = mliColor_set(256.0, 255.9, 255.9);
-        CHECK(!mliColor_is_valid_8bit_range(c));
+        CHECK(!mliColor_is_in_range(c, 0., 256.));
 
         c = mliColor_set(255.9, 256.0, 255.9);
-        CHECK(!mliColor_is_valid_8bit_range(c));
+        CHECK(!mliColor_is_in_range(c, 0., 256.));
 
         c = mliColor_set(255.9, 255.9, 256.0);
-        CHECK(!mliColor_is_valid_8bit_range(c));
+        CHECK(!mliColor_is_in_range(c, 0., 256.));
 
         c = mliColor_set(1.0, MLI_NAN, 1.0);
-        CHECK(!mliColor_is_valid_8bit_range(c));
+        CHECK(!mliColor_is_in_range(c, 0., 256.));
 }

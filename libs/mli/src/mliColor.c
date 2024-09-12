@@ -41,24 +41,27 @@ struct mliColor mliColor_mean(
         return out;
 }
 
-struct mliColor mliColor_truncate_to_uint8(const struct mliColor color)
+struct mliColor mliColor_truncate(
+        const struct mliColor color,
+        const float start,
+        const float stop)
 {
         struct mliColor out;
         out.r = color.r;
         out.g = color.g;
         out.b = color.b;
-        if (out.r > 255.)
-                out.r = 255.;
-        if (out.r < 0.)
-                out.r = 0.;
-        if (out.g > 255.)
-                out.g = 255.;
-        if (out.g < 0.)
-                out.g = 0.;
-        if (out.b > 255.)
-                out.b = 255.;
-        if (out.b < 0.)
-                out.b = 0.;
+        if (out.r > stop)
+                out.r = stop;
+        if (out.r < start)
+                out.r = start;
+        if (out.g > stop)
+                out.g = stop;
+        if (out.g < start)
+                out.g = start;
+        if (out.b > stop)
+                out.b = stop;
+        if (out.b < start)
+                out.b = start;
         return out;
 }
 
@@ -73,7 +76,10 @@ int mliColor_equal(const struct mliColor a, const struct mliColor b)
         return 1;
 }
 
-int mliColor_is_valid_8bit_range(const struct mliColor c)
+int mliColor_is_in_range(
+        const struct mliColor c,
+        const float start,
+        const float stop)
 {
         if (MLI_IS_NAN(c.r))
                 return 0;
@@ -82,11 +88,11 @@ int mliColor_is_valid_8bit_range(const struct mliColor c)
         if (MLI_IS_NAN(c.b))
                 return 0;
 
-        if (c.r < 0.0 || c.r >= 256.0)
+        if (c.r < start || c.r >= stop)
                 return 0;
-        if (c.g < 0.0 || c.g >= 256.0)
+        if (c.g < start || c.g >= stop)
                 return 0;
-        if (c.b < 0.0 || c.b >= 256.0)
+        if (c.b < start || c.b >= stop)
                 return 0;
         return 1;
 }
