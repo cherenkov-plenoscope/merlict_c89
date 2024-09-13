@@ -3,6 +3,7 @@
 #define MLICOLOROBSERVER_H_
 
 #include "mliFunc.h"
+#include "mliColor.h"
 
 struct mliColorObserver {
         /* Color detection efficiency by wavelength.
@@ -18,4 +19,8 @@ struct mliColorObserver {
 struct mliColorObserver mliColorObserver_init(void);
 void mliColorObserver_free(struct mliColorObserver *colobs);
 int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs);
+int mliColorObserver_evaluate(
+        const struct mliColorObserver *colobs,
+        const struct mliFunc *func,
+        struct mliColor *color);
 #endif
