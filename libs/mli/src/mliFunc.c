@@ -120,7 +120,6 @@ int mliFunc_fold_numeric_default_zero(
         const struct mliFunc *b,
         double *fold)
 {
-        (*fold) = 0.0;
         double x_start, x_stop, x_step, x_range, x_weight;
         uint64_t i;
         const uint64_t NUM_STEPS = 1024 * 8;
