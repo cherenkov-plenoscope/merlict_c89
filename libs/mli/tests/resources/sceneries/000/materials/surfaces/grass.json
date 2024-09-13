@@ -1,6 +1,5 @@
 {
     "material": "Phong",
-    "specular_reflection": [[200e-9, 0.0], [1.2e-6, 0.0]],
-    "diffuse_reflection": [[200e-9, 0.0], [1.2e-6, 0.0]],
-    "color": [22, 91, 149]
+    "specular_reflection": [[200e-9, 0.0], [450e-9, 0.11], [550e-9, 0.5], [600e-9, 0.7], [1.2e-6, 0.0]],
+    "diffuse_reflection": [[200e-9, 0.0], [450e-9, 0.11], [550e-9, 0.5], [600e-9, 0.7], [1.2e-6, 0.0]]
 }
