@@ -16,19 +16,16 @@ struct mliColor mli_trace_color_tone_of_sun(
         const struct mliTracerConfig *config,
         const struct mliVec support);
 struct mliColor mli_trace_color_tone_of_diffuse_sky(
-        const struct mliTracerConfig *config,
+        const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
-        const struct mliScenery *scenery,
         struct mliPrng *prng);
 struct mliColor mli_trace_to_intersection_atmosphere(
-        const struct mliTracerConfig *config,
+        const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
-        const struct mliScenery *scenery,
         struct mliPrng *prng);
 struct mliColor mli_trace_with_atmosphere(
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         const struct mliRay ray,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng);
 
 #endif

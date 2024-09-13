@@ -118,11 +118,10 @@ int mlivr_get_key(void)
 }
 
 int mlivr_export_image(
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         const struct mlivrConfig config,
         const struct mliView view,
         struct mliPrng *prng,
-        const struct mliTracerConfig *tracer_config,
         const double object_distance,
         const char *path)
 {
@@ -148,7 +147,7 @@ int mlivr_export_image(
         apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
-                apcam, camera2root_comp, scenery, &full, tracer_config, prng);
+                apcam, camera2root_comp, tracer, &full, prng);
         chk_msg(mliImage_write_to_path(&full, path), "Failed to write ppm.");
         mliImage_free(&full);
         return 1;
@@ -177,6 +176,9 @@ int mlivr_run_interactive_viewer(
 {
         struct mliPrng prng = mliPrng_init_MT19937(config.random_seed);
         struct mliTracerConfig tracer_config = mliTracerConfig_init();
+        struct mliTracer tracer = mliTracer_init();
+        struct mliColorObserver color_observer = mliColorObserver_init();
+        struct mliColorMaterials color_materials = mliColorMaterials_init();
         char path[1024];
         int key;
         int super_resolution = 0;
@@ -193,6 +195,17 @@ int mlivr_run_interactive_viewer(
         int print_scenery_info = 0;
         int has_probing_intersection = 0;
         struct mliIntersectionSurfaceNormal probing_intersection;
+
+        chk_msg(mliColorObserver_malloc_cie1931(&color_observer),
+                "Can't malloc color observer.");
+        chk_msg(mliColorMaterials_malloc_from_Materials(
+                        &color_materials, &scenery->materials, &color_observer),
+                "Can't malloc color materials from scenery materials.");
+        mliColorObserver_free(&color_observer);
+
+        tracer.scenery = scenery;
+        tracer.config = &tracer_config;
+        tracer.scenery_color_materials = &color_materials;
 
         mlivr_timestamp_now_19chars(timestamp);
         chk_mem(mliImage_malloc(
@@ -242,11 +255,10 @@ int mlivr_run_interactive_viewer(
                                         num_screenshots);
                                 num_screenshots++;
                                 chk(mlivr_export_image(
-                                        scenery,
+                                        &tracer,
                                         config,
                                         view,
                                         &prng,
-                                        &tracer_config,
                                         probing_intersection.distance_of_ray,
                                         path));
                                 update_image = 0;
@@ -370,19 +382,17 @@ int mlivr_run_interactive_viewer(
                         if (super_resolution) {
                                 mliPinHoleCamera_render_image_with_view(
                                         view,
-                                        scenery,
+                                        &tracer,
                                         &img2,
                                         row_over_column_pixel_ratio,
-                                        &tracer_config,
                                         &prng);
                                 mliImage_scale_down_twice(&img2, &img);
                         } else {
                                 mliPinHoleCamera_render_image_with_view(
                                         view,
-                                        scenery,
+                                        &tracer,
                                         &img,
                                         row_over_column_pixel_ratio,
-                                        &tracer_config,
                                         &prng);
                         }
                 }
@@ -487,6 +497,7 @@ int mlivr_run_interactive_viewer(
                 }
         }
 
+        mliColorMaterials_free(&color_materials);
         mliImage_free(&img);
         mliImage_free(&img2);
         return 1;

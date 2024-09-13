@@ -4,7 +4,6 @@
 
 #include <stdint.h>
 #include "mliObject.h"
-#include "mliColor.h"
 #include "mliFunc.h"
 #include "mliSurface.h"
 #include "mliMedium.h"

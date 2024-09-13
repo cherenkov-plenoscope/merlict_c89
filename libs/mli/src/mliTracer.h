@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "mliRay.h"
 #include "mliColor.h"
+#include "mliColorMaterials.h"
 #include "mliAtmosphere.h"
 
 struct mliScenery;
@@ -21,34 +22,37 @@ struct mliTracerConfig {
 
 struct mliTracerConfig mliTracerConfig_init(void);
 
-struct mliColor mli_trace(
-        const struct mliScenery *scenery,
+struct mliTracer {
+        const struct mliScenery *scenery;
+        const struct mliColorMaterials *scenery_color_materials;
+        const struct mliTracerConfig *config;
+};
+
+struct mliTracer mliTracer_init(void);
+
+struct mliColor mliTracer_trace_ray(
+        const struct mliTracer *tracer,
         const struct mliRay ray,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng);
 
-struct mliColor mli_trace_with_atmosphere(
-        const struct mliScenery *scenery,
+struct mliColor mliTracer_trace_ray_with_atmosphere(
+        const struct mliTracer *tracer,
         const struct mliRay ray,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng);
 
-struct mliColor mli_trace_without_atmosphere(
-        const struct mliScenery *scenery,
+struct mliColor mliTracer_trace_ray_without_atmosphere(
+        const struct mliTracer *tracer,
         const struct mliRay ray,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng);
 
 double mli_trace_sun_obstruction(
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         const struct mliVec position,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng);
 
 double mli_trace_sun_visibility(
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         const struct mliVec position,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng);
 
 #endif

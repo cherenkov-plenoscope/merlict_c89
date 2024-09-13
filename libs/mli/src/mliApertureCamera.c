@@ -169,10 +169,9 @@ void mliApertureCamera_aquire_pixels(
         const struct mliApertureCamera camera,
         const struct mliImage *image,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         const struct mliPixels *pixels_to_do,
         struct mliImage *colors,
-        const struct mliTracerConfig *tracer_config,
         struct mliPrng *prng)
 {
         uint64_t i;
@@ -195,7 +194,7 @@ void mliApertureCamera_aquire_pixels(
                         mliHomTra_ray(&camera2root, ray_wrt_camera);
 
                 struct mliColor set_color =
-                        mli_trace(scenery, ray_wrt_root, tracer_config, prng);
+                        mliTracer_trace_ray(tracer, ray_wrt_root, prng);
 
                 mliImage_set(colors, i, 0u, set_color);
         }
@@ -228,9 +227,8 @@ void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
 int mliApertureCamera_render_image(
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         struct mliImage *image,
-        const struct mliTracerConfig *tracer_config,
         struct mliPrng *prng)
 {
         float noise_threshold = 0.05 * 255.0;
@@ -289,10 +287,9 @@ int mliApertureCamera_render_image(
                 camera,
                 image,
                 camera2root_comp,
-                scenery,
+                tracer,
                 &pixels_to_do,
                 &colors,
-                tracer_config,
                 prng);
 
         mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
@@ -325,10 +322,9 @@ int mliApertureCamera_render_image(
                         camera,
                         image,
                         camera2root_comp,
-                        scenery,
+                        tracer,
                         &pixels_to_do,
                         &colors,
-                        tracer_config,
                         prng);
 
                 mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(

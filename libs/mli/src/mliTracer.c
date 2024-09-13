@@ -8,34 +8,41 @@
 #include "mli_random.h"
 #include "mliIntersection.h"
 #include "mli_ray_scenery_query.h"
+#include "chk.h"
+
+struct mliTracer mliTracer_init(void)
+{
+        struct mliTracer tracer;
+        tracer.scenery = NULL;
+        tracer.scenery_color_materials = NULL;
+        tracer.config = NULL;
+        return tracer;
+}
 
 double mli_trace_sun_visibility(
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         const struct mliVec position,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
-        return (1.0 -
-                mli_trace_sun_obstruction(scenery, position, config, prng));
+        return (1.0 - mli_trace_sun_obstruction(tracer, position, prng));
 }
 
 double mli_trace_sun_obstruction(
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         const struct mliVec position,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
         uint64_t i;
         double num_obstructions = 0.0;
 
-        for (i = 0; i < config->num_trails_global_light_source; i++) {
+        for (i = 0; i < tracer->config->num_trails_global_light_source; i++) {
                 struct mliVec pos_in_source = mliVec_add(
                         mliVec_multiply(
-                                config->atmosphere.sunDirection,
-                                config->atmosphere.sunDistance),
+                                tracer->config->atmosphere.sunDirection,
+                                tracer->config->atmosphere.sunDistance),
                         mliVec_multiply(
                                 mli_random_position_inside_unit_sphere(prng),
-                                config->atmosphere.sunRadius));
+                                tracer->config->atmosphere.sunRadius));
 
                 struct mliRay line_of_sight_to_source = mliRay_set(
                         position, mliVec_substract(pos_in_source, position));
@@ -43,20 +50,20 @@ double mli_trace_sun_obstruction(
                 struct mliIntersection isec;
 
                 const int has_intersection = mli_query_intersection(
-                        scenery, line_of_sight_to_source, &isec);
+                        tracer->scenery, line_of_sight_to_source, &isec);
 
                 if (has_intersection) {
                         num_obstructions += 1.0;
                 }
         }
 
-        return num_obstructions / config->num_trails_global_light_source;
+        return num_obstructions /
+               tracer->config->num_trails_global_light_source;
 }
 
 struct mliColor mli_trace_to_intersection(
-        const struct mliTracerConfig *config,
+        const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
-        const struct mliScenery *scenery,
         struct mliPrng *prng)
 {
         struct mliColor color;
@@ -64,14 +71,16 @@ struct mliColor mli_trace_to_intersection(
         double theta;
         double lambert_factor;
 
-        const double sun_visibility = mli_trace_sun_visibility(
-                scenery, intersection->position, config, prng);
+        const double sun_visibility =
+                mli_trace_sun_visibility(tracer, intersection->position, prng);
 
-        side = mli_get_side_coming_from(scenery, intersection);
-        color = scenery->materials.surfaces[side.surface].color;
+        side = mli_get_side_coming_from(tracer->scenery, intersection);
+        color = tracer->scenery_color_materials->surfaces[side.surface]
+                        .diffuse_reflection;
 
         theta = mliVec_angle_between(
-                config->atmosphere.sunDirection, intersection->surface_normal);
+                tracer->config->atmosphere.sunDirection,
+                intersection->surface_normal);
         lambert_factor = fabs(cos(theta));
 
         color.r = color.r * 0.5 * (1.0 + sun_visibility * lambert_factor);
@@ -81,34 +90,32 @@ struct mliColor mli_trace_to_intersection(
         return color;
 }
 
-struct mliColor mli_trace_without_atmosphere(
-        const struct mliScenery *scenery,
+struct mliColor mliTracer_trace_ray_without_atmosphere(
+        const struct mliTracer *tracer,
         const struct mliRay ray,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
         struct mliIntersectionSurfaceNormal intersection =
                 mliIntersectionSurfaceNormal_init();
 
         if (mli_query_intersection_with_surface_normal(
-                    scenery, ray, &intersection)) {
-                return mli_trace_to_intersection(
-                        config, &intersection, scenery, prng);
+                    tracer->scenery, ray, &intersection)) {
+                return mli_trace_to_intersection(tracer, &intersection, prng);
         } else {
-                return config->background_color;
+                return tracer->config->background_color;
         }
 }
 
-struct mliColor mli_trace(
-        const struct mliScenery *scenery,
+struct mliColor mliTracer_trace_ray(
+        const struct mliTracer *tracer,
         const struct mliRay ray,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
-        if (config->have_atmosphere) {
-                return mli_trace_with_atmosphere(scenery, ray, config, prng);
+        if (tracer->config->have_atmosphere) {
+                return mliTracer_trace_ray_with_atmosphere(tracer, ray, prng);
         } else {
-                return mli_trace_without_atmosphere(scenery, ray, config, prng);
+                return mliTracer_trace_ray_without_atmosphere(
+                        tracer, ray, prng);
         }
 }
 

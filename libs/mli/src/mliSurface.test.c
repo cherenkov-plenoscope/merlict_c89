@@ -9,17 +9,12 @@ CASE("mliSurface_json")
         char json_str[] =
                 "{"
                 "\"material\": \"Phong\","
-                "\"color\": [123, 111, 87],"
                 "\"specular_reflection\": [[0, 10], [1, 11], [2, 12]],"
                 "\"diffuse_reflection\": [[5, 50], [6, 51], [7, 52]]"
                 "}";
         CHECK(mliSurface_malloc_from_json_str(&srf, json_str));
 
         CHECK(srf.material == MLI_MATERIAL_PHONG);
-
-        CHECK(srf.color.r == 123);
-        CHECK(srf.color.g == 111);
-        CHECK(srf.color.b == 87);
 
         CHECK(srf.specular_reflection.num_points == 3);
         CHECK(srf.specular_reflection.x[0] == 0);

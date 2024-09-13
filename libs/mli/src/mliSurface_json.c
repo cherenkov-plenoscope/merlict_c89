@@ -48,7 +48,6 @@ int mliSurface_malloc_from_json_token(
 {
         uint64_t token_specref;
         uint64_t token_diffref;
-        uint64_t token_color;
         uint64_t token_material;
 
         /* material */
@@ -78,14 +77,6 @@ int mliSurface_malloc_from_json_token(
         chk_msg(mliFunc_malloc_from_json_token(
                         &surface->diffuse_reflection, json, token_diffref + 1),
                 "Failed to read surface's diffuse_reflection from json.");
-
-        /* color */
-        /* ----- */
-        chk_msg(mliJson_token_by_key(json, token, "color", &token_color),
-                "Expected surface to have key 'color'.");
-        chk_msg(mliColor_from_json_token(
-                        &surface->color, json, token_color + 1),
-                "Failed to read surface's color from json.");
 
         return 1;
 chk_error:

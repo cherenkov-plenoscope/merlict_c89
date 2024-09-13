@@ -173,11 +173,7 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                 fprintf(f,
                         "%6d ",
                         res->surfaces[i].diffuse_reflection.num_points);
-                fprintf(f,
-                        "   %3d,%3d,%3d ",
-                        (int)res->surfaces[i].color.r,
-                        (int)res->surfaces[i].color.g,
-                        (int)res->surfaces[i].color.b);
+                fprintf(f, "   %3d,%3d,%3d ", 0, 0, 0);
                 fprintf(f, "\n");
         }
         fprintf(f, "\n");

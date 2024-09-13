@@ -10,7 +10,6 @@ struct mliSurface mliSurface_init(void)
         surface.material = MLI_MATERIAL_PHONG;
         surface.specular_reflection = mliFunc_init();
         surface.diffuse_reflection = mliFunc_init();
-        surface.color = mliColor_set(0.0, 0.0, 0.0);
         return surface;
 }
 
@@ -43,8 +42,6 @@ int mliSurface_equal(const struct mliSurface *a, const struct mliSurface *b)
         if (!mliFunc_equal(a->specular_reflection, b->specular_reflection))
                 return 0;
         if (!mliFunc_equal(a->diffuse_reflection, b->diffuse_reflection))
-                return 0;
-        if (!mliColor_equal(a->color, b->color))
                 return 0;
         return 1;
 }
@@ -92,7 +89,6 @@ int mliSurface_fwrite(const struct mliSurface *srf, FILE *f)
         chk_fwrite(&srf->material, sizeof(uint32_t), 1u, f);
         chk(mliFunc_fwrite(&srf->specular_reflection, f));
         chk(mliFunc_fwrite(&srf->diffuse_reflection, f));
-        chk_fwrite(&srf->color, sizeof(struct mliColor), 1u, f);
 
         return 1;
 chk_error:
@@ -111,7 +107,6 @@ int mliSurface_malloc_fread(struct mliSurface *srf, FILE *f)
         chk_fread(&srf->material, sizeof(uint32_t), 1u, f);
         chk(mliFunc_malloc_fread(&srf->specular_reflection, f));
         chk(mliFunc_malloc_fread(&srf->diffuse_reflection, f));
-        chk_fread(&srf->color, sizeof(struct mliColor), 1u, f);
 
         return 1;
 chk_error:

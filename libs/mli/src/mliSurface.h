@@ -15,12 +15,6 @@ struct mliSurface {
 
         struct mliFunc specular_reflection;
         struct mliFunc diffuse_reflection;
-
-        /*
-         *  The color is only relevant for fast rendering of images.
-         *  Color will not effect the propagation of photons.
-         */
-        struct mliColor color;
 };
 
 int mliSurface_malloc(

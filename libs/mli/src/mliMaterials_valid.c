@@ -33,9 +33,6 @@ int mliMaterials_valid_surfaces(const struct mliMaterials *materials)
                 chk_msg(mliFunc_is_valid(
                                 &materials->surfaces[i].diffuse_reflection),
                         "Expected diffuse_reflection of surface to be valid.");
-                chk_msg(mliColor_is_in_range(
-                                materials->surfaces[i].color, 0.0, 256.0),
-                        "Expected 0.0 <= color < 256.0.");
         }
         return 1;
 chk_error:

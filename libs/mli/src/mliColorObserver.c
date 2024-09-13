@@ -98,6 +98,7 @@ int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs)
                 colobs->b.y[i] = blue[i][1];
         }
 
+        return 1;
 chk_error:
         mliColorObserver_free(colobs);
         return 0;
@@ -114,15 +115,15 @@ int mliColorObserver_evaluate(
         chk_msg(func->num_points > 1, "Expected function's num_points > 1");
         wavelength_range = func->x[func->num_points - 1] - func->x[0];
         chk_msg(wavelength_range > 0.0, "Expected wavelength range > 0nm");
-        chk_msg(mliFunc_fold_numeric(&colobs->r, func, &r),
+        chk_msg(mliFunc_fold_numeric_default_zero(&colobs->r, func, &r),
                 "Can't fold red channel.");
-        chk_msg(mliFunc_fold_numeric(&colobs->g, func, &g),
+        chk_msg(mliFunc_fold_numeric_default_zero(&colobs->g, func, &g),
                 "Can't fold green channel.");
-        chk_msg(mliFunc_fold_numeric(&colobs->b, func, &g),
+        chk_msg(mliFunc_fold_numeric_default_zero(&colobs->b, func, &b),
                 "Can't fold blue channel.");
         color->r = (float)(r / wavelength_range);
-        color->b = (float)(g / wavelength_range);
-        color->g = (float)(b / wavelength_range);
+        color->g = (float)(g / wavelength_range);
+        color->b = (float)(b / wavelength_range);
         return 1;
 chk_error:
         return 0;

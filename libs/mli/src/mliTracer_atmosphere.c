@@ -53,9 +53,8 @@ struct mliColor mli_trace_color_tone_of_sun(
 }
 
 struct mliColor mli_trace_color_tone_of_diffuse_sky(
-        const struct mliTracerConfig *config,
+        const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
-        const struct mliScenery *scenery,
         struct mliPrng *prng)
 {
         int i;
@@ -79,11 +78,11 @@ struct mliColor mli_trace_color_tone_of_diffuse_sky(
                 obstruction_ray.direction = rnd_dir;
 
                 has_direct_view_to_sky = !mli_query_intersection(
-                        scenery, obstruction_ray, &isec);
+                        tracer->scenery, obstruction_ray, &isec);
 
                 if (has_direct_view_to_sky) {
                         struct mliColor sample = mliAtmosphere_query(
-                                &config->atmosphere,
+                                &tracer->config->atmosphere,
                                 intersection->position,
                                 rnd_dir);
 
@@ -100,9 +99,8 @@ struct mliColor mli_trace_color_tone_of_diffuse_sky(
 }
 
 struct mliColor mli_trace_to_intersection_atmosphere(
-        const struct mliTracerConfig *config,
+        const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
-        const struct mliScenery *scenery,
         struct mliPrng *prng)
 {
         struct mliColor color;
@@ -111,23 +109,25 @@ struct mliColor mli_trace_to_intersection_atmosphere(
         double theta;
         double lambert_factor;
 
-        const double sun_visibility = mli_trace_sun_visibility(
-                scenery, intersection->position, config, prng);
+        const double sun_visibility =
+                mli_trace_sun_visibility(tracer, intersection->position, prng);
 
         if (sun_visibility > 0.0) {
                 tone = mli_trace_color_tone_of_sun(
-                        config, intersection->position);
+                        tracer->config, intersection->position);
                 tone = mliColor_multiply(tone, sun_visibility);
         } else {
                 tone = mli_trace_color_tone_of_diffuse_sky(
-                        config, intersection, scenery, prng);
+                        tracer, intersection, prng);
         }
 
-        side = mli_get_side_coming_from(scenery, intersection);
-        color = scenery->materials.surfaces[side.surface].color;
+        side = mli_get_side_coming_from(tracer->scenery, intersection);
+        color = tracer->scenery_color_materials->surfaces[side.surface]
+                        .diffuse_reflection;
 
         theta = mliVec_angle_between(
-                config->atmosphere.sunDirection, intersection->surface_normal);
+                tracer->config->atmosphere.sunDirection,
+                intersection->surface_normal);
         lambert_factor = fabs(cos(theta));
 
         color = mliColor_multiply(color, lambert_factor);
@@ -135,23 +135,25 @@ struct mliColor mli_trace_to_intersection_atmosphere(
         return mliColor_multiply_elementwise(color, tone);
 }
 
-struct mliColor mli_trace_with_atmosphere(
-        const struct mliScenery *scenery,
+struct mliColor mliTracer_trace_ray_with_atmosphere(
+        const struct mliTracer *tracer,
         const struct mliRay ray,
-        const struct mliTracerConfig *config,
         struct mliPrng *prng)
 {
         struct mliIntersectionSurfaceNormal intersection =
                 mliIntersectionSurfaceNormal_init();
         struct mliColor out;
+        int has_intersection = mli_query_intersection_with_surface_normal(
+                tracer->scenery, ray, &intersection);
 
-        if (mli_query_intersection_with_surface_normal(
-                    scenery, ray, &intersection)) {
+        if (has_intersection) {
                 out = mli_trace_to_intersection_atmosphere(
-                        config, &intersection, scenery, prng);
+                        tracer, &intersection, prng);
         } else {
                 out = mliAtmosphere_query(
-                        &config->atmosphere, ray.support, ray.direction);
+                        &tracer->config->atmosphere,
+                        ray.support,
+                        ray.direction);
         }
         return out;
 }

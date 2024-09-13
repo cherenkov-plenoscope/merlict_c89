@@ -25,11 +25,10 @@ void mlivr_print_info_line(
 void mlivr_timestamp_now_19chars(char *buffer);
 
 int mlivr_export_image(
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         const struct mlivrConfig config,
         const struct mliView view,
         struct mliPrng *prng,
-        const struct mliTracerConfig *tracer_config,
         const double object_distance,
         const char *path);
 

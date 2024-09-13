@@ -64,6 +64,28 @@ chk_error:
         return 0;
 }
 
+double mliFunc_evaluate_with_default_when_out_of_range(
+        const struct mliFunc *f,
+        const double xarg,
+        const double default_value)
+{
+        double y1, y0, x1, x0;
+        uint32_t idx = mli_upper_compare_double(f->x, f->num_points, xarg);
+        if (idx == 0) {
+                /* mliFunc argument below lower bound */
+                return default_value;
+        } else if (idx == f->num_points) {
+                /* mliFunc argument above upper bound */
+                return default_value;
+        } else {
+                y1 = f->y[idx];
+                y0 = f->y[idx - 1u];
+                x1 = f->x[idx];
+                x0 = f->x[idx - 1u];
+                return mli_linear_interpolate_2d(xarg, x0, y0, x1, y1);
+        }
+}
+
 int mliFunc_fold_numeric(
         const struct mliFunc *a,
         const struct mliFunc *b,
@@ -88,6 +110,49 @@ int mliFunc_fold_numeric(
                 chk(mliFunc_evaluate(b, x, &rb));
                 (*fold) += (ra * rb) * step_size;
         }
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mliFunc_fold_numeric_default_zero(
+        const struct mliFunc *a,
+        const struct mliFunc *b,
+        double *fold)
+{
+        (*fold) = 0.0;
+        double x_start, x_stop, x_step, x_range, x_weight;
+        uint64_t i;
+        const uint64_t NUM_STEPS = 1024 * 8;
+
+        chk_msg(a->num_points >= 2u, "Expect a->num_points >= 2.");
+        chk_msg(b->num_points >= 2u, "Expect b->num_points >= 2.");
+
+        chk_msg(mliFunc_x_is_strictly_increasing(a),
+                "Expected function a to be strictly_increasing.");
+        chk_msg(mliFunc_x_is_strictly_increasing(b),
+                "Expected function b to be strictly_increasing.");
+
+        x_start = MLI_MAX2(a->x[0], b->x[0]);
+        x_stop = MLI_MIN2(a->x[a->num_points - 1], b->x[b->num_points - 1]);
+        x_range = x_stop - x_start;
+        x_step = (x_range) / (double)NUM_STEPS;
+        x_weight = x_step / x_range;
+
+        (*fold) = 0.0;
+        if (x_start < x_stop) {
+                for (i = 0; i < NUM_STEPS; i++) {
+                        double ra = MLI_NAN;
+                        double rb = MLI_NAN;
+                        double x = x_start + (double)i * x_step;
+                        ra = mliFunc_evaluate_with_default_when_out_of_range(
+                                a, x, 0.0);
+                        rb = mliFunc_evaluate_with_default_when_out_of_range(
+                                b, x, 0.0);
+                        (*fold) += (ra * rb) * x_weight;
+                }
+        }
+
         return 1;
 chk_error:
         return 0;

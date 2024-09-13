@@ -146,19 +146,17 @@ struct mliApertureCamera mliApertureCamera_init(void);
 int mliApertureCamera_render_image(
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         struct mliImage *image,
-        const struct mliTracerConfig *tracer_config,
         struct mliPrng *prng);
 
 void mliApertureCamera_aquire_pixels(
         const struct mliApertureCamera camera,
         const struct mliImage *image,
         const struct mliHomTraComp camera2root_comp,
-        const struct mliScenery *scenery,
+        const struct mliTracer *tracer,
         const struct mliPixels *pixels_to_do,
         struct mliImage *colors,
-        const struct mliTracerConfig *tracer_config,
         struct mliPrng *prng);
 
 void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(

@@ -8,15 +8,68 @@
 #include "mliObject_wavefront.h"
 #include "mliScenery_valid.h"
 
-struct mliColor mli_random_color(struct mliPrng *prng)
+int mliSurface_malloc_random_phong(struct mliSurface *srf, struct mliPrng *prng)
 {
-        struct mliRandomUniformRange uniform_8bit_range;
-        uniform_8bit_range.start = 0.0;
-        uniform_8bit_range.range = 255.0;
-        return mliColor_set(
-                mli_random_draw_uniform(uniform_8bit_range, prng),
-                mli_random_draw_uniform(uniform_8bit_range, prng),
-                mli_random_draw_uniform(uniform_8bit_range, prng));
+        struct mliRandomUniformRange uniform_range;
+        struct mliColor color;
+
+        mliSurface_free(srf);
+        uniform_range.start = 0.0;
+        uniform_range.range = 1.0;
+        color = mliColor_set(
+                mli_random_draw_uniform(uniform_range, prng),
+                mli_random_draw_uniform(uniform_range, prng),
+                mli_random_draw_uniform(uniform_range, prng));
+
+        /* r: 600nm
+         * g: 550nm
+         * b: 450nm
+         */
+
+        srf->material = MLI_MATERIAL_PHONG;
+
+        /* no specular reflection */
+        chk(mliFunc_malloc(&srf->specular_reflection, 2));
+        srf->specular_reflection.x[0] = 200e-9;
+        srf->specular_reflection.y[0] = 0.0;
+        srf->specular_reflection.x[1] = 1200e-9;
+        srf->specular_reflection.y[1] = 0.0;
+
+        /* only diffuse reflection */
+        chk(mliFunc_malloc(&srf->diffuse_reflection, 11));
+        srf->diffuse_reflection.x[0] = 200e-9;
+        srf->diffuse_reflection.y[0] = 0.0;
+
+        /* blue peak */
+        srf->diffuse_reflection.x[1] = 400e-9;
+        srf->diffuse_reflection.y[1] = 0.0;
+        srf->diffuse_reflection.x[2] = 450e-9;
+        srf->diffuse_reflection.y[2] = color.b;
+        srf->diffuse_reflection.x[3] = 500e-9;
+        srf->diffuse_reflection.y[3] = 0.0;
+
+        /* green peak */
+        srf->diffuse_reflection.x[4] = 501e-9;
+        srf->diffuse_reflection.y[4] = 0.0;
+        srf->diffuse_reflection.x[5] = 550e-9;
+        srf->diffuse_reflection.y[5] = color.g;
+        srf->diffuse_reflection.x[6] = 575e-9;
+        srf->diffuse_reflection.y[6] = 0.0;
+
+        /* red peak */
+        srf->diffuse_reflection.x[7] = 576e-9;
+        srf->diffuse_reflection.y[7] = 0.0;
+        srf->diffuse_reflection.x[8] = 600e-9;
+        srf->diffuse_reflection.y[8] = color.r;
+        srf->diffuse_reflection.x[9] = 650e-9;
+        srf->diffuse_reflection.y[9] = 0.0;
+
+        srf->diffuse_reflection.x[10] = 1200e-9;
+        srf->diffuse_reflection.y[10] = 0.0;
+
+        return 1;
+chk_error:
+        return 0;
 }
 
 int mliScenery_malloc_minimal_from_wavefront(
@@ -76,26 +129,9 @@ int mliScenery_malloc_minimal_from_wavefront(
         scenery->materials.media[0].absorbtion.y[1] = 0.0;
 
         for (i = 0u; i < total_num_boundary_layers; i++) {
-                scenery->materials.surfaces[i].material = MLI_MATERIAL_PHONG;
-                scenery->materials.surfaces[i].color = mli_random_color(&prng);
-
-                chk(mliFunc_malloc(
-                        &scenery->materials.surfaces[i].specular_reflection,
-                        2));
-                scenery->materials.surfaces[i].specular_reflection.x[0] =
-                        200e-9;
-                scenery->materials.surfaces[i].specular_reflection.x[1] =
-                        1200e-9;
-                scenery->materials.surfaces[i].specular_reflection.y[0] = 0.0;
-                scenery->materials.surfaces[i].specular_reflection.y[1] = 0.0;
-
-                chk(mliFunc_malloc(
-                        &scenery->materials.surfaces[i].diffuse_reflection, 2));
-                scenery->materials.surfaces[i].diffuse_reflection.x[0] = 200e-9;
-                scenery->materials.surfaces[i].diffuse_reflection.x[1] =
-                        1200e-9;
-                scenery->materials.surfaces[i].diffuse_reflection.y[0] = 1.0;
-                scenery->materials.surfaces[i].diffuse_reflection.y[1] = 1.0;
+                chk_msg(mliSurface_malloc_random_phong(
+                                &scenery->materials.surfaces[i], &prng),
+                        "Can't draw random phong surface.");
 
                 sprintf(scenery->materials.surface_names[i].cstr,
                         "surface_%06u",

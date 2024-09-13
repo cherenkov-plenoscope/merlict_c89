@@ -16,6 +16,9 @@ CASE("mliAccelerator, init")
         struct mliRay ray;
         struct mliPrng prng = mliPrng_init_MT19937(0);
         struct mliTracerConfig tracer_config = mliTracerConfig_init();
+        struct mliColorObserver color_observer = mliColorObserver_init();
+        struct mliColorMaterials color_materials = mliColorMaterials_init();
+        struct mliTracer tracer = mliTracer_init();
 
         CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
@@ -26,14 +29,24 @@ CASE("mliAccelerator, init")
                 "sceneries/"
                 "001.tar"));
 
+        CHECK(mliColorObserver_malloc_cie1931(&color_observer));
+        CHECK(mliColorMaterials_malloc_from_Materials(
+                &color_materials, &scenery.materials, &color_observer));
+
+        tracer.scenery = &scenery;
+        tracer.scenery_color_materials = &color_materials;
+        tracer.config = &tracer_config;
+
         ray = mliRay_set(
                 mliVec_init(0.0, 0.0, -5.0), mliVec_init(0.0, 0.0, 1.0));
 
-        color = mli_trace(&scenery, ray, &tracer_config, &prng);
+        color = mliTracer_trace_ray(&tracer, ray, &prng);
 
         CHECK_MARGIN(color.r, 11.0, 1.0);
         CHECK_MARGIN(color.g, 45.5, 1.0);
         CHECK_MARGIN(color.b, 74.5, 1.0);
 
+        mliColorObserver_free(&color_observer);
+        mliColorMaterials_free(&color_materials);
         mliScenery_free(&scenery);
 }
