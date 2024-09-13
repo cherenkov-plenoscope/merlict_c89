@@ -108,18 +108,21 @@ int mliColorObserver_evaluate(
         const struct mliFunc *func,
         struct mliColor *color)
 {
-        double c;
+        double r, g, b;
+        double wavelength_range = 0.0;
         (*color) = mliColor_set(0.0, 0.0, 0.0);
-        chk_msg(mliFunc_fold_numeric(&colobs->r, func, &c),
+        chk_msg(func->num_points > 1, "Expected function's num_points > 1");
+        wavelength_range = func->x[func->num_points - 1] - func->x[0];
+        chk_msg(wavelength_range > 0.0, "Expected wavelength range > 0nm");
+        chk_msg(mliFunc_fold_numeric(&colobs->r, func, &r),
                 "Can't fold red channel.");
-        color->r = (float)c;
-        chk_msg(mliFunc_fold_numeric(&colobs->g, func, &c),
+        chk_msg(mliFunc_fold_numeric(&colobs->g, func, &g),
                 "Can't fold green channel.");
-        color->g = (float)c;
-        chk_msg(mliFunc_fold_numeric(&colobs->b, func, &c),
+        chk_msg(mliFunc_fold_numeric(&colobs->b, func, &g),
                 "Can't fold blue channel.");
-        color->b = (float)c;
-
+        color->r = (float)(r / wavelength_range);
+        color->b = (float)(g / wavelength_range);
+        color->g = (float)(b / wavelength_range);
         return 1;
 chk_error:
         return 0;
