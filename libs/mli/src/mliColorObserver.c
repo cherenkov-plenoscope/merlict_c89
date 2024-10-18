@@ -21,6 +21,11 @@ void mliColorObserver_free(struct mliColorObserver *colobs)
 
 int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs)
 {
+        /*
+         * https://en.wikipedia.org/wiki/CIE_1931_color_space
+         * The spectral sensitivity of a 'standard observer' as defined by the
+         * International Commission on Illumination in 1931.
+         */
         float red[][2] = {{2.00e-7, 0.0},       {3.59e-7, 0.00313729},
                           {3.95e-7, 0.0157643}, {4.07e-7, 0.0399472},
                           {4.17e-7, 0.111873},  {4.25e-7, 0.225938},
