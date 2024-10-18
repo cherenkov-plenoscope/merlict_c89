@@ -2,8 +2,8 @@
 #ifndef MLICOLOROBSERVER_H_
 #define MLICOLOROBSERVER_H_
 
-#include "mliFunc.h"
 #include "mliColor.h"
+#include "mliFunc.h"
 
 struct mliColorObserver {
         /* Color detection efficiency by wavelength.
