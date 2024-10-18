@@ -42,9 +42,9 @@ CASE("mliAccelerator, init")
 
         color = mliTracer_trace_ray(&tracer, ray, &prng);
 
-        CHECK_MARGIN(color.r, 11.0, 1.0);
-        CHECK_MARGIN(color.g, 45.5, 1.0);
-        CHECK_MARGIN(color.b, 74.5, 1.0);
+        CHECK_MARGIN(color.r, 22814.0, 10.0);
+        CHECK_MARGIN(color.g, 27569.5, 10.0);
+        CHECK_MARGIN(color.b, 44154.5, 10.0);
 
         mliColorObserver_free(&color_observer);
         mliColorMaterials_free(&color_materials);
