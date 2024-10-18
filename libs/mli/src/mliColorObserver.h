@@ -23,4 +23,5 @@ int mliColorObserver_evaluate(
         const struct mliColorObserver *colobs,
         const struct mliFunc *func,
         struct mliColor *color);
+int mliColorObserver_is_valid(const struct mliColorObserver *colobs);
 #endif

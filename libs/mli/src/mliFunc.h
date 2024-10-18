@@ -16,7 +16,7 @@ int mliFunc_fold_numeric(
         const struct mliFunc *a,
         const struct mliFunc *b,
         double *fold);
-int mliFunc_fold_numeric_default_zero(
+int mliFunc_fold_numeric_default_closest(
         const struct mliFunc *a,
         const struct mliFunc *b,
         double *fold);
@@ -25,6 +25,9 @@ double mliFunc_evaluate_with_default_when_out_of_range(
         const struct mliFunc *f,
         const double xarg,
         const double default_value);
+double mliFunc_evaluate_with_default_closest(
+        const struct mliFunc *f,
+        const double xarg);
 int mliFunc_x_is_strictly_increasing(const struct mliFunc *f);
 int mliFunc_malloc(struct mliFunc *f, const uint32_t num_points);
 void mliFunc_free(struct mliFunc *f);

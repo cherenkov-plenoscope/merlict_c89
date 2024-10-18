@@ -86,6 +86,27 @@ double mliFunc_evaluate_with_default_when_out_of_range(
         }
 }
 
+double mliFunc_evaluate_with_default_closest(
+        const struct mliFunc *f,
+        const double xarg)
+{
+        double y1, y0, x1, x0;
+        uint32_t idx = mli_upper_compare_double(f->x, f->num_points, xarg);
+        if (idx == 0) {
+                /* mliFunc argument below lower bound */
+                return f->y[0];
+        } else if (idx == f->num_points) {
+                /* mliFunc argument above upper bound */
+                return f->y[f->num_points - 1];
+        } else {
+                y1 = f->y[idx];
+                y0 = f->y[idx - 1u];
+                x1 = f->x[idx];
+                x0 = f->x[idx - 1u];
+                return mli_linear_interpolate_2d(xarg, x0, y0, x1, y1);
+        }
+}
+
 int mliFunc_fold_numeric(
         const struct mliFunc *a,
         const struct mliFunc *b,
@@ -115,7 +136,7 @@ chk_error:
         return 0;
 }
 
-int mliFunc_fold_numeric_default_zero(
+int mliFunc_fold_numeric_default_closest(
         const struct mliFunc *a,
         const struct mliFunc *b,
         double *fold)
@@ -144,10 +165,8 @@ int mliFunc_fold_numeric_default_zero(
                         double ra = MLI_NAN;
                         double rb = MLI_NAN;
                         double x = x_start + (double)i * x_step;
-                        ra = mliFunc_evaluate_with_default_when_out_of_range(
-                                a, x, 0.0);
-                        rb = mliFunc_evaluate_with_default_when_out_of_range(
-                                b, x, 0.0);
+                        ra = mliFunc_evaluate_with_default_closest(a, x);
+                        rb = mliFunc_evaluate_with_default_closest(b, x);
                         (*fold) += (ra * rb) * x_weight;
                 }
         }

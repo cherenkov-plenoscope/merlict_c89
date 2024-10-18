@@ -141,7 +141,6 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         fprintf(f, "    ");
         fprintf(f, "%48s ", "spec.");
         fprintf(f, "%6s ", "diff.");
-        fprintf(f, "%10s ", "color");
         fprintf(f, "\n");
         fprintf(f, "    ");
         fprintf(f, "%3s ", "#");
@@ -149,7 +148,6 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         fprintf(f, "%12s ", "material");
         fprintf(f, "%6s ", "refl.");
         fprintf(f, "%6s ", "refl.");
-        fprintf(f, "%10s ", "r,g,b");
         fprintf(f, "\n");
         fprintf(f, "    ");
         for (i = 0; i < 70; i++) {
@@ -173,7 +171,6 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                 fprintf(f,
                         "%6d ",
                         res->surfaces[i].diffuse_reflection.num_points);
-                fprintf(f, "   %3d,%3d,%3d ", 0, 0, 0);
                 fprintf(f, "\n");
         }
         fprintf(f, "\n");

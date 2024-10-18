@@ -25,6 +25,9 @@ int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs)
          * https://en.wikipedia.org/wiki/CIE_1931_color_space
          * The spectral sensitivity of a 'standard observer' as defined by the
          * International Commission on Illumination in 1931.
+         *
+         * Here the observer is normalized for the largest response of the
+         * three channeks x, y, and z to be 1.0.
          */
         float red[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
@@ -186,9 +189,40 @@ int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs)
                 colobs->b.y[i] = blue[i][1];
         }
 
+        chk_msg(mliColorObserver_is_valid(colobs),
+                "Expected ColorObserver spectra to be valid.");
         return 1;
 chk_error:
         mliColorObserver_free(colobs);
+        return 0;
+}
+
+int mliColorObserver_is_valid(const struct mliColorObserver *colobs)
+{
+        uint64_t i;
+        for (i = 0; i < colobs->r.num_points; i++) {
+                chk_msg(colobs->r.y[i] >= 0.0 && colobs->r.y[i] <= 1.0,
+                        "Expected channel red 0.0 <= value <= 1.0.");
+        }
+        for (i = 0; i < colobs->g.num_points; i++) {
+                chk_msg(colobs->g.y[i] >= 0.0 && colobs->g.y[i] <= 1.0,
+                        "Expected channel green 0.0 <= value <= 1.0.");
+        }
+        for (i = 0; i < colobs->b.num_points; i++) {
+                chk_msg(colobs->b.y[i] >= 0.0 && colobs->b.y[i] <= 1.0,
+                        "Expected channel blue 0.0 <= value <= 1.0.");
+        }
+        chk_msg(mliFunc_x_is_strictly_increasing(&colobs->r),
+                "Expected wavelength in channel red to be strictly "
+                "increasing.");
+        chk_msg(mliFunc_x_is_strictly_increasing(&colobs->g),
+                "Expected wavelength in channel green to be strictly "
+                "increasing.");
+        chk_msg(mliFunc_x_is_strictly_increasing(&colobs->b),
+                "Expected wavelength in channel blue to be strictly "
+                "increasing.");
+        return 1;
+chk_error:
         return 0;
 }
 
@@ -198,20 +232,17 @@ int mliColorObserver_evaluate(
         struct mliColor *color)
 {
         double r, g, b;
-        double wavelength_range = 0.0;
         (*color) = mliColor_set(0.0, 0.0, 0.0);
         chk_msg(func->num_points > 1, "Expected function's num_points > 1");
-        wavelength_range = func->x[func->num_points - 1] - func->x[0];
-        chk_msg(wavelength_range > 0.0, "Expected wavelength range > 0nm");
-        chk_msg(mliFunc_fold_numeric_default_zero(&colobs->r, func, &r),
+        chk_msg(mliFunc_fold_numeric_default_closest(&colobs->r, func, &r),
                 "Can't fold red channel.");
-        chk_msg(mliFunc_fold_numeric_default_zero(&colobs->g, func, &g),
+        chk_msg(mliFunc_fold_numeric_default_closest(&colobs->g, func, &g),
                 "Can't fold green channel.");
-        chk_msg(mliFunc_fold_numeric_default_zero(&colobs->b, func, &b),
+        chk_msg(mliFunc_fold_numeric_default_closest(&colobs->b, func, &b),
                 "Can't fold blue channel.");
-        color->r = (float)(r / wavelength_range);
-        color->g = (float)(g / wavelength_range);
-        color->b = (float)(b / wavelength_range);
+        color->r = (float)(r);
+        color->g = (float)(g);
+        color->b = (float)(b);
         return 1;
 chk_error:
         return 0;
