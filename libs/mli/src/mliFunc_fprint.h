@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "mliFunc.h"
 
-struct mliFuncPlot {
+struct mliFunc_fprint_Config {
         double x_start;
         double x_stop;
         int x_num;
@@ -18,6 +18,6 @@ struct mliFuncPlot {
 int mliFunc_fprint(
         FILE *f,
         const struct mliFunc *func,
-        struct mliFuncPlot plot);
+        struct mliFunc_fprint_Config plot);
 
 #endif

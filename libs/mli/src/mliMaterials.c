@@ -2,6 +2,9 @@
 #include "mliMaterials.h"
 #include <stdlib.h>
 #include "chk.h"
+#include "mliColorMaterials.h"
+#include "mliFunc_fprint.h"
+
 
 struct mliMaterialsCapacity mliMaterialsCapacity_init(void)
 {
@@ -97,6 +100,8 @@ chk_error:
 void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
 {
         uint32_t i = 0;
+        struct mliFunc_fprint_Config pltcfg;
+
         fprintf(f, "materials\n");
         fprintf(f, "---------\n");
         fprintf(f, "\n");
@@ -128,6 +133,28 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                 if (i == res->default_medium) {
                         fprintf(f, "%12s", "True");
                 }
+                fprintf(f, "\n");
+                fprintf(f, "    ");
+                fprintf(f, "absorbtion\n");
+                pltcfg.x_start = 200e-9;
+                pltcfg.x_stop = 1200e-9;
+                pltcfg.x_num = 54;
+                pltcfg.y_start = 0.0;
+                pltcfg.y_stop = 5.0;
+                pltcfg.y_num = 12;
+                mliFunc_fprint(f, &res->media[i].absorbtion, pltcfg);
+                fprintf(f, "\n");
+
+                fprintf(f, "\n");
+                fprintf(f, "    ");
+                fprintf(f, "refraction\n");
+                pltcfg.x_start = 200e-9;
+                pltcfg.x_stop = 1200e-9;
+                pltcfg.x_num = 54;
+                pltcfg.y_start = 0.0;
+                pltcfg.y_stop = 2.0;
+                pltcfg.y_num = 12;
+                mliFunc_fprint(f, &res->media[i].refraction, pltcfg);
                 fprintf(f, "\n");
         }
         fprintf(f, "\n");
