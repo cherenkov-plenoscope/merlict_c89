@@ -11,26 +11,42 @@ int mliFunc_fprint(FILE *f, const struct mliFunc *func, struct mliFuncPlot plot)
         const double x_step = x_range / plot.x_num;
         const double y_step = y_range / plot.y_num;
 
+        const int NUM_Y_SUB_STEPS = 3;
         chk(mliFunc_is_valid(func));
 
-        for (iy = 0; iy < plot.y_num; iy++) {
-                if (iy == 0) {
+        for (iy = plot.y_num - 1; iy >= 0; iy--) {
+                if (iy == plot.y_num - 1) {
                         fprintf(f, "  %-10.2e -|", plot.y_stop);
-                } else if (iy == plot.y_num - 1) {
-                        fprintf(f, "  %-10.2e -|", plot.y_start);
                 } else {
                         fprintf(f, "    %-10s|", "");
                 }
 
                 for (ix = 0; ix < plot.x_num; ix++) {
                         double x, y;
-                        int jy;
+                        double jy;
+                        int jy_sub;
                         x = plot.x_start + x_step * ix;
                         if (mliFunc_in_range(func, x)) {
                                 chk(mliFunc_evaluate(func, x, &y));
                                 jy = (y - plot.y_start) / y_step;
-                                if (iy == jy) {
-                                        fprintf(f, "x");
+                                jy_sub =
+                                        (int)(NUM_Y_SUB_STEPS *
+                                              (jy - floor(jy)));
+                                if (iy == (int)(jy)) {
+                                        switch (jy_sub) {
+                                        case 0:
+                                                fprintf(f, ",");
+                                                break;
+                                        case 1:
+                                                fprintf(f, "-");
+                                                break;
+                                        case 2:
+                                                fprintf(f, "'");
+                                                break;
+                                        default:
+                                                fprintf(f, "?");
+                                                break;
+                                        }
                                 } else {
                                         fprintf(f, " ");
                                 }
@@ -38,7 +54,7 @@ int mliFunc_fprint(FILE *f, const struct mliFunc *func, struct mliFuncPlot plot)
                 }
                 fprintf(f, "\n");
         }
-        fprintf(f, "    %-10s+", "");
+        fprintf(f, "  %-10.2e  +", plot.y_start);
         for (ix = 0; ix < plot.x_num; ix++) {
                 fprintf(f, "-");
         }
