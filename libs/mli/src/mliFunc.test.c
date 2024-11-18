@@ -136,6 +136,24 @@ CASE("mliFunc_fold_numeric")
         mliFunc_free(&b);
 }
 
+CASE("mliFunc_in_range")
+{
+        struct mliFunc func = mliFunc_init();
+        CHECK(mliFunc_malloc(&func, 2u));
+        func.x[0] = -2.5;
+        func.x[1] = 4.2;
+
+        CHECK(!mliFunc_in_range(&func, -5.0));
+        CHECK(!mliFunc_in_range(&func, -2.51));
+        CHECK(mliFunc_in_range(&func, -2.5));
+        CHECK(mliFunc_in_range(&func, 0.0));
+        CHECK(mliFunc_in_range(&func, 4.19));
+        CHECK(!mliFunc_in_range(&func, 4.2));
+        CHECK(!mliFunc_in_range(&func, 133.7));
+
+        mliFunc_free(&func);
+}
+
 CASE("mliFunc_json")
 {
         uint64_t token = 0;

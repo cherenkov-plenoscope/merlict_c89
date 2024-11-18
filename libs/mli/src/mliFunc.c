@@ -64,6 +64,19 @@ chk_error:
         return 0;
 }
 
+int mliFunc_in_range(const struct mliFunc *f, const double xarg)
+{
+        if (f->num_points < 2) {
+                return 0;
+        }
+        if (xarg >= f->x[0]) {
+                if (xarg < f->x[f->num_points - 1]) {
+                        return 1;
+                }
+        }
+        return 0;
+}
+
 double mliFunc_evaluate_with_default_when_out_of_range(
         const struct mliFunc *f,
         const double xarg,

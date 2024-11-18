@@ -21,6 +21,7 @@ int mliFunc_fold_numeric_default_closest(
         const struct mliFunc *b,
         double *fold);
 int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out);
+int mliFunc_in_range(const struct mliFunc *f, const double xarg);
 double mliFunc_evaluate_with_default_when_out_of_range(
         const struct mliFunc *f,
         const double xarg,
