@@ -47,6 +47,38 @@ CASE("mliIo_copy")
         mliIo_free(&src);
 }
 
+CASE("mliIo_shrink_to_fit")
+{
+        struct mliIo str = mliIo_init();
+
+        CHECK(mliIo_write_cstr_format(&str, "0123456789"));
+
+        CHECK(str.cstr != NULL);
+        CHECK(str.capacity == 16);
+        CHECK(str.size == 10);
+        CHECK(str.pos == 10);
+
+        CHECK(mliIo_reset(&str));
+        CHECK(str.cstr != NULL);
+        CHECK(str.capacity == 16);
+        CHECK(str.size == 0);
+        CHECK(str.pos == 0);
+
+        CHECK(mliIo_write_cstr_format(&str, "abc"));
+        CHECK(str.cstr != NULL);
+        CHECK(str.capacity == 16);
+        CHECK(str.size == 3);
+        CHECK(str.pos == 3);
+
+        CHECK(mliIo_shrink_to_fit(&str));
+        CHECK(str.cstr != NULL);
+        CHECK(str.capacity == 3);
+        CHECK(str.size == 3);
+        CHECK(str.pos == 3);
+
+        mliIo_free(&str);
+}
+
 CASE("mliIo_copy_start_num")
 {
         struct mliIo src = mliIo_init();
@@ -79,7 +111,7 @@ CASE("BytesIo_putc")
         CHECK(mliIo_reset(&byt));
 
         for (i = 0; i < 20; i++) {
-                CHECK(mliIo_putc(&byt, 'A'));
+                CHECK(mliIo_write_unsigned_char(&byt, 'A'));
 
                 CHECK(byt.cstr != NULL);
                 CHECK(byt.pos == i + 1);
@@ -103,17 +135,17 @@ CASE("BytesIo_putc_rewind_getc")
         struct mliIo byt = mliIo_init();
         CHECK(mliIo_reset(&byt));
 
-        CHECK(mliIo_putc(&byt, 'A'));
-        CHECK(mliIo_putc(&byt, 'B'));
-        CHECK(mliIo_putc(&byt, 'C'));
+        CHECK(mliIo_write_unsigned_char(&byt, 'A'));
+        CHECK(mliIo_write_unsigned_char(&byt, 'B'));
+        CHECK(mliIo_write_unsigned_char(&byt, 'C'));
 
         mliIo_rewind(&byt);
         CHECK(byt.pos == 0u);
 
-        CHECK(mliIo_getc(&byt) == 'A');
-        CHECK(mliIo_getc(&byt) == 'B');
-        CHECK(mliIo_getc(&byt) == 'C');
-        CHECK(mliIo_getc(&byt) == EOF);
+        CHECK(mliIo_read_char(&byt) == 'A');
+        CHECK(mliIo_read_char(&byt) == 'B');
+        CHECK(mliIo_read_char(&byt) == 'C');
+        CHECK(mliIo_read_char(&byt) == EOF);
 
         mliIo_free(&byt);
 }

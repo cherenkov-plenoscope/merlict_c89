@@ -13,7 +13,7 @@ int mliTar_read_data_to_io(
         for (i = 0; i < size; i++) {
                 unsigned char c;
                 chk(mliTar_read_data(tar, (void *)(&c), 1));
-                chk(mliIo_putc(buff, c));
+                chk(mliIo_write_unsigned_char(buff, c));
         }
 
         return 1;
@@ -29,7 +29,7 @@ int mliTar_write_data_from_io(
         uint64_t i;
         chk_msg(tar->stream, "tar is not open.");
         for (i = 0; i < size; i++) {
-                int rc = mliIo_getc(buff);
+                int rc = mliIo_read_char(buff);
                 unsigned char c;
                 chk(rc != EOF);
                 c = (char)(rc);

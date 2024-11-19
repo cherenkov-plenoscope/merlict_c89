@@ -62,9 +62,9 @@ int mliIo_realloc_capacity(struct mliIo *byt, const uint64_t new_capacity)
         } else {
                 /* shrinking */
                 numcpy = new_capacity;
-                chk_msg(tmp.pos < new_capacity,
+                chk_msg(tmp.pos <= new_capacity,
                         "Expected cursor 'pos' to be within new capacity.");
-                chk_msg(tmp.size < new_capacity,
+                chk_msg(tmp.size <= new_capacity,
                         "Expected 'size' to be within new capacity.");
         }
 
@@ -93,7 +93,16 @@ chk_error:
         return 0;
 }
 
-int mliIo_putc(struct mliIo *byt, const unsigned char c)
+int mliIo_shrink_to_fit(struct mliIo *byt)
+{
+        chk_msg(mliIo_realloc_capacity(byt, byt->size),
+                "Failed to reallocate to size.");
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mliIo_write_unsigned_char(struct mliIo *byt, const unsigned char c)
 {
         /* 'puts' a single byte (char) to the BytesIo-buffer */
         const uint64_t new_size = byt->size + 1u;
@@ -117,9 +126,9 @@ chk_error:
         return 0;
 }
 
-int mliIo_putchar(struct mliIo *byt, const char c)
+int mliIo_write_char(struct mliIo *byt, const char c)
 {
-        return mliIo_putc(byt, (unsigned char)c);
+        return mliIo_write_unsigned_char(byt, (unsigned char)c);
 }
 
 int mliIo_write_cstr_format(struct mliIo *str, const char *format, ...)
@@ -146,7 +155,7 @@ int mliIo_write_cstr_format(struct mliIo *str, const char *format, ...)
                 "a buffer overflow.");
 
         for (i = 0; i < tmp_length; i++) {
-                chk(mliIo_putc(str, tmp.cstr[i]))
+                chk(mliIo_write_unsigned_char(str, tmp.cstr[i]))
         }
 
         va_end(args);
@@ -177,7 +186,7 @@ int mliIo_copy_start_num(
         chk_msg(start + num <= src->size, "Expected start + num < src->size.");
         chk(mliIo_malloc_capacity(dst, num));
         for (i = 0; i < num; i++) {
-                chk(mliIo_putc(dst, src->cstr[i + start]));
+                chk(mliIo_write_unsigned_char(dst, src->cstr[i + start]));
         }
         return 1;
 chk_error:
@@ -185,7 +194,7 @@ chk_error:
         return 0;
 }
 
-int mliIo_getc(struct mliIo *byt)
+int mliIo_read_char(struct mliIo *byt)
 {
         int c;
         if (byt->pos >= byt->size) {
@@ -207,7 +216,8 @@ int64_t mliIo_write(
 
         uint64_t i;
         for (i = 0u; i < block_size; i++) {
-                chk_msg(mliIo_putc(byt, block[i]), "Failed to put byte");
+                chk_msg(mliIo_write_unsigned_char(byt, block[i]),
+                        "Failed to put byte");
         }
         return (i + 1u) / size;
 chk_error:
@@ -225,7 +235,7 @@ int64_t mliIo_read(
 
         uint64_t i;
         for (i = 0u; i < block_size; i++) {
-                int c = mliIo_getc(byt);
+                int c = mliIo_read_char(byt);
 
                 if (c == EOF) {
                         return EOF;
@@ -237,6 +247,8 @@ int64_t mliIo_read(
 }
 
 uint64_t mliIo_ftell(struct mliIo *byt) { return byt->pos; }
+
+void mliIo_seek(struct mliIo *byt, const uint64_t pos) { byt->pos = pos; }
 
 void mliIo_rewind(struct mliIo *byt) { byt->pos = 0u; }
 
@@ -250,13 +262,13 @@ int mliStr_convert_line_break_CRLF_CR_to_LF(
 
         while (i < src->length) {
                 if (mli_cstr_is_CRLF((char *)&src->cstr[i])) {
-                        chk(mliIo_putchar(&sdst, '\n'));
+                        chk(mliIo_write_char(&sdst, '\n'));
                         i += 2;
                 } else if (mli_cstr_is_CR((char *)&src->cstr[i])) {
-                        chk(mliIo_putchar(&sdst, '\n'));
+                        chk(mliIo_write_char(&sdst, '\n'));
                         i += 1;
                 } else {
-                        chk(mliIo_putchar(&sdst, src->cstr[i]));
+                        chk(mliIo_write_char(&sdst, src->cstr[i]));
                         i += 1;
                 }
         }
@@ -280,7 +292,7 @@ int mliIo_write_from_path(struct mliIo *byt, const char *path)
         chk_msg(mliIo_malloc(byt), "Can not malloc string.");
         c = getc(f);
         while (c != EOF) {
-                chk_msg(mliIo_putchar(byt, c), "Failed to push back char.");
+                chk_msg(mliIo_write_char(byt, c), "Failed to push back char.");
                 c = getc(f);
         }
         fclose(f);
@@ -298,7 +310,7 @@ int mliIo_read_to_path(struct mliIo *byt, const char *path)
         FILE *f = fopen(path, "w");
         chk_msg(f != NULL, "Failed to open path.");
         while (c != EOF) {
-                c = mliIo_getc(byt);
+                c = mliIo_read_char(byt);
                 chk(fputc(c, f));
         }
         fclose(f);
@@ -316,13 +328,13 @@ int mliIo_str_read_line(
         chk(mliIo_reset(line));
 
         while (stream->pos < stream->size) {
-                const int c = mliIo_getc(stream);
+                const int c = mliIo_read_char(stream);
                 if (c == '\0') {
                         break;
                 } else if (c == delimiter) {
                         break;
                 } else {
-                        chk(mliIo_putchar(line, c));
+                        chk(mliIo_write_char(line, c));
                 }
         }
 
@@ -341,13 +353,13 @@ int mli_readline(
         chk(mliIo_malloc(&buf));
 
         while (stream->pos < stream->size) {
-                const int c = mliIo_getc(stream);
+                const int c = mliIo_read_char(stream);
                 if (c == '\0') {
                         break;
                 } else if (c == delimiter) {
                         break;
                 } else {
-                        chk(mliIo_putchar(&buf, c));
+                        chk(mliIo_write_char(&buf, c));
                 }
         }
 
@@ -492,7 +504,7 @@ int mli_line_viewer_write(
                                 f, line, _line_number));
                 }
                 if (valid) {
-                        chk(mliIo_putchar(f, text->cstr[i]));
+                        chk(mliIo_write_char(f, text->cstr[i]));
                 }
                 if (prefix && text->cstr[i] == '\n') {
                         chk(mli_line_viewer_write_line_match(
@@ -500,7 +512,7 @@ int mli_line_viewer_write(
                 }
                 i++;
         }
-        chk(mliIo_putchar(f, '\n'));
+        chk(mliIo_write_char(f, '\n'));
 
         return 1;
 chk_error:
@@ -514,7 +526,7 @@ int mliIo_write_from_file(struct mliIo *byt, FILE *f, const uint64_t size)
         chk_msg(byt->cstr != NULL, "Expected buffer to be allocated.");
         for (i = 0; i < size; i++) {
                 char c = getc(f);
-                chk(mliIo_putc(byt, c))
+                chk(mliIo_write_unsigned_char(byt, c))
         }
 
         return 1;
@@ -528,7 +540,7 @@ int mliIo_read_to_file(struct mliIo *byt, FILE *f, const uint64_t size)
         chk_msg(f, "Expected file to be open.");
         chk_msg(byt->cstr != NULL, "Expected buffer to be allocated.");
         for (i = 0; i < size; i++) {
-                int rc = mliIo_getc(byt);
+                int rc = mliIo_read_char(byt);
                 unsigned char c;
                 chk(rc != EOF);
                 c = (unsigned char)(rc);
