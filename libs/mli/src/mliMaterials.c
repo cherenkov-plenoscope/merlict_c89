@@ -5,7 +5,6 @@
 #include "mliColorMaterials.h"
 #include "mliFunc_fprint.h"
 
-
 struct mliMaterialsCapacity mliMaterialsCapacity_init(void)
 {
         struct mliMaterialsCapacity cap;

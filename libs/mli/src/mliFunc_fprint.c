@@ -3,7 +3,10 @@
 #include <stdio.h>
 #include "mliFunc_fprint.h"
 
-int mliFunc_fprint(FILE *f, const struct mliFunc *func, struct mliFunc_fprint_Config cfg)
+int mliFunc_fprint(
+        FILE *f,
+        const struct mliFunc *func,
+        struct mliFunc_fprint_Config cfg)
 {
         int iy, ix;
         const double x_range = cfg.x_stop - cfg.x_start;
