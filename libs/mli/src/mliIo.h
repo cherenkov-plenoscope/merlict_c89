@@ -23,6 +23,7 @@ struct mliIo {
 struct mliIo mliIo_init(void);
 void mliIo_free(struct mliIo *byt);
 int mliIo_malloc_capacity(struct mliIo *byt, const uint64_t capacity);
+int mliIo_realloc_capacity(struct mliIo *byt, const uint64_t new_capacity);
 int mliIo_malloc(struct mliIo *byt);
 int64_t mliIo_malloc_cstr(struct mliIo *byt, const char *s);
 int mliIo_malloc_from_path(struct mliIo *byt, const char *path);

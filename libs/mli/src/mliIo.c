@@ -42,6 +42,42 @@ chk_error:
         return 0;
 }
 
+int mliIo_realloc_capacity(struct mliIo *byt, const uint64_t new_capacity)
+{
+        uint64_t numcpy;
+        struct mliIo tmp = mliIo_init();
+
+        chk_msg(mliIo_malloc_capacity(&tmp, byt->capacity),
+                "Failed to allocate temporary swap.");
+        memcpy(tmp.cstr, byt->cstr, byt->capacity);
+        tmp.pos = byt->pos;
+        tmp.size = byt->size;
+
+        chk_msg(mliIo_malloc_capacity(byt, new_capacity),
+                "Faild to allocate new capacity.");
+
+        if (new_capacity >= tmp.capacity) {
+                /* growing or same */
+                numcpy = tmp.capacity;
+        } else {
+                /* shrinking */
+                numcpy = new_capacity;
+                chk_msg(tmp.pos < new_capacity,
+                        "Expected cursor 'pos' to be within new capacity.");
+                chk_msg(tmp.size < new_capacity,
+                        "Expected 'size' to be within new capacity.");
+        }
+
+        memcpy(byt->cstr, tmp.cstr, numcpy);
+        byt->pos = tmp.pos;
+        byt->size = tmp.size;
+
+        mliIo_free(&tmp);
+        return 1;
+chk_error:
+        return 0;
+}
+
 int mliIo_putc(struct mliIo *byt, const unsigned char c)
 {
         /* 'puts' a single byte (char) to the BytesIo-buffer */
@@ -54,12 +90,8 @@ int mliIo_putc(struct mliIo *byt, const unsigned char c)
         if (new_size >= byt->capacity) {
                 const uint64_t min_new_capacity =
                         MLI_MAX2(new_size, 2 * byt->capacity);
-
-                byt->capacity = min_new_capacity;
-                byt->cstr = (unsigned char *)realloc(
-                        (void *)byt->cstr, byt->capacity * sizeof(char));
-                memset(&byt->cstr[byt->size], '\0', byt->capacity - byt->size);
-                chk_mem(byt->cstr);
+                chk_msg(mliIo_realloc_capacity(byt, min_new_capacity),
+                        "Failed to reallocate.");
         }
         byt->cstr[byt->size] = c;
         byt->size = new_size;
