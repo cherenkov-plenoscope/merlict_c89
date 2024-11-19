@@ -638,9 +638,9 @@ chk_error:
 int mliObject_fprint_to_wavefront(struct mliIo *f, const struct mliObject *obj)
 {
         uint32_t i, mtl, face;
-        chk(mliIo_printf(f, "# vertices\n"));
+        chk(mliIo_write_cstr_format(f, "# vertices\n"));
         for (i = 0; i < obj->num_vertices; i++) {
-                chk(mliIo_printf(
+                chk(mliIo_write_cstr_format(
                         f,
                         "v %.6f %.6f %.6f\n",
                         obj->vertices[i].x,
@@ -648,9 +648,9 @@ int mliObject_fprint_to_wavefront(struct mliIo *f, const struct mliObject *obj)
                         obj->vertices[i].z));
         }
 
-        chk(mliIo_printf(f, "# vertex normals\n"));
+        chk(mliIo_write_cstr_format(f, "# vertex normals\n"));
         for (i = 0; i < obj->num_vertex_normals; i++) {
-                chk(mliIo_printf(
+                chk(mliIo_write_cstr_format(
                         f,
                         "vn %.6f %.6f %.6f\n",
                         obj->vertex_normals[i].x,
@@ -658,17 +658,17 @@ int mliObject_fprint_to_wavefront(struct mliIo *f, const struct mliObject *obj)
                         obj->vertex_normals[i].z));
         }
 
-        chk(mliIo_printf(f, "# faces\n"));
+        chk(mliIo_write_cstr_format(f, "# faces\n"));
         for (face = 0; face < obj->num_faces; face++) {
                 if ((face == 0) || (mtl != obj->faces_materials[face])) {
                         mtl = obj->faces_materials[face];
-                        chk(mliIo_printf(
+                        chk(mliIo_write_cstr_format(
                                 f,
                                 "usemtl %s\n",
                                 obj->material_names[mtl].cstr));
                 }
 
-                chk(mliIo_printf(
+                chk(mliIo_write_cstr_format(
                         f,
                         "f %d//%d %d//%d %d//%d\n",
                         obj->faces_vertices[face].a + 1,

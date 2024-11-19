@@ -87,7 +87,7 @@ int mliScenery_malloc_minimal_from_wavefront(
                 "Failed to malloc geometry.");
 
         /* set object */
-        chk_msg(mliIo_malloc_from_path(&str, path), "Failed to read file.");
+        chk_msg(mliIo_write_from_path(&str, path), "Failed to read file.");
         chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls((char *)str.cstr),
                 "Expected object-wavefront file to be free of "
                 "control characters, except [NUL, TAB, LF].");

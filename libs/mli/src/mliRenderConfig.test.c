@@ -10,48 +10,56 @@ CASE("Parse_from_jsonline")
         struct mliRenderConfig cc = mliRenderConfig_init();
 
         mliIo_malloc(&ss);
-        mliIo_printf(&ss, "{");
-        mliIo_printf(&ss, "    \"camera\": {");
-        mliIo_printf(&ss, "        \"pos\": [1,2,3],");
-        mliIo_printf(&ss, "        \"rot\": {");
-        mliIo_printf(&ss, "            \"repr\": \"tait_bryan\", ");
-        mliIo_printf(&ss, "            \"xyz_deg\": [0, 0, 90], ");
-        mliIo_printf(&ss, "        }, ");
-        mliIo_printf(&ss, "        \"focal_length\": 50e-3, ");
-        mliIo_printf(&ss, "        \"aperture_radius\": 12.5e-3, ");
-        mliIo_printf(&ss, "        \"image_sensor_distance\": 50e-3, ");
-        mliIo_printf(&ss, "        \"image_sensor_width_x\": 36e-3, ");
-        mliIo_printf(&ss, "        \"image_sensor_width_y\": 24e-3, ");
-        mliIo_printf(&ss, "    }, ");
-        mliIo_printf(&ss, "    \"tracer\": {");
-        mliIo_printf(&ss, "        \"num_trails_global_light_source\": 3, ");
-        mliIo_printf(&ss, "        \"background_color\": [110, 120, 130], ");
-        mliIo_printf(&ss, "        \"have_atmosphere\": 1, ");
-        mliIo_printf(&ss, "        \"atmosphere\": {");
-        mliIo_printf(&ss, "            \"sunLatitude\": 0.0, ");
-        mliIo_printf(&ss, "            \"sunHourAngle\": 12.0, ");
-        mliIo_printf(&ss, "            \"sunDistance\": 1.5e11, ");
-        mliIo_printf(&ss, "            \"sunRadius\": 7e8, ");
-        mliIo_printf(&ss, "            \"altitude\": 2.3e3, ");
-        mliIo_printf(&ss, "            \"earthRadius\": 6360e3, ");
-        mliIo_printf(&ss, "            \"atmosphereRadius\": 6420e3, ");
-        mliIo_printf(&ss, "            \"Height_Rayleigh\": 7994.0, ");
-        mliIo_printf(&ss, "            \"Height_Mie\": 1200.0, ");
-        mliIo_printf(
+        mliIo_write_cstr_format(&ss, "{");
+        mliIo_write_cstr_format(&ss, "    \"camera\": {");
+        mliIo_write_cstr_format(&ss, "        \"pos\": [1,2,3],");
+        mliIo_write_cstr_format(&ss, "        \"rot\": {");
+        mliIo_write_cstr_format(&ss, "            \"repr\": \"tait_bryan\", ");
+        mliIo_write_cstr_format(&ss, "            \"xyz_deg\": [0, 0, 90], ");
+        mliIo_write_cstr_format(&ss, "        }, ");
+        mliIo_write_cstr_format(&ss, "        \"focal_length\": 50e-3, ");
+        mliIo_write_cstr_format(&ss, "        \"aperture_radius\": 12.5e-3, ");
+        mliIo_write_cstr_format(
+                &ss, "        \"image_sensor_distance\": 50e-3, ");
+        mliIo_write_cstr_format(
+                &ss, "        \"image_sensor_width_x\": 36e-3, ");
+        mliIo_write_cstr_format(
+                &ss, "        \"image_sensor_width_y\": 24e-3, ");
+        mliIo_write_cstr_format(&ss, "    }, ");
+        mliIo_write_cstr_format(&ss, "    \"tracer\": {");
+        mliIo_write_cstr_format(
+                &ss, "        \"num_trails_global_light_source\": 3, ");
+        mliIo_write_cstr_format(
+                &ss, "        \"background_color\": [110, 120, 130], ");
+        mliIo_write_cstr_format(&ss, "        \"have_atmosphere\": 1, ");
+        mliIo_write_cstr_format(&ss, "        \"atmosphere\": {");
+        mliIo_write_cstr_format(&ss, "            \"sunLatitude\": 0.0, ");
+        mliIo_write_cstr_format(&ss, "            \"sunHourAngle\": 12.0, ");
+        mliIo_write_cstr_format(&ss, "            \"sunDistance\": 1.5e11, ");
+        mliIo_write_cstr_format(&ss, "            \"sunRadius\": 7e8, ");
+        mliIo_write_cstr_format(&ss, "            \"altitude\": 2.3e3, ");
+        mliIo_write_cstr_format(&ss, "            \"earthRadius\": 6360e3, ");
+        mliIo_write_cstr_format(
+                &ss, "            \"atmosphereRadius\": 6420e3, ");
+        mliIo_write_cstr_format(
+                &ss, "            \"Height_Rayleigh\": 7994.0, ");
+        mliIo_write_cstr_format(&ss, "            \"Height_Mie\": 1200.0, ");
+        mliIo_write_cstr_format(
                 &ss,
                 "            \"beta_Rayleigh\": [3.8e-6, 13.5e-6, 33.1e-6], ");
-        mliIo_printf(&ss, "            \"beta_Mie\": [41e-6, 41e-6, 41e-6], ");
-        mliIo_printf(&ss, "            \"numSamples\": 16, ");
-        mliIo_printf(&ss, "            \"numSamplesLight\": 8, ");
-        mliIo_printf(&ss, "            \"power\": 3.6e3, ");
-        mliIo_printf(&ss, "        },");
-        mliIo_printf(&ss, "    }, ");
-        mliIo_printf(&ss, "    \"image\": {");
-        mliIo_printf(&ss, "        \"num_pixel_x\": 192, ");
-        mliIo_printf(&ss, "        \"num_pixel_y\": 108, ");
-        mliIo_printf(&ss, "    }, ");
-        mliIo_printf(&ss, "    \"random_seed\": 1337");
-        mliIo_printf(&ss, "}");
+        mliIo_write_cstr_format(
+                &ss, "            \"beta_Mie\": [41e-6, 41e-6, 41e-6], ");
+        mliIo_write_cstr_format(&ss, "            \"numSamples\": 16, ");
+        mliIo_write_cstr_format(&ss, "            \"numSamplesLight\": 8, ");
+        mliIo_write_cstr_format(&ss, "            \"power\": 3.6e3, ");
+        mliIo_write_cstr_format(&ss, "        },");
+        mliIo_write_cstr_format(&ss, "    }, ");
+        mliIo_write_cstr_format(&ss, "    \"image\": {");
+        mliIo_write_cstr_format(&ss, "        \"num_pixel_x\": 192, ");
+        mliIo_write_cstr_format(&ss, "        \"num_pixel_y\": 108, ");
+        mliIo_write_cstr_format(&ss, "    }, ");
+        mliIo_write_cstr_format(&ss, "    \"random_seed\": 1337");
+        mliIo_write_cstr_format(&ss, "}");
 
         CHECK(mliJson_malloc_from_cstr(&json, (char *)ss.cstr));
         CHECK(mliRenderConfig_from_json(&cc, &json, 0));

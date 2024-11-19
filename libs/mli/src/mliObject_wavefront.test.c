@@ -361,7 +361,7 @@ CASE("mliObject, read wavefront file")
 {
         struct mliIo str = mliIo_init();
         struct mliObject obj = mliObject_init();
-        CHECK(mliIo_malloc_from_path(
+        CHECK(mliIo_write_from_path(
                 &str,
                 "libs/"
                 "mli/"
@@ -389,7 +389,7 @@ CASE("mliObject, write and read binary-string")
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
         FILE *f;
-        CHECK(mliIo_malloc_from_path(
+        CHECK(mliIo_write_from_path(
                 &str,
                 "libs/"
                 "mli/"
@@ -457,7 +457,7 @@ CASE("mliObject, write and read ascii-text-string")
         struct mliIo str = mliIo_init();
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        CHECK(mliIo_malloc_from_path(
+        CHECK(mliIo_write_from_path(
                 &str,
                 "libs/"
                 "mli/"
@@ -477,7 +477,7 @@ CASE("mliObject, write and read ascii-text-string")
                 &f, "libs/mli/tests/resources/hexagonal_mirror_facet.obj.tmp");
         mliIo_free(&f);
 
-        CHECK(mliIo_malloc_from_path(
+        CHECK(mliIo_write_from_path(
                 &str,
                 "libs/mli/tests/resources/"
                 "hexagonal_mirror_facet.obj.tmp"));
@@ -518,7 +518,7 @@ CASE("mliObject, read and write multiple materials")
         struct mliIo str = mliIo_init();
         struct mliObject obj_orig = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        CHECK(mliIo_malloc_from_path(
+        CHECK(mliIo_write_from_path(
                 &str,
                 "libs/"
                 "mli/"
@@ -542,7 +542,7 @@ CASE("mliObject, read and write multiple materials")
                 &f, "libs/mli/tests/resources/cube_with_materials.obj.tmp");
         mliIo_free(&f);
 
-        CHECK(mliIo_malloc_from_path(
+        CHECK(mliIo_write_from_path(
                 &str,
                 "libs/"
                 "mli/"
@@ -585,7 +585,7 @@ CASE("mliObject, read and write repeating materials")
         struct mliIo str = mliIo_init();
         struct mliObject obj_orig = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        CHECK(mliIo_malloc_from_path(
+        CHECK(mliIo_write_from_path(
                 &str,
                 "libs/"
                 "mli/"
@@ -605,7 +605,7 @@ CASE("mliObject, read and write repeating materials")
                 &f, "libs/mli/tests/resources/repeating_material.obj.tmp");
         mliIo_free(&f);
 
-        CHECK(mliIo_malloc_from_path(
+        CHECK(mliIo_write_from_path(
                 &str,
                 "libs/"
                 "mli/"

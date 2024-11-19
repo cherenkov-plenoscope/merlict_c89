@@ -27,8 +27,8 @@ int mliIo_malloc_capacity(struct mliIo *byt, const uint64_t capacity)
         mliIo_free(byt);
         byt->capacity = MLI_MAX2(2u, capacity);
         byt->size = 0u;
-        chk_malloc(byt->cstr, unsigned char, byt->capacity);
-        memset(byt->cstr, '\0', byt->capacity);
+        chk_malloc(byt->cstr, unsigned char, byt->capacity + 1u);
+        memset(byt->cstr, '\0', byt->capacity + 1u);
         return 1;
 chk_error:
         return 0;
@@ -78,6 +78,21 @@ chk_error:
         return 0;
 }
 
+int mliIo_reset(struct mliIo *byt)
+{
+        if (byt->cstr == NULL) {
+                chk(mliIo_malloc(byt));
+        } else {
+                chk_msg(byt->capacity >= 2u, "Expected minimal capacity of 2.");
+                byt->pos = 0u;
+                byt->size = 0u;
+                memset(byt->cstr, '\0', byt->capacity + 1u);
+        }
+        return 1;
+chk_error:
+        return 0;
+}
+
 int mliIo_putc(struct mliIo *byt, const unsigned char c)
 {
         /* 'puts' a single byte (char) to the BytesIo-buffer */
@@ -105,6 +120,69 @@ chk_error:
 int mliIo_putchar(struct mliIo *byt, const char c)
 {
         return mliIo_putc(byt, (unsigned char)c);
+}
+
+int mliIo_write_cstr_format(struct mliIo *str, const char *format, ...)
+{
+        uint64_t i;
+        uint64_t tmp_length;
+        struct mliIo tmp = mliIo_init();
+        va_list args;
+
+        chk(mliIo_malloc_capacity(&tmp, 32 * strlen(format)));
+        va_start(args, format);
+        vsprintf((char *)tmp.cstr, format, args);
+
+        tmp_length = 0;
+        for (i = 0; i < tmp.capacity; i++) {
+                if (tmp.cstr[i] == (char)'\0') {
+                        break;
+                } else {
+                        tmp_length += 1;
+                }
+        }
+        chk_msg(tmp_length < tmp.capacity,
+                "Expected tmp length < tmp.capacity. Probably vsprintf caused "
+                "a buffer overflow.");
+
+        for (i = 0; i < tmp_length; i++) {
+                chk(mliIo_putc(str, tmp.cstr[i]))
+        }
+
+        va_end(args);
+        mliIo_free(&tmp);
+        return 1;
+chk_error:
+        va_end(args);
+        mliIo_free(&tmp);
+        return 0;
+}
+
+/* copy */
+/* ---- */
+
+int mliIo_copy(struct mliIo *dst, const struct mliIo *src)
+{
+        return mliIo_copy_start_num(dst, src, 0, src->size);
+}
+
+int mliIo_copy_start_num(
+        struct mliIo *dst,
+        const struct mliIo *src,
+        const uint64_t start,
+        const uint64_t num)
+{
+        uint64_t i;
+        chk_msg(src->cstr != NULL, "Expected src to be allocated");
+        chk_msg(start + num <= src->size, "Expected start + num < src->size.");
+        chk(mliIo_malloc_capacity(dst, num));
+        for (i = 0; i < num; i++) {
+                chk(mliIo_putc(dst, src->cstr[i + start]));
+        }
+        return 1;
+chk_error:
+        mliIo_free(dst);
+        return 0;
 }
 
 int mliIo_getc(struct mliIo *byt)
@@ -162,33 +240,6 @@ uint64_t mliIo_ftell(struct mliIo *byt) { return byt->pos; }
 
 void mliIo_rewind(struct mliIo *byt) { byt->pos = 0u; }
 
-int64_t mliIo_printf(struct mliIo *byt, const char *format, ...)
-{
-        uint64_t i;
-        char tmp[256];
-        va_list args;
-        memset(tmp, '\0', sizeof(tmp));
-
-        va_start(args, format);
-
-        /* DANGER, THIS WILL 100% BUFFEROVERFLOW  */
-        /* PROBLEM IS THERE IS NO vsnprintf (note the 'n') in c89 */
-        /* SO SEFAULT-PARADE IT IS UNTIL I WRITE MY OWN snprintf */
-        vsprintf(tmp, format, args);
-
-        for (i = 0; i < 256; i++) {
-                if (tmp[i] == '\0') {
-                        break;
-                }
-                chk(mliIo_putchar(byt, tmp[i]));
-        }
-        va_end(args);
-        return (int64_t)i;
-chk_error:
-        va_end(args);
-        return -1;
-}
-
 int mliStr_convert_line_break_CRLF_CR_to_LF(
         struct mliStr *dst,
         const struct mliStr *src)
@@ -221,7 +272,7 @@ chk_error:
         return 0;
 }
 
-int mliIo_malloc_from_path(struct mliIo *byt, const char *path)
+int mliIo_write_from_path(struct mliIo *byt, const char *path)
 {
         int c = EOF;
         FILE *f = fopen(path, "rt");
@@ -257,15 +308,27 @@ chk_error:
         return 0;
 }
 
-int64_t mliIo_malloc_cstr(struct mliIo *byt, const char *s)
+int mliIo_str_read_line(
+        struct mliIo *stream,
+        struct mliIo *line,
+        const char delimiter)
 {
-        const uint64_t slen = strlen(s);
-        uint64_t i;
-        for (i = 0; i < slen; i++) {
-                chk_msg(mliIo_putchar(byt, s[i]), "Failed to push back char");
+        chk(mliIo_reset(line));
+
+        while (stream->pos < stream->size) {
+                const int c = mliIo_getc(stream);
+                if (c == '\0') {
+                        break;
+                } else if (c == delimiter) {
+                        break;
+                } else {
+                        chk(mliIo_putchar(line, c));
+                }
         }
-        return i;
+
+        return 1;
 chk_error:
+        mliIo_free(line);
         return 0;
 }
 
@@ -389,11 +452,11 @@ int mli_line_viewer_write_line_match(
         const int64_t line_number,
         const int64_t line_number_of_interest)
 {
-        chk(mliIo_printf(f, "% 6d", (int32_t)line_number));
+        chk(mliIo_write_cstr_format(f, "% 6d", (int32_t)line_number));
         if (line_number == line_number_of_interest) {
-                chk(mliIo_printf(f, "->|  "));
+                chk(mliIo_write_cstr_format(f, "->|  "));
         } else {
-                chk(mliIo_printf(f, "  |  "));
+                chk(mliIo_write_cstr_format(f, "  |  "));
         }
         return 1;
 chk_error:
@@ -415,8 +478,8 @@ int mli_line_viewer_write(
 
         chk_msg(line_radius > 1, "Expected line_radius > 1.");
 
-        chk(mliIo_printf(f, "  line     text\n"));
-        chk(mliIo_printf(f, "        |\n"));
+        chk(mliIo_write_cstr_format(f, "  line     text\n"));
+        chk(mliIo_write_cstr_format(f, "        |\n"));
 
         while (i < text->length && text->cstr[i]) {
                 int prefix = (line + 1 >= line_start) && (line < line_stop);

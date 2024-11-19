@@ -3,7 +3,7 @@
 #include "../../mli_testing/src/mli_testing.h"
 #include "../src/mliIo.h"
 
-CASE("BytesIo_init")
+CASE("mliIo_init")
 {
         struct mliIo byt = mliIo_init();
 
@@ -13,10 +13,10 @@ CASE("BytesIo_init")
         CHECK(byt.pos == 0u);
 }
 
-CASE("BytesIo_malloc")
+CASE("mliIo_reset")
 {
         struct mliIo byt = mliIo_init();
-        CHECK(mliIo_malloc(&byt));
+        CHECK(mliIo_reset(&byt));
 
         CHECK(byt.cstr != NULL);
         CHECK(byt.capacity == 2u);
@@ -26,11 +26,57 @@ CASE("BytesIo_malloc")
         mliIo_free(&byt);
 }
 
+CASE("mliIo_copy")
+{
+        struct mliIo src = mliIo_init();
+        struct mliIo dst = mliIo_init();
+
+        CHECK(mliIo_write_cstr_format(&src, "abb"));
+        CHECK(mliIo_copy(&dst, &src));
+        CHECK(0 == strcmp((char *)dst.cstr, "abb"));
+
+        CHECK(mliIo_reset(&src));
+        CHECK(mliIo_write_cstr_format(&src, ""));
+        CHECK(mliIo_copy(&dst, &src));
+        CHECK(0 == strcmp((char *)dst.cstr, ""));
+
+        mliIo_free(&src);
+        CHECK(!mliIo_copy(&dst, &src));
+
+        mliIo_free(&dst);
+        mliIo_free(&src);
+}
+
+CASE("mliIo_copy_start_num")
+{
+        struct mliIo src = mliIo_init();
+        struct mliIo dst = mliIo_init();
+
+        CHECK(mliIo_write_cstr_format(&src, "123456789.json"));
+
+        CHECK(mliIo_copy_start_num(&dst, &src, 0, src.size));
+        CHECK(0 == strcmp((char *)dst.cstr, "123456789.json"));
+
+        CHECK(!mliIo_copy_start_num(&dst, &src, 0, src.size + 1));
+
+        CHECK(mliIo_copy_start_num(&dst, &src, 0, 3));
+        CHECK(0 == strcmp((char *)dst.cstr, "123"));
+
+        CHECK(mliIo_copy_start_num(&dst, &src, 8, 3));
+        CHECK(0 == strcmp((char *)dst.cstr, "9.j"));
+
+        CHECK(mliIo_copy_start_num(&dst, &src, 8, 0));
+        CHECK(0 == strcmp((char *)dst.cstr, ""));
+
+        mliIo_free(&dst);
+        mliIo_free(&src);
+}
+
 CASE("BytesIo_putc")
 {
         struct mliIo byt = mliIo_init();
         uint64_t i;
-        CHECK(mliIo_malloc(&byt));
+        CHECK(mliIo_reset(&byt));
 
         for (i = 0; i < 20; i++) {
                 CHECK(mliIo_putc(&byt, 'A'));
@@ -55,7 +101,7 @@ CASE("BytesIo_putc")
 CASE("BytesIo_putc_rewind_getc")
 {
         struct mliIo byt = mliIo_init();
-        CHECK(mliIo_malloc(&byt));
+        CHECK(mliIo_reset(&byt));
 
         CHECK(mliIo_putc(&byt, 'A'));
         CHECK(mliIo_putc(&byt, 'B'));
@@ -83,7 +129,7 @@ CASE("BytesIo_write_rewind_read")
                 evth[i] = i;
         }
 
-        CHECK(mliIo_malloc(&byt));
+        CHECK(mliIo_reset(&byt));
 
         rc = mliIo_write(&byt, evth, sizeof(float), 273);
         CHECK(rc == 273);
@@ -113,7 +159,7 @@ CASE("BytesIo_printf")
 {
         struct mliIo byt = mliIo_init();
 
-        mliIo_printf(&byt, "Hans %03d Lok %.3fh!", 8, 3.141);
+        mliIo_write_cstr_format(&byt, "Hans %03d Lok %.3fh!", 8, 3.141);
         mliIo_rewind(&byt);
 
         CHECK(0 == strcmp((char *)byt.cstr, "Hans 008 Lok 3.141h!"));
@@ -126,7 +172,8 @@ CASE("mli_readline")
         struct mliIo file = mliIo_init();
         struct mliStr line = mliStr_init();
 
-        mliIo_printf(&file, "first-line\nsecond-line\n\nfourth-line\n");
+        mliIo_write_cstr_format(
+                &file, "first-line\nsecond-line\n\nfourth-line\n");
         mliIo_rewind(&file);
 
         CHECK(mli_readline(&file, &line, '\n'));
@@ -308,25 +355,25 @@ CASE("mli_line_viewer_write")
         struct mliIo f = mliIo_init();
         struct mliStr text = mliStr_init();
 
-        CHECK(mliIo_printf(&f, "TEXT\n"));
-        CHECK(mliIo_printf(&f, "====\n"));
-        CHECK(mliIo_printf(&f, "auto hirsch flasche bat\n"));
-        CHECK(mliIo_printf(&f, "tisch rad wein\n"));
-        CHECK(mliIo_printf(&f, "\n"));
-        CHECK(mliIo_printf(&f, "Ausserdem: Stuhl\n"));
-        CHECK(mliIo_printf(&f, "1.)\n"));
-        CHECK(mliIo_printf(&f, " - soziooekonomisch\n"));
-        CHECK(mliIo_printf(&f, "ENDE\n"));
+        CHECK(mliIo_write_cstr_format(&f, "TEXT\n"));
+        CHECK(mliIo_write_cstr_format(&f, "====\n"));
+        CHECK(mliIo_write_cstr_format(&f, "auto hirsch flasche bat\n"));
+        CHECK(mliIo_write_cstr_format(&f, "tisch rad wein\n"));
+        CHECK(mliIo_write_cstr_format(&f, "\n"));
+        CHECK(mliIo_write_cstr_format(&f, "Ausserdem: Stuhl\n"));
+        CHECK(mliIo_write_cstr_format(&f, "1.)\n"));
+        CHECK(mliIo_write_cstr_format(&f, " - soziooekonomisch\n"));
+        CHECK(mliIo_write_cstr_format(&f, "ENDE\n"));
         mliIo_rewind(&f);
 
         CHECK(mliStr_malloc_cstr(&text, (char *)f.cstr));
         mliIo_free(&f);
 
         CHECK(mli_line_viewer_write(&f, &text, 1, 3));
-        CHECK(mliIo_printf(&f, "\n---\n\n"));
+        CHECK(mliIo_write_cstr_format(&f, "\n---\n\n"));
 
         CHECK(mli_line_viewer_write(&f, &text, 4, 5));
-        CHECK(mliIo_printf(&f, "\n---\n\n"));
+        CHECK(mliIo_write_cstr_format(&f, "\n---\n\n"));
 
         CHECK(mli_line_viewer_write(&f, &text, 7, 2));
 

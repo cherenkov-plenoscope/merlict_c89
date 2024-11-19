@@ -288,7 +288,7 @@ CASE("line info fprint")
 {
         struct mliIo s = mliIo_init();
         FILE *f;
-        CHECK(mliIo_malloc_from_path(
+        CHECK(mliIo_write_from_path(
                 &s,
                 "libs/"
                 "mli/"
