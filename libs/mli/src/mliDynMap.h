@@ -4,13 +4,24 @@
 
 #include <stdint.h>
 #include "mliName.h"
+#include "mliArray.h"
 #include "mliDynArray.h"
 
-struct mliDynMapItem {
+struct mliMapItem {
         char key[MLI_NAME_CAPACITY];
         uint64_t value;
 };
-MLIDYNARRAY_DEFINITON(mli, Map, struct mliDynMapItem)
+MLIARRAY_DEFINITON(mli, MapItem, struct mliMapItem)
+MLIDYNARRAY_DEFINITON(mli, MapItem, struct mliMapItem)
+
+struct mliDynMap {
+        struct mliDynMapItem items;
+};
+
+struct mliDynMap mliDynMap_init(void);
+void mliDynMap_free(struct mliDynMap *map);
+int mliDynMap_malloc(struct mliDynMap *map);
+uint64_t mliDynMap_size(const struct mliDynMap *map);
 int mliDynMap_has(const struct mliDynMap *map, const char *key);
 int mliDynMap_insert(struct mliDynMap *map, const char *key, uint64_t value);
 int mliDynMap_find(const struct mliDynMap *map, const char *key, uint64_t *idx);

@@ -25,9 +25,9 @@ struct mliNameMap mliNameMap_init(void)
 int mliNameMap_malloc(struct mliNameMap *namemap)
 {
         mliNameMap_free(namemap);
-        chk_mem(mliDynMap_malloc(&namemap->media, 0u));
-        chk_mem(mliDynMap_malloc(&namemap->surfaces, 0u));
-        chk_mem(mliDynMap_malloc(&namemap->boundary_layers, 0u));
+        chk_mem(mliDynMap_malloc(&namemap->media));
+        chk_mem(mliDynMap_malloc(&namemap->surfaces));
+        chk_mem(mliDynMap_malloc(&namemap->boundary_layers));
         return 1;
 chk_error:
         return 0;
@@ -53,7 +53,7 @@ int mli_set_geometry_objects_and_names_from_archive(
         obj_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_cstr_has_prefix_suffix(
-                            archive->filenames.array[arc_idx].key,
+                            archive->filenames.items.array[arc_idx].key,
                             "geometry/objects/",
                             ".obj")) {
                         chk_msg(obj_idx < geometry->num_objects,
@@ -61,7 +61,8 @@ int mli_set_geometry_objects_and_names_from_archive(
 
                         memset(key, '\0', sizeof(key));
                         mli_cstr_path_basename_without_extension(
-                                archive->filenames.array[arc_idx].key, key);
+                                archive->filenames.items.array[arc_idx].key,
+                                key);
                         mli_cstr_path_basename_without_extension(key, key);
                         chk_msg(mliDynMap_insert(object_names, key, obj_idx),
                                 "Failed to insert object-filename into map.");
@@ -135,7 +136,7 @@ int mliMaterials_malloc_form_archive(
         med_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_cstr_has_prefix_suffix(
-                            archive->filenames.array[arc_idx].key,
+                            archive->filenames.items.array[arc_idx].key,
                             "materials/media/",
                             ".json")) {
                         chk_msg(mliMedium_malloc_from_json_str(
@@ -148,14 +149,15 @@ int mliMaterials_malloc_form_archive(
 
                         memset(key, '\0', sizeof(key));
                         mli_cstr_path_basename_without_extension(
-                                archive->filenames.array[arc_idx].key, key);
+                                archive->filenames.items.array[arc_idx].key,
+                                key);
                         mli_cstr_path_basename_without_extension(key, key);
 
                         chk_msg(mliDynMap_insert(&names->media, key, med_idx),
                                 "Failed to insert media-name into map.");
 
                         memcpy(materials->medium_names[med_idx].cstr,
-                               names->media.array[med_idx].key,
+                               names->media.items.array[med_idx].key,
                                MLI_NAME_CAPACITY);
 
                         med_idx += 1u;
@@ -166,7 +168,7 @@ int mliMaterials_malloc_form_archive(
         srf_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 if (mli_cstr_has_prefix_suffix(
-                            archive->filenames.array[arc_idx].key,
+                            archive->filenames.items.array[arc_idx].key,
                             "materials/surfaces/",
                             ".json")) {
                         chk_msg(mliSurface_malloc_from_json_str(
@@ -179,7 +181,8 @@ int mliMaterials_malloc_form_archive(
 
                         memset(key, '\0', sizeof(key));
                         mli_cstr_path_basename_without_extension(
-                                archive->filenames.array[arc_idx].key, key);
+                                archive->filenames.items.array[arc_idx].key,
+                                key);
                         mli_cstr_path_basename_without_extension(key, key);
 
                         chk_msg(mliDynMap_insert(
@@ -187,7 +190,7 @@ int mliMaterials_malloc_form_archive(
                                 "Failed to insert surface-name into map.");
 
                         memcpy(materials->surface_names[srf_idx].cstr,
-                               names->surfaces.array[srf_idx].key,
+                               names->surfaces.items.array[srf_idx].key,
                                MLI_NAME_CAPACITY);
 
                         srf_idx += 1u;
@@ -204,7 +207,7 @@ int mliMaterials_malloc_form_archive(
                 "Failed to copy boundary_layers from materials.json.");
         for (i = 0; i < materials->num_boundary_layers; i++) {
                 memcpy(materials->boundary_layer_names[i].cstr,
-                       names->boundary_layers.array[i].key,
+                       names->boundary_layers.items.array[i].key,
                        MLI_NAME_CAPACITY);
         }
 

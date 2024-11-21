@@ -527,7 +527,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         chk(mliDynFace_malloc(&fvn, 0u));
         chk(mliDynUint32_malloc(&fm, 0u));
 
-        chk(mliDynMap_malloc(&material_names, 0u));
+        chk(mliDynMap_malloc(&material_names));
 
         /* parse wavefront into dyn */
         while (1) {
@@ -560,7 +560,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                         } else if (mli_cstr_starts_with(line, "f ")) {
                                 struct mliFace tmp_fv;
                                 struct mliFace tmp_fvn;
-                                chk_msg(material_names.size > 0,
+                                chk_msg(mliDynMap_size(&material_names) > 0,
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
                                 chk_msg(mliObject_parse_face_vertices_and_normals(
@@ -590,7 +590,11 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         chk_msg(fv.size == fvn.size,
                 "Expected num. vertex-indices == num. vertex-normal-indices.");
         chk_msg(mliObject_malloc(
-                        obj, v.size, vn.size, fv.size, material_names.size),
+                        obj,
+                        v.size,
+                        vn.size,
+                        fv.size,
+                        mliDynMap_size(&material_names)),
                 "Failed to malloc mliObject from file.");
 
         MLI_NCPY(v.array, obj->vertices, v.size);
@@ -598,9 +602,9 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         MLI_NCPY(fv.array, obj->faces_vertices, fv.size);
         MLI_NCPY(fvn.array, obj->faces_vertex_normals, fvn.size);
         MLI_NCPY(fm.array, obj->faces_materials, fm.size);
-        for (i = 0; i < material_names.size; i++) {
+        for (i = 0; i < mliDynMap_size(&material_names); i++) {
                 memcpy(obj->material_names[i].cstr,
-                       material_names.array[i].key,
+                       material_names.items.array[i].key,
                        MLI_NAME_CAPACITY);
         }
 

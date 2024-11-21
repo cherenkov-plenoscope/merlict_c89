@@ -6,11 +6,10 @@
 #include "mliHomTra.h"
 #include "mliDynArray.h"
 #include "mliDynUint32.h"
+#include "mliDynFramePtr.h"
 
 #define MLI_FRAME 1000u
 #define MLI_OBJECT 1001u
-
-MLIDYNARRAY_DEFINITON(mli, FramePtr, struct mliFrame *)
 
 struct mliFrame {
         uint32_t type;

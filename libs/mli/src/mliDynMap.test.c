@@ -8,7 +8,7 @@ CASE("vmap")
         uint64_t ptr;
         uint64_t ptr_back;
         struct mliDynMap map = mliDynMap_init();
-        CHECK(mliDynMap_malloc(&map, 0u));
+        CHECK(mliDynMap_malloc(&map));
 
         CHECK(mliDynMap_has(&map, "hans") == 0);
         ptr = 1337;

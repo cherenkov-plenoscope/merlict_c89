@@ -1,8 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFrame.h"
 #include "chk.h"
-
-MLIDYNARRAY_IMPLEMENTATION(mli, FramePtr, struct mliFrame *)
+#include "mliDynFramePtr.h"
 
 struct mliFrame;
 
@@ -145,7 +144,8 @@ void mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention)
                 printf("%*s", (int)indention, "");
                 printf("|-boundary_layers [");
                 for (ii = 0; ii < f->boundary_layers.size; ii++) {
-                        printf("%u,", f->boundary_layers.array[ii]);
+                        uint32_t boundary_layer = f->boundary_layers.array[ii];
+                        printf("%u,", boundary_layer);
                 }
                 printf("]\n");
 
@@ -153,7 +153,7 @@ void mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention)
                 printf("|-obj %u\n", f->object);
         }
         for (c = 0; c < f->children.size; c++) {
-                const struct mliFrame *child = f->children.array[c];
+                struct mliFrame *child = f->children.array[c];
                 mliFrame_print_walk(child, indention + 4);
         }
 }

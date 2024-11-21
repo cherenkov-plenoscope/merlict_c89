@@ -1,14 +1,12 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef ARCHIVE_H_
-#define ARCHIVE_H_
+#ifndef MLIARCHIVE_H_
+#define MLIARCHIVE_H_
 
 #include <stdint.h>
 #include "mliIo.h"
 #include "mli_json.h"
-#include "mliDynArray.h"
-#include "mliDynMap.h"
-
-MLIDYNARRAY_DEFINITON(mli, TextFiles, struct mliStr)
+#include "mliArray.h"
+#include "mliDynTextFiles.h"
 
 struct mliArchive {
         struct mliDynTextFiles textfiles;

@@ -51,7 +51,7 @@ int mliScenery_malloc_from_Archive(
                         &scenery->materials, &material_names, archive),
                 "Failed to malloc materials.");
 
-        chk(mliDynMap_malloc(&object_names, 0u));
+        chk(mliDynMap_malloc(&object_names));
 
         num_objects = mliArchive_num_filename_prefix_sufix(
                 archive, "geometry/objects/", ".obj");

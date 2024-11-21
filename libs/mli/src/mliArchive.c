@@ -6,8 +6,6 @@
 #include "mliTar.h"
 #include "chk.h"
 
-MLIDYNARRAY_IMPLEMENTATION(mli, TextFiles, struct mliStr)
-
 struct mliArchive mliArchive_init(void)
 {
         struct mliArchive arc;
@@ -20,7 +18,8 @@ void mliArchive_free(struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
-                mliStr_free(&arc->textfiles.array[i]);
+                struct mliStr *str = &arc->textfiles.array[i];
+                mliStr_free(str);
         }
         mliDynTextFiles_free(&arc->textfiles);
         mliDynMap_free(&arc->filenames);
@@ -31,7 +30,7 @@ int mliArchive_malloc(struct mliArchive *arc)
 {
         mliArchive_free(arc);
         chk(mliDynTextFiles_malloc(&arc->textfiles, 0u));
-        chk(mliDynMap_malloc(&arc->filenames, 0u));
+        chk(mliDynMap_malloc(&arc->filenames));
         return 1;
 chk_error:
         return 0;
@@ -43,9 +42,10 @@ int mliArchive_push_back(
         const struct mliStr *payload)
 {
         uint64_t next;
+        struct mliStr *text = NULL;
         chk_msg(filename->length < MLI_TAR_NAME_LENGTH,
                 "Expected shorter filename.");
-        next = arc->filenames.size;
+        next = mliDynMap_size(&arc->filenames);
 
         /* filename */
         /* ======== */
@@ -56,8 +56,8 @@ int mliArchive_push_back(
         /* ======= */
         chk_msg(mliDynTextFiles_push_back(&arc->textfiles, mliStr_init()),
                 "Can not push back mliStr.");
-        chk_msg(mliStr_malloc_copy(&arc->textfiles.array[next], payload),
-                "Can not copy payload.");
+        text = &arc->textfiles.array[next];
+        chk_msg(mliStr_malloc_copy(text, payload), "Can not copy payload.");
         return 1;
 chk_error:
         return 0;
@@ -130,8 +130,10 @@ int mliArchive_get(
         struct mliStr **str)
 {
         uint64_t idx;
+        struct mliStr *txt = NULL;
         chk(mliDynMap_find(&arc->filenames, filename, &idx));
-        (*str) = &arc->textfiles.array[idx];
+        txt = &arc->textfiles.array[idx];
+        (*str) = txt;
         return 1;
 chk_error:
         return 0;
@@ -157,19 +159,20 @@ chk_error:
 
 uint64_t mliArchive_num(const struct mliArchive *arc)
 {
-        return arc->filenames.size;
+        return mliDynMap_size(&arc->filenames);
 }
 
 void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliDynMapItem *map_item = &arc->filenames.array[i];
+                struct mliMapItem item = arc->filenames.items.array[i];
+                struct mliStr *str = &arc->textfiles.array[i];
                 fprintf(f,
                         "%u: %s, %u\n",
                         (uint32_t)i,
-                        map_item->key,
-                        (uint32_t)arc->textfiles.array[i].length);
+                        item.key,
+                        (uint32_t)str->length);
         }
 }
 
@@ -182,10 +185,9 @@ void mliArchive_mask_filename_prefix_sufix(
         uint64_t i = 0u;
         uint64_t match = 0u;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliDynMapItem *map_item = &arc->filenames.array[i];
+                struct mliMapItem item = arc->filenames.items.array[i];
 
-                match = mli_cstr_has_prefix_suffix(
-                        map_item->key, prefix, sufix);
+                match = mli_cstr_has_prefix_suffix(item.key, prefix, sufix);
 
                 if (match) {
                         mask[i] = 1;
@@ -204,10 +206,9 @@ uint64_t mliArchive_num_filename_prefix_sufix(
         uint64_t match;
         uint64_t num_matches = 0;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliDynMapItem *map_item = &arc->filenames.array[i];
+                struct mliMapItem item = arc->filenames.items.array[i];
 
-                match = mli_cstr_has_prefix_suffix(
-                        map_item->key, prefix, sufix);
+                match = mli_cstr_has_prefix_suffix(item.key, prefix, sufix);
 
                 if (match) {
                         num_matches++;
