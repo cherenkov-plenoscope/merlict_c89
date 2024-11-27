@@ -2,7 +2,7 @@
 #ifndef MLIDYNARRAY_FRAMEPTR_H_
 #define MLIDYNARRAY_FRAMEPTR_H_
 
-#include "mliFrame.h"
+struct mliFrame;
 #include "mliDynArray.h"
 MLIDYNARRAY_DEFINITON(mli, FramePtr, struct mliFrame *)
 #endif
