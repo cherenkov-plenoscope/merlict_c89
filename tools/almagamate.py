@@ -251,25 +251,25 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument(
     "outdir",
-    metavar="PATHS",
+    metavar="OUTDIR",
     type=str,
     help="Output directory for header and source.",
 )
 parser.add_argument(
     "--header_path",
-    metavar="PATH",
+    metavar="HEADER_PATH",
     type=str,
     help="Path of header.",
 )
 parser.add_argument(
     "--source_path",
-    metavar="PATH",
+    metavar="SOURCE_PATH",
     type=str,
     help="Path of source.",
 )
 parser.add_argument(
     "libs",
-    metavar="PATHS",
+    metavar="LIBS_PATHS",
     nargs="+",
     type=str,
     help=(
