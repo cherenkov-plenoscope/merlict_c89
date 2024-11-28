@@ -318,6 +318,5 @@ CASE("basename")
         sprintf(expected, "rale");
         mli_cstr_path_basename_without_extension(filename, key);
         mli_cstr_path_basename_without_extension(key, key);
-        fprintf(stderr, "%s vs %s\n", key, expected);
         CHECK(strcmp(key, expected) == 0);
 }
