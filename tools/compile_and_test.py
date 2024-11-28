@@ -106,7 +106,7 @@ os.makedirs("build", exist_ok=True)
 os.makedirs(os.path.join("build", "almagamate"), exist_ok=True)
 os.makedirs(os.path.join("build", "tests"), exist_ok=True)
 
-scenery_names = ["000", "001", "002", "optics_prism optics_focussing_mirror"]
+scenery_names = ["000", "001", "002", "optics_prism", "optics_focussing_mirror"]
 
 for scenery_name in scenery_names:
     rc = tar_sceneries(scenery_name=scenery_name)
