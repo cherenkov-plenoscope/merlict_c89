@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "mliFunc_fprint.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliFunc_fprint(
         FILE *f,

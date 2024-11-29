@@ -4,7 +4,7 @@
 #include "../../mli/src/mliTar.h"
 #include "../../mli/src/mli_cstr.h"
 #include "../../mli/src/mli_cstr_numbers.h"
-#include "../../mli/src/chk.h"
+#include "../../chk/src/chk.h"
 
 /* writer */
 /* ====== */

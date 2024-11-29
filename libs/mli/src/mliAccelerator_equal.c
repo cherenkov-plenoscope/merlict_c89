@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator_equal.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mliOcTree_equal.h"
 
 int mliAccelerator_equal(

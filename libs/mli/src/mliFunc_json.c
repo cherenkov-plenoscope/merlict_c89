@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFunc_json.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliFunc_malloc_from_json_token(
         struct mliFunc *f,

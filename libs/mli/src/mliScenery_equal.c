@@ -4,7 +4,7 @@
 #include "mliGeometry_equal.h"
 #include "mliAccelerator_equal.h"
 #include "mliGeometryToMaterialMap_equal.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliScenery_equal(const struct mliScenery *a, const struct mliScenery *b)
 {

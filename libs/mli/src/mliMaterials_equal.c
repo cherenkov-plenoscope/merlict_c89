@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials_equal.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliMaterials_media_equal(
         const struct mliMaterials *a,

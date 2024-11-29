@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_minimal_object.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mliColor.h"
 #include "mli_random.h"
 #include "mli_random_generator.h"

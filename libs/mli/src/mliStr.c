@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 struct mliStr mliStr_init(void)
 {

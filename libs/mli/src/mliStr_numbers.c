@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "mliIo.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliStr_nto_double(
         double *out,

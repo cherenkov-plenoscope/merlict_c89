@@ -30,6 +30,7 @@ parser = argparse.ArgumentParser(
 )
 args = parser.parse_args()
 libpaths = [
+    os.path.join("libs", "chk"),
     os.path.join("libs", "mli_testing"),
     os.path.join("libs", "mli"),
     os.path.join("libs", "mli_corsika"),

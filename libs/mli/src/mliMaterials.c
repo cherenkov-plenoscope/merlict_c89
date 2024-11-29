@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials.h"
 #include <stdlib.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mliColorMaterials.h"
 #include "mliFunc_fprint.h"
 

@@ -1,7 +1,7 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "mliTarIo.h"
 #include <stdio.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliTar_read_data_to_io(
         struct mliTar *tar,

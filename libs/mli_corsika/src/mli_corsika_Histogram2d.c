@@ -2,7 +2,7 @@
 
 #include "mli_corsika_Histogram2d.h"
 #include <string.h>
-#include "../../mli/src/chk.h"
+#include "../../chk/src/chk.h"
 #include "../../mli/src/mli_math.h"
 
 MLIDYNARRAY_IMPLEMENTATION(

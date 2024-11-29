@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "../src/mli_viewer_Config.h"
 #include "../src/mli_viewer_viewer.h"
-#include "../../mli/src/chk.h"
+#include "../../chk/src/chk.h"
 #include "../../mli/src/mliScenery.h"
 #include "../../mli/src/mliScenery_tar.h"
 #include "../../mli/src/mliScenery_minimal_object.h"

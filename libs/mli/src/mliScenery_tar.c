@@ -2,7 +2,7 @@
 #include "mliScenery_tar.h"
 #include <math.h>
 #include <stdint.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mliScenery_valid.h"
 #include "mli_frame_to_scenery.h"
 #include "mliUserScenery.h"

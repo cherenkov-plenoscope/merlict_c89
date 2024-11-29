@@ -4,7 +4,7 @@
 #include "mliGeometry_valid.h"
 #include "mliAccelerator_valid.h"
 #include "mliGeometryToMaterialMap_valid.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliScenery_valid(const struct mliScenery *scenery)
 {

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliPhotonInteraction.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mli_photoninteraction_type_to_string(const int32_t type, char *s)
 {

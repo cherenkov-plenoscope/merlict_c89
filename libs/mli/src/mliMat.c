@@ -2,7 +2,7 @@
 #include "mliMat.h"
 #include <math.h>
 #include <assert.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 void mliMat_set(struct mliMat *a, uint64_t col, uint64_t row, const double v)
 {

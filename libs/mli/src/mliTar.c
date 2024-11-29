@@ -7,7 +7,7 @@
 #include "mliTar.h"
 #include <string.h>
 #include <stddef.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mli_cstr_numbers.h"
 
 /*                             basics                                         */

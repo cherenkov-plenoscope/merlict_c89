@@ -2,7 +2,7 @@
 #include "mliRenderConfig.h"
 #include "mliFrame_json.h"
 #include "mliAtmosphere_json.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mliColor_json.h"
 
 int mliTracerConfig_from_json_token(

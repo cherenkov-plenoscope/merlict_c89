@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mli_math.h"
 
 #define MLIDYNARRAY_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                         \

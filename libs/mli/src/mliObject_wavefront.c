@@ -9,7 +9,7 @@
 #include "mliDynVec.h"
 #include "mliDynUint32.h"
 #include "mliDynDouble.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mli_cstr_numbers.h"
 #include "mli_cstr.h"
 #include "mliStr_numbers.h"

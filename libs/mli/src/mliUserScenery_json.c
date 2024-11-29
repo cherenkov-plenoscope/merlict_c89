@@ -4,7 +4,7 @@
 #include "mliVec_json.h"
 #include "mliColor_json.h"
 #include "mliMaterials.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliMaterials_assign_boundary_layers_from_json(
         struct mliMaterials *materials,

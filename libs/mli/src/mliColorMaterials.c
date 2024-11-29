@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliColorMaterials.h"
 #include <stdlib.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 struct mliColorMaterials mliColorMaterials_init(void)
 {

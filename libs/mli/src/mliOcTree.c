@@ -4,7 +4,7 @@
 #include "mliObject_AABB.h"
 #include "mliGeometry_AABB.h"
 #include "mliGeometryAndAccelerator.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 /*
  * mliOcTree

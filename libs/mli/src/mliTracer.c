@@ -8,7 +8,7 @@
 #include "mli_random.h"
 #include "mliIntersection.h"
 #include "mli_ray_scenery_query.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 struct mliTracer mliTracer_init(void)
 {

@@ -3,7 +3,7 @@
 #include <math.h>
 #include <assert.h>
 #include "mli_math.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 struct mliApertureCamera mliApertureCamera_init(void)
 {

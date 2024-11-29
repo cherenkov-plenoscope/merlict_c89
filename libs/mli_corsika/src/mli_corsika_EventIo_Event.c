@@ -1,7 +1,7 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
 #include "mli_corsika_EventIo_Event.h"
 #include "mli_corsika_EventIo_Run.h"
-#include "../../mli/src/chk.h"
+#include "../../chk/src/chk.h"
 #include "../../mli/src/mliDynFloat.h"
 
 int mliEventIo_read_telescope_offsets(

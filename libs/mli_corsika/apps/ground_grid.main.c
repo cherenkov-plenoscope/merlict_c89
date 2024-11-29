@@ -4,7 +4,7 @@
 #include "../src/mli_corsika_CorsikaPhotonBunch.h"
 #include "../src/mli_corsika_EventTape.h"
 #include "../src/mli_corsika_Histogram2d.h"
-#include "../../mli/src/chk.h"
+#include "../../chk/src/chk.h"
 #include "../../mli/src/mli_math.h"
 #include "../../mli/src/mliIo.h"
 #include "../../mli/src/mliTar.h"

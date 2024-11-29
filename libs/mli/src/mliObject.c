@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject.h"
 #include <assert.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include <stdlib.h>
 
 struct mliObject mliObject_init(void)

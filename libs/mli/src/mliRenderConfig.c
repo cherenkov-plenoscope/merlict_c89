@@ -4,7 +4,7 @@
 #include "mliAtmosphere_json.h"
 #include "mliTracerConfig_json.h"
 #include "mliImage.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 struct mliRenderConfig mliRenderConfig_init(void)
 {

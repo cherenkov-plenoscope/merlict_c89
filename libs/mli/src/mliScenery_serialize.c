@@ -2,7 +2,7 @@
 #include "mliScenery_serialize.h"
 #include <math.h>
 #include <stdint.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mliMagicId.h"
 #include "mliGeometry_serialize.h"
 #include "mliAccelerator_serialize.h"

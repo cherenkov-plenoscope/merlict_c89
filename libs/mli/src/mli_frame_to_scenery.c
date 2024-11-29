@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_frame_to_scenery.h"
 #include <math.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mliFrame.h"
 #include "mliGeometry.h"
 #include "mliGeometryToMaterialMap.h"

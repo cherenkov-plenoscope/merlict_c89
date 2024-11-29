@@ -2,7 +2,7 @@
 #include "mliMaterials_serialize.h"
 #include "mliMedium_serialize.h"
 #include "mliMagicId.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
 {

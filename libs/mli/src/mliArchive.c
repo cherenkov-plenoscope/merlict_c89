@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliArchive.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mli_cstr.h"
 #include "mli_json.h"
 #include "mliTar.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 struct mliArchive mliArchive_init(void)
 {

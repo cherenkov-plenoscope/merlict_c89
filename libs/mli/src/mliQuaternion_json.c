@@ -2,7 +2,7 @@
 #include "mliQuaternion_json.h"
 #include "mliVec_json.h"
 #include "mli_math.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliQuaternion_tait_bryan_from_json(
         struct mliQuaternion *quat,

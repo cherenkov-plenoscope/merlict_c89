@@ -2,7 +2,7 @@
 #include "mliIo.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mli_cstr.h"
 #include "mli_math.h"
 

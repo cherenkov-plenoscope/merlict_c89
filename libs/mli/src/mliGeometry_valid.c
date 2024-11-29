@@ -2,7 +2,7 @@
 #include "mliGeometry_valid.h"
 #include "mliObject_valid.h"
 #include "mli_math.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliGeometry_valid_objects(const struct mliGeometry *geometry)
 {

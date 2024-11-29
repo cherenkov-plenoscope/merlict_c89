@@ -2,7 +2,7 @@
 #include "mliObject_serialize.h"
 #include "mliMagicId.h"
 #include "mliObject_valid.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliObject_fwrite(const struct mliObject *obj, FILE *f)
 {

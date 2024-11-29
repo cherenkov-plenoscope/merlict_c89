@@ -3,7 +3,7 @@
 #include "mliObject_serialize.h"
 #include "mliMaterials_serialize.h"
 #include "mliMagicId.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
 {

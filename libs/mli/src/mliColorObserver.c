@@ -1,6 +1,6 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "mliColorObserver.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 #include "mliFunc.h"
 
 struct mliColorObserver mliColorObserver_init(void)

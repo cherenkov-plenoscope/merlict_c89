@@ -2,7 +2,7 @@
 #include "mliSurface.h"
 #include "mliMagicId.h"
 #include "mliFunc_serialize.h"
-#include "chk.h"
+#include "../../chk/src/chk.h"
 
 struct mliSurface mliSurface_init(void)
 {
