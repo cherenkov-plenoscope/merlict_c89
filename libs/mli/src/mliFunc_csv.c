@@ -1,9 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFunc_csv.h"
+#include "mliDynDouble.h"
+#include "mli_cstr.h"
+#include "mli_cstr_numbers.h"
 #include "chk.h"
 
 int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
 {
+        uint64_t MLI_NAME_CAPACITY = 256;
         uint64_t i = 0u;
         uint64_t p = 0u;
         uint64_t line_number = 0u;
