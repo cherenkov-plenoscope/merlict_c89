@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "mliMaterials.h"
 #include "mliColor.h"
+#include "mliColorObserver.h"
 
 struct mliColorSurface {
         struct mliColor specular_reflection;

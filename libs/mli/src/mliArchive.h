@@ -7,6 +7,7 @@
 #include "mli_json.h"
 #include "mliArray.h"
 #include "mliDynTextFiles.h"
+#include "mliDynMap.h"
 
 struct mliArchive {
         struct mliDynTextFiles textfiles;
