@@ -26,8 +26,7 @@
                 struct NAME *dst,                                              \
                 const struct NAME *src,                                        \
                 const uint64_t start,                                          \
-                const uint64_t length);                                        \
-
+                const uint64_t length);
 
 #define MTL_ARRAY_IMPLEMENTATION_MALLOC(NAME, PAYLOAD_TYPE)                    \
         int NAME##_malloc(struct NAME *self, const uint64_t size)              \
@@ -98,7 +97,6 @@
                 (*self) = NAME##_init();                                       \
         }                                                                      \
                                                                                \
-                                                                               \
         int NAME##_set(                                                        \
                 struct NAME *self, const uint64_t at, PAYLOAD_TYPE item)       \
         {                                                                      \
@@ -134,10 +132,9 @@
                 chk_msg(start + length <= src->size,                           \
                         "Expected start + length < src->size.")                \
                         NAME##_malloc(dst, length);                            \
-                memcpy(                                                        \
-                        dst->array,                                            \
-                        &src->array[start],                                    \
-                        length * sizeof(PAYLOAD_TYPE));                        \
+                memcpy(dst->array,                                             \
+                       &src->array[start],                                     \
+                       length * sizeof(PAYLOAD_TYPE));                         \
                 return 1;                                                      \
         chk_error:                                                             \
                 return 0;                                                      \
