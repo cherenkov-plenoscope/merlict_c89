@@ -3,6 +3,6 @@
 #define MLIDYNARRAY_VEC_H_
 
 #include "mliVec.h"
-#include "../../mtl/src/vec.h"
+#include "../../mtl/src/vector.h"
 MTL_VEC_DEFINITON(mli, Vec, struct mliVec)
 #endif

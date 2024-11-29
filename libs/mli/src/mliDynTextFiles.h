@@ -4,7 +4,7 @@
 
 #include "mliStr.h"
 #include "../../mtl/src/array.h"
-#include "../../mtl/src/vec.h"
+#include "../../mtl/src/vector.h"
 MTL_ARRAY_DEFINITON(mli, TextFiles, struct mliStr)
 MTL_VEC_DEFINITON(mli, TextFiles, struct mliStr)
 

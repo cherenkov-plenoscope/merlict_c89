@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mliName.h"
 #include "../../mtl/src/array.h"
-#include "../../mtl/src/vec.h"
+#include "../../mtl/src/vector.h"
 
 struct mliMapItem {
         char key[MLI_NAME_CAPACITY];

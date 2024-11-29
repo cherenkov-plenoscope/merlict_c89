@@ -1,8 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 #include "../../mli_testing/src/mli_testing.h"
-#include "vec.h"
-#include "vec_testing.h"
+#include "vector.h"
+#include "vector_testing.h"
 
 CASE("malloc, and free")
 {

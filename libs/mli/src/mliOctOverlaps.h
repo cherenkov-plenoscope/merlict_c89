@@ -2,7 +2,7 @@
 #ifndef MLIOCTOVERLAPS_H_
 #define MLIOCTOVERLAPS_H_
 
-#include "../../mtl/src/vec.h"
+#include "../../mtl/src/vector.h"
 
 #define mliOctOverlap mliDynUint32
 #define mliOctOverlap_init mliDynUint32_init

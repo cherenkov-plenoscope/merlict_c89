@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MTL_VEC_H_
-#define MTL_VEC_H_
+#ifndef MTL_VECTOR_H_
+#define MTL_VECTOR_H_
 
 #include <stdint.h>
 #include <stdlib.h>

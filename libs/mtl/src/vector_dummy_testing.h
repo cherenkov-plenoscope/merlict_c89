@@ -2,8 +2,8 @@
 #ifndef MTL_VEC_DUMMY_TESTING_H_
 #define MTL_VEC_DUMMY_TESTING_H_
 
-#include "vec.h"
-#include "vec_testing.h"
+#include "vector.h"
+#include "vector_testing.h"
 
 struct mtlDummy {
         float r;

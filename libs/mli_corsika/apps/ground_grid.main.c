@@ -10,7 +10,7 @@
 #include "../../mli/src/mliTar.h"
 #include "../../mli/src/mliTarIo.h"
 #include "../../mli/src/mliStr_numbers.h"
-#include "../../mtl/src/vec.h"
+#include "../../mtl/src/vector.h"
 #include "../../mli/src/mli_ray_grid_traversal.h"
 
 int mliAxisAlignedGrid_set_from_config(

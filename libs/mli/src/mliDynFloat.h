@@ -2,6 +2,6 @@
 #ifndef MLIDYNARRAY_FLOAT_H_
 #define MLIDYNARRAY_FLOAT_H_
 
-#include "../../mtl/src/vec.h"
+#include "../../mtl/src/vector.h"
 MTL_VEC_DEFINITON(mli, Float, float)
 #endif

@@ -5,7 +5,7 @@
 #include "mliPhotonInteraction.h"
 #include "mliGeometry.h"
 #include "mliScenery.h"
-#include "../../mtl/src/vec.h"
+#include "../../mtl/src/vector.h"
 
 MTL_VEC_DEFINITON(mli, PhotonInteraction, struct mliPhotonInteraction)
 

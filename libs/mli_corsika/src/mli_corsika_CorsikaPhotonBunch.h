@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_CORSIKAPHOTONBUNCH_H_
 
 #include <stdint.h>
-#include "../../mtl/src/vec.h"
+#include "../../mtl/src/vector.h"
 #include "../../mli/src/mliVec.h"
 #include "../../mli/src/mliPhoton.h"
 
