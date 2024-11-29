@@ -27,7 +27,18 @@
                 struct LIB##Dyn##NAME *self, const uint64_t size);             \
                                                                                \
         int LIB##Dyn##NAME##_push_back(                                        \
-                struct LIB##Dyn##NAME *self, PAYLOAD_TYPE item);
+                struct LIB##Dyn##NAME *self, PAYLOAD_TYPE item);               \
+                                                                               \
+        int LIB##Dyn##NAME##_set(                                              \
+                struct LIB##Dyn##NAME *self,                                   \
+                const uint64_t at,                                             \
+                PAYLOAD_TYPE item);                                            \
+                                                                               \
+        int LIB##Dyn##NAME##_get(                                              \
+                struct LIB##Dyn##NAME *self,                                   \
+                const uint64_t at,                                             \
+                PAYLOAD_TYPE *item);
+
 
 #define MTL_VECTOR_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                     \
                                                                                \
@@ -85,6 +96,32 @@
                 return 1;                                                      \
         chk_error:                                                             \
                 return 0;                                                      \
+        }                                                                      \
+                                                                               \
+        int LIB##Dyn##NAME##_set(                                              \
+                struct LIB##Dyn##NAME *self,                                   \
+                const uint64_t at,                                             \
+                PAYLOAD_TYPE item)                                             \
+        {                                                                      \
+                chk_msg(at < self->size, "Out of range.");                     \
+                self->array[at] = item;                                        \
+                return 1;                                                      \
+        chk_error:                                                             \
+                return 0;                                                      \
+        }                                                                      \
+                                                                               \
+        int LIB##Dyn##NAME##_get(                                              \
+                struct LIB##Dyn##NAME *self,                                   \
+                const uint64_t at,                                             \
+                PAYLOAD_TYPE *item)                                            \
+        {                                                                      \
+                chk_msg(at < self->size, "Out of range.");                     \
+                (*item) = self->array[at];                                     \
+                return 1;                                                      \
+        chk_error:                                                             \
+                return 0;                                                      \
         }
+
+
 
 #endif

@@ -3,5 +3,5 @@
 #define MLIARRAYCHAR_H_
 
 #include "../../mtl/src/array.h"
-MTL_ARRAY_DEFINITON(mli, Char, char)
+MTL_ARRAY_DEFINITON(mliArrayChar, char)
 #endif

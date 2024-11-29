@@ -4,6 +4,6 @@
 
 #include "array.h"
 
-MTL_ARRAY_DEFINITON(mtl, Char, char)
+MTL_ARRAY_DEFINITON(mtlArrayChar, char)
 
 #endif
