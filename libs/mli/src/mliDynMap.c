@@ -2,7 +2,7 @@
 #include "mliDynMap.h"
 #include "../../chk/src/chk.h"
 
-MLIARRAY_IMPLEMENTATION(mli, MapItem, struct mliMapItem)
+MTL_ARRAY_IMPLEMENTATION(mli, MapItem, struct mliMapItem)
 MTL_VEC_IMPLEMENTATION(mli, MapItem, struct mliMapItem)
 
 struct mliDynMap mliDynMap_init(void)

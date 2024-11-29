@@ -3,9 +3,9 @@
 #define MLIDYNTEXTFILE_H_
 
 #include "mliStr.h"
-#include "mliArray.h"
+#include "../../mtl/src/array.h"
 #include "../../mtl/src/vec.h"
-MLIARRAY_DEFINITON(mli, TextFiles, struct mliStr)
+MTL_ARRAY_DEFINITON(mli, TextFiles, struct mliStr)
 MTL_VEC_DEFINITON(mli, TextFiles, struct mliStr)
 
 #endif

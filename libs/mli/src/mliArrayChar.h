@@ -2,6 +2,6 @@
 #ifndef MLIARRAYCHAR_H_
 #define MLIARRAYCHAR_H_
 
-#include "mliArray.h"
-MLIARRAY_DEFINITON(mli, Char, char)
+#include "../../mtl/src/array.h"
+MTL_ARRAY_DEFINITON(mli, Char, char)
 #endif

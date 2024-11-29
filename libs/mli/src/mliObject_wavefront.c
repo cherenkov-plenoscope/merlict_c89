@@ -13,6 +13,7 @@
 #include "mli_cstr_numbers.h"
 #include "mli_cstr.h"
 #include "mliStr_numbers.h"
+#include "mli_math.h"
 
 #define MLI_WAVEFRONT_FACE_LINE_V 7
 #define MLI_WAVEFRONT_FACE_LINE_V_VN 37

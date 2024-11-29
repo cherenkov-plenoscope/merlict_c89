@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mliIo.h"
 #include "mli_json.h"
-#include "mliArray.h"
+#include "../../mtl/src/array.h"
 #include "mliDynTextFiles.h"
 #include "mliDynMap.h"
 
