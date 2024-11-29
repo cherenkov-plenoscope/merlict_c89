@@ -5,7 +5,7 @@
 #include "../../chk/src/chk.h"
 #include "../../mli/src/mli_math.h"
 
-MTL_VEC_IMPLEMENTATION(
+MTL_VECTOR_IMPLEMENTATION(
         mli,
         CorsikaHistogram2dBin,
         struct mliCorsikaHistogram2dBin)

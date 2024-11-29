@@ -4,5 +4,5 @@
 
 #include "mliVec.h"
 #include "../../mtl/src/vector.h"
-MTL_VEC_DEFINITON(mli, Vec, struct mliVec)
+MTL_VECTOR_DEFINITON(mli, Vec, struct mliVec)
 #endif

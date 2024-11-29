@@ -2,7 +2,7 @@
 #include "mli_corsika_CorsikaPhotonBunch.h"
 #include "../../mli/src/mli_math.h"
 
-MTL_VEC_IMPLEMENTATION(mli, CorsikaPhotonBunch, struct mliCorsikaPhotonBunch)
+MTL_VECTOR_IMPLEMENTATION(mli, CorsikaPhotonBunch, struct mliCorsikaPhotonBunch)
 
 void mliCorsikaPhotonBunch_set_from_raw(
         struct mliCorsikaPhotonBunch *bunch,

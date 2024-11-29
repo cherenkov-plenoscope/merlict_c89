@@ -3,5 +3,5 @@
 #define MLIDYNARRAY_DOUBLE_H_
 
 #include "../../mtl/src/vector.h"
-MTL_VEC_DEFINITON(mli, Double, double)
+MTL_VECTOR_DEFINITON(mli, Double, double)
 #endif

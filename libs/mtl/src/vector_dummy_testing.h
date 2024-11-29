@@ -11,8 +11,8 @@ struct mtlDummy {
         float b;
 };
 
-MTL_VEC_DEFINITON(mtl, Dummy, struct mtlDummy)
-MTL_VEC_DEFINITON(mtl, DummyPtr, struct mtlDummy *)
+MTL_VECTOR_DEFINITON(mtl, Dummy, struct mtlDummy)
+MTL_VECTOR_DEFINITON(mtl, DummyPtr, struct mtlDummy *)
 
 MTL_VEC_TESTING_DEFINITON(mtl, Dummy, struct mtlDummy)
 MTL_VEC_TESTING_DEFINITON(mtl, DummyPtr, struct mtlDummy *)

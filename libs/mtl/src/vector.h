@@ -8,7 +8,7 @@
 
 #define MTL_MAX2(a, b) (((a) > (b)) ? (a) : (b))
 
-#define MTL_VEC_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                             \
+#define MTL_VECTOR_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                          \
                                                                                \
         struct LIB##Dyn##NAME {                                                \
                 uint64_t capacity;                                             \
@@ -29,7 +29,7 @@
         int LIB##Dyn##NAME##_push_back(                                        \
                 struct LIB##Dyn##NAME *dh, PAYLOAD_TYPE item);
 
-#define MTL_VEC_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                        \
+#define MTL_VECTOR_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                     \
                                                                                \
         struct LIB##Dyn##NAME LIB##Dyn##NAME##_init(void)                      \
         {                                                                      \

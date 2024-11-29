@@ -13,6 +13,9 @@ struct mliEventIoTelescopeOffset {
 };
 struct mliEventIoTelescopeOffset mliEventIoTelescopeOffset_init(void);
 
-MTL_VEC_DEFINITON(mli, EventIoTelescopeOffset, struct mliEventIoTelescopeOffset)
+MTL_VECTOR_DEFINITON(
+        mli,
+        EventIoTelescopeOffset,
+        struct mliEventIoTelescopeOffset)
 
 #endif

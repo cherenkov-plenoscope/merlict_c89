@@ -11,7 +11,7 @@ struct mliEventIoTelescopeOffset mliEventIoTelescopeOffset_init(void)
         return offset;
 }
 
-MTL_VEC_IMPLEMENTATION(
+MTL_VECTOR_IMPLEMENTATION(
         mli,
         EventIoTelescopeOffset,
         struct mliEventIoTelescopeOffset)

@@ -4,5 +4,5 @@
 
 struct mliFrame;
 #include "../../mtl/src/vector.h"
-MTL_VEC_DEFINITON(mli, FramePtr, struct mliFrame *)
+MTL_VECTOR_DEFINITON(mli, FramePtr, struct mliFrame *)
 #endif
