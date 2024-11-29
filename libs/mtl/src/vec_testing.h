@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIDYNARRAY_TESTING_H_
-#define MLIDYNARRAY_TESTING_H_
+#ifndef MTL_VEC_TESTING_H_
+#define MTL_VEC_TESTING_H_
 
 #include <stdint.h>
 
-#define MLIDYNARRAY_TEST_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                    \
+#define MTL_VEC_TESTING_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                     \
                                                                                \
         int LIB##Dyn##NAME##_test_init(struct LIB##Dyn##NAME *dh);             \
                                                                                \
@@ -13,7 +13,7 @@
                                                                                \
         int LIB##Dyn##NAME##_test_free(struct LIB##Dyn##NAME *dh);
 
-#define MLIDYNARRAY_TEST_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)               \
+#define MTL_VEC_TESTING_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                \
                                                                                \
         int LIB##Dyn##NAME##_test_init(struct LIB##Dyn##NAME *dh)              \
         {                                                                      \

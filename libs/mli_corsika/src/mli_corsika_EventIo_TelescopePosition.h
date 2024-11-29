@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_EVENTIO_TELESCOPEPOSITION_H_
 
 #include <stdint.h>
-#include "../../mli/src/mliDynArray.h"
+#include "../../mtl/src/vec.h"
 
 struct mliEventIoTelescopePosition {
         float x;
@@ -11,7 +11,7 @@ struct mliEventIoTelescopePosition {
         float z;
         float r;
 };
-MLIDYNARRAY_DEFINITON(
+MTL_VEC_DEFINITON(
         mli,
         EventIoTelescopePosition,
         struct mliEventIoTelescopePosition)

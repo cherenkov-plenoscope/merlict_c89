@@ -1,13 +1,14 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIDYNARRAY_H_
-#define MLIDYNARRAY_H_
+#ifndef MTL_VEC_H_
+#define MTL_VEC_H_
 
 #include <stdint.h>
 #include <stdlib.h>
 #include "../../chk/src/chk.h"
-#include "mli_math.h"
 
-#define MLIDYNARRAY_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                         \
+#define MTL_MAX2(a, b) (((a) > (b)) ? (a) : (b))
+
+#define MTL_VEC_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                             \
                                                                                \
         struct LIB##Dyn##NAME {                                                \
                 uint64_t capacity;                                             \
@@ -28,7 +29,7 @@
         int LIB##Dyn##NAME##_push_back(                                        \
                 struct LIB##Dyn##NAME *dh, PAYLOAD_TYPE item);
 
-#define MLIDYNARRAY_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                    \
+#define MTL_VEC_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                        \
                                                                                \
         struct LIB##Dyn##NAME LIB##Dyn##NAME##_init(void)                      \
         {                                                                      \
@@ -49,7 +50,7 @@
                 struct LIB##Dyn##NAME *dh, const uint64_t size)                \
         {                                                                      \
                 LIB##Dyn##NAME##_free(dh);                                     \
-                dh->capacity = MLI_MAX2(2, size);                              \
+                dh->capacity = MTL_MAX2(2, size);                              \
                 dh->size = 0;                                                  \
                 chk_malloc(dh->array, PAYLOAD_TYPE, dh->capacity);             \
                 return 1;                                                      \

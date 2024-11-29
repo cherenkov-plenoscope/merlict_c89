@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliHomTra.h"
-#include "mliDynArray.h"
+#include "../../mtl/src/vec.h"
 #include "mliDynUint32.h"
 #include "mliDynFramePtr.h"
 

@@ -2,7 +2,7 @@
 #ifndef MLIDYNPHOTON_H_
 #define MLIDYNPHOTON_H_
 
-#include "mliDynArray.h"
+#include "../../mtl/src/vec.h"
 #include "mliPhoton.h"
-MLIDYNARRAY_DEFINITON(mli, Photon, struct mliPhoton)
+MTL_VEC_DEFINITON(mli, Photon, struct mliPhoton)
 #endif

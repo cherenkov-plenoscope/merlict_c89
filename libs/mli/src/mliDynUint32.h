@@ -3,6 +3,6 @@
 #define MLIDYNARRAY_UINT32_H_
 
 #include <stdint.h>
-#include "mliDynArray.h"
-MLIDYNARRAY_DEFINITON(mli, Uint32, uint32_t)
+#include "../../mtl/src/vec.h"
+MTL_VEC_DEFINITON(mli, Uint32, uint32_t)
 #endif

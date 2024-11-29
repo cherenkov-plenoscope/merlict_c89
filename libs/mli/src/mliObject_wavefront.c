@@ -3,7 +3,7 @@
 #include "mliObject.h"
 #include "mliObject_valid.h"
 #include <ctype.h>
-#include "mliDynArray.h"
+#include "../../mtl/src/vec.h"
 #include "mliDynMap.h"
 #include "mliDynFace.h"
 #include "mliDynVec.h"

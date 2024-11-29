@@ -4,8 +4,8 @@
 
 #include "mliStr.h"
 #include "mliArray.h"
-#include "mliDynArray.h"
+#include "../../mtl/src/vec.h"
 MLIARRAY_DEFINITON(mli, TextFiles, struct mliStr)
-MLIDYNARRAY_DEFINITON(mli, TextFiles, struct mliStr)
+MTL_VEC_DEFINITON(mli, TextFiles, struct mliStr)
 
 #endif

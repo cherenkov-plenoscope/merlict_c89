@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_EVENTIO_TELESCOPE_H_
 
 #include <stdint.h>
-#include "../../mli/src/mliDynArray.h"
+#include "../../mtl/src/vec.h"
 #include "mli_corsika_CorsikaPhotonBunch.h"
 #include "mli_corsika_EventIo_TelescopeOffset.h"
 
@@ -16,6 +16,6 @@ struct mliEventIoTelescope {
 struct mliEventIoTelescope mliEventIoTelescope_init(void);
 void mliEventIoTelescope_free(struct mliEventIoTelescope *telescope);
 
-MLIDYNARRAY_DEFINITON(mli, EventIoTelescope, struct mliEventIoTelescope)
+MTL_VEC_DEFINITON(mli, EventIoTelescope, struct mliEventIoTelescope)
 
 #endif

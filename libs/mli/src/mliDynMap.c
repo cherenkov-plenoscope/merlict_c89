@@ -3,7 +3,7 @@
 #include "../../chk/src/chk.h"
 
 MLIARRAY_IMPLEMENTATION(mli, MapItem, struct mliMapItem)
-MLIDYNARRAY_IMPLEMENTATION(mli, MapItem, struct mliMapItem)
+MTL_VEC_IMPLEMENTATION(mli, MapItem, struct mliMapItem)
 
 struct mliDynMap mliDynMap_init(void)
 {

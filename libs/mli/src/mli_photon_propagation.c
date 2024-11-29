@@ -4,6 +4,7 @@
 #include "mli_lambertian_cosine_law.h"
 #include "mli_ray_scenery_query.h"
 #include "../../chk/src/chk.h"
+#include <math.h>
 
 struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
