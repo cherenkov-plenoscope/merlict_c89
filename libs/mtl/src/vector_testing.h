@@ -4,18 +4,17 @@
 
 #include <stdint.h>
 
-#define MTL_VEC_TESTING_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                     \
+#define MTL_VEC_TESTING_DEFINITON(NAME, PAYLOAD_TYPE)                          \
                                                                                \
-        int LIB##Dyn##NAME##_test_init(struct LIB##Dyn##NAME *dh);             \
+        int NAME##_test_init(struct NAME *dh);                                 \
                                                                                \
-        int LIB##Dyn##NAME##_test_malloc(                                      \
-                struct LIB##Dyn##NAME *dh, const uint64_t capacity);           \
+        int NAME##_test_malloc(struct NAME *dh, const uint64_t capacity);      \
                                                                                \
-        int LIB##Dyn##NAME##_test_free(struct LIB##Dyn##NAME *dh);
+        int NAME##_test_free(struct NAME *dh);
 
-#define MTL_VEC_TESTING_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                \
+#define MTL_VEC_TESTING_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                     \
                                                                                \
-        int LIB##Dyn##NAME##_test_init(struct LIB##Dyn##NAME *dh)              \
+        int NAME##_test_init(struct NAME *dh)                                  \
         {                                                                      \
                 chk(dh->capacity == 0u);                                       \
                 chk(dh->size == 0u);                                           \
@@ -25,8 +24,7 @@
                 return 0;                                                      \
         }                                                                      \
                                                                                \
-        int LIB##Dyn##NAME##_test_malloc(                                      \
-                struct LIB##Dyn##NAME *dh, const uint64_t capacity)            \
+        int NAME##_test_malloc(struct NAME *dh, const uint64_t capacity)       \
         {                                                                      \
                 chk(dh->capacity >= dh->size);                                 \
                 if (capacity < 2) {                                            \
@@ -40,9 +38,6 @@
                 return 0;                                                      \
         }                                                                      \
                                                                                \
-        int LIB##Dyn##NAME##_test_free(struct LIB##Dyn##NAME *dh)              \
-        {                                                                      \
-                return LIB##Dyn##NAME##_test_init(dh);                         \
-        }
+        int NAME##_test_free(struct NAME *dh) { return NAME##_test_init(dh); }
 
 #endif

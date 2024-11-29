@@ -17,21 +17,15 @@
                                                                                \
         void NAME##_free(struct NAME *self);                                   \
                                                                                \
-        int NAME##_malloc(                                                     \
-                struct NAME *self, const uint64_t size);                       \
+        int NAME##_malloc(struct NAME *self, const uint64_t size);             \
                                                                                \
-        int NAME##_realloc(                                                    \
-                struct NAME *self, const uint64_t size);                       \
+        int NAME##_realloc(struct NAME *self, const uint64_t size);            \
                                                                                \
         int NAME##_set(                                                        \
-                struct NAME *self,                                             \
-                const uint64_t at,                                             \
-                PAYLOAD_TYPE item);                                            \
+                struct NAME *self, const uint64_t at, PAYLOAD_TYPE item);      \
                                                                                \
         int NAME##_get(                                                        \
-                struct NAME *self,                                             \
-                const uint64_t at,                                             \
-                PAYLOAD_TYPE *item);
+                struct NAME *self, const uint64_t at, PAYLOAD_TYPE *item);
 
 #define MTL_ARRAY_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                           \
                                                                                \
@@ -49,8 +43,7 @@
                 (*self) = NAME##_init();                                       \
         }                                                                      \
                                                                                \
-        int NAME##_malloc(                                                     \
-                struct NAME *self, const uint64_t size)                        \
+        int NAME##_malloc(struct NAME *self, const uint64_t size)              \
         {                                                                      \
                 NAME##_free(self);                                             \
                 self->size = size;                                             \
@@ -60,8 +53,7 @@
                 return 0;                                                      \
         }                                                                      \
                                                                                \
-        int NAME##_realloc(                                                    \
-                struct NAME *self, const uint64_t size)                        \
+        int NAME##_realloc(struct NAME *self, const uint64_t size)             \
         {                                                                      \
                 PAYLOAD_TYPE *new_array = (PAYLOAD_TYPE *)realloc(             \
                         (void *)self->array, size * sizeof(PAYLOAD_TYPE));     \
@@ -74,9 +66,7 @@
         }                                                                      \
                                                                                \
         int NAME##_set(                                                        \
-                struct NAME *self,                                             \
-                const uint64_t at,                                             \
-                PAYLOAD_TYPE item)                                             \
+                struct NAME *self, const uint64_t at, PAYLOAD_TYPE item)       \
         {                                                                      \
                 chk_msg(at < self->size, "Out of range.");                     \
                 self->array[at] = item;                                        \
@@ -86,9 +76,7 @@
         }                                                                      \
                                                                                \
         int NAME##_get(                                                        \
-                struct NAME *self,                                             \
-                const uint64_t at,                                             \
-                PAYLOAD_TYPE *item)                                            \
+                struct NAME *self, const uint64_t at, PAYLOAD_TYPE *item)      \
         {                                                                      \
                 chk_msg(at < self->size, "Out of range.");                     \
                 (*item) = self->array[at];                                     \

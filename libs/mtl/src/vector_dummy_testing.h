@@ -11,10 +11,10 @@ struct mtlDummy {
         float b;
 };
 
-MTL_VECTOR_DEFINITON(mtl, Dummy, struct mtlDummy)
-MTL_VECTOR_DEFINITON(mtl, DummyPtr, struct mtlDummy *)
+MTL_VECTOR_DEFINITON(mtlDynDummy, struct mtlDummy)
+MTL_VECTOR_DEFINITON(mtlDynDummyPtr, struct mtlDummy *)
 
-MTL_VEC_TESTING_DEFINITON(mtl, Dummy, struct mtlDummy)
-MTL_VEC_TESTING_DEFINITON(mtl, DummyPtr, struct mtlDummy *)
+MTL_VEC_TESTING_DEFINITON(mtlDynDummy, struct mtlDummy)
+MTL_VEC_TESTING_DEFINITON(mtlDynDummyPtr, struct mtlDummy *)
 
 #endif

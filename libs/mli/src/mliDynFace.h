@@ -4,5 +4,5 @@
 
 #include "mliFace.h"
 #include "../../mtl/src/vector.h"
-MTL_VECTOR_DEFINITON(mli, Face, struct mliFace)
+MTL_VECTOR_DEFINITON(mliDynFace, struct mliFace)
 #endif

@@ -16,6 +16,6 @@ struct mliEventIoTelescope {
 struct mliEventIoTelescope mliEventIoTelescope_init(void);
 void mliEventIoTelescope_free(struct mliEventIoTelescope *telescope);
 
-MTL_VECTOR_DEFINITON(mli, EventIoTelescope, struct mliEventIoTelescope)
+MTL_VECTOR_DEFINITON(mliDynEventIoTelescope, struct mliEventIoTelescope)
 
 #endif

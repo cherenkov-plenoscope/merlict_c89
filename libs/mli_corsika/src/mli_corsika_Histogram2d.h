@@ -18,8 +18,7 @@ struct mliCorsikaHistogram2dBin {
 };
 
 MTL_VECTOR_DEFINITON(
-        mli,
-        CorsikaHistogram2dBin,
+        mliDynCorsikaHistogram2dBin,
         struct mliCorsikaHistogram2dBin)
 
 struct mliCorsikaHistogram2d mliCorsikaHistogram2d_init(void);

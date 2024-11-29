@@ -2,6 +2,5 @@
 #include "mli_corsika_EventIo_TelescopePosition.h"
 
 MTL_VECTOR_IMPLEMENTATION(
-        mli,
-        EventIoTelescopePosition,
+        mliDynEventIoTelescopePosition,
         struct mliEventIoTelescopePosition)

@@ -4,5 +4,5 @@
 
 #include <stdint.h>
 #include "../../mtl/src/vector.h"
-MTL_VECTOR_DEFINITON(mli, Uint32, uint32_t)
+MTL_VECTOR_DEFINITON(mliDynUint32, uint32_t)
 #endif

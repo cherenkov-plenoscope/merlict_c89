@@ -4,5 +4,5 @@
 
 #include "../../mtl/src/vector.h"
 #include "mliPhoton.h"
-MTL_VECTOR_DEFINITON(mli, Photon, struct mliPhoton)
+MTL_VECTOR_DEFINITON(mliDynPhoton, struct mliPhoton)
 #endif

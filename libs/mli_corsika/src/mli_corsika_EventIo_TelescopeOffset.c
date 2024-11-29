@@ -12,6 +12,5 @@ struct mliEventIoTelescopeOffset mliEventIoTelescopeOffset_init(void)
 }
 
 MTL_VECTOR_IMPLEMENTATION(
-        mli,
-        EventIoTelescopeOffset,
+        mliDynEventIoTelescopeOffset,
         struct mliEventIoTelescopeOffset)

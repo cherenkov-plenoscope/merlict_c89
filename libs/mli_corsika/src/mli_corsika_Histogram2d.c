@@ -6,8 +6,7 @@
 #include "../../mli/src/mli_math.h"
 
 MTL_VECTOR_IMPLEMENTATION(
-        mli,
-        CorsikaHistogram2dBin,
+        mliDynCorsikaHistogram2dBin,
         struct mliCorsikaHistogram2dBin)
 
 struct key {

@@ -4,5 +4,5 @@
 
 #include "mliColor.h"
 #include "../../mtl/src/vector.h"
-MTL_VECTOR_DEFINITON(mli, Color, struct mliColor)
+MTL_VECTOR_DEFINITON(mliDynColor, struct mliColor)
 #endif

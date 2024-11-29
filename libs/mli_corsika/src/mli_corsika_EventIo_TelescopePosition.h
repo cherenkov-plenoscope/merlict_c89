@@ -12,8 +12,7 @@ struct mliEventIoTelescopePosition {
         float r;
 };
 MTL_VECTOR_DEFINITON(
-        mli,
-        EventIoTelescopePosition,
+        mliDynEventIoTelescopePosition,
         struct mliEventIoTelescopePosition)
 
 #endif

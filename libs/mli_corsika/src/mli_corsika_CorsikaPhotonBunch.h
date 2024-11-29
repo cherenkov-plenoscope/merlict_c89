@@ -71,7 +71,7 @@ struct mliCorsikaPhotonBunch {
         float wavelength_nm;
 };
 
-MTL_VECTOR_DEFINITON(mli, CorsikaPhotonBunch, struct mliCorsikaPhotonBunch)
+MTL_VECTOR_DEFINITON(mliDynCorsikaPhotonBunch, struct mliCorsikaPhotonBunch)
 
 void mliCorsikaPhotonBunch_set_from_raw(
         struct mliCorsikaPhotonBunch *bunch,

@@ -12,7 +12,7 @@ struct mliMapItem {
         uint64_t value;
 };
 MTL_ARRAY_DEFINITON(mliArrayMapItem, struct mliMapItem)
-MTL_VECTOR_DEFINITON(mli, MapItem, struct mliMapItem)
+MTL_VECTOR_DEFINITON(mliDynMapItem, struct mliMapItem)
 
 struct mliDynMap {
         struct mliDynMapItem items;

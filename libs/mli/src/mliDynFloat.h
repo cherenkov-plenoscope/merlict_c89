@@ -3,5 +3,5 @@
 #define MLIDYNARRAY_FLOAT_H_
 
 #include "../../mtl/src/vector.h"
-MTL_VECTOR_DEFINITON(mli, Float, float)
+MTL_VECTOR_DEFINITON(mliDynFloat, float)
 #endif

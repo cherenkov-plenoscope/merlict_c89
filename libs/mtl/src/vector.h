@@ -8,59 +8,50 @@
 
 #define MTL_MAX2(a, b) (((a) > (b)) ? (a) : (b))
 
-#define MTL_VECTOR_DEFINITON(LIB, NAME, PAYLOAD_TYPE)                          \
+#define MTL_VECTOR_DEFINITON(NAME, PAYLOAD_TYPE)                               \
                                                                                \
-        struct LIB##Dyn##NAME {                                                \
+        struct NAME {                                                          \
                 uint64_t capacity;                                             \
                 uint64_t size;                                                 \
                 PAYLOAD_TYPE *array;                                           \
         };                                                                     \
                                                                                \
-        struct LIB##Dyn##NAME LIB##Dyn##NAME##_init(void);                     \
+        struct NAME NAME##_init(void);                                         \
                                                                                \
-        void LIB##Dyn##NAME##_free(struct LIB##Dyn##NAME *self);               \
+        void NAME##_free(struct NAME *self);                                   \
                                                                                \
-        int LIB##Dyn##NAME##_malloc(                                           \
-                struct LIB##Dyn##NAME *self, const uint64_t size);             \
+        int NAME##_malloc(struct NAME *self, const uint64_t size);             \
                                                                                \
-        int LIB##Dyn##NAME##_malloc_set_size(                                  \
-                struct LIB##Dyn##NAME *self, const uint64_t size);             \
+        int NAME##_malloc_set_size(struct NAME *self, const uint64_t size);    \
                                                                                \
-        int LIB##Dyn##NAME##_push_back(                                        \
-                struct LIB##Dyn##NAME *self, PAYLOAD_TYPE item);               \
+        int NAME##_push_back(struct NAME *self, PAYLOAD_TYPE item);            \
                                                                                \
-        int LIB##Dyn##NAME##_set(                                              \
-                struct LIB##Dyn##NAME *self,                                   \
-                const uint64_t at,                                             \
-                PAYLOAD_TYPE item);                                            \
+        int NAME##_set(                                                        \
+                struct NAME *self, const uint64_t at, PAYLOAD_TYPE item);      \
                                                                                \
-        int LIB##Dyn##NAME##_get(                                              \
-                struct LIB##Dyn##NAME *self,                                   \
-                const uint64_t at,                                             \
-                PAYLOAD_TYPE *item);
+        int NAME##_get(                                                        \
+                struct NAME *self, const uint64_t at, PAYLOAD_TYPE *item);
 
-
-#define MTL_VECTOR_IMPLEMENTATION(LIB, NAME, PAYLOAD_TYPE)                     \
+#define MTL_VECTOR_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                          \
                                                                                \
-        struct LIB##Dyn##NAME LIB##Dyn##NAME##_init(void)                      \
+        struct NAME NAME##_init(void)                                          \
         {                                                                      \
-                struct LIB##Dyn##NAME out;                                     \
+                struct NAME out;                                               \
                 out.capacity = 0u;                                             \
                 out.size = 0u;                                                 \
                 out.array = NULL;                                              \
                 return out;                                                    \
         }                                                                      \
                                                                                \
-        void LIB##Dyn##NAME##_free(struct LIB##Dyn##NAME *self)                \
+        void NAME##_free(struct NAME *self)                                    \
         {                                                                      \
                 free(self->array);                                             \
-                (*self) = LIB##Dyn##NAME##_init();                             \
+                (*self) = NAME##_init();                                       \
         }                                                                      \
                                                                                \
-        int LIB##Dyn##NAME##_malloc(                                           \
-                struct LIB##Dyn##NAME *self, const uint64_t size)              \
+        int NAME##_malloc(struct NAME *self, const uint64_t size)              \
         {                                                                      \
-                LIB##Dyn##NAME##_free(self);                                   \
+                NAME##_free(self);                                             \
                 self->capacity = MTL_MAX2(2, size);                            \
                 self->size = 0;                                                \
                 chk_malloc(self->array, PAYLOAD_TYPE, self->capacity);         \
@@ -69,18 +60,16 @@
                 return 0;                                                      \
         }                                                                      \
                                                                                \
-        int LIB##Dyn##NAME##_malloc_set_size(                                  \
-                struct LIB##Dyn##NAME *self, const uint64_t size)              \
+        int NAME##_malloc_set_size(struct NAME *self, const uint64_t size)     \
         {                                                                      \
-                chk(LIB##Dyn##NAME##_malloc(self, size));                      \
+                chk(NAME##_malloc(self, size));                                \
                 self->size = size;                                             \
                 return 1;                                                      \
         chk_error:                                                             \
                 return 0;                                                      \
         }                                                                      \
                                                                                \
-        int LIB##Dyn##NAME##_push_back(                                        \
-                struct LIB##Dyn##NAME *self, PAYLOAD_TYPE item)                \
+        int NAME##_push_back(struct NAME *self, PAYLOAD_TYPE item)             \
         {                                                                      \
                 if (self->size == self->capacity) {                            \
                         self->capacity = self->capacity * 2;                   \
@@ -98,10 +87,8 @@
                 return 0;                                                      \
         }                                                                      \
                                                                                \
-        int LIB##Dyn##NAME##_set(                                              \
-                struct LIB##Dyn##NAME *self,                                   \
-                const uint64_t at,                                             \
-                PAYLOAD_TYPE item)                                             \
+        int NAME##_set(                                                        \
+                struct NAME *self, const uint64_t at, PAYLOAD_TYPE item)       \
         {                                                                      \
                 chk_msg(at < self->size, "Out of range.");                     \
                 self->array[at] = item;                                        \
@@ -110,10 +97,8 @@
                 return 0;                                                      \
         }                                                                      \
                                                                                \
-        int LIB##Dyn##NAME##_get(                                              \
-                struct LIB##Dyn##NAME *self,                                   \
-                const uint64_t at,                                             \
-                PAYLOAD_TYPE *item)                                            \
+        int NAME##_get(                                                        \
+                struct NAME *self, const uint64_t at, PAYLOAD_TYPE *item)      \
         {                                                                      \
                 chk_msg(at < self->size, "Out of range.");                     \
                 (*item) = self->array[at];                                     \
@@ -121,7 +106,5 @@
         chk_error:                                                             \
                 return 0;                                                      \
         }
-
-
 
 #endif
