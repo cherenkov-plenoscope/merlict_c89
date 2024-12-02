@@ -7,7 +7,7 @@
 
 MTL_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(mtl_String, char)
 
-int mtl_String_mallocf(struct mtl_String *str, const char *format, ...)
+int mtl_String_from_cstr_fromat(struct mtl_String *str, const char *format, ...)
 {
         struct mtl_String tmp = mtl_String_init();
         va_list args;
@@ -26,7 +26,7 @@ chk_error:
         return 0;
 }
 
-int mtl_String_malloc_cstr(struct mtl_String *str, const char *s)
+int mtl_String_from_cstr(struct mtl_String *str, const char *s)
 {
         chk(mtl_String_malloc(str, strlen(s)));
         strncpy(str->array, s, str->size);
@@ -157,7 +157,7 @@ int mtl_String_strip(const struct mtl_String *src, struct mtl_String *dst)
         len = stop - start;
 
         if (len < 0) {
-                chk(mtl_String_mallocf(dst, ""));
+                chk(mtl_String_from_cstr_fromat(dst, ""));
         } else {
                 chk(mtl_String_malloc(dst, len + 1));
                 strncpy(dst->array, &cpysrc.array[start], len + 1);
@@ -184,4 +184,16 @@ uint64_t mtl_String_countn(
                 i++;
         }
         return count;
+}
+
+int mtl_String_equal_cstr(struct mtl_String *self, const char *cstr)
+{
+        if (self->array == NULL) {
+                return 0;
+        }
+        if (strcmp(self->array, cstr) == 0) {
+                return 1;
+        } else {
+                return 0;
+        }
 }

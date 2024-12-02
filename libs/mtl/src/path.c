@@ -1,7 +1,7 @@
 #include "../../chk/src/chk.h"
 #include "path.h"
 
-int mli_path_strip_this_dir(
+int mtl_path_strip_this_dir(
         const struct mtl_String *src,
         struct mtl_String *dst)
 {
@@ -32,7 +32,7 @@ chk_error:
         return 0;
 }
 
-int mli_path_basename(const struct mtl_String *src, struct mtl_String *dst)
+int mtl_path_basename(const struct mtl_String *src, struct mtl_String *dst)
 {
         int64_t pos_last_del = -1;
         mtl_String_free(dst);
@@ -41,9 +41,10 @@ int mli_path_basename(const struct mtl_String *src, struct mtl_String *dst)
         pos_last_del = mtl_String_rfind(src, '/');
 
         if (pos_last_del < 0) {
-                chk(mtl_String_mallocf(dst, src->array));
+                chk(mtl_String_from_cstr_fromat(dst, src->array));
         } else {
-                chk(mtl_String_mallocf(dst, &src->array[pos_last_del + 1]));
+                chk(mtl_String_from_cstr_fromat(
+                        dst, &src->array[pos_last_del + 1]));
         }
         return 1;
 chk_error:
@@ -69,8 +70,8 @@ int mli_path_splitext(
         d = mtl_String_rfind(&tmp, '/');
 
         if (p <= 0 || d > p || ((d + 1 == p) && (p + 1 < (int64_t)tmp.size))) {
-                chk(mtl_String_mallocf(dst, tmp.array));
-                chk(mtl_String_mallocf(ext, ""));
+                chk(mtl_String_from_cstr_fromat(dst, tmp.array));
+                chk(mtl_String_from_cstr_fromat(ext, ""));
         } else {
                 chk(mtl_String_malloc(dst, p));
                 strncpy(dst->array, tmp.array, p);

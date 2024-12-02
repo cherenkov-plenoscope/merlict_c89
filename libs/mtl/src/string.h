@@ -7,8 +7,13 @@
 
 MTL_ARRAY_DEFINITON(mtl_String, char)
 
-int mtl_String_mallocf(struct mtl_String *str, const char *format, ...);
-int mtl_String_malloc_cstr(struct mtl_String *str, const char *s);
+int mtl_String_from_cstr_fromat(
+        struct mtl_String *str,
+        const char *format,
+        ...);
+int mtl_String_from_cstr(struct mtl_String *str, const char *s);
+
+int mtl_String_equal_cstr(struct mtl_String *self, const char *cstr);
 
 int mtl_String_ends_with(
         const struct mtl_String *str,

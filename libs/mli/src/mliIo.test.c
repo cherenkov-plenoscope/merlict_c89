@@ -252,7 +252,7 @@ CASE("mli_line_viewer_write")
         CHECK(mliIo_write_cstr_format(&f, "ENDE\n"));
         mliIo_rewind(&f);
 
-        CHECK(mtl_String_malloc_cstr(&text, (char *)f.cstr));
+        CHECK(mtl_String_from_cstr(&text, (char *)f.cstr));
         mliIo_free(&f);
 
         CHECK(mli_line_viewer_write(&f, &text, 1, 3));

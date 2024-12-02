@@ -2,6 +2,7 @@
 #include "mliArchive.h"
 #include "../../chk/src/chk.h"
 #include "../../mtl/src/string.h"
+#include "../../mtl/src/path.h"
 #include "mli_cstr.h"
 #include "mli_json.h"
 #include "mliTar.h"
@@ -77,9 +78,9 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 
         while (mliTar_read_header(&tar, &tarh)) {
 
-                chk(mtl_String_malloc_cstr(&filename, tarh.name));
+                chk(mtl_String_from_cstr(&filename, tarh.name));
                 chk(mtl_String_strip(&filename, &filename));
-                chk(mli_path_strip_this_dir(&filename, &filename));
+                chk(mtl_path_strip_this_dir(&filename, &filename));
 
                 chk_msg(mtl_String_malloc(&payload, tarh.size),
                         "Can not allocate payload.");

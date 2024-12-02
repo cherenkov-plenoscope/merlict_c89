@@ -3,11 +3,11 @@
 #define mtl_path_H_
 #include "string.h"
 
-int mli_path_strip_this_dir(
+int mtl_path_strip_this_dir(
         const struct mtl_String *src,
         struct mtl_String *dst);
-int mli_path_basename(const struct mtl_String *src, struct mtl_String *dst);
-int mli_path_splitext(
+int mtl_path_basename(const struct mtl_String *src, struct mtl_String *dst);
+int mtl_path_splitext(
         const struct mtl_String *src,
         struct mtl_String *dst,
         struct mtl_String *ext);
