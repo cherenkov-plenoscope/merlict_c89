@@ -54,12 +54,12 @@
 #define MTL_ARRAY_IMPLEMENTATION_MALLOC_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)   \
         int NAME##_malloc(struct NAME *self, const uint64_t size)              \
         {                                                                      \
-                PAYLOAD_TYPE *termination = NULL;                              \
                 NAME##_free(self);                                             \
                 self->size = size;                                             \
                 chk_malloc(self->array, PAYLOAD_TYPE, self->size + 1);         \
-                termination = &(self->array[self->size]);                      \
-                memset(termination, '\0', sizeof(PAYLOAD_TYPE));               \
+                memset(self->array,                                            \
+                       '\0',                                                   \
+                       (self->size + 1) * sizeof(PAYLOAD_TYPE));               \
                 return 1;                                                      \
         chk_error:                                                             \
                 return 0;                                                      \
@@ -67,15 +67,15 @@
                                                                                \
         int NAME##_realloc(struct NAME *self, const uint64_t size)             \
         {                                                                      \
-                PAYLOAD_TYPE *termination = NULL;                              \
                 PAYLOAD_TYPE *new_array = (PAYLOAD_TYPE *)realloc(             \
                         (void *)self->array,                                   \
                         (size + 1) * sizeof(PAYLOAD_TYPE));                    \
                 chk_mem(new_array);                                            \
                 self->array = new_array;                                       \
                 self->size = size;                                             \
-                termination = &(self->array[self->size]);                      \
-                memset(termination, '\0', sizeof(PAYLOAD_TYPE));               \
+                memset(self->array,                                            \
+                       '\0',                                                   \
+                       (self->size + 1) * sizeof(PAYLOAD_TYPE));               \
                 return 1;                                                      \
         chk_error:                                                             \
                 return 0;                                                      \

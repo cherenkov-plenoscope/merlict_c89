@@ -178,62 +178,62 @@ CASE("find CRLF and CR linebreaks")
 
 CASE("replace CRLF and CR linebreaks with LF")
 {
-        struct mliStr src = mliStr_init();
-        struct mliStr dst = mliStr_init();
+        struct mtl_String src = mtl_String_init();
+        struct mtl_String dst = mtl_String_init();
 
-        CHECK(mliStr_malloc(&src, 32));
-        CHECK(mliStr_malloc(&dst, 32));
+        CHECK(mtl_String_malloc(&src, 32));
+        CHECK(mtl_String_malloc(&dst, 32));
 
         /* all '\0' */
         /* -------- */
-        CHECK(src.cstr[0] == '\0');
-        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(dst.cstr[0] == '\0');
+        CHECK(src.array[0] == '\0');
+        CHECK(mtl_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(dst.array[0] == '\0');
 
         /* minimal CR */
         /* ---------- */
-        memset((char *)src.cstr, '\0', src.length);
-        sprintf((char *)src.cstr, "\r");
-        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.cstr, "\n"));
+        memset((char *)src.array, '\0', src.size);
+        sprintf((char *)src.array, "\r");
+        CHECK(mtl_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp((char *)dst.array, "\n"));
 
         /* minimal CRLF */
         /* ------------ */
-        memset((char *)src.cstr, '\0', src.length);
-        sprintf((char *)src.cstr, "\r\n");
-        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.cstr, "\n"));
+        memset((char *)src.array, '\0', src.size);
+        sprintf((char *)src.array, "\r\n");
+        CHECK(mtl_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp((char *)dst.array, "\n"));
 
         /* minimal text CRLF */
         /* ----------------- */
-        memset((char *)src.cstr, '\0', src.length);
-        sprintf((char *)src.cstr, "hans\r\npeter");
-        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.cstr, "hans\npeter"));
+        memset((char *)src.array, '\0', src.size);
+        sprintf((char *)src.array, "hans\r\npeter");
+        CHECK(mtl_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp((char *)dst.array, "hans\npeter"));
 
         /* minimal text CR */
         /* ----------------- */
-        memset((char *)src.cstr, '\0', src.length);
-        sprintf((char *)src.cstr, "hans\rpeter");
-        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.cstr, "hans\npeter"));
+        memset((char *)src.array, '\0', src.size);
+        sprintf((char *)src.array, "hans\rpeter");
+        CHECK(mtl_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp((char *)dst.array, "hans\npeter"));
 
         /* complex text CRLF */
         /* ----------------- */
-        memset((char *)src.cstr, '\0', src.length);
-        sprintf((char *)src.cstr, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
-        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.cstr, "\nflower\ncar\n\nhouse\n"));
+        memset((char *)src.array, '\0', src.size);
+        sprintf((char *)src.array, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
+        CHECK(mtl_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp((char *)dst.array, "\nflower\ncar\n\nhouse\n"));
 
         /* complex text CR */
         /* ----------------- */
-        memset((char *)src.cstr, '\0', src.length);
-        sprintf((char *)src.cstr, "\rflower\rcar\r\rhouse\r");
-        CHECK(mliStr_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.cstr, "\nflower\ncar\n\nhouse\n"));
+        memset((char *)src.array, '\0', src.size);
+        sprintf((char *)src.array, "\rflower\rcar\r\rhouse\r");
+        CHECK(mtl_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(0 == strcmp((char *)dst.array, "\nflower\ncar\n\nhouse\n"));
 
-        mliStr_free(&src);
-        mliStr_free(&dst);
+        mtl_String_free(&src);
+        mtl_String_free(&dst);
 }
 
 CASE("assert no unexpected control codes in ascii-text.")

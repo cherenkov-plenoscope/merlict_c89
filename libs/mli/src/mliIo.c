@@ -252,35 +252,35 @@ void mliIo_seek(struct mliIo *byt, const uint64_t pos) { byt->pos = pos; }
 
 void mliIo_rewind(struct mliIo *byt) { byt->pos = 0u; }
 
-int mliStr_convert_line_break_CRLF_CR_to_LF(
-        struct mliStr *dst,
-        const struct mliStr *src)
+int mtl_String_convert_line_break_CRLF_CR_to_LF(
+        struct mtl_String *dst,
+        const struct mtl_String *src)
 {
         uint64_t i = 0;
         struct mliIo sdst = mliIo_init();
         chk(mliIo_malloc(&sdst));
 
-        while (i < src->length) {
-                if (mli_cstr_is_CRLF((char *)&src->cstr[i])) {
+        while (i < src->size) {
+                if (mli_cstr_is_CRLF((char *)&src->array[i])) {
                         chk(mliIo_write_char(&sdst, '\n'));
                         i += 2;
-                } else if (mli_cstr_is_CR((char *)&src->cstr[i])) {
+                } else if (mli_cstr_is_CR((char *)&src->array[i])) {
                         chk(mliIo_write_char(&sdst, '\n'));
                         i += 1;
                 } else {
-                        chk(mliIo_write_char(&sdst, src->cstr[i]));
+                        chk(mliIo_write_char(&sdst, src->array[i]));
                         i += 1;
                 }
         }
 
-        chk(mliStr_malloc(dst, sdst.size));
-        strncpy(dst->cstr, (char *)sdst.cstr, sdst.size);
+        chk(mtl_String_malloc(dst, sdst.size));
+        strncpy(dst->array, (char *)sdst.cstr, sdst.size);
 
         mliIo_free(&sdst);
         return 1;
 chk_error:
         mliIo_free(&sdst);
-        mliStr_free(dst);
+        mtl_String_free(dst);
         return 0;
 }
 
@@ -346,7 +346,7 @@ chk_error:
 
 int mli_readline(
         struct mliIo *stream,
-        struct mliStr *line,
+        struct mtl_String *line,
         const char delimiter)
 {
         struct mliIo buf = mliIo_init();
@@ -364,8 +364,8 @@ int mli_readline(
         }
 
         mliIo_rewind(&buf);
-        chk(mliStr_malloc(line, buf.size));
-        strcpy(line->cstr, (char *)buf.cstr);
+        chk(mtl_String_malloc(line, buf.size));
+        strcpy(line->array, (char *)buf.cstr);
 
         mliIo_free(&buf);
         return 1;
@@ -374,88 +374,89 @@ chk_error:
         return 0;
 }
 
-int mli_path_strip_this_dir(const struct mliStr *src, struct mliStr *dst)
+int mli_path_strip_this_dir(
+        const struct mtl_String *src,
+        struct mtl_String *dst)
 {
         uint64_t i = 0;
-        struct mliStr cpysrc = mliStr_init();
-        chk_msg(src->cstr, "Expected src-string to be allocated.");
-        chk_msg(mliStr_malloc_copy(&cpysrc, src), "Can not copy input.");
-        mliStr_free(dst);
+        struct mtl_String cpysrc = mtl_String_init();
+        chk_msg(src->array, "Expected src-string to be allocated.");
+        chk_msg(mtl_String_copy(&cpysrc, src), "Can not copy input.");
+        mtl_String_free(dst);
 
-        if (cpysrc.cstr == NULL) {
+        if (cpysrc.array == NULL) {
                 return 1;
         }
 
-        while (i + 1 < cpysrc.length) {
-                if (cpysrc.cstr[i] == '.' && cpysrc.cstr[i + 1] == '/') {
+        while (i + 1 < cpysrc.size) {
+                if (cpysrc.array[i] == '.' && cpysrc.array[i + 1] == '/') {
                         i += 2;
                 } else {
                         break;
                 }
         }
-        chk(mliStr_malloc(dst, cpysrc.length - i));
-        strcpy(dst->cstr, &cpysrc.cstr[i]);
-        mliStr_free(&cpysrc);
+        chk(mtl_String_malloc(dst, cpysrc.size - i));
+        strcpy(dst->array, &cpysrc.array[i]);
+        mtl_String_free(&cpysrc);
         return 1;
 chk_error:
-        mliStr_free(&cpysrc);
-        mliStr_free(dst);
+        mtl_String_free(&cpysrc);
+        mtl_String_free(dst);
         return 0;
 }
 
-int mli_path_basename(const struct mliStr *src, struct mliStr *dst)
+int mli_path_basename(const struct mtl_String *src, struct mtl_String *dst)
 {
         int64_t pos_last_del = -1;
-        mliStr_free(dst);
-        chk_msg(src->cstr != NULL, "Expected src-path to be allocated");
+        mtl_String_free(dst);
+        chk_msg(src->array != NULL, "Expected src-path to be allocated");
 
-        pos_last_del = mliStr_rfind(src, '/');
+        pos_last_del = mtl_String_rfind(src, '/');
 
         if (pos_last_del < 0) {
-                chk(mliStr_mallocf(dst, src->cstr));
+                chk(mtl_String_mallocf(dst, src->array));
         } else {
-                chk(mliStr_mallocf(dst, &src->cstr[pos_last_del + 1]));
+                chk(mtl_String_mallocf(dst, &src->array[pos_last_del + 1]));
         }
         return 1;
 chk_error:
-        mliStr_free(dst);
+        mtl_String_free(dst);
         return 0;
 }
 
 int mli_path_splitext(
-        const struct mliStr *src,
-        struct mliStr *dst,
-        struct mliStr *ext)
+        const struct mtl_String *src,
+        struct mtl_String *dst,
+        struct mtl_String *ext)
 {
         int64_t p = -1;
         int64_t d = -1;
-        struct mliStr tmp = mliStr_init();
-        chk_msg(src->cstr != NULL, "Expected src-path to be allocated");
-        chk(mliStr_malloc_copy(&tmp, src));
+        struct mtl_String tmp = mtl_String_init();
+        chk_msg(src->array != NULL, "Expected src-path to be allocated");
+        chk(mtl_String_copy(&tmp, src));
 
-        mliStr_free(dst);
-        mliStr_free(ext);
+        mtl_String_free(dst);
+        mtl_String_free(ext);
 
-        p = mliStr_rfind(&tmp, '.');
-        d = mliStr_rfind(&tmp, '/');
+        p = mtl_String_rfind(&tmp, '.');
+        d = mtl_String_rfind(&tmp, '/');
 
-        if (p <= 0 || d > p ||
-            ((d + 1 == p) && (p + 1 < (int64_t)tmp.length))) {
-                chk(mliStr_mallocf(dst, tmp.cstr));
-                chk(mliStr_mallocf(ext, ""));
+        if (p <= 0 || d > p || ((d + 1 == p) && (p + 1 < (int64_t)tmp.size))) {
+                chk(mtl_String_mallocf(dst, tmp.array));
+                chk(mtl_String_mallocf(ext, ""));
         } else {
-                chk(mliStr_malloc(dst, p));
-                strncpy(dst->cstr, tmp.cstr, p);
-                chk(mliStr_malloc(ext, tmp.length - p));
-                strncpy(ext->cstr, &tmp.cstr[p + 1], tmp.length - p);
+                chk(mtl_String_malloc(dst, p));
+                strncpy(dst->array, tmp.array, p);
+                chk(mtl_String_malloc(ext, tmp.size - p));
+                strncpy(ext->array, &tmp.array[p + 1], tmp.size - p);
         }
 
-        mliStr_free(&tmp);
+        mtl_String_free(&tmp);
         return 1;
 chk_error:
-        mliStr_free(&tmp);
-        mliStr_free(dst);
-        mliStr_free(ext);
+        mtl_String_free(&tmp);
+        mtl_String_free(dst);
+        mtl_String_free(ext);
         return 0;
 }
 
@@ -477,7 +478,7 @@ chk_error:
 
 int mli_line_viewer_write(
         struct mliIo *f,
-        const struct mliStr *text,
+        const struct mtl_String *text,
         const uint64_t line_number,
         const uint64_t line_radius)
 {
@@ -493,10 +494,10 @@ int mli_line_viewer_write(
         chk(mliIo_write_cstr_format(f, "  line     text\n"));
         chk(mliIo_write_cstr_format(f, "        |\n"));
 
-        while (i < text->length && text->cstr[i]) {
+        while (i < text->size && text->array[i]) {
                 int prefix = (line + 1 >= line_start) && (line < line_stop);
                 int valid = (line >= line_start) && (line <= line_stop);
-                if (text->cstr[i] == '\n') {
+                if (text->array[i] == '\n') {
                         line++;
                 }
                 if (prefix && i == 0) {
@@ -504,9 +505,9 @@ int mli_line_viewer_write(
                                 f, line, _line_number));
                 }
                 if (valid) {
-                        chk(mliIo_write_char(f, text->cstr[i]));
+                        chk(mliIo_write_char(f, text->array[i]));
                 }
-                if (prefix && text->cstr[i] == '\n') {
+                if (prefix && text->array[i] == '\n') {
                         chk(mli_line_viewer_write_line_match(
                                 f, line, _line_number));
                 }

@@ -5,11 +5,11 @@
 #include "../src/mli_corsika_EventTape.h"
 #include "../src/mli_corsika_Histogram2d.h"
 #include "../../chk/src/chk.h"
+#include "../../mtl/src/string_numbers.h"
 #include "../../mli/src/mli_math.h"
 #include "../../mli/src/mliIo.h"
 #include "../../mli/src/mliTar.h"
 #include "../../mli/src/mliTarIo.h"
-#include "../../mli/src/mliStr_numbers.h"
 #include "../../mtl/src/vector.h"
 #include "../../mli/src/mli_ray_grid_traversal.h"
 
@@ -20,34 +20,34 @@ int mliAxisAlignedGrid_set_from_config(
         struct mliVec lower;
         struct mliVec upper;
         struct mliIdx3 num_bins;
-        struct mliStr line = mliStr_init();
-        chk(mliStr_malloc(&line, 100));
+        struct mtl_String line = mtl_String_init();
+        chk(mtl_String_malloc(&line, 100));
         mliIo_rewind(text);
         /* X */
         chk(mli_readline(text, &line, '\n'));
-        chk(mliStr_to_int64(&(num_bins.x), &line, 10));
+        chk(mtl_String_to_int64(&(num_bins.x), &line, 10));
         chk(mli_readline(text, &line, '\n'));
-        chk(mliStr_to_double(&(lower.x), &line)); /* cm */
+        chk(mtl_String_to_double(&(lower.x), &line)); /* cm */
         chk(mli_readline(text, &line, '\n'));
-        chk(mliStr_to_double(&(upper.x), &line)); /* cm */
+        chk(mtl_String_to_double(&(upper.x), &line)); /* cm */
 
         /* Y */
         chk(mli_readline(text, &line, '\n'));
-        chk(mliStr_to_int64(&(num_bins.y), &line, 10));
+        chk(mtl_String_to_int64(&(num_bins.y), &line, 10));
         chk(mli_readline(text, &line, '\n'));
-        chk(mliStr_to_double(&(lower.y), &line)); /* cm */
+        chk(mtl_String_to_double(&(lower.y), &line)); /* cm */
         chk(mli_readline(text, &line, '\n'));
-        chk(mliStr_to_double(&(upper.y), &line)); /* cm */
+        chk(mtl_String_to_double(&(upper.y), &line)); /* cm */
 
         /* Z */
         chk(mli_readline(text, &line, '\n'));
-        chk(mliStr_to_int64(&(num_bins.z), &line, 10));
+        chk(mtl_String_to_int64(&(num_bins.z), &line, 10));
         chk(mli_readline(text, &line, '\n'));
-        chk(mliStr_to_double(&(lower.z), &line)); /* cm */
+        chk(mtl_String_to_double(&(lower.z), &line)); /* cm */
         chk(mli_readline(text, &line, '\n'));
-        chk(mliStr_to_double(&(upper.z), &line)); /* cm */
+        chk(mtl_String_to_double(&(upper.z), &line)); /* cm */
 
-        mliStr_free(&line);
+        mtl_String_free(&line);
 
         (*grid) = mliAxisAlignedGrid_set(mliAABB_set(lower, upper), num_bins);
 

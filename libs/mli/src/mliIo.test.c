@@ -202,190 +202,190 @@ CASE("BytesIo_printf")
 CASE("mli_readline")
 {
         struct mliIo file = mliIo_init();
-        struct mliStr line = mliStr_init();
+        struct mtl_String line = mtl_String_init();
 
         mliIo_write_cstr_format(
                 &file, "first-line\nsecond-line\n\nfourth-line\n");
         mliIo_rewind(&file);
 
         CHECK(mli_readline(&file, &line, '\n'));
-        CHECK(0 == strcmp((char *)line.cstr, "first-line"));
+        CHECK(0 == strcmp((char *)line.array, "first-line"));
 
         CHECK(mli_readline(&file, &line, '\n'));
-        CHECK(0 == strcmp((char *)line.cstr, "second-line"));
+        CHECK(0 == strcmp((char *)line.array, "second-line"));
 
         CHECK(mli_readline(&file, &line, '\n'));
-        CHECK(line.length == 0);
+        CHECK(line.size == 0);
 
         CHECK(mli_readline(&file, &line, '\n'));
-        CHECK(0 == strcmp((char *)line.cstr, "fourth-line"));
+        CHECK(0 == strcmp((char *)line.array, "fourth-line"));
 
         mliIo_free(&file);
-        mliStr_free(&line);
+        mtl_String_free(&line);
 }
 
 CASE("mli_readline_empty")
 {
         struct mliIo file = mliIo_init();
-        struct mliStr line = mliStr_init();
+        struct mtl_String line = mtl_String_init();
 
         CHECK(mli_readline(&file, &line, '\n'));
-        CHECK(line.length == 0);
+        CHECK(line.size == 0);
 
         mliIo_free(&file);
-        mliStr_free(&line);
+        mtl_String_free(&line);
 }
 
 CASE("mli_path_strip_this_dir")
 {
-        struct mliStr src = mliStr_init();
-        struct mliStr dst = mliStr_init();
+        struct mtl_String src = mtl_String_init();
+        struct mtl_String dst = mtl_String_init();
 
-        CHECK(mliStr_mallocf(&src, "/a/b/c"));
+        CHECK(mtl_String_mallocf(&src, "/a/b/c"));
         mli_path_strip_this_dir(&src, &dst);
-        CHECK(0 == strcmp(dst.cstr, src.cstr));
+        CHECK(0 == strcmp(dst.array, src.array));
 
-        CHECK(mliStr_mallocf(&src, "./a/b/c"));
+        CHECK(mtl_String_mallocf(&src, "./a/b/c"));
         mli_path_strip_this_dir(&src, &dst);
-        CHECK(0 == strcmp(dst.cstr, "a/b/c"));
+        CHECK(0 == strcmp(dst.array, "a/b/c"));
 
-        CHECK(mliStr_mallocf(&src, "./functions/hans.csv"));
+        CHECK(mtl_String_mallocf(&src, "./functions/hans.csv"));
         mli_path_strip_this_dir(&src, &dst);
-        CHECK(0 == strcmp(dst.cstr, "functions/hans.csv"));
+        CHECK(0 == strcmp(dst.array, "functions/hans.csv"));
 
-        CHECK(mliStr_mallocf(&src, "././././f/h.csv"));
+        CHECK(mtl_String_mallocf(&src, "././././f/h.csv"));
         mli_path_strip_this_dir(&src, &dst);
-        CHECK(0 == strcmp(dst.cstr, "f/h.csv"));
+        CHECK(0 == strcmp(dst.array, "f/h.csv"));
 
-        CHECK(mliStr_mallocf(&src, "a/b"));
+        CHECK(mtl_String_mallocf(&src, "a/b"));
         mli_path_strip_this_dir(&src, &dst);
-        CHECK(0 == strcmp(dst.cstr, "a/b"));
+        CHECK(0 == strcmp(dst.array, "a/b"));
 
-        CHECK(mliStr_mallocf(&src, ".a/b"));
+        CHECK(mtl_String_mallocf(&src, ".a/b"));
         mli_path_strip_this_dir(&src, &dst);
-        CHECK(0 == strcmp(dst.cstr, ".a/b"));
+        CHECK(0 == strcmp(dst.array, ".a/b"));
 
-        CHECK(mliStr_mallocf(&src, "a./b"));
+        CHECK(mtl_String_mallocf(&src, "a./b"));
         mli_path_strip_this_dir(&src, &dst);
-        CHECK(0 == strcmp(dst.cstr, "a./b"));
+        CHECK(0 == strcmp(dst.array, "a./b"));
 
-        mliStr_free(&src);
+        mtl_String_free(&src);
         mli_path_strip_this_dir(&src, &dst);
-        CHECK(0 == src.length);
-        CHECK(0 == dst.length);
-        CHECK(NULL == dst.cstr);
+        CHECK(0 == src.size);
+        CHECK(0 == dst.size);
+        CHECK(NULL == dst.array);
 
-        mliStr_free(&src);
-        mliStr_free(&dst);
+        mtl_String_free(&src);
+        mtl_String_free(&dst);
 }
 
 CASE("mli_path_basename")
 {
-        struct mliStr path = mliStr_init();
-        struct mliStr base = mliStr_init();
+        struct mtl_String path = mtl_String_init();
+        struct mtl_String base = mtl_String_init();
 
-        mliStr_free(&path);
+        mtl_String_free(&path);
         CHECK(!mli_path_basename(&path, &base));
 
-        CHECK(mliStr_mallocf(&path, ""));
+        CHECK(mtl_String_mallocf(&path, ""));
         CHECK(mli_path_basename(&path, &base));
-        CHECK(0 == strcmp(base.cstr, ""));
+        CHECK(0 == strcmp(base.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "/"));
+        CHECK(mtl_String_mallocf(&path, "/"));
         CHECK(mli_path_basename(&path, &base));
-        CHECK(0 == strcmp(base.cstr, ""));
+        CHECK(0 == strcmp(base.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "//"));
+        CHECK(mtl_String_mallocf(&path, "//"));
         CHECK(mli_path_basename(&path, &base));
-        CHECK(0 == strcmp(base.cstr, ""));
+        CHECK(0 == strcmp(base.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "a/b/"));
+        CHECK(mtl_String_mallocf(&path, "a/b/"));
         CHECK(mli_path_basename(&path, &base));
-        CHECK(0 == strcmp(base.cstr, ""));
+        CHECK(0 == strcmp(base.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "a/b/c"));
+        CHECK(mtl_String_mallocf(&path, "a/b/c"));
         CHECK(mli_path_basename(&path, &base));
-        CHECK(0 == strcmp(base.cstr, "c"));
+        CHECK(0 == strcmp(base.array, "c"));
 
-        mliStr_free(&path);
-        mliStr_free(&base);
+        mtl_String_free(&path);
+        mtl_String_free(&base);
 }
 
 CASE("mli_path_splitext")
 {
-        struct mliStr path = mliStr_init();
-        struct mliStr base = mliStr_init();
-        struct mliStr ext = mliStr_init();
+        struct mtl_String path = mtl_String_init();
+        struct mtl_String base = mtl_String_init();
+        struct mtl_String ext = mtl_String_init();
 
-        mliStr_free(&path);
+        mtl_String_free(&path);
         CHECK(!mli_path_splitext(&path, &base, &ext));
 
-        CHECK(mliStr_mallocf(&path, ""));
+        CHECK(mtl_String_mallocf(&path, ""));
         CHECK(mli_path_splitext(&path, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, ""));
-        CHECK(0 == strcmp(ext.cstr, ""));
+        CHECK(0 == strcmp(base.array, ""));
+        CHECK(0 == strcmp(ext.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "a.b"));
+        CHECK(mtl_String_mallocf(&path, "a.b"));
         CHECK(mli_path_splitext(&path, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "a"));
-        CHECK(0 == strcmp(ext.cstr, "b"));
+        CHECK(0 == strcmp(base.array, "a"));
+        CHECK(0 == strcmp(ext.array, "b"));
 
-        CHECK(mliStr_mallocf(&path, ".a"));
+        CHECK(mtl_String_mallocf(&path, ".a"));
         CHECK(mli_path_splitext(&path, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, ".a"));
-        CHECK(0 == strcmp(ext.cstr, ""));
+        CHECK(0 == strcmp(base.array, ".a"));
+        CHECK(0 == strcmp(ext.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "."));
+        CHECK(mtl_String_mallocf(&path, "."));
         CHECK(mli_path_splitext(&path, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "."));
-        CHECK(0 == strcmp(ext.cstr, ""));
+        CHECK(0 == strcmp(base.array, "."));
+        CHECK(0 == strcmp(ext.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "./"));
+        CHECK(mtl_String_mallocf(&path, "./"));
         CHECK(mli_path_splitext(&path, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "./"));
-        CHECK(0 == strcmp(ext.cstr, ""));
+        CHECK(0 == strcmp(base.array, "./"));
+        CHECK(0 == strcmp(ext.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "./."));
+        CHECK(mtl_String_mallocf(&path, "./."));
         CHECK(mli_path_splitext(&path, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "./"));
-        CHECK(0 == strcmp(ext.cstr, ""));
+        CHECK(0 == strcmp(base.array, "./"));
+        CHECK(0 == strcmp(ext.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "./.abc"));
+        CHECK(mtl_String_mallocf(&path, "./.abc"));
         CHECK(mli_path_splitext(&path, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "./.abc"));
-        CHECK(0 == strcmp(ext.cstr, ""));
+        CHECK(0 == strcmp(base.array, "./.abc"));
+        CHECK(0 == strcmp(ext.array, ""));
 
-        CHECK(mliStr_mallocf(&path, "./.abc.json.tmp"));
+        CHECK(mtl_String_mallocf(&path, "./.abc.json.tmp"));
         CHECK(mli_path_splitext(&path, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "./.abc.json"));
-        CHECK(0 == strcmp(ext.cstr, "tmp"));
+        CHECK(0 == strcmp(base.array, "./.abc.json"));
+        CHECK(0 == strcmp(ext.array, "tmp"));
 
-        CHECK(mliStr_mallocf(&path, "./name.1.2.3"));
+        CHECK(mtl_String_mallocf(&path, "./name.1.2.3"));
         CHECK(mli_path_splitext(&path, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "./name.1.2"));
-        CHECK(0 == strcmp(ext.cstr, "3"));
+        CHECK(0 == strcmp(base.array, "./name.1.2"));
+        CHECK(0 == strcmp(ext.array, "3"));
 
         CHECK(mli_path_splitext(&base, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "./name.1"));
-        CHECK(0 == strcmp(ext.cstr, "2"));
+        CHECK(0 == strcmp(base.array, "./name.1"));
+        CHECK(0 == strcmp(ext.array, "2"));
 
         CHECK(mli_path_splitext(&base, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "./name"));
-        CHECK(0 == strcmp(ext.cstr, "1"));
+        CHECK(0 == strcmp(base.array, "./name"));
+        CHECK(0 == strcmp(ext.array, "1"));
 
         CHECK(mli_path_splitext(&base, &base, &ext));
-        CHECK(0 == strcmp(base.cstr, "./name"));
-        CHECK(0 == strcmp(ext.cstr, ""));
+        CHECK(0 == strcmp(base.array, "./name"));
+        CHECK(0 == strcmp(ext.array, ""));
 
-        mliStr_free(&path);
-        mliStr_free(&base);
-        mliStr_free(&ext);
+        mtl_String_free(&path);
+        mtl_String_free(&base);
+        mtl_String_free(&ext);
 }
 
 CASE("mli_line_viewer_write")
 {
         struct mliIo f = mliIo_init();
-        struct mliStr text = mliStr_init();
+        struct mtl_String text = mtl_String_init();
 
         CHECK(mliIo_write_cstr_format(&f, "TEXT\n"));
         CHECK(mliIo_write_cstr_format(&f, "====\n"));
@@ -398,7 +398,7 @@ CASE("mli_line_viewer_write")
         CHECK(mliIo_write_cstr_format(&f, "ENDE\n"));
         mliIo_rewind(&f);
 
-        CHECK(mliStr_malloc_cstr(&text, (char *)f.cstr));
+        CHECK(mtl_String_malloc_cstr(&text, (char *)f.cstr));
         mliIo_free(&f);
 
         CHECK(mli_line_viewer_write(&f, &text, 1, 3));
@@ -414,5 +414,5 @@ CASE("mli_line_viewer_write")
                 &f, "libs/mli/tests/resources/lines_info.tmp"));
 
         mliIo_free(&f);
-        mliStr_free(&text);
+        mtl_String_free(&text);
 }

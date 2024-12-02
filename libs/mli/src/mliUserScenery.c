@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 #include "../../chk/src/chk.h"
+#include "../../mtl/src/string.h"
 #include "mliGeometry.h"
 #include "mli_json.h"
 #include "mli_cstr.h"
@@ -70,7 +71,7 @@ int mli_set_geometry_objects_and_names_from_archive(
                                         &geometry->objects[obj_idx],
                                         (char *)archive->textfiles
                                                 .array[arc_idx]
-                                                .cstr),
+                                                .array),
                                 "Failed to parse wave-front-object.");
                         memcpy(geometry->object_names[obj_idx].cstr,
                                key,
@@ -96,7 +97,7 @@ int mliMaterials_malloc_form_archive(
         uint64_t arc_idx = 0;
         char key[MLI_NAME_CAPACITY];
 
-        struct mliStr *default_medium_text = NULL;
+        struct mtl_String *default_medium_text = NULL;
         struct mliJson boundary_layers_json = mliJson_init();
         struct mliMaterialsCapacity cap = mliMaterialsCapacity_init();
 
@@ -143,7 +144,7 @@ int mliMaterials_malloc_form_archive(
                                         &materials->media[med_idx],
                                         (char *)archive->textfiles
                                                 .array[arc_idx]
-                                                .cstr),
+                                                .array),
                                 "Failed to parse media json from "
                                 "file.");
 
@@ -175,7 +176,7 @@ int mliMaterials_malloc_form_archive(
                                         &materials->surfaces[srf_idx],
                                         (char *)archive->textfiles
                                                 .array[arc_idx]
-                                                .cstr),
+                                                .array),
                                 "Failed to parse surface json from "
                                 "file.");
 
@@ -222,7 +223,7 @@ int mliMaterials_malloc_form_archive(
                 "Can not find 'materials/default_medium.txt' in scenery.");
 
         memset(key, '\0', sizeof(key));
-        mli_cstr_strip_spaces((char *)default_medium_text->cstr, key);
+        mli_cstr_strip_spaces((char *)default_medium_text->array, key);
 
         chk_msg(mliDynMap_get(&names->media, key, &materials->default_medium),
                 "Failed to assign the 'default_medium'.");

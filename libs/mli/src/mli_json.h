@@ -6,10 +6,10 @@
 #include <stdio.h>
 #include "mli_json_jsmn.h"
 #include "mliIo.h"
-#include "mliStr.h"
+#include "../../mtl/src/string.h"
 
 struct mliJson {
-        struct mliStr raw;
+        struct mtl_String raw;
         uint64_t num_tokens;
         struct jsmntok_t *tokens;
 };

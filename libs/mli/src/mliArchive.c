@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliArchive.h"
 #include "../../chk/src/chk.h"
+#include "../../mtl/src/string.h"
 #include "mli_cstr.h"
 #include "mli_json.h"
 #include "mliTar.h"
-#include "../../chk/src/chk.h"
 
 struct mliArchive mliArchive_init(void)
 {
@@ -18,8 +18,8 @@ void mliArchive_free(struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliStr *str = &arc->textfiles.array[i];
-                mliStr_free(str);
+                struct mtl_String *str = &arc->textfiles.array[i];
+                mtl_String_free(str);
         }
         mliDynTextFiles_free(&arc->textfiles);
         mliDynMap_free(&arc->filenames);
@@ -38,26 +38,26 @@ chk_error:
 
 int mliArchive_push_back(
         struct mliArchive *arc,
-        const struct mliStr *filename,
-        const struct mliStr *payload)
+        const struct mtl_String *filename,
+        const struct mtl_String *payload)
 {
         uint64_t next;
-        struct mliStr *text = NULL;
-        chk_msg(filename->length < MLI_TAR_NAME_LENGTH,
+        struct mtl_String *text = NULL;
+        chk_msg(filename->size < MLI_TAR_NAME_LENGTH,
                 "Expected shorter filename.");
         next = mliDynMap_size(&arc->filenames);
 
         /* filename */
         /* ======== */
-        chk_msg(mliDynMap_insert(&arc->filenames, filename->cstr, next),
+        chk_msg(mliDynMap_insert(&arc->filenames, filename->array, next),
                 "Can not insert key.");
 
         /* payload */
         /* ======= */
-        chk_msg(mliDynTextFiles_push_back(&arc->textfiles, mliStr_init()),
-                "Can not push back mliStr.");
+        chk_msg(mliDynTextFiles_push_back(&arc->textfiles, mtl_String_init()),
+                "Can not push back mtl_String.");
         text = &arc->textfiles.array[next];
-        chk_msg(mliStr_malloc_copy(text, payload), "Can not copy payload.");
+        chk_msg(mtl_String_copy(text, payload), "Can not copy payload.");
         return 1;
 chk_error:
         return 0;
@@ -67,8 +67,8 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
-        struct mliStr payload = mliStr_init();
-        struct mliStr filename = mliStr_init();
+        struct mtl_String payload = mtl_String_init();
+        struct mtl_String filename = mtl_String_init();
 
         char tarh_name[MLI_TAR_NAME_LENGTH] = {'\0'};
 
@@ -77,18 +77,19 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 
         while (mliTar_read_header(&tar, &tarh)) {
 
-                chk(mliStr_malloc_cstr(&filename, tarh.name));
-                chk(mliStr_strip(&filename, &filename));
+                chk(mtl_String_malloc_cstr(&filename, tarh.name));
+                chk(mtl_String_strip(&filename, &filename));
                 chk(mli_path_strip_this_dir(&filename, &filename));
 
-                chk_msg(mliStr_malloc(&payload, tarh.size),
+                chk_msg(mtl_String_malloc(&payload, tarh.size),
                         "Can not allocate payload.");
-                chk_msg(mliTar_read_data(&tar, (void *)payload.cstr, tarh.size),
+                chk_msg(mliTar_read_data(
+                                &tar, (void *)payload.array, tarh.size),
                         "Failed to read payload from tar into payload.");
-                chk_msg(mliStr_convert_line_break_CRLF_CR_to_LF(
+                chk_msg(mtl_String_convert_line_break_CRLF_CR_to_LF(
                                 &payload, &payload),
                         "Failed to replace CRLF and CR linebreaks.");
-                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(payload.cstr),
+                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(payload.array),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
                 chk_msg(mliArchive_push_back(arc, &filename, &payload),
@@ -96,13 +97,13 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
         }
 
         chk_msg(mliTar_read_finalize(&tar), "Can't finalize reading tar.");
-        mliStr_free(&payload);
-        mliStr_free(&filename);
+        mtl_String_free(&payload);
+        mtl_String_free(&filename);
         return 1;
 chk_error:
         fprintf(stderr, "tar->filename: '%s'.\n", tarh_name);
-        mliStr_free(&payload);
-        mliStr_free(&filename);
+        mtl_String_free(&payload);
+        mtl_String_free(&filename);
         mliArchive_free(arc);
         return 0;
 }
@@ -127,10 +128,10 @@ int mliArchive_has(const struct mliArchive *arc, const char *filename)
 int mliArchive_get(
         const struct mliArchive *arc,
         const char *filename,
-        struct mliStr **str)
+        struct mtl_String **str)
 {
         uint64_t idx;
-        struct mliStr *txt = NULL;
+        struct mtl_String *txt = NULL;
         chk(mliDynMap_find(&arc->filenames, filename, &idx));
         txt = &arc->textfiles.array[idx];
         (*str) = txt;
@@ -144,12 +145,12 @@ int mliArchive_get_malloc_json(
         const char *filename,
         struct mliJson *json)
 {
-        struct mliStr *text = NULL;
+        struct mtl_String *text = NULL;
 
         chk_msg(mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
 
-        chk_msg(mliJson_malloc_from_cstr(json, (char *)text->cstr),
+        chk_msg(mliJson_malloc_from_cstr(json, (char *)text->array),
                 "Can not parse requested json.");
 
         return 1;
@@ -167,12 +168,12 @@ void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
                 struct mliMapItem item = arc->filenames.items.array[i];
-                struct mliStr *str = &arc->textfiles.array[i];
+                struct mtl_String *str = &arc->textfiles.array[i];
                 fprintf(f,
                         "%u: %s, %u\n",
                         (uint32_t)i,
                         item.key,
-                        (uint32_t)str->length);
+                        (uint32_t)str->size);
         }
 }
 

@@ -3,16 +3,16 @@
 #include "mliObject.h"
 #include "mliObject_valid.h"
 #include <ctype.h>
+#include "../../chk/src/chk.h"
 #include "../../mtl/src/vector.h"
+#include "../../mtl/src/string_numbers.h"
 #include "mliDynMap.h"
 #include "mliDynFace.h"
 #include "mliDynVec.h"
 #include "mliDynUint32.h"
 #include "mliDynDouble.h"
-#include "../../chk/src/chk.h"
 #include "mli_cstr_numbers.h"
 #include "mli_cstr.h"
-#include "mliStr_numbers.h"
 #include "mli_math.h"
 
 #define MLI_WAVEFRONT_FACE_LINE_V 7
@@ -48,10 +48,10 @@ int mliObject_is_face_line_toggle(const int state)
         return 0;
 }
 
-int mliStr_to_uint32(uint32_t *out, const struct mliStr *str)
+int mtl_String_to_uint32(uint32_t *out, const struct mtl_String *str)
 {
         uint64_t u = 0;
-        chk(mliStr_to_uint64(&u, str, 10));
+        chk(mtl_String_to_uint64(&u, str, 10));
         (*out) = (uint32_t)u;
         return 1;
 chk_error:
@@ -211,9 +211,9 @@ int mliObject_parse_face_line(
         uint64_t i = 0;
         char c;
 
-        struct mliStr wuff = mliStr_init();
-        chk(mliStr_malloc(&wuff, MAX_NUM_CHARS));
-        wuff.length = 0;
+        struct mtl_String wuff = mtl_String_init();
+        chk(mtl_String_malloc(&wuff, MAX_NUM_CHARS));
+        wuff.size = 0;
 
         while (state != final_state) {
                 chk_msg(i <= MAX_NUM_CHARS, "Expected less chars in line.");
@@ -255,84 +255,84 @@ int mliObject_parse_face_line(
                 }
 
                 if (mliObject_is_face_line_toggle(state)) {
-                        wuff.cstr[wuff.length] = c;
-                        wuff.length++;
+                        wuff.array[wuff.size] = c;
+                        wuff.size++;
                 } else if (mliObject_is_face_line_toggle(old_state)) {
                         uint64_t r;
-                        for (r = wuff.length; r < MAX_NUM_CHARS; r++) {
-                                wuff.cstr[r] = '\0';
+                        for (r = wuff.size; r < MAX_NUM_CHARS; r++) {
+                                wuff.array[r] = '\0';
                         }
 
                         switch (old_state) {
                         /* MLI_WAVEFRONT_FACE_LINE_V                          */
                         case 3:
-                                chk(mliStr_to_uint32(&v->a, &wuff));
+                                chk(mtl_String_to_uint32(&v->a, &wuff));
                                 break;
                         case 5:
-                                chk(mliStr_to_uint32(&v->b, &wuff));
+                                chk(mtl_String_to_uint32(&v->b, &wuff));
                                 break;
                         case 7:
-                                chk(mliStr_to_uint32(&v->c, &wuff));
+                                chk(mtl_String_to_uint32(&v->c, &wuff));
                                 break;
 
                         /* MLI_WAVEFRONT_FACE_LINE_V_VN                       */
                         /*    3                        v->a                   */
                         case 27:
-                                chk(mliStr_to_uint32(&vn->a, &wuff));
+                                chk(mtl_String_to_uint32(&vn->a, &wuff));
                                 break;
                         case 29:
-                                chk(mliStr_to_uint32(&v->b, &wuff));
+                                chk(mtl_String_to_uint32(&v->b, &wuff));
                                 break;
                         case 32:
-                                chk(mliStr_to_uint32(&vn->b, &wuff));
+                                chk(mtl_String_to_uint32(&vn->b, &wuff));
                                 break;
                         case 34:
-                                chk(mliStr_to_uint32(&v->c, &wuff));
+                                chk(mtl_String_to_uint32(&v->c, &wuff));
                                 break;
                         case 37:
-                                chk(mliStr_to_uint32(&vn->c, &wuff));
+                                chk(mtl_String_to_uint32(&vn->c, &wuff));
                                 break;
 
                         /* MLI_WAVEFRONT_FACE_LINE_V_VT_VN                    */
                         /*    3                        v->a                   */
                         case 11:
-                                chk(mliStr_to_uint32(&vt->a, &wuff));
+                                chk(mtl_String_to_uint32(&vt->a, &wuff));
                                 break;
                         case 13:
-                                chk(mliStr_to_uint32(&vn->a, &wuff));
+                                chk(mtl_String_to_uint32(&vn->a, &wuff));
                                 break;
                         case 15:
-                                chk(mliStr_to_uint32(&v->b, &wuff));
+                                chk(mtl_String_to_uint32(&v->b, &wuff));
                                 break;
                         case 17:
-                                chk(mliStr_to_uint32(&vt->b, &wuff));
+                                chk(mtl_String_to_uint32(&vt->b, &wuff));
                                 break;
                         case 19:
-                                chk(mliStr_to_uint32(&vn->b, &wuff));
+                                chk(mtl_String_to_uint32(&vn->b, &wuff));
                                 break;
                         case 21:
-                                chk(mliStr_to_uint32(&v->c, &wuff));
+                                chk(mtl_String_to_uint32(&v->c, &wuff));
                                 break;
                         case 23:
-                                chk(mliStr_to_uint32(&vt->c, &wuff));
+                                chk(mtl_String_to_uint32(&vt->c, &wuff));
                                 break;
                         case 25:
-                                chk(mliStr_to_uint32(&vn->c, &wuff));
+                                chk(mtl_String_to_uint32(&vn->c, &wuff));
                                 break;
 
                         default:
                                 break;
                         }
-                        wuff.length = 0;
+                        wuff.size = 0;
                 }
 
                 old_state = state;
                 i++;
         }
-        mliStr_free(&wuff);
+        mtl_String_free(&wuff);
         return 1;
 chk_error:
-        mliStr_free(&wuff);
+        mtl_String_free(&wuff);
         return 0;
 }
 
@@ -404,9 +404,9 @@ int mliObject_parse_three_float_line(const char *line, struct mliVec *v)
         uint64_t i = 0;
         char c;
 
-        struct mliStr wuff = mliStr_init();
-        chk(mliStr_malloc(&wuff, MAX_NUM_CHARS));
-        wuff.length = 0;
+        struct mtl_String wuff = mtl_String_init();
+        chk(mtl_String_malloc(&wuff, MAX_NUM_CHARS));
+        wuff.size = 0;
 
         while (state != final_state) {
                 chk_msg(i <= MAX_NUM_CHARS, "Expected less chars in line.");
@@ -433,28 +433,28 @@ int mliObject_parse_three_float_line(const char *line, struct mliVec *v)
                 }
 
                 if (mliObject_is_vert_line_toggle(state)) {
-                        wuff.cstr[wuff.length] = c;
-                        wuff.length++;
+                        wuff.array[wuff.size] = c;
+                        wuff.size++;
                 } else if (mliObject_is_vert_line_toggle(old_state)) {
                         uint64_t r;
-                        for (r = wuff.length; r < MAX_NUM_CHARS; r++) {
-                                wuff.cstr[r] = '\0';
+                        for (r = wuff.size; r < MAX_NUM_CHARS; r++) {
+                                wuff.array[r] = '\0';
                         }
 
                         switch (old_state) {
                         case 2:
-                                chk(mliStr_to_double(&v->x, &wuff));
+                                chk(mtl_String_to_double(&v->x, &wuff));
                                 break;
                         case 4:
-                                chk(mliStr_to_double(&v->y, &wuff));
+                                chk(mtl_String_to_double(&v->y, &wuff));
                                 break;
                         case 6:
-                                chk(mliStr_to_double(&v->z, &wuff));
+                                chk(mtl_String_to_double(&v->z, &wuff));
                                 break;
                         default:
                                 break;
                         }
-                        wuff.length = 0;
+                        wuff.size = 0;
                 }
 
                 old_state = state;

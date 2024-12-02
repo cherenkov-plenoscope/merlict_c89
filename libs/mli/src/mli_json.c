@@ -10,7 +10,7 @@
 struct mliJson mliJson_init(void)
 {
         struct mliJson j;
-        j.raw = mliStr_init();
+        j.raw = mtl_String_init();
         j.num_tokens = 0u;
         j.tokens = NULL;
         return j;
@@ -18,7 +18,7 @@ struct mliJson mliJson_init(void)
 
 void mliJson_free(struct mliJson *json)
 {
-        mliStr_free(&json->raw);
+        mtl_String_free(&json->raw);
         free(json->tokens);
         (*json) = mliJson_init();
 }
@@ -26,8 +26,8 @@ void mliJson_free(struct mliJson *json)
 int mliJson_malloc_tokens__(struct mliJson *json)
 {
         struct jsmntok_t default_token = {JSMN_UNDEFINED, 0, 0, 0};
-        chk_msg(&json->raw.cstr != NULL, "Expected raw cstr to be malloced.");
-        json->num_tokens = json->raw.length / 2;
+        chk_msg(&json->raw.array != NULL, "Expected raw cstr to be malloced.");
+        json->num_tokens = json->raw.size / 2;
         chk_malloc(json->tokens, struct jsmntok_t, json->num_tokens);
         MLI_ARRAY_SET(json->tokens, default_token, json->num_tokens);
         return 1;
@@ -44,8 +44,8 @@ int mliJson_parse_tokens__(struct mliJson *json)
         jsmn_init(&parser);
         num_tokens_parsed = jsmn_parse(
                 &parser,
-                json->raw.cstr,
-                json->raw.length,
+                json->raw.array,
+                json->raw.size,
                 json->tokens,
                 json->num_tokens);
         chk_msgf(
@@ -66,7 +66,7 @@ chk_error:
 int mliJson_malloc_from_cstr(struct mliJson *json, const char *cstr)
 {
         mliJson_free(json);
-        chk_msg(mliStr_malloc_cstr(&json->raw, cstr), "Can't copy cstr.");
+        chk_msg(mtl_String_malloc_cstr(&json->raw, cstr), "Can't copy cstr.");
         chk_msg(mliJson_malloc_tokens__(json), "Can't malloc Json's tokens.");
         chk_msg(mliJson_parse_tokens__(json), "Can't parse Json into tokens.");
         return 1;
@@ -81,7 +81,7 @@ int mliJson_malloc_from_path(struct mliJson *json, const char *path)
         mliJson_free(json);
         chk_msg(mliIo_write_from_path(&ff, path),
                 "Failed to read file into Json's Str.");
-        chk_msg(mliStr_malloc_cstr(&json->raw, (char *)ff.cstr),
+        chk_msg(mtl_String_malloc_cstr(&json->raw, (char *)ff.cstr),
                 "Failed to copy cstr.");
         mliIo_free(&ff);
         chk_msg(mliJson_malloc_tokens__(json), "Can't malloc Json's tokens.");
@@ -104,7 +104,7 @@ int mliJson_cstr_by_token(
         chk_msg(actual_length < return_string_size,
                 "Expected return_string_size to be sufficiently large for "
                 "json-string, but it is not.");
-        memcpy(return_string, json->raw.cstr + t.start, actual_length);
+        memcpy(return_string, json->raw.array + t.start, actual_length);
         return_string[actual_length] = '\0';
         return 1;
 chk_error:
@@ -122,7 +122,7 @@ int mliJson_int64_by_token(
                 "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
         chk_msg(mli_cstr_nto_int64(
                         return_int64,
-                        (char *)&json->raw.cstr[t.start],
+                        (char *)&json->raw.array[t.start],
                         10,
                         token_length),
                 "Can't parse int64.");
@@ -186,7 +186,7 @@ int mliJson_double_by_token(
         chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json float64 expected json-token-to be JSMN_PRIMITIVE.");
         chk_msg(mli_cstr_nto_double(
-                        val, (char *)&json->raw.cstr[t.start], token_length),
+                        val, (char *)&json->raw.array[t.start], token_length),
                 "Can't parse double.");
         return 1;
 chk_error:
@@ -224,7 +224,7 @@ int mliJson_cstrcmp(
                 return 0;
         }
         for (i = 0; i < token_length; i++) {
-                const char token_char = (char)json->raw.cstr[t.start + i];
+                const char token_char = (char)json->raw.array[t.start + i];
                 const char str_char = str[i];
                 if (token_char != str_char) {
                         return 0;
@@ -305,14 +305,15 @@ int mliJson_debug_token_fprint(
         uint64_t i = 0u;
         struct jsmntok_t t = json->tokens[token];
         uint32_t token_size = t.end - t.start;
-        uint64_t line_number = 1u + mliStr_countn(&json->raw, '\n', t.start);
+        uint64_t line_number =
+                1u + mtl_String_countn(&json->raw, '\n', t.start);
         chk(fprintf(f, "line: %u, ", (uint32_t)line_number));
         chk(fprintf(f, "token: %u, ", (uint32_t)token));
         chk(fprintf(f, "type: %d, ", t.type));
         chk(fprintf(f, "children: %d, ", t.size));
         chk(fprintf(f, "chars: (%d -> %d, %d)\n", t.start, t.end, token_size));
         for (i = 0; i < token_size; i++) {
-                chk(fputc((char)json->raw.cstr[t.start + i], f));
+                chk(fputc((char)json->raw.array[t.start + i], f));
         }
         chk(fprintf(f, "\n"));
         return 1;

@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include "mliStr.h"
+#include "../../mtl/src/string.h"
 
 struct mliIo {
         /* memory */
@@ -75,23 +75,25 @@ int mliIo_readline(
 
 int mli_readline(
         struct mliIo *stream,
-        struct mliStr *line,
+        struct mtl_String *line,
         const char delimiter);
 
-int mli_path_strip_this_dir(const struct mliStr *src, struct mliStr *dst);
-int mli_path_basename(const struct mliStr *src, struct mliStr *dst);
+int mli_path_strip_this_dir(
+        const struct mtl_String *src,
+        struct mtl_String *dst);
+int mli_path_basename(const struct mtl_String *src, struct mtl_String *dst);
 int mli_path_splitext(
-        const struct mliStr *src,
-        struct mliStr *dst,
-        struct mliStr *ext);
+        const struct mtl_String *src,
+        struct mtl_String *dst,
+        struct mtl_String *ext);
 
-int mliStr_convert_line_break_CRLF_CR_to_LF(
-        struct mliStr *dst,
-        const struct mliStr *src);
+int mtl_String_convert_line_break_CRLF_CR_to_LF(
+        struct mtl_String *dst,
+        const struct mtl_String *src);
 
 int mli_line_viewer_write(
         struct mliIo *f,
-        const struct mliStr *text,
+        const struct mtl_String *text,
         const uint64_t line_number,
         const uint64_t line_radius);
 
