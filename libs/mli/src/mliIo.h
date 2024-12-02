@@ -78,15 +78,6 @@ int mli_readline(
         struct mtl_String *line,
         const char delimiter);
 
-int mli_path_strip_this_dir(
-        const struct mtl_String *src,
-        struct mtl_String *dst);
-int mli_path_basename(const struct mtl_String *src, struct mtl_String *dst);
-int mli_path_splitext(
-        const struct mtl_String *src,
-        struct mtl_String *dst,
-        struct mtl_String *ext);
-
 int mtl_String_convert_line_break_CRLF_CR_to_LF(
         struct mtl_String *dst,
         const struct mtl_String *src);
