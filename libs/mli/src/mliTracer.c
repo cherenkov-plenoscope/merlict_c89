@@ -22,7 +22,7 @@ struct mliTracer mliTracer_init(void)
 double mli_trace_sun_visibility(
         const struct mliTracer *tracer,
         const struct mliVec position,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         return (1.0 - mli_trace_sun_obstruction(tracer, position, prng));
 }
@@ -30,7 +30,7 @@ double mli_trace_sun_visibility(
 double mli_trace_sun_obstruction(
         const struct mliTracer *tracer,
         const struct mliVec position,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         uint64_t i;
         double num_obstructions = 0.0;
@@ -64,7 +64,7 @@ double mli_trace_sun_obstruction(
 struct mliColor mli_trace_to_intersection(
         const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         struct mliColor color;
         struct mliSide side;
@@ -93,7 +93,7 @@ struct mliColor mli_trace_to_intersection(
 struct mliColor mliTracer_trace_ray_without_atmosphere(
         const struct mliTracer *tracer,
         const struct mliRay ray,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         struct mliIntersectionSurfaceNormal intersection =
                 mliIntersectionSurfaceNormal_init();
@@ -109,7 +109,7 @@ struct mliColor mliTracer_trace_ray_without_atmosphere(
 struct mliColor mliTracer_trace_ray(
         const struct mliTracer *tracer,
         const struct mliRay ray,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         if (tracer->config->have_atmosphere) {
                 return mliTracer_trace_ray_with_atmosphere(tracer, ray, prng);

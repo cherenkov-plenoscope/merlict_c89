@@ -3,23 +3,25 @@
 #include "../../chk/src/chk.h"
 #include "mliColor.h"
 #include "mli_random.h"
-#include "../../mtl/src/random_generator.h"
+#include "../../mtl/src/prng.h"
 #include "../../mtl/src/cstr.h"
 #include "mliObject_wavefront.h"
 #include "mliScenery_valid.h"
 
-int mliSurface_malloc_random_phong(struct mliSurface *srf, struct mliPrng *prng)
+int mliSurface_malloc_random_phong(
+        struct mliSurface *srf,
+        struct mtl_Prng *prng)
 {
-        struct mliRandomUniformRange uniform_range;
+        struct mtl_prng_UniformRange uniform_range;
         struct mliColor color;
 
         mliSurface_free(srf);
         uniform_range.start = 0.0;
         uniform_range.range = 1.0;
         color = mliColor_set(
-                mli_random_draw_uniform(uniform_range, prng),
-                mli_random_draw_uniform(uniform_range, prng),
-                mli_random_draw_uniform(uniform_range, prng));
+                mtl_prng_draw_uniform(uniform_range, prng),
+                mtl_prng_draw_uniform(uniform_range, prng),
+                mtl_prng_draw_uniform(uniform_range, prng));
 
         /* r: 600nm
          * g: 550nm
@@ -77,7 +79,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         const char *path)
 {
         uint32_t i, total_num_boundary_layers;
-        struct mliPrng prng = mliPrng_init_MT19937(1u);
+        struct mtl_Prng prng = mtl_Prng_init_MT19937(1u);
         struct mtl_IO str = mtl_IO_init();
         struct mliMaterialsCapacity mtlcap = mliMaterialsCapacity_init();
 

@@ -14,11 +14,11 @@
 
 CASE("refraction_in_prism")
 {
-        struct mliPrng prng = mliPrng_init_MT19937(0u);
+        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
         struct mliScenery scenery = mliScenery_init();
         struct mliDynPhotonInteraction photon_history =
                 mliDynPhotonInteraction_init();
-        struct mliRandomUniformRange wavelength_range;
+        struct mtl_prng_UniformRange wavelength_range;
         const uint64_t NUM_PHOTONS = 10 * 1000;
         const uint64_t MAX_INTERACTIONS = 16;
         uint64_t i;
@@ -56,7 +56,7 @@ CASE("refraction_in_prism")
                         mliVec_init(0.0, -1.0, -angle_of_attack),
                         mliVec_init(0.0, 1.0, angle_of_attack));
                 photon.wavelength =
-                        mli_random_draw_uniform(wavelength_range, &prng);
+                        mtl_prng_draw_uniform(wavelength_range, &prng);
                 photon.id = i;
 
                 CHECK(mliDynPhotonInteraction_malloc(

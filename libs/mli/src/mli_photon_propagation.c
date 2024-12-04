@@ -54,7 +54,7 @@ int mli_propagate_photon_phong(
                         env->photon->wavelength,
                         &specular),
                 "Failed to eval. specular reflection for wavelength.");
-        rnd = mli_random_uniform(env->prng);
+        rnd = mtl_Prng_uniform(env->prng);
         /*
                                                       absorbtion
                   diffuse      specular        (1.0 - diffuse - specular)
@@ -173,7 +173,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
                 n_coming_from,
                 n_going_to);
         reflection_propability = mliFresnel_reflection_propability(fresnel);
-        if (reflection_propability > mli_random_uniform(env->prng)) {
+        if (reflection_propability > mtl_Prng_uniform(env->prng)) {
                 chk(mliDynPhotonInteraction_push_back(
                         env->history,
                         mliPhotonInteraction_from_Intersection(
@@ -226,7 +226,7 @@ chk_error:
 int mli_propagate_photon_distance_until_absorbtion(
         const struct mliFunc *absorbtion_in_medium_passing_through,
         const double wavelength,
-        struct mliPrng *prng,
+        struct mtl_Prng *prng,
         double *distance_until_absorbtion)
 {
         double one_over_e_way;
@@ -236,7 +236,7 @@ int mli_propagate_photon_distance_until_absorbtion(
                         &one_over_e_way),
                 "Failed to eval. absorbtion for wavelength.");
         (*distance_until_absorbtion) =
-                mli_random_expovariate(prng, 1. / one_over_e_way);
+                mtl_Prng_expovariate(prng, 1. / one_over_e_way);
         return 1;
 chk_error:
         return 0;
@@ -378,7 +378,7 @@ int mli_propagate_photon(
         const struct mliScenery *scenery,
         struct mliDynPhotonInteraction *history,
         struct mliPhoton *photon,
-        struct mliPrng *prng,
+        struct mtl_Prng *prng,
         const uint64_t max_interactions)
 {
         struct mliEnv env;

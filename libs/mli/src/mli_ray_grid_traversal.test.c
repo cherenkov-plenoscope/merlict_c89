@@ -255,13 +255,13 @@ CASE("Elaborated example")
         struct mliAxisAlignedGrid grid;
         struct mliAxisAlignedGridTraversal traversal;
         struct mliRay ray;
-        struct mliPrng prng;
-        struct mliRandomUniformRange range;
+        struct mtl_Prng prng;
+        struct mtl_prng_UniformRange range;
 
         grid = mliAxisAlignedGrid_set(
                 mliAABB_set(mliVec_init(-3, -3, -3), mliVec_init(3, 3, 3)),
                 mliIdx3_set(10, 10, 10));
-        prng = mliPrng_init_MT19937(0u);
+        prng = mtl_Prng_init_MT19937(0u);
         num_overlaps = 0;
         num_rays = 10000;
         range.start = -1.0;
@@ -270,9 +270,9 @@ CASE("Elaborated example")
         for (i = 0; i < num_rays; i++) {
                 struct mliVec ppp;
                 struct mliVec ddd = mliVec_init(
-                        mli_random_draw_uniform(range, &prng),
-                        mli_random_draw_uniform(range, &prng),
-                        mli_random_draw_uniform(range, &prng));
+                        mtl_prng_draw_uniform(range, &prng),
+                        mtl_prng_draw_uniform(range, &prng),
+                        mtl_prng_draw_uniform(range, &prng));
                 ddd = mliVec_normalized(ddd);
                 ray = mliRay_set(
                         mliVec_multiply(ddd, 20), mliVec_multiply(ddd, -1.0));

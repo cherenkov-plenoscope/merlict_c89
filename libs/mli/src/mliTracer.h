@@ -9,7 +9,7 @@
 #include "mliAtmosphere.h"
 
 struct mliScenery;
-struct mliPrng;
+struct mtl_Prng;
 
 #define MLI_TRC_SPHERE_SHAPE 1
 
@@ -50,26 +50,26 @@ struct mliTracer mliTracer_init(void);
 struct mliColor mliTracer_trace_ray(
         const struct mliTracer *tracer,
         const struct mliRay ray,
-        struct mliPrng *prng);
+        struct mtl_Prng *prng);
 
 struct mliColor mliTracer_trace_ray_with_atmosphere(
         const struct mliTracer *tracer,
         const struct mliRay ray,
-        struct mliPrng *prng);
+        struct mtl_Prng *prng);
 
 struct mliColor mliTracer_trace_ray_without_atmosphere(
         const struct mliTracer *tracer,
         const struct mliRay ray,
-        struct mliPrng *prng);
+        struct mtl_Prng *prng);
 
 double mli_trace_sun_obstruction(
         const struct mliTracer *tracer,
         const struct mliVec position,
-        struct mliPrng *prng);
+        struct mtl_Prng *prng);
 
 double mli_trace_sun_visibility(
         const struct mliTracer *tracer,
         const struct mliVec position,
-        struct mliPrng *prng);
+        struct mtl_Prng *prng);
 
 #endif

@@ -8,7 +8,7 @@ CASE("lambertian cosine law, populate histogram, check cosine law")
         uint64_t n;
         const uint64_t NUM_TRAILS = 1000 * 100;
         struct mliVec unit_z = mliVec_init(0, 0, 1);
-        struct mliPrng prng = mliPrng_init_MT19937(0);
+        struct mtl_Prng prng = mtl_Prng_init_MT19937(0);
 
         double hist_bin_edges[25 + 1];
         const uint64_t hist_num_bin_edges = 25 + 1;
@@ -59,7 +59,7 @@ CASE("lambertian cosine law, relative to surface normal")
         const uint64_t NUM_TRAILS = 5000;
         double theta;
         struct mliVec surface_normal;
-        struct mliPrng prng = mliPrng_init_MT19937(1);
+        struct mtl_Prng prng = mtl_Prng_init_MT19937(1);
 
         double hist_bin_edges[10 + 1];
         const uint64_t hist_num_bin_edges = 10 + 1;
@@ -73,9 +73,9 @@ CASE("lambertian cosine law, relative to surface normal")
 
         for (n = 0; n < NUM_NORMALS; n++) {
                 surface_normal = mliVec_init(
-                        mli_random_uniform(&prng) - .5,
-                        mli_random_uniform(&prng) - .5,
-                        mli_random_uniform(&prng) - .5);
+                        mtl_Prng_uniform(&prng) - .5,
+                        mtl_Prng_uniform(&prng) - .5,
+                        mtl_Prng_uniform(&prng) - .5);
                 surface_normal = mliVec_normalized(surface_normal);
 
                 MTL_MATH_ARRAY_SET(hist_bins, 0, hist_num_bins);

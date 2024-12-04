@@ -5,21 +5,21 @@
 #include <stdint.h>
 #include "mli_corsika_EventTape.h"
 #include "../../mli/src/mli_random.h"
-#include "../../mtl/src/random_generator.h"
+#include "../../mtl/src/prng.h"
 
 void mliEventTape_testing_set_random_corsika_header(
         float *head,
-        struct mliPrng *prng);
+        struct mtl_Prng *prng);
 void mliEventTape_testing_set_random_RUNH(
         float *runh,
         const float run_number,
-        struct mliPrng *prng);
+        struct mtl_Prng *prng);
 void mliEventTape_testing_set_random_EVTH(
         float *evth,
         const float event_number,
         const float run_number,
-        struct mliPrng *prng);
-void mliEventTape_testing_set_random_bunch(float *bunch, struct mliPrng *prng);
+        struct mtl_Prng *prng);
+void mliEventTape_testing_set_random_bunch(float *bunch, struct mtl_Prng *prng);
 int mliEventTape_testing_bunches_are_equal(float *b1, float *b2);
 int mliEventTape_testing_corsika_headers_are_equal(
         const float *h1,

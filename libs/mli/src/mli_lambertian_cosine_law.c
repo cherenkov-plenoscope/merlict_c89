@@ -5,19 +5,19 @@
 #include "mliMat.h"
 #include "mliHomTra.h"
 
-struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliPrng *prng)
+struct mliVec mli_draw_lambertian_direction_wrt_z(struct mtl_Prng *prng)
 {
         double azimuth;
         double sin_theta, cos_theta;
-        azimuth = MTL_MATH_2PI * mli_random_uniform(prng);
-        sin_theta = mli_random_uniform(prng);
+        azimuth = MTL_MATH_2PI * mtl_Prng_uniform(prng);
+        sin_theta = mtl_Prng_uniform(prng);
         cos_theta = sqrt(1.0 - sin_theta * sin_theta);
         return mliVec_init(
                 sin_theta * cos(azimuth), sin_theta * sin(azimuth), cos_theta);
 }
 
 struct mliVec mli_draw_lambertian_direction_wrt_surface_normal(
-        struct mliPrng *prng,
+        struct mtl_Prng *prng,
         const struct mliVec surface_normal)
 {
         const struct mliVec z = mliVec_init(0, 0, 1);

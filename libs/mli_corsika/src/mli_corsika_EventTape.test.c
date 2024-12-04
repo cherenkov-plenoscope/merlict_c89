@@ -17,7 +17,7 @@ CASE("EventTape: run_normal")
         float corhi[273] = {0.0};
         float bunch[8] = {0.0};
         float bunch_expected[8] = {0.0};
-        struct mliPrng prng = mliPrng_init_PCG32(random_seed);
+        struct mtl_Prng prng = mtl_Prng_init_PCG32(random_seed);
         const char path[] = "libs/mli_corsika/tests/resources/"
                             "run_normal.tar";
 
@@ -43,7 +43,7 @@ CASE("EventTape: run_normal")
 
         /* read back */
         /* --------- */
-        mliPrng_reinit(&prng, random_seed);
+        mtl_Prng_reinit(&prng, random_seed);
 
         istream = fopen(path, "rb");
         CHECK(mliEventTapeReader_begin(&tari, istream));

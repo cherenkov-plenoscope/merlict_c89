@@ -49,7 +49,7 @@ struct mliVec mliApertureCamera_pixel_support_on_image_sensor_plane(
         const uint64_t num_pixel_y,
         const uint64_t pixel_x,
         const uint64_t pixel_y,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         double pixel_bin_width_x = image_sensor_width_x / (double)num_pixel_x;
         double pixel_bin_width_y = image_sensor_width_y / (double)num_pixel_y;
@@ -63,10 +63,10 @@ struct mliVec mliApertureCamera_pixel_support_on_image_sensor_plane(
                         pixel_x,
                         pixel_y);
         double rnd_x =
-                (mli_random_uniform(prng) * pixel_bin_width_x -
+                (mtl_Prng_uniform(prng) * pixel_bin_width_x -
                  0.5 * pixel_bin_width_x);
         double rnd_y =
-                (mli_random_uniform(prng) * pixel_bin_width_y -
+                (mtl_Prng_uniform(prng) * pixel_bin_width_y -
                  0.5 * pixel_bin_width_y);
         support.x = support.x + rnd_x;
         support.y = support.y + rnd_y;
@@ -89,7 +89,7 @@ struct mliVec mliApertureCamera_get_object_point(
 
 struct mliVec mliApertureCamera_ray_support_on_aperture(
         const double aperture_radius,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         /* use a perfect disc as aperture */
         return mli_random_position_on_disc(aperture_radius, prng);
@@ -134,7 +134,7 @@ struct mliRay mliApertureCamera_get_ray_for_pixel(
         const uint64_t num_pixel_y,
         const uint64_t pixel_x,
         const uint64_t pixel_y,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         struct mliVec direction;
         struct mliVec aperture_support =
@@ -172,7 +172,7 @@ void mliApertureCamera_aquire_pixels(
         const struct mliTracer *tracer,
         const struct mliPixels *pixels_to_do,
         struct mliImage *colors,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         uint64_t i;
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
@@ -229,7 +229,7 @@ int mliApertureCamera_render_image(
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         struct mliImage *image,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         float noise_threshold = 0.05 * 255.0;
         uint64_t MAX_ITERATIONS = 128;

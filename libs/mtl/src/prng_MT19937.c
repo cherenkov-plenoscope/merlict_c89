@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "random_MT19937.h"
+#include "prng_MT19937.h"
 
 /*
  *      Adopted from https://en.wikipedia.org/wiki/Mersenne_Twister
  */
-void mliMT19937_set_constants(struct mliMT19937 *mt)
+void mtl_prng_MT19937_set_constants(struct mtl_prng_MT19937 *mt)
 {
         /*
          *      Define MT19937 constants (32-bit RNG)
@@ -25,10 +25,10 @@ void mliMT19937_set_constants(struct mliMT19937 *mt)
         mt->MASK_UPPER = (1u << mt->R);
 }
 
-void mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed)
+void mtl_prng_MT19937_reinit(struct mtl_prng_MT19937 *mt, const uint32_t seed)
 {
         uint32_t i;
-        mliMT19937_set_constants(mt);
+        mtl_prng_MT19937_set_constants(mt);
         mt->mt[0] = seed;
         for (i = 1; i < mt->N; i++) {
                 mt->mt[i] =
@@ -37,14 +37,14 @@ void mliMT19937_reinit(struct mliMT19937 *mt, const uint32_t seed)
         mt->index = mt->N;
 }
 
-struct mliMT19937 mliMT19937_init(const uint32_t seed)
+struct mtl_prng_MT19937 mtl_prng_MT19937_init(const uint32_t seed)
 {
-        struct mliMT19937 mt;
-        mliMT19937_reinit(&mt, seed);
+        struct mtl_prng_MT19937 mt;
+        mtl_prng_MT19937_reinit(&mt, seed);
         return mt;
 }
 
-void mliMT19937_twist(struct mliMT19937 *mt)
+void mtl_prng_MT19937_twist(struct mtl_prng_MT19937 *mt)
 {
         uint32_t i, x, xA;
         for (i = 0; i < mt->N; i++) {
@@ -59,12 +59,12 @@ void mliMT19937_twist(struct mliMT19937 *mt)
         mt->index = 0;
 }
 
-uint32_t mliMT19937_generate_uint32(struct mliMT19937 *mt)
+uint32_t mtl_prng_MT19937_generate_uint32(struct mtl_prng_MT19937 *mt)
 {
         uint32_t y;
         int i = mt->index;
         if (mt->index >= mt->N) {
-                mliMT19937_twist(mt);
+                mtl_prng_MT19937_twist(mt);
                 i = mt->index;
         }
         y = mt->mt[i];

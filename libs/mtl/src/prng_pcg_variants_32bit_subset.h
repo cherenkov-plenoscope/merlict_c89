@@ -33,21 +33,22 @@
  *     http://www.pcg-random.org
  */
 
-#ifndef MLI_RANDOM_PCG_VARIANTS_32BIT_SUBSET_H_INCLUDED
-#define MLI_RANDOM_PCG_VARIANTS_32BIT_SUBSET_H_INCLUDED
+#ifndef MTL_PRNG_PCG_VARIANTS_32BIT_SUBSET_H_INCLUDED
+#define MTL_PRNG_PCG_VARIANTS_32BIT_SUBSET_H_INCLUDED
 
 #include <stdint.h>
 
-struct pcg_state_setseq_64 {
+struct mtl_prng_pcg_state_setseq_64 {
         uint64_t state;
         uint64_t inc;
 };
 
-void pcg_setseq_64_srandom_r(
-        struct pcg_state_setseq_64 *rng,
+void mtl_prng_pcg_setseq_64_srandom_r(
+        struct mtl_prng_pcg_state_setseq_64 *rng,
         uint64_t initstate,
         uint64_t initseq);
 
-uint32_t pcg_setseq_64_xsh_rr_32_random_r(struct pcg_state_setseq_64 *rng);
+uint32_t mtl_prng_pcg_setseq_64_xsh_rr_32_random_r(
+        struct mtl_prng_pcg_state_setseq_64 *rng);
 
 #endif

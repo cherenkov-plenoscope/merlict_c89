@@ -4,18 +4,18 @@
 
 void mliEventTape_testing_set_random_corsika_header(
         float *head,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         uint64_t i;
         for (i = 0; i < 273; i++) {
-                head[i] = (float)mli_random_uniform(prng);
+                head[i] = (float)mtl_Prng_uniform(prng);
         }
 }
 
 void mliEventTape_testing_set_random_RUNH(
         float *runh,
         const float run_number,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         mliEventTape_testing_set_random_corsika_header(runh, prng);
         runh[0] = mli_chars_to_float("RUNH");
@@ -26,7 +26,7 @@ void mliEventTape_testing_set_random_EVTH(
         float *evth,
         const float event_number,
         const float run_number,
-        struct mliPrng *prng)
+        struct mtl_Prng *prng)
 {
         mliEventTape_testing_set_random_corsika_header(evth, prng);
         evth[0] = mli_chars_to_float("EVTH");
@@ -34,16 +34,16 @@ void mliEventTape_testing_set_random_EVTH(
         evth[MLI_CORSIKA_EVTH_RUN_NUMBER] = run_number;
 }
 
-void mliEventTape_testing_set_random_bunch(float *bunch, struct mliPrng *prng)
+void mliEventTape_testing_set_random_bunch(float *bunch, struct mtl_Prng *prng)
 {
-        bunch[0] = (float)mli_random_uniform(prng);
-        bunch[1] = (float)mli_random_uniform(prng);
-        bunch[2] = (float)mli_random_uniform(prng);
-        bunch[3] = (float)mli_random_uniform(prng);
-        bunch[4] = (float)mli_random_uniform(prng);
-        bunch[5] = (float)mli_random_uniform(prng);
-        bunch[6] = (float)mli_random_uniform(prng);
-        bunch[7] = (float)mli_random_uniform(prng);
+        bunch[0] = (float)mtl_Prng_uniform(prng);
+        bunch[1] = (float)mtl_Prng_uniform(prng);
+        bunch[2] = (float)mtl_Prng_uniform(prng);
+        bunch[3] = (float)mtl_Prng_uniform(prng);
+        bunch[4] = (float)mtl_Prng_uniform(prng);
+        bunch[5] = (float)mtl_Prng_uniform(prng);
+        bunch[6] = (float)mtl_Prng_uniform(prng);
+        bunch[7] = (float)mtl_Prng_uniform(prng);
 }
 
 int mliEventTape_testing_bunches_are_equal(float *b1, float *b2)
@@ -116,8 +116,8 @@ int mliEventTape_testing_write_and_read(
         struct mliEventTapeWriter taro = mliEventTapeWriter_init();
         struct mliEventTapeReader tari = mliEventTapeReader_init();
 
-        struct mliPrng prng = mliPrng_init_PCG32(random_seed);
-        mliPrng_reinit(&prng, random_seed);
+        struct mtl_Prng prng = mtl_Prng_init_PCG32(random_seed);
+        mtl_Prng_reinit(&prng, random_seed);
 
         /* write RUN */
         /* ========= */
@@ -148,7 +148,7 @@ int mliEventTape_testing_write_and_read(
 
         /* read RUN */
         /* ======== */
-        mliPrng_reinit(&prng, random_seed);
+        mtl_Prng_reinit(&prng, random_seed);
 
         istream = fopen(path, "rb");
         chk_msg(mliEventTapeReader_begin(&tari, istream),

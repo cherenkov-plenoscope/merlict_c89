@@ -143,10 +143,10 @@ CASE("complex sequence")
 {
         uint64_t i;
         const uint64_t num_combinations = 100;
-        struct mliPrng prng = mliPrng_init_MT19937(1337);
+        struct mtl_Prng prng = mtl_Prng_init_MT19937(1337);
 
-        struct mliRandomUniformRange trans_range;
-        struct mliRandomUniformRange angle_range;
+        struct mtl_prng_UniformRange trans_range;
+        struct mtl_prng_UniformRange angle_range;
         trans_range.start = -10.0;
         trans_range.range = 20.0;
         angle_range.start = -MTL_MATH_PI;
@@ -158,30 +158,30 @@ CASE("complex sequence")
                 struct mliVec pos_B, pos_A, pos_C_via_B, pos_C_direct;
 
                 pos_A = mliVec_init(
-                        mli_random_draw_uniform(trans_range, &prng),
-                        mli_random_draw_uniform(trans_range, &prng),
-                        mli_random_draw_uniform(trans_range, &prng));
+                        mtl_prng_draw_uniform(trans_range, &prng),
+                        mtl_prng_draw_uniform(trans_range, &prng),
+                        mtl_prng_draw_uniform(trans_range, &prng));
 
                 _AB.translation = mliVec_init(
-                        mli_random_draw_uniform(trans_range, &prng),
-                        mli_random_draw_uniform(trans_range, &prng),
-                        mli_random_draw_uniform(trans_range, &prng));
+                        mtl_prng_draw_uniform(trans_range, &prng),
+                        mtl_prng_draw_uniform(trans_range, &prng),
+                        mtl_prng_draw_uniform(trans_range, &prng));
                 _AB.rotation = mliQuaternion_set_tait_bryan(
-                        mli_random_draw_uniform(angle_range, &prng),
-                        mli_random_draw_uniform(angle_range, &prng),
-                        mli_random_draw_uniform(angle_range, &prng));
+                        mtl_prng_draw_uniform(angle_range, &prng),
+                        mtl_prng_draw_uniform(angle_range, &prng),
+                        mtl_prng_draw_uniform(angle_range, &prng));
                 AB = mliHomTra_from_compact(_AB);
 
                 pos_B = mliHomTra_pos_inverse(&AB, pos_A);
 
                 _BC.translation = mliVec_init(
-                        mli_random_draw_uniform(trans_range, &prng),
-                        mli_random_draw_uniform(trans_range, &prng),
-                        mli_random_draw_uniform(trans_range, &prng));
+                        mtl_prng_draw_uniform(trans_range, &prng),
+                        mtl_prng_draw_uniform(trans_range, &prng),
+                        mtl_prng_draw_uniform(trans_range, &prng));
                 _BC.rotation = mliQuaternion_set_tait_bryan(
-                        mli_random_draw_uniform(angle_range, &prng),
-                        mli_random_draw_uniform(angle_range, &prng),
-                        mli_random_draw_uniform(angle_range, &prng));
+                        mtl_prng_draw_uniform(angle_range, &prng),
+                        mtl_prng_draw_uniform(angle_range, &prng),
+                        mtl_prng_draw_uniform(angle_range, &prng));
                 BC = mliHomTra_from_compact(_BC);
 
                 pos_C_via_B = mliHomTra_pos_inverse(&BC, pos_B);
