@@ -3,7 +3,7 @@
 #define MLIARCHIVE_H_
 
 #include <stdint.h>
-#include "mliIo.h"
+#include "../../mtl/src/io.h"
 #include "mli_json.h"
 #include "../../mtl/src/array.h"
 #include "../../mtl/src/string.h"

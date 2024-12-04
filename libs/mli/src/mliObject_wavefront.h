@@ -4,10 +4,12 @@
 
 #include <stdint.h>
 #include "mliObject.h"
-#include "mliIo.h"
+#include "../../mtl/src/io.h"
 
 int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str);
-int mliObject_fprint_to_wavefront(struct mliIo *f, const struct mliObject *obj);
+int mliObject_fprint_to_wavefront(
+        struct mtl_IO *f,
+        const struct mliObject *obj);
 int mliObject_parse_face_line(
         const char *line,
         struct mliFace *faces_vertices,

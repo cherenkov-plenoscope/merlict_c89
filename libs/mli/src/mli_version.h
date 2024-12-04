@@ -4,9 +4,9 @@
 
 #include <stdio.h>
 
-#define MLI_VERSION_MAYOR 1
-#define MLI_VERSION_MINOR 10
-#define MLI_VERSION_PATCH 2
+#define MLI_VERSION_MAYOR 2
+#define MLI_VERSION_MINOR 0
+#define MLI_VERSION_PATCH 0
 
 void mli_logo_fprint(FILE *f);
 void mli_authors_and_affiliations_fprint(FILE *f);

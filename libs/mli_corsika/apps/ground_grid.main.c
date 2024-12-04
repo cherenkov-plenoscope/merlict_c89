@@ -7,7 +7,7 @@
 #include "../../chk/src/chk.h"
 #include "../../mtl/src/string_numbers.h"
 #include "../../mli/src/mli_math.h"
-#include "../../mli/src/mliIo.h"
+#include "../../mtl/src/io.h"
 #include "../../mli/src/mliTar.h"
 #include "../../mli/src/mliTarIo.h"
 #include "../../mtl/src/vector.h"
@@ -15,36 +15,36 @@
 
 int mliAxisAlignedGrid_set_from_config(
         struct mliAxisAlignedGrid *grid,
-        struct mliIo *text)
+        struct mtl_IO *text)
 {
         struct mliVec lower;
         struct mliVec upper;
         struct mliIdx3 num_bins;
         struct mtl_String line = mtl_String_init();
         chk(mtl_String_malloc(&line, 100));
-        mliIo_rewind(text);
+        mtl_IO_rewind(text);
         /* X */
-        chk(mli_readline(text, &line, '\n'));
+        chk(mtl_IO_readline(text, &line, '\n'));
         chk(mtl_String_to_int64(&(num_bins.x), &line, 10));
-        chk(mli_readline(text, &line, '\n'));
+        chk(mtl_IO_readline(text, &line, '\n'));
         chk(mtl_String_to_double(&(lower.x), &line)); /* cm */
-        chk(mli_readline(text, &line, '\n'));
+        chk(mtl_IO_readline(text, &line, '\n'));
         chk(mtl_String_to_double(&(upper.x), &line)); /* cm */
 
         /* Y */
-        chk(mli_readline(text, &line, '\n'));
+        chk(mtl_IO_readline(text, &line, '\n'));
         chk(mtl_String_to_int64(&(num_bins.y), &line, 10));
-        chk(mli_readline(text, &line, '\n'));
+        chk(mtl_IO_readline(text, &line, '\n'));
         chk(mtl_String_to_double(&(lower.y), &line)); /* cm */
-        chk(mli_readline(text, &line, '\n'));
+        chk(mtl_IO_readline(text, &line, '\n'));
         chk(mtl_String_to_double(&(upper.y), &line)); /* cm */
 
         /* Z */
-        chk(mli_readline(text, &line, '\n'));
+        chk(mtl_IO_readline(text, &line, '\n'));
         chk(mtl_String_to_int64(&(num_bins.z), &line, 10));
-        chk(mli_readline(text, &line, '\n'));
+        chk(mtl_IO_readline(text, &line, '\n'));
         chk(mtl_String_to_double(&(lower.z), &line)); /* cm */
-        chk(mli_readline(text, &line, '\n'));
+        chk(mtl_IO_readline(text, &line, '\n'));
         chk(mtl_String_to_double(&(upper.z), &line)); /* cm */
 
         mtl_String_free(&line);
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
         while (mliTar_read_header(&arc, &arch)) {
                 if (strcmp(arch.name, "init.txt") == 0) {
-                        struct mliIo config_text = mliIo_init();
+                        struct mtl_IO config_text = mtl_IO_init();
 
                         if (hist.dict.capacity > 10 * HIST_TARGET_SIZE) {
                                 chk(mliCorsikaHistogram2d_malloc(
@@ -87,12 +87,12 @@ int main(int argc, char *argv[])
                         } else {
                                 mliCorsikaHistogram2d_reset(&hist);
                         }
-                        chk(mliIo_malloc(&config_text));
+                        chk(mtl_IO_malloc(&config_text));
                         chk(mliTar_read_data_to_io(
                                 &arc, &config_text, arch.size));
                         chk(mliAxisAlignedGrid_set_from_config(
                                 &grid, &config_text));
-                        mliIo_free(&config_text);
+                        mtl_IO_free(&config_text);
                 } else if (strcmp(arch.name, "cer.x8.float32") == 0) {
                         const int num_bunches = arch.size / 32;
                         int num = 0;
