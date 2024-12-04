@@ -33,5 +33,8 @@ uint64_t mtl_String_countn(
         const struct mtl_String *str,
         const char c,
         const uint64_t num_chars_to_scan);
+int64_t mtl_String_compare(
+        const struct mtl_String *s1,
+        const struct mtl_String *s2);
 
 #endif

@@ -197,3 +197,10 @@ int mtl_String_equal_cstr(struct mtl_String *self, const char *cstr)
                 return 0;
         }
 }
+
+int64_t mtl_String_compare(
+        const struct mtl_String *s1,
+        const struct mtl_String *s2)
+{
+        return strcmp(s1->array, s2->array);
+}
