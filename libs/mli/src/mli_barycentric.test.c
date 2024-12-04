@@ -29,7 +29,7 @@ CASE("barycentric coordinates on vertices")
 
 CASE("barycentric coordinates in center")
 {
-        const double phi = 2.0 * MLI_MATH_PI / 3.0;
+        const double phi = 2.0 * MTL_MATH_PI / 3.0;
         const struct mliVec a =
                 mliVec_init(cos(0.0 * phi), sin(0.0 * phi), 0.0);
         const struct mliVec b =
@@ -46,7 +46,7 @@ CASE("barycentric coordinates in center")
 
 CASE("barycentric coordinates out of triangle")
 {
-        const double phi = 2.0 * MLI_MATH_PI / 3.0;
+        const double phi = 2.0 * MTL_MATH_PI / 3.0;
         const struct mliVec a =
                 mliVec_init(cos(0.0 * phi), sin(0.0 * phi), 0.0);
         const struct mliVec b =
@@ -73,7 +73,7 @@ CASE("barycentric coordinates out of triangle")
 
 CASE("estimate surface normal")
 {
-        const double phi = 2.0 * MLI_MATH_PI / 3.0;
+        const double phi = 2.0 * MTL_MATH_PI / 3.0;
         const struct mliVec a =
                 mliVec_init(cos(0.0 * phi), sin(0.0 * phi), 0.0);
         const struct mliVec b =

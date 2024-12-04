@@ -18,7 +18,7 @@ CASE("parallel_towards_z_from_xy_disc")
 
         for (i = 0; i < photons.size; i++) {
                 CHECK(photons.array[i].ray.support.z == 0.0);
-                CHECK(mli_math_hypot(
+                CHECK(mtl_math_hypot(
                               photons.array[i].ray.support.x,
                               photons.array[i].ray.support.y) <= disc_radius);
                 CHECK(photons.array[i].ray.direction.x == 0.0);
@@ -35,7 +35,7 @@ CASE("point_like_towards_z")
 {
         struct mliPrng prng = mliPrng_init_MT19937(0u);
         struct mliDynPhoton photons = mliDynPhoton_init();
-        const double opening_angle = mli_math_deg2rad(1.0);
+        const double opening_angle = mtl_math_deg2rad(1.0);
         const double wavelength = 433e-9;
         const uint64_t num_photons = 1000;
         uint64_t i;

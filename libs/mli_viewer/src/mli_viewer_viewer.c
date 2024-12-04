@@ -73,12 +73,12 @@ void mlivr_print_info_line(
                view.position.x,
                view.position.y,
                view.position.z,
-               mli_math_rad2deg(view.rotation.x),
-               mli_math_rad2deg(view.rotation.y),
-               mli_math_rad2deg(view.rotation.z),
-               mli_math_rad2deg(view.field_of_view));
+               mtl_math_rad2deg(view.rotation.x),
+               mtl_math_rad2deg(view.rotation.y),
+               mtl_math_rad2deg(view.rotation.z),
+               mtl_math_rad2deg(view.field_of_view));
         printf("Sun: lat % 3.0fdeg, %02d:%02dh, alt % 3.1fkm",
-               mli_math_rad2deg(tracer_config.atmosphere.sunLatitude),
+               mtl_math_rad2deg(tracer_config.atmosphere.sunLatitude),
                (int)(tracer_config.atmosphere.sunHourAngle),
                (int)(tracer_config.atmosphere.sunHourAngle * 60) % 60,
                tracer_config.atmosphere.altitude * 1e-3);
@@ -352,12 +352,12 @@ int mlivr_run_interactive_viewer(
                         case '6':
                                 mliAtmosphere_decrease_latitude(
                                         &tracer_config.atmosphere,
-                                        mli_math_deg2rad(2.0));
+                                        mtl_math_deg2rad(2.0));
                                 break;
                         case '7':
                                 mliAtmosphere_increase_latitude(
                                         &tracer_config.atmosphere,
-                                        mli_math_deg2rad(2.0));
+                                        mtl_math_deg2rad(2.0));
                                 break;
                         case '8':
                                 mliAtmosphere_decrease_hours(

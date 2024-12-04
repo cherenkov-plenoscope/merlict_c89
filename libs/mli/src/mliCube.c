@@ -34,7 +34,7 @@ struct mliCube mliCube_outermost_cube(const struct mliAABB a)
         double max_half_length;
         center = mliAABB_center(a);
         diff = mliVec_substract(a.upper, a.lower);
-        max_half_length = .5 * MLI_MATH_MAX3(diff.x, diff.y, diff.z);
+        max_half_length = .5 * MTL_MATH_MAX3(diff.x, diff.y, diff.z);
         half_diagonal.x = max_half_length;
         half_diagonal.y = max_half_length;
         half_diagonal.z = max_half_length;

@@ -22,10 +22,10 @@ CASE("uniform population of histogram")
         uint64_t overflow_bin, underflow_bin;
         overflow_bin = 0u;
         underflow_bin = 0u;
-        MLI_MATH_ARRAY_SET(bins, 0u, num_bins);
-        mli_math_linspace(0., 1., bin_edges, num_bin_edges);
+        MTL_MATH_ARRAY_SET(bins, 0u, num_bins);
+        mtl_math_linspace(0., 1., bin_edges, num_bin_edges);
         for (i = 0; i < 100000u; i++) {
-                mli_math_histogram(
+                mtl_math_histogram(
                         bin_edges,
                         num_bin_edges,
                         &underflow_bin,
@@ -56,7 +56,7 @@ CASE("throwing Pi")
                 }
         }
         pi_estimate = 4 * (double)num_in_circle / (double)num_throws;
-        CHECK_MARGIN(pi_estimate, MLI_MATH_PI, 1e-3);
+        CHECK_MARGIN(pi_estimate, MTL_MATH_PI, 1e-3);
 }
 
 CASE("normal, Irwin Hall approximation")
@@ -77,8 +77,8 @@ CASE("normal, Irwin Hall approximation")
                         throws[i] = mli_random_normal_Irwin_Hall_approximation(
                                 &prng, target_mean[s], taregt_std[s]);
                 }
-                mean = mli_math_mean(throws, num_throws);
-                std = mli_math_std(throws, num_throws, mean);
+                mean = mtl_math_mean(throws, num_throws);
+                std = mtl_math_std(throws, num_throws, mean);
 
                 CHECK_MARGIN(
                         mean,
@@ -101,8 +101,8 @@ CASE("uniform_0_to_1_stddev")
         for (i = 0; i < num_samples; i++) {
                 mliDynDouble_push_back(&samples, mli_random_uniform(&prng));
         }
-        mean = mli_math_mean(samples.array, samples.size);
-        std = mli_math_std(samples.array, samples.size, mean);
+        mean = mtl_math_mean(samples.array, samples.size);
+        std = mtl_math_std(samples.array, samples.size, mean);
 
         CHECK_MARGIN(1.0 / sqrt(12.0), std, 1e-3);
         mliDynDouble_free(&samples);
@@ -125,9 +125,9 @@ CASE("full_sphere")
         uint64_t i = 0;
         struct mliPrng prng = mliPrng_init_MT19937(0u);
         const struct mliRandomUniformRange azimuth =
-                mliRandomUniformRange_set(0.0, 2.0 * MLI_MATH_PI);
+                mliRandomUniformRange_set(0.0, 2.0 * MTL_MATH_PI);
         const struct mliRandomZenithRange zenith =
-                mliRandomZenithRange_set(0.0, MLI_MATH_PI);
+                mliRandomZenithRange_set(0.0, MTL_MATH_PI);
         struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -1.0, 1e-6);
@@ -150,9 +150,9 @@ CASE("octo_sphere")
         uint64_t i = 0;
         struct mliPrng prng = mliPrng_init_MT19937(0u);
         const struct mliRandomUniformRange azimuth =
-                mliRandomUniformRange_set(0.0, MLI_MATH_PI / 2.0);
+                mliRandomUniformRange_set(0.0, MTL_MATH_PI / 2.0);
         const struct mliRandomZenithRange zenith =
-                mliRandomZenithRange_set(0., MLI_MATH_PI / 2.0);
+                mliRandomZenithRange_set(0., MTL_MATH_PI / 2.0);
         struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
@@ -174,9 +174,9 @@ CASE("octo_sphere_minus_z")
         uint64_t i = 0;
         struct mliPrng prng = mliPrng_init_MT19937(0u);
         const struct mliRandomUniformRange azimuth =
-                mliRandomUniformRange_set(0.0, MLI_MATH_PI / 2.0);
+                mliRandomUniformRange_set(0.0, MTL_MATH_PI / 2.0);
         const struct mliRandomZenithRange zenith =
-                mliRandomZenithRange_set(MLI_MATH_PI / 2.0, MLI_MATH_PI);
+                mliRandomZenithRange_set(MTL_MATH_PI / 2.0, MTL_MATH_PI);
         struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 0.5, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
@@ -226,8 +226,8 @@ CASE("position_on_disc")
         for (r = evaluation_disc_radius;
              r < disc_radius - evaluation_disc_radius;
              r = r + evaluation_disc_radius) {
-                for (phi = 0; phi < 2.0 * MLI_MATH_PI;
-                     phi = phi + MLI_MATH_PI / 3.0) {
+                for (phi = 0; phi < 2.0 * MTL_MATH_PI;
+                     phi = phi + MTL_MATH_PI / 3.0) {
                         double counts_in_evaluation_bin = 0.0;
                         struct mliVec eval_disc_pos =
                                 mliVec_init(r * cos(phi), r * sin(phi), 0.0);
@@ -245,10 +245,10 @@ CASE("position_on_disc")
         }
 
         /* Expect num. counts in evaluation-bins to be similar */
-        mean_count = mli_math_mean(
+        mean_count = mtl_math_mean(
                 counts_in_evaluation_bins.array,
                 counts_in_evaluation_bins.size);
-        std_count = mli_math_std(
+        std_count = mtl_math_std(
                 counts_in_evaluation_bins.array,
                 counts_in_evaluation_bins.size,
                 mean_count);

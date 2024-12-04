@@ -213,7 +213,7 @@ CASE("rotation representations")
 
         /* z-axis, 45deg */
         q_expected =
-                mliQuaternion_set_tait_bryan(0., 0., -mli_math_deg2rad(45.));
+                mliQuaternion_set_tait_bryan(0., 0., -mtl_math_deg2rad(45.));
 
         sprintf(json_str,
                 "{"

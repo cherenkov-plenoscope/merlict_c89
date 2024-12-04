@@ -35,13 +35,13 @@ CASE("mliColor 8bit range")
         c = mliColor_set(0.0, 0.0, 0.0);
         CHECK(mliColor_is_in_range(c, 0., 256.));
 
-        c = mliColor_set(-MLI_MATH_EPSILON, 0.0, 0.0);
+        c = mliColor_set(-MTL_MATH_EPSILON, 0.0, 0.0);
         CHECK(!mliColor_is_in_range(c, 0., 256.));
 
-        c = mliColor_set(0.0, -MLI_MATH_EPSILON, 0.0);
+        c = mliColor_set(0.0, -MTL_MATH_EPSILON, 0.0);
         CHECK(!mliColor_is_in_range(c, 0., 256.));
 
-        c = mliColor_set(0.0, 0.0, -MLI_MATH_EPSILON);
+        c = mliColor_set(0.0, 0.0, -MTL_MATH_EPSILON);
         CHECK(!mliColor_is_in_range(c, 0., 256.));
 
         c = mliColor_set(255.9, 255.9, 255.9);
@@ -56,6 +56,6 @@ CASE("mliColor 8bit range")
         c = mliColor_set(255.9, 255.9, 256.0);
         CHECK(!mliColor_is_in_range(c, 0., 256.));
 
-        c = mliColor_set(1.0, MLI_MATH_NAN, 1.0);
+        c = mliColor_set(1.0, MTL_MATH_NAN, 1.0);
         CHECK(!mliColor_is_in_range(c, 0., 256.));
 }

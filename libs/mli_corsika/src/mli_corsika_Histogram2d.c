@@ -52,12 +52,12 @@ int mliCorsikaHistogram2d_assign(
 
         has = mliAvlDict_get(&hist->dict, key.i8, &ival);
         if (has) {
-                double dval = mli_math_interpret_int64_as_double(ival);
+                double dval = mtl_math_interpret_int64_as_double(ival);
                 dval += weight;
-                ival = mli_math_interpret_double_as_int64(dval);
+                ival = mtl_math_interpret_double_as_int64(dval);
 
         } else {
-                ival = mli_math_interpret_double_as_int64(weight);
+                ival = mtl_math_interpret_double_as_int64(weight);
         }
         return mliAvlDict_set(&hist->dict, key.i8, ival);
 }
@@ -80,7 +80,7 @@ int mliCorsikaHistogram2d_flatten__(
 
                 bin.x = key.i4i4.x;
                 bin.y = key.i4i4.y;
-                bin.value = mli_math_interpret_int64_as_double(node->value);
+                bin.value = mtl_math_interpret_int64_as_double(node->value);
 
                 chk_msg(mliDynCorsikaHistogram2dBin_push_back(f, bin),
                         "Failed to push back bin-node.");

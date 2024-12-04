@@ -19,11 +19,11 @@ struct mlivrConfig mlivrConfig_default(void)
         cfg.view.position.y = 0.;
         cfg.view.position.z = 0.;
 
-        cfg.view.rotation.x = mli_math_deg2rad(90.);
+        cfg.view.rotation.x = mtl_math_deg2rad(90.);
         cfg.view.rotation.y = 0.;
         cfg.view.rotation.z = 0.;
 
-        cfg.view.field_of_view = mli_math_deg2rad(80.);
+        cfg.view.field_of_view = mtl_math_deg2rad(80.);
 
         cfg.aperture_camera_f_stop_ratio = 0.95;
         cfg.aperture_camera_image_sensor_width = 64e-3;

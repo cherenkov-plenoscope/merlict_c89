@@ -7,7 +7,7 @@ int mliObject_is_valid(const struct mliObject *obj)
 {
         chk_msg(mliObject_has_valid_vertices(obj), "Bad vertex.");
         chk_msg(mliObject_has_valid_faces(obj), "Expected faces to be valid.");
-        chk_msg(mliObject_has_valid_normals(obj, MLI_MATH_EPSILON),
+        chk_msg(mliObject_has_valid_normals(obj, MTL_MATH_EPSILON),
                 "Bad vertex-normal.");
         chk_msg(mliObject_has_valid_materials(obj), "Bad material.");
         return 1;
@@ -52,9 +52,9 @@ int mliObject_has_valid_vertices(const struct mliObject *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_vertices; i++) {
-                chk_msg(!MLI_MATH_IS_NAN(obj->vertices[i].x), "X is 'nan'.");
-                chk_msg(!MLI_MATH_IS_NAN(obj->vertices[i].y), "Y is 'nan'.");
-                chk_msg(!MLI_MATH_IS_NAN(obj->vertices[i].z), "Z is 'nan'.");
+                chk_msg(!MTL_MATH_IS_NAN(obj->vertices[i].x), "X is 'nan'.");
+                chk_msg(!MTL_MATH_IS_NAN(obj->vertices[i].y), "Y is 'nan'.");
+                chk_msg(!MTL_MATH_IS_NAN(obj->vertices[i].z), "Z is 'nan'.");
         }
         return 1;
 chk_error:
@@ -69,11 +69,11 @@ int mliObject_has_valid_normals(
         uint32_t i = 0;
         for (i = 0; i < obj->num_vertex_normals; i++) {
                 double norm;
-                chk_msg(!MLI_MATH_IS_NAN(obj->vertex_normals[i].x),
+                chk_msg(!MTL_MATH_IS_NAN(obj->vertex_normals[i].x),
                         "X is 'nan'.");
-                chk_msg(!MLI_MATH_IS_NAN(obj->vertex_normals[i].y),
+                chk_msg(!MTL_MATH_IS_NAN(obj->vertex_normals[i].y),
                         "Y is 'nan'.");
-                chk_msg(!MLI_MATH_IS_NAN(obj->vertex_normals[i].z),
+                chk_msg(!MTL_MATH_IS_NAN(obj->vertex_normals[i].z),
                         "Z is 'nan'.");
 
                 norm = mliVec_norm(obj->vertex_normals[i]);
@@ -117,13 +117,13 @@ int mliObject_num_unused(
         (*num_unused_materials) = 0;
 
         chk_malloc(v, uint64_t, obj->num_vertices);
-        MLI_MATH_ARRAY_SET(v, 0, obj->num_vertices);
+        MTL_MATH_ARRAY_SET(v, 0, obj->num_vertices);
 
         chk_malloc(vn, uint64_t, obj->num_vertex_normals);
-        MLI_MATH_ARRAY_SET(vn, 0, obj->num_vertex_normals);
+        MTL_MATH_ARRAY_SET(vn, 0, obj->num_vertex_normals);
 
         chk_malloc(mtl, uint64_t, obj->num_materials);
-        MLI_MATH_ARRAY_SET(mtl, 0, obj->num_materials);
+        MTL_MATH_ARRAY_SET(mtl, 0, obj->num_materials);
 
         for (f = 0; f < obj->num_faces; f++) {
                 v[obj->faces_vertices[f].a] += 1;

@@ -598,11 +598,11 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                         mliDynMap_size(&material_names)),
                 "Failed to malloc mliObject from file.");
 
-        MLI_MATH_NCPY(v.array, obj->vertices, v.size);
-        MLI_MATH_NCPY(vn.array, obj->vertex_normals, vn.size);
-        MLI_MATH_NCPY(fv.array, obj->faces_vertices, fv.size);
-        MLI_MATH_NCPY(fvn.array, obj->faces_vertex_normals, fvn.size);
-        MLI_MATH_NCPY(fm.array, obj->faces_materials, fm.size);
+        MTL_MATH_NCPY(v.array, obj->vertices, v.size);
+        MTL_MATH_NCPY(vn.array, obj->vertex_normals, vn.size);
+        MTL_MATH_NCPY(fv.array, obj->faces_vertices, fv.size);
+        MTL_MATH_NCPY(fvn.array, obj->faces_vertex_normals, fvn.size);
+        MTL_MATH_NCPY(fm.array, obj->faces_materials, fm.size);
         for (i = 0; i < mliDynMap_size(&material_names); i++) {
                 memcpy(obj->material_names[i].cstr,
                        material_names.items.array[i].key,

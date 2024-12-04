@@ -100,9 +100,9 @@ int64_t mli_triangle_aabb_check_point(
         int64_t mask)
 {
         struct mliVec plane_point;
-        plane_point.x = mli_math_linear_interpolate_1d(alpha, p1.x, p2.x);
-        plane_point.y = mli_math_linear_interpolate_1d(alpha, p1.y, p2.y);
-        plane_point.z = mli_math_linear_interpolate_1d(alpha, p1.z, p2.z);
+        plane_point.x = mtl_math_linear_interpolate_1d(alpha, p1.x, p2.x);
+        plane_point.y = mtl_math_linear_interpolate_1d(alpha, p1.y, p2.y);
+        plane_point.z = mtl_math_linear_interpolate_1d(alpha, p1.z, p2.z);
         return (mli_triangle_aabb_face_plane(plane_point) & mask);
 }
 
@@ -160,17 +160,17 @@ int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mliVec p)
         /* First, a quick bounding-box test:                               */
         /* If P is outside triangle bbox, there cannot be an intersection. */
 
-        if (p.x > MLI_MATH_MAX3(t.v1.x, t.v2.x, t.v3.x))
+        if (p.x > MTL_MATH_MAX3(t.v1.x, t.v2.x, t.v3.x))
                 return (MLI_OUTSIDE);
-        if (p.y > MLI_MATH_MAX3(t.v1.y, t.v2.y, t.v3.y))
+        if (p.y > MTL_MATH_MAX3(t.v1.y, t.v2.y, t.v3.y))
                 return (MLI_OUTSIDE);
-        if (p.z > MLI_MATH_MAX3(t.v1.z, t.v2.z, t.v3.z))
+        if (p.z > MTL_MATH_MAX3(t.v1.z, t.v2.z, t.v3.z))
                 return (MLI_OUTSIDE);
-        if (p.x < MLI_MATH_MIN3(t.v1.x, t.v2.x, t.v3.x))
+        if (p.x < MTL_MATH_MIN3(t.v1.x, t.v2.x, t.v3.x))
                 return (MLI_OUTSIDE);
-        if (p.y < MLI_MATH_MIN3(t.v1.y, t.v2.y, t.v3.y))
+        if (p.y < MTL_MATH_MIN3(t.v1.y, t.v2.y, t.v3.y))
                 return (MLI_OUTSIDE);
-        if (p.z < MLI_MATH_MIN3(t.v1.z, t.v2.z, t.v3.z))
+        if (p.z < MTL_MATH_MIN3(t.v1.z, t.v2.z, t.v3.z))
                 return (MLI_OUTSIDE);
 
         /* For each triangle side, make a vector out of it by subtracting
@@ -185,25 +185,25 @@ int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mliVec p)
         vect12 = mliVec_substract(t.v1, t.v2);
         vect1h = mliVec_substract(t.v1, p);
         cross12_1p = mliVec_cross(vect12, vect1h);
-        /*sign12_bitmask = MLI_MATH_SIGN3(cross12_1p);*/
-        sign12_bitmask = mliVec_sign3_bitmask(cross12_1p, MLI_MATH_EPSILON);
+        /*sign12_bitmask = MTL_MATH_SIGN3(cross12_1p);*/
+        sign12_bitmask = mliVec_sign3_bitmask(cross12_1p, MTL_MATH_EPSILON);
         /* Extract X,Y,Z signs as 0..7 or 0...63 integer */
 
         vect23 = mliVec_substract(t.v2, t.v3);
         vect2h = mliVec_substract(t.v2, p);
         cross23_2p = mliVec_cross(vect23, vect2h);
-        sign23_bitmask = mliVec_sign3_bitmask(cross23_2p, MLI_MATH_EPSILON);
+        sign23_bitmask = mliVec_sign3_bitmask(cross23_2p, MTL_MATH_EPSILON);
 
         vect31 = mliVec_substract(t.v3, t.v1);
         vect3h = mliVec_substract(t.v3, p);
         cross31_3p = mliVec_cross(vect31, vect3h);
-        sign31_bitmask = mliVec_sign3_bitmask(cross31_3p, MLI_MATH_EPSILON);
+        sign31_bitmask = mliVec_sign3_bitmask(cross31_3p, MTL_MATH_EPSILON);
 
         /* If all three crossproduct vectors agree in their component signs,  */
         /* then the point must be inside all three.                           */
         /* P cannot be MLI_OUTSIDE all three sides simultaneously. */
 
-        /* this is the old test; with the revised MLI_MATH_SIGN3() macro, the
+        /* this is the old test; with the revised MTL_MATH_SIGN3() macro, the
          * test needs to be revised. */
         return ((sign12_bitmask & sign23_bitmask & sign31_bitmask) == 0)
                        ? MLI_OUTSIDE
@@ -306,7 +306,7 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
 
         /* if one of the diagonals is parallel to the plane,
          * the other will intersect the plane */
-        if (fabs(denom = (norm.x + norm.y + norm.z)) > MLI_MATH_EPSILON)
+        if (fabs(denom = (norm.x + norm.y + norm.z)) > MTL_MATH_EPSILON)
         /* skip parallel diagonals to the plane; division by 0 can occur */
         {
                 hitpp.x = hitpp.y = hitpp.z = d / denom;
@@ -315,21 +315,21 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
-        if (fabs(denom = (norm.x + norm.y - norm.z)) > MLI_MATH_EPSILON) {
+        if (fabs(denom = (norm.x + norm.y - norm.z)) > MTL_MATH_EPSILON) {
                 hitpn.z = -(hitpn.x = hitpn.y = d / denom);
                 if (fabs(hitpn.x) <= 0.5)
                         if (mliTriangle_intersects_point(t, hitpn) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
-        if (fabs(denom = (norm.x - norm.y + norm.z)) > MLI_MATH_EPSILON) {
+        if (fabs(denom = (norm.x - norm.y + norm.z)) > MTL_MATH_EPSILON) {
                 hitnp.y = -(hitnp.x = hitnp.z = d / denom);
                 if (fabs(hitnp.x) <= 0.5)
                         if (mliTriangle_intersects_point(t, hitnp) ==
                             MLI_INSIDE)
                                 return (MLI_INSIDE);
         }
-        if (fabs(denom = (norm.x - norm.y - norm.z)) > MLI_MATH_EPSILON) {
+        if (fabs(denom = (norm.x - norm.y - norm.z)) > MTL_MATH_EPSILON) {
                 hitnn.y = hitnn.z = -(hitnn.x = d / denom);
                 if (fabs(hitnn.x) <= 0.5)
                         if (mliTriangle_intersects_point(t, hitnn) ==
@@ -392,11 +392,11 @@ struct mliAABB mliTriangle_aabb(
         const struct mliVec c)
 {
         struct mliAABB aabb;
-        aabb.lower.x = MLI_MATH_MIN3(a.x, b.x, c.x);
-        aabb.lower.y = MLI_MATH_MIN3(a.y, b.y, c.y);
-        aabb.lower.z = MLI_MATH_MIN3(a.z, b.z, c.z);
-        aabb.upper.x = MLI_MATH_MAX3(a.x, b.x, c.x);
-        aabb.upper.y = MLI_MATH_MAX3(a.y, b.y, c.y);
-        aabb.upper.z = MLI_MATH_MAX3(a.z, b.z, c.z);
+        aabb.lower.x = MTL_MATH_MIN3(a.x, b.x, c.x);
+        aabb.lower.y = MTL_MATH_MIN3(a.y, b.y, c.y);
+        aabb.lower.z = MTL_MATH_MIN3(a.z, b.z, c.z);
+        aabb.upper.x = MTL_MATH_MAX3(a.x, b.x, c.x);
+        aabb.upper.y = MTL_MATH_MAX3(a.y, b.y, c.y);
+        aabb.upper.z = MTL_MATH_MAX3(a.z, b.z, c.z);
         return aabb;
 }

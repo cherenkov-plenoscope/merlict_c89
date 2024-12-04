@@ -38,9 +38,9 @@ int mliGeometryToMaterialMap_malloc(
                 map->first_boundary_layer_in_robject,
                 uint32_t,
                 map->num_robjects);
-        MLI_MATH_ARRAY_SET(
+        MTL_MATH_ARRAY_SET(
                 map->first_boundary_layer_in_robject, 0, map->num_robjects);
-        MLI_MATH_ARRAY_SET(
+        MTL_MATH_ARRAY_SET(
                 map->boundary_layers, 0, map->total_num_boundary_layers);
         return 1;
 chk_error:

@@ -72,8 +72,8 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
         chk_msg(mliFunc_malloc(func, x.size),
                 "Failed to malloc mliFunc from file.");
 
-        MLI_MATH_NCPY(x.array, func->x, x.size);
-        MLI_MATH_NCPY(y.array, func->y, y.size);
+        MTL_MATH_NCPY(x.array, func->x, x.size);
+        MTL_MATH_NCPY(y.array, func->y, y.size);
 
         mliDynDouble_free(&x);
         mliDynDouble_free(&y);

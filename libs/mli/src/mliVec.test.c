@@ -229,7 +229,7 @@ CASE("ncpy")
         a[1] = mliVec_init(3., 4., 5.);
         a[2] = mliVec_init(6., 7., 8.);
 
-        MLI_MATH_NCPY(a, b, 3); /* <--- to be tested */
+        MTL_MATH_NCPY(a, b, 3); /* <--- to be tested */
 
         for (i = 0; i < 3; i++) {
                 CHECK(a[i].x == b[i].x);
@@ -248,9 +248,9 @@ CASE("mean")
                 a[i] = mliVec_init(j, -j, j * j);
         }
         m = mliVec_mean(a, 10);
-        CHECK_MARGIN(m.x, 4.5, MLI_MATH_EPSILON);
-        CHECK_MARGIN(m.y, -4.5, MLI_MATH_EPSILON);
-        CHECK_MARGIN(m.z, 28.5, MLI_MATH_EPSILON);
+        CHECK_MARGIN(m.x, 4.5, MTL_MATH_EPSILON);
+        CHECK_MARGIN(m.y, -4.5, MTL_MATH_EPSILON);
+        CHECK_MARGIN(m.z, 28.5, MTL_MATH_EPSILON);
 }
 
 CASE("mean_of_zero_samples")
@@ -258,7 +258,7 @@ CASE("mean_of_zero_samples")
         struct mliVec a[1];
         struct mliVec m = {0.0, 0.0, 0.0};
         m = mliVec_mean(a, 0);
-        CHECK(MLI_MATH_IS_NAN(m.x));
-        CHECK(MLI_MATH_IS_NAN(m.y));
-        CHECK(MLI_MATH_IS_NAN(m.z));
+        CHECK(MTL_MATH_IS_NAN(m.x));
+        CHECK(MTL_MATH_IS_NAN(m.y));
+        CHECK(MTL_MATH_IS_NAN(m.z));
 }

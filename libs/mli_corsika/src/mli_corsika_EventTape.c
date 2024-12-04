@@ -80,7 +80,7 @@ int mliEventTapeWriter_write_runh(
         const float *runh)
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
-        tio->run_number = (int)(MLI_MATH_ROUND(runh[1]));
+        tio->run_number = (int)(MTL_MATH_ROUND(runh[1]));
         chk_msg(tio->run_number >= 1, "Expected run_number >= 1.");
         sprintf(path, "%09d/RUNH.float32", tio->run_number);
         chk_msg(mliEventTapeWriter_write_corsika_header(tio, path, runh),
@@ -96,7 +96,7 @@ int mliEventTapeWriter_write_evth(
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
         int evth_run_number =
-                (int)(MLI_MATH_ROUND(evth[MLI_CORSIKA_EVTH_RUN_NUMBER]));
+                (int)(MTL_MATH_ROUND(evth[MLI_CORSIKA_EVTH_RUN_NUMBER]));
 
         if (tio->event_number > 0) {
                 chk_msg(mliEventTapeWriter_flush_cherenkov_bunch_block(tio),
@@ -107,7 +107,7 @@ int mliEventTapeWriter_write_evth(
                 "Expected run_number in EVTH "
                 "to match run_number in last RUNH.");
         tio->event_number =
-                (int)(MLI_MATH_ROUND(evth[MLI_CORSIKA_EVTH_EVENT_NUMBER]));
+                (int)(MTL_MATH_ROUND(evth[MLI_CORSIKA_EVTH_EVENT_NUMBER]));
         chk_msg(tio->event_number > 0, "Expected event_number > 0.");
         tio->cherenkov_bunch_block_number = 1;
         sprintf(path,
@@ -228,7 +228,7 @@ int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh)
                         &tio->run_number, &tio->tarh.name[0], BASE, NUM_DIGITS),
                 "Can't read run_number from RUNH's path.");
         runh_run_number =
-                (uint64_t)(MLI_MATH_ROUND(runh[MLI_CORSIKA_RUNH_RUN_NUMBER]));
+                (uint64_t)(MTL_MATH_ROUND(runh[MLI_CORSIKA_RUNH_RUN_NUMBER]));
         chk_msg(tio->run_number == runh_run_number,
                 "Expected run_number in RUNH's path "
                 "to match run_number in RUNH.");

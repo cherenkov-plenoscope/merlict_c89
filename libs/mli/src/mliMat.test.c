@@ -88,7 +88,7 @@ CASE("qr_decomposition")
         for (i = 0; i < 3; i++) {
                 int match = 0;
                 for (j = 0; j < 3; j++) {
-                        if (mli_math_relative_ratio(exp_eval[i], act_eval[j]) <
+                        if (mtl_math_relative_ratio(exp_eval[i], act_eval[j]) <
                             1e-4) {
                                 int eq;
                                 match += 1;
