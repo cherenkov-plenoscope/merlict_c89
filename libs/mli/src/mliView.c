@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mliMat.h"
 #include "mliHomTra.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 struct mliVec mliView_optical_axis(const struct mliView cam)
 {

@@ -2,7 +2,7 @@
 #include "mliImage.h"
 #include <assert.h>
 #include "mliPixelWalk.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "../../chk/src/chk.h"
 #include <float.h>
 

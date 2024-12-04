@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliCube.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 struct mliVec mliCube_upper(const struct mliCube a)
 {

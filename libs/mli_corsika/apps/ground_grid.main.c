@@ -6,7 +6,7 @@
 #include "../src/mli_corsika_Histogram2d.h"
 #include "../../chk/src/chk.h"
 #include "../../mtl/src/string_numbers.h"
-#include "../../mli/src/mli_math.h"
+#include "../../mtl/src/math.h"
 #include "../../mtl/src/io.h"
 #include "../../mli/src/mliTar.h"
 #include "../../mli/src/mliTarIo.h"

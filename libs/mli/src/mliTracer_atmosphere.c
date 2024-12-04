@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 #include "mli_random.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "mliIntersectionSurfaceNormal.h"
 #include "mliIntersection.h"
 #include "mli_ray_scenery_query.h"

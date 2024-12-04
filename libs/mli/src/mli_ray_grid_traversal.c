@@ -1,6 +1,6 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "mli_ray_grid_traversal.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "mliRay_AABB.h"
 #include <assert.h>
 #include <math.h>

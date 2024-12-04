@@ -2,7 +2,7 @@
 #include "mliApertureCamera.h"
 #include <math.h>
 #include <assert.h>
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "../../chk/src/chk.h"
 
 struct mliApertureCamera mliApertureCamera_init(void)

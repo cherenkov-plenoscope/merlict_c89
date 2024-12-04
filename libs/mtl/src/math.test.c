@@ -1,7 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
 #include "../../mli_testing/src/mli_testing.h"
-#include "../src/mli_math.h"
 
 CASE("rad2deg, deg2rad")
 {

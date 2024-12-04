@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_viewer_Config.h"
-#include "../../mli/src/mli_math.h"
+#include "../../mtl/src/math.h"
 
 struct mlivrConfig mlivrConfig_default(void)
 {

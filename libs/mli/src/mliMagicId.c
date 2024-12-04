@@ -2,7 +2,7 @@
 #include "mliMagicId.h"
 #include <assert.h>
 #include "mli_version.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "../../chk/src/chk.h"
 
 struct mliMagicId mliMagicId_init(void)

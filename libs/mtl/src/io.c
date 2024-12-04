@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "../../chk/src/chk.h"
 #include "vector.h"
+#include "cstr.h"
 
 struct mtl_IO mtl_IO_init(void)
 {

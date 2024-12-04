@@ -5,7 +5,7 @@
 #include "../../mtl/src/cstr.h"
 #include "../../mtl/src/cstr_numbers.h"
 #include "../../chk/src/chk.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
 {

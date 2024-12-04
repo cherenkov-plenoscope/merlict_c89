@@ -2,7 +2,7 @@
 #include "mli_random.h"
 #include <math.h>
 #include <assert.h>
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 double mli_random_uniform(struct mliPrng *prng)
 {

@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_lambertian_cosine_law.h"
 #include <math.h>
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "mliMat.h"
 #include "mliHomTra.h"
 

@@ -3,7 +3,7 @@
 #include "mli_corsika_Histogram2d.h"
 #include <string.h>
 #include "../../chk/src/chk.h"
-#include "../../mli/src/mli_math.h"
+#include "../../mtl/src/math.h"
 
 MTL_VECTOR_IMPLEMENTATION(
         mliDynCorsikaHistogram2dBin,

@@ -3,7 +3,7 @@
 #include "mliObject_AABB.h"
 #include "mliGeometryAndAccelerator.h"
 #include "../../chk/src/chk.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 struct mliAccelerator mliAccelerator_init(void)
 {

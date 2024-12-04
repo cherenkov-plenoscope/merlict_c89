@@ -2,7 +2,7 @@
 #include "mli_triangle_intersection.h"
 #include <math.h>
 #include "mli_barycentric.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 int mliRay_intersects_triangle(
         const struct mliRay ray,

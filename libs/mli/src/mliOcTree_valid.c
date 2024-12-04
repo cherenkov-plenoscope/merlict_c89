@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree_valid.h"
 #include "../../chk/src/chk.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 int mliOcTree_valid(const struct mliOcTree *octree)
 {

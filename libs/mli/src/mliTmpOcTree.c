@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTmpOcTree.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "mliObject_AABB.h"
 #include "mliDynUint32.h"
 #include "../../chk/src/chk.h"

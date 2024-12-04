@@ -4,7 +4,7 @@
 #include "../../mtl/src/cstr.h"
 #include "../../mtl/src/cstr_numbers.h"
 #include "mli_json_jsmn.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "../../chk/src/chk.h"
 
 struct mliJson mliJson_init(void)

@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "../../chk/src/chk.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 struct mliGeometryToMaterialMap mliGeometryToMaterialMap_init(void)
 {

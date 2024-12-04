@@ -13,7 +13,7 @@
 #include "mliDynDouble.h"
 #include "../../mtl/src/cstr.h"
 #include "../../mtl/src/cstr_numbers.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 #define MLI_WAVEFRONT_FACE_LINE_V 7
 #define MLI_WAVEFRONT_FACE_LINE_V_VN 37

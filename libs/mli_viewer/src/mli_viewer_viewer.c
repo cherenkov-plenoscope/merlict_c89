@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <time.h>
 #include "../../chk/src/chk.h"
-#include "../../mli/src/mli_math.h"
+#include "../../mtl/src/math.h"
 #include "../../mli/src/mliIntersectionSurfaceNormal.h"
 #include "../../mli/src/mliImage.h"
 #include "../../mli/src/mliImage_print.h"

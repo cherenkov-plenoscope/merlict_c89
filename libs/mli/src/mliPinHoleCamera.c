@@ -3,7 +3,7 @@
 #include <math.h>
 #include <assert.h>
 #include "mliPixelWalk.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "mliHomTra.h"
 
 struct mliPinHoleCamera mliPinHoleCamera_init(

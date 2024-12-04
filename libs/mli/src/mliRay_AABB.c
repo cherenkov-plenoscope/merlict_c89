@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliRay_AABB.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 void mliRay_aabb_intersections(
         const struct mliRay ray,

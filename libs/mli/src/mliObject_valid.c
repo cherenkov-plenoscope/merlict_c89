@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject_valid.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "../../chk/src/chk.h"
 
 int mliObject_is_valid(const struct mliObject *obj)

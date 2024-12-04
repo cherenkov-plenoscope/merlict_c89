@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "../../chk/src/chk.h"
-#include "../../mli/src/mli_math.h"
+#include "../../mtl/src/math.h"
 
 int mtl_cstr_ends_with(const char *str, const char *sufix)
 {

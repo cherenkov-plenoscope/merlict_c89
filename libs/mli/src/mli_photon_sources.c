@@ -2,7 +2,7 @@
 #include "mli_photon_sources.h"
 #include "../../chk/src/chk.h"
 #include "mli_random.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 int mli_photon_source_parallel_towards_z_from_xy_disc(
         struct mliDynPhoton *out_photons,

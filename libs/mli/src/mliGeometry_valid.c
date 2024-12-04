@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry_valid.h"
 #include "mliObject_valid.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 #include "../../chk/src/chk.h"
 
 int mliGeometry_valid_objects(const struct mliGeometry *geometry)

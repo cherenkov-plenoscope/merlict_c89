@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "mliMagicId.h"
 #include "../../chk/src/chk.h"
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 struct mliFunc mliFunc_init(void)
 {

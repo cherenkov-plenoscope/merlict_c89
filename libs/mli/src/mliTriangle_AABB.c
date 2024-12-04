@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTriangle_AABB.h"
 #include <math.h>
-#include "mli_math.h"
+#include "../../mtl/src/math.h"
 
 #define MLI_INSIDE 0
 #define MLI_OUTSIDE 1
