@@ -9,7 +9,7 @@ struct mliVec mli_draw_lambertian_direction_wrt_z(struct mliPrng *prng)
 {
         double azimuth;
         double sin_theta, cos_theta;
-        azimuth = MLI_2PI * mli_random_uniform(prng);
+        azimuth = MLI_MATH_2PI * mli_random_uniform(prng);
         sin_theta = mli_random_uniform(prng);
         cos_theta = sqrt(1.0 - sin_theta * sin_theta);
         return mliVec_init(

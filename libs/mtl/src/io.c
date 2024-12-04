@@ -260,10 +260,10 @@ int mtl_String_convert_line_break_CRLF_CR_to_LF(
         chk(mtl_IO_malloc(&sdst));
 
         while (i < src->size) {
-                if (mli_cstr_is_CRLF((char *)&src->array[i])) {
+                if (mtl_cstr_is_CRLF((char *)&src->array[i])) {
                         chk(mtl_IO_write_char(&sdst, '\n'));
                         i += 2;
-                } else if (mli_cstr_is_CR((char *)&src->array[i])) {
+                } else if (mtl_cstr_is_CR((char *)&src->array[i])) {
                         chk(mtl_IO_write_char(&sdst, '\n'));
                         i += 1;
                 } else {

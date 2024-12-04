@@ -187,9 +187,9 @@ void mliImage_sobel(const struct mliImage *image, struct mliImage *out)
                         yg += +1. * image->raw[idx_cm1_rm1].g;
                         yb += +1. * image->raw[idx_cm1_rm1].b;
 
-                        out->raw[idx].r = mli_hypot(xr, yr);
-                        out->raw[idx].g = mli_hypot(xg, yg);
-                        out->raw[idx].b = mli_hypot(xb, yb);
+                        out->raw[idx].r = mli_math_hypot(xr, yr);
+                        out->raw[idx].g = mli_math_hypot(xg, yg);
+                        out->raw[idx].b = mli_math_hypot(xb, yb);
                 }
         }
 }
@@ -342,10 +342,10 @@ void mliImage_histogram(
         uint64_t col_upper_idx, row_upper_idx;
         int valid_col, valid_row;
 
-        col_upper_idx = mli_upper_compare_double(
+        col_upper_idx = MLI_MATH_UPPER_COMPARE_double(
                 col_bin_edges, img->num_cols + 1, col_val);
 
-        row_upper_idx = mli_upper_compare_double(
+        row_upper_idx = MLI_MATH_UPPER_COMPARE_double(
                 row_bin_edges, img->num_rows + 1, row_val);
 
         valid_col = col_upper_idx > 0 && col_upper_idx < img->num_cols + 1;

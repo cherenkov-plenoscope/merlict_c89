@@ -71,8 +71,10 @@ struct mliAABB mliObject_aabb(
         uint64_t face_idx;
 
         if (obj->num_faces == 0) {
-                aabb.lower = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
-                aabb.upper = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                aabb.lower =
+                        mliVec_init(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
+                aabb.upper =
+                        mliVec_init(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
                 return aabb;
         }
 
@@ -94,29 +96,29 @@ struct mliAABB mliObject_aabb(
                 const struct mliVec c_root =
                         mliHomTra_pos(&local2root, c_local);
 
-                aabb.lower.x = MLI_MIN2(aabb.lower.x, a_root.x);
-                aabb.lower.y = MLI_MIN2(aabb.lower.y, a_root.y);
-                aabb.lower.z = MLI_MIN2(aabb.lower.z, a_root.z);
+                aabb.lower.x = MLI_MATH_MIN2(aabb.lower.x, a_root.x);
+                aabb.lower.y = MLI_MATH_MIN2(aabb.lower.y, a_root.y);
+                aabb.lower.z = MLI_MATH_MIN2(aabb.lower.z, a_root.z);
 
-                aabb.upper.x = MLI_MAX2(aabb.upper.x, a_root.x);
-                aabb.upper.y = MLI_MAX2(aabb.upper.y, a_root.y);
-                aabb.upper.z = MLI_MAX2(aabb.upper.z, a_root.z);
+                aabb.upper.x = MLI_MATH_MAX2(aabb.upper.x, a_root.x);
+                aabb.upper.y = MLI_MATH_MAX2(aabb.upper.y, a_root.y);
+                aabb.upper.z = MLI_MATH_MAX2(aabb.upper.z, a_root.z);
 
-                aabb.lower.x = MLI_MIN2(aabb.lower.x, b_root.x);
-                aabb.lower.y = MLI_MIN2(aabb.lower.y, b_root.y);
-                aabb.lower.z = MLI_MIN2(aabb.lower.z, b_root.z);
+                aabb.lower.x = MLI_MATH_MIN2(aabb.lower.x, b_root.x);
+                aabb.lower.y = MLI_MATH_MIN2(aabb.lower.y, b_root.y);
+                aabb.lower.z = MLI_MATH_MIN2(aabb.lower.z, b_root.z);
 
-                aabb.upper.x = MLI_MAX2(aabb.upper.x, b_root.x);
-                aabb.upper.y = MLI_MAX2(aabb.upper.y, b_root.y);
-                aabb.upper.z = MLI_MAX2(aabb.upper.z, b_root.z);
+                aabb.upper.x = MLI_MATH_MAX2(aabb.upper.x, b_root.x);
+                aabb.upper.y = MLI_MATH_MAX2(aabb.upper.y, b_root.y);
+                aabb.upper.z = MLI_MATH_MAX2(aabb.upper.z, b_root.z);
 
-                aabb.lower.x = MLI_MIN2(aabb.lower.x, c_root.x);
-                aabb.lower.y = MLI_MIN2(aabb.lower.y, c_root.y);
-                aabb.lower.z = MLI_MIN2(aabb.lower.z, c_root.z);
+                aabb.lower.x = MLI_MATH_MIN2(aabb.lower.x, c_root.x);
+                aabb.lower.y = MLI_MATH_MIN2(aabb.lower.y, c_root.y);
+                aabb.lower.z = MLI_MATH_MIN2(aabb.lower.z, c_root.z);
 
-                aabb.upper.x = MLI_MAX2(aabb.upper.x, c_root.x);
-                aabb.upper.y = MLI_MAX2(aabb.upper.y, c_root.y);
-                aabb.upper.z = MLI_MAX2(aabb.upper.z, c_root.z);
+                aabb.upper.x = MLI_MATH_MAX2(aabb.upper.x, c_root.x);
+                aabb.upper.y = MLI_MATH_MAX2(aabb.upper.y, c_root.y);
+                aabb.upper.z = MLI_MATH_MAX2(aabb.upper.z, c_root.z);
         }
         return aabb;
 }

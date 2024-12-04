@@ -21,7 +21,7 @@ int mliRay_intersects_triangle(
         h = mliVec_cross(ray.direction, edge2);
         a = mliVec_dot(edge1, h);
 
-        if (a > -MLI_EPSILON && a < MLI_EPSILON)
+        if (a > -MLI_MATH_EPSILON && a < MLI_MATH_EPSILON)
                 return 0; /* This ray is parallel to this triangle. */
         f = 1.0 / a;
         s = mliVec_substract(ray.support, vertex_a);
@@ -35,7 +35,7 @@ int mliRay_intersects_triangle(
         /* At this stage we can compute t to find out where the intersection */
         /* point is on the line. */
         t = f * mliVec_dot(edge2, q);
-        if (t > MLI_EPSILON) {
+        if (t > MLI_MATH_EPSILON) {
                 (*intersection_ray_parameter) = t;
                 return 1;
         } else {

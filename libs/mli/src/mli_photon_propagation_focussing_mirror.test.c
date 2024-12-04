@@ -25,7 +25,7 @@ CASE("focussing_a_parallel_beam")
 
         CHECK(mliImage_malloc(&screen_img, NUM_PIXEL, NUM_PIXEL));
         mliImage_set_all_pixel(&screen_img, mliColor_set(20.0, 0.0, 0.0));
-        mli_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
+        mli_math_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
         wavelength_range = mliRandomUniformRange_set(380e-9, 700e-9);
 
         CHECK(mliScenery_malloc_from_path_tar(

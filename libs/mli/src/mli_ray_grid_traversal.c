@@ -165,9 +165,9 @@ struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
                 grid, ray, &traversal.voxel);
         if (traversal.valid) {
                 struct mliVec first_plane;
-                traversal.step.x = MLI_SIGN(ray->direction.x);
-                traversal.step.y = MLI_SIGN(ray->direction.y);
-                traversal.step.z = MLI_SIGN(ray->direction.z);
+                traversal.step.x = MLI_MATH_SIGN(ray->direction.x);
+                traversal.step.y = MLI_MATH_SIGN(ray->direction.y);
+                traversal.step.z = MLI_MATH_SIGN(ray->direction.z);
 
                 first_plane = mliAxisAlignedGridTraversal_first_plane(
                         grid, traversal.voxel, ray->direction);

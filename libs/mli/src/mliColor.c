@@ -81,11 +81,11 @@ int mliColor_is_in_range(
         const float start,
         const float stop)
 {
-        if (MLI_IS_NAN(c.r))
+        if (MLI_MATH_IS_NAN(c.r))
                 return 0;
-        if (MLI_IS_NAN(c.g))
+        if (MLI_MATH_IS_NAN(c.g))
                 return 0;
-        if (MLI_IS_NAN(c.b))
+        if (MLI_MATH_IS_NAN(c.b))
                 return 0;
 
         if (c.r < start || c.r >= stop)

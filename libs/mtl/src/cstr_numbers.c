@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_cstr_numbers.h"
+#include "cstr_numbers.h"
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "../../chk/src/chk.h"
 
-int mli_cstr_nto_int64(
+int mtl_cstr_nto_int64(
         int64_t *out,
         const char *s,
         const uint64_t base,
@@ -32,23 +32,23 @@ chk_error:
         return 0;
 }
 
-int mli_cstr_to_int64(int64_t *out, const char *s, const uint64_t base)
+int mtl_cstr_to_int64(int64_t *out, const char *s, const uint64_t base)
 {
-        chk_msg(mli_cstr_nto_int64(out, s, base, strlen(s)),
+        chk_msg(mtl_cstr_nto_int64(out, s, base, strlen(s)),
                 "Can not convert string to int64.");
         return 1;
 chk_error:
         return 0;
 }
 
-int mli_cstr_nto_uint64(
+int mtl_cstr_nto_uint64(
         uint64_t *out,
         const char *s,
         const uint64_t base,
         const uint64_t expected_num_chars)
 {
         int64_t tmp;
-        chk(mli_cstr_nto_int64(&tmp, s, base, expected_num_chars));
+        chk(mtl_cstr_nto_int64(&tmp, s, base, expected_num_chars));
         chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
         return 1;
@@ -56,10 +56,10 @@ chk_error:
         return 0;
 }
 
-int mli_cstr_to_uint64(uint64_t *out, const char *s, const uint64_t base)
+int mtl_cstr_to_uint64(uint64_t *out, const char *s, const uint64_t base)
 {
         int64_t tmp;
-        chk(mli_cstr_to_int64(&tmp, s, base));
+        chk(mtl_cstr_to_int64(&tmp, s, base));
         chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
         return 1;
@@ -67,7 +67,7 @@ chk_error:
         return 0;
 }
 
-int mli_cstr_nto_double(
+int mtl_cstr_nto_double(
         double *out,
         const char *s,
         const uint64_t expected_num_chars)
@@ -92,16 +92,16 @@ chk_error:
         return 0;
 }
 
-int mli_cstr_to_double(double *out, const char *s)
+int mtl_cstr_to_double(double *out, const char *s)
 {
-        chk_msg(mli_cstr_nto_double(out, s, strlen(s)),
+        chk_msg(mtl_cstr_nto_double(out, s, strlen(s)),
                 "Can not convert string to float64.");
         return 1;
 chk_error:
         return 0;
 }
 
-int mli_cstr_print_uint64(
+int mtl_cstr_print_uint64(
         uint64_t u,
         char *s,
         const uint64_t max_num_chars,

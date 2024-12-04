@@ -26,14 +26,14 @@ int mliGeometry_valid_robjects_HomTras(const struct mliGeometry *geometry)
                 const struct mliVec t = geometry->robject2root[i].translation;
                 const struct mliQuaternion q =
                         geometry->robject2root[i].rotation;
-                chk_msg(!MLI_IS_NAN(t.x), "translation.x is 'nan'.");
-                chk_msg(!MLI_IS_NAN(t.y), "translation.y is 'nan'.");
-                chk_msg(!MLI_IS_NAN(t.z), "translation.z is 'nan'.");
+                chk_msg(!MLI_MATH_IS_NAN(t.x), "translation.x is 'nan'.");
+                chk_msg(!MLI_MATH_IS_NAN(t.y), "translation.y is 'nan'.");
+                chk_msg(!MLI_MATH_IS_NAN(t.z), "translation.z is 'nan'.");
 
-                chk_msg(!MLI_IS_NAN(q.w), "quaternion.w is 'nan'.");
-                chk_msg(!MLI_IS_NAN(q.x), "quaternion.x is 'nan'.");
-                chk_msg(!MLI_IS_NAN(q.y), "quaternion.y is 'nan'.");
-                chk_msg(!MLI_IS_NAN(q.z), "quaternion.z is 'nan'.");
+                chk_msg(!MLI_MATH_IS_NAN(q.w), "quaternion.w is 'nan'.");
+                chk_msg(!MLI_MATH_IS_NAN(q.x), "quaternion.x is 'nan'.");
+                chk_msg(!MLI_MATH_IS_NAN(q.y), "quaternion.y is 'nan'.");
+                chk_msg(!MLI_MATH_IS_NAN(q.z), "quaternion.z is 'nan'.");
         }
         return 1;
 chk_error:

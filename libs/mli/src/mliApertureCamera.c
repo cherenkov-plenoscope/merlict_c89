@@ -27,12 +27,12 @@ struct mliVec mliApertureCamera_pixel_center_on_image_sensor_plane(
         const uint64_t pixel_y)
 {
         struct mliVec pixel_center;
-        pixel_center.x = -1.0 * mli_bin_center_in_linear_space(
+        pixel_center.x = -1.0 * mli_math_bin_center_in_linear_space(
                                         -0.5 * image_sensor_width_x,
                                         +0.5 * image_sensor_width_x,
                                         num_pixel_x,
                                         pixel_x);
-        pixel_center.y = -1.0 * mli_bin_center_in_linear_space(
+        pixel_center.y = -1.0 * mli_math_bin_center_in_linear_space(
                                         -0.5 * image_sensor_width_y,
                                         +0.5 * image_sensor_width_y,
                                         num_pixel_y,

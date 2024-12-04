@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_json.h"
 #include <stdlib.h>
-#include "mli_cstr.h"
-#include "mli_cstr_numbers.h"
+#include "../../mtl/src/cstr.h"
+#include "../../mtl/src/cstr_numbers.h"
 #include "mli_json_jsmn.h"
 #include "mli_math.h"
 #include "../../chk/src/chk.h"
@@ -29,7 +29,7 @@ int mliJson_malloc_tokens__(struct mliJson *json)
         chk_msg(&json->raw.array != NULL, "Expected raw cstr to be malloced.");
         json->num_tokens = json->raw.size / 2;
         chk_malloc(json->tokens, struct jsmntok_t, json->num_tokens);
-        MLI_ARRAY_SET(json->tokens, default_token, json->num_tokens);
+        MLI_MATH_ARRAY_SET(json->tokens, default_token, json->num_tokens);
         return 1;
 chk_error:
         return 0;
@@ -120,7 +120,7 @@ int mliJson_int64_by_token(
         const uint64_t token_length = t.end - t.start;
         chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
-        chk_msg(mli_cstr_nto_int64(
+        chk_msg(mtl_cstr_nto_int64(
                         return_int64,
                         (char *)&json->raw.array[t.start],
                         10,
@@ -185,7 +185,7 @@ int mliJson_double_by_token(
         const uint64_t token_length = t.end - t.start;
         chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json float64 expected json-token-to be JSMN_PRIMITIVE.");
-        chk_msg(mli_cstr_nto_double(
+        chk_msg(mtl_cstr_nto_double(
                         val, (char *)&json->raw.array[t.start], token_length),
                 "Can't parse double.");
         return 1;

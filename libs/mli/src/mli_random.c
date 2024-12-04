@@ -101,7 +101,7 @@ struct mliVec mli_random_position_on_disc(
         struct mliPrng *prng)
 {
         const double r = sqrt(mli_random_uniform(prng)) * radius;
-        const double azimuth = mli_random_uniform(prng) * MLI_2PI;
+        const double azimuth = mli_random_uniform(prng) * MLI_MATH_2PI;
         return mliVec_init(r * cos(azimuth), r * sin(azimuth), 0.0);
 }
 

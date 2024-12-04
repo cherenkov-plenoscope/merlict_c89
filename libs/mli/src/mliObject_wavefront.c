@@ -11,8 +11,8 @@
 #include "mliDynVec.h"
 #include "mliDynUint32.h"
 #include "mliDynDouble.h"
-#include "mli_cstr_numbers.h"
-#include "mli_cstr.h"
+#include "../../mtl/src/cstr.h"
+#include "../../mtl/src/cstr_numbers.h"
 #include "mli_math.h"
 
 #define MLI_WAVEFRONT_FACE_LINE_V 7
@@ -537,12 +537,12 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                         "Expected less than 1e9 lines in wavefront-file. "
                         "Something went wrong.");
 
-                line_length = mli_cstr_split(&str[p], '\n', line, sizeof(line));
+                line_length = mtl_cstr_split(&str[p], '\n', line, sizeof(line));
 
                 chk_msg(line_length < sizeof(line), "Line is too long.");
 
                 if (line_length > 0) {
-                        if (mli_cstr_starts_with(line, "vn ")) {
+                        if (mtl_cstr_starts_with(line, "vn ")) {
                                 struct mliVec tmp_vn;
                                 chk_msg(mliObject_parse_three_float_line(
                                                 &line[2], &tmp_vn),
@@ -552,13 +552,13 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                         mliVec_normalized(tmp_vn);
 
                                 chk(mliDynVec_push_back(&vn, tmp_vn));
-                        } else if (mli_cstr_starts_with(line, "v ")) {
+                        } else if (mtl_cstr_starts_with(line, "v ")) {
                                 struct mliVec tmp_v;
                                 chk_msg(mliObject_parse_three_float_line(
                                                 &line[1], &tmp_v),
                                         "Can not parse vertex-line.");
                                 chk(mliDynVec_push_back(&v, tmp_v));
-                        } else if (mli_cstr_starts_with(line, "f ")) {
+                        } else if (mtl_cstr_starts_with(line, "f ")) {
                                 struct mliFace tmp_fv;
                                 struct mliFace tmp_fvn;
                                 chk_msg(mliDynMap_size(&material_names) > 0,
@@ -570,7 +570,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                                 chk(mliDynFace_push_back(&fv, tmp_fv));
                                 chk(mliDynFace_push_back(&fvn, tmp_fvn));
                                 chk(mliDynUint32_push_back(&fm, mtl));
-                        } else if (mli_cstr_starts_with(line, "usemtl ")) {
+                        } else if (mtl_cstr_starts_with(line, "usemtl ")) {
                                 const char *mtl_key = &line[7];
                                 if (!mliDynMap_has(&material_names, mtl_key)) {
                                         chk(mliDynMap_insert(
@@ -598,11 +598,11 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
                         mliDynMap_size(&material_names)),
                 "Failed to malloc mliObject from file.");
 
-        MLI_NCPY(v.array, obj->vertices, v.size);
-        MLI_NCPY(vn.array, obj->vertex_normals, vn.size);
-        MLI_NCPY(fv.array, obj->faces_vertices, fv.size);
-        MLI_NCPY(fvn.array, obj->faces_vertex_normals, fvn.size);
-        MLI_NCPY(fm.array, obj->faces_materials, fm.size);
+        MLI_MATH_NCPY(v.array, obj->vertices, v.size);
+        MLI_MATH_NCPY(vn.array, obj->vertex_normals, vn.size);
+        MLI_MATH_NCPY(fv.array, obj->faces_vertices, fv.size);
+        MLI_MATH_NCPY(fvn.array, obj->faces_vertex_normals, fvn.size);
+        MLI_MATH_NCPY(fm.array, obj->faces_materials, fm.size);
         for (i = 0; i < mliDynMap_size(&material_names); i++) {
                 memcpy(obj->material_names[i].cstr,
                        material_names.items.array[i].key,
@@ -635,7 +635,7 @@ chk_error:
 
         mliDynMap_free(&material_names);
 
-        mli_cstr_lines_fprint(stderr, str, line_number, debug_line_radius);
+        mtl_cstr_lines_fprint(stderr, str, line_number, debug_line_radius);
 
         return 0;
 }

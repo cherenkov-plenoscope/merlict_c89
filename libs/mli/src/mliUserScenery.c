@@ -6,7 +6,7 @@
 #include "../../mtl/src/string.h"
 #include "mliGeometry.h"
 #include "mli_json.h"
-#include "mli_cstr.h"
+#include "../../mtl/src/cstr.h"
 #include "mliUserScenery_json.h"
 #include "mliArchive.h"
 #include "mliObject_wavefront.h"
@@ -53,7 +53,7 @@ int mli_set_geometry_objects_and_names_from_archive(
         /* objects */
         obj_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
-                if (mli_cstr_has_prefix_suffix(
+                if (mtl_cstr_has_prefix_suffix(
                             archive->filenames.items.array[arc_idx].key,
                             "geometry/objects/",
                             ".obj")) {
@@ -61,10 +61,10 @@ int mli_set_geometry_objects_and_names_from_archive(
                                 "Expected less objects in archive.");
 
                         memset(key, '\0', sizeof(key));
-                        mli_cstr_path_basename_without_extension(
+                        mtl_cstr_path_basename_without_extension(
                                 archive->filenames.items.array[arc_idx].key,
                                 key);
-                        mli_cstr_path_basename_without_extension(key, key);
+                        mtl_cstr_path_basename_without_extension(key, key);
                         chk_msg(mliDynMap_insert(object_names, key, obj_idx),
                                 "Failed to insert object-filename into map.");
                         chk_msg(mliObject_malloc_from_wavefront(
@@ -136,7 +136,7 @@ int mliMaterials_malloc_form_archive(
         /* media */
         med_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
-                if (mli_cstr_has_prefix_suffix(
+                if (mtl_cstr_has_prefix_suffix(
                             archive->filenames.items.array[arc_idx].key,
                             "materials/media/",
                             ".json")) {
@@ -149,10 +149,10 @@ int mliMaterials_malloc_form_archive(
                                 "file.");
 
                         memset(key, '\0', sizeof(key));
-                        mli_cstr_path_basename_without_extension(
+                        mtl_cstr_path_basename_without_extension(
                                 archive->filenames.items.array[arc_idx].key,
                                 key);
-                        mli_cstr_path_basename_without_extension(key, key);
+                        mtl_cstr_path_basename_without_extension(key, key);
 
                         chk_msg(mliDynMap_insert(&names->media, key, med_idx),
                                 "Failed to insert media-name into map.");
@@ -168,7 +168,7 @@ int mliMaterials_malloc_form_archive(
         /* surfaces */
         srf_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
-                if (mli_cstr_has_prefix_suffix(
+                if (mtl_cstr_has_prefix_suffix(
                             archive->filenames.items.array[arc_idx].key,
                             "materials/surfaces/",
                             ".json")) {
@@ -181,10 +181,10 @@ int mliMaterials_malloc_form_archive(
                                 "file.");
 
                         memset(key, '\0', sizeof(key));
-                        mli_cstr_path_basename_without_extension(
+                        mtl_cstr_path_basename_without_extension(
                                 archive->filenames.items.array[arc_idx].key,
                                 key);
-                        mli_cstr_path_basename_without_extension(key, key);
+                        mtl_cstr_path_basename_without_extension(key, key);
 
                         chk_msg(mliDynMap_insert(
                                         &names->surfaces, key, srf_idx),
@@ -223,7 +223,7 @@ int mliMaterials_malloc_form_archive(
                 "Can not find 'materials/default_medium.txt' in scenery.");
 
         memset(key, '\0', sizeof(key));
-        mli_cstr_strip_spaces((char *)default_medium_text->array, key);
+        mtl_cstr_strip_spaces((char *)default_medium_text->array, key);
 
         chk_msg(mliDynMap_get(&names->media, key, &materials->default_medium),
                 "Failed to assign the 'default_medium'.");

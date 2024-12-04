@@ -35,7 +35,7 @@ int mli_photon_source_point_like_opening_cone_towards_z(
 {
         uint64_t i;
         struct mliRandomUniformRange azimuth =
-                mliRandomUniformRange_set(0.0, 2.0 * MLI_PI);
+                mliRandomUniformRange_set(0.0, 2.0 * MLI_MATH_PI);
         struct mliRandomZenithRange zenith =
                 mliRandomZenithRange_set(0.0, opening_angle);
         for (i = 0; i < num_photons; i++) {

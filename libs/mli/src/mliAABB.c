@@ -14,12 +14,12 @@ struct mliAABB mliAABB_set(const struct mliVec lower, const struct mliVec upper)
 struct mliAABB mliAABB_outermost(const struct mliAABB a, const struct mliAABB b)
 {
         struct mliAABB c;
-        c.lower.x = MLI_MIN2(a.lower.x, b.lower.x);
-        c.lower.y = MLI_MIN2(a.lower.y, b.lower.y);
-        c.lower.z = MLI_MIN2(a.lower.z, b.lower.z);
-        c.upper.x = MLI_MAX2(a.upper.x, b.upper.x);
-        c.upper.y = MLI_MAX2(a.upper.y, b.upper.y);
-        c.upper.z = MLI_MAX2(a.upper.z, b.upper.z);
+        c.lower.x = MLI_MATH_MIN2(a.lower.x, b.lower.x);
+        c.lower.y = MLI_MATH_MIN2(a.lower.y, b.lower.y);
+        c.lower.z = MLI_MATH_MIN2(a.lower.z, b.lower.z);
+        c.upper.x = MLI_MATH_MAX2(a.upper.x, b.upper.x);
+        c.upper.y = MLI_MATH_MAX2(a.upper.y, b.upper.y);
+        c.upper.z = MLI_MATH_MAX2(a.upper.z, b.upper.z);
         return c;
 }
 
@@ -31,13 +31,13 @@ struct mliVec mliAABB_center(const struct mliAABB a)
 
 int mliAABB_valid(const struct mliAABB a)
 {
-        chk_msg(!MLI_IS_NAN(a.lower.x), "aabb.lower.x is 'nan'.");
-        chk_msg(!MLI_IS_NAN(a.lower.y), "aabb.lower.y is 'nan'.");
-        chk_msg(!MLI_IS_NAN(a.lower.z), "aabb.lower.z is 'nan'.");
+        chk_msg(!MLI_MATH_IS_NAN(a.lower.x), "aabb.lower.x is 'nan'.");
+        chk_msg(!MLI_MATH_IS_NAN(a.lower.y), "aabb.lower.y is 'nan'.");
+        chk_msg(!MLI_MATH_IS_NAN(a.lower.z), "aabb.lower.z is 'nan'.");
 
-        chk_msg(!MLI_IS_NAN(a.upper.x), "aabb.upper.x is 'nan'.");
-        chk_msg(!MLI_IS_NAN(a.upper.y), "aabb.upper.y is 'nan'.");
-        chk_msg(!MLI_IS_NAN(a.upper.z), "aabb.upper.z is 'nan'.");
+        chk_msg(!MLI_MATH_IS_NAN(a.upper.x), "aabb.upper.x is 'nan'.");
+        chk_msg(!MLI_MATH_IS_NAN(a.upper.y), "aabb.upper.y is 'nan'.");
+        chk_msg(!MLI_MATH_IS_NAN(a.upper.z), "aabb.upper.z is 'nan'.");
 
         chk_msg(a.lower.x <= a.upper.x, "Expected lower.x <= upper.x");
         chk_msg(a.lower.y <= a.upper.y, "Expected lower.y <= upper.y");

@@ -3,7 +3,7 @@
 #include "../../chk/src/chk.h"
 #include "../../mtl/src/string.h"
 #include "../../mtl/src/path.h"
-#include "mli_cstr.h"
+#include "../../mtl/src/cstr.h"
 #include "mli_json.h"
 #include "mliTar.h"
 
@@ -90,7 +90,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
                 chk_msg(mtl_String_convert_line_break_CRLF_CR_to_LF(
                                 &payload, &payload),
                         "Failed to replace CRLF and CR linebreaks.");
-                chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(payload.array),
+                chk_msg(mtl_cstr_assert_only_NUL_LF_TAB_controls(payload.array),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
                 chk_msg(mliArchive_push_back(arc, &filename, &payload),
@@ -189,7 +189,7 @@ void mliArchive_mask_filename_prefix_sufix(
         for (i = 0; i < arc->textfiles.size; i++) {
                 struct mliMapItem item = arc->filenames.items.array[i];
 
-                match = mli_cstr_has_prefix_suffix(item.key, prefix, sufix);
+                match = mtl_cstr_has_prefix_suffix(item.key, prefix, sufix);
 
                 if (match) {
                         mask[i] = 1;
@@ -210,7 +210,7 @@ uint64_t mliArchive_num_filename_prefix_sufix(
         for (i = 0; i < arc->textfiles.size; i++) {
                 struct mliMapItem item = arc->filenames.items.array[i];
 
-                match = mli_cstr_has_prefix_suffix(item.key, prefix, sufix);
+                match = mtl_cstr_has_prefix_suffix(item.key, prefix, sufix);
 
                 if (match) {
                         num_matches++;

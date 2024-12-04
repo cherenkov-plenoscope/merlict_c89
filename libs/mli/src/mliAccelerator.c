@@ -176,8 +176,10 @@ struct mliAABB mliAccelerator_outermost_aabb(const struct mliAccelerator *accel)
         uint32_t rob;
         struct mliAABB aabb;
         if (accel->num_robjects == 0) {
-                aabb.lower = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
-                aabb.upper = mliVec_init(MLI_NAN, MLI_NAN, MLI_NAN);
+                aabb.lower =
+                        mliVec_init(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
+                aabb.upper =
+                        mliVec_init(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
                 return aabb;
         }
         aabb.lower = accel->robject_aabbs[0].lower;

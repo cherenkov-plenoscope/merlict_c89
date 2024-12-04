@@ -2,19 +2,22 @@
 #include "mli_math.h"
 #include <string.h>
 
-double mli_rad2deg(const double angle_in_rad)
+double mli_math_rad2deg(const double angle_in_rad)
 {
-        return 180. * angle_in_rad / MLI_PI;
+        return 180. * angle_in_rad / MLI_MATH_PI;
 }
 
-double mli_deg2rad(const double angle_in_deg)
+double mli_math_deg2rad(const double angle_in_deg)
 {
-        return angle_in_deg * (1. / 180.) * MLI_PI;
+        return angle_in_deg * (1. / 180.) * MLI_MATH_PI;
 }
 
-double mli_hypot(const double a, const double b) { return sqrt(a * a + b * b); }
+double mli_math_hypot(const double a, const double b)
+{
+        return sqrt(a * a + b * b);
+}
 
-double mli_square(const double a) { return a * a; }
+double mli_math_square(const double a) { return a * a; }
 
 /*
  *  parameters
@@ -23,17 +26,17 @@ double mli_square(const double a) { return a * a; }
  *      num_points      Number of points.
  *      point_arg       The point to find the upper-bound for.
  */
-uint64_t mli_upper_compare_double(
+uint64_t MLI_MATH_UPPER_COMPARE_double(
         const double *points,
         const uint64_t num_points,
         const double point_arg)
 {
         uint64_t upper_index = 0;
-        MLI_UPPER_COMPARE(points, num_points, point_arg, upper_index);
+        MLI_MATH_UPPER_COMPARE(points, num_points, point_arg, upper_index);
         return upper_index;
 }
 
-void mli_histogram(
+void mli_math_histogram(
         const double *bin_edges,
         const uint64_t num_bin_edges,
         uint64_t *underflow_bin,
@@ -42,7 +45,7 @@ void mli_histogram(
         const double point)
 {
         uint64_t idx_upper =
-                mli_upper_compare_double(bin_edges, num_bin_edges, point);
+                MLI_MATH_UPPER_COMPARE_double(bin_edges, num_bin_edges, point);
         if (idx_upper == 0) {
                 (*underflow_bin) += 1u;
         } else if (idx_upper == num_bin_edges) {
@@ -52,7 +55,7 @@ void mli_histogram(
         }
 }
 
-void mli_linspace(
+void mli_math_linspace(
         const double start,
         const double stop,
         double *points,
@@ -66,7 +69,7 @@ void mli_linspace(
         }
 }
 
-double mli_mean(const double vals[], const uint64_t size)
+double mli_math_mean(const double vals[], const uint64_t size)
 {
         uint64_t i;
         double sum = 0;
@@ -76,7 +79,10 @@ double mli_mean(const double vals[], const uint64_t size)
         return sum / (double)size;
 }
 
-double mli_std(const double vals[], const uint64_t size, const double vals_mean)
+double mli_math_std(
+        const double vals[],
+        const uint64_t size,
+        const double vals_mean)
 {
         uint64_t i;
         double s = 0.;
@@ -86,7 +92,7 @@ double mli_std(const double vals[], const uint64_t size, const double vals_mean)
         return sqrt(s / (double)size);
 }
 
-double mli_bin_center_in_linear_space(
+double mli_math_bin_center_in_linear_space(
         const double start,
         const double stop,
         const uint64_t num_bins,
@@ -97,7 +103,7 @@ double mli_bin_center_in_linear_space(
         return start + bin * bin_width + 0.5 * bin_width;
 }
 
-double mli_linear_interpolate_1d(
+double mli_math_linear_interpolate_1d(
         const double weight,
         const double start,
         const double end)
@@ -105,7 +111,7 @@ double mli_linear_interpolate_1d(
         return start + weight * (end - start);
 }
 
-double mli_linear_interpolate_2d(
+double mli_math_linear_interpolate_2d(
         const double xarg,
         const double x0,
         const double y0,
@@ -131,19 +137,19 @@ double mli_linear_interpolate_2d(
         return m * xarg + b;
 }
 
-double mli_relative_ratio(const double a, const double b)
+double mli_math_relative_ratio(const double a, const double b)
 {
         return fabs(a - b) / (0.5 * (a + b));
 }
 
-double mli_interpret_int64_as_double(int64_t i)
+double mli_math_interpret_int64_as_double(int64_t i)
 {
         double f;
         memcpy(&f, &i, sizeof(double));
         return f;
 }
 
-int64_t mli_interpret_double_as_int64(double d)
+int64_t mli_math_interpret_double_as_int64(double d)
 {
         int64_t i;
         memcpy(&i, &d, sizeof(int64_t));
