@@ -1,8 +1,8 @@
 /* Copyright 2019 Sebastian A. Mueller */
-#include "mli_quadratic_equation.h"
+#include "math_quadratic_equation.h"
 #include <math.h>
 
-int mli_quadratic_equation(
+int mtl_math_quadratic_equation(
         const double p,
         const double q,
         double *minus_solution,
