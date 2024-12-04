@@ -1,4 +1,4 @@
-#include "mli_random_generator.h"
+#include "random_generator.h"
 
 uint32_t mliPrng_generate_uint32(struct mliPrng *prng)
 {

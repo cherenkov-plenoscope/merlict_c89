@@ -2,7 +2,7 @@
 #ifndef MLI_RANDOM_H_
 #define MLI_RANDOM_H_
 
-#include "mli_random_generator.h"
+#include "../../mtl/src/random_generator.h"
 #include "mliVec.h"
 
 struct mliRandomUniformRange {

@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLI_RANDOM_GENERATOR_H_
-#define MLI_RANDOM_GENERATOR_H_
+#ifndef MTL_RANDOM_GENERATOR_H_
+#define MTL_RANDOM_GENERATOR_H_
 
 #include <stdint.h>
-#include "mli_random_MT19937.h"
-#include "mli_random_PCG32.h"
+#include "random_MT19937.h"
+#include "random_PCG32.h"
 
 /**
  *      mliPrng is a transparent container to use different

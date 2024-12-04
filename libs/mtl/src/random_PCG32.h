@@ -3,7 +3,7 @@
 #define MLI_RANDOM_PCG32_H_
 
 #include <stdint.h>
-#include "mli_random_pcg_variants_32bit_subset.h"
+#include "random_pcg_variants_32bit_subset.h"
 
 /*      Wrapping the pcg implementation by Melissa O'Neill in
  *      pcg_variants_32bit_subset.h

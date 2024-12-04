@@ -3,7 +3,7 @@
 #include "../../chk/src/chk.h"
 #include "mliColor.h"
 #include "mli_random.h"
-#include "mli_random_generator.h"
+#include "../../mtl/src/random_generator.h"
 #include "../../mtl/src/cstr.h"
 #include "mliObject_wavefront.h"
 #include "mliScenery_valid.h"
