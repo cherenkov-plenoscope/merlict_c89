@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../chk/chk.h"
-#include "vector.h"
+#include "../math/math.h"
 #include "cstr.h"
 
 struct mtl_IO mtl_IO_init(void)
@@ -25,7 +25,7 @@ void mtl_IO_free(struct mtl_IO *byt)
 int mtl_IO_malloc_capacity(struct mtl_IO *byt, const uint64_t capacity)
 {
         mtl_IO_free(byt);
-        byt->capacity = MTL_MAX2(2u, capacity);
+        byt->capacity = MLI_MATH_MAX2(2u, capacity);
         byt->size = 0u;
         chk_malloc(byt->cstr, unsigned char, byt->capacity + 1u);
         memset(byt->cstr, '\0', byt->capacity + 1u);
@@ -113,7 +113,7 @@ int mtl_IO_write_unsigned_char(struct mtl_IO *byt, const unsigned char c)
 
         if (new_size >= byt->capacity) {
                 const uint64_t min_new_capacity =
-                        MTL_MAX2(new_size, 2 * byt->capacity);
+                        MLI_MATH_MAX2(new_size, 2 * byt->capacity);
                 chk_msg(mtl_IO_realloc_capacity(byt, min_new_capacity),
                         "Failed to reallocate.");
         }
@@ -398,7 +398,7 @@ int mli_line_viewer_write(
 {
         int64_t _line_number = (int64_t)line_number;
         int64_t _line_radius = (int64_t)line_radius;
-        int64_t line_start = MTL_MAX2(_line_number - _line_radius, 1);
+        int64_t line_start = MLI_MATH_MAX2(_line_number - _line_radius, 1);
         int64_t line_stop = line_number + line_radius;
         int64_t line = 1;
         uint64_t i = 0;

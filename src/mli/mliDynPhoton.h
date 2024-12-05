@@ -2,7 +2,7 @@
 #ifndef MLIDYNPHOTON_H_
 #define MLIDYNPHOTON_H_
 
-#include "../mtl/vector.h"
+#include "../vector/vector.h"
 #include "mliPhoton.h"
-MTL_VECTOR_DEFINITON(mliDynPhoton, struct mliPhoton)
+MLI_VECTOR_DEFINITON(mliDynPhoton, struct mliPhoton)
 #endif

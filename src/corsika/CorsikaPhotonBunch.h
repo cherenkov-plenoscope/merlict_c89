@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_CORSIKAPHOTONBUNCH_H_
 
 #include <stdint.h>
-#include "../mtl/vector.h"
+#include "../vector/vector.h"
 #include "../mli/mliVec.h"
 #include "../mli/mliPhoton.h"
 
@@ -71,7 +71,7 @@ struct mli_corsika_PhotonBunch {
         float wavelength_nm;
 };
 
-MTL_VECTOR_DEFINITON(mliDynCorsikaPhotonBunch, struct mli_corsika_PhotonBunch)
+MLI_VECTOR_DEFINITON(mliDynCorsikaPhotonBunch, struct mli_corsika_PhotonBunch)
 
 void mli_corsika_PhotonBunch_set_from_raw(
         struct mli_corsika_PhotonBunch *bunch,

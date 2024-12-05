@@ -2,6 +2,6 @@
 #ifndef MLIDYNARRAY_DOUBLE_H_
 #define MLIDYNARRAY_DOUBLE_H_
 
-#include "../mtl/vector.h"
-MTL_VECTOR_DEFINITON(mliDynDouble, double)
+#include "../vector/vector.h"
+MLI_VECTOR_DEFINITON(mliDynDouble, double)
 #endif

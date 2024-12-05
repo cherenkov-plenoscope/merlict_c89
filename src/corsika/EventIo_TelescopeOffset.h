@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_EVENTIO_TELESCOPEOFFSET_H_
 
 #include <stdint.h>
-#include "../mtl/vector.h"
+#include "../vector/vector.h"
 
 struct mliEventIoTelescopeOffset {
         float toff;
@@ -13,7 +13,7 @@ struct mliEventIoTelescopeOffset {
 };
 struct mliEventIoTelescopeOffset mliEventIoTelescopeOffset_init(void);
 
-MTL_VECTOR_DEFINITON(
+MLI_VECTOR_DEFINITON(
         mliDynEventIoTelescopeOffset,
         struct mliEventIoTelescopeOffset)
 

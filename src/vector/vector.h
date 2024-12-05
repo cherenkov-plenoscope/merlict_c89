@@ -1,14 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MTL_VECTOR_H_
-#define MTL_VECTOR_H_
+#ifndef MLI_VECTOR_H_
+#define MLI_VECTOR_H_
 
 #include <stdint.h>
 #include <stdlib.h>
 #include "../chk/chk.h"
+#include "../math/math.h"
 
-#define MTL_MAX2(a, b) (((a) > (b)) ? (a) : (b))
-
-#define MTL_VECTOR_DEFINITON(NAME, PAYLOAD_TYPE)                               \
+#define MLI_VECTOR_DEFINITON(NAME, PAYLOAD_TYPE)                               \
                                                                                \
         struct NAME {                                                          \
                 uint64_t capacity;                                             \
@@ -32,7 +31,7 @@
         int NAME##_get(                                                        \
                 struct NAME *self, const uint64_t at, PAYLOAD_TYPE *item);
 
-#define MTL_VECTOR_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                          \
+#define MLI_VECTOR_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                          \
                                                                                \
         struct NAME NAME##_init(void)                                          \
         {                                                                      \
@@ -52,7 +51,7 @@
         int NAME##_malloc(struct NAME *self, const uint64_t size)              \
         {                                                                      \
                 NAME##_free(self);                                             \
-                self->capacity = MTL_MAX2(2, size);                            \
+                self->capacity = MLI_MATH_MAX2(2, size);                       \
                 self->size = 0;                                                \
                 chk_malloc(self->array, PAYLOAD_TYPE, self->capacity);         \
                 return 1;                                                      \

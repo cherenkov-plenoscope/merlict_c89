@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../mli/mliAvlDict.h"
 #include "../mtl/io.h"
-#include "../mtl/vector.h"
+#include "../vector/vector.h"
 
 struct mli_corsika_Histogram2d {
         struct mliAvlDict dict;
@@ -17,7 +17,7 @@ struct mli_corsika_Histogram2dBin {
         double value;
 };
 
-MTL_VECTOR_DEFINITON(
+MLI_VECTOR_DEFINITON(
         mliDynCorsikaHistogram2dBin,
         struct mli_corsika_Histogram2dBin)
 

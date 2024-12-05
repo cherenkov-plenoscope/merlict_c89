@@ -5,9 +5,9 @@
 #include "mliPhotonInteraction.h"
 #include "mliGeometry.h"
 #include "mliScenery.h"
-#include "../mtl/vector.h"
+#include "../vector/vector.h"
 
-MTL_VECTOR_DEFINITON(mliDynPhotonInteraction, struct mliPhotonInteraction)
+MLI_VECTOR_DEFINITON(mliDynPhotonInteraction, struct mliPhotonInteraction)
 
 void mliDynPhotonInteraction_print(
         const struct mliDynPhotonInteraction *history,

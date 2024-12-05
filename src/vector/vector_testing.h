@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MTL_VECTOR_TESTING_H_
-#define MTL_VECTOR_TESTING_H_
+#ifndef MLI_VECTOR_TESTING_H_
+#define MLI_VECTOR_TESTING_H_
 
 #include <stdint.h>
 

@@ -3,7 +3,7 @@
 #define MLIDYNTEXTFILE_H_
 
 #include "../mtl/string.h"
-#include "../mtl/vector.h"
-MTL_VECTOR_DEFINITON(mliDynTextFiles, struct mtl_String)
+#include "../vector/vector.h"
+MLI_VECTOR_DEFINITON(mliDynTextFiles, struct mtl_String)
 
 #endif

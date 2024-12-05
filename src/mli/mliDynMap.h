@@ -5,14 +5,14 @@
 #include <stdint.h>
 #include "mliName.h"
 #include "../mtl/array.h"
-#include "../mtl/vector.h"
+#include "../vector/vector.h"
 
 struct mliMapItem {
         char key[MLI_NAME_CAPACITY];
         uint64_t value;
 };
 MTL_ARRAY_DEFINITON(mliArrayMapItem, struct mliMapItem)
-MTL_VECTOR_DEFINITON(mliDynMapItem, struct mliMapItem)
+MLI_VECTOR_DEFINITON(mliDynMapItem, struct mliMapItem)
 
 struct mliDynMap {
         struct mliDynMapItem items;

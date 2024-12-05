@@ -3,6 +3,6 @@
 #define MLIDYNARRAY_FRAMEPTR_H_
 
 struct mliFrame;
-#include "../mtl/vector.h"
-MTL_VECTOR_DEFINITON(mliDynFramePtr, struct mliFrame *)
+#include "../vector/vector.h"
+MLI_VECTOR_DEFINITON(mliDynFramePtr, struct mliFrame *)
 #endif

@@ -3,6 +3,6 @@
 #define MLIDYNARRAY_COLOR_H_
 
 #include "mliColor.h"
-#include "../mtl/vector.h"
-MTL_VECTOR_DEFINITON(mliDynColor, struct mliColor)
+#include "../vector/vector.h"
+MLI_VECTOR_DEFINITON(mliDynColor, struct mliColor)
 #endif

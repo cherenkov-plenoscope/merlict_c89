@@ -3,6 +3,6 @@
 #define MLIDYNARRAY_FACE_H_
 
 #include "mliFace.h"
-#include "../mtl/vector.h"
-MTL_VECTOR_DEFINITON(mliDynFace, struct mliFace)
+#include "../vector/vector.h"
+MLI_VECTOR_DEFINITON(mliDynFace, struct mliFace)
 #endif
