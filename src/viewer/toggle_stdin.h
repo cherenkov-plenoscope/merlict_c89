@@ -8,8 +8,8 @@
 
 #ifdef HAVE_TERMIOS_H
 #include <termios.h>
-struct termios mlivr_non_canonical_stdin(void);
-void mlivr_restore_stdin(struct termios *old_terminal);
+struct termios mli_viewer_non_canonical_stdin(void);
+void mli_viewer_restore_stdin(struct termios *old_terminal);
 #endif
 
 #endif

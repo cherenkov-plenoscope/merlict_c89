@@ -2,9 +2,9 @@
 #include "Config.h"
 #include "../mtl/math.h"
 
-struct mlivrConfig mlivrConfig_default(void)
+struct mli_viewer_Config mli_viewer_Config_default(void)
 {
-        struct mlivrConfig cfg;
+        struct mli_viewer_Config cfg;
         cfg.random_seed = 0u;
 
         cfg.preview_num_cols = 160u;

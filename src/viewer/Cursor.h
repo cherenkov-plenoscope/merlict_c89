@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-struct mlivrCursor {
+struct mli_viewer_Cursor {
         int64_t active;
         uint64_t col;
         uint64_t row;
@@ -12,9 +12,9 @@ struct mlivrCursor {
         uint64_t num_rows;
 };
 
-void mlivrCursor_move_up(struct mlivrCursor *cursor);
-void mlivrCursor_move_down(struct mlivrCursor *cursor);
-void mlivrCursor_move_right(struct mlivrCursor *cursor);
-void mlivrCursor_move_left(struct mlivrCursor *cursor);
+void mli_viewer_Cursor_move_up(struct mli_viewer_Cursor *cursor);
+void mli_viewer_Cursor_move_down(struct mli_viewer_Cursor *cursor);
+void mli_viewer_Cursor_move_right(struct mli_viewer_Cursor *cursor);
+void mli_viewer_Cursor_move_left(struct mli_viewer_Cursor *cursor);
 
 #endif

@@ -10,32 +10,32 @@
 #include "Cursor.h"
 #include "Config.h"
 
-#define MLIVR_ESCAPE_KEY 27
-#define MLIVR_SPACE_KEY 32
+#define mli_viewer_ESCAPE_KEY 27
+#define mli_viewer_SPACE_KEY 32
 
-void mlivr_clear_screen(void);
+void mli_viewer_clear_screen(void);
 
-void mlivr_print_help(void);
+void mli_viewer_print_help(void);
 
-void mlivr_print_info_line(
+void mli_viewer_print_info_line(
         const struct mliView view,
-        const struct mlivrCursor cursor,
+        const struct mli_viewer_Cursor cursor,
         const struct mliTracerConfig tracer_config);
 
-void mlivr_timestamp_now_19chars(char *buffer);
+void mli_viewer_timestamp_now_19chars(char *buffer);
 
-int mlivr_export_image(
+int mli_viewer_export_image(
         const struct mliTracer *tracer,
-        const struct mlivrConfig config,
+        const struct mli_viewer_Config config,
         const struct mliView view,
         struct mtl_Prng *prng,
         const double object_distance,
         const char *path);
 
-int mlivr_run_interactive_viewer(
+int mli_viewer_run_interactive_viewer(
         const struct mliScenery *scenery,
-        const struct mlivrConfig config);
-int mlivr_run_interactive_viewer_try_non_canonical_stdin(
+        const struct mli_viewer_Config config);
+int mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
         const struct mliScenery *scenery,
-        const struct mlivrConfig config);
+        const struct mli_viewer_Config config);
 #endif

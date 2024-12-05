@@ -3,10 +3,10 @@ import os
 import subprocess
 import glob
 
-libs_dir = os.path.join("libs")
+src_dir = os.path.join("src")
 clang_format_file = os.path.join("tools", ".clang-format")
 
-for namespace_dir in glob.glob(os.path.join(libs_dir, "*")):
+for namespace_dir in glob.glob(os.path.join(src_dir, "*")):
     if os.path.isdir(namespace_dir):
         paths = []
         for wild in ["*.h", "*.c"]:

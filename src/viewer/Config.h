@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../mli/mliView.h"
 
-struct mlivrConfig {
+struct mli_viewer_Config {
         uint32_t random_seed;
         uint64_t preview_num_cols;
         uint64_t preview_num_rows;
@@ -18,6 +18,6 @@ struct mlivrConfig {
         double aperture_camera_image_sensor_width;
 };
 
-struct mlivrConfig mlivrConfig_default(void);
+struct mli_viewer_Config mli_viewer_Config_default(void);
 
 #endif

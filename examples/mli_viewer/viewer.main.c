@@ -34,7 +34,7 @@
 
 int main(int argc, char *argv[])
 {
-        struct mlivrConfig config = mlivrConfig_default();
+        struct mli_viewer_Config config = mli_viewer_Config_default();
         struct mliScenery scenery = mliScenery_init();
 
         if (argc >= 2) {
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
                 goto chk_error;
         }
 
-        chk_msg(mlivr_run_interactive_viewer_try_non_canonical_stdin(
+        chk_msg(mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
                         &scenery, config),
                 "Failure in viewer");
 

@@ -4,7 +4,7 @@
 
 #include <unistd.h> /* STDIN_FILENO */
 
-struct termios mlivr_non_canonical_stdin(void)
+struct termios mli_viewer_non_canonical_stdin(void)
 {
         struct termios old_terminal;
         struct termios new_terminal;
@@ -15,7 +15,7 @@ struct termios mlivr_non_canonical_stdin(void)
         return old_terminal;
 }
 
-void mlivr_restore_stdin(struct termios *old_terminal)
+void mli_viewer_restore_stdin(struct termios *old_terminal)
 {
         tcsetattr(STDIN_FILENO, TCSANOW, old_terminal);
 }

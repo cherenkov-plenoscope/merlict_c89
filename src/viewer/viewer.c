@@ -16,7 +16,7 @@
 #include "../mli/mli_version.h"
 #include "toggle_stdin.h"
 
-void mlivr_clear_screen(void)
+void mli_viewer_clear_screen(void)
 {
         uint64_t n = 20;
         while (n) {
@@ -25,9 +25,9 @@ void mlivr_clear_screen(void)
         }
 }
 
-void mlivr_print_help(void)
+void mli_viewer_print_help(void)
 {
-        mlivr_clear_screen();
+        mli_viewer_clear_screen();
         mli_logo_fprint(stdout);
         printf("  v%d.%d.%d\n",
                MLI_VERSION_MAYOR,
@@ -60,9 +60,9 @@ void mlivr_print_help(void)
         mli_authors_and_affiliations_fprint(stdout);
 }
 
-void mlivr_print_info_line(
+void mli_viewer_print_info_line(
         const struct mliView view,
-        const struct mlivrCursor cursor,
+        const struct mli_viewer_Cursor cursor,
         const struct mliTracerConfig tracer_config)
 {
         printf("Help 'h', "
@@ -88,7 +88,7 @@ void mlivr_print_info_line(
         printf(".\n");
 }
 
-void mlivr_timestamp_now_19chars(char *buffer)
+void mli_viewer_timestamp_now_19chars(char *buffer)
 {
         time_t now = time(0);
         struct tm *nowtm;
@@ -103,7 +103,7 @@ void mlivr_timestamp_now_19chars(char *buffer)
                 nowtm->tm_sec);
 }
 
-int mlivr_get_key(void)
+int mli_viewer_get_key(void)
 {
         /* Waits for keystroke and returns ascii-code.
          */
@@ -117,9 +117,9 @@ int mlivr_get_key(void)
         }
 }
 
-int mlivr_export_image(
+int mli_viewer_export_image(
         const struct mliTracer *tracer,
-        const struct mlivrConfig config,
+        const struct mli_viewer_Config config,
         const struct mliView view,
         struct mtl_Prng *prng,
         const double object_distance,
@@ -155,24 +155,24 @@ chk_error:
         return 0;
 }
 
-int mlivr_run_interactive_viewer_try_non_canonical_stdin(
+int mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
         const struct mliScenery *scenery,
-        const struct mlivrConfig config)
+        const struct mli_viewer_Config config)
 {
 #ifdef HAVE_TERMIOS_H
-        struct termios old_terminal = mlivr_non_canonical_stdin();
+        struct termios old_terminal = mli_viewer_non_canonical_stdin();
 #endif
-        int rc = mlivr_run_interactive_viewer(scenery, config);
+        int rc = mli_viewer_run_interactive_viewer(scenery, config);
 
 #ifdef HAVE_TERMIOS_H
-        mlivr_restore_stdin(&old_terminal);
+        mli_viewer_restore_stdin(&old_terminal);
 #endif
         return rc;
 }
 
-int mlivr_run_interactive_viewer(
+int mli_viewer_run_interactive_viewer(
         const struct mliScenery *scenery,
-        const struct mlivrConfig config)
+        const struct mli_viewer_Config config)
 {
         struct mtl_Prng prng = mtl_Prng_init_MT19937(config.random_seed);
         struct mliTracerConfig tracer_config = mliTracerConfig_init();
@@ -182,7 +182,7 @@ int mlivr_run_interactive_viewer(
         char path[1024];
         int key;
         int super_resolution = 0;
-        struct mlivrCursor cursor;
+        struct mli_viewer_Cursor cursor;
         uint64_t num_screenshots = 0;
         uint64_t print_mode = MLI_ASCII_MONOCHROME;
         char timestamp[20];
@@ -207,7 +207,7 @@ int mlivr_run_interactive_viewer(
         tracer.config = &tracer_config;
         tracer.scenery_color_materials = &color_materials;
 
-        mlivr_timestamp_now_19chars(timestamp);
+        mli_viewer_timestamp_now_19chars(timestamp);
         chk_mem(mliImage_malloc(
                 &img, config.preview_num_cols, config.preview_num_rows));
         chk_mem(mliImage_malloc(
@@ -222,7 +222,7 @@ int mlivr_run_interactive_viewer(
         cursor.num_rows = config.preview_num_rows;
         goto show_image;
 
-        while ((key = mlivr_get_key()) != MLIVR_ESCAPE_KEY) {
+        while ((key = mli_viewer_get_key()) != mli_viewer_ESCAPE_KEY) {
                 update_image = 1;
                 print_help = 0;
                 print_scenery_info = 0;
@@ -231,16 +231,16 @@ int mlivr_run_interactive_viewer(
                         super_resolution = 0;
                         switch (key) {
                         case 'i':
-                                mlivrCursor_move_up(&cursor);
+                                mli_viewer_Cursor_move_up(&cursor);
                                 break;
                         case 'k':
-                                mlivrCursor_move_down(&cursor);
+                                mli_viewer_Cursor_move_down(&cursor);
                                 break;
                         case 'l':
-                                mlivrCursor_move_left(&cursor);
+                                mli_viewer_Cursor_move_left(&cursor);
                                 break;
                         case 'j':
-                                mlivrCursor_move_right(&cursor);
+                                mli_viewer_Cursor_move_right(&cursor);
                                 break;
                         case 'c':
                                 cursor.active = !cursor.active;
@@ -248,13 +248,13 @@ int mlivr_run_interactive_viewer(
                         case 'h':
                                 print_help = 1;
                                 break;
-                        case MLIVR_SPACE_KEY:
+                        case mli_viewer_SPACE_KEY:
                                 sprintf(path,
                                         "%s_%06lu.ppm",
                                         timestamp,
                                         num_screenshots);
                                 num_screenshots++;
-                                chk(mlivr_export_image(
+                                chk(mli_viewer_export_image(
                                         &tracer,
                                         config,
                                         view,
@@ -323,7 +323,7 @@ int mlivr_run_interactive_viewer(
                                 cursor.active = !cursor.active;
                                 update_image = 0;
                                 break;
-                        case MLIVR_SPACE_KEY:
+                        case mli_viewer_SPACE_KEY:
                                 printf("Go into cursor-mode first.\n");
                                 break;
                         case 'g':
@@ -396,7 +396,7 @@ int mlivr_run_interactive_viewer(
                                         &prng);
                         }
                 }
-                mlivr_clear_screen();
+                mli_viewer_clear_screen();
                 if (cursor.active) {
                         char symbols[1];
                         uint64_t rows[1];
@@ -448,7 +448,7 @@ int mlivr_run_interactive_viewer(
                 } else {
                         mliImage_print(&img, print_mode);
                 }
-                mlivr_print_info_line(view, cursor, tracer_config);
+                mli_viewer_print_info_line(view, cursor, tracer_config);
                 if (cursor.active) {
                         printf("Intersection: ");
                         if (has_probing_intersection) {
@@ -489,10 +489,10 @@ int mlivr_run_interactive_viewer(
                         printf("\n");
                 }
                 if (print_help) {
-                        mlivr_print_help();
+                        mli_viewer_print_help();
                 }
                 if (print_scenery_info) {
-                        mlivr_clear_screen();
+                        mli_viewer_clear_screen();
                         mliScenery_info_fprint(stdout, scenery);
                 }
         }
