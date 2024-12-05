@@ -4,6 +4,6 @@
 
 #include "../string/string.h"
 #include "../vector/vector.h"
-MLI_VECTOR_DEFINITON(mliDynTextFiles, struct mtl_String)
+MLI_VECTOR_DEFINITON(mliDynTextFiles, struct mli_String)
 
 #endif

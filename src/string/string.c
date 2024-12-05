@@ -5,39 +5,39 @@
 #include <ctype.h>
 #include "../chk/chk.h"
 
-MLI_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(mtl_String, char)
+MLI_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(mli_String, char)
 
-int mtl_String_from_cstr_fromat(struct mtl_String *str, const char *format, ...)
+int mli_String_from_cstr_fromat(struct mli_String *str, const char *format, ...)
 {
-        struct mtl_String tmp = mtl_String_init();
+        struct mli_String tmp = mli_String_init();
         va_list args;
 
-        chk(mtl_String_malloc(&tmp, 10 * strlen(format)));
+        chk(mli_String_malloc(&tmp, 10 * strlen(format)));
         va_start(args, format);
         vsprintf(tmp.array, format, args);
-        chk(mtl_String_malloc(str, strlen(tmp.array)));
+        chk(mli_String_malloc(str, strlen(tmp.array)));
         strncpy(str->array, tmp.array, str->size);
         va_end(args);
-        mtl_String_free(&tmp);
+        mli_String_free(&tmp);
         return 1;
 chk_error:
         va_end(args);
-        mtl_String_free(&tmp);
+        mli_String_free(&tmp);
         return 0;
 }
 
-int mtl_String_from_cstr(struct mtl_String *str, const char *s)
+int mli_String_from_cstr(struct mli_String *str, const char *s)
 {
-        chk(mtl_String_malloc(str, strlen(s)));
+        chk(mli_String_malloc(str, strlen(s)));
         strncpy(str->array, s, str->size);
         return 1;
 chk_error:
         return 0;
 }
 
-int mtl_String_ends_with(
-        const struct mtl_String *str,
-        const struct mtl_String *suffix)
+int mli_String_ends_with(
+        const struct mli_String *str,
+        const struct mli_String *suffix)
 {
         if (!str->array || !suffix->array) {
                 return 0;
@@ -50,9 +50,9 @@ int mtl_String_ends_with(
                        suffix->size) == 0;
 }
 
-int mtl_String_starts_with(
-        const struct mtl_String *str,
-        const struct mtl_String *prefix)
+int mli_String_starts_with(
+        const struct mli_String *str,
+        const struct mli_String *prefix)
 {
         if (!str->array || !prefix->array) {
                 return 0;
@@ -63,19 +63,19 @@ int mtl_String_starts_with(
         return strncmp(str->array, prefix->array, prefix->size) == 0;
 }
 
-int mtl_String_has_prefix_suffix(
-        const struct mtl_String *str,
-        const struct mtl_String *prefix,
-        const struct mtl_String *suffix)
+int mli_String_has_prefix_suffix(
+        const struct mli_String *str,
+        const struct mli_String *prefix,
+        const struct mli_String *suffix)
 {
         uint64_t has_pre = 1;
         uint64_t has_suf = 1;
         if (prefix->array != NULL) {
-                has_pre = mtl_String_starts_with(str, prefix);
+                has_pre = mli_String_starts_with(str, prefix);
         }
 
         if (suffix->array != NULL) {
-                has_suf = mtl_String_ends_with(str, suffix);
+                has_suf = mli_String_ends_with(str, suffix);
         }
 
         if (has_pre == 1 && has_suf == 1) {
@@ -85,7 +85,7 @@ int mtl_String_has_prefix_suffix(
         }
 }
 
-int64_t mtl_String_rfind(const struct mtl_String *str, const char c)
+int64_t mli_String_rfind(const struct mli_String *str, const char c)
 {
         int64_t i;
         for (i = str->size - 1; i >= 0; i--) {
@@ -98,7 +98,7 @@ int64_t mtl_String_rfind(const struct mtl_String *str, const char c)
         return -1;
 }
 
-int64_t mtl_String_find(const struct mtl_String *str, const char c)
+int64_t mli_String_find(const struct mli_String *str, const char c)
 {
         int64_t i;
         for (i = 0; i < (int64_t)str->size; i++) {
@@ -111,9 +111,9 @@ int64_t mtl_String_find(const struct mtl_String *str, const char c)
         return -1;
 }
 
-int mtl_String_match_templeate(
-        const struct mtl_String *s,
-        const struct mtl_String *t,
+int mli_String_match_templeate(
+        const struct mli_String *s,
+        const struct mli_String *t,
         const char digit_wildcard)
 {
         uint64_t i;
@@ -134,16 +134,16 @@ int mtl_String_match_templeate(
         return 1;
 }
 
-int mtl_String_strip(const struct mtl_String *src, struct mtl_String *dst)
+int mli_String_strip(const struct mli_String *src, struct mli_String *dst)
 {
         int64_t start = 0;
         int64_t stop = 0;
         int64_t len = -1;
-        struct mtl_String cpysrc = mtl_String_init();
+        struct mli_String cpysrc = mli_String_init();
 
         chk_msg(src->array, "Expected src-string to be allocated.");
-        chk_msg(mtl_String_copy(&cpysrc, src), "Can not copy input.");
-        mtl_String_free(dst);
+        chk_msg(mli_String_copy(&cpysrc, src), "Can not copy input.");
+        mli_String_free(dst);
 
         while (start < (int64_t)cpysrc.size && isspace(cpysrc.array[start])) {
                 start += 1;
@@ -157,21 +157,21 @@ int mtl_String_strip(const struct mtl_String *src, struct mtl_String *dst)
         len = stop - start;
 
         if (len < 0) {
-                chk(mtl_String_from_cstr_fromat(dst, ""));
+                chk(mli_String_from_cstr_fromat(dst, ""));
         } else {
-                chk(mtl_String_malloc(dst, len + 1));
+                chk(mli_String_malloc(dst, len + 1));
                 strncpy(dst->array, &cpysrc.array[start], len + 1);
         }
-        mtl_String_free(&cpysrc);
+        mli_String_free(&cpysrc);
         return 1;
 chk_error:
-        mtl_String_free(&cpysrc);
-        mtl_String_free(dst);
+        mli_String_free(&cpysrc);
+        mli_String_free(dst);
         return 0;
 }
 
-uint64_t mtl_String_countn(
-        const struct mtl_String *str,
+uint64_t mli_String_countn(
+        const struct mli_String *str,
         const char match,
         const uint64_t num_chars_to_scan)
 {
@@ -186,7 +186,7 @@ uint64_t mtl_String_countn(
         return count;
 }
 
-int mtl_String_equal_cstr(struct mtl_String *self, const char *cstr)
+int mli_String_equal_cstr(struct mli_String *self, const char *cstr)
 {
         if (self->array == NULL) {
                 return 0;
@@ -198,9 +198,9 @@ int mtl_String_equal_cstr(struct mtl_String *self, const char *cstr)
         }
 }
 
-int64_t mtl_String_compare(
-        const struct mtl_String *s1,
-        const struct mtl_String *s2)
+int64_t mli_String_compare(
+        const struct mli_String *s1,
+        const struct mli_String *s2)
 {
         return strcmp(s1->array, s2->array);
 }

@@ -3,7 +3,7 @@
 CASE("mliArchive, read tar")
 {
         struct mliArchive arc = mliArchive_init();
-        struct mtl_String *data = NULL;
+        struct mli_String *data = NULL;
         struct mliObject triangle = mliObject_init();
 
         CHECK(mliArchive_malloc_from_path(

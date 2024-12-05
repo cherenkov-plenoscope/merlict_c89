@@ -20,34 +20,34 @@ int mliAxisAlignedGrid_set_from_config(
         struct mliVec lower;
         struct mliVec upper;
         struct mliIdx3 num_bins;
-        struct mtl_String line = mtl_String_init();
-        chk(mtl_String_malloc(&line, 100));
+        struct mli_String line = mli_String_init();
+        chk(mli_String_malloc(&line, 100));
         mtl_IO_rewind(text);
         /* X */
         chk(mtl_IO_readline(text, &line, '\n'));
-        chk(mtl_String_to_int64(&(num_bins.x), &line, 10));
+        chk(mli_String_to_int64(&(num_bins.x), &line, 10));
         chk(mtl_IO_readline(text, &line, '\n'));
-        chk(mtl_String_to_double(&(lower.x), &line)); /* cm */
+        chk(mli_String_to_double(&(lower.x), &line)); /* cm */
         chk(mtl_IO_readline(text, &line, '\n'));
-        chk(mtl_String_to_double(&(upper.x), &line)); /* cm */
+        chk(mli_String_to_double(&(upper.x), &line)); /* cm */
 
         /* Y */
         chk(mtl_IO_readline(text, &line, '\n'));
-        chk(mtl_String_to_int64(&(num_bins.y), &line, 10));
+        chk(mli_String_to_int64(&(num_bins.y), &line, 10));
         chk(mtl_IO_readline(text, &line, '\n'));
-        chk(mtl_String_to_double(&(lower.y), &line)); /* cm */
+        chk(mli_String_to_double(&(lower.y), &line)); /* cm */
         chk(mtl_IO_readline(text, &line, '\n'));
-        chk(mtl_String_to_double(&(upper.y), &line)); /* cm */
+        chk(mli_String_to_double(&(upper.y), &line)); /* cm */
 
         /* Z */
         chk(mtl_IO_readline(text, &line, '\n'));
-        chk(mtl_String_to_int64(&(num_bins.z), &line, 10));
+        chk(mli_String_to_int64(&(num_bins.z), &line, 10));
         chk(mtl_IO_readline(text, &line, '\n'));
-        chk(mtl_String_to_double(&(lower.z), &line)); /* cm */
+        chk(mli_String_to_double(&(lower.z), &line)); /* cm */
         chk(mtl_IO_readline(text, &line, '\n'));
-        chk(mtl_String_to_double(&(upper.z), &line)); /* cm */
+        chk(mli_String_to_double(&(upper.z), &line)); /* cm */
 
-        mtl_String_free(&line);
+        mli_String_free(&line);
 
         (*grid) = mliAxisAlignedGrid_set(mliAABB_set(lower, upper), num_bins);
 

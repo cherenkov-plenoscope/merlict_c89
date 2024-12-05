@@ -19,8 +19,8 @@ void mliArchive_free(struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct mtl_String *str = &arc->textfiles.array[i];
-                mtl_String_free(str);
+                struct mli_String *str = &arc->textfiles.array[i];
+                mli_String_free(str);
         }
         mliDynTextFiles_free(&arc->textfiles);
         mliDynMap_free(&arc->filenames);
@@ -39,11 +39,11 @@ chk_error:
 
 int mliArchive_push_back(
         struct mliArchive *arc,
-        const struct mtl_String *filename,
-        const struct mtl_String *payload)
+        const struct mli_String *filename,
+        const struct mli_String *payload)
 {
         uint64_t next;
-        struct mtl_String *text = NULL;
+        struct mli_String *text = NULL;
         chk_msg(filename->size < MLI_TAR_NAME_LENGTH,
                 "Expected shorter filename.");
         next = mliDynMap_size(&arc->filenames);
@@ -55,10 +55,10 @@ int mliArchive_push_back(
 
         /* payload */
         /* ======= */
-        chk_msg(mliDynTextFiles_push_back(&arc->textfiles, mtl_String_init()),
-                "Can not push back mtl_String.");
+        chk_msg(mliDynTextFiles_push_back(&arc->textfiles, mli_String_init()),
+                "Can not push back mli_String.");
         text = &arc->textfiles.array[next];
-        chk_msg(mtl_String_copy(text, payload), "Can not copy payload.");
+        chk_msg(mli_String_copy(text, payload), "Can not copy payload.");
         return 1;
 chk_error:
         return 0;
@@ -68,8 +68,8 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 {
         struct mliTar tar = mliTar_init();
         struct mliTarHeader tarh = mliTarHeader_init();
-        struct mtl_String payload = mtl_String_init();
-        struct mtl_String filename = mtl_String_init();
+        struct mli_String payload = mli_String_init();
+        struct mli_String filename = mli_String_init();
 
         char tarh_name[MLI_TAR_NAME_LENGTH] = {'\0'};
 
@@ -78,16 +78,16 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 
         while (mliTar_read_header(&tar, &tarh)) {
 
-                chk(mtl_String_from_cstr(&filename, tarh.name));
-                chk(mtl_String_strip(&filename, &filename));
+                chk(mli_String_from_cstr(&filename, tarh.name));
+                chk(mli_String_strip(&filename, &filename));
                 chk(mli_path_strip_this_dir(&filename, &filename));
 
-                chk_msg(mtl_String_malloc(&payload, tarh.size),
+                chk_msg(mli_String_malloc(&payload, tarh.size),
                         "Can not allocate payload.");
                 chk_msg(mliTar_read_data(
                                 &tar, (void *)payload.array, tarh.size),
                         "Failed to read payload from tar into payload.");
-                chk_msg(mtl_String_convert_line_break_CRLF_CR_to_LF(
+                chk_msg(mli_String_convert_line_break_CRLF_CR_to_LF(
                                 &payload, &payload),
                         "Failed to replace CRLF and CR linebreaks.");
                 chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(payload.array),
@@ -98,13 +98,13 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
         }
 
         chk_msg(mliTar_read_finalize(&tar), "Can't finalize reading tar.");
-        mtl_String_free(&payload);
-        mtl_String_free(&filename);
+        mli_String_free(&payload);
+        mli_String_free(&filename);
         return 1;
 chk_error:
         fprintf(stderr, "tar->filename: '%s'.\n", tarh_name);
-        mtl_String_free(&payload);
-        mtl_String_free(&filename);
+        mli_String_free(&payload);
+        mli_String_free(&filename);
         mliArchive_free(arc);
         return 0;
 }
@@ -129,10 +129,10 @@ int mliArchive_has(const struct mliArchive *arc, const char *filename)
 int mliArchive_get(
         const struct mliArchive *arc,
         const char *filename,
-        struct mtl_String **str)
+        struct mli_String **str)
 {
         uint64_t idx;
-        struct mtl_String *txt = NULL;
+        struct mli_String *txt = NULL;
         chk(mliDynMap_find(&arc->filenames, filename, &idx));
         txt = &arc->textfiles.array[idx];
         (*str) = txt;
@@ -146,7 +146,7 @@ int mliArchive_get_malloc_json(
         const char *filename,
         struct mliJson *json)
 {
-        struct mtl_String *text = NULL;
+        struct mli_String *text = NULL;
 
         chk_msg(mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
@@ -169,7 +169,7 @@ void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
                 struct mliMapItem item = arc->filenames.items.array[i];
-                struct mtl_String *str = &arc->textfiles.array[i];
+                struct mli_String *str = &arc->textfiles.array[i];
                 fprintf(f,
                         "%u: %s, %u\n",
                         (uint32_t)i,

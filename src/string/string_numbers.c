@@ -5,9 +5,9 @@
 #include <ctype.h>
 #include "../chk/chk.h"
 
-int mtl_String_nto_double(
+int mli_String_nto_double(
         double *out,
-        const struct mtl_String *str,
+        const struct mli_String *str,
         const uint64_t expected_num_chars)
 {
         char *end;
@@ -31,18 +31,18 @@ chk_error:
         return 0;
 }
 
-int mtl_String_to_double(double *out, const struct mtl_String *str)
+int mli_String_to_double(double *out, const struct mli_String *str)
 {
-        chk_msg(mtl_String_nto_double(out, str, str->size),
-                "Can not convert mtl_String to double.");
+        chk_msg(mli_String_nto_double(out, str, str->size),
+                "Can not convert mli_String to double.");
         return 1;
 chk_error:
         return 0;
 }
 
-int mtl_String_nto_int64(
+int mli_String_nto_int64(
         int64_t *out,
-        const struct mtl_String *str,
+        const struct mli_String *str,
         const uint64_t base,
         const uint64_t expected_num_chars)
 {
@@ -66,26 +66,26 @@ chk_error:
         return 0;
 }
 
-int mtl_String_to_int64(
+int mli_String_to_int64(
         int64_t *out,
-        const struct mtl_String *str,
+        const struct mli_String *str,
         const uint64_t base)
 {
-        chk_msg(mtl_String_nto_int64(out, str, base, str->size),
+        chk_msg(mli_String_nto_int64(out, str, base, str->size),
                 "Can not convert string to int64.");
         return 1;
 chk_error:
         return 0;
 }
 
-int mtl_String_nto_uint64(
+int mli_String_nto_uint64(
         uint64_t *out,
-        const struct mtl_String *str,
+        const struct mli_String *str,
         const uint64_t base,
         const uint64_t expected_num_chars)
 {
         int64_t tmp;
-        chk(mtl_String_nto_int64(&tmp, str, base, expected_num_chars));
+        chk(mli_String_nto_int64(&tmp, str, base, expected_num_chars));
         chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
         return 1;
@@ -93,13 +93,13 @@ chk_error:
         return 0;
 }
 
-int mtl_String_to_uint64(
+int mli_String_to_uint64(
         uint64_t *out,
-        const struct mtl_String *str,
+        const struct mli_String *str,
         const uint64_t base)
 {
         int64_t tmp;
-        chk(mtl_String_to_int64(&tmp, str, base));
+        chk(mli_String_to_int64(&tmp, str, base));
         chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
         return 1;
@@ -107,9 +107,9 @@ chk_error:
         return 0;
 }
 
-int mtl_String_reverse_print_uint64(
+int mli_String_reverse_print_uint64(
         const uint64_t u,
-        struct mtl_String *str,
+        struct mli_String *str,
         const uint64_t base)
 {
         char literals[] = {
@@ -137,7 +137,7 @@ int mtl_String_reverse_print_uint64(
 
         chk_msg(base <= 16, "Expected base <= 16");
         chk_msg(base > 1, "Expected base > 1");
-        mtl_String_free(str);
+        mli_String_free(str);
 
         do {
                 remainder = quotient % base;
@@ -148,22 +148,22 @@ int mtl_String_reverse_print_uint64(
                 chk_msg(digs < 127, "Exceeded max_num_chars.");
         } while (quotient > 0u);
 
-        chk(mtl_String_malloc(str, digs));
+        chk(mli_String_malloc(str, digs));
         strncpy(str->array, tmp, digs);
         return 1;
 chk_error:
-        mtl_String_free(str);
+        mli_String_free(str);
         return 0;
 }
 
-int mtl_String_print_uint64(
+int mli_String_print_uint64(
         const uint64_t u,
-        struct mtl_String *str,
+        struct mli_String *str,
         const uint64_t base,
         const uint64_t min_num_digits,
         const char leading_char)
 {
-        struct mtl_String tmp = mtl_String_init();
+        struct mli_String tmp = mli_String_init();
         int64_t pos = 0;
         int64_t i = 0;
         int64_t length = 0;
@@ -173,14 +173,14 @@ int mtl_String_print_uint64(
         chk_msg(base <= 16, "Expected base <= 16");
         chk_msg(base > 1, "Expected base > 1");
 
-        chk(mtl_String_reverse_print_uint64(u, &tmp, base));
+        chk(mli_String_reverse_print_uint64(u, &tmp, base));
 
         num_leading = min_num_digits - tmp.size;
         if (num_leading < 0) {
                 num_leading = 0;
         }
         length = num_leading + tmp.size;
-        chk(mtl_String_malloc(str, length));
+        chk(mli_String_malloc(str, length));
         chk_msg(length < MAX_NUM_CHARS, "Exceeded max_num_chars.");
 
         pos = 0;
@@ -194,9 +194,9 @@ int mtl_String_print_uint64(
                 pos++;
         }
 
-        mtl_String_free(&tmp);
+        mli_String_free(&tmp);
         return 1;
 chk_error:
-        mtl_String_free(&tmp);
+        mli_String_free(&tmp);
         return 0;
 }

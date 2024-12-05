@@ -97,7 +97,7 @@ int mliMaterials_malloc_form_archive(
         uint64_t arc_idx = 0;
         char key[MLI_NAME_CAPACITY];
 
-        struct mtl_String *default_medium_text = NULL;
+        struct mli_String *default_medium_text = NULL;
         struct mliJson boundary_layers_json = mliJson_init();
         struct mliMaterialsCapacity cap = mliMaterialsCapacity_init();
 

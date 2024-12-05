@@ -24,14 +24,14 @@ int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path);
 
 int mliArchive_push_back(
         struct mliArchive *arc,
-        const struct mtl_String *filename,
-        const struct mtl_String *payload);
+        const struct mli_String *filename,
+        const struct mli_String *payload);
 
 int mliArchive_has(const struct mliArchive *arc, const char *filename);
 int mliArchive_get(
         const struct mliArchive *arc,
         const char *filename,
-        struct mtl_String **str);
+        struct mli_String **str);
 int mliArchive_get_malloc_json(
         const struct mliArchive *arc,
         const char *filename,

@@ -199,44 +199,44 @@ CASE("BytesIo_printf")
 CASE("mtl_IO_readline")
 {
         struct mtl_IO file = mtl_IO_init();
-        struct mtl_String line = mtl_String_init();
+        struct mli_String line = mli_String_init();
 
         mtl_IO_write_cstr_format(
                 &file, "first-line\nsecond-line\n\nfourth-line\n");
         mtl_IO_rewind(&file);
 
         CHECK(mtl_IO_readline(&file, &line, '\n'));
-        CHECK(mtl_String_equal_cstr(&line, "first-line"));
+        CHECK(mli_String_equal_cstr(&line, "first-line"));
 
         CHECK(mtl_IO_readline(&file, &line, '\n'));
-        CHECK(mtl_String_equal_cstr(&line, "second-line"));
+        CHECK(mli_String_equal_cstr(&line, "second-line"));
 
         CHECK(mtl_IO_readline(&file, &line, '\n'));
         CHECK(line.size == 0);
 
         CHECK(mtl_IO_readline(&file, &line, '\n'));
-        CHECK(mtl_String_equal_cstr(&line, "fourth-line"));
+        CHECK(mli_String_equal_cstr(&line, "fourth-line"));
 
         mtl_IO_free(&file);
-        mtl_String_free(&line);
+        mli_String_free(&line);
 }
 
 CASE("mtl_IO_readline_empty")
 {
         struct mtl_IO file = mtl_IO_init();
-        struct mtl_String line = mtl_String_init();
+        struct mli_String line = mli_String_init();
 
         CHECK(mtl_IO_readline(&file, &line, '\n'));
         CHECK(line.size == 0);
 
         mtl_IO_free(&file);
-        mtl_String_free(&line);
+        mli_String_free(&line);
 }
 
 CASE("mli_line_viewer_write")
 {
         struct mtl_IO f = mtl_IO_init();
-        struct mtl_String text = mtl_String_init();
+        struct mli_String text = mli_String_init();
 
         CHECK(mtl_IO_write_cstr_format(&f, "TEXT\n"));
         CHECK(mtl_IO_write_cstr_format(&f, "====\n"));
@@ -249,7 +249,7 @@ CASE("mli_line_viewer_write")
         CHECK(mtl_IO_write_cstr_format(&f, "ENDE\n"));
         mtl_IO_rewind(&f);
 
-        CHECK(mtl_String_from_cstr(&text, (char *)f.cstr));
+        CHECK(mli_String_from_cstr(&text, (char *)f.cstr));
         mtl_IO_free(&f);
 
         CHECK(mli_line_viewer_write(&f, &text, 1, 3));
@@ -265,5 +265,5 @@ CASE("mli_line_viewer_write")
                 &f, "data/mli/tests/resources/lines_info.tmp"));
 
         mtl_IO_free(&f);
-        mtl_String_free(&text);
+        mli_String_free(&text);
 }

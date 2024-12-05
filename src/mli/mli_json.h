@@ -9,7 +9,7 @@
 #include "../string/string.h"
 
 struct mliJson {
-        struct mtl_String raw;
+        struct mli_String raw;
         uint64_t num_tokens;
         struct jsmntok_t *tokens;
 };

@@ -1,40 +1,40 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MTL_STRING_H_
-#define MTL_STRING_H_
+#ifndef MLI_STRING_H_
+#define MLI_STRING_H_
 
 #include "../array/array.h"
 #include <stdarg.h>
 
-MLI_ARRAY_DEFINITON(mtl_String, char)
+MLI_ARRAY_DEFINITON(mli_String, char)
 
-int mtl_String_from_cstr_fromat(
-        struct mtl_String *str,
+int mli_String_from_cstr_fromat(
+        struct mli_String *str,
         const char *format,
         ...);
-int mtl_String_from_cstr(struct mtl_String *str, const char *s);
+int mli_String_from_cstr(struct mli_String *str, const char *s);
 
-int mtl_String_equal_cstr(struct mtl_String *self, const char *cstr);
+int mli_String_equal_cstr(struct mli_String *self, const char *cstr);
 
-int mtl_String_ends_with(
-        const struct mtl_String *str,
-        const struct mtl_String *suffix);
-int mtl_String_starts_with(
-        const struct mtl_String *str,
-        const struct mtl_String *prefix);
-int mtl_String_has_prefix_suffix(
-        const struct mtl_String *str,
-        const struct mtl_String *prefix,
-        const struct mtl_String *suffix);
+int mli_String_ends_with(
+        const struct mli_String *str,
+        const struct mli_String *suffix);
+int mli_String_starts_with(
+        const struct mli_String *str,
+        const struct mli_String *prefix);
+int mli_String_has_prefix_suffix(
+        const struct mli_String *str,
+        const struct mli_String *prefix,
+        const struct mli_String *suffix);
 
-int64_t mtl_String_rfind(const struct mtl_String *str, const char c);
-int64_t mtl_String_find(const struct mtl_String *str, const char c);
-int mtl_String_strip(const struct mtl_String *src, struct mtl_String *dst);
-uint64_t mtl_String_countn(
-        const struct mtl_String *str,
+int64_t mli_String_rfind(const struct mli_String *str, const char c);
+int64_t mli_String_find(const struct mli_String *str, const char c);
+int mli_String_strip(const struct mli_String *src, struct mli_String *dst);
+uint64_t mli_String_countn(
+        const struct mli_String *str,
         const char c,
         const uint64_t num_chars_to_scan);
-int64_t mtl_String_compare(
-        const struct mtl_String *s1,
-        const struct mtl_String *s2);
+int64_t mli_String_compare(
+        const struct mli_String *s1,
+        const struct mli_String *s2);
 
 #endif

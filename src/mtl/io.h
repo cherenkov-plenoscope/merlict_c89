@@ -70,16 +70,16 @@ void mtl_IO_seek(struct mtl_IO *byt, const uint64_t pos);
 
 int mtl_IO_readline(
         struct mtl_IO *stream,
-        struct mtl_String *line,
+        struct mli_String *line,
         const char delimiter);
 
-int mtl_String_convert_line_break_CRLF_CR_to_LF(
-        struct mtl_String *dst,
-        const struct mtl_String *src);
+int mli_String_convert_line_break_CRLF_CR_to_LF(
+        struct mli_String *dst,
+        const struct mli_String *src);
 
 int mli_line_viewer_write(
         struct mtl_IO *f,
-        const struct mtl_String *text,
+        const struct mli_String *text,
         const uint64_t line_number,
         const uint64_t line_radius);
 

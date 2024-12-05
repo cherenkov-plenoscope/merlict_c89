@@ -4,12 +4,12 @@
 #include "../string/string.h"
 
 int mli_path_strip_this_dir(
-        const struct mtl_String *src,
-        struct mtl_String *dst);
-int mli_path_basename(const struct mtl_String *src, struct mtl_String *dst);
+        const struct mli_String *src,
+        struct mli_String *dst);
+int mli_path_basename(const struct mli_String *src, struct mli_String *dst);
 int mli_path_splitext(
-        const struct mtl_String *src,
-        struct mtl_String *dst,
-        struct mtl_String *ext);
+        const struct mli_String *src,
+        struct mli_String *dst,
+        struct mli_String *ext);
 
 #endif

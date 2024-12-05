@@ -10,7 +10,7 @@
 struct mliJson mliJson_init(void)
 {
         struct mliJson j;
-        j.raw = mtl_String_init();
+        j.raw = mli_String_init();
         j.num_tokens = 0u;
         j.tokens = NULL;
         return j;
@@ -18,7 +18,7 @@ struct mliJson mliJson_init(void)
 
 void mliJson_free(struct mliJson *json)
 {
-        mtl_String_free(&json->raw);
+        mli_String_free(&json->raw);
         free(json->tokens);
         (*json) = mliJson_init();
 }
@@ -66,7 +66,7 @@ chk_error:
 int mliJson_malloc_from_cstr(struct mliJson *json, const char *cstr)
 {
         mliJson_free(json);
-        chk_msg(mtl_String_from_cstr(&json->raw, cstr), "Can't copy cstr.");
+        chk_msg(mli_String_from_cstr(&json->raw, cstr), "Can't copy cstr.");
         chk_msg(mliJson_malloc_tokens__(json), "Can't malloc Json's tokens.");
         chk_msg(mliJson_parse_tokens__(json), "Can't parse Json into tokens.");
         return 1;
@@ -81,7 +81,7 @@ int mliJson_malloc_from_path(struct mliJson *json, const char *path)
         mliJson_free(json);
         chk_msg(mtl_IO_write_from_path(&ff, path),
                 "Failed to read file into Json's Str.");
-        chk_msg(mtl_String_from_cstr(&json->raw, (char *)ff.cstr),
+        chk_msg(mli_String_from_cstr(&json->raw, (char *)ff.cstr),
                 "Failed to copy cstr.");
         mtl_IO_free(&ff);
         chk_msg(mliJson_malloc_tokens__(json), "Can't malloc Json's tokens.");
@@ -306,7 +306,7 @@ int mliJson_debug_token_fprint(
         struct jsmntok_t t = json->tokens[token];
         uint32_t token_size = t.end - t.start;
         uint64_t line_number =
-                1u + mtl_String_countn(&json->raw, '\n', t.start);
+                1u + mli_String_countn(&json->raw, '\n', t.start);
         chk(fprintf(f, "line: %u, ", (uint32_t)line_number));
         chk(fprintf(f, "token: %u, ", (uint32_t)token));
         chk(fprintf(f, "type: %d, ", t.type));

@@ -252,9 +252,9 @@ void mtl_IO_seek(struct mtl_IO *byt, const uint64_t pos) { byt->pos = pos; }
 
 void mtl_IO_rewind(struct mtl_IO *byt) { byt->pos = 0u; }
 
-int mtl_String_convert_line_break_CRLF_CR_to_LF(
-        struct mtl_String *dst,
-        const struct mtl_String *src)
+int mli_String_convert_line_break_CRLF_CR_to_LF(
+        struct mli_String *dst,
+        const struct mli_String *src)
 {
         uint64_t i = 0;
         struct mtl_IO sdst = mtl_IO_init();
@@ -273,14 +273,14 @@ int mtl_String_convert_line_break_CRLF_CR_to_LF(
                 }
         }
 
-        chk(mtl_String_malloc(dst, sdst.size));
+        chk(mli_String_malloc(dst, sdst.size));
         strncpy(dst->array, (char *)sdst.cstr, sdst.size);
 
         mtl_IO_free(&sdst);
         return 1;
 chk_error:
         mtl_IO_free(&sdst);
-        mtl_String_free(dst);
+        mli_String_free(dst);
         return 0;
 }
 
@@ -346,7 +346,7 @@ chk_error:
 
 int mtl_IO_readline(
         struct mtl_IO *stream,
-        struct mtl_String *line,
+        struct mli_String *line,
         const char delimiter)
 {
         struct mtl_IO buf = mtl_IO_init();
@@ -364,7 +364,7 @@ int mtl_IO_readline(
         }
 
         mtl_IO_rewind(&buf);
-        chk(mtl_String_malloc(line, buf.size));
+        chk(mli_String_malloc(line, buf.size));
         strcpy(line->array, (char *)buf.cstr);
 
         mtl_IO_free(&buf);
@@ -392,7 +392,7 @@ chk_error:
 
 int mli_line_viewer_write(
         struct mtl_IO *f,
-        const struct mtl_String *text,
+        const struct mli_String *text,
         const uint64_t line_number,
         const uint64_t line_radius)
 {
