@@ -30,30 +30,39 @@ def argmax(iterable):
     return max(enumerate(iterable), key=lambda x: x[1])[0]
 
 
-def read_lib(path, source_types=SOURCE_TYPES):
+def path_is_source(path, source_types):
+    for key in source_types:
+        if path.endswith("." + key):
+            return True
+    return False
+
+
+def read_module(path, source_types=SOURCE_TYPES):
     out = {}
     for key in source_types:
         out[key] = {}
     for ooo in os.walk(path):
         for filename in ooo[2]:
             source_path = os.path.join(ooo[0], filename)
-            with open(source_path, "rt") as fin:
-                source_text = fin.read()
-            matching_keys = []
-            for key in source_types:
-                ext = "." + key
-                if ext in filename:
-                    matching_keys.append(key)
-            matching_key = matching_keys[
-                argmax([len(i) for i in matching_keys])
-            ]
-            matching_ext = "." + matching_key
-            mfilename = filename.replace(matching_ext, "")
 
-            out[matching_key][mfilename] = {
-                "source": source_text,
-                "path": source_path,
-            }
+            if path_is_source(source_path, source_types):
+                with open(source_path, "rt") as fin:
+                    source_text = fin.read()
+                matching_keys = []
+                for key in source_types:
+                    ext = "." + key
+                    if ext in filename:
+                        matching_keys.append(key)
+                matching_key = matching_keys[
+                    argmax([len(i) for i in matching_keys])
+                ]
+                matching_ext = "." + matching_key
+                mfilename = filename.replace(matching_ext, "")
+
+                out[matching_key][mfilename] = {
+                    "source": source_text,
+                    "path": source_path,
+                }
     return out
 
 
@@ -98,9 +107,9 @@ def limit_sources(sources, source_paths):
 
 
 def make_test_main(
-    relpath_outdir_to_libs, header_paths, source_paths, test_paths
+    relpath_outdir_to_src, header_paths, source_paths, test_paths
 ):
-    ro2l = relpath_outdir_to_libs
+    ro2l = relpath_outdir_to_src
     o = ""
     o += "#include <stdlib.h>\n"
     o += "\n"
@@ -129,18 +138,17 @@ def make_test_main(
     return o
 
 
-def gather_sources(libpaths, source_types=SOURCE_TYPES):
+def gather_sources(module_paths, source_types=SOURCE_TYPES):
     sources = {}
     for source_type in source_types:
         sources[source_type] = {}
 
-    for libpath in libpaths:
-        libname = os.path.basename(libpath)
-        lib = read_lib(os.path.join(libpath, "src"))
+    for module_path in module_paths:
+        module = read_module(module_path)
         for source_type in source_types:
-            for filename in lib[source_type]:
+            for filename in module[source_type]:
                 assert filename not in sources[source_type]
-                sources[source_type][filename] = lib[source_type][filename]
+                sources[source_type][filename] = module[source_type][filename]
 
     for source_type in source_types:
         for filename in sources[source_type]:
@@ -246,7 +254,7 @@ parser = argparse.ArgumentParser(
     prog="almagamate.py",
     description=(
         "Makes a single header-file and a single source-file "
-        "out of the requested submodules from merlict_c89/libs/."
+        "out of the requested submodules from merlict_c89/src."
     ),
 )
 parser.add_argument(
@@ -268,13 +276,13 @@ parser.add_argument(
     help="Path of source.",
 )
 parser.add_argument(
-    "libs",
-    metavar="LIBS_PATHS",
+    "modules",
+    metavar="MODULES_PATHS",
     nargs="+",
     type=str,
     help=(
-        "A list of the libs to be almagamated e.g. "
-        "'libs/mli', 'libs/mli_corsika'."
+        "A list of the modules to be almagamated e.g. "
+        "'src/mli', 'src/chk'."
     ),
 )
 parser.add_argument(
@@ -297,19 +305,20 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
-libpaths = args.libs
+module_paths = args.modules
 outdir = args.outdir
 cherrypickpath = args.cherry_pick
 
 if args.test:
-    if os.path.join("libs", "mli_testing") not in libpaths:
-        libpaths.append(os.path.join("libs", "mli_testing"))
+    _test_module_path = os.path.join("src", "mli_testing")
+    if _test_module_path not in module_paths:
+        module_paths.append(_test_module_path)
 
 os.makedirs(outdir, exist_ok=True)
-libnames = str.join("-", [os.path.basename(lp) for lp in libpaths])
+module_names = str.join("-", [os.path.basename(lp) for lp in module_paths])
 
 sources, includes_from_std = gather_sources(
-    libpaths=libpaths, source_types=SOURCE_TYPES
+    module_paths=module_paths, source_types=SOURCE_TYPES
 )
 
 if cherrypickpath:
@@ -321,14 +330,14 @@ if cherrypickpath:
     with open(cherrypickpath, "rt") as f:
         cherrypick["src"] = f.read().splitlines()
     sources = limit_sources(sources=sources, source_paths=cherrypick["src"])
-    libnames = libnames + "-" + cherrypick["name"]
+    module_names = module_names + "-" + cherrypick["name"]
 
 if args.header_only:
-    libnames = libnames + "-headeronly"
+    module_names = module_names + "-headeronly"
 
-header_path = os.path.join(outdir, libnames + ".h")
-source_path = os.path.join(outdir, libnames + ".c")
-test_path = os.path.join(outdir, libnames + ".test.c")
+header_path = os.path.join(outdir, module_names + ".h")
+source_path = os.path.join(outdir, module_names + ".c")
+test_path = os.path.join(outdir, module_names + ".test.c")
 
 if args.header_path:
     header_path = args.header_path
@@ -370,12 +379,12 @@ if args.test:
         list_tests.append(sources["test.c"][filename]["path"])
 
     o = make_test_main(
-        relpath_outdir_to_libs=os.path.relpath(".", start=outdir),
+        relpath_outdir_to_src=os.path.relpath(".", start=outdir),
         header_paths=list_headers,
         source_paths=list_sources,
         test_paths=list_tests,
     )
-    test_main_path = os.path.join(outdir, libnames + ".test.main.c")
+    test_main_path = os.path.join(outdir, module_names + ".test.main.c")
     with open(test_main_path, "wt") as f:
         f.write(o)
 

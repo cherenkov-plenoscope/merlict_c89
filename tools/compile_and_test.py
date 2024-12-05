@@ -25,19 +25,19 @@ parser = argparse.ArgumentParser(
     prog="compile_and_test.py",
     description=(
         "Makes a single header-file and a single source-file "
-        "out of the requested libraries from merlict_c89."
+        "out of the requested modules from merlict_c89."
     ),
 )
 args = parser.parse_args()
-libpaths = [
-    os.path.join("libs", "chk"),
-    os.path.join("libs", "mli_testing"),
-    os.path.join("libs", "mtl"),
-    os.path.join("libs", "mli"),
-    os.path.join("libs", "mli_corsika"),
-    os.path.join("libs", "mli_viewer"),
+module_paths = [
+    os.path.join("src", "chk"),
+    os.path.join("src", "mli_testing"),
+    os.path.join("src", "mtl"),
+    os.path.join("src", "mli"),
+    os.path.join("src", "mli_corsika"),
+    os.path.join("src", "mli_viewer"),
 ]
-libnames = str.join("-", [os.path.basename(lp) for lp in libpaths])
+module_names = str.join("-", [os.path.basename(lp) for lp in module_paths])
 
 
 def print_file(path):
@@ -70,7 +70,7 @@ def tar_sceneries(scenery_name):
 
 def almagamate_sources(
     outdir,
-    libpaths,
+    module_paths,
 ):
     stdout_path = os.path.join(outdir, "compile_and_test.o")
     return run_and_save_sdtout(
@@ -80,7 +80,7 @@ def almagamate_sources(
             "--test",
             outdir,
         ]
-        + libpaths,
+        + module_paths,
         stdout_path=stdout_path,
     )
 
@@ -116,23 +116,23 @@ for scenery_name in scenery_names:
 
 almagamate_sources(
     outdir=os.path.join("build", "almagamate"),
-    libpaths=libpaths,
+    module_paths=module_paths,
 )
 
 
-os.makedirs(os.path.join("build", "tests", libnames), exist_ok=True)
+os.makedirs(os.path.join("build", "tests", module_names), exist_ok=True)
 
 for comkey in com:
     print(comkey)
     out_path = os.path.join(
-        "build", "tests", libnames, "test_{:s}".format(comkey)
+        "build", "tests", module_names, "test_{:s}".format(comkey)
     )
     rc = compile_sources(
         compiler=com[comkey]["compiler"],
         target=os.path.join(
             "build",
             "almagamate",
-            "{:s}.test.main.c".format(libnames),
+            "{:s}.test.main.c".format(module_names),
         ),
         out_path=out_path + ".exe",
         flags=com[comkey]["flags"],

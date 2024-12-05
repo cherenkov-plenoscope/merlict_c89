@@ -5,7 +5,7 @@ CC          := gcc
 TARGET      := ground_grid
 
 #The Directories, Source, Includes, Objects, Binary and Resources
-SRCDIR      := libs
+SRCDIR      := src
 INCDIR      := $(SRCDIR)
 BUILDDIR    := build/obj
 TARGETDIR   := build/bin
@@ -31,9 +31,9 @@ OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJE
 #Defauilt Make
 all: resources $(TARGET)
 
-viewer: $(SRCDIR)/mli_viewer/apps/viewer.main.c
+viewer: examples/mli_viewer/viewer.main.c
 
-ground_grid: $(SRCDIR)/mli_corsika/apps/ground_grid.main.c
+ground_grid: examples/mli_corsika/ground_grid.main.c
 
 #Remake
 remake: cleaner all
