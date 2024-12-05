@@ -1,11 +1,11 @@
 /* Copyright 2020-2021 Sebastian Achim Mueller */
-#ifndef MLIPIXELWALK_H_
-#define MLIPIXELWALK_H_
+#ifndef MLI_PIXEL_WALK_H_
+#define MLI_PIXEL_WALK_H_
 
 #include <stdint.h>
-#include "mliPixels.h"
+#include "pixel.h"
 
-struct mliPixelWalk {
+struct mli_PixelWalk {
         /*
          * PixelWalk walks over the pixels of a rectangular image in a
          * cache-aware-way with respect to raytracing.
@@ -26,10 +26,10 @@ struct mliPixelWalk {
         uint32_t i;
 };
 
-struct mliPixelWalk mliPixelWalk_set(
+struct mli_PixelWalk mli_PixelWalk_set(
         const uint32_t num_cols,
         const uint32_t num_rows,
         const uint32_t chunk_size);
-struct mliPixel mliPixelWalk_get(const struct mliPixelWalk *walk);
-void mliPixelWalk_walk(struct mliPixelWalk *walk);
+struct mli_Pixel mli_PixelWalk_get(const struct mli_PixelWalk *walk);
+void mli_PixelWalk_walk(struct mli_PixelWalk *walk);
 #endif

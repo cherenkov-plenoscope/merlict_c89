@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMagicId.h"
 #include <assert.h>
-#include "mli_version.h"
+#include "../version/version.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
 

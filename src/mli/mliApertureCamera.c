@@ -170,13 +170,13 @@ void mliApertureCamera_aquire_pixels(
         const struct mli_Image *image,
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
-        const struct mliPixels *pixels_to_do,
+        const struct mli_Pixels *pixels_to_do,
         struct mli_Image *colors,
         struct mli_Prng *prng)
 {
         uint64_t i;
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
-        for (i = 0; i < pixels_to_do->num_pixels_to_do; i++) {
+        for (i = 0; i < pixels_to_do->size; i++) {
                 struct mliRay ray_wrt_camera =
                         mliApertureCamera_get_ray_for_pixel(
                                 camera.focal_length,
@@ -186,8 +186,8 @@ void mliApertureCamera_aquire_pixels(
                                 camera.image_sensor_width_y,
                                 image->num_cols,
                                 image->num_rows,
-                                pixels_to_do->pixels[i].col,
-                                pixels_to_do->pixels[i].row,
+                                pixels_to_do->array[i].col,
+                                pixels_to_do->array[i].row,
                                 prng);
 
                 struct mliRay ray_wrt_root =
@@ -203,17 +203,17 @@ void mliApertureCamera_aquire_pixels(
 }
 
 void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
-        const struct mliPixels *pixels,
+        const struct mli_Pixels *pixels,
         const struct mli_Image *colors,
         struct mli_Image *sum_image,
         struct mli_Image *exposure_image)
 {
         uint64_t pix;
-        for (pix = 0; pix < pixels->num_pixels_to_do; pix++) {
+        for (pix = 0; pix < pixels->size; pix++) {
                 const uint64_t idx = mli_Image_idx(
                         sum_image,
-                        pixels->pixels[pix].col,
-                        pixels->pixels[pix].row);
+                        pixels->array[pix].col,
+                        pixels->array[pix].row);
                 sum_image->raw[idx].r += colors->raw[pix].r;
                 sum_image->raw[idx].g += colors->raw[pix].g;
                 sum_image->raw[idx].b += colors->raw[pix].b;
@@ -243,7 +243,7 @@ int mliApertureCamera_render_image(
         struct mli_Image previous_sobel_image = mli_Image_init();
         struct mli_Image diff_image = mli_Image_init();
         struct mli_Image colors = mli_Image_init();
-        struct mliPixels pixels_to_do = mliPixels_init();
+        struct mli_Pixels pixels_to_do = mli_Pixels_init();
 
         chk_msg(mli_Image_malloc(&sum_image, image->num_cols, image->num_rows),
                 "Failed to malloc sum_image.");
@@ -274,7 +274,7 @@ int mliApertureCamera_render_image(
         mli_Image_set_all_pixel(&previous_sobel_image, zero_color);
         mli_Image_set_all_pixel(&colors, zero_color);
 
-        chk_msg(mliPixels_malloc(
+        chk_msg(mli_Pixels_malloc(
                         &pixels_to_do, image->num_cols * image->num_rows),
                 "Failed to malloc pixels_to_do.");
 
@@ -282,8 +282,7 @@ int mliApertureCamera_render_image(
         initial image
         =============
         */
-        mliPixels_set_all_from_image(&pixels_to_do, image);
-        pixels_to_do.num_pixels_to_do = image->num_cols * image->num_rows;
+        mli_Pixels_set_all_from_image(&pixels_to_do, image);
 
         mliApertureCamera_aquire_pixels(
                 camera,
@@ -309,9 +308,9 @@ int mliApertureCamera_render_image(
                 if (iteration >= MAX_ITERATIONS)
                         break;
 
-                mliPixels_above_threshold(&to_do_image, 0.5, &pixels_to_do);
+                mli_Pixels_above_threshold(&to_do_image, 0.5, &pixels_to_do);
 
-                if (pixels_to_do.num_pixels_to_do <
+                if (pixels_to_do.size <
                     image->num_rows * image->num_cols / 100.0)
                         break;
 
@@ -355,7 +354,7 @@ int mliApertureCamera_render_image(
         mli_Image_free(&previous_sobel_image);
         mli_Image_free(&diff_image);
         mli_Image_free(&colors);
-        mliPixels_free(&pixels_to_do);
+        mli_Pixels_free(&pixels_to_do);
         return 1;
 chk_error:
         mli_Image_free(&sum_image);
@@ -365,6 +364,6 @@ chk_error:
         mli_Image_free(&previous_sobel_image);
         mli_Image_free(&diff_image);
         mli_Image_free(&colors);
-        mliPixels_free(&pixels_to_do);
+        mli_Pixels_free(&pixels_to_do);
         return 0;
 }

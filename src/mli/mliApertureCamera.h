@@ -155,12 +155,12 @@ void mliApertureCamera_aquire_pixels(
         const struct mli_Image *image,
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
-        const struct mliPixels *pixels_to_do,
+        const struct mli_Pixels *pixels_to_do,
         struct mli_Image *colors,
         struct mli_Prng *prng);
 
 void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
-        const struct mliPixels *pixels,
+        const struct mli_Pixels *pixels,
         const struct mli_Image *colors,
         struct mli_Image *sum_image,
         struct mli_Image *exposure_image);

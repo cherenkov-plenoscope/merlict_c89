@@ -31,6 +31,7 @@ parser = argparse.ArgumentParser(
 args = parser.parse_args()
 module_paths = [
     os.path.join("src", "chk"),
+    os.path.join("src", "version"),
     os.path.join("src", "math"),
     os.path.join("src", "vector"),
     os.path.join("src", "array"),
@@ -40,6 +41,7 @@ module_paths = [
     os.path.join("src", "prng"),
     os.path.join("src", "io"),
     os.path.join("src", "json"),
+    os.path.join("src", "pixel"),
     os.path.join("src", "image"),
     os.path.join("src", "func"),
     os.path.join("src", "testing"),
@@ -62,12 +64,13 @@ def run_and_save_sdtout(call, stdout_path):
             stderr=subprocess.STDOUT,
             stdout=f,
         )
+    print_file(stdout_path)
     return rc
 
 
 def tar_sceneries(scenery_name):
     in_path = os.path.join(
-        "libs", "mli", "tests", "resources", "sceneries", scenery_name
+        "data", "mli", "tests", "resources", "sceneries", scenery_name
     )
     out_path = in_path + ".tar"
     call = ["tar", "-cvf", out_path, "--directory", in_path, "."]

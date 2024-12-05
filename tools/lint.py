@@ -13,7 +13,10 @@ for namespace_dir in glob.glob(os.path.join(src_dir, "*")):
             wild_path = os.path.join(namespace_dir, wild)
             for pwp in glob.glob(wild_path):
                 paths.append(pwp)
-        subprocess.call(
-            ["clang-format", "-i", f"--style=file:{clang_format_file:s}"]
-            + paths
-        )
+        if len(paths) > 0:
+            subprocess.call(
+                ["clang-format", "-i", f"--style=file:{clang_format_file:s}"]
+                + paths
+            )
+        else:
+            print(namespace_dir, "is empty")

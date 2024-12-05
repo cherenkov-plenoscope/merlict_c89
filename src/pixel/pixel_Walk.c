@@ -1,12 +1,12 @@
 /* Copyright 2020-2021 Sebastian Achim Mueller */
-#include "mliPixelWalk.h"
+#include "pixel_Walk.h"
 
-struct mliPixelWalk mliPixelWalk_set(
+struct mli_PixelWalk mli_PixelWalk_set(
         const uint32_t num_cols,
         const uint32_t num_rows,
         const uint32_t chunk_size)
 {
-        struct mliPixelWalk walk;
+        struct mli_PixelWalk walk;
         uint32_t full_row, full_col, rest_row, rest_col;
 
         walk.num_cols = num_cols;
@@ -32,27 +32,27 @@ struct mliPixelWalk mliPixelWalk_set(
         return walk;
 }
 
-struct mliPixel mliPixelWalk_get(const struct mliPixelWalk *walk)
+struct mli_Pixel mli_PixelWalk_get(const struct mli_PixelWalk *walk)
 {
-        struct mliPixel px;
+        struct mli_Pixel px;
         px.row = walk->chunk_row * walk->chunk_size + walk->sub_row;
         px.col = walk->chunk_col * walk->chunk_size + walk->sub_col;
         return px;
 }
 
-void mliPixelWalk_walk(struct mliPixelWalk *walk)
+void mli_PixelWalk_walk(struct mli_PixelWalk *walk)
 {
-        struct mliPixel px;
+        struct mli_Pixel px;
 
         walk->sub_row += 1u;
-        px = mliPixelWalk_get(walk);
+        px = mli_PixelWalk_get(walk);
         if (walk->sub_row < walk->chunk_size && px.row < walk->num_rows) {
                 return;
         }
 
         walk->sub_row = 0u;
         walk->sub_col += 1u;
-        px = mliPixelWalk_get(walk);
+        px = mli_PixelWalk_get(walk);
         if (walk->sub_col < walk->chunk_size && px.col < walk->num_cols) {
                 return;
         }

@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_version.h"
+#include "version.h"
 
-void mli_logo_fprint(FILE *f)
+void mli_version_logo_fprint(FILE *f)
 {
         fprintf(f,
                 "\n  "
@@ -18,7 +18,7 @@ void mli_logo_fprint(FILE *f)
                 "\n");
 }
 
-void mli_authors_and_affiliations_fprint(FILE *f)
+void mli_version_authors_and_affiliations_fprint(FILE *f)
 {
         fprintf(f,
                 "  Sebastian Achim Mueller (1,2*,3^)\n"

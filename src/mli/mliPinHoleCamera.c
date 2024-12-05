@@ -2,7 +2,7 @@
 #include "mliPinHoleCamera.h"
 #include <math.h>
 #include <assert.h>
-#include "mliPixelWalk.h"
+#include "../pixel/pixel_Walk.h"
 #include "../math/math.h"
 #include "mliHomTra.h"
 
@@ -53,14 +53,14 @@ void mliPinHoleCamera_render_image(
         struct mli_Image *image,
         struct mli_Prng *prng)
 {
-        struct mliPixelWalk walk =
-                mliPixelWalk_set(image->num_cols, image->num_rows, 16u);
+        struct mli_PixelWalk walk =
+                mli_PixelWalk_set(image->num_cols, image->num_rows, 16u);
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
         uint32_t i;
         const uint32_t num_pixel = image->num_rows * image->num_cols;
 
         for (i = 0; i < num_pixel; i++) {
-                struct mliPixel px = mliPixelWalk_get(&walk);
+                struct mli_Pixel px = mli_PixelWalk_get(&walk);
                 struct mliRay ray_wrt_camera = mliPinHoleCamera_ray_at_row_col(
                         &camera, image, px.row, px.col);
 
@@ -70,7 +70,7 @@ void mliPinHoleCamera_render_image(
                 struct mliColor color =
                         mliTracer_trace_ray(tracer, ray_wrt_root, prng);
                 mli_Image_set(image, px.col, px.row, color);
-                mliPixelWalk_walk(&walk);
+                mli_PixelWalk_walk(&walk);
         }
 }
 

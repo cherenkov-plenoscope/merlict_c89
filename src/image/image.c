@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "../image/image.h"
 #include <assert.h>
-#include "../mli/mliPixelWalk.h"
+#include "../pixel/pixel_Walk.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
 #include <float.h>
@@ -243,58 +243,55 @@ void mli_Image_from_sum_and_exposure(
         }
 }
 
-void mliPixels_set_all_from_image(
-        struct mliPixels *pixels,
+void mli_Pixels_set_all_from_image(
+        struct mli_Pixels *pixels,
         const struct mli_Image *image)
 {
-        struct mliPixelWalk walk =
-                mliPixelWalk_set(image->num_cols, image->num_rows, 16u);
+        struct mli_PixelWalk walk =
+                mli_PixelWalk_set(image->num_cols, image->num_rows, 16u);
         uint64_t i;
         const uint64_t num_pixel = image->num_rows * image->num_cols;
-
-        assert(image->num_cols * image->num_rows == pixels->num_pixels);
+        assert(num_pixel == pixels->capacity);
+        pixels->size = 0;
         for (i = 0; i < num_pixel; i++) {
-                pixels->pixels[i] = mliPixelWalk_get(&walk);
-                mliPixelWalk_walk(&walk);
+                mli_Pixels_push_back(pixels, mli_PixelWalk_get(&walk));
+                mli_PixelWalk_walk(&walk);
         }
 }
 
-void mliPixels_above_threshold(
+void mli_Pixels_above_threshold(
         const struct mli_Image *image,
         const float threshold,
-        struct mliPixels *pixels)
+        struct mli_Pixels *pixels)
 {
-        struct mliPixelWalk walk =
-                mliPixelWalk_set(image->num_cols, image->num_rows, 16u);
+        struct mli_PixelWalk walk =
+                mli_PixelWalk_set(image->num_cols, image->num_rows, 16u);
         uint64_t i;
         const uint64_t num_pixel = image->num_rows * image->num_cols;
 
-        pixels->num_pixels_to_do = 0;
+        pixels->size = 0;
         for (i = 0; i < num_pixel; i++) {
-                struct mliPixel px = mliPixelWalk_get(&walk);
+                struct mli_Pixel px = mli_PixelWalk_get(&walk);
                 double lum = 0.0;
                 struct mliColor c = mli_Image_at(image, px.col, px.row);
                 lum = c.r + c.g + c.b;
                 if (lum > threshold) {
-                        pixels->pixels[pixels->num_pixels_to_do] = px;
-                        pixels->num_pixels_to_do += 1;
+                        mli_Pixels_push_back(pixels, px);
                 }
-                mliPixelWalk_walk(&walk);
+                mli_PixelWalk_walk(&walk);
         }
 }
 
 void mli_Image_assign_pixel_colors_to_sum_and_exposure_image(
-        const struct mliPixels *pixels,
+        const struct mli_Pixels *pixels,
         const struct mli_Image *colors,
         struct mli_Image *sum_image,
         struct mli_Image *exposure_image)
 {
         uint64_t pix;
-        for (pix = 0u; pix < pixels->num_pixels; pix++) {
-                const uint64_t idx = mli_Image_idx(
-                        sum_image,
-                        pixels->pixels[pix].col,
-                        pixels->pixels[pix].row);
+        for (pix = 0u; pix < pixels->size; pix++) {
+                const struct mli_Pixel px = pixels->array[pix];
+                const uint64_t idx = mli_Image_idx(sum_image, px.col, px.row);
                 sum_image->raw[idx].r += colors->raw[idx].r;
                 sum_image->raw[idx].g += colors->raw[idx].g;
                 sum_image->raw[idx].b += colors->raw[idx].b;

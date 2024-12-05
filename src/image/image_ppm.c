@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "image_ppm.h"
-#include "../mli/mli_version.h"
+#include "../version/version.h"
 #include "../chk/chk.h"
 
 int mli_Image_malloc_fread(struct mli_Image *img, FILE *f)

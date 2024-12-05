@@ -13,7 +13,7 @@
 #include "../mli/mliPinHoleCamera.h"
 #include "../mli/mliApertureCamera.h"
 #include "../mli/mli_ray_scenery_query.h"
-#include "../mli/mli_version.h"
+#include "../version/version.h"
 #include "toggle_stdin.h"
 
 void mli_viewer_clear_screen(void)
@@ -28,7 +28,7 @@ void mli_viewer_clear_screen(void)
 void mli_viewer_print_help(void)
 {
         mli_viewer_clear_screen();
-        mli_logo_fprint(stdout);
+        mli_version_logo_fprint(stdout);
         printf("  v%d.%d.%d\n",
                MLI_VERSION_MAYOR,
                MLI_VERSION_MINOR,
@@ -57,7 +57,7 @@ void mli_viewer_print_help(void)
         printf("    + altitude        [  5  ]     + latitude        [  7  ]\n");
         printf("                                  - latitude        [  6  ]\n");
         printf("\n");
-        mli_authors_and_affiliations_fprint(stdout);
+        mli_version_authors_and_affiliations_fprint(stdout);
 }
 
 void mli_viewer_print_info_line(
