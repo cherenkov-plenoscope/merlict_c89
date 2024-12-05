@@ -1,5 +1,5 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-#include "mli_viewer_Cursor.h"
+#include "Cursor.h"
 
 void mlivrCursor_move_up(struct mlivrCursor *cursor)
 {

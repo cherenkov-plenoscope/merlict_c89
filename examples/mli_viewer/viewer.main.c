@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../src/mli_viewer/mli_viewer_Config.h"
-#include "../../src/mli_viewer/mli_viewer_viewer.h"
+#include "../../src/viewer/Config.h"
+#include "../../src/viewer/viewer.h"
 #include "../../src/chk/chk.h"
 #include "../../src/mtl/cstr.h"
 #include "../../src/mtl/cstr_numbers.h"

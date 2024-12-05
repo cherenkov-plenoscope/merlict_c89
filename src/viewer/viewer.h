@@ -7,8 +7,8 @@
 #include "../mli/mliTracer.h"
 #include "../mtl/prng.h"
 #include "../mli/mliView.h"
-#include "mli_viewer_Cursor.h"
-#include "mli_viewer_Config.h"
+#include "Cursor.h"
+#include "Config.h"
 
 #define MLIVR_ESCAPE_KEY 27
 #define MLIVR_SPACE_KEY 32

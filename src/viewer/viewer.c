@@ -1,5 +1,5 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
-#include "mli_viewer_viewer.h"
+#include "viewer.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
@@ -14,7 +14,7 @@
 #include "../mli/mliApertureCamera.h"
 #include "../mli/mli_ray_scenery_query.h"
 #include "../mli/mli_version.h"
-#include "mli_viewer_toggle_stdin.h"
+#include "toggle_stdin.h"
 
 void mlivr_clear_screen(void)
 {
