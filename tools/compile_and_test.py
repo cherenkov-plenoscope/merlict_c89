@@ -36,10 +36,11 @@ module_paths = [
     os.path.join("src", "array"),
     os.path.join("src", "cstr"),
     os.path.join("src", "string"),
+    os.path.join("src", "path"),
     os.path.join("src", "testing"),
     os.path.join("src", "mtl"),
     os.path.join("src", "mli"),
-    os.path.join("src", "mli_corsika"),
+    os.path.join("src", "corsika"),
     os.path.join("src", "viewer"),
 ]
 module_names = str.join("-", [os.path.basename(lp) for lp in module_paths])

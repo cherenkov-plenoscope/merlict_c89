@@ -1,7 +1,7 @@
 #include "../chk/chk.h"
 #include "path.h"
 
-int mtl_path_strip_this_dir(
+int mli_path_strip_this_dir(
         const struct mtl_String *src,
         struct mtl_String *dst)
 {
@@ -32,7 +32,7 @@ chk_error:
         return 0;
 }
 
-int mtl_path_basename(const struct mtl_String *src, struct mtl_String *dst)
+int mli_path_basename(const struct mtl_String *src, struct mtl_String *dst)
 {
         int64_t pos_last_del = -1;
         mtl_String_free(dst);

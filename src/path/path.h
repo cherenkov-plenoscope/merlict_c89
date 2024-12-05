@@ -1,13 +1,13 @@
 /* Copyright Sebastian Achim Mueller */
-#ifndef mtl_path_H_
-#define mtl_path_H_
+#ifndef MLI_PATH_H_
+#define MLI_PATH_H_
 #include "../string/string.h"
 
-int mtl_path_strip_this_dir(
+int mli_path_strip_this_dir(
         const struct mtl_String *src,
         struct mtl_String *dst);
-int mtl_path_basename(const struct mtl_String *src, struct mtl_String *dst);
-int mtl_path_splitext(
+int mli_path_basename(const struct mtl_String *src, struct mtl_String *dst);
+int mli_path_splitext(
         const struct mtl_String *src,
         struct mtl_String *dst,
         struct mtl_String *ext);
