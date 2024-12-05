@@ -33,6 +33,7 @@ module_paths = [
     os.path.join("src", "chk"),
     os.path.join("src", "math"),
     os.path.join("src", "vector"),
+    os.path.join("src", "array"),
     os.path.join("src", "testing"),
     os.path.join("src", "mtl"),
     os.path.join("src", "mli"),

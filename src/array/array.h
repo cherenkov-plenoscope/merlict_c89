@@ -1,12 +1,12 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MTL_ARRAY_H_
-#define MTL_ARRAY_H_
+#ifndef MLI_ARRAY_H_
+#define MLI_ARRAY_H_
 
 #include <stdint.h>
 #include <stdlib.h>
 #include "../chk/chk.h"
 
-#define MTL_ARRAY_DEFINITON(NAME, PAYLOAD_TYPE)                                \
+#define MLI_ARRAY_DEFINITON(NAME, PAYLOAD_TYPE)                                \
                                                                                \
         struct NAME {                                                          \
                 uint64_t size;                                                 \
@@ -28,7 +28,7 @@
                 const uint64_t start,                                          \
                 const uint64_t length);
 
-#define MTL_ARRAY_IMPLEMENTATION_MALLOC(NAME, PAYLOAD_TYPE)                    \
+#define MLI_ARRAY_IMPLEMENTATION_MALLOC(NAME, PAYLOAD_TYPE)                    \
         int NAME##_malloc(struct NAME *self, const uint64_t size)              \
         {                                                                      \
                 NAME##_free(self);                                             \
@@ -51,7 +51,7 @@
                 return 0;                                                      \
         }
 
-#define MTL_ARRAY_IMPLEMENTATION_MALLOC_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)   \
+#define MLI_ARRAY_IMPLEMENTATION_MALLOC_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)   \
         int NAME##_malloc(struct NAME *self, const uint64_t size)              \
         {                                                                      \
                 NAME##_free(self);                                             \
@@ -81,7 +81,7 @@
                 return 0;                                                      \
         }
 
-#define MTL_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                    \
+#define MLI_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                    \
                                                                                \
         struct NAME NAME##_init(void)                                          \
         {                                                                      \
@@ -140,12 +140,12 @@
                 return 0;                                                      \
         }
 
-#define MTL_ARRAY_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                           \
-        MTL_ARRAY_IMPLEMENTATION_MALLOC(NAME, PAYLOAD_TYPE)                    \
-        MTL_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)
+#define MLI_ARRAY_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                           \
+        MLI_ARRAY_IMPLEMENTATION_MALLOC(NAME, PAYLOAD_TYPE)                    \
+        MLI_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)
 
-#define MTL_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)          \
-        MTL_ARRAY_IMPLEMENTATION_MALLOC_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)   \
-        MTL_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)
+#define MLI_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)          \
+        MLI_ARRAY_IMPLEMENTATION_MALLOC_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)   \
+        MLI_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)
 
 #endif

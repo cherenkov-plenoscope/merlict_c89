@@ -2,10 +2,10 @@
 #ifndef MTL_STRING_H_
 #define MTL_STRING_H_
 
-#include "array.h"
+#include "../array/array.h"
 #include <stdarg.h>
 
-MTL_ARRAY_DEFINITON(mtl_String, char)
+MLI_ARRAY_DEFINITON(mtl_String, char)
 
 int mtl_String_from_cstr_fromat(
         struct mtl_String *str,

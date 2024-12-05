@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "../chk/chk.h"
 
-MTL_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(mtl_String, char)
+MLI_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(mtl_String, char)
 
 int mtl_String_from_cstr_fromat(struct mtl_String *str, const char *format, ...)
 {
