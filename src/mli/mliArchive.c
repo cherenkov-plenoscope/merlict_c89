@@ -5,7 +5,7 @@
 #include "../path/path.h"
 #include "../cstr/cstr.h"
 #include "../json/json.h"
-#include "mliTar.h"
+#include "../tar/tar.h"
 
 struct mliArchive mliArchive_init(void)
 {
@@ -66,17 +66,17 @@ chk_error:
 
 int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 {
-        struct mliTar tar = mliTar_init();
-        struct mliTarHeader tarh = mliTarHeader_init();
+        struct mli_Tar tar = mli_Tar_init();
+        struct mli_TarHeader tarh = mli_TarHeader_init();
         struct mli_String payload = mli_String_init();
         struct mli_String filename = mli_String_init();
 
         char tarh_name[MLI_TAR_NAME_LENGTH] = {'\0'};
 
         chk_msg(mliArchive_malloc(arc), "Can not malloc archive.");
-        chk_msg(mliTar_read_begin(&tar, f), "Can't begin tar.");
+        chk_msg(mli_Tar_read_begin(&tar, f), "Can't begin tar.");
 
-        while (mliTar_read_header(&tar, &tarh)) {
+        while (mli_Tar_read_header(&tar, &tarh)) {
 
                 chk(mli_String_from_cstr(&filename, tarh.name));
                 chk(mli_String_strip(&filename, &filename));
@@ -84,7 +84,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
 
                 chk_msg(mli_String_malloc(&payload, tarh.size),
                         "Can not allocate payload.");
-                chk_msg(mliTar_read_data(
+                chk_msg(mli_Tar_read_data(
                                 &tar, (void *)payload.array, tarh.size),
                         "Failed to read payload from tar into payload.");
                 chk_msg(mli_String_convert_line_break_CRLF_CR_to_LF(
@@ -97,7 +97,7 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
                         "Can not push back file into archive.");
         }
 
-        chk_msg(mliTar_read_finalize(&tar), "Can't finalize reading tar.");
+        chk_msg(mli_Tar_read_finalize(&tar), "Can't finalize reading tar.");
         mli_String_free(&payload);
         mli_String_free(&filename);
         return 1;

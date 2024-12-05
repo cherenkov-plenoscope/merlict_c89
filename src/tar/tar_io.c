@@ -1,10 +1,10 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
-#include "mliTarIo.h"
+#include "tar_io.h"
 #include <stdio.h>
 #include "../chk/chk.h"
 
-int mliTar_read_data_to_io(
-        struct mliTar *tar,
+int mli_Tar_read_data_to_IO(
+        struct mli_Tar *tar,
         struct mli_IO *buff,
         const uint64_t size)
 {
@@ -12,7 +12,7 @@ int mliTar_read_data_to_io(
         chk_msg(buff->cstr != NULL, "buff is not allocated.");
         for (i = 0; i < size; i++) {
                 unsigned char c;
-                chk(mliTar_read_data(tar, (void *)(&c), 1));
+                chk(mli_Tar_read_data(tar, (void *)(&c), 1));
                 chk(mli_IO_write_unsigned_char(buff, c));
         }
 
@@ -21,8 +21,8 @@ chk_error:
         return 0;
 }
 
-int mliTar_write_data_from_io(
-        struct mliTar *tar,
+int mli_Tar_write_data_from_IO(
+        struct mli_Tar *tar,
         struct mli_IO *buff,
         const uint64_t size)
 {
@@ -33,7 +33,7 @@ int mliTar_write_data_from_io(
                 unsigned char c;
                 chk(rc != EOF);
                 c = (char)(rc);
-                chk(mliTar_write_data(tar, (void *)(&c), 1));
+                chk(mli_Tar_write_data(tar, (void *)(&c), 1));
         }
 
         return 1;

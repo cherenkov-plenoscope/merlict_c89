@@ -2,14 +2,14 @@
 #define MLITARIO_H_
 
 #include "../io/io.h"
-#include "mliTar.h"
+#include "tar.h"
 
-int mliTar_read_data_to_io(
-        struct mliTar *tar,
+int mli_Tar_read_data_to_IO(
+        struct mli_Tar *tar,
         struct mli_IO *buff,
         const uint64_t size);
-int mliTar_write_data_from_io(
-        struct mliTar *tar,
+int mli_Tar_write_data_from_IO(
+        struct mli_Tar *tar,
         struct mli_IO *buff,
         const uint64_t size);
 #endif

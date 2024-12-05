@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_EVENTTAPE_H_
 
 #include <stdint.h>
-#include "../mli/mliTar.h"
+#include "../tar/tar.h"
 #include "../mli/mliDynFloat.h"
 #include "utils.h"
 
@@ -12,7 +12,7 @@
 #define MLI_CORSIKA_EVENTTAPE_VERSION_PATCH 2
 
 struct mliEventTapeWriter {
-        struct mliTar tar;
+        struct mli_Tar tar;
         int flush_tar_stream_after_each_file;
         int run_number;
         int event_number;
@@ -54,11 +54,11 @@ struct mliEventTapeReader {
         int has_still_bunches_in_event;
 
         /* Underlying tape-archive */
-        struct mliTar tar;
+        struct mli_Tar tar;
 
         /* Next file's tar-header in the underlying tape-archive */
         int has_tarh;
-        struct mliTarHeader tarh;
+        struct mli_TarHeader tarh;
 };
 struct mliEventTapeReader mliEventTapeReader_init(void);
 

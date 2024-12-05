@@ -2,7 +2,7 @@
 #include "EventTape.h"
 #include "utils.h"
 #include "../math/math.h"
-#include "../mli/mliTar.h"
+#include "../tar/tar.h"
 #include "../cstr/cstr.h"
 #include "../cstr/cstr_numbers.h"
 #include "../chk/chk.h"
@@ -12,7 +12,7 @@
 struct mliEventTapeWriter mliEventTapeWriter_init(void)
 {
         struct mliEventTapeWriter tio;
-        tio.tar = mliTar_init();
+        tio.tar = mli_Tar_init();
         tio.flush_tar_stream_after_each_file = 1;
         tio.run_number = 0;
         tio.event_number = 0;
@@ -26,7 +26,7 @@ int mliEventTapeWriter_finalize(struct mliEventTapeWriter *tio)
         if (tio->tar.stream) {
                 chk_msg(mliEventTapeWriter_flush_cherenkov_bunch_block(tio),
                         "Can't finalize cherenkov-bunch-block.");
-                chk_msg(mliTar_write_finalize(&tio->tar),
+                chk_msg(mli_Tar_write_finalize(&tio->tar),
                         "Can't finalize tar-file.");
         }
         mliDynFloat_free(&tio->buffer);
@@ -43,7 +43,7 @@ int mliEventTapeWriter_begin(
 {
         chk_msg(mliEventTapeWriter_finalize(tio),
                 "Can't close and free previous tar-io-writer.");
-        chk_msg(mliTar_write_begin(&tio->tar, stream), "Can't begin tar.");
+        chk_msg(mli_Tar_write_begin(&tio->tar, stream), "Can't begin tar.");
         chk_msg(mliDynFloat_malloc(&tio->buffer, 8 * num_bunches_buffer),
                 "Can't malloc cherenkov-bunch-buffer.");
         return 1;
@@ -56,13 +56,13 @@ int mliEventTapeWriter_write_corsika_header(
         const char *path,
         const float *corsika_header)
 {
-        struct mliTarHeader tarh = mliTarHeader_init();
-        chk_msg(mliTarHeader_set_normal_file(
+        struct mli_TarHeader tarh = mli_TarHeader_init();
+        chk_msg(mli_TarHeader_set_normal_file(
                         &tarh, path, MLI_CORSIKA_HEADER_SIZE_BYTES),
                 "Can't set tar-header for corsika-header.");
-        chk_msg(mliTar_write_header(&tio->tar, &tarh),
+        chk_msg(mli_Tar_write_header(&tio->tar, &tarh),
                 "Can't write tar-header for corsika-header to tar.");
-        chk_msg(mliTar_write_data(
+        chk_msg(mli_Tar_write_data(
                         &tio->tar,
                         corsika_header,
                         MLI_CORSIKA_HEADER_SIZE_BYTES),
@@ -125,18 +125,18 @@ int mliEventTapeWriter_flush_cherenkov_bunch_block(
         struct mliEventTapeWriter *tio)
 {
         char path[MLI_TAR_NAME_LENGTH] = {'\0'};
-        struct mliTarHeader tarh = mliTarHeader_init();
+        struct mli_TarHeader tarh = mli_TarHeader_init();
         sprintf(path,
                 "%09d/%09d/%09d.cer.x8.float32",
                 tio->run_number,
                 tio->event_number,
                 tio->cherenkov_bunch_block_number);
-        chk_msg(mliTarHeader_set_normal_file(
+        chk_msg(mli_TarHeader_set_normal_file(
                         &tarh, path, tio->buffer.size * sizeof(float)),
                 "Can't set cherenkov-bunch-block's tar-header.");
-        chk_msg(mliTar_write_header(&tio->tar, &tarh),
+        chk_msg(mli_Tar_write_header(&tio->tar, &tarh),
                 "Can't write tar-header for cherenkov-bunch-block to tar.");
-        chk_msg(mliTar_write_data(
+        chk_msg(mli_Tar_write_data(
                         &tio->tar,
                         tio->buffer.array,
                         tio->buffer.size * sizeof(float)),
@@ -175,8 +175,8 @@ chk_error:
 struct mliEventTapeReader mliEventTapeReader_init(void)
 {
         struct mliEventTapeReader tio;
-        tio.tar = mliTar_init();
-        tio.tarh = mliTarHeader_init();
+        tio.tar = mli_Tar_init();
+        tio.tarh = mli_TarHeader_init();
         tio.run_number = 0;
         tio.event_number = 0;
         tio.cherenkov_bunch_block_number = 0;
@@ -189,7 +189,7 @@ struct mliEventTapeReader mliEventTapeReader_init(void)
 int mliEventTapeReader_finalize(struct mliEventTapeReader *tio)
 {
         if (tio->tar.stream) {
-                chk_msg(mliTar_read_finalize(&tio->tar),
+                chk_msg(mli_Tar_read_finalize(&tio->tar),
                         "Can't finalize reading tar.");
         }
         (*tio) = mliEventTapeReader_init();
@@ -202,8 +202,8 @@ int mliEventTapeReader_begin(struct mliEventTapeReader *tio, FILE *stream)
 {
         chk_msg(mliEventTapeReader_finalize(tio),
                 "Can't close and free previous tar-io-reader.");
-        chk_msg(mliTar_read_begin(&tio->tar, stream), "Can't begin tar.");
-        tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
+        chk_msg(mli_Tar_read_begin(&tio->tar, stream), "Can't begin tar.");
+        tio->has_tarh = mli_Tar_read_header(&tio->tar, &tio->tarh);
         return 1;
 chk_error:
         return 0;
@@ -220,7 +220,7 @@ int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh)
                 "Expected file to be 'ddddddddd/RUNH.float32.'");
         chk_msg(tio->tarh.size == MLI_CORSIKA_HEADER_SIZE_BYTES,
                 "Expected RUNH to have size 273*sizeof(float)");
-        chk_msg(mliTar_read_data(&tio->tar, (void *)runh, tio->tarh.size),
+        chk_msg(mli_Tar_read_data(&tio->tar, (void *)runh, tio->tarh.size),
                 "Can't read RUNH from tar.");
         chk_msg(runh[0] == mli_chars_to_float("RUNH"),
                 "Expected RUNH[0] == 'RUNH'");
@@ -232,7 +232,7 @@ int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh)
         chk_msg(tio->run_number == runh_run_number,
                 "Expected run_number in RUNH's path "
                 "to match run_number in RUNH.");
-        tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
+        tio->has_tarh = mli_Tar_read_header(&tio->tar, &tio->tarh);
         return 1;
 chk_error:
         return 0;
@@ -265,7 +265,7 @@ int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth)
                 "Can't parse run-number from path.");
         chk_msg(tio->tarh.size == MLI_CORSIKA_HEADER_SIZE_BYTES,
                 "Expected EVTH to have size 273*sizeof(float)");
-        chk_msg(mliTar_read_data(&tio->tar, (void *)evth, tio->tarh.size),
+        chk_msg(mli_Tar_read_data(&tio->tar, (void *)evth, tio->tarh.size),
                 "Can't read EVTH from tar.");
         chk_msg(evth[0] == mli_chars_to_float("EVTH"),
                 "Expected EVTH[0] == 'EVTH'");
@@ -282,7 +282,7 @@ int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth)
         tio->cherenkov_bunch_block_number = 1;
 
         /* now there must follow a cherenkov-bunch-block */
-        tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
+        tio->has_tarh = mli_Tar_read_header(&tio->tar, &tio->tarh);
 
         chk_msg(tio->has_tarh, "Expected cherenkov-bunch-block after EVTH.");
         chk_msg(mliEventTapeReader_tarh_is_valid_cherenkov_block(tio),
@@ -359,7 +359,7 @@ int mliEventTapeReader_read_cherenkov_bunch(
         }
         if (tio->block_at == tio->block_size) {
                 tio->cherenkov_bunch_block_number += 1;
-                tio->has_tarh = mliTar_read_header(&tio->tar, &tio->tarh);
+                tio->has_tarh = mli_Tar_read_header(&tio->tar, &tio->tarh);
                 if (!tio->has_tarh) {
                         tio->has_still_bunches_in_event = 0;
                         return 0;
@@ -377,7 +377,7 @@ int mliEventTapeReader_read_cherenkov_bunch(
                 tio->block_size = tio->tarh.size / MLI_CORSIKA_BUNCH_SIZE_BYTES;
                 tio->block_at = 0;
         }
-        chk_msg(mliTar_read_data(
+        chk_msg(mli_Tar_read_data(
                         &tio->tar,
                         (void *)(bunch),
                         MLI_CORSIKA_BUNCH_SIZE_BYTES),
