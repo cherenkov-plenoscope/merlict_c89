@@ -3,12 +3,12 @@
 #define MLI_CORSIKA_HISTOGRAM2D_H_
 
 #include <stdint.h>
-#include "../mli/mliAvlDict.h"
+#include "../avl/avl_Dict.h"
 #include "../io/io.h"
 #include "../vector/vector.h"
 
 struct mli_corsika_Histogram2d {
-        struct mliAvlDict dict;
+        struct mli_AvlDict dict;
 };
 
 struct mli_corsika_Histogram2dBin {

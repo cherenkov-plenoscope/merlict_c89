@@ -45,6 +45,7 @@ module_paths = [
     os.path.join("src", "image"),
     os.path.join("src", "func"),
     os.path.join("src", "tar"),
+    os.path.join("src", "avl"),
     os.path.join("src", "testing"),
     os.path.join("src", "mli"),
     os.path.join("src", "corsika"),

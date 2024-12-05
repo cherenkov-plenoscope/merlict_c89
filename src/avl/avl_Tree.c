@@ -1,4 +1,4 @@
-#include "mliAvlTree.h"
+#include "avl_Tree.h"
 #include <stdio.h>
 
 /* Adopted from:
@@ -20,11 +20,11 @@
 /* Swing to the left
  * Warning: no balance maintainance
  */
-void mliAvl_swing_left(struct mliAvl **root)
+void mli_Avl_swing_left(struct mli_Avl **root)
 {
         /* no balance maintainance */
-        struct mliAvl *a = *root;
-        struct mliAvl *b = a->right;
+        struct mli_Avl *a = *root;
+        struct mli_Avl *b = a->right;
         *root = b;
         a->right = b->left;
         b->left = a;
@@ -33,11 +33,11 @@ void mliAvl_swing_left(struct mliAvl **root)
 /* Swing to the right
  * Warning: no balance maintainance
  */
-void mliAvl_swing_right(struct mliAvl **root)
+void mli_Avl_swing_right(struct mli_Avl **root)
 {
         /* no balance maintainance */
-        struct mliAvl *a = *root;
-        struct mliAvl *b = a->left;
+        struct mli_Avl *a = *root;
+        struct mli_Avl *b = a->left;
         *root = b;
         a->left = b->right;
         b->right = a;
@@ -45,7 +45,7 @@ void mliAvl_swing_right(struct mliAvl **root)
 
 /* Balance maintainance after especially nasty swings
  */
-void mliAvl_rebalance(struct mliAvl *root)
+void mli_Avl_rebalance(struct mli_Avl *root)
 {
         switch (root->balance) {
         case -1:
@@ -67,7 +67,7 @@ void mliAvl_rebalance(struct mliAvl *root)
  * returns 1 if the depth of the tree has grown
  * Warning: do not insert elements already present
  */
-int mliAvlTree_insert(struct mliAvlTree *t, struct mliAvl *a)
+int mli_AvlTree_insert(struct mli_AvlTree *t, struct mli_Avl *a)
 {
         /* initialize */
         a->left = 0;
@@ -83,10 +83,10 @@ int mliAvlTree_insert(struct mliAvlTree *t, struct mliAvl *a)
         if (t->compare(t->root, a) > 0) {
                 /* insert into the left subtree */
                 if (t->root->left) {
-                        struct mliAvlTree left_subtree;
+                        struct mli_AvlTree left_subtree;
                         left_subtree.root = t->root->left;
                         left_subtree.compare = t->compare;
-                        if (mliAvlTree_insert(&left_subtree, a)) {
+                        if (mli_AvlTree_insert(&left_subtree, a)) {
                                 switch (t->root->balance--) {
                                 case 1:
                                         return 0;
@@ -94,13 +94,13 @@ int mliAvlTree_insert(struct mliAvlTree *t, struct mliAvl *a)
                                         return 1;
                                 }
                                 if (t->root->left->balance < 0) {
-                                        mliAvl_swing_right(&(t->root));
+                                        mli_Avl_swing_right(&(t->root));
                                         t->root->balance = 0;
                                         t->root->right->balance = 0;
                                 } else {
-                                        mliAvl_swing_left(&(t->root->left));
-                                        mliAvl_swing_right(&(t->root));
-                                        mliAvl_rebalance(t->root);
+                                        mli_Avl_swing_left(&(t->root->left));
+                                        mli_Avl_swing_right(&(t->root));
+                                        mli_Avl_rebalance(t->root);
                                 }
                         } else {
                                 t->root->left = left_subtree.root;
@@ -116,10 +116,10 @@ int mliAvlTree_insert(struct mliAvlTree *t, struct mliAvl *a)
         } else {
                 /* insert into the right subtree */
                 if (t->root->right) {
-                        struct mliAvlTree right_subtree;
+                        struct mli_AvlTree right_subtree;
                         right_subtree.root = t->root->right;
                         right_subtree.compare = t->compare;
-                        if (mliAvlTree_insert(&right_subtree, a)) {
+                        if (mli_AvlTree_insert(&right_subtree, a)) {
                                 switch (t->root->balance++) {
                                 case -1:
                                         return 0;
@@ -127,13 +127,13 @@ int mliAvlTree_insert(struct mliAvlTree *t, struct mliAvl *a)
                                         return 1;
                                 }
                                 if (t->root->right->balance > 0) {
-                                        mliAvl_swing_left(&(t->root));
+                                        mli_Avl_swing_left(&(t->root));
                                         t->root->balance = 0;
                                         t->root->left->balance = 0;
                                 } else {
-                                        mliAvl_swing_right(&(t->root->right));
-                                        mliAvl_swing_left(&(t->root));
-                                        mliAvl_rebalance(t->root);
+                                        mli_Avl_swing_right(&(t->root->right));
+                                        mli_Avl_swing_left(&(t->root));
+                                        mli_Avl_rebalance(t->root);
                                 }
                         } else {
                                 t->root->right = right_subtree.root;
@@ -155,11 +155,11 @@ int mliAvlTree_insert(struct mliAvlTree *t, struct mliAvl *a)
  * Warning: if the element is not present in the tree,
  *          returns 0 as if it had been removed succesfully.
  */
-int mliAvlTree_remove(struct mliAvlTree *t, struct mliAvl *a)
+int mli_AvlTree_remove(struct mli_AvlTree *t, struct mli_Avl *a)
 {
         int b;
         if (t->root == a) {
-                return mliAvlTree_removeroot(t);
+                return mli_AvlTree_removeroot(t);
         }
         b = t->compare(t->root, a);
 
@@ -167,10 +167,10 @@ int mliAvlTree_remove(struct mliAvlTree *t, struct mliAvl *a)
                 /* remove from the left subtree */
                 int ch;
                 if (t->root->left) {
-                        struct mliAvlTree left_subtree;
+                        struct mli_AvlTree left_subtree;
                         left_subtree.root = t->root->left;
                         left_subtree.compare = t->compare;
-                        ch = mliAvlTree_remove(&left_subtree, a);
+                        ch = mli_AvlTree_remove(&left_subtree, a);
                         t->root->left = left_subtree.root;
                         if (ch) {
                                 switch (t->root->balance++) {
@@ -181,19 +181,19 @@ int mliAvlTree_remove(struct mliAvlTree *t, struct mliAvl *a)
                                 }
                                 switch (t->root->right->balance) {
                                 case 0:
-                                        mliAvl_swing_left(&(t->root));
+                                        mli_Avl_swing_left(&(t->root));
                                         t->root->balance = -1;
                                         t->root->left->balance = 1;
                                         return 0;
                                 case 1:
-                                        mliAvl_swing_left(&(t->root));
+                                        mli_Avl_swing_left(&(t->root));
                                         t->root->balance = 0;
                                         t->root->left->balance = 0;
                                         return -1;
                                 }
-                                mliAvl_swing_right(&(t->root->right));
-                                mliAvl_swing_left(&(t->root));
-                                mliAvl_rebalance(t->root);
+                                mli_Avl_swing_right(&(t->root->right));
+                                mli_Avl_swing_left(&(t->root));
+                                mli_Avl_rebalance(t->root);
                                 return -1;
                         }
                 }
@@ -202,10 +202,10 @@ int mliAvlTree_remove(struct mliAvlTree *t, struct mliAvl *a)
                 /* remove from the right subtree */
                 int ch;
                 if (t->root->right) {
-                        struct mliAvlTree right_subtree;
+                        struct mli_AvlTree right_subtree;
                         right_subtree.root = t->root->right;
                         right_subtree.compare = t->compare;
-                        ch = mliAvlTree_remove(&right_subtree, a);
+                        ch = mli_AvlTree_remove(&right_subtree, a);
                         t->root->right = right_subtree.root;
                         if (ch) {
                                 switch (t->root->balance--) {
@@ -216,19 +216,19 @@ int mliAvlTree_remove(struct mliAvlTree *t, struct mliAvl *a)
                                 }
                                 switch (t->root->left->balance) {
                                 case 0:
-                                        mliAvl_swing_right(&(t->root));
+                                        mli_Avl_swing_right(&(t->root));
                                         t->root->balance = 1;
                                         t->root->right->balance = -1;
                                         return 0;
                                 case -1:
-                                        mliAvl_swing_right(&(t->root));
+                                        mli_Avl_swing_right(&(t->root));
                                         t->root->balance = 0;
                                         t->root->right->balance = 0;
                                         return -1;
                                 }
-                                mliAvl_swing_left(&(t->root->left));
-                                mliAvl_swing_right(&(t->root));
-                                mliAvl_rebalance(t->root);
+                                mli_Avl_swing_left(&(t->root->left));
+                                mli_Avl_swing_right(&(t->root));
+                                mli_Avl_rebalance(t->root);
                                 return -1;
                         }
                 }
@@ -239,10 +239,10 @@ int mliAvlTree_remove(struct mliAvlTree *t, struct mliAvl *a)
 /* Remove the root of the AVL tree t
  * Warning: dumps core if t is empty
  */
-int mliAvlTree_removeroot(struct mliAvlTree *t)
+int mli_AvlTree_removeroot(struct mli_AvlTree *t)
 {
         int ch;
-        struct mliAvl *a;
+        struct mli_Avl *a;
         if (!t->root->left) {
                 if (!t->root->right) {
                         t->root = 0;
@@ -268,7 +268,7 @@ int mliAvlTree_removeroot(struct mliAvlTree *t)
                         a = a->left;
                 }
         }
-        ch = mliAvlTree_remove(t, a);
+        ch = mli_AvlTree_remove(t, a);
         a->left = t->root->left;
         a->right = t->root->right;
         a->balance = t->root->balance;
@@ -278,7 +278,7 @@ int mliAvlTree_removeroot(struct mliAvlTree *t)
         return 0;
 }
 
-struct mliAvl *mliAvlTree_find(struct mliAvlTree *t, const struct mliAvl *probe)
+struct mli_Avl *mli_AvlTree_find(struct mli_AvlTree *t, const struct mli_Avl *probe)
 {
         int64_t match;
 
@@ -292,19 +292,19 @@ struct mliAvl *mliAvlTree_find(struct mliAvlTree *t, const struct mliAvl *probe)
                 return t->root;
         } else if (match < 0) {
                 if (t->root->left != NULL) {
-                        struct mliAvlTree left_subtree;
+                        struct mli_AvlTree left_subtree;
                         left_subtree.root = t->root->left;
                         left_subtree.compare = t->compare;
-                        return mliAvlTree_find(&left_subtree, probe);
+                        return mli_AvlTree_find(&left_subtree, probe);
                 } else {
                         return NULL;
                 }
         } else {
                 if (t->root->right != NULL) {
-                        struct mliAvlTree right_subtree;
+                        struct mli_AvlTree right_subtree;
                         right_subtree.root = t->root->right;
                         right_subtree.compare = t->compare;
-                        return mliAvlTree_find(&right_subtree, probe);
+                        return mli_AvlTree_find(&right_subtree, probe);
                 } else {
                         return NULL;
                 }
@@ -312,9 +312,9 @@ struct mliAvl *mliAvlTree_find(struct mliAvlTree *t, const struct mliAvl *probe)
         return NULL;
 }
 
-struct mliAvlNode mliAvlNode_init(void)
+struct mli_AvlNode mli_AvlNode_init(void)
 {
-        struct mliAvlNode n;
+        struct mli_AvlNode n;
         n.avl.left = NULL;
         n.avl.right = NULL;
         n.avl.balance = 0;
@@ -323,25 +323,25 @@ struct mliAvlNode mliAvlNode_init(void)
         return n;
 }
 
-int64_t mliAvlNode_compare(const void *a, const void *b)
+int64_t mli_AvlNode_compare(const void *a, const void *b)
 {
-        return ((struct mliAvlNode *)a)->key - ((struct mliAvlNode *)b)->key;
+        return ((struct mli_AvlNode *)a)->key - ((struct mli_AvlNode *)b)->key;
 }
 
-void mliAvlNode_print(struct mliAvl *a, int m)
+void mli_AvlNode_print(struct mli_Avl *a, int m)
 {
         int n = m;
         if (a == NULL) {
                 return;
         };
         if (a->right) {
-                mliAvlNode_print(a->right, m + 1);
+                mli_AvlNode_print(a->right, m + 1);
         }
         while (n--) {
                 printf("   ");
         }
-        printf("%ld (%ld)\n", ((struct mliAvlNode *)a)->key, a->balance);
+        printf("%ld (%ld)\n", ((struct mli_AvlNode *)a)->key, a->balance);
         if (a->left) {
-                mliAvlNode_print(a->left, m + 1);
+                mli_AvlNode_print(a->left, m + 1);
         }
 }
