@@ -8,7 +8,7 @@
 #include "../mli/mliDynDouble.h"
 
 void mli_corsika_overlap_of_ray_with_voxels(
-        const struct mliCorsikaPhotonBunch *bunch,
+        const struct mli_corsika_PhotonBunch *bunch,
         const struct mliDynDouble *x_bin_edges,
         const struct mliDynDouble *y_bin_edges,
         const struct mliDynDouble *z_bin_edges,

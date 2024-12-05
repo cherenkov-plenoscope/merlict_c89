@@ -7,11 +7,11 @@
 #include "../mtl/io.h"
 #include "../mtl/vector.h"
 
-struct mliCorsikaHistogram2d {
+struct mli_corsika_Histogram2d {
         struct mliAvlDict dict;
 };
 
-struct mliCorsikaHistogram2dBin {
+struct mli_corsika_Histogram2dBin {
         int32_t x;
         int32_t y;
         double value;
@@ -19,27 +19,28 @@ struct mliCorsikaHistogram2dBin {
 
 MTL_VECTOR_DEFINITON(
         mliDynCorsikaHistogram2dBin,
-        struct mliCorsikaHistogram2dBin)
+        struct mli_corsika_Histogram2dBin)
 
-struct mliCorsikaHistogram2d mliCorsikaHistogram2d_init(void);
+struct mli_corsika_Histogram2d mli_corsika_Histogram2d_init(void);
 
-int mliCorsikaHistogram2d_malloc(
-        struct mliCorsikaHistogram2d *hist,
+int mli_corsika_Histogram2d_malloc(
+        struct mli_corsika_Histogram2d *hist,
         const uint64_t capacity);
 
-void mliCorsikaHistogram2d_free(struct mliCorsikaHistogram2d *hist);
+void mli_corsika_Histogram2d_free(struct mli_corsika_Histogram2d *hist);
 
-int mliCorsikaHistogram2d_assign(
-        struct mliCorsikaHistogram2d *hist,
+int mli_corsika_Histogram2d_assign(
+        struct mli_corsika_Histogram2d *hist,
         const int32_t x,
         const int32_t y,
         const double weight);
 
-int mliCorsikaHistogram2d_flatten(
-        const struct mliCorsikaHistogram2d *hist,
+int mli_corsika_Histogram2d_flatten(
+        const struct mli_corsika_Histogram2d *hist,
         struct mliDynCorsikaHistogram2dBin *dump);
 
-void mliCorsikaHistogram2d_reset(struct mliCorsikaHistogram2d *hist);
-uint64_t mliCorsikaHistogram2d_len(const struct mliCorsikaHistogram2d *hist);
+void mli_corsika_Histogram2d_reset(struct mli_corsika_Histogram2d *hist);
+uint64_t mli_corsika_Histogram2d_len(
+        const struct mli_corsika_Histogram2d *hist);
 
 #endif

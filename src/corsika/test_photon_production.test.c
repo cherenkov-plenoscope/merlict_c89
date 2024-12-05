@@ -22,7 +22,7 @@ CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
                                 for (float vy = -0.5; vy < 0.5;
                                      vy = vy + 0.11) {
                                         struct mliPhoton merlict_photon;
-                                        struct mliCorsikaPhotonBunch
+                                        struct mli_corsika_PhotonBunch
                                                 corsika_photon;
                                         corsika_photon.x_cm = x;
                                         corsika_photon.y_cm = y;
@@ -37,7 +37,7 @@ CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
                                                 corsika_photon));
 
                                         merlict_photon =
-                                                mliCorsikaPhotonBunch_to_merlict_photon(
+                                                mli_corsika_PhotonBunch_to_merlict_photon(
                                                         corsika_photon
                                                                 production_distance_offset,
                                                         id);

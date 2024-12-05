@@ -7,7 +7,7 @@
 #include "../mli/mliVec.h"
 #include "../mli/mliPhoton.h"
 
-struct mliCorsikaPhotonBunch {
+struct mli_corsika_PhotonBunch {
         /*
          * x in cm
          * y in cm
@@ -71,32 +71,33 @@ struct mliCorsikaPhotonBunch {
         float wavelength_nm;
 };
 
-MTL_VECTOR_DEFINITON(mliDynCorsikaPhotonBunch, struct mliCorsikaPhotonBunch)
+MTL_VECTOR_DEFINITON(mliDynCorsikaPhotonBunch, struct mli_corsika_PhotonBunch)
 
-void mliCorsikaPhotonBunch_set_from_raw(
-        struct mliCorsikaPhotonBunch *bunch,
+void mli_corsika_PhotonBunch_set_from_raw(
+        struct mli_corsika_PhotonBunch *bunch,
         const float *raw);
-void mliCorsikaPhotonBunch_to_raw(
-        const struct mliCorsikaPhotonBunch *bunch,
+void mli_corsika_PhotonBunch_to_raw(
+        const struct mli_corsika_PhotonBunch *bunch,
         float *raw);
 
-struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
-        const struct mliCorsikaPhotonBunch bunch,
+struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
+        const struct mli_corsika_PhotonBunch bunch,
         const double production_distance_offset,
         const int64_t id);
 
 struct mliVec mli_corsika_photon_direction_of_motion(
-        const struct mliCorsikaPhotonBunch bunch);
+        const struct mli_corsika_PhotonBunch bunch);
 
 struct mliVec mli_corsika_photon_support_on_observation_level(
-        const struct mliCorsikaPhotonBunch bunch);
+        const struct mli_corsika_PhotonBunch bunch);
 
-double mli_corsika_photon_wavelength(const struct mliCorsikaPhotonBunch bunch);
+double mli_corsika_photon_wavelength(
+        const struct mli_corsika_PhotonBunch bunch);
 
 double mli_corsika_photon_emission_height(
-        const struct mliCorsikaPhotonBunch bunch);
+        const struct mli_corsika_PhotonBunch bunch);
 
 double mli_corsika_photon_relative_arrival_time_on_observation_level(
-        const struct mliCorsikaPhotonBunch bunch);
+        const struct mli_corsika_PhotonBunch bunch);
 
 #endif

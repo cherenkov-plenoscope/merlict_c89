@@ -7,7 +7,7 @@
 
 MTL_VECTOR_IMPLEMENTATION(
         mliDynCorsikaHistogram2dBin,
-        struct mliCorsikaHistogram2dBin)
+        struct mli_corsika_Histogram2dBin)
 
 struct key {
         int32_t x;
@@ -19,27 +19,27 @@ union i4i4_to_i8 {
         int64_t i8;
 };
 
-struct mliCorsikaHistogram2d mliCorsikaHistogram2d_init(void)
+struct mli_corsika_Histogram2d mli_corsika_Histogram2d_init(void)
 {
-        struct mliCorsikaHistogram2d hist;
+        struct mli_corsika_Histogram2d hist;
         hist.dict = mliAvlDict_init();
         return hist;
 }
 
-void mliCorsikaHistogram2d_free(struct mliCorsikaHistogram2d *hist)
+void mli_corsika_Histogram2d_free(struct mli_corsika_Histogram2d *hist)
 {
         mliAvlDict_free(&hist->dict);
 }
 
-int mliCorsikaHistogram2d_malloc(
-        struct mliCorsikaHistogram2d *hist,
+int mli_corsika_Histogram2d_malloc(
+        struct mli_corsika_Histogram2d *hist,
         const uint64_t capacity)
 {
         return mliAvlDict_malloc(&hist->dict, capacity);
 }
 
-int mliCorsikaHistogram2d_assign(
-        struct mliCorsikaHistogram2d *hist,
+int mli_corsika_Histogram2d_assign(
+        struct mli_corsika_Histogram2d *hist,
         const int32_t x,
         const int32_t y,
         const double weight)
@@ -62,12 +62,12 @@ int mliCorsikaHistogram2d_assign(
         return mliAvlDict_set(&hist->dict, key.i8, ival);
 }
 
-uint64_t mliCorsikaHistogram2d_len(const struct mliCorsikaHistogram2d *hist)
+uint64_t mli_corsika_Histogram2d_len(const struct mli_corsika_Histogram2d *hist)
 {
         return hist->dict.len;
 }
 
-int mliCorsikaHistogram2d_flatten__(
+int mli_corsika_Histogram2d_flatten__(
         const struct mliAvlNode *node,
         struct mliDynCorsikaHistogram2dBin *f)
 {
@@ -75,7 +75,7 @@ int mliCorsikaHistogram2d_flatten__(
                 return 1;
         } else {
                 union i4i4_to_i8 key;
-                struct mliCorsikaHistogram2dBin bin;
+                struct mli_corsika_Histogram2dBin bin;
                 key.i8 = node->key;
 
                 bin.x = key.i4i4.x;
@@ -88,13 +88,13 @@ int mliCorsikaHistogram2d_flatten__(
                 if (node->avl.left != NULL) {
                         struct mliAvlNode *left =
                                 (struct mliAvlNode *)(node->avl.left);
-                        chk_msg(mliCorsikaHistogram2d_flatten__(left, f),
+                        chk_msg(mli_corsika_Histogram2d_flatten__(left, f),
                                 "Failed left");
                 }
                 if (node->avl.right != NULL) {
                         struct mliAvlNode *right =
                                 (struct mliAvlNode *)(node->avl.right);
-                        chk_msg(mliCorsikaHistogram2d_flatten__(right, f),
+                        chk_msg(mli_corsika_Histogram2d_flatten__(right, f),
                                 "Failed right");
                 }
                 return 1;
@@ -104,11 +104,11 @@ chk_error:
         return 0;
 }
 
-int mliCorsikaHistogram2d_flatten(
-        const struct mliCorsikaHistogram2d *hist,
+int mli_corsika_Histogram2d_flatten(
+        const struct mli_corsika_Histogram2d *hist,
         struct mliDynCorsikaHistogram2dBin *f)
 {
-        chk_msg(mliCorsikaHistogram2d_flatten__(
+        chk_msg(mli_corsika_Histogram2d_flatten__(
                         (const struct mliAvlNode *)hist->dict.tree.root, f),
                 "Failed to write dict.");
 
@@ -117,7 +117,7 @@ chk_error:
         return 0;
 }
 
-void mliCorsikaHistogram2d_reset(struct mliCorsikaHistogram2d *hist)
+void mli_corsika_Histogram2d_reset(struct mli_corsika_Histogram2d *hist)
 {
         mliAvlDict_reset(&hist->dict);
 }

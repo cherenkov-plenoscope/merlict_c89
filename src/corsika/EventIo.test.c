@@ -179,7 +179,7 @@ CASE("EventIoRun_telescope_dat__photon_bundle_size")
         CHECK(event.telescopes.size == 1u);
         CHECK(event.telescopes.array[0].photon_bunches.size == 42629u);
         for (i = 0; i < event.telescopes.array[0].photon_bunches.size; i++) {
-                struct mliCorsikaPhotonBunch bunch =
+                struct mli_corsika_PhotonBunch bunch =
                         event.telescopes.array[0].photon_bunches.array[i];
                 CHECK(bunch.z_emission_cm > 0.0);
         }
@@ -192,7 +192,7 @@ CASE("EventIoRun_telescope_dat__photon_bundle_size")
 CASE("EventIoRun_telescope_dat__photon_bundle_values")
 {
         int j;
-        struct mliCorsikaPhotonBunch some[5] = {
+        struct mli_corsika_PhotonBunch some[5] = {
                 {161.90000915527344,
                  236.8000030517578,
                  0.23186667263507843,
@@ -244,7 +244,7 @@ CASE("EventIoRun_telescope_dat__photon_bundle_values")
         CHECK(event.telescopes.array[0].photon_bunches.size == 42629u);
 
         for (j = 2; j < 5; j++) {
-                struct mliCorsikaPhotonBunch b =
+                struct mli_corsika_PhotonBunch b =
                         event.telescopes.array[0].photon_bunches.array[j];
 
                 CHECK_MARGIN(b.x_cm, some[j].x_cm, 1e-6);

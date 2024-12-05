@@ -64,28 +64,28 @@ int main(int argc, char *argv[])
         struct mliTar out = mliTar_init();
         struct mliTarHeader arch = mliTarHeader_init();
 
-        struct mliCorsikaHistogram2d hist = mliCorsikaHistogram2d_init();
+        struct mli_corsika_Histogram2d hist = mli_corsika_Histogram2d_init();
         struct mliAxisAlignedGrid grid;
         struct mliAxisAlignedGridTraversal traversal;
 
         float raw[8] = {0.0};
-        struct mliCorsikaPhotonBunch bunch;
+        struct mli_corsika_PhotonBunch bunch;
         struct mliRay ray;
         int i;
 
         chk(mliTar_read_begin(&arc, stdin));
         chk(mliTar_write_begin(&out, stdout));
-        chk(mliCorsikaHistogram2d_malloc(&hist, HIST_TARGET_SIZE));
+        chk(mli_corsika_Histogram2d_malloc(&hist, HIST_TARGET_SIZE));
 
         while (mliTar_read_header(&arc, &arch)) {
                 if (strcmp(arch.name, "init.txt") == 0) {
                         struct mtl_IO config_text = mtl_IO_init();
 
                         if (hist.dict.capacity > 10 * HIST_TARGET_SIZE) {
-                                chk(mliCorsikaHistogram2d_malloc(
+                                chk(mli_corsika_Histogram2d_malloc(
                                         &hist, HIST_TARGET_SIZE));
                         } else {
-                                mliCorsikaHistogram2d_reset(&hist);
+                                mli_corsika_Histogram2d_reset(&hist);
                         }
                         chk(mtl_IO_malloc(&config_text));
                         chk(mliTar_read_data_to_io(
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
                                 chk_msg(mliTar_read_data(
                                                 &arc, (void *)raw, sizeof(raw)),
                                         "Failed to read 'cer.x8.float32'.");
-                                mliCorsikaPhotonBunch_set_from_raw(&bunch, raw);
+                                mli_corsika_PhotonBunch_set_from_raw(&bunch, raw);
                                 ray.support.x = bunch.x_cm;
                                 ray.support.y = bunch.y_cm;
                                 ray.support.z = 0.0;
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
                                                         stderr, &traversal);
                                         }
                                         num += 1;
-                                        chk(mliCorsikaHistogram2d_assign(
+                                        chk(mli_corsika_Histogram2d_assign(
                                                 &hist,
                                                 traversal.voxel.x,
                                                 traversal.voxel.y,
@@ -154,11 +154,11 @@ int main(int argc, char *argv[])
                                 mliDynCorsikaHistogram2dBin_init();
                         chk_msg(arch.size == 0, "Expected zero size.");
                         chk(mliDynCorsikaHistogram2dBin_malloc(
-                                &bins, mliCorsikaHistogram2d_len(&hist)));
-                        chk(mliCorsikaHistogram2d_flatten(&hist, &bins));
+                                &bins, mli_corsika_Histogram2d_len(&hist)));
+                        chk(mli_corsika_Histogram2d_flatten(&hist, &bins));
                         strcpy(outh.name, "histogram.int32_int32_float64");
                         outh.size = bins.size *
-                                    sizeof(struct mliCorsikaHistogram2dBin);
+                                    sizeof(struct mli_corsika_Histogram2dBin);
                         chk_msg(mliTar_write_header(&out, &outh),
                                 "Failed to write tar header to stdout");
                         chk_msg(mliTar_write_data(
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
                 }
         }
 
-        mliCorsikaHistogram2d_free(&hist);
+        mli_corsika_Histogram2d_free(&hist);
         mliTar_read_finalize(&arc);
         mliTar_write_finalize(&out);
         fflush(out.stream);

@@ -4,10 +4,10 @@
 
 MTL_VECTOR_IMPLEMENTATION(
         mliDynCorsikaPhotonBunch,
-        struct mliCorsikaPhotonBunch)
+        struct mli_corsika_PhotonBunch)
 
-void mliCorsikaPhotonBunch_set_from_raw(
-        struct mliCorsikaPhotonBunch *bunch,
+void mli_corsika_PhotonBunch_set_from_raw(
+        struct mli_corsika_PhotonBunch *bunch,
         const float *raw)
 {
         bunch->x_cm = raw[0];
@@ -20,8 +20,8 @@ void mliCorsikaPhotonBunch_set_from_raw(
         bunch->wavelength_nm = raw[7];
 }
 
-void mliCorsikaPhotonBunch_to_raw(
-        const struct mliCorsikaPhotonBunch *bunch,
+void mli_corsika_PhotonBunch_to_raw(
+        const struct mli_corsika_PhotonBunch *bunch,
         float *raw)
 {
         raw[0] = bunch->x_cm;
@@ -34,8 +34,8 @@ void mliCorsikaPhotonBunch_to_raw(
         raw[7] = bunch->wavelength_nm;
 }
 
-struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
-        const struct mliCorsikaPhotonBunch bunch,
+struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
+        const struct mli_corsika_PhotonBunch bunch,
         const double production_distance_offset,
         const int64_t id)
 {
@@ -85,7 +85,7 @@ struct mliPhoton mliCorsikaPhotonBunch_to_merlict_photon(
 }
 
 struct mliVec mli_corsika_photon_direction_of_motion(
-        const struct mliCorsikaPhotonBunch bunch)
+        const struct mli_corsika_PhotonBunch bunch)
 { /*
        KIT-CORSIKA coordinate-system
 
@@ -139,25 +139,25 @@ struct mliVec mli_corsika_photon_direction_of_motion(
 }
 
 struct mliVec mli_corsika_photon_support_on_observation_level(
-        const struct mliCorsikaPhotonBunch bunch)
+        const struct mli_corsika_PhotonBunch bunch)
 {
         return mliVec_init(
                 (double)bunch.x_cm * 1e-2, (double)bunch.y_cm * 1e-2, 0.0);
 }
 
-double mli_corsika_photon_wavelength(const struct mliCorsikaPhotonBunch bunch)
+double mli_corsika_photon_wavelength(const struct mli_corsika_PhotonBunch bunch)
 {
         return fabs((double)bunch.wavelength_nm * 1e-9);
 }
 
 double mli_corsika_photon_emission_height(
-        const struct mliCorsikaPhotonBunch bunch)
+        const struct mli_corsika_PhotonBunch bunch)
 {
         return (double)bunch.z_emission_cm * 1e-2;
 }
 
 double mli_corsika_photon_relative_arrival_time_on_observation_level(
-        const struct mliCorsikaPhotonBunch bunch)
+        const struct mli_corsika_PhotonBunch bunch)
 {
         return (double)bunch.time_ns * 1e-9;
 }
