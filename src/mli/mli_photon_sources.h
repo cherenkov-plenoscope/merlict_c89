@@ -4,18 +4,18 @@
 
 #include <stdint.h>
 #include "mliDynPhoton.h"
-#include "../mtl/prng.h"
+#include "../prng/prng.h"
 
 int mli_photon_source_point_like_opening_cone_towards_z(
         struct mliDynPhoton *out_photons,
         const double wavelength,
         const double opening_angle,
         const uint64_t num_photons,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 int mli_photon_source_parallel_towards_z_from_xy_disc(
         struct mliDynPhoton *out_photons,
         const double wavelength,
         const double radius,
         const uint64_t num_photons,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 #endif

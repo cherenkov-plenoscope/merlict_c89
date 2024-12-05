@@ -8,11 +8,11 @@
 CASE("focussing_a_parallel_beam")
 {
 #define NUM_PIXEL 127
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         struct mliScenery scenery = mliScenery_init();
         struct mliDynPhotonInteraction photon_history =
                 mliDynPhotonInteraction_init();
-        struct mtl_prng_UniformRange wavelength_range;
+        struct mli_prng_UniformRange wavelength_range;
         const uint64_t NUM_PHOTONS = 10 * 1000;
         const uint64_t MAX_INTERACTIONS = 16;
         uint64_t i;
@@ -26,7 +26,7 @@ CASE("focussing_a_parallel_beam")
         CHECK(mliImage_malloc(&screen_img, NUM_PIXEL, NUM_PIXEL));
         mliImage_set_all_pixel(&screen_img, mliColor_set(20.0, 0.0, 0.0));
         mli_math_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
-        wavelength_range = mtl_prng_UniformRange_set(380e-9, 700e-9);
+        wavelength_range = mli_prng_UniformRange_set(380e-9, 700e-9);
 
         CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
@@ -49,7 +49,7 @@ CASE("focussing_a_parallel_beam")
                                 mliVec_init(0.0, 0.0, 10.0)),
                         mliVec_init(0.0, 0.0, -1.0));
                 photon.wavelength =
-                        mtl_prng_draw_uniform(wavelength_range, &prng);
+                        mli_prng_draw_uniform(wavelength_range, &prng);
                 photon.id = i;
 
                 CHECK(mliDynPhotonInteraction_malloc(

@@ -9,7 +9,7 @@ int mli_photon_source_parallel_towards_z_from_xy_disc(
         const double wavelength,
         const double radius,
         const uint64_t num_photons,
-        struct mtl_Prng *prng)
+        struct mli_Prng *prng)
 {
         uint64_t i;
         const struct mliVec direction = mliVec_init(0., 0., 1.);
@@ -31,13 +31,13 @@ int mli_photon_source_point_like_opening_cone_towards_z(
         const double wavelength,
         const double opening_angle,
         const uint64_t num_photons,
-        struct mtl_Prng *prng)
+        struct mli_Prng *prng)
 {
         uint64_t i;
-        struct mtl_prng_UniformRange azimuth =
-                mtl_prng_UniformRange_set(0.0, 2.0 * MLI_MATH_PI);
-        struct mtl_prng_ZenithRange zenith =
-                mtl_prng_ZenithRange_set(0.0, opening_angle);
+        struct mli_prng_UniformRange azimuth =
+                mli_prng_UniformRange_set(0.0, 2.0 * MLI_MATH_PI);
+        struct mli_prng_ZenithRange zenith =
+                mli_prng_ZenithRange_set(0.0, opening_angle);
         for (i = 0; i < num_photons; i++) {
                 struct mliVec direction =
                         mli_random_draw_direction_in_zenith_azimuth_range(

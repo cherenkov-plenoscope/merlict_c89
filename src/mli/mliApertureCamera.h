@@ -99,7 +99,7 @@ struct mliVec mliApertureCamera_pixel_support_on_image_sensor_plane(
         const uint64_t num_pixel_y,
         const uint64_t pixel_x,
         const uint64_t pixel_y,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 
 struct mliVec mliApertureCamera_get_object_point(
         const double focal_length,
@@ -119,7 +119,7 @@ double mliApertureCamera_focal_length_given_field_of_view_and_sensor_width(
 
 struct mliVec mliApertureCamera_ray_support_on_aperture(
         const double aperture_radius,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 
 struct mliRay mliApertureCamera_get_ray_for_pixel(
         const double focal_length,
@@ -131,7 +131,7 @@ struct mliRay mliApertureCamera_get_ray_for_pixel(
         const uint64_t num_pixel_y,
         const uint64_t pixel_x,
         const uint64_t pixel_y,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 
 struct mliApertureCamera {
         double focal_length;
@@ -148,7 +148,7 @@ int mliApertureCamera_render_image(
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         struct mliImage *image,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 
 void mliApertureCamera_aquire_pixels(
         const struct mliApertureCamera camera,
@@ -157,7 +157,7 @@ void mliApertureCamera_aquire_pixels(
         const struct mliTracer *tracer,
         const struct mliPixels *pixels_to_do,
         struct mliImage *colors,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 
 void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
         const struct mliPixels *pixels,

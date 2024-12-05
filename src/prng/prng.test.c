@@ -6,9 +6,9 @@ CASE("average of uniform distribution")
 {
         double sum = 0;
         uint64_t i;
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         for (i = 0; i < 1000000; i++) {
-                sum += mtl_Prng_uniform(&prng);
+                sum += mli_Prng_uniform(&prng);
         }
         CHECK_MARGIN(sum, 5e5, 2e2);
 }
@@ -16,7 +16,7 @@ CASE("average of uniform distribution")
 CASE("uniform population of histogram")
 {
         uint64_t i;
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         double bin_edges[100];
         const uint64_t num_bin_edges = 100;
         const uint64_t num_bins = num_bin_edges - 1u;
@@ -33,7 +33,7 @@ CASE("uniform population of histogram")
                         &underflow_bin,
                         bins,
                         &overflow_bin,
-                        mtl_Prng_uniform(&prng));
+                        mli_Prng_uniform(&prng));
         }
         CHECK(underflow_bin == 0u);
         CHECK(overflow_bin == 0u);
@@ -48,10 +48,10 @@ CASE("throwing Pi")
         uint64_t i;
         uint64_t num_in_circle = 0u;
         double pi_estimate;
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         for (i = 0; i < num_throws; i++) {
-                const double x = mtl_Prng_uniform(&prng);
-                const double y = mtl_Prng_uniform(&prng);
+                const double x = mli_Prng_uniform(&prng);
+                const double y = mli_Prng_uniform(&prng);
                 const double r_sq = x * x + y * y;
                 if (r_sq <= 1.) {
                         num_in_circle += 1u;
@@ -63,7 +63,7 @@ CASE("throwing Pi")
 
 CASE("normal, Irwin Hall approximation")
 {
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
 
         const uint64_t num_scenarios = 6;
         const uint64_t num_throws = 100u * 1000u;
@@ -76,7 +76,7 @@ CASE("normal, Irwin Hall approximation")
                 double mean = 0.;
                 double std = 0.;
                 for (i = 0; i < num_throws; i++) {
-                        throws[i] = mtl_Prng_normal_Irwin_Hall_approximation(
+                        throws[i] = mli_Prng_normal_Irwin_Hall_approximation(
                                 &prng, target_mean[s], taregt_std[s]);
                 }
                 mean = mli_math_mean(throws, num_throws);
@@ -93,7 +93,7 @@ CASE("normal, Irwin Hall approximation")
 
 CASE("uniform_0_to_1_stddev")
 {
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         const uint64_t num_samples = 42 * 1337;
         struct mtl_VectorDoubles samples = mtl_VectorDoubles_init();
         double mean, std;
@@ -101,7 +101,7 @@ CASE("uniform_0_to_1_stddev")
 
         CHECK(mtl_VectorDoubles_malloc(&samples, num_samples));
         for (i = 0; i < num_samples; i++) {
-                mtl_VectorDoubles_push_back(&samples, mtl_Prng_uniform(&prng));
+                mtl_VectorDoubles_push_back(&samples, mli_Prng_uniform(&prng));
         }
         mean = mli_math_mean(samples.array, samples.size);
         std = mli_math_std(samples.array, samples.size, mean);
@@ -112,47 +112,47 @@ CASE("uniform_0_to_1_stddev")
 
 CASE("draw_from_poisson_distribution")
 {
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         double sum = 0.0;
         const double rate = 1e6;
         uint64_t i = 0;
         for (i = 0; i < rate; i++)
-                sum += mtl_Prng_expovariate(&prng, rate);
+                sum += mli_Prng_expovariate(&prng, rate);
         CHECK_MARGIN(1.0, sum, 1e-3);
 }
 
 CASE("Generator")
 {
         uint32_t i;
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(42);
-        struct mtl_prng_MT19937 mt_prng = mtl_prng_MT19937_init(42);
-        struct mtl_prng_PCG32 pcg_prng = mtl_prng_PCG32_init(42);
+        struct mli_Prng prng = mli_Prng_init_MT19937(42);
+        struct mli_prng_MT19937 mt_prng = mli_prng_MT19937_init(42);
+        struct mli_prng_PCG32 pcg_prng = mli_prng_PCG32_init(42);
 
         for (i = 0; i < 10; i++) {
-                CHECK(mtl_Prng_generate_uint32(&prng) ==
-                      mtl_prng_MT19937_generate_uint32(&mt_prng));
+                CHECK(mli_Prng_generate_uint32(&prng) ==
+                      mli_prng_MT19937_generate_uint32(&mt_prng));
         }
 
-        mtl_Prng_reinit(&prng, 1337);
-        mtl_prng_MT19937_reinit(&mt_prng, 1337);
+        mli_Prng_reinit(&prng, 1337);
+        mli_prng_MT19937_reinit(&mt_prng, 1337);
 
         for (i = 0; i < 10; i++) {
-                CHECK(mtl_Prng_generate_uint32(&prng) ==
-                      mtl_prng_MT19937_generate_uint32(&mt_prng));
+                CHECK(mli_Prng_generate_uint32(&prng) ==
+                      mli_prng_MT19937_generate_uint32(&mt_prng));
         }
 
-        prng = mtl_Prng_init_PCG32(42);
+        prng = mli_Prng_init_PCG32(42);
 
         for (i = 0; i < 10; i++) {
-                CHECK(mtl_Prng_generate_uint32(&prng) ==
-                      mtl_prng_PCG32_generate_uint32(&pcg_prng));
+                CHECK(mli_Prng_generate_uint32(&prng) ==
+                      mli_prng_PCG32_generate_uint32(&pcg_prng));
         }
 
-        mtl_Prng_reinit(&prng, 1337);
-        mtl_prng_PCG32_reinit(&pcg_prng, 1337);
+        mli_Prng_reinit(&prng, 1337);
+        mli_prng_PCG32_reinit(&pcg_prng, 1337);
 
         for (i = 0; i < 10; i++) {
-                CHECK(mtl_Prng_generate_uint32(&prng) ==
-                      mtl_prng_PCG32_generate_uint32(&pcg_prng));
+                CHECK(mli_Prng_generate_uint32(&prng) ==
+                      mli_prng_PCG32_generate_uint32(&pcg_prng));
         }
 }

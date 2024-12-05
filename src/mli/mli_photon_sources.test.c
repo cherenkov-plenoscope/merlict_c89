@@ -2,7 +2,7 @@
 
 CASE("parallel_towards_z_from_xy_disc")
 {
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         struct mliDynPhoton photons = mliDynPhoton_init();
         const double disc_radius = 1.23;
         const double wavelength = 433e-9;
@@ -30,7 +30,7 @@ CASE("parallel_towards_z_from_xy_disc")
 
 CASE("point_like_towards_z")
 {
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         struct mliDynPhoton photons = mliDynPhoton_init();
         const double opening_angle = mli_math_deg2rad(1.0);
         const double wavelength = 433e-9;

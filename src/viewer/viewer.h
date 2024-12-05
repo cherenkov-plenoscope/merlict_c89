@@ -5,7 +5,7 @@
 #include "../mli/mliImage.h"
 #include "../mli/mliScenery.h"
 #include "../mli/mliTracer.h"
-#include "../mtl/prng.h"
+#include "../prng/prng.h"
 #include "../mli/mliView.h"
 #include "Cursor.h"
 #include "Config.h"
@@ -28,7 +28,7 @@ int mli_viewer_export_image(
         const struct mliTracer *tracer,
         const struct mli_viewer_Config config,
         const struct mliView view,
-        struct mtl_Prng *prng,
+        struct mli_Prng *prng,
         const double object_distance,
         const char *path);
 

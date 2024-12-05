@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MTL_PRNG_TESTING_H_
-#define MTL_PRNG_TESTING_H_
+#ifndef MLI_PRNG_TESTING_H_
+#define MLI_PRNG_TESTING_H_
 
 #include "../vector/vector.h"
 

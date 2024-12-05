@@ -23,13 +23,13 @@
 
 #include "prng_pcg_variants_32bit_subset.h"
 
-#define MTL_PRNG_PCG_DEFAULT_MULTIPLIER_64 6364136223846793005U
-#define MTL_PRNG_PCG_DEFAULT_INCREMENT_64 1442695040888963407U
+#define MLI_PRNG_PCG_DEFAULT_MULTIPLIER_64 6364136223846793005U
+#define MLI_PRNG_PCG_DEFAULT_INCREMENT_64 1442695040888963407U
 
 /**     Rotate helper functions.
  */
 
-uint32_t mtl_prng_pcg_rotr_32(uint32_t value, unsigned int rot)
+uint32_t mli_prng_pcg_rotr_32(uint32_t value, unsigned int rot)
 {
         return (value >> rot) | (value << ((-rot) & 31));
 }
@@ -39,9 +39,9 @@ uint32_t mtl_prng_pcg_rotr_32(uint32_t value, unsigned int rot)
  *      XSH RR
  */
 
-uint32_t mtl_prng_pcg_output_xsh_rr_64_32(uint64_t state)
+uint32_t mli_prng_pcg_output_xsh_rr_64_32(uint64_t state)
 {
-        return mtl_prng_pcg_rotr_32(
+        return mli_prng_pcg_rotr_32(
                 ((state >> 18u) ^ state) >> 27u, state >> 59u);
 }
 
@@ -50,24 +50,24 @@ uint32_t mtl_prng_pcg_output_xsh_rr_64_32(uint64_t state)
  *      There is rarely a good reason to call them directly.
  */
 
-void mtl_prng_pcg_setseq_64_step_r(struct mtl_prng_pcg_state_setseq_64 *rng)
+void mli_prng_pcg_setseq_64_step_r(struct mli_prng_pcg_state_setseq_64 *rng)
 {
-        rng->state = rng->state * MTL_PRNG_PCG_DEFAULT_MULTIPLIER_64 + rng->inc;
+        rng->state = rng->state * MLI_PRNG_PCG_DEFAULT_MULTIPLIER_64 + rng->inc;
 }
 
 /**     Seed the RNG state.
  */
 
-void mtl_prng_pcg_setseq_64_srandom_r(
-        struct mtl_prng_pcg_state_setseq_64 *rng,
+void mli_prng_pcg_setseq_64_srandom_r(
+        struct mli_prng_pcg_state_setseq_64 *rng,
         uint64_t initstate,
         uint64_t initseq)
 {
         rng->state = 0U;
         rng->inc = (initseq << 1u) | 1u;
-        mtl_prng_pcg_setseq_64_step_r(rng);
+        mli_prng_pcg_setseq_64_step_r(rng);
         rng->state += initstate;
-        mtl_prng_pcg_setseq_64_step_r(rng);
+        mli_prng_pcg_setseq_64_step_r(rng);
 }
 
 /**     Now, finally we provide
@@ -77,10 +77,10 @@ void mtl_prng_pcg_setseq_64_srandom_r(
  *      Generation functions for XSH RR
  */
 
-uint32_t mtl_prng_pcg_setseq_64_xsh_rr_32_random_r(
-        struct mtl_prng_pcg_state_setseq_64 *rng)
+uint32_t mli_prng_pcg_setseq_64_xsh_rr_32_random_r(
+        struct mli_prng_pcg_state_setseq_64 *rng)
 {
         uint64_t oldstate = rng->state;
-        mtl_prng_pcg_setseq_64_step_r(rng);
-        return mtl_prng_pcg_output_xsh_rr_64_32(oldstate);
+        mli_prng_pcg_setseq_64_step_r(rng);
+        return mli_prng_pcg_output_xsh_rr_64_32(oldstate);
 }

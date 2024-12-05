@@ -121,7 +121,7 @@ int mli_viewer_export_image(
         const struct mliTracer *tracer,
         const struct mli_viewer_Config config,
         const struct mliView view,
-        struct mtl_Prng *prng,
+        struct mli_Prng *prng,
         const double object_distance,
         const char *path)
 {
@@ -174,7 +174,7 @@ int mli_viewer_run_interactive_viewer(
         const struct mliScenery *scenery,
         const struct mli_viewer_Config config)
 {
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(config.random_seed);
+        struct mli_Prng prng = mli_Prng_init_MT19937(config.random_seed);
         struct mliTracerConfig tracer_config = mliTracerConfig_init();
         struct mliTracer tracer = mliTracer_init();
         struct mliColorObserver color_observer = mliColorObserver_init();

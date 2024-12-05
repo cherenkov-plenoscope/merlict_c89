@@ -10,7 +10,7 @@
 #include "mliIntersectionSurfaceNormal.h"
 
 struct mliVec mli_random_direction_in_hemisphere(
-        struct mtl_Prng *prng,
+        struct mli_Prng *prng,
         struct mliVec normal);
 struct mliColor mli_trace_color_tone_of_sun(
         const struct mliTracerConfig *config,
@@ -18,14 +18,14 @@ struct mliColor mli_trace_color_tone_of_sun(
 struct mliColor mli_trace_color_tone_of_diffuse_sky(
         const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 struct mliColor mli_trace_to_intersection_atmosphere(
         const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 struct mliColor mli_trace_with_atmosphere(
         const struct mliTracer *tracer,
         const struct mliRay ray,
-        struct mtl_Prng *prng);
+        struct mli_Prng *prng);
 
 #endif

@@ -4,11 +4,11 @@ CASE("full_sphere")
 {
         const uint64_t n = 1000 * 1000;
         uint64_t i = 0;
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
-        const struct mtl_prng_UniformRange azimuth =
-                mtl_prng_UniformRange_set(0.0, 2.0 * MLI_MATH_PI);
-        const struct mtl_prng_ZenithRange zenith =
-                mtl_prng_ZenithRange_set(0.0, MLI_MATH_PI);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
+        const struct mli_prng_UniformRange azimuth =
+                mli_prng_UniformRange_set(0.0, 2.0 * MLI_MATH_PI);
+        const struct mli_prng_ZenithRange zenith =
+                mli_prng_ZenithRange_set(0.0, MLI_MATH_PI);
         struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -1.0, 1e-6);
@@ -29,11 +29,11 @@ CASE("octo_sphere")
 {
         const uint64_t n = 1000 * 1000;
         uint64_t i = 0;
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
-        const struct mtl_prng_UniformRange azimuth =
-                mtl_prng_UniformRange_set(0.0, MLI_MATH_PI / 2.0);
-        const struct mtl_prng_ZenithRange zenith =
-                mtl_prng_ZenithRange_set(0., MLI_MATH_PI / 2.0);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
+        const struct mli_prng_UniformRange azimuth =
+                mli_prng_UniformRange_set(0.0, MLI_MATH_PI / 2.0);
+        const struct mli_prng_ZenithRange zenith =
+                mli_prng_ZenithRange_set(0., MLI_MATH_PI / 2.0);
         struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
@@ -53,11 +53,11 @@ CASE("octo_sphere_minus_z")
 {
         const uint64_t n = 1000 * 1000;
         uint64_t i = 0;
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
-        const struct mtl_prng_UniformRange azimuth =
-                mtl_prng_UniformRange_set(0.0, MLI_MATH_PI / 2.0);
-        const struct mtl_prng_ZenithRange zenith =
-                mtl_prng_ZenithRange_set(MLI_MATH_PI / 2.0, MLI_MATH_PI);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
+        const struct mli_prng_UniformRange azimuth =
+                mli_prng_UniformRange_set(0.0, MLI_MATH_PI / 2.0);
+        const struct mli_prng_ZenithRange zenith =
+                mli_prng_ZenithRange_set(MLI_MATH_PI / 2.0, MLI_MATH_PI);
         struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 0.5, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
@@ -75,7 +75,7 @@ CASE("octo_sphere_minus_z")
 
 CASE("position_on_disc")
 {
-        struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
+        struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         uint64_t n_points = 1e6;
         double disc_radius = 1.337;
         double evaluation_disc_radius = disc_radius / 5.0;

@@ -37,6 +37,7 @@ module_paths = [
     os.path.join("src", "cstr"),
     os.path.join("src", "string"),
     os.path.join("src", "path"),
+    os.path.join("src", "prng"),
     os.path.join("src", "testing"),
     os.path.join("src", "mtl"),
     os.path.join("src", "mli"),
