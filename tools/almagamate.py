@@ -310,7 +310,7 @@ outdir = args.outdir
 cherrypickpath = args.cherry_pick
 
 if args.test:
-    _test_module_path = os.path.join("src", "mli_testing")
+    _test_module_path = os.path.join("src", "testing")
     if _test_module_path not in module_paths:
         module_paths.append(_test_module_path)
 
