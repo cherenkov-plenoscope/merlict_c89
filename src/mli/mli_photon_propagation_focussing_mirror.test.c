@@ -19,12 +19,12 @@ CASE("focussing_a_parallel_beam")
         const double mirror_radius = 0.51;
         double count_reaching_screen = 0.0;
         double fraction_reaching_screen = 0.0;
-        struct mliImage screen_img = mliImage_init();
+        struct mli_Image screen_img = mli_Image_init();
         double screen_bin_edges[NUM_PIXEL + 1];
         struct mliColor max_color;
 
-        CHECK(mliImage_malloc(&screen_img, NUM_PIXEL, NUM_PIXEL));
-        mliImage_set_all_pixel(&screen_img, mliColor_set(20.0, 0.0, 0.0));
+        CHECK(mli_Image_malloc(&screen_img, NUM_PIXEL, NUM_PIXEL));
+        mli_Image_set_all_pixel(&screen_img, mliColor_set(20.0, 0.0, 0.0));
         mli_math_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
         wavelength_range = mli_prng_UniformRange_set(380e-9, 700e-9);
 
@@ -71,7 +71,7 @@ CASE("focussing_a_parallel_beam")
                 if (final_robj_id == 42) {
                         count_reaching_screen += 1.0;
 
-                        mliImage_histogram(
+                        mli_Image_histogram(
                                 &screen_img,
                                 screen_bin_edges,
                                 screen_bin_edges,
@@ -88,11 +88,11 @@ CASE("focussing_a_parallel_beam")
                 screen_img.raw[i].g = pow(screen_img.raw[i].g, 0.3);
                 screen_img.raw[i].b = pow(screen_img.raw[i].b, 0.3);
         }
-        max_color = mliImage_max(&screen_img);
-        mliImage_multiply(
+        max_color = mli_Image_max(&screen_img);
+        mli_Image_multiply(
                 &screen_img,
                 mliColor_set(1.0, 255.0 / max_color.g, 255.0 / max_color.b));
-        CHECK(mliImage_write_to_path(
+        CHECK(mli_Image_write_to_path(
                 &screen_img,
                 "data/"
                 "mli/"
@@ -102,5 +102,5 @@ CASE("focussing_a_parallel_beam")
 
         mliScenery_free(&scenery);
         mliDynPhotonInteraction_free(&photon_history);
-        mliImage_free(&screen_img);
+        mli_Image_free(&screen_img);
 }

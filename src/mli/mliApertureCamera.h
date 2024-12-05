@@ -7,7 +7,7 @@
 #include "mliVec.h"
 #include "mliHomTra.h"
 #include "mliTracer.h"
-#include "mliImage.h"
+#include "../image/image.h"
 
 /*
 principal-rays of the thin-lens
@@ -147,22 +147,22 @@ int mliApertureCamera_render_image(
         const struct mliApertureCamera camera,
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
-        struct mliImage *image,
+        struct mli_Image *image,
         struct mli_Prng *prng);
 
 void mliApertureCamera_aquire_pixels(
         const struct mliApertureCamera camera,
-        const struct mliImage *image,
+        const struct mli_Image *image,
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         const struct mliPixels *pixels_to_do,
-        struct mliImage *colors,
+        struct mli_Image *colors,
         struct mli_Prng *prng);
 
 void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
         const struct mliPixels *pixels,
-        const struct mliImage *colors,
-        struct mliImage *sum_image,
-        struct mliImage *exposure_image);
+        const struct mli_Image *colors,
+        struct mli_Image *sum_image,
+        struct mli_Image *exposure_image);
 
 #endif

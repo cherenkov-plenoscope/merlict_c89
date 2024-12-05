@@ -40,6 +40,7 @@ module_paths = [
     os.path.join("src", "prng"),
     os.path.join("src", "io"),
     os.path.join("src", "json"),
+    os.path.join("src", "image"),
     os.path.join("src", "testing"),
     os.path.join("src", "mli"),
     os.path.join("src", "corsika"),

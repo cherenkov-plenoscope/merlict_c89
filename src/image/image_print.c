@@ -1,16 +1,16 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliImage_print.h"
+#include "image_print.h"
 #include <stddef.h>
 #include <stdio.h>
 
-void mliImage_print(const struct mliImage *img, const uint64_t print_mode)
+void mli_Image_print(const struct mli_Image *img, const uint64_t print_mode)
 {
         const uint64_t num_symbols = 0;
-        mliImage_print_chars(img, NULL, NULL, NULL, num_symbols, print_mode);
+        mli_Image_print_chars(img, NULL, NULL, NULL, num_symbols, print_mode);
 }
 
-void mliImage_print_chars(
-        const struct mliImage *img,
+void mli_Image_print_chars(
+        const struct mli_Image *img,
         const char *symbols,
         const uint64_t *rows,
         const uint64_t *cols,
@@ -18,10 +18,10 @@ void mliImage_print_chars(
         const uint64_t print_mode)
 {
         if (print_mode == MLI_ANSI_ESCAPE_COLOR) {
-                mliImage_print_ansi_escape_chars(
+                mli_Image_print_ansi_escape_chars(
                         img, symbols, rows, cols, num_symbols);
         } else {
-                mliImage_print_ascii_chars(
+                mli_Image_print_ascii_chars(
                         img, symbols, rows, cols, num_symbols);
                 if (print_mode != MLI_ASCII_MONOCHROME) {
                         fprintf(stderr,
@@ -32,8 +32,8 @@ void mliImage_print_chars(
         return;
 }
 
-void mliImage_print_ansi_escape_chars(
-        const struct mliImage *img,
+void mli_Image_print_ansi_escape_chars(
+        const struct mli_Image *img,
         const char *symbols,
         const uint64_t *rows,
         const uint64_t *cols,
@@ -43,7 +43,7 @@ void mliImage_print_ansi_escape_chars(
         char symbol;
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
-                        struct mliColor color = mliImage_at(img, col, row);
+                        struct mliColor color = mli_Image_at(img, col, row);
                         struct mliColor out =
                                 mliColor_truncate(color, 0., 255.);
                         uint8_t r = (uint8_t)out.r;
@@ -63,8 +63,8 @@ void mliImage_print_ansi_escape_chars(
         fflush(stdout);
 }
 
-void mliImage_print_ascii_chars(
-        const struct mliImage *img,
+void mli_Image_print_ascii_chars(
+        const struct mli_Image *img,
         const char *symbols,
         const uint64_t *rows,
         const uint64_t *cols,
@@ -91,7 +91,7 @@ void mliImage_print_ascii_chars(
                 '#'};
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
-                        struct mliColor color = mliImage_at(img, col, row);
+                        struct mliColor color = mli_Image_at(img, col, row);
                         struct mliColor out =
                                 mliColor_truncate(color, 0., 255.);
                         float lum = 1.0 / 3.0 * (out.r + out.g + out.b);

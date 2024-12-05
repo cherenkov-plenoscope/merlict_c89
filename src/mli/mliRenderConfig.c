@@ -3,7 +3,7 @@
 #include "mliFrame_json.h"
 #include "mliAtmosphere_json.h"
 #include "mliTracerConfig_json.h"
-#include "mliImage.h"
+#include "../image/image.h"
 #include "../chk/chk.h"
 
 struct mliRenderConfig mliRenderConfig_init(void)

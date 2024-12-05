@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliImage_ppm.h"
-#include "mli_version.h"
+#include "image_ppm.h"
+#include "../mli/mli_version.h"
 #include "../chk/chk.h"
 
-int mliImage_malloc_fread(struct mliImage *img, FILE *f)
+int mli_Image_malloc_fread(struct mli_Image *img, FILE *f)
 {
         char line[1024];
         uint32_t num_commen_lines = 0;
@@ -27,7 +27,7 @@ int mliImage_malloc_fread(struct mliImage *img, FILE *f)
         num_rows = atoi(line);
         chk_msg(fgets(line, 1024, f), "Can't read header-line.");
         chk_msg(strcmp(line, "255\n") == 0, "Expected 8bit range '255'.");
-        chk_mem(mliImage_malloc(img, num_cols, num_rows));
+        chk_mem(mli_Image_malloc(img, num_cols, num_rows));
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
                         uint8_t r, g, b;
@@ -38,32 +38,32 @@ int mliImage_malloc_fread(struct mliImage *img, FILE *f)
                         color.r = (float)r;
                         color.g = (float)g;
                         color.b = (float)b;
-                        mliImage_set(img, col, row, color);
+                        mli_Image_set(img, col, row, color);
                 }
         }
         return 1;
 chk_error:
-        mliImage_free(img);
+        mli_Image_free(img);
         return 0;
 }
 
-int mliImage_malloc_from_path(struct mliImage *img, const char *path)
+int mli_Image_malloc_from_path(struct mli_Image *img, const char *path)
 {
         FILE *f;
         f = fopen(path, "rb");
         chk_msgf(f, ("Can't open path '%s'.", path));
-        chk_msg(mliImage_malloc_fread(img, f), "Can't read ppm from file.");
+        chk_msg(mli_Image_malloc_fread(img, f), "Can't read ppm from file.");
         chk_msg(!feof(f), "Unexpected end-of-file.");
         chk_msg(!ferror(f), "File error.");
         fclose(f);
         return 1;
 chk_error:
-        mliImage_free(img);
+        mli_Image_free(img);
         fclose(f);
         return 0;
 }
 
-int mliImage_fwrite(const struct mliImage *img, FILE *f)
+int mli_Image_fwrite(const struct mli_Image *img, FILE *f)
 {
 
         uint32_t col;
@@ -81,7 +81,7 @@ int mliImage_fwrite(const struct mliImage *img, FILE *f)
         chk(fprintf(f, "255\n"));
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
-                        struct mliColor color = mliImage_at(img, col, row);
+                        struct mliColor color = mli_Image_at(img, col, row);
                         struct mliColor out =
                                 mliColor_truncate(color, 0., 255.);
                         uint8_t r = (uint8_t)out.r;
@@ -97,12 +97,12 @@ chk_error:
         return 0;
 }
 
-int mliImage_write_to_path(const struct mliImage *img, const char *path)
+int mli_Image_write_to_path(const struct mli_Image *img, const char *path)
 {
         FILE *f;
         f = fopen(path, "wb");
         chk_msgf(f, ("Can't open path '%s'.", path));
-        chk_msg(mliImage_fwrite(img, f), "Can't write ppm to file.");
+        chk_msg(mli_Image_fwrite(img, f), "Can't write ppm to file.");
         chk_msg(!feof(f), "Unexpected end-of-file.");
         chk_msg(!ferror(f), "File error.");
         fclose(f);

@@ -2,7 +2,6 @@
 #ifndef MLI_VIEWER_VIEWER_H_
 #define MLI_VIEWER_VIEWER_H_
 
-#include "../mli/mliImage.h"
 #include "../mli/mliScenery.h"
 #include "../mli/mliTracer.h"
 #include "../prng/prng.h"

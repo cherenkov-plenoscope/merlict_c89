@@ -7,9 +7,9 @@
 #include "../chk/chk.h"
 #include "../math/math.h"
 #include "../mli/mliIntersectionSurfaceNormal.h"
-#include "../mli/mliImage.h"
-#include "../mli/mliImage_print.h"
-#include "../mli/mliImage_ppm.h"
+#include "../image/image.h"
+#include "../image/image_print.h"
+#include "../image/image_ppm.h"
 #include "../mli/mliPinHoleCamera.h"
 #include "../mli/mliApertureCamera.h"
 #include "../mli/mli_ray_scenery_query.h"
@@ -125,14 +125,14 @@ int mli_viewer_export_image(
         const double object_distance,
         const char *path)
 {
-        struct mliImage full = mliImage_init();
+        struct mli_Image full = mli_Image_init();
         struct mliHomTraComp camera2root_comp;
         struct mliApertureCamera apcam = mliApertureCamera_init();
 
         const double image_ratio =
                 ((double)config.export_num_cols /
                  (double)config.export_num_rows);
-        chk_mem(mliImage_malloc(
+        chk_mem(mli_Image_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
         camera2root_comp = mliView_to_HomTraComp(view);
         apcam.focal_length =
@@ -148,8 +148,8 @@ int mli_viewer_export_image(
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
                 apcam, camera2root_comp, tracer, &full, prng);
-        chk_msg(mliImage_write_to_path(&full, path), "Failed to write ppm.");
-        mliImage_free(&full);
+        chk_msg(mli_Image_write_to_path(&full, path), "Failed to write ppm.");
+        mli_Image_free(&full);
         return 1;
 chk_error:
         return 0;
@@ -187,8 +187,8 @@ int mli_viewer_run_interactive_viewer(
         uint64_t print_mode = MLI_ASCII_MONOCHROME;
         char timestamp[20];
         struct mliView view = config.view;
-        struct mliImage img = mliImage_init();
-        struct mliImage img2 = mliImage_init();
+        struct mli_Image img = mli_Image_init();
+        struct mli_Image img2 = mli_Image_init();
         const double row_over_column_pixel_ratio = 2.0;
         int update_image = 1;
         int print_help = 0;
@@ -208,9 +208,9 @@ int mli_viewer_run_interactive_viewer(
         tracer.scenery_color_materials = &color_materials;
 
         mli_viewer_timestamp_now_19chars(timestamp);
-        chk_mem(mliImage_malloc(
+        chk_mem(mli_Image_malloc(
                 &img, config.preview_num_cols, config.preview_num_rows));
-        chk_mem(mliImage_malloc(
+        chk_mem(mli_Image_malloc(
                 &img2,
                 config.preview_num_cols * 2u,
                 config.preview_num_rows * 2u));
@@ -386,7 +386,7 @@ int mli_viewer_run_interactive_viewer(
                                         &img2,
                                         row_over_column_pixel_ratio,
                                         &prng);
-                                mliImage_scale_down_twice(&img2, &img);
+                                mli_Image_scale_down_twice(&img2, &img);
                         } else {
                                 mliPinHoleCamera_render_image_with_view(
                                         view,
@@ -405,7 +405,7 @@ int mli_viewer_run_interactive_viewer(
                         symbols[0] = 'X';
                         rows[0] = cursor.row;
                         cols[0] = cursor.col;
-                        mliImage_print_chars(
+                        mli_Image_print_chars(
                                 &img,
                                 symbols,
                                 rows,
@@ -446,7 +446,7 @@ int mli_viewer_run_interactive_viewer(
                                                 &probing_intersection);
                         }
                 } else {
-                        mliImage_print(&img, print_mode);
+                        mli_Image_print(&img, print_mode);
                 }
                 mli_viewer_print_info_line(view, cursor, tracer_config);
                 if (cursor.active) {
@@ -498,11 +498,11 @@ int mli_viewer_run_interactive_viewer(
         }
 
         mliColorMaterials_free(&color_materials);
-        mliImage_free(&img);
-        mliImage_free(&img2);
+        mli_Image_free(&img);
+        mli_Image_free(&img2);
         return 1;
 chk_error:
-        mliImage_free(&img);
-        mliImage_free(&img2);
+        mli_Image_free(&img);
+        mli_Image_free(&img2);
         return 0;
 }

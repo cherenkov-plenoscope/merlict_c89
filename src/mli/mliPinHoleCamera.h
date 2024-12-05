@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mliTracer.h"
 #include "mliView.h"
-#include "mliImage.h"
+#include "../image/image.h"
 
 struct mliPinHoleCamera {
         struct mliVec optical_axis;
@@ -18,26 +18,26 @@ struct mliPinHoleCamera {
 
 struct mliPinHoleCamera mliPinHoleCamera_init(
         const double field_of_view,
-        const struct mliImage *image,
+        const struct mli_Image *image,
         const double row_over_column_pixel_ratio);
 
 void mliPinHoleCamera_render_image(
         struct mliPinHoleCamera camera,
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
-        struct mliImage *image,
+        struct mli_Image *image,
         struct mli_Prng *prng);
 
 void mliPinHoleCamera_render_image_with_view(
         const struct mliView view,
         const struct mliTracer *tracer,
-        struct mliImage *image,
+        struct mli_Image *image,
         const double row_over_column_pixel_ratio,
         struct mli_Prng *prng);
 
 struct mliRay mliPinHoleCamera_ray_at_row_col(
         const struct mliPinHoleCamera *camera,
-        const struct mliImage *image,
+        const struct mli_Image *image,
         const uint32_t row,
         const uint32_t col);
 

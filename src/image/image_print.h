@@ -1,16 +1,16 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIIMAGE_PRINT_H_
-#define MLIIMAGE_PRINT_H_
+#ifndef MLI_IMAGE_PRINT_H_
+#define MLI_IMAGE_PRINT_H_
 
 #include <stdint.h>
-#include "mliImage.h"
+#include "../image/image.h"
 
 #define MLI_ASCII_MONOCHROME 100
 #define MLI_ANSI_ESCAPE_COLOR 101
 
-void mliImage_print(const struct mliImage *img, const uint64_t print_mode);
-void mliImage_print_chars(
-        const struct mliImage *img,
+void mli_Image_print(const struct mli_Image *img, const uint64_t print_mode);
+void mli_Image_print_chars(
+        const struct mli_Image *img,
         const char *symbols,
         const uint64_t *rows,
         const uint64_t *cols,
@@ -19,8 +19,8 @@ void mliImage_print_chars(
 
 /* Colored ANSI escape sequences */
 
-void mliImage_print_ansi_escape_chars(
-        const struct mliImage *img,
+void mli_Image_print_ansi_escape_chars(
+        const struct mli_Image *img,
         const char *symbols,
         const uint64_t *rows,
         const uint64_t *cols,
@@ -28,8 +28,8 @@ void mliImage_print_ansi_escape_chars(
 
 /* Monochrome ASCII chars */
 
-void mliImage_print_ascii_chars(
-        const struct mliImage *img,
+void mli_Image_print_ascii_chars(
+        const struct mli_Image *img,
         const char *symbols,
         const uint64_t *rows,
         const uint64_t *cols,
