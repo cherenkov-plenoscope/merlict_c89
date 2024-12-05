@@ -1,6 +1,6 @@
 /* Copyright 2017 Sebastian A. Mueller */
 
-#include "mli_corsika_Histogram2d.h"
+#include "Histogram2d.h"
 #include <string.h>
 #include "../chk/chk.h"
 #include "../mtl/math.h"

@@ -4,8 +4,8 @@
 
 #include <stdint.h>
 #include "../mtl/vector.h"
-#include "mli_corsika_CorsikaPhotonBunch.h"
-#include "mli_corsika_EventIo_TelescopeOffset.h"
+#include "CorsikaPhotonBunch.h"
+#include "EventIo_TelescopeOffset.h"
 
 struct mliEventIoTelescope {
         int16_t array_id;

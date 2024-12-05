@@ -1,5 +1,5 @@
 /* Copyright 2020 Sebastian A. Mueller*/
-#include "mli_corsika_EventIo_Telescope.h"
+#include "EventIo_Telescope.h"
 
 struct mliEventIoTelescope mliEventIoTelescope_init(void)
 {

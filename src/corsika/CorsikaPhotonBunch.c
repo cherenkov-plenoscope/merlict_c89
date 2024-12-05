@@ -1,5 +1,5 @@
 /* Copyright 2016 Sebastian A. Mueller */
-#include "mli_corsika_CorsikaPhotonBunch.h"
+#include "CorsikaPhotonBunch.h"
 #include "../mtl/math.h"
 
 MTL_VECTOR_IMPLEMENTATION(

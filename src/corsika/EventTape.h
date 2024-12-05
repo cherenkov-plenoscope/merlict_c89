@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../mli/mliTar.h"
 #include "../mli/mliDynFloat.h"
-#include "mli_corsika_utils.h"
+#include "utils.h"
 
 #define MLI_CORSIKA_EVENTTAPE_VERSION_MAYOR 2
 #define MLI_CORSIKA_EVENTTAPE_VERSION_MINOR 1

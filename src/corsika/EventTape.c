@@ -1,6 +1,6 @@
 /* Copyright 2020 Sebastian A. Mueller */
-#include "mli_corsika_EventTape.h"
-#include "mli_corsika_utils.h"
+#include "EventTape.h"
+#include "utils.h"
 #include "../mtl/math.h"
 #include "../mli/mliTar.h"
 #include "../mtl/cstr.h"

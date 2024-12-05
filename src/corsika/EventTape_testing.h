@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_EVENTTAPE_TESTING_H_
 
 #include <stdint.h>
-#include "mli_corsika_EventTape.h"
+#include "EventTape.h"
 #include "../mli/mli_random.h"
 #include "../mtl/prng.h"
 

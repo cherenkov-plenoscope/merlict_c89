@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../src/mli_corsika/mli_corsika_ray_voxel_overlap.h"
-#include "../../src/mli_corsika/mli_corsika_CorsikaPhotonBunch.h"
-#include "../../src/mli_corsika/mli_corsika_EventTape.h"
-#include "../../src/mli_corsika/mli_corsika_Histogram2d.h"
+#include "../../src/corsika/ray_voxel_overlap.h"
+#include "../../src/corsika/CorsikaPhotonBunch.h"
+#include "../../src/corsika/EventTape.h"
+#include "../../src/corsika/Histogram2d.h"
 #include "../../src/chk/chk.h"
 #include "../../src/mtl/string_numbers.h"
 #include "../../src/mtl/math.h"

@@ -1,7 +1,7 @@
 /* Copyright 2017 Sebastian A. Mueller */
 #include <math.h>
 #include <assert.h>
-#include "mli_corsika_ray_voxel_overlap.h"
+#include "ray_voxel_overlap.h"
 
 void intersection_plane(
         double *support,

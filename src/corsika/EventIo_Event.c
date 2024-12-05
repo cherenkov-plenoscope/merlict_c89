@@ -1,6 +1,6 @@
 /* Copyright 2016 Sebastian A. Mueller, Dominik Neise */
-#include "mli_corsika_EventIo_Event.h"
-#include "mli_corsika_EventIo_Run.h"
+#include "EventIo_Event.h"
+#include "EventIo_Run.h"
 #include "../chk/chk.h"
 #include "../mli/mliDynFloat.h"
 #include <math.h>

@@ -1,5 +1,5 @@
 /* Copyright 2020 Sebastian A. Mueller */
-#include "mli_corsika_EventTape_testing.h"
+#include "EventTape_testing.h"
 #include "../chk/chk.h"
 
 void mliEventTape_testing_set_random_corsika_header(

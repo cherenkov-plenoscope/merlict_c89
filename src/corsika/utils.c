@@ -1,5 +1,5 @@
 /* Copyright 2020 Sebastian A. Mueller*/
-#include "mli_corsika_utils.h"
+#include "utils.h"
 #include <string.h>
 #include <math.h>
 

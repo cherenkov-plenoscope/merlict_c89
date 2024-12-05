@@ -4,8 +4,8 @@
 
 #include <stdint.h>
 #include "../mtl/io.h"
-#include "mli_corsika_EventIo_Header.h"
-#include "mli_corsika_EventIo_TelescopePosition.h"
+#include "EventIo_Header.h"
+#include "EventIo_TelescopePosition.h"
 
 struct mliEventIoRun {
         FILE *f;

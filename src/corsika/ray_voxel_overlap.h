@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_RAY_VOXEL_OVERLAP_H_
 
 #include <stdint.h>
-#include "mli_corsika_CorsikaPhotonBunch.h"
+#include "CorsikaPhotonBunch.h"
 #include "../mli/mliDynUint32.h"
 #include "../mli/mliDynDouble.h"
 
