@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSurface_json.h"
 #include "mliName.h"
-#include "mliFunc_json.h"
+#include "../func/func_json.h"
 #include "mliColor_json.h"
 #include "../chk/chk.h"
 
@@ -65,7 +65,7 @@ int mliSurface_malloc_from_json_token(
         chk_msg(mli_Json_token_by_key(
                         json, token, "specular_reflection", &token_specref),
                 "Expected surface to have key 'specular_reflection'.");
-        chk_msg(mliFunc_malloc_from_json_token(
+        chk_msg(mli_Func_malloc_from_json_token(
                         &surface->specular_reflection, json, token_specref + 1),
                 "Failed to read surface's specular_reflection from json.");
 
@@ -74,7 +74,7 @@ int mliSurface_malloc_from_json_token(
         chk_msg(mli_Json_token_by_key(
                         json, token, "diffuse_reflection", &token_diffref),
                 "Expected surface to have key 'diffuse_reflection'.");
-        chk_msg(mliFunc_malloc_from_json_token(
+        chk_msg(mli_Func_malloc_from_json_token(
                         &surface->diffuse_reflection, json, token_diffref + 1),
                 "Failed to read surface's diffuse_reflection from json.");
 

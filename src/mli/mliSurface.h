@@ -3,7 +3,7 @@
 #define MLISURFACE_H_
 
 #include <stdint.h>
-#include "mliFunc.h"
+#include "../func/func.h"
 #include "mliColor.h"
 #include "../json/json.h"
 
@@ -13,8 +13,8 @@
 struct mliSurface {
         uint32_t material;
 
-        struct mliFunc specular_reflection;
-        struct mliFunc diffuse_reflection;
+        struct mli_Func specular_reflection;
+        struct mli_Func diffuse_reflection;
 };
 
 int mliSurface_malloc(

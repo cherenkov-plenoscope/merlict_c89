@@ -250,9 +250,11 @@ int mliApertureCamera_render_image(
         chk_msg(mli_Image_malloc(
                         &exposure_image, image->num_cols, image->num_rows),
                 "Failed to malloc exposure_image.");
-        chk_msg(mli_Image_malloc(&to_do_image, image->num_cols, image->num_rows),
+        chk_msg(mli_Image_malloc(
+                        &to_do_image, image->num_cols, image->num_rows),
                 "Failed to malloc to_do_image.");
-        chk_msg(mli_Image_malloc(&sobel_image, image->num_cols, image->num_rows),
+        chk_msg(mli_Image_malloc(
+                        &sobel_image, image->num_cols, image->num_rows),
                 "Failed to malloc sobel_image.");
         chk_msg(mli_Image_malloc(
                         &previous_sobel_image,

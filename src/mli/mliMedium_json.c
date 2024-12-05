@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMedium_json.h"
-#include "mliFunc_json.h"
+#include "../func/func_json.h"
 #include "../chk/chk.h"
 
 int mliMedium_malloc_from_json_str(struct mliMedium *med, const char *json_str)
@@ -26,13 +26,13 @@ int mliMedium_malloc_from_json_token(
         chk_msg(mli_Json_token_by_key(
                         json, token, "refraction", &refraction_token),
                 "Expected medium to have key 'refraction', but it does not.");
-        chk_msg(mliFunc_malloc_from_json_token(
+        chk_msg(mli_Func_malloc_from_json_token(
                         &med->refraction, json, refraction_token + 1),
                 "Failed to read medium's refraction from json.");
         chk_msg(mli_Json_token_by_key(
                         json, token, "absorbtion", &absorbtion_token),
                 "Expected medium to have key 'absorbtion', but it does not.");
-        chk_msg(mliFunc_malloc_from_json_token(
+        chk_msg(mli_Func_malloc_from_json_token(
                         &med->absorbtion, json, absorbtion_token + 1),
                 "Failed to read medium's absorbtion from json.");
         return 1;

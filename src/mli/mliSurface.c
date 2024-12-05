@@ -1,22 +1,22 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSurface.h"
 #include "mliMagicId.h"
-#include "mliFunc_serialize.h"
+#include "../func/func_serialize.h"
 #include "../chk/chk.h"
 
 struct mliSurface mliSurface_init(void)
 {
         struct mliSurface surface;
         surface.material = MLI_MATERIAL_PHONG;
-        surface.specular_reflection = mliFunc_init();
-        surface.diffuse_reflection = mliFunc_init();
+        surface.specular_reflection = mli_Func_init();
+        surface.diffuse_reflection = mli_Func_init();
         return surface;
 }
 
 void mliSurface_free(struct mliSurface *surface)
 {
-        mliFunc_free(&surface->specular_reflection);
-        mliFunc_free(&surface->diffuse_reflection);
+        mli_Func_free(&surface->specular_reflection);
+        mli_Func_free(&surface->diffuse_reflection);
         (*surface) = mliSurface_init();
 }
 
@@ -26,9 +26,9 @@ int mliSurface_malloc(
         const uint32_t num_points_diffuse_reflection)
 {
         mliSurface_free(surface);
-        chk(mliFunc_malloc(
+        chk(mli_Func_malloc(
                 &surface->specular_reflection, num_points_specular_reflection));
-        chk(mliFunc_malloc(
+        chk(mli_Func_malloc(
                 &surface->diffuse_reflection, num_points_diffuse_reflection));
         return 1;
 chk_error:
@@ -39,9 +39,9 @@ int mliSurface_equal(const struct mliSurface *a, const struct mliSurface *b)
 {
         if (a->material != b->material)
                 return 0;
-        if (!mliFunc_equal(a->specular_reflection, b->specular_reflection))
+        if (!mli_Func_equal(a->specular_reflection, b->specular_reflection))
                 return 0;
-        if (!mliFunc_equal(a->diffuse_reflection, b->diffuse_reflection))
+        if (!mli_Func_equal(a->diffuse_reflection, b->diffuse_reflection))
                 return 0;
         return 1;
 }
@@ -87,8 +87,8 @@ int mliSurface_fwrite(const struct mliSurface *srf, FILE *f)
         chk_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
 
         chk_fwrite(&srf->material, sizeof(uint32_t), 1u, f);
-        chk(mliFunc_fwrite(&srf->specular_reflection, f));
-        chk(mliFunc_fwrite(&srf->diffuse_reflection, f));
+        chk(mli_Func_fwrite(&srf->specular_reflection, f));
+        chk(mli_Func_fwrite(&srf->diffuse_reflection, f));
 
         return 1;
 chk_error:
@@ -105,8 +105,8 @@ int mliSurface_malloc_fread(struct mliSurface *srf, FILE *f)
         mliMagicId_warn_version(&magic);
 
         chk_fread(&srf->material, sizeof(uint32_t), 1u, f);
-        chk(mliFunc_malloc_fread(&srf->specular_reflection, f));
-        chk(mliFunc_malloc_fread(&srf->diffuse_reflection, f));
+        chk(mli_Func_malloc_fread(&srf->specular_reflection, f));
+        chk(mli_Func_malloc_fread(&srf->diffuse_reflection, f));
 
         return 1;
 chk_error:

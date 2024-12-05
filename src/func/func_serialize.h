@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIFUNC_SERIALIZE_H_
-#define MLIFUNC_SERIALIZE_H_
+#ifndef MLI_FUNC_SERIALIZE_H_
+#define MLI_FUNC_SERIALIZE_H_
 
 #include <stdio.h>
-#include "mliFunc.h"
+#include "../func/func.h"
 
-int mliFunc_malloc_fread(struct mliFunc *func, FILE *f);
-int mliFunc_fwrite(const struct mliFunc *func, FILE *f);
+int mli_Func_malloc_fread(struct mli_Func *func, FILE *f);
+int mli_Func_fwrite(const struct mli_Func *func, FILE *f);
 #endif

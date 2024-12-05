@@ -40,14 +40,14 @@ int mli_propagate_photon_phong(
         struct mliSide side_coming_from =
                 mli_get_side_coming_from(env->scenery, isec);
 
-        chk_msg(mliFunc_evaluate(
+        chk_msg(mli_Func_evaluate(
                         &env->scenery->materials
                                  .surfaces[side_coming_from.surface]
                                  .diffuse_reflection,
                         env->photon->wavelength,
                         &diffuse),
                 "Failed to eval. diffuse reflection for wavelength.");
-        chk_msg(mliFunc_evaluate(
+        chk_msg(mli_Func_evaluate(
                         &env->scenery->materials
                                  .surfaces[side_coming_from.surface]
                                  .specular_reflection,
@@ -130,7 +130,7 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
         double one_over_e_way;
         const struct mliSide side_coming_from =
                 mli_get_side_coming_from(scenery, isec);
-        chk_msg(mliFunc_evaluate(
+        chk_msg(mli_Func_evaluate(
                         &scenery->materials.media[side_coming_from.medium]
                                  .absorbtion,
                         photon->wavelength,
@@ -152,12 +152,12 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
         double n_coming_from;
         double reflection_propability;
         struct mliVec facing_surface_normal;
-        chk_msg(mliFunc_evaluate(
+        chk_msg(mli_Func_evaluate(
                         mli_get_refractive_index_going_to(env->scenery, isec),
                         env->photon->wavelength,
                         &n_going_to),
                 "Failed to eval. refraction going to for wavelength.");
-        chk_msg(mliFunc_evaluate(
+        chk_msg(mli_Func_evaluate(
                         mli_get_refractive_index_coming_from(
                                 env->scenery, isec),
                         env->photon->wavelength,
@@ -224,13 +224,13 @@ chk_error:
 }
 
 int mli_propagate_photon_distance_until_absorbtion(
-        const struct mliFunc *absorbtion_in_medium_passing_through,
+        const struct mli_Func *absorbtion_in_medium_passing_through,
         const double wavelength,
         struct mli_Prng *prng,
         double *distance_until_absorbtion)
 {
         double one_over_e_way;
-        chk_msg(mliFunc_evaluate(
+        chk_msg(mli_Func_evaluate(
                         absorbtion_in_medium_passing_through,
                         wavelength,
                         &one_over_e_way),
@@ -247,7 +247,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
         int ray_does_intersect_surface = 0;
         double distance_until_absorbtion = 0.0;
         struct mliIntersectionSurfaceNormal next_intersection;
-        struct mliFunc *absorbtion_in_medium_passing_through;
+        struct mli_Func *absorbtion_in_medium_passing_through;
         struct mliPhotonInteraction phia;
 
         ray_does_intersect_surface = mli_query_intersection_with_surface_normal(

@@ -1,12 +1,12 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIFUNC_plot_H_
-#define MLIFUNC_plot_H_
+#ifndef MLI_FUNC_plot_H_
+#define MLI_FUNC_plot_H_
 
 #include <stdint.h>
 #include <stdio.h>
-#include "mliFunc.h"
+#include "../func/func.h"
 
-struct mliFunc_fprint_Config {
+struct mli_Func_fprint_Config {
         double x_start;
         double x_stop;
         int x_num;
@@ -15,9 +15,9 @@ struct mliFunc_fprint_Config {
         int y_num;
 };
 
-int mliFunc_fprint(
+int mli_Func_fprint(
         FILE *f,
-        const struct mliFunc *func,
-        struct mliFunc_fprint_Config plot);
+        const struct mli_Func *func,
+        struct mli_Func_fprint_Config plot);
 
 #endif

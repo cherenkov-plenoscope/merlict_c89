@@ -13,18 +13,21 @@ int mliAtmosphere_from_json_token(
 
         (*atm) = mliAtmosphere_init();
 
-        chk(mli_Json_double_by_key(json, tkn, &atm->sunLatitude, "sunLatitude"));
+        chk(mli_Json_double_by_key(
+                json, tkn, &atm->sunLatitude, "sunLatitude"));
         chk(mli_Json_double_by_key(
                 json, tkn, &atm->sunHourAngle, "sunHourAngle"));
         mliAtmosphere_set_sun_direction(
                 atm, atm->sunLatitude, atm->sunHourAngle);
 
-        chk(mli_Json_double_by_key(json, tkn, &atm->sunDistance, "sunDistance"));
+        chk(mli_Json_double_by_key(
+                json, tkn, &atm->sunDistance, "sunDistance"));
         chk_msg(atm->sunDistance > 0, "Expected atmosphere->sunDistance > 0.");
         chk(mli_Json_double_by_key(json, tkn, &atm->sunRadius, "sunRadius"));
         chk_msg(atm->sunRadius > 0, "Expected atmosphere->sunRadius > 0.");
 
-        chk(mli_Json_double_by_key(json, tkn, &atm->earthRadius, "earthRadius"));
+        chk(mli_Json_double_by_key(
+                json, tkn, &atm->earthRadius, "earthRadius"));
         chk_msg(atm->earthRadius > 0, "Expected atmosphere->earthRadius > 0.");
         chk(mli_Json_double_by_key(
                 json, tkn, &atm->atmosphereRadius, "atmosphereRadius"));

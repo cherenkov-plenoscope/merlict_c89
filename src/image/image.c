@@ -304,7 +304,9 @@ void mli_Image_assign_pixel_colors_to_sum_and_exposure_image(
         }
 }
 
-void mli_Image_copy(const struct mli_Image *source, struct mli_Image *destination)
+void mli_Image_copy(
+        const struct mli_Image *source,
+        struct mli_Image *destination)
 {
         uint64_t pix;
         assert(source->num_rows == destination->num_rows);

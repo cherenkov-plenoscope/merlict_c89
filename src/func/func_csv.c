@@ -1,13 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliFunc_csv.h"
-#include "mliName.h"
-#include "mliDynDouble.h"
+#include "func_csv.h"
+#include "../mli/mliName.h"
+#include "../mli/mliDynDouble.h"
 #include "../cstr/cstr.h"
 #include "../cstr/cstr_numbers.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
 
-int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
+int mli_Func_malloc_from_csv(struct mli_Func *func, const char *str)
 {
         uint64_t i = 0u;
         uint64_t p = 0u;
@@ -25,7 +25,7 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
         chk(mliDynDouble_malloc(&x, 0u));
         chk(mliDynDouble_malloc(&y, 0u));
 
-        mliFunc_free(func);
+        mli_Func_free(func);
         while (1) {
                 line_number += 1;
                 chk_msg(line_number < 1000 * 1000,
@@ -67,10 +67,10 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
                 p += line_length + 1;
         }
 
-        /* copy x y into mliFunc */
+        /* copy x y into mli_Func */
         chk_msg(x.size == y.size, "Expected same number x, y values.");
-        chk_msg(mliFunc_malloc(func, x.size),
-                "Failed to malloc mliFunc from file.");
+        chk_msg(mli_Func_malloc(func, x.size),
+                "Failed to malloc mli_Func from file.");
 
         MLI_MATH_NCPY(x.array, func->x, x.size);
         MLI_MATH_NCPY(y.array, func->y, y.size);
@@ -81,6 +81,6 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
 chk_error:
         mliDynDouble_free(&x);
         mliDynDouble_free(&y);
-        mliFunc_free(func);
+        mli_Func_free(func);
         return 0;
 }

@@ -7,9 +7,9 @@ int mliMaterials_valid_media(const struct mliMaterials *materials)
 {
         uint32_t i = 0u;
         for (i = 0; i < materials->num_media; i++) {
-                chk_msg(mliFunc_is_valid(&materials->media[i].refraction),
+                chk_msg(mli_Func_is_valid(&materials->media[i].refraction),
                         "Expected refraction of medium to be valid.");
-                chk_msg(mliFunc_is_valid(&materials->media[i].absorbtion),
+                chk_msg(mli_Func_is_valid(&materials->media[i].absorbtion),
                         "Expected refraction of medium to be valid.");
         }
         return 1;
@@ -27,10 +27,10 @@ int mliMaterials_valid_surfaces(const struct mliMaterials *materials)
                                 (materials->surfaces[i].material ==
                                  MLI_MATERIAL_TRANSPARENT),
                         "Material-type is unknown.");
-                chk_msg(mliFunc_is_valid(
+                chk_msg(mli_Func_is_valid(
                                 &materials->surfaces[i].specular_reflection),
                         "Expected specular_reflection of surface to be valid.");
-                chk_msg(mliFunc_is_valid(
+                chk_msg(mli_Func_is_valid(
                                 &materials->surfaces[i].diffuse_reflection),
                         "Expected diffuse_reflection of surface to be valid.");
         }

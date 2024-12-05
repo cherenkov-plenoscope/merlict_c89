@@ -2,13 +2,13 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <math.h>
-#include "mliFunc_fprint.h"
+#include "func_fprint.h"
 #include "../chk/chk.h"
 
-int mliFunc_fprint(
+int mli_Func_fprint(
         FILE *f,
-        const struct mliFunc *func,
-        struct mliFunc_fprint_Config cfg)
+        const struct mli_Func *func,
+        struct mli_Func_fprint_Config cfg)
 {
         int iy, ix;
         const double x_range = cfg.x_stop - cfg.x_start;
@@ -17,7 +17,7 @@ int mliFunc_fprint(
         const double y_step = y_range / cfg.y_num;
 
         const int NUM_Y_SUB_STEPS = 3;
-        chk(mliFunc_is_valid(func));
+        chk(mli_Func_is_valid(func));
 
         for (iy = cfg.y_num - 1; iy >= 0; iy--) {
                 if (iy == cfg.y_num - 1) {
@@ -31,8 +31,8 @@ int mliFunc_fprint(
                         double jy;
                         int jy_sub;
                         x = cfg.x_start + x_step * ix;
-                        if (mliFunc_in_range(func, x)) {
-                                chk(mliFunc_evaluate(func, x, &y));
+                        if (mli_Func_in_range(func, x)) {
+                                chk(mli_Func_evaluate(func, x, &y));
                                 jy = (y - cfg.y_start) / y_step;
                                 jy_sub =
                                         (int)(NUM_Y_SUB_STEPS *

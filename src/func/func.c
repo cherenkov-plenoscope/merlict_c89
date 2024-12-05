@@ -1,39 +1,39 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliFunc.h"
+#include "func.h"
 #include <stdlib.h>
-#include "mliMagicId.h"
+#include "../mli/mliMagicId.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
 
-struct mliFunc mliFunc_init(void)
+struct mli_Func mli_Func_init(void)
 {
-        struct mliFunc f;
+        struct mli_Func f;
         f.num_points = 0u;
         f.x = NULL;
         f.y = NULL;
         return f;
 }
 
-void mliFunc_free(struct mliFunc *f)
+void mli_Func_free(struct mli_Func *f)
 {
         free(f->x);
         free(f->y);
-        (*f) = mliFunc_init();
+        (*f) = mli_Func_init();
 }
 
-int mliFunc_malloc(struct mliFunc *f, const uint32_t num_points)
+int mli_Func_malloc(struct mli_Func *f, const uint32_t num_points)
 {
-        mliFunc_free(f);
+        mli_Func_free(f);
         f->num_points = num_points;
         chk_malloc(f->x, double, f->num_points);
         chk_malloc(f->y, double, f->num_points);
         return 1;
 chk_error:
-        mliFunc_free(f);
+        mli_Func_free(f);
         return 0;
 }
 
-int mliFunc_x_is_strictly_increasing(const struct mliFunc *f)
+int mli_Func_x_is_strictly_increasing(const struct mli_Func *f)
 {
         uint32_t i;
         for (i = 1; i < f->num_points; i++) {
@@ -44,14 +44,14 @@ int mliFunc_x_is_strictly_increasing(const struct mliFunc *f)
         return 1;
 }
 
-int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
+int mli_Func_evaluate(const struct mli_Func *f, const double xarg, double *out)
 {
         double y1, y0, x1, x0;
         uint32_t idx = MLI_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
         if (idx == 0) {
-                chk_bad("mliFunc argument below lower bound.");
+                chk_bad("mli_Func argument below lower bound.");
         } else if (idx == f->num_points) {
-                chk_bad("mliFunc argument above upper bound.");
+                chk_bad("mli_Func argument above upper bound.");
         } else {
                 y1 = f->y[idx];
                 y0 = f->y[idx - 1u];
@@ -64,7 +64,7 @@ chk_error:
         return 0;
 }
 
-int mliFunc_in_range(const struct mliFunc *f, const double xarg)
+int mli_Func_in_range(const struct mli_Func *f, const double xarg)
 {
         if (f->num_points < 2) {
                 return 0;
@@ -77,18 +77,18 @@ int mliFunc_in_range(const struct mliFunc *f, const double xarg)
         return 0;
 }
 
-double mliFunc_evaluate_with_default_when_out_of_range(
-        const struct mliFunc *f,
+double mli_Func_evaluate_with_default_when_out_of_range(
+        const struct mli_Func *f,
         const double xarg,
         const double default_value)
 {
         double y1, y0, x1, x0;
         uint32_t idx = MLI_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
         if (idx == 0) {
-                /* mliFunc argument below lower bound */
+                /* mli_Func argument below lower bound */
                 return default_value;
         } else if (idx == f->num_points) {
-                /* mliFunc argument above upper bound */
+                /* mli_Func argument above upper bound */
                 return default_value;
         } else {
                 y1 = f->y[idx];
@@ -99,17 +99,17 @@ double mliFunc_evaluate_with_default_when_out_of_range(
         }
 }
 
-double mliFunc_evaluate_with_default_closest(
-        const struct mliFunc *f,
+double mli_Func_evaluate_with_default_closest(
+        const struct mli_Func *f,
         const double xarg)
 {
         double y1, y0, x1, x0;
         uint32_t idx = MLI_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
         if (idx == 0) {
-                /* mliFunc argument below lower bound */
+                /* mli_Func argument below lower bound */
                 return f->y[0];
         } else if (idx == f->num_points) {
-                /* mliFunc argument above upper bound */
+                /* mli_Func argument above upper bound */
                 return f->y[f->num_points - 1];
         } else {
                 y1 = f->y[idx];
@@ -120,9 +120,9 @@ double mliFunc_evaluate_with_default_closest(
         }
 }
 
-int mliFunc_fold_numeric(
-        const struct mliFunc *a,
-        const struct mliFunc *b,
+int mli_Func_fold_numeric(
+        const struct mli_Func *a,
+        const struct mli_Func *b,
         double *fold)
 {
         uint64_t i;
@@ -140,8 +140,8 @@ int mliFunc_fold_numeric(
                 double ra = MLI_MATH_NAN;
                 double rb = MLI_MATH_NAN;
                 double x = xmin + (double)i * step_size;
-                chk(mliFunc_evaluate(a, x, &ra));
-                chk(mliFunc_evaluate(b, x, &rb));
+                chk(mli_Func_evaluate(a, x, &ra));
+                chk(mli_Func_evaluate(b, x, &rb));
                 (*fold) += (ra * rb) * step_size;
         }
         return 1;
@@ -149,9 +149,9 @@ chk_error:
         return 0;
 }
 
-int mliFunc_fold_numeric_default_closest(
-        const struct mliFunc *a,
-        const struct mliFunc *b,
+int mli_Func_fold_numeric_default_closest(
+        const struct mli_Func *a,
+        const struct mli_Func *b,
         double *fold)
 {
         double x_start, x_stop, x_step, x_range, x_weight;
@@ -161,9 +161,9 @@ int mliFunc_fold_numeric_default_closest(
         chk_msg(a->num_points >= 2u, "Expect a->num_points >= 2.");
         chk_msg(b->num_points >= 2u, "Expect b->num_points >= 2.");
 
-        chk_msg(mliFunc_x_is_strictly_increasing(a),
+        chk_msg(mli_Func_x_is_strictly_increasing(a),
                 "Expected function a to be strictly_increasing.");
-        chk_msg(mliFunc_x_is_strictly_increasing(b),
+        chk_msg(mli_Func_x_is_strictly_increasing(b),
                 "Expected function b to be strictly_increasing.");
 
         x_start = MLI_MATH_MAX2(a->x[0], b->x[0]);
@@ -179,8 +179,8 @@ int mliFunc_fold_numeric_default_closest(
                         double ra = MLI_MATH_NAN;
                         double rb = MLI_MATH_NAN;
                         double x = x_start + (double)i * x_step;
-                        ra = mliFunc_evaluate_with_default_closest(a, x);
-                        rb = mliFunc_evaluate_with_default_closest(b, x);
+                        ra = mli_Func_evaluate_with_default_closest(a, x);
+                        rb = mli_Func_evaluate_with_default_closest(b, x);
                         (*fold) += (ra * rb) * x_weight;
                 }
         }
@@ -190,7 +190,7 @@ chk_error:
         return 0;
 }
 
-int mliFunc_equal(const struct mliFunc a, const struct mliFunc b)
+int mli_Func_equal(const struct mli_Func a, const struct mli_Func b)
 {
         uint64_t i;
         if (a.num_points != b.num_points)
@@ -204,7 +204,7 @@ int mliFunc_equal(const struct mliFunc a, const struct mliFunc b)
         return 1;
 }
 
-int mliFunc_is_valid(const struct mliFunc *func)
+int mli_Func_is_valid(const struct mli_Func *func)
 {
         uint64_t i;
         chk_msg(func->num_points >= 2,
@@ -221,7 +221,7 @@ int mliFunc_is_valid(const struct mliFunc *func)
                         "but it is 'nan'.");
         }
 
-        chk_msg(mliFunc_x_is_strictly_increasing(func),
+        chk_msg(mli_Func_x_is_strictly_increasing(func),
                 "Expected x-arguments to be strictly increasing, "
                 "but they do not.");
 

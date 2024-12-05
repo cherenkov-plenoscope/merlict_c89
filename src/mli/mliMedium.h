@@ -3,11 +3,11 @@
 #define MLIMEDIUM_H_
 
 #include <stdint.h>
-#include "mliFunc.h"
+#include "../func/func.h"
 
 struct mliMedium {
-        struct mliFunc refraction;
-        struct mliFunc absorbtion;
+        struct mli_Func refraction;
+        struct mli_Func absorbtion;
 };
 struct mliMedium mliMedium_init(void);
 void mliMedium_free(struct mliMedium *medium);

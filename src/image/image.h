@@ -62,7 +62,9 @@ int mli_Image_malloc(
         const uint32_t num_rows);
 void mli_Image_free(struct mli_Image *img);
 
-void mli_Image_copy(const struct mli_Image *source, struct mli_Image *destination);
+void mli_Image_copy(
+        const struct mli_Image *source,
+        struct mli_Image *destination);
 void mli_Image_fabs_difference(
         const struct mli_Image *a,
         const struct mli_Image *b,

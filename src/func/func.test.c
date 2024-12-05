@@ -1,31 +1,31 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("mliFunc_malloc")
+CASE("mli_Func_malloc")
 {
-        struct mliFunc func = mliFunc_init();
-        CHECK(mliFunc_malloc(&func, 0u));
+        struct mli_Func func = mli_Func_init();
+        CHECK(mli_Func_malloc(&func, 0u));
         CHECK(func.num_points == 0u);
-        CHECK(mliFunc_x_is_strictly_increasing(&func));
-        mliFunc_free(&func);
+        CHECK(mli_Func_x_is_strictly_increasing(&func));
+        mli_Func_free(&func);
 }
 
-CASE("mliFunc_x_is_strictly_increasing")
+CASE("mli_Func_x_is_strictly_increasing")
 {
-        struct mliFunc func = mliFunc_init();
-        CHECK(mliFunc_malloc(&func, 3u));
+        struct mli_Func func = mli_Func_init();
+        CHECK(mli_Func_malloc(&func, 3u));
         CHECK(func.num_points == 3u);
         func.x[0] = 0.;
         func.x[1] = 1.;
         func.x[2] = 2.;
-        CHECK(mliFunc_x_is_strictly_increasing(&func));
-        mliFunc_free(&func);
+        CHECK(mli_Func_x_is_strictly_increasing(&func));
+        mli_Func_free(&func);
 }
 
-CASE("mliFunc_evaluate, explicit")
+CASE("mli_Func_evaluate, explicit")
 {
         double y;
-        struct mliFunc func = mliFunc_init();
-        CHECK(mliFunc_malloc(&func, 5u));
+        struct mli_Func func = mli_Func_init();
+        CHECK(mli_Func_malloc(&func, 5u));
         CHECK(func.num_points == 5u);
 
         func.x[0] = 0.;
@@ -40,38 +40,38 @@ CASE("mliFunc_evaluate, explicit")
         func.y[3] = 1.;
         func.y[4] = 0.;
 
-        CHECK(mliFunc_x_is_strictly_increasing(&func));
+        CHECK(mli_Func_x_is_strictly_increasing(&func));
         CHECK(MLI_MATH_UPPER_COMPARE_double(func.x, func.num_points, 1.5) == 2);
-        CHECK(mliFunc_evaluate(&func, 1.5, &y));
+        CHECK(mli_Func_evaluate(&func, 1.5, &y));
         CHECK(y == 2.5);
-        mliFunc_free(&func);
+        mli_Func_free(&func);
 }
 
-CASE("mliFunc_evaluate, loop")
+CASE("mli_Func_evaluate, loop")
 {
         double x, y;
-        struct mliFunc func = mliFunc_init();
-        CHECK(mliFunc_malloc(&func, 2u));
+        struct mli_Func func = mli_Func_init();
+        CHECK(mli_Func_malloc(&func, 2u));
         func.x[0] = 0.;
         func.x[1] = 1.;
         func.y[0] = 0.;
         func.y[1] = 1.;
-        CHECK(mliFunc_x_is_strictly_increasing(&func));
+        CHECK(mli_Func_x_is_strictly_increasing(&func));
         for (x = 0.; x < 1.; x = x + 1e-2) {
-                CHECK(mliFunc_evaluate(&func, x, &y));
+                CHECK(mli_Func_evaluate(&func, x, &y));
                 CHECK_MARGIN(y, x, 1e-6);
         }
-        mliFunc_free(&func);
+        mli_Func_free(&func);
 }
 
-CASE("mliFunc_fold_numeric")
+CASE("mli_Func_fold_numeric")
 {
         double aa, ab, ba, bb, integral_0_1_x_square;
-        struct mliFunc a, b;
-        a = mliFunc_init();
-        b = mliFunc_init();
-        CHECK(mliFunc_malloc(&a, 6u));
-        CHECK(mliFunc_malloc(&b, 6u));
+        struct mli_Func a, b;
+        a = mli_Func_init();
+        b = mli_Func_init();
+        CHECK(mli_Func_malloc(&a, 6u));
+        CHECK(mli_Func_malloc(&b, 6u));
 
         integral_0_1_x_square = 1. / 3.;
 
@@ -120,49 +120,49 @@ CASE("mliFunc_fold_numeric")
         b.x[5] = 4.;
         b.y[5] = 0.;
 
-        CHECK(mliFunc_fold_numeric(&a, &a, &aa));
+        CHECK(mli_Func_fold_numeric(&a, &a, &aa));
         CHECK_MARGIN(aa, 1.0 + integral_0_1_x_square, 1e-3);
-        CHECK(mliFunc_fold_numeric(&a, &b, &ab));
+        CHECK(mli_Func_fold_numeric(&a, &b, &ab));
         CHECK_MARGIN(ab, 1.0, 1e-3);
-        CHECK(mliFunc_fold_numeric(&b, &a, &ba));
+        CHECK(mli_Func_fold_numeric(&b, &a, &ba));
         CHECK_MARGIN(ab, ba, 1e-3);
-        CHECK(mliFunc_fold_numeric(&b, &b, &bb));
+        CHECK(mli_Func_fold_numeric(&b, &b, &bb));
         CHECK_MARGIN(bb, aa, 1e-3);
 
-        mliFunc_free(&a);
-        mliFunc_free(&b);
+        mli_Func_free(&a);
+        mli_Func_free(&b);
 }
 
-CASE("mliFunc_in_range")
+CASE("mli_Func_in_range")
 {
-        struct mliFunc func = mliFunc_init();
-        CHECK(mliFunc_malloc(&func, 2u));
+        struct mli_Func func = mli_Func_init();
+        CHECK(mli_Func_malloc(&func, 2u));
         func.x[0] = -2.5;
         func.x[1] = 4.2;
 
-        CHECK(!mliFunc_in_range(&func, -5.0));
-        CHECK(!mliFunc_in_range(&func, -2.51));
-        CHECK(mliFunc_in_range(&func, -2.5));
-        CHECK(mliFunc_in_range(&func, 0.0));
-        CHECK(mliFunc_in_range(&func, 4.19));
-        CHECK(!mliFunc_in_range(&func, 4.2));
-        CHECK(!mliFunc_in_range(&func, 133.7));
+        CHECK(!mli_Func_in_range(&func, -5.0));
+        CHECK(!mli_Func_in_range(&func, -2.51));
+        CHECK(mli_Func_in_range(&func, -2.5));
+        CHECK(mli_Func_in_range(&func, 0.0));
+        CHECK(mli_Func_in_range(&func, 4.19));
+        CHECK(!mli_Func_in_range(&func, 4.2));
+        CHECK(!mli_Func_in_range(&func, 133.7));
 
-        mliFunc_free(&func);
+        mli_Func_free(&func);
 }
 
-CASE("mliFunc_json")
+CASE("mli_Func_json")
 {
         uint64_t token = 0;
         uint64_t token_f = 0;
-        struct mliFunc f = mliFunc_init();
+        struct mli_Func f = mli_Func_init();
         struct mli_Json json = mli_Json_init();
         char json_str[] = "{\"function\": [[0, 10], [1, 11], [2, 12]]}";
         CHECK(mli_Json_malloc_from_cstr(&json, json_str));
 
         CHECK(mli_Json_token_by_key(&json, token, "function", &token_f));
 
-        CHECK(mliFunc_malloc_from_json_token(&f, &json, token_f + 1));
+        CHECK(mli_Func_malloc_from_json_token(&f, &json, token_f + 1));
 
         CHECK(f.num_points == 3);
         CHECK(f.x[0] == 0.0);

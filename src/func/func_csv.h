@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIFUNC_CSV_H_
-#define MLIFUNC_CSV_H_
+#ifndef MLI_FUNC_CSV_H_
+#define MLI_FUNC_CSV_H_
 
 #include <stdint.h>
-#include "mliFunc.h"
+#include "../func/func.h"
 
-int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str);
+int mli_Func_malloc_from_csv(struct mli_Func *func, const char *str);
 
 #endif

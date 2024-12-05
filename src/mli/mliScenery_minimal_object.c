@@ -31,14 +31,14 @@ int mliSurface_malloc_random_phong(
         srf->material = MLI_MATERIAL_PHONG;
 
         /* no specular reflection */
-        chk(mliFunc_malloc(&srf->specular_reflection, 2));
+        chk(mli_Func_malloc(&srf->specular_reflection, 2));
         srf->specular_reflection.x[0] = 200e-9;
         srf->specular_reflection.y[0] = 0.0;
         srf->specular_reflection.x[1] = 1200e-9;
         srf->specular_reflection.y[1] = 0.0;
 
         /* only diffuse reflection */
-        chk(mliFunc_malloc(&srf->diffuse_reflection, 11));
+        chk(mli_Func_malloc(&srf->diffuse_reflection, 11));
         srf->diffuse_reflection.x[0] = 200e-9;
         srf->diffuse_reflection.y[0] = 0.0;
 
@@ -118,13 +118,13 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         sprintf(scenery->materials.medium_names[0].cstr, "vacuum");
 
-        chk(mliFunc_malloc(&scenery->materials.media[0].refraction, 2));
+        chk(mli_Func_malloc(&scenery->materials.media[0].refraction, 2));
         scenery->materials.media[0].refraction.x[0] = 200e-9;
         scenery->materials.media[0].refraction.x[1] = 1200e-9;
         scenery->materials.media[0].refraction.y[0] = 1.0;
         scenery->materials.media[0].refraction.y[1] = 1.0;
 
-        chk(mliFunc_malloc(&scenery->materials.media[0].absorbtion, 2));
+        chk(mli_Func_malloc(&scenery->materials.media[0].absorbtion, 2));
         scenery->materials.media[0].absorbtion.x[0] = 200e-9;
         scenery->materials.media[0].absorbtion.x[1] = 1200e-9;
         scenery->materials.media[0].absorbtion.y[0] = 0.0;

@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliFunc_json.h"
+#include "func_json.h"
 #include "../chk/chk.h"
 
-int mliFunc_malloc_from_json_token(
-        struct mliFunc *f,
+int mli_Func_malloc_from_json_token(
+        struct mli_Func *f,
         const struct mli_Json *json,
         const uint64_t token)
 {
@@ -11,7 +11,7 @@ int mliFunc_malloc_from_json_token(
         uint64_t point_token;
         chk_msg(json->tokens[token].type == JSMN_ARRAY,
                 "Expected function-token to be a json-array.");
-        chk_msg(mliFunc_malloc(f, json->tokens[token].size),
+        chk_msg(mli_Func_malloc(f, json->tokens[token].size),
                 "Can not allocate function.");
         point_token = token + 1;
         for (p = 0; p < f->num_points; p++) {
@@ -30,6 +30,6 @@ int mliFunc_malloc_from_json_token(
         }
         return 1;
 chk_error:
-        mliFunc_free(f);
+        mli_Func_free(f);
         return 0;
 }

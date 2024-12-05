@@ -28,11 +28,11 @@ CASE("fold ColorObserver")
 {
         struct mliColor rgb = mliColor_set(1., 1., 1.);
         struct mliColorObserver obs = mliColorObserver_init();
-        struct mliFunc spectrum = mliFunc_init();
+        struct mli_Func spectrum = mli_Func_init();
 
         CHECK(mliColorObserver_malloc_cie1931(&obs));
 
-        CHECK(mliFunc_malloc(&spectrum, 6));
+        CHECK(mli_Func_malloc(&spectrum, 6));
         spectrum.x[0] = 200e-9;
         spectrum.y[0] = 0.0;
 
@@ -91,5 +91,5 @@ CASE("fold ColorObserver")
         CHECK_MARGIN(rgb.b, 0.1e-2, 1e-3);
 
         mliColorObserver_free(&obs);
-        mliFunc_free(&spectrum);
+        mli_Func_free(&spectrum);
 }

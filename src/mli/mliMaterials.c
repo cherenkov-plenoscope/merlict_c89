@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "../chk/chk.h"
 #include "mliColorMaterials.h"
-#include "mliFunc_fprint.h"
+#include "../func/func_fprint.h"
 
 struct mliMaterialsCapacity mliMaterialsCapacity_init(void)
 {
@@ -99,7 +99,7 @@ chk_error:
 void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
 {
         uint32_t i = 0;
-        struct mliFunc_fprint_Config pltcfg;
+        struct mli_Func_fprint_Config pltcfg;
 
         fprintf(f, "materials\n");
         fprintf(f, "---------\n");
@@ -141,7 +141,7 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                 pltcfg.y_start = 0.0;
                 pltcfg.y_stop = 5.0;
                 pltcfg.y_num = 12;
-                mliFunc_fprint(f, &res->media[i].absorbtion, pltcfg);
+                mli_Func_fprint(f, &res->media[i].absorbtion, pltcfg);
                 fprintf(f, "\n");
 
                 fprintf(f, "\n");
@@ -153,7 +153,7 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                 pltcfg.y_start = 0.0;
                 pltcfg.y_stop = 2.0;
                 pltcfg.y_num = 12;
-                mliFunc_fprint(f, &res->media[i].refraction, pltcfg);
+                mli_Func_fprint(f, &res->media[i].refraction, pltcfg);
                 fprintf(f, "\n");
         }
         fprintf(f, "\n");

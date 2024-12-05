@@ -1,22 +1,22 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "mliColorObserver.h"
 #include "../chk/chk.h"
-#include "mliFunc.h"
+#include "../func/func.h"
 
 struct mliColorObserver mliColorObserver_init(void)
 {
         struct mliColorObserver colobs;
-        colobs.r = mliFunc_init();
-        colobs.g = mliFunc_init();
-        colobs.b = mliFunc_init();
+        colobs.r = mli_Func_init();
+        colobs.g = mli_Func_init();
+        colobs.b = mli_Func_init();
         return colobs;
 }
 
 void mliColorObserver_free(struct mliColorObserver *colobs)
 {
-        mliFunc_free(&colobs->r);
-        mliFunc_free(&colobs->g);
-        mliFunc_free(&colobs->b);
+        mli_Func_free(&colobs->r);
+        mli_Func_free(&colobs->g);
+        mli_Func_free(&colobs->b);
 }
 
 int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs)
@@ -168,21 +168,21 @@ int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs)
 
         mliColorObserver_free(colobs);
 
-        chk_msg(mliFunc_malloc(&colobs->r, sizeof(red) / sizeof(red[0])),
+        chk_msg(mli_Func_malloc(&colobs->r, sizeof(red) / sizeof(red[0])),
                 "Can't malloc red channel in ColorObserver.");
         for (i = 0; i < colobs->r.num_points; i++) {
                 colobs->r.x[i] = red[i][0];
                 colobs->r.y[i] = red[i][1];
         }
 
-        chk_msg(mliFunc_malloc(&colobs->g, sizeof(green) / sizeof(green[0])),
+        chk_msg(mli_Func_malloc(&colobs->g, sizeof(green) / sizeof(green[0])),
                 "Can't malloc green channel in ColorObserver.");
         for (i = 0; i < colobs->g.num_points; i++) {
                 colobs->g.x[i] = green[i][0];
                 colobs->g.y[i] = green[i][1];
         }
 
-        chk_msg(mliFunc_malloc(&colobs->b, sizeof(blue) / sizeof(blue[0])),
+        chk_msg(mli_Func_malloc(&colobs->b, sizeof(blue) / sizeof(blue[0])),
                 "Can't malloc blue channel in ColorObserver.");
         for (i = 0; i < colobs->b.num_points; i++) {
                 colobs->b.x[i] = blue[i][0];
@@ -212,13 +212,13 @@ int mliColorObserver_is_valid(const struct mliColorObserver *colobs)
                 chk_msg(colobs->b.y[i] >= 0.0 && colobs->b.y[i] <= 1.0,
                         "Expected channel blue 0.0 <= value <= 1.0.");
         }
-        chk_msg(mliFunc_x_is_strictly_increasing(&colobs->r),
+        chk_msg(mli_Func_x_is_strictly_increasing(&colobs->r),
                 "Expected wavelength in channel red to be strictly "
                 "increasing.");
-        chk_msg(mliFunc_x_is_strictly_increasing(&colobs->g),
+        chk_msg(mli_Func_x_is_strictly_increasing(&colobs->g),
                 "Expected wavelength in channel green to be strictly "
                 "increasing.");
-        chk_msg(mliFunc_x_is_strictly_increasing(&colobs->b),
+        chk_msg(mli_Func_x_is_strictly_increasing(&colobs->b),
                 "Expected wavelength in channel blue to be strictly "
                 "increasing.");
         return 1;
@@ -228,17 +228,17 @@ chk_error:
 
 int mliColorObserver_evaluate(
         const struct mliColorObserver *colobs,
-        const struct mliFunc *func,
+        const struct mli_Func *func,
         struct mliColor *color)
 {
         double r, g, b;
         (*color) = mliColor_set(0.0, 0.0, 0.0);
         chk_msg(func->num_points > 1, "Expected function's num_points > 1");
-        chk_msg(mliFunc_fold_numeric_default_closest(&colobs->r, func, &r),
+        chk_msg(mli_Func_fold_numeric_default_closest(&colobs->r, func, &r),
                 "Can't fold red channel.");
-        chk_msg(mliFunc_fold_numeric_default_closest(&colobs->g, func, &g),
+        chk_msg(mli_Func_fold_numeric_default_closest(&colobs->g, func, &g),
                 "Can't fold green channel.");
-        chk_msg(mliFunc_fold_numeric_default_closest(&colobs->b, func, &b),
+        chk_msg(mli_Func_fold_numeric_default_closest(&colobs->b, func, &b),
                 "Can't fold blue channel.");
         color->r = (float)(r);
         color->g = (float)(g);

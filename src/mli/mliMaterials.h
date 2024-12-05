@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliObject.h"
-#include "mliFunc.h"
+#include "../func/func.h"
 #include "mliSurface.h"
 #include "mliMedium.h"
 #include "mliBoundaryLayer.h"
