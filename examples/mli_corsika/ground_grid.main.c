@@ -5,7 +5,7 @@
 #include "../../src/corsika/EventTape.h"
 #include "../../src/corsika/Histogram2d.h"
 #include "../../src/chk/chk.h"
-#include "../../src/mtl/string_numbers.h"
+#include "../../src/string/string_numbers.h"
 #include "../../src/math/math.h"
 #include "../../src/mtl/io.h"
 #include "../../src/mli/mliTar.h"

@@ -6,7 +6,7 @@
 #include "../mtl/io.h"
 #include "mli_json.h"
 #include "../array/array.h"
-#include "../mtl/string.h"
+#include "../string/string.h"
 #include "mliDynTextFiles.h"
 #include "mliDynMap.h"
 

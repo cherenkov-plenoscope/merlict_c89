@@ -1,7 +1,7 @@
 /* Copyright Sebastian Achim Mueller */
 #ifndef mtl_path_H_
 #define mtl_path_H_
-#include "string.h"
+#include "../string/string.h"
 
 int mtl_path_strip_this_dir(
         const struct mtl_String *src,

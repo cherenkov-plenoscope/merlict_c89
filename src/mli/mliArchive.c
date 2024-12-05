@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliArchive.h"
 #include "../chk/chk.h"
-#include "../mtl/string.h"
+#include "../string/string.h"
 #include "../mtl/path.h"
 #include "../cstr/cstr.h"
 #include "mli_json.h"

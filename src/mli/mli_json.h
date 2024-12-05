@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "mli_json_jsmn.h"
 #include "../mtl/io.h"
-#include "../mtl/string.h"
+#include "../string/string.h"
 
 struct mliJson {
         struct mtl_String raw;

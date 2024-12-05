@@ -2,7 +2,7 @@
 #ifndef MLIDYNTEXTFILE_H_
 #define MLIDYNTEXTFILE_H_
 
-#include "../mtl/string.h"
+#include "../string/string.h"
 #include "../vector/vector.h"
 MLI_VECTOR_DEFINITON(mliDynTextFiles, struct mtl_String)
 

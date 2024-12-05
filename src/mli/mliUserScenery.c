@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 #include "../chk/chk.h"
-#include "../mtl/string.h"
+#include "../string/string.h"
 #include "mliGeometry.h"
 #include "mli_json.h"
 #include "../cstr/cstr.h"

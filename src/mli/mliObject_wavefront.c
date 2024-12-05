@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "../chk/chk.h"
 #include "../vector/vector.h"
-#include "../mtl/string_numbers.h"
+#include "../string/string_numbers.h"
 #include "mliDynMap.h"
 #include "mliDynFace.h"
 #include "mliDynVec.h"
