@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stddef.h>
 #include "../chk/chk.h"
-#include "../mtl/cstr_numbers.h"
+#include "../cstr/cstr_numbers.h"
 
 /*                             basics                                         */
 /* ========================================================================== */
@@ -37,7 +37,7 @@ int mliTar_field_to_uint(
                 buff[fieldsize - 2] = 0;
         }
 
-        chk(mtl_cstr_to_uint64(out, buff, MLI_TAR_OCTAL));
+        chk(mli_cstr_to_uint64(out, buff, MLI_TAR_OCTAL));
         return 1;
 chk_error:
         return 0;
@@ -48,7 +48,7 @@ int mliTar_uint_to_field(
         char *field,
         const uint64_t fieldsize)
 {
-        chk(mtl_cstr_print_uint64(
+        chk(mli_cstr_print_uint64(
                 val, field, fieldsize, MLI_TAR_OCTAL, fieldsize - 1));
         return 1;
 chk_error:
@@ -166,7 +166,7 @@ int mliTarRawHeader_from_header(
 
         /* Calculate and write checksum */
         chksum = mliTarRawHeader_checksum(rh);
-        chk_msg(mtl_cstr_print_uint64(
+        chk_msg(mli_cstr_print_uint64(
                         chksum,
                         rh->checksum,
                         sizeof(rh->checksum),

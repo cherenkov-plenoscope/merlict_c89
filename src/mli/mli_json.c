@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_json.h"
 #include <stdlib.h>
-#include "../mtl/cstr.h"
-#include "../mtl/cstr_numbers.h"
+#include "../cstr/cstr.h"
+#include "../cstr/cstr_numbers.h"
 #include "mli_json_jsmn.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
@@ -120,7 +120,7 @@ int mliJson_int64_by_token(
         const uint64_t token_length = t.end - t.start;
         chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json int64 expected json-token-to be JSMN_PRIMITIVE.");
-        chk_msg(mtl_cstr_nto_int64(
+        chk_msg(mli_cstr_nto_int64(
                         return_int64,
                         (char *)&json->raw.array[t.start],
                         10,
@@ -185,7 +185,7 @@ int mliJson_double_by_token(
         const uint64_t token_length = t.end - t.start;
         chk_msg(t.type == JSMN_PRIMITIVE,
                 "Json float64 expected json-token-to be JSMN_PRIMITIVE.");
-        chk_msg(mtl_cstr_nto_double(
+        chk_msg(mli_cstr_nto_double(
                         val, (char *)&json->raw.array[t.start], token_length),
                 "Can't parse double.");
         return 1;

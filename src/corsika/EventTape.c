@@ -3,8 +3,8 @@
 #include "utils.h"
 #include "../math/math.h"
 #include "../mli/mliTar.h"
-#include "../mtl/cstr.h"
-#include "../mtl/cstr_numbers.h"
+#include "../cstr/cstr.h"
+#include "../cstr/cstr_numbers.h"
 #include "../chk/chk.h"
 
 /* writer */
@@ -215,7 +215,7 @@ int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh)
         const uint64_t BASE = 10;
         uint64_t runh_run_number = 0;
         chk_msg(tio->has_tarh, "Expected next tar-header.");
-        chk_msg(mtl_cstr_match_templeate(
+        chk_msg(mli_cstr_match_templeate(
                         tio->tarh.name, "ddddddddd/RUNH.float32", 'd'),
                 "Expected file to be 'ddddddddd/RUNH.float32.'");
         chk_msg(tio->tarh.size == MLI_CORSIKA_HEADER_SIZE_BYTES,
@@ -224,7 +224,7 @@ int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh)
                 "Can't read RUNH from tar.");
         chk_msg(runh[0] == mli_chars_to_float("RUNH"),
                 "Expected RUNH[0] == 'RUNH'");
-        chk_msg(mtl_cstr_nto_uint64(
+        chk_msg(mli_cstr_nto_uint64(
                         &tio->run_number, &tio->tarh.name[0], BASE, NUM_DIGITS),
                 "Can't read run_number from RUNH's path.");
         runh_run_number =
@@ -251,16 +251,16 @@ int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth)
         if (!tio->has_tarh) {
                 return 0;
         }
-        if (!mtl_cstr_match_templeate(tio->tarh.name, match, 'd')) {
+        if (!mli_cstr_match_templeate(tio->tarh.name, match, 'd')) {
                 return 0;
         }
-        chk_msg(mtl_cstr_nto_uint64(
+        chk_msg(mli_cstr_nto_uint64(
                         &path_event_number,
                         &tio->tarh.name[10],
                         BASE,
                         NUM_DIGITS),
                 "Can't parse event-number from path.");
-        chk_msg(mtl_cstr_nto_uint64(
+        chk_msg(mli_cstr_nto_uint64(
                         &path_run_number, &tio->tarh.name[0], BASE, NUM_DIGITS),
                 "Can't parse run-number from path.");
         chk_msg(tio->tarh.size == MLI_CORSIKA_HEADER_SIZE_BYTES,
@@ -305,7 +305,7 @@ int mliEventTapeReader_tarh_might_be_valid_cherenkov_block(
 {
         char match[MLI_TAR_NAME_LENGTH] =
                 "ddddddddd/ddddddddd/ddddddddd.cer.x8.float32";
-        return mtl_cstr_match_templeate(tio->tarh.name, match, 'd');
+        return mli_cstr_match_templeate(tio->tarh.name, match, 'd');
 }
 
 int mliEventTapeReader_tarh_is_valid_cherenkov_block(
@@ -321,13 +321,13 @@ int mliEventTapeReader_tarh_is_valid_cherenkov_block(
         chk_msg(mliEventTapeReader_tarh_might_be_valid_cherenkov_block(tio),
                 "Expected cherenkov-bunch-block-name to be valid.");
 
-        chk_msg(mtl_cstr_nto_uint64(
+        chk_msg(mli_cstr_nto_uint64(
                         &path_run_number, &tio->tarh.name[0], BASE, NUM_DIGITS),
                 "Can't parse run-number from path.");
         chk_msg(path_run_number == tio->run_number,
                 "Expected consistent run-number in cherenkov-block-path.");
 
-        chk_msg(mtl_cstr_nto_uint64(
+        chk_msg(mli_cstr_nto_uint64(
                         &path_event_number,
                         &tio->tarh.name[9 + 1],
                         BASE,
@@ -336,7 +336,7 @@ int mliEventTapeReader_tarh_is_valid_cherenkov_block(
         chk_msg(path_event_number == tio->event_number,
                 "Expected same event-number in cherenkov-block-path and EVTH.");
 
-        chk_msg(mtl_cstr_nto_uint64(
+        chk_msg(mli_cstr_nto_uint64(
                         &path_block_number,
                         &tio->tarh.name[9 + 1 + 9 + 1],
                         BASE,

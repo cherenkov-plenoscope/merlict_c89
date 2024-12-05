@@ -2,8 +2,8 @@
 #include "mliFunc_csv.h"
 #include "mliName.h"
 #include "mliDynDouble.h"
-#include "../mtl/cstr.h"
-#include "../mtl/cstr_numbers.h"
+#include "../cstr/cstr.h"
+#include "../cstr/cstr_numbers.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
 
@@ -32,30 +32,30 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
                         "Expected less than 1e6 lines in scv file. "
                         "Something went wrong.");
 
-                line_length = mtl_cstr_split(&str[p], '\n', line, sizeof(line));
+                line_length = mli_cstr_split(&str[p], '\n', line, sizeof(line));
 
                 chk_msg(line_length < sizeof(line), "Line is too long.");
 
                 if (line_length > 0) {
-                        if (mtl_cstr_starts_with(line, "#")) {
+                        if (mli_cstr_starts_with(line, "#")) {
                                 /* comment */
                         } else {
                                 i = 0;
-                                token_length = mtl_cstr_split(
+                                token_length = mli_cstr_split(
                                         &line[i], ',', token, sizeof(token));
                                 chk_msg(token_length > 0,
                                         "Expected x column not to be empty.");
-                                chk_msg(mtl_cstr_to_double(&_x, token),
+                                chk_msg(mli_cstr_to_double(&_x, token),
                                         "Failed to parse 'x' column.");
                                 chk(mliDynDouble_push_back(&x, _x));
                                 chk_msg(line[i + token_length] != '\0',
                                         "Expected y column to be present.");
                                 i += token_length + 1;
-                                token_length = mtl_cstr_split(
+                                token_length = mli_cstr_split(
                                         &line[i], ',', token, sizeof(token));
                                 chk_msg(token_length > 0,
                                         "Expected y column not to be empty.");
-                                chk_msg(mtl_cstr_to_double(&_y, token),
+                                chk_msg(mli_cstr_to_double(&_y, token),
                                         "Failed to parse 'y' column.");
                                 chk(mliDynDouble_push_back(&y, _y));
                         }
