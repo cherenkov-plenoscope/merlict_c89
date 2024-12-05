@@ -6,7 +6,7 @@
 #include "mliApertureCamera.h"
 #include "mliHomTra.h"
 #include "mliTracer.h"
-#include "mli_json.h"
+#include "../json/json.h"
 
 struct mliRenderConfig {
         struct mliApertureCamera camera;
@@ -21,7 +21,7 @@ struct mliRenderConfig mliRenderConfig_init(void);
 
 int mliRenderConfig_from_json_token(
         struct mliRenderConfig *cc,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token);
 
 #endif

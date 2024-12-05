@@ -26,7 +26,7 @@
  * - always JSMN_STRICT
  */
 
-#include "mli_json_jsmn.h"
+#include "json_jsmn.h"
 
 void jsmn_init(struct jsmn_parser *parser);
 

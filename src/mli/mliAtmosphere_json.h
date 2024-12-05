@@ -4,11 +4,11 @@
 
 #include <stdint.h>
 #include "mliAtmosphere.h"
-#include "mli_json.h"
+#include "../json/json.h"
 
 int mliAtmosphere_from_json_token(
         struct mliAtmosphere *atm,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t tkn);
 
 #endif

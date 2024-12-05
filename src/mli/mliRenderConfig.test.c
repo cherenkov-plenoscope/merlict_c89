@@ -2,7 +2,7 @@
 
 CASE("Parse_from_jsonline")
 {
-        struct mliJson json = mliJson_init();
+        struct mli_Json json = mli_Json_init();
         struct mli_IO ss = mli_IO_init();
         struct mliRenderConfig cc = mliRenderConfig_init();
 
@@ -58,9 +58,9 @@ CASE("Parse_from_jsonline")
         mli_IO_write_cstr_format(&ss, "    \"random_seed\": 1337");
         mli_IO_write_cstr_format(&ss, "}");
 
-        CHECK(mliJson_malloc_from_cstr(&json, (char *)ss.cstr));
+        CHECK(mli_Json_malloc_from_cstr(&json, (char *)ss.cstr));
         CHECK(mliRenderConfig_from_json(&cc, &json, 0));
-        mliJson_free(&json);
+        mli_Json_free(&json);
         mli_IO_free(&ss);
 
         CHECK(cc.random_seed == 1337);

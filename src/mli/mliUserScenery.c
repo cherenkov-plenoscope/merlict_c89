@@ -5,7 +5,7 @@
 #include "../chk/chk.h"
 #include "../string/string.h"
 #include "mliGeometry.h"
-#include "mli_json.h"
+#include "../json/json.h"
 #include "../cstr/cstr.h"
 #include "mliUserScenery_json.h"
 #include "mliArchive.h"
@@ -98,7 +98,7 @@ int mliMaterials_malloc_form_archive(
         char key[MLI_NAME_CAPACITY];
 
         struct mli_String *default_medium_text = NULL;
-        struct mliJson boundary_layers_json = mliJson_init();
+        struct mli_Json boundary_layers_json = mli_Json_init();
         struct mliMaterialsCapacity cap = mliMaterialsCapacity_init();
 
         /* free */
@@ -212,7 +212,7 @@ int mliMaterials_malloc_form_archive(
                        MLI_NAME_CAPACITY);
         }
 
-        mliJson_free(&boundary_layers_json);
+        mli_Json_free(&boundary_layers_json);
 
         /* default medium */
 
@@ -230,7 +230,7 @@ int mliMaterials_malloc_form_archive(
 
         return 1;
 chk_error:
-        mliJson_free(&boundary_layers_json);
+        mli_Json_free(&boundary_layers_json);
         mliMaterials_free(materials);
         mliNameMap_free(names);
         return 0;
@@ -244,11 +244,11 @@ int mli_check_malloc_root_frame_from_Archive(
         const struct mliDynMap *boundary_layer_names)
 {
         uint64_t token = 0u;
-        struct mliJson tree_json = mliJson_init();
+        struct mli_Json tree_json = mli_Json_init();
         chk_msg(mliArchive_get_malloc_json(
                         archive, "geometry/relations.json", &tree_json),
                 "Failed to parse 'geometry/relations.json'.");
-        chk_msg(mliJson_token_by_key(&tree_json, 0, "children", &token),
+        chk_msg(mli_Json_token_by_key(&tree_json, 0, "children", &token),
                 "Expected 'tree.json' to have key 'children'.");
         chk_msg(mliFrame_malloc(root, MLI_FRAME), "Can not malloc root-frame.");
         chk_msg(mliFrame_from_json(
@@ -259,13 +259,13 @@ int mli_check_malloc_root_frame_from_Archive(
                         objects,
                         boundary_layer_names),
                 "Failed to populate tree of Frames from 'tree.json'.");
-        mliJson_free(&tree_json);
+        mli_Json_free(&tree_json);
 
         /* init transformations */
         mliFrame_set_frame2root(root);
 
         return 1;
 chk_error:
-        mliJson_free(&tree_json);
+        mli_Json_free(&tree_json);
         return 0;
 }

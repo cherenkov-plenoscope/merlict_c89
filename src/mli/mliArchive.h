@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../io/io.h"
-#include "mli_json.h"
+#include "../json/json.h"
 #include "../array/array.h"
 #include "../string/string.h"
 #include "mliDynTextFiles.h"
@@ -35,7 +35,7 @@ int mliArchive_get(
 int mliArchive_get_malloc_json(
         const struct mliArchive *arc,
         const char *filename,
-        struct mliJson *json);
+        struct mli_Json *json);
 uint64_t mliArchive_num(const struct mliArchive *arc);
 void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc);
 void mliArchive_mask_filename_prefix_sufix(

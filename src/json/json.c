@@ -1,29 +1,29 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_json.h"
+#include "json.h"
 #include <stdlib.h>
+#include "json_jsmn.h"
 #include "../cstr/cstr.h"
 #include "../cstr/cstr_numbers.h"
-#include "mli_json_jsmn.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
 
-struct mliJson mliJson_init(void)
+struct mli_Json mli_Json_init(void)
 {
-        struct mliJson j;
+        struct mli_Json j;
         j.raw = mli_String_init();
         j.num_tokens = 0u;
         j.tokens = NULL;
         return j;
 }
 
-void mliJson_free(struct mliJson *json)
+void mli_Json_free(struct mli_Json *json)
 {
         mli_String_free(&json->raw);
         free(json->tokens);
-        (*json) = mliJson_init();
+        (*json) = mli_Json_init();
 }
 
-int mliJson_malloc_tokens__(struct mliJson *json)
+int mli_Json_malloc_tokens__(struct mli_Json *json)
 {
         struct jsmntok_t default_token = {JSMN_UNDEFINED, 0, 0, 0};
         chk_msg(&json->raw.array != NULL, "Expected raw cstr to be malloced.");
@@ -35,7 +35,7 @@ chk_error:
         return 0;
 }
 
-int mliJson_parse_tokens__(struct mliJson *json)
+int mli_Json_parse_tokens__(struct mli_Json *json)
 {
         int64_t num_tokens_parsed;
         struct jsmn_parser parser;
@@ -63,38 +63,38 @@ chk_error:
         return 0;
 }
 
-int mliJson_malloc_from_cstr(struct mliJson *json, const char *cstr)
+int mli_Json_malloc_from_cstr(struct mli_Json *json, const char *cstr)
 {
-        mliJson_free(json);
+        mli_Json_free(json);
         chk_msg(mli_String_from_cstr(&json->raw, cstr), "Can't copy cstr.");
-        chk_msg(mliJson_malloc_tokens__(json), "Can't malloc Json's tokens.");
-        chk_msg(mliJson_parse_tokens__(json), "Can't parse Json into tokens.");
+        chk_msg(mli_Json_malloc_tokens__(json), "Can't malloc Json's tokens.");
+        chk_msg(mli_Json_parse_tokens__(json), "Can't parse Json into tokens.");
         return 1;
 chk_error:
-        mliJson_free(json);
+        mli_Json_free(json);
         return 0;
 }
 
-int mliJson_malloc_from_path(struct mliJson *json, const char *path)
+int mli_Json_malloc_from_path(struct mli_Json *json, const char *path)
 {
         struct mli_IO ff = mli_IO_init();
-        mliJson_free(json);
+        mli_Json_free(json);
         chk_msg(mli_IO_write_from_path(&ff, path),
                 "Failed to read file into Json's Str.");
         chk_msg(mli_String_from_cstr(&json->raw, (char *)ff.cstr),
                 "Failed to copy cstr.");
         mli_IO_free(&ff);
-        chk_msg(mliJson_malloc_tokens__(json), "Can't malloc Json's tokens.");
-        chk_msg(mliJson_parse_tokens__(json), "Can't parse Json into tokens.");
+        chk_msg(mli_Json_malloc_tokens__(json), "Can't malloc Json's tokens.");
+        chk_msg(mli_Json_parse_tokens__(json), "Can't parse Json into tokens.");
         return 1;
 chk_error:
         mli_IO_free(&ff);
-        mliJson_free(json);
+        mli_Json_free(json);
         return 0;
 }
 
-int mliJson_cstr_by_token(
-        const struct mliJson *json,
+int mli_Json_cstr_by_token(
+        const struct mli_Json *json,
         const uint64_t token,
         char *return_string,
         const uint64_t return_string_size)
@@ -111,8 +111,8 @@ chk_error:
         return 0;
 }
 
-int mliJson_int64_by_token(
-        const struct mliJson *json,
+int mli_Json_int64_by_token(
+        const struct mli_Json *json,
         const uint64_t token,
         int64_t *return_int64)
 {
@@ -131,13 +131,13 @@ chk_error:
         return 0;
 }
 
-int mliJson_uint64_by_token(
-        const struct mliJson *json,
+int mli_Json_uint64_by_token(
+        const struct mli_Json *json,
         const uint64_t token,
         uint64_t *val)
 {
         int64_t tmp;
-        chk(mliJson_int64_by_token(json, token, &tmp));
+        chk(mli_Json_int64_by_token(json, token, &tmp));
         chk_msg(tmp >= 0, "Expected value to be unsigned.");
         (*val) = (uint64_t)tmp;
         return 1;
@@ -145,30 +145,30 @@ chk_error:
         return 0;
 }
 
-int mliJson_int64_by_key(
-        const struct mliJson *json,
+int mli_Json_int64_by_key(
+        const struct mli_Json *json,
         const uint64_t token,
         int64_t *val,
         const char *key)
 {
         uint64_t token_n;
-        chk(mliJson_token_by_key_eprint(json, token, key, &token_n));
+        chk(mli_Json_token_by_key_eprint(json, token, key, &token_n));
         chk_msgf(
-                mliJson_int64_by_token(json, token_n + 1, val),
+                mli_Json_int64_by_token(json, token_n + 1, val),
                 ("Can't parse value of '%s' into int64.", key));
         return 1;
 chk_error:
         return 0;
 }
 
-int mliJson_uint64_by_key(
-        const struct mliJson *json,
+int mli_Json_uint64_by_key(
+        const struct mli_Json *json,
         const uint64_t token,
         uint64_t *val,
         const char *key)
 {
         int64_t tmp;
-        chk(mliJson_int64_by_key(json, token, &tmp, key));
+        chk(mli_Json_int64_by_key(json, token, &tmp, key));
         chk_msg(tmp >= 0, "Expected value to be unsigned.");
         (*val) = (uint64_t)tmp;
         return 1;
@@ -176,8 +176,8 @@ chk_error:
         return 0;
 }
 
-int mliJson_double_by_token(
-        const struct mliJson *json,
+int mli_Json_double_by_token(
+        const struct mli_Json *json,
         const uint64_t token,
         double *val)
 {
@@ -193,16 +193,16 @@ chk_error:
         return 0;
 }
 
-int mliJson_double_by_key(
-        const struct mliJson *json,
+int mli_Json_double_by_key(
+        const struct mli_Json *json,
         const uint64_t token,
         double *val,
         const char *key)
 {
         uint64_t token_n;
-        chk(mliJson_token_by_key_eprint(json, token, key, &token_n));
+        chk(mli_Json_token_by_key_eprint(json, token, key, &token_n));
         chk_msgf(
-                mliJson_double_by_token(json, token_n + 1, val),
+                mli_Json_double_by_token(json, token_n + 1, val),
                 ("Can't parse value of '%s' into double.", key));
 
         return 1;
@@ -210,8 +210,8 @@ chk_error:
         return 0;
 }
 
-int mliJson_cstrcmp(
-        const struct mliJson *json,
+int mli_Json_cstrcmp(
+        const struct mli_Json *json,
         const uint64_t token,
         const char *str)
 {
@@ -233,8 +233,8 @@ int mliJson_cstrcmp(
         return 1;
 }
 
-int mliJson_token_by_key(
-        const struct mliJson *json,
+int mli_Json_token_by_key(
+        const struct mli_Json *json,
         const uint64_t token,
         const char *key,
         uint64_t *key_token)
@@ -245,7 +245,7 @@ int mliJson_token_by_key(
         int64_t idx = token + 1;
 
         while (child < json->tokens[token].size) {
-                if (mliJson_cstrcmp(json, idx, key)) {
+                if (mli_Json_cstrcmp(json, idx, key)) {
                         (*key_token) = idx;
                         found += 1;
                 }
@@ -261,22 +261,22 @@ int mliJson_token_by_key(
         return found;
 }
 
-int mliJson_token_by_key_eprint(
-        const struct mliJson *json,
+int mli_Json_token_by_key_eprint(
+        const struct mli_Json *json,
         const uint64_t token,
         const char *key,
         uint64_t *key_token)
 {
         chk_msgf(
-                mliJson_token_by_key(json, token, key, key_token),
+                mli_Json_token_by_key(json, token, key, key_token),
                 ("Expected key '%s' in json.", key));
         return 1;
 chk_error:
         return 0;
 }
 
-uint64_t mliJson_token_by_index(
-        const struct mliJson *json,
+uint64_t mli_Json_token_by_index(
+        const struct mli_Json *json,
         const uint64_t token,
         const uint64_t index)
 {
@@ -297,9 +297,9 @@ uint64_t mliJson_token_by_index(
         return idx;
 }
 
-int mliJson_debug_token_fprint(
+int mli_Json_debug_token_fprint(
         FILE *f,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token)
 {
         uint64_t i = 0u;
@@ -321,11 +321,11 @@ chk_error:
         return 0;
 }
 
-int mliJson_debug_fprint(FILE *f, const struct mliJson *json)
+int mli_Json_debug_fprint(FILE *f, const struct mli_Json *json)
 {
         uint64_t i;
         for (i = 0; i < json->num_tokens; i++) {
-                chk_msg(mliJson_debug_token_fprint(f, json, i),
+                chk_msg(mli_Json_debug_token_fprint(f, json, i),
                         "Failed to write json-token debug-info to file.");
         }
         return 1;
@@ -333,12 +333,12 @@ chk_error:
         return 0;
 }
 
-int mliJson_debug_to_path(const struct mliJson *json, const char *path)
+int mli_Json_debug_to_path(const struct mli_Json *json, const char *path)
 {
         FILE *f;
         f = fopen(path, "wt");
         chk_msg(f != NULL, "Failed to open file for Json debug output.");
-        chk_msg(mliJson_debug_fprint(f, json), "Failed to fprint debug.");
+        chk_msg(mli_Json_debug_fprint(f, json), "Failed to fprint debug.");
         fclose(f);
         return 1;
 chk_error:

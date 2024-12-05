@@ -156,11 +156,11 @@ CASE("mliFunc_json")
         uint64_t token = 0;
         uint64_t token_f = 0;
         struct mliFunc f = mliFunc_init();
-        struct mliJson json = mliJson_init();
+        struct mli_Json json = mli_Json_init();
         char json_str[] = "{\"function\": [[0, 10], [1, 11], [2, 12]]}";
-        CHECK(mliJson_malloc_from_cstr(&json, json_str));
+        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
 
-        CHECK(mliJson_token_by_key(&json, token, "function", &token_f));
+        CHECK(mli_Json_token_by_key(&json, token, "function", &token_f));
 
         CHECK(mliFunc_malloc_from_json_token(&f, &json, token_f + 1));
 
@@ -171,5 +171,5 @@ CASE("mliFunc_json")
         CHECK(f.y[1] == 11.0);
         CHECK(f.x[2] == 2.0);
         CHECK(f.y[2] == 12.0);
-        mliJson_free(&json);
+        mli_Json_free(&json);
 }

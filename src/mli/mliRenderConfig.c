@@ -21,25 +21,25 @@ struct mliRenderConfig mliRenderConfig_init(void)
 
 int mliRenderConfig_camera_from_json(
         struct mliRenderConfig *cc,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t tkn)
 {
         chk(mliFrame_pos_rot_from_json_token(&cc->camera_to_root, json, tkn));
-        chk(mliJson_double_by_key(
+        chk(mli_Json_double_by_key(
                 json,
                 tkn,
                 &cc->camera.image_sensor_width_x,
                 "image_sensor_width_x"));
-        chk(mliJson_double_by_key(
+        chk(mli_Json_double_by_key(
                 json,
                 tkn,
                 &cc->camera.image_sensor_width_y,
                 "image_sensor_width_y"));
-        chk(mliJson_double_by_key(
+        chk(mli_Json_double_by_key(
                 json, tkn, &cc->camera.focal_length, "focal_length"));
-        chk(mliJson_double_by_key(
+        chk(mli_Json_double_by_key(
                 json, tkn, &cc->camera.aperture_radius, "aperture_radius"));
-        chk(mliJson_double_by_key(
+        chk(mli_Json_double_by_key(
                 json,
                 tkn,
                 &cc->camera.image_sensor_distance,
@@ -65,11 +65,11 @@ chk_error:
 
 int mliRenderConfig_image_from_json(
         struct mliRenderConfig *cc,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t tkn)
 {
-        chk(mliJson_uint64_by_key(json, tkn, &cc->num_pixel_x, "num_pixel_x"));
-        chk(mliJson_uint64_by_key(json, tkn, &cc->num_pixel_y, "num_pixel_y"));
+        chk(mli_Json_uint64_by_key(json, tkn, &cc->num_pixel_x, "num_pixel_x"));
+        chk(mli_Json_uint64_by_key(json, tkn, &cc->num_pixel_y, "num_pixel_y"));
         chk_msg(cc->num_pixel_x > 0, "Expected image.num_pixel_x > 0.");
         chk_msg(cc->num_pixel_y > 0, "Expected image.num_pixel_y > 0.");
         return 1;
@@ -79,16 +79,16 @@ chk_error:
 
 int mliRenderConfig_from_json(
         struct mliRenderConfig *cc,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t tkn)
 {
         uint64_t camtkn;
         uint64_t imgtkn;
         uint64_t tratkn;
-        chk(mliJson_uint64_by_key(json, tkn, &cc->random_seed, "random_seed"));
-        chk(mliJson_token_by_key_eprint(json, tkn, "camera", &camtkn));
-        chk(mliJson_token_by_key_eprint(json, tkn, "image", &imgtkn));
-        chk(mliJson_token_by_key_eprint(json, tkn, "tracer", &tratkn));
+        chk(mli_Json_uint64_by_key(json, tkn, &cc->random_seed, "random_seed"));
+        chk(mli_Json_token_by_key_eprint(json, tkn, "camera", &camtkn));
+        chk(mli_Json_token_by_key_eprint(json, tkn, "image", &imgtkn));
+        chk(mli_Json_token_by_key_eprint(json, tkn, "tracer", &tratkn));
 
         chk(mliRenderConfig_camera_from_json(cc, json, camtkn + 1));
         chk(mliRenderConfig_image_from_json(cc, json, imgtkn + 1));

@@ -11,7 +11,7 @@ int mliMaterials_assign_boundary_layers_from_json(
         struct mliDynMap *boundary_layer_names,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names,
-        const struct mliJson *json)
+        const struct mli_Json *json)
 {
         uint64_t token = 0;
         uint64_t s;
@@ -25,7 +25,7 @@ int mliMaterials_assign_boundary_layers_from_json(
                 "json-object.size.");
 
         for (s = 0; s < materials->num_boundary_layers; s++) {
-                uint64_t token_s_name = mliJson_token_by_index(json, token, s);
+                uint64_t token_s_name = mli_Json_token_by_index(json, token, s);
                 uint64_t token_s = token_s_name + 1;
 
                 chk_msg(json->tokens[token_s_name].type == JSMN_STRING,
@@ -49,7 +49,7 @@ int mliMaterials_assign_boundary_layers_from_json(
 
         return 1;
 chk_error:
-        mliJson_debug_token_fprint(stderr, json, token);
+        mli_Json_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
@@ -57,19 +57,19 @@ int mliSide_from_json(
         struct mliSide *side,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t side_token)
 {
         uint64_t token_medium, token_surface;
 
-        chk_msg(mliJson_token_by_key(
+        chk_msg(mli_Json_token_by_key(
                         json, side_token + 1, "medium", &token_medium),
                 "Expected key 'medium' in side.");
         chk_msg(mliDynMap_get_value_for_string_from_json(
                         medium_names, json, token_medium + 1, &side->medium),
                 "Failed to get medium-idx from map");
 
-        chk_msg(mliJson_token_by_key(
+        chk_msg(mli_Json_token_by_key(
                         json, side_token + 1, "surface", &token_surface),
                 "Expected key 'surface' in side.");
         chk_msg(mliDynMap_get_value_for_string_from_json(
@@ -78,7 +78,7 @@ int mliSide_from_json(
 
         return 1;
 chk_error:
-        mliJson_debug_token_fprint(stderr, json, side_token + 1);
+        mli_Json_debug_token_fprint(stderr, json, side_token + 1);
         return 0;
 }
 
@@ -86,14 +86,14 @@ int mliBoundaryLayer_from_json(
         struct mliBoundaryLayer *boundary_layer,
         const struct mliDynMap *surface_names,
         const struct mliDynMap *medium_names,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token_surface)
 {
         uint64_t token_inner_side, token_outer_side;
-        chk_msg(mliJson_token_by_key(
+        chk_msg(mli_Json_token_by_key(
                         json, token_surface, "inner", &token_inner_side),
                 "Expected key 'inner' in surface.");
-        chk_msg(mliJson_token_by_key(
+        chk_msg(mli_Json_token_by_key(
                         json, token_surface, "outer", &token_outer_side),
                 "Expected key 'outer' in surface.");
 
@@ -113,6 +113,6 @@ int mliBoundaryLayer_from_json(
                 "Failed to parse outer side.");
         return 1;
 chk_error:
-        mliJson_debug_token_fprint(stderr, json, token_surface);
+        mli_Json_debug_token_fprint(stderr, json, token_surface);
         return 0;
 }

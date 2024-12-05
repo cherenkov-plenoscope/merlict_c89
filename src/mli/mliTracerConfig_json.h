@@ -4,10 +4,10 @@
 
 #include <stdint.h>
 #include "mliTracer.h"
-#include "mli_json.h"
+#include "../json/json.h"
 
 int mliTracerConfig_from_json_token(
         struct mliTracerConfig *tc,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t tkn);
 #endif

@@ -9,19 +9,19 @@ int mliSurface_malloc_from_json_str(
         struct mliSurface *surface,
         const char *json_str)
 {
-        struct mliJson json = mliJson_init();
-        chk_msg(mliJson_malloc_from_cstr(&json, json_str),
+        struct mli_Json json = mli_Json_init();
+        chk_msg(mli_Json_malloc_from_cstr(&json, json_str),
                 "Failed to read json_str to malloc surface.");
         chk_msg(mliSurface_malloc_from_json_token(surface, &json, 0),
                 "Failed to malloc surface from json.");
-        mliJson_free(&json);
+        mli_Json_free(&json);
         return 1;
 chk_error:
         return 0;
 }
 
 int mli_material_type_from_json_token(
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token,
         uint32_t *material)
 {
@@ -31,19 +31,19 @@ int mli_material_type_from_json_token(
         chk_msg(name_strlen < sizeof(buff), "Value of 'name' is too long");
         chk_msg(json->tokens[token + 1].type == JSMN_STRING,
                 "Expected 'name' to be of type string.");
-        chk_msg(mliJson_cstr_by_token(json, token + 1, buff, name_strlen + 1),
+        chk_msg(mli_Json_cstr_by_token(json, token + 1, buff, name_strlen + 1),
                 "Failed to extract string from json.");
         chk_msg(mli_material_type_from_string(buff, material),
                 "Failed to parse material type from json-string.");
         return 1;
 chk_error:
-        mliJson_debug_token_fprint(stderr, json, token + 1);
+        mli_Json_debug_token_fprint(stderr, json, token + 1);
         return 0;
 }
 
 int mliSurface_malloc_from_json_token(
         struct mliSurface *surface,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token)
 {
         uint64_t token_specref;
@@ -52,7 +52,7 @@ int mliSurface_malloc_from_json_token(
 
         /* material */
         /* -------- */
-        chk_msg(mliJson_token_by_key(json, token, "material", &token_material),
+        chk_msg(mli_Json_token_by_key(json, token, "material", &token_material),
                 "Expected json-surface-item to contain key 'material'.");
         chk_msg(json->tokens[token_material].type == JSMN_STRING,
                 "Expected surface's material to be of type string.");
@@ -62,7 +62,7 @@ int mliSurface_malloc_from_json_token(
 
         /* specular_reflection */
         /* ------------------- */
-        chk_msg(mliJson_token_by_key(
+        chk_msg(mli_Json_token_by_key(
                         json, token, "specular_reflection", &token_specref),
                 "Expected surface to have key 'specular_reflection'.");
         chk_msg(mliFunc_malloc_from_json_token(
@@ -71,7 +71,7 @@ int mliSurface_malloc_from_json_token(
 
         /* diffuse_reflection */
         /* ------------------ */
-        chk_msg(mliJson_token_by_key(
+        chk_msg(mli_Json_token_by_key(
                         json, token, "diffuse_reflection", &token_diffref),
                 "Expected surface to have key 'diffuse_reflection'.");
         chk_msg(mliFunc_malloc_from_json_token(

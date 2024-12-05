@@ -4,7 +4,7 @@
 #include "../string/string.h"
 #include "../path/path.h"
 #include "../cstr/cstr.h"
-#include "mli_json.h"
+#include "../json/json.h"
 #include "mliTar.h"
 
 struct mliArchive mliArchive_init(void)
@@ -144,14 +144,14 @@ chk_error:
 int mliArchive_get_malloc_json(
         const struct mliArchive *arc,
         const char *filename,
-        struct mliJson *json)
+        struct mli_Json *json)
 {
         struct mli_String *text = NULL;
 
         chk_msg(mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
 
-        chk_msg(mliJson_malloc_from_cstr(json, (char *)text->array),
+        chk_msg(mli_Json_malloc_from_cstr(json, (char *)text->array),
                 "Can not parse requested json.");
 
         return 1;

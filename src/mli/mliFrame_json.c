@@ -7,12 +7,12 @@
 
 int mliFrame_type_from_json_token(
         uint64_t *type,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token)
 {
         uint64_t _t;
-        int has_obj = mliJson_token_by_key(json, token, "obj", &_t);
-        int has_children = mliJson_token_by_key(json, token, "children", &_t);
+        int has_obj = mli_Json_token_by_key(json, token, "obj", &_t);
+        int has_children = mli_Json_token_by_key(json, token, "children", &_t);
 
         if (has_obj && has_children) {
                 chk_bad("Frame must not have both keys 'obj', and 'children'.");
@@ -28,52 +28,52 @@ int mliFrame_type_from_json_token(
 
         return 1;
 chk_error:
-        mliJson_debug_token_fprint(stderr, json, token);
+        mli_Json_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
 int mliFrame_id_from_json_token(
         uint32_t *id,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token)
 {
         uint64_t token_id;
         int64_t _id;
-        chk_msg(mliJson_token_by_key(json, token, "id", &token_id),
+        chk_msg(mli_Json_token_by_key(json, token, "id", &token_id),
                 "Expected Frame to have key 'id'.");
-        chk_msg(mliJson_int64_by_token(json, token_id + 1, &_id),
+        chk_msg(mli_Json_int64_by_token(json, token_id + 1, &_id),
                 "Failed to parse Frame's id.");
         chk_msg(_id >= 0, "Expected Frame's id >= 0.");
         (*id) = _id;
 
         return 1;
 chk_error:
-        mliJson_debug_token_fprint(stderr, json, token);
+        mli_Json_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
 int mliFrame_pos_rot_from_json_token(
         struct mliHomTraComp *frame2mother,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token)
 {
         uint64_t token_pos, token_rot;
         /* pos */
-        chk_msg(mliJson_token_by_key(json, token, "pos", &token_pos),
+        chk_msg(mli_Json_token_by_key(json, token, "pos", &token_pos),
                 "Expected Frame to have key 'pos'.");
         chk_msg(mliVec_from_json_token(
                         &frame2mother->translation, json, token_pos + 1),
                 "Failed to parse Frame's 'pos' from json.");
 
         /* rot */
-        chk_msg(mliJson_token_by_key(json, token, "rot", &token_rot),
+        chk_msg(mli_Json_token_by_key(json, token, "rot", &token_rot),
                 "Expected Frame to have key 'rot'.");
         chk_msg(mliQuaternion_from_json(
                         &frame2mother->rotation, json, token_rot + 1),
                 "Failed to parse Frame's 'rot' from json.");
         return 1;
 chk_error:
-        mliJson_debug_token_fprint(stderr, json, token);
+        mli_Json_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
@@ -82,12 +82,12 @@ int mliFrame_boundary_layers_form_json_token(
         const uint32_t object_idx,
         const struct mliObject *objects,
         const struct mliDynMap *boundary_layer_names,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token)
 {
         uint64_t token_mtl_key, token_mtl;
         uint64_t material_idx;
-        chk_msg(mliJson_token_by_key(json, token, "mtl", &token_mtl_key),
+        chk_msg(mli_Json_token_by_key(json, token, "mtl", &token_mtl_key),
                 "Expected 'mtl' in Frame.");
         token_mtl = token_mtl_key + 1;
         chk_msg(json->tokens[token_mtl].type == JSMN_OBJECT,
@@ -101,7 +101,7 @@ int mliFrame_boundary_layers_form_json_token(
 
                 uint64_t token_material_key = 0u;
                 uint32_t boundary_layer_idx = 0u;
-                chk_msg(mliJson_token_by_key(
+                chk_msg(mli_Json_token_by_key(
                                 json,
                                 token_mtl,
                                 material_key_in_object,
@@ -124,18 +124,18 @@ int mliFrame_boundary_layers_form_json_token(
 
         return 1;
 chk_error:
-        mliJson_debug_token_fprint(stderr, json, token);
+        mli_Json_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
 int mliFrame_object_reference_form_json_token(
         uint32_t *object_reference,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token,
         const struct mliDynMap *object_names)
 {
         uint64_t token_obj_key;
-        chk_msg(mliJson_token_by_key(json, token, "obj", &token_obj_key),
+        chk_msg(mli_Json_token_by_key(json, token, "obj", &token_obj_key),
                 "Expected object to have key 'obj'.");
         chk_msg(mliDynMap_get_value_for_string_from_json(
                         object_names,
@@ -145,13 +145,13 @@ int mliFrame_object_reference_form_json_token(
                 "Failed to get object-reference 'obj' from map");
         return 1;
 chk_error:
-        mliJson_debug_token_fprint(stderr, json, token);
+        mli_Json_debug_token_fprint(stderr, json, token);
         return 0;
 }
 
 int mliFrame_from_json(
         struct mliFrame *mother,
-        const struct mliJson *json,
+        const struct mli_Json *json,
         const uint64_t token_children,
         const struct mliDynMap *object_names,
         const struct mliObject *objects,
@@ -164,7 +164,7 @@ int mliFrame_from_json(
         num_children = json->tokens[token_children].size;
         for (c = 0; c < num_children; c++) {
                 uint64_t token_child =
-                        mliJson_token_by_index(json, token_children, c);
+                        mli_Json_token_by_index(json, token_children, c);
                 struct mliFrame *child = NULL;
                 uint64_t type;
                 uint64_t token_grandchildren;
@@ -185,7 +185,7 @@ int mliFrame_from_json(
 
                 switch (type) {
                 case MLI_FRAME:
-                        chk_msg(mliJson_token_by_key(
+                        chk_msg(mli_Json_token_by_key(
                                         json,
                                         token_child,
                                         "children",
