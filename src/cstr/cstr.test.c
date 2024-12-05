@@ -283,9 +283,9 @@ CASE("assert no unexpected control codes in ascii-text.")
 
 CASE("line info fprint")
 {
-        struct mtl_IO s = mtl_IO_init();
+        struct mli_IO s = mli_IO_init();
         FILE *f;
-        CHECK(mtl_IO_write_from_path(
+        CHECK(mli_IO_write_from_path(
                 &s,
                 "data/"
                 "mli/"
@@ -303,7 +303,7 @@ CASE("line info fprint")
         CHECK(mli_cstr_lines_fprint(f, (char *)s.cstr, 35, 3));
         fclose(f);
 
-        mtl_IO_free(&s);
+        mli_IO_free(&s);
 }
 
 CASE("basename")

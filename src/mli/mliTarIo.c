@@ -5,7 +5,7 @@
 
 int mliTar_read_data_to_io(
         struct mliTar *tar,
-        struct mtl_IO *buff,
+        struct mli_IO *buff,
         const uint64_t size)
 {
         uint64_t i;
@@ -13,7 +13,7 @@ int mliTar_read_data_to_io(
         for (i = 0; i < size; i++) {
                 unsigned char c;
                 chk(mliTar_read_data(tar, (void *)(&c), 1));
-                chk(mtl_IO_write_unsigned_char(buff, c));
+                chk(mli_IO_write_unsigned_char(buff, c));
         }
 
         return 1;
@@ -23,13 +23,13 @@ chk_error:
 
 int mliTar_write_data_from_io(
         struct mliTar *tar,
-        struct mtl_IO *buff,
+        struct mli_IO *buff,
         const uint64_t size)
 {
         uint64_t i;
         chk_msg(tar->stream, "tar is not open.");
         for (i = 0; i < size; i++) {
-                int rc = mtl_IO_read_char(buff);
+                int rc = mli_IO_read_char(buff);
                 unsigned char c;
                 chk(rc != EOF);
                 c = (char)(rc);
