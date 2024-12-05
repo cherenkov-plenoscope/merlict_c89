@@ -222,7 +222,7 @@ int mli_viewer_run_interactive_viewer(
         cursor.num_rows = config.preview_num_rows;
         goto show_image;
 
-        while ((key = mli_viewer_get_key()) != mli_viewer_ESCAPE_KEY) {
+        while ((key = mli_viewer_get_key()) != MLI_VIEWER_ESCAPE_KEY) {
                 update_image = 1;
                 print_help = 0;
                 print_scenery_info = 0;
@@ -248,7 +248,7 @@ int mli_viewer_run_interactive_viewer(
                         case 'h':
                                 print_help = 1;
                                 break;
-                        case mli_viewer_SPACE_KEY:
+                        case MLI_VIEWER_SPACE_KEY:
                                 sprintf(path,
                                         "%s_%06lu.ppm",
                                         timestamp,
@@ -323,7 +323,7 @@ int mli_viewer_run_interactive_viewer(
                                 cursor.active = !cursor.active;
                                 update_image = 0;
                                 break;
-                        case mli_viewer_SPACE_KEY:
+                        case MLI_VIEWER_SPACE_KEY:
                                 printf("Go into cursor-mode first.\n");
                                 break;
                         case 'g':
