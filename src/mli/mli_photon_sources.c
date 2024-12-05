@@ -2,7 +2,7 @@
 #include "mli_photon_sources.h"
 #include "../chk/chk.h"
 #include "mli_random.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 int mli_photon_source_parallel_towards_z_from_xy_disc(
         struct mliDynPhoton *out_photons,
@@ -35,7 +35,7 @@ int mli_photon_source_point_like_opening_cone_towards_z(
 {
         uint64_t i;
         struct mtl_prng_UniformRange azimuth =
-                mtl_prng_UniformRange_set(0.0, 2.0 * MTL_MATH_PI);
+                mtl_prng_UniformRange_set(0.0, 2.0 * MLI_MATH_PI);
         struct mtl_prng_ZenithRange zenith =
                 mtl_prng_ZenithRange_set(0.0, opening_angle);
         for (i = 0; i < num_photons; i++) {

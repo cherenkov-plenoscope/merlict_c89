@@ -7,7 +7,7 @@ CASE("b/a=1., c/a=1., no real solutions")
         const double c_over_a = 1.;
         double plus_solution;
         double minus_solution;
-        int valid_solutions = mtl_math_quadratic_equation(
+        int valid_solutions = mli_math_quadratic_equation(
                 b_over_a, c_over_a, &minus_solution, &plus_solution);
         CHECK(!valid_solutions);
 }
@@ -19,7 +19,7 @@ CASE("b/a=0., c/a=0., solutions both 0.")
         const double c_over_a = 0.;
         double plus_solution;
         double minus_solution;
-        CHECK(mtl_math_quadratic_equation(
+        CHECK(mli_math_quadratic_equation(
                 b_over_a, c_over_a, &minus_solution, &plus_solution));
         CHECK(minus_solution == 0.);
         CHECK(plus_solution == 0.);
@@ -32,7 +32,7 @@ CASE("b/a=0., c/a=-1.")
         const double c_over_a = -1.;
         double plus_solution;
         double minus_solution;
-        CHECK(mtl_math_quadratic_equation(
+        CHECK(mli_math_quadratic_equation(
                 b_over_a, c_over_a, &minus_solution, &plus_solution));
         CHECK(minus_solution == -1.);
         CHECK(plus_solution == +1.);
@@ -48,7 +48,7 @@ CASE("looping combinations")
                                 if (a != 0.0) {
                                         double xp;
                                         double xm;
-                                        if (mtl_math_quadratic_equation(
+                                        if (mli_math_quadratic_equation(
                                                     b / a, c / a, &xm, &xp)) {
                                                 CHECK_MARGIN(
                                                         a * xp * xp + b * xp +

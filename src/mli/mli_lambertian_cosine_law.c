@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_lambertian_cosine_law.h"
 #include <math.h>
-#include "../mtl/math.h"
+#include "../math/math.h"
 #include "mliMat.h"
 #include "mliHomTra.h"
 
@@ -9,7 +9,7 @@ struct mliVec mli_draw_lambertian_direction_wrt_z(struct mtl_Prng *prng)
 {
         double azimuth;
         double sin_theta, cos_theta;
-        azimuth = MTL_MATH_2PI * mtl_Prng_uniform(prng);
+        azimuth = MLI_MATH_2PI * mtl_Prng_uniform(prng);
         sin_theta = mtl_Prng_uniform(prng);
         cos_theta = sqrt(1.0 - sin_theta * sin_theta);
         return mliVec_init(

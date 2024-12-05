@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <time.h>
 #include "../chk/chk.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 #include "../mli/mliIntersectionSurfaceNormal.h"
 #include "../mli/mliImage.h"
 #include "../mli/mliImage_print.h"
@@ -73,12 +73,12 @@ void mli_viewer_print_info_line(
                view.position.x,
                view.position.y,
                view.position.z,
-               mtl_math_rad2deg(view.rotation.x),
-               mtl_math_rad2deg(view.rotation.y),
-               mtl_math_rad2deg(view.rotation.z),
-               mtl_math_rad2deg(view.field_of_view));
+               mli_math_rad2deg(view.rotation.x),
+               mli_math_rad2deg(view.rotation.y),
+               mli_math_rad2deg(view.rotation.z),
+               mli_math_rad2deg(view.field_of_view));
         printf("Sun: lat % 3.0fdeg, %02d:%02dh, alt % 3.1fkm",
-               mtl_math_rad2deg(tracer_config.atmosphere.sunLatitude),
+               mli_math_rad2deg(tracer_config.atmosphere.sunLatitude),
                (int)(tracer_config.atmosphere.sunHourAngle),
                (int)(tracer_config.atmosphere.sunHourAngle * 60) % 60,
                tracer_config.atmosphere.altitude * 1e-3);
@@ -352,12 +352,12 @@ int mli_viewer_run_interactive_viewer(
                         case '6':
                                 mliAtmosphere_decrease_latitude(
                                         &tracer_config.atmosphere,
-                                        mtl_math_deg2rad(2.0));
+                                        mli_math_deg2rad(2.0));
                                 break;
                         case '7':
                                 mliAtmosphere_increase_latitude(
                                         &tracer_config.atmosphere,
-                                        mtl_math_deg2rad(2.0));
+                                        mli_math_deg2rad(2.0));
                                 break;
                         case '8':
                                 mliAtmosphere_decrease_hours(

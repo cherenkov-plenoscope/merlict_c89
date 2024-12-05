@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MTL_MATH_PIN_HOLE_CAMERA_H_
-#define MTL_MATH_PIN_HOLE_CAMERA_H_
+#ifndef MLI_MATH_PIN_HOLE_CAMERA_H_
+#define MLI_MATH_PIN_HOLE_CAMERA_H_
 
 #include <stdint.h>
 #include "mliTracer.h"

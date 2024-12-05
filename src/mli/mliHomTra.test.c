@@ -32,7 +32,7 @@ CASE("sequence, one translation, one rotation")
 
         b.translation = mliVec_init(0., 0., 0.);
         b.rotation =
-                mliQuaternion_set_tait_bryan(0., 0., mtl_math_deg2rad(90.));
+                mliQuaternion_set_tait_bryan(0., 0., mli_math_deg2rad(90.));
 
         a_b = mliHomTraComp_sequence(a, b);
         a_b_ = mliHomTra_from_compact(a_b);
@@ -63,11 +63,11 @@ CASE("sequence, cancelation")
 
         a.translation = mliVec_init(0., 0., 1.);
         a.rotation =
-                mliQuaternion_set_tait_bryan(0., 0., -mtl_math_deg2rad(90.));
+                mliQuaternion_set_tait_bryan(0., 0., -mli_math_deg2rad(90.));
 
         a_inverse.translation = mliVec_init(0., 0., -1.);
         a_inverse.rotation =
-                mliQuaternion_set_tait_bryan(0., 0., mtl_math_deg2rad(90.));
+                mliQuaternion_set_tait_bryan(0., 0., mli_math_deg2rad(90.));
 
         a_a_inverse = mliHomTraComp_sequence(a, a_inverse);
         a_a_inverse_ = mliHomTra_from_compact(a_a_inverse);
@@ -120,7 +120,7 @@ CASE("only rotation")
 
         t_AB.translation = mliVec_init(0., 0., 0.);
         t_AB.rotation =
-                mliQuaternion_set_tait_bryan(0., 0., mtl_math_deg2rad(90.0));
+                mliQuaternion_set_tait_bryan(0., 0., mli_math_deg2rad(90.0));
         t_AB_ = mliHomTra_from_compact(t_AB);
 
         pA = mliVec_init(0.0, 0.0, 1.0);
@@ -146,8 +146,8 @@ CASE("complex sequence")
         struct mtl_prng_UniformRange angle_range;
         trans_range.start = -10.0;
         trans_range.range = 20.0;
-        angle_range.start = -MTL_MATH_PI;
-        angle_range.range = 2.0 * MTL_MATH_PI;
+        angle_range.start = -MLI_MATH_PI;
+        angle_range.range = 2.0 * MLI_MATH_PI;
 
         for (i = 0; i < num_combinations; i++) {
                 struct mliHomTraComp _AB, _BC, _AC;
@@ -208,7 +208,7 @@ CASE("mliMat_init_tait_bryan")
         CHECK_MARGIN(rotation.r21, 0., 1e-9);
         CHECK_MARGIN(rotation.r22, 1., 1e-9);
 
-        rotation = mliMat_init_tait_bryan(0., 0., mtl_math_deg2rad(90));
+        rotation = mliMat_init_tait_bryan(0., 0., mli_math_deg2rad(90));
         CHECK_MARGIN(rotation.r00, 0., 1e-9);
         CHECK_MARGIN(rotation.r01, 1., 1e-9);
         CHECK_MARGIN(rotation.r02, 0., 1e-9);
@@ -245,7 +245,7 @@ CASE("mliMat_init_axis_angle")
         CHECK_MARGIN(rotation.r21, 0., 1e-9);
         CHECK_MARGIN(rotation.r22, 1., 1e-9);
 
-        rotation = mliMat_init_axis_angle(axis, mtl_math_deg2rad(90.));
+        rotation = mliMat_init_axis_angle(axis, mli_math_deg2rad(90.));
         CHECK_MARGIN(rotation.r00, 0., 1e-9);
         CHECK_MARGIN(rotation.r01, 1., 1e-9);
         CHECK_MARGIN(rotation.r02, 0., 1e-9);
@@ -264,7 +264,7 @@ CASE("mliMat_init_tait_bryan, 45deg")
         struct mliMat rotation;
         struct mliVec a = {0., 0., 1.};
         struct mliVec a_rot;
-        rotation = mliMat_init_tait_bryan(0., 0., mtl_math_deg2rad(45.));
+        rotation = mliMat_init_tait_bryan(0., 0., mli_math_deg2rad(45.));
         a_rot = mli_transform_orientation(&rotation, a);
         CHECK_MARGIN(a_rot.x, 0., 1e-9);
         CHECK_MARGIN(a_rot.y, 0., 1e-9);
@@ -276,7 +276,7 @@ CASE("mli_transform_orientation_inverse")
         struct mliMat rotation;
         struct mliVec x = {1., 0., 0.};
         struct mliVec x_rot;
-        rotation = mliMat_init_tait_bryan(0., 0., mtl_math_deg2rad(45.));
+        rotation = mliMat_init_tait_bryan(0., 0., mli_math_deg2rad(45.));
         x_rot = mli_transform_orientation(&rotation, x);
         CHECK_MARGIN(x_rot.x, 1. / sqrt(2.), 1e-6);
         CHECK_MARGIN(x_rot.y, -1. / sqrt(2.), 1e-6);
@@ -334,7 +334,7 @@ CASE("transform_position_forth_and_back_full_set")
         struct mliVec ux_original, ux_forth, ux_back;
 
         homtra.translation = mliVec_init(0.0, 0.0, 133.7);
-        homtra.rotation = mliQuaternion_set_tait_bryan(0.0, MTL_MATH_PI, 0.0);
+        homtra.rotation = mliQuaternion_set_tait_bryan(0.0, MLI_MATH_PI, 0.0);
         homtra_ = mliHomTra_from_compact(homtra);
 
         ux_original = mliVec_init(1.0, 0.0, 0.0);
@@ -355,7 +355,7 @@ CASE("trans_orientation_forth_and_back_only_rot_component_set")
         struct mliVec ux_original, ux_forth, ux_back;
 
         homtra.translation = mliVec_init(0.0, 0.0, 0.0);
-        homtra.rotation = mliQuaternion_set_tait_bryan(0.0, MTL_MATH_PI, 0.0);
+        homtra.rotation = mliQuaternion_set_tait_bryan(0.0, MLI_MATH_PI, 0.0);
         homtra_ = mliHomTra_from_compact(homtra);
 
         ux_original = mliVec_init(1.0, 0.0, 0.0);

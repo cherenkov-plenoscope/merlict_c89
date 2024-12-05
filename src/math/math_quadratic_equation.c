@@ -2,7 +2,7 @@
 #include "math_quadratic_equation.h"
 #include <math.h>
 
-int mtl_math_quadratic_equation(
+int mli_math_quadratic_equation(
         const double p,
         const double q,
         double *minus_solution,

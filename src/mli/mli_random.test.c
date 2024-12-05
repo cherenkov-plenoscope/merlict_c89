@@ -6,9 +6,9 @@ CASE("full_sphere")
         uint64_t i = 0;
         struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
         const struct mtl_prng_UniformRange azimuth =
-                mtl_prng_UniformRange_set(0.0, 2.0 * MTL_MATH_PI);
+                mtl_prng_UniformRange_set(0.0, 2.0 * MLI_MATH_PI);
         const struct mtl_prng_ZenithRange zenith =
-                mtl_prng_ZenithRange_set(0.0, MTL_MATH_PI);
+                mtl_prng_ZenithRange_set(0.0, MLI_MATH_PI);
         struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -1.0, 1e-6);
@@ -31,9 +31,9 @@ CASE("octo_sphere")
         uint64_t i = 0;
         struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
         const struct mtl_prng_UniformRange azimuth =
-                mtl_prng_UniformRange_set(0.0, MTL_MATH_PI / 2.0);
+                mtl_prng_UniformRange_set(0.0, MLI_MATH_PI / 2.0);
         const struct mtl_prng_ZenithRange zenith =
-                mtl_prng_ZenithRange_set(0., MTL_MATH_PI / 2.0);
+                mtl_prng_ZenithRange_set(0., MLI_MATH_PI / 2.0);
         struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
@@ -55,9 +55,9 @@ CASE("octo_sphere_minus_z")
         uint64_t i = 0;
         struct mtl_Prng prng = mtl_Prng_init_MT19937(0u);
         const struct mtl_prng_UniformRange azimuth =
-                mtl_prng_UniformRange_set(0.0, MTL_MATH_PI / 2.0);
+                mtl_prng_UniformRange_set(0.0, MLI_MATH_PI / 2.0);
         const struct mtl_prng_ZenithRange zenith =
-                mtl_prng_ZenithRange_set(MTL_MATH_PI / 2.0, MTL_MATH_PI);
+                mtl_prng_ZenithRange_set(MLI_MATH_PI / 2.0, MLI_MATH_PI);
         struct mliVec mean_position = mliVec_init(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 0.5, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
@@ -107,8 +107,8 @@ CASE("position_on_disc")
         for (r = evaluation_disc_radius;
              r < disc_radius - evaluation_disc_radius;
              r = r + evaluation_disc_radius) {
-                for (phi = 0; phi < 2.0 * MTL_MATH_PI;
-                     phi = phi + MTL_MATH_PI / 3.0) {
+                for (phi = 0; phi < 2.0 * MLI_MATH_PI;
+                     phi = phi + MLI_MATH_PI / 3.0) {
                         double counts_in_evaluation_bin = 0.0;
                         struct mliVec eval_disc_pos =
                                 mliVec_init(r * cos(phi), r * sin(phi), 0.0);
@@ -126,10 +126,10 @@ CASE("position_on_disc")
         }
 
         /* Expect num. counts in evaluation-bins to be similar */
-        mean_count = mtl_math_mean(
+        mean_count = mli_math_mean(
                 counts_in_evaluation_bins.array,
                 counts_in_evaluation_bins.size);
-        std_count = mtl_math_std(
+        std_count = mli_math_std(
                 counts_in_evaluation_bins.array,
                 counts_in_evaluation_bins.size,
                 mean_count);

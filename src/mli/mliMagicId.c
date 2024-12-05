@@ -2,7 +2,7 @@
 #include "mliMagicId.h"
 #include <assert.h>
 #include "mli_version.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 #include "../chk/chk.h"
 
 struct mliMagicId mliMagicId_init(void)
@@ -22,7 +22,7 @@ int mliMagicId_set(struct mliMagicId *magic, const char *word)
         chk_msg(strlen(word) < sizeof(magic->word),
                 "Expected magic word to be shorter.");
 
-        len = MTL_MATH_MIN2(strlen(word), sizeof(magic->word));
+        len = MLI_MATH_MIN2(strlen(word), sizeof(magic->word));
 
         for (i = 0; i < len; i++) {
                 magic->word[i] = word[i];
@@ -42,7 +42,7 @@ int mliMagicId_has_word(const struct mliMagicId *magic, const char *word)
         chk_msg(strlen(word) < sizeof(magic->word),
                 "Expected magic word to be shorter.");
 
-        len = MTL_MATH_MIN2(strlen(word), sizeof(magic->word));
+        len = MLI_MATH_MIN2(strlen(word), sizeof(magic->word));
 
         for (i = 0; i < len; i++) {
                 if (magic->word[i] != word[i]) {

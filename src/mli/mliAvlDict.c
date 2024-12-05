@@ -1,6 +1,6 @@
 #include "mliAvlDict.h"
 #include "../chk/chk.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 struct mliAvlDict mliAvlDict_init(void)
 {

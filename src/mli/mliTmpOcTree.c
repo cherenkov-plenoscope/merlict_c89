@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliTmpOcTree.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 #include "mliObject_AABB.h"
 #include "mliDynUint32.h"
 #include "../chk/chk.h"
@@ -116,7 +116,7 @@ int mliTmpNode_add_children(
                 chk_malloc(node->children[c], struct mliTmpNode, 1u);
                 (*node->children[c]) = mliTmpNode_init();
                 chk(mliTmpNode_malloc(node->children[c], overlap[c].size));
-                MTL_MATH_NCPY(
+                MLI_MATH_NCPY(
                         overlap[c].array,
                         node->children[c]->objects,
                         overlap[c].size);

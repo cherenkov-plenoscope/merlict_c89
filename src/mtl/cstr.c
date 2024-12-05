@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "../chk/chk.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 int mtl_cstr_ends_with(const char *str, const char *sufix)
 {
@@ -172,7 +172,7 @@ int mtl_cstr_lines_fprint(
 {
         int64_t _line_number = (int64_t)line_number;
         int64_t _line_radius = (int64_t)line_radius;
-        int64_t line_start = MTL_MATH_MAX2(_line_number - _line_radius, 1);
+        int64_t line_start = MLI_MATH_MAX2(_line_number - _line_radius, 1);
         int64_t line_stop = line_number + line_radius;
         int64_t line = 1;
         int64_t i = 0;

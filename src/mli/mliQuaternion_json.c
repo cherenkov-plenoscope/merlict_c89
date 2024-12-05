@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliQuaternion_json.h"
 #include "mliVec_json.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 #include "../chk/chk.h"
 
 int mliQuaternion_tait_bryan_from_json(
@@ -16,9 +16,9 @@ int mliQuaternion_tait_bryan_from_json(
         chk_msg(mliVec_from_json_token(&xyz_deg, json, token_xyz + 1),
                 "Failed to parse tait_bryan's 'xyz_deg' from json.");
         *quat = mliQuaternion_set_tait_bryan(
-                mtl_math_deg2rad(xyz_deg.x),
-                mtl_math_deg2rad(xyz_deg.y),
-                mtl_math_deg2rad(xyz_deg.z));
+                mli_math_deg2rad(xyz_deg.x),
+                mli_math_deg2rad(xyz_deg.y),
+                mli_math_deg2rad(xyz_deg.z));
         return 1;
 chk_error:
         return 0;
@@ -41,7 +41,7 @@ int mliQuaternion_axis_angle_from_json(
         chk_msg(mliJson_double_by_token(json, token_angle + 1, &angle_deg),
                 "Failed to parse axis_angle's 'angle_deg' from json.");
         *quat = mliQuaternion_set_rotaxis_and_angle(
-                axis, mtl_math_deg2rad(angle_deg));
+                axis, mli_math_deg2rad(angle_deg));
         return 1;
 chk_error:
         return 0;

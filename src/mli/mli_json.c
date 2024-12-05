@@ -4,7 +4,7 @@
 #include "../mtl/cstr.h"
 #include "../mtl/cstr_numbers.h"
 #include "mli_json_jsmn.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 #include "../chk/chk.h"
 
 struct mliJson mliJson_init(void)
@@ -29,7 +29,7 @@ int mliJson_malloc_tokens__(struct mliJson *json)
         chk_msg(&json->raw.array != NULL, "Expected raw cstr to be malloced.");
         json->num_tokens = json->raw.size / 2;
         chk_malloc(json->tokens, struct jsmntok_t, json->num_tokens);
-        MTL_MATH_ARRAY_SET(json->tokens, default_token, json->num_tokens);
+        MLI_MATH_ARRAY_SET(json->tokens, default_token, json->num_tokens);
         return 1;
 chk_error:
         return 0;

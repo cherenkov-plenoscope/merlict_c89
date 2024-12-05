@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliRay.h"
-#include "../mtl/math_quadratic_equation.h"
+#include "../math/math_quadratic_equation.h"
 
 struct mliRay mliRay_set(
         const struct mliVec support,
@@ -36,5 +36,5 @@ int mliRay_sphere_intersection(
         const double p = 2.0 * (sup_times_dir / dir_times_dir);
         const double q = sup_times_sup / dir_times_dir - radius_square;
 
-        return mtl_math_quadratic_equation(p, q, minus_solution, plus_solution);
+        return mli_math_quadratic_equation(p, q, minus_solution, plus_solution);
 }

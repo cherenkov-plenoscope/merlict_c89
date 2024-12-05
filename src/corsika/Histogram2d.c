@@ -3,7 +3,7 @@
 #include "Histogram2d.h"
 #include <string.h>
 #include "../chk/chk.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 MTL_VECTOR_IMPLEMENTATION(
         mliDynCorsikaHistogram2dBin,
@@ -52,12 +52,12 @@ int mli_corsika_Histogram2d_assign(
 
         has = mliAvlDict_get(&hist->dict, key.i8, &ival);
         if (has) {
-                double dval = mtl_math_interpret_int64_as_double(ival);
+                double dval = mli_math_interpret_int64_as_double(ival);
                 dval += weight;
-                ival = mtl_math_interpret_double_as_int64(dval);
+                ival = mli_math_interpret_double_as_int64(dval);
 
         } else {
-                ival = mtl_math_interpret_double_as_int64(weight);
+                ival = mli_math_interpret_double_as_int64(weight);
         }
         return mliAvlDict_set(&hist->dict, key.i8, ival);
 }
@@ -80,7 +80,7 @@ int mli_corsika_Histogram2d_flatten__(
 
                 bin.x = key.i4i4.x;
                 bin.y = key.i4i4.y;
-                bin.value = mtl_math_interpret_int64_as_double(node->value);
+                bin.value = mli_math_interpret_int64_as_double(node->value);
 
                 chk_msg(mliDynCorsikaHistogram2dBin_push_back(f, bin),
                         "Failed to push back bin-node.");

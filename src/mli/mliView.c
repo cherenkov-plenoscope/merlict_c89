@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mliMat.h"
 #include "mliHomTra.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 struct mliVec mliView_optical_axis(const struct mliView cam)
 {
@@ -59,7 +59,7 @@ struct mliView mliView_look_right(const struct mliView camin, const double rate)
 {
         struct mliView camout = camin;
         const double diff = camin.field_of_view * rate;
-        camout.rotation.z = fmod(camout.rotation.z - diff, (2. * MTL_MATH_PI));
+        camout.rotation.z = fmod(camout.rotation.z - diff, (2. * MLI_MATH_PI));
         return camout;
 }
 
@@ -70,9 +70,9 @@ struct mliView mliView_look_down_when_possible(
         struct mliView camout = camin;
         const double diff = camin.field_of_view * rate;
         const double next_rotation_x = camout.rotation.x + diff;
-        const int fals_forward_over = next_rotation_x > MTL_MATH_PI;
+        const int fals_forward_over = next_rotation_x > MLI_MATH_PI;
         if (fals_forward_over) {
-                camout.rotation.x = MTL_MATH_PI;
+                camout.rotation.x = MLI_MATH_PI;
         } else {
                 camout.rotation.x = next_rotation_x;
         }
@@ -84,8 +84,8 @@ struct mliView mliView_increase_fov(
         const double rate)
 {
         struct mliView camout = camin;
-        if (camout.field_of_view * rate > mtl_math_deg2rad(170)) {
-                camout.field_of_view = mtl_math_deg2rad(170);
+        if (camout.field_of_view * rate > mli_math_deg2rad(170)) {
+                camout.field_of_view = mli_math_deg2rad(170);
         } else {
                 camout.field_of_view *= rate;
         }
@@ -97,8 +97,8 @@ struct mliView mliView_decrease_fov(
         const double rate)
 {
         struct mliView camout = camin;
-        if (camout.field_of_view / rate < mtl_math_deg2rad(.1)) {
-                camout.field_of_view = mtl_math_deg2rad(.1);
+        if (camout.field_of_view / rate < mli_math_deg2rad(.1)) {
+                camout.field_of_view = mli_math_deg2rad(.1);
         } else {
                 camout.field_of_view /= rate;
         }

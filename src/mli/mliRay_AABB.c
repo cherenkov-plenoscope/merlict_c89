@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliRay_AABB.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 void mliRay_aabb_intersections(
         const struct mliRay ray,
@@ -24,16 +24,16 @@ void mliRay_aabb_intersections(
         upper.y = (aabb.upper.y - ray.support.y) * frac.y;
         upper.z = (aabb.upper.z - ray.support.z) * frac.z;
 
-        t1.x = MTL_MATH_MIN2(lower.x, upper.x);
-        t1.y = MTL_MATH_MIN2(lower.y, upper.y);
-        t1.z = MTL_MATH_MIN2(lower.z, upper.z);
+        t1.x = MLI_MATH_MIN2(lower.x, upper.x);
+        t1.y = MLI_MATH_MIN2(lower.y, upper.y);
+        t1.z = MLI_MATH_MIN2(lower.z, upper.z);
 
-        t2.x = MTL_MATH_MAX2(lower.x, upper.x);
-        t2.y = MTL_MATH_MAX2(lower.y, upper.y);
-        t2.z = MTL_MATH_MAX2(lower.z, upper.z);
+        t2.x = MLI_MATH_MAX2(lower.x, upper.x);
+        t2.y = MLI_MATH_MAX2(lower.y, upper.y);
+        t2.z = MLI_MATH_MAX2(lower.z, upper.z);
 
-        (*t_near) = MTL_MATH_MAX3(t1.x, t1.y, t1.z);
-        (*t_far) = MTL_MATH_MIN3(t2.x, t2.y, t2.z);
+        (*t_near) = MLI_MATH_MAX3(t1.x, t1.y, t1.z);
+        (*t_far) = MLI_MATH_MIN3(t2.x, t2.y, t2.z);
 }
 
 int mliRay_aabb_intersections_is_valid_given_near_and_far(

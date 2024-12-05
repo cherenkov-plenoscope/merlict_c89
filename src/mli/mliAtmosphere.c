@@ -8,7 +8,7 @@
 #include "mliAtmosphere.h"
 #include <assert.h>
 #include <float.h>
-#include "../mtl/math.h"
+#include "../math/math.h"
 #include "mliHomTra.h"
 
 struct mliAtmosphere mliAtmosphere_init(void)
@@ -51,8 +51,8 @@ void mliAtmosphere_set_sun_direction(
 
         {
                 const double hours_rad =
-                        MTL_MATH_PI +
-                        2.0 * MTL_MATH_PI * atmosphere->sunHourAngle / 24.0;
+                        MLI_MATH_PI +
+                        2.0 * MLI_MATH_PI * atmosphere->sunHourAngle / 24.0;
 
                 const struct mliHomTraComp tc_latitude = mliHomTraComp_set(
                         mliVec_init(0.0, 0.0, 0.0),
@@ -90,10 +90,10 @@ struct mliColor mliAtmosphere_compute_depth(
          * direction and the ray direction
          */
         const double mu = mliVec_dot(dir, atmosphere->sunDirection);
-        const double phaseR = 3.f / (16.f * MTL_MATH_PI) * (1.0 + mu * mu);
+        const double phaseR = 3.f / (16.f * MLI_MATH_PI) * (1.0 + mu * mu);
         const double g = 0.76f;
         const double phaseM =
-                3.f / (8.f * MTL_MATH_PI) *
+                3.f / (8.f * MLI_MATH_PI) *
                 (((1.f - g * g) * (1.f + mu * mu)) /
                  ((2.f + g * g) * pow(1.f + g * g - 2.f * g * mu, 1.5f)));
 
@@ -219,7 +219,7 @@ struct mliColor mliAtmosphere_hit_earth_body(
                 orig, dir, atmosphere->earthRadius, &t_minus, &t_plus);
 
         if (intersects_earth_body && t_minus > 0) {
-                t_max = MTL_MATH_MAX2(0.0, t_minus);
+                t_max = MLI_MATH_MAX2(0.0, t_minus);
         }
 
         return mliAtmosphere_hit_outer_atmosphere(
@@ -241,7 +241,7 @@ void mliAtmosphere_increase_latitude(
         struct mliAtmosphere *atmosphere,
         const double increment)
 {
-        if (atmosphere->sunLatitude + increment <= 0.5 * MTL_MATH_PI) {
+        if (atmosphere->sunLatitude + increment <= 0.5 * MLI_MATH_PI) {
                 atmosphere->sunLatitude += increment;
                 mliAtmosphere_set_sun_direction(
                         atmosphere,
@@ -254,7 +254,7 @@ void mliAtmosphere_decrease_latitude(
         struct mliAtmosphere *atmosphere,
         const double increment)
 {
-        if (atmosphere->sunLatitude - increment >= -0.5 * MTL_MATH_PI) {
+        if (atmosphere->sunLatitude - increment >= -0.5 * MLI_MATH_PI) {
                 atmosphere->sunLatitude -= increment;
                 mliAtmosphere_set_sun_direction(
                         atmosphere,

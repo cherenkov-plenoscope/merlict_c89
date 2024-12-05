@@ -5,7 +5,7 @@
 #include "../mtl/cstr.h"
 #include "../mtl/cstr_numbers.h"
 #include "../chk/chk.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
 {
@@ -72,8 +72,8 @@ int mliFunc_malloc_from_csv(struct mliFunc *func, const char *str)
         chk_msg(mliFunc_malloc(func, x.size),
                 "Failed to malloc mliFunc from file.");
 
-        MTL_MATH_NCPY(x.array, func->x, x.size);
-        MTL_MATH_NCPY(y.array, func->y, y.size);
+        MLI_MATH_NCPY(x.array, func->x, x.size);
+        MLI_MATH_NCPY(y.array, func->y, y.size);
 
         mliDynDouble_free(&x);
         mliDynDouble_free(&y);

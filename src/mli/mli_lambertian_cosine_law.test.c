@@ -14,16 +14,16 @@ CASE("lambertian cosine law, populate histogram, check cosine law")
         double hist_bins_norm[25];
         uint64_t hist_overflow_bin = 0u;
         uint64_t hist_underflow_bin = 0u;
-        MTL_MATH_ARRAY_SET(hist_bins, 0, hist_num_bins);
-        mtl_math_linspace(
-                0., MTL_MATH_PI / 2.0, hist_bin_edges, hist_num_bin_edges);
+        MLI_MATH_ARRAY_SET(hist_bins, 0, hist_num_bins);
+        mli_math_linspace(
+                0., MLI_MATH_PI / 2.0, hist_bin_edges, hist_num_bin_edges);
 
         for (n = 0; n < NUM_TRAILS; n++) {
                 double theta;
                 struct mliVec lambertian_reflex;
                 lambertian_reflex = mli_draw_lambertian_direction_wrt_z(&prng);
                 theta = mliVec_angle_between(unit_z, lambertian_reflex);
-                mtl_math_histogram(
+                mli_math_histogram(
                         hist_bin_edges,
                         hist_num_bin_edges,
                         &hist_underflow_bin,
@@ -64,9 +64,9 @@ CASE("lambertian cosine law, relative to surface normal")
         uint64_t hist_bins[10];
         uint64_t hist_overflow_bin = 0u;
         uint64_t hist_underflow_bin = 0u;
-        MTL_MATH_ARRAY_SET(hist_bins, 0, hist_num_bins);
-        mtl_math_linspace(
-                0., MTL_MATH_PI / 2.0, hist_bin_edges, hist_num_bin_edges);
+        MLI_MATH_ARRAY_SET(hist_bins, 0, hist_num_bins);
+        mli_math_linspace(
+                0., MLI_MATH_PI / 2.0, hist_bin_edges, hist_num_bin_edges);
 
         for (n = 0; n < NUM_NORMALS; n++) {
                 surface_normal = mliVec_init(
@@ -75,14 +75,14 @@ CASE("lambertian cosine law, relative to surface normal")
                         mtl_Prng_uniform(&prng) - .5);
                 surface_normal = mliVec_normalized(surface_normal);
 
-                MTL_MATH_ARRAY_SET(hist_bins, 0, hist_num_bins);
+                MLI_MATH_ARRAY_SET(hist_bins, 0, hist_num_bins);
                 for (m = 0; m < NUM_TRAILS; m++) {
                         struct mliVec lambertian_reflex =
                                 mli_draw_lambertian_direction_wrt_surface_normal(
                                         &prng, surface_normal);
                         theta = mliVec_angle_between(
                                 surface_normal, lambertian_reflex);
-                        mtl_math_histogram(
+                        mli_math_histogram(
                                 hist_bin_edges,
                                 hist_num_bin_edges,
                                 &hist_underflow_bin,

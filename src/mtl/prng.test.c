@@ -24,10 +24,10 @@ CASE("uniform population of histogram")
         uint64_t overflow_bin, underflow_bin;
         overflow_bin = 0u;
         underflow_bin = 0u;
-        MTL_MATH_ARRAY_SET(bins, 0u, num_bins);
-        mtl_math_linspace(0., 1., bin_edges, num_bin_edges);
+        MLI_MATH_ARRAY_SET(bins, 0u, num_bins);
+        mli_math_linspace(0., 1., bin_edges, num_bin_edges);
         for (i = 0; i < 100000u; i++) {
-                mtl_math_histogram(
+                mli_math_histogram(
                         bin_edges,
                         num_bin_edges,
                         &underflow_bin,
@@ -58,7 +58,7 @@ CASE("throwing Pi")
                 }
         }
         pi_estimate = 4 * (double)num_in_circle / (double)num_throws;
-        CHECK_MARGIN(pi_estimate, MTL_MATH_PI, 1e-3);
+        CHECK_MARGIN(pi_estimate, MLI_MATH_PI, 1e-3);
 }
 
 CASE("normal, Irwin Hall approximation")
@@ -79,8 +79,8 @@ CASE("normal, Irwin Hall approximation")
                         throws[i] = mtl_Prng_normal_Irwin_Hall_approximation(
                                 &prng, target_mean[s], taregt_std[s]);
                 }
-                mean = mtl_math_mean(throws, num_throws);
-                std = mtl_math_std(throws, num_throws, mean);
+                mean = mli_math_mean(throws, num_throws);
+                std = mli_math_std(throws, num_throws, mean);
 
                 CHECK_MARGIN(
                         mean,
@@ -103,8 +103,8 @@ CASE("uniform_0_to_1_stddev")
         for (i = 0; i < num_samples; i++) {
                 mtl_VectorDoubles_push_back(&samples, mtl_Prng_uniform(&prng));
         }
-        mean = mtl_math_mean(samples.array, samples.size);
-        std = mtl_math_std(samples.array, samples.size, mean);
+        mean = mli_math_mean(samples.array, samples.size);
+        std = mli_math_std(samples.array, samples.size, mean);
 
         CHECK_MARGIN(1.0 / sqrt(12.0), std, 1e-3);
         mtl_VectorDoubles_free(&samples);

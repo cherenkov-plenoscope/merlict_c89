@@ -3,7 +3,7 @@
 #include <math.h>
 #include <assert.h>
 #include "mliPixelWalk.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 #include "mliHomTra.h"
 
 struct mliPinHoleCamera mliPinHoleCamera_init(
@@ -14,7 +14,7 @@ struct mliPinHoleCamera mliPinHoleCamera_init(
         struct mliPinHoleCamera sensor;
 
         assert(field_of_view > 0.);
-        assert(field_of_view < mtl_math_deg2rad(180.));
+        assert(field_of_view < mli_math_deg2rad(180.));
 
         sensor.optical_axis = mliVec_init(0.0, 0.0, 1.0);
         sensor.col_axis = mliVec_init(1.0, 0.0, 0.0);

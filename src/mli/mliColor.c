@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliColor.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 struct mliColor mliColor_set(const float r, const float g, const float b)
 {
@@ -81,11 +81,11 @@ int mliColor_is_in_range(
         const float start,
         const float stop)
 {
-        if (MTL_MATH_IS_NAN(c.r))
+        if (MLI_MATH_IS_NAN(c.r))
                 return 0;
-        if (MTL_MATH_IS_NAN(c.g))
+        if (MLI_MATH_IS_NAN(c.g))
                 return 0;
-        if (MTL_MATH_IS_NAN(c.b))
+        if (MLI_MATH_IS_NAN(c.b))
                 return 0;
 
         if (c.r < start || c.r >= stop)

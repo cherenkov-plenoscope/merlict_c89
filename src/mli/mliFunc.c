@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "mliMagicId.h"
 #include "../chk/chk.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 struct mliFunc mliFunc_init(void)
 {
@@ -47,7 +47,7 @@ int mliFunc_x_is_strictly_increasing(const struct mliFunc *f)
 int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
 {
         double y1, y0, x1, x0;
-        uint32_t idx = MTL_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
+        uint32_t idx = MLI_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
         if (idx == 0) {
                 chk_bad("mliFunc argument below lower bound.");
         } else if (idx == f->num_points) {
@@ -57,7 +57,7 @@ int mliFunc_evaluate(const struct mliFunc *f, const double xarg, double *out)
                 y0 = f->y[idx - 1u];
                 x1 = f->x[idx];
                 x0 = f->x[idx - 1u];
-                (*out) = mtl_math_linear_interpolate_2d(xarg, x0, y0, x1, y1);
+                (*out) = mli_math_linear_interpolate_2d(xarg, x0, y0, x1, y1);
         }
         return 1;
 chk_error:
@@ -83,7 +83,7 @@ double mliFunc_evaluate_with_default_when_out_of_range(
         const double default_value)
 {
         double y1, y0, x1, x0;
-        uint32_t idx = MTL_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
+        uint32_t idx = MLI_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
         if (idx == 0) {
                 /* mliFunc argument below lower bound */
                 return default_value;
@@ -95,7 +95,7 @@ double mliFunc_evaluate_with_default_when_out_of_range(
                 y0 = f->y[idx - 1u];
                 x1 = f->x[idx];
                 x0 = f->x[idx - 1u];
-                return mtl_math_linear_interpolate_2d(xarg, x0, y0, x1, y1);
+                return mli_math_linear_interpolate_2d(xarg, x0, y0, x1, y1);
         }
 }
 
@@ -104,7 +104,7 @@ double mliFunc_evaluate_with_default_closest(
         const double xarg)
 {
         double y1, y0, x1, x0;
-        uint32_t idx = MTL_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
+        uint32_t idx = MLI_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
         if (idx == 0) {
                 /* mliFunc argument below lower bound */
                 return f->y[0];
@@ -116,7 +116,7 @@ double mliFunc_evaluate_with_default_closest(
                 y0 = f->y[idx - 1u];
                 x1 = f->x[idx];
                 x0 = f->x[idx - 1u];
-                return mtl_math_linear_interpolate_2d(xarg, x0, y0, x1, y1);
+                return mli_math_linear_interpolate_2d(xarg, x0, y0, x1, y1);
         }
 }
 
@@ -137,8 +137,8 @@ int mliFunc_fold_numeric(
                 "Expect a->x[:-1] == b->x[:-1].");
         (*fold) = 0.0;
         for (i = 0; i < NUM_STEPS; i++) {
-                double ra = MTL_MATH_NAN;
-                double rb = MTL_MATH_NAN;
+                double ra = MLI_MATH_NAN;
+                double rb = MLI_MATH_NAN;
                 double x = xmin + (double)i * step_size;
                 chk(mliFunc_evaluate(a, x, &ra));
                 chk(mliFunc_evaluate(b, x, &rb));
@@ -166,9 +166,9 @@ int mliFunc_fold_numeric_default_closest(
         chk_msg(mliFunc_x_is_strictly_increasing(b),
                 "Expected function b to be strictly_increasing.");
 
-        x_start = MTL_MATH_MAX2(a->x[0], b->x[0]);
+        x_start = MLI_MATH_MAX2(a->x[0], b->x[0]);
         x_stop =
-                MTL_MATH_MIN2(a->x[a->num_points - 1], b->x[b->num_points - 1]);
+                MLI_MATH_MIN2(a->x[a->num_points - 1], b->x[b->num_points - 1]);
         x_range = x_stop - x_start;
         x_step = (x_range) / (double)NUM_STEPS;
         x_weight = x_step / x_range;
@@ -176,8 +176,8 @@ int mliFunc_fold_numeric_default_closest(
         (*fold) = 0.0;
         if (x_start < x_stop) {
                 for (i = 0; i < NUM_STEPS; i++) {
-                        double ra = MTL_MATH_NAN;
-                        double rb = MTL_MATH_NAN;
+                        double ra = MLI_MATH_NAN;
+                        double rb = MLI_MATH_NAN;
                         double x = x_start + (double)i * x_step;
                         ra = mliFunc_evaluate_with_default_closest(a, x);
                         rb = mliFunc_evaluate_with_default_closest(b, x);
@@ -213,10 +213,10 @@ int mliFunc_is_valid(const struct mliFunc *func)
                 "between two points.");
 
         for (i = 0; i < func->num_points; i++) {
-                chk_msg(!MTL_MATH_IS_NAN(func->x[i]),
+                chk_msg(!MLI_MATH_IS_NAN(func->x[i]),
                         "Expected x-argument to be a real number, "
                         "but it is 'nan'.");
-                chk_msg(!MTL_MATH_IS_NAN(func->y[i]),
+                chk_msg(!MLI_MATH_IS_NAN(func->y[i]),
                         "Expected y-value to be a real number, "
                         "but it is 'nan'.");
         }

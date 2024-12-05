@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 #include "mli_random.h"
-#include "../mtl/math.h"
+#include "../math/math.h"
 #include "mliIntersectionSurfaceNormal.h"
 #include "mliIntersection.h"
 #include "mli_ray_scenery_query.h"
@@ -35,7 +35,7 @@ struct mliColor mli_trace_color_tone_of_sun(
                         config->atmosphere.sunDirection);
 
                 double f = config->atmosphere.sunDirection.z;
-                double max = MTL_MATH_MAX3(
+                double max = MLI_MATH_MAX3(
                         color_close_to_sun.r,
                         color_close_to_sun.g,
                         color_close_to_sun.b);

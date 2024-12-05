@@ -2,7 +2,7 @@
 #include "mli_random.h"
 #include <math.h>
 #include <assert.h>
-#include "../mtl/math.h"
+#include "../math/math.h"
 
 /*
         direction
@@ -24,7 +24,7 @@ struct mliVec mli_random_position_on_disc(
         struct mtl_Prng *prng)
 {
         const double r = sqrt(mtl_Prng_uniform(prng)) * radius;
-        const double azimuth = mtl_Prng_uniform(prng) * MTL_MATH_2PI;
+        const double azimuth = mtl_Prng_uniform(prng) * MLI_MATH_2PI;
         return mliVec_init(r * cos(azimuth), r * sin(azimuth), 0.0);
 }
 
