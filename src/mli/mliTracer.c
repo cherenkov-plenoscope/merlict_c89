@@ -61,12 +61,12 @@ double mli_trace_sun_obstruction(
                tracer->config->num_trails_global_light_source;
 }
 
-struct mliColor mli_trace_to_intersection(
+struct mli_Color mli_trace_to_intersection(
         const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
-        struct mliColor color;
+        struct mli_Color color;
         struct mliSide side;
         double theta;
         double lambert_factor;
@@ -90,7 +90,7 @@ struct mliColor mli_trace_to_intersection(
         return color;
 }
 
-struct mliColor mliTracer_trace_ray_without_atmosphere(
+struct mli_Color mliTracer_trace_ray_without_atmosphere(
         const struct mliTracer *tracer,
         const struct mliRay ray,
         struct mli_Prng *prng)
@@ -106,7 +106,7 @@ struct mliColor mliTracer_trace_ray_without_atmosphere(
         }
 }
 
-struct mliColor mliTracer_trace_ray(
+struct mli_Color mliTracer_trace_ray(
         const struct mliTracer *tracer,
         const struct mliRay ray,
         struct mli_Prng *prng)
@@ -122,7 +122,7 @@ struct mliColor mliTracer_trace_ray(
 struct mliTracerConfig mliTracerConfig_init(void)
 {
         struct mliTracerConfig config;
-        config.background_color = mliColor_set(128.0, 128.0, 128.0);
+        config.background_color = mli_Color_set(128.0, 128.0, 128.0);
         config.num_trails_global_light_source = 3;
         config.have_atmosphere = 0;
         config.atmosphere = mliAtmosphere_init();

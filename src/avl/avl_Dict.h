@@ -24,7 +24,10 @@ int mli_AvlDict_set(
         const int64_t value);
 int mli_AvlDict_pop(struct mli_AvlDict *dict, const int64_t key);
 int mli_AvlDict_has(struct mli_AvlDict *dict, const int64_t key);
-int mli_AvlDict_get(struct mli_AvlDict *dict, const int64_t key, int64_t *value);
+int mli_AvlDict_get(
+        struct mli_AvlDict *dict,
+        const int64_t key,
+        int64_t *value);
 void mli_AvlDict_reset(struct mli_AvlDict *dict);
 
 #endif

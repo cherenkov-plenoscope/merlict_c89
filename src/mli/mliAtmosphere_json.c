@@ -1,6 +1,6 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
 #include "mliAtmosphere_json.h"
-#include "mliColor_json.h"
+#include "../color/color_json.h"
 #include "../chk/chk.h"
 
 int mliAtmosphere_from_json_token(
@@ -47,7 +47,7 @@ int mliAtmosphere_from_json_token(
 
         chk(mli_Json_token_by_key(
                 json, tkn, "beta_Rayleigh", &beta_rayleigh_tkn));
-        chk(mliColor_from_json_token(
+        chk(mli_Color_from_json_token(
                 &atm->beta_Rayleigh, json, beta_rayleigh_tkn + 1));
         chk_msg(atm->beta_Rayleigh.r > 0.0,
                 "Expected atmosphere->beta_Rayleigh.r > 0.");
@@ -57,7 +57,7 @@ int mliAtmosphere_from_json_token(
                 "Expected atmosphere->beta_Rayleigh.b > 0.");
 
         chk(mli_Json_token_by_key(json, tkn, "beta_Mie", &beta_mie_tkn));
-        chk(mliColor_from_json_token(&atm->beta_Mie, json, beta_mie_tkn + 1));
+        chk(mli_Color_from_json_token(&atm->beta_Mie, json, beta_mie_tkn + 1));
         chk_msg(atm->beta_Mie.r > 0.0, "Expected atmosphere->beta_Mie.r > 0.");
         chk_msg(atm->beta_Mie.g > 0.0, "Expected atmosphere->beta_Mie.g > 0.");
         chk_msg(atm->beta_Mie.b > 0.0, "Expected atmosphere->beta_Mie.b > 0.");

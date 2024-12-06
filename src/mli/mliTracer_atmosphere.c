@@ -20,16 +20,16 @@ struct mliVec mli_random_direction_in_hemisphere(
         return mliVec_normalized(rnd_dir);
 }
 
-struct mliColor mli_trace_color_tone_of_sun(
+struct mli_Color mli_trace_color_tone_of_sun(
         const struct mliTracerConfig *config,
         const struct mliVec support)
 {
-        struct mliColor sun_color = mliColor_set(1.0, 1.0, 1.0);
+        struct mli_Color sun_color = mli_Color_set(1.0, 1.0, 1.0);
         double width_atmosphere = config->atmosphere.atmosphereRadius -
                                   config->atmosphere.earthRadius;
 
         if (config->atmosphere.altitude < width_atmosphere) {
-                struct mliColor color_close_to_sun = mliAtmosphere_query(
+                struct mli_Color color_close_to_sun = mliAtmosphere_query(
                         &config->atmosphere,
                         support,
                         config->atmosphere.sunDirection);
@@ -44,21 +44,21 @@ struct mliColor mli_trace_color_tone_of_sun(
                 color_close_to_sun.g /= max;
                 color_close_to_sun.b /= max;
 
-                return mliColor_add(
-                        mliColor_multiply(sun_color, f),
-                        mliColor_multiply(color_close_to_sun, (1.0 - f)));
+                return mli_Color_add(
+                        mli_Color_multiply(sun_color, f),
+                        mli_Color_multiply(color_close_to_sun, (1.0 - f)));
         } else {
                 return sun_color;
         }
 }
 
-struct mliColor mli_trace_color_tone_of_diffuse_sky(
+struct mli_Color mli_trace_color_tone_of_diffuse_sky(
         const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
         int i;
-        struct mliColor sky = mliColor_set(0.0, 0.0, 0.0);
+        struct mli_Color sky = mli_Color_set(0.0, 0.0, 0.0);
         struct mliRay obstruction_ray;
         struct mliVec facing_surface_normal;
         struct mliIntersection isec;
@@ -81,7 +81,7 @@ struct mliColor mli_trace_color_tone_of_diffuse_sky(
                         tracer->scenery, obstruction_ray, &isec);
 
                 if (has_direct_view_to_sky) {
-                        struct mliColor sample = mliAtmosphere_query(
+                        struct mli_Color sample = mliAtmosphere_query(
                                 &tracer->config->atmosphere,
                                 intersection->position,
                                 rnd_dir);
@@ -90,21 +90,22 @@ struct mliColor mli_trace_color_tone_of_diffuse_sky(
                                 rnd_dir, facing_surface_normal);
                         double lambert_factor = fabs(cos(theta));
 
-                        sky = mliColor_add(
-                                sky, mliColor_multiply(sample, lambert_factor));
+                        sky = mli_Color_add(
+                                sky,
+                                mli_Color_multiply(sample, lambert_factor));
                 }
         }
 
-        return mliColor_multiply(sky, 1.0 / (255.0 * num_samples));
+        return mli_Color_multiply(sky, 1.0 / (255.0 * num_samples));
 }
 
-struct mliColor mli_trace_to_intersection_atmosphere(
+struct mli_Color mli_trace_to_intersection_atmosphere(
         const struct mliTracer *tracer,
         const struct mliIntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
-        struct mliColor color;
-        struct mliColor tone;
+        struct mli_Color color;
+        struct mli_Color tone;
         struct mliSide side;
         double theta;
         double lambert_factor;
@@ -115,7 +116,7 @@ struct mliColor mli_trace_to_intersection_atmosphere(
         if (sun_visibility > 0.0) {
                 tone = mli_trace_color_tone_of_sun(
                         tracer->config, intersection->position);
-                tone = mliColor_multiply(tone, sun_visibility);
+                tone = mli_Color_multiply(tone, sun_visibility);
         } else {
                 tone = mli_trace_color_tone_of_diffuse_sky(
                         tracer, intersection, prng);
@@ -130,19 +131,19 @@ struct mliColor mli_trace_to_intersection_atmosphere(
                 intersection->surface_normal);
         lambert_factor = fabs(cos(theta));
 
-        color = mliColor_multiply(color, lambert_factor);
+        color = mli_Color_multiply(color, lambert_factor);
 
-        return mliColor_multiply_elementwise(color, tone);
+        return mli_Color_multiply_elementwise(color, tone);
 }
 
-struct mliColor mliTracer_trace_ray_with_atmosphere(
+struct mli_Color mliTracer_trace_ray_with_atmosphere(
         const struct mliTracer *tracer,
         const struct mliRay ray,
         struct mli_Prng *prng)
 {
         struct mliIntersectionSurfaceNormal intersection =
                 mliIntersectionSurfaceNormal_init();
-        struct mliColor out;
+        struct mli_Color out;
         int has_intersection = mli_query_intersection_with_surface_normal(
                 tracer->scenery, ray, &intersection);
 

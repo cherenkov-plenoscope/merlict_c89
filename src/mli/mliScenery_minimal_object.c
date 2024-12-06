@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_minimal_object.h"
 #include "../chk/chk.h"
-#include "mliColor.h"
+#include "../color/color.h"
 #include "mli_random.h"
 #include "../prng/prng.h"
 #include "../cstr/cstr.h"
@@ -13,12 +13,12 @@ int mliSurface_malloc_random_phong(
         struct mli_Prng *prng)
 {
         struct mli_prng_UniformRange uniform_range;
-        struct mliColor color;
+        struct mli_Color color;
 
         mliSurface_free(srf);
         uniform_range.start = 0.0;
         uniform_range.range = 1.0;
-        color = mliColor_set(
+        color = mli_Color_set(
                 mli_prng_draw_uniform(uniform_range, prng),
                 mli_prng_draw_uniform(uniform_range, prng),
                 mli_prng_draw_uniform(uniform_range, prng));

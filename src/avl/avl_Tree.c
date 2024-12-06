@@ -278,7 +278,9 @@ int mli_AvlTree_removeroot(struct mli_AvlTree *t)
         return 0;
 }
 
-struct mli_Avl *mli_AvlTree_find(struct mli_AvlTree *t, const struct mli_Avl *probe)
+struct mli_Avl *mli_AvlTree_find(
+        struct mli_AvlTree *t,
+        const struct mli_Avl *probe)
 {
         int64_t match;
 

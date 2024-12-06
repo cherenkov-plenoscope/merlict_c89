@@ -67,7 +67,7 @@ void mliPinHoleCamera_render_image(
                 struct mliRay ray_wrt_root =
                         mliHomTra_ray(&camera2root, ray_wrt_camera);
 
-                struct mliColor color =
+                struct mli_Color color =
                         mliTracer_trace_ray(tracer, ray_wrt_root, prng);
                 mli_Image_set(image, px.col, px.row, color);
                 mli_PixelWalk_walk(&walk);

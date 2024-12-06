@@ -27,22 +27,22 @@ CASE("scaling")
          *    3   |   98   26   11   23
          *   rows
          */
-        mli_Image_set(&src, 0, 0, mliColor_set(0, 0, 10));
-        mli_Image_set(&src, 0, 1, mliColor_set(0, 0, 20));
-        mli_Image_set(&src, 0, 2, mliColor_set(0, 0, 30));
-        mli_Image_set(&src, 0, 3, mliColor_set(0, 0, 40));
-        mli_Image_set(&src, 1, 0, mliColor_set(0, 0, 50));
-        mli_Image_set(&src, 1, 1, mliColor_set(0, 0, 60));
-        mli_Image_set(&src, 1, 2, mliColor_set(0, 0, 70));
-        mli_Image_set(&src, 1, 3, mliColor_set(0, 0, 80));
-        mli_Image_set(&src, 2, 0, mliColor_set(0, 0, 55));
-        mli_Image_set(&src, 2, 1, mliColor_set(0, 0, 34));
-        mli_Image_set(&src, 2, 2, mliColor_set(0, 0, 31));
-        mli_Image_set(&src, 2, 3, mliColor_set(0, 0, 17));
-        mli_Image_set(&src, 3, 0, mliColor_set(0, 0, 98));
-        mli_Image_set(&src, 3, 1, mliColor_set(0, 0, 26));
-        mli_Image_set(&src, 3, 2, mliColor_set(0, 0, 11));
-        mli_Image_set(&src, 3, 3, mliColor_set(0, 0, 23));
+        mli_Image_set(&src, 0, 0, mli_Color_set(0, 0, 10));
+        mli_Image_set(&src, 0, 1, mli_Color_set(0, 0, 20));
+        mli_Image_set(&src, 0, 2, mli_Color_set(0, 0, 30));
+        mli_Image_set(&src, 0, 3, mli_Color_set(0, 0, 40));
+        mli_Image_set(&src, 1, 0, mli_Color_set(0, 0, 50));
+        mli_Image_set(&src, 1, 1, mli_Color_set(0, 0, 60));
+        mli_Image_set(&src, 1, 2, mli_Color_set(0, 0, 70));
+        mli_Image_set(&src, 1, 3, mli_Color_set(0, 0, 80));
+        mli_Image_set(&src, 2, 0, mli_Color_set(0, 0, 55));
+        mli_Image_set(&src, 2, 1, mli_Color_set(0, 0, 34));
+        mli_Image_set(&src, 2, 2, mli_Color_set(0, 0, 31));
+        mli_Image_set(&src, 2, 3, mli_Color_set(0, 0, 17));
+        mli_Image_set(&src, 3, 0, mli_Color_set(0, 0, 98));
+        mli_Image_set(&src, 3, 1, mli_Color_set(0, 0, 26));
+        mli_Image_set(&src, 3, 2, mli_Color_set(0, 0, 11));
+        mli_Image_set(&src, 3, 3, mli_Color_set(0, 0, 23));
 
         mli_Image_scale_down_twice(&src, &dst);
 
@@ -70,7 +70,7 @@ CASE("mli_Image_write_to_ppm, mli_Image_malloc_from_ppm")
         tone = 0.;
         for (col = 0; col < img.num_cols; col++) {
                 for (row = 0; row < img.num_rows; row++) {
-                        struct mliColor color;
+                        struct mli_Color color;
                         tone = (double)col * (double)row;
                         color.r = tone;
                         color.g = tone + 1.;
@@ -86,8 +86,8 @@ CASE("mli_Image_write_to_ppm, mli_Image_malloc_from_ppm")
 
         for (col = 0; col < back.num_cols; col++) {
                 for (row = 0; row < back.num_rows; row++) {
-                        struct mliColor c_in = mli_Image_at(&img, col, row);
-                        struct mliColor c_back = mli_Image_at(&back, col, row);
+                        struct mli_Color c_in = mli_Image_at(&img, col, row);
+                        struct mli_Color c_back = mli_Image_at(&back, col, row);
                         CHECK_MARGIN(c_in.r, c_back.r, 1.);
                         CHECK_MARGIN(c_in.g, c_back.g, 1.);
                         CHECK_MARGIN(c_in.b, c_back.b, 1.);

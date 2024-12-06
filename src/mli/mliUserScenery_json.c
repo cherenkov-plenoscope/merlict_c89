@@ -2,7 +2,7 @@
 #include "mliUserScenery_json.h"
 #include "mliDynMap_json.h"
 #include "mliVec_json.h"
-#include "mliColor_json.h"
+#include "../color/color_json.h"
 #include "mliMaterials.h"
 #include "../chk/chk.h"
 

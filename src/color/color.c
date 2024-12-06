@@ -1,33 +1,33 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliColor.h"
+#include "../color/color.h"
 #include "../math/math.h"
 
-struct mliColor mliColor_set(const float r, const float g, const float b)
+struct mli_Color mli_Color_set(const float r, const float g, const float b)
 {
-        struct mliColor rgb;
+        struct mli_Color rgb;
         rgb.r = r;
         rgb.g = g;
         rgb.b = b;
         return rgb;
 }
 
-struct mliColor mliColor_mix(
-        const struct mliColor a,
-        const struct mliColor b,
+struct mli_Color mli_Color_mix(
+        const struct mli_Color a,
+        const struct mli_Color b,
         const float refl)
 {
-        struct mliColor out;
+        struct mli_Color out;
         out.r = (1.f - refl) * a.r + refl * b.r;
         out.g = (1.f - refl) * a.g + refl * b.g;
         out.b = (1.f - refl) * a.b + refl * b.b;
         return out;
 }
 
-struct mliColor mliColor_mean(
-        const struct mliColor colors[],
+struct mli_Color mli_Color_mean(
+        const struct mli_Color colors[],
         const uint32_t num_colors)
 {
-        struct mliColor out = {0., 0., 0.};
+        struct mli_Color out = {0., 0., 0.};
         const float f_num_colors = (float)num_colors;
         uint32_t i;
         for (i = 0; i < num_colors; i++) {
@@ -41,12 +41,12 @@ struct mliColor mliColor_mean(
         return out;
 }
 
-struct mliColor mliColor_truncate(
-        const struct mliColor color,
+struct mli_Color mli_Color_truncate(
+        const struct mli_Color color,
         const float start,
         const float stop)
 {
-        struct mliColor out;
+        struct mli_Color out;
         out.r = color.r;
         out.g = color.g;
         out.b = color.b;
@@ -65,7 +65,7 @@ struct mliColor mliColor_truncate(
         return out;
 }
 
-int mliColor_equal(const struct mliColor a, const struct mliColor b)
+int mli_Color_equal(const struct mli_Color a, const struct mli_Color b)
 {
         if (a.r != b.r)
                 return 0;
@@ -76,8 +76,8 @@ int mliColor_equal(const struct mliColor a, const struct mliColor b)
         return 1;
 }
 
-int mliColor_is_in_range(
-        const struct mliColor c,
+int mli_Color_is_in_range(
+        const struct mli_Color c,
         const float start,
         const float stop)
 {
@@ -97,19 +97,21 @@ int mliColor_is_in_range(
         return 1;
 }
 
-struct mliColor mliColor_add(const struct mliColor u, const struct mliColor v)
+struct mli_Color mli_Color_add(
+        const struct mli_Color u,
+        const struct mli_Color v)
 {
-        return mliColor_set(u.r + v.r, u.g + v.g, u.b + v.b);
+        return mli_Color_set(u.r + v.r, u.g + v.g, u.b + v.b);
 }
 
-struct mliColor mliColor_multiply(const struct mliColor c, const double f)
+struct mli_Color mli_Color_multiply(const struct mli_Color c, const double f)
 {
-        return mliColor_set(c.r * f, c.g * f, c.b * f);
+        return mli_Color_set(c.r * f, c.g * f, c.b * f);
 }
 
-struct mliColor mliColor_multiply_elementwise(
-        const struct mliColor u,
-        const struct mliColor v)
+struct mli_Color mli_Color_multiply_elementwise(
+        const struct mli_Color u,
+        const struct mli_Color v)
 {
-        return mliColor_set(u.r * v.r, u.g * v.g, u.b * v.b);
+        return mli_Color_set(u.r * v.r, u.g * v.g, u.b * v.b);
 }

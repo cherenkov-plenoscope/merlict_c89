@@ -2,7 +2,7 @@
 
 CASE("init ColorObserver")
 {
-        struct mliColorObserver obs = mliColorObserver_init();
+        struct mli_ColorObserver obs = mli_ColorObserver_init();
         CHECK(obs.r.num_points == 0);
         CHECK(obs.g.num_points == 0);
         CHECK(obs.b.num_points == 0);
@@ -10,14 +10,14 @@ CASE("init ColorObserver")
 
 CASE("malloc ColorObserver")
 {
-        struct mliColorObserver obs = mliColorObserver_init();
-        CHECK(mliColorObserver_malloc_cie1931(&obs));
+        struct mli_ColorObserver obs = mli_ColorObserver_init();
+        CHECK(mli_ColorObserver_malloc_cie1931(&obs));
 
         CHECK(obs.r.num_points > 0);
         CHECK(obs.g.num_points > 0);
         CHECK(obs.b.num_points > 0);
 
-        mliColorObserver_free(&obs);
+        mli_ColorObserver_free(&obs);
 
         CHECK(obs.r.num_points == 0);
         CHECK(obs.g.num_points == 0);
@@ -26,11 +26,11 @@ CASE("malloc ColorObserver")
 
 CASE("fold ColorObserver")
 {
-        struct mliColor rgb = mliColor_set(1., 1., 1.);
-        struct mliColorObserver obs = mliColorObserver_init();
+        struct mli_Color rgb = mli_Color_set(1., 1., 1.);
+        struct mli_ColorObserver obs = mli_ColorObserver_init();
         struct mli_Func spectrum = mli_Func_init();
 
-        CHECK(mliColorObserver_malloc_cie1931(&obs));
+        CHECK(mli_ColorObserver_malloc_cie1931(&obs));
 
         CHECK(mli_Func_malloc(&spectrum, 6));
         spectrum.x[0] = 200e-9;
@@ -51,7 +51,7 @@ CASE("fold ColorObserver")
 
         spectrum.x[4] = 480e-9;
         spectrum.y[4] = 0.0;
-        CHECK(mliColorObserver_evaluate(&obs, &spectrum, &rgb));
+        CHECK(mli_ColorObserver_evaluate(&obs, &spectrum, &rgb));
         CHECK_MARGIN(rgb.r, 1.0e-2, 1e-2);
         CHECK_MARGIN(rgb.g, 0.2e-2, 1e-2);
         CHECK_MARGIN(rgb.b, 5.0e-2, 1e-2);
@@ -68,7 +68,7 @@ CASE("fold ColorObserver")
 
         spectrum.x[4] = 550e-9;
         spectrum.y[4] = 0.0;
-        CHECK(mliColorObserver_evaluate(&obs, &spectrum, &rgb));
+        CHECK(mli_ColorObserver_evaluate(&obs, &spectrum, &rgb));
         CHECK_MARGIN(rgb.r, 0.4e-2, 1e-3);
         CHECK_MARGIN(rgb.g, 2.0e-2, 1e-3);
         CHECK_MARGIN(rgb.b, 0.2e-2, 1e-3);
@@ -85,11 +85,11 @@ CASE("fold ColorObserver")
 
         spectrum.x[4] = 700e-9;
         spectrum.y[4] = 0.0;
-        CHECK(mliColorObserver_evaluate(&obs, &spectrum, &rgb));
+        CHECK(mli_ColorObserver_evaluate(&obs, &spectrum, &rgb));
         CHECK_MARGIN(rgb.r, 2.1e-2, 1e-3);
         CHECK_MARGIN(rgb.g, 1.0e-2, 1e-3);
         CHECK_MARGIN(rgb.b, 0.1e-2, 1e-3);
 
-        mliColorObserver_free(&obs);
+        mli_ColorObserver_free(&obs);
         mli_Func_free(&spectrum);
 }

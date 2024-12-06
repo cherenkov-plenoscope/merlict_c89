@@ -30,8 +30,8 @@ struct mliAtmosphere mliAtmosphere_init(void)
         atm.Height_Rayleigh = 7994.0;
         atm.Height_Mie = 1200.0;
 
-        atm.beta_Rayleigh = mliColor_set(3.8e-6, 13.5e-6, 33.1e-6);
-        atm.beta_Mie = mliColor_multiply(mliColor_set(1.0, 1.0, 1.0), 41e-6);
+        atm.beta_Rayleigh = mli_Color_set(3.8e-6, 13.5e-6, 33.1e-6);
+        atm.beta_Mie = mli_Color_multiply(mli_Color_set(1.0, 1.0, 1.0), 41e-6);
 
         atm.numSamples = 16;
         atm.numSamplesLight = 8;
@@ -69,7 +69,7 @@ void mliAtmosphere_set_sun_direction(
         }
 }
 
-struct mliColor mliAtmosphere_compute_depth(
+struct mli_Color mliAtmosphere_compute_depth(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,
@@ -79,8 +79,8 @@ struct mliColor mliAtmosphere_compute_depth(
         uint64_t i, j;
         const double segmentLength = (tmax - tmin) / atmosphere->numSamples;
         double tCurrent = tmin;
-        struct mliColor sumR = mliColor_set(0.0, 0.0, 0.0);
-        struct mliColor sumM = mliColor_set(0.0, 0.0, 0.0);
+        struct mli_Color sumR = mli_Color_set(0.0, 0.0, 0.0);
+        struct mli_Color sumM = mli_Color_set(0.0, 0.0, 0.0);
         /* mie and rayleigh contribution */
 
         double opticalDepthR = 0.0;
@@ -151,38 +151,38 @@ struct mliColor mliAtmosphere_compute_depth(
                 }
 
                 if (j == atmosphere->numSamplesLight) {
-                        const struct mliColor tau = mliColor_add(
-                                mliColor_multiply(
+                        const struct mli_Color tau = mli_Color_add(
+                                mli_Color_multiply(
                                         atmosphere->beta_Rayleigh,
                                         opticalDepthR + opticalDepthLightR),
-                                mliColor_multiply(
+                                mli_Color_multiply(
                                         atmosphere->beta_Mie,
                                         1.1 * (opticalDepthM +
                                                opticalDepthLightM)));
-                        const struct mliColor attenuation = mliColor_set(
+                        const struct mli_Color attenuation = mli_Color_set(
                                 exp(-tau.r), exp(-tau.g), exp(-tau.b));
-                        sumR = mliColor_add(
-                                sumR, mliColor_multiply(attenuation, hr));
-                        sumM = mliColor_add(
-                                sumM, mliColor_multiply(attenuation, hm));
+                        sumR = mli_Color_add(
+                                sumR, mli_Color_multiply(attenuation, hr));
+                        sumM = mli_Color_add(
+                                sumM, mli_Color_multiply(attenuation, hm));
                 }
                 tCurrent += segmentLength;
         }
 
-        return mliColor_multiply(
-                mliColor_add(
-                        mliColor_multiply(
-                                mliColor_multiply_elementwise(
+        return mli_Color_multiply(
+                mli_Color_add(
+                        mli_Color_multiply(
+                                mli_Color_multiply_elementwise(
                                         sumR, atmosphere->beta_Rayleigh),
                                 phaseR),
-                        mliColor_multiply(
-                                mliColor_multiply_elementwise(
+                        mli_Color_multiply(
+                                mli_Color_multiply_elementwise(
                                         sumM, atmosphere->beta_Mie),
                                 phaseM)),
                 atmosphere->power);
 }
 
-struct mliColor mliAtmosphere_hit_outer_atmosphere(
+struct mli_Color mliAtmosphere_hit_outer_atmosphere(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,
@@ -195,7 +195,7 @@ struct mliColor mliAtmosphere_hit_outer_atmosphere(
                 orig, dir, atmosphere->atmosphereRadius, &t_minus, &t_plus);
 
         if (!has_intersection || t_plus < 0.0) {
-                return mliColor_set(0.0, 0.0, 0.0);
+                return mli_Color_set(0.0, 0.0, 0.0);
         }
         if (t_minus > tmin && t_minus > 0) {
                 tmin = t_minus;
@@ -207,7 +207,7 @@ struct mliColor mliAtmosphere_hit_outer_atmosphere(
         return mliAtmosphere_compute_depth(atmosphere, orig, dir, tmin, tmax);
 }
 
-struct mliColor mliAtmosphere_hit_earth_body(
+struct mli_Color mliAtmosphere_hit_earth_body(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir)
@@ -226,7 +226,7 @@ struct mliColor mliAtmosphere_hit_earth_body(
                 atmosphere, orig, dir, 0.0, t_max);
 }
 
-struct mliColor mliAtmosphere_query(
+struct mli_Color mliAtmosphere_query(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir)

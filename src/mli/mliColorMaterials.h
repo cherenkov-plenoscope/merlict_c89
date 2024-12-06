@@ -4,34 +4,34 @@
 
 #include <stdint.h>
 #include "mliMaterials.h"
-#include "mliColor.h"
-#include "mliColorObserver.h"
+#include "../color/color.h"
+#include "../color/colorObserver.h"
 
-struct mliColorSurface {
-        struct mliColor specular_reflection;
-        struct mliColor diffuse_reflection;
+struct mli_ColorSurface {
+        struct mli_Color specular_reflection;
+        struct mli_Color diffuse_reflection;
 };
 
-struct mliColorMedium {
-        struct mliColor refraction;
-        struct mliColor absorbtion;
+struct mli_ColorMedium {
+        struct mli_Color refraction;
+        struct mli_Color absorbtion;
 };
 
-struct mliColorMaterials {
+struct mli_ColorMaterials {
         uint64_t num_surfaces;
-        struct mliColorSurface *surfaces;
+        struct mli_ColorSurface *surfaces;
 
         uint64_t num_media;
-        struct mliColorMedium *media;
+        struct mli_ColorMedium *media;
 };
 
-struct mliColorMaterials mliColorMaterials_init(void);
-int mliColorMaterials_malloc(
-        struct mliColorMaterials *colmat,
+struct mli_ColorMaterials mli_ColorMaterials_init(void);
+int mli_ColorMaterials_malloc(
+        struct mli_ColorMaterials *colmat,
         const struct mliMaterialsCapacity rescap);
-int mliColorMaterials_malloc_from_Materials(
-        struct mliColorMaterials *colmat,
+int mli_ColorMaterials_malloc_from_Materials(
+        struct mli_ColorMaterials *colmat,
         const struct mliMaterials *mat,
-        const struct mliColorObserver *colobs);
-void mliColorMaterials_free(struct mliColorMaterials *colmat);
+        const struct mli_ColorObserver *colobs);
+void mli_ColorMaterials_free(struct mli_ColorMaterials *colmat);
 #endif

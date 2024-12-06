@@ -177,8 +177,8 @@ int mli_viewer_run_interactive_viewer(
         struct mli_Prng prng = mli_Prng_init_MT19937(config.random_seed);
         struct mliTracerConfig tracer_config = mliTracerConfig_init();
         struct mliTracer tracer = mliTracer_init();
-        struct mliColorObserver color_observer = mliColorObserver_init();
-        struct mliColorMaterials color_materials = mliColorMaterials_init();
+        struct mli_ColorObserver color_observer = mli_ColorObserver_init();
+        struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         char path[1024];
         int key;
         int super_resolution = 0;
@@ -196,12 +196,12 @@ int mli_viewer_run_interactive_viewer(
         int has_probing_intersection = 0;
         struct mliIntersectionSurfaceNormal probing_intersection;
 
-        chk_msg(mliColorObserver_malloc_cie1931(&color_observer),
+        chk_msg(mli_ColorObserver_malloc_cie1931(&color_observer),
                 "Can't malloc color observer.");
-        chk_msg(mliColorMaterials_malloc_from_Materials(
+        chk_msg(mli_ColorMaterials_malloc_from_Materials(
                         &color_materials, &scenery->materials, &color_observer),
                 "Can't malloc color materials from scenery materials.");
-        mliColorObserver_free(&color_observer);
+        mli_ColorObserver_free(&color_observer);
 
         tracer.scenery = scenery;
         tracer.config = &tracer_config;
@@ -497,7 +497,7 @@ int mli_viewer_run_interactive_viewer(
                 }
         }
 
-        mliColorMaterials_free(&color_materials);
+        mli_ColorMaterials_free(&color_materials);
         mli_Image_free(&img);
         mli_Image_free(&img2);
         return 1;

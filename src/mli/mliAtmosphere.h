@@ -3,7 +3,7 @@
 #define MLIATMOSPHERE_H_
 
 #include <stdint.h>
-#include "mliColor.h"
+#include "../color/color.h"
 #include "mliVec.h"
 
 struct mliAtmosphere {
@@ -20,8 +20,8 @@ struct mliAtmosphere {
         double Height_Rayleigh;
         double Height_Mie;
 
-        struct mliColor beta_Rayleigh;
-        struct mliColor beta_Mie;
+        struct mli_Color beta_Rayleigh;
+        struct mli_Color beta_Mie;
 
         uint64_t numSamples;
         uint64_t numSamplesLight;
@@ -54,24 +54,24 @@ void mliAtmosphere_decrease_altitude(
         struct mliAtmosphere *atmosphere,
         const double factor);
 
-struct mliColor mliAtmosphere_query(
+struct mli_Color mliAtmosphere_query(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir);
 
-struct mliColor mliAtmosphere_hit_earth_body(
+struct mli_Color mliAtmosphere_hit_earth_body(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir);
 
-struct mliColor mliAtmosphere_hit_outer_atmosphere(
+struct mli_Color mliAtmosphere_hit_outer_atmosphere(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,
         double tmin,
         double tmax);
 
-struct mliColor mliAtmosphere_compute_depth(
+struct mli_Color mliAtmosphere_compute_depth(
         const struct mliAtmosphere *atmosphere,
         const struct mliVec orig,
         const struct mliVec dir,

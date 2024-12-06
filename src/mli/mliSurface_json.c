@@ -2,7 +2,7 @@
 #include "mliSurface_json.h"
 #include "mliName.h"
 #include "../func/func_json.h"
-#include "mliColor_json.h"
+#include "../color/color_json.h"
 #include "../chk/chk.h"
 
 int mliSurface_malloc_from_json_str(

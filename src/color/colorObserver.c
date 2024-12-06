@@ -1,25 +1,25 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
-#include "mliColorObserver.h"
+#include "colorObserver.h"
 #include "../chk/chk.h"
 #include "../func/func.h"
 
-struct mliColorObserver mliColorObserver_init(void)
+struct mli_ColorObserver mli_ColorObserver_init(void)
 {
-        struct mliColorObserver colobs;
+        struct mli_ColorObserver colobs;
         colobs.r = mli_Func_init();
         colobs.g = mli_Func_init();
         colobs.b = mli_Func_init();
         return colobs;
 }
 
-void mliColorObserver_free(struct mliColorObserver *colobs)
+void mli_ColorObserver_free(struct mli_ColorObserver *colobs)
 {
         mli_Func_free(&colobs->r);
         mli_Func_free(&colobs->g);
         mli_Func_free(&colobs->b);
 }
 
-int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs)
+int mli_ColorObserver_malloc_cie1931(struct mli_ColorObserver *colobs)
 {
         /*
          * https://en.wikipedia.org/wiki/CIE_1931_color_space
@@ -166,7 +166,7 @@ int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs)
 
         uint64_t i;
 
-        mliColorObserver_free(colobs);
+        mli_ColorObserver_free(colobs);
 
         chk_msg(mli_Func_malloc(&colobs->r, sizeof(red) / sizeof(red[0])),
                 "Can't malloc red channel in ColorObserver.");
@@ -189,15 +189,15 @@ int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs)
                 colobs->b.y[i] = blue[i][1];
         }
 
-        chk_msg(mliColorObserver_is_valid(colobs),
+        chk_msg(mli_ColorObserver_is_valid(colobs),
                 "Expected ColorObserver spectra to be valid.");
         return 1;
 chk_error:
-        mliColorObserver_free(colobs);
+        mli_ColorObserver_free(colobs);
         return 0;
 }
 
-int mliColorObserver_is_valid(const struct mliColorObserver *colobs)
+int mli_ColorObserver_is_valid(const struct mli_ColorObserver *colobs)
 {
         uint64_t i;
         for (i = 0; i < colobs->r.num_points; i++) {
@@ -226,13 +226,13 @@ chk_error:
         return 0;
 }
 
-int mliColorObserver_evaluate(
-        const struct mliColorObserver *colobs,
+int mli_ColorObserver_evaluate(
+        const struct mli_ColorObserver *colobs,
         const struct mli_Func *func,
-        struct mliColor *color)
+        struct mli_Color *color)
 {
         double r, g, b;
-        (*color) = mliColor_set(0.0, 0.0, 0.0);
+        (*color) = mli_Color_set(0.0, 0.0, 0.0);
         chk_msg(func->num_points > 1, "Expected function's num_points > 1");
         chk_msg(mli_Func_fold_numeric_default_closest(&colobs->r, func, &r),
                 "Can't fold red channel.");

@@ -3,13 +3,13 @@
 #define MLI_IMAGE_H_
 
 #include <stdint.h>
-#include "../mli/mliColor.h"
+#include "../color/color.h"
 #include "../pixel/pixel.h"
 
 struct mli_Image {
         uint32_t num_cols;
         uint32_t num_rows;
-        struct mliColor *raw;
+        struct mli_Color *raw;
 };
 
 void mli_Image_assign_pixel_colors_to_sum_and_exposure_image(
@@ -37,7 +37,7 @@ void mli_Image_sobel(const struct mli_Image *image, struct mli_Image *out);
 int mli_Image_scale_down_twice(
         const struct mli_Image *source,
         struct mli_Image *destination);
-struct mliColor mli_Image_at(
+struct mli_Color mli_Image_at(
         const struct mli_Image *img,
         const uint32_t col,
         const uint32_t row);
@@ -45,10 +45,10 @@ void mli_Image_set(
         const struct mli_Image *img,
         const uint32_t col,
         const uint32_t row,
-        const struct mliColor color);
+        const struct mli_Color color);
 void mli_Image_set_all_pixel(
         const struct mli_Image *img,
-        const struct mliColor color);
+        const struct mli_Color color);
 void mli_Pixels_set_all_from_image(
         struct mli_Pixels *pixels,
         const struct mli_Image *image);
@@ -77,9 +77,9 @@ void mli_Image_histogram(
         const double *row_bin_edges,
         const double x,
         const double y,
-        const struct mliColor weight);
-struct mliColor mli_Image_max(const struct mli_Image *img);
-void mli_Image_multiply(struct mli_Image *img, const struct mliColor color);
+        const struct mli_Color weight);
+struct mli_Color mli_Image_max(const struct mli_Image *img);
+void mli_Image_multiply(struct mli_Image *img, const struct mli_Color color);
 void mli_Image_divide_pixelwise(
         const struct mli_Image *numerator,
         const struct mli_Image *denominator,

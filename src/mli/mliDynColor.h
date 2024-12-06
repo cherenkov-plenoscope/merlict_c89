@@ -2,7 +2,7 @@
 #ifndef MLIDYNARRAY_COLOR_H_
 #define MLIDYNARRAY_COLOR_H_
 
-#include "mliColor.h"
+#include "../color/color.h"
 #include "../vector/vector.h"
-MLI_VECTOR_DEFINITON(mliDynColor, struct mliColor)
+MLI_VECTOR_DEFINITON(mliDynColor, struct mli_Color)
 #endif

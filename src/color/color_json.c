@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliColor_json.h"
-#include "mliVec_json.h"
+#include "color_json.h"
+#include "../mli/mliVec_json.h"
 #include "../chk/chk.h"
 
-int mliColor_from_json_token(
-        struct mliColor *c,
+int mli_Color_from_json_token(
+        struct mli_Color *c,
         const struct mli_Json *json,
         const uint64_t token)
 {

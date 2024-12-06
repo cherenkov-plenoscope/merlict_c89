@@ -31,7 +31,7 @@ int mli_Image_malloc_fread(struct mli_Image *img, FILE *f)
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
                         uint8_t r, g, b;
-                        struct mliColor color;
+                        struct mli_Color color;
                         chk_fread(&r, sizeof(uint8_t), 1u, f);
                         chk_fread(&g, sizeof(uint8_t), 1u, f);
                         chk_fread(&b, sizeof(uint8_t), 1u, f);
@@ -81,9 +81,9 @@ int mli_Image_fwrite(const struct mli_Image *img, FILE *f)
         chk(fprintf(f, "255\n"));
         for (row = 0; row < img->num_rows; row++) {
                 for (col = 0; col < img->num_cols; col++) {
-                        struct mliColor color = mli_Image_at(img, col, row);
-                        struct mliColor out =
-                                mliColor_truncate(color, 0., 255.);
+                        struct mli_Color color = mli_Image_at(img, col, row);
+                        struct mli_Color out =
+                                mli_Color_truncate(color, 0., 255.);
                         uint8_t r = (uint8_t)out.r;
                         uint8_t g = (uint8_t)out.g;
                         uint8_t b = (uint8_t)out.b;

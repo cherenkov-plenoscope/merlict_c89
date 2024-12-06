@@ -59,7 +59,9 @@ int mli_Tar_uint_to_field(
         char *field,
         const uint64_t fieldsize);
 int mli_Tar_uint64_to_field12_2001star_base256(uint64_t val, char *field);
-int mli_Tar_field12_to_uint64_2001star_base256(const char *field, uint64_t *val);
+int mli_Tar_field12_to_uint64_2001star_base256(
+        const char *field,
+        uint64_t *val);
 
 /* header and raw header */
 /* ===================== */

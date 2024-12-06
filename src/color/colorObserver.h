@@ -2,10 +2,10 @@
 #ifndef MLICOLOROBSERVER_H_
 #define MLICOLOROBSERVER_H_
 
-#include "mliColor.h"
+#include "../color/color.h"
 #include "../func/func.h"
 
-struct mliColorObserver {
+struct mli_ColorObserver {
         /* Color detection efficiency by wavelength.
          * The color observer has three color channels (r,g,b).
          * The functions r, g and b define how these channels respond to a
@@ -16,12 +16,12 @@ struct mliColorObserver {
         struct mli_Func b;
 };
 
-struct mliColorObserver mliColorObserver_init(void);
-void mliColorObserver_free(struct mliColorObserver *colobs);
-int mliColorObserver_malloc_cie1931(struct mliColorObserver *colobs);
-int mliColorObserver_evaluate(
-        const struct mliColorObserver *colobs,
+struct mli_ColorObserver mli_ColorObserver_init(void);
+void mli_ColorObserver_free(struct mli_ColorObserver *colobs);
+int mli_ColorObserver_malloc_cie1931(struct mli_ColorObserver *colobs);
+int mli_ColorObserver_evaluate(
+        const struct mli_ColorObserver *colobs,
         const struct mli_Func *func,
-        struct mliColor *color);
-int mliColorObserver_is_valid(const struct mliColorObserver *colobs);
+        struct mli_Color *color);
+int mli_ColorObserver_is_valid(const struct mli_ColorObserver *colobs);
 #endif

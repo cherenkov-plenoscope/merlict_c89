@@ -32,7 +32,9 @@ chk_error:
         return 0;
 }
 
-struct mli_AvlNode *mli_AvlDict_find(struct mli_AvlDict *dict, const int64_t key)
+struct mli_AvlNode *mli_AvlDict_find(
+        struct mli_AvlDict *dict,
+        const int64_t key)
 {
         struct mli_AvlNode *out = NULL;
         struct mli_AvlNode probe;
@@ -43,7 +45,9 @@ struct mli_AvlNode *mli_AvlDict_find(struct mli_AvlDict *dict, const int64_t key
         return out;
 }
 
-int mli_AvlDict_update__(const struct mli_AvlNode *node, struct mli_AvlDict *out)
+int mli_AvlDict_update__(
+        const struct mli_AvlNode *node,
+        struct mli_AvlDict *out)
 {
         if (node == NULL) {
                 return 1;
@@ -53,7 +57,8 @@ int mli_AvlDict_update__(const struct mli_AvlNode *node, struct mli_AvlDict *out
                 "updating.");
 
         if (node->avl.left != NULL) {
-                struct mli_AvlNode *left = (struct mli_AvlNode *)(node->avl.left);
+                struct mli_AvlNode *left =
+                        (struct mli_AvlNode *)(node->avl.left);
                 chk_msg(mli_AvlDict_update__(left, out), "1");
         }
         if (node->avl.right != NULL) {

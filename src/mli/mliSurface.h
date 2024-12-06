@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../func/func.h"
-#include "mliColor.h"
+#include "../color/color.h"
 #include "../json/json.h"
 
 #define MLI_MATERIAL_PHONG 100u

@@ -29,7 +29,7 @@ int mli_Image_malloc(
         mli_Image_free(img);
         img->num_cols = num_cols;
         img->num_rows = num_rows;
-        chk_malloc(img->raw, struct mliColor, img->num_cols * img->num_rows);
+        chk_malloc(img->raw, struct mli_Color, img->num_cols * img->num_rows);
         return 1;
 chk_error:
         mli_Image_free(img);
@@ -48,14 +48,14 @@ void mli_Image_set(
         const struct mli_Image *img,
         const uint32_t col,
         const uint32_t row,
-        const struct mliColor color)
+        const struct mli_Color color)
 {
         img->raw[mli_Image_idx(img, col, row)] = color;
 }
 
 void mli_Image_set_all_pixel(
         const struct mli_Image *img,
-        const struct mliColor color)
+        const struct mli_Color color)
 {
         uint64_t row, col;
         for (row = 0; row < img->num_rows; row++) {
@@ -65,12 +65,12 @@ void mli_Image_set_all_pixel(
         }
 }
 
-struct mliColor mli_Image_at(
+struct mli_Color mli_Image_at(
         const struct mli_Image *img,
         const uint32_t col,
         const uint32_t row)
 {
-        struct mliColor out;
+        struct mli_Color out;
         out = img->raw[mli_Image_idx(img, col, row)];
         return out;
 }
@@ -86,7 +86,7 @@ int mli_Image_scale_down_twice(
                 "Expected destination.num_rows*2u == source.num_rows");
         for (row = 0; row < destination->num_rows; row++) {
                 for (col = 0; col < destination->num_cols; col++) {
-                        struct mliColor mix[4];
+                        struct mli_Color mix[4];
                         sr = row * 2u;
                         sc = col * 2u;
                         mix[0] = mli_Image_at(source, sc + 0, sr + 0);
@@ -94,7 +94,7 @@ int mli_Image_scale_down_twice(
                         mix[2] = mli_Image_at(source, sc + 1, sr + 0);
                         mix[3] = mli_Image_at(source, sc + 1, sr + 1);
                         mli_Image_set(
-                                destination, col, row, mliColor_mean(mix, 4));
+                                destination, col, row, mli_Color_mean(mix, 4));
                 }
         }
         return 1;
@@ -202,10 +202,10 @@ void mli_Image_luminance_threshold_dilatation(
         const int32_t rows = image->num_rows;
         const int32_t cols = image->num_cols;
         int32_t col, row;
-        const struct mliColor color_max = mliColor_set(255., 255., 255.);
+        const struct mli_Color color_max = mli_Color_set(255., 255., 255.);
         for (row = 0; row < rows; row++) {
                 for (col = 0; col < cols; col++) {
-                        const struct mliColor color_at =
+                        const struct mli_Color color_at =
                                 mli_Image_at(image, col, row);
                         const float luminance =
                                 (color_at.r + color_at.g + color_at.b);
@@ -273,7 +273,7 @@ void mli_Pixels_above_threshold(
         for (i = 0; i < num_pixel; i++) {
                 struct mli_Pixel px = mli_PixelWalk_get(&walk);
                 double lum = 0.0;
-                struct mliColor c = mli_Image_at(image, px.col, px.row);
+                struct mli_Color c = mli_Image_at(image, px.col, px.row);
                 lum = c.r + c.g + c.b;
                 if (lum > threshold) {
                         mli_Pixels_push_back(pixels, px);
@@ -336,7 +336,7 @@ void mli_Image_histogram(
         const double *row_bin_edges,
         const double col_val,
         const double row_val,
-        const struct mliColor weight)
+        const struct mli_Color weight)
 {
         uint64_t col_upper_idx, row_upper_idx;
         int valid_col, valid_row;
@@ -354,16 +354,16 @@ void mli_Image_histogram(
                 const uint32_t col_idx = col_upper_idx - 1;
                 const uint32_t row_idx = row_upper_idx - 1;
                 const uint64_t pix = mli_Image_idx(img, col_idx, row_idx);
-                img->raw[pix] = mliColor_add(img->raw[pix], weight);
+                img->raw[pix] = mli_Color_add(img->raw[pix], weight);
         }
 }
 
-struct mliColor mli_Image_max(const struct mli_Image *img)
+struct mli_Color mli_Image_max(const struct mli_Image *img)
 {
-        struct mliColor max = mliColor_set(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+        struct mli_Color max = mli_Color_set(-FLT_MAX, -FLT_MAX, -FLT_MAX);
         uint64_t pix;
         for (pix = 0u; pix < img->num_rows * img->num_cols; pix++) {
-                struct mliColor c = img->raw[pix];
+                struct mli_Color c = img->raw[pix];
                 if (c.r > max.r) {
                         max.r = c.r;
                 }
@@ -377,7 +377,7 @@ struct mliColor mli_Image_max(const struct mli_Image *img)
         return max;
 }
 
-void mli_Image_multiply(struct mli_Image *img, const struct mliColor color)
+void mli_Image_multiply(struct mli_Image *img, const struct mli_Color color)
 {
         uint64_t pix;
         for (pix = 0u; pix < img->num_rows * img->num_cols; pix++) {

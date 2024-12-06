@@ -21,10 +21,10 @@ CASE("focussing_a_parallel_beam")
         double fraction_reaching_screen = 0.0;
         struct mli_Image screen_img = mli_Image_init();
         double screen_bin_edges[NUM_PIXEL + 1];
-        struct mliColor max_color;
+        struct mli_Color max_color;
 
         CHECK(mli_Image_malloc(&screen_img, NUM_PIXEL, NUM_PIXEL));
-        mli_Image_set_all_pixel(&screen_img, mliColor_set(20.0, 0.0, 0.0));
+        mli_Image_set_all_pixel(&screen_img, mli_Color_set(20.0, 0.0, 0.0));
         mli_math_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
         wavelength_range = mli_prng_UniformRange_set(380e-9, 700e-9);
 
@@ -77,7 +77,7 @@ CASE("focussing_a_parallel_beam")
                                 screen_bin_edges,
                                 final_intersection.position.x,
                                 final_intersection.position.y,
-                                mliColor_set(0.0, 1.0, 1.0));
+                                mli_Color_set(0.0, 1.0, 1.0));
                 }
         }
         fraction_reaching_screen = count_reaching_screen / (double)NUM_PHOTONS;
@@ -91,7 +91,7 @@ CASE("focussing_a_parallel_beam")
         max_color = mli_Image_max(&screen_img);
         mli_Image_multiply(
                 &screen_img,
-                mliColor_set(1.0, 255.0 / max_color.g, 255.0 / max_color.b));
+                mli_Color_set(1.0, 255.0 / max_color.g, 255.0 / max_color.b));
         CHECK(mli_Image_write_to_path(
                 &screen_img,
                 "data/"

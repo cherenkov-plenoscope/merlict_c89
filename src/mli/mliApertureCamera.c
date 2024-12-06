@@ -193,7 +193,7 @@ void mliApertureCamera_aquire_pixels(
                 struct mliRay ray_wrt_root =
                         mliHomTra_ray(&camera2root, ray_wrt_camera);
 
-                struct mliColor set_color =
+                struct mli_Color set_color =
                         mliTracer_trace_ray(tracer, ray_wrt_root, prng);
 
                 mli_Image_set(colors, i, 0u, set_color);
@@ -235,7 +235,7 @@ int mliApertureCamera_render_image(
         uint64_t MAX_ITERATIONS = 128;
         uint64_t iteration = 0;
 
-        struct mliColor zero_color = mliColor_set(0.0, 0.0, 0.0);
+        struct mli_Color zero_color = mli_Color_set(0.0, 0.0, 0.0);
         struct mli_Image sum_image = mli_Image_init();
         struct mli_Image exposure_image = mli_Image_init();
         struct mli_Image to_do_image = mli_Image_init();

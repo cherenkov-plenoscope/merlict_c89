@@ -3,7 +3,7 @@
 #include "mliFrame_json.h"
 #include "mliAtmosphere_json.h"
 #include "../chk/chk.h"
-#include "mliColor_json.h"
+#include "../color/color_json.h"
 
 int mliTracerConfig_from_json_token(
         struct mliTracerConfig *tc,
@@ -26,7 +26,7 @@ int mliTracerConfig_from_json_token(
         tc->have_atmosphere = (int)have_atmosphere;
 
         chk(mli_Json_token_by_key(json, tkn, "background_color", &bgctkn));
-        chk(mliColor_from_json_token(&tc->background_color, json, bgctkn + 1));
+        chk(mli_Color_from_json_token(&tc->background_color, json, bgctkn + 1));
 
         chk(mli_Json_token_by_key(json, tkn, "atmosphere", &atmtkn));
         chk(mliAtmosphere_from_json_token(&tc->atmosphere, json, atmtkn + 1));
