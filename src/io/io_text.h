@@ -7,6 +7,7 @@
 #include "io.h"
 
 int mli_IO_text_getc(struct mli_IO *byt);
+int mli_IO_text_putc(struct mli_IO *byt, const char c);
 
 int mli_IO_text_read_line(
         struct mli_IO *stream,

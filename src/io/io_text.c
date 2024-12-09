@@ -8,12 +8,22 @@
 
 int mli_IO_text_getc(struct mli_IO *byt)
 {
-        unsigned char c;
-        int rc = mli_IO__read_unsigned_char(byt, &c);
+        char c = EOF;
+        int rc = mli_IO_read(byt, (void *)(&c), sizeof(char), 1);
         if (rc == EOF) {
                 return EOF;
+        } else {
+                return (int)c;
         }
-        return (int)c;
+}
+
+int mli_IO_text_putc(struct mli_IO *byt, const char c)
+{
+        chk_msg(mli_IO_write(byt, (void *)(&c), sizeof(char), 1),
+                "Can not write char to IO.");
+        return 1;
+chk_error:
+        return 0;
 }
 
 int mli_IO_text_read_line(
@@ -31,7 +41,7 @@ int mli_IO_text_read_line(
                 } else if (c == delimiter) {
                         break;
                 } else {
-                        chk(mli_IO_write_char(&buf, c));
+                        chk(mli_IO_text_putc(&buf, c));
                 }
         }
 
@@ -91,7 +101,7 @@ int mli_IO_text_write_multi_line_debug_view(
                                 f, line, _line_number));
                 }
                 if (valid) {
-                        chk(mli_IO_write_char(f, text->array[i]));
+                        chk(mli_IO_text_putc(f, text->array[i]));
                 }
                 if (prefix && text->array[i] == '\n') {
                         chk(mli_IO_text_write_multi_line_debug_view_line_match(
@@ -99,7 +109,7 @@ int mli_IO_text_write_multi_line_debug_view(
                 }
                 i++;
         }
-        chk(mli_IO_write_char(f, '\n'));
+        chk(mli_IO_text_putc(f, '\n'));
 
         return 1;
 chk_error:

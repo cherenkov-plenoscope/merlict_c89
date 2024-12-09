@@ -101,7 +101,7 @@ chk_error:
         return 0;
 }
 
-int mli_IO__write_unsigned_char(struct mli_IO *byt, const unsigned char c)
+int mli_IO__write_unsigned_char(struct mli_IO *byt, const unsigned char *c)
 {
         /* 'puts' a single byte (char) to the BytesIo-buffer */
         const uint64_t new_size = byt->size + 1u;
@@ -116,7 +116,7 @@ int mli_IO__write_unsigned_char(struct mli_IO *byt, const unsigned char c)
                 chk_msg(mli_IO__realloc_capacity(byt, min_new_capacity),
                         "Failed to reallocate.");
         }
-        byt->cstr[byt->size] = c;
+        byt->cstr[byt->size] = (*c);
         byt->size = new_size;
         byt->pos += 1;
 
@@ -133,11 +133,6 @@ int mli_IO__read_unsigned_char(struct mli_IO *self, unsigned char *c)
         (*c) = self->cstr[self->pos];
         self->pos += 1;
         return 1;
-}
-
-int mli_IO_write_char(struct mli_IO *byt, const char c)
-{
-        return mli_IO__write_unsigned_char(byt, (unsigned char)c);
 }
 
 int mli_IO_write_cstr_format(struct mli_IO *str, const char *format, ...)
@@ -164,7 +159,8 @@ int mli_IO_write_cstr_format(struct mli_IO *str, const char *format, ...)
                 "a buffer overflow.");
 
         for (i = 0; i < tmp_length; i++) {
-                chk(mli_IO__write_unsigned_char(str, tmp.cstr[i]))
+                chk(mli_IO__write_unsigned_char(
+                        str, (unsigned char *)(&tmp.cstr[i])));
         }
 
         va_end(args);
@@ -195,7 +191,8 @@ int mli_IO_copy_start_num(
         chk_msg(start + num <= src->size, "Expected start + num < src->size.");
         chk(mli_IO__malloc_capacity(dst, num));
         for (i = 0; i < num; i++) {
-                chk(mli_IO__write_unsigned_char(dst, src->cstr[i + start]));
+                chk(mli_IO__write_unsigned_char(
+                        dst, (unsigned char *)(&src->cstr[i + start])));
         }
         return 1;
 chk_error:
@@ -214,7 +211,7 @@ int64_t mli_IO_write(
 
         uint64_t i;
         for (i = 0u; i < block_size; i++) {
-                chk_msg(mli_IO__write_unsigned_char(byt, block[i]),
+                chk_msg(mli_IO__write_unsigned_char(byt, &block[i]),
                         "Failed to put byte");
         }
         return (i + 1u) / size;
@@ -264,7 +261,7 @@ int mli_IO_write_from_path(struct mli_IO *byt, const char *path)
                 if (rc == 0) {
                         break;
                 }
-                chk_msg(mli_IO__write_unsigned_char(byt, c),
+                chk_msg(mli_IO__write_unsigned_char(byt, &c),
                         "Failed to write char to IO.");
         }
         fclose(f);

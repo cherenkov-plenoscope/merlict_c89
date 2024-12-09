@@ -101,52 +101,6 @@ CASE("mli_IO_copy_start_num")
         mli_IO_free(&src);
 }
 
-CASE("BytesIo_putc")
-{
-        struct mli_IO byt = mli_IO_init();
-        uint64_t i;
-        CHECK(mli_IO_reset(&byt));
-
-        for (i = 0; i < 20; i++) {
-                CHECK(mli_IO__write_unsigned_char(&byt, 'A'));
-
-                CHECK(byt.cstr != NULL);
-                CHECK(byt.pos == i + 1);
-                CHECK(byt.pos == byt.size);
-                CHECK(byt.capacity > byt.size);
-
-                /* always terminated with '\0' */
-                CHECK(byt.cstr[byt.pos] == '\0');
-                CHECK(strlen((char *)byt.cstr) == byt.size);
-        }
-        mli_IO_free(&byt);
-
-        CHECK(byt.cstr == NULL);
-        CHECK(byt.capacity == 0u);
-        CHECK(byt.size == 0u);
-        CHECK(byt.pos == 0u);
-}
-
-CASE("BytesIo_putc_rewind_getc")
-{
-        struct mli_IO byt = mli_IO_init();
-        CHECK(mli_IO_reset(&byt));
-
-        CHECK(mli_IO__write_unsigned_char(&byt, 'A'));
-        CHECK(mli_IO__write_unsigned_char(&byt, 'B'));
-        CHECK(mli_IO__write_unsigned_char(&byt, 'C'));
-
-        mli_IO_rewind(&byt);
-        CHECK(byt.pos == 0u);
-
-        CHECK(mli_IO_text_getc(&byt) == 'A');
-        CHECK(mli_IO_text_getc(&byt) == 'B');
-        CHECK(mli_IO_text_getc(&byt) == 'C');
-        CHECK(mli_IO_text_getc(&byt) == EOF);
-
-        mli_IO_free(&byt);
-}
-
 CASE("BytesIo_write_rewind_read")
 {
         struct mli_IO byt = mli_IO_init();

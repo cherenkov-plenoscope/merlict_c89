@@ -217,13 +217,13 @@ int mli_String_convert_line_break_CRLF_CR_to_LF(
 
         while (i < src->size) {
                 if (mli_cstr_is_CRLF((char *)&src->array[i])) {
-                        chk(mli_IO_write_char(&sdst, '\n'));
+                        chk(mli_IO_text_putc(&sdst, '\n'));
                         i += 2;
                 } else if (mli_cstr_is_CR((char *)&src->array[i])) {
-                        chk(mli_IO_write_char(&sdst, '\n'));
+                        chk(mli_IO_text_putc(&sdst, '\n'));
                         i += 1;
                 } else {
-                        chk(mli_IO_write_char(&sdst, src->array[i]));
+                        chk(mli_IO_text_putc(&sdst, src->array[i]));
                         i += 1;
                 }
         }
