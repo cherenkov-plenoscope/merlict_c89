@@ -6,6 +6,8 @@
 #include "../string/string.h"
 #include "io.h"
 
+int mli_IO_text_getc(struct mli_IO *byt);
+
 int mli_IO_text_read_line(
         struct mli_IO *stream,
         struct mli_String *line,

@@ -2,6 +2,7 @@
 #include "tar_io.h"
 #include <stdio.h>
 #include "../chk/chk.h"
+#include "../io/io.h"
 
 int mli_Tar_read_data_to_IO(
         struct mli_Tar *tar,
@@ -13,7 +14,7 @@ int mli_Tar_read_data_to_IO(
         for (i = 0; i < size; i++) {
                 unsigned char c;
                 chk(mli_Tar_read_data(tar, (void *)(&c), 1));
-                chk(mli_IO_write_unsigned_char(buff, c));
+                chk(mli_IO_write(buff, (void *)(&c), sizeof(unsigned char), 1));
         }
 
         return 1;
@@ -29,10 +30,8 @@ int mli_Tar_write_data_from_IO(
         uint64_t i;
         chk_msg(tar->stream, "tar is not open.");
         for (i = 0; i < size; i++) {
-                int rc = mli_IO_read_char(buff);
                 unsigned char c;
-                chk(rc != EOF);
-                c = (char)(rc);
+                chk(mli_IO_read(buff, (void *)(&c), sizeof(unsigned char), 1));
                 chk(mli_Tar_write_data(tar, (void *)(&c), 1));
         }
 

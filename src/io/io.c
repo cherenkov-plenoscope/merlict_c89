@@ -101,7 +101,7 @@ chk_error:
         return 0;
 }
 
-int mli_IO_write_unsigned_char(struct mli_IO *byt, const unsigned char c)
+int mli_IO__write_unsigned_char(struct mli_IO *byt, const unsigned char c)
 {
         /* 'puts' a single byte (char) to the BytesIo-buffer */
         const uint64_t new_size = byt->size + 1u;
@@ -125,9 +125,19 @@ chk_error:
         return 0;
 }
 
+int mli_IO__read_unsigned_char(struct mli_IO *self, unsigned char *c)
+{
+        if (self->pos >= self->size) {
+                return EOF;
+        }
+        (*c) = self->cstr[self->pos];
+        self->pos += 1;
+        return 1;
+}
+
 int mli_IO_write_char(struct mli_IO *byt, const char c)
 {
-        return mli_IO_write_unsigned_char(byt, (unsigned char)c);
+        return mli_IO__write_unsigned_char(byt, (unsigned char)c);
 }
 
 int mli_IO_write_cstr_format(struct mli_IO *str, const char *format, ...)
@@ -154,7 +164,7 @@ int mli_IO_write_cstr_format(struct mli_IO *str, const char *format, ...)
                 "a buffer overflow.");
 
         for (i = 0; i < tmp_length; i++) {
-                chk(mli_IO_write_unsigned_char(str, tmp.cstr[i]))
+                chk(mli_IO__write_unsigned_char(str, tmp.cstr[i]))
         }
 
         va_end(args);
@@ -185,23 +195,12 @@ int mli_IO_copy_start_num(
         chk_msg(start + num <= src->size, "Expected start + num < src->size.");
         chk(mli_IO__malloc_capacity(dst, num));
         for (i = 0; i < num; i++) {
-                chk(mli_IO_write_unsigned_char(dst, src->cstr[i + start]));
+                chk(mli_IO__write_unsigned_char(dst, src->cstr[i + start]));
         }
         return 1;
 chk_error:
         mli_IO_free(dst);
         return 0;
-}
-
-int mli_IO_read_char(struct mli_IO *byt)
-{
-        int c;
-        if (byt->pos >= byt->size) {
-                return EOF;
-        }
-        c = byt->cstr[byt->pos];
-        byt->pos += 1;
-        return c;
 }
 
 int64_t mli_IO_write(
@@ -215,7 +214,7 @@ int64_t mli_IO_write(
 
         uint64_t i;
         for (i = 0u; i < block_size; i++) {
-                chk_msg(mli_IO_write_unsigned_char(byt, block[i]),
+                chk_msg(mli_IO__write_unsigned_char(byt, block[i]),
                         "Failed to put byte");
         }
         return (i + 1u) / size;
@@ -234,12 +233,14 @@ int64_t mli_IO_read(
 
         uint64_t i;
         for (i = 0u; i < block_size; i++) {
-                int c = mli_IO_read_char(byt);
+                int rc;
+                unsigned char c;
+                rc = mli_IO__read_unsigned_char(byt, &c);
 
-                if (c == EOF) {
+                if (rc == EOF) {
                         return EOF;
                 } else {
-                        block[i] = (unsigned char)c;
+                        block[i] = c;
                 }
         }
         return (i + 1u) / size;
@@ -253,14 +254,18 @@ void mli_IO_rewind(struct mli_IO *byt) { byt->pos = 0u; }
 
 int mli_IO_write_from_path(struct mli_IO *byt, const char *path)
 {
-        int c = EOF;
+        int rc;
+        unsigned char c;
         FILE *f = fopen(path, "rt");
         chk_msg(f, "Failed to open file.");
         chk_msg(mli_IO__malloc(byt), "Can not malloc string.");
-        c = getc(f);
-        while (c != EOF) {
-                chk_msg(mli_IO_write_char(byt, c), "Failed to push back char.");
-                c = getc(f);
+        while (1) {
+                rc = fread((void *)(&c), sizeof(unsigned char), 1, f);
+                if (rc == 0) {
+                        break;
+                }
+                chk_msg(mli_IO__write_unsigned_char(byt, c),
+                        "Failed to write char to IO.");
         }
         fclose(f);
         return 1;
@@ -273,40 +278,19 @@ chk_error:
 
 int mli_IO_read_to_path(struct mli_IO *byt, const char *path)
 {
-        int c = 1;
         FILE *f = fopen(path, "w");
         chk_msg(f != NULL, "Failed to open path.");
-        while (c != EOF) {
-                c = mli_IO_read_char(byt);
-                chk(fputc(c, f));
-        }
-        fclose(f);
-        return 1;
-chk_error:
-        fclose(f);
-        return 0;
-}
-
-int mli_IO_str_read_line(
-        struct mli_IO *stream,
-        struct mli_IO *line,
-        const char delimiter)
-{
-        chk(mli_IO_reset(line));
-
-        while (stream->pos < stream->size) {
-                const int c = mli_IO_read_char(stream);
-                if (c == '\0') {
+        while (1) {
+                unsigned char c;
+                int rc = mli_IO__read_unsigned_char(byt, &c);
+                if (rc == EOF) {
                         break;
-                } else if (c == delimiter) {
-                        break;
-                } else {
-                        chk(mli_IO_write_char(line, c));
                 }
+                chk_fwrite(&c, sizeof(unsigned char), 1, f);
         }
-
+        fclose(f);
         return 1;
 chk_error:
-        mli_IO_free(line);
+        fclose(f);
         return 0;
 }

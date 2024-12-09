@@ -24,7 +24,6 @@ struct mli_IO mli_IO_init(void);
 void mli_IO_free(struct mli_IO *byt);
 int mli_IO_reset(struct mli_IO *byt);
 
-
 /* copy */
 /* ---- */
 int mli_IO_copy(struct mli_IO *dst, const struct mli_IO *src);
@@ -37,8 +36,6 @@ int mli_IO_copy_start_num(
 /* writing */
 /* ------- */
 int mli_IO_write_cstr_format(struct mli_IO *byt, const char *format, ...);
-int mli_IO_write_from_path(struct mli_IO *byt, const char *path);
-int mli_IO_write_unsigned_char(struct mli_IO *byt, const unsigned char c);
 int mli_IO_write_char(struct mli_IO *byt, const char c);
 int64_t mli_IO_write(
         struct mli_IO *byt,
@@ -48,8 +45,6 @@ int64_t mli_IO_write(
 
 /* reading */
 /* ------- */
-int mli_IO_read_to_path(struct mli_IO *byt, const char *path);
-int mli_IO_read_char(struct mli_IO *byt);
 int64_t mli_IO_read(
         struct mli_IO *byt,
         const void *ptr,
@@ -62,10 +57,15 @@ uint64_t mli_IO_ftell(struct mli_IO *byt);
 void mli_IO_rewind(struct mli_IO *byt);
 void mli_IO_seek(struct mli_IO *byt, const uint64_t pos);
 
+/* to/from path */
+int mli_IO_write_from_path(struct mli_IO *byt, const char *path);
+int mli_IO_read_to_path(struct mli_IO *byt, const char *path);
+
 /* internal */
 int mli_IO__malloc(struct mli_IO *byt);
 int mli_IO__malloc_capacity(struct mli_IO *byt, const uint64_t capacity);
 int mli_IO__realloc_capacity(struct mli_IO *byt, const uint64_t new_capacity);
 int mli_IO__shrink_to_fit(struct mli_IO *byt);
-
+int mli_IO__write_unsigned_char(struct mli_IO *byt, const unsigned char c);
+int mli_IO__read_unsigned_char(struct mli_IO *self, unsigned char *c);
 #endif

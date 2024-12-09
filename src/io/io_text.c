@@ -6,6 +6,16 @@
 #include "../math/math.h"
 #include "../cstr/cstr.h"
 
+int mli_IO_text_getc(struct mli_IO *byt)
+{
+        unsigned char c;
+        int rc = mli_IO__read_unsigned_char(byt, &c);
+        if (rc == EOF) {
+                return EOF;
+        }
+        return (int)c;
+}
+
 int mli_IO_text_read_line(
         struct mli_IO *stream,
         struct mli_String *line,
@@ -15,7 +25,7 @@ int mli_IO_text_read_line(
         chk(mli_IO_reset(&buf));
 
         while (stream->pos < stream->size) {
-                const int c = mli_IO_read_char(stream);
+                const int c = mli_IO_text_getc(stream);
                 if (c == '\0') {
                         break;
                 } else if (c == delimiter) {
