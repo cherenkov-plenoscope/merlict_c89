@@ -88,12 +88,12 @@ int main(int argc, char *argv[])
                         } else {
                                 mli_corsika_Histogram2d_reset(&hist);
                         }
-                        chk(mli_IO_reset(&config_text));
+                        chk(mli_IO_open(&config_text));
                         chk(mli_Tar_read_data_to_IO(
                                 &arc, &config_text, arch.size));
                         chk(mliAxisAlignedGrid_set_from_config(
                                 &grid, &config_text));
-                        mli_IO_free(&config_text);
+                        mli_IO_close(&config_text);
                 } else if (strcmp(arch.name, "cer.x8.float32") == 0) {
                         const int num_bunches = arch.size / 32;
                         int num = 0;

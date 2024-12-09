@@ -243,7 +243,7 @@ CASE("line info fprint")
         CHECK(mli_cstr_lines_fprint(f, (char *)s.cstr, 35, 3));
         fclose(f);
 
-        mli_IO_free(&s);
+        mli_IO_close(&s);
 }
 
 CASE("basename")

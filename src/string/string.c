@@ -213,7 +213,7 @@ int mli_String_convert_line_break_CRLF_CR_to_LF(
 {
         uint64_t i = 0;
         struct mli_IO sdst = mli_IO_init();
-        chk(mli_IO_reset(&sdst));
+        chk(mli_IO_open(&sdst));
 
         while (i < src->size) {
                 if (mli_cstr_is_CRLF((char *)&src->array[i])) {
@@ -231,10 +231,10 @@ int mli_String_convert_line_break_CRLF_CR_to_LF(
         chk(mli_String_malloc(dst, sdst.size));
         strncpy(dst->array, (char *)sdst.cstr, sdst.size);
 
-        mli_IO_free(&sdst);
+        mli_IO_close(&sdst);
         return 1;
 chk_error:
-        mli_IO_free(&sdst);
+        mli_IO_close(&sdst);
         mli_String_free(dst);
         return 0;
 }

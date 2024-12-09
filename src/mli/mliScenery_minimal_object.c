@@ -96,7 +96,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         chk_msg(mliObject_malloc_from_wavefront(
                         &scenery->geometry.objects[0], (char *)str.cstr),
                 "Failed to malloc wavefront-object from string.");
-        mli_IO_free(&str);
+        mli_IO_close(&str);
         sprintf(scenery->geometry.object_names[0].cstr, "default-object");
 
         /* set reference */

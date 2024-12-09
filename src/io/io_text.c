@@ -32,7 +32,7 @@ int mli_IO_text_read_line(
         const char delimiter)
 {
         struct mli_IO buf = mli_IO_init();
-        chk(mli_IO_reset(&buf));
+        chk(mli_IO_open(&buf));
 
         while (stream->pos < stream->size) {
                 const int c = mli_IO_text_getc(stream);
@@ -49,10 +49,10 @@ int mli_IO_text_read_line(
         chk(mli_String_malloc(line, buf.size));
         strcpy(line->array, (char *)buf.cstr);
 
-        mli_IO_free(&buf);
+        mli_IO_close(&buf);
         return 1;
 chk_error:
-        mli_IO_free(&buf);
+        mli_IO_close(&buf);
         return 0;
 }
 

@@ -370,7 +370,7 @@ CASE("mliObject, read wavefront file")
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, (char *)str.cstr));
-        mli_IO_free(&str);
+        mli_IO_close(&str);
 
         CHECK(obj.num_faces == 600);
         CHECK(obj.num_vertices == 331);
@@ -398,7 +398,7 @@ CASE("mliObject, write and read binary-string")
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, (char *)str.cstr));
-        mli_IO_free(&str);
+        mli_IO_close(&str);
 
         f =
                 fopen("data/"
@@ -466,20 +466,20 @@ CASE("mliObject, write and read ascii-text-string")
                 "objects/"
                 "hexagonal_mirror_facet.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj, (char *)str.cstr));
-        mli_IO_free(&str);
+        mli_IO_close(&str);
 
         mliObject_fprint_to_wavefront(&f, &obj);
         mli_IO_rewind(&f);
         mli_IO_read_to_path(
                 &f, "data/mli/tests/resources/hexagonal_mirror_facet.obj.tmp");
-        mli_IO_free(&f);
+        mli_IO_close(&f);
 
         CHECK(mli_IO_write_from_path(
                 &str,
                 "data/mli/tests/resources/"
                 "hexagonal_mirror_facet.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, (char *)str.cstr));
-        mli_IO_free(&str);
+        mli_IO_close(&str);
 
         CHECK(obj.num_vertices == obj_back.num_vertices);
         CHECK(obj.num_vertex_normals == obj_back.num_vertex_normals);
@@ -527,7 +527,7 @@ CASE("mliObject, read and write multiple materials")
                 "objects/"
                 "cube_with_materials.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj_orig, (char *)str.cstr));
-        mli_IO_free(&str);
+        mli_IO_close(&str);
         CHECK(obj_orig.num_vertices == 8);
         CHECK(obj_orig.num_vertex_normals == 6);
         CHECK(obj_orig.num_faces == 12);
@@ -537,7 +537,7 @@ CASE("mliObject, read and write multiple materials")
         mli_IO_rewind(&f);
         mli_IO_read_to_path(
                 &f, "data/mli/tests/resources/cube_with_materials.obj.tmp");
-        mli_IO_free(&f);
+        mli_IO_close(&f);
 
         CHECK(mli_IO_write_from_path(
                 &str,
@@ -547,7 +547,7 @@ CASE("mliObject, read and write multiple materials")
                 "resources/"
                 "cube_with_materials.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, (char *)str.cstr));
-        mli_IO_free(&str);
+        mli_IO_close(&str);
 
         CHECK(obj_back.num_vertices == 8);
         CHECK(obj_back.num_vertex_normals == 6);
@@ -590,7 +590,7 @@ CASE("mliObject, read and write repeating materials")
                 "resources/"
                 "repeating_material.obj"));
         CHECK(mliObject_malloc_from_wavefront(&obj_orig, (char *)str.cstr));
-        mli_IO_free(&str);
+        mli_IO_close(&str);
         CHECK(obj_orig.num_vertices == 5);
         CHECK(obj_orig.num_vertex_normals == 1);
         CHECK(obj_orig.num_faces == 3);
@@ -600,7 +600,7 @@ CASE("mliObject, read and write repeating materials")
         mli_IO_rewind(&f);
         mli_IO_read_to_path(
                 &f, "data/mli/tests/resources/repeating_material.obj.tmp");
-        mli_IO_free(&f);
+        mli_IO_close(&f);
 
         CHECK(mli_IO_write_from_path(
                 &str,
@@ -610,7 +610,7 @@ CASE("mliObject, read and write repeating materials")
                 "resources/"
                 "repeating_material.obj.tmp"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, (char *)str.cstr));
-        mli_IO_free(&str);
+        mli_IO_close(&str);
 
         CHECK(obj_back.num_vertices == obj_orig.num_vertices);
         CHECK(obj_back.num_vertex_normals == obj_orig.num_vertex_normals);

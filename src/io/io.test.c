@@ -10,38 +10,17 @@ CASE("mli_IO_init")
         CHECK(byt.pos == 0u);
 }
 
-CASE("mli_IO_reset")
+CASE("mli_IO_open")
 {
         struct mli_IO byt = mli_IO_init();
-        CHECK(mli_IO_reset(&byt));
+        CHECK(mli_IO_open(&byt));
 
         CHECK(byt.cstr != NULL);
         CHECK(byt.capacity == 2u);
         CHECK(byt.size == 0u);
         CHECK(byt.pos == 0u);
 
-        mli_IO_free(&byt);
-}
-
-CASE("mli_IO_copy")
-{
-        struct mli_IO src = mli_IO_init();
-        struct mli_IO dst = mli_IO_init();
-
-        CHECK(mli_IO_write_cstr_format(&src, "abb"));
-        CHECK(mli_IO_copy(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.cstr, "abb"));
-
-        CHECK(mli_IO_reset(&src));
-        CHECK(mli_IO_write_cstr_format(&src, ""));
-        CHECK(mli_IO_copy(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.cstr, ""));
-
-        mli_IO_free(&src);
-        CHECK(!mli_IO_copy(&dst, &src));
-
-        mli_IO_free(&dst);
-        mli_IO_free(&src);
+        mli_IO_close(&byt);
 }
 
 CASE("mli_IO__shrink_to_fit")
@@ -55,7 +34,7 @@ CASE("mli_IO__shrink_to_fit")
         CHECK(str.size == 10);
         CHECK(str.pos == 10);
 
-        CHECK(mli_IO_reset(&str));
+        CHECK(mli_IO_open(&str));
         CHECK(str.cstr != NULL);
         CHECK(str.capacity == 16);
         CHECK(str.size == 0);
@@ -73,32 +52,7 @@ CASE("mli_IO__shrink_to_fit")
         CHECK(str.size == 3);
         CHECK(str.pos == 3);
 
-        mli_IO_free(&str);
-}
-
-CASE("mli_IO_copy_start_num")
-{
-        struct mli_IO src = mli_IO_init();
-        struct mli_IO dst = mli_IO_init();
-
-        CHECK(mli_IO_write_cstr_format(&src, "123456789.json"));
-
-        CHECK(mli_IO_copy_start_num(&dst, &src, 0, src.size));
-        CHECK(0 == strcmp((char *)dst.cstr, "123456789.json"));
-
-        CHECK(!mli_IO_copy_start_num(&dst, &src, 0, src.size + 1));
-
-        CHECK(mli_IO_copy_start_num(&dst, &src, 0, 3));
-        CHECK(0 == strcmp((char *)dst.cstr, "123"));
-
-        CHECK(mli_IO_copy_start_num(&dst, &src, 8, 3));
-        CHECK(0 == strcmp((char *)dst.cstr, "9.j"));
-
-        CHECK(mli_IO_copy_start_num(&dst, &src, 8, 0));
-        CHECK(0 == strcmp((char *)dst.cstr, ""));
-
-        mli_IO_free(&dst);
-        mli_IO_free(&src);
+        mli_IO_close(&str);
 }
 
 CASE("BytesIo_write_rewind_read")
@@ -112,7 +66,7 @@ CASE("BytesIo_write_rewind_read")
                 evth[i] = i;
         }
 
-        CHECK(mli_IO_reset(&byt));
+        CHECK(mli_IO_open(&byt));
 
         rc = mli_IO_write(&byt, evth, sizeof(float), 273);
         CHECK(rc == 273);
@@ -135,7 +89,7 @@ CASE("BytesIo_write_rewind_read")
         rc = mli_IO_read(&byt, back, sizeof(float), 1);
         CHECK(rc == EOF);
 
-        mli_IO_free(&byt);
+        mli_IO_close(&byt);
 }
 
 CASE("BytesIo_printf")
@@ -147,5 +101,5 @@ CASE("BytesIo_printf")
 
         CHECK(0 == strcmp((char *)byt.cstr, "Hans 008 Lok 3.141h!"));
 
-        mli_IO_free(&byt);
+        mli_IO_close(&byt);
 }
