@@ -28,7 +28,6 @@ int mli_IO_shrink_to_fit(struct mli_IO *byt);
 
 int mli_IO_malloc(struct mli_IO *byt);
 int mli_IO_malloc_capacity(struct mli_IO *byt, const uint64_t capacity);
-int mli_IO_realloc_capacity(struct mli_IO *byt, const uint64_t new_capacity);
 
 /* copy */
 /* ---- */
@@ -69,35 +68,7 @@ uint64_t mli_IO_ftell(struct mli_IO *byt);
 void mli_IO_rewind(struct mli_IO *byt);
 void mli_IO_seek(struct mli_IO *byt, const uint64_t pos);
 
-/* text like */
-/* --------- */
-
-/*
-struct mli_Stream {
-        uint64_t type;
-        union {
-                FILE* file;
-                struct mli_IO memory;
-        };
-};
-struct mli_Stream mli_Stream_init(void);
-int mli_Stream_close(struct mli_Stream* self);
-struct mli_Stream mli_Stream_open(struct mli_Stream *self);
-struct mli_Stream mli_Stream_open_file(
-        struct mli_Stream *self,
-        const struct mli_String *filename,
-        const struct mli_String *mode);
-int64_t mli_Stream_write(
-        struct mli_Stream *self,
-        const void *ptr,
-        const uint64_t size,
-        const uint64_t count);
-int64_t mli_Stream_read(
-        struct mli_Stream *self,
-        const void *ptr,
-        const uint64_t size,
-        const uint64_t count);
-int mli_Stream_seek(struct mli_Stream *self, const uint64_t pos);
-*/
+/* internal */
+int mli_IO__realloc_capacity(struct mli_IO *byt, const uint64_t new_capacity);
 
 #endif

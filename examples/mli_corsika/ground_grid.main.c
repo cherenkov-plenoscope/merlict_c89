@@ -8,6 +8,7 @@
 #include "../../src/string/string_numbers.h"
 #include "../../src/math/math.h"
 #include "../../src/io/io.h"
+#include "../../src/io/io_text.h"
 #include "../../src/tar/tar.h"
 #include "../../src/tar/tar_io.h"
 #include "../../src/vector/vector.h"

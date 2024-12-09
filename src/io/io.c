@@ -42,7 +42,7 @@ chk_error:
         return 0;
 }
 
-int mli_IO_realloc_capacity(struct mli_IO *byt, const uint64_t new_capacity)
+int mli_IO__realloc_capacity(struct mli_IO *byt, const uint64_t new_capacity)
 {
         uint64_t numcpy;
         struct mli_IO tmp = mli_IO_init();
@@ -95,7 +95,7 @@ chk_error:
 
 int mli_IO_shrink_to_fit(struct mli_IO *byt)
 {
-        chk_msg(mli_IO_realloc_capacity(byt, byt->size),
+        chk_msg(mli_IO__realloc_capacity(byt, byt->size),
                 "Failed to reallocate to size.");
         return 1;
 chk_error:
@@ -114,7 +114,7 @@ int mli_IO_write_unsigned_char(struct mli_IO *byt, const unsigned char c)
         if (new_size >= byt->capacity) {
                 const uint64_t min_new_capacity =
                         MLI_MATH_MAX2(new_size, 2 * byt->capacity);
-                chk_msg(mli_IO_realloc_capacity(byt, min_new_capacity),
+                chk_msg(mli_IO__realloc_capacity(byt, min_new_capacity),
                         "Failed to reallocate.");
         }
         byt->cstr[byt->size] = c;
