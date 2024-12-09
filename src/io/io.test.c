@@ -44,7 +44,7 @@ CASE("mli_IO_copy")
         mli_IO_free(&src);
 }
 
-CASE("mli_IO_shrink_to_fit")
+CASE("mli_IO__shrink_to_fit")
 {
         struct mli_IO str = mli_IO_init();
 
@@ -67,7 +67,7 @@ CASE("mli_IO_shrink_to_fit")
         CHECK(str.size == 3);
         CHECK(str.pos == 3);
 
-        CHECK(mli_IO_shrink_to_fit(&str));
+        CHECK(mli_IO__shrink_to_fit(&str));
         CHECK(str.cstr != NULL);
         CHECK(str.capacity == 3);
         CHECK(str.size == 3);

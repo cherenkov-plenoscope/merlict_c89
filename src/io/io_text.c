@@ -12,7 +12,7 @@ int mli_IO_text_read_line(
         const char delimiter)
 {
         struct mli_IO buf = mli_IO_init();
-        chk(mli_IO_malloc(&buf));
+        chk(mli_IO_reset(&buf));
 
         while (stream->pos < stream->size) {
                 const int c = mli_IO_read_char(stream);

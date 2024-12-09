@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
                         } else {
                                 mli_corsika_Histogram2d_reset(&hist);
                         }
-                        chk(mli_IO_malloc(&config_text));
+                        chk(mli_IO_reset(&config_text));
                         chk(mli_Tar_read_data_to_IO(
                                 &arc, &config_text, arch.size));
                         chk(mliAxisAlignedGrid_set_from_config(

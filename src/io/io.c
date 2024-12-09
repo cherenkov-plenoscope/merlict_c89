@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "../chk/chk.h"
 #include "../math/math.h"
-#include "../cstr/cstr.h"
 
 struct mli_IO mli_IO_init(void)
 {
@@ -22,7 +21,7 @@ void mli_IO_free(struct mli_IO *byt)
         (*byt) = mli_IO_init();
 }
 
-int mli_IO_malloc_capacity(struct mli_IO *byt, const uint64_t capacity)
+int mli_IO__malloc_capacity(struct mli_IO *byt, const uint64_t capacity)
 {
         mli_IO_free(byt);
         byt->capacity = MLI_MATH_MAX2(2u, capacity);
@@ -34,9 +33,9 @@ chk_error:
         return 0;
 }
 
-int mli_IO_malloc(struct mli_IO *byt)
+int mli_IO__malloc(struct mli_IO *byt)
 {
-        chk(mli_IO_malloc_capacity(byt, 0u));
+        chk(mli_IO__malloc_capacity(byt, 0u));
         return 1;
 chk_error:
         return 0;
@@ -47,13 +46,13 @@ int mli_IO__realloc_capacity(struct mli_IO *byt, const uint64_t new_capacity)
         uint64_t numcpy;
         struct mli_IO tmp = mli_IO_init();
 
-        chk_msg(mli_IO_malloc_capacity(&tmp, byt->capacity),
+        chk_msg(mli_IO__malloc_capacity(&tmp, byt->capacity),
                 "Failed to allocate temporary swap.");
         memcpy(tmp.cstr, byt->cstr, byt->capacity);
         tmp.pos = byt->pos;
         tmp.size = byt->size;
 
-        chk_msg(mli_IO_malloc_capacity(byt, new_capacity),
+        chk_msg(mli_IO__malloc_capacity(byt, new_capacity),
                 "Faild to allocate new capacity.");
 
         if (new_capacity >= tmp.capacity) {
@@ -81,7 +80,7 @@ chk_error:
 int mli_IO_reset(struct mli_IO *byt)
 {
         if (byt->cstr == NULL) {
-                chk(mli_IO_malloc(byt));
+                chk(mli_IO__malloc(byt));
         } else {
                 chk_msg(byt->capacity >= 2u, "Expected minimal capacity of 2.");
                 byt->pos = 0u;
@@ -93,7 +92,7 @@ chk_error:
         return 0;
 }
 
-int mli_IO_shrink_to_fit(struct mli_IO *byt)
+int mli_IO__shrink_to_fit(struct mli_IO *byt)
 {
         chk_msg(mli_IO__realloc_capacity(byt, byt->size),
                 "Failed to reallocate to size.");
@@ -108,7 +107,7 @@ int mli_IO_write_unsigned_char(struct mli_IO *byt, const unsigned char c)
         const uint64_t new_size = byt->size + 1u;
 
         if (byt->cstr == NULL) {
-                chk(mli_IO_malloc(byt));
+                chk(mli_IO__malloc(byt));
         }
 
         if (new_size >= byt->capacity) {
@@ -138,7 +137,7 @@ int mli_IO_write_cstr_format(struct mli_IO *str, const char *format, ...)
         struct mli_IO tmp = mli_IO_init();
         va_list args;
 
-        chk(mli_IO_malloc_capacity(&tmp, 32 * strlen(format)));
+        chk(mli_IO__malloc_capacity(&tmp, 32 * strlen(format)));
         va_start(args, format);
         vsprintf((char *)tmp.cstr, format, args);
 
@@ -184,7 +183,7 @@ int mli_IO_copy_start_num(
         uint64_t i;
         chk_msg(src->cstr != NULL, "Expected src to be allocated");
         chk_msg(start + num <= src->size, "Expected start + num < src->size.");
-        chk(mli_IO_malloc_capacity(dst, num));
+        chk(mli_IO__malloc_capacity(dst, num));
         for (i = 0; i < num; i++) {
                 chk(mli_IO_write_unsigned_char(dst, src->cstr[i + start]));
         }
@@ -257,7 +256,7 @@ int mli_IO_write_from_path(struct mli_IO *byt, const char *path)
         int c = EOF;
         FILE *f = fopen(path, "rt");
         chk_msg(f, "Failed to open file.");
-        chk_msg(mli_IO_malloc(byt), "Can not malloc string.");
+        chk_msg(mli_IO__malloc(byt), "Can not malloc string.");
         c = getc(f);
         while (c != EOF) {
                 chk_msg(mli_IO_write_char(byt, c), "Failed to push back char.");
@@ -309,38 +308,5 @@ int mli_IO_str_read_line(
         return 1;
 chk_error:
         mli_IO_free(line);
-        return 0;
-}
-
-int mli_IO_write_from_file(struct mli_IO *byt, FILE *f, const uint64_t size)
-{
-        uint64_t i;
-        chk_msg(f, "Expected file to be open.");
-        chk_msg(byt->cstr != NULL, "Expected buffer to be allocated.");
-        for (i = 0; i < size; i++) {
-                char c = getc(f);
-                chk(mli_IO_write_unsigned_char(byt, c))
-        }
-
-        return 1;
-chk_error:
-        return 0;
-}
-
-int mli_IO_read_to_file(struct mli_IO *byt, FILE *f, const uint64_t size)
-{
-        uint64_t i;
-        chk_msg(f, "Expected file to be open.");
-        chk_msg(byt->cstr != NULL, "Expected buffer to be allocated.");
-        for (i = 0; i < size; i++) {
-                int rc = mli_IO_read_char(byt);
-                unsigned char c;
-                chk(rc != EOF);
-                c = (unsigned char)(rc);
-                chk_fwrite(&c, sizeof(unsigned char), 1, f);
-        }
-
-        return 1;
-chk_error:
         return 0;
 }

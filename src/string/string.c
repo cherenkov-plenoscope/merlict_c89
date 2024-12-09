@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "../chk/chk.h"
+#include "../cstr/cstr.h"
 #include "../io/io.h"
 
 MLI_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(mli_String, char)
@@ -212,7 +213,7 @@ int mli_String_convert_line_break_CRLF_CR_to_LF(
 {
         uint64_t i = 0;
         struct mli_IO sdst = mli_IO_init();
-        chk(mli_IO_malloc(&sdst));
+        chk(mli_IO_reset(&sdst));
 
         while (i < src->size) {
                 if (mli_cstr_is_CRLF((char *)&src->array[i])) {
