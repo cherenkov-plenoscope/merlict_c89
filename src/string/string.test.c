@@ -238,3 +238,55 @@ CASE("mli_String_copyn")
         mli_String_free(&dst);
         mli_String_free(&src);
 }
+
+CASE("replace CRLF and CR linebreaks with LF")
+{
+        struct mli_String src = mli_String_init();
+        struct mli_String dst = mli_String_init();
+
+        /* all '\0' */
+        /* -------- */
+        CHECK(mli_String_from_cstr_fromat(&src, ""));
+        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mli_String_equal_cstr(&dst, ""));
+
+        /* minimal CR */
+        /* ---------- */
+        CHECK(mli_String_from_cstr_fromat(&src, "\r"));
+        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mli_String_equal_cstr(&dst, "\n"));
+
+        /* minimal CRLF */
+        /* ------------ */
+        CHECK(mli_String_from_cstr_fromat(&src, "\r\n"));
+        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mli_String_equal_cstr(&dst, "\n"));
+
+        /* minimal text CRLF */
+        /* ----------------- */
+        CHECK(mli_String_from_cstr_fromat(&src, "hans\r\npeter"));
+        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mli_String_equal_cstr(&dst, "hans\npeter"));
+
+        /* minimal text CR */
+        /* ----------------- */
+        CHECK(mli_String_from_cstr_fromat(&src, "hans\rpeter"));
+        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mli_String_equal_cstr(&dst, "hans\npeter"));
+
+        /* complex text CRLF */
+        /* ----------------- */
+        CHECK(mli_String_from_cstr_fromat(
+                &src, "\r\nflower\r\ncar\r\n\r\nhouse\r\n"));
+        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mli_String_equal_cstr(&dst, "\nflower\ncar\n\nhouse\n"));
+
+        /* complex text CR */
+        /* ----------------- */
+        CHECK(mli_String_from_cstr_fromat(&src, "\rflower\rcar\r\rhouse\r"));
+        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
+        CHECK(mli_String_equal_cstr(&dst, "\nflower\ncar\n\nhouse\n"));
+
+        mli_String_free(&src);
+        mli_String_free(&dst);
+}

@@ -173,66 +173,6 @@ CASE("find CRLF and CR linebreaks")
         CHECK(!mli_cstr_is_CR(&txt[2]));
 }
 
-CASE("replace CRLF and CR linebreaks with LF")
-{
-        struct mli_String src = mli_String_init();
-        struct mli_String dst = mli_String_init();
-
-        CHECK(mli_String_malloc(&src, 32));
-        CHECK(mli_String_malloc(&dst, 32));
-
-        /* all '\0' */
-        /* -------- */
-        CHECK(src.array[0] == '\0');
-        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(dst.array[0] == '\0');
-
-        /* minimal CR */
-        /* ---------- */
-        memset((char *)src.array, '\0', src.size);
-        sprintf((char *)src.array, "\r");
-        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.array, "\n"));
-
-        /* minimal CRLF */
-        /* ------------ */
-        memset((char *)src.array, '\0', src.size);
-        sprintf((char *)src.array, "\r\n");
-        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.array, "\n"));
-
-        /* minimal text CRLF */
-        /* ----------------- */
-        memset((char *)src.array, '\0', src.size);
-        sprintf((char *)src.array, "hans\r\npeter");
-        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.array, "hans\npeter"));
-
-        /* minimal text CR */
-        /* ----------------- */
-        memset((char *)src.array, '\0', src.size);
-        sprintf((char *)src.array, "hans\rpeter");
-        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.array, "hans\npeter"));
-
-        /* complex text CRLF */
-        /* ----------------- */
-        memset((char *)src.array, '\0', src.size);
-        sprintf((char *)src.array, "\r\nflower\r\ncar\r\n\r\nhouse\r\n");
-        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.array, "\nflower\ncar\n\nhouse\n"));
-
-        /* complex text CR */
-        /* ----------------- */
-        memset((char *)src.array, '\0', src.size);
-        sprintf((char *)src.array, "\rflower\rcar\r\rhouse\r");
-        CHECK(mli_String_convert_line_break_CRLF_CR_to_LF(&dst, &src));
-        CHECK(0 == strcmp((char *)dst.array, "\nflower\ncar\n\nhouse\n"));
-
-        mli_String_free(&src);
-        mli_String_free(&dst);
-}
-
 CASE("assert no unexpected control codes in ascii-text.")
 {
         char txt[32];

@@ -36,5 +36,8 @@ uint64_t mli_String_countn(
 int64_t mli_String_compare(
         const struct mli_String *s1,
         const struct mli_String *s2);
+int mli_String_convert_line_break_CRLF_CR_to_LF(
+        struct mli_String *dst,
+        const struct mli_String *src);
 
 #endif

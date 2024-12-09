@@ -69,19 +69,35 @@ uint64_t mli_IO_ftell(struct mli_IO *byt);
 void mli_IO_rewind(struct mli_IO *byt);
 void mli_IO_seek(struct mli_IO *byt, const uint64_t pos);
 
-int mli_IO_readline(
-        struct mli_IO *stream,
-        struct mli_String *line,
-        const char delimiter);
+/* text like */
+/* --------- */
 
-int mli_String_convert_line_break_CRLF_CR_to_LF(
-        struct mli_String *dst,
-        const struct mli_String *src);
-
-int mli_line_viewer_write(
-        struct mli_IO *f,
-        const struct mli_String *text,
-        const uint64_t line_number,
-        const uint64_t line_radius);
+/*
+struct mli_Stream {
+        uint64_t type;
+        union {
+                FILE* file;
+                struct mli_IO memory;
+        };
+};
+struct mli_Stream mli_Stream_init(void);
+int mli_Stream_close(struct mli_Stream* self);
+struct mli_Stream mli_Stream_open(struct mli_Stream *self);
+struct mli_Stream mli_Stream_open_file(
+        struct mli_Stream *self,
+        const struct mli_String *filename,
+        const struct mli_String *mode);
+int64_t mli_Stream_write(
+        struct mli_Stream *self,
+        const void *ptr,
+        const uint64_t size,
+        const uint64_t count);
+int64_t mli_Stream_read(
+        struct mli_Stream *self,
+        const void *ptr,
+        const uint64_t size,
+        const uint64_t count);
+int mli_Stream_seek(struct mli_Stream *self, const uint64_t pos);
+*/
 
 #endif

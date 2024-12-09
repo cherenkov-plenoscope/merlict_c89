@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "../chk/chk.h"
+#include "../io/io.h"
 
 MLI_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(mli_String, char)
 
@@ -203,4 +204,36 @@ int64_t mli_String_compare(
         const struct mli_String *s2)
 {
         return strcmp(s1->array, s2->array);
+}
+
+int mli_String_convert_line_break_CRLF_CR_to_LF(
+        struct mli_String *dst,
+        const struct mli_String *src)
+{
+        uint64_t i = 0;
+        struct mli_IO sdst = mli_IO_init();
+        chk(mli_IO_malloc(&sdst));
+
+        while (i < src->size) {
+                if (mli_cstr_is_CRLF((char *)&src->array[i])) {
+                        chk(mli_IO_write_char(&sdst, '\n'));
+                        i += 2;
+                } else if (mli_cstr_is_CR((char *)&src->array[i])) {
+                        chk(mli_IO_write_char(&sdst, '\n'));
+                        i += 1;
+                } else {
+                        chk(mli_IO_write_char(&sdst, src->array[i]));
+                        i += 1;
+                }
+        }
+
+        chk(mli_String_malloc(dst, sdst.size));
+        strncpy(dst->array, (char *)sdst.cstr, sdst.size);
+
+        mli_IO_free(&sdst);
+        return 1;
+chk_error:
+        mli_IO_free(&sdst);
+        mli_String_free(dst);
+        return 0;
 }

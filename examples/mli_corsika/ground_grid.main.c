@@ -24,27 +24,27 @@ int mliAxisAlignedGrid_set_from_config(
         chk(mli_String_malloc(&line, 100));
         mli_IO_rewind(text);
         /* X */
-        chk(mli_IO_readline(text, &line, '\n'));
+        chk(mli_IO_text_read_line(text, &line, '\n'));
         chk(mli_String_to_int64(&(num_bins.x), &line, 10));
-        chk(mli_IO_readline(text, &line, '\n'));
+        chk(mli_IO_text_read_line(text, &line, '\n'));
         chk(mli_String_to_double(&(lower.x), &line)); /* cm */
-        chk(mli_IO_readline(text, &line, '\n'));
+        chk(mli_IO_text_read_line(text, &line, '\n'));
         chk(mli_String_to_double(&(upper.x), &line)); /* cm */
 
         /* Y */
-        chk(mli_IO_readline(text, &line, '\n'));
+        chk(mli_IO_text_read_line(text, &line, '\n'));
         chk(mli_String_to_int64(&(num_bins.y), &line, 10));
-        chk(mli_IO_readline(text, &line, '\n'));
+        chk(mli_IO_text_read_line(text, &line, '\n'));
         chk(mli_String_to_double(&(lower.y), &line)); /* cm */
-        chk(mli_IO_readline(text, &line, '\n'));
+        chk(mli_IO_text_read_line(text, &line, '\n'));
         chk(mli_String_to_double(&(upper.y), &line)); /* cm */
 
         /* Z */
-        chk(mli_IO_readline(text, &line, '\n'));
+        chk(mli_IO_text_read_line(text, &line, '\n'));
         chk(mli_String_to_int64(&(num_bins.z), &line, 10));
-        chk(mli_IO_readline(text, &line, '\n'));
+        chk(mli_IO_text_read_line(text, &line, '\n'));
         chk(mli_String_to_double(&(lower.z), &line)); /* cm */
-        chk(mli_IO_readline(text, &line, '\n'));
+        chk(mli_IO_text_read_line(text, &line, '\n'));
         chk(mli_String_to_double(&(upper.z), &line)); /* cm */
 
         mli_String_free(&line);
