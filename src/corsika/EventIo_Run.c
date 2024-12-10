@@ -68,7 +68,7 @@ int mliEventIoRun_read_telescope_positions(
 
         chk_msg(num_following_arrays == 4, "Expected exactly four arrays.")
 
-                chk(mliDynEventIoTelescopePosition_malloc_set_size(
+                chk(mliDynEventIoTelescopePosition_malloc(
                         telescope_positions, ntel));
         chk_fread(
                 telescope_positions->array,

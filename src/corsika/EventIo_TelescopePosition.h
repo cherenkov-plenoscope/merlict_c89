@@ -3,7 +3,7 @@
 #define MLI_CORSIKA_EVENTIO_TELESCOPEPOSITION_H_
 
 #include <stdint.h>
-#include "../vector/vector.h"
+#include "../array/array.h"
 
 struct mliEventIoTelescopePosition {
         float x;
@@ -11,7 +11,7 @@ struct mliEventIoTelescopePosition {
         float z;
         float r;
 };
-MLI_VECTOR_DEFINITON(
+MLI_ARRAY_DEFINITON(
         mliDynEventIoTelescopePosition,
         struct mliEventIoTelescopePosition)
 
