@@ -164,48 +164,6 @@ chk_error:
         return 0;
 }
 
-int mli_cstr_lines_fprint(
-        FILE *f,
-        const char *text,
-        const uint64_t line_number,
-        const uint64_t line_radius)
-{
-        int64_t _line_number = (int64_t)line_number;
-        int64_t _line_radius = (int64_t)line_radius;
-        int64_t line_start = MLI_MATH_MAX2(_line_number - _line_radius, 1);
-        int64_t line_stop = line_number + line_radius;
-        int64_t line = 1;
-        int64_t i = 0;
-
-        chk_msg(line_radius > 1, "Expected line_radius > 1.");
-
-        chk(fprintf(f, "  line     text\n"));
-        chk(fprintf(f, "        |\n"));
-
-        while (text[i]) {
-                int prefix = (line + 1 >= line_start) && (line < line_stop);
-                int valid = (line >= line_start) && (line <= line_stop);
-                if (text[i] == '\n') {
-                        line++;
-                }
-                if (prefix && i == 0) {
-                        chk(mli_fprint_line_match(f, line, _line_number));
-                }
-                if (valid) {
-                        chk(putc(text[i], f));
-                }
-                if (prefix && text[i] == '\n') {
-                        chk(mli_fprint_line_match(f, line, _line_number));
-                }
-                i++;
-        }
-        chk(putc('\n', f));
-
-        return 1;
-chk_error:
-        return 0;
-}
-
 void mli_cstr_path_strip_this_dir(char *dst, const char *src)
 {
         const char *_src = &src[0];

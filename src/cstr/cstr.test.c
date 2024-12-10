@@ -221,31 +221,6 @@ CASE("assert no unexpected control codes in ascii-text.")
         }
 }
 
-CASE("line info fprint")
-{
-        struct mli_IO s = mli_IO_init();
-        FILE *f;
-        CHECK(mli_IO_write_from_path(
-                &s,
-                "data/"
-                "mli/"
-                "tests/"
-                "resources/"
-                "sceneries/"
-                "002/"
-                "geometry/"
-                "objects/"
-                "cube_with_materials.obj"));
-        f = fopen("data/mli/tests/resources/lines_info.tmp", "w");
-        CHECK(f);
-        CHECK(mli_cstr_lines_fprint(f, (char *)s.cstr, 1, 3));
-        CHECK(mli_cstr_lines_fprint(f, (char *)s.cstr, 10, 3));
-        CHECK(mli_cstr_lines_fprint(f, (char *)s.cstr, 35, 3));
-        fclose(f);
-
-        mli_IO_close(&s);
-}
-
 CASE("basename")
 {
         char filename[256] = {'\0'};

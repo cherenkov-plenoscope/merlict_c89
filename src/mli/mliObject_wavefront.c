@@ -507,7 +507,6 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
         char line[2 * MLI_NAME_CAPACITY];
         uint64_t line_length = 0u;
         uint64_t mtl = 0u;
-        const uint64_t debug_line_radius = 5u;
 
         /* init dyn */
         struct mliDynVec v = mliDynVec_init();
@@ -635,8 +634,6 @@ chk_error:
         mliDynUint32_free(&fm);
 
         mliDynMap_free(&material_names);
-
-        mli_cstr_lines_fprint(stderr, str, line_number, debug_line_radius);
 
         return 0;
 }

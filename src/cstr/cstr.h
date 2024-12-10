@@ -29,11 +29,6 @@ uint64_t mli_cstr_count_chars_up_to(
         const char c,
         const uint64_t num_chars_to_scan);
 
-int mli_cstr_lines_fprint(
-        FILE *f,
-        const char *str,
-        const uint64_t line,
-        const uint64_t line_radius);
 void mli_cstr_path_strip_this_dir(char *dst, const char *src);
 
 void mli_cstr_path_basename_without_extension(const char *filename, char *key);
