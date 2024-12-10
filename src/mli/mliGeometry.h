@@ -5,12 +5,12 @@
 #include <stdint.h>
 #include "mliHomTra.h"
 #include "mliMaterials.h"
-#include "mliName.h"
+#include "../string/string.h"
 
 struct mliGeometry {
         uint32_t num_objects;
         struct mliObject *objects;
-        struct mliName *object_names;
+        struct mli_String *object_names;
 
         uint32_t num_robjects;
         uint32_t *robjects;

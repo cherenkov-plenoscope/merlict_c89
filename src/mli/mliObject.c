@@ -25,11 +25,16 @@ struct mliObject mliObject_init(void)
 
 void mliObject_free(struct mliObject *obj)
 {
+        size_t i;
         free(obj->vertices);
         free(obj->vertex_normals);
         free(obj->faces_vertices);
         free(obj->faces_vertex_normals);
         free(obj->faces_materials);
+
+        for (i = 0; i < obj->num_materials; i++) {
+                mli_String_free(&obj->material_names[i]);
+        }
         free(obj->material_names);
         *obj = mliObject_init();
 }
@@ -61,9 +66,9 @@ int mliObject_malloc(
         chk_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
         chk_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
         chk_malloc(obj->faces_materials, uint16_t, obj->num_faces);
-        chk_malloc(obj->material_names, struct mliName, obj->num_materials);
+        chk_malloc(obj->material_names, struct mli_String, obj->num_materials);
         for (i = 0; i < obj->num_materials; i++) {
-                obj->material_names[i] = mliName_init();
+                obj->material_names[i] = mli_String_init();
         }
         return 1;
 chk_error:
@@ -92,7 +97,7 @@ int mliObject_equal(const struct mliObject *a, const struct mliObject *b)
                 chk(a->faces_materials[i] == b->faces_materials[i]);
         }
         for (i = 0; i < a->num_materials; i++) {
-                chk(mliName_equal(
+                chk(mli_String_equal(
                         &a->material_names[i], &b->material_names[i]));
         }
         return 1;

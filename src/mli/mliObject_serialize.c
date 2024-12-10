@@ -3,9 +3,11 @@
 #include "mliMagicId.h"
 #include "mliObject_valid.h"
 #include "../chk/chk.h"
+#include "../string/string_serialize.h"
 
 int mliObject_fwrite(const struct mliObject *obj, FILE *f)
 {
+        uint64_t i;
         struct mliMagicId magic;
         chk(mliMagicId_set(&magic, "mliObject"));
         chk_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
@@ -31,11 +33,10 @@ int mliObject_fwrite(const struct mliObject *obj, FILE *f)
                 obj->num_faces,
                 f);
         chk_fwrite(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
-        chk_fwrite(
-                obj->material_names,
-                sizeof(struct mliName),
-                obj->num_materials,
-                f);
+
+        for (i = 0; i < obj->num_materials; i++) {
+                chk(mli_String_fwrite(&obj->material_names[i], f));
+        }
 
         return 1;
 chk_error:
@@ -44,6 +45,7 @@ chk_error:
 
 int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
 {
+        uint64_t i;
         uint32_t num_vertices;
         uint32_t num_vertex_normals;
         uint32_t num_faces;
@@ -80,11 +82,10 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
                 obj->num_faces,
                 f);
         chk_fread(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
-        chk_fread(
-                obj->material_names,
-                sizeof(struct mliName),
-                obj->num_materials,
-                f);
+
+        for (i = 0; i < obj->num_materials; i++) {
+                chk(mli_String_malloc_fread(&obj->material_names[i], f));
+        }
 
         chk_msg(mliObject_has_valid_faces(obj),
                 "A face refers to a not existing vertex/vertex_normal.");

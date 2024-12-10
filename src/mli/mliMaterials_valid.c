@@ -57,8 +57,9 @@ int mliMaterials_valid_boundary_layers(const struct mliMaterials *materials)
                                 materials->num_media,
                         "outer.medium is invalid.");
 
-                chk_msg(mliName_valid(&materials->boundary_layer_names[i]),
-                        "Name is invalid.");
+                chk_msg(mli_String_valid(
+                                &materials->boundary_layer_names[i], 1),
+                        "materials.boundary_layer_name is invalid.");
         }
         return 1;
 chk_error:

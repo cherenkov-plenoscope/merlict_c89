@@ -14,14 +14,24 @@ int mli_String_from_cstr_fromat(
         ...);
 int mli_String_from_cstr(struct mli_String *str, const char *s);
 
-int mli_String_equal_cstr(struct mli_String *self, const char *cstr);
+int mli_String_equal_cstr(const struct mli_String *self, const char *cstr);
+
+int mli_String_equal(
+        const struct mli_String *self,
+        const struct mli_String *other);
 
 int mli_String_ends_with(
         const struct mli_String *str,
         const struct mli_String *suffix);
+int mli_String_ends_with_cstr(const struct mli_String *str, const char *cstr);
+
 int mli_String_starts_with(
         const struct mli_String *str,
         const struct mli_String *prefix);
+int mli_String_starts_with_cstr(
+        const struct mli_String *self,
+        const char *cstr);
+
 int mli_String_has_prefix_suffix(
         const struct mli_String *str,
         const struct mli_String *prefix,
@@ -41,6 +51,7 @@ int mli_String_convert_line_break_CRLF_CR_to_LF(
         struct mli_String *dst,
         const struct mli_String *src);
 
-int64_t mli_String__discover_length(struct mli_String *self);
+int64_t mli_String__discover_size(const struct mli_String *self);
+int mli_String_valid(const struct mli_String *self, const size_t min_size);
 
 #endif

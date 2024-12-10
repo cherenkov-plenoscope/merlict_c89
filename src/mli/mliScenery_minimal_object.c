@@ -97,7 +97,9 @@ int mliScenery_malloc_minimal_from_wavefront(
                         &scenery->geometry.objects[0], &str),
                 "Failed to malloc wavefront-object from string.");
         mli_IO_close(&str);
-        sprintf(scenery->geometry.object_names[0].cstr, "default-object");
+
+        chk(mli_String_from_cstr(
+                &scenery->geometry.object_names[0], "default-object"));
 
         /* set reference */
         scenery->geometry.robjects[0] = 0u;
@@ -116,7 +118,8 @@ int mliScenery_malloc_minimal_from_wavefront(
         chk_msg(mliMaterials_malloc(&scenery->materials, mtlcap),
                 "Failed to malloc materials.");
 
-        sprintf(scenery->materials.medium_names[0].cstr, "vacuum");
+        chk(mli_String_from_cstr(
+                &scenery->materials.medium_names[0], "vacuum"));
 
         chk(mli_Func_malloc(&scenery->materials.media[0].refraction, 2));
         scenery->materials.media[0].refraction.x[0] = 200e-9;
@@ -135,17 +138,20 @@ int mliScenery_malloc_minimal_from_wavefront(
                                 &scenery->materials.surfaces[i], &prng),
                         "Can't draw random phong surface.");
 
-                sprintf(scenery->materials.surface_names[i].cstr,
+                chk(mli_String_from_cstr_fromat(
+                        &scenery->materials.surface_names[i],
                         "surface_%06u",
-                        i);
+                        i));
 
                 scenery->materials.boundary_layers[i].inner.medium = 0u;
                 scenery->materials.boundary_layers[i].outer.medium = 0u;
                 scenery->materials.boundary_layers[i].inner.surface = i;
                 scenery->materials.boundary_layers[i].outer.surface = i;
-                sprintf(scenery->materials.boundary_layer_names[i].cstr,
+
+                chk(mli_String_from_cstr_fromat(
+                        &scenery->materials.boundary_layer_names[i],
                         "boundary_layer_%06u",
-                        i);
+                        i));
         }
 
         chk_msg(mliGeometryToMaterialMap_malloc(

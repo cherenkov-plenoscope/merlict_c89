@@ -54,6 +54,11 @@ int mli_String_ends_with(
                        suffix->size) == 0;
 }
 
+int mli_String_ends_with_cstr(const struct mli_String *self, const char *cstr)
+{
+        return mli_cstr_ends_with(self->array, cstr);
+}
+
 int mli_String_starts_with(
         const struct mli_String *str,
         const struct mli_String *prefix)
@@ -65,6 +70,11 @@ int mli_String_starts_with(
                 return 0;
         }
         return strncmp(str->array, prefix->array, prefix->size) == 0;
+}
+
+int mli_String_starts_with_cstr(const struct mli_String *self, const char *cstr)
+{
+        return mli_cstr_starts_with(self->array, cstr);
 }
 
 int mli_String_has_prefix_suffix(
@@ -189,7 +199,7 @@ uint64_t mli_String_countn(
         return count;
 }
 
-int mli_String_equal_cstr(struct mli_String *self, const char *cstr)
+int mli_String_equal_cstr(const struct mli_String *self, const char *cstr)
 {
         if (self->array == NULL) {
                 return 0;
@@ -236,7 +246,7 @@ chk_error:
         return 0;
 }
 
-int64_t mli_String__discover_size(struct mli_String *self)
+int64_t mli_String__discover_size(const struct mli_String *self)
 {
         int64_t i;
         for (i = 0; i < (int64_t)self->capacity; i++) {
@@ -251,4 +261,38 @@ int64_t mli_String__discover_size(struct mli_String *self)
                 }
         }
         return i;
+}
+
+int mli_String_equal(
+        const struct mli_String *self,
+        const struct mli_String *other)
+{
+        if (self->array == NULL || other->array == NULL) {
+                return 0;
+        }
+        if (self->size == other->size) {
+                size_t i;
+                for (i = 0; i < self->size; i++) {
+                        if (self->array[i] != other->array[i]) {
+                                return 0;
+                        }
+                }
+                return 1;
+        } else {
+                return 0;
+        }
+}
+
+int mli_String_valid(const struct mli_String *self, const size_t min_size)
+{
+        const int64_t size = mli_String__discover_size(self);
+        chk_msg(size >= (int64_t)min_size,
+                "Expected string to have min_size "
+                "and to be '\\0' terminated.");
+        chk_msg(size == (int64_t)self->size,
+                "Expected string.size to "
+                "match zero termination.");
+        return 1;
+chk_error:
+        return 0;
 }

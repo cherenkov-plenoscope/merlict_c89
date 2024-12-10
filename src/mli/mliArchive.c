@@ -50,7 +50,7 @@ int mliArchive_push_back(
 
         /* filename */
         /* ======== */
-        chk_msg(mliDynMap_insert(&arc->filenames, filename->array, next),
+        chk_msg(mliDynMap_insert(&arc->filenames, filename, next),
                 "Can not insert key.");
 
         /* payload */
@@ -123,14 +123,16 @@ chk_error:
         return 0;
 }
 
-int mliArchive_has(const struct mliArchive *arc, const char *filename)
+int mliArchive_has(
+        const struct mliArchive *arc,
+        const struct mli_String *filename)
 {
         return mliDynMap_has(&arc->filenames, filename);
 }
 
 int mliArchive_get(
         const struct mliArchive *arc,
-        const char *filename,
+        const struct mli_String *filename,
         struct mli_String **str)
 {
         uint64_t idx;
@@ -145,7 +147,7 @@ chk_error:
 
 int mliArchive_get_malloc_json(
         const struct mliArchive *arc,
-        const char *filename,
+        const struct mli_String *filename,
         struct mli_Json *json)
 {
         struct mli_String *text = NULL;
@@ -169,12 +171,12 @@ void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
 {
         uint64_t i;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliMapItem item = arc->filenames.items.array[i];
+                struct mliMapItem *item = &arc->filenames.items.array[i];
                 struct mli_String *str = &arc->textfiles.array[i];
                 fprintf(f,
                         "%u: %s, %u\n",
                         (uint32_t)i,
-                        item.key,
+                        item->key.array,
                         (uint32_t)str->size);
         }
 }
@@ -188,9 +190,14 @@ void mliArchive_mask_filename_prefix_sufix(
         uint64_t i = 0u;
         uint64_t match = 0u;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliMapItem item = arc->filenames.items.array[i];
+                struct mliMapItem *item = &arc->filenames.items.array[i];
 
-                match = mli_cstr_has_prefix_suffix(item.key, prefix, sufix);
+                if (mli_String_starts_with_cstr(&item->key, prefix) &&
+                    mli_String_ends_with_cstr(&item->key, sufix)) {
+                        match = 1;
+                } else {
+                        match = 0;
+                }
 
                 if (match) {
                         mask[i] = 1;
@@ -209,9 +216,14 @@ uint64_t mliArchive_num_filename_prefix_sufix(
         uint64_t match;
         uint64_t num_matches = 0;
         for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliMapItem item = arc->filenames.items.array[i];
+                struct mliMapItem *item = &arc->filenames.items.array[i];
 
-                match = mli_cstr_has_prefix_suffix(item.key, prefix, sufix);
+                if (mli_String_starts_with_cstr(&item->key, prefix) &&
+                    mli_String_ends_with_cstr(&item->key, sufix)) {
+                        match = 1;
+                } else {
+                        match = 0;
+                }
 
                 if (match) {
                         num_matches++;

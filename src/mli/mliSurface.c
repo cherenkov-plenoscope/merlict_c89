@@ -46,14 +46,14 @@ int mliSurface_equal(const struct mliSurface *a, const struct mliSurface *b)
         return 1;
 }
 
-int mli_material_type_to_string(const uint32_t type, char *s)
+int mli_material_type_to_string(const uint32_t type, struct mli_String *s)
 {
         switch (type) {
         case MLI_MATERIAL_PHONG:
-                sprintf(s, "Phong");
+                chk(mli_String_from_cstr(s, "Phong"));
                 break;
         case MLI_MATERIAL_TRANSPARENT:
-                sprintf(s, "transparent");
+                chk(mli_String_from_cstr(s, "transparent"));
                 break;
         default:
                 chk_bad("material-type-id is unknown.");
@@ -63,12 +63,12 @@ chk_error:
         return 0;
 }
 
-int mli_material_type_from_string(const char *s, uint32_t *id)
+int mli_material_type_from_string(const struct mli_String *s, uint32_t *id)
 {
-        if (0 == strcmp(s, "Phong")) {
+        if (mli_String_equal_cstr(s, "Phong")) {
                 (*id) = MLI_MATERIAL_PHONG;
                 return 1;
-        } else if (0 == strcmp(s, "transparent")) {
+        } else if (mli_String_equal_cstr(s, "transparent")) {
                 (*id) = MLI_MATERIAL_TRANSPARENT;
                 return 1;
         } else {

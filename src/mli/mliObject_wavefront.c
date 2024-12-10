@@ -547,8 +547,10 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
         chk(mli_String_from_cstr(&sf, "f "));
         chk(mli_String_from_cstr(&susemtl, "usemtl "));
 
-        /* parse wavefront into dyn */
-        while (1) {
+        chk_dbg
+                /* parse wavefront into dyn */
+                while (1)
+        {
                 line_number += 1;
                 chk_msg(line_number < 1000 * 1000,
                         "Expected less than 1e9 lines in wavefront-file. "
@@ -597,23 +599,24 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
                         } else if (mli_String_starts_with(&line, &susemtl)) {
                                 chk(mli_String_copyn(
                                         &tmp, &line, 7, line.size - 7));
-                                if (!mliDynMap_has(
-                                            &material_names, tmp.array)) {
+                                if (!mliDynMap_has(&material_names, &tmp)) {
                                         chk(mliDynMap_insert(
-                                                &material_names, tmp.array, 0));
+                                                &material_names, &tmp, 0));
                                 }
                                 chk(mliDynMap_find(
-                                        &material_names, tmp.array, &mtl));
+                                        &material_names, &tmp, &mtl));
                         } else {
                                 /*fprintf(stderr, "no match: '%s'\n",
                                  * line.array);*/
                         }
                 } /* line_length > 0 */
         }
+        chk_dbg
 
-        /* copy dyn into static mliObject */
-        chk_msg(fv.size == fvn.size,
-                "Expected num. vertex-indices == num. vertex-normal-indices.");
+                /* copy dyn into static mliObject */
+                chk_msg(fv.size == fvn.size,
+                        "Expected num. vertex-indices == num. "
+                        "vertex-normal-indices.");
         chk_msg(mliObject_malloc(
                         obj,
                         v.size,
@@ -621,16 +624,15 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
                         fv.size,
                         mliDynMap_size(&material_names)),
                 "Failed to malloc mliObject from file.");
-
-        MLI_MATH_NCPY(v.array, obj->vertices, v.size);
+        chk_dbg MLI_MATH_NCPY(v.array, obj->vertices, v.size);
         MLI_MATH_NCPY(vn.array, obj->vertex_normals, vn.size);
         MLI_MATH_NCPY(fv.array, obj->faces_vertices, fv.size);
         MLI_MATH_NCPY(fvn.array, obj->faces_vertex_normals, fvn.size);
         MLI_MATH_NCPY(fm.array, obj->faces_materials, fm.size);
         for (i = 0; i < mliDynMap_size(&material_names); i++) {
-                memcpy(obj->material_names[i].cstr,
-                       material_names.items.array[i].key,
-                       MLI_NAME_CAPACITY);
+                chk(mli_String_copy(
+                        &obj->material_names[i],
+                        &material_names.items.array[i].key));
         }
 
         chk_msg(mliObject_is_valid(obj), "Expected object to be valid.");
@@ -706,7 +708,7 @@ int mliObject_fprint_to_wavefront(struct mli_IO *f, const struct mliObject *obj)
                         chk(mli_IO_text_write_cstr_format(
                                 f,
                                 "usemtl %s\n",
-                                obj->material_names[mtl].cstr));
+                                obj->material_names[mtl].array));
                 }
 
                 chk(mli_IO_text_write_cstr_format(

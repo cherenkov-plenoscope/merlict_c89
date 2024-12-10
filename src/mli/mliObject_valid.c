@@ -90,14 +90,11 @@ int mliObject_has_valid_materials(const struct mliObject *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_materials; i++) {
-                chk_msg(mliName_valid(&obj->material_names[i]),
-                        "Expected material_name to be '\\0' terminated.");
-                chk_msg(strlen(obj->material_names[i].cstr) > 0,
-                        "Expected strlen(material_name) > 0.");
+                chk(mli_String_valid(&obj->material_names[i], 1));
         }
         return 1;
 chk_error:
-        fprintf(stderr, "In obj.materials[%u]\n", i);
+        fprintf(stderr, "In obj.material_names[%u]\n", i);
         return 0;
 }
 

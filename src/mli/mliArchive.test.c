@@ -6,6 +6,7 @@ CASE("mliArchive, read tar")
         struct mli_String *data = NULL;
         struct mli_IO io = mli_IO_init();
         struct mliObject triangle = mliObject_init();
+        struct mli_String tmp = mli_String_init();
 
         CHECK(mliArchive_malloc_from_path(
                 &arc,
@@ -23,13 +24,18 @@ CASE("mliArchive, read tar")
         CHECK(1 == mliArchive_num_filename_prefix_sufix(
                            &arc, "geometry/objects/", ".obj"));
 
-        CHECK(1 == mliArchive_num_filename_prefix_sufix(&arc, NULL, ".md"));
+        CHECK(1 == mliArchive_num_filename_prefix_sufix(&arc, "", ".md"));
 
-        CHECK(mliArchive_has(&arc, "README.md"));
+        CHECK(mli_String_from_cstr(&tmp, "README.md"));
+        CHECK(mliArchive_has(&arc, &tmp));
 
-        CHECK(mliArchive_has(&arc, "geometry/objects/"));
-        CHECK(mliArchive_has(&arc, "geometry/objects/triangle.obj"));
-        CHECK(mliArchive_get(&arc, "geometry/objects/triangle.obj", &data));
+        CHECK(mli_String_from_cstr(&tmp, "geometry/objects/"));
+        CHECK(mliArchive_has(&arc, &tmp));
+
+        CHECK(mli_String_from_cstr(&tmp, "geometry/objects/triangle.obj"));
+        CHECK(mliArchive_has(&arc, &tmp));
+
+        CHECK(mliArchive_get(&arc, &tmp, &data));
         /*CHECK(data->length == 119 + 1);*/
 
         CHECK(mli_IO_text_write_String(&io, data));
@@ -39,8 +45,10 @@ CASE("mliArchive, read tar")
         CHECK(triangle.num_vertex_normals == 1u);
         CHECK(triangle.num_faces == 1);
 
-        CHECK(!mliArchive_has(&arc, "does-not-exist"));
+        CHECK(mli_String_from_cstr(&tmp, "does-not-exist"));
+        CHECK(!mliArchive_has(&arc, &tmp));
 
+        mli_String_free(&tmp);
         mli_IO_close(&io);
         mliArchive_free(&arc);
         mliObject_free(&triangle);

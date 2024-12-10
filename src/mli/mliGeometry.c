@@ -31,6 +31,7 @@ void mliGeometry_free_objects(struct mliGeometry *geometry)
         uint32_t i;
         for (i = 0; i < geometry->num_objects; i++) {
                 mliObject_free(&(geometry->objects[i]));
+                mli_String_free(&(geometry->object_names[i]));
         }
         free(geometry->objects);
         free(geometry->object_names);
@@ -60,10 +61,12 @@ int mliGeometry_malloc_objects(
         geometry->num_objects = num_objects;
         chk_malloc(geometry->objects, struct mliObject, geometry->num_objects);
         chk_malloc(
-                geometry->object_names, struct mliName, geometry->num_objects);
+                geometry->object_names,
+                struct mli_String,
+                geometry->num_objects);
         for (i = 0; i < geometry->num_objects; i++) {
                 geometry->objects[i] = mliObject_init();
-                geometry->object_names[i] = mliName_init();
+                geometry->object_names[i] = mli_String_init();
         }
         return 1;
 chk_error:
@@ -131,7 +134,7 @@ void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry)
         for (i = 0; i < geometry->num_objects; i++) {
                 fprintf(f, "    ");
                 fprintf(f, "%5d ", i);
-                fprintf(f, "%24s ", geometry->object_names[i].cstr);
+                fprintf(f, "%24s ", geometry->object_names[i].array);
                 fprintf(f, "%8d ", geometry->objects[i].num_vertices);
                 fprintf(f, "%8d ", geometry->objects[i].num_vertex_normals);
                 fprintf(f, "%8d ", geometry->objects[i].num_faces);
@@ -194,7 +197,7 @@ int mliGeometry_warn_objects(const struct mliGeometry *geometry)
                 if (v > 0 || vn > 0 || mtl > 0) {
                         fprintf(stderr,
                                 "[WARNING] Object '%s' at [%u] ",
-                                geometry->object_names[o].cstr,
+                                geometry->object_names[o].array,
                                 o);
                 }
                 if (v > 0) {

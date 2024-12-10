@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mliVec.h"
 #include "mliFace.h"
-#include "mliName.h"
+#include "../string/string.h"
 
 struct mliObject {
         uint32_t num_vertices;
@@ -20,7 +20,7 @@ struct mliObject {
         uint16_t *faces_materials;
 
         uint32_t num_materials;
-        struct mliName *material_names;
+        struct mli_String *material_names;
 };
 
 int mliObject_malloc(

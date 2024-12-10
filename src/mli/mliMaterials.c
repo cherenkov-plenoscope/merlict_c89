@@ -36,22 +36,30 @@ struct mliMaterials mliMaterials_init(void)
 void mliMaterials_free(struct mliMaterials *res)
 {
         uint64_t i;
-        for (i = 0; i < res->num_media; i++) {
+        chk_dbg for (i = 0; i < res->num_media; i++)
+        {
                 mliMedium_free(&(res->media[i]));
+                mli_String_free(&(res->medium_names[i]));
         }
         free(res->media);
         free(res->medium_names);
 
-        for (i = 0; i < res->num_surfaces; i++) {
+        chk_dbg for (i = 0; i < res->num_surfaces; i++)
+        {
                 mliSurface_free(&(res->surfaces[i]));
+                mli_String_free(&res->surface_names[i]);
         }
         free(res->surfaces);
         free(res->surface_names);
 
+        chk_dbg for (i = 0; i < res->num_boundary_layers; i++)
+        {
+                mli_String_free(&res->boundary_layer_names[i]);
+        }
         free(res->boundary_layers);
         free(res->boundary_layer_names);
 
-        (*res) = mliMaterials_init();
+        chk_dbg(*res) = mliMaterials_init();
 }
 
 int mliMaterials_malloc(
@@ -65,17 +73,17 @@ int mliMaterials_malloc(
         res->num_boundary_layers = rescap.num_boundary_layers;
 
         chk_malloc(res->media, struct mliMedium, res->num_media);
-        chk_malloc(res->medium_names, struct mliName, res->num_media);
+        chk_malloc(res->medium_names, struct mli_String, res->num_media);
         for (i = 0; i < res->num_media; i++) {
                 res->media[i] = mliMedium_init();
-                res->medium_names[i] = mliName_init();
+                res->medium_names[i] = mli_String_init();
         }
 
         chk_malloc(res->surfaces, struct mliSurface, res->num_surfaces);
-        chk_malloc(res->surface_names, struct mliName, res->num_surfaces);
+        chk_malloc(res->surface_names, struct mli_String, res->num_surfaces);
         for (i = 0; i < res->num_surfaces; i++) {
                 res->surfaces[i] = mliSurface_init();
-                res->surface_names[i] = mliName_init();
+                res->surface_names[i] = mli_String_init();
         }
 
         chk_malloc(
@@ -84,10 +92,10 @@ int mliMaterials_malloc(
                 res->num_boundary_layers);
         chk_malloc(
                 res->boundary_layer_names,
-                struct mliName,
+                struct mli_String,
                 res->num_boundary_layers);
         for (i = 0; i < res->num_boundary_layers; i++) {
-                res->boundary_layer_names[i] = mliName_init();
+                res->boundary_layer_names[i] = mli_String_init();
         }
 
         return 1;
@@ -126,7 +134,7 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         for (i = 0; i < res->num_media; i++) {
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
-                fprintf(f, "%24s ", res->medium_names[i].cstr);
+                fprintf(f, "%24s ", res->medium_names[i].array);
                 fprintf(f, "%12d ", res->media[i].absorbtion.num_points);
                 fprintf(f, "%12d ", res->media[i].refraction.num_points);
                 if (i == res->default_medium) {
@@ -183,7 +191,7 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         for (i = 0; i < res->num_surfaces; i++) {
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
-                fprintf(f, "%24s ", res->surface_names[i].cstr);
+                fprintf(f, "%24s ", res->surface_names[i].array);
                 if (res->surfaces[i].material == MLI_MATERIAL_TRANSPARENT) {
                         fprintf(f, "%12s ", "transparent");
                 } else if (res->surfaces[i].material == MLI_MATERIAL_PHONG) {
@@ -228,7 +236,7 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
         for (i = 0; i < res->num_boundary_layers; i++) {
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
-                fprintf(f, "%24s ", res->boundary_layer_names[i].cstr);
+                fprintf(f, "%24s ", res->boundary_layer_names[i].array);
 
                 fprintf(f, "%8d ", res->boundary_layers[i].inner.medium);
                 fprintf(f, "%8d ", res->boundary_layers[i].inner.surface);

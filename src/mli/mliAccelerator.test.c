@@ -17,7 +17,7 @@ CASE("mliAccelerator, init")
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         struct mliTracer tracer = mliTracer_init();
 
-        CHECK(mliScenery_malloc_from_path_tar(
+        chk_dbg CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,
                 "data/"
                 "mli/"
@@ -25,8 +25,9 @@ CASE("mliAccelerator, init")
                 "resources/"
                 "sceneries/"
                 "001.tar"));
+        chk_dbg
 
-        CHECK(mli_ColorObserver_malloc_cie1931(&color_observer));
+                CHECK(mli_ColorObserver_malloc_cie1931(&color_observer));
         CHECK(mli_ColorMaterials_malloc_from_Materials(
                 &color_materials, &scenery.materials, &color_observer));
 

@@ -80,9 +80,9 @@ void mliDynPhotonInteraction_print(
                 printf("{%-12s,%-12s}  ",
                        scenery->materials
                                .medium_names[phisec.medium_coming_from]
-                               .cstr,
+                               .array,
                        scenery->materials.medium_names[phisec.medium_going_to]
-                               .cstr);
+                               .array);
 
                 if (phisec.type == MLI_PHOTON_CREATION) {
                         printf(" n/a  ");

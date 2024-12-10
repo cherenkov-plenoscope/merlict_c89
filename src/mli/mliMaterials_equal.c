@@ -11,7 +11,8 @@ int mliMaterials_media_equal(
         for (i = 0; i < a->num_media; i++) {
                 chk_msg(mliMedium_equal(&a->media[i], &b->media[i]),
                         "Different Medium.");
-                chk_msg(mliName_equal(&a->medium_names[i], &b->medium_names[i]),
+                chk_msg(mli_String_equal(
+                                &a->medium_names[i], &b->medium_names[i]),
                         "Different medium-name.");
         }
         return 1;
@@ -30,7 +31,7 @@ int mliMaterials_surfaces_equal(
         for (i = 0; i < a->num_surfaces; i++) {
                 chk_msg(mliSurface_equal(&a->surfaces[i], &b->surfaces[i]),
                         "Different Surface.");
-                chk_msg(mliName_equal(
+                chk_msg(mli_String_equal(
                                 &a->surface_names[i], &b->surface_names[i]),
                         "Different surface-name.");
         }
@@ -51,7 +52,7 @@ int mliMaterials_boundary_layers_equal(
                 chk_msg(mliBoundaryLayer_equal(
                                 a->boundary_layers[i], b->boundary_layers[i]),
                         "Different boundary_layer.");
-                chk_msg(mliName_equal(
+                chk_msg(mli_String_equal(
                                 &a->boundary_layer_names[i],
                                 &b->boundary_layer_names[i]),
                         "Different boundary_layer-name.");

@@ -6,12 +6,20 @@
 
 int mliGeometry_valid_objects(const struct mliGeometry *geometry)
 {
-        uint32_t i;
+        uint32_t i = 0;
         for (i = 0; i < geometry->num_objects; i++) {
+
+                struct mli_String *name = &geometry->object_names[i];
+                int64_t size = mli_String__discover_size(name);
+                chk_msg(size > 0,
+                        "Expected object_names to have at least "
+                        "size '1' and to be '\\0' terminated.");
+                chk_msg(size == (int64_t)name->size,
+                        "Expected object_names size to "
+                        "match zero termination.");
+
                 chk_msg(mliObject_is_valid(&geometry->objects[i]),
                         "Expected object to be valid.");
-                chk_msg(mliName_valid(&geometry->object_names[i]),
-                        "Expected object_name to be valid.");
         }
         return 1;
 chk_error:

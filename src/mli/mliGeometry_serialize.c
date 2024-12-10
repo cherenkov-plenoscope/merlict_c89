@@ -4,6 +4,7 @@
 #include "mliMaterials_serialize.h"
 #include "mliMagicId.h"
 #include "../chk/chk.h"
+#include "../string/string_serialize.h"
 
 int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
 {
@@ -27,12 +28,9 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
         for (i = 0; i < geometry->num_objects; i++) {
                 chk_msg(mliObject_malloc_fread(&geometry->objects[i], f),
                         "Failed to read object into geometry.");
+                chk_msg(mli_String_malloc_fread(&geometry->object_names[i], f),
+                        "Failed to read object name into geometry.");
         }
-        chk_fread(
-                geometry->object_names,
-                sizeof(struct mliName),
-                geometry->num_objects,
-                f);
 
         chk_fread(
                 geometry->robjects,
@@ -71,12 +69,9 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
         for (i = 0; i < geometry->num_objects; i++) {
                 chk_msg(mliObject_fwrite(&geometry->objects[i], f),
                         "Failed to write objects.");
+                chk_msg(mli_String_fwrite(&geometry->object_names[i], f),
+                        "Failed to write object name.");
         }
-        chk_fwrite(
-                geometry->object_names,
-                sizeof(struct mliName),
-                geometry->num_objects,
-                f);
 
         chk_fwrite(
                 geometry->robjects,

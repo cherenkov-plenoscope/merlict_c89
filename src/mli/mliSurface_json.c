@@ -25,18 +25,22 @@ int mli_material_type_from_json_token(
         const uint64_t token,
         uint32_t *material)
 {
-        char buff[MLI_NAME_CAPACITY] = {'\0'};
+        struct mli_String buff = mli_String_init();
         const uint64_t name_strlen =
                 (json->tokens[token + 1].end - json->tokens[token + 1].start);
-        chk_msg(name_strlen < sizeof(buff), "Value of 'name' is too long");
         chk_msg(json->tokens[token + 1].type == JSMN_STRING,
                 "Expected 'name' to be of type string.");
-        chk_msg(mli_Json_cstr_by_token(json, token + 1, buff, name_strlen + 1),
+        chk(mli_String_malloc(&buff, name_strlen));
+        buff.size = buff.capacity;
+        chk_msg(mli_Json_cstr_by_token(
+                        json, token + 1, buff.array, buff.size + 1),
                 "Failed to extract string from json.");
-        chk_msg(mli_material_type_from_string(buff, material),
+        chk_msg(mli_material_type_from_string(&buff, material),
                 "Failed to parse material type from json-string.");
+        mli_String_free(&buff);
         return 1;
 chk_error:
+        mli_String_free(&buff);
         mli_Json_debug_token_fprint(stderr, json, token + 1);
         return 0;
 }

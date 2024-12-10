@@ -27,14 +27,16 @@ int mliArchive_push_back(
         const struct mli_String *filename,
         const struct mli_String *payload);
 
-int mliArchive_has(const struct mliArchive *arc, const char *filename);
+int mliArchive_has(
+        const struct mliArchive *arc,
+        const struct mli_String *filename);
 int mliArchive_get(
         const struct mliArchive *arc,
-        const char *filename,
+        const struct mli_String *filename,
         struct mli_String **str);
 int mliArchive_get_malloc_json(
         const struct mliArchive *arc,
-        const char *filename,
+        const struct mli_String *filename,
         struct mli_Json *json);
 uint64_t mliArchive_num(const struct mliArchive *arc);
 void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc);
