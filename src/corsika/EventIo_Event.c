@@ -48,7 +48,7 @@ int mliEventIo_read_telescope_offsets(
                 chk_bad("Expected num_following_arrays to be either 2, or 3.");
         }
 
-        chk_msg(mliDynEventIoTelescopeOffset_malloc_set_size(
+        chk_msg(mliDynEventIoTelescopeOffset_malloc(
                         telescope_offsets, narray),
                 "Failed to malloc telescope_offsets.");
 
