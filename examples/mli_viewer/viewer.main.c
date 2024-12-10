@@ -39,31 +39,24 @@ int main(int argc, char *argv[])
         struct mli_ArrayString args = mli_ArrayString_init();
         struct mli_viewer_Config config = mli_viewer_Config_default();
         struct mliScenery scenery = mliScenery_init();
-        struct mli_String tar_suffix = mli_String_init();
-        struct mli_String mli_suffix = mli_String_init();
-        struct mli_String obj_suffix = mli_String_init();
 
         chk_msg(
                 mli_ArrayString_from_argc_argv(&args, argc, argv),
                 "Failed to copy argc and argv."
         );
 
-        chk(mli_String_from_cstr(&tar_suffix, ".tar"));
-        chk(mli_String_from_cstr(&mli_suffix, ".mli"));
-        chk(mli_String_from_cstr(&obj_suffix, ".obj"));
-
         if (args.size >= 2) {
-                if (mli_String_ends_with(&args.array[1], &tar_suffix)) {
+                if (mli_String_ends_with_cstr(&args.array[1], ".tar")) {
                         chk_msg(mliScenery_malloc_from_path_tar(
                                         &scenery,
                                         args.array[1].array),
                                 "Can not read scenery from '.tar'.");
-                } else if (mli_String_ends_with(&args.array[1], &mli_suffix)) {
+                } else if (mli_String_ends_with_cstr(&args.array[1], ".mli")) {
                         chk_msg(mliScenery_malloc_from_path(
                                 &scenery,
                                 args.array[1].array),
                                 "Can not read scenery from '.mli'.");
-                } else if (mli_String_ends_with(&args.array[1], &obj_suffix)) {
+                } else if (mli_String_ends_with_cstr(&args.array[1], ".obj")) {
                         chk_msg(mliScenery_malloc_minimal_from_wavefront(
                                         &scenery,
                                         args.array[1].array),
@@ -93,9 +86,6 @@ int main(int argc, char *argv[])
                         &scenery, config),
                 "Failure in viewer");
 
-        mli_String_free(&tar_suffix);
-        mli_String_free(&mli_suffix);
-        mli_String_free(&obj_suffix);
         mli_ArrayString_free(&args);
         mliScenery_free(&scenery);
         return EXIT_SUCCESS;
