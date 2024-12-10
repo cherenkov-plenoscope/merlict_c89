@@ -30,4 +30,9 @@ size_t mli_IoFile_read(
         const size_t size,
         const size_t count);
 void mli_IoFile_rewind(struct mli_IoFile *self);
+int64_t mli_IoFile_tell(struct mli_IoFile *self);
+int64_t mli_IoFile_seek(
+        struct mli_IoFile *self,
+        const int64_t offset,
+        const int64_t origin);
 #endif

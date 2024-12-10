@@ -69,3 +69,13 @@ chk_error:
 }
 
 void mli_IoFile_rewind(struct mli_IoFile *self) { rewind(self->cfile); }
+
+int64_t mli_IoFile_tell(struct mli_IoFile *self) { return ftell(self->cfile); }
+
+int64_t mli_IoFile_seek(
+        struct mli_IoFile *self,
+        const int64_t offset,
+        const int64_t origin)
+{
+        return fseek(self->cfile, offset, origin);
+}

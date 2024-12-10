@@ -42,7 +42,7 @@ int mli_Stream_close(struct mli_Stream *self)
                 rc = mli_IoFile_close(&self->data.file);
                 break;
         case MLI_IO_TYPE_VOID:
-                rc = 0;
+                rc = 1;
                 break;
         }
         (*self) = mli_Stream_init();
@@ -99,4 +99,35 @@ void mli_Stream_rewind(struct mli_Stream *self)
                 rewind(self->data.file.cfile);
                 break;
         }
+}
+
+int64_t mli_Stream_tell(struct mli_Stream *self)
+{
+        int64_t rc = -1;
+        switch (self->type) {
+        case MLI_IO_TYPE_MEMORY:
+                rc = mli_IO_tell(&self->data.memory);
+                break;
+        case MLI_IO_TYPE_FILE:
+                rc = mli_IoFile_tell(&self->data.file);
+                break;
+        }
+        return rc;
+}
+
+int64_t mli_Stream_seek(
+        struct mli_Stream *self,
+        const int64_t offset,
+        const int64_t origin)
+{
+        int64_t rc = -1;
+        switch (self->type) {
+        case MLI_IO_TYPE_MEMORY:
+                rc = mli_IO_seek(&self->data.memory, offset, origin);
+                break;
+        case MLI_IO_TYPE_FILE:
+                rc = mli_IoFile_seek(&self->data.file, offset, origin);
+                break;
+        }
+        return rc;
 }

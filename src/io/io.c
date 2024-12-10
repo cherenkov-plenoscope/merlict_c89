@@ -180,6 +180,33 @@ size_t mli_IO_read(
 
 void mli_IO_rewind(struct mli_IO *self) { self->pos = 0u; }
 
+int64_t mli_IO_tell(struct mli_IO *self) { return (int64_t)self->pos; }
+
+int64_t mli_IO_seek(
+        struct mli_IO *self,
+        const int64_t offset,
+        const int64_t origin)
+{
+        const int64_t SUCCESS = 0;
+        const int64_t FAIL = -1;
+        /* If successful, the function returns zero.
+         * Otherwise, it returns non-zero value.
+         */
+        if (origin == SEEK_CUR) {
+                const int64_t new_pos = self->pos + offset;
+                return mli_IO_seek(self, new_pos, SEEK_SET);
+        } else if (origin == SEEK_SET) {
+                if (offset < 0 || offset >= (int64_t)self->size) {
+                        return FAIL;
+                } else {
+                        self->pos = offset;
+                        return SUCCESS;
+                }
+        } else {
+                return FAIL;
+        }
+}
+
 int mli_IO_write_from_path(struct mli_IO *self, const char *path)
 {
         int rc;

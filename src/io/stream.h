@@ -38,5 +38,10 @@ size_t mli_Stream_read(
         const size_t size,
         const size_t count);
 void mli_Stream_rewind(struct mli_Stream *self);
+int64_t mli_Stream_tell(struct mli_Stream *self);
+int64_t mli_Stream_seek(
+        struct mli_Stream *self,
+        const int64_t offset,
+        const int64_t origin);
 
 #endif

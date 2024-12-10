@@ -33,6 +33,11 @@ size_t mli_IO_read(
         const size_t size,
         const size_t count);
 void mli_IO_rewind(struct mli_IO *self);
+int64_t mli_IO_tell(struct mli_IO *self);
+int64_t mli_IO_seek(
+        struct mli_IO *self,
+        const int64_t offset,
+        const int64_t origin);
 
 /* to/from path */
 int mli_IO_write_from_path(struct mli_IO *self, const char *path);
