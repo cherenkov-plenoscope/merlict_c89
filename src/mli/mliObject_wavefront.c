@@ -11,6 +11,7 @@
 #include "mliDynVec.h"
 #include "mliDynUint32.h"
 #include "mliDynDouble.h"
+#include "../io/io_text.h"
 #include "../cstr/cstr.h"
 #include "../cstr/cstr_numbers.h"
 #include "../math/math.h"
@@ -643,9 +644,9 @@ chk_error:
 int mliObject_fprint_to_wavefront(struct mli_IO *f, const struct mliObject *obj)
 {
         uint32_t i, mtl, face;
-        chk(mli_IO_write_cstr_format(f, "# vertices\n"));
+        chk(mli_IO_text_write_cstr_format(f, "# vertices\n"));
         for (i = 0; i < obj->num_vertices; i++) {
-                chk(mli_IO_write_cstr_format(
+                chk(mli_IO_text_write_cstr_format(
                         f,
                         "v %.6f %.6f %.6f\n",
                         obj->vertices[i].x,
@@ -653,9 +654,9 @@ int mliObject_fprint_to_wavefront(struct mli_IO *f, const struct mliObject *obj)
                         obj->vertices[i].z));
         }
 
-        chk(mli_IO_write_cstr_format(f, "# vertex normals\n"));
+        chk(mli_IO_text_write_cstr_format(f, "# vertex normals\n"));
         for (i = 0; i < obj->num_vertex_normals; i++) {
-                chk(mli_IO_write_cstr_format(
+                chk(mli_IO_text_write_cstr_format(
                         f,
                         "vn %.6f %.6f %.6f\n",
                         obj->vertex_normals[i].x,
@@ -663,17 +664,17 @@ int mliObject_fprint_to_wavefront(struct mli_IO *f, const struct mliObject *obj)
                         obj->vertex_normals[i].z));
         }
 
-        chk(mli_IO_write_cstr_format(f, "# faces\n"));
+        chk(mli_IO_text_write_cstr_format(f, "# faces\n"));
         for (face = 0; face < obj->num_faces; face++) {
                 if ((face == 0) || (mtl != obj->faces_materials[face])) {
                         mtl = obj->faces_materials[face];
-                        chk(mli_IO_write_cstr_format(
+                        chk(mli_IO_text_write_cstr_format(
                                 f,
                                 "usemtl %s\n",
                                 obj->material_names[mtl].cstr));
                 }
 
-                chk(mli_IO_write_cstr_format(
+                chk(mli_IO_text_write_cstr_format(
                         f,
                         "f %d//%d %d//%d %d//%d\n",
                         obj->faces_vertices[face].a + 1,

@@ -50,7 +50,7 @@ CASE("mli_IO_text_read_line")
         struct mli_IO file = mli_IO_init();
         struct mli_String line = mli_String_init();
 
-        mli_IO_write_cstr_format(
+        mli_IO_text_write_cstr_format(
                 &file, "first-line\nsecond-line\n\nfourth-line\n");
         mli_IO_rewind(&file);
 
@@ -87,25 +87,25 @@ CASE("mli_IO_text_write_multi_line_debug_view")
         struct mli_IO f = mli_IO_init();
         struct mli_String text = mli_String_init();
 
-        CHECK(mli_IO_write_cstr_format(&f, "TEXT\n"));
-        CHECK(mli_IO_write_cstr_format(&f, "====\n"));
-        CHECK(mli_IO_write_cstr_format(&f, "auto hirsch flasche bat\n"));
-        CHECK(mli_IO_write_cstr_format(&f, "tisch rad wein\n"));
-        CHECK(mli_IO_write_cstr_format(&f, "\n"));
-        CHECK(mli_IO_write_cstr_format(&f, "Ausserdem: Stuhl\n"));
-        CHECK(mli_IO_write_cstr_format(&f, "1.)\n"));
-        CHECK(mli_IO_write_cstr_format(&f, " - soziooekonomisch\n"));
-        CHECK(mli_IO_write_cstr_format(&f, "ENDE\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "TEXT\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "====\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "auto hirsch flasche bat\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "tisch rad wein\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "Ausserdem: Stuhl\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "1.)\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, " - soziooekonomisch\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "ENDE\n"));
         mli_IO_rewind(&f);
 
         CHECK(mli_String_from_cstr(&text, (char *)f.cstr));
         mli_IO_close(&f);
 
         CHECK(mli_IO_text_write_multi_line_debug_view(&f, &text, 1, 3));
-        CHECK(mli_IO_write_cstr_format(&f, "\n---\n\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "\n---\n\n"));
 
         CHECK(mli_IO_text_write_multi_line_debug_view(&f, &text, 4, 5));
-        CHECK(mli_IO_write_cstr_format(&f, "\n---\n\n"));
+        CHECK(mli_IO_text_write_cstr_format(&f, "\n---\n\n"));
 
         CHECK(mli_IO_text_write_multi_line_debug_view(&f, &text, 7, 2));
 

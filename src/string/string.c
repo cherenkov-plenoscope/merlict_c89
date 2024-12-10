@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "../chk/chk.h"
 #include "../cstr/cstr.h"
-#include "../io/io.h"
+#include "../io/io_text.h"
 
 MLI_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(mli_String, char)
 

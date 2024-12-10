@@ -3,7 +3,6 @@
 #define MLI_IO_H_
 
 #include <stdint.h>
-#include <stdarg.h>
 #include "../string/string.h"
 
 struct mli_IO {
@@ -21,30 +20,19 @@ struct mli_IO {
 };
 
 struct mli_IO mli_IO_init(void);
-void mli_IO_close(struct mli_IO *self);
+int mli_IO_close(struct mli_IO *self);
 int mli_IO_open(struct mli_IO *self);
-
-/* writing */
-/* ------- */
-int mli_IO_write_cstr_format(struct mli_IO *self, const char *format, ...);
-int64_t mli_IO_write(
+size_t mli_IO_write(
         struct mli_IO *self,
         const void *ptr,
-        const uint64_t size,
-        const uint64_t count);
-
-/* reading */
-/* ------- */
-int64_t mli_IO_read(
+        const size_t size,
+        const size_t count);
+size_t mli_IO_read(
         struct mli_IO *self,
-        const void *ptr,
-        const uint64_t size,
-        const uint64_t count);
-
-/* file like */
-/* --------- */
+        void *ptr,
+        const size_t size,
+        const size_t count);
 void mli_IO_rewind(struct mli_IO *self);
-void mli_IO_seek(struct mli_IO *self, const uint64_t pos);
 
 /* to/from path */
 int mli_IO_write_from_path(struct mli_IO *self, const char *path);

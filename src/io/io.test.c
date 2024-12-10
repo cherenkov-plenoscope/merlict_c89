@@ -27,7 +27,7 @@ CASE("mli_IO__shrink_to_fit")
 {
         struct mli_IO str = mli_IO_init();
 
-        CHECK(mli_IO_write_cstr_format(&str, "0123456789"));
+        CHECK(mli_IO_text_write_cstr_format(&str, "0123456789"));
 
         CHECK(str.cstr != NULL);
         CHECK(str.capacity == 16);
@@ -40,7 +40,7 @@ CASE("mli_IO__shrink_to_fit")
         CHECK(str.size == 0);
         CHECK(str.pos == 0);
 
-        CHECK(mli_IO_write_cstr_format(&str, "abc"));
+        CHECK(mli_IO_text_write_cstr_format(&str, "abc"));
         CHECK(str.cstr != NULL);
         CHECK(str.capacity == 16);
         CHECK(str.size == 3);
@@ -61,7 +61,7 @@ CASE("BytesIo_write_rewind_read")
         int32_t evth[273];
         int32_t back[273];
         uint64_t i;
-        int64_t rc;
+        size_t rc;
         for (i = 0; i < 273; i++) {
                 evth[i] = i;
         }
@@ -87,7 +87,7 @@ CASE("BytesIo_write_rewind_read")
         }
 
         rc = mli_IO_read(&byt, back, sizeof(float), 1);
-        CHECK(rc == EOF);
+        CHECK(rc == 0);
 
         mli_IO_close(&byt);
 }
@@ -96,7 +96,7 @@ CASE("BytesIo_printf")
 {
         struct mli_IO byt = mli_IO_init();
 
-        mli_IO_write_cstr_format(&byt, "Hans %03d Lok %.3fh!", 8, 3.141);
+        mli_IO_text_write_cstr_format(&byt, "Hans %03d Lok %.3fh!", 8, 3.141);
         mli_IO_rewind(&byt);
 
         CHECK(0 == strcmp((char *)byt.cstr, "Hans 008 Lok 3.141h!"));

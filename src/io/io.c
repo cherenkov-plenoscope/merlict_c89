@@ -15,10 +15,12 @@ struct mli_IO mli_IO_init(void)
         return byt;
 }
 
-void mli_IO_close(struct mli_IO *self)
+int mli_IO_close(struct mli_IO *self)
 {
+        const int RC_IS_ALWAYS_1 = 1;
         free(self->cstr);
         (*self) = mli_IO_init();
+        return RC_IS_ALWAYS_1;
 }
 
 int mli_IO__malloc_capacity(struct mli_IO *self, const uint64_t capacity)
@@ -136,87 +138,45 @@ int mli_IO__read_unsigned_char(struct mli_IO *self, unsigned char *c)
         return 1;
 }
 
-int mli_IO_write_cstr_format(struct mli_IO *str, const char *format, ...)
-{
-        uint64_t i;
-        uint64_t tmp_length;
-        struct mli_IO tmp = mli_IO_init();
-        va_list args;
-
-        chk(mli_IO__malloc_capacity(&tmp, 32 * strlen(format)));
-        va_start(args, format);
-        vsprintf((char *)tmp.cstr, format, args);
-
-        tmp_length = 0;
-        for (i = 0; i < tmp.capacity; i++) {
-                if (tmp.cstr[i] == (char)'\0') {
-                        break;
-                } else {
-                        tmp_length += 1;
-                }
-        }
-        chk_msg(tmp_length < tmp.capacity,
-                "Expected tmp length < tmp.capacity. Probably vsprintf caused "
-                "a buffer overflow.");
-
-        for (i = 0; i < tmp_length; i++) {
-                chk(mli_IO__write_unsigned_char(
-                        str, (unsigned char *)(&tmp.cstr[i])));
-        }
-
-        va_end(args);
-        mli_IO_close(&tmp);
-        return 1;
-chk_error:
-        va_end(args);
-        mli_IO_close(&tmp);
-        return 0;
-}
-
-int64_t mli_IO_write(
+size_t mli_IO_write(
         struct mli_IO *self,
         const void *ptr,
-        const uint64_t size,
-        const uint64_t count)
+        const size_t size,
+        const size_t count)
 {
-        const uint64_t block_size = size * count;
+        const size_t block_size = size * count;
         unsigned char *block = (unsigned char *)ptr;
 
-        uint64_t i;
+        size_t i;
         for (i = 0u; i < block_size; i++) {
-                chk_msg(mli_IO__write_unsigned_char(self, &block[i]),
-                        "Failed to put selfe");
+                chk_msg(mli_IO__write_unsigned_char(self, &block[i]), "");
         }
+chk_error:
         return (i + 1u) / size;
-chk_error:
-        return -1;
 }
 
-int64_t mli_IO_read(
+size_t mli_IO_read(
         struct mli_IO *self,
-        const void *ptr,
-        const uint64_t size,
-        const uint64_t count)
+        void *ptr,
+        const size_t size,
+        const size_t count)
 {
-        const uint64_t block_size = size * count;
+        const size_t block_size = size * count;
         unsigned char *block = (unsigned char *)ptr;
 
-        uint64_t i;
+        size_t i;
         for (i = 0u; i < block_size; i++) {
-                int rc;
                 unsigned char c;
-                rc = mli_IO__read_unsigned_char(self, &c);
-
+                const int rc = mli_IO__read_unsigned_char(self, &c);
                 if (rc == EOF) {
-                        return EOF;
+                        return i / size;
+                        ;
                 } else {
                         block[i] = c;
                 }
         }
         return (i + 1u) / size;
 }
-
-void mli_IO_seek(struct mli_IO *self, const uint64_t pos) { self->pos = pos; }
 
 void mli_IO_rewind(struct mli_IO *self) { self->pos = 0u; }
 

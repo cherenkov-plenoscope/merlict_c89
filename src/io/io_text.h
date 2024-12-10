@@ -5,9 +5,13 @@
 #include <stdint.h>
 #include "../string/string.h"
 #include "io.h"
+#include <stdarg.h>
 
 int mli_IO_text_getc(struct mli_IO *byt);
 int mli_IO_text_putc(struct mli_IO *byt, const char c);
+
+int mli_IO_text_write_cstr(struct mli_IO *self, const char *str);
+int mli_IO_text_write_cstr_format(struct mli_IO *self, const char *format, ...);
 
 int mli_IO_text_read_line(
         struct mli_IO *stream,

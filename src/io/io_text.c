@@ -26,6 +26,42 @@ chk_error:
         return 0;
 }
 
+int mli_IO_text_write_cstr_format(struct mli_IO *str, const char *format, ...)
+{
+        uint64_t i;
+        uint64_t tmp_length;
+        struct mli_IO tmp = mli_IO_init();
+        va_list args;
+
+        chk(mli_IO__malloc_capacity(&tmp, 32 * strlen(format)));
+        va_start(args, format);
+        vsprintf((char *)tmp.cstr, format, args);
+
+        tmp_length = 0;
+        for (i = 0; i < tmp.capacity; i++) {
+                if (tmp.cstr[i] == (char)'\0') {
+                        break;
+                } else {
+                        tmp_length += 1;
+                }
+        }
+        chk_msg(tmp_length < tmp.capacity,
+                "Expected tmp length < tmp.capacity. Probably vsprintf caused "
+                "a buffer overflow.");
+
+        for (i = 0; i < tmp_length; i++) {
+                chk(mli_IO_text_putc(str, tmp.cstr[i]));
+        }
+
+        va_end(args);
+        mli_IO_close(&tmp);
+        return 1;
+chk_error:
+        va_end(args);
+        mli_IO_close(&tmp);
+        return 0;
+}
+
 int mli_IO_text_read_line(
         struct mli_IO *stream,
         struct mli_String *line,
@@ -61,11 +97,11 @@ int mli_IO_text_write_multi_line_debug_view_line_match(
         const int64_t line_number,
         const int64_t line_number_of_interest)
 {
-        chk(mli_IO_write_cstr_format(f, "% 6d", (int32_t)line_number));
+        chk(mli_IO_text_write_cstr_format(f, "% 6d", (int32_t)line_number));
         if (line_number == line_number_of_interest) {
-                chk(mli_IO_write_cstr_format(f, "->|  "));
+                chk(mli_IO_text_write_cstr_format(f, "->|  "));
         } else {
-                chk(mli_IO_write_cstr_format(f, "  |  "));
+                chk(mli_IO_text_write_cstr_format(f, "  |  "));
         }
         return 1;
 chk_error:
@@ -87,8 +123,8 @@ int mli_IO_text_write_multi_line_debug_view(
 
         chk_msg(line_radius > 1, "Expected line_radius > 1.");
 
-        chk(mli_IO_write_cstr_format(f, "  line     text\n"));
-        chk(mli_IO_write_cstr_format(f, "        |\n"));
+        chk(mli_IO_text_write_cstr_format(f, "  line     text\n"));
+        chk(mli_IO_text_write_cstr_format(f, "        |\n"));
 
         while (i < text->size && text->array[i]) {
                 int prefix = (line + 1 >= line_start) && (line < line_stop);
