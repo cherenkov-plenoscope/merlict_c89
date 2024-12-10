@@ -17,9 +17,9 @@ int mliEventIo_read_telescope_offsets(
         uint64_t n;
         float toff;
 
-        struct mliDynFloat xoff = mliDynFloat_init();
-        struct mliDynFloat yoff = mliDynFloat_init();
-        struct mliDynFloat weight = mliDynFloat_init();
+        struct mli_ArrayFloat xoff = mli_ArrayFloat_init();
+        struct mli_ArrayFloat yoff = mli_ArrayFloat_init();
+        struct mli_ArrayFloat weight = mli_ArrayFloat_init();
 
         chk_fread(&_narray, sizeof(int32_t), 1, f);
         chk_msg(_narray >= 0, "Expected num. of arrays to be positive.");
@@ -27,9 +27,9 @@ int mliEventIo_read_telescope_offsets(
 
         chk_fread(&toff, sizeof(float), 1, f);
 
-        chk(mliDynFloat_malloc_set_size(&xoff, narray));
-        chk(mliDynFloat_malloc_set_size(&yoff, narray));
-        chk(mliDynFloat_malloc_set_size(&weight, narray));
+        chk(mli_ArrayFloat_malloc(&xoff, narray));
+        chk(mli_ArrayFloat_malloc(&yoff, narray));
+        chk(mli_ArrayFloat_malloc(&weight, narray));
 
         num_following_arrays = (int)((length - length_first_two) / narray / 4);
 
@@ -48,8 +48,7 @@ int mliEventIo_read_telescope_offsets(
                 chk_bad("Expected num_following_arrays to be either 2, or 3.");
         }
 
-        chk_msg(mliDynEventIoTelescopeOffset_malloc(
-                        telescope_offsets, narray),
+        chk_msg(mliDynEventIoTelescopeOffset_malloc(telescope_offsets, narray),
                 "Failed to malloc telescope_offsets.");
 
         for (n = 0; n < narray; n++) {
@@ -59,9 +58,9 @@ int mliEventIo_read_telescope_offsets(
                 telescope_offsets->array[n].weight = weight.array[n];
         }
 
-        mliDynFloat_free(&xoff);
-        mliDynFloat_free(&yoff);
-        mliDynFloat_free(&weight);
+        mli_ArrayFloat_free(&xoff);
+        mli_ArrayFloat_free(&yoff);
+        mli_ArrayFloat_free(&weight);
 
         return 1;
 chk_error:
@@ -92,9 +91,9 @@ int mliEventIo_read_photon_bunches(
 
         is_compact = (int)(version / 1000 == 1);
 
-        chk_msg(mliDynCorsikaPhotonBunch_malloc_set_size(
-                        bunches, b_head->num_bunches),
+        chk_msg(mliDynCorsikaPhotonBunch_malloc(bunches, b_head->num_bunches),
                 "Failed to malloc bunches.");
+        bunches->size = b_head->num_bunches;
 
         if (is_compact) {
                 int16_t buff[8];

@@ -4,7 +4,7 @@
 
 #include "array.h"
 
-MLI_ARRAY_DEFINITON(mli_ArrayFloat, float)
-MLI_ARRAY_DEFINITON(mli_ArrayChar, char)
+MLI_ARRAY_DEFINITON(mli_ArrayTestingFloat, float)
+MLI_ARRAY_DEFINITON(mli_ArrayTestingChar, char)
 
 #endif

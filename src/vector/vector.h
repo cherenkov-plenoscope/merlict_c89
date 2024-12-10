@@ -21,8 +21,6 @@
                                                                                \
         int NAME##_malloc(struct NAME *self, const uint64_t size);             \
                                                                                \
-        int NAME##_malloc_set_size(struct NAME *self, const uint64_t size);    \
-                                                                               \
         int NAME##_push_back(struct NAME *self, PAYLOAD_TYPE item);            \
                                                                                \
         int NAME##_set(                                                        \
@@ -54,15 +52,6 @@
                 self->capacity = MLI_MATH_MAX2(2, size);                       \
                 self->size = 0;                                                \
                 chk_malloc(self->array, PAYLOAD_TYPE, self->capacity);         \
-                return 1;                                                      \
-        chk_error:                                                             \
-                return 0;                                                      \
-        }                                                                      \
-                                                                               \
-        int NAME##_malloc_set_size(struct NAME *self, const uint64_t size)     \
-        {                                                                      \
-                chk(NAME##_malloc(self, size));                                \
-                self->size = size;                                             \
                 return 1;                                                      \
         chk_error:                                                             \
                 return 0;                                                      \
