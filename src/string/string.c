@@ -235,3 +235,20 @@ chk_error:
         mli_String_free(&cpysrc);
         return 0;
 }
+
+int64_t mli_String__discover_size(struct mli_String *self)
+{
+        int64_t i;
+        for (i = 0; i < (int64_t)self->capacity; i++) {
+                if (self->array[i] == '\0') {
+                        break;
+                }
+        }
+
+        if (i == (int64_t)self->capacity - 1) {
+                if (self->array[i] != '\0') {
+                        i = -1;
+                }
+        }
+        return i;
+}

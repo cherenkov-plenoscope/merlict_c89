@@ -41,4 +41,6 @@ int mli_String_convert_line_break_CRLF_CR_to_LF(
         struct mli_String *dst,
         const struct mli_String *src);
 
+int64_t mli_String__discover_length(struct mli_String *self);
+
 #endif

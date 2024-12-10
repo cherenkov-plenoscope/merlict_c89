@@ -125,65 +125,67 @@ CASE("mli_String_print_uint64")
         struct mli_String s = mli_String_init();
 
         CHECK(mli_String_print_uint64(0, &s, 10u, 0u, '0'));
-        CHECK(strcmp(s.array, "0") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(&s, "0"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         CHECK(mli_String_print_uint64(123, &s, 10u, 0u, '0'));
-        CHECK(strcmp(s.array, "123") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(&s, "123"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         CHECK(mli_String_print_uint64(1233456789, &s, 10u, 0u, '0'));
-        CHECK(strcmp(s.array, "1233456789") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(&s, "1233456789"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         /* octal */
         CHECK(mli_String_print_uint64(0, &s, 8u, 0u, '0'));
-        CHECK(strcmp(s.array, "0") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(&s, "0"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         CHECK(mli_String_print_uint64(1337, &s, 8u, 0u, '0'));
-        CHECK(strcmp(s.array, "2471") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(&s, "2471"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         CHECK(mli_String_print_uint64(42, &s, 8u, 0u, '0'));
-        CHECK(strcmp(s.array, "52") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(&s, "52"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         /* binary */
         CHECK(mli_String_print_uint64(13, &s, 2u, 0u, '0'));
-        CHECK(strcmp(s.array, "1101") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(&s, "1101"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         CHECK(!mli_String_print_uint64(13, &s, 1u, 0u, '0'));
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         /* hex */
         CHECK(mli_String_print_uint64(10, &s, 16u, 0u, '0'));
-        CHECK(strcmp(s.array, "A") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(&s, "A"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         CHECK(mli_String_print_uint64(255, &s, 16u, 0u, '0'));
-        CHECK(strcmp(s.array, "FF") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(&s, "FF"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         /* base too large */
         CHECK(!mli_String_print_uint64(13, &s, 17u, 0u, '0'));
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         /* leading zeros */
         CHECK(mli_String_print_uint64(123, &s, 10u, 9u, '0'));
-        CHECK(strcmp(s.array,
-                     "000"
-                     "000"
-                     "123") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(
+                      &s,
+                      "000"
+                      "000"
+                      "123"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         CHECK(mli_String_print_uint64(123, &s, 10u, 9u, ' '));
-        CHECK(strcmp(s.array,
-                     "   "
-                     "   "
-                     "123") == 0);
-        CHECK(strlen(s.array) == s.size);
+        CHECK(mli_String_equal_cstr(
+                      &s,
+                      "   "
+                      "   "
+                      "123"));
+        CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         mli_String_free(&s);
 }
