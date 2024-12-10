@@ -33,48 +33,6 @@ int mli_cstr_starts_with(const char *str, const char *prefix)
         return strncmp(str, prefix, len_prefix) == 0;
 }
 
-int mli_cstr_has_prefix_suffix(
-        const char *str,
-        const char *prefix,
-        const char *sufix)
-{
-        uint64_t has_pre = 1;
-        uint64_t has_suf = 1;
-        if (prefix != NULL) {
-                has_pre = mli_cstr_starts_with(str, prefix);
-        }
-
-        if (sufix != NULL) {
-                has_suf = mli_cstr_ends_with(str, sufix);
-        }
-
-        if (has_pre == 1 && has_suf == 1) {
-                return 1;
-        } else {
-                return 0;
-        }
-}
-
-int mli_cstr_split(
-        const char *str,
-        const char delimiter,
-        char *token,
-        const uint64_t token_length)
-{
-        uint64_t i = 0;
-        memset(token, '\0', token_length);
-        for (i = 0; i < token_length; i++) {
-                if (str[i] == '\0') {
-                        break;
-                } else if (str[i] == delimiter) {
-                        break;
-                } else {
-                        token[i] = str[i];
-                }
-        }
-        return i;
-}
-
 int mli_cstr_is_CRLF(const char *s)
 {
         if (s[0] == '\0') {
@@ -132,22 +90,6 @@ int mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(const char *str, const int dbg)
         return 1;
 }
 
-uint64_t mli_cstr_count_chars_up_to(
-        const char *str,
-        const char c,
-        const uint64_t num_chars_to_scan)
-{
-        uint64_t i = 0;
-        uint64_t count = 0u;
-        while (str[i] != '\0' && i < num_chars_to_scan) {
-                if (str[i] == c) {
-                        count++;
-                }
-                i++;
-        }
-        return count;
-}
-
 int mli_fprint_line_match(
         FILE *f,
         const int64_t line,
@@ -162,64 +104,6 @@ int mli_fprint_line_match(
         return 1;
 chk_error:
         return 0;
-}
-
-void mli_cstr_path_strip_this_dir(char *dst, const char *src)
-{
-        const char *_src = &src[0];
-        memset(dst, '\0', strlen(src));
-        while (mli_cstr_starts_with(_src, "./") && _src[0] != '\0') {
-                _src += 2;
-        }
-        strcpy(dst, _src);
-}
-
-void mli_cstr_path_basename_without_extension(const char *filename, char *key)
-{
-        uint64_t i = 0u;
-        uint64_t o = 0u;
-
-        while (1) {
-                if (filename[i] == '\0') {
-                        goto finalize;
-                }
-                if (filename[i] == '/') {
-                        i += 1;
-                        break;
-                }
-                i += 1;
-        }
-
-        while (1) {
-                if (filename[i] == '\0') {
-                        goto finalize;
-                }
-                if (filename[i] == '.') {
-                        i += 1;
-                        break;
-                }
-                key[o] = filename[i];
-                i += 1;
-                o += 1;
-        }
-
-finalize:
-        key[o] = '\0';
-}
-
-void mli_cstr_strip_spaces(const char *in, char *out)
-{
-        uint64_t i = 0u;
-        uint64_t o = 0u;
-        while (in[i] && isspace(in[i])) {
-                i += 1;
-        }
-        while (in[i] && !isspace(in[i])) {
-                out[o] = in[i];
-                i += 1;
-                o += 1;
-        }
-        out[o] = '\0';
 }
 
 int mli_cstr_match_templeate(

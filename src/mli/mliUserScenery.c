@@ -16,7 +16,6 @@
 #include "mliFrame.h"
 #include "mliFrame_json.h"
 
-
 int mli_set_geometry_objects_and_names_from_archive(
         struct mliGeometry *geometry,
         struct mliDynMap *object_names,
