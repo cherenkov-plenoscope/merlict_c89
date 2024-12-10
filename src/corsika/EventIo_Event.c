@@ -191,7 +191,7 @@ int mliEventIoEvent_malloc_from_run(
 
         /* telescopes */
         /* ---------- */
-        chk_msg(mliDynEventIoTelescope_malloc_set_size(
+        chk_msg(mliDynEventIoTelescope_malloc(
                         &event->telescopes, tmp_offsets.size),
                 "Failed to malloc telescpes");
         for (i = 0; i < event->telescopes.size; i++) {

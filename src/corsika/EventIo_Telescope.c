@@ -17,4 +17,4 @@ void mliEventIoTelescope_free(struct mliEventIoTelescope *telescope)
         (*telescope) = mliEventIoTelescope_init();
 }
 
-MLI_VECTOR_IMPLEMENTATION(mliDynEventIoTelescope, struct mliEventIoTelescope)
+MLI_ARRAY_IMPLEMENTATION(mliDynEventIoTelescope, struct mliEventIoTelescope)
