@@ -16,32 +16,6 @@
 #include "mliFrame.h"
 #include "mliFrame_json.h"
 
-struct mliNameMap mliNameMap_init(void)
-{
-        struct mliNameMap nm;
-        nm.media = mliDynMap_init();
-        nm.surfaces = mliDynMap_init();
-        nm.boundary_layers = mliDynMap_init();
-        return nm;
-}
-
-int mliNameMap_malloc(struct mliNameMap *namemap)
-{
-        mliNameMap_free(namemap);
-        chk_mem(mliDynMap_malloc(&namemap->media));
-        chk_mem(mliDynMap_malloc(&namemap->surfaces));
-        chk_mem(mliDynMap_malloc(&namemap->boundary_layers));
-        return 1;
-chk_error:
-        return 0;
-}
-
-void mliNameMap_free(struct mliNameMap *namemap)
-{
-        mliDynMap_free(&namemap->media);
-        mliDynMap_free(&namemap->surfaces);
-        mliDynMap_free(&namemap->boundary_layers);
-}
 
 int mli_set_geometry_objects_and_names_from_archive(
         struct mliGeometry *geometry,
@@ -107,7 +81,7 @@ chk_error:
 
 int mliMaterials_malloc_form_archive(
         struct mliMaterials *materials,
-        struct mliNameMap *names,
+        struct mli_ResourceNameMap *names,
         const struct mliArchive *archive)
 {
         uint64_t i = 0u;
@@ -127,8 +101,8 @@ int mliMaterials_malloc_form_archive(
         chk_dbg
                 /* free */
                 mliMaterials_free(materials);
-        chk_dbg mliNameMap_free(names);
-        chk_dbg chk(mliNameMap_malloc(names));
+        chk_dbg mli_ResourceNameMap_free(names);
+        chk_dbg chk(mli_ResourceNameMap_malloc(names));
         chk_dbg
                 /* estimate capacity */
                 /* boundary_layers */
@@ -248,7 +222,7 @@ int mliMaterials_malloc_form_archive(
 chk_error:
         mli_Json_free(&boundary_layers_json);
         mliMaterials_free(materials);
-        mliNameMap_free(names);
+        mli_ResourceNameMap_free(names);
 
         mli_String_free(&fixname);
         mli_String_free(&extension);
