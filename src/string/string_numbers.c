@@ -129,28 +129,22 @@ int mli_String_reverse_print_uint64(
                 'D',
                 'E',
                 'F'};
-        char tmp[128] = {'\0'};
         uint64_t remainder = 0u;
         uint32_t remainder32 = 0u;
         uint64_t quotient = u;
-        int64_t digs = 0u;
 
         chk_msg(base <= 16, "Expected base <= 16");
         chk_msg(base > 1, "Expected base > 1");
-        mli_String_free(str);
+        mli_String_malloc(str, 16);
 
         do {
                 remainder = quotient % base;
                 quotient = quotient / base;
                 remainder32 = (uint32_t)remainder;
-                tmp[digs] = literals[remainder32];
-                digs++;
-                chk_msg(digs < 127, "Exceeded max_num_chars.");
+                chk(mli_String_push_back(str, literals[remainder32]));
+                chk_msg(str->size < 127, "Exceeded max_num_chars.");
         } while (quotient > 0u);
 
-        chk(mli_String_malloc(str, digs));
-        strncpy(str->array, tmp, digs);
-        str->size = digs;
         return 1;
 chk_error:
         mli_String_free(str);
@@ -197,6 +191,7 @@ int mli_String_print_uint64(
         mli_String_free(&tmp);
         return 1;
 chk_error:
+        /*mli_String_free(str);*/
         mli_String_free(&tmp);
         return 0;
 }
