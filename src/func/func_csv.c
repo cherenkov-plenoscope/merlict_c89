@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "func_csv.h"
-#include "../mli/mliName.h"
 #include "../mli/mliDynDouble.h"
 #include "../cstr/cstr.h"
 #include "../cstr/cstr_numbers.h"

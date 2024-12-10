@@ -52,7 +52,6 @@ int mli_set_geometry_objects_and_names_from_archive(
                         chk_dbg chk(mli_path_basename(filename, &basename));
                         chk(mli_path_splitext(&basename, &key, &extension));
 
-                        fprintf(stderr, "key: %s\n", key.array);
                         chk_msg(mliDynMap_insert(object_names, &key, obj_idx),
                                 "Failed to insert object-filename into map.");
                         chk_dbg chk_msg(

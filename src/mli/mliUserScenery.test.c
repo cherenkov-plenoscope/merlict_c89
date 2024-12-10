@@ -32,7 +32,7 @@ CASE("mliScenery, malloc from archive")
 
         CHECK(2 == scenery.geometry.num_objects);
 
-        CHECK(mliName_find_idx(
+        CHECK(mli_String__find_idx_with_cstr(
                 scenery.geometry.object_names,
                 scenery.geometry.num_objects,
                 "hexagonal_mirror_facet",
@@ -41,7 +41,7 @@ CASE("mliScenery, malloc from archive")
         CHECK(331 == scenery.geometry.objects[obj_hex_idx].num_vertices);
         CHECK(331 == scenery.geometry.objects[obj_hex_idx].num_vertex_normals);
 
-        CHECK(mliName_find_idx(
+        CHECK(mli_String__find_idx_with_cstr(
                 scenery.geometry.object_names,
                 scenery.geometry.num_objects,
                 "teapot",
@@ -66,27 +66,27 @@ CASE("mliScenery, malloc from archive")
          *              |_____ obj4 (hex)
          */
 
-        CHECK(mliName_find_idx(
+        CHECK(mli_String__find_idx_with_cstr(
                 scenery.materials.surface_names,
                 scenery.materials.num_surfaces,
                 "grass",
                 &srf_grass));
-        CHECK(mliName_find_idx(
+        CHECK(mli_String__find_idx_with_cstr(
                 scenery.materials.surface_names,
                 scenery.materials.num_surfaces,
                 "wood",
                 &srf_wood));
-        CHECK(mliName_find_idx(
+        CHECK(mli_String__find_idx_with_cstr(
                 scenery.materials.surface_names,
                 scenery.materials.num_surfaces,
                 "leafs",
                 &srf_leafs));
-        CHECK(mliName_find_idx(
+        CHECK(mli_String__find_idx_with_cstr(
                 scenery.materials.surface_names,
                 scenery.materials.num_surfaces,
                 "blue_glass",
                 &srf_blue_glass));
-        CHECK(mliName_find_idx(
+        CHECK(mli_String__find_idx_with_cstr(
                 scenery.materials.medium_names,
                 scenery.materials.num_media,
                 "vacuum",

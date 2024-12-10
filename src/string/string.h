@@ -54,4 +54,10 @@ int mli_String_convert_line_break_CRLF_CR_to_LF(
 int64_t mli_String__discover_size(const struct mli_String *self);
 int mli_String_valid(const struct mli_String *self, const size_t min_size);
 
+int mli_String__find_idx_with_cstr(
+        const struct mli_String *names,
+        const uint64_t num_names,
+        const char *key,
+        uint64_t *idx);
+
 #endif

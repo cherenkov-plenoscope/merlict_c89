@@ -26,12 +26,12 @@ CASE("simple propagation")
                 "sceneries/"
                 "002.tar"));
 
-        CHECK(mliName_find_idx(
+        CHECK(mli_String__find_idx_with_cstr(
                 scenery.materials.medium_names,
                 scenery.materials.num_media,
                 "glass",
                 &MED_GLASS));
-        CHECK(mliName_find_idx(
+        CHECK(mli_String__find_idx_with_cstr(
                 scenery.materials.medium_names,
                 scenery.materials.num_media,
                 "vacuum",

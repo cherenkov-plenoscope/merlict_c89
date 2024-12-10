@@ -3,7 +3,6 @@
 #define MLIMAP_H_
 
 #include <stdint.h>
-#include "mliName.h"
 #include "../string/string.h"
 #include "../vector/vector.h"
 

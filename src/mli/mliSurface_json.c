@@ -1,6 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSurface_json.h"
-#include "mliName.h"
 #include "../func/func_json.h"
 #include "../color/color_json.h"
 #include "../chk/chk.h"
