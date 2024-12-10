@@ -130,7 +130,7 @@
         {                                                                      \
                 chk_msg(src->array != NULL, "Expected src to be allocated");   \
                 chk_msg(start + length <= src->size,                           \
-                        "Expected start + length < src->size.")                \
+                        "Expected start + length <= src->size.")               \
                         NAME##_malloc(dst, length);                            \
                 memcpy(dst->array,                                             \
                        &src->array[start],                                     \

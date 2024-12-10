@@ -123,3 +123,18 @@ CASE("DynArray push")
         mtlDynDummy_free(&channel);
         CHECK(mtlDynDummy_test_free(&channel));
 }
+
+CASE("mli_vector_implementation_malloc_zero_termination")
+{
+        struct mtl_VectorChar txt = mtl_VectorChar_init();
+        CHECK(mtl_VectorChar_malloc(&txt, 100));
+        CHECK(txt.capacity == 100);
+        CHECK(txt.size == 0);
+
+        txt.size = 70;
+
+        CHECK(mtl_VectorChar_realloc(&txt, 50));
+        CHECK(txt.capacity == 50);
+        CHECK(txt.size == 50);
+        mtl_VectorChar_free(&txt);
+}

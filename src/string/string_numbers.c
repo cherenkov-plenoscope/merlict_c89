@@ -150,6 +150,7 @@ int mli_String_reverse_print_uint64(
 
         chk(mli_String_malloc(str, digs));
         strncpy(str->array, tmp, digs);
+        str->size = digs;
         return 1;
 chk_error:
         mli_String_free(str);
@@ -164,7 +165,6 @@ int mli_String_print_uint64(
         const char leading_char)
 {
         struct mli_String tmp = mli_String_init();
-        int64_t pos = 0;
         int64_t i = 0;
         int64_t length = 0;
         int64_t num_leading = 0;
@@ -183,15 +183,15 @@ int mli_String_print_uint64(
         chk(mli_String_malloc(str, length));
         chk_msg(length < MAX_NUM_CHARS, "Exceeded max_num_chars.");
 
-        pos = 0;
         for (i = 0; i < num_leading; i++) {
-                str->array[pos] = leading_char;
-                pos++;
+                chk(mli_String_push_back(str, leading_char));
         }
 
         for (i = 0; i < (int64_t)tmp.size; i++) {
-                str->array[pos] = tmp.array[(int64_t)tmp.size - i - 1];
-                pos++;
+                char cc;
+                size_t at = (int64_t)tmp.size - i - 1;
+                chk(mli_String_get(&tmp, at, &cc));
+                chk(mli_String_push_back(str, cc));
         }
 
         mli_String_free(&tmp);

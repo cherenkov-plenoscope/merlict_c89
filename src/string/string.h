@@ -2,10 +2,11 @@
 #ifndef MLI_STRING_H_
 #define MLI_STRING_H_
 
+#include "../vector/vector.h"
 #include "../array/array.h"
 #include <stdarg.h>
 
-MLI_ARRAY_DEFINITON(mli_String, char)
+MLI_VECTOR_DEFINITON(mli_String, char)
 
 int mli_String_from_cstr_fromat(
         struct mli_String *str,

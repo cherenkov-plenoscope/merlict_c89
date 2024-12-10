@@ -67,7 +67,7 @@ def run_and_save_sdtout(call, stdout_path):
             stderr=subprocess.STDOUT,
             stdout=f,
         )
-    print_file(stdout_path)
+    #print_file(stdout_path)
     return rc
 
 

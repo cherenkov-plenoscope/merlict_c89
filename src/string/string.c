@@ -5,9 +5,8 @@
 #include <ctype.h>
 #include "../chk/chk.h"
 #include "../cstr/cstr.h"
-#include "../io/io_text.h"
 
-MLI_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(mli_String, char)
+MLI_VECTOR_IMPLEMENTATION_ZERO_TERMINATION(mli_String, char)
 
 int mli_String_from_cstr_fromat(struct mli_String *str, const char *format, ...)
 {
@@ -17,8 +16,9 @@ int mli_String_from_cstr_fromat(struct mli_String *str, const char *format, ...)
         chk(mli_String_malloc(&tmp, 10 * strlen(format)));
         va_start(args, format);
         vsprintf(tmp.array, format, args);
-        chk(mli_String_malloc(str, strlen(tmp.array)));
-        strncpy(str->array, tmp.array, str->size);
+        tmp.size = strlen(tmp.array);
+        chk(mli_String_copy(str, &tmp));
+
         va_end(args);
         mli_String_free(&tmp);
         return 1;
@@ -30,7 +30,9 @@ chk_error:
 
 int mli_String_from_cstr(struct mli_String *str, const char *s)
 {
-        chk(mli_String_malloc(str, strlen(s)));
+        size_t length = strlen(s);
+        chk(mli_String_malloc(str, length));
+        str->size = length;
         strncpy(str->array, s, str->size);
         return 1;
 chk_error:
@@ -161,8 +163,7 @@ int mli_String_strip(const struct mli_String *src, struct mli_String *dst)
         if (len < 0) {
                 chk(mli_String_from_cstr_fromat(dst, ""));
         } else {
-                chk(mli_String_malloc(dst, len + 1));
-                strncpy(dst->array, &cpysrc.array[start], len + 1);
+                chk(mli_String_copyn(dst, &cpysrc, start, len + 1));
         }
         mli_String_free(&cpysrc);
         return 1;
@@ -212,29 +213,25 @@ int mli_String_convert_line_break_CRLF_CR_to_LF(
         const struct mli_String *src)
 {
         uint64_t i = 0;
-        struct mli_IO sdst = mli_IO_init();
-        chk(mli_IO_open(&sdst));
+        struct mli_String cpysrc = mli_String_init();
+        chk(mli_String_malloc(&cpysrc, src->size));
 
         while (i < src->size) {
                 if (mli_cstr_is_CRLF((char *)&src->array[i])) {
-                        chk(mli_IO_text_putc(&sdst, '\n'));
+                        chk(mli_String_push_back(&cpysrc, '\n'));
                         i += 2;
                 } else if (mli_cstr_is_CR((char *)&src->array[i])) {
-                        chk(mli_IO_text_putc(&sdst, '\n'));
+                        chk(mli_String_push_back(&cpysrc, '\n'));
                         i += 1;
                 } else {
-                        chk(mli_IO_text_putc(&sdst, src->array[i]));
+                        chk(mli_String_push_back(&cpysrc, src->array[i]));
                         i += 1;
                 }
         }
-
-        chk(mli_String_malloc(dst, sdst.size));
-        strncpy(dst->array, (char *)sdst.cstr, sdst.size);
-
-        mli_IO_close(&sdst);
+        chk(mli_String_copy(dst, &cpysrc));
+        mli_String_free(&cpysrc);
         return 1;
 chk_error:
-        mli_IO_close(&sdst);
-        mli_String_free(dst);
+        mli_String_free(&cpysrc);
         return 0;
 }

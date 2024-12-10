@@ -5,25 +5,23 @@ int mli_path_strip_this_dir(
         const struct mli_String *src,
         struct mli_String *dst)
 {
-        uint64_t i = 0;
+        uint64_t start = 0;
+        uint64_t length = 0;
         struct mli_String cpysrc = mli_String_init();
         chk_msg(src->array, "Expected src-string to be allocated.");
         chk_msg(mli_String_copy(&cpysrc, src), "Can not copy input.");
         mli_String_free(dst);
 
-        if (cpysrc.array == NULL) {
-                return 1;
-        }
-
-        while (i + 1 < cpysrc.size) {
-                if (cpysrc.array[i] == '.' && cpysrc.array[i + 1] == '/') {
-                        i += 2;
+        while (start + 1 < cpysrc.size) {
+                if (cpysrc.array[start] == '.' &&
+                    cpysrc.array[start + 1] == '/') {
+                        start += 2;
                 } else {
                         break;
                 }
         }
-        chk(mli_String_malloc(dst, cpysrc.size - i));
-        strcpy(dst->array, &cpysrc.array[i]);
+        length = cpysrc.size - start;
+        chk(mli_String_copyn(dst, &cpysrc, start, length));
         mli_String_free(&cpysrc);
         return 1;
 chk_error:
@@ -70,13 +68,11 @@ int mli_path_splitext(
         d = mli_String_rfind(&tmp, '/');
 
         if (p <= 0 || d > p || ((d + 1 == p) && (p + 1 < (int64_t)tmp.size))) {
-                chk(mli_String_from_cstr_fromat(dst, tmp.array));
+                chk(mli_String_copy(dst, &tmp));
                 chk(mli_String_from_cstr_fromat(ext, ""));
         } else {
-                chk(mli_String_malloc(dst, p));
-                strncpy(dst->array, tmp.array, p);
-                chk(mli_String_malloc(ext, tmp.size - p));
-                strncpy(ext->array, &tmp.array[p + 1], tmp.size - p);
+                chk(mli_String_copyn(dst, &tmp, 0, p));
+                chk(mli_String_copyn(ext, &tmp, p + 1, tmp.size - p - 1));
         }
 
         mli_String_free(&tmp);

@@ -87,6 +87,8 @@ int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
                 chk_msg(mli_Tar_read_data(
                                 &tar, (void *)payload.array, tarh.size),
                         "Failed to read payload from tar into payload.");
+                payload.size = strlen(payload.array);
+
                 chk_msg(mli_String_convert_line_break_CRLF_CR_to_LF(
                                 &payload, &payload),
                         "Failed to replace CRLF and CR linebreaks.");
@@ -150,7 +152,6 @@ int mliArchive_get_malloc_json(
 
         chk_msg(mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
-
         chk_msg(mli_Json_malloc_from_cstr(json, (char *)text->array),
                 "Can not parse requested json.");
 
