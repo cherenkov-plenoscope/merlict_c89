@@ -38,6 +38,7 @@ int64_t mli_IO_seek(
         struct mli_IO *self,
         const int64_t offset,
         const int64_t origin);
+int mli_IO_eof(const struct mli_IO *self);
 
 /* to/from path */
 int mli_IO_write_from_path(struct mli_IO *self, const char *path);

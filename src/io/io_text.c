@@ -9,8 +9,8 @@
 int mli_IO_text_getc(struct mli_IO *byt)
 {
         char c = EOF;
-        int rc = mli_IO_read(byt, (void *)(&c), sizeof(char), 1);
-        if (rc == EOF) {
+        size_t rc = mli_IO_read(byt, (void *)(&c), sizeof(char), 1);
+        if (rc == 0) {
                 return EOF;
         } else {
                 return (int)c;
@@ -67,28 +67,40 @@ int mli_IO_text_read_line(
         struct mli_String *line,
         const char delimiter)
 {
-        struct mli_IO buf = mli_IO_init();
-        chk(mli_IO_open(&buf));
+        chk(mli_String_malloc(line, 16));
 
-        while (stream->pos < stream->size) {
+        if (mli_IO_eof(stream)) {
+                return EOF;
+        }
+
+        while (!mli_IO_eof(stream)) {
                 const int c = mli_IO_text_getc(stream);
-                if (c == '\0') {
+                if (c == delimiter) {
                         break;
-                } else if (c == delimiter) {
+                } else if (c == '\0') {
                         break;
                 } else {
-                        chk(mli_IO_text_putc(&buf, c));
+                        chk(mli_String_push_back(line, c));
                 }
         }
 
-        mli_IO_rewind(&buf);
-        chk(mli_String_malloc(line, buf.size));
-        strcpy(line->array, (char *)buf.cstr);
-
-        mli_IO_close(&buf);
         return 1;
 chk_error:
-        mli_IO_close(&buf);
+        return 0;
+}
+
+int mli_IO_text_write_String(struct mli_IO *self, const struct mli_String *str)
+{
+        uint64_t i;
+        for (i = 0; i < str->size; i++) {
+                char c = str->array[i];
+                if (c == '\0') {
+                        break;
+                }
+                chk(mli_IO_text_putc(self, c));
+        }
+        return 1;
+chk_error:
         return 0;
 }
 

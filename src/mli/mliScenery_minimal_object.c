@@ -94,7 +94,7 @@ int mliScenery_malloc_minimal_from_wavefront(
                 "Expected object-wavefront file to be free of "
                 "control characters, except [NUL, TAB, LF].");
         chk_msg(mliObject_malloc_from_wavefront(
-                        &scenery->geometry.objects[0], (char *)str.cstr),
+                        &scenery->geometry.objects[0], &str),
                 "Failed to malloc wavefront-object from string.");
         mli_IO_close(&str);
         sprintf(scenery->geometry.object_names[0].cstr, "default-object");

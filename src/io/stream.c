@@ -131,3 +131,17 @@ int64_t mli_Stream_seek(
         }
         return rc;
 }
+
+int mli_Stream_eof(const struct mli_Stream *self)
+{
+        int64_t rc = EOF;
+        switch (self->type) {
+        case MLI_IO_TYPE_MEMORY:
+                rc = mli_IO_eof(&self->data.memory);
+                break;
+        case MLI_IO_TYPE_FILE:
+                rc = mli_IoFile_eof(&self->data.file);
+                break;
+        }
+        return rc;
+}

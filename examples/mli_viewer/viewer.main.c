@@ -5,12 +5,14 @@
 #include "../../src/viewer/Config.h"
 #include "../../src/viewer/viewer.h"
 #include "../../src/chk/chk.h"
-#include "../../src/mtl/cstr.h"
-#include "../../src/mtl/cstr_numbers.h"
+#include "../../src/cstr/cstr.h"
+#include "../../src/cstr/cstr_numbers.h"
 #include "../../src/mli/mliScenery.h"
 #include "../../src/mli/mliScenery_tar.h"
 #include "../../src/mli/mliScenery_minimal_object.h"
 #include "../../src/mli/mliScenery_serialize.h"
+#include "../../src/args/args.h"
+#include "../../src/string/string_numbers.h"
 
 /*
         1) Almagamate
@@ -34,20 +36,37 @@
 
 int main(int argc, char *argv[])
 {
+        struct mli_ArrayString args = mli_ArrayString_init();
         struct mli_viewer_Config config = mli_viewer_Config_default();
         struct mliScenery scenery = mliScenery_init();
+        struct mli_String tar_suffix = mli_String_init();
+        struct mli_String mli_suffix = mli_String_init();
+        struct mli_String obj_suffix = mli_String_init();
 
-        if (argc >= 2) {
-                if (mli_cstr_ends_with(argv[1], ".tar")) {
+        chk_msg(
+                mli_ArrayString_from_argc_argv(&args, argc, argv),
+                "Failed to copy argc and argv."
+        );
+
+        chk(mli_String_from_cstr(&tar_suffix, ".tar"));
+        chk(mli_String_from_cstr(&mli_suffix, ".mli"));
+        chk(mli_String_from_cstr(&obj_suffix, ".obj"));
+
+        if (args.size >= 2) {
+                if (mli_String_ends_with(&args.array[1], &tar_suffix)) {
                         chk_msg(mliScenery_malloc_from_path_tar(
-                                        &scenery, argv[1]),
+                                        &scenery,
+                                        args.array[1].array),
                                 "Can not read scenery from '.tar'.");
-                } else if (mli_cstr_ends_with(argv[1], ".mli")) {
-                        chk_msg(mliScenery_malloc_from_path(&scenery, argv[1]),
+                } else if (mli_String_ends_with(&args.array[1], &mli_suffix)) {
+                        chk_msg(mliScenery_malloc_from_path(
+                                &scenery,
+                                args.array[1].array),
                                 "Can not read scenery from '.mli'.");
-                } else if (mli_cstr_ends_with(argv[1], ".obj")) {
+                } else if (mli_String_ends_with(&args.array[1], &obj_suffix)) {
                         chk_msg(mliScenery_malloc_minimal_from_wavefront(
-                                        &scenery, argv[1]),
+                                        &scenery,
+                                        args.array[1].array),
                                 "Can not read scenery from '.obj'.");
                 } else {
                         chk_bad("Scenery-format has to be either of "
@@ -55,16 +74,18 @@ int main(int argc, char *argv[])
                 }
         }
 
-        if (argc == 3) {
-                chk_msg(mli_cstr_to_double(&config.step_length, argv[2]),
+        if (args.size == 3) {
+                chk_msg(mli_String_to_double(
+                        &config.step_length,
+                        &args.array[2]),
                         "Can not parse step_length from argv[2].");
                 config.aperture_camera_image_sensor_width *= config.step_length;
         }
 
-        if (argc < 2 || argc > 3) {
+        if (args.size < 2 || args.size > 3) {
                 fprintf(stderr,
                         "Usage: %s <scenery-path> [step_length]\n",
-                        argv[0]);
+                        args.array[0].array);
                 goto chk_error;
         }
 
@@ -72,6 +93,10 @@ int main(int argc, char *argv[])
                         &scenery, config),
                 "Failure in viewer");
 
+        mli_String_free(&tar_suffix);
+        mli_String_free(&mli_suffix);
+        mli_String_free(&obj_suffix);
+        mli_ArrayString_free(&args);
         mliScenery_free(&scenery);
         return EXIT_SUCCESS;
 chk_error:

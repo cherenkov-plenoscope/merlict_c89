@@ -60,7 +60,7 @@ chk_error:
 }
 
 int mliObject_parse_face_line(
-        const char *line,
+        const struct mli_String *line,
         struct mliFace *faces_vertices,
         struct mliFace *faces_texture_points,
         struct mliFace *faces_vertex_normals,
@@ -218,7 +218,11 @@ int mliObject_parse_face_line(
 
         while (state != final_state) {
                 chk_msg(i <= MAX_NUM_CHARS, "Expected less chars in line.");
-                c = line[i];
+                if (i < line->size) {
+                        chk_msg(mli_String_get(line, i, &c), "Beyond 'line'.");
+                } else {
+                        c = '\0';
+                }
 
                 /* printf("i: %d, c:%c state: %d \n", i, c, state); */
 
@@ -349,7 +353,9 @@ int mliObject_is_vert_line_toggle(const int state)
         return 0;
 }
 
-int mliObject_parse_three_float_line(const char *line, struct mliVec *v)
+int mliObject_parse_three_float_line(
+        const struct mli_String *line,
+        struct mliVec *v)
 {
         /*
         statemachine
@@ -411,12 +417,16 @@ int mliObject_parse_three_float_line(const char *line, struct mliVec *v)
 
         while (state != final_state) {
                 chk_msg(i <= MAX_NUM_CHARS, "Expected less chars in line.");
-                c = line[i];
+                if (i < line->size) {
+                        chk_msg(mli_String_get(line, i, &c), "Beyond 'line'.");
+                } else {
+                        c = '\0';
+                }
 
                 if (state == error_state) {
                         fprintf(stderr,
                                 "[ERROR] Can not parse line '%s'\n",
-                                line);
+                                line->array);
                 }
                 chk_msg(state != error_state,
                         "Can not parse three float line.");
@@ -467,7 +477,7 @@ chk_error:
 }
 
 int mliObject_parse_face_vertices_and_normals(
-        const char *line,
+        const struct mli_String *line,
         struct mliFace *fv,
         struct mliFace *fvn)
 {
@@ -499,14 +509,18 @@ chk_error:
         return 0;
 }
 
-int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
+int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
 {
         uint64_t i = 0u;
-        uint64_t p = 0u;
         uint64_t line_number = 0u;
-        char line[2 * MLI_NAME_CAPACITY];
-        uint64_t line_length = 0u;
         uint64_t mtl = 0u;
+
+        struct mli_String line = mli_String_init();
+        struct mli_String tmp = mli_String_init();
+        struct mli_String svn = mli_String_init();
+        struct mli_String sv = mli_String_init();
+        struct mli_String sf = mli_String_init();
+        struct mli_String susemtl = mli_String_init();
 
         /* init dyn */
         struct mliDynVec v = mliDynVec_init();
@@ -518,8 +532,6 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
         struct mliDynMap material_names = mliDynMap_init();
 
-        memset(line, '\0', sizeof(line));
-
         /* malloc dyn */
         chk(mliDynVec_malloc(&v, 0u));
         chk(mliDynVec_malloc(&vn, 0u));
@@ -530,61 +542,73 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
         chk(mliDynMap_malloc(&material_names));
 
+        chk(mli_String_from_cstr(&svn, "vn "));
+        chk(mli_String_from_cstr(&sv, "v "));
+        chk(mli_String_from_cstr(&sf, "f "));
+        chk(mli_String_from_cstr(&susemtl, "usemtl "));
+
         /* parse wavefront into dyn */
         while (1) {
                 line_number += 1;
-                chk_msg(line_number < 1000 * 1000 * 1000,
+                chk_msg(line_number < 1000 * 1000,
                         "Expected less than 1e9 lines in wavefront-file. "
                         "Something went wrong.");
 
-                line_length = mli_cstr_split(&str[p], '\n', line, sizeof(line));
+                if (mli_IO_eof(io)) {
+                        break;
+                }
+                chk_msg(mli_IO_text_read_line(io, &line, '\n'),
+                        "Can not read line.");
+                chk_msg(line.size < 1024, "Expected line.size < 1024.");
 
-                chk_msg(line_length < sizeof(line), "Line is too long.");
-
-                if (line_length > 0) {
-                        if (mli_cstr_starts_with(line, "vn ")) {
+                if (line.size > 0) {
+                        if (mli_String_starts_with(&line, &svn)) {
                                 struct mliVec tmp_vn;
+                                chk(mli_String_copyn(
+                                        &tmp, &line, 2, line.size - 2));
                                 chk_msg(mliObject_parse_three_float_line(
-                                                &line[2], &tmp_vn),
+                                                &tmp, &tmp_vn),
                                         "Can not parse vertex-normal-line.");
                                 chk_msg(mliVec_dot(tmp_vn, tmp_vn) > 0.0,
                                         "vn can not be normalized.") tmp_vn =
                                         mliVec_normalized(tmp_vn);
 
                                 chk(mliDynVec_push_back(&vn, tmp_vn));
-                        } else if (mli_cstr_starts_with(line, "v ")) {
+                        } else if (mli_String_starts_with(&line, &sv)) {
                                 struct mliVec tmp_v;
+                                chk(mli_String_copyn(
+                                        &tmp, &line, 1, line.size - 1));
                                 chk_msg(mliObject_parse_three_float_line(
-                                                &line[1], &tmp_v),
+                                                &tmp, &tmp_v),
                                         "Can not parse vertex-line.");
                                 chk(mliDynVec_push_back(&v, tmp_v));
-                        } else if (mli_cstr_starts_with(line, "f ")) {
+                        } else if (mli_String_starts_with(&line, &sf)) {
                                 struct mliFace tmp_fv;
                                 struct mliFace tmp_fvn;
                                 chk_msg(mliDynMap_size(&material_names) > 0,
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
                                 chk_msg(mliObject_parse_face_vertices_and_normals(
-                                                line, &tmp_fv, &tmp_fvn),
+                                                &line, &tmp_fv, &tmp_fvn),
                                         "Failed to parse face-line.");
                                 chk(mliDynFace_push_back(&fv, tmp_fv));
                                 chk(mliDynFace_push_back(&fvn, tmp_fvn));
                                 chk(mliDynUint32_push_back(&fm, mtl));
-                        } else if (mli_cstr_starts_with(line, "usemtl ")) {
-                                const char *mtl_key = &line[7];
-                                if (!mliDynMap_has(&material_names, mtl_key)) {
+                        } else if (mli_String_starts_with(&line, &susemtl)) {
+                                chk(mli_String_copyn(
+                                        &tmp, &line, 7, line.size - 7));
+                                if (!mliDynMap_has(
+                                            &material_names, tmp.array)) {
                                         chk(mliDynMap_insert(
-                                                &material_names, mtl_key, 0));
+                                                &material_names, tmp.array, 0));
                                 }
                                 chk(mliDynMap_find(
-                                        &material_names, mtl_key, &mtl));
+                                        &material_names, tmp.array, &mtl));
+                        } else {
+                                /*fprintf(stderr, "no match: '%s'\n",
+                                 * line.array);*/
                         }
                 } /* line_length > 0 */
-
-                if (str[p + line_length] == '\0') {
-                        break;
-                }
-                p += line_length + 1;
         }
 
         /* copy dyn into static mliObject */
@@ -621,6 +645,13 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str)
 
         mliDynMap_free(&material_names);
 
+        mli_String_free(&line);
+        mli_String_free(&tmp);
+        mli_String_free(&svn);
+        mli_String_free(&sv);
+        mli_String_free(&sf);
+        mli_String_free(&susemtl);
+
         return 1;
 chk_error:
         mliObject_free(obj);
@@ -634,6 +665,13 @@ chk_error:
         mliDynUint32_free(&fm);
 
         mliDynMap_free(&material_names);
+
+        mli_String_free(&line);
+        mli_String_free(&tmp);
+        mli_String_free(&svn);
+        mli_String_free(&sv);
+        mli_String_free(&sf);
+        mli_String_free(&susemtl);
 
         return 0;
 }

@@ -7,7 +7,8 @@
 #include "../chk/chk.h"
 #include "../math/math.h"
 
-int mli_Func_malloc_from_csv(struct mli_Func *func, const char *str)
+/*
+int mli_Func_malloc_from_csv(struct mli_Func *func, struct mli_IO *io)
 {
         uint64_t i = 0u;
         uint64_t p = 0u;
@@ -38,7 +39,7 @@ int mli_Func_malloc_from_csv(struct mli_Func *func, const char *str)
 
                 if (line_length > 0) {
                         if (mli_cstr_starts_with(line, "#")) {
-                                /* comment */
+
                         } else {
                                 i = 0;
                                 token_length = mli_cstr_split(
@@ -67,7 +68,6 @@ int mli_Func_malloc_from_csv(struct mli_Func *func, const char *str)
                 p += line_length + 1;
         }
 
-        /* copy x y into mli_Func */
         chk_msg(x.size == y.size, "Expected same number x, y values.");
         chk_msg(mli_Func_malloc(func, x.size),
                 "Failed to malloc mli_Func from file.");
@@ -84,3 +84,4 @@ chk_error:
         mli_Func_free(func);
         return 0;
 }
+*/

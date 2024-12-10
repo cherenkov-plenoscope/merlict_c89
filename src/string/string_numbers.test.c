@@ -173,18 +173,18 @@ CASE("mli_String_print_uint64")
         /* leading zeros */
         CHECK(mli_String_print_uint64(123, &s, 10u, 9u, '0'));
         CHECK(mli_String_equal_cstr(
-                      &s,
-                      "000"
-                      "000"
-                      "123"));
+                &s,
+                "000"
+                "000"
+                "123"));
         CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         CHECK(mli_String_print_uint64(123, &s, 10u, 9u, ' '));
         CHECK(mli_String_equal_cstr(
-                      &s,
-                      "   "
-                      "   "
-                      "123"));
+                &s,
+                "   "
+                "   "
+                "123"));
         CHECK(mli_String__discover_size(&s) == (int64_t)s.size);
 
         mli_String_free(&s);

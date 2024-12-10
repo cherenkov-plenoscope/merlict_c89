@@ -28,7 +28,9 @@
                 struct NAME *self, const uint64_t at, PAYLOAD_TYPE item);      \
                                                                                \
         int NAME##_get(                                                        \
-                struct NAME *self, const uint64_t at, PAYLOAD_TYPE *item);     \
+                const struct NAME *self,                                       \
+                const uint64_t at,                                             \
+                PAYLOAD_TYPE *item);                                           \
         int NAME##_copy(struct NAME *dst, const struct NAME *src);             \
         int NAME##_copyn(                                                      \
                 struct NAME *dst,                                              \
@@ -86,11 +88,16 @@
                 chk_mem(new_array);                                            \
                 self->array = new_array;                                       \
                 self->capacity = capacity;                                     \
-                memset(self->array,                                            \
-                       '\0',                                                   \
-                       (self->capacity + 1) * sizeof(PAYLOAD_TYPE));           \
+                                                                               \
                 if (self->capacity < self->size) {                             \
                         self->size = self->capacity;                           \
+                } else {                                                       \
+                        int64_t num_fields_after_size =                        \
+                                ((int64_t)self->capacity -                     \
+                                 (int64_t)self->size);                         \
+                        memset(&self->array[self->size],                       \
+                               '\0',                                           \
+                               num_fields_after_size * sizeof(PAYLOAD_TYPE));  \
                 }                                                              \
                 return 1;                                                      \
         chk_error:                                                             \
@@ -140,7 +147,9 @@
         }                                                                      \
                                                                                \
         int NAME##_get(                                                        \
-                struct NAME *self, const uint64_t at, PAYLOAD_TYPE *item)      \
+                const struct NAME *self,                                       \
+                const uint64_t at,                                             \
+                PAYLOAD_TYPE *item)                                            \
         {                                                                      \
                 chk_msg(at < self->size, "Out of range.");                     \
                 (*item) = self->array[at];                                     \

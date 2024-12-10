@@ -37,6 +37,7 @@ module_paths = [
     os.path.join("src", "array"),
     os.path.join("src", "cstr"),
     os.path.join("src", "string"),
+    os.path.join("src", "argv"),
     os.path.join("src", "path"),
     os.path.join("src", "prng"),
     os.path.join("src", "io"),
@@ -64,8 +65,8 @@ def run_and_save_sdtout(call, stdout_path):
     with open(stdout_path, "wt") as f:
         rc = subprocess.call(
             call,
-            stderr=subprocess.STDOUT,
-            stdout=f,
+            #stderr=subprocess.STDOUT,
+            #stdout=f,
         )
     #print_file(stdout_path)
     return rc

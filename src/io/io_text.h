@@ -18,6 +18,8 @@ int mli_IO_text_read_line(
         struct mli_String *line,
         const char delimiter);
 
+int mli_IO_text_write_String(struct mli_IO *self, const struct mli_String *str);
+
 int mli_IO_text_write_multi_line_debug_view(
         struct mli_IO *f,
         const struct mli_String *text,

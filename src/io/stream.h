@@ -43,5 +43,6 @@ int64_t mli_Stream_seek(
         struct mli_Stream *self,
         const int64_t offset,
         const int64_t origin);
+int mli_Stream_eof(const struct mli_Stream *self);
 
 #endif

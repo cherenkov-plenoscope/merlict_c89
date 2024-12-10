@@ -5,16 +5,19 @@
 #include <stdint.h>
 #include "mliObject.h"
 #include "../io/io.h"
+#include "../string/string.h"
 
-int mliObject_malloc_from_wavefront(struct mliObject *obj, const char *str);
+int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io);
 int mliObject_fprint_to_wavefront(
         struct mli_IO *f,
         const struct mliObject *obj);
 int mliObject_parse_face_line(
-        const char *line,
+        const struct mli_String *line,
         struct mliFace *faces_vertices,
         struct mliFace *faces_texture_points,
         struct mliFace *faces_vertex_normals,
         int *line_mode);
-int mliObject_parse_three_float_line(const char *line, struct mliVec *v);
+int mliObject_parse_three_float_line(
+        const struct mli_String *line,
+        struct mliVec *v);
 #endif

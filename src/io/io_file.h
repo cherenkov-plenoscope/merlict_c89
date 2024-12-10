@@ -35,4 +35,5 @@ int64_t mli_IoFile_seek(
         struct mli_IoFile *self,
         const int64_t offset,
         const int64_t origin);
+int mli_IoFile_eof(const struct mli_IoFile *self);
 #endif

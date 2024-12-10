@@ -20,7 +20,9 @@
         int NAME##_set(                                                        \
                 struct NAME *self, const uint64_t at, PAYLOAD_TYPE item);      \
         int NAME##_get(                                                        \
-                struct NAME *self, const uint64_t at, PAYLOAD_TYPE *item);     \
+                const struct NAME *self,                                       \
+                const uint64_t at,                                             \
+                PAYLOAD_TYPE *item);                                           \
         int NAME##_copy(struct NAME *dst, const struct NAME *src);             \
         int NAME##_copyn(                                                      \
                 struct NAME *dst,                                              \
@@ -81,6 +83,25 @@
                 return 0;                                                      \
         }
 
+#define MLI_ARRAY_IMPLEMENTATION_PRIMITIVE_FREE(NAME, PAYLOAD_TYPE)            \
+        void NAME##_free(struct NAME *self)                                    \
+        {                                                                      \
+                free(self->array);                                             \
+                (*self) = NAME##_init();                                       \
+        }
+
+#define MLI_ARRAY_IMPLEMENTATION_PAYLOAD_FREE(                                 \
+        NAME, PAYLOAD_TYPE, PAYLOAD_FREE)                                      \
+        void NAME##_free(struct NAME *self)                                    \
+        {                                                                      \
+                size_t i;                                                      \
+                for (i = 0; i < self->size; i++) {                             \
+                        PAYLOAD_FREE(&self->array[i]);                         \
+                }                                                              \
+                free(self->array);                                             \
+                (*self) = NAME##_init();                                       \
+        }
+
 #define MLI_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                    \
                                                                                \
         struct NAME NAME##_init(void)                                          \
@@ -89,12 +110,6 @@
                 out.size = 0u;                                                 \
                 out.array = NULL;                                              \
                 return out;                                                    \
-        }                                                                      \
-                                                                               \
-        void NAME##_free(struct NAME *self)                                    \
-        {                                                                      \
-                free(self->array);                                             \
-                (*self) = NAME##_init();                                       \
         }                                                                      \
                                                                                \
         int NAME##_set(                                                        \
@@ -108,7 +123,9 @@
         }                                                                      \
                                                                                \
         int NAME##_get(                                                        \
-                struct NAME *self, const uint64_t at, PAYLOAD_TYPE *item)      \
+                const struct NAME *self,                                       \
+                const uint64_t at,                                             \
+                PAYLOAD_TYPE *item)                                            \
         {                                                                      \
                 chk_msg(at < self->size, "Out of range.");                     \
                 (*item) = self->array[at];                                     \
@@ -142,10 +159,17 @@
 
 #define MLI_ARRAY_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                           \
         MLI_ARRAY_IMPLEMENTATION_MALLOC(NAME, PAYLOAD_TYPE)                    \
-        MLI_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)
+        MLI_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                    \
+        MLI_ARRAY_IMPLEMENTATION_PRIMITIVE_FREE(NAME, PAYLOAD_TYPE)
 
 #define MLI_ARRAY_IMPLEMENTATION_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)          \
         MLI_ARRAY_IMPLEMENTATION_MALLOC_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)   \
-        MLI_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)
+        MLI_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                    \
+        MLI_ARRAY_IMPLEMENTATION_PRIMITIVE_FREE(NAME, PAYLOAD_TYPE)
+
+#define MLI_ARRAY_IMPLEMENTATION_FREE(NAME, PAYLOAD_TYPE, PAYLOAD_FREE)        \
+        MLI_ARRAY_IMPLEMENTATION_MALLOC(NAME, PAYLOAD_TYPE)                    \
+        MLI_ARRAY_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                    \
+        MLI_ARRAY_IMPLEMENTATION_PAYLOAD_FREE(NAME, PAYLOAD_TYPE, PAYLOAD_FREE)
 
 #endif

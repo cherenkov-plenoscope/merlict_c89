@@ -79,3 +79,5 @@ int64_t mli_IoFile_seek(
 {
         return fseek(self->cfile, offset, origin);
 }
+
+int mli_IoFile_eof(const struct mli_IoFile *self) { return feof(self->cfile); }

@@ -57,6 +57,12 @@ int mli_set_geometry_objects_and_names_from_archive(
                             archive->filenames.items.array[arc_idx].key,
                             "geometry/objects/",
                             ".obj")) {
+
+                        struct mli_IO buff = mli_IO_init();
+                        chk(mli_IO_text_write_String(
+                                &buff, &archive->textfiles.array[arc_idx]));
+                        mli_IO_rewind(&buff);
+
                         chk_msg(obj_idx < geometry->num_objects,
                                 "Expected less objects in archive.");
 
@@ -67,17 +73,18 @@ int mli_set_geometry_objects_and_names_from_archive(
                         mli_cstr_path_basename_without_extension(key, key);
                         chk_msg(mliDynMap_insert(object_names, key, obj_idx),
                                 "Failed to insert object-filename into map.");
+
                         chk_msg(mliObject_malloc_from_wavefront(
-                                        &geometry->objects[obj_idx],
-                                        (char *)archive->textfiles
-                                                .array[arc_idx]
-                                                .array),
+                                        &geometry->objects[obj_idx], &buff),
                                 "Failed to parse wave-front-object.");
+
                         memcpy(geometry->object_names[obj_idx].cstr,
                                key,
                                MLI_NAME_CAPACITY);
 
                         obj_idx += 1u;
+
+                        mli_IO_close(&buff);
                 }
         }
 

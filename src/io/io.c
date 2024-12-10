@@ -207,6 +207,15 @@ int64_t mli_IO_seek(
         }
 }
 
+int mli_IO_eof(const struct mli_IO *self)
+{
+        if (self->pos < self->size) {
+                return 0;
+        } else {
+                return EOF;
+        }
+}
+
 int mli_IO_write_from_path(struct mli_IO *self, const char *path)
 {
         int rc;
