@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "func_csv.h"
 #include "../mli/mliDynDouble.h"
-#include "../cstr/cstr.h"
-#include "../cstr/cstr_numbers.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
+#include "../string/string_numbers.h"
+#include "../io/io_text.h"
 
 int mli_Func_from_csv_split_line(
         struct mli_String *line,
