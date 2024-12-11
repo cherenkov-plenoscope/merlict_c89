@@ -13,18 +13,18 @@ struct mli_Image {
 };
 
 void mli_Image_assign_pixel_colors_to_sum_and_exposure_image(
-        const struct mli_Pixels *pixels,
+        const struct mli_image_PixelVector *pixels,
         const struct mli_Image *colors,
         struct mli_Image *sum_image,
         struct mli_Image *exposure_image);
-int mli_Pixels_malloc_from_image_above_threshold(
-        struct mli_Pixels *pixels,
+int mli_image_PixelVector_malloc_from_image_above_threshold(
+        struct mli_image_PixelVector *pixels,
         const struct mli_Image *image,
         const float threshold);
-void mli_Pixels_above_threshold(
+void mli_image_PixelVector_above_threshold(
         const struct mli_Image *to_do_image,
         const float threshold,
-        struct mli_Pixels *pixels);
+        struct mli_image_PixelVector *pixels);
 void mli_Image_from_sum_and_exposure(
         const struct mli_Image *sum,
         const struct mli_Image *exposure,
@@ -49,8 +49,8 @@ void mli_Image_set(
 void mli_Image_set_all_pixel(
         const struct mli_Image *img,
         const struct mli_Color color);
-void mli_Pixels_set_all_from_image(
-        struct mli_Pixels *pixels,
+void mli_image_PixelVector_set_all_from_image(
+        struct mli_image_PixelVector *pixels,
         const struct mli_Image *image);
 uint32_t mli_Image_idx(
         const struct mli_Image *img,

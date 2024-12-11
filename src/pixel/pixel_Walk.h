@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "pixel.h"
 
-struct mli_PixelWalk {
+struct mli_image_PixelWalk {
         /*
          * PixelWalk walks over the pixels of a rectangular image in a
          * cache-aware-way with respect to raytracing.
@@ -26,10 +26,11 @@ struct mli_PixelWalk {
         uint32_t i;
 };
 
-struct mli_PixelWalk mli_PixelWalk_set(
+struct mli_image_PixelWalk mli_image_PixelWalk_set(
         const uint32_t num_cols,
         const uint32_t num_rows,
         const uint32_t chunk_size);
-struct mli_Pixel mli_PixelWalk_get(const struct mli_PixelWalk *walk);
-void mli_PixelWalk_walk(struct mli_PixelWalk *walk);
+struct mli_image_Pixel mli_image_PixelWalk_get(
+        const struct mli_image_PixelWalk *walk);
+void mli_image_PixelWalk_walk(struct mli_image_PixelWalk *walk);
 #endif

@@ -170,7 +170,7 @@ void mliApertureCamera_aquire_pixels(
         const struct mli_Image *image,
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
-        const struct mli_Pixels *pixels_to_do,
+        const struct mli_image_PixelVector *pixels_to_do,
         struct mli_Image *colors,
         struct mli_Prng *prng)
 {
@@ -203,7 +203,7 @@ void mliApertureCamera_aquire_pixels(
 }
 
 void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
-        const struct mli_Pixels *pixels,
+        const struct mli_image_PixelVector *pixels,
         const struct mli_Image *colors,
         struct mli_Image *sum_image,
         struct mli_Image *exposure_image)
@@ -243,7 +243,8 @@ int mliApertureCamera_render_image(
         struct mli_Image previous_sobel_image = mli_Image_init();
         struct mli_Image diff_image = mli_Image_init();
         struct mli_Image colors = mli_Image_init();
-        struct mli_Pixels pixels_to_do = mli_Pixels_init();
+        struct mli_image_PixelVector pixels_to_do =
+                mli_image_PixelVector_init();
 
         chk_msg(mli_Image_malloc(&sum_image, image->num_cols, image->num_rows),
                 "Failed to malloc sum_image.");
@@ -274,7 +275,7 @@ int mliApertureCamera_render_image(
         mli_Image_set_all_pixel(&previous_sobel_image, zero_color);
         mli_Image_set_all_pixel(&colors, zero_color);
 
-        chk_msg(mli_Pixels_malloc(
+        chk_msg(mli_image_PixelVector_malloc(
                         &pixels_to_do, image->num_cols * image->num_rows),
                 "Failed to malloc pixels_to_do.");
 
@@ -282,7 +283,7 @@ int mliApertureCamera_render_image(
         initial image
         =============
         */
-        mli_Pixels_set_all_from_image(&pixels_to_do, image);
+        mli_image_PixelVector_set_all_from_image(&pixels_to_do, image);
 
         mliApertureCamera_aquire_pixels(
                 camera,
@@ -308,7 +309,8 @@ int mliApertureCamera_render_image(
                 if (iteration >= MAX_ITERATIONS)
                         break;
 
-                mli_Pixels_above_threshold(&to_do_image, 0.5, &pixels_to_do);
+                mli_image_PixelVector_above_threshold(
+                        &to_do_image, 0.5, &pixels_to_do);
 
                 if (pixels_to_do.size <
                     image->num_rows * image->num_cols / 100.0)
@@ -354,7 +356,7 @@ int mliApertureCamera_render_image(
         mli_Image_free(&previous_sobel_image);
         mli_Image_free(&diff_image);
         mli_Image_free(&colors);
-        mli_Pixels_free(&pixels_to_do);
+        mli_image_PixelVector_free(&pixels_to_do);
         return 1;
 chk_error:
         mli_Image_free(&sum_image);
@@ -364,6 +366,6 @@ chk_error:
         mli_Image_free(&previous_sobel_image);
         mli_Image_free(&diff_image);
         mli_Image_free(&colors);
-        mli_Pixels_free(&pixels_to_do);
+        mli_image_PixelVector_free(&pixels_to_do);
         return 0;
 }

@@ -5,11 +5,11 @@
 #include <stdint.h>
 #include "../vector/vector.h"
 
-struct mli_Pixel {
+struct mli_image_Pixel {
         uint16_t row;
         uint16_t col;
 };
 
-MLI_VECTOR_DEFINITON(mli_Pixels, struct mli_Pixel)
+MLI_VECTOR_DEFINITON(mli_image_PixelVector, struct mli_image_Pixel)
 
 #endif

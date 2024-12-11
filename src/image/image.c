@@ -243,54 +243,55 @@ void mli_Image_from_sum_and_exposure(
         }
 }
 
-void mli_Pixels_set_all_from_image(
-        struct mli_Pixels *pixels,
+void mli_image_PixelVector_set_all_from_image(
+        struct mli_image_PixelVector *pixels,
         const struct mli_Image *image)
 {
-        struct mli_PixelWalk walk =
-                mli_PixelWalk_set(image->num_cols, image->num_rows, 16u);
+        struct mli_image_PixelWalk walk =
+                mli_image_PixelWalk_set(image->num_cols, image->num_rows, 16u);
         uint64_t i;
         const uint64_t num_pixel = image->num_rows * image->num_cols;
         assert(num_pixel == pixels->capacity);
         pixels->size = 0;
         for (i = 0; i < num_pixel; i++) {
-                mli_Pixels_push_back(pixels, mli_PixelWalk_get(&walk));
-                mli_PixelWalk_walk(&walk);
+                mli_image_PixelVector_push_back(
+                        pixels, mli_image_PixelWalk_get(&walk));
+                mli_image_PixelWalk_walk(&walk);
         }
 }
 
-void mli_Pixels_above_threshold(
+void mli_image_PixelVector_above_threshold(
         const struct mli_Image *image,
         const float threshold,
-        struct mli_Pixels *pixels)
+        struct mli_image_PixelVector *pixels)
 {
-        struct mli_PixelWalk walk =
-                mli_PixelWalk_set(image->num_cols, image->num_rows, 16u);
+        struct mli_image_PixelWalk walk =
+                mli_image_PixelWalk_set(image->num_cols, image->num_rows, 16u);
         uint64_t i;
         const uint64_t num_pixel = image->num_rows * image->num_cols;
 
         pixels->size = 0;
         for (i = 0; i < num_pixel; i++) {
-                struct mli_Pixel px = mli_PixelWalk_get(&walk);
+                struct mli_image_Pixel px = mli_image_PixelWalk_get(&walk);
                 double lum = 0.0;
                 struct mli_Color c = mli_Image_at(image, px.col, px.row);
                 lum = c.r + c.g + c.b;
                 if (lum > threshold) {
-                        mli_Pixels_push_back(pixels, px);
+                        mli_image_PixelVector_push_back(pixels, px);
                 }
-                mli_PixelWalk_walk(&walk);
+                mli_image_PixelWalk_walk(&walk);
         }
 }
 
 void mli_Image_assign_pixel_colors_to_sum_and_exposure_image(
-        const struct mli_Pixels *pixels,
+        const struct mli_image_PixelVector *pixels,
         const struct mli_Image *colors,
         struct mli_Image *sum_image,
         struct mli_Image *exposure_image)
 {
         uint64_t pix;
         for (pix = 0u; pix < pixels->size; pix++) {
-                const struct mli_Pixel px = pixels->array[pix];
+                const struct mli_image_Pixel px = pixels->array[pix];
                 const uint64_t idx = mli_Image_idx(sum_image, px.col, px.row);
                 sum_image->raw[idx].r += colors->raw[idx].r;
                 sum_image->raw[idx].g += colors->raw[idx].g;
