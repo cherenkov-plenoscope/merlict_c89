@@ -2,7 +2,7 @@
 #include "mliPinHoleCamera.h"
 #include <math.h>
 #include <assert.h>
-#include "../pixel/pixel_Walk.h"
+#include "../image/image_PixelWalk.h"
 #include "../math/math.h"
 #include "mliHomTra.h"
 

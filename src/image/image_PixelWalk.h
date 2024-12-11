@@ -1,9 +1,9 @@
 /* Copyright 2020-2021 Sebastian Achim Mueller */
-#ifndef MLI_PIXEL_WALK_H_
-#define MLI_PIXEL_WALK_H_
+#ifndef MLI_IMAGE_PIXELWALK_H_
+#define MLI_IMAGE_PIXELWALK_H_
 
 #include <stdint.h>
-#include "pixel.h"
+#include "image_Pixel.h"
 
 struct mli_image_PixelWalk {
         /*

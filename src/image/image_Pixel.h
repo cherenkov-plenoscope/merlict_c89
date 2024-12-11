@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLI_PIXEL_H_
-#define MLI_PIXEL_H_
+#ifndef MLI_IMAGE_PIXEL_H_
+#define MLI_IMAGE_PIXEL_H_
 
 #include <stdint.h>
 #include "../vector/vector.h"

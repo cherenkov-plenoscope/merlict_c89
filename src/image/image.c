@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "../image/image.h"
 #include <assert.h>
-#include "../pixel/pixel_Walk.h"
+#include "../image/image_PixelWalk.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
 #include <float.h>

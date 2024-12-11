@@ -1,5 +1,5 @@
 /* Copyright 2020-2021 Sebastian Achim Mueller */
-#include "pixel_Walk.h"
+#include "image_PixelWalk.h"
 
 struct mli_image_PixelWalk mli_image_PixelWalk_set(
         const uint32_t num_cols,

@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../color/color.h"
-#include "../pixel/pixel.h"
+#include "image_Pixel.h"
 
 struct mli_image_Chunk {
         uint64_t edge_size;
