@@ -6,65 +6,79 @@
 #include "../chk/chk.h"
 #include "../math/math.h"
 
-/*
-int mli_Func_malloc_from_csv(struct mli_Func *func, struct mli_IO *io)
+int mli_Func_from_csv_split_line(
+        struct mli_String *line,
+        struct mli_String *sx,
+        struct mli_String *sy)
 {
-        uint64_t i = 0u;
-        uint64_t p = 0u;
+        size_t i;
+        int num_commas = 0;
+        chk(mli_String_malloc(sx, 16));
+        chk(mli_String_malloc(sy, 16));
+        for (i = 0; i < line->size; i++) {
+                char c = line->array[i];
+                if (c == ',') {
+                        if (num_commas > 0) {
+                                return 1;
+                        }
+                        num_commas += 1;
+                } else {
+                        if (num_commas > 0) {
+                                chk(mli_String_push_back(sy, c));
+                        } else {
+                                chk(mli_String_push_back(sx, c));
+                        }
+                }
+        }
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_Func_from_csv(
+        struct mli_Func *func,
+        struct mli_String *xname,
+        struct mli_String *yname,
+        struct mli_IO *io)
+{
         uint64_t line_number = 0u;
-        uint64_t line_length;
-        uint64_t token_length;
         double _x, _y;
-        char line[2 * MLI_NAME_CAPACITY];
-        char token[MLI_NAME_CAPACITY];
+        struct mli_String line = mli_String_init();
+        struct mli_String sx = mli_String_init();
+        struct mli_String sy = mli_String_init();
         struct mliDynDouble x = mliDynDouble_init();
         struct mliDynDouble y = mliDynDouble_init();
 
-        memset(line, '\0', sizeof(line));
-        memset(token, '\0', sizeof(token));
         chk(mliDynDouble_malloc(&x, 0u));
         chk(mliDynDouble_malloc(&y, 0u));
 
         mli_Func_free(func);
         while (1) {
                 line_number += 1;
-                chk_msg(line_number < 1000 * 1000,
-                        "Expected less than 1e6 lines in scv file. "
+                chk_msg(line_number < 1000 * 1000 * 1000,
+                        "Expected less than 1e9 lines in csv file. "
                         "Something went wrong.");
 
-                line_length = mli_cstr_split(&str[p], '\n', line, sizeof(line));
+                if (mli_IO_eof(io)) {
+                        break;
+                }
+                chk_msg(mli_IO_text_read_line(io, &line, '\n'),
+                        "Can not read line.");
+                chk_msg(line.size < 4096, "Expected line.size < 4096.");
 
-                chk_msg(line_length < sizeof(line), "Line is too long.");
-
-                if (line_length > 0) {
-                        if (mli_cstr_starts_with(line, "#")) {
-
+                if (line.size > 0) {
+                        chk_msg(mli_Func_from_csv_split_line(&line, &sx, &sy),
+                                "Can not split line into tokens.");
+                        if (line_number == 1) {
+                                chk(mli_String_copy(xname, &sx));
+                                chk(mli_String_copy(yname, &sy));
                         } else {
-                                i = 0;
-                                token_length = mli_cstr_split(
-                                        &line[i], ',', token, sizeof(token));
-                                chk_msg(token_length > 0,
-                                        "Expected x column not to be empty.");
-                                chk_msg(mli_cstr_to_double(&_x, token),
-                                        "Failed to parse 'x' column.");
+                                chk(mli_String_to_double(&_x, &sx));
+                                chk(mli_String_to_double(&_y, &sy));
                                 chk(mliDynDouble_push_back(&x, _x));
-                                chk_msg(line[i + token_length] != '\0',
-                                        "Expected y column to be present.");
-                                i += token_length + 1;
-                                token_length = mli_cstr_split(
-                                        &line[i], ',', token, sizeof(token));
-                                chk_msg(token_length > 0,
-                                        "Expected y column not to be empty.");
-                                chk_msg(mli_cstr_to_double(&_y, token),
-                                        "Failed to parse 'y' column.");
                                 chk(mliDynDouble_push_back(&y, _y));
                         }
                 }
-
-                if (str[p + line_length] == '\0') {
-                        break;
-                }
-                p += line_length + 1;
         }
 
         chk_msg(x.size == y.size, "Expected same number x, y values.");
@@ -74,13 +88,21 @@ int mli_Func_malloc_from_csv(struct mli_Func *func, struct mli_IO *io)
         MLI_MATH_NCPY(x.array, func->x, x.size);
         MLI_MATH_NCPY(y.array, func->y, y.size);
 
+        mli_String_free(&line);
+        mli_String_free(&sx);
+        mli_String_free(&sy);
         mliDynDouble_free(&x);
         mliDynDouble_free(&y);
         return 1;
 chk_error:
+        mli_String_free(&line);
+        mli_String_free(&sx);
+        mli_String_free(&sy);
         mliDynDouble_free(&x);
         mliDynDouble_free(&y);
+
+        mli_String_free(xname);
+        mli_String_free(yname);
         mli_Func_free(func);
         return 0;
 }
-*/

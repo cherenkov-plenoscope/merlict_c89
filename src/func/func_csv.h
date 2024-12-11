@@ -5,7 +5,12 @@
 #include <stdint.h>
 #include "../func/func.h"
 #include "../io/io.h"
-/*
-int mli_Func_malloc_from_csv(struct mli_Func *func, struct mli_IO *io);
-*/
+#include "../string/string.h"
+
+int mli_Func_from_csv(
+        struct mli_Func *func,
+        struct mli_String *xname,
+        struct mli_String *yname,
+        struct mli_IO *io);
+
 #endif

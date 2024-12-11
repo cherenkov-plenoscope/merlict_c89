@@ -552,8 +552,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
                 while (1)
         {
                 line_number += 1;
-                chk_msg(line_number < 1000 * 1000,
-                        "Expected less than 1e9 lines in wavefront-file. "
+                chk_msg(line_number < 1000 * 1000 * 1000,
+                        "Expected less than 1e9 lines in wavefront obj file. "
                         "Something went wrong.");
 
                 if (mli_IO_eof(io)) {
