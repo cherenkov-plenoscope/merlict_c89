@@ -21,7 +21,7 @@ CASE("mli_image_PixelWalk, no rest")
         uint32_t num_cols = 6;
         struct mli_image_PixelWalk w =
                 mli_image_PixelWalk_set(num_cols, num_rows, 2);
-        CHECK(w.chunk_size == 2);
+        CHECK(w.chunk_edge_size == 2);
         CHECK(w.num_cols == num_cols);
         CHECK(w.num_rows == num_rows);
 
@@ -142,7 +142,7 @@ CASE("mli_image_PixelWalk, with rest")
         uint32_t num_cols = 5;
         struct mli_image_PixelWalk w =
                 mli_image_PixelWalk_set(num_cols, num_rows, 2);
-        CHECK(w.chunk_size == 2);
+        CHECK(w.chunk_edge_size == 2);
         CHECK(w.num_cols == num_cols);
         CHECK(w.num_rows == num_rows);
 

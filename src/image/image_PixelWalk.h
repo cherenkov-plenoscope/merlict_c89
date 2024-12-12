@@ -14,7 +14,7 @@ struct mli_image_PixelWalk {
          * the other, PixelWalk spreads the walk among both axis by walking
          * small quadratic chunks of pixels.
          */
-        uint32_t chunk_size;
+        uint32_t chunk_edge_size;
         uint32_t num_chunks_row;
         uint32_t num_chunks_col;
         uint32_t chunk_row;
@@ -29,7 +29,7 @@ struct mli_image_PixelWalk {
 struct mli_image_PixelWalk mli_image_PixelWalk_set(
         const uint32_t num_cols,
         const uint32_t num_rows,
-        const uint32_t chunk_size);
+        const uint32_t chunk_edge_size);
 struct mli_image_Pixel mli_image_PixelWalk_get(
         const struct mli_image_PixelWalk *walk);
 void mli_image_PixelWalk_walk(struct mli_image_PixelWalk *walk);
