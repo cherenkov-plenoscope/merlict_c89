@@ -5,12 +5,28 @@
 #include <stdint.h>
 #include "../color/color.h"
 #include "image_Pixel.h"
+#include "image_chunk.h"
+#include "image_PixelWalk.h"
 
 struct mli_Image {
         uint32_t num_cols;
         uint32_t num_rows;
         struct mli_Color *raw;
+
+        uint32_t chunk_edge_size;
+        struct mli_image_Chunk *chunks;
 };
+
+struct mli_Image mli_Image_init(void);
+void mli_Image_free(struct mli_Image *self);
+int mli_Image_malloc(
+        struct mli_Image *self,
+        const uint32_t num_cols,
+        const uint32_t num_rows);
+
+void mli_Image_copy(
+        const struct mli_Image *source,
+        struct mli_Image *destination);
 
 void mli_Image_assign_pixel_colors_to_sum_and_exposure_image(
         const struct mli_image_PixelVector *pixels,
@@ -56,20 +72,11 @@ uint32_t mli_Image_idx(
         const struct mli_Image *img,
         const uint32_t col,
         const uint32_t row);
-int mli_Image_malloc(
-        struct mli_Image *img,
-        const uint32_t num_cols,
-        const uint32_t num_rows);
-void mli_Image_free(struct mli_Image *img);
 
-void mli_Image_copy(
-        const struct mli_Image *source,
-        struct mli_Image *destination);
 void mli_Image_fabs_difference(
         const struct mli_Image *a,
         const struct mli_Image *b,
         struct mli_Image *out);
-struct mli_Image mli_Image_init(void);
 
 void mli_Image_histogram(
         struct mli_Image *img,

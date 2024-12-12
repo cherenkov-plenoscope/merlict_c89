@@ -8,31 +8,56 @@
 
 struct mli_Image mli_Image_init(void)
 {
-        struct mli_Image img;
-        img.num_cols = 0u;
-        img.num_rows = 0u;
-        img.raw = NULL;
-        return img;
+        struct mli_Image out;
+        out.num_cols = 0u;
+        out.num_rows = 0u;
+        out.raw = NULL;
+
+        out.chunk_edge_size = (2u * 3u * 5u);
+        out.chunks = NULL;
+        return out;
 }
 
-void mli_Image_free(struct mli_Image *img)
+void mli_Image_free(struct mli_Image *self)
 {
-        free(img->raw);
-        (*img) = mli_Image_init();
+        uint64_t i = 0;
+        struct mli_image_PixelWalk walk = mli_image_PixelWalk_set(
+                self->num_cols, self->num_rows, self->chunk_edge_size);
+        for (i = 0; i < walk.num_chunks_col * walk.num_chunks_row; i++) {
+                mli_image_Chunk_free(&self->chunks[i]);
+        }
+        free(self->chunks);
+
+        free(self->raw);
+        (*self) = mli_Image_init();
 }
 
 int mli_Image_malloc(
-        struct mli_Image *img,
+        struct mli_Image *self,
         const uint32_t num_cols,
         const uint32_t num_rows)
 {
-        mli_Image_free(img);
-        img->num_cols = num_cols;
-        img->num_rows = num_rows;
-        chk_malloc(img->raw, struct mli_Color, img->num_cols * img->num_rows);
+        struct mli_image_PixelWalk walk;
+        uint64_t i = 0;
+        mli_Image_free(self);
+        self->num_cols = num_cols;
+        self->num_rows = num_rows;
+        chk_malloc(self->raw, struct mli_Color, self->num_cols * self->num_rows);
+
+        walk = mli_image_PixelWalk_set(
+                self->num_cols, self->num_rows, self->chunk_edge_size);
+        chk_malloc(
+                self->chunks,
+                struct mli_image_Chunk,
+                walk.num_chunks_col * walk.num_chunks_row);
+        for (i = 0; i < walk.num_chunks_col * walk.num_chunks_row; i++) {
+                chk(mli_image_Chunk_malloc(
+                        &self->chunks[i], self->chunk_edge_size));
+        }
+
         return 1;
 chk_error:
-        mli_Image_free(img);
+        mli_Image_free(self);
         return 0;
 }
 
