@@ -255,7 +255,7 @@ void mli_image_PixelVector_set_all_from_image(
         pixels->size = 0;
         for (i = 0; i < num_pixel; i++) {
                 mli_image_PixelVector_push_back(
-                        pixels, mli_image_PixelWalk_get(&walk));
+                        pixels, mli_image_PixelWalk_get_Pixel(&walk));
                 mli_image_PixelWalk_walk(&walk);
         }
 }
@@ -272,7 +272,8 @@ void mli_image_PixelVector_above_threshold(
 
         pixels->size = 0;
         for (i = 0; i < num_pixel; i++) {
-                struct mli_image_Pixel px = mli_image_PixelWalk_get(&walk);
+                struct mli_image_Pixel px =
+                        mli_image_PixelWalk_get_Pixel(&walk);
                 double lum = 0.0;
                 struct mli_Color c = mli_Image_at(image, px.col, px.row);
                 lum = c.r + c.g + c.b;

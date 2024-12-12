@@ -30,7 +30,7 @@ struct mli_image_PixelWalk mli_image_PixelWalk_set(
         const uint32_t num_cols,
         const uint32_t num_rows,
         const uint32_t chunk_edge_size);
-struct mli_image_Pixel mli_image_PixelWalk_get(
-        const struct mli_image_PixelWalk *walk);
-void mli_image_PixelWalk_walk(struct mli_image_PixelWalk *walk);
+struct mli_image_Pixel mli_image_PixelWalk_get_Pixel(
+        const struct mli_image_PixelWalk *self);
+void mli_image_PixelWalk_walk(struct mli_image_PixelWalk *self);
 #endif

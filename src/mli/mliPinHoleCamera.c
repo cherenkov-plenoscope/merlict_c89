@@ -60,7 +60,8 @@ void mliPinHoleCamera_render_image(
         const uint32_t num_pixel = image->num_rows * image->num_cols;
 
         for (i = 0; i < num_pixel; i++) {
-                struct mli_image_Pixel px = mli_image_PixelWalk_get(&walk);
+                struct mli_image_Pixel px =
+                        mli_image_PixelWalk_get_Pixel(&walk);
                 struct mliRay ray_wrt_camera = mliPinHoleCamera_ray_at_row_col(
                         &camera, image, px.row, px.col);
 

@@ -32,44 +32,44 @@ struct mli_image_PixelWalk mli_image_PixelWalk_set(
         return walk;
 }
 
-struct mli_image_Pixel mli_image_PixelWalk_get(
-        const struct mli_image_PixelWalk *walk)
+struct mli_image_Pixel mli_image_PixelWalk_get_Pixel(
+        const struct mli_image_PixelWalk *self)
 {
         struct mli_image_Pixel px;
-        px.row = walk->chunk_row * walk->chunk_edge_size + walk->sub_row;
-        px.col = walk->chunk_col * walk->chunk_edge_size + walk->sub_col;
+        px.row = self->chunk_row * self->chunk_edge_size + self->sub_row;
+        px.col = self->chunk_col * self->chunk_edge_size + self->sub_col;
         return px;
 }
 
-void mli_image_PixelWalk_walk(struct mli_image_PixelWalk *walk)
+void mli_image_PixelWalk_walk(struct mli_image_PixelWalk *self)
 {
         struct mli_image_Pixel px;
 
-        walk->sub_row += 1u;
-        px = mli_image_PixelWalk_get(walk);
-        if (walk->sub_row < walk->chunk_edge_size && px.row < walk->num_rows) {
+        self->sub_row += 1u;
+        px = mli_image_PixelWalk_get_Pixel(self);
+        if (self->sub_row < self->chunk_edge_size && px.row < self->num_rows) {
                 return;
         }
 
-        walk->sub_row = 0u;
-        walk->sub_col += 1u;
-        px = mli_image_PixelWalk_get(walk);
-        if (walk->sub_col < walk->chunk_edge_size && px.col < walk->num_cols) {
+        self->sub_row = 0u;
+        self->sub_col += 1u;
+        px = mli_image_PixelWalk_get_Pixel(self);
+        if (self->sub_col < self->chunk_edge_size && px.col < self->num_cols) {
                 return;
         }
 
-        walk->sub_col = 0u;
-        walk->chunk_row += 1u;
-        if (walk->chunk_row < walk->num_chunks_row) {
+        self->sub_col = 0u;
+        self->chunk_row += 1u;
+        if (self->chunk_row < self->num_chunks_row) {
                 return;
         }
 
-        walk->chunk_row = 0u;
-        walk->chunk_col += 1u;
-        if (walk->chunk_col < walk->num_chunks_col) {
+        self->chunk_row = 0u;
+        self->chunk_col += 1u;
+        if (self->chunk_col < self->num_chunks_col) {
                 return;
         }
 
-        walk->chunk_col = 0;
+        self->chunk_col = 0;
         return;
 }
