@@ -53,15 +53,14 @@ void mliPinHoleCamera_render_image(
         struct mli_Image *image,
         struct mli_Prng *prng)
 {
-        struct mli_image_PixelWalk walk =
-                mli_image_PixelWalk_set(image->num_cols, image->num_rows, 16u);
+        struct mli_image_PixelWalk walk = mli_image_PixelWalk_init();
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
         uint32_t i;
         const uint32_t num_pixel = image->num_rows * image->num_cols;
 
         for (i = 0; i < num_pixel; i++) {
                 struct mli_image_Pixel px =
-                        mli_image_PixelWalk_get_Pixel(&walk);
+                        mli_image_PixelWalk_get_Pixel(&walk, &image->geometry);
                 struct mliRay ray_wrt_camera = mliPinHoleCamera_ray_at_row_col(
                         &camera, image, px.row, px.col);
 
@@ -71,7 +70,7 @@ void mliPinHoleCamera_render_image(
                 struct mli_Color color =
                         mliTracer_trace_ray(tracer, ray_wrt_root, prng);
                 mli_Image_set(image, px.col, px.row, color);
-                mli_image_PixelWalk_walk(&walk);
+                mli_image_PixelWalk_walk(&walk, &image->geometry);
         }
 }
 

@@ -29,4 +29,21 @@ uint64_t mli_image_Chunk__idx(
         const uint64_t col,
         const uint64_t row);
 
+struct mli_image_ChunkGeometry {
+        uint64_t num_cols;
+        uint64_t num_rows;
+        uint64_t chunk_edge_size;
+        uint64_t num_chunks_row;
+        uint64_t num_chunks_col;
+};
+
+struct mli_image_ChunkGeometry mli_image_ChunkGeometry_set(
+        const uint64_t num_cols,
+        const uint64_t num_rows,
+        const uint64_t chunk_edge_size);
+
+int mli_image_ChunkGeometry_equal(
+        const struct mli_image_ChunkGeometry a,
+        const struct mli_image_ChunkGeometry b);
+
 #endif

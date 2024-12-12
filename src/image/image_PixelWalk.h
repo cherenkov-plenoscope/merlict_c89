@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "image_Pixel.h"
+#include "image_chunk.h"
 
 struct mli_image_PixelWalk {
         /*
@@ -14,23 +15,26 @@ struct mli_image_PixelWalk {
          * the other, PixelWalk spreads the walk among both axis by walking
          * small quadratic chunks of pixels.
          */
-        uint32_t chunk_edge_size;
-        uint32_t num_chunks_row;
-        uint32_t num_chunks_col;
         uint32_t chunk_row;
         uint32_t sub_row;
         uint32_t chunk_col;
         uint32_t sub_col;
-        uint32_t num_rows;
-        uint32_t num_cols;
         uint32_t i;
 };
 
-struct mli_image_PixelWalk mli_image_PixelWalk_set(
-        const uint32_t num_cols,
-        const uint32_t num_rows,
-        const uint32_t chunk_edge_size);
+struct mli_image_PixelWalk mli_image_PixelWalk_init(void);
 struct mli_image_Pixel mli_image_PixelWalk_get_Pixel(
-        const struct mli_image_PixelWalk *self);
-void mli_image_PixelWalk_walk(struct mli_image_PixelWalk *self);
+        const struct mli_image_PixelWalk *self,
+        const struct mli_image_ChunkGeometry *chunk_geometry);
+struct mli_image_Pixel mli_image_PixelWalk_get_Pixel(
+        const struct mli_image_PixelWalk *self,
+        const struct mli_image_ChunkGeometry *chunk_geometry);
+void mli_image_PixelWalk_walk(
+        struct mli_image_PixelWalk *self,
+        const struct mli_image_ChunkGeometry *chunk_geometry);
+
+struct mli_image_PixelWalk mli_image_PixelWalk_from_pixel(
+        const struct mli_image_ChunkGeometry *geometry,
+        struct mli_image_Pixel pixel);
+
 #endif

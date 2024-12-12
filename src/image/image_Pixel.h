@@ -10,6 +10,10 @@ struct mli_image_Pixel {
         uint16_t col;
 };
 
+struct mli_image_Pixel mli_image_Pixel_set(
+        const uint16_t row,
+        const uint16_t col);
+
 MLI_VECTOR_DEFINITON(mli_image_PixelVector, struct mli_image_Pixel)
 
 #endif

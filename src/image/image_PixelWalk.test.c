@@ -1,5 +1,15 @@
 /* Copyright 2020-2021 Sebastian Achim Mueller                                */
 
+CASE("mli_image_PixelWalk, init zeros")
+{
+        struct mli_image_PixelWalk walk = mli_image_PixelWalk_init();
+        CHECK(walk.chunk_row == 0);
+        CHECK(walk.sub_row == 0);
+        CHECK(walk.chunk_col == 0);
+        CHECK(walk.sub_col == 0);
+        CHECK(walk.i == 0);
+}
+
 CASE("mli_image_PixelWalk, no rest")
 {
         /*
@@ -17,108 +27,110 @@ CASE("mli_image_PixelWalk, no rest")
             |
             v
          */
-        uint32_t num_rows = 4;
-        uint32_t num_cols = 6;
-        struct mli_image_PixelWalk w =
-                mli_image_PixelWalk_set(num_cols, num_rows, 2);
-        CHECK(w.chunk_edge_size == 2);
-        CHECK(w.num_cols == num_cols);
-        CHECK(w.num_rows == num_rows);
+        const uint32_t NUM_ROWS = 4;
+        const uint32_t NUM_COLS = 6;
+        const uint32_t CHUNK_SIZE = 2;
+        struct mli_image_ChunkGeometry g =
+                mli_image_ChunkGeometry_set(NUM_COLS, NUM_ROWS, CHUNK_SIZE);
+        struct mli_image_PixelWalk w = mli_image_PixelWalk_init();
+        CHECK(g.chunk_edge_size == CHUNK_SIZE);
+        CHECK(g.num_cols == NUM_COLS);
+        CHECK(g.num_rows == NUM_ROWS);
 
         /* chunk 0,0 */
         CHECK(w.chunk_col == 0 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 0 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 0 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 1 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 1 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 0 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 0 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 1 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 1 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
 
         /* chunk 0,1 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 0 && w.chunk_row == 1);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 0 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 0 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 3);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 1 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 1 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 3);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 0 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 0 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 3);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 1 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 1 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 3);
 
         /* chunk 1,0 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 1 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 2 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 2 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 3 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 3 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 2 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 2 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 3 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 3 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
 
         /* chunk 1,1 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 1 && w.chunk_row == 1);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 2 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 2 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 3);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 3 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 3 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 3);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 2 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 2 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 3);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 3 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 3 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 3);
 
         /* chunk 2,0 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 2 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 4 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 4 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 5 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 5 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 4 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 4 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 5 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 5 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
 
         /* chunk 2,1 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 2 && w.chunk_row == 1);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 4 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 4 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 3);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 5 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
-        mli_image_PixelWalk_walk(&w);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 5 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 3);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 4 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 4 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 3);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 5 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
+        mli_image_PixelWalk_walk(&w, &g);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 5 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 3);
 
         /* back to chunk 0,0 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 0 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 0 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 0 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
 }
 
 CASE("mli_image_PixelWalk, with rest")
@@ -138,88 +150,90 @@ CASE("mli_image_PixelWalk, with rest")
             |
             v
          */
-        uint32_t num_rows = 3;
-        uint32_t num_cols = 5;
-        struct mli_image_PixelWalk w =
-                mli_image_PixelWalk_set(num_cols, num_rows, 2);
-        CHECK(w.chunk_edge_size == 2);
-        CHECK(w.num_cols == num_cols);
-        CHECK(w.num_rows == num_rows);
+        const uint32_t NUM_ROWS = 3;
+        const uint32_t NUM_COLS = 5;
+        const uint32_t CHUNK_SIZE = 2;
+        struct mli_image_ChunkGeometry g =
+                mli_image_ChunkGeometry_set(NUM_COLS, NUM_ROWS, CHUNK_SIZE);
+        struct mli_image_PixelWalk w = mli_image_PixelWalk_init();
+        CHECK(g.chunk_edge_size == CHUNK_SIZE);
+        CHECK(g.num_cols == NUM_COLS);
+        CHECK(g.num_rows == NUM_ROWS);
 
         /* chunk 0,0 */
         CHECK(w.chunk_col == 0 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 0 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 0 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 0 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 0 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
-        mli_image_PixelWalk_walk(&w);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 0 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 0 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 1 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 1 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 0 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 1 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 1 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
 
         /* chunk 0,1 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 0 && w.chunk_row == 1);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 0 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
-        mli_image_PixelWalk_walk(&w);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 0 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 0 && w.chunk_row == 1);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 1 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 1 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
 
         /* chunk 1,0 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 1 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 2 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 2 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 1 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 2 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
-        mli_image_PixelWalk_walk(&w);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 2 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 1 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 3 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 3 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 1 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 3 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 3 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
 
         /* chunk 1,1 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 1 && w.chunk_row == 1);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 2 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
-        mli_image_PixelWalk_walk(&w);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 2 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 1 && w.chunk_row == 1);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 3 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 3 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
 
         /* chunk 2,0 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 2 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 4 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
-        mli_image_PixelWalk_walk(&w);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 4 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 2 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 4 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 1);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 4 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 1);
 
         /* chunk 2,1 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 2 && w.chunk_row == 1);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 4 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 2);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 4 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 2);
 
         /* back to chunk 0,0 */
-        mli_image_PixelWalk_walk(&w);
+        mli_image_PixelWalk_walk(&w, &g);
         CHECK(w.chunk_col == 0 && w.chunk_row == 0);
-        CHECK(mli_image_PixelWalk_get_Pixel(&w).col == 0 &&
-              mli_image_PixelWalk_get_Pixel(&w).row == 0);
+        CHECK(mli_image_PixelWalk_get_Pixel(&w, &g).col == 0 &&
+              mli_image_PixelWalk_get_Pixel(&w, &g).row == 0);
 }

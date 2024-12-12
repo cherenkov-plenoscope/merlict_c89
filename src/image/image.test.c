@@ -1,5 +1,19 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
+CASE("mli_Image_init")
+{
+        struct mli_Image img = mli_Image_init();
+        CHECK(img.num_cols == 0u);
+        CHECK(img.num_rows == 0u);
+        CHECK(img.chunks == NULL);
+}
+
+CASE("mli_Image_free")
+{
+        struct mli_Image img = mli_Image_init();
+        mli_Image_free(&img);
+}
+
 CASE("mli_Image_malloc")
 {
         struct mli_Image img = mli_Image_init();
