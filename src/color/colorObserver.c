@@ -5,21 +5,21 @@
 
 struct mli_ColorObserver mli_ColorObserver_init(void)
 {
-        struct mli_ColorObserver colobs;
-        colobs.r = mli_Func_init();
-        colobs.g = mli_Func_init();
-        colobs.b = mli_Func_init();
-        return colobs;
+        struct mli_ColorObserver out;
+        out.x = mli_Func_init();
+        out.y = mli_Func_init();
+        out.z = mli_Func_init();
+        return out;
 }
 
-void mli_ColorObserver_free(struct mli_ColorObserver *colobs)
+void mli_ColorObserver_free(struct mli_ColorObserver *self)
 {
-        mli_Func_free(&colobs->r);
-        mli_Func_free(&colobs->g);
-        mli_Func_free(&colobs->b);
+        mli_Func_free(&self->x);
+        mli_Func_free(&self->y);
+        mli_Func_free(&self->z);
 }
 
-int mli_ColorObserver_malloc_cie1931(struct mli_ColorObserver *colobs)
+int mli_ColorObserver_malloc_cie1931(struct mli_ColorObserver *self)
 {
         /*
          * https://en.wikipedia.org/wiki/CIE_1931_color_space
@@ -29,7 +29,72 @@ int mli_ColorObserver_malloc_cie1931(struct mli_ColorObserver *colobs)
          * Here the observer is normalized for the largest response of the
          * three channeks x, y, and z to be 1.0.
          */
-        float red[][2] = {
+        mli_ColorObserver_free(self);
+        chk(mli_Func_malloc_cie1931_spectral_matching_curve_x(&self->x));
+        chk(mli_Func_malloc_cie1931_spectral_matching_curve_y(&self->y));
+        chk(mli_Func_malloc_cie1931_spectral_matching_curve_z(&self->z));
+        chk_msg(mli_ColorObserver_is_valid(self),
+                "Expected ColorObserver spectra to be valid.");
+        return 1;
+chk_error:
+        mli_ColorObserver_free(self);
+        return 0;
+}
+
+int mli_ColorObserver_is_valid(const struct mli_ColorObserver *self)
+{
+        uint64_t i;
+        for (i = 0; i < self->x.num_points; i++) {
+                chk_msg(self->x.y[i] >= 0.0 && self->x.y[i] <= 1.0,
+                        "Expected 0.0 <= X <= 1.0.");
+        }
+        for (i = 0; i < self->y.num_points; i++) {
+                chk_msg(self->y.y[i] >= 0.0 && self->y.y[i] <= 1.0,
+                        "Expected 0.0 <= Y <= 1.0.");
+        }
+        for (i = 0; i < self->z.num_points; i++) {
+                chk_msg(self->z.y[i] >= 0.0 && self->z.y[i] <= 1.0,
+                        "Expected 0.0 <= Z <= 1.0.");
+        }
+        chk_msg(mli_Func_x_is_strictly_increasing(&self->x),
+                "Expected wavelength in X to be strictly "
+                "increasing.");
+        chk_msg(mli_Func_x_is_strictly_increasing(&self->y),
+                "Expected wavelength in Y to be strictly "
+                "increasing.");
+        chk_msg(mli_Func_x_is_strictly_increasing(&self->z),
+                "Expected wavelength in Z to be strictly "
+                "increasing.");
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_ColorObserver_evaluate(
+        const struct mli_ColorObserver *self,
+        const struct mli_Func *func,
+        struct mli_Color *color)
+{
+        double r, g, b;
+        (*color) = mli_Color_set(0.0, 0.0, 0.0);
+        chk_msg(func->num_points > 1, "Expected function's num_points > 1");
+        chk_msg(mli_Func_fold_numeric_default_closest(&self->x, func, &r),
+                "Can't fold red channel.");
+        chk_msg(mli_Func_fold_numeric_default_closest(&self->y, func, &g),
+                "Can't fold green channel.");
+        chk_msg(mli_Func_fold_numeric_default_closest(&self->z, func, &b),
+                "Can't fold blue channel.");
+        color->r = (float)(r);
+        color->g = (float)(g);
+        color->b = (float)(b);
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_Func_malloc_cie1931_spectral_matching_curve_x(struct mli_Func *self)
+{
+        float X[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
                 {3.850e-07, 2.957e-03}, {3.900e-07, 5.914e-03},
                 {3.950e-07, 8.871e-03}, {4.000e-07, 1.454e-02},
@@ -73,8 +138,21 @@ int mli_ColorObserver_malloc_cie1931(struct mli_ColorObserver *colobs)
                 {7.750e-07, 2.072e-03}, {7.800e-07, 0.000e+00},
                 {1.200e-06, 0.000e+00},
         };
+        uint64_t i;
+        chk_msg(mli_Func_malloc(self, sizeof(X) / sizeof(X[0])),
+                "Can't malloc function from cie1931.X.");
+        for (i = 0; i < self->num_points; i++) {
+                self->x[i] = X[i][0];
+                self->y[i] = X[i][1];
+        }
+        return 1;
+chk_error:
+        return 0;
+}
 
-        float green[][2] = {
+int mli_Func_malloc_cie1931_spectral_matching_curve_y(struct mli_Func *self)
+{
+        float Y[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
                 {3.850e-07, 1.099e-03}, {3.900e-07, 2.198e-03},
                 {3.950e-07, 3.296e-03}, {4.000e-07, 4.395e-03},
@@ -118,8 +196,21 @@ int mli_ColorObserver_malloc_cie1931(struct mli_ColorObserver *colobs)
                 {7.750e-07, 1.799e-03}, {7.800e-07, 0.000e+00},
                 {1.200e-06, 0.000e+00},
         };
+        uint64_t i;
+        chk_msg(mli_Func_malloc(self, sizeof(Y) / sizeof(Y[0])),
+                "Can't malloc function from cie1931.Y.");
+        for (i = 0; i < self->num_points; i++) {
+                self->x[i] = Y[i][0];
+                self->y[i] = Y[i][1];
+        }
+        return 1;
+chk_error:
+        return 0;
+}
 
-        float blue[][2] = {
+int mli_Func_malloc_cie1931_spectral_matching_curve_z(struct mli_Func *self)
+{
+        float Z[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
                 {3.850e-07, 9.873e-03}, {3.900e-07, 1.595e-02},
                 {3.950e-07, 2.536e-02}, {4.000e-07, 4.352e-02},
@@ -163,86 +254,13 @@ int mli_ColorObserver_malloc_cie1931(struct mli_ColorObserver *colobs)
                 {7.750e-07, 2.074e-03}, {7.800e-07, 0.000e+00},
                 {1.200e-06, 0.000e+00},
         };
-
         uint64_t i;
-
-        mli_ColorObserver_free(colobs);
-
-        chk_msg(mli_Func_malloc(&colobs->r, sizeof(red) / sizeof(red[0])),
-                "Can't malloc red channel in ColorObserver.");
-        for (i = 0; i < colobs->r.num_points; i++) {
-                colobs->r.x[i] = red[i][0];
-                colobs->r.y[i] = red[i][1];
+        chk_msg(mli_Func_malloc(self, sizeof(Z) / sizeof(Z[0])),
+                "Can't malloc function from cie1931.Z.");
+        for (i = 0; i < self->num_points; i++) {
+                self->x[i] = Z[i][0];
+                self->y[i] = Z[i][1];
         }
-
-        chk_msg(mli_Func_malloc(&colobs->g, sizeof(green) / sizeof(green[0])),
-                "Can't malloc green channel in ColorObserver.");
-        for (i = 0; i < colobs->g.num_points; i++) {
-                colobs->g.x[i] = green[i][0];
-                colobs->g.y[i] = green[i][1];
-        }
-
-        chk_msg(mli_Func_malloc(&colobs->b, sizeof(blue) / sizeof(blue[0])),
-                "Can't malloc blue channel in ColorObserver.");
-        for (i = 0; i < colobs->b.num_points; i++) {
-                colobs->b.x[i] = blue[i][0];
-                colobs->b.y[i] = blue[i][1];
-        }
-
-        chk_msg(mli_ColorObserver_is_valid(colobs),
-                "Expected ColorObserver spectra to be valid.");
-        return 1;
-chk_error:
-        mli_ColorObserver_free(colobs);
-        return 0;
-}
-
-int mli_ColorObserver_is_valid(const struct mli_ColorObserver *colobs)
-{
-        uint64_t i;
-        for (i = 0; i < colobs->r.num_points; i++) {
-                chk_msg(colobs->r.y[i] >= 0.0 && colobs->r.y[i] <= 1.0,
-                        "Expected channel red 0.0 <= value <= 1.0.");
-        }
-        for (i = 0; i < colobs->g.num_points; i++) {
-                chk_msg(colobs->g.y[i] >= 0.0 && colobs->g.y[i] <= 1.0,
-                        "Expected channel green 0.0 <= value <= 1.0.");
-        }
-        for (i = 0; i < colobs->b.num_points; i++) {
-                chk_msg(colobs->b.y[i] >= 0.0 && colobs->b.y[i] <= 1.0,
-                        "Expected channel blue 0.0 <= value <= 1.0.");
-        }
-        chk_msg(mli_Func_x_is_strictly_increasing(&colobs->r),
-                "Expected wavelength in channel red to be strictly "
-                "increasing.");
-        chk_msg(mli_Func_x_is_strictly_increasing(&colobs->g),
-                "Expected wavelength in channel green to be strictly "
-                "increasing.");
-        chk_msg(mli_Func_x_is_strictly_increasing(&colobs->b),
-                "Expected wavelength in channel blue to be strictly "
-                "increasing.");
-        return 1;
-chk_error:
-        return 0;
-}
-
-int mli_ColorObserver_evaluate(
-        const struct mli_ColorObserver *colobs,
-        const struct mli_Func *func,
-        struct mli_Color *color)
-{
-        double r, g, b;
-        (*color) = mli_Color_set(0.0, 0.0, 0.0);
-        chk_msg(func->num_points > 1, "Expected function's num_points > 1");
-        chk_msg(mli_Func_fold_numeric_default_closest(&colobs->r, func, &r),
-                "Can't fold red channel.");
-        chk_msg(mli_Func_fold_numeric_default_closest(&colobs->g, func, &g),
-                "Can't fold green channel.");
-        chk_msg(mli_Func_fold_numeric_default_closest(&colobs->b, func, &b),
-                "Can't fold blue channel.");
-        color->r = (float)(r);
-        color->g = (float)(g);
-        color->b = (float)(b);
         return 1;
 chk_error:
         return 0;

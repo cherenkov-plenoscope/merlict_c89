@@ -3,9 +3,9 @@
 CASE("init ColorObserver")
 {
         struct mli_ColorObserver obs = mli_ColorObserver_init();
-        CHECK(obs.r.num_points == 0);
-        CHECK(obs.g.num_points == 0);
-        CHECK(obs.b.num_points == 0);
+        CHECK(obs.x.num_points == 0);
+        CHECK(obs.y.num_points == 0);
+        CHECK(obs.z.num_points == 0);
 }
 
 CASE("malloc ColorObserver")
@@ -13,15 +13,15 @@ CASE("malloc ColorObserver")
         struct mli_ColorObserver obs = mli_ColorObserver_init();
         CHECK(mli_ColorObserver_malloc_cie1931(&obs));
 
-        CHECK(obs.r.num_points > 0);
-        CHECK(obs.g.num_points > 0);
-        CHECK(obs.b.num_points > 0);
+        CHECK(obs.x.num_points > 0);
+        CHECK(obs.y.num_points > 0);
+        CHECK(obs.z.num_points > 0);
 
         mli_ColorObserver_free(&obs);
 
-        CHECK(obs.r.num_points == 0);
-        CHECK(obs.g.num_points == 0);
-        CHECK(obs.b.num_points == 0);
+        CHECK(obs.x.num_points == 0);
+        CHECK(obs.y.num_points == 0);
+        CHECK(obs.z.num_points == 0);
 }
 
 CASE("fold ColorObserver")
