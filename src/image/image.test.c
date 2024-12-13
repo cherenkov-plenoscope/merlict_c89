@@ -137,7 +137,7 @@ CASE("mli_Image_sobel")
         struct mli_Image dst = mli_Image_init();
         CHECK(mli_Image_malloc(&src, 160, 90));
 
-        mli_Image_set_by_col_row_all_pixel(&src, mli_Color_set(128, 128, 128));
+        mli_Image_set_all(&src, mli_Color_set(128, 128, 128));
 
         for (col = BOX_X_START; col < BOX_X_STOP; col++) {
                 for (row = BOX_Y_START; row < BOX_Y_STOP; row++) {

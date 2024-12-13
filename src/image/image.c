@@ -122,6 +122,16 @@ struct mli_Color mli_Image__get_by_PixelWalk(
                 walk.sub_row);
 }
 
+struct mli_Color *mli_Image__get_ptr_by_PixelWalk(
+        const struct mli_Image *self,
+        const struct mli_image_PixelWalk walk)
+{
+        return mli_image_Chunk_get_ptr(
+                &self->chunks[walk.chunk_row][walk.chunk_col],
+                walk.sub_col,
+                walk.sub_row);
+}
+
 /* SET GET PIXEL */
 
 struct mli_Color mli_Image_get_by_Pixel(
@@ -168,7 +178,7 @@ struct mli_Color mli_Image_get_by_col_row(
         return mli_Image_get_by_Pixel(self, px);
 }
 
-void mli_Image_set_by_col_row_all_pixel(
+void mli_Image_set_all(
         const struct mli_Image *self,
         const struct mli_Color color)
 {
@@ -536,9 +546,8 @@ void mli_Image_histogram(
                         mli_image_PixelWalk_from_pixel(
                                 &self->geometry,
                                 mli_image_Pixel_set_col_row(col, row));
-                struct mli_Color c = mli_Image__get_by_PixelWalk(self, w);
-                c = mli_Color_add(c, weight);
-                mli_Image__set_by_PixelWalk(self, w, c);
+                struct mli_Color *c = mli_Image__get_ptr_by_PixelWalk(self, w);
+                (*c) = mli_Color_add((*c), weight);
         }
 }
 
@@ -572,11 +581,11 @@ void mli_Image_multiply(struct mli_Image *self, const struct mli_Color color)
         struct mli_image_PixelWalk w = mli_image_PixelWalk_init();
 
         for (i = 0; i < NUM; i++) {
-                struct mli_Color _self = mli_Image__get_by_PixelWalk(self, w);
-                _self.r *= color.r;
-                _self.g *= color.g;
-                _self.b *= color.b;
-                mli_Image__set_by_PixelWalk(self, w, _self);
+                struct mli_Color *_self =
+                        mli_Image__get_ptr_by_PixelWalk(self, w);
+                _self->r *= color.r;
+                _self->g *= color.g;
+                _self->b *= color.b;
                 mli_image_PixelWalk_walk(&w, &self->geometry);
         }
 }
@@ -588,11 +597,11 @@ void mli_Image_power(struct mli_Image *self, const struct mli_Color power)
         struct mli_image_PixelWalk w = mli_image_PixelWalk_init();
 
         for (i = 0; i < NUM; i++) {
-                struct mli_Color _self = mli_Image__get_by_PixelWalk(self, w);
-                _self.r = pow(_self.r, power.r);
-                _self.g = pow(_self.g, power.g);
-                _self.b = pow(_self.b, power.b);
-                mli_Image__set_by_PixelWalk(self, w, _self);
+                struct mli_Color *_self =
+                        mli_Image__get_ptr_by_PixelWalk(self, w);
+                _self->r = pow(_self->r, power.r);
+                _self->g = pow(_self->g, power.g);
+                _self->b = pow(_self->b, power.b);
                 mli_image_PixelWalk_walk(&w, &self->geometry);
         }
 }
@@ -607,11 +616,10 @@ int mli_Image_divide_pixelwise(
         struct mli_image_PixelWalk w = mli_image_PixelWalk_init();
 
         chk_msg(mli_image_ChunkGeometry_equal(
-                        out->geometry, numerator->geometry),
-                "");
-        chk_msg(mli_image_ChunkGeometry_equal(
-                        out->geometry, denominator->geometry),
-                "");
+                        numerator->geometry, denominator->geometry),
+                "Expected images 'numerator' and 'denominator' to have "
+                "the same geometry.");
+        chk(mli_Image_malloc_same_size(out, numerator));
 
         for (i = 0; i < NUM; i++) {
                 const struct mli_Color _numerator =

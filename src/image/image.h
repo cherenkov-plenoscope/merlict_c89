@@ -44,6 +44,9 @@ void mli_Image__set_by_PixelWalk(
 struct mli_Color mli_Image__get_by_PixelWalk(
         const struct mli_Image *self,
         const struct mli_image_PixelWalk walk);
+struct mli_Color *mli_Image__get_ptr_by_PixelWalk(
+        const struct mli_Image *self,
+        const struct mli_image_PixelWalk walk);
 
 void mli_Image_set_by_Pixel(
         struct mli_Image *self,
@@ -85,7 +88,7 @@ int mli_Image_scale_down_twice(
         const struct mli_Image *source,
         struct mli_Image *destination);
 
-void mli_Image_set_by_col_row_all_pixel(
+void mli_Image_set_all(
         const struct mli_Image *img,
         const struct mli_Color color);
 void mli_image_PixelVector_push_back_all_from_image(

@@ -24,7 +24,7 @@ CASE("focussing_a_parallel_beam")
         struct mli_Color max_color;
 
         CHECK(mli_Image_malloc(&screen_img, NUM_PIXEL, NUM_PIXEL));
-        mli_Image_set_by_col_row_all_pixel(
+        mli_Image_set_all(
                 &screen_img, mli_Color_set(20.0, 0.0, 0.0));
         mli_math_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
         wavelength_range = mli_prng_UniformRange_set(380e-9, 700e-9);

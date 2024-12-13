@@ -45,6 +45,14 @@ struct mli_Color mli_image_Chunk_get(
         return self->array[mli_image_Chunk__idx(self, col, row)];
 }
 
+struct mli_Color *mli_image_Chunk_get_ptr(
+        const struct mli_image_Chunk *self,
+        const uint64_t col,
+        const uint64_t row)
+{
+        return &self->array[mli_image_Chunk__idx(self, col, row)];
+}
+
 uint64_t mli_image_Chunk__idx(
         const struct mli_image_Chunk *self,
         const uint64_t col,
