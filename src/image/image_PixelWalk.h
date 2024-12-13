@@ -37,4 +37,8 @@ struct mli_image_PixelWalk mli_image_PixelWalk_from_pixel(
         const struct mli_image_ChunkGeometry *geometry,
         struct mli_image_Pixel pixel);
 
+void mli_image_PixelWalk_fprint(
+        FILE *f,
+        const struct mli_image_PixelWalk *self);
+
 #endif

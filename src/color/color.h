@@ -27,6 +27,7 @@ int mli_Color_is_in_range(
         const struct mli_Color c,
         const float start,
         const float stop);
+float mli_Color_luminance(const struct mli_Color self);
 
 struct mli_Color mli_Color_add(
         const struct mli_Color a,

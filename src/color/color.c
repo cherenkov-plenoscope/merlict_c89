@@ -97,6 +97,11 @@ int mli_Color_is_in_range(
         return 1;
 }
 
+float mli_Color_luminance(const struct mli_Color self)
+{
+        return self.r + self.g + self.b;
+}
+
 struct mli_Color mli_Color_add(
         const struct mli_Color u,
         const struct mli_Color v)

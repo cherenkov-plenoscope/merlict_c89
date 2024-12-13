@@ -171,11 +171,13 @@ void mliApertureCamera_aquire_pixels(
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         const struct mli_image_PixelVector *pixels_to_do,
-        struct mli_Image *colors,
+        struct mli_ColorVector *colors_to_do,
         struct mli_Prng *prng)
 {
         uint64_t i;
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
+
+        colors_to_do->size = 0;
         for (i = 0; i < pixels_to_do->size; i++) {
                 struct mliRay ray_wrt_camera =
                         mliApertureCamera_get_ray_for_pixel(
@@ -184,8 +186,8 @@ void mliApertureCamera_aquire_pixels(
                                 camera.image_sensor_distance,
                                 camera.image_sensor_width_x,
                                 camera.image_sensor_width_y,
-                                image->num_cols,
-                                image->num_rows,
+                                mli_Image_num_cols(image),
+                                mli_Image_num_rows(image),
                                 pixels_to_do->array[i].col,
                                 pixels_to_do->array[i].row,
                                 prng);
@@ -196,7 +198,7 @@ void mliApertureCamera_aquire_pixels(
                 struct mli_Color set_color =
                         mliTracer_trace_ray(tracer, ray_wrt_root, prng);
 
-                mli_Image_set(colors, i, 0u, set_color);
+                mli_ColorVector_push_back(colors_to_do, set_color);
         }
 
         return;
@@ -204,23 +206,25 @@ void mliApertureCamera_aquire_pixels(
 
 void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
         const struct mli_image_PixelVector *pixels,
-        const struct mli_Image *colors,
+        const struct mli_ColorVector *colors,
         struct mli_Image *sum_image,
         struct mli_Image *exposure_image)
 {
-        uint64_t pix;
-        for (pix = 0; pix < pixels->size; pix++) {
-                const uint64_t idx = mli_Image_idx(
-                        sum_image,
-                        pixels->array[pix].col,
-                        pixels->array[pix].row);
-                sum_image->raw[idx].r += colors->raw[pix].r;
-                sum_image->raw[idx].g += colors->raw[pix].g;
-                sum_image->raw[idx].b += colors->raw[pix].b;
+        uint64_t i;
+        const struct mli_Color ONE = mli_Color_set(1.0, 1.0, 1.0);
+        for (i = 0; i < pixels->size; i++) {
+                const struct mli_image_Pixel pix = pixels->array[i];
+                const struct mli_Color color = colors->array[i];
 
-                exposure_image->raw[idx].r += 1.;
-                exposure_image->raw[idx].g += 1.;
-                exposure_image->raw[idx].b += 1.;
+                const struct mli_Color _exposure =
+                        mli_Image_get_by_Pixel(exposure_image, pix);
+                const struct mli_Color _sum =
+                        mli_Image_get_by_Pixel(sum_image, pix);
+
+                mli_Image_set_by_Pixel(
+                        sum_image, pix, mli_Color_add(_sum, color));
+                mli_Image_set_by_Pixel(
+                        exposure_image, pix, mli_Color_add(_exposure, ONE));
         }
 }
 
@@ -236,126 +240,122 @@ int mliApertureCamera_render_image(
         uint64_t iteration = 0;
 
         struct mli_Color zero_color = mli_Color_set(0.0, 0.0, 0.0);
+        const struct mli_Color HIGH_COLOR = mli_Color_set(255.0, 255.0, 255.0);
         struct mli_Image sum_image = mli_Image_init();
         struct mli_Image exposure_image = mli_Image_init();
         struct mli_Image to_do_image = mli_Image_init();
         struct mli_Image sobel_image = mli_Image_init();
         struct mli_Image previous_sobel_image = mli_Image_init();
         struct mli_Image diff_image = mli_Image_init();
-        struct mli_Image colors = mli_Image_init();
+        struct mli_ColorVector colors_to_do = mli_ColorVector_init();
         struct mli_image_PixelVector pixels_to_do =
                 mli_image_PixelVector_init();
-
-        chk_msg(mli_Image_malloc(&sum_image, image->num_cols, image->num_rows),
+        chk_dbg chk_msg(
+                mli_Image_malloc_same_size(&sum_image, image),
                 "Failed to malloc sum_image.");
-        chk_msg(mli_Image_malloc(
-                        &exposure_image, image->num_cols, image->num_rows),
+        chk_msg(mli_Image_malloc_same_size(&exposure_image, image),
                 "Failed to malloc exposure_image.");
-        chk_msg(mli_Image_malloc(
-                        &to_do_image, image->num_cols, image->num_rows),
+        chk_msg(mli_Image_malloc_same_size(&to_do_image, image),
                 "Failed to malloc to_do_image.");
-        chk_msg(mli_Image_malloc(
-                        &sobel_image, image->num_cols, image->num_rows),
+        chk_msg(mli_Image_malloc_same_size(&sobel_image, image),
                 "Failed to malloc sobel_image.");
-        chk_msg(mli_Image_malloc(
-                        &previous_sobel_image,
-                        image->num_cols,
-                        image->num_rows),
+        chk_msg(mli_Image_malloc_same_size(&previous_sobel_image, image),
                 "Failed to malloc previous_sobel_image.");
-        chk_msg(mli_Image_malloc(&diff_image, image->num_cols, image->num_rows),
+        chk_msg(mli_Image_malloc_same_size(&diff_image, image),
                 "Failed to malloc diff_image.");
-        chk_msg(mli_Image_malloc(&colors, image->num_cols * image->num_rows, 1),
-                "Failed to malloc colors.");
-
-        mli_Image_set_all_pixel(image, zero_color);
-        mli_Image_set_all_pixel(&sum_image, zero_color);
-        mli_Image_set_all_pixel(&exposure_image, zero_color);
-        mli_Image_set_all_pixel(&to_do_image, zero_color);
-        mli_Image_set_all_pixel(&sobel_image, zero_color);
-        mli_Image_set_all_pixel(&previous_sobel_image, zero_color);
-        mli_Image_set_all_pixel(&colors, zero_color);
-
-        chk_msg(mli_image_PixelVector_malloc(
-                        &pixels_to_do, image->num_cols * image->num_rows),
+        chk_dbg chk_msg(
+                mli_image_PixelVector_malloc(
+                        &pixels_to_do, mli_Image_num_pixel(image)),
                 "Failed to malloc pixels_to_do.");
+        chk_msg(mli_ColorVector_malloc(
+                        &colors_to_do, mli_Image_num_pixel(image)),
+                "Failed to malloc colors_to_do.");
 
-        /*
-        initial image
-        =============
-        */
-        mli_image_PixelVector_set_all_from_image(&pixels_to_do, image);
-
-        mliApertureCamera_aquire_pixels(
+        chk_dbg mli_Image_set_by_col_row_all_pixel(image, zero_color);
+        mli_Image_set_by_col_row_all_pixel(&sum_image, zero_color);
+        mli_Image_set_by_col_row_all_pixel(&exposure_image, zero_color);
+        mli_Image_set_by_col_row_all_pixel(&to_do_image, zero_color);
+        mli_Image_set_by_col_row_all_pixel(&sobel_image, zero_color);
+        mli_Image_set_by_col_row_all_pixel(&previous_sobel_image, zero_color);
+        MLI_MATH_ARRAY_SET(
+                colors_to_do.array, zero_color, colors_to_do.capacity);
+        chk_dbg
+                /*
+                initial image
+                =============
+                */
+                mli_image_PixelVector_push_back_all_from_image(
+                        &pixels_to_do, image);
+        chk_dbg mliApertureCamera_aquire_pixels(
                 camera,
                 image,
                 camera2root_comp,
                 tracer,
                 &pixels_to_do,
-                &colors,
+                &colors_to_do,
                 prng);
+        chk_dbg mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
+                &pixels_to_do, &colors_to_do, &sum_image, &exposure_image);
+        chk_dbg mli_Image_divide_pixelwise(&sum_image, &exposure_image, image);
+        chk_dbg chk(mli_Image_sobel(image, &sobel_image));
+        chk_dbg mli_Image_luminance_threshold_dilatation(
+                &sobel_image, 128.0, HIGH_COLOR, &to_do_image);
+        chk_dbg
 
-        mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
-                &pixels_to_do, &colors, &sum_image, &exposure_image);
-
-        mli_Image_divide_pixelwise(&sum_image, &exposure_image, image);
-
-        mli_Image_sobel(image, &sobel_image);
-
-        mli_Image_luminance_threshold_dilatation(
-                &sobel_image, 128.0, &to_do_image);
-
-        /*printf("\n");*/
+                fprintf(stderr, "\n");
         while (1) {
                 if (iteration >= MAX_ITERATIONS)
                         break;
-
-                mli_image_PixelVector_above_threshold(
+                chk_dbg mli_image_PixelVector_above_threshold(
                         &to_do_image, 0.5, &pixels_to_do);
-
-                if (pixels_to_do.size <
-                    image->num_rows * image->num_cols / 100.0)
-                        break;
-
-                /*printf("loop %3u / %3u, %d,%03d pixel left\n",
-                       (uint32_t)iteration + 1,
-                       (uint32_t)MAX_ITERATIONS,
-                       pixels_to_do.num_pixels_to_do / 1000,
-                       pixels_to_do.num_pixels_to_do % 1000);*/
+                chk_dbg if (
+                        pixels_to_do.size <
+                        mli_Image_num_pixel(image) / 100.0) break;
+                chk_dbg fprintf(
+                        stderr,
+                        "loop %3u / %3u, %ld,%03ld pixel left\n",
+                        (uint32_t)iteration + 1,
+                        (uint32_t)MAX_ITERATIONS,
+                        pixels_to_do.size / 1000,
+                        pixels_to_do.size % 1000);
                 mliApertureCamera_aquire_pixels(
                         camera,
                         image,
                         camera2root_comp,
                         tracer,
                         &pixels_to_do,
-                        &colors,
+                        &colors_to_do,
                         prng);
-
-                mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
-                        &pixels_to_do, &colors, &sum_image, &exposure_image);
-
-                mli_Image_divide_pixelwise(&sum_image, &exposure_image, image);
-
-                mli_Image_copy(&sobel_image, &previous_sobel_image);
-
-                mli_Image_sobel(image, &sobel_image);
-                mli_Image_fabs_difference(
-                        &previous_sobel_image, &sobel_image, &diff_image);
-
-                mli_Image_set_all_pixel(&to_do_image, zero_color);
-
-                mli_Image_luminance_threshold_dilatation(
-                        &diff_image, noise_threshold, &to_do_image);
-
-                iteration += 1;
+                chk_dbg mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
+                        &pixels_to_do,
+                        &colors_to_do,
+                        &sum_image,
+                        &exposure_image);
+                chk_dbg mli_Image_divide_pixelwise(
+                        &sum_image, &exposure_image, image);
+                chk_dbg chk(
+                        mli_Image_copy(&sobel_image, &previous_sobel_image));
+                chk_dbg chk(mli_Image_sobel(image, &sobel_image));
+                chk_dbg chk(mli_Image_fabs_difference(
+                        &previous_sobel_image, &sobel_image, &diff_image));
+                chk_dbg mli_Image_set_by_col_row_all_pixel(
+                        &to_do_image, zero_color);
+                chk_dbg chk(mli_Image_luminance_threshold_dilatation(
+                        &diff_image,
+                        noise_threshold,
+                        HIGH_COLOR,
+                        &to_do_image));
+                chk_dbg iteration += 1;
         }
+        chk_dbg
 
-        mli_Image_free(&sum_image);
+                mli_Image_free(&sum_image);
         mli_Image_free(&exposure_image);
         mli_Image_free(&to_do_image);
         mli_Image_free(&sobel_image);
         mli_Image_free(&previous_sobel_image);
         mli_Image_free(&diff_image);
-        mli_Image_free(&colors);
+        mli_ColorVector_free(&colors_to_do);
         mli_image_PixelVector_free(&pixels_to_do);
         return 1;
 chk_error:
@@ -365,7 +365,7 @@ chk_error:
         mli_Image_free(&sobel_image);
         mli_Image_free(&previous_sobel_image);
         mli_Image_free(&diff_image);
-        mli_Image_free(&colors);
+        mli_ColorVector_free(&colors_to_do);
         mli_image_PixelVector_free(&pixels_to_do);
         return 0;
 }

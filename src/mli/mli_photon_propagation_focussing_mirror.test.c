@@ -24,7 +24,8 @@ CASE("focussing_a_parallel_beam")
         struct mli_Color max_color;
 
         CHECK(mli_Image_malloc(&screen_img, NUM_PIXEL, NUM_PIXEL));
-        mli_Image_set_all_pixel(&screen_img, mli_Color_set(20.0, 0.0, 0.0));
+        mli_Image_set_by_col_row_all_pixel(
+                &screen_img, mli_Color_set(20.0, 0.0, 0.0));
         mli_math_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
         wavelength_range = mli_prng_UniformRange_set(380e-9, 700e-9);
 
@@ -84,10 +85,8 @@ CASE("focussing_a_parallel_beam")
         CHECK(fraction_reaching_screen < 0.99);
         CHECK(fraction_reaching_screen > 0.95);
 
-        for (i = 0u; i < screen_img.num_rows * screen_img.num_cols; i++) {
-                screen_img.raw[i].g = pow(screen_img.raw[i].g, 0.3);
-                screen_img.raw[i].b = pow(screen_img.raw[i].b, 0.3);
-        }
+        mli_Image_power(&screen_img, mli_Color_set(0.3, 0.3, 0.3));
+
         max_color = mli_Image_max(&screen_img);
         mli_Image_multiply(
                 &screen_img,

@@ -8,6 +8,7 @@
 #include "mliHomTra.h"
 #include "mliTracer.h"
 #include "../image/image.h"
+#include "../color/color_vector.h"
 
 /*
 principal-rays of the thin-lens
@@ -156,12 +157,12 @@ void mliApertureCamera_aquire_pixels(
         const struct mliHomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         const struct mli_image_PixelVector *pixels_to_do,
-        struct mli_Image *colors,
+        struct mli_ColorVector *colors_to_do,
         struct mli_Prng *prng);
 
 void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
         const struct mli_image_PixelVector *pixels,
-        const struct mli_Image *colors,
+        const struct mli_ColorVector *colors,
         struct mli_Image *sum_image,
         struct mli_Image *exposure_image);
 

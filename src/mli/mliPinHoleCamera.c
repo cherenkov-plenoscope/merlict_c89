@@ -21,7 +21,7 @@ struct mliPinHoleCamera mliPinHoleCamera_init(
         sensor.row_axis = mliVec_init(0.0, row_over_column_pixel_ratio, 0.0);
 
         sensor.distance_to_principal_point =
-                ((0.5 * image->num_cols) / tan(0.5 * field_of_view));
+                ((0.5 * mli_Image_num_cols(image)) / tan(0.5 * field_of_view));
         sensor.principal_point = mliVec_multiply(
                 sensor.optical_axis, sensor.distance_to_principal_point);
         return sensor;
@@ -34,8 +34,8 @@ struct mliRay mliPinHoleCamera_ray_at_row_col(
         const uint32_t col)
 {
         struct mliVec pin_hole_position = mliVec_init(0.0, 0.0, 0.0);
-        int row_idx_on_sensor = row - image->num_rows / 2;
-        int col_idx_on_sensor = col - image->num_cols / 2;
+        int row_idx_on_sensor = row - mli_Image_num_rows(image) / 2;
+        int col_idx_on_sensor = col - mli_Image_num_cols(image) / 2;
         struct mliVec s_row =
                 mliVec_multiply(camera->row_axis, row_idx_on_sensor);
         struct mliVec s_col =
@@ -56,7 +56,7 @@ void mliPinHoleCamera_render_image(
         struct mli_image_PixelWalk walk = mli_image_PixelWalk_init();
         struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
         uint32_t i;
-        const uint32_t num_pixel = image->num_rows * image->num_cols;
+        const uint32_t num_pixel = mli_Image_num_pixel(image);
 
         for (i = 0; i < num_pixel; i++) {
                 struct mli_image_Pixel px =
@@ -69,7 +69,7 @@ void mliPinHoleCamera_render_image(
 
                 struct mli_Color color =
                         mliTracer_trace_ray(tracer, ray_wrt_root, prng);
-                mli_Image_set(image, px.col, px.row, color);
+                mli_Image_set_by_col_row(image, px.col, px.row, color);
                 mli_image_PixelWalk_walk(&walk, &image->geometry);
         }
 }

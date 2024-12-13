@@ -28,8 +28,8 @@ int mli_Image_malloc_fread(struct mli_Image *img, FILE *f)
         chk_msg(fgets(line, 1024, f), "Can't read header-line.");
         chk_msg(strcmp(line, "255\n") == 0, "Expected 8bit range '255'.");
         chk_mem(mli_Image_malloc(img, num_cols, num_rows));
-        for (row = 0; row < img->num_rows; row++) {
-                for (col = 0; col < img->num_cols; col++) {
+        for (row = 0; row < mli_Image_num_rows(img); row++) {
+                for (col = 0; col < mli_Image_num_cols(img); col++) {
                         uint8_t r, g, b;
                         struct mli_Color color;
                         chk_fread(&r, sizeof(uint8_t), 1u, f);
@@ -38,7 +38,7 @@ int mli_Image_malloc_fread(struct mli_Image *img, FILE *f)
                         color.r = (float)r;
                         color.g = (float)g;
                         color.b = (float)b;
-                        mli_Image_set(img, col, row, color);
+                        mli_Image_set_by_col_row(img, col, row, color);
                 }
         }
         return 1;
@@ -76,12 +76,13 @@ int mli_Image_fwrite(const struct mli_Image *img, FILE *f)
                         MLI_VERSION_MAYOR,
                         MLI_VERSION_MINOR,
                         MLI_VERSION_PATCH));
-        chk(fprintf(f, "%d\n", img->num_cols));
-        chk(fprintf(f, "%d\n", img->num_rows));
+        chk(fprintf(f, "%ld\n", mli_Image_num_cols(img)));
+        chk(fprintf(f, "%ld\n", mli_Image_num_rows(img)));
         chk(fprintf(f, "255\n"));
-        for (row = 0; row < img->num_rows; row++) {
-                for (col = 0; col < img->num_cols; col++) {
-                        struct mli_Color color = mli_Image_at(img, col, row);
+        for (row = 0; row < mli_Image_num_rows(img); row++) {
+                for (col = 0; col < mli_Image_num_cols(img); col++) {
+                        struct mli_Color color =
+                                mli_Image_get_by_col_row(img, col, row);
                         struct mli_Color out =
                                 mli_Color_truncate(color, 0., 255.);
                         uint8_t r = (uint8_t)out.r;

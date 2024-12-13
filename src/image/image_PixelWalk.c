@@ -67,9 +67,19 @@ struct mli_image_PixelWalk mli_image_PixelWalk_from_pixel(
         struct mli_image_Pixel pixel)
 {
         struct mli_image_PixelWalk address;
-        address.chunk_row = pixel.row / geometry->num_chunks_row;
-        address.sub_row = pixel.row % geometry->num_chunks_row;
-        address.chunk_col = pixel.col / geometry->num_chunks_col;
-        address.sub_col = pixel.col % geometry->num_chunks_col;
+        address.chunk_col = pixel.col / geometry->chunk_edge_size;
+        address.sub_col = pixel.col % geometry->chunk_edge_size;
+        address.chunk_row = pixel.row / geometry->chunk_edge_size;
+        address.sub_row = pixel.row % geometry->chunk_edge_size;
         return address;
+}
+
+void mli_image_PixelWalk_fprint(FILE *f, const struct mli_image_PixelWalk *self)
+{
+        fprintf(f,
+                "(col: %d/%d, row: %d/%d)",
+                self->chunk_col,
+                self->sub_col,
+                self->chunk_row,
+                self->sub_row);
 }
