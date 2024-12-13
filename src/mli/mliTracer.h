@@ -11,23 +11,6 @@
 struct mliScenery;
 struct mli_Prng;
 
-#define MLI_TRC_SPHERE_SHAPE 1
-
-struct mli_trc_SphereShape {
-        double radius;
-};
-
-union mli_trc_LightSourceShapes {
-        struct mli_trc_SphereShape sphere;
-};
-
-struct mli_trc_LightSource {
-        struct mliVec position;
-        struct mli_Color emission_spectrum;
-        uint64_t shape;
-        union mli_trc_LightSourceShapes light_source_shape;
-};
-
 struct mliTracerConfig {
         uint64_t num_trails_global_light_source;
 
