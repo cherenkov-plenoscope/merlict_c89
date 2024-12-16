@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliVec_json.h"
+#include "vec_json.h"
 #include "../chk/chk.h"
 
-int mliVec_from_json_token(
-        struct mliVec *v,
+int mli_Vec_from_json_token(
+        struct mli_Vec *v,
         const struct mli_Json *json,
         const uint64_t token)
 {
@@ -12,11 +12,11 @@ int mliVec_from_json_token(
         chk_msg(json->tokens[token].size == 3,
                 "Expected vec-token to contain exactly 3 tokens.");
         chk_msg(mli_Json_double_by_token(json, token + 1, &v->x),
-                "Can not parse mliVec-x-value.");
+                "Can not parse mli_Vec-x-value.");
         chk_msg(mli_Json_double_by_token(json, token + 2, &v->y),
-                "Can not parse mliVec y-value.");
+                "Can not parse mli_Vec y-value.");
         chk_msg(mli_Json_double_by_token(json, token + 3, &v->z),
-                "Can not parse mliVec z-value.");
+                "Can not parse mli_Vec z-value.");
         return 1;
 chk_error:
         return 0;

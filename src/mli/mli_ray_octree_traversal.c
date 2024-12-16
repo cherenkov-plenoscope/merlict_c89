@@ -56,8 +56,8 @@
  */
 
 int mli_ray_octree_traversal_first_octree_node(
-        const struct mliVec t0,
-        const struct mliVec tm)
+        const struct mli_Vec t0,
+        const struct mli_Vec tm)
 {
         uint8_t child = 0;
         if (t0.x > t0.y) {
@@ -88,7 +88,7 @@ int mli_ray_octree_traversal_first_octree_node(
 }
 
 int mli_ray_octree_traversal_next_octree_node(
-        const struct mliVec tm,
+        const struct mli_Vec tm,
         int x,
         int y,
         int z)
@@ -108,8 +108,8 @@ int mli_ray_octree_traversal_next_octree_node(
 }
 
 void mli_ray_octree_traversal_sub(
-        struct mliVec t0,
-        struct mliVec t1,
+        struct mli_Vec t0,
+        struct mli_Vec t1,
         const struct mliOcTree *octree,
         const int32_t node_idx,
         const int32_t node_type,
@@ -121,7 +121,7 @@ void mli_ray_octree_traversal_sub(
                 const uint32_t))
 {
         int32_t proc_node;
-        struct mliVec tm, nt0, nt1;
+        struct mli_Vec tm, nt0, nt1;
 
         if (t1.x < 0 || t1.y < 0 || t1.z < 0) {
                 return;
@@ -146,8 +146,8 @@ void mli_ray_octree_traversal_sub(
         do {
                 switch (proc_node) {
                 case 0: {
-                        nt0 = mliVec_init(t0.x, t0.y, t0.z);
-                        nt1 = mliVec_init(tm.x, tm.y, tm.z);
+                        nt0 = mli_Vec_init(t0.x, t0.y, t0.z);
+                        nt1 = mli_Vec_init(tm.x, tm.y, tm.z);
                         mli_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -162,8 +162,8 @@ void mli_ray_octree_traversal_sub(
                         break;
                 }
                 case 1: {
-                        nt0 = mliVec_init(t0.x, t0.y, tm.z);
-                        nt1 = mliVec_init(tm.x, tm.y, t1.z);
+                        nt0 = mli_Vec_init(t0.x, t0.y, tm.z);
+                        nt1 = mli_Vec_init(tm.x, tm.y, t1.z);
                         mli_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -179,8 +179,8 @@ void mli_ray_octree_traversal_sub(
                         break;
                 }
                 case 2: {
-                        nt0 = mliVec_init(t0.x, tm.y, t0.z);
-                        nt1 = mliVec_init(tm.x, t1.y, tm.z);
+                        nt0 = mli_Vec_init(t0.x, tm.y, t0.z);
+                        nt1 = mli_Vec_init(tm.x, t1.y, tm.z);
                         mli_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -196,8 +196,8 @@ void mli_ray_octree_traversal_sub(
                         break;
                 }
                 case 3: {
-                        nt0 = mliVec_init(t0.x, tm.y, tm.z);
-                        nt1 = mliVec_init(tm.x, t1.y, t1.z);
+                        nt0 = mli_Vec_init(t0.x, tm.y, tm.z);
+                        nt1 = mli_Vec_init(tm.x, t1.y, t1.z);
                         mli_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -213,8 +213,8 @@ void mli_ray_octree_traversal_sub(
                         break;
                 }
                 case 4: {
-                        nt0 = mliVec_init(tm.x, t0.y, t0.z);
-                        nt1 = mliVec_init(t1.x, tm.y, tm.z);
+                        nt0 = mli_Vec_init(tm.x, t0.y, t0.z);
+                        nt1 = mli_Vec_init(t1.x, tm.y, tm.z);
                         mli_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -230,8 +230,8 @@ void mli_ray_octree_traversal_sub(
                         break;
                 }
                 case 5: {
-                        nt0 = mliVec_init(tm.x, t0.y, tm.z);
-                        nt1 = mliVec_init(t1.x, tm.y, t1.z);
+                        nt0 = mli_Vec_init(tm.x, t0.y, tm.z);
+                        nt1 = mli_Vec_init(t1.x, tm.y, t1.z);
                         mli_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -247,8 +247,8 @@ void mli_ray_octree_traversal_sub(
                         break;
                 }
                 case 6: {
-                        nt0 = mliVec_init(tm.x, tm.y, t0.z);
-                        nt1 = mliVec_init(t1.x, t1.y, tm.z);
+                        nt0 = mli_Vec_init(tm.x, tm.y, t0.z);
+                        nt1 = mli_Vec_init(t1.x, t1.y, tm.z);
                         mli_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -264,8 +264,8 @@ void mli_ray_octree_traversal_sub(
                         break;
                 }
                 case 7: {
-                        nt0 = mliVec_init(tm.x, tm.y, tm.z);
-                        nt1 = mliVec_init(t1.x, t1.y, t1.z);
+                        nt0 = mli_Vec_init(tm.x, tm.y, tm.z);
+                        nt1 = mli_Vec_init(t1.x, t1.y, t1.z);
                         mli_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -292,10 +292,10 @@ void mli_ray_octree_traversal(
                 const struct mliOcTree *,
                 const uint32_t))
 {
-        struct mliVec t0, t1;
-        struct mliVec div;
+        struct mli_Vec t0, t1;
+        struct mli_Vec div;
         struct mliRay ray_wrt_octree;
-        struct mliVec cube_upper, cube_size;
+        struct mli_Vec cube_upper, cube_size;
         struct mliCube cube;
         int32_t octree_root_node, octree_root_type;
         uint8_t permutation = 0;
@@ -303,7 +303,7 @@ void mli_ray_octree_traversal(
         cube_upper = mliCube_upper(cube);
         octree_root_node = 0u;
         octree_root_type = octree->root_type;
-        cube_size = mliVec_add(cube.lower, cube_upper);
+        cube_size = mli_Vec_add(cube.lower, cube_upper);
 
         ray_wrt_octree = ray;
 

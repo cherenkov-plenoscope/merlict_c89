@@ -2,7 +2,7 @@
 #include "mliHomTra.h"
 
 struct mliHomTraComp mliHomTraComp_set(
-        const struct mliVec translation,
+        const struct mli_Vec translation,
         const struct mliQuaternion rotation)
 {
         struct mliHomTraComp comp;
@@ -19,11 +19,11 @@ struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo)
         return t;
 }
 
-struct mliVec mli_transform_orientation(
+struct mli_Vec mli_transform_orientation(
         const struct mliMat *rotation,
-        const struct mliVec ori)
+        const struct mli_Vec ori)
 {
-        struct mliVec out;
+        struct mli_Vec out;
         out.x =
                 (ori.x * rotation->r00 + ori.y * rotation->r01 +
                  ori.z * rotation->r02);
@@ -36,11 +36,11 @@ struct mliVec mli_transform_orientation(
         return out;
 }
 
-struct mliVec mli_transform_orientation_inverse(
+struct mli_Vec mli_transform_orientation_inverse(
         const struct mliMat *rotation,
-        const struct mliVec ori)
+        const struct mli_Vec ori)
 {
-        struct mliVec out;
+        struct mli_Vec out;
         out.x =
                 (ori.x * rotation->r00 + ori.y * rotation->r10 +
                  ori.z * rotation->r20);
@@ -53,12 +53,12 @@ struct mliVec mli_transform_orientation_inverse(
         return out;
 }
 
-struct mliVec mli_transform_position(
+struct mli_Vec mli_transform_position(
         const struct mliMat *rotation,
-        const struct mliVec translation,
-        const struct mliVec pos)
+        const struct mli_Vec translation,
+        const struct mli_Vec pos)
 {
-        struct mliVec out;
+        struct mli_Vec out;
         out.x = (pos.x * rotation->r00 + pos.y * rotation->r01 +
                  pos.z * rotation->r02) +
                 translation.x;
@@ -71,12 +71,12 @@ struct mliVec mli_transform_position(
         return out;
 }
 
-struct mliVec mli_transform_position_inverse(
+struct mli_Vec mli_transform_position_inverse(
         const struct mliMat *rotation,
-        const struct mliVec translation,
-        const struct mliVec pos)
+        const struct mli_Vec translation,
+        const struct mli_Vec pos)
 {
-        struct mliVec out;
+        struct mli_Vec out;
         out.x = (pos.x * rotation->r00 + pos.y * rotation->r10 +
                  pos.z * rotation->r20) -
                 (rotation->r00 * translation.x + rotation->r10 * translation.y +
@@ -94,7 +94,7 @@ struct mliVec mli_transform_position_inverse(
 
 struct mliRay mli_transform_ray(
         const struct mliMat *rotation,
-        const struct mliVec translation,
+        const struct mli_Vec translation,
         const struct mliRay in)
 {
         struct mliRay out;
@@ -105,7 +105,7 @@ struct mliRay mli_transform_ray(
 
 struct mliRay mli_transform_ray_inverse(
         const struct mliMat *rotation,
-        const struct mliVec translation,
+        const struct mli_Vec translation,
         const struct mliRay in)
 {
         struct mliRay out;
@@ -128,26 +128,26 @@ struct mliRay mliHomTra_ray_inverse(
         return mli_transform_ray_inverse(&t->rotation, t->translation, in);
 }
 
-struct mliVec mliHomTra_pos(const struct mliHomTra *t, const struct mliVec in)
+struct mli_Vec mliHomTra_pos(const struct mliHomTra *t, const struct mli_Vec in)
 {
         return mli_transform_position(&t->rotation, t->translation, in);
 }
 
-struct mliVec mliHomTra_pos_inverse(
+struct mli_Vec mliHomTra_pos_inverse(
         const struct mliHomTra *t,
-        const struct mliVec in)
+        const struct mli_Vec in)
 {
         return mli_transform_position_inverse(&t->rotation, t->translation, in);
 }
 
-struct mliVec mliHomTra_dir(const struct mliHomTra *t, const struct mliVec in)
+struct mli_Vec mliHomTra_dir(const struct mliHomTra *t, const struct mli_Vec in)
 {
         return mli_transform_orientation(&t->rotation, in);
 }
 
-struct mliVec mliHomTra_dir_inverse(
+struct mli_Vec mliHomTra_dir_inverse(
         const struct mliHomTra *t,
-        const struct mliVec in)
+        const struct mli_Vec in)
 {
         return mli_transform_orientation_inverse(&t->rotation, in);
 }
@@ -156,7 +156,7 @@ int mliHomTraComp_equal(
         const struct mliHomTraComp a,
         const struct mliHomTraComp b)
 {
-        if (!mliVec_equal(a.translation, b.translation))
+        if (!mli_Vec_equal(a.translation, b.translation))
                 return 0;
         if (!mliQuaternion_equal(a.rotation, b.rotation))
                 return 0;

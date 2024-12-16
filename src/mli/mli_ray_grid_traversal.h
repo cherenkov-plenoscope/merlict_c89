@@ -3,7 +3,7 @@
 #define MLI_RAY_GRID_TRAVERSAL_H_
 
 #include <stdint.h>
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mliAABB.h"
 #include "mliRay.h"
 
@@ -18,7 +18,7 @@ struct mliIdx3 mliIdx3_set(const int64_t x, const int64_t y, const int64_t z);
 struct mliAxisAlignedGrid {
         struct mliAABB bounds;
         struct mliIdx3 num_bins;
-        struct mliVec bin_width;
+        struct mli_Vec bin_width;
 };
 
 struct mliAxisAlignedGrid mliAxisAlignedGrid_set(
@@ -37,9 +37,9 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
 struct mliAxisAlignedGridTraversal {
         const struct mliAxisAlignedGrid *grid;
         struct mliIdx3 voxel;
-        struct mliVec step;
-        struct mliVec tMax;
-        struct mliVec tDelta;
+        struct mli_Vec step;
+        struct mli_Vec tMax;
+        struct mli_Vec tDelta;
         int valid;
 };
 

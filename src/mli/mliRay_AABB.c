@@ -8,9 +8,9 @@ void mliRay_aabb_intersections(
         double *t_near,
         double *t_far)
 {
-        struct mliVec frac;
-        struct mliVec lower, upper;
-        struct mliVec t1, t2;
+        struct mli_Vec frac;
+        struct mli_Vec lower, upper;
+        struct mli_Vec t1, t2;
 
         frac.x = 1. / ray.direction.x;
         frac.y = 1. / ray.direction.y;

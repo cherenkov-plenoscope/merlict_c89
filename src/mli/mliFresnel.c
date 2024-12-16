@@ -3,8 +3,8 @@
 #include <math.h>
 
 struct mliFresnel mliFresnel_init(
-        const struct mliVec incident,
-        const struct mliVec normal,
+        const struct mli_Vec incident,
+        const struct mli_Vec normal,
         const double n_from,
         const double n_to)
 {
@@ -14,7 +14,7 @@ struct mliFresnel mliFresnel_init(
         fresnel.n_from = n_from;
         fresnel.n_to = n_to;
 
-        fresnel._cosI = -1.0 * mliVec_dot(normal, incident);
+        fresnel._cosI = -1.0 * mli_Vec_dot(normal, incident);
         fresnel._n_from_over_n_to = n_from / n_to;
         fresnel._sinT2 =
                 (fresnel._n_from_over_n_to * fresnel._n_from_over_n_to) *
@@ -42,18 +42,18 @@ double mliFresnel_reflection_propability(const struct mliFresnel fresnel)
         }
 }
 
-struct mliVec mliFresnel_reflection_direction(const struct mliFresnel fresnel)
+struct mli_Vec mliFresnel_reflection_direction(const struct mliFresnel fresnel)
 {
-        return mliVec_add(
+        return mli_Vec_add(
                 fresnel.incident,
-                mliVec_multiply(fresnel.normal, fresnel._cosI * 2.0));
+                mli_Vec_multiply(fresnel.normal, fresnel._cosI * 2.0));
 }
 
-struct mliVec mliFresnel_refraction_direction(const struct mliFresnel fresnel)
+struct mli_Vec mliFresnel_refraction_direction(const struct mliFresnel fresnel)
 {
-        return mliVec_add(
-                mliVec_multiply(fresnel.incident, fresnel._n_from_over_n_to),
-                mliVec_multiply(
+        return mli_Vec_add(
+                mli_Vec_multiply(fresnel.incident, fresnel._n_from_over_n_to),
+                mli_Vec_multiply(
                         fresnel.normal,
                         fresnel._n_from_over_n_to * fresnel._cosI -
                                 fresnel._cosT));

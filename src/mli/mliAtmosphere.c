@@ -55,24 +55,24 @@ void mliAtmosphere_set_sun_direction(
                         2.0 * MLI_MATH_PI * atmosphere->sunHourAngle / 24.0;
 
                 const struct mliHomTraComp tc_latitude = mliHomTraComp_set(
-                        mliVec_init(0.0, 0.0, 0.0),
+                        mli_Vec_init(0.0, 0.0, 0.0),
                         mliQuaternion_set_tait_bryan(
                                 atmosphere->sunLatitude, 0.0, 0.0));
                 const struct mliHomTraComp tc_hour = mliHomTraComp_set(
-                        mliVec_init(0.0, 0.0, 0.0),
+                        mli_Vec_init(0.0, 0.0, 0.0),
                         mliQuaternion_set_tait_bryan(0.0, hours_rad, 0.0));
                 const struct mliHomTraComp tc =
                         mliHomTraComp_sequence(tc_latitude, tc_hour);
                 const struct mliHomTra t = mliHomTra_from_compact(tc);
-                const struct mliVec zenith = mliVec_init(0.0, 0.0, 1.0);
+                const struct mli_Vec zenith = mli_Vec_init(0.0, 0.0, 1.0);
                 atmosphere->sunDirection = mliHomTra_dir(&t, zenith);
         }
 }
 
 struct mli_Color mliAtmosphere_compute_depth(
         const struct mliAtmosphere *atmosphere,
-        const struct mliVec orig,
-        const struct mliVec dir,
+        const struct mli_Vec orig,
+        const struct mli_Vec dir,
         double tmin,
         double tmax)
 {
@@ -89,7 +89,7 @@ struct mli_Color mliAtmosphere_compute_depth(
          * mu in the paper which is the cosine of the angle between the sun
          * direction and the ray direction
          */
-        const double mu = mliVec_dot(dir, atmosphere->sunDirection);
+        const double mu = mli_Vec_dot(dir, atmosphere->sunDirection);
         const double phaseR = 3.f / (16.f * MLI_MATH_PI) * (1.0 + mu * mu);
         const double g = 0.76f;
         const double phaseM =
@@ -98,12 +98,13 @@ struct mli_Color mliAtmosphere_compute_depth(
                  ((2.f + g * g) * pow(1.f + g * g - 2.f * g * mu, 1.5f)));
 
         for (i = 0; i < atmosphere->numSamples; ++i) {
-                const struct mliVec samplePosition = mliVec_add(
+                const struct mli_Vec samplePosition = mli_Vec_add(
                         orig,
-                        mliVec_multiply(
+                        mli_Vec_multiply(
                                 dir, (tCurrent + segmentLength * 0.5f)));
                 const double height =
-                        (mliVec_norm(samplePosition) - atmosphere->earthRadius);
+                        (mli_Vec_norm(samplePosition) -
+                         atmosphere->earthRadius);
                 /* compute optical depth for light */
                 const double hr = segmentLength *
                                   exp(-height / atmosphere->Height_Rayleigh);
@@ -128,14 +129,14 @@ struct mli_Color mliAtmosphere_compute_depth(
                 segmentLengthLight = t1Light / atmosphere->numSamplesLight;
 
                 for (j = 0; j < atmosphere->numSamplesLight; ++j) {
-                        const struct mliVec samplePositionLight = mliVec_add(
+                        const struct mli_Vec samplePositionLight = mli_Vec_add(
                                 samplePosition,
-                                mliVec_multiply(
+                                mli_Vec_multiply(
                                         atmosphere->sunDirection,
                                         tCurrentLight +
                                                 0.5 * segmentLengthLight));
                         const double heightLight =
-                                mliVec_norm(samplePositionLight) -
+                                mli_Vec_norm(samplePositionLight) -
                                 atmosphere->earthRadius;
 
                         if (heightLight < 0)
@@ -184,8 +185,8 @@ struct mli_Color mliAtmosphere_compute_depth(
 
 struct mli_Color mliAtmosphere_hit_outer_atmosphere(
         const struct mliAtmosphere *atmosphere,
-        const struct mliVec orig,
-        const struct mliVec dir,
+        const struct mli_Vec orig,
+        const struct mli_Vec dir,
         double tmin,
         double tmax)
 {
@@ -209,8 +210,8 @@ struct mli_Color mliAtmosphere_hit_outer_atmosphere(
 
 struct mli_Color mliAtmosphere_hit_earth_body(
         const struct mliAtmosphere *atmosphere,
-        const struct mliVec orig,
-        const struct mliVec dir)
+        const struct mli_Vec orig,
+        const struct mli_Vec dir)
 {
         double t_minus = DBL_MAX;
         double t_plus = DBL_MAX;
@@ -228,10 +229,10 @@ struct mli_Color mliAtmosphere_hit_earth_body(
 
 struct mli_Color mliAtmosphere_query(
         const struct mliAtmosphere *atmosphere,
-        const struct mliVec orig,
-        const struct mliVec dir)
+        const struct mli_Vec orig,
+        const struct mli_Vec dir)
 {
-        struct mliVec orig_up = orig;
+        struct mli_Vec orig_up = orig;
         orig_up.z += (atmosphere->earthRadius + atmosphere->altitude);
 
         return mliAtmosphere_hit_earth_body(atmosphere, orig_up, dir);

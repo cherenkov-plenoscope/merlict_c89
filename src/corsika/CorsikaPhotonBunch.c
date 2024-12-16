@@ -60,12 +60,12 @@ struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
         */
 
         const double VACUUM_SPPED_OF_LIGHT = 299792458.0;
-        const struct mliVec photon_direction_of_motion =
+        const struct mli_Vec photon_direction_of_motion =
                 mli_corsika_photon_direction_of_motion(bunch);
 
         const struct mliRay ray_running_upwards_to_production = mliRay_set(
                 mli_corsika_photon_support_on_observation_level(bunch),
-                mliVec_multiply(photon_direction_of_motion, -1.0));
+                mli_Vec_multiply(photon_direction_of_motion, -1.0));
 
         const double offset =
                 (production_distance_offset +
@@ -73,7 +73,7 @@ struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
                          mli_corsika_photon_relative_arrival_time_on_observation_level(
                                  bunch));
 
-        const struct mliVec photon_emission_position =
+        const struct mli_Vec photon_emission_position =
                 mliRay_at(&ray_running_upwards_to_production, offset);
 
         struct mliPhoton photon;
@@ -84,7 +84,7 @@ struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
         return photon;
 }
 
-struct mliVec mli_corsika_photon_direction_of_motion(
+struct mli_Vec mli_corsika_photon_direction_of_motion(
         const struct mli_corsika_PhotonBunch bunch)
 { /*
        KIT-CORSIKA coordinate-system
@@ -135,13 +135,13 @@ struct mliVec mli_corsika_photon_direction_of_motion(
           down towards the observation-plane.
   */
         const double z = sqrt(1.0 - bunch.ux * bunch.ux - bunch.vy * bunch.vy);
-        return mliVec_init(bunch.ux, bunch.vy, -z);
+        return mli_Vec_init(bunch.ux, bunch.vy, -z);
 }
 
-struct mliVec mli_corsika_photon_support_on_observation_level(
+struct mli_Vec mli_corsika_photon_support_on_observation_level(
         const struct mli_corsika_PhotonBunch bunch)
 {
-        return mliVec_init(
+        return mli_Vec_init(
                 (double)bunch.x_cm * 1e-2, (double)bunch.y_cm * 1e-2, 0.0);
 }
 

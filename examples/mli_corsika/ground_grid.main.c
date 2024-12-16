@@ -18,8 +18,8 @@ int mliAxisAlignedGrid_set_from_config(
         struct mliAxisAlignedGrid *grid,
         struct mli_IO *text)
 {
-        struct mliVec lower;
-        struct mliVec upper;
+        struct mli_Vec lower;
+        struct mli_Vec upper;
         struct mliIdx3 num_bins;
         struct mli_String line = mli_String_init();
         chk(mli_String_malloc(&line, 100));

@@ -1,79 +1,81 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliVec.h"
+#include "vec.h"
 #include <assert.h>
 #include <math.h>
 #include <float.h>
 
-struct mliVec mliVec_init(const double x, const double y, const double z)
+struct mli_Vec mli_Vec_init(const double x, const double y, const double z)
 {
-        struct mliVec out;
+        struct mli_Vec out;
         out.x = x;
         out.y = y;
         out.z = z;
         return out;
 }
 
-struct mliVec mliVec_add(const struct mliVec a, const struct mliVec b)
+struct mli_Vec mli_Vec_add(const struct mli_Vec a, const struct mli_Vec b)
 {
-        struct mliVec out;
+        struct mli_Vec out;
         out.x = a.x + b.x;
         out.y = a.y + b.y;
         out.z = a.z + b.z;
         return out;
 }
 
-struct mliVec mliVec_substract(const struct mliVec a, const struct mliVec b)
+struct mli_Vec mli_Vec_substract(const struct mli_Vec a, const struct mli_Vec b)
 {
-        struct mliVec out;
+        struct mli_Vec out;
         out.x = a.x - b.x;
         out.y = a.y - b.y;
         out.z = a.z - b.z;
         return out;
 }
 
-struct mliVec mliVec_cross(const struct mliVec a, const struct mliVec b)
+struct mli_Vec mli_Vec_cross(const struct mli_Vec a, const struct mli_Vec b)
 {
-        struct mliVec out;
+        struct mli_Vec out;
         out.x = (a.y * b.z - a.z * b.y);
         out.y = (a.z * b.x - a.x * b.z);
         out.z = (a.x * b.y - a.y * b.x);
         return out;
 }
 
-double mliVec_dot(const struct mliVec a, const struct mliVec b)
+double mli_Vec_dot(const struct mli_Vec a, const struct mli_Vec b)
 {
         return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-struct mliVec mliVec_multiply(const struct mliVec v, const double a)
+struct mli_Vec mli_Vec_multiply(const struct mli_Vec v, const double a)
 {
-        struct mliVec out;
+        struct mli_Vec out;
         out.x = v.x * a;
         out.y = v.y * a;
         out.z = v.z * a;
         return out;
 }
 
-double mliVec_norm(const struct mliVec a) { return sqrt(mliVec_dot(a, a)); }
+double mli_Vec_norm(const struct mli_Vec a) { return sqrt(mli_Vec_dot(a, a)); }
 
-struct mliVec mliVec_normalized(struct mliVec a)
+struct mli_Vec mli_Vec_normalized(struct mli_Vec a)
 {
-        return mliVec_multiply(a, 1. / mliVec_norm(a));
+        return mli_Vec_multiply(a, 1. / mli_Vec_norm(a));
 }
 
-double mliVec_angle_between(const struct mliVec a, const struct mliVec b)
+double mli_Vec_angle_between(const struct mli_Vec a, const struct mli_Vec b)
 {
-        struct mliVec a_normalized = mliVec_multiply(a, 1. / mliVec_norm(a));
-        struct mliVec b_normalized = mliVec_multiply(b, 1. / mliVec_norm(b));
-        return acos(mliVec_dot(a_normalized, b_normalized));
+        struct mli_Vec a_normalized = mli_Vec_multiply(a, 1. / mli_Vec_norm(a));
+        struct mli_Vec b_normalized = mli_Vec_multiply(b, 1. / mli_Vec_norm(b));
+        return acos(mli_Vec_dot(a_normalized, b_normalized));
 }
 
-double mliVec_norm_between(const struct mliVec a, const struct mliVec b)
+double mli_Vec_norm_between(const struct mli_Vec a, const struct mli_Vec b)
 {
-        return mliVec_norm(mliVec_substract(a, b));
+        return mli_Vec_norm(mli_Vec_substract(a, b));
 }
 
-struct mliVec mliVec_mirror(const struct mliVec in, const struct mliVec normal)
+struct mli_Vec mli_Vec_mirror(
+        const struct mli_Vec in,
+        const struct mli_Vec normal)
 {
         /*
          *      This is taken from
@@ -105,7 +107,7 @@ struct mliVec mliVec_mirror(const struct mliVec in, const struct mliVec normal)
          *                   [0 1 0]
          *                   [0 0 1]
          */
-        struct mliVec out;
+        struct mli_Vec out;
         out.x = (1. - 2. * normal.x * normal.x) * in.x +
                 -2. * normal.x * normal.y * in.y +
                 -2. * normal.x * normal.z * in.z;
@@ -120,19 +122,19 @@ struct mliVec mliVec_mirror(const struct mliVec in, const struct mliVec normal)
         return out;
 }
 
-int mliVec_equal_margin(
-        const struct mliVec a,
-        const struct mliVec b,
+int mli_Vec_equal_margin(
+        const struct mli_Vec a,
+        const struct mli_Vec b,
         const double distance_margin)
 {
-        struct mliVec diff;
+        struct mli_Vec diff;
         double distance_squared;
-        diff = mliVec_substract(a, b);
-        distance_squared = mliVec_dot(diff, diff);
+        diff = mli_Vec_substract(a, b);
+        distance_squared = mli_Vec_dot(diff, diff);
         return distance_squared <= distance_margin * distance_margin;
 }
 
-int mliVec_equal(const struct mliVec a, const struct mliVec b)
+int mli_Vec_equal(const struct mli_Vec a, const struct mli_Vec b)
 {
         if (fabs(a.x - b.x) > DBL_EPSILON)
                 return 0;
@@ -143,7 +145,7 @@ int mliVec_equal(const struct mliVec a, const struct mliVec b)
         return 1;
 }
 
-uint32_t mliVec_octant(const struct mliVec a)
+uint32_t mli_Vec_octant(const struct mli_Vec a)
 {
         /*
          *  encodes the octant sectors where the vector is pointing to
@@ -163,7 +165,7 @@ uint32_t mliVec_octant(const struct mliVec a)
         return 4 * sx + 2 * sy + 1 * sz;
 }
 
-int mliVec_sign3_bitmask(const struct mliVec a, const double epsilon)
+int mli_Vec_sign3_bitmask(const struct mli_Vec a, const double epsilon)
 {
         /* bits: 7  6  5  4  3  2  1  0  */
         /*             xp yp zp xn yn zn */
@@ -180,17 +182,17 @@ int mliVec_sign3_bitmask(const struct mliVec a, const double epsilon)
         return (xn | xp | yn | yp | zn | zp);
 }
 
-struct mliVec mliVec_mean(const struct mliVec *vecs, const uint64_t num_vecs)
+struct mli_Vec mli_Vec_mean(const struct mli_Vec *vecs, const uint64_t num_vecs)
 {
         uint64_t i;
-        struct mliVec mean = mliVec_init(0.0, 0.0, 0.0);
+        struct mli_Vec mean = mli_Vec_init(0.0, 0.0, 0.0);
         for (i = 0; i < num_vecs; i++) {
-                mean = mliVec_add(mean, vecs[i]);
+                mean = mli_Vec_add(mean, vecs[i]);
         }
-        return mliVec_multiply(mean, (1.0 / num_vecs));
+        return mli_Vec_multiply(mean, (1.0 / num_vecs));
 }
 
-void mliVec_set(struct mliVec *a, const uint64_t dim, const double v)
+void mli_Vec_set(struct mli_Vec *a, const uint64_t dim, const double v)
 {
         switch (dim) {
         case 0:
@@ -208,7 +210,7 @@ void mliVec_set(struct mliVec *a, const uint64_t dim, const double v)
         }
 }
 
-double mliVec_get(const struct mliVec *a, const uint64_t dim)
+double mli_Vec_get(const struct mli_Vec *a, const uint64_t dim)
 {
         double o = 0.0;
         switch (dim) {

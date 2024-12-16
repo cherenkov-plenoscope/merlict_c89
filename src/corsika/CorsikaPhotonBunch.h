@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../vector/vector.h"
-#include "../mli/mliVec.h"
+#include "../vec/vec.h"
 #include "../mli/mliPhoton.h"
 
 struct mli_corsika_PhotonBunch {
@@ -85,10 +85,10 @@ struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
         const double production_distance_offset,
         const int64_t id);
 
-struct mliVec mli_corsika_photon_direction_of_motion(
+struct mli_Vec mli_corsika_photon_direction_of_motion(
         const struct mli_corsika_PhotonBunch bunch);
 
-struct mliVec mli_corsika_photon_support_on_observation_level(
+struct mli_Vec mli_corsika_photon_support_on_observation_level(
         const struct mli_corsika_PhotonBunch bunch);
 
 double mli_corsika_photon_wavelength(

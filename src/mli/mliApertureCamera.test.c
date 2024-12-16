@@ -2,7 +2,7 @@
 
 CASE("pixel-center on image-sensor-plane")
 {
-        struct mliVec c;
+        struct mli_Vec c;
         const double image_sensor_width_x = 16.0;
         const double image_sensor_width_y = 9.0;
         const double image_sensor_distance = 1.337;
@@ -56,8 +56,8 @@ CASE("object-point")
         double image_sensor_distance = -1.1;
         double object_distance = mli_thin_lens_get_object_given_focal_and_image(
                 focal_length, fabs(image_sensor_distance));
-        struct mliVec obj = mliApertureCamera_get_object_point(
-                focal_length, mliVec_init(0.1, 0.1, image_sensor_distance));
+        struct mli_Vec obj = mliApertureCamera_get_object_point(
+                focal_length, mli_Vec_init(0.1, 0.1, image_sensor_distance));
         CHECK_MARGIN(object_distance, 11.0, 1e-6);
         CHECK_MARGIN(obj.x, -1.0, 1e-6);
         CHECK_MARGIN(obj.y, -1.0, 1e-6);

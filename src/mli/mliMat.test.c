@@ -3,22 +3,22 @@
 CASE("covariance")
 {
         /* a crosscheck with numpy */
-        struct mliVec vecs[9];
-        struct mliVec vecs_mean;
+        struct mli_Vec vecs[9];
+        struct mli_Vec vecs_mean;
         struct mliMat cov;
 
         /* random values */
-        vecs[0] = mliVec_init(73.0, 7.0, 83.0);
-        vecs[1] = mliVec_init(39.0, 97.0, 63.0);
-        vecs[2] = mliVec_init(56.0, 95.0, 84.0);
-        vecs[3] = mliVec_init(99.0, 21.0, 74.0);
-        vecs[4] = mliVec_init(66.0, 50.0, 5.0);
-        vecs[5] = mliVec_init(91.0, 29.0, 62.0);
-        vecs[6] = mliVec_init(29.0, 1.0, 76.0);
-        vecs[7] = mliVec_init(76.0, 42.0, 42.0);
-        vecs[8] = mliVec_init(80.0, 46.0, 63.0);
+        vecs[0] = mli_Vec_init(73.0, 7.0, 83.0);
+        vecs[1] = mli_Vec_init(39.0, 97.0, 63.0);
+        vecs[2] = mli_Vec_init(56.0, 95.0, 84.0);
+        vecs[3] = mli_Vec_init(99.0, 21.0, 74.0);
+        vecs[4] = mli_Vec_init(66.0, 50.0, 5.0);
+        vecs[5] = mli_Vec_init(91.0, 29.0, 62.0);
+        vecs[6] = mli_Vec_init(29.0, 1.0, 76.0);
+        vecs[7] = mli_Vec_init(76.0, 42.0, 42.0);
+        vecs[8] = mli_Vec_init(80.0, 46.0, 63.0);
 
-        vecs_mean = mliVec_mean(vecs, 9);
+        vecs_mean = mli_Vec_mean(vecs, 9);
         cov = mliMat_covariance(vecs, 9, vecs_mean);
 
         CHECK_MARGIN(cov.r00, 529.0, 1e-6);
@@ -50,12 +50,12 @@ CASE("qr_decomposition")
         struct mliMat q;
         struct mliMat r;
         double act_eval[3];
-        struct mliVec act_evec[3];
+        struct mli_Vec act_evec[3];
         int i, j;
 
         /* expectation from numpy.linalg */
         double exp_eval[3] = {1252.33620323, 431.09407495, 636.93083293};
-        struct mliVec exp_evec[3] = {
+        struct mli_Vec exp_evec[3] = {
                 {-0.27500715, 0.95326021, -0.12516409},
                 {0.86629383, 0.30214904, 0.39779511},
                 {-0.41702046, -0.00096762, 0.90889658},
@@ -89,12 +89,12 @@ CASE("qr_decomposition")
                             1e-4) {
                                 int eq;
                                 match += 1;
-                                eq = mliVec_equal_margin(
+                                eq = mli_Vec_equal_margin(
                                         exp_evec[i], act_evec[j], 1e-3);
                                 if (eq == 0) {
-                                        eq = mliVec_equal_margin(
+                                        eq = mli_Vec_equal_margin(
                                                 exp_evec[i],
-                                                mliVec_multiply(
+                                                mli_Vec_multiply(
                                                         act_evec[j], -1.0),
                                                 1e-3);
                                 }

@@ -46,10 +46,12 @@ CASE("point_like_towards_z")
                 CHECK(photons.array[i].ray.support.x == 0.0);
                 CHECK(photons.array[i].ray.support.y == 0.0);
                 CHECK_MARGIN(
-                        mliVec_norm(photons.array[i].ray.direction), 1.0, 1e-6);
-                CHECK(mliVec_angle_between(
+                        mli_Vec_norm(photons.array[i].ray.direction),
+                        1.0,
+                        1e-6);
+                CHECK(mli_Vec_angle_between(
                               photons.array[i].ray.direction,
-                              mliVec_init(0., 0., 1.)) <= opening_angle);
+                              mli_Vec_init(0., 0., 1.)) <= opening_angle);
                 CHECK(photons.array[i].wavelength == wavelength);
                 CHECK(photons.array[i].id == (int64_t)i);
         }

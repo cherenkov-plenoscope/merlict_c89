@@ -36,7 +36,7 @@ CASE("mliAccelerator, init")
         tracer.config = &tracer_config;
 
         ray = mliRay_set(
-                mliVec_init(0.0, 0.0, -5.0), mliVec_init(0.0, 0.0, 1.0));
+                mli_Vec_init(0.0, 0.0, -5.0), mli_Vec_init(0.0, 0.0, 1.0));
 
         color = mliTracer_trace_ray(&tracer, ray, &prng);
 

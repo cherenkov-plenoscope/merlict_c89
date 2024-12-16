@@ -2,7 +2,7 @@
 #ifndef MLIAABB_H_
 #define MLIAABB_H_
 
-#include "mliVec.h"
+#include "../vec/vec.h"
 
 struct mliAABB {
         /*
@@ -26,14 +26,14 @@ struct mliAABB {
          *
          *
          */
-        struct mliVec lower;
-        struct mliVec upper;
+        struct mli_Vec lower;
+        struct mli_Vec upper;
 };
 
 struct mliAABB mliAABB_set(
-        const struct mliVec lower,
-        const struct mliVec upper);
-struct mliVec mliAABB_center(const struct mliAABB a);
+        const struct mli_Vec lower,
+        const struct mli_Vec upper);
+struct mli_Vec mliAABB_center(const struct mliAABB a);
 struct mliAABB mliAABB_outermost(
         const struct mliAABB a,
         const struct mliAABB b);
@@ -41,5 +41,5 @@ int mliAABB_valid(const struct mliAABB a);
 int mliAABB_equal(const struct mliAABB a, const struct mliAABB b);
 int mliAABB_overlapp_aabb(const struct mliAABB a, const struct mliAABB b);
 int mliAABB_is_overlapping(const struct mliAABB a, const struct mliAABB b);
-int mliAABB_is_point_inside(const struct mliAABB a, const struct mliVec point);
+int mliAABB_is_point_inside(const struct mliAABB a, const struct mli_Vec point);
 #endif

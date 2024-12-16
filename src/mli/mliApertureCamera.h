@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mli_random.h"
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mliHomTra.h"
 #include "mliTracer.h"
 #include "../image/image.h"
@@ -83,7 +83,7 @@ principal-rays of the thin-lens
 
 */
 
-struct mliVec mliApertureCamera_pixel_center_on_image_sensor_plane(
+struct mli_Vec mliApertureCamera_pixel_center_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,
         const double image_sensor_distance,
@@ -92,7 +92,7 @@ struct mliVec mliApertureCamera_pixel_center_on_image_sensor_plane(
         const uint64_t pixel_x,
         const uint64_t pixel_y);
 
-struct mliVec mliApertureCamera_pixel_support_on_image_sensor_plane(
+struct mli_Vec mliApertureCamera_pixel_support_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,
         const double image_sensor_distance,
@@ -102,9 +102,9 @@ struct mliVec mliApertureCamera_pixel_support_on_image_sensor_plane(
         const uint64_t pixel_y,
         struct mli_Prng *prng);
 
-struct mliVec mliApertureCamera_get_object_point(
+struct mli_Vec mliApertureCamera_get_object_point(
         const double focal_length,
-        const struct mliVec pixel_support);
+        const struct mli_Vec pixel_support);
 
 double mli_thin_lens_get_object_given_focal_and_image(
         const double focal_length,
@@ -118,7 +118,7 @@ double mliApertureCamera_focal_length_given_field_of_view_and_sensor_width(
         const double field_of_view,
         const double image_sensor_width);
 
-struct mliVec mliApertureCamera_ray_support_on_aperture(
+struct mli_Vec mliApertureCamera_ray_support_on_aperture(
         const double aperture_radius,
         struct mli_Prng *prng);
 

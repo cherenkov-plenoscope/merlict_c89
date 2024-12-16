@@ -3,16 +3,16 @@
 #define MLIOBJECT_H_
 
 #include <stdint.h>
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mliFace.h"
 #include "../string/string.h"
 
 struct mliObject {
         uint32_t num_vertices;
-        struct mliVec *vertices;
+        struct mli_Vec *vertices;
 
         uint32_t num_vertex_normals;
-        struct mliVec *vertex_normals;
+        struct mli_Vec *vertex_normals;
 
         uint32_t num_faces;
         struct mliFace *faces_vertices;

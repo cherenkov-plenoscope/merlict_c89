@@ -2,10 +2,10 @@
 
 CASE("barycentric coordinates on vertices")
 {
-        const struct mliVec a = {-1.0, 0.0, 0.0};
-        const struct mliVec b = {1.0, 0.0, 0.0};
-        const struct mliVec c = {0.0, 2.0, 0.0};
-        struct mliVec test_point;
+        const struct mli_Vec a = {-1.0, 0.0, 0.0};
+        const struct mli_Vec b = {1.0, 0.0, 0.0};
+        const struct mli_Vec c = {0.0, 2.0, 0.0};
+        struct mli_Vec test_point;
         struct mliBarycentrigWeights weights;
 
         test_point = a;
@@ -30,15 +30,15 @@ CASE("barycentric coordinates on vertices")
 CASE("barycentric coordinates in center")
 {
         const double phi = 2.0 * MLI_MATH_PI / 3.0;
-        const struct mliVec a =
-                mliVec_init(cos(0.0 * phi), sin(0.0 * phi), 0.0);
-        const struct mliVec b =
-                mliVec_init(cos(1.0 * phi), sin(1.0 * phi), 0.0);
-        const struct mliVec c =
-                mliVec_init(cos(2.0 * phi), sin(2.0 * phi), 0.0);
+        const struct mli_Vec a =
+                mli_Vec_init(cos(0.0 * phi), sin(0.0 * phi), 0.0);
+        const struct mli_Vec b =
+                mli_Vec_init(cos(1.0 * phi), sin(1.0 * phi), 0.0);
+        const struct mli_Vec c =
+                mli_Vec_init(cos(2.0 * phi), sin(2.0 * phi), 0.0);
         struct mliBarycentrigWeights weights;
 
-        weights = mli_barycentric_weights(a, b, c, mliVec_init(0.0, 0.0, 0.0));
+        weights = mli_barycentric_weights(a, b, c, mli_Vec_init(0.0, 0.0, 0.0));
         CHECK_MARGIN(weights.a, 1.0 / 3.0, 1e-6);
         CHECK_MARGIN(weights.b, 1.0 / 3.0, 1e-6);
         CHECK_MARGIN(weights.c, 1.0 / 3.0, 1e-6);
@@ -47,25 +47,25 @@ CASE("barycentric coordinates in center")
 CASE("barycentric coordinates out of triangle")
 {
         const double phi = 2.0 * MLI_MATH_PI / 3.0;
-        const struct mliVec a =
-                mliVec_init(cos(0.0 * phi), sin(0.0 * phi), 0.0);
-        const struct mliVec b =
-                mliVec_init(cos(1.0 * phi), sin(1.0 * phi), 0.0);
-        const struct mliVec c =
-                mliVec_init(cos(2.0 * phi), sin(2.0 * phi), 0.0);
+        const struct mli_Vec a =
+                mli_Vec_init(cos(0.0 * phi), sin(0.0 * phi), 0.0);
+        const struct mli_Vec b =
+                mli_Vec_init(cos(1.0 * phi), sin(1.0 * phi), 0.0);
+        const struct mli_Vec c =
+                mli_Vec_init(cos(2.0 * phi), sin(2.0 * phi), 0.0);
         struct mliBarycentrigWeights weights;
 
-        weights = mli_barycentric_weights(a, b, c, mliVec_multiply(a, 1.1));
+        weights = mli_barycentric_weights(a, b, c, mli_Vec_multiply(a, 1.1));
         CHECK(weights.a > 0.0);
         CHECK(weights.b < 0.0);
         CHECK(weights.c < 0.0);
 
-        weights = mli_barycentric_weights(a, b, c, mliVec_multiply(b, 1.1));
+        weights = mli_barycentric_weights(a, b, c, mli_Vec_multiply(b, 1.1));
         CHECK(weights.a < 0.0);
         CHECK(weights.b > 0.0);
         CHECK(weights.c < 0.0);
 
-        weights = mli_barycentric_weights(a, b, c, mliVec_multiply(c, 1.1));
+        weights = mli_barycentric_weights(a, b, c, mli_Vec_multiply(c, 1.1));
         CHECK(weights.a < 0.0);
         CHECK(weights.b < 0.0);
         CHECK(weights.c > 0.0);
@@ -74,25 +74,25 @@ CASE("barycentric coordinates out of triangle")
 CASE("estimate surface normal")
 {
         const double phi = 2.0 * MLI_MATH_PI / 3.0;
-        const struct mliVec a =
-                mliVec_init(cos(0.0 * phi), sin(0.0 * phi), 0.0);
-        const struct mliVec b =
-                mliVec_init(cos(1.0 * phi), sin(1.0 * phi), 0.0);
-        const struct mliVec c =
-                mliVec_init(cos(2.0 * phi), sin(2.0 * phi), 0.0);
-        const struct mliVec unit_z = mliVec_init(0.0, 0.0, 1.0);
-        const struct mliVec negative_unit_z = mliVec_init(0.0, 0.0, -1.0);
+        const struct mli_Vec a =
+                mli_Vec_init(cos(0.0 * phi), sin(0.0 * phi), 0.0);
+        const struct mli_Vec b =
+                mli_Vec_init(cos(1.0 * phi), sin(1.0 * phi), 0.0);
+        const struct mli_Vec c =
+                mli_Vec_init(cos(2.0 * phi), sin(2.0 * phi), 0.0);
+        const struct mli_Vec unit_z = mli_Vec_init(0.0, 0.0, 1.0);
+        const struct mli_Vec negative_unit_z = mli_Vec_init(0.0, 0.0, -1.0);
         struct mliBarycentrigWeights weights;
-        struct mliVec normal;
+        struct mli_Vec normal;
 
-        weights = mli_barycentric_weights(a, b, c, mliVec_init(0.0, 0.0, 0.0));
+        weights = mli_barycentric_weights(a, b, c, mli_Vec_init(0.0, 0.0, 0.0));
         normal = mliTriangle_interpolate_surface_normal(
                 unit_z, unit_z, unit_z, weights);
         CHECK(normal.x == unit_z.x);
         CHECK(normal.y == unit_z.y);
         CHECK(normal.z == unit_z.z);
 
-        weights = mli_barycentric_weights(a, b, c, mliVec_init(0.0, 0.0, 0.0));
+        weights = mli_barycentric_weights(a, b, c, mli_Vec_init(0.0, 0.0, 0.0));
         normal = mliTriangle_interpolate_surface_normal(a, b, c, weights);
         CHECK_MARGIN(normal.x, 0.0, 1e-6);
         CHECK_MARGIN(normal.y, 0.0, 1e-6);

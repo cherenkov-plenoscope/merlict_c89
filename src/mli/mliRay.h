@@ -3,20 +3,20 @@
 #define MLIRAY_H_
 
 #include <stdio.h>
-#include "mliVec.h"
+#include "../vec/vec.h"
 
 struct mliRay {
-        struct mliVec support;
-        struct mliVec direction;
+        struct mli_Vec support;
+        struct mli_Vec direction;
 };
 
-struct mliVec mliRay_at(const struct mliRay *ray, const double t);
+struct mli_Vec mliRay_at(const struct mliRay *ray, const double t);
 struct mliRay mliRay_set(
-        const struct mliVec support,
-        const struct mliVec direction);
+        const struct mli_Vec support,
+        const struct mli_Vec direction);
 int mliRay_sphere_intersection(
-        const struct mliVec support,
-        const struct mliVec direction,
+        const struct mli_Vec support,
+        const struct mli_Vec direction,
         const double radius,
         double *minus_solution,
         double *plus_solution);

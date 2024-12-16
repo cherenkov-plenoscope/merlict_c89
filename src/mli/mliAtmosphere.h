@@ -4,13 +4,13 @@
 
 #include <stdint.h>
 #include "../color/color.h"
-#include "mliVec.h"
+#include "../vec/vec.h"
 
 struct mliAtmosphere {
         double sunLatitude;
         double sunHourAngle;
 
-        struct mliVec sunDirection;
+        struct mli_Vec sunDirection;
         double sunDistance;
         double sunRadius;
 
@@ -56,25 +56,25 @@ void mliAtmosphere_decrease_altitude(
 
 struct mli_Color mliAtmosphere_query(
         const struct mliAtmosphere *atmosphere,
-        const struct mliVec orig,
-        const struct mliVec dir);
+        const struct mli_Vec orig,
+        const struct mli_Vec dir);
 
 struct mli_Color mliAtmosphere_hit_earth_body(
         const struct mliAtmosphere *atmosphere,
-        const struct mliVec orig,
-        const struct mliVec dir);
+        const struct mli_Vec orig,
+        const struct mli_Vec dir);
 
 struct mli_Color mliAtmosphere_hit_outer_atmosphere(
         const struct mliAtmosphere *atmosphere,
-        const struct mliVec orig,
-        const struct mliVec dir,
+        const struct mli_Vec orig,
+        const struct mli_Vec dir,
         double tmin,
         double tmax);
 
 struct mli_Color mliAtmosphere_compute_depth(
         const struct mliAtmosphere *atmosphere,
-        const struct mliVec orig,
-        const struct mliVec dir,
+        const struct mli_Vec orig,
+        const struct mli_Vec dir,
         double tmin,
         double tmax);
 

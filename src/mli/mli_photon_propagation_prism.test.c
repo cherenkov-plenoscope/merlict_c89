@@ -53,8 +53,8 @@ CASE("refraction_in_prism")
                 uint64_t final_robj_id;
 
                 photon.ray = mliRay_set(
-                        mliVec_init(0.0, -1.0, -angle_of_attack),
-                        mliVec_init(0.0, 1.0, angle_of_attack));
+                        mli_Vec_init(0.0, -1.0, -angle_of_attack),
+                        mli_Vec_init(0.0, 1.0, angle_of_attack));
                 photon.wavelength =
                         mli_prng_draw_uniform(wavelength_range, &prng);
                 photon.id = i;

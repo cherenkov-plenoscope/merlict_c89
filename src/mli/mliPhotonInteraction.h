@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliIntersectionSurfaceNormal.h"
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mliPhoton.h"
 #include "mliMaterials.h"
 
@@ -21,8 +21,8 @@ struct mliPhotonInteraction {
         int32_t on_geometry_surface;
         struct mliGeometryId geometry_id;
 
-        struct mliVec position;
-        struct mliVec position_local;
+        struct mli_Vec position;
+        struct mli_Vec position_local;
         double distance_of_ray;
 
         uint64_t medium_coming_from;

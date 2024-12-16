@@ -3,7 +3,9 @@
 #include "../chk/chk.h"
 #include "../math/math.h"
 
-struct mliAABB mliAABB_set(const struct mliVec lower, const struct mliVec upper)
+struct mliAABB mliAABB_set(
+        const struct mli_Vec lower,
+        const struct mli_Vec upper)
 {
         struct mliAABB a;
         a.lower = lower;
@@ -23,10 +25,10 @@ struct mliAABB mliAABB_outermost(const struct mliAABB a, const struct mliAABB b)
         return c;
 }
 
-struct mliVec mliAABB_center(const struct mliAABB a)
+struct mli_Vec mliAABB_center(const struct mliAABB a)
 {
-        struct mliVec sum = mliVec_add(a.upper, a.lower);
-        return mliVec_multiply(sum, .5);
+        struct mli_Vec sum = mli_Vec_add(a.upper, a.lower);
+        return mli_Vec_multiply(sum, .5);
 }
 
 int mliAABB_valid(const struct mliAABB a)
@@ -49,9 +51,9 @@ chk_error:
 
 int mliAABB_equal(const struct mliAABB a, const struct mliAABB b)
 {
-        chk_msg(mliVec_equal(a.lower, b.lower),
+        chk_msg(mli_Vec_equal(a.lower, b.lower),
                 "Expected 'lower'-corner to be equal.");
-        chk_msg(mliVec_equal(a.upper, b.upper),
+        chk_msg(mli_Vec_equal(a.upper, b.upper),
                 "Expected 'upper'-corner to be equal.");
         return 1;
 chk_error:
@@ -66,7 +68,7 @@ int mliAABB_is_overlapping(const struct mliAABB a, const struct mliAABB b)
         return (over_x && over_y) && over_z;
 }
 
-int mliAABB_is_point_inside(const struct mliAABB a, const struct mliVec point)
+int mliAABB_is_point_inside(const struct mliAABB a, const struct mli_Vec point)
 {
         if (a.lower.x > point.x || a.upper.x <= point.x)
                 return 0;

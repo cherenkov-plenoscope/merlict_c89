@@ -2,12 +2,12 @@
 #ifndef MLIINTERSECTION_H_
 #define MLIINTERSECTION_H_
 
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mliGeometryId.h"
 
 struct mliIntersection {
         struct mliGeometryId geometry_id;
-        struct mliVec position_local;
+        struct mli_Vec position_local;
         double distance_of_ray;
 };
 

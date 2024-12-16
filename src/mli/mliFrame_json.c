@@ -2,7 +2,7 @@
 #include "mliFrame_json.h"
 #include "../chk/chk.h"
 #include "mliDynMap_json.h"
-#include "mliVec_json.h"
+#include "../vec/vec_json.h"
 #include "mliQuaternion_json.h"
 
 int mliFrame_type_from_json_token(
@@ -61,7 +61,7 @@ int mliFrame_pos_rot_from_json_token(
         /* pos */
         chk_msg(mli_Json_token_by_key(json, token, "pos", &token_pos),
                 "Expected Frame to have key 'pos'.");
-        chk_msg(mliVec_from_json_token(
+        chk_msg(mli_Vec_from_json_token(
                         &frame2mother->translation, json, token_pos + 1),
                 "Failed to parse Frame's 'pos' from json.");
 

@@ -47,12 +47,12 @@ struct mli_Color mliTracer_trace_ray_without_atmosphere(
 
 double mli_trace_sun_obstruction(
         const struct mliTracer *tracer,
-        const struct mliVec position,
+        const struct mli_Vec position,
         struct mli_Prng *prng);
 
 double mli_trace_sun_visibility(
         const struct mliTracer *tracer,
-        const struct mliVec position,
+        const struct mli_Vec position,
         struct mli_Prng *prng);
 
 #endif

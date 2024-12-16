@@ -138,15 +138,15 @@ CASE("mliFrame_set_frame2root, only translation z-component")
         c1 = mliFrame_add(&root, MLI_FRAME);
         CHECK(c1);
         c1->id = 1;
-        c1->frame2mother.translation = mliVec_init(0., 0., 1.);
+        c1->frame2mother.translation = mli_Vec_init(0., 0., 1.);
         c2 = mliFrame_add(&root, MLI_FRAME);
         CHECK(c2);
         c2->id = 2;
-        c2->frame2mother.translation = mliVec_init(0., 0., -1.);
+        c2->frame2mother.translation = mli_Vec_init(0., 0., -1.);
         c1_c1 = mliFrame_add(c1, MLI_FRAME);
         CHECK(c1_c1);
         c1_c1->id = 11;
-        c1_c1->frame2mother.translation = mliVec_init(0., 0., 1.);
+        c1_c1->frame2mother.translation = mli_Vec_init(0., 0., 1.);
 
         mliFrame_set_frame2root(&root);
         CHECK_MARGIN(root.frame2root.translation.z, 0., 1e-9);

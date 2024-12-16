@@ -3,15 +3,15 @@
 #define MLIINTERSECTIONSURFACENORMAL_H_
 
 #include <stdint.h>
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mliGeometryId.h"
 
 struct mliIntersectionSurfaceNormal {
         struct mliGeometryId geometry_id;
-        struct mliVec position;
-        struct mliVec surface_normal;
-        struct mliVec position_local;
-        struct mliVec surface_normal_local;
+        struct mli_Vec position;
+        struct mli_Vec surface_normal;
+        struct mli_Vec position_local;
+        struct mli_Vec surface_normal_local;
         double distance_of_ray;
         int64_t from_outside_to_inside;
 };

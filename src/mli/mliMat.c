@@ -178,11 +178,11 @@ struct mliMat mliMat_init_tait_bryan(
 }
 
 struct mliMat mliMat_init_axis_angle(
-        const struct mliVec axis,
+        const struct mli_Vec axis,
         const double angle)
 {
         struct mliMat rot;
-        const double norm = mliVec_norm(axis);
+        const double norm = mli_Vec_norm(axis);
         const double rx = axis.x / norm;
         const double ry = axis.y / norm;
         const double rz = axis.z / norm;
@@ -201,9 +201,9 @@ struct mliMat mliMat_init_axis_angle(
 }
 
 struct mliMat mliMat_init_columns(
-        const struct mliVec c0,
-        const struct mliVec c1,
-        const struct mliVec c2)
+        const struct mli_Vec c0,
+        const struct mli_Vec c1,
+        const struct mli_Vec c2)
 {
         struct mliMat m;
         m.r00 = c0.x;
@@ -219,9 +219,9 @@ struct mliMat mliMat_init_columns(
 }
 
 struct mliMat mliMat_covariance(
-        const struct mliVec *vecs,
+        const struct mli_Vec *vecs,
         const uint64_t num_vecs,
-        const struct mliVec vecs_mean)
+        const struct mli_Vec vecs_mean)
 {
         /*
         Estimates the is the 'sample covariance'.
@@ -254,11 +254,11 @@ struct mliMat mliMat_covariance(
         double sum_z = 0.0;
 
         double inum = 1.0 / (((double)num_vecs) - 1.0);
-        struct mliVec v;
+        struct mli_Vec v;
         struct mliMat cov;
 
         for (i = 0; i < num_vecs; i++) {
-                v = mliVec_substract(vecs[i], vecs_mean);
+                v = mli_Vec_substract(vecs[i], vecs_mean);
                 sum_xx += v.x * v.x;
                 sum_xy += v.x * v.y;
                 sum_xz += v.x * v.z;
@@ -359,7 +359,7 @@ struct mliMat mliMat_minor(const struct mliMat x, const int d)
         return m;
 }
 
-struct mliMat mliMat_vector_outer_product(const struct mliVec v)
+struct mliMat mliMat_vector_outer_product(const struct mli_Vec v)
 {
         struct mliMat x;
         x.r00 = -2.0 * v.x * v.x + 1;
@@ -385,22 +385,22 @@ void mliMat_qr_decompose(
         struct mliMat q0, q1;
         struct mliMat z = m;
 
-        struct mliVec e;
-        struct mliVec x;
+        struct mli_Vec e;
+        struct mli_Vec x;
         double xnorm;
 
         /* column 0 */
         /* -------- */
         z = mliMat_minor(z, 0);
-        x = mliVec_init(z.r00, z.r10, z.r20);
-        xnorm = mliVec_norm(x);
+        x = mli_Vec_init(z.r00, z.r10, z.r20);
+        xnorm = mli_Vec_norm(x);
         if (m.r00 > 0) {
                 xnorm = -xnorm;
         };
 
-        e = mliVec_init(xnorm, 0.0, 0.0);
-        e = mliVec_add(x, e);
-        e = mliVec_normalized(e);
+        e = mli_Vec_init(xnorm, 0.0, 0.0);
+        e = mli_Vec_add(x, e);
+        e = mli_Vec_normalized(e);
 
         q0 = mliMat_vector_outer_product(e);
         z = mliMat_multiply(q0, z);
@@ -408,15 +408,15 @@ void mliMat_qr_decompose(
         /* column 1 */
         /* -------- */
         z = mliMat_minor(z, 1);
-        x = mliVec_init(z.r01, z.r11, z.r21);
-        xnorm = mliVec_norm(x);
+        x = mli_Vec_init(z.r01, z.r11, z.r21);
+        xnorm = mli_Vec_norm(x);
         if (m.r11 > 0) {
                 xnorm = -xnorm;
         };
 
-        e = mliVec_init(0.0, xnorm, 0.0);
-        e = mliVec_add(x, e);
-        e = mliVec_normalized(e);
+        e = mli_Vec_init(0.0, xnorm, 0.0);
+        e = mli_Vec_add(x, e);
+        e = mli_Vec_normalized(e);
 
         q1 = mliMat_vector_outer_product(e);
         z = mliMat_multiply(q1, z);
@@ -474,11 +474,11 @@ void mliMat_find_eigenvalues(
 int mliMat_find_eigenvector_for_eigenvalue(
         struct mliMat A,
         const double eigen_value,
-        struct mliVec *eigen_vector,
+        struct mli_Vec *eigen_vector,
         const double tolerance)
 {
         int pivots[4] = {0, 0, 0, 0};
-        struct mliVec right_hand_side = {1.0, 1.0, 1.0};
+        struct mli_Vec right_hand_side = {1.0, 1.0, 1.0};
 
         chk_msg(tolerance > 0.0, "Expected tolerance > 0.0");
 
@@ -489,7 +489,7 @@ int mliMat_find_eigenvector_for_eigenvalue(
         chk_msg(mliMat_lup_decompose(&A, pivots, tolerance),
                 "Can not decompose LU-matices");
         mliMat_lup_solve(&A, pivots, &right_hand_side, eigen_vector);
-        (*eigen_vector) = mliVec_normalized(*eigen_vector);
+        (*eigen_vector) = mli_Vec_normalized(*eigen_vector);
 
         return 1;
 chk_error:
@@ -589,8 +589,8 @@ int mliMat_lup_decompose(struct mliMat *A, int *P, const double tolerance)
 void mliMat_lup_solve(
         const struct mliMat *A,
         const int *P,
-        const struct mliVec *b,
-        struct mliVec *x)
+        const struct mli_Vec *b,
+        struct mli_Vec *x)
 {
         /*
         Solve linear equation A*x = b for x.
@@ -610,12 +610,12 @@ void mliMat_lup_solve(
         const uint64_t N = 3;
         uint64_t i, k, idown;
         for (i = 0; i < N; i++) {
-                mliVec_set(x, i, mliVec_get(b, P[i]));
+                mli_Vec_set(x, i, mli_Vec_get(b, P[i]));
                 for (k = 0; k < i; k++) {
                         const double tmp =
-                                (mliVec_get(x, i) -
-                                 mliMat_get(A, i, k) * mliVec_get(x, k));
-                        mliVec_set(x, i, tmp);
+                                (mli_Vec_get(x, i) -
+                                 mliMat_get(A, i, k) * mli_Vec_get(x, k));
+                        mli_Vec_set(x, i, tmp);
                 }
         }
 
@@ -624,12 +624,12 @@ void mliMat_lup_solve(
                 double tmp;
                 for (k = i + 1; k < N; k++) {
                         const double tmp =
-                                (mliVec_get(x, i) -
-                                 mliMat_get(A, i, k) * mliVec_get(x, k));
-                        mliVec_set(x, i, tmp);
+                                (mli_Vec_get(x, i) -
+                                 mliMat_get(A, i, k) * mli_Vec_get(x, k));
+                        mli_Vec_set(x, i, tmp);
                 }
-                tmp = mliVec_get(x, i) / mliMat_get(A, i, i);
-                mliVec_set(x, i, tmp);
+                tmp = mli_Vec_get(x, i) / mliMat_get(A, i, i);
+                mli_Vec_set(x, i, tmp);
                 i--;
         }
 }

@@ -280,7 +280,7 @@ CASE("mliObject, parse bad obj face lines")
 
 CASE("mliObject, parse valid obj-float-lines")
 {
-        struct mliVec v;
+        struct mli_Vec v;
         struct mli_String line = mli_String_init();
 
         CHECK(mli_String_from_cstr(&line, " 0 0 0"));
@@ -349,7 +349,7 @@ CASE("mliObject, parse valid obj-float-lines")
 
 CASE("mliObject, parse bad obj-float-lines")
 {
-        struct mliVec v;
+        struct mli_Vec v;
         struct mli_String line = mli_String_init();
 
         CHECK(mli_String_from_cstr(&line, ""));
@@ -442,10 +442,10 @@ CASE("mliObject, write and read binary-string")
         CHECK(obj.num_faces == obj_back.num_faces);
 
         for (i = 0; i < obj.num_vertices; i++) {
-                CHECK(mliVec_equal(obj.vertices[i], obj_back.vertices[i]));
+                CHECK(mli_Vec_equal(obj.vertices[i], obj_back.vertices[i]));
         }
         for (i = 0; i < obj.num_vertex_normals; i++) {
-                CHECK(mliVec_equal(
+                CHECK(mli_Vec_equal(
                         obj.vertex_normals[i], obj_back.vertex_normals[i]));
         }
         for (i = 0; i < obj.num_faces; i++) {
@@ -504,11 +504,11 @@ CASE("mliObject, write and read ascii-text-string")
         CHECK(obj.num_materials == obj_back.num_materials);
 
         for (i = 0; i < obj.num_vertices; i++) {
-                CHECK(mliVec_equal_margin(
+                CHECK(mli_Vec_equal_margin(
                         obj.vertices[i], obj_back.vertices[i], 1e-6));
         }
         for (i = 0; i < obj.num_vertex_normals; i++) {
-                CHECK(mliVec_equal_margin(
+                CHECK(mli_Vec_equal_margin(
                         obj.vertex_normals[i],
                         obj_back.vertex_normals[i],
                         1e-6));

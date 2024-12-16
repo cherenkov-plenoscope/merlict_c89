@@ -2,11 +2,11 @@
 #include "mliCube.h"
 #include "../math/math.h"
 
-struct mliVec mliCube_upper(const struct mliCube a)
+struct mli_Vec mliCube_upper(const struct mliCube a)
 {
-        return mliVec_add(
+        return mli_Vec_add(
                 a.lower,
-                mliVec_init(a.edge_length, a.edge_length, a.edge_length));
+                mli_Vec_init(a.edge_length, a.edge_length, a.edge_length));
 }
 
 struct mliAABB mliCube_to_aabb(const struct mliCube a)
@@ -17,9 +17,9 @@ struct mliAABB mliCube_to_aabb(const struct mliCube a)
         return out;
 }
 
-struct mliVec mliCube_center(const struct mliCube a)
+struct mli_Vec mliCube_center(const struct mliCube a)
 {
-        return mliVec_init(
+        return mli_Vec_init(
                 a.lower.x + a.edge_length * .5,
                 a.lower.y + a.edge_length * .5,
                 a.lower.z + a.edge_length * .5);
@@ -28,17 +28,17 @@ struct mliVec mliCube_center(const struct mliCube a)
 struct mliCube mliCube_outermost_cube(const struct mliAABB a)
 {
         struct mliCube cube;
-        struct mliVec center;
-        struct mliVec half_diagonal;
-        struct mliVec diff;
+        struct mli_Vec center;
+        struct mli_Vec half_diagonal;
+        struct mli_Vec diff;
         double max_half_length;
         center = mliAABB_center(a);
-        diff = mliVec_substract(a.upper, a.lower);
+        diff = mli_Vec_substract(a.upper, a.lower);
         max_half_length = .5 * MLI_MATH_MAX3(diff.x, diff.y, diff.z);
         half_diagonal.x = max_half_length;
         half_diagonal.y = max_half_length;
         half_diagonal.z = max_half_length;
-        cube.lower = mliVec_substract(center, half_diagonal);
+        cube.lower = mli_Vec_substract(center, half_diagonal);
         cube.edge_length = max_half_length * 2.;
         return cube;
 }
@@ -50,9 +50,9 @@ struct mliCube mliCube_octree_child(
         const uint32_t sz)
 {
         struct mliCube child;
-        struct mliVec length;
-        struct mliVec center = mliCube_center(cube);
-        length = mliVec_substract(center, cube.lower);
+        struct mli_Vec length;
+        struct mli_Vec center = mliCube_center(cube);
+        length = mli_Vec_substract(center, cube.lower);
         child.lower = cube.lower;
         child.edge_length = .5 * cube.edge_length;
         if (sx) {
@@ -72,9 +72,9 @@ struct mliCube mliCube_octree_child_code(
         const uint8_t a)
 {
         struct mliCube child;
-        struct mliVec length;
-        struct mliVec center = mliCube_center(cube);
-        length = mliVec_substract(center, cube.lower);
+        struct mli_Vec length;
+        struct mli_Vec center = mliCube_center(cube);
+        length = mli_Vec_substract(center, cube.lower);
         child.lower = cube.lower;
         child.edge_length = .5 * cube.edge_length;
         if (MLI_IS_BIT(a, 2)) {
@@ -93,7 +93,7 @@ int mliCube_equal(const struct mliCube a, const struct mliCube b)
 {
         if (a.edge_length != b.edge_length)
                 return 0;
-        if (!mliVec_equal(a.lower, b.lower))
+        if (!mli_Vec_equal(a.lower, b.lower))
                 return 0;
         return 1;
 }

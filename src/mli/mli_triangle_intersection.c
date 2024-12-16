@@ -6,35 +6,35 @@
 
 int mliRay_intersects_triangle(
         const struct mliRay ray,
-        const struct mliVec vertex_a,
-        const struct mliVec vertex_b,
-        const struct mliVec vertex_c,
+        const struct mli_Vec vertex_a,
+        const struct mli_Vec vertex_b,
+        const struct mli_Vec vertex_c,
         double *intersection_ray_parameter)
 {
         /* Moeller-Trumbore-intersection-algorithm */
-        struct mliVec edge1;
-        struct mliVec edge2;
-        struct mliVec h, s, q;
+        struct mli_Vec edge1;
+        struct mli_Vec edge2;
+        struct mli_Vec h, s, q;
         double a, f, u, v, t;
-        edge1 = mliVec_substract(vertex_b, vertex_a);
-        edge2 = mliVec_substract(vertex_c, vertex_a);
-        h = mliVec_cross(ray.direction, edge2);
-        a = mliVec_dot(edge1, h);
+        edge1 = mli_Vec_substract(vertex_b, vertex_a);
+        edge2 = mli_Vec_substract(vertex_c, vertex_a);
+        h = mli_Vec_cross(ray.direction, edge2);
+        a = mli_Vec_dot(edge1, h);
 
         if (a > -MLI_MATH_EPSILON && a < MLI_MATH_EPSILON)
                 return 0; /* This ray is parallel to this triangle. */
         f = 1.0 / a;
-        s = mliVec_substract(ray.support, vertex_a);
-        u = f * mliVec_dot(s, h);
+        s = mli_Vec_substract(ray.support, vertex_a);
+        u = f * mli_Vec_dot(s, h);
         if (u < 0.0 || u > 1.0)
                 return 0;
-        q = mliVec_cross(s, edge1);
-        v = f * mliVec_dot(ray.direction, q);
+        q = mli_Vec_cross(s, edge1);
+        v = f * mli_Vec_dot(ray.direction, q);
         if (v < 0.0 || u + v > 1.0)
                 return 0;
         /* At this stage we can compute t to find out where the intersection */
         /* point is on the line. */
-        t = f * mliVec_dot(edge2, q);
+        t = f * mli_Vec_dot(edge2, q);
         if (t > MLI_MATH_EPSILON) {
                 (*intersection_ray_parameter) = t;
                 return 1;
@@ -45,13 +45,13 @@ int mliRay_intersects_triangle(
         }
 }
 
-struct mliVec mliTriangle_interpolate_surface_normal(
-        const struct mliVec vertex_normal_a,
-        const struct mliVec vertex_normal_b,
-        const struct mliVec vertex_normal_c,
+struct mli_Vec mliTriangle_interpolate_surface_normal(
+        const struct mli_Vec vertex_normal_a,
+        const struct mli_Vec vertex_normal_b,
+        const struct mli_Vec vertex_normal_c,
         const struct mliBarycentrigWeights weights)
 {
-        return mliVec_init(
+        return mli_Vec_init(
                 vertex_normal_a.x * weights.a + vertex_normal_b.x * weights.b +
                         vertex_normal_c.x * weights.c,
 
@@ -62,16 +62,16 @@ struct mliVec mliTriangle_interpolate_surface_normal(
                         vertex_normal_c.z * weights.c);
 }
 
-struct mliVec mliTriangle_surface_normal(
-        const struct mliVec vertex_a,
-        const struct mliVec vertex_b,
-        const struct mliVec vertex_c,
-        const struct mliVec vertex_normal_a,
-        const struct mliVec vertex_normal_b,
-        const struct mliVec vertex_normal_c,
-        const struct mliVec intersection_position)
+struct mli_Vec mliTriangle_surface_normal(
+        const struct mli_Vec vertex_a,
+        const struct mli_Vec vertex_b,
+        const struct mli_Vec vertex_c,
+        const struct mli_Vec vertex_normal_a,
+        const struct mli_Vec vertex_normal_b,
+        const struct mli_Vec vertex_normal_c,
+        const struct mli_Vec intersection_position)
 {
-        struct mliVec surface_normal;
+        struct mli_Vec surface_normal;
         struct mliBarycentrigWeights normal_weights = mli_barycentric_weights(
                 vertex_a, vertex_b, vertex_c, intersection_position);
 
@@ -81,7 +81,7 @@ struct mliVec mliTriangle_surface_normal(
                 vertex_normal_c,
                 normal_weights);
 
-        surface_normal = mliVec_normalized(surface_normal);
+        surface_normal = mli_Vec_normalized(surface_normal);
 
         return surface_normal;
 }

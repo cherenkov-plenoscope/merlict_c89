@@ -2,7 +2,7 @@
 #ifndef MLIQUATERNION_H_
 #define MLIQUATERNION_H_
 
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mliMat.h"
 
 struct mliQuaternion {
@@ -19,7 +19,7 @@ struct mliQuaternion mliQuaternion_set_tait_bryan(
         const double rz);
 struct mliMat mliQuaternion_to_matrix(const struct mliQuaternion quat);
 struct mliQuaternion mliQuaternion_set_rotaxis_and_angle(
-        const struct mliVec rot_axis,
+        const struct mli_Vec rot_axis,
         const double angle);
 double mliQuaternion_norm(const struct mliQuaternion q);
 double mliQuaternion_product_complex_conjugate(const struct mliQuaternion p);

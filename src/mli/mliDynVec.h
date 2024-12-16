@@ -2,7 +2,7 @@
 #ifndef MLIDYNARRAY_VEC_H_
 #define MLIDYNARRAY_VEC_H_
 
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "../vector/vector.h"
-MLI_VECTOR_DEFINITON(mliDynVec, struct mliVec)
+MLI_VECTOR_DEFINITON(mliDynVec, struct mli_Vec)
 #endif

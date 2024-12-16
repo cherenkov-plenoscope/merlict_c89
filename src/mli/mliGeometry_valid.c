@@ -31,7 +31,7 @@ int mliGeometry_valid_robjects_HomTras(const struct mliGeometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
-                const struct mliVec t = geometry->robject2root[i].translation;
+                const struct mli_Vec t = geometry->robject2root[i].translation;
                 const struct mliQuaternion q =
                         geometry->robject2root[i].rotation;
                 chk_msg(!MLI_MATH_IS_NAN(t.x), "translation.x is 'nan'.");

@@ -7,25 +7,25 @@
 #include "mliHomTra.h"
 #include "../math/math.h"
 
-struct mliVec mliView_optical_axis(const struct mliView cam)
+struct mli_Vec mliView_optical_axis(const struct mliView cam)
 {
         struct mliMat rotation = mliMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rotation, mliVec_init(0., 0., 1.));
+        return mli_transform_orientation(&rotation, mli_Vec_init(0., 0., 1.));
 }
 
-struct mliVec mliView_direction_right(const struct mliView cam)
+struct mli_Vec mliView_direction_right(const struct mliView cam)
 {
         struct mliMat rotation = mliMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rotation, mliVec_init(1., 0., 0.));
+        return mli_transform_orientation(&rotation, mli_Vec_init(1., 0., 0.));
 }
 
-struct mliVec mliView_direction_up(const struct mliView cam)
+struct mli_Vec mliView_direction_up(const struct mliView cam)
 {
         struct mliMat rotation = mliMat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rotation, mliVec_init(0., 1., 0.));
+        return mli_transform_orientation(&rotation, mli_Vec_init(0., 1., 0.));
 }
 
 struct mliView mliView_move_forward(
@@ -33,18 +33,18 @@ struct mliView mliView_move_forward(
         const double rate)
 {
         struct mliView camout = camin;
-        struct mliVec optical_axis = mliView_optical_axis(camin);
-        camout.position = mliVec_add(
-                camout.position, mliVec_multiply(optical_axis, rate));
+        struct mli_Vec optical_axis = mliView_optical_axis(camin);
+        camout.position = mli_Vec_add(
+                camout.position, mli_Vec_multiply(optical_axis, rate));
         return camout;
 }
 
 struct mliView mliView_move_right(const struct mliView camin, const double rate)
 {
         struct mliView camout = camin;
-        struct mliVec direction_right = mliView_direction_right(camout);
-        camout.position = mliVec_add(
-                camout.position, mliVec_multiply(direction_right, rate));
+        struct mli_Vec direction_right = mliView_direction_right(camout);
+        camout.position = mli_Vec_add(
+                camout.position, mli_Vec_multiply(direction_right, rate));
         return camout;
 }
 

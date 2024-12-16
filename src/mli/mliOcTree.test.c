@@ -3,7 +3,7 @@
 CASE("init mliCaOctree")
 {
         struct mliOcTree octree = mliOcTree_init();
-        CHECK(mliVec_equal(octree.cube.lower, mliVec_init(0.0, 0.0, 0.0)));
+        CHECK(mli_Vec_equal(octree.cube.lower, mli_Vec_init(0.0, 0.0, 0.0)));
         CHECK(octree.cube.edge_length == 0.0);
         CHECK(octree.num_nodes == 0);
         CHECK(octree.leafs.num_leafs == 0);
@@ -23,30 +23,30 @@ CASE("ray parallel to axis")
         uint32_t robj = 0;
         uint32_t obj;
         struct mliIntersection isec;
-        struct mliVec sups[6];
-        struct mliVec dirs[6];
+        struct mli_Vec sups[6];
+        struct mli_Vec dirs[6];
         const double N = 0.0;
 
-        sups[0] = mliVec_init(0, 0, -10);
-        dirs[0] = mliVec_init(N, N, 1);
+        sups[0] = mli_Vec_init(0, 0, -10);
+        dirs[0] = mli_Vec_init(N, N, 1);
 
-        sups[1] = mliVec_init(0, 0, 10);
-        dirs[1] = mliVec_init(N, N, -1);
+        sups[1] = mli_Vec_init(0, 0, 10);
+        dirs[1] = mli_Vec_init(N, N, -1);
 
-        sups[2] = mliVec_init(-10, 0, 0);
-        dirs[2] = mliVec_init(1, N, N);
+        sups[2] = mli_Vec_init(-10, 0, 0);
+        dirs[2] = mli_Vec_init(1, N, N);
 
-        sups[2] = mliVec_init(10, 0, 0);
-        dirs[2] = mliVec_init(-1, N, N);
+        sups[2] = mli_Vec_init(10, 0, 0);
+        dirs[2] = mli_Vec_init(-1, N, N);
 
-        sups[3] = mliVec_init(-10, 0, 0);
-        dirs[3] = mliVec_init(1, N, N);
+        sups[3] = mli_Vec_init(-10, 0, 0);
+        dirs[3] = mli_Vec_init(1, N, N);
 
-        sups[4] = mliVec_init(0, -10, 0);
-        dirs[4] = mliVec_init(N, 1, N);
+        sups[4] = mli_Vec_init(0, -10, 0);
+        dirs[4] = mli_Vec_init(N, 1, N);
 
-        sups[5] = mliVec_init(0, 10, 0);
-        dirs[5] = mliVec_init(N, -1, N);
+        sups[5] = mli_Vec_init(0, 10, 0);
+        dirs[5] = mli_Vec_init(N, -1, N);
 
         CHECK(mliScenery_malloc_from_path_tar(
                 &scenery,

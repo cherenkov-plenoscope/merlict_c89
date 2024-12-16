@@ -8,10 +8,10 @@
 #include "../image/image.h"
 
 struct mliPinHoleCamera {
-        struct mliVec optical_axis;
-        struct mliVec col_axis;
-        struct mliVec row_axis;
-        struct mliVec principal_point;
+        struct mli_Vec optical_axis;
+        struct mli_Vec col_axis;
+        struct mli_Vec row_axis;
+        struct mli_Vec principal_point;
         double distance_to_principal_point;
         double row_over_column_pixel_ratio;
 };

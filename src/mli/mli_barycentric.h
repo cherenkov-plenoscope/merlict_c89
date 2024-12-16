@@ -2,7 +2,7 @@
 #ifndef MLI_BARYCENTRIC_H_
 #define MLI_BARYCENTRIC_H_
 
-#include "mliVec.h"
+#include "../vec/vec.h"
 
 struct mliBarycentrigWeights {
         double a;
@@ -11,8 +11,8 @@ struct mliBarycentrigWeights {
 };
 
 struct mliBarycentrigWeights mli_barycentric_weights(
-        const struct mliVec a,
-        const struct mliVec b,
-        const struct mliVec c,
-        const struct mliVec t);
+        const struct mli_Vec a,
+        const struct mli_Vec b,
+        const struct mli_Vec c,
+        const struct mli_Vec t);
 #endif

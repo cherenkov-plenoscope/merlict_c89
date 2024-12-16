@@ -24,8 +24,7 @@ CASE("focussing_a_parallel_beam")
         struct mli_Color max_color;
 
         CHECK(mli_Image_malloc(&screen_img, NUM_PIXEL, NUM_PIXEL));
-        mli_Image_set_all(
-                &screen_img, mli_Color_set(20.0, 0.0, 0.0));
+        mli_Image_set_all(&screen_img, mli_Color_set(20.0, 0.0, 0.0));
         mli_math_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
         wavelength_range = mli_prng_UniformRange_set(380e-9, 700e-9);
 
@@ -44,11 +43,11 @@ CASE("focussing_a_parallel_beam")
                 uint64_t final_robj_id;
 
                 photon.ray = mliRay_set(
-                        mliVec_add(
+                        mli_Vec_add(
                                 mli_random_position_on_disc(
                                         mirror_radius, &prng),
-                                mliVec_init(0.0, 0.0, 10.0)),
-                        mliVec_init(0.0, 0.0, -1.0));
+                                mli_Vec_init(0.0, 0.0, 10.0)),
+                        mli_Vec_init(0.0, 0.0, -1.0));
                 photon.wavelength =
                         mli_prng_draw_uniform(wavelength_range, &prng);
                 photon.id = i;

@@ -21,7 +21,7 @@ struct mliTracer mliTracer_init(void)
 
 double mli_trace_sun_visibility(
         const struct mliTracer *tracer,
-        const struct mliVec position,
+        const struct mli_Vec position,
         struct mli_Prng *prng)
 {
         return (1.0 - mli_trace_sun_obstruction(tracer, position, prng));
@@ -29,23 +29,23 @@ double mli_trace_sun_visibility(
 
 double mli_trace_sun_obstruction(
         const struct mliTracer *tracer,
-        const struct mliVec position,
+        const struct mli_Vec position,
         struct mli_Prng *prng)
 {
         uint64_t i;
         double num_obstructions = 0.0;
 
         for (i = 0; i < tracer->config->num_trails_global_light_source; i++) {
-                struct mliVec pos_in_source = mliVec_add(
-                        mliVec_multiply(
+                struct mli_Vec pos_in_source = mli_Vec_add(
+                        mli_Vec_multiply(
                                 tracer->config->atmosphere.sunDirection,
                                 tracer->config->atmosphere.sunDistance),
-                        mliVec_multiply(
+                        mli_Vec_multiply(
                                 mli_random_position_inside_unit_sphere(prng),
                                 tracer->config->atmosphere.sunRadius));
 
                 struct mliRay line_of_sight_to_source = mliRay_set(
-                        position, mliVec_substract(pos_in_source, position));
+                        position, mli_Vec_substract(pos_in_source, position));
 
                 struct mliIntersection isec;
 
@@ -78,7 +78,7 @@ struct mli_Color mli_trace_to_intersection(
         color = tracer->scenery_color_materials->surfaces[side.surface]
                         .diffuse_reflection;
 
-        theta = mliVec_angle_between(
+        theta = mli_Vec_angle_between(
                 tracer->config->atmosphere.sunDirection,
                 intersection->surface_normal);
         lambert_factor = fabs(cos(theta));

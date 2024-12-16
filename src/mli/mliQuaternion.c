@@ -85,10 +85,10 @@ struct mliQuaternion mliQuaternion_product(
         const struct mliQuaternion q)
 {
         struct mliQuaternion pq;
-        const struct mliVec P = mliVec_init(p.x, p.y, p.z);
-        const struct mliVec Q = mliVec_init(q.x, q.y, q.z);
-        const struct mliVec P_cross_Q = mliVec_cross(P, Q);
-        pq.w = p.w * q.w - mliVec_dot(P, Q);
+        const struct mli_Vec P = mli_Vec_init(p.x, p.y, p.z);
+        const struct mli_Vec Q = mli_Vec_init(q.x, q.y, q.z);
+        const struct mli_Vec P_cross_Q = mli_Vec_cross(P, Q);
+        pq.w = p.w * q.w - mli_Vec_dot(P, Q);
         pq.x = p.w * Q.x + q.w * P.x + P_cross_Q.x;
         pq.y = p.w * Q.y + q.w * P.y + P_cross_Q.y;
         pq.z = p.w * Q.z + q.w * P.z + P_cross_Q.z;
@@ -106,10 +106,10 @@ double mliQuaternion_norm(const struct mliQuaternion q)
 }
 
 struct mliQuaternion mliQuaternion_set_rotaxis_and_angle(
-        const struct mliVec rot_axis,
+        const struct mli_Vec rot_axis,
         const double angle)
 {
-        const struct mliVec normed_rot_axis = mliVec_normalized(rot_axis);
+        const struct mli_Vec normed_rot_axis = mli_Vec_normalized(rot_axis);
         struct mliQuaternion quat;
         const double angle_half = .5 * angle;
         const double sin_angle_half = sin(angle_half);
@@ -154,11 +154,11 @@ struct mliQuaternion mliQuaternion_set_tait_bryan(
         const double rz)
 {
         const struct mliQuaternion qz =
-                mliQuaternion_set_rotaxis_and_angle(mliVec_init(0, 0, 1), -rz);
+                mliQuaternion_set_rotaxis_and_angle(mli_Vec_init(0, 0, 1), -rz);
         const struct mliQuaternion qy =
-                mliQuaternion_set_rotaxis_and_angle(mliVec_init(0, 1, 0), -ry);
+                mliQuaternion_set_rotaxis_and_angle(mli_Vec_init(0, 1, 0), -ry);
         const struct mliQuaternion qx =
-                mliQuaternion_set_rotaxis_and_angle(mliVec_init(1, 0, 0), -rx);
+                mliQuaternion_set_rotaxis_and_angle(mli_Vec_init(1, 0, 0), -rx);
         const struct mliQuaternion qz_qy = mliQuaternion_product(qz, qy);
         return mliQuaternion_product(qz_qy, qx);
 }

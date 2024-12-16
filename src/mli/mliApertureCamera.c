@@ -17,7 +17,7 @@ struct mliApertureCamera mliApertureCamera_init(void)
         return apcam;
 }
 
-struct mliVec mliApertureCamera_pixel_center_on_image_sensor_plane(
+struct mli_Vec mliApertureCamera_pixel_center_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,
         const double image_sensor_distance,
@@ -26,7 +26,7 @@ struct mliVec mliApertureCamera_pixel_center_on_image_sensor_plane(
         const uint64_t pixel_x,
         const uint64_t pixel_y)
 {
-        struct mliVec pixel_center;
+        struct mli_Vec pixel_center;
         pixel_center.x = -1.0 * mli_math_bin_center_in_linear_space(
                                         -0.5 * image_sensor_width_x,
                                         +0.5 * image_sensor_width_x,
@@ -41,7 +41,7 @@ struct mliVec mliApertureCamera_pixel_center_on_image_sensor_plane(
         return pixel_center;
 }
 
-struct mliVec mliApertureCamera_pixel_support_on_image_sensor_plane(
+struct mli_Vec mliApertureCamera_pixel_support_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,
         const double image_sensor_distance,
@@ -53,7 +53,7 @@ struct mliVec mliApertureCamera_pixel_support_on_image_sensor_plane(
 {
         double pixel_bin_width_x = image_sensor_width_x / (double)num_pixel_x;
         double pixel_bin_width_y = image_sensor_width_y / (double)num_pixel_y;
-        struct mliVec support =
+        struct mli_Vec support =
                 mliApertureCamera_pixel_center_on_image_sensor_plane(
                         image_sensor_width_x,
                         image_sensor_width_y,
@@ -73,21 +73,21 @@ struct mliVec mliApertureCamera_pixel_support_on_image_sensor_plane(
         return support;
 }
 
-struct mliVec mliApertureCamera_get_object_point(
+struct mli_Vec mliApertureCamera_get_object_point(
         const double focal_length,
-        const struct mliVec pixel_support)
+        const struct mli_Vec pixel_support)
 {
         const double object_distance =
                 mli_thin_lens_get_object_given_focal_and_image(
                         focal_length, -1.0 * pixel_support.z);
         const double scaleing = object_distance / pixel_support.z;
-        return mliVec_init(
+        return mli_Vec_init(
                 scaleing * pixel_support.x,
                 scaleing * pixel_support.y,
                 object_distance);
 }
 
-struct mliVec mliApertureCamera_ray_support_on_aperture(
+struct mli_Vec mliApertureCamera_ray_support_on_aperture(
         const double aperture_radius,
         struct mli_Prng *prng)
 {
@@ -136,12 +136,12 @@ struct mliRay mliApertureCamera_get_ray_for_pixel(
         const uint64_t pixel_y,
         struct mli_Prng *prng)
 {
-        struct mliVec direction;
-        struct mliVec aperture_support =
+        struct mli_Vec direction;
+        struct mli_Vec aperture_support =
                 mliApertureCamera_ray_support_on_aperture(
                         aperture_radius, prng);
 
-        struct mliVec image_sensor_support =
+        struct mli_Vec image_sensor_support =
                 (mliApertureCamera_pixel_support_on_image_sensor_plane(
                         image_sensor_width_x,
                         image_sensor_width_y,
@@ -154,12 +154,13 @@ struct mliRay mliApertureCamera_get_ray_for_pixel(
 
         if (fabs(1.0 - focal_length / image_sensor_distance) < 1e-6) {
                 /* focus set to infinity */
-                direction = mliVec_multiply(image_sensor_support, -1.0);
+                direction = mli_Vec_multiply(image_sensor_support, -1.0);
         } else {
-                struct mliVec object_point = mliApertureCamera_get_object_point(
-                        focal_length, image_sensor_support);
+                struct mli_Vec object_point =
+                        mliApertureCamera_get_object_point(
+                                focal_length, image_sensor_support);
 
-                direction = mliVec_substract(object_point, aperture_support);
+                direction = mli_Vec_substract(object_point, aperture_support);
         }
 
         return mliRay_set(aperture_support, direction);

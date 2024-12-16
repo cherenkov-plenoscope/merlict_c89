@@ -76,7 +76,7 @@ int mliObject_has_valid_normals(
                 chk_msg(!MLI_MATH_IS_NAN(obj->vertex_normals[i].z),
                         "Z is 'nan'.");
 
-                norm = mliVec_norm(obj->vertex_normals[i]);
+                norm = mli_Vec_norm(obj->vertex_normals[i]);
                 chk_msg(fabs(norm - 1.0) <= epsilon,
                         "Expected vertex_normals to be normalized.");
         }

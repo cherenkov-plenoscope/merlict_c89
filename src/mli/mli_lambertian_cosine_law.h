@@ -2,11 +2,11 @@
 #ifndef MLI_LAMBERTIAN_COSINE_LAW_H_
 #define MLI_LAMBERTIAN_COSINE_LAW_H_
 
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mli_random.h"
 
-struct mliVec mli_draw_lambertian_direction_wrt_surface_normal(
+struct mli_Vec mli_draw_lambertian_direction_wrt_surface_normal(
         struct mli_Prng *prng,
-        const struct mliVec surface_normal);
-struct mliVec mli_draw_lambertian_direction_wrt_z(struct mli_Prng *prng);
+        const struct mli_Vec surface_normal);
+struct mli_Vec mli_draw_lambertian_direction_wrt_z(struct mli_Prng *prng);
 #endif

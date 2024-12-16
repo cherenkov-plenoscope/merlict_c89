@@ -2,29 +2,29 @@
 #ifndef MLITRIANGLE_INTERSECTION_H_
 #define MLITRIANGLE_INTERSECTION_H_
 
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mliRay.h"
 #include "mli_barycentric.h"
 
-struct mliVec mliTriangle_interpolate_surface_normal(
-        const struct mliVec vertex_normal_a,
-        const struct mliVec vertex_normal_b,
-        const struct mliVec vertex_normal_c,
+struct mli_Vec mliTriangle_interpolate_surface_normal(
+        const struct mli_Vec vertex_normal_a,
+        const struct mli_Vec vertex_normal_b,
+        const struct mli_Vec vertex_normal_c,
         const struct mliBarycentrigWeights weights);
 
 int mliRay_intersects_triangle(
         const struct mliRay ray,
-        const struct mliVec vertex_a,
-        const struct mliVec vertex_b,
-        const struct mliVec vertex_c,
+        const struct mli_Vec vertex_a,
+        const struct mli_Vec vertex_b,
+        const struct mli_Vec vertex_c,
         double *intersection_ray_parameter);
 
-struct mliVec mliTriangle_surface_normal(
-        const struct mliVec vertex_a,
-        const struct mliVec vertex_b,
-        const struct mliVec vertex_c,
-        const struct mliVec vertex_normal_a,
-        const struct mliVec vertex_normal_b,
-        const struct mliVec vertex_normal_c,
-        const struct mliVec intersection_position);
+struct mli_Vec mliTriangle_surface_normal(
+        const struct mli_Vec vertex_a,
+        const struct mli_Vec vertex_b,
+        const struct mli_Vec vertex_c,
+        const struct mli_Vec vertex_normal_a,
+        const struct mli_Vec vertex_normal_b,
+        const struct mli_Vec vertex_normal_c,
+        const struct mli_Vec intersection_position);
 #endif

@@ -6,10 +6,10 @@ struct mliIntersectionSurfaceNormal mliIntersectionSurfaceNormal_init(void)
 {
         struct mliIntersectionSurfaceNormal isec;
         isec.geometry_id = mliGeometryId_init();
-        isec.position = mliVec_init(0.0, 0.0, 0.0);
-        isec.surface_normal = mliVec_init(0.0, 0.0, 1.0);
-        isec.position_local = mliVec_init(0.0, 0.0, 0.0);
-        isec.surface_normal_local = mliVec_init(0.0, 0.0, 1.0);
+        isec.position = mli_Vec_init(0.0, 0.0, 0.0);
+        isec.surface_normal = mli_Vec_init(0.0, 0.0, 1.0);
+        isec.position_local = mli_Vec_init(0.0, 0.0, 0.0);
+        isec.surface_normal_local = mli_Vec_init(0.0, 0.0, 1.0);
         isec.distance_of_ray = DBL_MAX;
         isec.from_outside_to_inside = 1;
         return isec;

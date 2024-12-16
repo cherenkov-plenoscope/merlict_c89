@@ -3,7 +3,7 @@
 #define MLIMAT_H_
 
 #include <stdint.h>
-#include "mliVec.h"
+#include "../vec/vec.h"
 
 struct mliMat {
         double r00;
@@ -25,24 +25,24 @@ int mliMat_equal_margin(
         const struct mliMat b,
         const double margin);
 struct mliMat mliMat_init_axis_angle(
-        const struct mliVec axis,
+        const struct mli_Vec axis,
         const double angle);
 struct mliMat mliMat_init_tait_bryan(
         const double rx,
         const double ry,
         const double rz);
 struct mliMat mliMat_init_columns(
-        const struct mliVec c0,
-        const struct mliVec c1,
-        const struct mliVec c2);
+        const struct mli_Vec c0,
+        const struct mli_Vec c1,
+        const struct mli_Vec c2);
 struct mliMat mliMat_covariance(
-        const struct mliVec *vecs,
+        const struct mli_Vec *vecs,
         const uint64_t num_vecs,
-        const struct mliVec vecs_mean);
+        const struct mli_Vec vecs_mean);
 struct mliMat mliMat_transpose(const struct mliMat m);
 struct mliMat mliMat_multiply(const struct mliMat x, const struct mliMat y);
 struct mliMat mliMat_minor(const struct mliMat x, const int d);
-struct mliMat mliMat_vector_outer_product(const struct mliVec v);
+struct mliMat mliMat_vector_outer_product(const struct mli_Vec v);
 void mliMat_qr_decompose(
         const struct mliMat m,
         struct mliMat *q,
@@ -58,12 +58,12 @@ void mliMat_find_eigenvalues(
 int mliMat_find_eigenvector_for_eigenvalue(
         struct mliMat a,
         const double eigen_value,
-        struct mliVec *eigen_vector,
+        struct mli_Vec *eigen_vector,
         const double tolerance);
 int mliMat_lup_decompose(struct mliMat *A, int *pivots, const double tolerance);
 void mliMat_lup_solve(
         const struct mliMat *A,
         const int *P,
-        const struct mliVec *b,
-        struct mliVec *x);
+        const struct mli_Vec *b,
+        struct mli_Vec *x);
 #endif

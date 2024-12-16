@@ -3,7 +3,7 @@
 #define MLICUBE_H_
 
 #include <stdint.h>
-#include "mliVec.h"
+#include "../vec/vec.h"
 #include "mliAABB.h"
 
 #define MLI_IS_BIT(var, pos) ((var) & (1 << (pos)))
@@ -13,7 +13,7 @@ struct mliCube {
          * Cubic Oriented-Bounding-Box
          * oriented w.r.t. the unit-vectors.
          */
-        struct mliVec lower;
+        struct mli_Vec lower;
         double edge_length;
 };
 
@@ -27,7 +27,7 @@ struct mliCube mliCube_octree_child(
         const uint32_t sy,
         const uint32_t sz);
 struct mliCube mliCube_outermost_cube(const struct mliAABB a);
-struct mliVec mliCube_center(const struct mliCube a);
+struct mli_Vec mliCube_center(const struct mliCube a);
 struct mliAABB mliCube_to_aabb(const struct mliCube a);
-struct mliVec mliCube_upper(const struct mliCube a);
+struct mli_Vec mliCube_upper(const struct mliCube a);
 #endif

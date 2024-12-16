@@ -9,20 +9,20 @@
 #include "mli_ray_scenery_query.h"
 #include "mli_intersection_and_scenery.h"
 
-struct mliVec mli_random_direction_in_hemisphere(
+struct mli_Vec mli_random_direction_in_hemisphere(
         struct mli_Prng *prng,
-        struct mliVec normal)
+        struct mli_Vec normal)
 {
-        struct mliVec rnd_dir;
+        struct mli_Vec rnd_dir;
         do {
                 rnd_dir = mli_random_position_inside_unit_sphere(prng);
-        } while (mliVec_dot(normal, rnd_dir) <= 0.0);
-        return mliVec_normalized(rnd_dir);
+        } while (mli_Vec_dot(normal, rnd_dir) <= 0.0);
+        return mli_Vec_normalized(rnd_dir);
 }
 
 struct mli_Color mli_trace_color_tone_of_sun(
         const struct mliTracerConfig *config,
-        const struct mliVec support)
+        const struct mli_Vec support)
 {
         struct mli_Color sun_color = mli_Color_set(1.0, 1.0, 1.0);
         double width_atmosphere = config->atmosphere.atmosphereRadius -
@@ -60,7 +60,7 @@ struct mli_Color mli_trace_color_tone_of_diffuse_sky(
         int i;
         struct mli_Color sky = mli_Color_set(0.0, 0.0, 0.0);
         struct mliRay obstruction_ray;
-        struct mliVec facing_surface_normal;
+        struct mli_Vec facing_surface_normal;
         struct mliIntersection isec;
         int has_direct_view_to_sky = 0;
         int num_samples = 5;
@@ -68,10 +68,10 @@ struct mli_Color mli_trace_color_tone_of_diffuse_sky(
         facing_surface_normal =
                 intersection->from_outside_to_inside
                         ? intersection->surface_normal
-                        : mliVec_multiply(intersection->surface_normal, -1.0);
+                        : mli_Vec_multiply(intersection->surface_normal, -1.0);
 
         for (i = 0; i < num_samples; i++) {
-                struct mliVec rnd_dir = mli_random_direction_in_hemisphere(
+                struct mli_Vec rnd_dir = mli_random_direction_in_hemisphere(
                         prng, facing_surface_normal);
 
                 obstruction_ray.support = intersection->position;
@@ -86,7 +86,7 @@ struct mli_Color mli_trace_color_tone_of_diffuse_sky(
                                 intersection->position,
                                 rnd_dir);
 
-                        double theta = mliVec_angle_between(
+                        double theta = mli_Vec_angle_between(
                                 rnd_dir, facing_surface_normal);
                         double lambert_factor = fabs(cos(theta));
 
@@ -126,7 +126,7 @@ struct mli_Color mli_trace_to_intersection_atmosphere(
         color = tracer->scenery_color_materials->surfaces[side.surface]
                         .diffuse_reflection;
 
-        theta = mliVec_angle_between(
+        theta = mli_Vec_angle_between(
                 tracer->config->atmosphere.sunDirection,
                 intersection->surface_normal);
         lambert_factor = fabs(cos(theta));

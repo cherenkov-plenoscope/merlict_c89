@@ -87,7 +87,7 @@ int mli_propagate_photon_phong(
                                 isec)));
                 env->photon->ray = mliRay_set(
                         isec->position,
-                        mliVec_mirror(
+                        mli_Vec_mirror(
                                 env->photon->ray.direction,
                                 isec->surface_normal));
                 chk_msg(mli_propagate_photon_env(env),
@@ -151,7 +151,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
         double n_going_to;
         double n_coming_from;
         double reflection_propability;
-        struct mliVec facing_surface_normal;
+        struct mli_Vec facing_surface_normal;
         chk_msg(mli_Func_evaluate(
                         mli_get_refractive_index_going_to(env->scenery, isec),
                         env->photon->wavelength,
@@ -166,7 +166,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
         facing_surface_normal =
                 isec->from_outside_to_inside
                         ? isec->surface_normal
-                        : mliVec_multiply(isec->surface_normal, -1.0);
+                        : mli_Vec_multiply(isec->surface_normal, -1.0);
         fresnel = mliFresnel_init(
                 env->photon->ray.direction,
                 facing_surface_normal,

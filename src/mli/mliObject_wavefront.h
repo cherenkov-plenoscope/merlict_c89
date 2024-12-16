@@ -19,5 +19,5 @@ int mliObject_parse_face_line(
         int *line_mode);
 int mliObject_parse_three_float_line(
         const struct mli_String *line,
-        struct mliVec *v);
+        struct mli_Vec *v);
 #endif

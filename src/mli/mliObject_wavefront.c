@@ -355,7 +355,7 @@ int mliObject_is_vert_line_toggle(const int state)
 
 int mliObject_parse_three_float_line(
         const struct mli_String *line,
-        struct mliVec *v)
+        struct mli_Vec *v)
 {
         /*
         statemachine
@@ -565,19 +565,19 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
 
                 if (line.size > 0) {
                         if (mli_String_starts_with(&line, &svn)) {
-                                struct mliVec tmp_vn;
+                                struct mli_Vec tmp_vn;
                                 chk(mli_String_copyn(
                                         &tmp, &line, 2, line.size - 2));
                                 chk_msg(mliObject_parse_three_float_line(
                                                 &tmp, &tmp_vn),
                                         "Can not parse vertex-normal-line.");
-                                chk_msg(mliVec_dot(tmp_vn, tmp_vn) > 0.0,
+                                chk_msg(mli_Vec_dot(tmp_vn, tmp_vn) > 0.0,
                                         "vn can not be normalized.") tmp_vn =
-                                        mliVec_normalized(tmp_vn);
+                                        mli_Vec_normalized(tmp_vn);
 
                                 chk(mliDynVec_push_back(&vn, tmp_vn));
                         } else if (mli_String_starts_with(&line, &sv)) {
-                                struct mliVec tmp_v;
+                                struct mli_Vec tmp_v;
                                 chk(mli_String_copyn(
                                         &tmp, &line, 1, line.size - 1));
                                 chk_msg(mliObject_parse_three_float_line(

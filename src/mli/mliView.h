@@ -2,11 +2,11 @@
 #ifndef MLIVIEW_H_
 #define MLIVIEW_H_
 
-#include "mliVec.h"
+#include "../vec/vec.h"
 
 struct mliView {
-        struct mliVec position;
-        struct mliVec rotation;
+        struct mli_Vec position;
+        struct mli_Vec rotation;
         double field_of_view;
 };
 
@@ -32,8 +32,8 @@ struct mliView mliView_move_right(
 struct mliView mliView_move_forward(
         const struct mliView camin,
         const double rate);
-struct mliVec mliView_direction_up(const struct mliView cam);
-struct mliVec mliView_direction_right(const struct mliView cam);
-struct mliVec mliView_optical_axis(const struct mliView cam);
+struct mli_Vec mliView_direction_up(const struct mliView cam);
+struct mli_Vec mliView_direction_right(const struct mliView cam);
+struct mli_Vec mliView_optical_axis(const struct mliView cam);
 struct mliHomTraComp mliView_to_HomTraComp(const struct mliView view);
 #endif

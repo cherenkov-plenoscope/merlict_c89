@@ -44,9 +44,9 @@ struct mliAxisAlignedGrid mliAxisAlignedGrid_set(
 
 struct mliIdx3 mliAxisAlignedGrid_get_voxel_idx(
         const struct mliAxisAlignedGrid *grid,
-        struct mliVec point)
+        struct mli_Vec point)
 {
-        struct mliVec pg = mliVec_substract(point, grid->bounds.lower);
+        struct mli_Vec pg = mli_Vec_substract(point, grid->bounds.lower);
         struct mliIdx3 iii;
         pg.x /= grid->bin_width.x;
         pg.y /= grid->bin_width.y;
@@ -77,7 +77,7 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
                         mliRay_aabb_intersections_is_valid_given_near_and_far(
                                 ray_parameter_near, ray_parameter_far);
                 if (has_intersection) {
-                        struct mliVec inner;
+                        struct mli_Vec inner;
                         inner = mliRay_at(ray, ray_parameter_near);
                         (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, inner);
 
@@ -99,16 +99,16 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
         return 0;
 }
 
-struct mliVec mliAxisAlignedGridTraversal_first_plane(
+struct mli_Vec mliAxisAlignedGridTraversal_first_plane(
         const struct mliAxisAlignedGrid *grid,
         const struct mliIdx3 voxel,
-        const struct mliVec ray_direction)
+        const struct mli_Vec ray_direction)
 {
-        struct mliVec voxel_lower = mliVec_init(
+        struct mli_Vec voxel_lower = mli_Vec_init(
                 grid->bounds.lower.x + (double)voxel.x * grid->bin_width.x,
                 grid->bounds.lower.y + (double)voxel.y * grid->bin_width.y,
                 grid->bounds.lower.z + (double)voxel.z * grid->bin_width.z);
-        struct mliVec voxel_upper = mliVec_init(
+        struct mli_Vec voxel_upper = mli_Vec_init(
                 grid->bounds.lower.x +
                         (double)(voxel.x + 1) * grid->bin_width.x,
                 grid->bounds.lower.y +
@@ -116,7 +116,7 @@ struct mliVec mliAxisAlignedGridTraversal_first_plane(
                 grid->bounds.lower.z +
                         (double)(voxel.z + 1) * grid->bin_width.z);
 
-        struct mliVec first;
+        struct mli_Vec first;
 
         if (ray_direction.x >= 0.0) {
                 first.x = voxel_upper.x;
@@ -164,7 +164,7 @@ struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
         traversal.valid = mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 grid, ray, &traversal.voxel);
         if (traversal.valid) {
-                struct mliVec first_plane;
+                struct mli_Vec first_plane;
                 traversal.step.x = MLI_MATH_SIGN(ray->direction.x);
                 traversal.step.y = MLI_MATH_SIGN(ray->direction.y);
                 traversal.step.z = MLI_MATH_SIGN(ray->direction.z);

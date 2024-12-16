@@ -16,13 +16,13 @@ struct mliPinHoleCamera mliPinHoleCamera_init(
         assert(field_of_view > 0.);
         assert(field_of_view < mli_math_deg2rad(180.));
 
-        sensor.optical_axis = mliVec_init(0.0, 0.0, 1.0);
-        sensor.col_axis = mliVec_init(1.0, 0.0, 0.0);
-        sensor.row_axis = mliVec_init(0.0, row_over_column_pixel_ratio, 0.0);
+        sensor.optical_axis = mli_Vec_init(0.0, 0.0, 1.0);
+        sensor.col_axis = mli_Vec_init(1.0, 0.0, 0.0);
+        sensor.row_axis = mli_Vec_init(0.0, row_over_column_pixel_ratio, 0.0);
 
         sensor.distance_to_principal_point =
                 ((0.5 * mli_Image_num_cols(image)) / tan(0.5 * field_of_view));
-        sensor.principal_point = mliVec_multiply(
+        sensor.principal_point = mli_Vec_multiply(
                 sensor.optical_axis, sensor.distance_to_principal_point);
         return sensor;
 }
@@ -33,16 +33,16 @@ struct mliRay mliPinHoleCamera_ray_at_row_col(
         const uint32_t row,
         const uint32_t col)
 {
-        struct mliVec pin_hole_position = mliVec_init(0.0, 0.0, 0.0);
+        struct mli_Vec pin_hole_position = mli_Vec_init(0.0, 0.0, 0.0);
         int row_idx_on_sensor = row - mli_Image_num_rows(image) / 2;
         int col_idx_on_sensor = col - mli_Image_num_cols(image) / 2;
-        struct mliVec s_row =
-                mliVec_multiply(camera->row_axis, row_idx_on_sensor);
-        struct mliVec s_col =
-                mliVec_multiply(camera->col_axis, col_idx_on_sensor);
-        struct mliVec sensor_intersection = camera->principal_point;
-        sensor_intersection = mliVec_add(sensor_intersection, s_row);
-        sensor_intersection = mliVec_add(sensor_intersection, s_col);
+        struct mli_Vec s_row =
+                mli_Vec_multiply(camera->row_axis, row_idx_on_sensor);
+        struct mli_Vec s_col =
+                mli_Vec_multiply(camera->col_axis, col_idx_on_sensor);
+        struct mli_Vec sensor_intersection = camera->principal_point;
+        sensor_intersection = mli_Vec_add(sensor_intersection, s_row);
+        sensor_intersection = mli_Vec_add(sensor_intersection, s_col);
         return mliRay_set(pin_hole_position, sensor_intersection);
 }
 

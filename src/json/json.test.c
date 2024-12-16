@@ -137,12 +137,12 @@ CASE("mli_Json_int64_by_key")
         mli_Json_free(&json);
 }
 
-CASE("parse mliVec and mli_Color")
+CASE("parse mli_Vec and mli_Color")
 {
         uint64_t token;
         struct mli_Json json = mli_Json_init();
-        struct mliVec vec1 = mliVec_init(0., 0., 0.);
-        struct mliVec vec2 = mliVec_init(0., 0., 0.);
+        struct mli_Vec vec1 = mli_Vec_init(0., 0., 0.);
+        struct mli_Vec vec2 = mli_Vec_init(0., 0., 0.);
         struct mli_Color col = mli_Color_set(0., 0., 0.);
         CHECK(mli_Json_malloc_from_path(
                 &json, "data/mli/tests/resources/json/vec.json"));
@@ -150,13 +150,13 @@ CASE("parse mliVec and mli_Color")
                 &json, "data/mli/tests/resources/json/vec.debug.tmp"));
 
         CHECK(mli_Json_token_by_key(&json, 0, "vec1", &token));
-        CHECK(mliVec_from_json_token(&vec1, &json, token + 1));
+        CHECK(mli_Vec_from_json_token(&vec1, &json, token + 1));
         CHECK_MARGIN(vec1.x, 1.5, 1e-6);
         CHECK_MARGIN(vec1.y, 2.5, 1e-6);
         CHECK_MARGIN(vec1.z, 3.5, 1e-6);
 
         CHECK(mli_Json_token_by_key(&json, 0, "vec2", &token));
-        CHECK(mliVec_from_json_token(&vec2, &json, token + 1));
+        CHECK(mli_Vec_from_json_token(&vec2, &json, token + 1));
         CHECK_MARGIN(vec2.x, 1.2, 1e-6);
         CHECK_MARGIN(vec2.y, 3.4, 1e-6);
         CHECK_MARGIN(vec2.z, -5.6, 1e-6);

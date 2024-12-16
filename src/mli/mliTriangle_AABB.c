@@ -12,7 +12,7 @@
 
 /* Which of the six face-plane(s) is point P outside of? */
 
-int64_t mli_triangle_aabb_face_plane(struct mliVec p)
+int64_t mli_triangle_aabb_face_plane(struct mli_Vec p)
 {
         int64_t outcode;
         outcode = 0;
@@ -33,7 +33,7 @@ int64_t mli_triangle_aabb_face_plane(struct mliVec p)
 
 /* Which of the twelve edge plane(s) is point P outside of? */
 
-int64_t mli_triangle_aabb_bevel_2d(struct mliVec p)
+int64_t mli_triangle_aabb_bevel_2d(struct mli_Vec p)
 {
         int64_t outcode;
         outcode = 0;
@@ -66,7 +66,7 @@ int64_t mli_triangle_aabb_bevel_2d(struct mliVec p)
 
 /* Which of the eight corner plane(s) is point P outside of? */
 
-int64_t mli_triangle_aabb_bevel_3d(struct mliVec p)
+int64_t mli_triangle_aabb_bevel_3d(struct mli_Vec p)
 {
         int64_t outcode;
         outcode = 0;
@@ -94,12 +94,12 @@ int64_t mli_triangle_aabb_bevel_3d(struct mliVec p)
 /* Consider only faces in "mask"                   */
 
 int64_t mli_triangle_aabb_check_point(
-        struct mliVec p1,
-        struct mliVec p2,
+        struct mli_Vec p1,
+        struct mli_Vec p2,
         double alpha,
         int64_t mask)
 {
-        struct mliVec plane_point;
+        struct mli_Vec plane_point;
         plane_point.x = mli_math_linear_interpolate_1d(alpha, p1.x, p2.x);
         plane_point.y = mli_math_linear_interpolate_1d(alpha, p1.y, p2.y);
         plane_point.z = mli_math_linear_interpolate_1d(alpha, p1.z, p2.z);
@@ -112,8 +112,8 @@ int64_t mli_triangle_aabb_check_point(
 /* Note: Zero bits in "outcode_diff" means face line is outside of */
 
 int64_t mli_triangle_aabb_check_line(
-        struct mliVec p1,
-        struct mliVec p2,
+        struct mli_Vec p1,
+        struct mli_Vec p2,
         int64_t outcode_diff)
 {
         if ((0x01 & outcode_diff) != 0)
@@ -151,11 +151,11 @@ int64_t mli_triangle_aabb_check_line(
 
 /* Test if 3D point is inside 3D triangle */
 
-int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mliVec p)
+int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mli_Vec p)
 {
         int64_t sign12_bitmask, sign23_bitmask, sign31_bitmask;
-        struct mliVec vect12, vect23, vect31, vect1h, vect2h, vect3h;
-        struct mliVec cross12_1p, cross23_2p, cross31_3p;
+        struct mli_Vec vect12, vect23, vect31, vect1h, vect2h, vect3h;
+        struct mli_Vec cross12_1p, cross23_2p, cross31_3p;
 
         /* First, a quick bounding-box test:                               */
         /* If P is outside triangle bbox, there cannot be an intersection. */
@@ -182,22 +182,22 @@ int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mliVec p)
          */
         /* to the outside of this triangle side. */
 
-        vect12 = mliVec_substract(t.v1, t.v2);
-        vect1h = mliVec_substract(t.v1, p);
-        cross12_1p = mliVec_cross(vect12, vect1h);
+        vect12 = mli_Vec_substract(t.v1, t.v2);
+        vect1h = mli_Vec_substract(t.v1, p);
+        cross12_1p = mli_Vec_cross(vect12, vect1h);
         /*sign12_bitmask = MLI_MATH_SIGN3(cross12_1p);*/
-        sign12_bitmask = mliVec_sign3_bitmask(cross12_1p, MLI_MATH_EPSILON);
+        sign12_bitmask = mli_Vec_sign3_bitmask(cross12_1p, MLI_MATH_EPSILON);
         /* Extract X,Y,Z signs as 0..7 or 0...63 integer */
 
-        vect23 = mliVec_substract(t.v2, t.v3);
-        vect2h = mliVec_substract(t.v2, p);
-        cross23_2p = mliVec_cross(vect23, vect2h);
-        sign23_bitmask = mliVec_sign3_bitmask(cross23_2p, MLI_MATH_EPSILON);
+        vect23 = mli_Vec_substract(t.v2, t.v3);
+        vect2h = mli_Vec_substract(t.v2, p);
+        cross23_2p = mli_Vec_cross(vect23, vect2h);
+        sign23_bitmask = mli_Vec_sign3_bitmask(cross23_2p, MLI_MATH_EPSILON);
 
-        vect31 = mliVec_substract(t.v3, t.v1);
-        vect3h = mliVec_substract(t.v3, p);
-        cross31_3p = mliVec_cross(vect31, vect3h);
-        sign31_bitmask = mliVec_sign3_bitmask(cross31_3p, MLI_MATH_EPSILON);
+        vect31 = mli_Vec_substract(t.v3, t.v1);
+        vect3h = mli_Vec_substract(t.v3, p);
+        cross31_3p = mli_Vec_cross(vect31, vect3h);
+        sign31_bitmask = mli_Vec_sign3_bitmask(cross31_3p, MLI_MATH_EPSILON);
 
         /* If all three crossproduct vectors agree in their component signs,  */
         /* then the point must be inside all three.                           */
@@ -222,8 +222,8 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
 {
         int64_t v1_test, v2_test, v3_test;
         double d, denom;
-        struct mliVec vect12, vect13, norm;
-        struct mliVec hitpp, hitpn, hitnp, hitnn;
+        struct mli_Vec vect12, vect13, norm;
+        struct mli_Vec hitpp, hitpn, hitnp, hitnn;
 
         /* First compare all three vertexes with all six face-planes */
         /* If any vertex is inside the cube, return immediately!     */
@@ -289,9 +289,9 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
         /* To find plane of the triangle, first perform crossproduct on  */
         /* two triangle side vectors to compute the normal vector.       */
 
-        vect12 = mliVec_substract(t.v1, t.v2);
-        vect13 = mliVec_substract(t.v1, t.v3);
-        norm = mliVec_cross(vect12, vect13);
+        vect12 = mli_Vec_substract(t.v1, t.v2);
+        vect13 = mli_Vec_substract(t.v1, t.v3);
+        norm = mli_Vec_cross(vect12, vect13);
 
         /* The normal vector "norm" X,Y,Z components are the coefficients */
         /* of the triangles AX + BY + CZ + D = 0 plane equation.  If we   */
@@ -344,20 +344,20 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
 }
 
 struct mliTriangle mliTriangle_set_in_norm_aabb(
-        const struct mliVec a,
-        const struct mliVec b,
-        const struct mliVec c,
+        const struct mli_Vec a,
+        const struct mli_Vec b,
+        const struct mli_Vec c,
         const struct mliAABB aabb)
 {
         struct mliTriangle tri;
-        struct mliVec aabb_center = mliAABB_center(aabb);
+        struct mli_Vec aabb_center = mliAABB_center(aabb);
         const double inv_scale_x = 1.0 / (aabb.upper.x - aabb.lower.x);
         const double inv_scale_y = 1.0 / (aabb.upper.y - aabb.lower.y);
         const double inv_scale_z = 1.0 / (aabb.upper.z - aabb.lower.z);
         /* translate */
-        tri.v1 = mliVec_substract(a, aabb_center);
-        tri.v2 = mliVec_substract(b, aabb_center);
-        tri.v3 = mliVec_substract(c, aabb_center);
+        tri.v1 = mli_Vec_substract(a, aabb_center);
+        tri.v2 = mli_Vec_substract(b, aabb_center);
+        tri.v3 = mli_Vec_substract(c, aabb_center);
         /* scale */
         tri.v1.x *= inv_scale_x;
         tri.v2.x *= inv_scale_x;
@@ -374,9 +374,9 @@ struct mliTriangle mliTriangle_set_in_norm_aabb(
 }
 
 int mliTriangle_has_overlap_aabb(
-        const struct mliVec a,
-        const struct mliVec b,
-        const struct mliVec c,
+        const struct mli_Vec a,
+        const struct mli_Vec b,
+        const struct mli_Vec c,
         const struct mliAABB aabb)
 {
         struct mliTriangle tri = mliTriangle_set_in_norm_aabb(a, b, c, aabb);
@@ -387,9 +387,9 @@ int mliTriangle_has_overlap_aabb(
 }
 
 struct mliAABB mliTriangle_aabb(
-        const struct mliVec a,
-        const struct mliVec b,
-        const struct mliVec c)
+        const struct mli_Vec a,
+        const struct mli_Vec b,
+        const struct mli_Vec c)
 {
         struct mliAABB aabb;
         aabb.lower.x = MLI_MATH_MIN3(a.x, b.x, c.x);

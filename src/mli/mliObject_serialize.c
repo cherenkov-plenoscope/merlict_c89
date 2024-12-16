@@ -17,11 +17,11 @@ int mliObject_fwrite(const struct mliObject *obj, FILE *f)
         chk_fwrite(&obj->num_faces, sizeof(uint32_t), 1u, f);
         chk_fwrite(&obj->num_materials, sizeof(uint32_t), 1u, f);
 
-        chk_fwrite(obj->vertices, sizeof(struct mliVec), obj->num_vertices, f);
+        chk_fwrite(obj->vertices, sizeof(struct mli_Vec), obj->num_vertices, f);
 
         chk_fwrite(
                 obj->vertex_normals,
-                sizeof(struct mliVec),
+                sizeof(struct mli_Vec),
                 obj->num_vertex_normals,
                 f);
 
@@ -67,10 +67,10 @@ int mliObject_malloc_fread(struct mliObject *obj, FILE *f)
                 num_faces,
                 num_materials));
 
-        chk_fread(obj->vertices, sizeof(struct mliVec), obj->num_vertices, f);
+        chk_fread(obj->vertices, sizeof(struct mli_Vec), obj->num_vertices, f);
         chk_fread(
                 obj->vertex_normals,
-                sizeof(struct mliVec),
+                sizeof(struct mli_Vec),
                 obj->num_vertex_normals,
                 f);
 
