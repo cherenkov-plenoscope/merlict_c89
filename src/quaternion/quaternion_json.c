@@ -1,11 +1,11 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliQuaternion_json.h"
+#include "quaternion_json.h"
 #include "../vec/vec_json.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
 
-int mliQuaternion_tait_bryan_from_json(
-        struct mliQuaternion *quat,
+int mli_Quaternion_tait_bryan_from_json(
+        struct mli_Quaternion *quat,
         const struct mli_Json *json,
         const uint64_t token)
 {
@@ -15,7 +15,7 @@ int mliQuaternion_tait_bryan_from_json(
                 "Expected tait_bryan to have key 'xyz_deg'.");
         chk_msg(mli_Vec_from_json_token(&xyz_deg, json, token_xyz + 1),
                 "Failed to parse tait_bryan's 'xyz_deg' from json.");
-        *quat = mliQuaternion_set_tait_bryan(
+        *quat = mli_Quaternion_set_tait_bryan(
                 mli_math_deg2rad(xyz_deg.x),
                 mli_math_deg2rad(xyz_deg.y),
                 mli_math_deg2rad(xyz_deg.z));
@@ -24,8 +24,8 @@ chk_error:
         return 0;
 }
 
-int mliQuaternion_axis_angle_from_json(
-        struct mliQuaternion *quat,
+int mli_Quaternion_axis_angle_from_json(
+        struct mli_Quaternion *quat,
         const struct mli_Json *json,
         const uint64_t token)
 {
@@ -40,15 +40,15 @@ int mliQuaternion_axis_angle_from_json(
                 "Expected axis_angle to have key 'angle_deg'.");
         chk_msg(mli_Json_double_by_token(json, token_angle + 1, &angle_deg),
                 "Failed to parse axis_angle's 'angle_deg' from json.");
-        *quat = mliQuaternion_set_rotaxis_and_angle(
+        *quat = mli_Quaternion_set_rotaxis_and_angle(
                 axis, mli_math_deg2rad(angle_deg));
         return 1;
 chk_error:
         return 0;
 }
 
-int mliQuaternion_quaternion_from_json(
-        struct mliQuaternion *quat,
+int mli_Quaternion_quaternion_from_json(
+        struct mli_Quaternion *quat,
         const struct mli_Json *json,
         const uint64_t token)
 {
@@ -58,16 +58,16 @@ int mliQuaternion_quaternion_from_json(
                 "Expected quaternion to have key 'xyz'.");
         chk_msg(mli_Vec_from_json_token(&q, json, token_xyz + 1),
                 "Failed to parse quaternion's 'xyz' from json.");
-        *quat = mliQuaternion_set_unit_xyz(q.x, q.y, q.z);
-        chk_msg(fabs(mliQuaternion_norm(*quat) - 1.) < 1e-6,
+        *quat = mli_Quaternion_set_unit_xyz(q.x, q.y, q.z);
+        chk_msg(fabs(mli_Quaternion_norm(*quat) - 1.) < 1e-6,
                 "Expected norm(quaternion) < 1e-6. Expected unit-quaternion.");
         return 1;
 chk_error:
         return 0;
 }
 
-int mliQuaternion_from_json(
-        struct mliQuaternion *quat,
+int mli_Quaternion_from_json(
+        struct mli_Quaternion *quat,
         const struct mli_Json *json,
         const uint64_t token)
 {
@@ -78,13 +78,13 @@ int mliQuaternion_from_json(
         token_repr_value = token_repr + 1;
 
         if (mli_Json_cstrcmp(json, token_repr_value, "tait_bryan")) {
-                chk_msg(mliQuaternion_tait_bryan_from_json(quat, json, token),
+                chk_msg(mli_Quaternion_tait_bryan_from_json(quat, json, token),
                         "Failed to parse tait_bryan rotation.");
         } else if (mli_Json_cstrcmp(json, token_repr_value, "axis_angle")) {
-                chk_msg(mliQuaternion_axis_angle_from_json(quat, json, token),
+                chk_msg(mli_Quaternion_axis_angle_from_json(quat, json, token),
                         "Failed to parse axis_angle rotation.");
         } else if (mli_Json_cstrcmp(json, token_repr_value, "quaternion")) {
-                chk_msg(mliQuaternion_quaternion_from_json(quat, json, token),
+                chk_msg(mli_Quaternion_quaternion_from_json(quat, json, token),
                         "Failed to parse quaternion rotation.");
         } else {
                 chk_bad("Unknown representation 'repr' in rotation.");

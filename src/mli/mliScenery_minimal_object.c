@@ -106,7 +106,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         scenery->geometry.robject_ids[0] = 0u;
         scenery->geometry.robject2root[0] = mliHomTraComp_set(
                 mli_Vec_init(0.0, 0.0, 0.0),
-                mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0));
+                mli_Quaternion_set_tait_bryan(0.0, 0.0, 0.0));
 
         /* materials */
         total_num_boundary_layers = scenery->geometry.objects[0].num_materials;

@@ -5,11 +5,11 @@
 #include "../vec/vec.h"
 #include "mliRay.h"
 #include "mliMat.h"
-#include "mliQuaternion.h"
+#include "../quaternion/quaternion.h"
 
 struct mliHomTraComp {
         struct mli_Vec translation;
-        struct mliQuaternion rotation;
+        struct mli_Quaternion rotation;
 };
 
 struct mliHomTra {
@@ -20,7 +20,7 @@ struct mliHomTra {
 void mliHomTra_print(const struct mliHomTra h);
 struct mliHomTraComp mliHomTraComp_set(
         const struct mli_Vec translation,
-        const struct mliQuaternion rotation);
+        const struct mli_Quaternion rotation);
 struct mliHomTraComp mliHomTraComp_sequence(
         const struct mliHomTraComp a,
         const struct mliHomTraComp b);

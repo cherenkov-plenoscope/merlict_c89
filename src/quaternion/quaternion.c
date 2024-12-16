@@ -1,15 +1,15 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliQuaternion.h"
+#include "quaternion.h"
 #include <math.h>
 #include <float.h>
 
-struct mliQuaternion mliQuaternion_set(
+struct mli_Quaternion mli_Quaternion_set(
         const double w,
         const double x,
         const double y,
         const double z)
 {
-        struct mliQuaternion o;
+        struct mli_Quaternion o;
         o.w = w;
         o.x = x;
         o.y = y;
@@ -17,7 +17,7 @@ struct mliQuaternion mliQuaternion_set(
         return o;
 }
 
-struct mliQuaternion mliQuaternion_set_unit_xyz(
+struct mli_Quaternion mli_Quaternion_set_unit_xyz(
         const double x,
         const double y,
         const double z)
@@ -31,12 +31,12 @@ struct mliQuaternion mliQuaternion_set_unit_xyz(
          *       q.w = sqrt(1.0 - q.x**2 - q.y**2 - q.z**2)
          */
         const double w = sqrt(1.0 - x * x - y * y - z * z);
-        return mliQuaternion_set(w, x, y, z);
+        return mli_Quaternion_set(w, x, y, z);
 }
 
-int mliQuaternion_equal(
-        const struct mliQuaternion a,
-        const struct mliQuaternion b)
+int mli_Quaternion_equal(
+        const struct mli_Quaternion a,
+        const struct mli_Quaternion b)
 {
         if (fabs(a.w - b.w) > DBL_EPSILON)
                 return 0;
@@ -49,9 +49,9 @@ int mliQuaternion_equal(
         return 1;
 }
 
-int mliQuaternion_equal_margin(
-        const struct mliQuaternion a,
-        const struct mliQuaternion b,
+int mli_Quaternion_equal_margin(
+        const struct mli_Quaternion a,
+        const struct mli_Quaternion b,
         const double margin)
 {
         if (fabs(a.w - b.w) >= margin) {
@@ -69,10 +69,10 @@ int mliQuaternion_equal_margin(
         return 1;
 }
 
-struct mliQuaternion mliQuaternion_complex_conjugate(
-        const struct mliQuaternion q)
+struct mli_Quaternion mli_Quaternion_complex_conjugate(
+        const struct mli_Quaternion q)
 {
-        struct mliQuaternion c;
+        struct mli_Quaternion c;
         c.w = q.w;
         c.x = -q.x;
         c.y = -q.y;
@@ -80,11 +80,11 @@ struct mliQuaternion mliQuaternion_complex_conjugate(
         return c;
 }
 
-struct mliQuaternion mliQuaternion_product(
-        const struct mliQuaternion p,
-        const struct mliQuaternion q)
+struct mli_Quaternion mli_Quaternion_product(
+        const struct mli_Quaternion p,
+        const struct mli_Quaternion q)
 {
-        struct mliQuaternion pq;
+        struct mli_Quaternion pq;
         const struct mli_Vec P = mli_Vec_init(p.x, p.y, p.z);
         const struct mli_Vec Q = mli_Vec_init(q.x, q.y, q.z);
         const struct mli_Vec P_cross_Q = mli_Vec_cross(P, Q);
@@ -95,22 +95,22 @@ struct mliQuaternion mliQuaternion_product(
         return pq;
 }
 
-double mliQuaternion_product_complex_conjugate(const struct mliQuaternion p)
+double mli_Quaternion_product_complex_conjugate(const struct mli_Quaternion p)
 {
         return p.w * p.w + p.x * p.x + p.y * p.y + p.z * p.z;
 }
 
-double mliQuaternion_norm(const struct mliQuaternion q)
+double mli_Quaternion_norm(const struct mli_Quaternion q)
 {
-        return sqrt(mliQuaternion_product_complex_conjugate(q));
+        return sqrt(mli_Quaternion_product_complex_conjugate(q));
 }
 
-struct mliQuaternion mliQuaternion_set_rotaxis_and_angle(
+struct mli_Quaternion mli_Quaternion_set_rotaxis_and_angle(
         const struct mli_Vec rot_axis,
         const double angle)
 {
         const struct mli_Vec normed_rot_axis = mli_Vec_normalized(rot_axis);
-        struct mliQuaternion quat;
+        struct mli_Quaternion quat;
         const double angle_half = .5 * angle;
         const double sin_angle_half = sin(angle_half);
         quat.w = cos(angle_half);
@@ -120,7 +120,7 @@ struct mliQuaternion mliQuaternion_set_rotaxis_and_angle(
         return quat;
 }
 
-struct mliMat mliQuaternion_to_matrix(const struct mliQuaternion quat)
+struct mliMat mli_Quaternion_to_matrix(const struct mli_Quaternion quat)
 {
         struct mliMat o;
         const double w2 = quat.w * quat.w;
@@ -148,17 +148,17 @@ struct mliMat mliQuaternion_to_matrix(const struct mliQuaternion quat)
         return o;
 }
 
-struct mliQuaternion mliQuaternion_set_tait_bryan(
+struct mli_Quaternion mli_Quaternion_set_tait_bryan(
         const double rx,
         const double ry,
         const double rz)
 {
-        const struct mliQuaternion qz =
-                mliQuaternion_set_rotaxis_and_angle(mli_Vec_init(0, 0, 1), -rz);
-        const struct mliQuaternion qy =
-                mliQuaternion_set_rotaxis_and_angle(mli_Vec_init(0, 1, 0), -ry);
-        const struct mliQuaternion qx =
-                mliQuaternion_set_rotaxis_and_angle(mli_Vec_init(1, 0, 0), -rx);
-        const struct mliQuaternion qz_qy = mliQuaternion_product(qz, qy);
-        return mliQuaternion_product(qz_qy, qx);
+        const struct mli_Quaternion qz = mli_Quaternion_set_rotaxis_and_angle(
+                mli_Vec_init(0, 0, 1), -rz);
+        const struct mli_Quaternion qy = mli_Quaternion_set_rotaxis_and_angle(
+                mli_Vec_init(0, 1, 0), -ry);
+        const struct mli_Quaternion qx = mli_Quaternion_set_rotaxis_and_angle(
+                mli_Vec_init(1, 0, 0), -rx);
+        const struct mli_Quaternion qz_qy = mli_Quaternion_product(qz, qy);
+        return mli_Quaternion_product(qz_qy, qx);
 }

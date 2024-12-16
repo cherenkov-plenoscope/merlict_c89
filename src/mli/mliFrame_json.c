@@ -3,7 +3,7 @@
 #include "../chk/chk.h"
 #include "mliDynMap_json.h"
 #include "../vec/vec_json.h"
-#include "mliQuaternion_json.h"
+#include "../quaternion/quaternion_json.h"
 
 int mliFrame_type_from_json_token(
         uint64_t *type,
@@ -68,7 +68,7 @@ int mliFrame_pos_rot_from_json_token(
         /* rot */
         chk_msg(mli_Json_token_by_key(json, token, "rot", &token_rot),
                 "Expected Frame to have key 'rot'.");
-        chk_msg(mliQuaternion_from_json(
+        chk_msg(mli_Quaternion_from_json(
                         &frame2mother->rotation, json, token_rot + 1),
                 "Failed to parse Frame's 'rot' from json.");
         return 1;

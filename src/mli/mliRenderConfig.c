@@ -11,7 +11,8 @@ struct mliRenderConfig mliRenderConfig_init(void)
         struct mliRenderConfig c;
         c.camera = mliApertureCamera_init();
         c.camera_to_root.translation = mli_Vec_init(0.0, 0.0, 0.0);
-        c.camera_to_root.rotation = mliQuaternion_set_tait_bryan(0.0, 0.0, 0.0);
+        c.camera_to_root.rotation =
+                mli_Quaternion_set_tait_bryan(0.0, 0.0, 0.0);
         c.tracer = mliTracerConfig_init();
         c.num_pixel_x = 64;
         c.num_pixel_y = 48;

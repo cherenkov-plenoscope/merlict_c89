@@ -56,11 +56,11 @@ void mliAtmosphere_set_sun_direction(
 
                 const struct mliHomTraComp tc_latitude = mliHomTraComp_set(
                         mli_Vec_init(0.0, 0.0, 0.0),
-                        mliQuaternion_set_tait_bryan(
+                        mli_Quaternion_set_tait_bryan(
                                 atmosphere->sunLatitude, 0.0, 0.0));
                 const struct mliHomTraComp tc_hour = mliHomTraComp_set(
                         mli_Vec_init(0.0, 0.0, 0.0),
-                        mliQuaternion_set_tait_bryan(0.0, hours_rad, 0.0));
+                        mli_Quaternion_set_tait_bryan(0.0, hours_rad, 0.0));
                 const struct mliHomTraComp tc =
                         mliHomTraComp_sequence(tc_latitude, tc_hour);
                 const struct mliHomTra t = mliHomTra_from_compact(tc);

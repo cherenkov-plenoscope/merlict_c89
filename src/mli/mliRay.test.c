@@ -146,7 +146,7 @@ CASE("mliHomTraComp, transform direction")
         struct mliHomTra T;
         struct mli_Vec v1, v2, v3;
         Tcomp.translation = mli_Vec_init(1., 0., 0.);
-        Tcomp.rotation = mliQuaternion_set_rotaxis_and_angle(
+        Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
                 mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90));
         T = mliHomTra_from_compact(Tcomp);
         v1 = mli_Vec_init(1., 0., 0.);
@@ -169,7 +169,7 @@ CASE("unity transformation must not change ray")
         struct mliHomTraComp Tcomp;
         struct mliHomTra T;
         Tcomp.translation = mli_Vec_init(0., 0., 0.);
-        Tcomp.rotation = mliQuaternion_set_tait_bryan(0., 0., 0.);
+        Tcomp.rotation = mli_Quaternion_set_tait_bryan(0., 0., 0.);
         T = mliHomTra_from_compact(Tcomp);
         ray2 = mliHomTra_ray(&T, ray);
         CHECK(mli_Vec_equal_margin(ray2.support, ray.support, 1e-6));
@@ -184,7 +184,7 @@ CASE("translation")
         struct mliHomTraComp Tcomp;
         struct mliHomTra T;
         Tcomp.translation = mli_Vec_init(1., 0., 0.);
-        Tcomp.rotation = mliQuaternion_set_rotaxis_and_angle(
+        Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
                 mli_Vec_init(0., 0., 1.), 0.);
         T = mliHomTra_from_compact(Tcomp);
         ray2 = mliHomTra_ray(&T, ray);
@@ -202,7 +202,7 @@ CASE("rotation")
         struct mliHomTraComp Tcomp;
         struct mliHomTra T;
         Tcomp.translation = mli_Vec_init(0., 0., 0.);
-        Tcomp.rotation = mliQuaternion_set_rotaxis_and_angle(
+        Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
                 mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90));
         T = mliHomTra_from_compact(Tcomp);
         ray2 = mliHomTra_ray(&T, ray);
@@ -221,7 +221,7 @@ CASE("translation and rotation")
         struct mliHomTraComp Tcomp;
         struct mliHomTra T;
         Tcomp.translation = mli_Vec_init(0., 1., 0.);
-        Tcomp.rotation = mliQuaternion_set_rotaxis_and_angle(
+        Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
                 mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90));
         T = mliHomTra_from_compact(Tcomp);
         ray2 = mliHomTra_ray(&T, ray);

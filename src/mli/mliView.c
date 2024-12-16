@@ -125,7 +125,7 @@ struct mliHomTraComp mliView_to_HomTraComp(const struct mliView view)
 {
         struct mliHomTraComp view2root_comp;
         view2root_comp.translation = view.position;
-        view2root_comp.rotation = mliQuaternion_set_tait_bryan(
+        view2root_comp.rotation = mli_Quaternion_set_tait_bryan(
                 view.rotation.x, view.rotation.y, view.rotation.z);
         return view2root_comp;
 }

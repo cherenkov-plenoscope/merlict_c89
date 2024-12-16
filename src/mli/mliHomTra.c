@@ -3,7 +3,7 @@
 
 struct mliHomTraComp mliHomTraComp_set(
         const struct mli_Vec translation,
-        const struct mliQuaternion rotation)
+        const struct mli_Quaternion rotation)
 {
         struct mliHomTraComp comp;
         comp.translation = translation;
@@ -15,7 +15,7 @@ struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo)
 {
         struct mliHomTra t;
         t.translation = trafo.translation;
-        t.rotation = mliQuaternion_to_matrix(trafo.rotation);
+        t.rotation = mli_Quaternion_to_matrix(trafo.rotation);
         return t;
 }
 
@@ -158,7 +158,7 @@ int mliHomTraComp_equal(
 {
         if (!mli_Vec_equal(a.translation, b.translation))
                 return 0;
-        if (!mliQuaternion_equal(a.rotation, b.rotation))
+        if (!mli_Quaternion_equal(a.rotation, b.rotation))
                 return 0;
         return 1;
 }
@@ -171,6 +171,6 @@ struct mliHomTraComp mliHomTraComp_sequence(
         struct mliHomTraComp s;
         b_ = mliHomTra_from_compact(b);
         s.translation = mliHomTra_pos(&b_, a.translation);
-        s.rotation = mliQuaternion_product(b.rotation, a.rotation);
+        s.rotation = mli_Quaternion_product(b.rotation, a.rotation);
         return s;
 }
