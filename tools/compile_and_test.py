@@ -64,10 +64,10 @@ def run_and_save_sdtout(call, stdout_path):
     with open(stdout_path, "wt") as f:
         rc = subprocess.call(
             call,
-            #stderr=subprocess.STDOUT,
-            #stdout=f,
+            # stderr=subprocess.STDOUT,
+            # stdout=f,
         )
-    #print_file(stdout_path)
+    # print_file(stdout_path)
     return rc
 
 
@@ -124,7 +124,13 @@ os.makedirs("build", exist_ok=True)
 os.makedirs(os.path.join("build", "almagamate"), exist_ok=True)
 os.makedirs(os.path.join("build", "tests"), exist_ok=True)
 
-scenery_names = ["000", "001", "002", "optics_prism", "optics_focussing_mirror"]
+scenery_names = [
+    "000",
+    "001",
+    "002",
+    "optics_prism",
+    "optics_focussing_mirror",
+]
 
 for scenery_name in scenery_names:
     rc = tar_sceneries(scenery_name=scenery_name)

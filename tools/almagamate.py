@@ -147,7 +147,9 @@ def gather_sources(module_paths, source_types=SOURCE_TYPES):
         module = read_module(module_path)
         for source_type in source_types:
             for filename in module[source_type]:
-                assert filename not in sources[source_type], f"Expected '{filename:s}' to not be in sources['{source_type:s}']."
+                assert (
+                    filename not in sources[source_type]
+                ), f"Expected '{filename:s}' to not be in sources['{source_type:s}']."
                 sources[source_type][filename] = module[source_type][filename]
 
     for source_type in source_types:
@@ -281,8 +283,7 @@ parser.add_argument(
     nargs="+",
     type=str,
     help=(
-        "A list of the modules to be almagamated e.g. "
-        "'src/mli', 'src/chk'."
+        "A list of the modules to be almagamated e.g. " "'src/mli', 'src/chk'."
     ),
 )
 parser.add_argument(
