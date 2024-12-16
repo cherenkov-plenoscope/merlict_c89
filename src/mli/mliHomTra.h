@@ -4,7 +4,7 @@
 
 #include "../vec/vec.h"
 #include "mliRay.h"
-#include "mliMat.h"
+#include "../mat/mat.h"
 #include "../quaternion/quaternion.h"
 
 struct mliHomTraComp {
@@ -14,7 +14,7 @@ struct mliHomTraComp {
 
 struct mliHomTra {
         struct mli_Vec translation;
-        struct mliMat rotation;
+        struct mli_Mat rotation;
 };
 
 void mliHomTra_print(const struct mliHomTra h);
@@ -44,26 +44,26 @@ struct mliRay mliHomTra_ray_inverse(
         const struct mliRay in);
 struct mliRay mliHomTra_ray(const struct mliHomTra *t, const struct mliRay in);
 struct mliRay mli_transform_ray_inverse(
-        const struct mliMat *rotation,
+        const struct mli_Mat *rotation,
         const struct mli_Vec translation,
         const struct mliRay in);
 struct mliRay mli_transform_ray(
-        const struct mliMat *rotation,
+        const struct mli_Mat *rotation,
         const struct mli_Vec translation,
         const struct mliRay in);
 struct mli_Vec mli_transform_position_inverse(
-        const struct mliMat *rotation,
+        const struct mli_Mat *rotation,
         const struct mli_Vec translation,
         const struct mli_Vec in);
 struct mli_Vec mli_transform_position(
-        const struct mliMat *rotation,
+        const struct mli_Mat *rotation,
         const struct mli_Vec translation,
         const struct mli_Vec in);
 struct mli_Vec mli_transform_orientation_inverse(
-        const struct mliMat *rotation,
+        const struct mli_Mat *rotation,
         const struct mli_Vec in);
 struct mli_Vec mli_transform_orientation(
-        const struct mliMat *rotation,
+        const struct mli_Mat *rotation,
         const struct mli_Vec in);
 struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo);
 #endif

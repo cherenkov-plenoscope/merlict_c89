@@ -3,27 +3,27 @@
 #include <math.h>
 #include <assert.h>
 #include <stdint.h>
-#include "mliMat.h"
+#include "../mat/mat.h"
 #include "mliHomTra.h"
 #include "../math/math.h"
 
 struct mli_Vec mliView_optical_axis(const struct mliView cam)
 {
-        struct mliMat rotation = mliMat_init_tait_bryan(
+        struct mli_Mat rotation = mli_Mat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
         return mli_transform_orientation(&rotation, mli_Vec_init(0., 0., 1.));
 }
 
 struct mli_Vec mliView_direction_right(const struct mliView cam)
 {
-        struct mliMat rotation = mliMat_init_tait_bryan(
+        struct mli_Mat rotation = mli_Mat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
         return mli_transform_orientation(&rotation, mli_Vec_init(1., 0., 0.));
 }
 
 struct mli_Vec mliView_direction_up(const struct mliView cam)
 {
-        struct mliMat rotation = mliMat_init_tait_bryan(
+        struct mli_Mat rotation = mli_Mat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
         return mli_transform_orientation(&rotation, mli_Vec_init(0., 1., 0.));
 }

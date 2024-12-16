@@ -5,7 +5,7 @@ CASE("covariance")
         /* a crosscheck with numpy */
         struct mli_Vec vecs[9];
         struct mli_Vec vecs_mean;
-        struct mliMat cov;
+        struct mli_Mat cov;
 
         /* random values */
         vecs[0] = mli_Vec_init(73.0, 7.0, 83.0);
@@ -19,7 +19,7 @@ CASE("covariance")
         vecs[8] = mli_Vec_init(80.0, 46.0, 63.0);
 
         vecs_mean = mli_Vec_mean(vecs, 9);
-        cov = mliMat_covariance(vecs, 9, vecs_mean);
+        cov = mli_Mat_covariance(vecs, 9, vecs_mean);
 
         CHECK_MARGIN(cov.r00, 529.0, 1e-6);
         CHECK_MARGIN(cov.r01, -215.20833333, 1e-6);
@@ -36,7 +36,7 @@ CASE("covariance")
 
 CASE("qr_decomposition")
 {
-        struct mliMat m = {
+        struct mli_Mat m = {
                 529,
                 -215.20833333,
                 -49.75,
@@ -46,9 +46,9 @@ CASE("qr_decomposition")
                 -49.75,
                 -98.16666667,
                 614.0};
-        struct mliMat qr;
-        struct mliMat q;
-        struct mliMat r;
+        struct mli_Mat qr;
+        struct mli_Mat q;
+        struct mli_Mat r;
         double act_eval[3];
         struct mli_Vec act_evec[3];
         int i, j;
@@ -61,8 +61,8 @@ CASE("qr_decomposition")
                 {-0.41702046, -0.00096762, 0.90889658},
         };
 
-        mliMat_qr_decompose(m, &q, &r);
-        qr = mliMat_multiply(q, r);
+        mli_Mat_qr_decompose(m, &q, &r);
+        qr = mli_Mat_multiply(q, r);
 
         CHECK_MARGIN(m.r00, qr.r00, 1e-6);
         CHECK_MARGIN(m.r01, qr.r01, 1e-6);
@@ -74,11 +74,11 @@ CASE("qr_decomposition")
         CHECK_MARGIN(m.r21, qr.r21, 1e-6);
         CHECK_MARGIN(m.r22, qr.r22, 1e-6);
 
-        mliMat_find_eigenvalues(
+        mli_Mat_find_eigenvalues(
                 m, &act_eval[0], &act_eval[1], &act_eval[2], 1e-4, 100);
 
         for (i = 0; i < 3; i++) {
-                CHECK(mliMat_find_eigenvector_for_eigenvalue(
+                CHECK(mli_Mat_find_eigenvector_for_eigenvalue(
                         m, act_eval[i], &act_evec[i], 1e-16));
         }
 

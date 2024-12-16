@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliMat.h"
+#include "mat.h"
 #include <math.h>
 #include <assert.h>
 #include "../chk/chk.h"
 
-void mliMat_set(struct mliMat *a, uint64_t col, uint64_t row, const double v)
+void mli_Mat_set(struct mli_Mat *a, uint64_t col, uint64_t row, const double v)
 {
         switch (col) {
         case 0:
@@ -61,7 +61,7 @@ void mliMat_set(struct mliMat *a, uint64_t col, uint64_t row, const double v)
         }
 }
 
-double mliMat_get(const struct mliMat *a, uint64_t col, uint64_t row)
+double mli_Mat_get(const struct mli_Mat *a, uint64_t col, uint64_t row)
 {
         double o = 0;
         switch (col) {
@@ -120,9 +120,9 @@ double mliMat_get(const struct mliMat *a, uint64_t col, uint64_t row)
         return o;
 }
 
-struct mliMat mliMat_unity(void)
+struct mli_Mat mli_Mat_unity(void)
 {
-        struct mliMat u;
+        struct mli_Mat u;
         u.r00 = 1.0;
         u.r01 = 0.0;
         u.r02 = 0.0;
@@ -135,16 +135,16 @@ struct mliMat mliMat_unity(void)
         return u;
 }
 
-int mliMat_equal_margin(
-        const struct mliMat a,
-        const struct mliMat b,
+int mli_Mat_equal_margin(
+        const struct mli_Mat a,
+        const struct mli_Mat b,
         const double margin)
 {
         int i, j;
         for (i = 0; i < 3; i++) {
                 for (j = 0; j < 3; j++) {
                         const double diff = fabs(
-                                mliMat_get(&a, i, j) - mliMat_get(&b, i, j));
+                                mli_Mat_get(&a, i, j) - mli_Mat_get(&b, i, j));
                         if (diff > margin) {
                                 return 0;
                         }
@@ -153,12 +153,12 @@ int mliMat_equal_margin(
         return 1;
 }
 
-struct mliMat mliMat_init_tait_bryan(
+struct mli_Mat mli_Mat_init_tait_bryan(
         const double rx,
         const double ry,
         const double rz)
 {
-        struct mliMat rot;
+        struct mli_Mat rot;
         const double cosRx = cos(rx);
         const double cosRy = cos(ry);
         const double cosRz = cos(rz);
@@ -177,11 +177,11 @@ struct mliMat mliMat_init_tait_bryan(
         return rot;
 }
 
-struct mliMat mliMat_init_axis_angle(
+struct mli_Mat mli_Mat_init_axis_angle(
         const struct mli_Vec axis,
         const double angle)
 {
-        struct mliMat rot;
+        struct mli_Mat rot;
         const double norm = mli_Vec_norm(axis);
         const double rx = axis.x / norm;
         const double ry = axis.y / norm;
@@ -200,12 +200,12 @@ struct mliMat mliMat_init_axis_angle(
         return rot;
 }
 
-struct mliMat mliMat_init_columns(
+struct mli_Mat mli_Mat_init_columns(
         const struct mli_Vec c0,
         const struct mli_Vec c1,
         const struct mli_Vec c2)
 {
-        struct mliMat m;
+        struct mli_Mat m;
         m.r00 = c0.x;
         m.r01 = c1.x;
         m.r02 = c2.x;
@@ -218,7 +218,7 @@ struct mliMat mliMat_init_columns(
         return m;
 }
 
-struct mliMat mliMat_covariance(
+struct mli_Mat mli_Mat_covariance(
         const struct mli_Vec *vecs,
         const uint64_t num_vecs,
         const struct mli_Vec vecs_mean)
@@ -255,7 +255,7 @@ struct mliMat mliMat_covariance(
 
         double inum = 1.0 / (((double)num_vecs) - 1.0);
         struct mli_Vec v;
-        struct mliMat cov;
+        struct mli_Mat cov;
 
         for (i = 0; i < num_vecs; i++) {
                 v = mli_Vec_substract(vecs[i], vecs_mean);
@@ -292,9 +292,9 @@ struct mliMat mliMat_covariance(
         return cov;
 }
 
-struct mliMat mliMat_transpose(const struct mliMat m)
+struct mli_Mat mli_Mat_transpose(const struct mli_Mat m)
 {
-        struct mliMat t;
+        struct mli_Mat t;
         t.r00 = m.r00;
         t.r01 = m.r10;
         t.r02 = m.r20;
@@ -309,9 +309,9 @@ struct mliMat mliMat_transpose(const struct mliMat m)
         return t;
 }
 
-struct mliMat mliMat_multiply(const struct mliMat x, const struct mliMat y)
+struct mli_Mat mli_Mat_multiply(const struct mli_Mat x, const struct mli_Mat y)
 {
-        struct mliMat p;
+        struct mli_Mat p;
         p.r00 = x.r00 * y.r00 + x.r01 * y.r10 + x.r02 * y.r20;
         p.r10 = x.r10 * y.r00 + x.r11 * y.r10 + x.r12 * y.r20;
         p.r20 = x.r20 * y.r00 + x.r21 * y.r10 + x.r22 * y.r20;
@@ -324,9 +324,9 @@ struct mliMat mliMat_multiply(const struct mliMat x, const struct mliMat y)
         return p;
 }
 
-struct mliMat mliMat_minor(const struct mliMat x, const int d)
+struct mli_Mat mli_Mat_minor(const struct mli_Mat x, const int d)
 {
-        struct mliMat m = x;
+        struct mli_Mat m = x;
         switch (d) {
         case 0:
                 break;
@@ -359,9 +359,9 @@ struct mliMat mliMat_minor(const struct mliMat x, const int d)
         return m;
 }
 
-struct mliMat mliMat_vector_outer_product(const struct mli_Vec v)
+struct mli_Mat mli_Mat_vector_outer_product(const struct mli_Vec v)
 {
-        struct mliMat x;
+        struct mli_Mat x;
         x.r00 = -2.0 * v.x * v.x + 1;
         x.r01 = -2.0 * v.x * v.y;
         x.r02 = -2.0 * v.x * v.z;
@@ -374,16 +374,16 @@ struct mliMat mliMat_vector_outer_product(const struct mli_Vec v)
         return x;
 }
 
-void mliMat_qr_decompose(
-        const struct mliMat m,
-        struct mliMat *q,
-        struct mliMat *r)
+void mli_Mat_qr_decompose(
+        const struct mli_Mat m,
+        struct mli_Mat *q,
+        struct mli_Mat *r)
 {
         /* housholder */
         /* ========== */
 
-        struct mliMat q0, q1;
-        struct mliMat z = m;
+        struct mli_Mat q0, q1;
+        struct mli_Mat z = m;
 
         struct mli_Vec e;
         struct mli_Vec x;
@@ -391,7 +391,7 @@ void mliMat_qr_decompose(
 
         /* column 0 */
         /* -------- */
-        z = mliMat_minor(z, 0);
+        z = mli_Mat_minor(z, 0);
         x = mli_Vec_init(z.r00, z.r10, z.r20);
         xnorm = mli_Vec_norm(x);
         if (m.r00 > 0) {
@@ -402,12 +402,12 @@ void mliMat_qr_decompose(
         e = mli_Vec_add(x, e);
         e = mli_Vec_normalized(e);
 
-        q0 = mliMat_vector_outer_product(e);
-        z = mliMat_multiply(q0, z);
+        q0 = mli_Mat_vector_outer_product(e);
+        z = mli_Mat_multiply(q0, z);
 
         /* column 1 */
         /* -------- */
-        z = mliMat_minor(z, 1);
+        z = mli_Mat_minor(z, 1);
         x = mli_Vec_init(z.r01, z.r11, z.r21);
         xnorm = mli_Vec_norm(x);
         if (m.r11 > 0) {
@@ -418,21 +418,21 @@ void mliMat_qr_decompose(
         e = mli_Vec_add(x, e);
         e = mli_Vec_normalized(e);
 
-        q1 = mliMat_vector_outer_product(e);
-        z = mliMat_multiply(q1, z);
+        q1 = mli_Mat_vector_outer_product(e);
+        z = mli_Mat_multiply(q1, z);
 
         /* finalize */
         /* ======== */
         (*q) = q0;
-        (*r) = mliMat_multiply(q0, m);
+        (*r) = mli_Mat_multiply(q0, m);
 
-        (*q) = mliMat_multiply(q1, *q);
+        (*q) = mli_Mat_multiply(q1, *q);
 
-        (*r) = mliMat_multiply(*q, m);
-        (*q) = mliMat_transpose(*q);
+        (*r) = mli_Mat_multiply(*q, m);
+        (*q) = mli_Mat_transpose(*q);
 }
 
-int mliMat_has_shurform(const struct mliMat m, const double margin)
+int mli_Mat_has_shurform(const struct mli_Mat m, const double margin)
 {
         if (fabs(m.r10) > margin)
                 return 0;
@@ -443,26 +443,26 @@ int mliMat_has_shurform(const struct mliMat m, const double margin)
         return 1;
 }
 
-void mliMat_find_eigenvalues(
-        const struct mliMat a,
+void mli_Mat_find_eigenvalues(
+        const struct mli_Mat a,
         double *e0,
         double *e1,
         double *e2,
         const double margin,
         const uint64_t max_num_iterations)
 {
-        struct mliMat ak = a;
-        struct mliMat qq = mliMat_unity();
+        struct mli_Mat ak = a;
+        struct mli_Mat qq = mli_Mat_unity();
         uint64_t k = 0;
 
         while (k < max_num_iterations) {
-                struct mliMat q, r;
+                struct mli_Mat q, r;
                 k += 1;
-                mliMat_qr_decompose(ak, &q, &r);
-                ak = mliMat_multiply(r, q);
-                qq = mliMat_multiply(qq, q);
+                mli_Mat_qr_decompose(ak, &q, &r);
+                ak = mli_Mat_multiply(r, q);
+                qq = mli_Mat_multiply(qq, q);
 
-                if (mliMat_has_shurform(ak, margin)) {
+                if (mli_Mat_has_shurform(ak, margin)) {
                         break;
                 }
         }
@@ -471,8 +471,8 @@ void mliMat_find_eigenvalues(
         (*e2) = ak.r22;
 }
 
-int mliMat_find_eigenvector_for_eigenvalue(
-        struct mliMat A,
+int mli_Mat_find_eigenvector_for_eigenvalue(
+        struct mli_Mat A,
         const double eigen_value,
         struct mli_Vec *eigen_vector,
         const double tolerance)
@@ -486,9 +486,9 @@ int mliMat_find_eigenvector_for_eigenvalue(
         A.r11 -= eigen_value;
         A.r22 -= eigen_value;
 
-        chk_msg(mliMat_lup_decompose(&A, pivots, tolerance),
+        chk_msg(mli_Mat_lup_decompose(&A, pivots, tolerance),
                 "Can not decompose LU-matices");
-        mliMat_lup_solve(&A, pivots, &right_hand_side, eigen_vector);
+        mli_Mat_lup_solve(&A, pivots, &right_hand_side, eigen_vector);
         (*eigen_vector) = mli_Vec_normalized(*eigen_vector);
 
         return 1;
@@ -496,7 +496,7 @@ chk_error:
         return 0;
 }
 
-int mliMat_lup_decompose(struct mliMat *A, int *P, const double tolerance)
+int mli_Mat_lup_decompose(struct mli_Mat *A, int *P, const double tolerance)
 {
         /*
         Parameters
@@ -534,7 +534,7 @@ int mliMat_lup_decompose(struct mliMat *A, int *P, const double tolerance)
                 imax = i;
 
                 for (k = i; k < 3; k++) {
-                        absA = fabs(mliMat_get(A, k, i));
+                        absA = fabs(mli_Mat_get(A, k, i));
                         if (absA > maxA) {
                                 maxA = absA;
                                 imax = k;
@@ -553,32 +553,33 @@ int mliMat_lup_decompose(struct mliMat *A, int *P, const double tolerance)
                         P[imax] = j;
 
                         /* pivoting rows of A */
-                        tmp[0] = mliMat_get(A, i, 0);
-                        tmp[1] = mliMat_get(A, i, 1);
-                        tmp[2] = mliMat_get(A, i, 2);
+                        tmp[0] = mli_Mat_get(A, i, 0);
+                        tmp[1] = mli_Mat_get(A, i, 1);
+                        tmp[2] = mli_Mat_get(A, i, 2);
 
-                        mliMat_set(A, i, 0, mliMat_get(A, imax, 0));
-                        mliMat_set(A, i, 1, mliMat_get(A, imax, 1));
-                        mliMat_set(A, i, 2, mliMat_get(A, imax, 2));
+                        mli_Mat_set(A, i, 0, mli_Mat_get(A, imax, 0));
+                        mli_Mat_set(A, i, 1, mli_Mat_get(A, imax, 1));
+                        mli_Mat_set(A, i, 2, mli_Mat_get(A, imax, 2));
 
-                        mliMat_set(A, imax, 0, tmp[0]);
-                        mliMat_set(A, imax, 1, tmp[1]);
-                        mliMat_set(A, imax, 2, tmp[2]);
+                        mli_Mat_set(A, imax, 0, tmp[0]);
+                        mli_Mat_set(A, imax, 1, tmp[1]);
+                        mli_Mat_set(A, imax, 2, tmp[2]);
 
                         /* counting pivots starting from 3 (for determinant) */
                         P[3]++;
                 }
 
                 for (j = i + 1; j < 3; j++) {
-                        double tmp = mliMat_get(A, j, i) / mliMat_get(A, i, i);
-                        mliMat_set(A, j, i, tmp);
+                        double tmp =
+                                mli_Mat_get(A, j, i) / mli_Mat_get(A, i, i);
+                        mli_Mat_set(A, j, i, tmp);
 
                         for (k = i + 1; k < 3; k++) {
                                 double tmp =
-                                        (mliMat_get(A, j, k) -
-                                         mliMat_get(A, j, i) *
-                                                 mliMat_get(A, i, k));
-                                mliMat_set(A, j, k, tmp);
+                                        (mli_Mat_get(A, j, k) -
+                                         mli_Mat_get(A, j, i) *
+                                                 mli_Mat_get(A, i, k));
+                                mli_Mat_set(A, j, k, tmp);
                         }
                 }
         }
@@ -586,8 +587,8 @@ int mliMat_lup_decompose(struct mliMat *A, int *P, const double tolerance)
         return 1; /* decomposition done */
 }
 
-void mliMat_lup_solve(
-        const struct mliMat *A,
+void mli_Mat_lup_solve(
+        const struct mli_Mat *A,
         const int *P,
         const struct mli_Vec *b,
         struct mli_Vec *x)
@@ -598,7 +599,7 @@ void mliMat_lup_solve(
         Parameters
         ----------
         A and P
-                Filled in mliMat_lup_decompose.
+                Filled in mli_Mat_lup_decompose.
         b
                 Right hand side vector b in A*x = b.
 
@@ -614,7 +615,7 @@ void mliMat_lup_solve(
                 for (k = 0; k < i; k++) {
                         const double tmp =
                                 (mli_Vec_get(x, i) -
-                                 mliMat_get(A, i, k) * mli_Vec_get(x, k));
+                                 mli_Mat_get(A, i, k) * mli_Vec_get(x, k));
                         mli_Vec_set(x, i, tmp);
                 }
         }
@@ -625,10 +626,10 @@ void mliMat_lup_solve(
                 for (k = i + 1; k < N; k++) {
                         const double tmp =
                                 (mli_Vec_get(x, i) -
-                                 mliMat_get(A, i, k) * mli_Vec_get(x, k));
+                                 mli_Mat_get(A, i, k) * mli_Vec_get(x, k));
                         mli_Vec_set(x, i, tmp);
                 }
-                tmp = mli_Vec_get(x, i) / mliMat_get(A, i, i);
+                tmp = mli_Vec_get(x, i) / mli_Mat_get(A, i, i);
                 mli_Vec_set(x, i, tmp);
                 i--;
         }

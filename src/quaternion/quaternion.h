@@ -3,7 +3,7 @@
 #define MLI_QUATERNION_H_
 
 #include "../vec/vec.h"
-#include "../mli/mliMat.h"
+#include "../mat/mat.h"
 
 struct mli_Quaternion {
         double w;
@@ -17,7 +17,7 @@ struct mli_Quaternion mli_Quaternion_set_tait_bryan(
         const double rx,
         const double ry,
         const double rz);
-struct mliMat mli_Quaternion_to_matrix(const struct mli_Quaternion quat);
+struct mli_Mat mli_Quaternion_to_matrix(const struct mli_Quaternion quat);
 struct mli_Quaternion mli_Quaternion_set_rotaxis_and_angle(
         const struct mli_Vec rot_axis,
         const double angle);

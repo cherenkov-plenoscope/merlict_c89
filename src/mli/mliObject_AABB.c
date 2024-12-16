@@ -127,6 +127,6 @@ struct mliAABB mliObject_aabb_in_local_frame(const struct mliObject *obj)
 {
         struct mliHomTra unity;
         unity.translation = mli_Vec_init(0.0, 0.0, 0.0);
-        unity.rotation = mliMat_unity();
+        unity.rotation = mli_Mat_unity();
         return mliObject_aabb(obj, unity);
 }

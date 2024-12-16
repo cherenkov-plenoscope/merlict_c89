@@ -2,7 +2,7 @@
 #include "mli_lambertian_cosine_law.h"
 #include <math.h>
 #include "../math/math.h"
-#include "mliMat.h"
+#include "../mat/mat.h"
 #include "mliHomTra.h"
 
 struct mli_Vec mli_draw_lambertian_direction_wrt_z(struct mli_Prng *prng)
@@ -25,7 +25,7 @@ struct mli_Vec mli_draw_lambertian_direction_wrt_surface_normal(
                 mli_draw_lambertian_direction_wrt_z(prng);
         const double rho = mli_Vec_angle_between(z, surface_normal);
         if (rho > 0.0) {
-                const struct mliMat rot = mliMat_init_axis_angle(
+                const struct mli_Mat rot = mli_Mat_init_axis_angle(
                         mli_Vec_cross(z, surface_normal), -1.0 * rho);
                 return mli_transform_orientation(&rot, lambertian_wrt_z);
         } else {
