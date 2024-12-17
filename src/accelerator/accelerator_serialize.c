@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliAccelerator_serialize.h"
+#include "accelerator_serialize.h"
 #include "../chk/chk.h"
 #include "../magicid/magicid.h"
 #include "../octree/octree_serialize.h"

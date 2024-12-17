@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliAccelerator_equal.h"
+#include "accelerator_equal.h"
 #include "../chk/chk.h"
 #include "../octree/octree_equal.h"
 

@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIACCELERATOR_VALID_H_
-#define MLIACCELERATOR_VALID_H_
+#ifndef MLI_ACCELERATOR_VALID_H_
+#define MLI_ACCELERATOR_VALID_H_
 
-#include "mliAccelerator.h"
+#include "accelerator.h"
 
 int mliAccelerator_valid(const struct mliAccelerator *accel);
 int mliAccelerator_valid_wrt_Geometry(

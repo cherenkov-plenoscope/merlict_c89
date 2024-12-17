@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "geometry.h"
-#include "../mli/mliAccelerator.h"
+#include "../accelerator/accelerator.h"
 #include "../aabb/aabb.h"
 
 int mli_Geometry_robject_has_overlap_aabb_void(

@@ -2,7 +2,7 @@
 #include "mliScenery_valid.h"
 #include "../materials/materials_valid.h"
 #include "../geometry/geometry_valid.h"
-#include "mliAccelerator_valid.h"
+#include "../accelerator/accelerator_valid.h"
 #include "mliGeometryToMaterialMap_valid.h"
 #include "../chk/chk.h"
 

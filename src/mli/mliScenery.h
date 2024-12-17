@@ -5,7 +5,7 @@
 #include "../geometry/geometry.h"
 #include "mliGeometryToMaterialMap.h"
 #include "../materials/materials.h"
-#include "mliAccelerator.h"
+#include "../accelerator/accelerator.h"
 
 struct mliScenery {
         struct mli_Geometry geometry;
