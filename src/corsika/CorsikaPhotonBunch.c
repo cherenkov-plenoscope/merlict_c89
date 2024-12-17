@@ -34,13 +34,13 @@ void mli_corsika_PhotonBunch_to_raw(
         raw[7] = bunch->wavelength_nm;
 }
 
-struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
+struct mli_Photon mli_corsika_PhotonBunch_to_merlict_photon(
         const struct mli_corsika_PhotonBunch bunch,
         const double production_distance_offset,
         const int64_t id)
 {
         /*
-        Returns an mliPhoton that will reach the observation-level in
+        Returns an mli_Photon that will reach the observation-level in
         the same way as the corsika-photon-bunch. The weight of the
         corsika-photon-bunch is not taken into account here.
 
@@ -76,7 +76,7 @@ struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
         const struct mli_Vec photon_emission_position =
                 mli_Ray_at(&ray_running_upwards_to_production, offset);
 
-        struct mliPhoton photon;
+        struct mli_Photon photon;
         photon.ray.support = photon_emission_position;
         photon.ray.direction = photon_direction_of_motion;
         photon.wavelength = mli_corsika_photon_wavelength(bunch);

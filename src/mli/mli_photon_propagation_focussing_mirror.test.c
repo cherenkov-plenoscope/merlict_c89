@@ -7,8 +7,8 @@ CASE("focussing_a_parallel_beam")
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         struct mliScenery scenery = mliScenery_init();
         struct mli_IO f = mli_IO_init();
-        struct mliDynPhotonInteraction photon_history =
-                mliDynPhotonInteraction_init();
+        struct mli_PhotonInteractionVector photon_history =
+                mli_PhotonInteractionVector_init();
         struct mli_prng_UniformRange wavelength_range;
         const uint64_t NUM_PHOTONS = 10 * 1000;
         const uint64_t MAX_INTERACTIONS = 16;
@@ -35,8 +35,8 @@ CASE("focussing_a_parallel_beam")
                 "optics_focussing_mirror.tar"));
 
         for (i = 0; i < NUM_PHOTONS; i++) {
-                struct mliPhoton photon;
-                struct mliPhotonInteraction final_intersection;
+                struct mli_Photon photon;
+                struct mli_PhotonInteraction final_intersection;
                 uint64_t final_robj_id;
 
                 photon.ray = mli_Ray_set(
@@ -49,7 +49,7 @@ CASE("focussing_a_parallel_beam")
                         mli_prng_draw_uniform(wavelength_range, &prng);
                 photon.id = i;
 
-                CHECK(mliDynPhotonInteraction_malloc(
+                CHECK(mli_PhotonInteractionVector_malloc(
                         &photon_history, MAX_INTERACTIONS));
 
                 CHECK(mli_propagate_photon(
@@ -100,6 +100,6 @@ CASE("focussing_a_parallel_beam")
         mli_IO_close(&f);
 
         mliScenery_free(&scenery);
-        mliDynPhotonInteraction_free(&photon_history);
+        mli_PhotonInteractionVector_free(&photon_history);
         mli_Image_free(&screen_img);
 }

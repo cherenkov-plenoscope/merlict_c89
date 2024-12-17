@@ -5,24 +5,24 @@
 #include <stdint.h>
 
 #include "../photon/photon.h"
-#include "../photon/mliPhotonInteraction.h"
+#include "../photon/photon_interaction.h"
 #include "mliScenery.h"
-#include "../photon/mliDynPhotonInteraction.h"
+#include "../photon/photon_interaction_vector.h"
 #include "../prng/prng.h"
 #include "../fresnel/fresnel.h"
 
 struct mliEnv {
         const struct mliScenery *scenery;
-        struct mliDynPhotonInteraction *history;
-        struct mliPhoton *photon;
+        struct mli_PhotonInteractionVector *history;
+        struct mli_Photon *photon;
         struct mli_Prng *prng;
         uint64_t max_interactions;
 };
 
 int mli_propagate_photon(
         const struct mliScenery *scenery,
-        struct mliDynPhotonInteraction *history,
-        struct mliPhoton *photon,
+        struct mli_PhotonInteractionVector *history,
+        struct mli_Photon *photon,
         struct mli_Prng *prng,
         const uint64_t max_interactions);
 int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env);
@@ -39,7 +39,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
         const struct mliIntersectionSurfaceNormal *isec);
 int mli_propagate_photon_probability_passing_medium_coming_from(
         const struct mliScenery *scenery,
-        const struct mliPhoton *photon,
+        const struct mli_Photon *photon,
         const struct mliIntersectionSurfaceNormal *isec,
         double *probability_passing);
 int mli_propagate_photon_pass_boundary_layer(
@@ -49,7 +49,7 @@ int mli_propagate_photon_pass_boundary_layer(
 int mli_propagate_photon_phong(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec);
-struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
+struct mli_PhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec);

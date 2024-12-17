@@ -1,11 +1,11 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_photon_sources.h"
+#include "photon_source.h"
 #include "../chk/chk.h"
 #include "../vec/vec_random.h"
 #include "../math/math.h"
 
 int mli_photon_source_parallel_towards_z_from_xy_disc(
-        struct mliDynPhoton *out_photons,
+        struct mli_PhotonVector *out_photons,
         const double wavelength,
         const double radius,
         const uint64_t num_photons,
@@ -14,12 +14,12 @@ int mli_photon_source_parallel_towards_z_from_xy_disc(
         uint64_t i;
         const struct mli_Vec direction = mli_Vec_init(0., 0., 1.);
         for (i = 0; i < num_photons; i++) {
-                struct mliPhoton ph;
+                struct mli_Photon ph;
                 ph.ray.support = mli_Vec_random_position_on_disc(radius, prng);
                 ph.ray.direction = direction;
                 ph.wavelength = wavelength;
                 ph.id = i;
-                chk(mliDynPhoton_push_back(out_photons, ph));
+                chk(mli_PhotonVector_push_back(out_photons, ph));
         }
         return 1;
 chk_error:
@@ -27,7 +27,7 @@ chk_error:
 }
 
 int mli_photon_source_point_like_opening_cone_towards_z(
-        struct mliDynPhoton *out_photons,
+        struct mli_PhotonVector *out_photons,
         const double wavelength,
         const double opening_angle,
         const uint64_t num_photons,
@@ -42,12 +42,12 @@ int mli_photon_source_point_like_opening_cone_towards_z(
                 struct mli_Vec direction =
                         mli_Vec_random_draw_direction_in_zenith_azimuth_range(
                                 zenith, azimuth, prng);
-                struct mliPhoton ph;
+                struct mli_Photon ph;
                 ph.ray.support = mli_Vec_init(0., 0., 0.);
                 ph.ray.direction = direction;
                 ph.wavelength = wavelength;
                 ph.id = i;
-                chk(mliDynPhoton_push_back(out_photons, ph));
+                chk(mli_PhotonVector_push_back(out_photons, ph));
         }
         return 1;
 chk_error:

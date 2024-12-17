@@ -9,10 +9,10 @@ CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
 
         /*
         const double production_distance_offset = 1e3;
-        struct mliDynPhoton merlict_photons = mliDynPhoton_init();
+        struct mli_PhotonVector merlict_photons = mli_PhotonVector_init();
         struct mliDynCorsikaPhotonBunch corsika_photons =
                 mliDynCorsikaPhotonBunch_init();
-        CHECK(mliDynPhoton_malloc(&merlict_photons, 0u));
+        CHECK(mli_PhotonVector_malloc(&merlict_photons, 0u));
         CHECK(mliDynCorsikaPhotonBunch_malloc(&corsika_photons, 0u));
 
         int64_t id = 0;
@@ -21,7 +21,7 @@ CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
                         for (float ux = -0.5; ux < 0.5; ux = ux + 0.11) {
                                 for (float vy = -0.5; vy < 0.5;
                                      vy = vy + 0.11) {
-                                        struct mliPhoton merlict_photon;
+                                        struct mli_Photon merlict_photon;
                                         struct mli_corsika_PhotonBunch
                                                 corsika_photon;
                                         corsika_photon.x_cm = x;
@@ -42,7 +42,7 @@ CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
                                                                 production_distance_offset,
                                                         id);
 
-                                        CHECK(mliDynPhoton_push_back(
+                                        CHECK(mli_PhotonVector_push_back(
                                                 &merlict_photons,
                                                 merlict_photon));
                                         id += 1;
@@ -85,7 +85,7 @@ CASE("EventIoPhotonFactoryTest: intersection_point_on_ground")
         CHECK(y * 1e-2 == Approx(sensor.photon_arrival_history[0].y_intersect)
                                   .margin(1e-6));
 
-        mliDynPhoton_free(&merlict_photons);
+        mli_PhotonVector_free(&merlict_photons);
         mliDynCorsikaPhotonBunch_free(&corsika_photons);
         */
 }

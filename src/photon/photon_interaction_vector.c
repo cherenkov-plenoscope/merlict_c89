@@ -1,12 +1,12 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliDynPhotonInteraction.h"
+#include "photon_interaction_vector.h"
 #include "../chk/chk.h"
 #include <stdlib.h>
 
-MLI_VECTOR_IMPLEMENTATION(mliDynPhotonInteraction, struct mliPhotonInteraction)
+MLI_VECTOR_IMPLEMENTATION(mli_PhotonInteractionVector, struct mli_PhotonInteraction)
 
-int mliDynPhotonInteraction_time_of_flight(
-        const struct mliDynPhotonInteraction *history,
+int mli_PhotonInteractionVector_time_of_flight(
+        const struct mli_PhotonInteractionVector *history,
         const struct mliScenery *scenery,
         const double wavelength,
         double *total_time_of_flight)
@@ -15,7 +15,7 @@ int mliDynPhotonInteraction_time_of_flight(
         (*total_time_of_flight) = 0.0;
         for (i = 0; i < history->size; i++) {
                 double time_of_flight = 0.0;
-                chk_msg(mli_time_of_flight(
+                chk_msg(mli_photon_time_of_flight(
                                 &scenery->materials,
                                 &history->array[i],
                                 wavelength,
@@ -28,8 +28,8 @@ chk_error:
         return 0;
 }
 
-void mliDynPhotonInteraction_print(
-        const struct mliDynPhotonInteraction *history,
+void mli_PhotonInteractionVector_print(
+        const struct mli_PhotonInteractionVector *history,
         const struct mliScenery *scenery)
 {
         uint64_t i;
@@ -53,7 +53,7 @@ void mliDynPhotonInteraction_print(
                "-----------------------------------------------------\n");
 
         for (i = 0; i < history->size; i++) {
-                struct mliPhotonInteraction phisec = history->array[i];
+                struct mli_PhotonInteraction phisec = history->array[i];
                 printf(" % 3d  ", (int32_t)i);
 
                 if (phisec.on_geometry_surface == 1) {
@@ -73,7 +73,7 @@ void mliDynPhotonInteraction_print(
                        phisec.position.y,
                        phisec.position.z);
 
-                mli_photoninteraction_type_to_string(phisec.type, type_string);
+                mli_photon_interaction_type_to_string(phisec.type, type_string);
 
                 printf("%-24s ", type_string);
 

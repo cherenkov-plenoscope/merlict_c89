@@ -4,7 +4,7 @@ CASE("simple propagation")
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         struct mliScenery scenery = mliScenery_init();
-        struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
+        struct mli_PhotonInteractionVector history = mli_PhotonInteractionVector_init();
         struct mliIntersectionSurfaceNormal intersection;
         struct mli_boundarylayer_Side side_coming_from, side_going_to;
         uint64_t max_interactions = 16;
@@ -12,7 +12,7 @@ CASE("simple propagation")
         uint64_t MED_VACUUM = 0;
         uint64_t MED_GLASS = 0;
 
-        struct mliPhoton photon;
+        struct mli_Photon photon;
         photon.ray = mli_Ray_set(mli_Vec_init(0, 0, -3), mli_Vec_init(0, 0, 1));
         photon.wavelength = 600e-9;
         photon.id = 0;
@@ -61,15 +61,15 @@ CASE("simple propagation")
         CHECK(scenery.materials.surfaces[side_coming_from.surface].material ==
               MLI_SURFACE_TRANSPARENT);
 
-        CHECK(mliDynPhotonInteraction_malloc(&history, max_interactions));
+        CHECK(mli_PhotonInteractionVector_malloc(&history, max_interactions));
 
         CHECK(mli_propagate_photon(
                 &scenery, &history, &photon, &prng, max_interactions));
 
         CHECK(history.size >= 1);
 
-        mliDynPhotonInteraction_print(&history, &scenery);
+        mli_PhotonInteractionVector_print(&history, &scenery);
 
         mliScenery_free(&scenery);
-        mliDynPhotonInteraction_free(&history);
+        mli_PhotonInteractionVector_free(&history);
 }

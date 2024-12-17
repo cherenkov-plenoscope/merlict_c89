@@ -80,7 +80,7 @@ void mli_corsika_PhotonBunch_to_raw(
         const struct mli_corsika_PhotonBunch *bunch,
         float *raw);
 
-struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
+struct mli_Photon mli_corsika_PhotonBunch_to_merlict_photon(
         const struct mli_corsika_PhotonBunch bunch,
         const double production_distance_offset,
         const int64_t id);

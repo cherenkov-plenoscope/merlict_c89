@@ -16,8 +16,8 @@ CASE("refraction_in_prism")
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         struct mliScenery scenery = mliScenery_init();
-        struct mliDynPhotonInteraction photon_history =
-                mliDynPhotonInteraction_init();
+        struct mli_PhotonInteractionVector photon_history =
+                mli_PhotonInteractionVector_init();
         struct mli_prng_UniformRange wavelength_range;
         const uint64_t NUM_PHOTONS = 10 * 1000;
         const uint64_t MAX_INTERACTIONS = 16;
@@ -48,8 +48,8 @@ CASE("refraction_in_prism")
         wavelength_range.range = 780e-9 - wavelength_range.start;
 
         for (i = 0; i < NUM_PHOTONS; i++) {
-                struct mliPhoton photon;
-                struct mliPhotonInteraction final_intersection;
+                struct mli_Photon photon;
+                struct mli_PhotonInteraction final_intersection;
                 uint64_t final_robj_id;
 
                 photon.ray = mli_Ray_set(
@@ -59,7 +59,7 @@ CASE("refraction_in_prism")
                         mli_prng_draw_uniform(wavelength_range, &prng);
                 photon.id = i;
 
-                CHECK(mliDynPhotonInteraction_malloc(
+                CHECK(mli_PhotonInteractionVector_malloc(
                         &photon_history, MAX_INTERACTIONS));
 
                 CHECK(mli_propagate_photon(
@@ -105,5 +105,5 @@ CASE("refraction_in_prism")
         CHECK(fraction_passing_prism > 0.8);
 
         mliScenery_free(&scenery);
-        mliDynPhotonInteraction_free(&photon_history);
+        mli_PhotonInteractionVector_free(&photon_history);
 }

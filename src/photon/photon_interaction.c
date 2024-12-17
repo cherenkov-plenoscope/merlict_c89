@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliPhotonInteraction.h"
+#include "photon_interaction.h"
 #include "../chk/chk.h"
 
-int mli_photoninteraction_type_to_string(const int32_t type, char *s)
+int mli_photon_interaction_type_to_string(const int32_t type, char *s)
 {
         switch (type) {
         case MLI_PHOTON_CREATION:
@@ -35,9 +35,9 @@ chk_error:
         return 0;
 }
 
-int mli_time_of_flight(
+int mli_photon_time_of_flight(
         const struct mli_Materials *materials,
-        const struct mliPhotonInteraction *phisec,
+        const struct mli_PhotonInteraction *phisec,
         const double wavelength,
         double *time_of_flight)
 {
@@ -50,7 +50,7 @@ int mli_time_of_flight(
                 "Failed to eval. refraction for wavelength.");
 
         (*time_of_flight) = (refractive_index * phisec->distance_of_ray) /
-                            MLI_VACUUM_SPPED_OF_LIGHT;
+                            MLI_PHOTON_VACUUM_SPPED_OF_LIGHT;
         return 1;
 chk_error:
         return 0;

@@ -3,12 +3,12 @@
 CASE("parallel_towards_z_from_xy_disc")
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
-        struct mliDynPhoton photons = mliDynPhoton_init();
+        struct mli_PhotonVector photons = mli_PhotonVector_init();
         const double disc_radius = 1.23;
         const double wavelength = 433e-9;
         const uint64_t num_photons = 1000;
         uint64_t i;
-        CHECK(mliDynPhoton_malloc(&photons, 0));
+        CHECK(mli_PhotonVector_malloc(&photons, 0));
 
         CHECK(mli_photon_source_parallel_towards_z_from_xy_disc(
                 &photons, wavelength, disc_radius, num_photons, &prng));
@@ -25,18 +25,18 @@ CASE("parallel_towards_z_from_xy_disc")
                 CHECK(photons.array[i].id == (int64_t)i);
         }
 
-        mliDynPhoton_free(&photons);
+        mli_PhotonVector_free(&photons);
 }
 
 CASE("point_like_towards_z")
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
-        struct mliDynPhoton photons = mliDynPhoton_init();
+        struct mli_PhotonVector photons = mli_PhotonVector_init();
         const double opening_angle = mli_math_deg2rad(1.0);
         const double wavelength = 433e-9;
         const uint64_t num_photons = 1000;
         uint64_t i;
-        CHECK(mliDynPhoton_malloc(&photons, 0));
+        CHECK(mli_PhotonVector_malloc(&photons, 0));
 
         CHECK(mli_photon_source_point_like_opening_cone_towards_z(
                 &photons, wavelength, opening_angle, num_photons, &prng));
@@ -56,5 +56,5 @@ CASE("point_like_towards_z")
                 CHECK(photons.array[i].id == (int64_t)i);
         }
 
-        mliDynPhoton_free(&photons);
+        mli_PhotonVector_free(&photons);
 }

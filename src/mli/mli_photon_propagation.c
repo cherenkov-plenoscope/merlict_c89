@@ -6,12 +6,12 @@
 #include "../chk/chk.h"
 #include <math.h>
 
-struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
+struct mli_PhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        struct mliPhotonInteraction phia;
+        struct mli_PhotonInteraction phia;
 
         struct mli_boundarylayer_Side side_coming_from, side_going_to;
 
@@ -66,7 +66,7 @@ int mli_propagate_photon_phong(
                0.0      diffuse      diffuse + specular                1.0
         */
         if (rnd < diffuse) {
-                chk(mliDynPhotonInteraction_push_back(
+                chk(mli_PhotonInteractionVector_push_back(
                         env->history,
                         mliPhotonInteraction_from_Intersection(
                                 MLI_PHOTON_DIFFUSE_REFLECTION,
@@ -79,7 +79,7 @@ int mli_propagate_photon_phong(
                 chk_msg(mli_propagate_photon_env(env),
                         "Failed to continue after diffuse reflection phong.");
         } else if (rnd < (specular + diffuse)) {
-                chk(mliDynPhotonInteraction_push_back(
+                chk(mli_PhotonInteractionVector_push_back(
                         env->history,
                         mliPhotonInteraction_from_Intersection(
                                 MLI_PHOTON_SPECULAR_REFLECTION,
@@ -93,7 +93,7 @@ int mli_propagate_photon_phong(
                 chk_msg(mli_propagate_photon_env(env),
                         "Failed to continue after specular reflection phong.");
         } else {
-                chk(mliDynPhotonInteraction_push_back(
+                chk(mli_PhotonInteractionVector_push_back(
                         env->history,
                         mliPhotonInteraction_from_Intersection(
                                 MLI_PHOTON_ABSORBTION, env->scenery, isec)));
@@ -108,7 +108,7 @@ int mli_propagate_photon_pass_boundary_layer(
         const struct mliIntersectionSurfaceNormal *isec,
         const struct mli_Fresnel fresnel)
 {
-        chk(mliDynPhotonInteraction_push_back(
+        chk(mli_PhotonInteractionVector_push_back(
                 env->history,
                 mliPhotonInteraction_from_Intersection(
                         MLI_PHOTON_REFRACTION, env->scenery, isec)));
@@ -123,7 +123,7 @@ chk_error:
 
 int mli_propagate_photon_probability_passing_medium_coming_from(
         const struct mliScenery *scenery,
-        const struct mliPhoton *photon,
+        const struct mli_Photon *photon,
         const struct mliIntersectionSurfaceNormal *isec,
         double *probability_passing)
 {
@@ -174,7 +174,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
                 n_going_to);
         reflection_propability = mli_Fresnel_reflection_propability(fresnel);
         if (reflection_propability > mli_Prng_uniform(env->prng)) {
-                chk(mliDynPhotonInteraction_push_back(
+                chk(mli_PhotonInteractionVector_push_back(
                         env->history,
                         mliPhotonInteraction_from_Intersection(
                                 MLI_PHOTON_FRESNEL_REFLECTION,
@@ -248,7 +248,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
         double distance_until_absorbtion = 0.0;
         struct mliIntersectionSurfaceNormal next_intersection;
         struct mli_Func *absorbtion_in_medium_passing_through;
-        struct mliPhotonInteraction phia;
+        struct mli_PhotonInteraction phia;
 
         ray_does_intersect_surface = mli_query_intersection_with_surface_normal(
                 env->scenery, env->photon->ray, &next_intersection);
@@ -285,7 +285,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
                         phia.medium_coming_from = side_coming_from.medium;
                         phia.medium_going_to = side_coming_from.medium;
 
-                        chk(mliDynPhotonInteraction_push_back(
+                        chk(mli_PhotonInteractionVector_push_back(
                                 env->history, phia));
                 }
 
@@ -304,7 +304,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
                         phia.medium_coming_from = side_coming_from.medium;
                         phia.medium_going_to = side_coming_from.medium;
 
-                        chk(mliDynPhotonInteraction_push_back(
+                        chk(mli_PhotonInteractionVector_push_back(
                                 env->history, phia));
                 } else {
                         chk_msg(mli_propagate_photon_interact_with_object(
@@ -338,7 +338,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
                         phia.medium_coming_from = default_medium;
                         phia.medium_going_to = default_medium;
 
-                        chk(mliDynPhotonInteraction_push_back(
+                        chk(mli_PhotonInteractionVector_push_back(
                                 env->history, phia));
                 }
 
@@ -355,7 +355,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
                 phia.medium_coming_from = default_medium;
                 phia.medium_going_to = default_medium;
 
-                chk(mliDynPhotonInteraction_push_back(env->history, phia));
+                chk(mli_PhotonInteractionVector_push_back(env->history, phia));
         }
 
         return 1;
@@ -376,8 +376,8 @@ chk_error:
 
 int mli_propagate_photon(
         const struct mliScenery *scenery,
-        struct mliDynPhotonInteraction *history,
-        struct mliPhoton *photon,
+        struct mli_PhotonInteractionVector *history,
+        struct mli_Photon *photon,
         struct mli_Prng *prng,
         const uint64_t max_interactions)
 {
