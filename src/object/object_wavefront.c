@@ -8,7 +8,7 @@
 #include "../string/string_numbers.h"
 #include "../mli/mliDynMap.h"
 #include "object_face_vector.h"
-#include "../mli/mliDynVec.h"
+#include "../vec/vec_vector.h"
 #include "../vector/uint32_vector.h"
 #include "../vector/double_vector.h"
 #include "../io/io_text.h"
@@ -523,8 +523,8 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
         struct mli_String susemtl = mli_String_init();
 
         /* init dyn */
-        struct mliDynVec v = mliDynVec_init();
-        struct mliDynVec vn = mliDynVec_init();
+        struct mli_VecVector v = mli_VecVector_init();
+        struct mli_VecVector vn = mli_VecVector_init();
 
         struct mli_object_FaceVector fv = mli_object_FaceVector_init();
         struct mli_object_FaceVector fvn = mli_object_FaceVector_init();
@@ -533,8 +533,8 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
         struct mliDynMap material_names = mliDynMap_init();
 
         /* malloc dyn */
-        chk(mliDynVec_malloc(&v, 0u));
-        chk(mliDynVec_malloc(&vn, 0u));
+        chk(mli_VecVector_malloc(&v, 0u));
+        chk(mli_VecVector_malloc(&vn, 0u));
 
         chk(mli_object_FaceVector_malloc(&fv, 0u));
         chk(mli_object_FaceVector_malloc(&fvn, 0u));
@@ -574,7 +574,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
                                         "vn can not be normalized.") tmp_vn =
                                         mli_Vec_normalized(tmp_vn);
 
-                                chk(mliDynVec_push_back(&vn, tmp_vn));
+                                chk(mli_VecVector_push_back(&vn, tmp_vn));
                         } else if (mli_String_starts_with(&line, &sv)) {
                                 struct mli_Vec tmp_v;
                                 chk(mli_String_copyn(
@@ -582,7 +582,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
                                 chk_msg(mli_Object_parse_three_float_line(
                                                 &tmp, &tmp_v),
                                         "Can not parse vertex-line.");
-                                chk(mliDynVec_push_back(&v, tmp_v));
+                                chk(mli_VecVector_push_back(&v, tmp_v));
                         } else if (mli_String_starts_with(&line, &sf)) {
                                 struct mli_object_Face tmp_fv;
                                 struct mli_object_Face tmp_fvn;
@@ -639,8 +639,8 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
         chk_msg(mli_Object_is_valid(obj), "Expected object to be valid.");
 
         /* free dyn */
-        mliDynVec_free(&v);
-        mliDynVec_free(&vn);
+        mli_VecVector_free(&v);
+        mli_VecVector_free(&vn);
 
         mli_object_FaceVector_free(&fv);
         mli_object_FaceVector_free(&fvn);
@@ -660,8 +660,8 @@ chk_error:
         mli_Object_free(obj);
 
         /* free dyn */
-        mliDynVec_free(&v);
-        mliDynVec_free(&vn);
+        mli_VecVector_free(&v);
+        mli_VecVector_free(&vn);
 
         mli_object_FaceVector_free(&fv);
         mli_object_FaceVector_free(&fvn);

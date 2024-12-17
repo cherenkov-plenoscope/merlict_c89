@@ -79,7 +79,7 @@ CASE("position_on_disc")
         uint64_t n_points = 1e6;
         double disc_radius = 1.337;
         double evaluation_disc_radius = disc_radius / 5.0;
-        struct mliDynVec points = mliDynVec_init();
+        struct mli_VecVector points = mli_VecVector_init();
         struct mli_DoubleVector counts_in_evaluation_bins =
                 mli_DoubleVector_init();
         uint64_t i = 0;
@@ -87,9 +87,9 @@ CASE("position_on_disc")
         double r, phi;
         double mean_count, std_count;
 
-        CHECK(mliDynVec_malloc(&points, n_points));
+        CHECK(mli_VecVector_malloc(&points, n_points));
         for (i = 0; i < n_points; i++)
-                CHECK(mliDynVec_push_back(
+                CHECK(mli_VecVector_push_back(
                         &points,
                         mli_random_position_on_disc(disc_radius, &prng)));
 
@@ -135,5 +135,5 @@ CASE("position_on_disc")
                 counts_in_evaluation_bins.size,
                 mean_count);
         CHECK(std_count / mean_count < 1e-2);
-        mliDynVec_free(&points);
+        mli_VecVector_free(&points);
 }
