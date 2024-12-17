@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIMEDIUM_JSON_H_
-#define MLIMEDIUM_JSON_H_
+#ifndef MLI_MEDIUM_JSON_H_
+#define MLI_MEDIUM_JSON_H_
 
 #include <stdint.h>
-#include "mliMedium.h"
+#include "medium.h"
 #include "../json/json.h"
 
 int mliMedium_malloc_from_json_string(

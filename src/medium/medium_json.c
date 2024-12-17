@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliMedium_json.h"
+#include "medium_json.h"
 #include "../func/func_json.h"
 #include "../chk/chk.h"
 

@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliMedium.h"
+#include "medium.h"
 
 struct mliMedium mliMedium_init(void)
 {

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIMEDIUM_H_
-#define MLIMEDIUM_H_
+#ifndef MLI_MEDIUM_H_
+#define MLI_MEDIUM_H_
 
 #include <stdint.h>
 #include "../func/func.h"

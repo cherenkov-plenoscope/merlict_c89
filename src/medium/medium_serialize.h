@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIMEDIUM_SERIALIZE_H_
-#define MLIMEDIUM_SERIALIZE_H_
+#ifndef MLI_MEDIUM_SERIALIZE_H_
+#define MLI_MEDIUM_SERIALIZE_H_
 
-#include "mliMedium.h"
+#include "medium.h"
 #include "../io/io.h"
 
 int mliMedium_to_io(const struct mliMedium *med, struct mli_IO *f);

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials_serialize.h"
-#include "mliMedium_serialize.h"
+#include "../medium/medium_serialize.h"
 #include "mliSurface_serialize.h"
 #include "../magicid/magicid.h"
 #include "../chk/chk.h"

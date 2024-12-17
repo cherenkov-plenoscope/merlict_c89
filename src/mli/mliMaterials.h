@@ -6,7 +6,7 @@
 #include "../object/object.h"
 #include "../func/func.h"
 #include "mliSurface.h"
-#include "mliMedium.h"
+#include "../medium/medium.h"
 #include "mliBoundaryLayer.h"
 #include "../string/string.h"
 

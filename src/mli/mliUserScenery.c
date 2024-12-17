@@ -12,7 +12,7 @@
 #include "mliUserScenery_json.h"
 #include "mliArchive.h"
 #include "../object/object_wavefront.h"
-#include "mliMedium_json.h"
+#include "../medium/medium_json.h"
 #include "mliFrame.h"
 #include "mliFrame_json.h"
 #include "mliSurface_json.h"
