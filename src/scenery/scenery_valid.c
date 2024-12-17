@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliScenery_valid.h"
+#include "scenery_valid.h"
 #include "../materials/materials_valid.h"
 #include "../geometry/geometry_valid.h"
 #include "../accelerator/accelerator_valid.h"
-#include "mliGeometryToMaterialMap_valid.h"
+#include "../mli/mliGeometryToMaterialMap_valid.h"
 #include "../chk/chk.h"
 
 int mliScenery_valid(const struct mliScenery *scenery)

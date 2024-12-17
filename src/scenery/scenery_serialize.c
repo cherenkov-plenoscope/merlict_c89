@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliScenery_serialize.h"
+#include "scenery_serialize.h"
 #include <math.h>
 #include <stdint.h>
 #include "../chk/chk.h"
@@ -7,7 +7,7 @@
 #include "../geometry/geometry_serialize.h"
 #include "../accelerator/accelerator_serialize.h"
 #include "../materials/materials_serialize.h"
-#include "mliGeometryToMaterialMap_serialize.h"
+#include "../mli/mliGeometryToMaterialMap_serialize.h"
 
 int mliScenery_to_io(const struct mliScenery *scenery, struct mli_IO *f)
 {

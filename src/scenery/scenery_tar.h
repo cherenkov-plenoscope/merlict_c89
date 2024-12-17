@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLISCENERY_TAR_H_
-#define MLISCENERY_TAR_H_
+#ifndef MLI_SCENERY_TAR_H_
+#define MLI_SCENERY_TAR_H_
 
-#include "mliScenery.h"
+#include "scenery.h"
 #include "../archive/archive.h"
 
 int mliScenery_from_io_tar(struct mliScenery *scenery, FILE *f);

@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLISCENERY_H_
-#define MLISCENERY_H_
+#ifndef MLI_SCENERY_H_
+#define MLI_SCENERY_H_
 
 #include "../geometry/geometry.h"
-#include "mliGeometryToMaterialMap.h"
+#include "../mli/mliGeometryToMaterialMap.h"
 #include "../materials/materials.h"
 #include "../accelerator/accelerator.h"
 

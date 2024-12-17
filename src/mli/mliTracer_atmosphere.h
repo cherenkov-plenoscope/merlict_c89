@@ -3,7 +3,7 @@
 #define MLITRACER_ATMOSPHERE_H_
 
 #include "../vec/vec.h"
-#include "mliScenery.h"
+#include "../scenery/scenery.h"
 #include "../color/color.h"
 #include "../ray/ray.h"
 #include "mliTracer.h"

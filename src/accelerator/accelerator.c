@@ -44,8 +44,7 @@ int mli_Accelerator_malloc(
         mli_Accelerator_free(self);
 
         self->num_objects = num_objects;
-        chk_malloc(
-                self->object_octrees, struct mli_OcTree, self->num_objects);
+        chk_malloc(self->object_octrees, struct mli_OcTree, self->num_objects);
         for (obj = 0; obj < self->num_objects; obj++) {
                 self->object_octrees[obj] = mli_OcTree_init();
         }

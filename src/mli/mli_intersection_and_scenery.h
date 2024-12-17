@@ -3,7 +3,7 @@
 #define MLI_INTERSECTION_AND_SCENERY_H_
 
 #include "mliIntersectionSurfaceNormal.h"
-#include "mliScenery.h"
+#include "../scenery/scenery.h"
 
 const struct mli_Func *mli_get_refractive_index_coming_from(
         const struct mliScenery *scenery,

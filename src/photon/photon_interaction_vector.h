@@ -4,7 +4,7 @@
 
 #include "photon_interaction.h"
 #include "../geometry/geometry.h"
-#include "../mli/mliScenery.h"
+#include "../scenery/scenery.h"
 #include "../vector/vector.h"
 
 MLI_VECTOR_DEFINITON(mli_PhotonInteractionVector, struct mli_PhotonInteraction)

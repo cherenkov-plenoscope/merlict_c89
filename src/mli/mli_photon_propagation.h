@@ -6,7 +6,7 @@
 
 #include "../photon/photon.h"
 #include "../photon/photon_interaction.h"
-#include "mliScenery.h"
+#include "../scenery/scenery.h"
 #include "../photon/photon_interaction_vector.h"
 #include "../prng/prng.h"
 #include "../fresnel/fresnel.h"

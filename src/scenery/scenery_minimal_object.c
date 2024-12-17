@@ -1,12 +1,12 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliScenery_minimal_object.h"
+#include "scenery_minimal_object.h"
 #include "../chk/chk.h"
 #include "../color/color.h"
 #include "../vec/vec_random.h"
 #include "../prng/prng.h"
 #include "../cstr/cstr.h"
 #include "../object/object_wavefront.h"
-#include "mliScenery_valid.h"
+#include "scenery_valid.h"
 
 int mli_Surface_malloc_random_phong(
         struct mli_Surface *srf,

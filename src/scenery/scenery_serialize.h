@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLISCENERY_SERIALIZE_H_
-#define MLISCENERY_SERIALIZE_H_
+#ifndef MLI_SCENERY_SERIALIZE_H_
+#define MLI_SCENERY_SERIALIZE_H_
 
-#include "mliScenery.h"
+#include "scenery.h"
 #include "../io/io.h"
 
 int mliScenery_to_io(const struct mliScenery *scenery, struct mli_IO *f);

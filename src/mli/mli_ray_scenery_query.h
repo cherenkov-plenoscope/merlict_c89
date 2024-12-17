@@ -9,7 +9,7 @@
 #include "../object/object.h"
 #include "../octree/octree.h"
 #include "../accelerator/accelerator.h"
-#include "mliScenery.h"
+#include "../scenery/scenery.h"
 #include "mliIntersection.h"
 #include "mliIntersectionSurfaceNormal.h"
 

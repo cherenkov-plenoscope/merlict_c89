@@ -1,11 +1,11 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliScenery_tar.h"
+#include "scenery_tar.h"
 #include <math.h>
 #include <stdint.h>
 #include "../chk/chk.h"
-#include "mliScenery_valid.h"
-#include "mli_frame_to_scenery.h"
-#include "mliUserScenery.h"
+#include "scenery_valid.h"
+#include "../mli/mli_frame_to_scenery.h"
+#include "../mli/mliUserScenery.h"
 #include "../frame/frame.h"
 
 int mliScenery_from_io_tar(struct mliScenery *scenery, FILE *f)
