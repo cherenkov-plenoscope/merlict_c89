@@ -4,7 +4,7 @@
 
 #include "accelerator.h"
 
-int mliAccelerator_equal(
-        const struct mliAccelerator *a,
-        const struct mliAccelerator *b);
+int mli_Accelerator_equal(
+        const struct mli_Accelerator *a,
+        const struct mli_Accelerator *b);
 #endif

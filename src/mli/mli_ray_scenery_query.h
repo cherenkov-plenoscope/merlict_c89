@@ -40,7 +40,7 @@ struct mliQueryInnerWork {
 struct mliQueryOuterWork {
         struct mliIntersection *intersection;
         const struct mli_Geometry *geometry;
-        const struct mliAccelerator *accelerator;
+        const struct mli_Accelerator *accelerator;
         struct mli_Ray ray_root;
 };
 

@@ -169,7 +169,7 @@ int mliScenery_malloc_minimal_from_wavefront(
                 mli_GeometryToMaterialMap_set(&scenery->geomap, 0u, i, i);
         }
 
-        chk_msg(mliAccelerator_malloc_from_Geometry(
+        chk_msg(mli_Accelerator_malloc_from_Geometry(
                         &scenery->accelerator, &scenery->geometry),
                 "Failed to malloc accelerator from geometry.");
 

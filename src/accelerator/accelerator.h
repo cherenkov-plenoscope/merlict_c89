@@ -6,7 +6,7 @@
 #include "../geometry/geometry.h"
 #include "../octree/octree.h"
 
-struct mliAccelerator {
+struct mli_Accelerator {
         uint32_t num_objects;
         struct mli_OcTree *object_octrees;
 
@@ -16,30 +16,30 @@ struct mliAccelerator {
         struct mli_OcTree scenery_octree;
 };
 
-struct mliAccelerator mliAccelerator_init(void);
+struct mli_Accelerator mli_Accelerator_init(void);
 
-void mliAccelerator_free(struct mliAccelerator *accel);
+void mli_Accelerator_free(struct mli_Accelerator *self);
 
-int mliAccelerator_malloc(
-        struct mliAccelerator *accel,
+int mli_Accelerator_malloc(
+        struct mli_Accelerator *self,
         const uint32_t num_objects,
         const uint32_t num_robjects);
 
-int mliAccelerator_malloc_from_Geometry(
-        struct mliAccelerator *accel,
+int mli_Accelerator_malloc_from_Geometry(
+        struct mli_Accelerator *self,
         const struct mli_Geometry *geometry);
 
-int mliAccelerator_set_robject_aabbs(
-        struct mliAccelerator *accel,
+int mli_Accelerator_set_robject_aabbs(
+        struct mli_Accelerator *self,
         const struct mli_Geometry *geometry);
 
-int mliAccelerator_set_object_octrees(
-        struct mliAccelerator *accel,
+int mli_Accelerator_set_object_octrees(
+        struct mli_Accelerator *self,
         const struct mli_Geometry *geometry);
 
-void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel);
+void mli_Accelerator_info_fprint(FILE *f, const struct mli_Accelerator *self);
 
-struct mli_AABB mliAccelerator_outermost_aabb(
-        const struct mliAccelerator *accel);
+struct mli_AABB mli_Accelerator_outermost_aabb(
+        const struct mli_Accelerator *self);
 
 #endif

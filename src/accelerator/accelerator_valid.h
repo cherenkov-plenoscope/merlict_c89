@@ -4,8 +4,8 @@
 
 #include "accelerator.h"
 
-int mliAccelerator_valid(const struct mliAccelerator *accel);
-int mliAccelerator_valid_wrt_Geometry(
-        const struct mliAccelerator *accel,
+int mli_Accelerator_valid(const struct mli_Accelerator *self);
+int mli_Accelerator_valid_wrt_Geometry(
+        const struct mli_Accelerator *self,
         const struct mli_Geometry *geometry);
 #endif

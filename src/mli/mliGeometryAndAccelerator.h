@@ -11,7 +11,7 @@ struct mli_GeometryAndAccelerator {
          * accelerator using only one pointer.
          */
         const struct mli_Geometry *geometry;
-        const struct mliAccelerator *accelerator;
+        const struct mli_Accelerator *accelerator;
 };
 
 #endif

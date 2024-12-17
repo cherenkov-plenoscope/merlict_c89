@@ -5,6 +5,8 @@
 #include "../io/io.h"
 #include "accelerator.h"
 
-int mliAccelerator_from_io(struct mliAccelerator *accel, struct mli_IO *f);
-int mliAccelerator_to_io(const struct mliAccelerator *accel, struct mli_IO *f);
+int mli_Accelerator_from_io(struct mli_Accelerator *self, struct mli_IO *f);
+int mli_Accelerator_to_io(
+        const struct mli_Accelerator *self,
+        struct mli_IO *f);
 #endif

@@ -13,13 +13,13 @@ int mliScenery_valid(const struct mliScenery *scenery)
                 "Expected materials to be valid.");
         chk_msg(mli_Geometry_valid(&scenery->geometry),
                 "Expected geometry to be valid.");
-        chk_msg(mliAccelerator_valid(&scenery->accelerator),
+        chk_msg(mli_Accelerator_valid(&scenery->accelerator),
                 "Expected accelerator to be valid");
         chk_msg(mli_GeometryToMaterialMap_valid(&scenery->geomap),
                 "Expected geometry-to-materials-map to be valid.");
 
         /* check interplay */
-        chk_msg(mliAccelerator_valid_wrt_Geometry(
+        chk_msg(mli_Accelerator_valid_wrt_Geometry(
                         &scenery->accelerator, &scenery->geometry),
                 "Expected accelerator to be valid w.r.t. geometry.");
         chk_msg(mli_GeometryToMaterialMap_valid_wrt_Geometry(

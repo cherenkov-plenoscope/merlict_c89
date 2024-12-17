@@ -3,9 +3,9 @@
 #include "../chk/chk.h"
 #include "../octree/octree_equal.h"
 
-int mliAccelerator_equal(
-        const struct mliAccelerator *a,
-        const struct mliAccelerator *b)
+int mli_Accelerator_equal(
+        const struct mli_Accelerator *a,
+        const struct mli_Accelerator *b)
 {
         uint32_t i = 0u;
         chk_msg(a->num_objects == b->num_objects,

@@ -105,7 +105,7 @@ int mliScenery_malloc_from_Archive(
         mli_Map_free(&object_names);
         mli_Frame_free(&root);
 
-        chk_msg(mliAccelerator_malloc_from_Geometry(
+        chk_msg(mli_Accelerator_malloc_from_Geometry(
                         &scenery->accelerator, &scenery->geometry),
                 "Failed to malloc accelerator from geometry.");
 

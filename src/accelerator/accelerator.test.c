@@ -1,12 +1,12 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("mliAccelerator, init")
+CASE("mli_Accelerator, init")
 {
-        struct mliAccelerator accel = mliAccelerator_init();
+        struct mli_Accelerator accel = mli_Accelerator_init();
         CHECK(accel.num_robjects == 0u);
 }
 
-CASE("mliAccelerator, init")
+CASE("mli_Accelerator, init")
 {
         struct mliScenery scenery = mliScenery_init();
         struct mli_Color color;

@@ -139,14 +139,14 @@ CASE("mliScenery, read, write")
         /* accelerator */
         /* ----------- */
         CHECK(mli_IO__open_file_cstr(&f, acce_path, "w"));
-        CHECK(mliAccelerator_to_io(&orig.accelerator, &f));
+        CHECK(mli_Accelerator_to_io(&orig.accelerator, &f));
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, acce_path, "r"));
-        CHECK(mliAccelerator_from_io(&back.accelerator, &f));
+        CHECK(mli_Accelerator_from_io(&back.accelerator, &f));
         mli_IO_close(&f);
 
-        CHECK(mliAccelerator_equal(&back.accelerator, &orig.accelerator));
+        CHECK(mli_Accelerator_equal(&back.accelerator, &orig.accelerator));
 
         /* geomap */
         /* ------ */
