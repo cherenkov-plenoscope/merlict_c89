@@ -6,7 +6,7 @@
 #include "../json/json.h"
 #include "mliFrame.h"
 #include "../object/object.h"
-#include "mliDynMap.h"
+#include "../map/map.h"
 
 int mliFrame_from_json(
         struct mliFrame *mother,

@@ -39,6 +39,7 @@ module_paths = [
     os.path.join("src", "cstr"),
     os.path.join("src", "string"),
     os.path.join("src", "argv"),
+    os.path.join("src", "map"),
     os.path.join("src", "path"),
     os.path.join("src", "prng"),
     os.path.join("src", "io"),

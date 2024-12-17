@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliFrame_json.h"
 #include "../chk/chk.h"
-#include "mliDynMap_json.h"
+#include "../map/map_json.h"
 #include "../vec/vec_json.h"
 #include "../quaternion/quaternion_json.h"
 

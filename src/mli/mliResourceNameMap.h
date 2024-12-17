@@ -2,7 +2,7 @@
 #ifndef MLI_RESOURCENAMEMAP_H_
 #define MLI_RESOURCENAMEMAP_H_
 
-#include "mliDynMap.h"
+#include "../map/map.h"
 
 struct mli_ResourceNameMap {
         struct mliDynMap media;

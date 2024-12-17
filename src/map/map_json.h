@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIDYNMAP_JSON_H_
-#define MLIDYNMAP_JSON_H_
+#ifndef MLI_MAP_JSON_H_
+#define MLI_MAP_JSON_H_
 
 #include <stdint.h>
 #include "../json/json.h"
-#include "mliDynMap.h"
+#include "map.h"
 
 int mliDynMap_get_value_for_string_from_json(
         const struct mliDynMap *map,

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIMAP_H_
-#define MLIMAP_H_
+#ifndef MLI_MAP_H_
+#define MLI_MAP_H_
 
 #include <stdint.h>
 #include "../string/string.h"

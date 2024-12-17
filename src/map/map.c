@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliDynMap.h"
+#include "map.h"
 #include "../chk/chk.h"
 
 MLI_VECTOR_IMPLEMENTATION(mli_VectorMapItem, struct mliMapItem)

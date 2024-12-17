@@ -8,7 +8,7 @@
 #include "../array/array.h"
 #include "../string/string.h"
 #include "../string/string_vector.h"
-#include "mliDynMap.h"
+#include "../map/map.h"
 
 struct mliArchive {
         struct mli_StringVector textfiles;

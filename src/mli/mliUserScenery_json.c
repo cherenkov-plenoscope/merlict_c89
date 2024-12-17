@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliUserScenery_json.h"
-#include "mliDynMap_json.h"
+#include "../map/map_json.h"
 #include "../vec/vec_json.h"
 #include "../color/color_json.h"
 #include "mliMaterials.h"

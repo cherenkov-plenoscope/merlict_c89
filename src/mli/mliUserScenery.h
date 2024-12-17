@@ -2,7 +2,7 @@
 #ifndef MLIUSERSCENERY_H_
 #define MLIUSERSCENERY_H_
 
-#include "mliDynMap.h"
+#include "../map/map.h"
 #include "mliResourceNameMap.h"
 
 struct mliMaterials;
