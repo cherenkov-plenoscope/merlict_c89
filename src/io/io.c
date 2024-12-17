@@ -80,18 +80,18 @@ int mli_IO_close(struct mli_IO *self)
 }
 
 size_t mli_IO_write(
-        struct mli_IO *self,
         const void *ptr,
         const size_t size,
-        const size_t count)
+        const size_t count,
+        struct mli_IO *self)
 {
         size_t rc = 0;
         switch (self->type) {
         case MLI_IO_TYPE_MEMORY:
-                rc = mli_IoMemory_write(&self->data.memory, ptr, size, count);
+                rc = mli_IoMemory_write(ptr, size, count, &self->data.memory);
                 break;
         case MLI_IO_TYPE_FILE:
-                rc = mli_IoFile_write(&self->data.file, ptr, size, count);
+                rc = mli_IoFile_write(ptr, size, count, &self->data.file);
                 break;
         default:
                 rc = 0;
@@ -100,18 +100,18 @@ size_t mli_IO_write(
 }
 
 size_t mli_IO_read(
-        struct mli_IO *self,
         void *ptr,
         const size_t size,
-        const size_t count)
+        const size_t count,
+        struct mli_IO *self)
 {
         size_t rc;
         switch (self->type) {
         case MLI_IO_TYPE_MEMORY:
-                rc = mli_IoMemory_read(&self->data.memory, ptr, size, count);
+                rc = mli_IoMemory_read(ptr, size, count, &self->data.memory);
                 break;
         case MLI_IO_TYPE_FILE:
-                rc = mli_IoFile_read(&self->data.file, ptr, size, count);
+                rc = mli_IoFile_read(ptr, size, count, &self->data.file);
                 break;
         default:
                 rc = 0;

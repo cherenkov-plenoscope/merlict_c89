@@ -23,15 +23,15 @@ struct mli_IoMemory mli_IoMemory_init(void);
 int mli_IoMemory_close(struct mli_IoMemory *self);
 int mli_IoMemory_open(struct mli_IoMemory *self);
 size_t mli_IoMemory_write(
-        struct mli_IoMemory *self,
         const void *ptr,
         const size_t size,
-        const size_t count);
+        const size_t count,
+        struct mli_IoMemory *self);
 size_t mli_IoMemory_read(
-        struct mli_IoMemory *self,
         void *ptr,
         const size_t size,
-        const size_t count);
+        const size_t count,
+        struct mli_IoMemory *self);
 void mli_IoMemory_rewind(struct mli_IoMemory *self);
 int64_t mli_IoMemory_tell(struct mli_IoMemory *self);
 int64_t mli_IoMemory_seek(

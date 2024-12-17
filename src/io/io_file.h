@@ -19,15 +19,15 @@ int mli_IoFile_open(
         const struct mli_String *mode);
 int mli_IoFile_adopt_cfile(struct mli_IoFile *self, FILE *cfile);
 size_t mli_IoFile_write(
-        struct mli_IoFile *self,
         const void *ptr,
         const size_t size,
-        const size_t count);
+        const size_t count,
+        struct mli_IoFile *self);
 size_t mli_IoFile_read(
-        struct mli_IoFile *self,
         void *ptr,
         const size_t size,
-        const size_t count);
+        const size_t count,
+        struct mli_IoFile *self);
 void mli_IoFile_rewind(struct mli_IoFile *self);
 int64_t mli_IoFile_tell(struct mli_IoFile *self);
 int64_t mli_IoFile_seek(

@@ -30,10 +30,10 @@ CASE("mli_IO_open_file")
 
         CHECK(mli_String_from_cstr(&payload, "A simple text."));
         CHECK(mli_IO_write(
-                &fstream,
                 (void *)(&payload.array),
                 sizeof(char),
-                payload.size));
+                payload.size,
+                &fstream));
 
         mli_IO_close(&fstream);
 
@@ -44,11 +44,11 @@ CASE("mli_IO_open_file")
         while (1) {
                 char c;
                 size_t rc =
-                        mli_IO_read(&fstream, (void *)(&c), sizeof(char), 1);
+                        mli_IO_read((void *)(&c), sizeof(char), 1, &fstream);
                 if (rc == 0) {
                         break;
                 }
-                CHECK(mli_IO_write(&mstream, (void *)(&c), sizeof(char), 1));
+                CHECK(mli_IO_write((void *)(&c), sizeof(char), 1, &mstream));
         }
         CHECK(mli_IO_tell(&mstream) == (int64_t)payload.size);
 

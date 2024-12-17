@@ -33,15 +33,15 @@ int mli_IO__open_file_cstr(
         const char *filename,
         const char *mode);
 size_t mli_IO_write(
-        struct mli_IO *self,
         const void *ptr,
         const size_t size,
-        const size_t count);
+        const size_t count,
+        struct mli_IO *self);
 size_t mli_IO_read(
-        struct mli_IO *self,
         void *ptr,
         const size_t size,
-        const size_t count);
+        const size_t count,
+        struct mli_IO *self);
 void mli_IO_rewind(struct mli_IO *self);
 int64_t mli_IO_tell(struct mli_IO *self);
 int64_t mli_IO_seek(

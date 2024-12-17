@@ -121,7 +121,7 @@ CASE("BytesIo_write_rewind_read")
 
         CHECK(mli_IoMemory_open(&byt));
 
-        rc = mli_IoMemory_write(&byt, evth, sizeof(float), 273);
+        rc = mli_IoMemory_write(evth, sizeof(float), 273, &byt);
         CHECK(rc == 273);
 
         CHECK(byt.cstr != NULL);
@@ -132,14 +132,14 @@ CASE("BytesIo_write_rewind_read")
         mli_IoMemory_rewind(&byt);
         CHECK(byt.pos == 0u);
 
-        rc = mli_IoMemory_read(&byt, back, sizeof(float), 273);
+        rc = mli_IoMemory_read(back, sizeof(float), 273, &byt);
         CHECK(rc == 273);
 
         for (i = 0; i < 273; i++) {
                 CHECK(evth[i] == back[i]);
         }
 
-        rc = mli_IoMemory_read(&byt, back, sizeof(float), 1);
+        rc = mli_IoMemory_read(back, sizeof(float), 1, &byt);
         CHECK(rc == 0);
 
         mli_IoMemory_close(&byt);

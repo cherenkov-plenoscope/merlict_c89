@@ -152,10 +152,10 @@ int mli_IoMemory__read_unsigned_char(
 }
 
 size_t mli_IoMemory_write(
-        struct mli_IoMemory *self,
         const void *ptr,
         const size_t size,
-        const size_t count)
+        const size_t count,
+        struct mli_IoMemory *self)
 {
         const size_t block_size = size * count;
         unsigned char *block = (unsigned char *)ptr;
@@ -169,10 +169,10 @@ chk_error:
 }
 
 size_t mli_IoMemory_read(
-        struct mli_IoMemory *self,
         void *ptr,
         const size_t size,
-        const size_t count)
+        const size_t count,
+        struct mli_IoMemory *self)
 {
         const size_t block_size = size * count;
         unsigned char *block = (unsigned char *)ptr;
@@ -238,7 +238,7 @@ int mli_IoMemory__write_cstr(struct mli_IoMemory *self, const char *cstr)
         size_t i = 0;
         while (cstr[i] != '\0') {
                 chk(mli_IoMemory_write(
-                        self, (unsigned char *)(&cstr[i]), sizeof(char), 1));
+                        (unsigned char *)(&cstr[i]), sizeof(char), 1, self));
                 i += 1;
         }
 

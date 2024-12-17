@@ -13,7 +13,7 @@ int mli_Tar_read_data_to_IO(
         for (i = 0; i < size; i++) {
                 unsigned char c;
                 chk(mli_Tar_read_data(tar, (void *)(&c), 1));
-                chk(mli_IO_write(buff, (void *)(&c), sizeof(unsigned char), 1));
+                chk(mli_IO_write((void *)(&c), sizeof(unsigned char), 1, buff));
         }
 
         return 1;
@@ -30,7 +30,7 @@ int mli_Tar_write_data_from_IO(
         chk_msg(tar->stream, "tar is not open.");
         for (i = 0; i < size; i++) {
                 unsigned char c;
-                chk(mli_IO_read(buff, (void *)(&c), sizeof(unsigned char), 1));
+                chk(mli_IO_read((void *)(&c), sizeof(unsigned char), 1, buff));
                 chk(mli_Tar_write_data(tar, (void *)(&c), 1));
         }
 

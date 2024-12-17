@@ -46,14 +46,14 @@ CASE("mli_IoFile_open_write_close_open_read_close")
         CHECK(mli_String_from_cstr(&mode, "w"));
 
         CHECK(mli_IoFile_open(&ff, &filename, &mode));
-        CHECK(mli_IoFile_write(&ff, (void *)(&payload), sizeof(uint64_t), 1));
+        CHECK(mli_IoFile_write((void *)(&payload), sizeof(uint64_t), 1, &ff));
         CHECK(mli_IoFile_close(&ff));
 
         CHECK(payload != back);
         CHECK(mli_String_from_cstr(&mode, "r"));
 
         CHECK(mli_IoFile_open(&ff, &filename, &mode));
-        CHECK(mli_IoFile_read(&ff, (void *)(&back), sizeof(uint64_t), 1));
+        CHECK(mli_IoFile_read((void *)(&back), sizeof(uint64_t), 1, &ff));
         CHECK(mli_IoFile_close(&ff));
 
         CHECK(payload == back);

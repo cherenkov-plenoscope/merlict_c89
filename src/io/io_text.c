@@ -9,7 +9,7 @@
 int mli_IO_text_getc(struct mli_IO *self)
 {
         char c = EOF;
-        size_t rc = mli_IO_read(self, (void *)(&c), sizeof(char), 1);
+        size_t rc = mli_IO_read((void *)(&c), sizeof(char), 1, self);
         if (rc == 0) {
                 return EOF;
         } else {
@@ -19,7 +19,7 @@ int mli_IO_text_getc(struct mli_IO *self)
 
 int mli_IO_text_putc(struct mli_IO *self, const char c)
 {
-        chk_msg(mli_IO_write(self, (void *)(&c), sizeof(char), 1),
+        chk_msg(mli_IO_write((void *)(&c), sizeof(char), 1, self),
                 "Can not write char to IO.");
         return 1;
 chk_error:

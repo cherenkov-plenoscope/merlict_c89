@@ -47,10 +47,10 @@ int mli_IoFile_adopt_cfile(struct mli_IoFile *self, FILE *cfile)
 }
 
 size_t mli_IoFile_write(
-        struct mli_IoFile *self,
         const void *ptr,
         const size_t size,
-        const size_t count)
+        const size_t count,
+        struct mli_IoFile *self)
 {
         const size_t actual_count = fwrite(ptr, size, count, self->cfile);
         chk_msg(actual_count == count, "Can not write to file.");
@@ -60,10 +60,10 @@ chk_error:
 }
 
 size_t mli_IoFile_read(
-        struct mli_IoFile *self,
         void *ptr,
         const size_t size,
-        const size_t count)
+        const size_t count,
+        struct mli_IoFile *self)
 {
         const size_t actual_count = fread(ptr, size, count, self->cfile);
         chk_msg(actual_count == count, "Can not read from file.");
