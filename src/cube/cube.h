@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLICUBE_H_
-#define MLICUBE_H_
+#ifndef MLI_CUBE_H_
+#define MLI_CUBE_H_
 
 #include <stdint.h>
 #include "../vec/vec.h"

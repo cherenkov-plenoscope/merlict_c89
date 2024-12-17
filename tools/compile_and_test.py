@@ -53,6 +53,7 @@ module_paths = [
     os.path.join("src", "aabb"),
     os.path.join("src", "ray"),
     os.path.join("src", "mat"),
+    os.path.join("src", "cube"),
     os.path.join("src", "quaternion"),
     os.path.join("src", "homtra"),
     os.path.join("src", "object"),

@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../mli/mliGeometry.h"
 #include "../aabb/aabb.h"
-#include "../mli/mliCube.h"
+#include "../cube/cube.h"
 #include "octree_overlaps.h"
 
 #define MLI_OCTREE_TMPNODE_FLAT_INDEX_NONE -1

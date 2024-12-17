@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliCube.h"
+#include "cube.h"
 #include "../math/math.h"
 
 struct mli_Vec mliCube_upper(const struct mliCube a)
