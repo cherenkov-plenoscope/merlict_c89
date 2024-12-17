@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "func_csv.h"
-#include "../mli/mliDynDouble.h"
+#include "../vector/double_vector.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
 #include "../string/string_numbers.h"

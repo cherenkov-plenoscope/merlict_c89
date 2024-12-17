@@ -4,8 +4,7 @@
 
 #include <stdint.h>
 #include "../homtra/homtra.h"
-#include "../vector/vector.h"
-#include "mliDynUint32.h"
+#include "../vector/uint32_vector.h"
 #include "mliDynFramePtr.h"
 
 #define MLI_FRAME 1000u

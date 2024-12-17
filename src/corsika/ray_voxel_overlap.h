@@ -4,8 +4,8 @@
 
 #include <stdint.h>
 #include "CorsikaPhotonBunch.h"
-#include "../mli/mliDynUint32.h"
-#include "../mli/mliDynDouble.h"
+#include "../vector/uint32_vector.h"
+#include "../vector/double_vector.h"
 
 void mli_corsika_overlap_of_ray_with_voxels(
         const struct mli_corsika_PhotonBunch *bunch,

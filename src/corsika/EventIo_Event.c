@@ -2,7 +2,7 @@
 #include "EventIo_Event.h"
 #include "EventIo_Run.h"
 #include "../chk/chk.h"
-#include "../mli/mliDynFloat.h"
+#include "../array/float_array.h"
 #include <math.h>
 
 int mliEventIo_read_telescope_offsets(

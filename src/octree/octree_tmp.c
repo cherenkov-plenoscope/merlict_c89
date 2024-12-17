@@ -2,7 +2,7 @@
 #include "octree_tmp.h"
 #include "../math/math.h"
 #include "../object/object_AABB.h"
-#include "../mli/mliDynUint32.h"
+#include "../vector/uint32_vector.h"
 #include "../chk/chk.h"
 
 uint64_t mli_octree_guess_depth_based_on_num_objects(const uint64_t num_objects)
