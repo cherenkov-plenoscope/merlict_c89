@@ -37,6 +37,7 @@ module_paths = [
     os.path.join("src", "vector"),
     os.path.join("src", "array"),
     os.path.join("src", "cstr"),
+    os.path.join("src", "archive"),
     os.path.join("src", "string"),
     os.path.join("src", "argv"),
     os.path.join("src", "map"),

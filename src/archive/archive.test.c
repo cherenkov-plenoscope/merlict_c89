@@ -1,14 +1,14 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("mliArchive, read tar")
+CASE("mli_Archive, read tar")
 {
-        struct mliArchive arc = mliArchive_init();
+        struct mli_Archive arc = mli_Archive_init();
         struct mli_String *data = NULL;
         struct mli_IO io = mli_IO_init();
         struct mli_Object triangle = mli_Object_init();
         struct mli_String tmp = mli_String_init();
 
-        CHECK(mliArchive_from_path(
+        CHECK(mli_Archive_from_path(
                 &arc,
                 "data/"
                 "mli/"
@@ -16,26 +16,26 @@ CASE("mliArchive, read tar")
                 "resources/"
                 "sceneries/"
                 "000.tar"));
-        CHECK(mliArchive_size(&arc) == 13);
+        CHECK(mli_Archive_size(&arc) == 13);
 
-        CHECK(1 == mliArchive_num_filename_prefix_sufix(
+        CHECK(1 == mli_Archive_num_filename_prefix_sufix(
                            &arc, "materials/media", ".json"));
 
-        CHECK(1 == mliArchive_num_filename_prefix_sufix(
+        CHECK(1 == mli_Archive_num_filename_prefix_sufix(
                            &arc, "geometry/objects/", ".obj"));
 
-        CHECK(1 == mliArchive_num_filename_prefix_sufix(&arc, "", ".md"));
+        CHECK(1 == mli_Archive_num_filename_prefix_sufix(&arc, "", ".md"));
 
         CHECK(mli_String_from_cstr(&tmp, "README.md"));
-        CHECK(mliArchive_has(&arc, &tmp));
+        CHECK(mli_Archive_has(&arc, &tmp));
 
         CHECK(mli_String_from_cstr(&tmp, "geometry/objects/"));
-        CHECK(mliArchive_has(&arc, &tmp));
+        CHECK(mli_Archive_has(&arc, &tmp));
 
         CHECK(mli_String_from_cstr(&tmp, "geometry/objects/triangle.obj"));
-        CHECK(mliArchive_has(&arc, &tmp));
+        CHECK(mli_Archive_has(&arc, &tmp));
 
-        CHECK(mliArchive_get(&arc, &tmp, &data));
+        CHECK(mli_Archive_get(&arc, &tmp, &data));
 
         CHECK(mli_IO_open_memory(&io));
         CHECK(mli_IO_text_write_String(&io, data));
@@ -46,10 +46,10 @@ CASE("mliArchive, read tar")
         CHECK(triangle.num_faces == 1);
 
         CHECK(mli_String_from_cstr(&tmp, "does-not-exist"));
-        CHECK(!mliArchive_has(&arc, &tmp));
+        CHECK(!mli_Archive_has(&arc, &tmp));
 
         mli_String_free(&tmp);
         mli_IO_close(&io);
-        mliArchive_free(&arc);
+        mli_Archive_free(&arc);
         mli_Object_free(&triangle);
 }

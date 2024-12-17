@@ -1,44 +1,43 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliArchive.h"
+#include "archive.h"
 #include "../chk/chk.h"
-#include "../string/string.h"
 #include "../path/path.h"
 #include "../cstr/cstr.h"
-#include "../json/json.h"
+#include "../string/string.h"
 #include "../tar/tar.h"
 
-struct mliArchive mliArchive_init(void)
+struct mli_Archive mli_Archive_init(void)
 {
-        struct mliArchive arc;
-        arc.textfiles = mli_StringVector_init();
-        arc.filenames = mli_Map_init();
-        return arc;
+        struct mli_Archive out;
+        out.textfiles = mli_StringVector_init();
+        out.filenames = mli_Map_init();
+        return out;
 }
 
-void mliArchive_free(struct mliArchive *arc)
+void mli_Archive_free(struct mli_Archive *self)
 {
         uint64_t i;
-        for (i = 0; i < arc->textfiles.size; i++) {
-                struct mli_String *str = &arc->textfiles.array[i];
+        for (i = 0; i < self->textfiles.size; i++) {
+                struct mli_String *str = &self->textfiles.array[i];
                 mli_String_free(str);
         }
-        mli_StringVector_free(&arc->textfiles);
-        mli_Map_free(&arc->filenames);
-        (*arc) = mliArchive_init();
+        mli_StringVector_free(&self->textfiles);
+        mli_Map_free(&self->filenames);
+        (*self) = mli_Archive_init();
 }
 
-int mliArchive_malloc(struct mliArchive *arc)
+int mli_Archive_malloc(struct mli_Archive *self)
 {
-        mliArchive_free(arc);
-        chk(mli_StringVector_malloc(&arc->textfiles, 0u));
-        chk(mli_Map_malloc(&arc->filenames));
+        mli_Archive_free(self);
+        chk(mli_StringVector_malloc(&self->textfiles, 0u));
+        chk(mli_Map_malloc(&self->filenames));
         return 1;
 chk_error:
         return 0;
 }
 
-int mliArchive_push_back(
-        struct mliArchive *arc,
+int mli_Archive_push_back(
+        struct mli_Archive *self,
         const struct mli_String *filename,
         const struct mli_String *payload)
 {
@@ -46,25 +45,25 @@ int mliArchive_push_back(
         struct mli_String *text = NULL;
         chk_msg(filename->size < MLI_TAR_NAME_LENGTH,
                 "Expected shorter filename.");
-        next = mli_Map_size(&arc->filenames);
+        next = mli_Map_size(&self->filenames);
 
         /* filename */
         /* ======== */
-        chk_msg(mli_Map_insert(&arc->filenames, filename, next),
+        chk_msg(mli_Map_insert(&self->filenames, filename, next),
                 "Can not insert key.");
 
         /* payload */
         /* ======= */
-        chk_msg(mli_StringVector_push_back(&arc->textfiles, mli_String_init()),
+        chk_msg(mli_StringVector_push_back(&self->textfiles, mli_String_init()),
                 "Can not push back mli_String.");
-        text = &arc->textfiles.array[next];
+        text = &self->textfiles.array[next];
         chk_msg(mli_String_copy(text, payload), "Can not copy payload.");
         return 1;
 chk_error:
         return 0;
 }
 
-int mliArchive_from_file(struct mliArchive *arc, FILE *f)
+int mli_Archive_from_file(struct mli_Archive *self, FILE *f)
 {
         struct mli_Tar tar = mli_Tar_init();
         struct mli_TarHeader tarh = mli_TarHeader_init();
@@ -73,7 +72,7 @@ int mliArchive_from_file(struct mliArchive *arc, FILE *f)
 
         char tarh_name[MLI_TAR_NAME_LENGTH] = {'\0'};
 
-        chk_msg(mliArchive_malloc(arc), "Can not malloc archive.");
+        chk_msg(mli_Archive_malloc(self), "Can not malloc selfhive.");
         chk_msg(mli_Tar_read_begin(&tar, f), "Can't begin tar.");
 
         while (mli_Tar_read_header(&tar, &tarh)) {
@@ -95,8 +94,8 @@ int mliArchive_from_file(struct mliArchive *arc, FILE *f)
                 chk_msg(mli_cstr_assert_only_NUL_LF_TAB_controls(payload.array),
                         "Did not expect control codes other than "
                         "('\\n', '\\t', '\\0') in textfiles.");
-                chk_msg(mliArchive_push_back(arc, &filename, &payload),
-                        "Can not push back file into archive.");
+                chk_msg(mli_Archive_push_back(self, &filename, &payload),
+                        "Can not push back file into selfhive.");
         }
 
         chk_msg(mli_Tar_read_finalize(&tar), "Can't finalize reading tar.");
@@ -107,58 +106,59 @@ chk_error:
         fprintf(stderr, "tar->filename: '%s'.\n", tarh_name);
         mli_String_free(&payload);
         mli_String_free(&filename);
-        mliArchive_free(arc);
+        mli_Archive_free(self);
         return 0;
 }
 
-int mliArchive_from_path(struct mliArchive *arc, const char *path)
+int mli_Archive_from_path(struct mli_Archive *self, const char *path)
 {
         FILE *f = fopen(path, "rb");
-        chk_msgf(f != NULL, ("Can't open path '%s'.", path)) chk_msg(
-                mliArchive_from_file(arc, f), "Can't fread Archive from file.");
+        chk_msgf(f != NULL, ("Can't open path '%s'.", path))
+                chk_msg(mli_Archive_from_file(self, f),
+                        "Can't fread Archive from file.");
         fclose(f);
         return 1;
 chk_error:
         return 0;
 }
 
-int mliArchive_has(
-        const struct mliArchive *arc,
+int mli_Archive_has(
+        const struct mli_Archive *self,
         const struct mli_String *filename)
 {
-        return mli_Map_has(&arc->filenames, filename);
+        return mli_Map_has(&self->filenames, filename);
 }
 
-int mliArchive_get(
-        const struct mliArchive *arc,
+int mli_Archive_get(
+        const struct mli_Archive *self,
         const struct mli_String *filename,
         struct mli_String **str)
 {
         uint64_t idx;
         struct mli_String *txt = NULL;
-        chk(mli_Map_find(&arc->filenames, filename, &idx));
-        txt = &arc->textfiles.array[idx];
+        chk(mli_Map_find(&self->filenames, filename, &idx));
+        txt = &self->textfiles.array[idx];
         (*str) = txt;
         return 1;
 chk_error:
         return 0;
 }
 
-uint64_t mliArchive_size(const struct mliArchive *arc)
+uint64_t mli_Archive_size(const struct mli_Archive *self)
 {
-        return mli_Map_size(&arc->filenames);
+        return mli_Map_size(&self->filenames);
 }
 
-uint64_t mliArchive_num_filename_prefix_sufix(
-        const struct mliArchive *arc,
+uint64_t mli_Archive_num_filename_prefix_sufix(
+        const struct mli_Archive *self,
         const char *prefix,
         const char *sufix)
 {
         uint64_t i = 0;
         uint64_t match;
         uint64_t num_matches = 0;
-        for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliMapItem *item = &arc->filenames.items.array[i];
+        for (i = 0; i < self->textfiles.size; i++) {
+                struct mliMapItem *item = &self->filenames.items.array[i];
 
                 if (mli_String_starts_with_cstr(&item->key, prefix) &&
                     mli_String_ends_with_cstr(&item->key, sufix)) {

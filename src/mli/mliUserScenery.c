@@ -10,7 +10,7 @@
 #include "../io/io_text.h"
 #include "../path/path.h"
 #include "mliUserScenery_json.h"
-#include "mliArchive.h"
+#include "../archive/archive.h"
 #include "../object/object_wavefront.h"
 #include "../medium/medium_json.h"
 #include "../frame/frame.h"
@@ -20,7 +20,7 @@
 int mli_set_geometry_objects_and_names_from_archive(
         struct mliGeometry *geometry,
         struct mli_Map *object_names,
-        const struct mliArchive *archive)
+        const struct mli_Archive *archive)
 {
         uint64_t arc_idx = 0u;
         uint64_t obj_idx = 0u;
@@ -31,7 +31,7 @@ int mli_set_geometry_objects_and_names_from_archive(
         chk_dbg;
         /* objects */
         obj_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_size(archive); arc_idx++) {
+        for (arc_idx = 0u; arc_idx < mli_Archive_size(archive); arc_idx++) {
                 struct mli_String *filename =
                         &archive->filenames.items.array[arc_idx].key;
 
@@ -84,7 +84,7 @@ chk_error:
 int mli_Materials_malloc_form_archive(
         struct mli_Materials *materials,
         struct mli_ResourceNameMap *names,
-        const struct mliArchive *archive)
+        const struct mli_Archive *archive)
 {
         uint64_t i = 0u;
         uint64_t med_idx = 0;
@@ -113,7 +113,7 @@ int mli_Materials_malloc_form_archive(
         /* boundary_layers */
         chk_dbg;
         chk(mli_String_from_cstr(&fixname, "materials/boundary_layers.json"));
-        chk_msg(mliArchive_get(archive, &fixname, &fixload),
+        chk_msg(mli_Archive_get(archive, &fixname, &fixload),
                 "Can not find materials/boundary_layers.json file in archive.");
         chk_msg(mli_Json_from_string(&boundary_layers_json, fixload),
                 "Failed to parse 'materials/boundary_layers.json'.");
@@ -123,10 +123,10 @@ int mli_Materials_malloc_form_archive(
                 "Expected key 'boundary_layers' to be a json-object.");
         cap.num_boundary_layers = boundary_layers_json.tokens[0].size;
         chk_dbg;
-        cap.num_media = mliArchive_num_filename_prefix_sufix(
+        cap.num_media = mli_Archive_num_filename_prefix_sufix(
                 archive, "materials/media/", ".json");
         chk_dbg;
-        cap.num_surfaces = mliArchive_num_filename_prefix_sufix(
+        cap.num_surfaces = mli_Archive_num_filename_prefix_sufix(
                 archive, "materials/surfaces/", ".json");
 
         chk_msg(mli_Materials_malloc(materials, cap),
@@ -138,7 +138,7 @@ int mli_Materials_malloc_form_archive(
 
         /* media */
         med_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_size(archive); arc_idx++) {
+        for (arc_idx = 0u; arc_idx < mli_Archive_size(archive); arc_idx++) {
                 struct mli_String *filename =
                         &archive->filenames.items.array[arc_idx].key;
 
@@ -167,7 +167,7 @@ int mli_Materials_malloc_form_archive(
         chk_dbg;
         /* surfaces */
         srf_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_size(archive); arc_idx++) {
+        for (arc_idx = 0u; arc_idx < mli_Archive_size(archive); arc_idx++) {
                 struct mli_String *filename =
                         &archive->filenames.items.array[arc_idx].key;
                 if (mli_String_starts_with_cstr(
@@ -213,7 +213,7 @@ int mli_Materials_malloc_form_archive(
 
         /* default medium */
         chk(mli_String_from_cstr(&fixname, "materials/default_medium.txt"));
-        chk_msg(mliArchive_get(archive, &fixname, &default_medium_text),
+        chk_msg(mli_Archive_get(archive, &fixname, &default_medium_text),
                 "Can not find 'materials/default_medium.txt' in scenery.");
 
         chk(mli_String_strip(default_medium_text, &key));
@@ -241,7 +241,7 @@ chk_error:
 
 int mli_check_malloc_root_frame_from_Archive(
         struct mli_Frame *root,
-        const struct mliArchive *archive,
+        const struct mli_Archive *archive,
         const struct mli_Map *object_names,
         const struct mli_Object *objects,
         const struct mli_Map *boundary_layer_names)
@@ -252,7 +252,7 @@ int mli_check_malloc_root_frame_from_Archive(
         struct mli_Json tree_json = mli_Json_init();
 
         chk(mli_String_from_cstr(&fixname, "geometry/relations.json"));
-        chk_msg(mliArchive_get(archive, &fixname, &fixload),
+        chk_msg(mli_Archive_get(archive, &fixname, &fixload),
                 "Can not find geometry/relations.json file in archive.");
         chk_msg(mli_Json_from_string(&tree_json, fixload),
                 "Failed to parse 'geometry/relations.json'.");

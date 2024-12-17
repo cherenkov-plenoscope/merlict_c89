@@ -10,15 +10,15 @@
 
 int mliScenery_from_io_tar(struct mliScenery *scenery, FILE *f)
 {
-        struct mliArchive archive = mliArchive_init();
+        struct mli_Archive archive = mli_Archive_init();
         chk_dbg;
-        chk_msg(mliArchive_from_file(&archive, f),
+        chk_msg(mli_Archive_from_file(&archive, f),
                 "Can't read archive from file.");
         chk_dbg;
         chk_msg(mliScenery_malloc_from_Archive(scenery, &archive),
                 "Can't malloc Scenery from Archive.");
         chk_dbg;
-        mliArchive_free(&archive);
+        mli_Archive_free(&archive);
         return 1;
 chk_error:
         return 0;
@@ -42,7 +42,7 @@ chk_error:
 
 int mliScenery_malloc_from_Archive(
         struct mliScenery *scenery,
-        const struct mliArchive *archive)
+        const struct mli_Archive *archive)
 {
         uint64_t num_robjects = 0u;
         uint64_t num_objects = 0u;
@@ -61,7 +61,7 @@ int mliScenery_malloc_from_Archive(
         chk(mli_Map_malloc(&object_names));
 
         chk_dbg;
-        num_objects = mliArchive_num_filename_prefix_sufix(
+        num_objects = mli_Archive_num_filename_prefix_sufix(
                 archive, "geometry/objects/", ".obj");
 
         chk_dbg;

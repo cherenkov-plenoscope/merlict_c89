@@ -6,22 +6,22 @@
 #include "mliResourceNameMap.h"
 
 struct mli_Materials;
-struct mliArchive;
+struct mli_Archive;
 int mli_Materials_malloc_form_archive(
         struct mli_Materials *materials,
         struct mli_ResourceNameMap *names,
-        const struct mliArchive *archive);
+        const struct mli_Archive *archive);
 struct mliGeometry;
 int mli_set_geometry_objects_and_names_from_archive(
         struct mliGeometry *geometry,
         struct mli_Map *object_names,
-        const struct mliArchive *archive);
+        const struct mli_Archive *archive);
 
 struct mli_Object;
 struct mli_Frame;
 int mli_check_malloc_root_frame_from_Archive(
         struct mli_Frame *root,
-        const struct mliArchive *archive,
+        const struct mli_Archive *archive,
         const struct mli_Map *object_names,
         const struct mli_Object *objects,
         const struct mli_Map *boundary_layer_names);
