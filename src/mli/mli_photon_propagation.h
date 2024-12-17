@@ -4,10 +4,10 @@
 
 #include <stdint.h>
 
-#include "mliPhoton.h"
-#include "mliPhotonInteraction.h"
+#include "../photon/photon.h"
+#include "../photon/mliPhotonInteraction.h"
 #include "mliScenery.h"
-#include "mliDynPhotonInteraction.h"
+#include "../photon/mliDynPhotonInteraction.h"
 #include "../prng/prng.h"
 #include "../fresnel/fresnel.h"
 

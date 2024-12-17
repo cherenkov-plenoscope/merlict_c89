@@ -3,8 +3,8 @@
 #define MLIDYNPHOTONINTERACTION_H_
 
 #include "mliPhotonInteraction.h"
-#include "mliGeometry.h"
-#include "mliScenery.h"
+#include "../mli/mliGeometry.h"
+#include "../mli/mliScenery.h"
 #include "../vector/vector.h"
 
 MLI_VECTOR_DEFINITON(mliDynPhotonInteraction, struct mliPhotonInteraction)

@@ -3,9 +3,9 @@
 #define MLIPHOTONINTERACTION_H_
 
 #include <stdint.h>
-#include "mliIntersectionSurfaceNormal.h"
+#include "photon.h"
+#include "../mli/mliIntersectionSurfaceNormal.h"
 #include "../vec/vec.h"
-#include "mliPhoton.h"
 #include "../materials/materials.h"
 
 #define MLI_VACUUM_SPPED_OF_LIGHT 299792458.0

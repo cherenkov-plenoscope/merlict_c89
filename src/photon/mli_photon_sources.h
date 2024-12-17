@@ -3,7 +3,7 @@
 #define MLI_PHOTON_SOURCES_H_
 
 #include <stdint.h>
-#include "mliDynPhoton.h"
+#include "photon_vector.h"
 #include "../prng/prng.h"
 
 int mli_photon_source_point_like_opening_cone_towards_z(

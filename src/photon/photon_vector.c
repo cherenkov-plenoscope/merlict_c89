@@ -1,4 +1,3 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliDynPhoton.h"
-
+#include "photon_vector.h"
 MLI_VECTOR_IMPLEMENTATION(mliDynPhoton, struct mliPhoton)

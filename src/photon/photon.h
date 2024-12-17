@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIPHOTON_H_
-#define MLIPHOTON_H_
+#ifndef MLIP_HOTON_H_
+#define MLIP_HOTON_H_
 
 #include <stdint.h>
 #include "../ray/ray.h"

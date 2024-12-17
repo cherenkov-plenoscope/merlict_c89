@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../vector/vector.h"
 #include "../vec/vec.h"
-#include "../mli/mliPhoton.h"
+#include "../photon/photon.h"
 
 struct mli_corsika_PhotonBunch {
         /*
