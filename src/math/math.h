@@ -84,7 +84,7 @@ void mli_math_histogram(
         uint64_t *bins,
         uint64_t *overflow_bin,
         const double point);
-uint64_t MLI_MATH_UPPER_COMPARE_double(
+uint64_t mli_math_upper_compare_double(
         const double *points,
         const uint64_t num_points,
         const double point_arg);

@@ -78,7 +78,7 @@ CASE("refraction_in_prism")
                 if (final_robj_id == 2) {
                         count_passing_prism += 1.0;
 
-                        screen_bin_idx = MLI_MATH_UPPER_COMPARE_double(
+                        screen_bin_idx = mli_math_upper_compare_double(
                                 screen_bin_edges,
                                 33,
                                 -final_intersection.position.z);

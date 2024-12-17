@@ -26,7 +26,7 @@ double mli_math_square(const double a) { return a * a; }
  *      num_points      Number of points.
  *      point_arg       The point to find the upper-bound for.
  */
-uint64_t MLI_MATH_UPPER_COMPARE_double(
+uint64_t mli_math_upper_compare_double(
         const double *points,
         const uint64_t num_points,
         const double point_arg)
@@ -45,7 +45,7 @@ void mli_math_histogram(
         const double point)
 {
         uint64_t idx_upper =
-                MLI_MATH_UPPER_COMPARE_double(bin_edges, num_bin_edges, point);
+                mli_math_upper_compare_double(bin_edges, num_bin_edges, point);
         if (idx_upper == 0) {
                 (*underflow_bin) += 1u;
         } else if (idx_upper == num_bin_edges) {

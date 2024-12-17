@@ -47,7 +47,7 @@ int mli_Func_x_is_strictly_increasing(const struct mli_Func *f)
 int mli_Func_evaluate(const struct mli_Func *f, const double xarg, double *out)
 {
         double y1, y0, x1, x0;
-        uint32_t idx = MLI_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
+        uint32_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
         if (idx == 0) {
                 chk_bad("mli_Func argument below lower bound.");
         } else if (idx == f->num_points) {
@@ -83,7 +83,7 @@ double mli_Func_evaluate_with_default_when_out_of_range(
         const double default_value)
 {
         double y1, y0, x1, x0;
-        uint32_t idx = MLI_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
+        uint32_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
         if (idx == 0) {
                 /* mli_Func argument below lower bound */
                 return default_value;
@@ -104,7 +104,7 @@ double mli_Func_evaluate_with_default_closest(
         const double xarg)
 {
         double y1, y0, x1, x0;
-        uint32_t idx = MLI_MATH_UPPER_COMPARE_double(f->x, f->num_points, xarg);
+        uint32_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
         if (idx == 0) {
                 /* mli_Func argument below lower bound */
                 return f->y[0];

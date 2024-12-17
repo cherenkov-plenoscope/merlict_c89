@@ -528,10 +528,10 @@ void mli_Image_histogram(
         uint64_t col_upper_idx, row_upper_idx;
         int valid_col, valid_row;
 
-        col_upper_idx = MLI_MATH_UPPER_COMPARE_double(
+        col_upper_idx = mli_math_upper_compare_double(
                 col_bin_edges, mli_Image_num_cols(self) + 1, col_val);
 
-        row_upper_idx = MLI_MATH_UPPER_COMPARE_double(
+        row_upper_idx = mli_math_upper_compare_double(
                 row_bin_edges, mli_Image_num_rows(self) + 1, row_val);
 
         valid_col = col_upper_idx > 0 &&

@@ -41,7 +41,7 @@ CASE("mli_Func_evaluate, explicit")
         func.y[4] = 0.;
 
         CHECK(mli_Func_x_is_strictly_increasing(&func));
-        CHECK(MLI_MATH_UPPER_COMPARE_double(func.x, func.num_points, 1.5) == 2);
+        CHECK(mli_math_upper_compare_double(func.x, func.num_points, 1.5) == 2);
         CHECK(mli_Func_evaluate(&func, 1.5, &y));
         CHECK(y == 2.5);
         mli_Func_free(&func);
