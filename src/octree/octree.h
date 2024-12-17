@@ -43,12 +43,12 @@ void mli_OcTree_print_walk(
         const uint32_t child);
 int mli_OcTree_equal_payload(
         const struct mli_OcTree *tree,
-        const struct mliTmpOcTree *tmp_octree);
+        const struct mli_octree_TmpOcTree *tmp_octree);
 int mli_OcTree_equal_payload_walk(
         const struct mli_OcTree *tree,
         const int32_t node_idx,
         const int32_t node_type,
-        const struct mliTmpNode *tmp_node);
+        const struct mli_octree_TmpNode *tmp_node);
 uint32_t mli_OcTree_leaf_object_link(
         const struct mli_OcTree *tree,
         const uint64_t leaf,
@@ -61,18 +61,18 @@ uint64_t mli_OcTree_node_num_children(
         const uint64_t node_idx);
 void mli_OcTree_set(
         struct mli_OcTree *tree,
-        const struct mliTmpOcTree *dyntree);
+        const struct mli_octree_TmpOcTree *dyntree);
 void mli_OcTree_set_walk(
         struct mli_OcTree *tree,
-        const struct mliTmpNode *dynnode,
+        const struct mli_octree_TmpNode *dynnode,
         uint64_t *object_link_size);
 void mli_OcTree_set_leaf(
         struct mli_OcTree *tree,
-        const struct mliTmpNode *dynnode,
+        const struct mli_octree_TmpNode *dynnode,
         uint64_t *object_link_size);
 void mli_OcTree_set_node(
         struct mli_OcTree *tree,
-        const struct mliTmpNode *dynnode);
+        const struct mli_octree_TmpNode *dynnode);
 int mli_OcTree_malloc(
         struct mli_OcTree *tree,
         const uint64_t num_nodes,

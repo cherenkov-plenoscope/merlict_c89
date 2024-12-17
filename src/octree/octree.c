@@ -12,24 +12,25 @@
  * =========
  *
  * A cache-aware mli_OcTree to accelerate the traversal.
- * mli_OcTree is created from the dynamic, mliTmpOcTree.
+ * mli_OcTree is created from the dynamic, mli_octree_TmpOcTree.
  *
- * Structure of mliTmpOcTree
+ * Structure of mli_octree_TmpOcTree
  * -------------------------
  *
- *                               mliTmpNode(0,-)
+ *                               mli_octree_TmpNode(0,-)
  *                                    |-objects[a,b,c,d,e,f,g,h]
  *                     _______________|________________
  *                    |                                |
- *                mliTmpNode(1,-)                  mliTmpNode(2,-)
+ *                mli_octree_TmpNode(1,-) mli_octree_TmpNode(2,-)
  *                    |objects[a,b,c,d]                |objects[e,f,g,h]
  *             _______|_______                 ________|________
  *            |               |               |                 |
- *        mliTmpNode(3,0) mliTmpNode(4,1) mliTmpNode(5,2)   mliTmpNode(6,3)
- *            |objects[a,b,c] |objects[c,d]  |objects[e,f]     |objects[f,g,h]
+ *        mli_octree_TmpNode(3,0) mli_octree_TmpNode(4,1)
+ * mli_octree_TmpNode(5,2)   mli_octree_TmpNode(6,3) |objects[a,b,c]
+ * |objects[c,d]  |objects[e,f]     |objects[f,g,h]
  *
- *      mliTmpNode link to each other via pointer.
- *      Each mliTmpNode is allocated separately.
+ *      mli_octree_TmpNode link to each other via pointer.
+ *      Each mli_octree_TmpNode is allocated separately.
  *
  *      advantages:
  *              easy to grow and fill
@@ -173,7 +174,7 @@ chk_error:
 
 void mli_OcTree_set_node(
         struct mli_OcTree *tree,
-        const struct mliTmpNode *dynnode)
+        const struct mli_octree_TmpNode *dynnode)
 {
         uint64_t c;
         uint64_t i = dynnode->node_index;
@@ -201,7 +202,7 @@ void mli_OcTree_set_node(
 
 void mli_OcTree_set_leaf(
         struct mli_OcTree *tree,
-        const struct mliTmpNode *dynnode,
+        const struct mli_octree_TmpNode *dynnode,
         uint64_t *object_link_size)
 {
         uint64_t o;
@@ -219,7 +220,7 @@ void mli_OcTree_set_leaf(
 
 void mli_OcTree_set_walk(
         struct mli_OcTree *tree,
-        const struct mliTmpNode *dynnode,
+        const struct mli_octree_TmpNode *dynnode,
         uint64_t *object_link_size)
 {
         uint64_t c;
@@ -237,11 +238,13 @@ void mli_OcTree_set_walk(
         }
 }
 
-void mli_OcTree_set(struct mli_OcTree *tree, const struct mliTmpOcTree *dyntree)
+void mli_OcTree_set(
+        struct mli_OcTree *tree,
+        const struct mli_octree_TmpOcTree *dyntree)
 {
         uint64_t object_link_size = 0u;
         tree->cube = dyntree->cube;
-        if (mliTmpNode_num_children(&dyntree->root) > 0) {
+        if (mli_octree_TmpNode_num_children(&dyntree->root) > 0) {
                 tree->root_type = MLI_OCTREE_TYPE_NODE;
         } else {
                 tree->root_type = MLI_OCTREE_TYPE_LEAF;
@@ -284,13 +287,13 @@ int mli_OcTree_equal_payload_walk(
         const struct mli_OcTree *tree,
         const int32_t node_idx,
         const int32_t node_type,
-        const struct mliTmpNode *tmp_node)
+        const struct mli_octree_TmpNode *tmp_node)
 {
         if (node_type == MLI_OCTREE_TYPE_LEAF) {
                 /* leaf */
                 uint64_t leaf_idx;
                 uint64_t obj;
-                chk_msg(mliTmpNode_num_children(tmp_node) == 0,
+                chk_msg(mli_octree_TmpNode_num_children(tmp_node) == 0,
                         "Expect tmp_node to have 0 children when "
                         "node_type == LEAF.");
                 leaf_idx = node_idx;
@@ -359,7 +362,7 @@ chk_error:
 
 int mli_OcTree_equal_payload(
         const struct mli_OcTree *tree,
-        const struct mliTmpOcTree *tmp_octree)
+        const struct mli_octree_TmpOcTree *tmp_octree)
 {
         int32_t root_node_idx = 0;
         int32_t root_node_type = MLI_OCTREE_TYPE_NODE;
@@ -449,8 +452,8 @@ int mli_OcTree_malloc_from_object_wavefront(
         uint64_t num_nodes = 0;
         uint64_t num_leafs = 0;
         uint64_t num_object_links = 0;
-        struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
-        chk_msg(mliTmpOcTree_malloc_from_bundle(
+        struct mli_octree_TmpOcTree tmp_octree = mli_octree_TmpOcTree_init();
+        chk_msg(mli_octree_TmpOcTree_malloc_from_bundle(
                         &tmp_octree,
                         (const void *)object,
                         object->num_faces,
@@ -458,15 +461,15 @@ int mli_OcTree_malloc_from_object_wavefront(
                         mli_Object_aabb_in_local_frame(object)),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from mli_Object");
-        mliTmpNode_set_flat_index(&tmp_octree.root);
-        mliTmpNode_num_nodes_leafs_objects(
+        mli_octree_TmpNode_set_flat_index(&tmp_octree.root);
+        mli_octree_TmpNode_num_nodes_leafs_objects(
                 &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);
 
         chk_msg(mli_OcTree_malloc(
                         octree, num_nodes, num_leafs, num_object_links),
                 "Failed to allocate cache-aware octree from dynamic octree.");
         mli_OcTree_set(octree, &tmp_octree);
-        mliTmpOcTree_free(&tmp_octree);
+        mli_octree_TmpOcTree_free(&tmp_octree);
 
         return 1;
 chk_error:
@@ -481,8 +484,8 @@ int mli_OcTree_malloc_from_Geometry(
         uint64_t num_nodes = 0;
         uint64_t num_leafs = 0;
         uint64_t num_object_links = 0;
-        struct mliTmpOcTree tmp_octree = mliTmpOcTree_init();
-        chk_msg(mliTmpOcTree_malloc_from_bundle(
+        struct mli_octree_TmpOcTree tmp_octree = mli_octree_TmpOcTree_init();
+        chk_msg(mli_octree_TmpOcTree_malloc_from_bundle(
                         &tmp_octree,
                         (const void *)accgeo,
                         accgeo->geometry->num_robjects,
@@ -490,15 +493,15 @@ int mli_OcTree_malloc_from_Geometry(
                         outermost_aabb),
                 "Failed to create dynamic, and temporary TmpOcTree "
                 "from scenery(Geometry, Accelerator)");
-        mliTmpNode_set_flat_index(&tmp_octree.root);
-        mliTmpNode_num_nodes_leafs_objects(
+        mli_octree_TmpNode_set_flat_index(&tmp_octree.root);
+        mli_octree_TmpNode_num_nodes_leafs_objects(
                 &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);
 
         chk_msg(mli_OcTree_malloc(
                         octree, num_nodes, num_leafs, num_object_links),
                 "Failed to allocate cache-aware octree from dynamic octree.");
         mli_OcTree_set(octree, &tmp_octree);
-        mliTmpOcTree_free(&tmp_octree);
+        mli_octree_TmpOcTree_free(&tmp_octree);
 
         return 1;
 chk_error:
