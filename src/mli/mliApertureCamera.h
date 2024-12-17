@@ -3,7 +3,6 @@
 #define MLIAPTCAM_H_
 
 #include <stdint.h>
-#include "mli_random.h"
 #include "../vec/vec.h"
 #include "../homtra/homtra.h"
 #include "mliTracer.h"

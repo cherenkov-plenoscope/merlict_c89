@@ -2,6 +2,7 @@
 #include "mliApertureCamera.h"
 #include <math.h>
 #include <assert.h>
+#include "../vec/vec_random.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
 

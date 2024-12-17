@@ -8,7 +8,7 @@
 #include "mliPhotonInteraction.h"
 #include "mliScenery.h"
 #include "mliDynPhotonInteraction.h"
-#include "mli_random.h"
+#include "../prng/prng.h"
 #include "../fresnel/fresnel.h"
 
 struct mliEnv {

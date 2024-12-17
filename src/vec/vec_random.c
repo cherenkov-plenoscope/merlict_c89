@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_random.h"
+#include "vec_random.h"
 #include <math.h>
 #include <assert.h>
 #include "../math/math.h"

@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLI_RANDOM_H_
-#define MLI_RANDOM_H_
+#ifndef MLI_VEC_RANDOM_H_
+#define MLI_VEC_RANDOM_H_
 
 #include "../prng/prng.h"
-#include "../vec/vec.h"
+#include "vec.h"
 
 struct mli_Vec mli_random_position_on_disc(
         const double radius,

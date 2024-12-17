@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "EventTape.h"
-#include "../mli/mli_random.h"
+#include "../vec/vec_random.h"
 #include "../prng/prng.h"
 
 void mliEventTape_testing_set_random_corsika_header(

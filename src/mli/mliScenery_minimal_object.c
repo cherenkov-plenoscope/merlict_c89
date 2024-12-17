@@ -2,7 +2,7 @@
 #include "mliScenery_minimal_object.h"
 #include "../chk/chk.h"
 #include "../color/color.h"
-#include "mli_random.h"
+#include "../vec/vec_random.h"
 #include "../prng/prng.h"
 #include "../cstr/cstr.h"
 #include "../object/object_wavefront.h"

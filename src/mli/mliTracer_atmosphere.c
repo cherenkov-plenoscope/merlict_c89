@@ -2,7 +2,7 @@
 #include "mliTracer.h"
 #include <math.h>
 #include <stdint.h>
-#include "mli_random.h"
+#include "../vec/vec_random.h"
 #include "../math/math.h"
 #include "mliIntersectionSurfaceNormal.h"
 #include "mliIntersection.h"

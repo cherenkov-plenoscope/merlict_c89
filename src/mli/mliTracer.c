@@ -5,7 +5,7 @@
 #include "mliTracer_atmosphere.h"
 #include "mli_intersection_and_scenery.h"
 #include "mli_ray_octree_traversal.h"
-#include "mli_random.h"
+#include "../vec/vec_random.h"
 #include "mliIntersection.h"
 #include "mli_ray_scenery_query.h"
 #include "../chk/chk.h"
