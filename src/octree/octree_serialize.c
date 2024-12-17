@@ -37,7 +37,7 @@ int mli_OcTree_to_io(const struct mli_OcTree *octree, struct mli_IO *f)
                 octree->leafs.num_object_links,
                 f);
 
-        /* mliCube */
+        /* mli_Cube */
         chk_IO_write(&octree->cube.lower.x, sizeof(double), 1u, f);
         chk_IO_write(&octree->cube.lower.y, sizeof(double), 1u, f);
         chk_IO_write(&octree->cube.lower.z, sizeof(double), 1u, f);
@@ -88,7 +88,7 @@ int mli_OcTree_from_io(struct mli_OcTree *octree, struct mli_IO *f)
                 octree->leafs.num_object_links,
                 f);
 
-        /* mliCube */
+        /* mli_Cube */
         chk_IO_read(&octree->cube.lower.x, sizeof(double), 1u, f);
         chk_IO_read(&octree->cube.lower.y, sizeof(double), 1u, f);
         chk_IO_read(&octree->cube.lower.z, sizeof(double), 1u, f);

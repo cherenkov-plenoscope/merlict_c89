@@ -1,30 +1,30 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("mliCube_octree_child")
+CASE("mli_Cube_octree_child")
 {
-        struct mliCube node;
-        struct mliCube child;
+        struct mli_Cube node;
+        struct mli_Cube child;
         node.lower = mli_Vec_init(.0, .0, .0);
         node.edge_length = 2.;
-        child = mliCube_octree_child(node, 0, 0, 0);
+        child = mli_Cube_octree_child(node, 0, 0, 0);
         CHECK_MARGIN(child.lower.x, 0., 1e-7);
         CHECK_MARGIN(child.lower.y, 0., 1e-7);
         CHECK_MARGIN(child.lower.z, 0., 1e-7);
         CHECK_MARGIN(child.edge_length, 1., 1e-7);
 
-        child = mliCube_octree_child(node, 0, 0, 1);
+        child = mli_Cube_octree_child(node, 0, 0, 1);
         CHECK_MARGIN(child.lower.x, 0., 1e-7);
         CHECK_MARGIN(child.lower.y, 0., 1e-7);
         CHECK_MARGIN(child.lower.z, 1., 1e-7);
         CHECK_MARGIN(child.edge_length, 1., 1e-7);
 
-        child = mliCube_octree_child(node, 0, 1, 0);
+        child = mli_Cube_octree_child(node, 0, 1, 0);
         CHECK_MARGIN(child.lower.x, 0., 1e-7);
         CHECK_MARGIN(child.lower.y, 1., 1e-7);
         CHECK_MARGIN(child.lower.z, 0., 1e-7);
         CHECK_MARGIN(child.edge_length, 1., 1e-7);
 
-        child = mliCube_octree_child(node, 1, 0, 0);
+        child = mli_Cube_octree_child(node, 1, 0, 0);
         CHECK_MARGIN(child.lower.x, 1., 1e-7);
         CHECK_MARGIN(child.lower.y, 0., 1e-7);
         CHECK_MARGIN(child.lower.z, 0., 1e-7);
@@ -34,21 +34,21 @@ CASE("mliCube_octree_child")
 CASE("Cube to Orientated-Bounding-Box")
 {
         struct mli_AABB a;
-        struct mliCube cube;
+        struct mli_Cube cube;
         cube.lower = mli_Vec_init(.0, .0, .0);
         cube.edge_length = 1.;
-        a = mliCube_to_aabb(cube);
+        a = mli_Cube_to_aabb(cube);
         CHECK(mli_Vec_equal_margin(a.lower, cube.lower, 1e-6));
         CHECK(mli_Vec_equal_margin(a.upper, mli_Vec_init(1., 1., 1.), 1e-6));
 }
 
-CASE("mliCube_outermost_cube")
+CASE("mli_Cube_outermost_cube")
 {
         struct mli_AABB a;
-        struct mliCube cube;
+        struct mli_Cube cube;
         a.lower = mli_Vec_init(.0, .0, .0);
         a.upper = mli_Vec_init(1., 2., 3.);
-        cube = mliCube_outermost_cube(a);
+        cube = mli_Cube_outermost_cube(a);
 
         CHECK_MARGIN(cube.lower.x, 0.5 - 1.5, 1e-7);
         CHECK_MARGIN(cube.lower.y, 1. - 1.5, 1e-7);

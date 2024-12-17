@@ -296,11 +296,11 @@ void mli_ray_octree_traversal(
         struct mli_Vec div;
         struct mli_Ray ray_wrt_octree;
         struct mli_Vec cube_upper, cube_size;
-        struct mliCube cube;
+        struct mli_Cube cube;
         int32_t octree_root_node, octree_root_type;
         uint8_t permutation = 0;
         cube = octree->cube;
-        cube_upper = mliCube_upper(cube);
+        cube_upper = mli_Cube_upper(cube);
         octree_root_node = 0u;
         octree_root_type = octree->root_type;
         cube_size = mli_Vec_add(cube.lower, cube_upper);

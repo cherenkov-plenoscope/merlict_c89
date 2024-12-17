@@ -66,13 +66,13 @@ int mli_octree_TmpNode_add_children(
                 const void *,
                 const uint32_t,
                 const struct mli_AABB),
-        const struct mliCube cube,
+        const struct mli_Cube cube,
         const uint64_t depth,
         const uint64_t max_depth)
 {
         uint32_t c;
         uint32_t sx, sy, sz, obj;
-        struct mliCube child_cubes[8];
+        struct mli_Cube child_cubes[8];
         struct mli_octree_OverlapVector overlap[8];
 
         if (node->num_objects <= 32u) {
@@ -97,14 +97,14 @@ int mli_octree_TmpNode_add_children(
                                         mli_octree_TmpNode_signs_to_child(
                                                 sx, sy, sz);
                                 child_cubes[child] =
-                                        mliCube_octree_child(cube, sx, sy, sz);
+                                        mli_Cube_octree_child(cube, sx, sy, sz);
                                 for (obj = 0u; obj < node->num_objects; obj++) {
                                         const uint32_t object_idx =
                                                 node->objects[obj];
                                         if (item_in_bundle_has_overlap_aabb(
                                                     bundle,
                                                     object_idx,
-                                                    mliCube_to_aabb(
+                                                    mli_Cube_to_aabb(
                                                             child_cubes
                                                                     [child]))) {
                                                 chk(mli_octree_OverlapVector_push_back(
@@ -154,7 +154,7 @@ int mli_octree_TmpNode_malloc_tree_from_bundle(
                 const void *,
                 const uint32_t,
                 const struct mli_AABB),
-        const struct mliCube bundle_cube)
+        const struct mli_Cube bundle_cube)
 {
         uint32_t idx, start_depth, max_depth;
         start_depth = 0u;
@@ -375,7 +375,7 @@ int mli_octree_TmpOcTree_malloc_from_bundle(
         struct mli_AABB bundle_aabb)
 {
         mli_octree_TmpOcTree_free(octree);
-        octree->cube = mliCube_outermost_cube(bundle_aabb);
+        octree->cube = mli_Cube_outermost_cube(bundle_aabb);
         chk_msg(mli_octree_TmpNode_malloc_tree_from_bundle(
                         &octree->root,
                         bundle,

@@ -27,7 +27,7 @@ struct mli_octree_Node {
 };
 
 struct mli_OcTree {
-        struct mliCube cube;
+        struct mli_Cube cube;
         uint64_t num_nodes;
         struct mli_octree_Node *nodes;
         struct mli_octree_LeafArray leafs;

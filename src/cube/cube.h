@@ -6,9 +6,7 @@
 #include "../vec/vec.h"
 #include "../aabb/aabb.h"
 
-#define MLI_IS_BIT(var, pos) ((var) & (1 << (pos)))
-
-struct mliCube {
+struct mli_Cube {
         /*
          * Cubic Oriented-Bounding-Box
          * oriented w.r.t. the unit-vectors.
@@ -17,17 +15,17 @@ struct mliCube {
         double edge_length;
 };
 
-int mliCube_equal(const struct mliCube a, const struct mliCube b);
-struct mliCube mliCube_octree_child_code(
-        const struct mliCube cube,
+int mli_Cube_equal(const struct mli_Cube a, const struct mli_Cube b);
+struct mli_Cube mli_Cube_octree_child_code(
+        const struct mli_Cube cube,
         const uint8_t a);
-struct mliCube mliCube_octree_child(
-        const struct mliCube cube,
+struct mli_Cube mli_Cube_octree_child(
+        const struct mli_Cube cube,
         const uint32_t sx,
         const uint32_t sy,
         const uint32_t sz);
-struct mliCube mliCube_outermost_cube(const struct mli_AABB a);
-struct mli_Vec mliCube_center(const struct mliCube a);
-struct mli_AABB mliCube_to_aabb(const struct mliCube a);
-struct mli_Vec mliCube_upper(const struct mliCube a);
+struct mli_Cube mli_Cube_outermost_cube(const struct mli_AABB a);
+struct mli_Vec mli_Cube_center(const struct mli_Cube a);
+struct mli_AABB mli_Cube_to_aabb(const struct mli_Cube a);
+struct mli_Vec mli_Cube_upper(const struct mli_Cube a);
 #endif

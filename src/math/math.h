@@ -65,6 +65,8 @@
                 }                                                              \
         } while (0)
 
+#define MLI_MATH_IS_BIT(var, pos) ((var) & (1 << (pos)))
+
 double mli_math_std(
         const double vals[],
         const uint64_t size,

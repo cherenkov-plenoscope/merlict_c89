@@ -64,7 +64,7 @@ int mli_octree_TmpNode_malloc_tree_from_bundle(
                 const void *,
                 const uint32_t,
                 const struct mli_AABB),
-        const struct mliCube bundle_cube);
+        const struct mli_Cube bundle_cube);
 int mli_octree_TmpNode_add_children(
         struct mli_octree_TmpNode *node,
         const void *bundle,
@@ -72,7 +72,7 @@ int mli_octree_TmpNode_add_children(
                 const void *,
                 const uint32_t,
                 const struct mli_AABB),
-        const struct mliCube cube,
+        const struct mli_Cube cube,
         const uint64_t depth,
         const uint64_t max_depth);
 uint32_t mli_octree_TmpNode_signs_to_child(
@@ -86,7 +86,7 @@ uint32_t mli_octree_TmpNode_signs_to_child(
  */
 
 struct mli_octree_TmpOcTree {
-        struct mliCube cube;
+        struct mli_Cube cube;
         struct mli_octree_TmpNode root;
 };
 
