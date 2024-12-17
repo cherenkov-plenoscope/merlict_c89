@@ -4,7 +4,7 @@
 
 #include "../vec/vec.h"
 
-struct mliTriangle {
+struct mli_Triangle {
         struct mli_Vec v1;
         struct mli_Vec v2;
         struct mli_Vec v3;

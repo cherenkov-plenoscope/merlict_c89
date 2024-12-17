@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "triangle_barycentric.h"
 
-struct mliBarycentrigWeights mli_barycentric_weights(
+struct mli_triangle_BarycentrigWeights mli_triangle_barycentric_weights(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c,
@@ -42,7 +42,7 @@ struct mliBarycentrigWeights mli_barycentric_weights(
           a------------------------------ab-----------------------------b
 
         */
-        struct mliBarycentrigWeights weights;
+        struct mli_triangle_BarycentrigWeights weights;
 
         const struct mli_Vec ab = mli_Vec_substract(b, a);
         const struct mli_Vec ac = mli_Vec_substract(c, a);

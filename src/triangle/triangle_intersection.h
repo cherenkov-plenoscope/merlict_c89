@@ -6,11 +6,11 @@
 #include "../vec/vec.h"
 #include "../ray/ray.h"
 
-struct mli_Vec mliTriangle_interpolate_surface_normal(
+struct mli_Vec mli_Triangle_interpolate_surface_normal(
         const struct mli_Vec vertex_normal_a,
         const struct mli_Vec vertex_normal_b,
         const struct mli_Vec vertex_normal_c,
-        const struct mliBarycentrigWeights weights);
+        const struct mli_triangle_BarycentrigWeights weights);
 
 int mli_Ray_intersects_triangle(
         const struct mli_Ray ray,
@@ -19,7 +19,7 @@ int mli_Ray_intersects_triangle(
         const struct mli_Vec vertex_c,
         double *intersection_ray_parameter);
 
-struct mli_Vec mliTriangle_surface_normal(
+struct mli_Vec mli_Triangle_surface_normal(
         const struct mli_Vec vertex_a,
         const struct mli_Vec vertex_b,
         const struct mli_Vec vertex_c,

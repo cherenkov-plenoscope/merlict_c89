@@ -44,11 +44,11 @@ int mli_Ray_intersects_triangle(
         }
 }
 
-struct mli_Vec mliTriangle_interpolate_surface_normal(
+struct mli_Vec mli_Triangle_interpolate_surface_normal(
         const struct mli_Vec vertex_normal_a,
         const struct mli_Vec vertex_normal_b,
         const struct mli_Vec vertex_normal_c,
-        const struct mliBarycentrigWeights weights)
+        const struct mli_triangle_BarycentrigWeights weights)
 {
         return mli_Vec_init(
                 vertex_normal_a.x * weights.a + vertex_normal_b.x * weights.b +
@@ -61,7 +61,7 @@ struct mli_Vec mliTriangle_interpolate_surface_normal(
                         vertex_normal_c.z * weights.c);
 }
 
-struct mli_Vec mliTriangle_surface_normal(
+struct mli_Vec mli_Triangle_surface_normal(
         const struct mli_Vec vertex_a,
         const struct mli_Vec vertex_b,
         const struct mli_Vec vertex_c,
@@ -71,10 +71,11 @@ struct mli_Vec mliTriangle_surface_normal(
         const struct mli_Vec intersection_position)
 {
         struct mli_Vec surface_normal;
-        struct mliBarycentrigWeights normal_weights = mli_barycentric_weights(
-                vertex_a, vertex_b, vertex_c, intersection_position);
+        struct mli_triangle_BarycentrigWeights normal_weights =
+                mli_triangle_barycentric_weights(
+                        vertex_a, vertex_b, vertex_c, intersection_position);
 
-        surface_normal = mliTriangle_interpolate_surface_normal(
+        surface_normal = mli_Triangle_interpolate_surface_normal(
                 vertex_normal_a,
                 vertex_normal_b,
                 vertex_normal_c,

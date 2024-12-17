@@ -13,7 +13,7 @@ int mli_Object_face_in_local_frame_has_overlap_aabb(
                 return 0;
         }
         face = obj->faces_vertices[face_idx];
-        if (mliTriangle_has_overlap_aabb(
+        if (mli_Triangle_has_overlap_aabb(
                     obj->vertices[face.a],
                     obj->vertices[face.b],
                     obj->vertices[face.c],
@@ -44,7 +44,7 @@ int mli_Object_has_overlap_aabb(
                 const struct mli_Vec c_root =
                         mli_HomTraComp_pos(&local2root, c_local);
 
-                if (mliTriangle_has_overlap_aabb(
+                if (mli_Triangle_has_overlap_aabb(
                             a_root, b_root, c_root, aabb)) {
                         return 1;
                 }

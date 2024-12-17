@@ -68,9 +68,9 @@ CASE("mli_AABB_center")
         CHECK_MARGIN(center.z, 1., 1e-7);
 }
 
-CASE("mliTriangle_aabb")
+CASE("mli_Triangle_aabb")
 {
-        struct mli_AABB aabb = mliTriangle_aabb(
+        struct mli_AABB aabb = mli_Triangle_aabb(
                 mli_Vec_init(-5., 2., -.8),
                 mli_Vec_init(20., -3., 19.),
                 mli_Vec_init(10., 6., 2.5));
@@ -104,42 +104,42 @@ CASE("mli_Vec_overlap_aabb, upper, and lower cases")
         CHECK(mli_Vec_overlap_aabb(mli_Vec_init(1., 1., 2.), low, upp));
 }
 
-CASE("mliTriangle_has_overlap_aabb")
+CASE("mli_Triangle_has_overlap_aabb")
 {
         struct mli_AABB aabb;
         aabb.lower = mli_Vec_init(0., 0., 0.);
         aabb.upper = mli_Vec_init(2., 2., 2.);
-        CHECK(mliTriangle_has_overlap_aabb(
+        CHECK(mli_Triangle_has_overlap_aabb(
                 mli_Vec_init(0., 0., 0.),
                 mli_Vec_init(2., 2., 2.),
                 mli_Vec_init(1., 1., 1.),
                 aabb));
 
-        CHECK(!mliTriangle_has_overlap_aabb(
+        CHECK(!mli_Triangle_has_overlap_aabb(
                 mli_Vec_init(0., 0., 5.),
                 mli_Vec_init(0., 1., 5.),
                 mli_Vec_init(1., 1., 5.),
                 aabb));
 
-        CHECK(mliTriangle_has_overlap_aabb(
+        CHECK(mli_Triangle_has_overlap_aabb(
                 mli_Vec_init(0., 0., 2.),
                 mli_Vec_init(0., 1., 2.),
                 mli_Vec_init(1., 1., 2.),
                 aabb));
 
-        CHECK(mliTriangle_has_overlap_aabb(
+        CHECK(mli_Triangle_has_overlap_aabb(
                 mli_Vec_init(2., 2., 1.),
                 mli_Vec_init(2., 3., 1.),
                 mli_Vec_init(3., 3., 1.),
                 aabb));
 
-        CHECK(!mliTriangle_has_overlap_aabb(
+        CHECK(!mli_Triangle_has_overlap_aabb(
                 mli_Vec_init(2.1, 2., 1.),
                 mli_Vec_init(2.1, 3., 1.),
                 mli_Vec_init(3., 3., 1.),
                 aabb));
 
-        CHECK(mliTriangle_has_overlap_aabb(
+        CHECK(mli_Triangle_has_overlap_aabb(
                 mli_Vec_init(-50, -50, 1.),
                 mli_Vec_init(50, -50, 1.),
                 mli_Vec_init(0., 50, 1.),

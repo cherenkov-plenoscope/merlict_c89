@@ -151,7 +151,7 @@ int64_t mli_triangle_aabb_check_line(
 
 /* Test if 3D point is inside 3D triangle */
 
-int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mli_Vec p)
+int64_t mli_Triangle_intersects_point(struct mli_Triangle t, struct mli_Vec p)
 {
         int64_t sign12_bitmask, sign23_bitmask, sign31_bitmask;
         struct mli_Vec vect12, vect23, vect31, vect1h, vect2h, vect3h;
@@ -218,7 +218,7 @@ int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mli_Vec p)
 /* intersects or does not intersect the cube. */
 /**********************************************/
 
-int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
+int64_t mli_Triangle_intersects_norm_aabb(struct mli_Triangle t)
 {
         int64_t v1_test, v2_test, v3_test;
         double d, denom;
@@ -317,28 +317,28 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
         {
                 hitpp.x = hitpp.y = hitpp.z = d / denom;
                 if (fabs(hitpp.x) <= 0.5)
-                        if (mliTriangle_intersects_point(t, hitpp) ==
+                        if (mli_Triangle_intersects_point(t, hitpp) ==
                             MLI_TRIANGLE_INSIDE)
                                 return (MLI_TRIANGLE_INSIDE);
         }
         if (fabs(denom = (norm.x + norm.y - norm.z)) > MLI_MATH_EPSILON) {
                 hitpn.z = -(hitpn.x = hitpn.y = d / denom);
                 if (fabs(hitpn.x) <= 0.5)
-                        if (mliTriangle_intersects_point(t, hitpn) ==
+                        if (mli_Triangle_intersects_point(t, hitpn) ==
                             MLI_TRIANGLE_INSIDE)
                                 return (MLI_TRIANGLE_INSIDE);
         }
         if (fabs(denom = (norm.x - norm.y + norm.z)) > MLI_MATH_EPSILON) {
                 hitnp.y = -(hitnp.x = hitnp.z = d / denom);
                 if (fabs(hitnp.x) <= 0.5)
-                        if (mliTriangle_intersects_point(t, hitnp) ==
+                        if (mli_Triangle_intersects_point(t, hitnp) ==
                             MLI_TRIANGLE_INSIDE)
                                 return (MLI_TRIANGLE_INSIDE);
         }
         if (fabs(denom = (norm.x - norm.y - norm.z)) > MLI_MATH_EPSILON) {
                 hitnn.y = hitnn.z = -(hitnn.x = d / denom);
                 if (fabs(hitnn.x) <= 0.5)
-                        if (mliTriangle_intersects_point(t, hitnn) ==
+                        if (mli_Triangle_intersects_point(t, hitnn) ==
                             MLI_TRIANGLE_INSIDE)
                                 return (MLI_TRIANGLE_INSIDE);
         }
@@ -349,13 +349,13 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
         return (MLI_TRIANGLE_OUTSIDE);
 }
 
-struct mliTriangle mliTriangle_set_in_norm_aabb(
+struct mli_Triangle mli_Triangle_set_in_norm_aabb(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c,
         const struct mli_AABB aabb)
 {
-        struct mliTriangle tri;
+        struct mli_Triangle tri;
         struct mli_Vec aabb_center = mli_AABB_center(aabb);
         const double inv_scale_x = 1.0 / (aabb.upper.x - aabb.lower.x);
         const double inv_scale_y = 1.0 / (aabb.upper.y - aabb.lower.y);
@@ -379,20 +379,20 @@ struct mliTriangle mliTriangle_set_in_norm_aabb(
         return tri;
 }
 
-int mliTriangle_has_overlap_aabb(
+int mli_Triangle_has_overlap_aabb(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c,
         const struct mli_AABB aabb)
 {
-        struct mliTriangle tri = mliTriangle_set_in_norm_aabb(a, b, c, aabb);
-        if (mliTriangle_intersects_norm_aabb(tri) == MLI_TRIANGLE_INSIDE)
+        struct mli_Triangle tri = mli_Triangle_set_in_norm_aabb(a, b, c, aabb);
+        if (mli_Triangle_intersects_norm_aabb(tri) == MLI_TRIANGLE_INSIDE)
                 return 1;
         else
                 return 0;
 }
 
-struct mli_AABB mliTriangle_aabb(
+struct mli_AABB mli_Triangle_aabb(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c)

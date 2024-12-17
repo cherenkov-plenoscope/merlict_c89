@@ -176,7 +176,7 @@ int mli_query_intersection_with_surface_normal(
                 isecsrf->position_local = isec.position_local;
 
                 /* find surface-normal */
-                isecsrf->surface_normal_local = mliTriangle_surface_normal(
+                isecsrf->surface_normal_local = mli_Triangle_surface_normal(
                         obj->vertices[fv.a],
                         obj->vertices[fv.b],
                         obj->vertices[fv.c],
