@@ -5,6 +5,6 @@
 #include "../io/io.h"
 #include "mliMaterials.h"
 
-int mliMaterials_fwrite(const struct mliMaterials *res, struct mli_IO *f);
-int mliMaterials_malloc_fread(struct mliMaterials *res, struct mli_IO *f);
+int mliMaterials_to_io(const struct mliMaterials *res, struct mli_IO *f);
+int mliMaterials_from_io(struct mliMaterials *res, struct mli_IO *f);
 #endif

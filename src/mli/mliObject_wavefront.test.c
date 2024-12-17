@@ -418,11 +418,11 @@ CASE("mliObject, write and read binary-string")
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, facet_bin_path, "w"));
-        mliObject_fwrite(&obj, &f);
+        mliObject_to_io(&obj, &f);
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, facet_bin_path, "r"));
-        mliObject_malloc_fread(&obj_back, &f);
+        mliObject_from_io(&obj_back, &f);
         mli_IO_close(&f);
 
         CHECK(obj.num_vertices == obj_back.num_vertices);

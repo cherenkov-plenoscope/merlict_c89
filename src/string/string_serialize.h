@@ -5,7 +5,7 @@
 #include "../io/io.h"
 #include "string.h"
 
-int mli_String_fwrite(const struct mli_String *self, struct mli_IO *f);
-int mli_String_malloc_fread(struct mli_String *self, struct mli_IO *f);
+int mli_String_to_io(const struct mli_String *self, struct mli_IO *f);
+int mli_String_from_io(struct mli_String *self, struct mli_IO *f);
 
 #endif

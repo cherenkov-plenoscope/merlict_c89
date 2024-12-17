@@ -115,11 +115,11 @@ CASE("mliScenery, read, write")
         /* geometry */
         /* -------- */
         CHECK(mli_IO__open_file_cstr(&f, geom_path, "w"));
-        CHECK(mliGeometry_fwrite(&orig.geometry, &f));
+        CHECK(mliGeometry_to_io(&orig.geometry, &f));
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, geom_path, "r"));
-        CHECK(mliGeometry_malloc_fread(&back.geometry, &f));
+        CHECK(mliGeometry_from_io(&back.geometry, &f));
         mli_IO_close(&f);
 
         CHECK(mliGeometry_equal(&back.geometry, &orig.geometry));
@@ -127,11 +127,11 @@ CASE("mliScenery, read, write")
         /* materials */
         /* --------- */
         CHECK(mli_IO__open_file_cstr(&f, mate_path, "w"));
-        CHECK(mliMaterials_fwrite(&orig.materials, &f));
+        CHECK(mliMaterials_to_io(&orig.materials, &f));
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, mate_path, "r"));
-        CHECK(mliMaterials_malloc_fread(&back.materials, &f));
+        CHECK(mliMaterials_from_io(&back.materials, &f));
         mli_IO_close(&f);
 
         CHECK(mliMaterials_equal(&back.materials, &orig.materials));
@@ -139,11 +139,11 @@ CASE("mliScenery, read, write")
         /* accelerator */
         /* ----------- */
         CHECK(mli_IO__open_file_cstr(&f, acce_path, "w"));
-        CHECK(mliAccelerator_fwrite(&orig.accelerator, &f));
+        CHECK(mliAccelerator_to_io(&orig.accelerator, &f));
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, acce_path, "r"));
-        CHECK(mliAccelerator_malloc_fread(&back.accelerator, &f));
+        CHECK(mliAccelerator_from_io(&back.accelerator, &f));
         mli_IO_close(&f);
 
         CHECK(mliAccelerator_equal(&back.accelerator, &orig.accelerator));
@@ -151,11 +151,11 @@ CASE("mliScenery, read, write")
         /* geomap */
         /* ------ */
         CHECK(mli_IO__open_file_cstr(&f, gmap_path, "w"));
-        CHECK(mliGeometryToMaterialMap_fwrite(&orig.geomap, &f));
+        CHECK(mliGeometryToMaterialMap_to_io(&orig.geomap, &f));
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, gmap_path, "r"));
-        CHECK(mliGeometryToMaterialMap_malloc_fread(&back.geomap, &f));
+        CHECK(mliGeometryToMaterialMap_from_io(&back.geomap, &f));
         mli_IO_close(&f);
 
         CHECK(mliGeometryToMaterialMap_equal(&back.geomap, &orig.geomap));

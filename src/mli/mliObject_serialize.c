@@ -5,7 +5,7 @@
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mliObject_fwrite(const struct mliObject *obj, struct mli_IO *f)
+int mliObject_to_io(const struct mliObject *obj, struct mli_IO *f)
 {
         uint64_t i;
         struct mliMagicId magic;
@@ -36,7 +36,7 @@ int mliObject_fwrite(const struct mliObject *obj, struct mli_IO *f)
         chk_IO_write(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
 
         for (i = 0; i < obj->num_materials; i++) {
-                chk(mli_String_fwrite(&obj->material_names[i], f));
+                chk(mli_String_to_io(&obj->material_names[i], f));
         }
 
         return 1;
@@ -44,7 +44,7 @@ chk_error:
         return 0;
 }
 
-int mliObject_malloc_fread(struct mliObject *obj, struct mli_IO *f)
+int mliObject_from_io(struct mliObject *obj, struct mli_IO *f)
 {
         uint64_t i;
         uint32_t num_vertices;
@@ -86,7 +86,7 @@ int mliObject_malloc_fread(struct mliObject *obj, struct mli_IO *f)
         chk_IO_read(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
 
         for (i = 0; i < obj->num_materials; i++) {
-                chk(mli_String_malloc_fread(&obj->material_names[i], f));
+                chk(mli_String_from_io(&obj->material_names[i], f));
         }
 
         chk_msg(mliObject_has_valid_faces(obj),

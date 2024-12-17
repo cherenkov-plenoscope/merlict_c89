@@ -3,7 +3,7 @@
 #include "mliMagicId.h"
 #include "../chk/chk.h"
 
-int mliOcTree_fwrite(const struct mliOcTree *octree, struct mli_IO *f)
+int mliOcTree_to_io(const struct mliOcTree *octree, struct mli_IO *f)
 {
         struct mliMagicId magic;
 
@@ -48,7 +48,7 @@ chk_error:
         return 0;
 }
 
-int mliOcTree_malloc_fread(struct mliOcTree *octree, struct mli_IO *f)
+int mliOcTree_from_io(struct mliOcTree *octree, struct mli_IO *f)
 {
         uint64_t num_nodes;
         uint64_t num_leafs;

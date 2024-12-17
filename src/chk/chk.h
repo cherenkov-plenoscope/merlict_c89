@@ -64,7 +64,7 @@ int chk_eprintf(const char *format, ...);
                 chk_mem(PTR);                                                  \
         }
 
-#define chk_fwrite(PTR, SIZE_OF_TYPE, NUM, F)                                  \
+#define chk_to_io(PTR, SIZE_OF_TYPE, NUM, F)                                   \
         {                                                                      \
                 const uint64_t num_written =                                   \
                         fwrite(PTR, SIZE_OF_TYPE, NUM, F);                     \

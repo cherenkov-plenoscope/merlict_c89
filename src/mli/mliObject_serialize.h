@@ -5,6 +5,6 @@
 #include "../io/io.h"
 #include "mliObject.h"
 
-int mliObject_fwrite(const struct mliObject *obj, struct mli_IO *f);
-int mliObject_malloc_fread(struct mliObject *obj, struct mli_IO *f);
+int mliObject_to_io(const struct mliObject *obj, struct mli_IO *f);
+int mliObject_from_io(struct mliObject *obj, struct mli_IO *f);
 #endif

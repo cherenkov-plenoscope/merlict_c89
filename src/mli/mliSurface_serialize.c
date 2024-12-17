@@ -3,7 +3,7 @@
 #include "mliMagicId.h"
 #include "../func/func_serialize.h"
 
-int mliSurface_fwrite(const struct mliSurface *srf, struct mli_IO *f)
+int mliSurface_to_io(const struct mliSurface *srf, struct mli_IO *f)
 {
         struct mliMagicId magic = mliMagicId_init();
         /* magic identifier */
@@ -11,15 +11,15 @@ int mliSurface_fwrite(const struct mliSurface *srf, struct mli_IO *f)
         chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
 
         chk_IO_write(&srf->material, sizeof(uint32_t), 1u, f);
-        chk(mli_Func_fwrite(&srf->specular_reflection, f));
-        chk(mli_Func_fwrite(&srf->diffuse_reflection, f));
+        chk(mli_Func_to_io(&srf->specular_reflection, f));
+        chk(mli_Func_to_io(&srf->diffuse_reflection, f));
 
         return 1;
 chk_error:
         return 0;
 }
 
-int mliSurface_malloc_fread(struct mliSurface *srf, struct mli_IO *f)
+int mliSurface_from_io(struct mliSurface *srf, struct mli_IO *f)
 {
         struct mliMagicId magic;
         /* magic identifier */
@@ -29,8 +29,8 @@ int mliSurface_malloc_fread(struct mliSurface *srf, struct mli_IO *f)
         mliMagicId_warn_version(&magic);
 
         chk_IO_read(&srf->material, sizeof(uint32_t), 1u, f);
-        chk(mli_Func_malloc_fread(&srf->specular_reflection, f));
-        chk(mli_Func_malloc_fread(&srf->diffuse_reflection, f));
+        chk(mli_Func_from_io(&srf->specular_reflection, f));
+        chk(mli_Func_from_io(&srf->diffuse_reflection, f));
 
         return 1;
 chk_error:

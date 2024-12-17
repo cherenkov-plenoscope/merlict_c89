@@ -14,11 +14,11 @@ CASE("mli_String_serialize")
         CHECK(mli_String_from_cstr(&first, "Yolo421!"));
 
         CHECK(mli_IO__open_file_cstr(&f, path, "w"));
-        CHECK(mli_String_fwrite(&first, &f));
+        CHECK(mli_String_to_io(&first, &f));
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, path, "r"));
-        CHECK(mli_String_malloc_fread(&second, &f));
+        CHECK(mli_String_from_io(&second, &f));
         mli_IO_close(&f);
 
         CHECK(mli_String_equal(&first, &second));

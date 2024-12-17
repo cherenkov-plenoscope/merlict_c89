@@ -122,7 +122,7 @@ int mli_viewer_image_to_path(const struct mli_Image *img, const char *path)
         struct mli_IO f = mli_IO_init();
         chk_msg(mli_IO__open_file_cstr(&f, path, "w"),
                 "Can't open path to write image.");
-        chk_msg(mli_Image_fwrite(img, &f), "Can't write image to file.");
+        chk_msg(mli_Image_to_io(img, &f), "Can't write image to file.");
         mli_IO_close(&f);
         return 1;
 chk_error:

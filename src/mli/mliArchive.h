@@ -19,7 +19,7 @@ struct mliArchive mliArchive_init(void);
 
 void mliArchive_free(struct mliArchive *arc);
 int mliArchive_malloc(struct mliArchive *arc);
-int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f);
+int mliArchive_from_io(struct mliArchive *arc, FILE *f);
 int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path);
 
 int mliArchive_push_back(

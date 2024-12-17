@@ -8,11 +8,11 @@
 #include "mliUserScenery.h"
 #include "mliFrame.h"
 
-int mliScenery_malloc_fread_tar(struct mliScenery *scenery, FILE *f)
+int mliScenery_from_io_tar(struct mliScenery *scenery, FILE *f)
 {
         struct mliArchive archive = mliArchive_init();
         chk_dbg;
-        chk_msg(mliArchive_malloc_fread(&archive, f),
+        chk_msg(mliArchive_from_io(&archive, f),
                 "Can't read archive from file.");
         chk_dbg;
         chk_msg(mliScenery_malloc_from_Archive(scenery, &archive),
@@ -31,7 +31,7 @@ int mliScenery_malloc_from_path_tar(
         FILE *f = fopen(path, "rb");
         chk_dbg;
         chk_msgf(f != NULL, ("Can't open path '%s'.", path))
-                chk_msg(mliScenery_malloc_fread_tar(scenery, f),
+                chk_msg(mliScenery_from_io_tar(scenery, f),
                         "Can't fread Scenery from file.");
         chk_dbg;
         fclose(f);

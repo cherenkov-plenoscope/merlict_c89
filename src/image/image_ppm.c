@@ -5,7 +5,7 @@
 #include "../string/string_numbers.h"
 #include "../io/io_text.h"
 
-int mli_Image_malloc_fread(struct mli_Image *img, struct mli_IO *f)
+int mli_Image_from_io(struct mli_Image *img, struct mli_IO *f)
 {
         struct mli_String line = mli_String_init();
         uint64_t num_comment_lines = 0;
@@ -62,7 +62,7 @@ chk_error:
         return 0;
 }
 
-int mli_Image_fwrite(const struct mli_Image *img, struct mli_IO *f)
+int mli_Image_to_io(const struct mli_Image *img, struct mli_IO *f)
 {
 
         uint32_t col;

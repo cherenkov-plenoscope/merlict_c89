@@ -3,7 +3,7 @@
 #include "../mli/mliMagicId.h"
 #include "../chk/chk.h"
 
-int mli_String_fwrite(const struct mli_String *self, struct mli_IO *f)
+int mli_String_to_io(const struct mli_String *self, struct mli_IO *f)
 {
         struct mliMagicId magic = mliMagicId_init();
         chk(mliMagicId_set(&magic, "mli_String"));
@@ -15,7 +15,7 @@ chk_error:
         return 0;
 }
 
-int mli_String_malloc_fread(struct mli_String *self, struct mli_IO *f)
+int mli_String_from_io(struct mli_String *self, struct mli_IO *f)
 {
         uint64_t size;
         struct mliMagicId magic;

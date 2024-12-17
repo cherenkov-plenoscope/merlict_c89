@@ -3,7 +3,7 @@
 #include "mliMagicId.h"
 #include "../chk/chk.h"
 
-int mliGeometryToMaterialMap_malloc_fread(
+int mliGeometryToMaterialMap_from_io(
         struct mliGeometryToMaterialMap *geomap,
         struct mli_IO *f)
 {
@@ -37,7 +37,7 @@ chk_error:
         return 0;
 }
 
-int mliGeometryToMaterialMap_fwrite(
+int mliGeometryToMaterialMap_to_io(
         const struct mliGeometryToMaterialMap *geomap,
         struct mli_IO *f)
 {

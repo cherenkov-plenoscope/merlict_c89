@@ -4,7 +4,7 @@
 #include "mliMagicId.h"
 #include "mliOcTree_serialize.h"
 
-int mliAccelerator_fwrite(const struct mliAccelerator *accel, struct mli_IO *f)
+int mliAccelerator_to_io(const struct mliAccelerator *accel, struct mli_IO *f)
 {
         uint64_t i = 0;
 
@@ -18,21 +18,21 @@ int mliAccelerator_fwrite(const struct mliAccelerator *accel, struct mli_IO *f)
         chk_IO_write(&accel->num_robjects, sizeof(uint32_t), 1, f);
 
         for (i = 0; i < accel->num_objects; i++) {
-                chk(mliOcTree_fwrite(&accel->object_octrees[i], f));
+                chk(mliOcTree_to_io(&accel->object_octrees[i], f));
         }
         chk_IO_write(
                 accel->robject_aabbs,
                 sizeof(struct mli_AABB),
                 accel->num_robjects,
                 f);
-        chk(mliOcTree_fwrite(&accel->scenery_octree, f));
+        chk(mliOcTree_to_io(&accel->scenery_octree, f));
 
         return 1;
 chk_error:
         return 0;
 }
 
-int mliAccelerator_malloc_fread(struct mliAccelerator *accel, struct mli_IO *f)
+int mliAccelerator_from_io(struct mliAccelerator *accel, struct mli_IO *f)
 {
         uint64_t i = 0u;
         struct mliMagicId magic;
@@ -53,7 +53,7 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, struct mli_IO *f)
         chk_mem(mliAccelerator_malloc(accel, num_objects, num_robjects));
 
         for (i = 0; i < accel->num_objects; i++) {
-                chk_mem(mliOcTree_malloc_fread(&accel->object_octrees[i], f));
+                chk_mem(mliOcTree_from_io(&accel->object_octrees[i], f));
         }
 
         chk_IO_read(
@@ -62,7 +62,7 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, struct mli_IO *f)
                 accel->num_robjects,
                 f);
 
-        chk_mem(mliOcTree_malloc_fread(&accel->scenery_octree, f));
+        chk_mem(mliOcTree_from_io(&accel->scenery_octree, f));
 
         return 1;
 chk_error:

@@ -96,7 +96,7 @@ CASE("focussing_a_parallel_beam")
                 "resources/"
                 "optics_focussing_mirror-psf.ppm.tmp",
                 "w"));
-        CHECK(mli_Image_fwrite(&screen_img, &f));
+        CHECK(mli_Image_to_io(&screen_img, &f));
         mli_IO_close(&f);
 
         mliScenery_free(&scenery);

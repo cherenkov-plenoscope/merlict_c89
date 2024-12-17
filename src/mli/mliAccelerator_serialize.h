@@ -5,6 +5,6 @@
 #include "../io/io.h"
 #include "mliAccelerator.h"
 
-int mliAccelerator_malloc_fread(struct mliAccelerator *accel, struct mli_IO *f);
-int mliAccelerator_fwrite(const struct mliAccelerator *accel, struct mli_IO *f);
+int mliAccelerator_from_io(struct mliAccelerator *accel, struct mli_IO *f);
+int mliAccelerator_to_io(const struct mliAccelerator *accel, struct mli_IO *f);
 #endif

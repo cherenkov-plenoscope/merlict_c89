@@ -64,7 +64,7 @@ chk_error:
         return 0;
 }
 
-int mliArchive_malloc_fread(struct mliArchive *arc, FILE *f)
+int mliArchive_from_io(struct mliArchive *arc, FILE *f)
 {
         struct mli_Tar tar = mli_Tar_init();
         struct mli_TarHeader tarh = mli_TarHeader_init();
@@ -114,9 +114,8 @@ chk_error:
 int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path)
 {
         FILE *f = fopen(path, "rb");
-        chk_msgf(f != NULL, ("Can't open path '%s'.", path))
-                chk_msg(mliArchive_malloc_fread(arc, f),
-                        "Can't fread Archive from file.");
+        chk_msgf(f != NULL, ("Can't open path '%s'.", path)) chk_msg(
+                mliArchive_from_io(arc, f), "Can't fread Archive from file.");
         fclose(f);
         return 1;
 chk_error:

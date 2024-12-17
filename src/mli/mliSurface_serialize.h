@@ -5,6 +5,6 @@
 #include "mliSurface.h"
 #include "../io/io.h"
 
-int mliSurface_fwrite(const struct mliSurface *srf, struct mli_IO *f);
-int mliSurface_malloc_fread(struct mliSurface *srf, struct mli_IO *f);
+int mliSurface_to_io(const struct mliSurface *srf, struct mli_IO *f);
+int mliSurface_from_io(struct mliSurface *srf, struct mli_IO *f);
 #endif

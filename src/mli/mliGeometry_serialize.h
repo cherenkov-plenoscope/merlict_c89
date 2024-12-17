@@ -5,6 +5,6 @@
 #include "../io/io.h"
 #include "mliGeometry.h"
 
-int mliGeometry_fwrite(const struct mliGeometry *scenery, struct mli_IO *f);
-int mliGeometry_malloc_fread(struct mliGeometry *scenery, struct mli_IO *f);
+int mliGeometry_to_io(const struct mliGeometry *scenery, struct mli_IO *f);
+int mliGeometry_from_io(struct mliGeometry *scenery, struct mli_IO *f);
 #endif

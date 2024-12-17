@@ -1,11 +1,12 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials_serialize.h"
 #include "mliMedium_serialize.h"
+#include "mliSurface_serialize.h"
 #include "mliMagicId.h"
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mliMaterials_fwrite(const struct mliMaterials *res, struct mli_IO *f)
+int mliMaterials_to_io(const struct mliMaterials *res, struct mli_IO *f)
 {
         uint64_t i;
         struct mliMagicId magic = mliMagicId_init();
@@ -19,15 +20,15 @@ int mliMaterials_fwrite(const struct mliMaterials *res, struct mli_IO *f)
         chk_IO_write(&res->num_boundary_layers, sizeof(uint64_t), 1u, f);
 
         for (i = 0; i < res->num_media; i++) {
-                chk(mli_String_fwrite(&res->medium_names[i], f));
-                chk(mliMedium_fwrite(&res->media[i], f));
+                chk(mli_String_to_io(&res->medium_names[i], f));
+                chk(mliMedium_to_io(&res->media[i], f));
         }
         for (i = 0; i < res->num_surfaces; i++) {
-                chk(mli_String_fwrite(&res->surface_names[i], f));
-                chk(mliSurface_fwrite(&res->surfaces[i], f));
+                chk(mli_String_to_io(&res->surface_names[i], f));
+                chk(mliSurface_to_io(&res->surfaces[i], f));
         }
         for (i = 0; i < res->num_boundary_layers; i++) {
-                chk(mli_String_fwrite(&res->boundary_layer_names[i], f));
+                chk(mli_String_to_io(&res->boundary_layer_names[i], f));
                 chk_IO_write(
                         &res->boundary_layers[i],
                         sizeof(struct mliBoundaryLayer),
@@ -41,7 +42,7 @@ chk_error:
         return 0;
 }
 
-int mliMaterials_malloc_fread(struct mliMaterials *res, struct mli_IO *f)
+int mliMaterials_from_io(struct mliMaterials *res, struct mli_IO *f)
 {
         uint64_t i;
         struct mliMagicId magic;
@@ -61,20 +62,19 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, struct mli_IO *f)
         /* payload */
         for (i = 0; i < res->num_media; i++) {
                 chk_dbg chk_msg(
-                        mli_String_malloc_fread(&res->medium_names[i], f),
+                        mli_String_from_io(&res->medium_names[i], f),
                         "Failed to fread medium name.");
-                chk_msg(mliMedium_malloc_fread(&res->media[i], f),
+                chk_msg(mliMedium_from_io(&res->media[i], f),
                         "Failed to fread Medium.");
         }
         for (i = 0; i < res->num_surfaces; i++) {
-                chk_msg(mli_String_malloc_fread(&res->surface_names[i], f),
+                chk_msg(mli_String_from_io(&res->surface_names[i], f),
                         "Failed to fread surface name.");
-                chk_msg(mliSurface_malloc_fread(&res->surfaces[i], f),
+                chk_msg(mliSurface_from_io(&res->surfaces[i], f),
                         "Failed to fread Surface.");
         }
         for (i = 0; i < res->num_boundary_layers; i++) {
-                chk_msg(mli_String_malloc_fread(
-                                &res->boundary_layer_names[i], f),
+                chk_msg(mli_String_from_io(&res->boundary_layer_names[i], f),
                         "Failed to fread boundary layer name.");
                 chk_IO_read(
                         &res->boundary_layers[i],

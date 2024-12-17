@@ -103,11 +103,11 @@ CASE("mli_Image_write_to_ppm, mli_Image_malloc_from_ppm")
                 }
         }
         CHECK(mli_IO__open_file_cstr(&f, path, "w"));
-        CHECK(mli_Image_fwrite(&img, &f));
+        CHECK(mli_Image_to_io(&img, &f));
         CHECK(mli_IO_close(&f));
 
         CHECK(mli_IO__open_file_cstr(&f, path, "r"));
-        CHECK(mli_Image_malloc_fread(&back, &f));
+        CHECK(mli_Image_from_io(&back, &f));
         CHECK(mli_IO_close(&f));
 
         CHECK(mli_Image_num_cols(&back) == 3u);
