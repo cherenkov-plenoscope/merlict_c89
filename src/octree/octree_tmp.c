@@ -5,7 +5,7 @@
 #include "../mli/mliDynUint32.h"
 #include "../chk/chk.h"
 
-uint64_t mli_guess_octree_depth_based_on_num_objects(const uint64_t num_objects)
+uint64_t mli_octree_guess_depth_based_on_num_objects(const uint64_t num_objects)
 {
         return 3u + (uint64_t)ceil(log((double)num_objects) / log(8.0));
 }
@@ -73,7 +73,7 @@ int mli_octree_TmpNode_add_children(
         uint32_t c;
         uint32_t sx, sy, sz, obj;
         struct mliCube child_cubes[8];
-        struct mliOctOverlap overlap[8];
+        struct mli_octree_OverlapVector overlap[8];
 
         if (node->num_objects <= 32u) {
                 return 1;
@@ -84,8 +84,9 @@ int mli_octree_TmpNode_add_children(
         }
 
         for (c = 0u; c < 8u; c++) {
-                overlap[c] = mliOctOverlap_init();
-                chk(mliOctOverlap_malloc(&overlap[c], node->num_objects));
+                overlap[c] = mli_octree_OverlapVector_init();
+                chk(mli_octree_OverlapVector_malloc(
+                        &overlap[c], node->num_objects));
         }
 
         /* sense possible children */
@@ -106,7 +107,7 @@ int mli_octree_TmpNode_add_children(
                                                     mliCube_to_aabb(
                                                             child_cubes
                                                                     [child]))) {
-                                                chk(mliOctOverlap_push_back(
+                                                chk(mli_octree_OverlapVector_push_back(
                                                         &overlap[child],
                                                         object_idx));
                                         }
@@ -127,7 +128,7 @@ int mli_octree_TmpNode_add_children(
         }
 
         for (c = 0u; c < 8u; c++) {
-                mliOctOverlap_free(&overlap[c]);
+                mli_octree_OverlapVector_free(&overlap[c]);
         }
 
         for (c = 0; c < 8u; c++) {
@@ -157,7 +158,7 @@ int mli_octree_TmpNode_malloc_tree_from_bundle(
 {
         uint32_t idx, start_depth, max_depth;
         start_depth = 0u;
-        max_depth = mli_guess_octree_depth_based_on_num_objects(
+        max_depth = mli_octree_guess_depth_based_on_num_objects(
                 num_items_in_bundle);
 
         chk_msg(mli_octree_TmpNode_malloc(root_node, num_items_in_bundle),
