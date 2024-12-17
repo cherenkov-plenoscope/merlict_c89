@@ -21,7 +21,8 @@ CASE("lambertian cosine law, populate histogram, check cosine law")
         for (n = 0; n < NUM_TRAILS; n++) {
                 double theta;
                 struct mli_Vec lambertian_reflex;
-                lambertian_reflex = mli_draw_lambertian_direction_wrt_z(&prng);
+                lambertian_reflex =
+                        mli_lambertian_cosine_law_draw_direction_wrt_z(&prng);
                 theta = mli_Vec_angle_between(unit_z, lambertian_reflex);
                 mli_math_histogram(
                         hist_bin_edges,
@@ -78,7 +79,7 @@ CASE("lambertian cosine law, relative to surface normal")
                 MLI_MATH_ARRAY_SET(hist_bins, 0, hist_num_bins);
                 for (m = 0; m < NUM_TRAILS; m++) {
                         struct mli_Vec lambertian_reflex =
-                                mli_draw_lambertian_direction_wrt_surface_normal(
+                                mli_lambertian_cosine_law_draw_direction_wrt_surface_normal(
                                         &prng, surface_normal);
                         theta = mli_Vec_angle_between(
                                 surface_normal, lambertian_reflex);

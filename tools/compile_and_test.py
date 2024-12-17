@@ -46,6 +46,7 @@ module_paths = [
     os.path.join("src", "json"),
     os.path.join("src", "image"),
     os.path.join("src", "fresnel"),
+    os.path.join("src", "lambertian"),
     os.path.join("src", "func"),
     os.path.join("src", "tar"),
     os.path.join("src", "avl"),
@@ -70,8 +71,6 @@ module_paths = [
     os.path.join("src", "view"),
     os.path.join("src", "viewer"),
 ]
-module_names = str.join("-", [os.path.basename(lp) for lp in module_paths])
-
 
 def print_file(path):
     with open(path, "rt") as f:
@@ -82,10 +81,9 @@ def run_and_save_sdtout(call, stdout_path):
     with open(stdout_path, "wt") as f:
         rc = subprocess.call(
             call,
-            # stderr=subprocess.STDOUT,
-            # stdout=f,
+            stderr=subprocess.STDOUT,
+            stdout=f,
         )
-    # print_file(stdout_path)
     return rc
 
 
@@ -160,19 +158,19 @@ almagamate_sources(
 )
 
 
-os.makedirs(os.path.join("build", "tests", module_names), exist_ok=True)
+os.makedirs(os.path.join("build", "tests", "mli"), exist_ok=True)
 
 for comkey in com:
     print(comkey)
     out_path = os.path.join(
-        "build", "tests", module_names, "test_{:s}".format(comkey)
+        "build", "tests", "mli", "test_{:s}".format(comkey)
     )
     rc = compile_sources(
         compiler=com[comkey]["compiler"],
         target=os.path.join(
             "build",
             "almagamate",
-            "{:s}.test.main.c".format(module_names),
+            "mli.test.main.c",
         ),
         out_path=out_path + ".exe",
         flags=com[comkey]["flags"],

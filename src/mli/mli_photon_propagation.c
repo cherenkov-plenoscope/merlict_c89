@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_photon_propagation.h"
 #include "mli_intersection_and_scenery.h"
-#include "mli_lambertian_cosine_law.h"
+#include "../lambertian/lambertian.h"
 #include "mli_ray_scenery_query.h"
 #include "../chk/chk.h"
 #include <math.h>
@@ -74,7 +74,7 @@ int mli_propagate_photon_phong(
                                 isec)));
                 env->photon->ray = mli_Ray_set(
                         isec->position,
-                        mli_draw_lambertian_direction_wrt_surface_normal(
+                        mli_lambertian_cosine_law_draw_direction_wrt_surface_normal(
                                 env->prng, isec->surface_normal));
                 chk_msg(mli_propagate_photon_env(env),
                         "Failed to continue after diffuse reflection phong.");

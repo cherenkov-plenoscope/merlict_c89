@@ -266,18 +266,6 @@ parser.add_argument(
     help="Output directory for header and source.",
 )
 parser.add_argument(
-    "--header_path",
-    metavar="HEADER_PATH",
-    type=str,
-    help="Path of header.",
-)
-parser.add_argument(
-    "--source_path",
-    metavar="SOURCE_PATH",
-    type=str,
-    help="Path of source.",
-)
-parser.add_argument(
     "modules",
     metavar="MODULES_PATHS",
     nargs="+",
@@ -316,7 +304,6 @@ if args.test:
         module_paths.append(_test_module_path)
 
 os.makedirs(outdir, exist_ok=True)
-module_names = str.join("-", [os.path.basename(lp) for lp in module_paths])
 
 sources, includes_from_std = gather_sources(
     module_paths=module_paths, source_types=SOURCE_TYPES
@@ -331,20 +318,15 @@ if cherrypickpath:
     with open(cherrypickpath, "rt") as f:
         cherrypick["src"] = f.read().splitlines()
     sources = limit_sources(sources=sources, source_paths=cherrypick["src"])
-    module_names = module_names + "-" + cherrypick["name"]
 
 if args.header_only:
     module_names = module_names + "-headeronly"
 
-header_path = os.path.join(outdir, module_names + ".h")
-source_path = os.path.join(outdir, module_names + ".c")
-test_path = os.path.join(outdir, module_names + ".test.c")
 
-if args.header_path:
-    header_path = args.header_path
-
-if args.source_path:
-    source_path = args.source_path
+header_path = os.path.join(outdir, "mli" + ".h")
+source_path = os.path.join(outdir, "mli" + ".c")
+test_path = os.path.join(outdir, "mli" + ".test.c")
+test_main_path = os.path.join(outdir, "mli" + ".test.main.c")
 
 header_txt, list_headers = make_header_txt(
     h_source=sources["h"], h_includes_from_std=includes_from_std["h"]
@@ -385,7 +367,6 @@ if args.test:
         source_paths=list_sources,
         test_paths=list_tests,
     )
-    test_main_path = os.path.join(outdir, module_names + ".test.main.c")
     with open(test_main_path, "wt") as f:
         f.write(o)
 
