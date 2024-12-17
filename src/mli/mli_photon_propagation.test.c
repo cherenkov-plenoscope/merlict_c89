@@ -6,7 +6,7 @@ CASE("simple propagation")
         struct mliScenery scenery = mliScenery_init();
         struct mliDynPhotonInteraction history = mliDynPhotonInteraction_init();
         struct mliIntersectionSurfaceNormal intersection;
-        struct mliSide side_coming_from, side_going_to;
+        struct mli_boundarylayer_Side side_coming_from, side_going_to;
         uint64_t max_interactions = 16;
 
         uint64_t MED_VACUUM = 0;

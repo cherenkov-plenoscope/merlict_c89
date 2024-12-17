@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliBoundaryLayer.h"
+#include "boundarylayer.h"
 #include <stdio.h>
 
-int mliBoundaryLayer_equal(
-        const struct mliBoundaryLayer a,
-        const struct mliBoundaryLayer b)
+int mli_BoundaryLayer_equal(
+        const struct mli_BoundaryLayer a,
+        const struct mli_BoundaryLayer b)
 {
         if (a.inner.surface != b.inner.surface)
                 return 0;
@@ -17,7 +17,7 @@ int mliBoundaryLayer_equal(
         return 1;
 }
 
-void mliBoundaryLayer_print(const struct mliBoundaryLayer a)
+void mli_BoundaryLayer_print(const struct mli_BoundaryLayer a)
 {
         fprintf(stderr,
                 "inner %d srf / %d med\nouter %d srf / %d med\n",

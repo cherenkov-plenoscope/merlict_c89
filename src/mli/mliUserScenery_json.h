@@ -5,16 +5,16 @@
 #include <stdint.h>
 #include "../json/json.h"
 #include "mliUserScenery.h"
-#include "mliBoundaryLayer.h"
+#include "../boundarylayer/boundarylayer.h"
 
-int mliSide_from_json(
-        struct mliSide *side,
+int mli_boundarylayer_Side_from_json(
+        struct mli_boundarylayer_Side *side,
         const struct mli_Map *surface_names,
         const struct mli_Map *medium_names,
         const struct mli_Json *json,
         const uint64_t side_token);
-int mliBoundaryLayer_from_json(
-        struct mliBoundaryLayer *boundary_layer,
+int mli_BoundaryLayer_from_json(
+        struct mli_BoundaryLayer *boundary_layer,
         const struct mli_Map *surface_names,
         const struct mli_Map *medium_names,
         const struct mli_Json *json,

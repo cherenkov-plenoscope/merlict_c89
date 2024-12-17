@@ -38,7 +38,7 @@ int mli_Materials_assign_boundary_layers_from_json(
                 chk_msg(json->tokens[token_s].type == JSMN_OBJECT,
                         "Expected boundary_layer to be of type object {}.");
 
-                chk_msg(mliBoundaryLayer_from_json(
+                chk_msg(mli_BoundaryLayer_from_json(
                                 &materials->boundary_layers[s],
                                 surface_names,
                                 medium_names,
@@ -53,8 +53,8 @@ chk_error:
         return 0;
 }
 
-int mliSide_from_json(
-        struct mliSide *side,
+int mli_boundarylayer_Side_from_json(
+        struct mli_boundarylayer_Side *side,
         const struct mli_Map *surface_names,
         const struct mli_Map *medium_names,
         const struct mli_Json *json,
@@ -82,8 +82,8 @@ chk_error:
         return 0;
 }
 
-int mliBoundaryLayer_from_json(
-        struct mliBoundaryLayer *boundary_layer,
+int mli_BoundaryLayer_from_json(
+        struct mli_BoundaryLayer *boundary_layer,
         const struct mli_Map *surface_names,
         const struct mli_Map *medium_names,
         const struct mli_Json *json,
@@ -97,14 +97,14 @@ int mliBoundaryLayer_from_json(
                         json, token_surface, "outer", &token_outer_side),
                 "Expected key 'outer' in surface.");
 
-        chk_msg(mliSide_from_json(
+        chk_msg(mli_boundarylayer_Side_from_json(
                         &boundary_layer->inner,
                         surface_names,
                         medium_names,
                         json,
                         token_inner_side),
                 "Failed to parse inner side.");
-        chk_msg(mliSide_from_json(
+        chk_msg(mli_boundarylayer_Side_from_json(
                         &boundary_layer->outer,
                         surface_names,
                         medium_names,

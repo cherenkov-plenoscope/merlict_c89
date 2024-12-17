@@ -13,7 +13,7 @@ struct mliPhotonInteraction mliPhotonInteraction_from_Intersection(
 {
         struct mliPhotonInteraction phia;
 
-        struct mliSide side_coming_from, side_going_to;
+        struct mli_boundarylayer_Side side_coming_from, side_going_to;
 
         side_coming_from = mli_get_side_coming_from(scenery, isec);
         side_going_to = mli_get_side_going_to(scenery, isec);
@@ -37,7 +37,7 @@ int mli_propagate_photon_phong(
         double specular;
         double diffuse;
         double rnd;
-        struct mliSide side_coming_from =
+        struct mli_boundarylayer_Side side_coming_from =
                 mli_get_side_coming_from(env->scenery, isec);
 
         chk_msg(mli_Func_evaluate(
@@ -128,7 +128,7 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
         double *probability_passing)
 {
         double one_over_e_way;
-        const struct mliSide side_coming_from =
+        const struct mli_boundarylayer_Side side_coming_from =
                 mli_get_side_coming_from(scenery, isec);
         chk_msg(mli_Func_evaluate(
                         &scenery->materials.media[side_coming_from.medium]
@@ -200,7 +200,7 @@ int mli_propagate_photon_interact_with_object(
         const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mli_Surface surface_coming_from;
-        const struct mliSide side_coming_from =
+        const struct mli_boundarylayer_Side side_coming_from =
                 mli_get_side_coming_from(env->scenery, isec);
         surface_coming_from =
                 env->scenery->materials.surfaces[side_coming_from.surface];
@@ -255,7 +255,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
 
         if (ray_does_intersect_surface) {
                 int photon_is_absorbed_before_reaching_surface;
-                struct mliSide side_coming_from;
+                struct mli_boundarylayer_Side side_coming_from;
 
                 side_coming_from = mli_get_side_coming_from(
                         env->scenery, &next_intersection);

@@ -15,11 +15,11 @@ uint32_t mliScenery_resolve_boundary_layer_idx(
         return boundary_layer_idx;
 }
 
-struct mliSide mli_get_side_coming_from(
+struct mli_boundarylayer_Side mli_get_side_coming_from(
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        struct mliBoundaryLayer layer =
+        struct mli_BoundaryLayer layer =
                 scenery->materials
                         .boundary_layers[mliScenery_resolve_boundary_layer_idx(
                                 scenery, isec->geometry_id)];
@@ -29,11 +29,11 @@ struct mliSide mli_get_side_coming_from(
                 return layer.inner;
 }
 
-struct mliSide mli_get_side_going_to(
+struct mli_boundarylayer_Side mli_get_side_going_to(
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        struct mliBoundaryLayer layer =
+        struct mli_BoundaryLayer layer =
                 scenery->materials
                         .boundary_layers[mliScenery_resolve_boundary_layer_idx(
                                 scenery, isec->geometry_id)];
@@ -47,7 +47,8 @@ const struct mli_Func *mli_get_refractive_index_going_to(
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        const struct mliSide going_to = mli_get_side_going_to(scenery, isec);
+        const struct mli_boundarylayer_Side going_to =
+                mli_get_side_going_to(scenery, isec);
         return &scenery->materials.media[going_to.medium].refraction;
 }
 
@@ -55,7 +56,7 @@ const struct mli_Func *mli_get_refractive_index_coming_from(
         const struct mliScenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        const struct mliSide coming_from =
+        const struct mli_boundarylayer_Side coming_from =
                 mli_get_side_coming_from(scenery, isec);
         return &scenery->materials.media[coming_from.medium].refraction;
 }

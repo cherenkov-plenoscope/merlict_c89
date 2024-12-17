@@ -7,7 +7,7 @@
 #include "../func/func.h"
 #include "../surface/surface.h"
 #include "../medium/medium.h"
-#include "../mli/mliBoundaryLayer.h"
+#include "../boundarylayer/boundarylayer.h"
 #include "../string/string.h"
 
 struct mli_MaterialsCapacity {
@@ -28,7 +28,7 @@ struct mli_Materials {
         struct mli_String *medium_names;
 
         uint64_t num_boundary_layers;
-        struct mliBoundaryLayer *boundary_layers;
+        struct mli_BoundaryLayer *boundary_layers;
         struct mli_String *boundary_layer_names;
 
         uint64_t default_medium;

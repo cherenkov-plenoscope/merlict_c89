@@ -31,7 +31,7 @@ int mli_Materials_to_io(const struct mli_Materials *res, struct mli_IO *f)
                 chk(mli_String_to_io(&res->boundary_layer_names[i], f));
                 chk_IO_write(
                         &res->boundary_layers[i],
-                        sizeof(struct mliBoundaryLayer),
+                        sizeof(struct mli_BoundaryLayer),
                         1,
                         f);
         }
@@ -78,7 +78,7 @@ int mli_Materials_from_io(struct mli_Materials *res, struct mli_IO *f)
                         "Failed to fread boundary layer name.");
                 chk_IO_read(
                         &res->boundary_layers[i],
-                        sizeof(struct mliBoundaryLayer),
+                        sizeof(struct mli_BoundaryLayer),
                         1,
                         f);
         }

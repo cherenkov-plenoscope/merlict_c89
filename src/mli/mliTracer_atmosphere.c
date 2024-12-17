@@ -106,7 +106,7 @@ struct mli_Color mli_trace_to_intersection_atmosphere(
 {
         struct mli_Color color;
         struct mli_Color tone;
-        struct mliSide side;
+        struct mli_boundarylayer_Side side;
         double theta;
         double lambert_factor;
 

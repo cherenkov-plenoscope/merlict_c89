@@ -87,7 +87,7 @@ int mli_Materials_malloc(
 
         chk_malloc(
                 res->boundary_layers,
-                struct mliBoundaryLayer,
+                struct mli_BoundaryLayer,
                 res->num_boundary_layers);
         chk_malloc(
                 res->boundary_layer_names,
