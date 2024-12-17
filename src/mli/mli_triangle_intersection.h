@@ -3,7 +3,7 @@
 #define MLITRIANGLE_INTERSECTION_H_
 
 #include "../vec/vec.h"
-#include "mliRay.h"
+#include "../ray/ray.h"
 #include "mli_barycentric.h"
 
 struct mli_Vec mliTriangle_interpolate_surface_normal(

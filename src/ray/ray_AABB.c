@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliRay_AABB.h"
+#include "ray_AABB.h"
 #include "../math/math.h"
 
 void mliRay_aabb_intersections(

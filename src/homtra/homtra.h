@@ -3,7 +3,7 @@
 #define MLI_HOMTRA_H_
 
 #include "../vec/vec.h"
-#include "../mli/mliRay.h"
+#include "../ray/ray.h"
 #include "../mat/mat.h"
 #include "../quaternion/quaternion.h"
 

@@ -3,7 +3,7 @@
 #define MLITRACER_H_
 
 #include <stdint.h>
-#include "mliRay.h"
+#include "../ray/ray.h"
 #include "../color/color.h"
 #include "mliColorMaterials.h"
 #include "mliAtmosphere.h"

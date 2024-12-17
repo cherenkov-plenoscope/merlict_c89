@@ -5,7 +5,7 @@
 #include "../vec/vec.h"
 #include "mliScenery.h"
 #include "../color/color.h"
-#include "mliRay.h"
+#include "../ray/ray.h"
 #include "mliTracer.h"
 #include "mliIntersectionSurfaceNormal.h"
 

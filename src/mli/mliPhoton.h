@@ -3,7 +3,7 @@
 #define MLIPHOTON_H_
 
 #include <stdint.h>
-#include "mliRay.h"
+#include "../ray/ray.h"
 
 struct mliPhoton {
         struct mliRay ray;

@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliRay.h"
+#include "ray.h"
 #include "../math/math_quadratic_equation.h"
 
 struct mliRay mliRay_set(

@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIRAY_AABB_H_
-#define MLIRAY_AABB_H_
+#ifndef MLI_RAY_AABB_H_
+#define MLI_RAY_AABB_H_
 
-#include "mliRay.h"
-#include "mliAABB.h"
+#include "../ray/ray.h"
+#include "../mli/mliAABB.h"
 
 void mliRay_aabb_intersections(
         const struct mliRay ray,

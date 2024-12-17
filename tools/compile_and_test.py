@@ -48,6 +48,7 @@ module_paths = [
     os.path.join("src", "avl"),
     os.path.join("src", "color"),
     os.path.join("src", "vec"),
+    os.path.join("src", "ray"),
     os.path.join("src", "mat"),
     os.path.join("src", "quaternion"),
     os.path.join("src", "homtra"),

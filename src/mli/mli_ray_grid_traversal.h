@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../vec/vec.h"
 #include "mliAABB.h"
-#include "mliRay.h"
+#include "../ray/ray.h"
 
 struct mliIdx3 {
         int64_t x;

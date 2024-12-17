@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIRAY_H_
-#define MLIRAY_H_
+#ifndef MLI_RAY_H_
+#define MLI_RAY_H_
 
 #include <stdio.h>
 #include "../vec/vec.h"

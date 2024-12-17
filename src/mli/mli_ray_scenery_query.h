@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mli_ray_octree_traversal.h"
-#include "mliRay.h"
+#include "../ray/ray.h"
 #include "../homtra/homtra.h"
 #include "mliObject.h"
 #include "mliOcTree.h"
