@@ -1,6 +1,5 @@
 /* Copyright 2018-2023 Sebastian Achim Mueller */
 #include "io_memory.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include "../chk/chk.h"
 #include "../math/math.h"
@@ -231,49 +230,6 @@ int mli_IoMemory_eof(const struct mli_IoMemory *self)
         } else {
                 return EOF;
         }
-}
-
-int mli_IoMemory_write_from_path(struct mli_IoMemory *self, const char *path)
-{
-        int rc;
-        unsigned char c;
-        FILE *f = fopen(path, "rt");
-        chk_msg(f, "Failed to open file.");
-        chk_msg(mli_IoMemory__malloc(self), "Can not malloc string.");
-        while (1) {
-                rc = fread((void *)(&c), sizeof(unsigned char), 1, f);
-                if (rc == 0) {
-                        break;
-                }
-                chk_msg(mli_IoMemory__write_unsigned_char(self, &c),
-                        "Failed to write char to IO.");
-        }
-        fclose(f);
-        return 1;
-chk_error:
-        if (f != NULL)
-                fclose(f);
-        mli_IoMemory_close(self);
-        return 0;
-}
-
-int mli_IoMemory_read_to_path(struct mli_IoMemory *self, const char *path)
-{
-        FILE *f = fopen(path, "w");
-        chk_msg(f != NULL, "Failed to open path.");
-        while (1) {
-                unsigned char c;
-                int rc = mli_IoMemory__read_unsigned_char(self, &c);
-                if (rc == EOF) {
-                        break;
-                }
-                chk_fwrite(&c, sizeof(unsigned char), 1, f);
-        }
-        fclose(f);
-        return 1;
-chk_error:
-        fclose(f);
-        return 0;
 }
 
 int mli_IoMemory__write_cstr(struct mli_IoMemory *self, const char *cstr)

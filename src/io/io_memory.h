@@ -40,10 +40,6 @@ int64_t mli_IoMemory_seek(
         const int64_t origin);
 int mli_IoMemory_eof(const struct mli_IoMemory *self);
 
-/* to/from path */
-int mli_IoMemory_write_from_path(struct mli_IoMemory *self, const char *path);
-int mli_IoMemory_read_to_path(struct mli_IoMemory *self, const char *path);
-
 /* internal */
 int mli_IoMemory__malloc(struct mli_IoMemory *self);
 int mli_IoMemory__malloc_capacity(
