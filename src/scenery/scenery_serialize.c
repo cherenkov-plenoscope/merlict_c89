@@ -7,7 +7,7 @@
 #include "../geometry/geometry_serialize.h"
 #include "../accelerator/accelerator_serialize.h"
 #include "../materials/materials_serialize.h"
-#include "../mli/mliGeometryToMaterialMap_serialize.h"
+#include "../geometrytomaterialmap/geometrytomaterialmap_serialize.h"
 
 int mli_Scenery_to_io(const struct mli_Scenery *self, struct mli_IO *f)
 {

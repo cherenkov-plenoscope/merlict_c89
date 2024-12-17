@@ -70,6 +70,7 @@ module_paths = [
     os.path.join("src", "photon"),
     os.path.join("src", "geometry"),
     os.path.join("src", "accelerator"),
+    os.path.join("src", "geometrytomaterialmap"),
     os.path.join("src", "scenery"),
     os.path.join("src", "testing"),
     os.path.join("src", "mli"),

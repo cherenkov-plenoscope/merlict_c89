@@ -4,7 +4,7 @@
 #include "../chk/chk.h"
 #include "../frame/frame.h"
 #include "../geometry/geometry.h"
-#include "mliGeometryToMaterialMap.h"
+#include "../geometrytomaterialmap/geometrytomaterialmap.h"
 
 int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
         const struct mli_Frame *frame,

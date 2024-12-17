@@ -3,7 +3,7 @@
 #define MLI_SCENERY_H_
 
 #include "../geometry/geometry.h"
-#include "../mli/mliGeometryToMaterialMap.h"
+#include "../geometrytomaterialmap/geometrytomaterialmap.h"
 #include "../materials/materials.h"
 #include "../accelerator/accelerator.h"
 

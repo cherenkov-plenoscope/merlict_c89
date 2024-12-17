@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIGEOMETRYTOMATERIALMAP_H_
-#define MLIGEOMETRYTOMATERIALMAP_H_
+#ifndef MLI_GEOMETRYTOMATERIALMAP_H_
+#define MLI_GEOMETRYTOMATERIALMAP_H_
 
 #include <stdint.h>
 #include "../geometry/geometry.h"

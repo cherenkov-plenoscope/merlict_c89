@@ -3,7 +3,7 @@
 #include "../materials/materials_valid.h"
 #include "../geometry/geometry_valid.h"
 #include "../accelerator/accelerator_valid.h"
-#include "../mli/mliGeometryToMaterialMap_valid.h"
+#include "../geometrytomaterialmap/geometrytomaterialmap_valid.h"
 #include "../chk/chk.h"
 
 int mli_Scenery_valid(const struct mli_Scenery *self)

@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIGEOMETRYTOMATERIALMAP_EQUAL_H_
-#define MLIGEOMETRYTOMATERIALMAP_EQUAL_H_
+#ifndef MLI_GEOMETRYTOMATERIALMAP_EQUAL_H_
+#define MLI_GEOMETRYTOMATERIALMAP_EQUAL_H_
 
-#include "mliGeometryToMaterialMap.h"
+#include "geometrytomaterialmap.h"
 
 int mli_GeometryToMaterialMap_equal(
         const struct mli_GeometryToMaterialMap *a,

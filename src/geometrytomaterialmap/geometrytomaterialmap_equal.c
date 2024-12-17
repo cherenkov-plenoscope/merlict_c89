@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliGeometryToMaterialMap_equal.h"
+#include "geometrytomaterialmap_equal.h"
 #include <stdint.h>
 #include "../chk/chk.h"
 

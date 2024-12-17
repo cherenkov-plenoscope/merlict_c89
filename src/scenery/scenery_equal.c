@@ -3,7 +3,7 @@
 #include "../materials/materials_equal.h"
 #include "../geometry/geometry_equal.h"
 #include "../accelerator/accelerator_equal.h"
-#include "../mli/mliGeometryToMaterialMap_equal.h"
+#include "../geometrytomaterialmap/geometrytomaterialmap_equal.h"
 #include "../chk/chk.h"
 
 int mli_Scenery_equal(const struct mli_Scenery *a, const struct mli_Scenery *b)

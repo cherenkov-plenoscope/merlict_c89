@@ -24,9 +24,7 @@ chk_error:
         return 0;
 }
 
-int mli_Scenery_malloc_from_path_tar(
-        struct mli_Scenery *self,
-        const char *path)
+int mli_Scenery_malloc_from_path_tar(struct mli_Scenery *self, const char *path)
 {
         FILE *f = fopen(path, "rb");
         chk_dbg;
@@ -87,14 +85,11 @@ int mli_Scenery_malloc_from_Archive(
                 "Can not estimate num_robjects from tree of frames.");
 
         chk_msg(mli_GeometryToMaterialMap_malloc(
-                        &self->geomap,
-                        num_robjects,
-                        total_num_boundary_layers),
+                        &self->geomap, num_robjects, total_num_boundary_layers),
                 "Failed to malloc geometry to materials map.");
 
         chk_dbg;
-        chk_msg(mli_Geometry_malloc_references(
-                        &self->geometry, num_robjects),
+        chk_msg(mli_Geometry_malloc_references(&self->geometry, num_robjects),
                 "Failed to malloc geometry.references.");
 
         chk_msg(mli_Frame_set_robjects_and_material_map(

@@ -122,8 +122,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
         chk_msg(mli_Materials_malloc(&self->materials, mtlcap),
                 "Failed to malloc materials.");
 
-        chk(mli_String_from_cstr(
-                &self->materials.medium_names[0], "vacuum"));
+        chk(mli_String_from_cstr(&self->materials.medium_names[0], "vacuum"));
 
         chk(mli_Func_malloc(&self->materials.media[0].refraction, 2));
         self->materials.media[0].refraction.x[0] = 200e-9;
@@ -143,9 +142,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                         "Can't draw random phong surface.");
 
                 chk(mli_String_from_cstr_fromat(
-                        &self->materials.surface_names[i],
-                        "surface_%06u",
-                        i));
+                        &self->materials.surface_names[i], "surface_%06u", i));
 
                 self->materials.boundary_layers[i].inner.medium = 0u;
                 self->materials.boundary_layers[i].outer.medium = 0u;
