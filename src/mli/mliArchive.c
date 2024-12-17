@@ -64,7 +64,7 @@ chk_error:
         return 0;
 }
 
-int mliArchive_from_io(struct mliArchive *arc, FILE *f)
+int mliArchive_from_file(struct mliArchive *arc, FILE *f)
 {
         struct mli_Tar tar = mli_Tar_init();
         struct mli_TarHeader tarh = mli_TarHeader_init();
@@ -111,11 +111,11 @@ chk_error:
         return 0;
 }
 
-int mliArchive_malloc_from_path(struct mliArchive *arc, const char *path)
+int mliArchive_from_path(struct mliArchive *arc, const char *path)
 {
         FILE *f = fopen(path, "rb");
         chk_msgf(f != NULL, ("Can't open path '%s'.", path)) chk_msg(
-                mliArchive_from_io(arc, f), "Can't fread Archive from file.");
+                mliArchive_from_file(arc, f), "Can't fread Archive from file.");
         fclose(f);
         return 1;
 chk_error:
@@ -144,66 +144,9 @@ chk_error:
         return 0;
 }
 
-int mliArchive_get_malloc_json(
-        const struct mliArchive *arc,
-        const struct mli_String *filename,
-        struct mli_Json *json)
-{
-        struct mli_String *text = NULL;
-
-        chk_msg(mliArchive_get(arc, filename, &text),
-                "Can not find requested file in archive.");
-        chk_msg(mli_Json_from_string(json, text),
-                "Can not parse requested json.");
-
-        return 1;
-chk_error:
-        return 0;
-}
-
-uint64_t mliArchive_num(const struct mliArchive *arc)
+uint64_t mliArchive_size(const struct mliArchive *arc)
 {
         return mli_Map_size(&arc->filenames);
-}
-
-void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)
-{
-        uint64_t i;
-        for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliMapItem *item = &arc->filenames.items.array[i];
-                struct mli_String *str = &arc->textfiles.array[i];
-                fprintf(f,
-                        "%u: %s, %u\n",
-                        (uint32_t)i,
-                        item->key.array,
-                        (uint32_t)str->size);
-        }
-}
-
-void mliArchive_mask_filename_prefix_sufix(
-        const struct mliArchive *arc,
-        uint64_t *mask,
-        const char *prefix,
-        const char *sufix)
-{
-        uint64_t i = 0u;
-        uint64_t match = 0u;
-        for (i = 0; i < arc->textfiles.size; i++) {
-                struct mliMapItem *item = &arc->filenames.items.array[i];
-
-                if (mli_String_starts_with_cstr(&item->key, prefix) &&
-                    mli_String_ends_with_cstr(&item->key, sufix)) {
-                        match = 1;
-                } else {
-                        match = 0;
-                }
-
-                if (match) {
-                        mask[i] = 1;
-                } else {
-                        mask[i] = 0;
-                }
-        }
 }
 
 uint64_t mliArchive_num_filename_prefix_sufix(

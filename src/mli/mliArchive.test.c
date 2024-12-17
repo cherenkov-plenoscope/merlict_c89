@@ -8,7 +8,7 @@ CASE("mliArchive, read tar")
         struct mli_Object triangle = mli_Object_init();
         struct mli_String tmp = mli_String_init();
 
-        CHECK(mliArchive_malloc_from_path(
+        CHECK(mliArchive_from_path(
                 &arc,
                 "data/"
                 "mli/"
@@ -16,7 +16,7 @@ CASE("mliArchive, read tar")
                 "resources/"
                 "sceneries/"
                 "000.tar"));
-        CHECK(mliArchive_num(&arc) == 13);
+        CHECK(mliArchive_size(&arc) == 13);
 
         CHECK(1 == mliArchive_num_filename_prefix_sufix(
                            &arc, "materials/media", ".json"));

@@ -12,7 +12,7 @@ int mliScenery_from_io_tar(struct mliScenery *scenery, FILE *f)
 {
         struct mliArchive archive = mliArchive_init();
         chk_dbg;
-        chk_msg(mliArchive_from_io(&archive, f),
+        chk_msg(mliArchive_from_file(&archive, f),
                 "Can't read archive from file.");
         chk_dbg;
         chk_msg(mliScenery_malloc_from_Archive(scenery, &archive),

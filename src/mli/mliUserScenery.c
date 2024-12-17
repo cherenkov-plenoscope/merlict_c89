@@ -31,7 +31,7 @@ int mli_set_geometry_objects_and_names_from_archive(
         chk_dbg;
         /* objects */
         obj_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
+        for (arc_idx = 0u; arc_idx < mliArchive_size(archive); arc_idx++) {
                 struct mli_String *filename =
                         &archive->filenames.items.array[arc_idx].key;
 
@@ -95,6 +95,7 @@ int mli_Materials_malloc_form_archive(
         struct mli_Json boundary_layers_json = mli_Json_init();
         struct mli_MaterialsCapacity cap = mli_MaterialsCapacity_init();
 
+        struct mli_String *fixload = NULL;
         struct mli_String fixname = mli_String_init();
         struct mli_String key = mli_String_init();
         struct mli_String basename = mli_String_init();
@@ -112,9 +113,11 @@ int mli_Materials_malloc_form_archive(
         /* boundary_layers */
         chk_dbg;
         chk(mli_String_from_cstr(&fixname, "materials/boundary_layers.json"));
-        chk_msg(mliArchive_get_malloc_json(
-                        archive, &fixname, &boundary_layers_json),
+        chk_msg(mliArchive_get(archive, &fixname, &fixload),
+                "Can not find materials/boundary_layers.json file in archive.");
+        chk_msg(mli_Json_from_string(&boundary_layers_json, fixload),
                 "Failed to parse 'materials/boundary_layers.json'.");
+
         chk_dbg;
         chk_msg(boundary_layers_json.tokens[0].type == JSMN_OBJECT,
                 "Expected key 'boundary_layers' to be a json-object.");
@@ -135,7 +138,7 @@ int mli_Materials_malloc_form_archive(
 
         /* media */
         med_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
+        for (arc_idx = 0u; arc_idx < mliArchive_size(archive); arc_idx++) {
                 struct mli_String *filename =
                         &archive->filenames.items.array[arc_idx].key;
 
@@ -164,7 +167,7 @@ int mli_Materials_malloc_form_archive(
         chk_dbg;
         /* surfaces */
         srf_idx = 0u;
-        for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
+        for (arc_idx = 0u; arc_idx < mliArchive_size(archive); arc_idx++) {
                 struct mli_String *filename =
                         &archive->filenames.items.array[arc_idx].key;
                 if (mli_String_starts_with_cstr(
@@ -244,12 +247,16 @@ int mli_check_malloc_root_frame_from_Archive(
         const struct mli_Map *boundary_layer_names)
 {
         uint64_t token = 0u;
+        struct mli_String *fixload = NULL;
         struct mli_String fixname = mli_String_init();
         struct mli_Json tree_json = mli_Json_init();
 
         chk(mli_String_from_cstr(&fixname, "geometry/relations.json"));
-        chk_msg(mliArchive_get_malloc_json(archive, &fixname, &tree_json),
+        chk_msg(mliArchive_get(archive, &fixname, &fixload),
+                "Can not find geometry/relations.json file in archive.");
+        chk_msg(mli_Json_from_string(&tree_json, fixload),
                 "Failed to parse 'geometry/relations.json'.");
+
         chk_msg(mli_Json_token_by_key(&tree_json, 0, "children", &token),
                 "Expected 'tree.json' to have key 'children'.");
         chk_msg(mli_Frame_malloc(root, MLI_FRAME_TYPE_FRAME),
