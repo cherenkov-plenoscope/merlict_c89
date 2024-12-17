@@ -8,6 +8,10 @@
 
 MLI_VECTOR_DEFINITON(mli_String, char)
 
+int mli_String_from_vargs(
+        struct mli_String *str,
+        const char *format,
+        va_list args);
 int mli_String_from_cstr_fromat(
         struct mli_String *str,
         const char *format,

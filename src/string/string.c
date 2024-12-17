@@ -10,20 +10,35 @@ MLI_VECTOR_IMPLEMENTATION_ZERO_TERMINATION(mli_String, char)
 
 int mli_String_from_cstr_fromat(struct mli_String *str, const char *format, ...)
 {
-        struct mli_String tmp = mli_String_init();
         va_list args;
-
-        chk(mli_String_malloc(&tmp, 10 * strlen(format)));
         va_start(args, format);
-        vsprintf(tmp.array, format, args);
-        tmp.size = strlen(tmp.array);
-        chk(mli_String_copy(str, &tmp));
-
+        chk_msg(mli_String_from_vargs(str, format, args),
+                "Failed to malloc String from variadic args.");
         va_end(args);
-        mli_String_free(&tmp);
         return 1;
 chk_error:
         va_end(args);
+        return 0;
+}
+
+int mli_String_from_vargs(
+        struct mli_String *str,
+        const char *format,
+        va_list args)
+{
+        struct mli_String tmp = mli_String_init();
+        const int64_t tmp_capacity = 10 * strlen(format);
+        chk(mli_String_malloc(&tmp, tmp_capacity));
+
+        vsprintf(tmp.array, format, args);
+        chk_msg(mli_String__discover_size(&tmp) <= tmp_capacity,
+                "Probably 'vsprintf' caused a buffer overflow.");
+        tmp.size = strlen(tmp.array);
+        chk(mli_String_copy(str, &tmp));
+
+        mli_String_free(&tmp);
+        return 1;
+chk_error:
         mli_String_free(&tmp);
         return 0;
 }

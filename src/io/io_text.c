@@ -26,39 +26,19 @@ chk_error:
         return 0;
 }
 
-int mli_IO_text_write_cstr_format(struct mli_IO *str, const char *format, ...)
+int mli_IO_text_write_cstr_format(struct mli_IO *self, const char *format, ...)
 {
-        uint64_t i;
-        uint64_t tmp_length;
-        struct mli_IO tmp = mli_IO_init();
+        struct mli_String tmp = mli_String_init();
         va_list args;
-
-        chk(mli_IO__malloc_capacity(&tmp, 32 * strlen(format)));
         va_start(args, format);
-        vsprintf((char *)tmp.cstr, format, args);
-
-        tmp_length = 0;
-        for (i = 0; i < tmp.capacity; i++) {
-                if (tmp.cstr[i] == (char)'\0') {
-                        break;
-                } else {
-                        tmp_length += 1;
-                }
-        }
-        chk_msg(tmp_length < tmp.capacity,
-                "Expected tmp length < tmp.capacity. Probably vsprintf caused "
-                "a buffer overflow.");
-
-        for (i = 0; i < tmp_length; i++) {
-                chk(mli_IO_text_putc(str, tmp.cstr[i]));
-        }
-
+        chk(mli_String_from_vargs(&tmp, format, args));
+        chk(mli_IO_text_write_String(self, &tmp));
         va_end(args);
-        mli_IO_close(&tmp);
+        mli_String_free(&tmp);
         return 1;
 chk_error:
         va_end(args);
-        mli_IO_close(&tmp);
+        mli_String_free(&tmp);
         return 0;
 }
 
