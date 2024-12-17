@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIFRAME_JSON_H_
-#define MLIFRAME_JSON_H_
+#ifndef MLI_FRAME_JSON_H_
+#define MLI_FRAME_JSON_H_
 
 #include <stdint.h>
+#include "frame.h"
 #include "../json/json.h"
-#include "mliFrame.h"
 #include "../object/object.h"
 #include "../map/map.h"
 

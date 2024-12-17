@@ -13,8 +13,8 @@
 #include "mliArchive.h"
 #include "../object/object_wavefront.h"
 #include "../medium/medium_json.h"
-#include "mliFrame.h"
-#include "mliFrame_json.h"
+#include "../frame/frame.h"
+#include "../frame/frame_json.h"
 #include "../surface/surface_json.h"
 
 int mli_set_geometry_objects_and_names_from_archive(

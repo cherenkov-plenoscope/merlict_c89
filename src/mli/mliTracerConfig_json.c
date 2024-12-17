@@ -1,6 +1,6 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
 #include "mliRenderConfig.h"
-#include "mliFrame_json.h"
+#include "../frame/frame_json.h"
 #include "mliAtmosphere_json.h"
 #include "../chk/chk.h"
 #include "../color/color_json.h"

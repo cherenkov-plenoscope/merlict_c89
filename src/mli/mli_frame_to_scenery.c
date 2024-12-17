@@ -2,7 +2,7 @@
 #include "mli_frame_to_scenery.h"
 #include <math.h>
 #include "../chk/chk.h"
-#include "mliFrame.h"
+#include "../frame/frame.h"
 #include "mliGeometry.h"
 #include "mliGeometryToMaterialMap.h"
 

@@ -6,7 +6,7 @@
 #include "mliScenery_valid.h"
 #include "mli_frame_to_scenery.h"
 #include "mliUserScenery.h"
-#include "mliFrame.h"
+#include "../frame/frame.h"
 
 int mliScenery_from_io_tar(struct mliScenery *scenery, FILE *f)
 {

@@ -64,6 +64,7 @@ module_paths = [
     os.path.join("src", "materials"),
     os.path.join("src", "triangle"),
     os.path.join("src", "octree"),
+    os.path.join("src", "frame"),
     os.path.join("src", "boundarylayer"),
     os.path.join("src", "photon"),
     os.path.join("src", "testing"),

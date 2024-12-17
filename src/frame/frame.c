@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliFrame.h"
+#include "frame.h"
 #include "../chk/chk.h"
-#include "mliDynFramePtr.h"
+#include "frame_ptr_vector.h"
 
 struct mliFrame;
 

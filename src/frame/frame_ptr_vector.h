@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIDYNARRAY_FRAMEPTR_H_
-#define MLIDYNARRAY_FRAMEPTR_H_
+#ifndef MLI_FRAME_PTR_VECTOR_H_
+#define MLI_FRAME_PTR_VECTOR_H_
 
 struct mliFrame;
 #include "../vector/vector.h"

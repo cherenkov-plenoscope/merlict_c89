@@ -1,11 +1,11 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIFRAME_H_
-#define MLIFRAME_H_
+#ifndef MLI_FRAME_H_
+#define MLI_FRAME_H_
 
 #include <stdint.h>
 #include "../homtra/homtra.h"
 #include "../vector/uint32_vector.h"
-#include "mliDynFramePtr.h"
+#include "frame_ptr_vector.h"
 
 #define MLI_FRAME 1000u
 #define MLI_OBJECT 1001u
