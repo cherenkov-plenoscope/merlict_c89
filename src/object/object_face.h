@@ -4,14 +4,16 @@
 
 #include <stdint.h>
 
-struct mliFace {
+struct mli_object_Face {
         uint32_t a;
         uint32_t b;
         uint32_t c;
 };
 
-int mliFace_equal(const struct mliFace a, const struct mliFace b);
-struct mliFace mliFace_set(
+int mli_object_Face_equal(
+        const struct mli_object_Face a,
+        const struct mli_object_Face b);
+struct mli_object_Face mli_object_Face_set(
         const uint32_t a,
         const uint32_t b,
         const uint32_t c);

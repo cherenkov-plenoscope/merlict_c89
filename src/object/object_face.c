@@ -1,16 +1,21 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "object_face.h"
 
-struct mliFace mliFace_set(const uint32_t a, const uint32_t b, const uint32_t c)
+struct mli_object_Face mli_object_Face_set(
+        const uint32_t a,
+        const uint32_t b,
+        const uint32_t c)
 {
-        struct mliFace face;
+        struct mli_object_Face face;
         face.a = a;
         face.b = b;
         face.c = c;
         return face;
 }
 
-int mliFace_equal(const struct mliFace a, const struct mliFace b)
+int mli_object_Face_equal(
+        const struct mli_object_Face a,
+        const struct mli_object_Face b)
 {
         if (a.a != b.a)
                 return 0;

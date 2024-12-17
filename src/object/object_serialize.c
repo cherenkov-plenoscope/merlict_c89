@@ -27,10 +27,13 @@ int mliObject_to_io(const struct mliObject *obj, struct mli_IO *f)
                 f);
 
         chk_IO_write(
-                obj->faces_vertices, sizeof(struct mliFace), obj->num_faces, f);
+                obj->faces_vertices,
+                sizeof(struct mli_object_Face),
+                obj->num_faces,
+                f);
         chk_IO_write(
                 obj->faces_vertex_normals,
-                sizeof(struct mliFace),
+                sizeof(struct mli_object_Face),
                 obj->num_faces,
                 f);
         chk_IO_write(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);
@@ -77,10 +80,13 @@ int mliObject_from_io(struct mliObject *obj, struct mli_IO *f)
                 f);
 
         chk_IO_read(
-                obj->faces_vertices, sizeof(struct mliFace), obj->num_faces, f);
+                obj->faces_vertices,
+                sizeof(struct mli_object_Face),
+                obj->num_faces,
+                f);
         chk_IO_read(
                 obj->faces_vertex_normals,
-                sizeof(struct mliFace),
+                sizeof(struct mli_object_Face),
                 obj->num_faces,
                 f);
         chk_IO_read(obj->faces_materials, sizeof(uint16_t), obj->num_faces, f);

@@ -61,14 +61,14 @@ chk_error:
 
 int mliObject_parse_face_line(
         const struct mli_String *line,
-        struct mliFace *faces_vertices,
-        struct mliFace *faces_texture_points,
-        struct mliFace *faces_vertex_normals,
+        struct mli_object_Face *faces_vertices,
+        struct mli_object_Face *faces_texture_points,
+        struct mli_object_Face *faces_vertex_normals,
         int *line_mode)
 {
-        struct mliFace *v = faces_vertices;
-        struct mliFace *vt = faces_texture_points;
-        struct mliFace *vn = faces_vertex_normals;
+        struct mli_object_Face *v = faces_vertices;
+        struct mli_object_Face *vt = faces_texture_points;
+        struct mli_object_Face *vn = faces_vertex_normals;
         /*
         statemachine
         ============
@@ -478,11 +478,11 @@ chk_error:
 
 int mliObject_parse_face_vertices_and_normals(
         const struct mli_String *line,
-        struct mliFace *fv,
-        struct mliFace *fvn)
+        struct mli_object_Face *fv,
+        struct mli_object_Face *fvn)
 {
         int line_mode = -1;
-        struct mliFace tmp_fvt;
+        struct mli_object_Face tmp_fvt;
 
         chk_msg(mliObject_parse_face_line(line, fv, &tmp_fvt, fvn, &line_mode),
                 "Can not parse face-line.");
@@ -526,8 +526,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
         struct mliDynVec v = mliDynVec_init();
         struct mliDynVec vn = mliDynVec_init();
 
-        struct mliDynFace fv = mliDynFace_init();
-        struct mliDynFace fvn = mliDynFace_init();
+        struct mli_object_FaceVector fv = mli_object_FaceVector_init();
+        struct mli_object_FaceVector fvn = mli_object_FaceVector_init();
         struct mliDynUint32 fm = mliDynUint32_init();
 
         struct mliDynMap material_names = mliDynMap_init();
@@ -536,8 +536,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
         chk(mliDynVec_malloc(&v, 0u));
         chk(mliDynVec_malloc(&vn, 0u));
 
-        chk(mliDynFace_malloc(&fv, 0u));
-        chk(mliDynFace_malloc(&fvn, 0u));
+        chk(mli_object_FaceVector_malloc(&fv, 0u));
+        chk(mli_object_FaceVector_malloc(&fvn, 0u));
         chk(mliDynUint32_malloc(&fm, 0u));
 
         chk(mliDynMap_malloc(&material_names));
@@ -584,16 +584,18 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
                                         "Can not parse vertex-line.");
                                 chk(mliDynVec_push_back(&v, tmp_v));
                         } else if (mli_String_starts_with(&line, &sf)) {
-                                struct mliFace tmp_fv;
-                                struct mliFace tmp_fvn;
+                                struct mli_object_Face tmp_fv;
+                                struct mli_object_Face tmp_fvn;
                                 chk_msg(mliDynMap_size(&material_names) > 0,
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
                                 chk_msg(mliObject_parse_face_vertices_and_normals(
                                                 &line, &tmp_fv, &tmp_fvn),
                                         "Failed to parse face-line.");
-                                chk(mliDynFace_push_back(&fv, tmp_fv));
-                                chk(mliDynFace_push_back(&fvn, tmp_fvn));
+                                chk(mli_object_FaceVector_push_back(
+                                        &fv, tmp_fv));
+                                chk(mli_object_FaceVector_push_back(
+                                        &fvn, tmp_fvn));
                                 chk(mliDynUint32_push_back(&fm, mtl));
                         } else if (mli_String_starts_with(&line, &susemtl)) {
                                 chk(mli_String_copyn(
@@ -640,8 +642,8 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
         mliDynVec_free(&v);
         mliDynVec_free(&vn);
 
-        mliDynFace_free(&fv);
-        mliDynFace_free(&fvn);
+        mli_object_FaceVector_free(&fv);
+        mli_object_FaceVector_free(&fvn);
         mliDynUint32_free(&fm);
 
         mliDynMap_free(&material_names);
@@ -661,8 +663,8 @@ chk_error:
         mliDynVec_free(&v);
         mliDynVec_free(&vn);
 
-        mliDynFace_free(&fv);
-        mliDynFace_free(&fvn);
+        mli_object_FaceVector_free(&fv);
+        mli_object_FaceVector_free(&fvn);
         mliDynUint32_free(&fm);
 
         mliDynMap_free(&material_names);

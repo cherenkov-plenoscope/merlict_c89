@@ -64,8 +64,11 @@ int mliObject_malloc(
         chk_malloc(obj->vertices, struct mli_Vec, obj->num_vertices);
         chk_malloc(
                 obj->vertex_normals, struct mli_Vec, obj->num_vertex_normals);
-        chk_malloc(obj->faces_vertices, struct mliFace, obj->num_faces);
-        chk_malloc(obj->faces_vertex_normals, struct mliFace, obj->num_faces);
+        chk_malloc(obj->faces_vertices, struct mli_object_Face, obj->num_faces);
+        chk_malloc(
+                obj->faces_vertex_normals,
+                struct mli_object_Face,
+                obj->num_faces);
         chk_malloc(obj->faces_materials, uint16_t, obj->num_faces);
         chk_malloc(obj->material_names, struct mli_String, obj->num_materials);
         for (i = 0; i < obj->num_materials; i++) {
@@ -91,8 +94,9 @@ int mliObject_equal(const struct mliObject *a, const struct mliObject *b)
                 chk(mli_Vec_equal(a->vertex_normals[i], b->vertex_normals[i]));
         }
         for (i = 0; i < a->num_faces; i++) {
-                chk(mliFace_equal(a->faces_vertices[i], b->faces_vertices[i]));
-                chk(mliFace_equal(
+                chk(mli_object_Face_equal(
+                        a->faces_vertices[i], b->faces_vertices[i]));
+                chk(mli_object_Face_equal(
                         a->faces_vertex_normals[i],
                         b->faces_vertex_normals[i]));
                 chk(a->faces_materials[i] == b->faces_materials[i]);

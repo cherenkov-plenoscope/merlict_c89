@@ -24,7 +24,8 @@ void mli_inner_object_traversal(
                 uint32_t face_idx = mliOcTree_leaf_object_link(
                         object_octree, object_octree_leaf_idx, f);
 
-                struct mliFace fv = inner->object->faces_vertices[face_idx];
+                struct mli_object_Face fv =
+                        inner->object->faces_vertices[face_idx];
 
                 int32_t hit = mli_Ray_intersects_triangle(
                         inner->ray_object,
@@ -164,8 +165,9 @@ int mli_query_intersection_with_surface_normal(
 
                 struct mliObject *obj = &scenery->geometry.objects[object_idx];
 
-                struct mliFace fv = obj->faces_vertices[face_idx];
-                struct mliFace fvn = obj->faces_vertex_normals[face_idx];
+                struct mli_object_Face fv = obj->faces_vertices[face_idx];
+                struct mli_object_Face fvn =
+                        obj->faces_vertex_normals[face_idx];
 
                 (*isecsrf) = mliIntersectionSurfaceNormal_init();
                 isecsrf->distance_of_ray = isec.distance_of_ray;

@@ -59,9 +59,9 @@ CASE("mliObject, parse valid obj face lines")
 {
         int line_mode = 0;
         struct mli_String line = mli_String_init();
-        struct mliFace faces_vertices;
-        struct mliFace faces_texture_points;
-        struct mliFace faces_vertex_normals;
+        struct mli_object_Face faces_vertices;
+        struct mli_object_Face faces_texture_points;
+        struct mli_object_Face faces_vertex_normals;
 
         CHECK(mli_String_from_cstr(&line, "f 1 2 3"));
         CHECK(mliObject_parse_face_line(
@@ -203,9 +203,9 @@ CASE("mliObject, parse valid obj face lines")
 CASE("mliObject, parse bad obj face lines")
 {
         int line_mode = 0;
-        struct mliFace faces_vertices;
-        struct mliFace faces_texture_points;
-        struct mliFace faces_vertex_normals;
+        struct mli_object_Face faces_vertices;
+        struct mli_object_Face faces_texture_points;
+        struct mli_object_Face faces_vertex_normals;
         struct mli_String line = mli_String_init();
 
         CHECK(mli_String_from_cstr(&line, "f"));
@@ -437,9 +437,9 @@ CASE("mliObject, write and read binary-string")
                         obj.vertex_normals[i], obj_back.vertex_normals[i]));
         }
         for (i = 0; i < obj.num_faces; i++) {
-                CHECK(mliFace_equal(
+                CHECK(mli_object_Face_equal(
                         obj.faces_vertices[i], obj_back.faces_vertices[i]));
-                CHECK(mliFace_equal(
+                CHECK(mli_object_Face_equal(
                         obj.faces_vertex_normals[i],
                         obj_back.faces_vertex_normals[i]));
         }
@@ -502,9 +502,9 @@ CASE("mliObject, write and read ascii-text-string")
                         1e-6));
         }
         for (i = 0; i < obj.num_faces; i++) {
-                CHECK(mliFace_equal(
+                CHECK(mli_object_Face_equal(
                         obj.faces_vertices[i], obj_back.faces_vertices[i]));
-                CHECK(mliFace_equal(
+                CHECK(mli_object_Face_equal(
                         obj.faces_vertex_normals[i],
                         obj_back.faces_vertex_normals[i]));
                 CHECK(obj.faces_materials[i] == obj_back.faces_materials[i]);

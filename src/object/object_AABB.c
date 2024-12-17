@@ -8,7 +8,7 @@ int mliObject_face_in_local_frame_has_overlap_aabb(
         const uint64_t face_idx,
         const struct mli_AABB aabb)
 {
-        struct mliFace face;
+        struct mli_object_Face face;
         if (face_idx >= obj->num_faces) {
                 return 0;
         }
@@ -30,7 +30,8 @@ int mliObject_has_overlap_aabb(
 {
         uint64_t face_idx;
         for (face_idx = 0; face_idx < obj->num_faces; face_idx++) {
-                const struct mliFace face = obj->faces_vertices[face_idx];
+                const struct mli_object_Face face =
+                        obj->faces_vertices[face_idx];
 
                 const struct mli_Vec a_local = obj->vertices[face.a];
                 const struct mli_Vec b_local = obj->vertices[face.b];
@@ -67,7 +68,7 @@ struct mli_AABB mliObject_aabb(
         struct mli_AABB aabb;
         struct mli_Vec seed_vertex_local;
         struct mli_Vec seed_vertex_root;
-        struct mliFace seed_face;
+        struct mli_object_Face seed_face;
         uint64_t face_idx;
 
         if (obj->num_faces == 0) {
@@ -85,7 +86,8 @@ struct mli_AABB mliObject_aabb(
         aabb.lower = seed_vertex_root;
         aabb.upper = seed_vertex_root;
         for (face_idx = 0; face_idx < obj->num_faces; face_idx++) {
-                const struct mliFace face = obj->faces_vertices[face_idx];
+                const struct mli_object_Face face =
+                        obj->faces_vertices[face_idx];
                 const struct mli_Vec a_local = obj->vertices[face.a];
                 const struct mli_Vec b_local = obj->vertices[face.b];
                 const struct mli_Vec c_local = obj->vertices[face.c];

@@ -4,5 +4,5 @@
 
 #include "object_face.h"
 #include "../vector/vector.h"
-MLI_VECTOR_DEFINITON(mliDynFace, struct mliFace)
+MLI_VECTOR_DEFINITON(mli_object_FaceVector, struct mli_object_Face)
 #endif
