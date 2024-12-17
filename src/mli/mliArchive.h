@@ -3,8 +3,7 @@
 #define MLIARCHIVE_H_
 
 #include <stdint.h>
-#include "../io/io_memory.h"
-#include "../array/array.h"
+#include <stdio.h>
 #include "../string/string.h"
 #include "../string/string_vector.h"
 #include "../map/map.h"
