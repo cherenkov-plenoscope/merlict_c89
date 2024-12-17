@@ -18,9 +18,9 @@ int mli_set_geometry_objects_and_names_from_archive(
         const struct mliArchive *archive);
 
 struct mli_Object;
-struct mliFrame;
+struct mli_Frame;
 int mli_check_malloc_root_frame_from_Archive(
-        struct mliFrame *root,
+        struct mli_Frame *root,
         const struct mliArchive *archive,
         const struct mli_Map *object_names,
         const struct mli_Object *objects,

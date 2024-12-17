@@ -3,29 +3,29 @@
 #define MLI_FRAME_TO_SCENERY_H_
 
 #include <stdint.h>
-struct mliFrame;
+struct mli_Frame;
 struct mliGeometry;
 struct mliGeometryToMaterialMap;
 
-int mliFrame_set_robjects_and_material_map(
-        const struct mliFrame *frame,
+int mli_Frame_set_robjects_and_material_map(
+        const struct mli_Frame *frame,
         struct mliGeometry *geometry,
         struct mliGeometryToMaterialMap *geomap);
 
-int mliFrame_set_robjects_and_material_map_walk(
-        const struct mliFrame *frame,
+int mli_Frame_set_robjects_and_material_map_walk(
+        const struct mli_Frame *frame,
         struct mliGeometry *geometry,
         struct mliGeometryToMaterialMap *geomap,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers);
 
-int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
-        const struct mliFrame *frame,
+int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
+        const struct mli_Frame *frame,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers);
 
-int mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
-        const struct mliFrame *frame,
+int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+        const struct mli_Frame *frame,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers);
 

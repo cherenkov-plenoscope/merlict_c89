@@ -5,7 +5,7 @@
 #include "../vec/vec_json.h"
 #include "../quaternion/quaternion_json.h"
 
-int mliFrame_type_from_json_token(
+int mli_Frame_type_from_json_token(
         uint64_t *type,
         const struct mli_Json *json,
         const uint64_t token)
@@ -32,7 +32,7 @@ chk_error:
         return 0;
 }
 
-int mliFrame_id_from_json_token(
+int mli_Frame_id_from_json_token(
         uint32_t *id,
         const struct mli_Json *json,
         const uint64_t token)
@@ -52,7 +52,7 @@ chk_error:
         return 0;
 }
 
-int mliFrame_pos_rot_from_json_token(
+int mli_Frame_pos_rot_from_json_token(
         struct mli_HomTraComp *frame2mother,
         const struct mli_Json *json,
         const uint64_t token)
@@ -77,7 +77,7 @@ chk_error:
         return 0;
 }
 
-int mliFrame_boundary_layers_form_json_token(
+int mli_Frame_boundary_layers_form_json_token(
         struct mli_Uint32Vector *boundary_layers,
         const uint32_t object_idx,
         const struct mli_Object *objects,
@@ -128,7 +128,7 @@ chk_error:
         return 0;
 }
 
-int mliFrame_object_reference_form_json_token(
+int mli_Frame_object_reference_form_json_token(
         uint32_t *object_reference,
         const struct mli_Json *json,
         const uint64_t token,
@@ -149,8 +149,8 @@ chk_error:
         return 0;
 }
 
-int mliFrame_from_json(
-        struct mliFrame *mother,
+int mli_Frame_from_json(
+        struct mli_Frame *mother,
         const struct mli_Json *json,
         const uint64_t token_children,
         const struct mli_Map *object_names,
@@ -165,21 +165,21 @@ int mliFrame_from_json(
         for (c = 0; c < num_children; c++) {
                 uint64_t token_child =
                         mli_Json_token_by_index(json, token_children, c);
-                struct mliFrame *child = NULL;
+                struct mli_Frame *child = NULL;
                 uint64_t type;
                 uint64_t token_grandchildren;
 
-                chk_msg(mliFrame_type_from_json_token(&type, json, token_child),
+                chk_msg(mli_Frame_type_from_json_token(&type, json, token_child),
                         "Failed to read type of Frame.");
 
-                child = mliFrame_add(mother, type);
+                child = mli_Frame_add(mother, type);
                 chk_msg(child, "Failed to add child to frame.");
 
-                chk_msg(mliFrame_pos_rot_from_json_token(
+                chk_msg(mli_Frame_pos_rot_from_json_token(
                                 &child->frame2mother, json, token_child),
                         "Failed to set pos, and rot of Frame from json.");
 
-                chk_msg(mliFrame_id_from_json_token(
+                chk_msg(mli_Frame_id_from_json_token(
                                 &child->id, json, token_child),
                         "Failed to set id of Frame from json.");
 
@@ -192,7 +192,7 @@ int mliFrame_from_json(
                                         &token_grandchildren),
                                 "Expected child of type Frame to have "
                                 "key 'children'.");
-                        chk_msg(mliFrame_from_json(
+                        chk_msg(mli_Frame_from_json(
                                         child,
                                         json,
                                         token_grandchildren + 1,
@@ -203,14 +203,14 @@ int mliFrame_from_json(
                                 "Frames from json.");
                         break;
                 case MLI_OBJECT:
-                        chk_msg(mliFrame_object_reference_form_json_token(
+                        chk_msg(mli_Frame_object_reference_form_json_token(
                                         &child->object,
                                         json,
                                         token_child,
                                         object_names),
                                 "Failed to parse object-reference "
                                 "from json.");
-                        chk_msg(mliFrame_boundary_layers_form_json_token(
+                        chk_msg(mli_Frame_boundary_layers_form_json_token(
                                         &child->boundary_layers,
                                         child->object,
                                         objects,

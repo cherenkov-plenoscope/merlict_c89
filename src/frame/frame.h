@@ -10,29 +10,29 @@
 #define MLI_FRAME 1000u
 #define MLI_OBJECT 1001u
 
-struct mliFrame {
+struct mli_Frame {
         uint32_t type;
         uint32_t id;
         struct mli_HomTraComp frame2mother;
         struct mli_HomTraComp frame2root;
-        struct mliFrame *mother;
+        struct mli_Frame *mother;
 
-        struct mliDynFramePtr children;
+        struct mli_FramePtrVector children;
 
         uint32_t object;
         struct mli_Uint32Vector boundary_layers;
 };
 
-void mliFrame_set_frame2root(struct mliFrame *f);
-void mliFrame_print(struct mliFrame *f);
-void mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention);
+void mli_Frame_set_frame2root(struct mli_Frame *f);
+void mli_Frame_print(struct mli_Frame *f);
+void mli_Frame_print_walk(const struct mli_Frame *f, const uint64_t indention);
 int mli_string_to_type(const char *s, uint64_t *type);
 int mli_type_to_string(const uint64_t type, char *s);
-struct mliFrame *mliFrame_add(struct mliFrame *mother, const uint64_t type);
-int mliFrame_set_mother_and_child(
-        struct mliFrame *mother,
-        struct mliFrame *child);
-int mliFrame_malloc(struct mliFrame *f, const uint64_t type);
-void mliFrame_free(struct mliFrame *f);
-struct mliFrame mliFrame_init(void);
+struct mli_Frame *mli_Frame_add(struct mli_Frame *mother, const uint64_t type);
+int mli_Frame_set_mother_and_child(
+        struct mli_Frame *mother,
+        struct mli_Frame *child);
+int mli_Frame_malloc(struct mli_Frame *f, const uint64_t type);
+void mli_Frame_free(struct mli_Frame *f);
+struct mli_Frame mli_Frame_init(void);
 #endif

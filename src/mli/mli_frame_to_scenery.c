@@ -6,8 +6,8 @@
 #include "mliGeometry.h"
 #include "mliGeometryToMaterialMap.h"
 
-int mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
-        const struct mliFrame *frame,
+int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+        const struct mli_Frame *frame,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers)
 {
@@ -15,7 +15,7 @@ int mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.size; c++) {
-                        chk(mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+                        chk(mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
                                 frame->children.array[c],
                                 num_robjects,
                                 total_num_boundary_layers));
@@ -34,14 +34,14 @@ chk_error:
         return 0;
 }
 
-int mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
-        const struct mliFrame *frame,
+int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
+        const struct mli_Frame *frame,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers)
 {
         (*num_robjects) = 0u;
         (*total_num_boundary_layers) = 0u;
-        chk_msg(mliFrame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+        chk_msg(mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
                         frame, num_robjects, total_num_boundary_layers),
                 "Failed to walk tree of frames to estimate "
                 "num_robjects and total_num_boundary_layers.");
@@ -50,8 +50,8 @@ chk_error:
         return 0;
 }
 
-int mliFrame_set_robjects_and_material_map_walk(
-        const struct mliFrame *frame,
+int mli_Frame_set_robjects_and_material_map_walk(
+        const struct mli_Frame *frame,
         struct mliGeometry *geometry,
         struct mliGeometryToMaterialMap *geomap,
         uint64_t *num_robjects,
@@ -63,7 +63,7 @@ int mliFrame_set_robjects_and_material_map_walk(
         switch (frame->type) {
         case MLI_FRAME:
                 for (c = 0; c < frame->children.size; c++) {
-                        chk(mliFrame_set_robjects_and_material_map_walk(
+                        chk(mli_Frame_set_robjects_and_material_map_walk(
                                 frame->children.array[c],
                                 geometry,
                                 geomap,
@@ -111,14 +111,14 @@ chk_error:
         return 0;
 }
 
-int mliFrame_set_robjects_and_material_map(
-        const struct mliFrame *frame,
+int mli_Frame_set_robjects_and_material_map(
+        const struct mli_Frame *frame,
         struct mliGeometry *geometry,
         struct mliGeometryToMaterialMap *geomap)
 {
         uint64_t num_robjects = 0u;
         uint64_t total_num_boundary_layers = 0u;
-        chk_msg(mliFrame_set_robjects_and_material_map_walk(
+        chk_msg(mli_Frame_set_robjects_and_material_map_walk(
                         frame,
                         geometry,
                         geomap,

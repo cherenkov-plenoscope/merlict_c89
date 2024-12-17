@@ -25,7 +25,7 @@ int mliRenderConfig_camera_from_json(
         const struct mli_Json *json,
         const uint64_t tkn)
 {
-        chk(mliFrame_pos_rot_from_json_token(&cc->camera_to_root, json, tkn));
+        chk(mli_Frame_pos_rot_from_json_token(&cc->camera_to_root, json, tkn));
         chk(mli_Json_double_by_key(
                 json,
                 tkn,

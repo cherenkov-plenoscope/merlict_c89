@@ -3,46 +3,46 @@
 #include "../chk/chk.h"
 #include "frame_ptr_vector.h"
 
-struct mliFrame;
+struct mli_Frame;
 
-struct mliFrame mliFrame_init(void)
+struct mli_Frame mli_Frame_init(void)
 {
-        struct mliFrame f;
+        struct mli_Frame f;
         f.type = MLI_FRAME;
         f.id = 0u;
         f.frame2mother.translation = mli_Vec_init(0., 0., 0.);
         f.frame2mother.rotation = mli_Quaternion_set_tait_bryan(0., 0., 0.);
         f.frame2root = f.frame2mother;
         f.mother = NULL;
-        f.children = mliDynFramePtr_init();
+        f.children = mli_FramePtrVector_init();
         f.object = 0u;
 
         f.boundary_layers = mli_Uint32Vector_init();
         return f;
 }
 
-void mliFrame_free(struct mliFrame *f)
+void mli_Frame_free(struct mli_Frame *f)
 {
         uint64_t c;
         if (f->type == MLI_FRAME) {
                 for (c = 0; c < f->children.size; c++) {
-                        struct mliFrame *child = f->children.array[c];
-                        mliFrame_free(child);
+                        struct mli_Frame *child = f->children.array[c];
+                        mli_Frame_free(child);
                 }
-                mliDynFramePtr_free(&f->children);
+                mli_FramePtrVector_free(&f->children);
         }
         if (f->type == MLI_OBJECT) {
                 mli_Uint32Vector_free(&f->boundary_layers);
         }
-        (*f) = mliFrame_init();
+        (*f) = mli_Frame_init();
 }
 
-int mliFrame_malloc(struct mliFrame *f, const uint64_t type)
+int mli_Frame_malloc(struct mli_Frame *f, const uint64_t type)
 {
-        mliFrame_free(f);
+        mli_Frame_free(f);
         f->type = type;
         if (type == MLI_FRAME) {
-                chk_msg(mliDynFramePtr_malloc(&f->children, 0u),
+                chk_msg(mli_FramePtrVector_malloc(&f->children, 0u),
                         "Can not allocate children of frame.");
         }
         if (type == MLI_OBJECT) {
@@ -54,27 +54,27 @@ chk_error:
         return 0;
 }
 
-int mliFrame_set_mother_and_child(
-        struct mliFrame *mother,
-        struct mliFrame *child)
+int mli_Frame_set_mother_and_child(
+        struct mli_Frame *mother,
+        struct mli_Frame *child)
 {
         chk_msg(mother->type == MLI_FRAME,
                 "Expected mother to be of type FRAME");
-        chk_msg(mliDynFramePtr_push_back(&mother->children, child),
+        chk_msg(mli_FramePtrVector_push_back(&mother->children, child),
                 "Can not push back child-frame.");
 
-        child->mother = (struct mliFrame *)mother;
+        child->mother = (struct mli_Frame *)mother;
         return 1;
 chk_error:
         return 0;
 }
 
-struct mliFrame *mliFrame_add(struct mliFrame *mother, const uint64_t type)
+struct mli_Frame *mli_Frame_add(struct mli_Frame *mother, const uint64_t type)
 {
-        struct mliFrame *child = NULL;
-        chk_malloc(child, struct mliFrame, 1u);
-        chk_msg(mliFrame_malloc(child, type), "Can not allocate child-frame.");
-        chk_msg(mliFrame_set_mother_and_child(mother, child),
+        struct mli_Frame *child = NULL;
+        chk_malloc(child, struct mli_Frame, 1u);
+        chk_msg(mli_Frame_malloc(child, type), "Can not allocate child-frame.");
+        chk_msg(mli_Frame_set_mother_and_child(mother, child),
                 "Can not allocate child-pointer.");
         return child;
 chk_error:
@@ -113,7 +113,7 @@ chk_error:
         return 0;
 }
 
-void mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention)
+void mli_Frame_print_walk(const struct mli_Frame *f, const uint64_t indention)
 {
         uint64_t c;
         char type_string[1024];
@@ -153,14 +153,14 @@ void mliFrame_print_walk(const struct mliFrame *f, const uint64_t indention)
                 printf("|-obj %u\n", f->object);
         }
         for (c = 0; c < f->children.size; c++) {
-                struct mliFrame *child = f->children.array[c];
-                mliFrame_print_walk(child, indention + 4);
+                struct mli_Frame *child = f->children.array[c];
+                mli_Frame_print_walk(child, indention + 4);
         }
 }
 
-void mliFrame_print(struct mliFrame *f) { mliFrame_print_walk(f, 0u); }
+void mli_Frame_print(struct mli_Frame *f) { mli_Frame_print_walk(f, 0u); }
 
-void mliFrame_set_frame2root(struct mliFrame *f)
+void mli_Frame_set_frame2root(struct mli_Frame *f)
 {
         if (f->mother == NULL) {
                 f->frame2root = f->frame2mother;
@@ -171,8 +171,8 @@ void mliFrame_set_frame2root(struct mliFrame *f)
         if (f->type == MLI_FRAME) {
                 uint64_t c;
                 for (c = 0; c < f->children.size; c++) {
-                        struct mliFrame *child = f->children.array[c];
-                        mliFrame_set_frame2root(child);
+                        struct mli_Frame *child = f->children.array[c];
+                        mli_Frame_set_frame2root(child);
                 }
         }
 }

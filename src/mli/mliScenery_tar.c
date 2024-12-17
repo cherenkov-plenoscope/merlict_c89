@@ -50,7 +50,7 @@ int mliScenery_malloc_from_Archive(
 
         struct mli_ResourceNameMap material_names = mli_ResourceNameMap_init();
         struct mli_Map object_names = mli_Map_init();
-        struct mliFrame root = mliFrame_init();
+        struct mli_Frame root = mli_Frame_init();
 
         chk_dbg;
         chk_msg(mli_Materials_malloc_form_archive(
@@ -82,7 +82,7 @@ int mliScenery_malloc_from_Archive(
                         &material_names.boundary_layers),
                 "Failed to malloc and populate tree of frames.");
 
-        chk_msg(mliFrame_estimate_num_robjects_and_total_num_boundary_layers(
+        chk_msg(mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
                         &root, &num_robjects, &total_num_boundary_layers),
                 "Can not estimate num_robjects from tree of frames.");
 
@@ -96,13 +96,13 @@ int mliScenery_malloc_from_Archive(
         chk_msg(mliGeometry_malloc_references(&scenery->geometry, num_robjects),
                 "Failed to malloc geometry.references.");
 
-        chk_msg(mliFrame_set_robjects_and_material_map(
+        chk_msg(mli_Frame_set_robjects_and_material_map(
                         &root, &scenery->geometry, &scenery->geomap),
                 "Can not set robjects.");
 
         mli_ResourceNameMap_free(&material_names);
         mli_Map_free(&object_names);
-        mliFrame_free(&root);
+        mli_Frame_free(&root);
 
         chk_msg(mliAccelerator_malloc_from_Geometry(
                         &scenery->accelerator, &scenery->geometry),
