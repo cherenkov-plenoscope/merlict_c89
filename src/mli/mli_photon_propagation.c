@@ -106,14 +106,14 @@ chk_error:
 int mli_propagate_photon_pass_boundary_layer(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec,
-        const struct mliFresnel fresnel)
+        const struct mli_Fresnel fresnel)
 {
         chk(mliDynPhotonInteraction_push_back(
                 env->history,
                 mliPhotonInteraction_from_Intersection(
                         MLI_PHOTON_REFRACTION, env->scenery, isec)));
         env->photon->ray = mli_Ray_set(
-                isec->position, mliFresnel_refraction_direction(fresnel));
+                isec->position, mli_Fresnel_refraction_direction(fresnel));
         chk_msg(mli_propagate_photon_env(env),
                 "Failed to continue after passing boundary layer");
         return 1;
@@ -147,7 +147,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        struct mliFresnel fresnel;
+        struct mli_Fresnel fresnel;
         double n_going_to;
         double n_coming_from;
         double reflection_propability;
@@ -167,12 +167,12 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
                 isec->from_outside_to_inside
                         ? isec->surface_normal
                         : mli_Vec_multiply(isec->surface_normal, -1.0);
-        fresnel = mliFresnel_init(
+        fresnel = mli_Fresnel_init(
                 env->photon->ray.direction,
                 facing_surface_normal,
                 n_coming_from,
                 n_going_to);
-        reflection_propability = mliFresnel_reflection_propability(fresnel);
+        reflection_propability = mli_Fresnel_reflection_propability(fresnel);
         if (reflection_propability > mli_Prng_uniform(env->prng)) {
                 chk(mliDynPhotonInteraction_push_back(
                         env->history,
@@ -182,7 +182,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
                                 isec)));
                 env->photon->ray = mli_Ray_set(
                         isec->position,
-                        mliFresnel_reflection_direction(fresnel));
+                        mli_Fresnel_reflection_direction(fresnel));
                 chk_msg(mli_propagate_photon_env(env),
                         "Failed to continue after reflection");
         } else {

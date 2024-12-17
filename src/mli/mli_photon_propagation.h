@@ -9,7 +9,7 @@
 #include "mliScenery.h"
 #include "mliDynPhotonInteraction.h"
 #include "mli_random.h"
-#include "mliFresnel.h"
+#include "../fresnel/fresnel.h"
 
 struct mliEnv {
         const struct mliScenery *scenery;
@@ -45,7 +45,7 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
 int mli_propagate_photon_pass_boundary_layer(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec,
-        const struct mliFresnel fresnel);
+        const struct mli_Fresnel fresnel);
 int mli_propagate_photon_phong(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec);
