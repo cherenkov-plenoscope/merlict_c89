@@ -2,18 +2,18 @@
 #include "mliMaterials_serialize.h"
 #include "mliMedium_serialize.h"
 #include "mliSurface_serialize.h"
-#include "mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
 int mliMaterials_to_io(const struct mliMaterials *res, struct mli_IO *f)
 {
         uint64_t i;
-        struct mliMagicId magic = mliMagicId_init();
+        struct mli_MagicId magic = mli_MagicId_init();
 
         /* magic identifier */
-        chk(mliMagicId_set(&magic, "mliMaterials"));
-        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk(mli_MagicId_set(&magic, "mliMaterials"));
+        chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk_IO_write(&res->num_media, sizeof(uint64_t), 1u, f);
         chk_IO_write(&res->num_surfaces, sizeof(uint64_t), 1u, f);
@@ -45,13 +45,13 @@ chk_error:
 int mliMaterials_from_io(struct mliMaterials *res, struct mli_IO *f)
 {
         uint64_t i;
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
         struct mliMaterialsCapacity cap;
 
         /* magic identifier */
-        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
-        chk(mliMagicId_has_word(&magic, "mliMaterials"));
-        mliMagicId_warn_version(&magic);
+        chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk(mli_MagicId_has_word(&magic, "mliMaterials"));
+        mli_MagicId_warn_version(&magic);
 
         chk_IO_read(&cap.num_media, sizeof(uint64_t), 1u, f);
         chk_IO_read(&cap.num_surfaces, sizeof(uint64_t), 1u, f);

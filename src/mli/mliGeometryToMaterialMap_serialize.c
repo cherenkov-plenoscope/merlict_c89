@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometryToMaterialMap_serialize.h"
-#include "mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "../chk/chk.h"
 
 int mliGeometryToMaterialMap_from_io(
@@ -9,12 +9,12 @@ int mliGeometryToMaterialMap_from_io(
 {
         uint32_t num_robjects = 0u;
         uint32_t total_num_boundary_layers = 0u;
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
 
         /* magic identifier */
-        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
-        chk(mliMagicId_has_word(&magic, "mliGeometryToMaterialMap"));
-        mliMagicId_warn_version(&magic);
+        chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk(mli_MagicId_has_word(&magic, "mliGeometryToMaterialMap"));
+        mli_MagicId_warn_version(&magic);
 
         /* payload */
         chk_IO_read(&num_robjects, sizeof(uint32_t), 1u, f);
@@ -41,11 +41,11 @@ int mliGeometryToMaterialMap_to_io(
         const struct mliGeometryToMaterialMap *geomap,
         struct mli_IO *f)
 {
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
 
         /* magic identifier */
-        chk(mliMagicId_set(&magic, "mliGeometryToMaterialMap"));
-        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk(mli_MagicId_set(&magic, "mliGeometryToMaterialMap"));
+        chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         /* payload */
         chk_IO_write(&geomap->num_robjects, sizeof(uint32_t), 1, f);

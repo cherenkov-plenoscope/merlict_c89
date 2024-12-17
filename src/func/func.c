@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "func.h"
 #include <stdlib.h>
-#include "../mli/mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
 

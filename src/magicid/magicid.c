@@ -1,13 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliMagicId.h"
+#include "magicid.h"
 #include <assert.h>
 #include "../version/version.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
 
-struct mliMagicId mliMagicId_init(void)
+struct mli_MagicId mli_MagicId_init(void)
 {
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
         memset(magic.word, '\0', sizeof(magic.word));
         magic.mayor = MLI_VERSION_MAYOR;
         magic.minor = MLI_VERSION_MINOR;
@@ -15,10 +15,10 @@ struct mliMagicId mliMagicId_init(void)
         return magic;
 }
 
-int mliMagicId_set(struct mliMagicId *magic, const char *word)
+int mli_MagicId_set(struct mli_MagicId *magic, const char *word)
 {
         uint64_t i, len;
-        (*magic) = mliMagicId_init();
+        (*magic) = mli_MagicId_init();
         chk_msg(strlen(word) < sizeof(magic->word),
                 "Expected magic word to be shorter.");
 
@@ -36,7 +36,7 @@ chk_error:
         return 0;
 }
 
-int mliMagicId_has_word(const struct mliMagicId *magic, const char *word)
+int mli_MagicId_has_word(const struct mli_MagicId *magic, const char *word)
 {
         uint64_t i, len;
         chk_msg(strlen(word) < sizeof(magic->word),
@@ -60,7 +60,7 @@ chk_error:
         return 0;
 }
 
-void mliMagicId_warn_version(const struct mliMagicId *magic)
+void mli_MagicId_warn_version(const struct mli_MagicId *magic)
 {
         if ((magic->mayor != MLI_VERSION_MAYOR) ||
             (magic->minor != MLI_VERSION_MINOR) ||

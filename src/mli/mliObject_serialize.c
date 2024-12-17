@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliObject_serialize.h"
-#include "mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "mliObject_valid.h"
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
@@ -8,9 +8,9 @@
 int mliObject_to_io(const struct mliObject *obj, struct mli_IO *f)
 {
         uint64_t i;
-        struct mliMagicId magic;
-        chk(mliMagicId_set(&magic, "mliObject"));
-        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
+        struct mli_MagicId magic;
+        chk(mli_MagicId_set(&magic, "mliObject"));
+        chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk_IO_write(&obj->num_vertices, sizeof(uint32_t), 1u, f);
         chk_IO_write(&obj->num_vertex_normals, sizeof(uint32_t), 1u, f);
@@ -51,10 +51,10 @@ int mliObject_from_io(struct mliObject *obj, struct mli_IO *f)
         uint32_t num_vertex_normals;
         uint32_t num_faces;
         uint32_t num_materials;
-        struct mliMagicId magic;
-        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
-        chk(mliMagicId_has_word(&magic, "mliObject"));
-        mliMagicId_warn_version(&magic);
+        struct mli_MagicId magic;
+        chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk(mli_MagicId_has_word(&magic, "mliObject"));
+        mli_MagicId_warn_version(&magic);
 
         chk_IO_read(&num_vertices, sizeof(uint32_t), 1u, f);
         chk_IO_read(&num_vertex_normals, sizeof(uint32_t), 1u, f);

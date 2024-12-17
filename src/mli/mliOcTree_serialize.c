@@ -1,15 +1,15 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree_serialize.h"
-#include "mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "../chk/chk.h"
 
 int mliOcTree_to_io(const struct mliOcTree *octree, struct mli_IO *f)
 {
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
 
         /* magic identifier */
-        chk(mliMagicId_set(&magic, "mliOcTree"));
-        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk(mli_MagicId_set(&magic, "mliOcTree"));
+        chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         /* capacity */
         chk_IO_write(&octree->num_nodes, sizeof(uint64_t), 1u, f);
@@ -53,12 +53,12 @@ int mliOcTree_from_io(struct mliOcTree *octree, struct mli_IO *f)
         uint64_t num_nodes;
         uint64_t num_leafs;
         uint64_t num_object_links;
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
 
         /* magic identifier */
-        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
-        chk(mliMagicId_has_word(&magic, "mliOcTree"));
-        mliMagicId_warn_version(&magic);
+        chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk(mli_MagicId_has_word(&magic, "mliOcTree"));
+        mli_MagicId_warn_version(&magic);
 
         /* capacity */
         chk_IO_read(&num_nodes, sizeof(uint64_t), 1u, f);

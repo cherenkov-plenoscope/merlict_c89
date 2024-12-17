@@ -1,13 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "func_serialize.h"
-#include "../mli/mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "../chk/chk.h"
 
 int mli_Func_to_io(const struct mli_Func *func, struct mli_IO *f)
 {
-        struct mliMagicId magic;
-        chk(mliMagicId_set(&magic, "mli_Func"));
-        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
+        struct mli_MagicId magic;
+        chk(mli_MagicId_set(&magic, "mli_Func"));
+        chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk_IO_write(&func->num_points, sizeof(uint32_t), 1u, f);
         chk_IO_write(func->x, sizeof(double), func->num_points, f);
@@ -20,10 +20,10 @@ chk_error:
 int mli_Func_from_io(struct mli_Func *func, struct mli_IO *f)
 {
         uint32_t num_points;
-        struct mliMagicId magic;
-        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
-        chk(mliMagicId_has_word(&magic, "mli_Func"));
-        mliMagicId_warn_version(&magic);
+        struct mli_MagicId magic;
+        chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk(mli_MagicId_has_word(&magic, "mli_Func"));
+        mli_MagicId_warn_version(&magic);
 
         chk_IO_read(&num_points, sizeof(uint32_t), 1u, f);
         chk(mli_Func_malloc(func, num_points));

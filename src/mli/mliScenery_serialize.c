@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 #include "../chk/chk.h"
-#include "mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "mliGeometry_serialize.h"
 #include "mliAccelerator_serialize.h"
 #include "mliMaterials_serialize.h"
@@ -11,9 +11,9 @@
 
 int mliScenery_to_io(const struct mliScenery *scenery, struct mli_IO *f)
 {
-        struct mliMagicId magic;
-        chk(mliMagicId_set(&magic, "mliScenery"));
-        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
+        struct mli_MagicId magic;
+        chk(mli_MagicId_set(&magic, "mliScenery"));
+        chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk(mliGeometry_to_io(&scenery->geometry, f));
         chk(mliAccelerator_to_io(&scenery->accelerator, f));
@@ -26,13 +26,13 @@ chk_error:
 
 int mliScenery_from_io(struct mliScenery *scenery, struct mli_IO *f)
 {
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
 
         mliScenery_free(scenery);
 
-        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
-        chk(mliMagicId_has_word(&magic, "mliScenery"));
-        mliMagicId_warn_version(&magic);
+        chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk(mli_MagicId_has_word(&magic, "mliScenery"));
+        mli_MagicId_warn_version(&magic);
 
         chk(mliGeometry_from_io(&scenery->geometry, f));
         chk(mliAccelerator_from_io(&scenery->accelerator, f));

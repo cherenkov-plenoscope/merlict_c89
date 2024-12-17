@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliSurface.h"
-#include "mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "../func/func_serialize.h"
 #include "../chk/chk.h"
 

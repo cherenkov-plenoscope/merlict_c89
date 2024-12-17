@@ -2,7 +2,7 @@
 #include "mliGeometry_serialize.h"
 #include "mliObject_serialize.h"
 #include "mliMaterials_serialize.h"
-#include "mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
@@ -11,12 +11,12 @@ int mliGeometry_from_io(struct mliGeometry *geometry, struct mli_IO *f)
         uint32_t i;
         uint32_t num_objects = 0u;
         uint32_t num_robjects = 0u;
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
 
         /* magic identifier */
-        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
-        chk(mliMagicId_has_word(&magic, "mliGeometry"));
-        mliMagicId_warn_version(&magic);
+        chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk(mli_MagicId_has_word(&magic, "mliGeometry"));
+        mli_MagicId_warn_version(&magic);
 
         /* payload */
         chk_IO_read(&num_objects, sizeof(uint32_t), 1u, f);
@@ -56,11 +56,11 @@ chk_error:
 int mliGeometry_to_io(const struct mliGeometry *geometry, struct mli_IO *f)
 {
         uint32_t i;
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
 
         /* magic identifier */
-        chk(mliMagicId_set(&magic, "mliGeometry"));
-        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk(mli_MagicId_set(&magic, "mliGeometry"));
+        chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         /* payload */
         chk_IO_write(&geometry->num_objects, sizeof(uint32_t), 1, f);

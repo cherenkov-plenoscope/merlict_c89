@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator_serialize.h"
 #include "../chk/chk.h"
-#include "mliMagicId.h"
+#include "../magicid/magicid.h"
 #include "mliOcTree_serialize.h"
 
 int mliAccelerator_to_io(const struct mliAccelerator *accel, struct mli_IO *f)
@@ -9,9 +9,9 @@ int mliAccelerator_to_io(const struct mliAccelerator *accel, struct mli_IO *f)
         uint64_t i = 0;
 
         /* magic identifier */
-        struct mliMagicId magic = mliMagicId_init();
-        chk(mliMagicId_set(&magic, "mliAccelerator"));
-        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
+        struct mli_MagicId magic = mli_MagicId_init();
+        chk(mli_MagicId_set(&magic, "mliAccelerator"));
+        chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         /* capacity */
         chk_IO_write(&accel->num_objects, sizeof(uint32_t), 1, f);
@@ -35,15 +35,15 @@ chk_error:
 int mliAccelerator_from_io(struct mliAccelerator *accel, struct mli_IO *f)
 {
         uint64_t i = 0u;
-        struct mliMagicId magic;
+        struct mli_MagicId magic;
 
         uint32_t num_robjects = 0u;
         uint32_t num_objects = 0u;
 
         /* magic identifier */
-        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
-        chk(mliMagicId_has_word(&magic, "mliAccelerator"));
-        mliMagicId_warn_version(&magic);
+        chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk(mli_MagicId_has_word(&magic, "mliAccelerator"));
+        mli_MagicId_warn_version(&magic);
 
         /* capacity */
         chk_IO_read(&num_objects, sizeof(uint32_t), 1u, f);
