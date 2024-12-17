@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIGEOMETRY_AABB_H_
-#define MLIGEOMETRY_AABB_H_
+#ifndef MLI_GEOMETRY_AABB_H_
+#define MLI_GEOMETRY_AABB_H_
 
 #include <stdint.h>
-#include "mliGeometry.h"
-#include "mliAccelerator.h"
+#include "geometry.h"
+#include "../mli/mliAccelerator.h"
 #include "../aabb/aabb.h"
 
 int mliGeometry_robject_has_overlap_aabb_void(

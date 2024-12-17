@@ -3,7 +3,7 @@
 #define MLIGEOMETRYTOMATERIALMAP_H_
 
 #include <stdint.h>
-#include "mliGeometry.h"
+#include "../geometry/geometry.h"
 #include "../materials/materials.h"
 
 struct mliGeometryToMaterialMap {

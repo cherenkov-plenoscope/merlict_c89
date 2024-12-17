@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIGEOMETRYID_H_
-#define MLIGEOMETRYID_H_
+#ifndef MLI_GEOMETRYID_H_
+#define MLI_GEOMETRYID_H_
 
 #include <stdint.h>
 

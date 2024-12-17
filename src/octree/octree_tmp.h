@@ -3,7 +3,7 @@
 #define MLI_OCTREE_TMP_H_
 
 #include <stdint.h>
-#include "../mli/mliGeometry.h"
+#include "../geometry/geometry.h"
 #include "../aabb/aabb.h"
 #include "../cube/cube.h"
 #include "octree_overlaps.h"

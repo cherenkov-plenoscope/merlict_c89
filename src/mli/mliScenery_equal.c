@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_equal.h"
 #include "../materials/materials_equal.h"
-#include "mliGeometry_equal.h"
+#include "../geometry/geometry_equal.h"
 #include "mliAccelerator_equal.h"
 #include "mliGeometryToMaterialMap_equal.h"
 #include "../chk/chk.h"

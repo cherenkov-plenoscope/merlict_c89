@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliGeometry_equal.h"
+#include "geometry_equal.h"
 #include "../chk/chk.h"
 
 int mliGeometry_objects_equal(

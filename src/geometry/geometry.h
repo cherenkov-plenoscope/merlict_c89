@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIGEOMETRY_H_
-#define MLIGEOMETRY_H_
+#ifndef MLI_GEOMETRY_H_
+#define MLI_GEOMETRY_H_
 
 #include <stdint.h>
 #include "../homtra/homtra.h"

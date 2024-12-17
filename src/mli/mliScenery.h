@@ -2,7 +2,7 @@
 #ifndef MLISCENERY_H_
 #define MLISCENERY_H_
 
-#include "mliGeometry.h"
+#include "../geometry/geometry.h"
 #include "mliGeometryToMaterialMap.h"
 #include "../materials/materials.h"
 #include "mliAccelerator.h"

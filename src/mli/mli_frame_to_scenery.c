@@ -3,7 +3,7 @@
 #include <math.h>
 #include "../chk/chk.h"
 #include "../frame/frame.h"
-#include "mliGeometry.h"
+#include "../geometry/geometry.h"
 #include "mliGeometryToMaterialMap.h"
 
 int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(

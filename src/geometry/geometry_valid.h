@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIGEOMETRY_VALID_H_
-#define MLIGEOMETRY_VALID_H_
+#ifndef MLI_GEOMETRY_VALID_H_
+#define MLI_GEOMETRY_VALID_H_
 
-#include "mliGeometry.h"
+#include "geometry.h"
 
 int mliGeometry_valid(const struct mliGeometry *geometry);
 int mliGeometry_valid_objects(const struct mliGeometry *geometry);

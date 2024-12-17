@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_valid.h"
 #include "../materials/materials_valid.h"
-#include "mliGeometry_valid.h"
+#include "../geometry/geometry_valid.h"
 #include "mliAccelerator_valid.h"
 #include "mliGeometryToMaterialMap_valid.h"
 #include "../chk/chk.h"

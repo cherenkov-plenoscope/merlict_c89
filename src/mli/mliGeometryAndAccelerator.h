@@ -2,7 +2,7 @@
 #ifndef MLIGEOMETRYANDACCELERATOR_H_
 #define MLIGEOMETRYANDACCELERATOR_H_
 
-#include "mliGeometry.h"
+#include "../geometry/geometry.h"
 #include "mliAccelerator.h"
 
 struct mliGeometryAndAccelerator {

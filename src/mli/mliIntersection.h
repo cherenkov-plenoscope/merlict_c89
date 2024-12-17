@@ -3,7 +3,7 @@
 #define MLIINTERSECTION_H_
 
 #include "../vec/vec.h"
-#include "mliGeometryId.h"
+#include "../geometry/geometry_id.h"
 
 struct mliIntersection {
         struct mliGeometryId geometry_id;

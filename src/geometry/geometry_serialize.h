@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIGEOMETRY_SERIALIZE_H_
-#define MLIGEOMETRY_SERIALIZE_H_
+#ifndef MLI_GEOMETRY_SERIALIZE_H_
+#define MLI_GEOMETRY_SERIALIZE_H_
 
 #include "../io/io.h"
-#include "mliGeometry.h"
+#include "geometry.h"
 
 int mliGeometry_to_io(const struct mliGeometry *scenery, struct mli_IO *f);
 int mliGeometry_from_io(struct mliGeometry *scenery, struct mli_IO *f);

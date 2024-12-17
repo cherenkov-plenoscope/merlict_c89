@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliGeometryId.h"
+#include "geometry_id.h"
 
 struct mliGeometryId mliGeometryId_init(void)
 {

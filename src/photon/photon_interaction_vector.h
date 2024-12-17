@@ -3,7 +3,7 @@
 #define MLI_PHOTON_INTERACTION_VECTOR_H_
 
 #include "photon_interaction.h"
-#include "../mli/mliGeometry.h"
+#include "../geometry/geometry.h"
 #include "../mli/mliScenery.h"
 #include "../vector/vector.h"
 

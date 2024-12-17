@@ -3,7 +3,7 @@
 #define MLIACCELERATOR_H_
 
 #include <stdint.h>
-#include "mliGeometry.h"
+#include "../geometry/geometry.h"
 #include "../octree/octree.h"
 
 struct mliAccelerator {

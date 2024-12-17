@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "../chk/chk.h"
 #include "../magicid/magicid.h"
-#include "mliGeometry_serialize.h"
+#include "../geometry/geometry_serialize.h"
 #include "mliAccelerator_serialize.h"
 #include "../materials/materials_serialize.h"
 #include "mliGeometryToMaterialMap_serialize.h"

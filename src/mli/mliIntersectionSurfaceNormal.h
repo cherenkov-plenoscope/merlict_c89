@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../vec/vec.h"
-#include "mliGeometryId.h"
+#include "../geometry/geometry_id.h"
 
 struct mliIntersectionSurfaceNormal {
         struct mliGeometryId geometry_id;
