@@ -2,7 +2,7 @@
 #include "tar_io.h"
 #include <stdio.h>
 #include "../chk/chk.h"
-#include "../io/io.h"
+#include "../io/IOMemory.h"
 
 int mli_Tar_read_data_to_IO(
         struct mli_Tar *tar,

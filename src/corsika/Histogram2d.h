@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../avl/avl_Dict.h"
-#include "../io/io.h"
+#include "../io/IOMemory.h"
 #include "../vector/vector.h"
 
 struct mli_corsika_Histogram2d {

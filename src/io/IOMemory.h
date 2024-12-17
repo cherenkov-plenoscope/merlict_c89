@@ -1,6 +1,6 @@
 /* Copyright 2018-2023 Sebastian Achim Mueller */
-#ifndef MLI_IO_H_
-#define MLI_IO_H_
+#ifndef MLI_IOMEMORY_H_
+#define MLI_IOMEMORY_H_
 
 #include <stdint.h>
 #include "../string/string.h"

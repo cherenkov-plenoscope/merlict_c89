@@ -1,5 +1,5 @@
 /* Copyright 2018-2023 Sebastian Achim Mueller */
-#include "io.h"
+#include "IOMemory.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "../chk/chk.h"
