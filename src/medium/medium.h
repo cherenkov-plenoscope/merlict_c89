@@ -5,13 +5,13 @@
 #include <stdint.h>
 #include "../func/func.h"
 
-struct mliMedium {
+struct mli_Medium {
         struct mli_Func refraction;
         struct mli_Func absorbtion;
 };
-struct mliMedium mliMedium_init(void);
-void mliMedium_free(struct mliMedium *medium);
+struct mli_Medium mli_Medium_init(void);
+void mli_Medium_free(struct mli_Medium *medium);
 
-int mliMedium_equal(const struct mliMedium *a, const struct mliMedium *b);
+int mli_Medium_equal(const struct mli_Medium *a, const struct mli_Medium *b);
 
 #endif

@@ -9,7 +9,7 @@ int mliMaterials_media_equal(
         uint32_t i = 0u;
         chk_msg(a->num_media == b->num_media, "Different number of media.");
         for (i = 0; i < a->num_media; i++) {
-                chk_msg(mliMedium_equal(&a->media[i], &b->media[i]),
+                chk_msg(mli_Medium_equal(&a->media[i], &b->media[i]),
                         "Different Medium.");
                 chk_msg(mli_String_equal(
                                 &a->medium_names[i], &b->medium_names[i]),

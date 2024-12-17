@@ -143,7 +143,7 @@ int mliMaterials_malloc_form_archive(
                     mli_String_ends_with_cstr(filename, ".json")) {
                         struct mli_String *payload =
                                 &archive->textfiles.array[arc_idx];
-                        chk_msg(mliMedium_malloc_from_json_string(
+                        chk_msg(mli_Medium_malloc_from_json_string(
                                         &materials->media[med_idx], payload),
                                 "Failed to parse media json from "
                                 "file.");

@@ -6,11 +6,11 @@
 #include "medium.h"
 #include "../json/json.h"
 
-int mliMedium_malloc_from_json_string(
-        struct mliMedium *med,
+int mli_Medium_malloc_from_json_string(
+        struct mli_Medium *med,
         const struct mli_String *str);
-int mliMedium_malloc_from_json_token(
-        struct mliMedium *med,
+int mli_Medium_malloc_from_json_token(
+        struct mli_Medium *med,
         const struct mli_Json *json,
         const uint64_t token);
 #endif

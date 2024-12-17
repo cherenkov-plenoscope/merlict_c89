@@ -3,14 +3,14 @@
 #include "../func/func_json.h"
 #include "../chk/chk.h"
 
-int mliMedium_malloc_from_json_string(
-        struct mliMedium *med,
+int mli_Medium_malloc_from_json_string(
+        struct mli_Medium *med,
         const struct mli_String *str)
 {
         struct mli_Json json = mli_Json_init();
         chk_msg(mli_Json_from_string(&json, str),
                 "Failed to read json string to malloc medium.");
-        chk_msg(mliMedium_malloc_from_json_token(med, &json, 0),
+        chk_msg(mli_Medium_malloc_from_json_token(med, &json, 0),
                 "Failed to malloc medium from json.");
         mli_Json_free(&json);
         return 1;
@@ -18,8 +18,8 @@ chk_error:
         return 0;
 }
 
-int mliMedium_malloc_from_json_token(
-        struct mliMedium *med,
+int mli_Medium_malloc_from_json_token(
+        struct mli_Medium *med,
         const struct mli_Json *json,
         const uint64_t token)
 {

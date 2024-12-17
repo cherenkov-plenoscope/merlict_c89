@@ -24,7 +24,7 @@ struct mliMaterials {
         struct mli_String *surface_names;
 
         uint64_t num_media;
-        struct mliMedium *media;
+        struct mli_Medium *media;
         struct mli_String *medium_names;
 
         uint64_t num_boundary_layers;

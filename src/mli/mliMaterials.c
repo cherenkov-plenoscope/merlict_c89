@@ -38,7 +38,7 @@ void mliMaterials_free(struct mliMaterials *res)
         uint64_t i;
         chk_dbg for (i = 0; i < res->num_media; i++)
         {
-                mliMedium_free(&(res->media[i]));
+                mli_Medium_free(&(res->media[i]));
                 mli_String_free(&(res->medium_names[i]));
         }
         free(res->media);
@@ -72,10 +72,10 @@ int mliMaterials_malloc(
         res->num_media = rescap.num_media;
         res->num_boundary_layers = rescap.num_boundary_layers;
 
-        chk_malloc(res->media, struct mliMedium, res->num_media);
+        chk_malloc(res->media, struct mli_Medium, res->num_media);
         chk_malloc(res->medium_names, struct mli_String, res->num_media);
         for (i = 0; i < res->num_media; i++) {
-                res->media[i] = mliMedium_init();
+                res->media[i] = mli_Medium_init();
                 res->medium_names[i] = mli_String_init();
         }
 

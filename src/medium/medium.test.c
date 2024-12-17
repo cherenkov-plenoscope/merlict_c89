@@ -1,8 +1,8 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("mliMedium_json")
+CASE("mli_Medium_json")
 {
-        struct mliMedium med = mliMedium_init();
+        struct mli_Medium med = mli_Medium_init();
         struct mli_String str = mli_String_init();
 
         CHECK(mli_String_from_cstr(
@@ -11,7 +11,7 @@ CASE("mliMedium_json")
                 "\"refraction\": [[0, 10], [1, 11], [2, 12]],"
                 "\"absorbtion\": [[5, 50], [6, 51], [7, 52]]"
                 "}"));
-        CHECK(mliMedium_malloc_from_json_string(&med, &str));
+        CHECK(mli_Medium_malloc_from_json_string(&med, &str));
 
         CHECK(med.refraction.num_points == 3);
         CHECK(med.refraction.x[0] == 0);
@@ -31,6 +31,6 @@ CASE("mliMedium_json")
         CHECK(med.absorbtion.y[1] == 51);
         CHECK(med.absorbtion.y[2] == 52);
 
-        mliMedium_free(&med);
+        mli_Medium_free(&med);
         mli_String_free(&str);
 }

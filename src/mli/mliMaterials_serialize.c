@@ -21,7 +21,7 @@ int mliMaterials_to_io(const struct mliMaterials *res, struct mli_IO *f)
 
         for (i = 0; i < res->num_media; i++) {
                 chk(mli_String_to_io(&res->medium_names[i], f));
-                chk(mliMedium_to_io(&res->media[i], f));
+                chk(mli_Medium_to_io(&res->media[i], f));
         }
         for (i = 0; i < res->num_surfaces; i++) {
                 chk(mli_String_to_io(&res->surface_names[i], f));
@@ -64,7 +64,7 @@ int mliMaterials_from_io(struct mliMaterials *res, struct mli_IO *f)
                 chk_dbg chk_msg(
                         mli_String_from_io(&res->medium_names[i], f),
                         "Failed to fread medium name.");
-                chk_msg(mliMedium_from_io(&res->media[i], f),
+                chk_msg(mli_Medium_from_io(&res->media[i], f),
                         "Failed to fread Medium.");
         }
         for (i = 0; i < res->num_surfaces; i++) {

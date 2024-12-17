@@ -5,6 +5,6 @@
 #include "medium.h"
 #include "../io/io.h"
 
-int mliMedium_to_io(const struct mliMedium *med, struct mli_IO *f);
-int mliMedium_from_io(struct mliMedium *med, struct mli_IO *f);
+int mli_Medium_to_io(const struct mli_Medium *med, struct mli_IO *f);
+int mli_Medium_from_io(struct mli_Medium *med, struct mli_IO *f);
 #endif
