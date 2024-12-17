@@ -6,6 +6,7 @@
 #include "../homtra/homtra.h"
 #include "mliMaterials.h"
 #include "../string/string.h"
+#include "../object/object.h"
 
 struct mliGeometry {
         uint32_t num_objects;

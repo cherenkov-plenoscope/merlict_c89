@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliObject_AABB.h"
-#include "mliTriangle_AABB.h"
+#include "object_AABB.h"
+#include "../mli/mliTriangle_AABB.h"
 #include "../math/math.h"
 
 int mliObject_face_in_local_frame_has_overlap_aabb(

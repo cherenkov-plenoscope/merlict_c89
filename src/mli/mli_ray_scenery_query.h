@@ -6,7 +6,7 @@
 #include "mli_ray_octree_traversal.h"
 #include "../ray/ray.h"
 #include "../homtra/homtra.h"
-#include "mliObject.h"
+#include "../object/object.h"
 #include "mliOcTree.h"
 #include "mliAccelerator.h"
 #include "mliScenery.h"

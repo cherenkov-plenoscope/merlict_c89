@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliObject_serialize.h"
+#include "object_serialize.h"
+#include "object_valid.h"
 #include "../magicid/magicid.h"
-#include "mliObject_valid.h"
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 

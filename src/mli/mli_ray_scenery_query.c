@@ -3,6 +3,7 @@
 #include <float.h>
 #include "mli_from_outside_to_inside.h"
 #include "mli_triangle_intersection.h"
+#include "../object/object_face.h"
 
 void mli_inner_object_traversal(
         void *_inner,

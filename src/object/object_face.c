@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliFace.h"
+#include "object_face.h"
 
 struct mliFace mliFace_set(const uint32_t a, const uint32_t b, const uint32_t c)
 {

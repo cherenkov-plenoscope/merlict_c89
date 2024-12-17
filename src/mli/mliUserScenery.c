@@ -11,7 +11,7 @@
 #include "../path/path.h"
 #include "mliUserScenery_json.h"
 #include "mliArchive.h"
-#include "mliObject_wavefront.h"
+#include "../object/object_wavefront.h"
 #include "mliMedium_json.h"
 #include "mliFrame.h"
 #include "mliFrame_json.h"

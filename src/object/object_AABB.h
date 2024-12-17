@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIOBJECT_AABB_H_
-#define MLIOBJECT_AABB_H_
+#ifndef MLI_OBJECT_AABB_H_
+#define MLI_OBJECT_AABB_H_
 
 #include <stdint.h>
 #include "../homtra/homtra.h"
-#include "mliObject.h"
+#include "object.h"
 #include "../aabb/aabb.h"
 
 int mliObject_has_overlap_aabb(

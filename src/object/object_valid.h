@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIOBJECT_VALID_H_
-#define MLIOBJECT_VALID_H_
+#ifndef MLI_OBJECT_VALID_H_
+#define MLI_OBJECT_VALID_H_
 
 #include <stdint.h>
-#include "mliObject.h"
+#include "object.h"
 
 int mliObject_is_valid(const struct mliObject *obj);
 int mliObject_has_valid_vertices(const struct mliObject *obj);

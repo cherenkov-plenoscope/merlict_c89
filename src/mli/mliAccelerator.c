@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator.h"
-#include "mliObject_AABB.h"
+#include "../object/object_AABB.h"
 #include "mliGeometryAndAccelerator.h"
 #include "../chk/chk.h"
 #include "../math/math.h"

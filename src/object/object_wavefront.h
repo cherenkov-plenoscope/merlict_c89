@@ -1,11 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIOBJECT_WAVEFRONT_H_
-#define MLIOBJECT_WAVEFRONT_H_
+#ifndef MLI_OBJECT_WAVEFRONT_H_
+#define MLI_OBJECT_WAVEFRONT_H_
 
 #include <stdint.h>
-#include "mliObject.h"
+#include "object.h"
+#include "object_face.h"
 #include "../io/io.h"
 #include "../string/string.h"
+#include "../vec/vec.h"
 
 int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io);
 int mliObject_fprint_to_wavefront(

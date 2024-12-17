@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../json/json.h"
 #include "mliFrame.h"
-#include "mliObject.h"
+#include "../object/object.h"
 #include "mliDynMap.h"
 
 int mliFrame_from_json(

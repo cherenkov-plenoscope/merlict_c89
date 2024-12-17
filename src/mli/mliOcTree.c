@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliOcTree.h"
 #include <assert.h>
-#include "mliObject_AABB.h"
+#include "../object/object_AABB.h"
 #include "mliGeometry_AABB.h"
 #include "mliGeometryAndAccelerator.h"
 #include "../chk/chk.h"

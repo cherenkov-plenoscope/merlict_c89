@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliObject.h"
+#include "object.h"
 #include <assert.h>
 #include "../chk/chk.h"
 #include <stdlib.h>

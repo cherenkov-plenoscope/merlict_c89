@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry_AABB.h"
 #include "../homtra/homtra.h"
-#include "mliObject.h"
-#include "mliObject_AABB.h"
+#include "../object/object.h"
+#include "../object/object_AABB.h"
 #include "../aabb/aabb.h"
 #include "mliGeometryAndAccelerator.h"
 

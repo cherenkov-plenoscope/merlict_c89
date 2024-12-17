@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIOBJECT_H_
-#define MLIOBJECT_H_
+#ifndef MLI_OBJECT_H_
+#define MLI_OBJECT_H_
 
 #include <stdint.h>
 #include "../vec/vec.h"
-#include "mliFace.h"
+#include "object_face.h"
 #include "../string/string.h"
 
 struct mliObject {

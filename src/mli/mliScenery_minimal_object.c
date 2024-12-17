@@ -5,7 +5,7 @@
 #include "mli_random.h"
 #include "../prng/prng.h"
 #include "../cstr/cstr.h"
-#include "mliObject_wavefront.h"
+#include "../object/object_wavefront.h"
 #include "mliScenery_valid.h"
 
 int mliSurface_malloc_random_phong(

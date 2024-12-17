@@ -3,7 +3,7 @@
 #define MLIMATERIALS_H_
 
 #include <stdint.h>
-#include "mliObject.h"
+#include "../object/object.h"
 #include "../func/func.h"
 #include "mliSurface.h"
 #include "mliMedium.h"
