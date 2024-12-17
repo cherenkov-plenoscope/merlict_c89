@@ -8,7 +8,7 @@
         direction
         ==========
 */
-struct mli_Vec mli_random_draw_direction_in_zenith_azimuth_range(
+struct mli_Vec mli_Vec_random_draw_direction_in_zenith_azimuth_range(
         const struct mli_prng_ZenithRange zenith,
         const struct mli_prng_UniformRange azimuth,
         struct mli_Prng *prng)
@@ -19,7 +19,7 @@ struct mli_Vec mli_random_draw_direction_in_zenith_azimuth_range(
         return mli_Vec_init(sin_zd * cos(az), sin_zd * sin(az), cos(zd));
 }
 
-struct mli_Vec mli_random_position_on_disc(
+struct mli_Vec mli_Vec_random_position_on_disc(
         const double radius,
         struct mli_Prng *prng)
 {
@@ -28,7 +28,7 @@ struct mli_Vec mli_random_position_on_disc(
         return mli_Vec_init(r * cos(azimuth), r * sin(azimuth), 0.0);
 }
 
-struct mli_Vec mli_random_position_inside_unit_sphere(struct mli_Prng *prng)
+struct mli_Vec mli_Vec_random_position_inside_unit_sphere(struct mli_Prng *prng)
 {
         /* rejection sampling */
         struct mli_Vec pos;

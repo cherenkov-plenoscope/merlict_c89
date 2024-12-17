@@ -41,7 +41,8 @@ double mli_trace_sun_obstruction(
                                 tracer->config->atmosphere.sunDirection,
                                 tracer->config->atmosphere.sunDistance),
                         mli_Vec_multiply(
-                                mli_random_position_inside_unit_sphere(prng),
+                                mli_Vec_random_position_inside_unit_sphere(
+                                        prng),
                                 tracer->config->atmosphere.sunRadius));
 
                 struct mli_Ray line_of_sight_to_source = mli_Ray_set(

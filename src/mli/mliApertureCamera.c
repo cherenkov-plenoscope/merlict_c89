@@ -93,7 +93,7 @@ struct mli_Vec mliApertureCamera_ray_support_on_aperture(
         struct mli_Prng *prng)
 {
         /* use a perfect disc as aperture */
-        return mli_random_position_on_disc(aperture_radius, prng);
+        return mli_Vec_random_position_on_disc(aperture_radius, prng);
 }
 
 double mli_thin_lens_get_object_given_focal_and_image(

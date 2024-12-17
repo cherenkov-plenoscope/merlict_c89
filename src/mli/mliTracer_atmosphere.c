@@ -15,7 +15,7 @@ struct mli_Vec mli_random_direction_in_hemisphere(
 {
         struct mli_Vec rnd_dir;
         do {
-                rnd_dir = mli_random_position_inside_unit_sphere(prng);
+                rnd_dir = mli_Vec_random_position_inside_unit_sphere(prng);
         } while (mli_Vec_dot(normal, rnd_dir) <= 0.0);
         return mli_Vec_normalized(rnd_dir);
 }

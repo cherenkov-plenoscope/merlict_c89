@@ -16,7 +16,7 @@ CASE("full_sphere")
         for (i = 0; i < n; i++) {
                 mean_position = mli_Vec_add(
                         mean_position,
-                        mli_random_draw_direction_in_zenith_azimuth_range(
+                        mli_Vec_random_draw_direction_in_zenith_azimuth_range(
                                 zenith, azimuth, &prng));
         }
         mean_position = mli_Vec_multiply(mean_position, 1.0 / (double)n);
@@ -40,7 +40,7 @@ CASE("octo_sphere")
         for (i = 0; i < n; i++) {
                 mean_position = mli_Vec_add(
                         mean_position,
-                        mli_random_draw_direction_in_zenith_azimuth_range(
+                        mli_Vec_random_draw_direction_in_zenith_azimuth_range(
                                 zenith, azimuth, &prng));
         }
         mean_position = mli_Vec_multiply(mean_position, 1.0 / (double)n);
@@ -64,7 +64,7 @@ CASE("octo_sphere_minus_z")
         for (i = 0; i < n; i++) {
                 mean_position = mli_Vec_add(
                         mean_position,
-                        mli_random_draw_direction_in_zenith_azimuth_range(
+                        mli_Vec_random_draw_direction_in_zenith_azimuth_range(
                                 zenith, azimuth, &prng));
         }
         mean_position = mli_Vec_multiply(mean_position, 1.0 / (double)n);
@@ -91,7 +91,7 @@ CASE("position_on_disc")
         for (i = 0; i < n_points; i++)
                 CHECK(mli_VecVector_push_back(
                         &points,
-                        mli_random_position_on_disc(disc_radius, &prng)));
+                        mli_Vec_random_position_on_disc(disc_radius, &prng)));
 
         /* mean position */
         mean = mli_Vec_init(0., 0., 0.);
