@@ -10,7 +10,7 @@
 struct mliArchive mliArchive_init(void)
 {
         struct mliArchive arc;
-        arc.textfiles = mliDynTextFiles_init();
+        arc.textfiles = mli_StringVector_init();
         arc.filenames = mliDynMap_init();
         return arc;
 }
@@ -22,7 +22,7 @@ void mliArchive_free(struct mliArchive *arc)
                 struct mli_String *str = &arc->textfiles.array[i];
                 mli_String_free(str);
         }
-        mliDynTextFiles_free(&arc->textfiles);
+        mli_StringVector_free(&arc->textfiles);
         mliDynMap_free(&arc->filenames);
         (*arc) = mliArchive_init();
 }
@@ -30,7 +30,7 @@ void mliArchive_free(struct mliArchive *arc)
 int mliArchive_malloc(struct mliArchive *arc)
 {
         mliArchive_free(arc);
-        chk(mliDynTextFiles_malloc(&arc->textfiles, 0u));
+        chk(mli_StringVector_malloc(&arc->textfiles, 0u));
         chk(mliDynMap_malloc(&arc->filenames));
         return 1;
 chk_error:
@@ -55,7 +55,7 @@ int mliArchive_push_back(
 
         /* payload */
         /* ======= */
-        chk_msg(mliDynTextFiles_push_back(&arc->textfiles, mli_String_init()),
+        chk_msg(mli_StringVector_push_back(&arc->textfiles, mli_String_init()),
                 "Can not push back mli_String.");
         text = &arc->textfiles.array[next];
         chk_msg(mli_String_copy(text, payload), "Can not copy payload.");

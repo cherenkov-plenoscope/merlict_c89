@@ -7,11 +7,11 @@
 #include "../json/json.h"
 #include "../array/array.h"
 #include "../string/string.h"
-#include "mliDynTextFiles.h"
+#include "../string/string_vector.h"
 #include "mliDynMap.h"
 
 struct mliArchive {
-        struct mliDynTextFiles textfiles;
+        struct mli_StringVector textfiles;
         struct mliDynMap filenames;
 };
 
