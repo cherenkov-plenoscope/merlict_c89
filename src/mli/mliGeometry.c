@@ -83,7 +83,7 @@ int mliGeometry_malloc_references(
         chk_malloc(geometry->robject_ids, uint32_t, geometry->num_robjects);
         chk_malloc(
                 geometry->robject2root,
-                struct mliHomTraComp,
+                struct mli_HomTraComp,
                 geometry->num_robjects);
         return 1;
 chk_error:

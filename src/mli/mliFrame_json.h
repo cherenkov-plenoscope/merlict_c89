@@ -20,7 +20,7 @@ int mliFrame_id_from_json_token(
         const struct mli_Json *json,
         const uint64_t token);
 int mliFrame_pos_rot_from_json_token(
-        struct mliHomTraComp *frame2mother,
+        struct mli_HomTraComp *frame2mother,
         const struct mli_Json *json,
         const uint64_t token);
 int mliFrame_type_from_json_token(

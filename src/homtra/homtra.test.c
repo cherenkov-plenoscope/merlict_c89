@@ -2,9 +2,9 @@
 
 CASE("sequence, unity and unity shall be unity")
 {
-        struct mliHomTraComp a;
-        struct mliHomTraComp b;
-        struct mliHomTraComp a_b;
+        struct mli_HomTraComp a;
+        struct mli_HomTraComp b;
+        struct mli_HomTraComp a_b;
 
         a.translation = mli_Vec_init(0., 0., 0.);
         a.rotation = mli_Quaternion_set_tait_bryan(0., 0., 0.);
@@ -12,7 +12,7 @@ CASE("sequence, unity and unity shall be unity")
         b.translation = mli_Vec_init(0., 0., 0.);
         b.rotation = mli_Quaternion_set_tait_bryan(0., 0., 0.);
 
-        a_b = mliHomTraComp_sequence(a, b);
+        a_b = mli_HomTraComp_sequence(a, b);
         CHECK_MARGIN(a_b.translation.x, 0., 1e-9);
         CHECK_MARGIN(a_b.translation.y, 0., 1e-9);
         CHECK_MARGIN(a_b.translation.z, 0., 1e-9);
@@ -22,10 +22,10 @@ CASE("sequence, unity and unity shall be unity")
 
 CASE("sequence, one translation, one rotation")
 {
-        struct mliHomTraComp a; /* only translation */
-        struct mliHomTraComp b; /* only rotation */
-        struct mliHomTraComp a_b;
-        struct mliHomTra a_b_;
+        struct mli_HomTraComp a; /* only translation */
+        struct mli_HomTraComp b; /* only rotation */
+        struct mli_HomTraComp a_b;
+        struct mli_HomTra a_b_;
 
         a.translation = mli_Vec_init(0., 0., 1.);
         a.rotation = mli_Quaternion_set_tait_bryan(0., 0., 0.);
@@ -34,8 +34,8 @@ CASE("sequence, one translation, one rotation")
         b.rotation =
                 mli_Quaternion_set_tait_bryan(0., 0., mli_math_deg2rad(90.));
 
-        a_b = mliHomTraComp_sequence(a, b);
-        a_b_ = mliHomTra_from_compact(a_b);
+        a_b = mli_HomTraComp_sequence(a, b);
+        a_b_ = mli_HomTraComp_from_compact(a_b);
 
         CHECK_MARGIN(a_b_.translation.x, 0., 1e-9);
         CHECK_MARGIN(a_b_.translation.y, 0., 1e-9);
@@ -56,10 +56,10 @@ CASE("sequence, one translation, one rotation")
 
 CASE("sequence, cancelation")
 {
-        struct mliHomTraComp a;
-        struct mliHomTraComp a_inverse; /* inverse ov a */
-        struct mliHomTraComp a_a_inverse;
-        struct mliHomTra a_a_inverse_;
+        struct mli_HomTraComp a;
+        struct mli_HomTraComp a_inverse; /* inverse ov a */
+        struct mli_HomTraComp a_a_inverse;
+        struct mli_HomTra a_a_inverse_;
 
         a.translation = mli_Vec_init(0., 0., 1.);
         a.rotation =
@@ -69,8 +69,8 @@ CASE("sequence, cancelation")
         a_inverse.rotation =
                 mli_Quaternion_set_tait_bryan(0., 0., mli_math_deg2rad(90.));
 
-        a_a_inverse = mliHomTraComp_sequence(a, a_inverse);
-        a_a_inverse_ = mliHomTra_from_compact(a_a_inverse);
+        a_a_inverse = mli_HomTraComp_sequence(a, a_inverse);
+        a_a_inverse_ = mli_HomTraComp_from_compact(a_a_inverse);
 
         CHECK_MARGIN(a_a_inverse_.translation.x, 0., 1e-9);
         CHECK_MARGIN(a_a_inverse_.translation.y, 0., 1e-9);
@@ -91,22 +91,22 @@ CASE("sequence, cancelation")
 
 CASE("only translate")
 {
-        struct mliHomTraComp t_AB;
-        struct mliHomTra t_AB_;
+        struct mli_HomTraComp t_AB;
+        struct mli_HomTra t_AB_;
         struct mli_Vec pA, pB, dA, dB;
 
         t_AB.translation = mli_Vec_init(0., 0., 1.);
         t_AB.rotation = mli_Quaternion_set_tait_bryan(0., 0., 0.);
-        t_AB_ = mliHomTra_from_compact(t_AB);
+        t_AB_ = mli_HomTraComp_from_compact(t_AB);
 
         pA = mli_Vec_init(0.0, 0.0, 1.0);
-        pB = mliHomTra_pos(&t_AB_, pA);
+        pB = mli_HomTraComp_pos(&t_AB_, pA);
         CHECK_MARGIN(pB.x, 0.0, 1e-9);
         CHECK_MARGIN(pB.y, 0.0, 1e-9);
         CHECK_MARGIN(pB.z, 2.0, 1e-9);
 
         dA = mli_Vec_init(1.0, 0.0, 0.0);
-        dB = mliHomTra_dir(&t_AB_, dA);
+        dB = mli_HomTraComp_dir(&t_AB_, dA);
         CHECK_MARGIN(dB.x, 1.0, 1e-9);
         CHECK_MARGIN(dB.y, 0.0, 1e-9);
         CHECK_MARGIN(dB.z, 0.0, 1e-9);
@@ -114,23 +114,23 @@ CASE("only translate")
 
 CASE("only rotation")
 {
-        struct mliHomTraComp t_AB;
-        struct mliHomTra t_AB_;
+        struct mli_HomTraComp t_AB;
+        struct mli_HomTra t_AB_;
         struct mli_Vec pA, pB, dA, dB;
 
         t_AB.translation = mli_Vec_init(0., 0., 0.);
         t_AB.rotation =
                 mli_Quaternion_set_tait_bryan(0., 0., mli_math_deg2rad(90.0));
-        t_AB_ = mliHomTra_from_compact(t_AB);
+        t_AB_ = mli_HomTraComp_from_compact(t_AB);
 
         pA = mli_Vec_init(0.0, 0.0, 1.0);
-        pB = mliHomTra_pos(&t_AB_, pA);
+        pB = mli_HomTraComp_pos(&t_AB_, pA);
         CHECK_MARGIN(pB.x, 0.0, 1e-9);
         CHECK_MARGIN(pB.y, 0.0, 1e-9);
         CHECK_MARGIN(pB.z, 1.0, 1e-9);
 
         dA = mli_Vec_init(1.0, 0.0, 0.0);
-        dB = mliHomTra_dir(&t_AB_, dA);
+        dB = mli_HomTraComp_dir(&t_AB_, dA);
         CHECK_MARGIN(dB.x, 0.0, 1e-9);
         CHECK_MARGIN(dB.y, -1.0, 1e-9);
         CHECK_MARGIN(dB.z, 0.0, 1e-9);
@@ -150,8 +150,8 @@ CASE("complex sequence")
         angle_range.range = 2.0 * MLI_MATH_PI;
 
         for (i = 0; i < num_combinations; i++) {
-                struct mliHomTraComp _AB, _BC, _AC;
-                struct mliHomTra AB, BC, AC;
+                struct mli_HomTraComp _AB, _BC, _AC;
+                struct mli_HomTra AB, BC, AC;
                 struct mli_Vec pos_B, pos_A, pos_C_via_B, pos_C_direct;
 
                 pos_A = mli_Vec_init(
@@ -167,9 +167,9 @@ CASE("complex sequence")
                         mli_prng_draw_uniform(angle_range, &prng),
                         mli_prng_draw_uniform(angle_range, &prng),
                         mli_prng_draw_uniform(angle_range, &prng));
-                AB = mliHomTra_from_compact(_AB);
+                AB = mli_HomTraComp_from_compact(_AB);
 
-                pos_B = mliHomTra_pos_inverse(&AB, pos_A);
+                pos_B = mli_HomTraComp_pos_inverse(&AB, pos_A);
 
                 _BC.translation = mli_Vec_init(
                         mli_prng_draw_uniform(trans_range, &prng),
@@ -179,14 +179,14 @@ CASE("complex sequence")
                         mli_prng_draw_uniform(angle_range, &prng),
                         mli_prng_draw_uniform(angle_range, &prng),
                         mli_prng_draw_uniform(angle_range, &prng));
-                BC = mliHomTra_from_compact(_BC);
+                BC = mli_HomTraComp_from_compact(_BC);
 
-                pos_C_via_B = mliHomTra_pos_inverse(&BC, pos_B);
+                pos_C_via_B = mli_HomTraComp_pos_inverse(&BC, pos_B);
 
-                _AC = mliHomTraComp_sequence(_BC, _AB);
-                AC = mliHomTra_from_compact(_AC);
+                _AC = mli_HomTraComp_sequence(_BC, _AB);
+                AC = mli_HomTraComp_from_compact(_AC);
 
-                pos_C_direct = mliHomTra_pos_inverse(&AC, pos_A);
+                pos_C_direct = mli_HomTraComp_pos_inverse(&AC, pos_A);
                 CHECK_MARGIN(pos_C_direct.x, pos_C_via_B.x, 1e-9);
                 CHECK_MARGIN(pos_C_direct.y, pos_C_via_B.y, 1e-9);
                 CHECK_MARGIN(pos_C_direct.z, pos_C_via_B.z, 1e-9);
@@ -308,20 +308,20 @@ CASE("only translation, mli_transform_position_inverse")
 
 CASE("trans_pos_forth_and_back_only_translation_component_set")
 {
-        struct mliHomTraComp homtra;
-        struct mliHomTra homtra_;
+        struct mli_HomTraComp homtra;
+        struct mli_HomTra homtra_;
         struct mli_Vec ux_original, ux_forth, ux_back;
 
         homtra.translation = mli_Vec_init(0.0, 0.0, 133.7);
         homtra.rotation = mli_Quaternion_set_tait_bryan(0.0, 0.0, 0.0);
-        homtra_ = mliHomTra_from_compact(homtra);
+        homtra_ = mli_HomTraComp_from_compact(homtra);
 
         ux_original = mli_Vec_init(1.0, 0.0, 0.0);
-        ux_forth = mliHomTra_pos(&homtra_, ux_original);
+        ux_forth = mli_HomTraComp_pos(&homtra_, ux_original);
         CHECK(1.0 == ux_forth.x);
         CHECK(0.0 == ux_forth.y);
         CHECK(133.7 == ux_forth.z);
-        ux_back = mliHomTra_pos_inverse(&homtra_, ux_forth);
+        ux_back = mli_HomTraComp_pos_inverse(&homtra_, ux_forth);
         CHECK(ux_original.x == ux_back.x);
         CHECK(ux_original.y == ux_back.y);
         CHECK(ux_original.z == ux_back.z);
@@ -329,20 +329,20 @@ CASE("trans_pos_forth_and_back_only_translation_component_set")
 
 CASE("transform_position_forth_and_back_full_set")
 {
-        struct mliHomTraComp homtra;
-        struct mliHomTra homtra_;
+        struct mli_HomTraComp homtra;
+        struct mli_HomTra homtra_;
         struct mli_Vec ux_original, ux_forth, ux_back;
 
         homtra.translation = mli_Vec_init(0.0, 0.0, 133.7);
         homtra.rotation = mli_Quaternion_set_tait_bryan(0.0, MLI_MATH_PI, 0.0);
-        homtra_ = mliHomTra_from_compact(homtra);
+        homtra_ = mli_HomTraComp_from_compact(homtra);
 
         ux_original = mli_Vec_init(1.0, 0.0, 0.0);
-        ux_forth = mliHomTra_pos(&homtra_, ux_original);
+        ux_forth = mli_HomTraComp_pos(&homtra_, ux_original);
         CHECK_MARGIN(-1.0, ux_forth.x, 1e-12);
         CHECK_MARGIN(0.0, ux_forth.y, 1e-12);
         CHECK_MARGIN(133.7, ux_forth.z, 1e-12);
-        ux_back = mliHomTra_pos_inverse(&homtra_, ux_forth);
+        ux_back = mli_HomTraComp_pos_inverse(&homtra_, ux_forth);
         CHECK(ux_original.x == ux_back.x);
         CHECK(ux_original.y == ux_back.y);
         CHECK(ux_original.z == ux_back.z);
@@ -350,20 +350,20 @@ CASE("transform_position_forth_and_back_full_set")
 
 CASE("trans_orientation_forth_and_back_only_rot_component_set")
 {
-        struct mliHomTraComp homtra;
-        struct mliHomTra homtra_;
+        struct mli_HomTraComp homtra;
+        struct mli_HomTra homtra_;
         struct mli_Vec ux_original, ux_forth, ux_back;
 
         homtra.translation = mli_Vec_init(0.0, 0.0, 0.0);
         homtra.rotation = mli_Quaternion_set_tait_bryan(0.0, MLI_MATH_PI, 0.0);
-        homtra_ = mliHomTra_from_compact(homtra);
+        homtra_ = mli_HomTraComp_from_compact(homtra);
 
         ux_original = mli_Vec_init(1.0, 0.0, 0.0);
-        ux_forth = mliHomTra_dir(&homtra_, ux_original);
+        ux_forth = mli_HomTraComp_dir(&homtra_, ux_original);
         CHECK_MARGIN(-1.0, ux_forth.x, 1e-12);
         CHECK_MARGIN(0.0, ux_forth.y, 1e-12);
         CHECK_MARGIN(0.0, ux_forth.z, 1e-12);
-        ux_back = mliHomTra_dir_inverse(&homtra_, ux_forth);
+        ux_back = mli_HomTraComp_dir_inverse(&homtra_, ux_forth);
         CHECK(ux_original.x == ux_back.x);
         CHECK(ux_original.y == ux_back.y);
         CHECK(ux_original.z == ux_back.z);

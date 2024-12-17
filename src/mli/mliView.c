@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <stdint.h>
 #include "../mat/mat.h"
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 #include "../math/math.h"
 
 struct mli_Vec mliView_optical_axis(const struct mliView cam)
@@ -121,9 +121,9 @@ struct mliView mliView_look_up_when_possible(
         return camout;
 }
 
-struct mliHomTraComp mliView_to_HomTraComp(const struct mliView view)
+struct mli_HomTraComp mliView_to_HomTraComp(const struct mliView view)
 {
-        struct mliHomTraComp view2root_comp;
+        struct mli_HomTraComp view2root_comp;
         view2root_comp.translation = view.position;
         view2root_comp.rotation = mli_Quaternion_set_tait_bryan(
                 view.rotation.x, view.rotation.y, view.rotation.z);

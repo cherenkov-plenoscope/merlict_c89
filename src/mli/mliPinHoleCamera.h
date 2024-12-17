@@ -23,7 +23,7 @@ struct mliPinHoleCamera mliPinHoleCamera_init(
 
 void mliPinHoleCamera_render_image(
         struct mliPinHoleCamera camera,
-        const struct mliHomTraComp camera2root_comp,
+        const struct mli_HomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         struct mli_Image *image,
         struct mli_Prng *prng);

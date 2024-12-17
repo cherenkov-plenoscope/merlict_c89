@@ -40,7 +40,7 @@ int mliGeometry_object_references_equal(
                 chk_msg(a->robject_ids[rob] == b->robject_ids[rob],
                         "Expected the users object-ids to be equal.");
 
-                chk_msg(mliHomTraComp_equal(
+                chk_msg(mli_HomTraComp_equal(
                                 a->robject2root[rob], b->robject2root[rob]),
                         "Expected homogenous transformation of "
                         "object-references to be equal");

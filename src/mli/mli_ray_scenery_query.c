@@ -51,17 +51,17 @@ void mli_inner_object_traversal(
 int mli_query_object_reference(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
-        const struct mliHomTraComp robject2root_comp,
+        const struct mli_HomTraComp robject2root_comp,
         const struct mliRay ray_root,
         struct mliIntersection *isec)
 {
-        struct mliHomTra robject2root =
-                mliHomTra_from_compact(robject2root_comp);
+        struct mli_HomTra robject2root =
+                mli_HomTraComp_from_compact(robject2root_comp);
 
         struct mliQueryInnerWork inner;
         inner.has_intersection = 0;
         inner.intersection = isec;
-        inner.ray_object = mliHomTra_ray_inverse(&robject2root, ray_root);
+        inner.ray_object = mli_HomTraComp_ray_inverse(&robject2root, ray_root);
         inner.object = object;
 
         mli_ray_octree_traversal(
@@ -156,10 +156,10 @@ int mli_query_intersection_with_surface_normal(
                         scenery->geometry.robjects[isec.geometry_id.robj];
                 uint32_t face_idx = isec.geometry_id.face;
 
-                struct mliHomTra robject2root = mliHomTra_from_compact(
+                struct mli_HomTra robject2root = mli_HomTraComp_from_compact(
                         scenery->geometry.robject2root[robject_idx]);
                 struct mliRay ray_object =
-                        mliHomTra_ray_inverse(&robject2root, ray_root);
+                        mli_HomTraComp_ray_inverse(&robject2root, ray_root);
 
                 struct mliObject *obj = &scenery->geometry.objects[object_idx];
 
@@ -182,7 +182,7 @@ int mli_query_intersection_with_surface_normal(
                         obj->vertex_normals[fvn.c],
                         isecsrf->position_local);
 
-                isecsrf->surface_normal = mliHomTra_dir(
+                isecsrf->surface_normal = mli_HomTraComp_dir(
                         &robject2root, isecsrf->surface_normal_local);
 
                 isecsrf->from_outside_to_inside =

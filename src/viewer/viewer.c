@@ -126,7 +126,7 @@ int mli_viewer_export_image(
         const char *path)
 {
         struct mli_Image full = mli_Image_init();
-        struct mliHomTraComp camera2root_comp;
+        struct mli_HomTraComp camera2root_comp;
         struct mliApertureCamera apcam = mliApertureCamera_init();
 
         const double image_ratio =
@@ -419,10 +419,10 @@ int mli_viewer_run_interactive_viewer(
                                                 &img,
                                                 row_over_column_pixel_ratio);
 
-                                struct mliHomTraComp camera2root_comp =
+                                struct mli_HomTraComp camera2root_comp =
                                         mliView_to_HomTraComp(view);
-                                struct mliHomTra camera2root =
-                                        mliHomTra_from_compact(
+                                struct mli_HomTra camera2root =
+                                        mli_HomTraComp_from_compact(
                                                 camera2root_comp);
                                 struct mliRay probing_ray_wrt_camera;
                                 struct mliRay probing_ray_wrt_root;
@@ -433,7 +433,7 @@ int mli_viewer_run_interactive_viewer(
                                                 &img,
                                                 cursor.row,
                                                 cursor.col);
-                                probing_ray_wrt_root = mliHomTra_ray(
+                                probing_ray_wrt_root = mli_HomTraComp_ray(
                                         &camera2root, probing_ray_wrt_camera);
 
                                 probing_intersection =

@@ -104,7 +104,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         /* set reference */
         scenery->geometry.robjects[0] = 0u;
         scenery->geometry.robject_ids[0] = 0u;
-        scenery->geometry.robject2root[0] = mliHomTraComp_set(
+        scenery->geometry.robject2root[0] = mli_HomTraComp_set(
                 mli_Vec_init(0.0, 0.0, 0.0),
                 mli_Quaternion_set_tait_bryan(0.0, 0.0, 0.0));
 

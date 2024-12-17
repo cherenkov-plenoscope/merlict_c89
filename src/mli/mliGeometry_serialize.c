@@ -44,7 +44,7 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
                 f);
         chk_fread(
                 geometry->robject2root,
-                sizeof(struct mliHomTraComp),
+                sizeof(struct mli_HomTraComp),
                 geometry->num_robjects,
                 f);
 
@@ -85,7 +85,7 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
                 f);
         chk_fwrite(
                 geometry->robject2root,
-                sizeof(struct mliHomTraComp),
+                sizeof(struct mli_HomTraComp),
                 geometry->num_robjects,
                 f);
 

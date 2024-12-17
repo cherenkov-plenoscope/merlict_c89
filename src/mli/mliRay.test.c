@@ -140,22 +140,22 @@ CASE("ray aabb actual test cases")
         */
 }
 
-CASE("mliHomTraComp, transform direction")
+CASE("../homtra/homtraComp, transform direction")
 {
-        struct mliHomTraComp Tcomp;
-        struct mliHomTra T;
+        struct mli_HomTraComp Tcomp;
+        struct mli_HomTra T;
         struct mli_Vec v1, v2, v3;
         Tcomp.translation = mli_Vec_init(1., 0., 0.);
         Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
                 mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90));
-        T = mliHomTra_from_compact(Tcomp);
+        T = mli_HomTraComp_from_compact(Tcomp);
         v1 = mli_Vec_init(1., 0., 0.);
-        v2 = mliHomTra_dir(&T, v1);
+        v2 = mli_HomTraComp_dir(&T, v1);
         CHECK_MARGIN(v2.x, 0., 1e-6);
         CHECK_MARGIN(v2.y, 1., 1e-6);
         CHECK_MARGIN(v2.z, 0., 1e-6);
 
-        v3 = mliHomTra_dir_inverse(&T, v2);
+        v3 = mli_HomTraComp_dir_inverse(&T, v2);
         CHECK_MARGIN(v3.x, v1.x, 1e-6);
         CHECK_MARGIN(v3.y, v1.y, 1e-6);
         CHECK_MARGIN(v3.z, v1.z, 1e-6);
@@ -166,12 +166,12 @@ CASE("unity transformation must not change ray")
         struct mliRay ray =
                 mliRay_set(mli_Vec_init(0., 0., 1.), mli_Vec_init(0., 0., 1.));
         struct mliRay ray2;
-        struct mliHomTraComp Tcomp;
-        struct mliHomTra T;
+        struct mli_HomTraComp Tcomp;
+        struct mli_HomTra T;
         Tcomp.translation = mli_Vec_init(0., 0., 0.);
         Tcomp.rotation = mli_Quaternion_set_tait_bryan(0., 0., 0.);
-        T = mliHomTra_from_compact(Tcomp);
-        ray2 = mliHomTra_ray(&T, ray);
+        T = mli_HomTraComp_from_compact(Tcomp);
+        ray2 = mli_HomTraComp_ray(&T, ray);
         CHECK(mli_Vec_equal_margin(ray2.support, ray.support, 1e-6));
         CHECK(mli_Vec_equal_margin(ray2.direction, ray.direction, 1e-6));
 }
@@ -181,13 +181,13 @@ CASE("translation")
         struct mliRay ray =
                 mliRay_set(mli_Vec_init(0., 0., 1.), mli_Vec_init(0., 0., 1.));
         struct mliRay ray2;
-        struct mliHomTraComp Tcomp;
-        struct mliHomTra T;
+        struct mli_HomTraComp Tcomp;
+        struct mli_HomTra T;
         Tcomp.translation = mli_Vec_init(1., 0., 0.);
         Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
                 mli_Vec_init(0., 0., 1.), 0.);
-        T = mliHomTra_from_compact(Tcomp);
-        ray2 = mliHomTra_ray(&T, ray);
+        T = mli_HomTraComp_from_compact(Tcomp);
+        ray2 = mli_HomTraComp_ray(&T, ray);
         CHECK(ray2.support.x == 1.);
         CHECK(ray2.support.y == 0.);
         CHECK(ray2.support.z == 1.);
@@ -199,13 +199,13 @@ CASE("rotation")
         struct mliRay ray =
                 mliRay_set(mli_Vec_init(0., 0., 1.), mli_Vec_init(1., 0., 0.));
         struct mliRay ray2;
-        struct mliHomTraComp Tcomp;
-        struct mliHomTra T;
+        struct mli_HomTraComp Tcomp;
+        struct mli_HomTra T;
         Tcomp.translation = mli_Vec_init(0., 0., 0.);
         Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
                 mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90));
-        T = mliHomTra_from_compact(Tcomp);
-        ray2 = mliHomTra_ray(&T, ray);
+        T = mli_HomTraComp_from_compact(Tcomp);
+        ray2 = mli_HomTraComp_ray(&T, ray);
         CHECK(mli_Vec_equal_margin(ray2.support, ray.support, 1e-6));
         CHECK_MARGIN(ray2.direction.x, 0., 1e-6);
         CHECK_MARGIN(ray2.direction.y, 1., 1e-6);
@@ -218,13 +218,13 @@ CASE("translation and rotation")
                 mliRay_set(mli_Vec_init(0., 0., 1.), mli_Vec_init(1., 0., 0.));
         struct mliRay ray2;
         struct mliRay ray3;
-        struct mliHomTraComp Tcomp;
-        struct mliHomTra T;
+        struct mli_HomTraComp Tcomp;
+        struct mli_HomTra T;
         Tcomp.translation = mli_Vec_init(0., 1., 0.);
         Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
                 mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90));
-        T = mliHomTra_from_compact(Tcomp);
-        ray2 = mliHomTra_ray(&T, ray);
+        T = mli_HomTraComp_from_compact(Tcomp);
+        ray2 = mli_HomTraComp_ray(&T, ray);
         CHECK_MARGIN(ray2.support.x, 0., 1e-6);
         CHECK_MARGIN(ray2.support.y, 1., 1e-6);
         CHECK_MARGIN(ray2.support.z, 1., 1e-6);
@@ -233,8 +233,8 @@ CASE("translation and rotation")
         CHECK_MARGIN(ray2.direction.z, 0., 1e-6);
 
         /* and back again */
-        ray3.support = mliHomTra_pos_inverse(&T, ray2.support);
-        ray3.direction = mliHomTra_dir_inverse(&T, ray2.direction);
+        ray3.support = mli_HomTraComp_pos_inverse(&T, ray2.support);
+        ray3.direction = mli_HomTraComp_dir_inverse(&T, ray2.direction);
         CHECK_MARGIN(ray3.support.x, ray.support.x, 1e-6);
         CHECK_MARGIN(ray3.support.y, ray.support.y, 1e-6);
         CHECK_MARGIN(ray3.support.z, ray.support.z, 1e-6);

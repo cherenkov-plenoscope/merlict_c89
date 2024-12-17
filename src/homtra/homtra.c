@@ -1,19 +1,19 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliHomTra.h"
+#include "homtra.h"
 
-struct mliHomTraComp mliHomTraComp_set(
+struct mli_HomTraComp mli_HomTraComp_set(
         const struct mli_Vec translation,
         const struct mli_Quaternion rotation)
 {
-        struct mliHomTraComp comp;
+        struct mli_HomTraComp comp;
         comp.translation = translation;
         comp.rotation = rotation;
         return comp;
 }
 
-struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo)
+struct mli_HomTra mli_HomTraComp_from_compact(const struct mli_HomTraComp trafo)
 {
-        struct mliHomTra t;
+        struct mli_HomTra t;
         t.translation = trafo.translation;
         t.rotation = mli_Quaternion_to_matrix(trafo.rotation);
         return t;
@@ -116,45 +116,51 @@ struct mliRay mli_transform_ray_inverse(
         return out;
 }
 
-struct mliRay mliHomTra_ray(const struct mliHomTra *t, const struct mliRay in)
+struct mliRay mli_HomTraComp_ray(
+        const struct mli_HomTra *t,
+        const struct mliRay in)
 {
         return mli_transform_ray(&t->rotation, t->translation, in);
 }
 
-struct mliRay mliHomTra_ray_inverse(
-        const struct mliHomTra *t,
+struct mliRay mli_HomTraComp_ray_inverse(
+        const struct mli_HomTra *t,
         const struct mliRay in)
 {
         return mli_transform_ray_inverse(&t->rotation, t->translation, in);
 }
 
-struct mli_Vec mliHomTra_pos(const struct mliHomTra *t, const struct mli_Vec in)
+struct mli_Vec mli_HomTraComp_pos(
+        const struct mli_HomTra *t,
+        const struct mli_Vec in)
 {
         return mli_transform_position(&t->rotation, t->translation, in);
 }
 
-struct mli_Vec mliHomTra_pos_inverse(
-        const struct mliHomTra *t,
+struct mli_Vec mli_HomTraComp_pos_inverse(
+        const struct mli_HomTra *t,
         const struct mli_Vec in)
 {
         return mli_transform_position_inverse(&t->rotation, t->translation, in);
 }
 
-struct mli_Vec mliHomTra_dir(const struct mliHomTra *t, const struct mli_Vec in)
+struct mli_Vec mli_HomTraComp_dir(
+        const struct mli_HomTra *t,
+        const struct mli_Vec in)
 {
         return mli_transform_orientation(&t->rotation, in);
 }
 
-struct mli_Vec mliHomTra_dir_inverse(
-        const struct mliHomTra *t,
+struct mli_Vec mli_HomTraComp_dir_inverse(
+        const struct mli_HomTra *t,
         const struct mli_Vec in)
 {
         return mli_transform_orientation_inverse(&t->rotation, in);
 }
 
-int mliHomTraComp_equal(
-        const struct mliHomTraComp a,
-        const struct mliHomTraComp b)
+int mli_HomTraComp_equal(
+        const struct mli_HomTraComp a,
+        const struct mli_HomTraComp b)
 {
         if (!mli_Vec_equal(a.translation, b.translation))
                 return 0;
@@ -163,14 +169,14 @@ int mliHomTraComp_equal(
         return 1;
 }
 
-struct mliHomTraComp mliHomTraComp_sequence(
-        const struct mliHomTraComp a,
-        const struct mliHomTraComp b)
+struct mli_HomTraComp mli_HomTraComp_sequence(
+        const struct mli_HomTraComp a,
+        const struct mli_HomTraComp b)
 {
-        struct mliHomTra b_;
-        struct mliHomTraComp s;
-        b_ = mliHomTra_from_compact(b);
-        s.translation = mliHomTra_pos(&b_, a.translation);
+        struct mli_HomTra b_;
+        struct mli_HomTraComp s;
+        b_ = mli_HomTraComp_from_compact(b);
+        s.translation = mli_HomTraComp_pos(&b_, a.translation);
         s.rotation = mli_Quaternion_product(b.rotation, a.rotation);
         return s;
 }

@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mli_ray_octree_traversal.h"
 #include "mliRay.h"
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 #include "mliObject.h"
 #include "mliOcTree.h"
 #include "mliAccelerator.h"
@@ -26,7 +26,7 @@ int mli_query_intersection_with_surface_normal(
 int mli_query_object_reference(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
-        const struct mliHomTraComp local2root_comp,
+        const struct mli_HomTraComp local2root_comp,
         const struct mliRay ray_root,
         struct mliIntersection *isec);
 

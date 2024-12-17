@@ -3,7 +3,7 @@
 #define MLIGEOMETRY_H_
 
 #include <stdint.h>
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 #include "mliMaterials.h"
 #include "../string/string.h"
 
@@ -15,7 +15,7 @@ struct mliGeometry {
         uint32_t num_robjects;
         uint32_t *robjects;
         uint32_t *robject_ids;
-        struct mliHomTraComp *robject2root;
+        struct mli_HomTraComp *robject2root;
 };
 
 int mliGeometry_malloc(

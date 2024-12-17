@@ -4,13 +4,13 @@
 
 #include <stdint.h>
 #include "mliApertureCamera.h"
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 #include "mliTracer.h"
 #include "../json/json.h"
 
 struct mliRenderConfig {
         struct mliApertureCamera camera;
-        struct mliHomTraComp camera_to_root;
+        struct mli_HomTraComp camera_to_root;
         struct mliTracerConfig tracer;
         uint64_t num_pixel_x;
         uint64_t num_pixel_y;

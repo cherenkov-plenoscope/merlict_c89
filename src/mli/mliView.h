@@ -35,5 +35,5 @@ struct mliView mliView_move_forward(
 struct mli_Vec mliView_direction_up(const struct mliView cam);
 struct mli_Vec mliView_direction_right(const struct mliView cam);
 struct mli_Vec mliView_optical_axis(const struct mliView cam);
-struct mliHomTraComp mliView_to_HomTraComp(const struct mliView view);
+struct mli_HomTraComp mliView_to_HomTraComp(const struct mliView view);
 #endif

@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "../image/image_PixelWalk.h"
 #include "../math/math.h"
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 
 struct mliPinHoleCamera mliPinHoleCamera_init(
         const double field_of_view,
@@ -48,13 +48,14 @@ struct mliRay mliPinHoleCamera_ray_at_row_col(
 
 void mliPinHoleCamera_render_image(
         struct mliPinHoleCamera camera,
-        const struct mliHomTraComp camera2root_comp,
+        const struct mli_HomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         struct mli_Image *image,
         struct mli_Prng *prng)
 {
         struct mli_image_PixelWalk walk = mli_image_PixelWalk_init();
-        struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
+        struct mli_HomTra camera2root =
+                mli_HomTraComp_from_compact(camera2root_comp);
         uint32_t i;
         const uint32_t num_pixel = mli_Image_num_pixel(image);
 
@@ -65,7 +66,7 @@ void mliPinHoleCamera_render_image(
                         &camera, image, px.row, px.col);
 
                 struct mliRay ray_wrt_root =
-                        mliHomTra_ray(&camera2root, ray_wrt_camera);
+                        mli_HomTraComp_ray(&camera2root, ray_wrt_camera);
 
                 struct mli_Color color =
                         mliTracer_trace_ray(tracer, ray_wrt_root, prng);
@@ -83,7 +84,7 @@ void mliPinHoleCamera_render_image_with_view(
 {
         struct mliPinHoleCamera camera = mliPinHoleCamera_init(
                 view.field_of_view, image, row_over_column_pixel_ratio);
-        struct mliHomTraComp camera2root_comp = mliView_to_HomTraComp(view);
+        struct mli_HomTraComp camera2root_comp = mliView_to_HomTraComp(view);
         mliPinHoleCamera_render_image(
                 camera, camera2root_comp, tracer, image, prng);
 }

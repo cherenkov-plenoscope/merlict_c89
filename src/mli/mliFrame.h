@@ -3,7 +3,7 @@
 #define MLIFRAME_H_
 
 #include <stdint.h>
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 #include "../vector/vector.h"
 #include "mliDynUint32.h"
 #include "mliDynFramePtr.h"
@@ -14,8 +14,8 @@
 struct mliFrame {
         uint32_t type;
         uint32_t id;
-        struct mliHomTraComp frame2mother;
-        struct mliHomTraComp frame2root;
+        struct mli_HomTraComp frame2mother;
+        struct mli_HomTraComp frame2root;
         struct mliFrame *mother;
 
         struct mliDynFramePtr children;

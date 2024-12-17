@@ -3,7 +3,7 @@
 #include <math.h>
 #include "../math/math.h"
 #include "../mat/mat.h"
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 
 struct mli_Vec mli_draw_lambertian_direction_wrt_z(struct mli_Prng *prng)
 {

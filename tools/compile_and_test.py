@@ -50,6 +50,7 @@ module_paths = [
     os.path.join("src", "vec"),
     os.path.join("src", "mat"),
     os.path.join("src", "quaternion"),
+    os.path.join("src", "homtra"),
     os.path.join("src", "testing"),
     os.path.join("src", "mli"),
     os.path.join("src", "corsika"),

@@ -53,7 +53,7 @@ chk_error:
 }
 
 int mliFrame_pos_rot_from_json_token(
-        struct mliHomTraComp *frame2mother,
+        struct mli_HomTraComp *frame2mother,
         const struct mli_Json *json,
         const uint64_t token)
 {

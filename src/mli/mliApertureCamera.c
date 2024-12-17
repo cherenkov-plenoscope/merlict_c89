@@ -169,14 +169,15 @@ struct mliRay mliApertureCamera_get_ray_for_pixel(
 void mliApertureCamera_aquire_pixels(
         const struct mliApertureCamera camera,
         const struct mli_Image *image,
-        const struct mliHomTraComp camera2root_comp,
+        const struct mli_HomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         const struct mli_image_PixelVector *pixels_to_do,
         struct mli_ColorVector *colors_to_do,
         struct mli_Prng *prng)
 {
         uint64_t i;
-        struct mliHomTra camera2root = mliHomTra_from_compact(camera2root_comp);
+        struct mli_HomTra camera2root =
+                mli_HomTraComp_from_compact(camera2root_comp);
 
         colors_to_do->size = 0;
         for (i = 0; i < pixels_to_do->size; i++) {
@@ -194,7 +195,7 @@ void mliApertureCamera_aquire_pixels(
                                 prng);
 
                 struct mliRay ray_wrt_root =
-                        mliHomTra_ray(&camera2root, ray_wrt_camera);
+                        mli_HomTraComp_ray(&camera2root, ray_wrt_camera);
 
                 struct mli_Color set_color =
                         mliTracer_trace_ray(tracer, ray_wrt_root, prng);
@@ -231,7 +232,7 @@ void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
 
 int mliApertureCamera_render_image(
         const struct mliApertureCamera camera,
-        const struct mliHomTraComp camera2root_comp,
+        const struct mli_HomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         struct mli_Image *image,
         struct mli_Prng *prng)

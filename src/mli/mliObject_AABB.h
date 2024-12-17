@@ -3,18 +3,18 @@
 #define MLIOBJECT_AABB_H_
 
 #include <stdint.h>
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 #include "mliObject.h"
 #include "mliAABB.h"
 
 int mliObject_has_overlap_aabb(
         const struct mliObject *obj,
-        const struct mliHomTra local2root,
+        const struct mli_HomTra local2root,
         const struct mliAABB aabb);
 
 struct mliAABB mliObject_aabb(
         const struct mliObject *obj,
-        const struct mliHomTra local2root);
+        const struct mli_HomTra local2root);
 
 int mliObject_face_in_local_frame_has_overlap_aabb(
         const struct mliObject *obj,

@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "mli_random.h"
 #include "../vec/vec.h"
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 #include "mliTracer.h"
 #include "../image/image.h"
 #include "../color/color_vector.h"
@@ -146,7 +146,7 @@ struct mliApertureCamera mliApertureCamera_init(void);
 
 int mliApertureCamera_render_image(
         const struct mliApertureCamera camera,
-        const struct mliHomTraComp camera2root_comp,
+        const struct mli_HomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         struct mli_Image *image,
         struct mli_Prng *prng);
@@ -154,7 +154,7 @@ int mliApertureCamera_render_image(
 void mliApertureCamera_aquire_pixels(
         const struct mliApertureCamera camera,
         const struct mli_Image *image,
-        const struct mliHomTraComp camera2root_comp,
+        const struct mli_HomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         const struct mli_image_PixelVector *pixels_to_do,
         struct mli_ColorVector *colors_to_do,

@@ -9,7 +9,7 @@
 #include <assert.h>
 #include <float.h>
 #include "../math/math.h"
-#include "mliHomTra.h"
+#include "../homtra/homtra.h"
 
 struct mliAtmosphere mliAtmosphere_init(void)
 {
@@ -54,18 +54,18 @@ void mliAtmosphere_set_sun_direction(
                         MLI_MATH_PI +
                         2.0 * MLI_MATH_PI * atmosphere->sunHourAngle / 24.0;
 
-                const struct mliHomTraComp tc_latitude = mliHomTraComp_set(
+                const struct mli_HomTraComp tc_latitude = mli_HomTraComp_set(
                         mli_Vec_init(0.0, 0.0, 0.0),
                         mli_Quaternion_set_tait_bryan(
                                 atmosphere->sunLatitude, 0.0, 0.0));
-                const struct mliHomTraComp tc_hour = mliHomTraComp_set(
+                const struct mli_HomTraComp tc_hour = mli_HomTraComp_set(
                         mli_Vec_init(0.0, 0.0, 0.0),
                         mli_Quaternion_set_tait_bryan(0.0, hours_rad, 0.0));
-                const struct mliHomTraComp tc =
-                        mliHomTraComp_sequence(tc_latitude, tc_hour);
-                const struct mliHomTra t = mliHomTra_from_compact(tc);
+                const struct mli_HomTraComp tc =
+                        mli_HomTraComp_sequence(tc_latitude, tc_hour);
+                const struct mli_HomTra t = mli_HomTraComp_from_compact(tc);
                 const struct mli_Vec zenith = mli_Vec_init(0.0, 0.0, 1.0);
-                atmosphere->sunDirection = mliHomTra_dir(&t, zenith);
+                atmosphere->sunDirection = mli_HomTraComp_dir(&t, zenith);
         }
 }
 

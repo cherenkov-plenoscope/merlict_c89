@@ -25,7 +25,7 @@ int mliObject_face_in_local_frame_has_overlap_aabb(
 
 int mliObject_has_overlap_aabb(
         const struct mliObject *obj,
-        const struct mliHomTra local2root,
+        const struct mli_HomTra local2root,
         const struct mliAABB aabb)
 {
         uint64_t face_idx;
@@ -37,11 +37,11 @@ int mliObject_has_overlap_aabb(
                 const struct mli_Vec c_local = obj->vertices[face.c];
 
                 const struct mli_Vec a_root =
-                        mliHomTra_pos(&local2root, a_local);
+                        mli_HomTraComp_pos(&local2root, a_local);
                 const struct mli_Vec b_root =
-                        mliHomTra_pos(&local2root, b_local);
+                        mli_HomTraComp_pos(&local2root, b_local);
                 const struct mli_Vec c_root =
-                        mliHomTra_pos(&local2root, c_local);
+                        mli_HomTraComp_pos(&local2root, c_local);
 
                 if (mliTriangle_has_overlap_aabb(
                             a_root, b_root, c_root, aabb)) {
@@ -62,7 +62,7 @@ int mliObject_face_in_local_frame_has_overlap_aabb_void(
 
 struct mliAABB mliObject_aabb(
         const struct mliObject *obj,
-        const struct mliHomTra local2root)
+        const struct mli_HomTra local2root)
 {
         struct mliAABB aabb;
         struct mli_Vec seed_vertex_local;
@@ -80,7 +80,7 @@ struct mliAABB mliObject_aabb(
 
         seed_face = obj->faces_vertices[0];
         seed_vertex_local = obj->vertices[seed_face.a];
-        seed_vertex_root = mliHomTra_pos(&local2root, seed_vertex_local);
+        seed_vertex_root = mli_HomTraComp_pos(&local2root, seed_vertex_local);
 
         aabb.lower = seed_vertex_root;
         aabb.upper = seed_vertex_root;
@@ -90,11 +90,11 @@ struct mliAABB mliObject_aabb(
                 const struct mli_Vec b_local = obj->vertices[face.b];
                 const struct mli_Vec c_local = obj->vertices[face.c];
                 const struct mli_Vec a_root =
-                        mliHomTra_pos(&local2root, a_local);
+                        mli_HomTraComp_pos(&local2root, a_local);
                 const struct mli_Vec b_root =
-                        mliHomTra_pos(&local2root, b_local);
+                        mli_HomTraComp_pos(&local2root, b_local);
                 const struct mli_Vec c_root =
-                        mliHomTra_pos(&local2root, c_local);
+                        mli_HomTraComp_pos(&local2root, c_local);
 
                 aabb.lower.x = MLI_MATH_MIN2(aabb.lower.x, a_root.x);
                 aabb.lower.y = MLI_MATH_MIN2(aabb.lower.y, a_root.y);
@@ -125,7 +125,7 @@ struct mliAABB mliObject_aabb(
 
 struct mliAABB mliObject_aabb_in_local_frame(const struct mliObject *obj)
 {
-        struct mliHomTra unity;
+        struct mli_HomTra unity;
         unity.translation = mli_Vec_init(0.0, 0.0, 0.0);
         unity.rotation = mli_Mat_unity();
         return mliObject_aabb(obj, unity);

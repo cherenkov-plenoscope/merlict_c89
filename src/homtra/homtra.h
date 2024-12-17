@@ -1,48 +1,50 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIHOMTRA_H_
-#define MLIHOMTRA_H_
+#ifndef MLI_HOMTRA_H_
+#define MLI_HOMTRA_H_
 
 #include "../vec/vec.h"
-#include "mliRay.h"
+#include "../mli/mliRay.h"
 #include "../mat/mat.h"
 #include "../quaternion/quaternion.h"
 
-struct mliHomTraComp {
+struct mli_HomTraComp {
         struct mli_Vec translation;
         struct mli_Quaternion rotation;
 };
 
-struct mliHomTra {
+struct mli_HomTra {
         struct mli_Vec translation;
         struct mli_Mat rotation;
 };
 
-void mliHomTra_print(const struct mliHomTra h);
-struct mliHomTraComp mliHomTraComp_set(
+void mli_HomTraComp_print(const struct mli_HomTra h);
+struct mli_HomTraComp mli_HomTraComp_set(
         const struct mli_Vec translation,
         const struct mli_Quaternion rotation);
-struct mliHomTraComp mliHomTraComp_sequence(
-        const struct mliHomTraComp a,
-        const struct mliHomTraComp b);
-int mliHomTraComp_equal(
-        const struct mliHomTraComp a,
-        const struct mliHomTraComp b);
-struct mli_Vec mliHomTra_dir_inverse(
-        const struct mliHomTra *t,
+struct mli_HomTraComp mli_HomTraComp_sequence(
+        const struct mli_HomTraComp a,
+        const struct mli_HomTraComp b);
+int mli_HomTraComp_equal(
+        const struct mli_HomTraComp a,
+        const struct mli_HomTraComp b);
+struct mli_Vec mli_HomTraComp_dir_inverse(
+        const struct mli_HomTra *t,
         const struct mli_Vec in);
-struct mli_Vec mliHomTra_dir(
-        const struct mliHomTra *t,
+struct mli_Vec mli_HomTraComp_dir(
+        const struct mli_HomTra *t,
         const struct mli_Vec in);
-struct mli_Vec mliHomTra_pos_inverse(
-        const struct mliHomTra *t,
+struct mli_Vec mli_HomTraComp_pos_inverse(
+        const struct mli_HomTra *t,
         const struct mli_Vec in);
-struct mli_Vec mliHomTra_pos(
-        const struct mliHomTra *t,
+struct mli_Vec mli_HomTraComp_pos(
+        const struct mli_HomTra *t,
         const struct mli_Vec in);
-struct mliRay mliHomTra_ray_inverse(
-        const struct mliHomTra *t,
+struct mliRay mli_HomTraComp_ray_inverse(
+        const struct mli_HomTra *t,
         const struct mliRay in);
-struct mliRay mliHomTra_ray(const struct mliHomTra *t, const struct mliRay in);
+struct mliRay mli_HomTraComp_ray(
+        const struct mli_HomTra *t,
+        const struct mliRay in);
 struct mliRay mli_transform_ray_inverse(
         const struct mli_Mat *rotation,
         const struct mli_Vec translation,
@@ -65,5 +67,6 @@ struct mli_Vec mli_transform_orientation_inverse(
 struct mli_Vec mli_transform_orientation(
         const struct mli_Mat *rotation,
         const struct mli_Vec in);
-struct mliHomTra mliHomTra_from_compact(const struct mliHomTraComp trafo);
+struct mli_HomTra mli_HomTraComp_from_compact(
+        const struct mli_HomTraComp trafo);
 #endif
