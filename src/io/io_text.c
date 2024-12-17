@@ -6,10 +6,10 @@
 #include "../math/math.h"
 #include "../cstr/cstr.h"
 
-int mli_IO_text_getc(struct mli_IO *byt)
+int mli_IO_text_getc(struct mli_IO *self)
 {
         char c = EOF;
-        size_t rc = mli_IO_read(byt, (void *)(&c), sizeof(char), 1);
+        size_t rc = mli_IO_read(self, (void *)(&c), sizeof(char), 1);
         if (rc == 0) {
                 return EOF;
         } else {
@@ -17,9 +17,9 @@ int mli_IO_text_getc(struct mli_IO *byt)
         }
 }
 
-int mli_IO_text_putc(struct mli_IO *byt, const char c)
+int mli_IO_text_putc(struct mli_IO *self, const char c)
 {
-        chk_msg(mli_IO_write(byt, (void *)(&c), sizeof(char), 1),
+        chk_msg(mli_IO_write(self, (void *)(&c), sizeof(char), 1),
                 "Can not write char to IO.");
         return 1;
 chk_error:
@@ -43,18 +43,18 @@ chk_error:
 }
 
 int mli_IO_text_read_line(
-        struct mli_IO *stream,
+        struct mli_IO *self,
         struct mli_String *line,
         const char delimiter)
 {
         chk(mli_String_malloc(line, 16));
 
-        if (mli_IO_eof(stream)) {
+        if (mli_IO_eof(self)) {
                 return EOF;
         }
 
-        while (!mli_IO_eof(stream)) {
-                const int c = mli_IO_text_getc(stream);
+        while (!mli_IO_eof(self)) {
+                const int c = mli_IO_text_getc(self);
                 if (c == delimiter) {
                         break;
                 } else if (c == '\0') {
@@ -85,15 +85,15 @@ chk_error:
 }
 
 int mli_IO_text_write_multi_line_debug_view_line_match(
-        struct mli_IO *f,
+        struct mli_IO *self,
         const int64_t line_number,
         const int64_t line_number_of_interest)
 {
-        chk(mli_IO_text_write_cstr_format(f, "% 6d", (int32_t)line_number));
+        chk(mli_IO_text_write_cstr_format(self, "% 6d", (int32_t)line_number));
         if (line_number == line_number_of_interest) {
-                chk(mli_IO_text_write_cstr_format(f, "->|  "));
+                chk(mli_IO_text_write_cstr_format(self, "->|  "));
         } else {
-                chk(mli_IO_text_write_cstr_format(f, "  |  "));
+                chk(mli_IO_text_write_cstr_format(self, "  |  "));
         }
         return 1;
 chk_error:
@@ -101,7 +101,7 @@ chk_error:
 }
 
 int mli_IO_text_write_multi_line_debug_view(
-        struct mli_IO *f,
+        struct mli_IO *self,
         const struct mli_String *text,
         const uint64_t line_number,
         const uint64_t line_radius)
@@ -115,8 +115,8 @@ int mli_IO_text_write_multi_line_debug_view(
 
         chk_msg(line_radius > 1, "Expected line_radius > 1.");
 
-        chk(mli_IO_text_write_cstr_format(f, "  line     text\n"));
-        chk(mli_IO_text_write_cstr_format(f, "        |\n"));
+        chk(mli_IO_text_write_cstr_format(self, "  line     text\n"));
+        chk(mli_IO_text_write_cstr_format(self, "        |\n"));
 
         while (i < text->size && text->array[i]) {
                 int prefix = (line + 1 >= line_start) && (line < line_stop);
@@ -126,18 +126,18 @@ int mli_IO_text_write_multi_line_debug_view(
                 }
                 if (prefix && i == 0) {
                         chk(mli_IO_text_write_multi_line_debug_view_line_match(
-                                f, line, _line_number));
+                                self, line, _line_number));
                 }
                 if (valid) {
-                        chk(mli_IO_text_putc(f, text->array[i]));
+                        chk(mli_IO_text_putc(self, text->array[i]));
                 }
                 if (prefix && text->array[i] == '\n') {
                         chk(mli_IO_text_write_multi_line_debug_view_line_match(
-                                f, line, _line_number));
+                                self, line, _line_number));
                 }
                 i++;
         }
-        chk(mli_IO_text_putc(f, '\n'));
+        chk(mli_IO_text_putc(self, '\n'));
 
         return 1;
 chk_error:
