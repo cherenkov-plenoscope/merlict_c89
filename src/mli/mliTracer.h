@@ -6,7 +6,7 @@
 #include "../ray/ray.h"
 #include "../color/color.h"
 #include "mliColorMaterials.h"
-#include "mliAtmosphere.h"
+#include "../atmosphere/atmosphere.h"
 
 struct mli_Scenery;
 struct mli_Prng;
@@ -15,7 +15,7 @@ struct mliTracerConfig {
         uint64_t num_trails_global_light_source;
 
         int have_atmosphere;
-        struct mliAtmosphere atmosphere;
+        struct mli_Atmosphere atmosphere;
 
         struct mli_Color background_color;
 };

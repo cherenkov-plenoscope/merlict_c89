@@ -1,23 +1,23 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
-#include "mliAtmosphere_json.h"
+#include "atmosphere_json.h"
 #include "../color/color_json.h"
 #include "../chk/chk.h"
 
-int mliAtmosphere_from_json_token(
-        struct mliAtmosphere *atm,
+int mli_Atmosphere_from_json_token(
+        struct mli_Atmosphere *atm,
         const struct mli_Json *json,
         const uint64_t tkn)
 {
         uint64_t beta_rayleigh_tkn;
         uint64_t beta_mie_tkn;
 
-        (*atm) = mliAtmosphere_init();
+        (*atm) = mli_Atmosphere_init();
 
         chk(mli_Json_double_by_key(
                 json, tkn, &atm->sunLatitude, "sunLatitude"));
         chk(mli_Json_double_by_key(
                 json, tkn, &atm->sunHourAngle, "sunHourAngle"));
-        mliAtmosphere_set_sun_direction(
+        mli_Atmosphere_set_sun_direction(
                 atm, atm->sunLatitude, atm->sunHourAngle);
 
         chk(mli_Json_double_by_key(

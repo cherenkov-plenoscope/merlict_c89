@@ -126,6 +126,6 @@ struct mliTracerConfig mliTracerConfig_init(void)
         config.background_color = mli_Color_set(128.0, 128.0, 128.0);
         config.num_trails_global_light_source = 3;
         config.have_atmosphere = 0;
-        config.atmosphere = mliAtmosphere_init();
+        config.atmosphere = mli_Atmosphere_init();
         return config;
 }

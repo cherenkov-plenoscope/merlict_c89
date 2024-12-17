@@ -1,7 +1,7 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
 #include "mliRenderConfig.h"
 #include "../frame/frame_json.h"
-#include "mliAtmosphere_json.h"
+#include "../atmosphere/atmosphere_json.h"
 #include "mliTracerConfig_json.h"
 #include "../image/image.h"
 #include "../chk/chk.h"

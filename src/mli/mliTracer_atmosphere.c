@@ -29,7 +29,7 @@ struct mli_Color mli_trace_color_tone_of_sun(
                                   config->atmosphere.earthRadius;
 
         if (config->atmosphere.altitude < width_atmosphere) {
-                struct mli_Color color_close_to_sun = mliAtmosphere_query(
+                struct mli_Color color_close_to_sun = mli_Atmosphere_query(
                         &config->atmosphere,
                         support,
                         config->atmosphere.sunDirection);
@@ -81,7 +81,7 @@ struct mli_Color mli_trace_color_tone_of_diffuse_sky(
                         tracer->scenery, obstruction_ray, &isec);
 
                 if (has_direct_view_to_sky) {
-                        struct mli_Color sample = mliAtmosphere_query(
+                        struct mli_Color sample = mli_Atmosphere_query(
                                 &tracer->config->atmosphere,
                                 intersection->position,
                                 rnd_dir);
@@ -151,7 +151,7 @@ struct mli_Color mliTracer_trace_ray_with_atmosphere(
                 out = mli_trace_to_intersection_atmosphere(
                         tracer, &intersection, prng);
         } else {
-                out = mliAtmosphere_query(
+                out = mli_Atmosphere_query(
                         &tracer->config->atmosphere,
                         ray.support,
                         ray.direction);

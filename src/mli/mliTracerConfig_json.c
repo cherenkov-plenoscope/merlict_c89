@@ -1,7 +1,7 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
 #include "mliRenderConfig.h"
 #include "../frame/frame_json.h"
-#include "mliAtmosphere_json.h"
+#include "../atmosphere/atmosphere_json.h"
 #include "../chk/chk.h"
 #include "../color/color_json.h"
 
@@ -29,7 +29,7 @@ int mliTracerConfig_from_json_token(
         chk(mli_Color_from_json_token(&tc->background_color, json, bgctkn + 1));
 
         chk(mli_Json_token_by_key(json, tkn, "atmosphere", &atmtkn));
-        chk(mliAtmosphere_from_json_token(&tc->atmosphere, json, atmtkn + 1));
+        chk(mli_Atmosphere_from_json_token(&tc->atmosphere, json, atmtkn + 1));
 
         return 1;
 chk_error:

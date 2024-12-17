@@ -356,29 +356,29 @@ int mli_viewer_run_interactive_viewer(
                                 break;
 
                         case '4':
-                                mliAtmosphere_decrease_altitude(
+                                mli_Atmosphere_decrease_altitude(
                                         &tracer_config.atmosphere, 0.9);
                                 break;
                         case '5':
-                                mliAtmosphere_increase_altitude(
+                                mli_Atmosphere_increase_altitude(
                                         &tracer_config.atmosphere, 1.1);
                                 break;
                         case '6':
-                                mliAtmosphere_decrease_latitude(
+                                mli_Atmosphere_decrease_latitude(
                                         &tracer_config.atmosphere,
                                         mli_math_deg2rad(2.0));
                                 break;
                         case '7':
-                                mliAtmosphere_increase_latitude(
+                                mli_Atmosphere_increase_latitude(
                                         &tracer_config.atmosphere,
                                         mli_math_deg2rad(2.0));
                                 break;
                         case '8':
-                                mliAtmosphere_decrease_hours(
+                                mli_Atmosphere_decrease_hours(
                                         &tracer_config.atmosphere, 0.1);
                                 break;
                         case '9':
-                                mliAtmosphere_increase_hours(
+                                mli_Atmosphere_increase_hours(
                                         &tracer_config.atmosphere, 0.1);
                                 break;
                         case '0':

@@ -1,12 +1,12 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIATMOSPHERE_H_
-#define MLIATMOSPHERE_H_
+#ifndef MLI_ATMOSPHERE_H_
+#define MLI_ATMOSPHERE_H_
 
 #include <stdint.h>
 #include "../color/color.h"
 #include "../vec/vec.h"
 
-struct mliAtmosphere {
+struct mli_Atmosphere {
         double sunLatitude;
         double sunHourAngle;
 
@@ -30,49 +30,49 @@ struct mliAtmosphere {
         double altitude;
 };
 
-struct mliAtmosphere mliAtmosphere_init(void);
-void mliAtmosphere_set_sun_direction(
-        struct mliAtmosphere *atmosphere,
+struct mli_Atmosphere mli_Atmosphere_init(void);
+void mli_Atmosphere_set_sun_direction(
+        struct mli_Atmosphere *self,
         const double sunLatitude,
         const double sunHourAngle);
-void mliAtmosphere_increase_latitude(
-        struct mliAtmosphere *atmosphere,
+void mli_Atmosphere_increase_latitude(
+        struct mli_Atmosphere *self,
         const double increment);
-void mliAtmosphere_decrease_latitude(
-        struct mliAtmosphere *atmosphere,
+void mli_Atmosphere_decrease_latitude(
+        struct mli_Atmosphere *self,
         const double increment);
-void mliAtmosphere_increase_hours(
-        struct mliAtmosphere *atmosphere,
+void mli_Atmosphere_increase_hours(
+        struct mli_Atmosphere *self,
         const double increment);
-void mliAtmosphere_decrease_hours(
-        struct mliAtmosphere *atmosphere,
+void mli_Atmosphere_decrease_hours(
+        struct mli_Atmosphere *self,
         const double increment);
-void mliAtmosphere_increase_altitude(
-        struct mliAtmosphere *atmosphere,
+void mli_Atmosphere_increase_altitude(
+        struct mli_Atmosphere *self,
         const double factor);
-void mliAtmosphere_decrease_altitude(
-        struct mliAtmosphere *atmosphere,
+void mli_Atmosphere_decrease_altitude(
+        struct mli_Atmosphere *self,
         const double factor);
 
-struct mli_Color mliAtmosphere_query(
-        const struct mliAtmosphere *atmosphere,
+struct mli_Color mli_Atmosphere_query(
+        const struct mli_Atmosphere *self,
         const struct mli_Vec orig,
         const struct mli_Vec dir);
 
-struct mli_Color mliAtmosphere_hit_earth_body(
-        const struct mliAtmosphere *atmosphere,
+struct mli_Color mli_Atmosphere_hit_earth_body(
+        const struct mli_Atmosphere *self,
         const struct mli_Vec orig,
         const struct mli_Vec dir);
 
-struct mli_Color mliAtmosphere_hit_outer_atmosphere(
-        const struct mliAtmosphere *atmosphere,
+struct mli_Color mli_Atmosphere_hit_outer_atmosphere(
+        const struct mli_Atmosphere *self,
         const struct mli_Vec orig,
         const struct mli_Vec dir,
         double tmin,
         double tmax);
 
-struct mli_Color mliAtmosphere_compute_depth(
-        const struct mliAtmosphere *atmosphere,
+struct mli_Color mli_Atmosphere_compute_depth(
+        const struct mli_Atmosphere *self,
         const struct mli_Vec orig,
         const struct mli_Vec dir,
         double tmin,
