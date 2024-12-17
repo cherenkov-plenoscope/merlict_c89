@@ -9,14 +9,14 @@
 MLI_VECTOR_DEFINITON(mli_String, char)
 
 int mli_String_from_vargs(
-        struct mli_String *str,
+        struct mli_String *self,
         const char *format,
         va_list args);
 int mli_String_from_cstr_fromat(
-        struct mli_String *str,
+        struct mli_String *self,
         const char *format,
         ...);
-int mli_String_from_cstr(struct mli_String *str, const char *s);
+int mli_String_from_cstr(struct mli_String *self, const char *s);
 
 int mli_String_equal_cstr(const struct mli_String *self, const char *cstr);
 
@@ -25,27 +25,27 @@ int mli_String_equal(
         const struct mli_String *other);
 
 int mli_String_ends_with(
-        const struct mli_String *str,
+        const struct mli_String *self,
         const struct mli_String *suffix);
-int mli_String_ends_with_cstr(const struct mli_String *str, const char *cstr);
+int mli_String_ends_with_cstr(const struct mli_String *self, const char *cstr);
 
 int mli_String_starts_with(
-        const struct mli_String *str,
+        const struct mli_String *self,
         const struct mli_String *prefix);
 int mli_String_starts_with_cstr(
         const struct mli_String *self,
         const char *cstr);
 
 int mli_String_has_prefix_suffix(
-        const struct mli_String *str,
+        const struct mli_String *self,
         const struct mli_String *prefix,
         const struct mli_String *suffix);
 
-int64_t mli_String_rfind(const struct mli_String *str, const char c);
-int64_t mli_String_find(const struct mli_String *str, const char c);
+int64_t mli_String_rfind(const struct mli_String *self, const char c);
+int64_t mli_String_find(const struct mli_String *self, const char c);
 int mli_String_strip(const struct mli_String *src, struct mli_String *dst);
 uint64_t mli_String_countn(
-        const struct mli_String *str,
+        const struct mli_String *self,
         const char c,
         const uint64_t num_chars_to_scan);
 int64_t mli_String_compare(

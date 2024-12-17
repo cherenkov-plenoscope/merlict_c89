@@ -8,11 +8,14 @@
 
 MLI_VECTOR_IMPLEMENTATION_ZERO_TERMINATION(mli_String, char)
 
-int mli_String_from_cstr_fromat(struct mli_String *str, const char *format, ...)
+int mli_String_from_cstr_fromat(
+        struct mli_String *self,
+        const char *format,
+        ...)
 {
         va_list args;
         va_start(args, format);
-        chk_msg(mli_String_from_vargs(str, format, args),
+        chk_msg(mli_String_from_vargs(self, format, args),
                 "Failed to malloc String from variadic args.");
         va_end(args);
         return 1;
@@ -22,7 +25,7 @@ chk_error:
 }
 
 int mli_String_from_vargs(
-        struct mli_String *str,
+        struct mli_String *self,
         const char *format,
         va_list args)
 {
@@ -34,7 +37,7 @@ int mli_String_from_vargs(
         chk_msg(mli_String__discover_size(&tmp) <= tmp_capacity,
                 "Probably 'vsprintf' caused a buffer overflow.");
         tmp.size = strlen(tmp.array);
-        chk(mli_String_copy(str, &tmp));
+        chk(mli_String_copy(self, &tmp));
 
         mli_String_free(&tmp);
         return 1;
@@ -43,28 +46,28 @@ chk_error:
         return 0;
 }
 
-int mli_String_from_cstr(struct mli_String *str, const char *s)
+int mli_String_from_cstr(struct mli_String *self, const char *s)
 {
         size_t length = strlen(s);
-        chk(mli_String_malloc(str, length));
-        str->size = length;
-        strncpy(str->array, s, str->size);
+        chk(mli_String_malloc(self, length));
+        self->size = length;
+        strncpy(self->array, s, self->size);
         return 1;
 chk_error:
         return 0;
 }
 
 int mli_String_ends_with(
-        const struct mli_String *str,
+        const struct mli_String *self,
         const struct mli_String *suffix)
 {
-        if (!str->array || !suffix->array) {
+        if (!self->array || !suffix->array) {
                 return 0;
         }
-        if (suffix->size > str->size) {
+        if (suffix->size > self->size) {
                 return 0;
         }
-        return strncmp(str->array + str->size - suffix->size,
+        return strncmp(self->array + self->size - suffix->size,
                        suffix->array,
                        suffix->size) == 0;
 }
@@ -75,16 +78,16 @@ int mli_String_ends_with_cstr(const struct mli_String *self, const char *cstr)
 }
 
 int mli_String_starts_with(
-        const struct mli_String *str,
+        const struct mli_String *self,
         const struct mli_String *prefix)
 {
-        if (!str->array || !prefix->array) {
+        if (!self->array || !prefix->array) {
                 return 0;
         }
-        if (prefix->size > str->size) {
+        if (prefix->size > self->size) {
                 return 0;
         }
-        return strncmp(str->array, prefix->array, prefix->size) == 0;
+        return strncmp(self->array, prefix->array, prefix->size) == 0;
 }
 
 int mli_String_starts_with_cstr(const struct mli_String *self, const char *cstr)
@@ -93,18 +96,18 @@ int mli_String_starts_with_cstr(const struct mli_String *self, const char *cstr)
 }
 
 int mli_String_has_prefix_suffix(
-        const struct mli_String *str,
+        const struct mli_String *self,
         const struct mli_String *prefix,
         const struct mli_String *suffix)
 {
         uint64_t has_pre = 1;
         uint64_t has_suf = 1;
         if (prefix->array != NULL) {
-                has_pre = mli_String_starts_with(str, prefix);
+                has_pre = mli_String_starts_with(self, prefix);
         }
 
         if (suffix->array != NULL) {
-                has_suf = mli_String_ends_with(str, suffix);
+                has_suf = mli_String_ends_with(self, suffix);
         }
 
         if (has_pre == 1 && has_suf == 1) {
@@ -114,26 +117,26 @@ int mli_String_has_prefix_suffix(
         }
 }
 
-int64_t mli_String_rfind(const struct mli_String *str, const char c)
+int64_t mli_String_rfind(const struct mli_String *self, const char c)
 {
         int64_t i;
-        for (i = str->size - 1; i >= 0; i--) {
-                if (str->array[i] == '\0') {
+        for (i = self->size - 1; i >= 0; i--) {
+                if (self->array[i] == '\0') {
                         return -1;
-                } else if (str->array[i] == c) {
+                } else if (self->array[i] == c) {
                         return i;
                 }
         }
         return -1;
 }
 
-int64_t mli_String_find(const struct mli_String *str, const char c)
+int64_t mli_String_find(const struct mli_String *self, const char c)
 {
         int64_t i;
-        for (i = 0; i < (int64_t)str->size; i++) {
-                if (str->array[i] == '\0') {
+        for (i = 0; i < (int64_t)self->size; i++) {
+                if (self->array[i] == '\0') {
                         return -1;
-                } else if (str->array[i] == c) {
+                } else if (self->array[i] == c) {
                         return i;
                 }
         }
@@ -199,14 +202,14 @@ chk_error:
 }
 
 uint64_t mli_String_countn(
-        const struct mli_String *str,
+        const struct mli_String *self,
         const char match,
         const uint64_t num_chars_to_scan)
 {
         uint64_t i = 0;
         uint64_t count = 0u;
-        while (i < str->size && i < num_chars_to_scan) {
-                if (str->array[i] == match) {
+        while (i < self->size && i < num_chars_to_scan) {
+                if (self->array[i] == match) {
                         count++;
                 }
                 i++;
