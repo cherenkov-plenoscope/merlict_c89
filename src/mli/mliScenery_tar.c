@@ -53,7 +53,7 @@ int mliScenery_malloc_from_Archive(
         struct mliFrame root = mliFrame_init();
 
         chk_dbg;
-        chk_msg(mliMaterials_malloc_form_archive(
+        chk_msg(mli_Materials_malloc_form_archive(
                         &scenery->materials, &material_names, archive),
                 "Failed to malloc materials.");
 

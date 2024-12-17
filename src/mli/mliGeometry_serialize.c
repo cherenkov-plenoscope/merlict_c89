@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliGeometry_serialize.h"
 #include "../object/object_serialize.h"
-#include "mliMaterials_serialize.h"
+#include "../materials/materials_serialize.h"
 #include "../magicid/magicid.h"
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"

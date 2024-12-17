@@ -6,7 +6,7 @@
 #include "mliIntersectionSurfaceNormal.h"
 #include "../vec/vec.h"
 #include "mliPhoton.h"
-#include "mliMaterials.h"
+#include "../materials/materials.h"
 
 #define MLI_VACUUM_SPPED_OF_LIGHT 299792458.0
 #define MLI_PHOTON_CREATION 101u
@@ -33,7 +33,7 @@ struct mliPhotonInteraction {
 };
 
 int mli_time_of_flight(
-        const struct mliMaterials *materials,
+        const struct mli_Materials *materials,
         const struct mliPhotonInteraction *phisec,
         const double wavelength,
         double *time_of_flight);

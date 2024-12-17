@@ -1,24 +1,24 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIMATERIALS_H_
-#define MLIMATERIALS_H_
+#ifndef MLI_MATERIALS_H_
+#define MLI_MATERIALS_H_
 
 #include <stdint.h>
 #include "../object/object.h"
 #include "../func/func.h"
 #include "../surface/surface.h"
 #include "../medium/medium.h"
-#include "mliBoundaryLayer.h"
+#include "../mli/mliBoundaryLayer.h"
 #include "../string/string.h"
 
-struct mliMaterialsCapacity {
+struct mli_MaterialsCapacity {
         uint64_t num_surfaces;
         uint64_t num_media;
         uint64_t num_boundary_layers;
 };
 
-struct mliMaterialsCapacity mliMaterialsCapacity_init(void);
+struct mli_MaterialsCapacity mli_MaterialsCapacity_init(void);
 
-struct mliMaterials {
+struct mli_Materials {
         uint64_t num_surfaces;
         struct mli_Surface *surfaces;
         struct mli_String *surface_names;
@@ -34,10 +34,10 @@ struct mliMaterials {
         uint64_t default_medium;
 };
 
-int mliMaterials_malloc(
-        struct mliMaterials *res,
-        const struct mliMaterialsCapacity rescap);
-void mliMaterials_free(struct mliMaterials *res);
-struct mliMaterials mliMaterials_init(void);
-void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res);
+int mli_Materials_malloc(
+        struct mli_Materials *res,
+        const struct mli_MaterialsCapacity rescap);
+void mli_Materials_free(struct mli_Materials *res);
+struct mli_Materials mli_Materials_init(void);
+void mli_Materials_info_fprint(FILE *f, const struct mli_Materials *res);
 #endif

@@ -81,8 +81,8 @@ chk_error:
         return 0;
 }
 
-int mliMaterials_malloc_form_archive(
-        struct mliMaterials *materials,
+int mli_Materials_malloc_form_archive(
+        struct mli_Materials *materials,
         struct mli_ResourceNameMap *names,
         const struct mliArchive *archive)
 {
@@ -93,7 +93,7 @@ int mliMaterials_malloc_form_archive(
 
         struct mli_String *default_medium_text = NULL;
         struct mli_Json boundary_layers_json = mli_Json_init();
-        struct mliMaterialsCapacity cap = mliMaterialsCapacity_init();
+        struct mli_MaterialsCapacity cap = mli_MaterialsCapacity_init();
 
         struct mli_String fixname = mli_String_init();
         struct mli_String key = mli_String_init();
@@ -102,7 +102,7 @@ int mliMaterials_malloc_form_archive(
 
         chk_dbg;
         /* free */
-        mliMaterials_free(materials);
+        mli_Materials_free(materials);
         chk_dbg;
         mli_ResourceNameMap_free(names);
         chk_dbg;
@@ -126,7 +126,7 @@ int mliMaterials_malloc_form_archive(
         cap.num_surfaces = mliArchive_num_filename_prefix_sufix(
                 archive, "materials/surfaces/", ".json");
 
-        chk_msg(mliMaterials_malloc(materials, cap),
+        chk_msg(mli_Materials_malloc(materials, cap),
                 "Can not malloc materials.");
 
         chk_dbg;
@@ -192,7 +192,7 @@ int mliMaterials_malloc_form_archive(
         }
         chk_dbg;
         /* boundary_layers */
-        chk_msg(mliMaterials_assign_boundary_layers_from_json(
+        chk_msg(mli_Materials_assign_boundary_layers_from_json(
                         materials,
                         &names->boundary_layers,
                         &names->surfaces,
@@ -226,7 +226,7 @@ int mliMaterials_malloc_form_archive(
         return 1;
 chk_error:
         mli_Json_free(&boundary_layers_json);
-        mliMaterials_free(materials);
+        mli_Materials_free(materials);
         mli_ResourceNameMap_free(names);
 
         mli_String_free(&fixname);

@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliMaterials_equal.h"
+#include "materials_equal.h"
 #include "../chk/chk.h"
 
-int mliMaterials_media_equal(
-        const struct mliMaterials *a,
-        const struct mliMaterials *b)
+int mli_Materials_media_equal(
+        const struct mli_Materials *a,
+        const struct mli_Materials *b)
 {
         uint32_t i = 0u;
         chk_msg(a->num_media == b->num_media, "Different number of media.");
@@ -21,9 +21,9 @@ chk_error:
         return 0;
 }
 
-int mliMaterials_surfaces_equal(
-        const struct mliMaterials *a,
-        const struct mliMaterials *b)
+int mli_Materials_surfaces_equal(
+        const struct mli_Materials *a,
+        const struct mli_Materials *b)
 {
         uint32_t i = 0u;
         chk_msg(a->num_surfaces == b->num_surfaces,
@@ -41,9 +41,9 @@ chk_error:
         return 0;
 }
 
-int mliMaterials_boundary_layers_equal(
-        const struct mliMaterials *a,
-        const struct mliMaterials *b)
+int mli_Materials_boundary_layers_equal(
+        const struct mli_Materials *a,
+        const struct mli_Materials *b)
 {
         uint32_t i = 0u;
         chk_msg(a->num_boundary_layers == b->num_boundary_layers,
@@ -63,15 +63,15 @@ chk_error:
         return 0;
 }
 
-int mliMaterials_equal(
-        const struct mliMaterials *a,
-        const struct mliMaterials *b)
+int mli_Materials_equal(
+        const struct mli_Materials *a,
+        const struct mli_Materials *b)
 {
         chk_msg(a->default_medium == b->default_medium,
                 "Different default_medium.");
-        chk_msg(mliMaterials_media_equal(a, b), "Different media.");
-        chk_msg(mliMaterials_surfaces_equal(a, b), "Different surfaces.");
-        chk_msg(mliMaterials_boundary_layers_equal(a, b),
+        chk_msg(mli_Materials_media_equal(a, b), "Different media.");
+        chk_msg(mli_Materials_surfaces_equal(a, b), "Different surfaces.");
+        chk_msg(mli_Materials_boundary_layers_equal(a, b),
                 "Different boundary_layers.");
         return 1;
 chk_error:

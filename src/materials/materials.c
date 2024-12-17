@@ -1,22 +1,21 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliMaterials.h"
+#include "materials.h"
 #include <stdlib.h>
 #include "../chk/chk.h"
-#include "mliColorMaterials.h"
 #include "../func/func_fprint.h"
 
-struct mliMaterialsCapacity mliMaterialsCapacity_init(void)
+struct mli_MaterialsCapacity mli_MaterialsCapacity_init(void)
 {
-        struct mliMaterialsCapacity cap;
+        struct mli_MaterialsCapacity cap;
         cap.num_surfaces = 0;
         cap.num_media = 0;
         cap.num_boundary_layers = 0;
         return cap;
 }
 
-struct mliMaterials mliMaterials_init(void)
+struct mli_Materials mli_Materials_init(void)
 {
-        struct mliMaterials res;
+        struct mli_Materials res;
         res.default_medium = 0u;
 
         res.num_media = 0u;
@@ -33,7 +32,7 @@ struct mliMaterials mliMaterials_init(void)
         return res;
 }
 
-void mliMaterials_free(struct mliMaterials *res)
+void mli_Materials_free(struct mli_Materials *res)
 {
         uint64_t i;
         chk_dbg for (i = 0; i < res->num_media; i++)
@@ -59,15 +58,15 @@ void mliMaterials_free(struct mliMaterials *res)
         free(res->boundary_layers);
         free(res->boundary_layer_names);
 
-        chk_dbg(*res) = mliMaterials_init();
+        chk_dbg(*res) = mli_Materials_init();
 }
 
-int mliMaterials_malloc(
-        struct mliMaterials *res,
-        const struct mliMaterialsCapacity rescap)
+int mli_Materials_malloc(
+        struct mli_Materials *res,
+        const struct mli_MaterialsCapacity rescap)
 {
         uint64_t i;
-        mliMaterials_free(res);
+        mli_Materials_free(res);
         res->num_surfaces = rescap.num_surfaces;
         res->num_media = rescap.num_media;
         res->num_boundary_layers = rescap.num_boundary_layers;
@@ -100,11 +99,11 @@ int mliMaterials_malloc(
 
         return 1;
 chk_error:
-        mliMaterials_free(res);
+        mli_Materials_free(res);
         return 0;
 }
 
-void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
+void mli_Materials_info_fprint(FILE *f, const struct mli_Materials *res)
 {
         uint32_t i = 0;
         struct mli_Func_fprint_Config pltcfg;

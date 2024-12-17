@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliMaterials_valid.h"
+#include "materials_valid.h"
 #include "../object/object.h"
 #include "../chk/chk.h"
 
-int mliMaterials_valid_media(const struct mliMaterials *materials)
+int mli_Materials_valid_media(const struct mli_Materials *materials)
 {
         uint32_t i = 0u;
         for (i = 0; i < materials->num_media; i++) {
@@ -18,7 +18,7 @@ chk_error:
         return 0;
 }
 
-int mliMaterials_valid_surfaces(const struct mliMaterials *materials)
+int mli_Materials_valid_surfaces(const struct mli_Materials *materials)
 {
         uint32_t i = 0u;
         for (i = 0; i < materials->num_surfaces; i++) {
@@ -40,7 +40,7 @@ chk_error:
         return 0;
 }
 
-int mliMaterials_valid_boundary_layers(const struct mliMaterials *materials)
+int mli_Materials_valid_boundary_layers(const struct mli_Materials *materials)
 {
         uint32_t i = 0u;
         for (i = 0; i < materials->num_boundary_layers; i++) {
@@ -67,15 +67,15 @@ chk_error:
         return 0;
 }
 
-int mliMaterials_valid(const struct mliMaterials *materials)
+int mli_Materials_valid(const struct mli_Materials *materials)
 {
         chk_msg(materials->default_medium <= materials->num_media,
                 "Expected default-medium to reference a valid medium.");
-        chk_msg(mliMaterials_valid_media(materials),
+        chk_msg(mli_Materials_valid_media(materials),
                 "Expected media to be valid.");
-        chk_msg(mliMaterials_valid_surfaces(materials),
+        chk_msg(mli_Materials_valid_surfaces(materials),
                 "Expected surfaces to be valid.");
-        chk_msg(mliMaterials_valid_boundary_layers(materials),
+        chk_msg(mli_Materials_valid_boundary_layers(materials),
                 "Expected boundary_layers to be valid.");
         return 1;
 chk_error:

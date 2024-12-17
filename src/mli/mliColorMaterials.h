@@ -3,7 +3,7 @@
 #define MLICOLORMATERIALS_H_
 
 #include <stdint.h>
-#include "mliMaterials.h"
+#include "../materials/materials.h"
 #include "../color/color.h"
 #include "../color/colorObserver.h"
 
@@ -28,10 +28,10 @@ struct mli_ColorMaterials {
 struct mli_ColorMaterials mli_ColorMaterials_init(void);
 int mli_ColorMaterials_malloc(
         struct mli_ColorMaterials *colmat,
-        const struct mliMaterialsCapacity rescap);
+        const struct mli_MaterialsCapacity rescap);
 int mli_ColorMaterials_malloc_from_Materials(
         struct mli_ColorMaterials *colmat,
-        const struct mliMaterials *mat,
+        const struct mli_Materials *mat,
         const struct mli_ColorObserver *colobs);
 void mli_ColorMaterials_free(struct mli_ColorMaterials *colmat);
 #endif

@@ -36,7 +36,7 @@ chk_error:
 }
 
 int mli_time_of_flight(
-        const struct mliMaterials *materials,
+        const struct mli_Materials *materials,
         const struct mliPhotonInteraction *phisec,
         const double wavelength,
         double *time_of_flight)

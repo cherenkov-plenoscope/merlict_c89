@@ -4,13 +4,13 @@
 
 #include "mliGeometry.h"
 #include "mliGeometryToMaterialMap.h"
-#include "mliMaterials.h"
+#include "../materials/materials.h"
 #include "mliAccelerator.h"
 
 struct mliScenery {
         struct mliGeometry geometry;
         struct mliAccelerator accelerator;
-        struct mliMaterials materials;
+        struct mli_Materials materials;
         struct mliGeometryToMaterialMap geomap;
 };
 

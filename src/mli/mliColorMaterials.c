@@ -24,7 +24,7 @@ void mli_ColorMaterials_free(struct mli_ColorMaterials *colmat)
 
 int mli_ColorMaterials_malloc(
         struct mli_ColorMaterials *colmat,
-        const struct mliMaterialsCapacity rescap)
+        const struct mli_MaterialsCapacity rescap)
 {
         mli_ColorMaterials_free(colmat);
         colmat->num_surfaces = rescap.num_surfaces;
@@ -44,11 +44,11 @@ chk_error:
 
 int mli_ColorMaterials_malloc_from_Materials(
         struct mli_ColorMaterials *colmat,
-        const struct mliMaterials *mat,
+        const struct mli_Materials *mat,
         const struct mli_ColorObserver *colobs)
 {
         uint64_t i;
-        struct mliMaterialsCapacity cap;
+        struct mli_MaterialsCapacity cap;
         cap.num_media = mat->num_media;
         cap.num_surfaces = mat->num_surfaces;
 

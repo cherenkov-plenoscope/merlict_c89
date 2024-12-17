@@ -19,8 +19,8 @@ int mliBoundaryLayer_from_json(
         const struct mli_Map *medium_names,
         const struct mli_Json *json,
         const uint64_t token_surface);
-int mliMaterials_assign_boundary_layers_from_json(
-        struct mliMaterials *materials,
+int mli_Materials_assign_boundary_layers_from_json(
+        struct mli_Materials *materials,
         struct mli_Map *boundary_layer_names,
         const struct mli_Map *surface_names,
         const struct mli_Map *medium_names,

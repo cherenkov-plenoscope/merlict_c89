@@ -49,7 +49,7 @@ chk_error:
 
 int mliGeometryToMaterialMap_valid_wrt_Materials(
         const struct mliGeometryToMaterialMap *geomap,
-        const struct mliMaterials *materials)
+        const struct mli_Materials *materials)
 {
         uint32_t i = 0u;
         for (i = 0u; i < geomap->total_num_boundary_layers; i++) {

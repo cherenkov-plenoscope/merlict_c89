@@ -12,5 +12,5 @@ int mliGeometryToMaterialMap_valid_wrt_Geometry(
         const struct mliGeometry *geometry);
 int mliGeometryToMaterialMap_valid_wrt_Materials(
         const struct mliGeometryToMaterialMap *geomap,
-        const struct mliMaterials *materials);
+        const struct mli_Materials *materials);
 #endif

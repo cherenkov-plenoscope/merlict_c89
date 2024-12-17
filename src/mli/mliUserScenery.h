@@ -5,10 +5,10 @@
 #include "../map/map.h"
 #include "mliResourceNameMap.h"
 
-struct mliMaterials;
+struct mli_Materials;
 struct mliArchive;
-int mliMaterials_malloc_form_archive(
-        struct mliMaterials *materials,
+int mli_Materials_malloc_form_archive(
+        struct mli_Materials *materials,
         struct mli_ResourceNameMap *names,
         const struct mliArchive *archive);
 struct mliGeometry;

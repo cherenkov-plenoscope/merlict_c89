@@ -1,18 +1,18 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliMaterials_serialize.h"
+#include "../materials/materials_serialize.h"
 #include "../medium/medium_serialize.h"
 #include "../surface/surface_serialize.h"
 #include "../magicid/magicid.h"
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mliMaterials_to_io(const struct mliMaterials *res, struct mli_IO *f)
+int mli_Materials_to_io(const struct mli_Materials *res, struct mli_IO *f)
 {
         uint64_t i;
         struct mli_MagicId magic = mli_MagicId_init();
 
         /* magic identifier */
-        chk(mli_MagicId_set(&magic, "mliMaterials"));
+        chk(mli_MagicId_set(&magic, "mli_Materials"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk_IO_write(&res->num_media, sizeof(uint64_t), 1u, f);
@@ -42,22 +42,22 @@ chk_error:
         return 0;
 }
 
-int mliMaterials_from_io(struct mliMaterials *res, struct mli_IO *f)
+int mli_Materials_from_io(struct mli_Materials *res, struct mli_IO *f)
 {
         uint64_t i;
         struct mli_MagicId magic;
-        struct mliMaterialsCapacity cap;
+        struct mli_MaterialsCapacity cap;
 
         /* magic identifier */
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
-        chk(mli_MagicId_has_word(&magic, "mliMaterials"));
+        chk(mli_MagicId_has_word(&magic, "mli_Materials"));
         mli_MagicId_warn_version(&magic);
 
         chk_IO_read(&cap.num_media, sizeof(uint64_t), 1u, f);
         chk_IO_read(&cap.num_surfaces, sizeof(uint64_t), 1u, f);
         chk_IO_read(&cap.num_boundary_layers, sizeof(uint64_t), 1u, f);
 
-        chk(mliMaterials_malloc(res, cap));
+        chk(mli_Materials_malloc(res, cap));
 
         /* payload */
         for (i = 0; i < res->num_media; i++) {

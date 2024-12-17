@@ -81,7 +81,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         uint32_t i, total_num_boundary_layers;
         struct mli_Prng prng = mli_Prng_init_MT19937(1u);
         struct mli_IO str = mli_IO_init();
-        struct mliMaterialsCapacity mtlcap = mliMaterialsCapacity_init();
+        struct mli_MaterialsCapacity mtlcap = mli_MaterialsCapacity_init();
         struct mli_String _path = mli_String_init();
         struct mli_String _mode = mli_String_init();
 
@@ -119,7 +119,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         mtlcap.num_boundary_layers = total_num_boundary_layers;
         mtlcap.num_surfaces = total_num_boundary_layers;
 
-        chk_msg(mliMaterials_malloc(&scenery->materials, mtlcap),
+        chk_msg(mli_Materials_malloc(&scenery->materials, mtlcap),
                 "Failed to malloc materials.");
 
         chk(mli_String_from_cstr(

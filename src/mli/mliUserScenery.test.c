@@ -2,14 +2,14 @@
 
 CASE("mliUserScenery, init")
 {
-        struct mliMaterials resources = mliMaterials_init();
+        struct mli_Materials resources = mli_Materials_init();
         CHECK(resources.num_surfaces == 0u);
         CHECK(resources.surfaces == NULL);
         CHECK(resources.num_media == 0u);
         CHECK(resources.media == NULL);
 }
 
-CASE("mliMaterials, estimate capacity from archive") {}
+CASE("mli_Materials, estimate capacity from archive") {}
 
 CASE("mliScenery, malloc from archive")
 {
@@ -127,14 +127,14 @@ CASE("mliScenery, read, write")
         /* materials */
         /* --------- */
         CHECK(mli_IO__open_file_cstr(&f, mate_path, "w"));
-        CHECK(mliMaterials_to_io(&orig.materials, &f));
+        CHECK(mli_Materials_to_io(&orig.materials, &f));
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, mate_path, "r"));
-        CHECK(mliMaterials_from_io(&back.materials, &f));
+        CHECK(mli_Materials_from_io(&back.materials, &f));
         mli_IO_close(&f);
 
-        CHECK(mliMaterials_equal(&back.materials, &orig.materials));
+        CHECK(mli_Materials_equal(&back.materials, &orig.materials));
 
         /* accelerator */
         /* ----------- */

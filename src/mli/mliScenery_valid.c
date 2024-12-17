@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliScenery_valid.h"
-#include "mliMaterials_valid.h"
+#include "../materials/materials_valid.h"
 #include "mliGeometry_valid.h"
 #include "mliAccelerator_valid.h"
 #include "mliGeometryToMaterialMap_valid.h"
@@ -9,7 +9,7 @@
 int mliScenery_valid(const struct mliScenery *scenery)
 {
         /* check in itself */
-        chk_msg(mliMaterials_valid(&scenery->materials),
+        chk_msg(mli_Materials_valid(&scenery->materials),
                 "Expected materials to be valid.");
         chk_msg(mliGeometry_valid(&scenery->geometry),
                 "Expected geometry to be valid.");

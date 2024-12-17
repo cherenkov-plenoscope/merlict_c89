@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliGeometry.h"
-#include "mliMaterials.h"
+#include "../materials/materials.h"
 
 struct mliGeometryToMaterialMap {
         uint32_t num_robjects;
