@@ -7,9 +7,9 @@
 #include "../json/json.h"
 #include "../string/string.h"
 
-int mliSurface_malloc_from_json_str(
+int mliSurface_malloc_from_json_string(
         struct mliSurface *surface,
-        const char *json_str);
+        const struct mli_String *str);
 int mliSurface_malloc_from_json_token(
         struct mliSurface *surface,
         const struct mli_Json *json,

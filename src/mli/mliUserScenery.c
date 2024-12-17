@@ -143,9 +143,8 @@ int mliMaterials_malloc_form_archive(
                     mli_String_ends_with_cstr(filename, ".json")) {
                         struct mli_String *payload =
                                 &archive->textfiles.array[arc_idx];
-                        chk_msg(mliMedium_malloc_from_json_str(
-                                        &materials->media[med_idx],
-                                        payload->array),
+                        chk_msg(mliMedium_malloc_from_json_string(
+                                        &materials->media[med_idx], payload),
                                 "Failed to parse media json from "
                                 "file.");
 
@@ -173,9 +172,8 @@ int mliMaterials_malloc_form_archive(
                     mli_String_ends_with_cstr(filename, ".json")) {
                         struct mli_String *payload =
                                 &archive->textfiles.array[arc_idx];
-                        chk_msg(mliSurface_malloc_from_json_str(
-                                        &materials->surfaces[srf_idx],
-                                        payload->array),
+                        chk_msg(mliSurface_malloc_from_json_string(
+                                        &materials->surfaces[srf_idx], payload),
                                 "Failed to parse surface json from "
                                 "file.");
 

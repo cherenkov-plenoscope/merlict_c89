@@ -154,7 +154,7 @@ int mliArchive_get_malloc_json(
 
         chk_msg(mliArchive_get(arc, filename, &text),
                 "Can not find requested file in archive.");
-        chk_msg(mli_Json_malloc_from_cstr(json, (char *)text->array),
+        chk_msg(mli_Json_from_string(json, text),
                 "Can not parse requested json.");
 
         return 1;

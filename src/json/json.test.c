@@ -72,7 +72,7 @@ CASE("mli_Json_init, defaults")
         CHECK(json.tokens == NULL);
 }
 
-CASE("mli_Json_malloc_from_path")
+CASE("mli_Json_from_io_path")
 {
         struct mli_IO file = mli_IO_init();
         struct mli_Json json = mli_Json_init();
@@ -151,12 +151,16 @@ CASE("mli_Json_int64_by_key")
 CASE("parse mli_Vec and mli_Color")
 {
         uint64_t token;
+        struct mli_IO io = mli_IO_init();
         struct mli_Json json = mli_Json_init();
         struct mli_Vec vec1 = mli_Vec_init(0., 0., 0.);
         struct mli_Vec vec2 = mli_Vec_init(0., 0., 0.);
         struct mli_Color col = mli_Color_set(0., 0., 0.);
-        CHECK(mli_Json_malloc_from_path(
-                &json, "data/mli/tests/resources/json/vec.json"));
+
+        CHECK(mli_IO__open_file_cstr(
+                &io, "data/mli/tests/resources/json/vec.json", "r"));
+        CHECK(mli_Json_from_io(&json, &io));
+        mli_IO_close(&io);
         CHECK(mli_Json_debug_to_path(
                 &json, "data/mli/tests/resources/json/vec.debug.tmp"));
 

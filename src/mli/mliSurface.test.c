@@ -3,13 +3,15 @@
 CASE("mliSurface_json")
 {
         struct mliSurface srf = mliSurface_init();
-        char json_str[] =
+        struct mli_String str = mli_String_init();
+        CHECK(mli_String_from_cstr(
+                &str,
                 "{"
                 "\"material\": \"Phong\","
                 "\"specular_reflection\": [[0, 10], [1, 11], [2, 12]],"
                 "\"diffuse_reflection\": [[5, 50], [6, 51], [7, 52]]"
-                "}";
-        CHECK(mliSurface_malloc_from_json_str(&srf, json_str));
+                "}"));
+        CHECK(mliSurface_malloc_from_json_string(&srf, &str));
 
         CHECK(srf.material == MLI_MATERIAL_PHONG);
 
@@ -32,4 +34,5 @@ CASE("mliSurface_json")
         CHECK(srf.diffuse_reflection.y[2] == 52);
 
         mliSurface_free(&srf);
+        mli_String_free(&str);
 }

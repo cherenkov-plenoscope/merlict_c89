@@ -3,11 +3,15 @@
 CASE("mliMedium_json")
 {
         struct mliMedium med = mliMedium_init();
-        char json_str[] = "{"
-                          "\"refraction\": [[0, 10], [1, 11], [2, 12]],"
-                          "\"absorbtion\": [[5, 50], [6, 51], [7, 52]]"
-                          "}";
-        CHECK(mliMedium_malloc_from_json_str(&med, json_str));
+        struct mli_String str = mli_String_init();
+
+        CHECK(mli_String_from_cstr(
+                &str,
+                "{"
+                "\"refraction\": [[0, 10], [1, 11], [2, 12]],"
+                "\"absorbtion\": [[5, 50], [6, 51], [7, 52]]"
+                "}"));
+        CHECK(mliMedium_malloc_from_json_string(&med, &str));
 
         CHECK(med.refraction.num_points == 3);
         CHECK(med.refraction.x[0] == 0);
@@ -28,4 +32,5 @@ CASE("mliMedium_json")
         CHECK(med.absorbtion.y[2] == 52);
 
         mliMedium_free(&med);
+        mli_String_free(&str);
 }

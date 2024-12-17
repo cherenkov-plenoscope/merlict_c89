@@ -64,19 +64,7 @@ chk_error:
         return 0;
 }
 
-int mli_Json_malloc_from_cstr(struct mli_Json *json, const char *cstr)
-{
-        mli_Json_free(json);
-        chk_msg(mli_String_from_cstr(&json->raw, cstr), "Can't copy cstr.");
-        chk_msg(mli_Json_malloc_tokens__(json), "Can't malloc Json's tokens.");
-        chk_msg(mli_Json_parse_tokens__(json), "Can't parse Json into tokens.");
-        return 1;
-chk_error:
-        mli_Json_free(json);
-        return 0;
-}
-
-int mli_Json_from_string(struct mli_Json *self, struct mli_String *str)
+int mli_Json_from_string(struct mli_Json *self, const struct mli_String *str)
 {
         mli_Json_free(self);
         chk_msg(mli_String_copy(&self->raw, str),
@@ -99,32 +87,6 @@ int mli_Json_from_io(struct mli_Json *self, struct mli_IO *io)
         return 1;
 chk_error:
         mli_Json_free(self);
-        return 0;
-}
-
-int mli_Json_malloc_from_path(struct mli_Json *json, const char *path)
-{
-        struct mli_IO ff = mli_IO_init();
-        struct mli_String _path = mli_String_init();
-        struct mli_String _mode = mli_String_init();
-
-        mli_Json_free(json);
-
-        chk(mli_String_from_cstr(&_path, path));
-        chk(mli_String_from_cstr(&_mode, "r"));
-        chk_msg(mli_IO_open_file(&ff, &_path, &_mode),
-                "Failed to read file into Json's Str.");
-        chk_msg(mli_Json_from_io(json, &ff), "Failed to malloc Json from io.");
-        mli_IO_close(&ff);
-        mli_String_free(&_path);
-        mli_String_free(&_mode);
-
-        return 1;
-chk_error:
-        mli_String_free(&_path);
-        mli_String_free(&_mode);
-        mli_IO_close(&ff);
-        mli_Json_free(json);
         return 0;
 }
 
