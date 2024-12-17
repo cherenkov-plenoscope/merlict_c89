@@ -3,7 +3,7 @@
 #define MLI_VIEWER_CONFIG_H_
 
 #include <stdint.h>
-#include "../mli/mliView.h"
+#include "../view/view.h"
 
 struct mli_viewer_Config {
         uint32_t random_seed;
@@ -12,7 +12,7 @@ struct mli_viewer_Config {
         uint64_t export_num_cols;
         uint64_t export_num_rows;
         double step_length;
-        struct mliView view;
+        struct mli_View view;
 
         double aperture_camera_f_stop_ratio;
         double aperture_camera_image_sensor_width;

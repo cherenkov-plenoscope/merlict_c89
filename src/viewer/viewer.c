@@ -61,7 +61,7 @@ void mli_viewer_print_help(void)
 }
 
 void mli_viewer_print_info_line(
-        const struct mliView view,
+        const struct mli_View view,
         const struct mli_viewer_Cursor cursor,
         const struct mliTracerConfig tracer_config)
 {
@@ -133,7 +133,7 @@ chk_error:
 int mli_viewer_export_image(
         const struct mliTracer *tracer,
         const struct mli_viewer_Config config,
-        const struct mliView view,
+        const struct mli_View view,
         struct mli_Prng *prng,
         const double object_distance,
         const char *path)
@@ -147,7 +147,7 @@ int mli_viewer_export_image(
                  (double)config.export_num_rows);
         chk_mem(mli_Image_malloc(
                 &full, config.export_num_cols, config.export_num_rows));
-        camera2root_comp = mliView_to_HomTraComp(view);
+        camera2root_comp = mli_View_to_HomTraComp(view);
         apcam.focal_length =
                 mliApertureCamera_focal_length_given_field_of_view_and_sensor_width(
                         view.field_of_view,
@@ -199,7 +199,7 @@ int mli_viewer_run_interactive_viewer(
         uint64_t num_screenshots = 0;
         uint64_t print_mode = MLI_ASCII_MONOCHROME;
         char timestamp[20];
-        struct mliView view = config.view;
+        struct mli_View view = config.view;
         struct mli_Image img = mli_Image_init();
         struct mli_Image img2 = mli_Image_init();
         const double row_over_column_pixel_ratio = 2.0;
@@ -283,47 +283,48 @@ int mli_viewer_run_interactive_viewer(
                 } else {
                         switch (key) {
                         case 'w':
-                                view = mliView_move_forward(
+                                view = mli_View_move_forward(
                                         view, config.step_length);
                                 break;
                         case 's':
-                                view = mliView_move_forward(
+                                view = mli_View_move_forward(
                                         view, -config.step_length);
                                 break;
                         case 'a':
-                                view = mliView_move_right(
+                                view = mli_View_move_right(
                                         view, -config.step_length);
                                 break;
                         case 'd':
-                                view = mliView_move_right(
+                                view = mli_View_move_right(
                                         view, config.step_length);
                                 break;
                         case 'q':
-                                view = mliView_move_up(
+                                view = mli_View_move_up(
                                         view, config.step_length);
                                 break;
                         case 'e':
-                                view = mliView_move_up(
+                                view = mli_View_move_up(
                                         view, -config.step_length);
                                 break;
                         case 'i':
-                                view = mliView_look_up_when_possible(view, .05);
+                                view = mli_View_look_up_when_possible(
+                                        view, .05);
                                 break;
                         case 'k':
-                                view = mliView_look_down_when_possible(
+                                view = mli_View_look_down_when_possible(
                                         view, .05);
                                 break;
                         case 'l':
-                                view = mliView_look_right(view, -.05);
+                                view = mli_View_look_right(view, -.05);
                                 break;
                         case 'j':
-                                view = mliView_look_right(view, .05);
+                                view = mli_View_look_right(view, .05);
                                 break;
                         case 'n':
-                                view = mliView_decrease_fov(view, 1.05);
+                                view = mli_View_decrease_fov(view, 1.05);
                                 break;
                         case 'm':
-                                view = mliView_increase_fov(view, 1.05);
+                                view = mli_View_increase_fov(view, 1.05);
                                 break;
                         case 'h':
                                 print_help = 1;
@@ -433,7 +434,7 @@ int mli_viewer_run_interactive_viewer(
                                                 row_over_column_pixel_ratio);
 
                                 struct mli_HomTraComp camera2root_comp =
-                                        mliView_to_HomTraComp(view);
+                                        mli_View_to_HomTraComp(view);
                                 struct mli_HomTra camera2root =
                                         mli_HomTraComp_from_compact(
                                                 camera2root_comp);

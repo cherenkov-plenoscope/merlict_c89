@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliTracer.h"
-#include "mliView.h"
+#include "../view/view.h"
 #include "../image/image.h"
 
 struct mliPinHoleCamera {
@@ -29,7 +29,7 @@ void mliPinHoleCamera_render_image(
         struct mli_Prng *prng);
 
 void mliPinHoleCamera_render_image_with_view(
-        const struct mliView view,
+        const struct mli_View view,
         const struct mliTracer *tracer,
         struct mli_Image *image,
         const double row_over_column_pixel_ratio,

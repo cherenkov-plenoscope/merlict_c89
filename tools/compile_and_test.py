@@ -63,6 +63,7 @@ module_paths = [
     os.path.join("src", "testing"),
     os.path.join("src", "mli"),
     os.path.join("src", "corsika"),
+    os.path.join("src", "view"),
     os.path.join("src", "viewer"),
 ]
 module_names = str.join("-", [os.path.basename(lp) for lp in module_paths])

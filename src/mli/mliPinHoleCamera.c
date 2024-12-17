@@ -76,7 +76,7 @@ void mliPinHoleCamera_render_image(
 }
 
 void mliPinHoleCamera_render_image_with_view(
-        const struct mliView view,
+        const struct mli_View view,
         const struct mliTracer *tracer,
         struct mli_Image *image,
         const double row_over_column_pixel_ratio,
@@ -84,7 +84,7 @@ void mliPinHoleCamera_render_image_with_view(
 {
         struct mliPinHoleCamera camera = mliPinHoleCamera_init(
                 view.field_of_view, image, row_over_column_pixel_ratio);
-        struct mli_HomTraComp camera2root_comp = mliView_to_HomTraComp(view);
+        struct mli_HomTraComp camera2root_comp = mli_View_to_HomTraComp(view);
         mliPinHoleCamera_render_image(
                 camera, camera2root_comp, tracer, image, prng);
 }
