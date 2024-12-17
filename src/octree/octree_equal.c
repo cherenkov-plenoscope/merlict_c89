@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliOcTree_equal.h"
+#include "octree_equal.h"
 #include "../chk/chk.h"
 
 int mliOcTree_equal(const struct mliOcTree *a, const struct mliOcTree *b)

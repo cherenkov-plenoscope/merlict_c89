@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIOCTREE_H_
-#define MLIOCTREE_H_
+#ifndef MLI_OCTREE_H_
+#define MLI_OCTREE_H_
 
 #include <stdint.h>
-#include "mliTmpOcTree.h"
+#include "octree_tmp.h"
 
 #define MLI_OCTREE_TYPE_NONE 0
 #define MLI_OCTREE_TYPE_NODE 1

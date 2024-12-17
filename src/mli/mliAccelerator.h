@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliGeometry.h"
-#include "mliOcTree.h"
+#include "../octree/octree.h"
 
 struct mliAccelerator {
         uint32_t num_objects;

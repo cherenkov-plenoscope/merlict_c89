@@ -2,7 +2,7 @@
 #include "mliAccelerator_valid.h"
 #include "../chk/chk.h"
 #include "../magicid/magicid.h"
-#include "mliOcTree_valid.h"
+#include "../octree/octree_valid.h"
 
 int mliAccelerator_valid(const struct mliAccelerator *accel)
 {

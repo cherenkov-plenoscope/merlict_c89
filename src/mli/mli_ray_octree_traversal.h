@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-#include "mliOcTree.h"
+#include "../octree/octree.h"
 #include "../ray/ray.h"
 
 #define MLI_RAY_OCTREE_TRAVERSAL_EPSILON 1.0e-307

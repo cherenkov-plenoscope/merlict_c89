@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIOCTREE_VALID_H_
-#define MLIOCTREE_VALID_H_
+#ifndef MLI_OCTREE_VALID_H_
+#define MLI_OCTREE_VALID_H_
 
 #include <stdint.h>
-#include "mliOcTree.h"
+#include "octree.h"
 
 int mliOcTree_valid(const struct mliOcTree *octree);
 int mliOcTree_valid_wrt_links(

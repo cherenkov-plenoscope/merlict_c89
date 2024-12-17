@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIOCTOVERLAPS_H_
-#define MLIOCTOVERLAPS_H_
+#ifndef MLI_OCTOVERLAPS_H_
+#define MLI_OCTOVERLAPS_H_
 
 #include "../vector/vector.h"
 

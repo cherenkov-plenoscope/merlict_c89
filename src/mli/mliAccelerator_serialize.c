@@ -2,7 +2,7 @@
 #include "mliAccelerator_serialize.h"
 #include "../chk/chk.h"
 #include "../magicid/magicid.h"
-#include "mliOcTree_serialize.h"
+#include "../octree/octree_serialize.h"
 
 int mliAccelerator_to_io(const struct mliAccelerator *accel, struct mli_IO *f)
 {

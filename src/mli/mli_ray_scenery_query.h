@@ -7,7 +7,7 @@
 #include "../ray/ray.h"
 #include "../homtra/homtra.h"
 #include "../object/object.h"
-#include "mliOcTree.h"
+#include "../octree/octree.h"
 #include "mliAccelerator.h"
 #include "mliScenery.h"
 #include "mliIntersection.h"

@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliTmpOcTree.h"
+#include "octree_tmp.h"
 #include "../math/math.h"
 #include "../object/object_AABB.h"
-#include "mliDynUint32.h"
+#include "../mli/mliDynUint32.h"
 #include "../chk/chk.h"
 
 uint64_t mli_guess_octree_depth_based_on_num_objects(const uint64_t num_objects)

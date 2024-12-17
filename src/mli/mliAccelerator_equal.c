@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliAccelerator_equal.h"
 #include "../chk/chk.h"
-#include "mliOcTree_equal.h"
+#include "../octree/octree_equal.h"
 
 int mliAccelerator_equal(
         const struct mliAccelerator *a,

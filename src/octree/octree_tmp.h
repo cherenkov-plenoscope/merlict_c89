@@ -1,12 +1,12 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLITMPOCTREE_H_
-#define MLITMPOCTREE_H_
+#ifndef MLI_OCTREE_TMP_H_
+#define MLI_OCTREE_TMP_H_
 
 #include <stdint.h>
-#include "mliGeometry.h"
+#include "../mli/mliGeometry.h"
 #include "../aabb/aabb.h"
-#include "mliCube.h"
-#include "mliOctOverlaps.h"
+#include "../mli/mliCube.h"
+#include "octree_overlaps.h"
 
 #define MLI_TMPNODE_FLAT_INDEX_NONE -1
 
