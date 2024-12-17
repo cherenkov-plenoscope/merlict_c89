@@ -19,7 +19,7 @@
 
 int mli_set_geometry_objects_and_names_from_archive(
         struct mliGeometry *geometry,
-        struct mliDynMap *object_names,
+        struct mli_Map *object_names,
         const struct mliArchive *archive)
 {
         uint64_t arc_idx = 0u;
@@ -54,7 +54,7 @@ int mli_set_geometry_objects_and_names_from_archive(
                         chk(mli_path_basename(filename, &basename));
                         chk(mli_path_splitext(&basename, &key, &extension));
 
-                        chk_msg(mliDynMap_insert(object_names, &key, obj_idx),
+                        chk_msg(mli_Map_insert(object_names, &key, obj_idx),
                                 "Failed to insert object-filename into map.");
                         chk_dbg;
                         chk_msg(mli_Object_malloc_from_wavefront(
@@ -151,7 +151,7 @@ int mliMaterials_malloc_form_archive(
                         chk(mli_path_basename(filename, &basename));
                         chk(mli_path_splitext(&basename, &key, &extension));
 
-                        chk_msg(mliDynMap_insert(&names->media, &key, med_idx),
+                        chk_msg(mli_Map_insert(&names->media, &key, med_idx),
                                 "Failed to insert media-name into map.");
 
                         chk(mli_String_copy(
@@ -180,8 +180,7 @@ int mliMaterials_malloc_form_archive(
                         chk(mli_path_basename(filename, &basename));
                         chk(mli_path_splitext(&basename, &key, &extension));
 
-                        chk_msg(mliDynMap_insert(
-                                        &names->surfaces, &key, srf_idx),
+                        chk_msg(mli_Map_insert(&names->surfaces, &key, srf_idx),
                                 "Failed to insert surface-name into map.");
 
                         chk(mli_String_copy(
@@ -216,7 +215,7 @@ int mliMaterials_malloc_form_archive(
 
         chk(mli_String_strip(default_medium_text, &key));
 
-        chk_msg(mliDynMap_get(&names->media, &key, &materials->default_medium),
+        chk_msg(mli_Map_get(&names->media, &key, &materials->default_medium),
                 "Failed to assign the 'default_medium'.");
 
         chk_dbg;
@@ -240,9 +239,9 @@ chk_error:
 int mli_check_malloc_root_frame_from_Archive(
         struct mliFrame *root,
         const struct mliArchive *archive,
-        const struct mliDynMap *object_names,
+        const struct mli_Map *object_names,
         const struct mli_Object *objects,
-        const struct mliDynMap *boundary_layer_names)
+        const struct mli_Map *boundary_layer_names)
 {
         uint64_t token = 0u;
         struct mli_String fixname = mli_String_init();

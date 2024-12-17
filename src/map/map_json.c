@@ -2,8 +2,8 @@
 #include "map_json.h"
 #include "../chk/chk.h"
 
-int mliDynMap_insert_key_from_json(
-        struct mliDynMap *map,
+int mli_Map_insert_key_from_json(
+        struct mli_Map *map,
         const struct mli_Json *json,
         const uint64_t token,
         const uint64_t value)
@@ -19,7 +19,7 @@ int mliDynMap_insert_key_from_json(
         chk_msg(mli_Json_cstr_by_token(
                         json, token, buff.array, buff.capacity + 1),
                 "Failed to extract string from json.");
-        chk_msg(mliDynMap_insert(map, &buff, value),
+        chk_msg(mli_Map_insert(map, &buff, value),
                 "Failed to insert name and value into map.");
         mli_String_free(&buff);
         return 1;
@@ -29,8 +29,8 @@ chk_error:
         return 0;
 }
 
-int mliDynMap_get_value_for_string_from_json(
-        const struct mliDynMap *map,
+int mli_Map_get_value_for_string_from_json(
+        const struct mli_Map *map,
         const struct mli_Json *json,
         const uint64_t token,
         uint32_t *out_value)
@@ -47,7 +47,7 @@ int mliDynMap_get_value_for_string_from_json(
                         json, token, buff.array, buff.capacity + 1),
                 "Failed to extract string from json.");
         buff.size = buff.capacity;
-        chk_msg(mliDynMap_get(map, &buff, &value),
+        chk_msg(mli_Map_get(map, &buff, &value),
                 "Failed to get value for json-string-key from map.");
         (*out_value) = (uint32_t)value;
 

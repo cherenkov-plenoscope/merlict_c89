@@ -530,7 +530,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
         struct mli_object_FaceVector fvn = mli_object_FaceVector_init();
         struct mli_Uint32Vector fm = mli_Uint32Vector_init();
 
-        struct mliDynMap material_names = mliDynMap_init();
+        struct mli_Map material_names = mli_Map_init();
 
         /* malloc dyn */
         chk(mli_VecVector_malloc(&v, 0u));
@@ -540,7 +540,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
         chk(mli_object_FaceVector_malloc(&fvn, 0u));
         chk(mli_Uint32Vector_malloc(&fm, 0u));
 
-        chk(mliDynMap_malloc(&material_names));
+        chk(mli_Map_malloc(&material_names));
 
         chk(mli_String_from_cstr(&svn, "vn "));
         chk(mli_String_from_cstr(&sv, "v "));
@@ -586,7 +586,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
                         } else if (mli_String_starts_with(&line, &sf)) {
                                 struct mli_object_Face tmp_fv;
                                 struct mli_object_Face tmp_fvn;
-                                chk_msg(mliDynMap_size(&material_names) > 0,
+                                chk_msg(mli_Map_size(&material_names) > 0,
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
                                 chk_msg(mli_Object_parse_face_vertices_and_normals(
@@ -600,12 +600,11 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
                         } else if (mli_String_starts_with(&line, &susemtl)) {
                                 chk(mli_String_copyn(
                                         &tmp, &line, 7, line.size - 7));
-                                if (!mliDynMap_has(&material_names, &tmp)) {
-                                        chk(mliDynMap_insert(
+                                if (!mli_Map_has(&material_names, &tmp)) {
+                                        chk(mli_Map_insert(
                                                 &material_names, &tmp, 0));
                                 }
-                                chk(mliDynMap_find(
-                                        &material_names, &tmp, &mtl));
+                                chk(mli_Map_find(&material_names, &tmp, &mtl));
                         } else {
                                 /*fprintf(stderr, "no match: '%s'\n",
                                  * line.array);*/
@@ -623,14 +622,14 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
                         v.size,
                         vn.size,
                         fv.size,
-                        mliDynMap_size(&material_names)),
+                        mli_Map_size(&material_names)),
                 "Failed to malloc mli_Object from file.");
         chk_dbg MLI_MATH_NCPY(v.array, obj->vertices, v.size);
         MLI_MATH_NCPY(vn.array, obj->vertex_normals, vn.size);
         MLI_MATH_NCPY(fv.array, obj->faces_vertices, fv.size);
         MLI_MATH_NCPY(fvn.array, obj->faces_vertex_normals, fvn.size);
         MLI_MATH_NCPY(fm.array, obj->faces_materials, fm.size);
-        for (i = 0; i < mliDynMap_size(&material_names); i++) {
+        for (i = 0; i < mli_Map_size(&material_names); i++) {
                 chk(mli_String_copy(
                         &obj->material_names[i],
                         &material_names.items.array[i].key));
@@ -646,7 +645,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
         mli_object_FaceVector_free(&fvn);
         mli_Uint32Vector_free(&fm);
 
-        mliDynMap_free(&material_names);
+        mli_Map_free(&material_names);
 
         mli_String_free(&line);
         mli_String_free(&tmp);
@@ -667,7 +666,7 @@ chk_error:
         mli_object_FaceVector_free(&fvn);
         mli_Uint32Vector_free(&fm);
 
-        mliDynMap_free(&material_names);
+        mli_Map_free(&material_names);
 
         mli_String_free(&line);
         mli_String_free(&tmp);

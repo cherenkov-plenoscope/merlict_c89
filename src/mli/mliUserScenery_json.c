@@ -8,9 +8,9 @@
 
 int mliMaterials_assign_boundary_layers_from_json(
         struct mliMaterials *materials,
-        struct mliDynMap *boundary_layer_names,
-        const struct mliDynMap *surface_names,
-        const struct mliDynMap *medium_names,
+        struct mli_Map *boundary_layer_names,
+        const struct mli_Map *surface_names,
+        const struct mli_Map *medium_names,
         const struct mli_Json *json)
 {
         uint64_t token = 0;
@@ -31,7 +31,7 @@ int mliMaterials_assign_boundary_layers_from_json(
                 chk_msg(json->tokens[token_s_name].type == JSMN_STRING,
                         "Expected boundary_layer to be a String.");
 
-                chk_msg(mliDynMap_insert_key_from_json(
+                chk_msg(mli_Map_insert_key_from_json(
                                 boundary_layer_names, json, token_s_name, s),
                         "Failed to insert boundary_layer's name into map.");
 
@@ -55,8 +55,8 @@ chk_error:
 
 int mliSide_from_json(
         struct mliSide *side,
-        const struct mliDynMap *surface_names,
-        const struct mliDynMap *medium_names,
+        const struct mli_Map *surface_names,
+        const struct mli_Map *medium_names,
         const struct mli_Json *json,
         const uint64_t side_token)
 {
@@ -65,14 +65,14 @@ int mliSide_from_json(
         chk_msg(mli_Json_token_by_key(
                         json, side_token + 1, "medium", &token_medium),
                 "Expected key 'medium' in side.");
-        chk_msg(mliDynMap_get_value_for_string_from_json(
+        chk_msg(mli_Map_get_value_for_string_from_json(
                         medium_names, json, token_medium + 1, &side->medium),
                 "Failed to get medium-idx from map");
 
         chk_msg(mli_Json_token_by_key(
                         json, side_token + 1, "surface", &token_surface),
                 "Expected key 'surface' in side.");
-        chk_msg(mliDynMap_get_value_for_string_from_json(
+        chk_msg(mli_Map_get_value_for_string_from_json(
                         surface_names, json, token_surface + 1, &side->surface),
                 "Failed to get surface-idx from map");
 
@@ -84,8 +84,8 @@ chk_error:
 
 int mliBoundaryLayer_from_json(
         struct mliBoundaryLayer *boundary_layer,
-        const struct mliDynMap *surface_names,
-        const struct mliDynMap *medium_names,
+        const struct mli_Map *surface_names,
+        const struct mli_Map *medium_names,
         const struct mli_Json *json,
         const uint64_t token_surface)
 {

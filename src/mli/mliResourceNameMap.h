@@ -5,9 +5,9 @@
 #include "../map/map.h"
 
 struct mli_ResourceNameMap {
-        struct mliDynMap media;
-        struct mliDynMap surfaces;
-        struct mliDynMap boundary_layers;
+        struct mli_Map media;
+        struct mli_Map surfaces;
+        struct mli_Map boundary_layers;
 };
 struct mli_ResourceNameMap mli_ResourceNameMap_init(void);
 int mli_ResourceNameMap_malloc(struct mli_ResourceNameMap *namemap);

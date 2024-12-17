@@ -5,18 +5,18 @@
 struct mli_ResourceNameMap mli_ResourceNameMap_init(void)
 {
         struct mli_ResourceNameMap nm;
-        nm.media = mliDynMap_init();
-        nm.surfaces = mliDynMap_init();
-        nm.boundary_layers = mliDynMap_init();
+        nm.media = mli_Map_init();
+        nm.surfaces = mli_Map_init();
+        nm.boundary_layers = mli_Map_init();
         return nm;
 }
 
 int mli_ResourceNameMap_malloc(struct mli_ResourceNameMap *namemap)
 {
         mli_ResourceNameMap_free(namemap);
-        chk_mem(mliDynMap_malloc(&namemap->media));
-        chk_mem(mliDynMap_malloc(&namemap->surfaces));
-        chk_mem(mliDynMap_malloc(&namemap->boundary_layers));
+        chk_mem(mli_Map_malloc(&namemap->media));
+        chk_mem(mli_Map_malloc(&namemap->surfaces));
+        chk_mem(mli_Map_malloc(&namemap->boundary_layers));
         return 1;
 chk_error:
         return 0;
@@ -24,7 +24,7 @@ chk_error:
 
 void mli_ResourceNameMap_free(struct mli_ResourceNameMap *namemap)
 {
-        mliDynMap_free(&namemap->media);
-        mliDynMap_free(&namemap->surfaces);
-        mliDynMap_free(&namemap->boundary_layers);
+        mli_Map_free(&namemap->media);
+        mli_Map_free(&namemap->surfaces);
+        mli_Map_free(&namemap->boundary_layers);
 }

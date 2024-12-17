@@ -12,7 +12,7 @@
 
 struct mliArchive {
         struct mli_StringVector textfiles;
-        struct mliDynMap filenames;
+        struct mli_Map filenames;
 };
 
 struct mliArchive mliArchive_init(void);

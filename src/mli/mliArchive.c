@@ -11,7 +11,7 @@ struct mliArchive mliArchive_init(void)
 {
         struct mliArchive arc;
         arc.textfiles = mli_StringVector_init();
-        arc.filenames = mliDynMap_init();
+        arc.filenames = mli_Map_init();
         return arc;
 }
 
@@ -23,7 +23,7 @@ void mliArchive_free(struct mliArchive *arc)
                 mli_String_free(str);
         }
         mli_StringVector_free(&arc->textfiles);
-        mliDynMap_free(&arc->filenames);
+        mli_Map_free(&arc->filenames);
         (*arc) = mliArchive_init();
 }
 
@@ -31,7 +31,7 @@ int mliArchive_malloc(struct mliArchive *arc)
 {
         mliArchive_free(arc);
         chk(mli_StringVector_malloc(&arc->textfiles, 0u));
-        chk(mliDynMap_malloc(&arc->filenames));
+        chk(mli_Map_malloc(&arc->filenames));
         return 1;
 chk_error:
         return 0;
@@ -46,11 +46,11 @@ int mliArchive_push_back(
         struct mli_String *text = NULL;
         chk_msg(filename->size < MLI_TAR_NAME_LENGTH,
                 "Expected shorter filename.");
-        next = mliDynMap_size(&arc->filenames);
+        next = mli_Map_size(&arc->filenames);
 
         /* filename */
         /* ======== */
-        chk_msg(mliDynMap_insert(&arc->filenames, filename, next),
+        chk_msg(mli_Map_insert(&arc->filenames, filename, next),
                 "Can not insert key.");
 
         /* payload */
@@ -126,7 +126,7 @@ int mliArchive_has(
         const struct mliArchive *arc,
         const struct mli_String *filename)
 {
-        return mliDynMap_has(&arc->filenames, filename);
+        return mli_Map_has(&arc->filenames, filename);
 }
 
 int mliArchive_get(
@@ -136,7 +136,7 @@ int mliArchive_get(
 {
         uint64_t idx;
         struct mli_String *txt = NULL;
-        chk(mliDynMap_find(&arc->filenames, filename, &idx));
+        chk(mli_Map_find(&arc->filenames, filename, &idx));
         txt = &arc->textfiles.array[idx];
         (*str) = txt;
         return 1;
@@ -163,7 +163,7 @@ chk_error:
 
 uint64_t mliArchive_num(const struct mliArchive *arc)
 {
-        return mliDynMap_size(&arc->filenames);
+        return mli_Map_size(&arc->filenames);
 }
 
 void mliArchive_info_fprint(FILE *f, const struct mliArchive *arc)

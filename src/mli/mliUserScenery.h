@@ -14,7 +14,7 @@ int mliMaterials_malloc_form_archive(
 struct mliGeometry;
 int mli_set_geometry_objects_and_names_from_archive(
         struct mliGeometry *geometry,
-        struct mliDynMap *object_names,
+        struct mli_Map *object_names,
         const struct mliArchive *archive);
 
 struct mli_Object;
@@ -22,7 +22,7 @@ struct mliFrame;
 int mli_check_malloc_root_frame_from_Archive(
         struct mliFrame *root,
         const struct mliArchive *archive,
-        const struct mliDynMap *object_names,
+        const struct mli_Map *object_names,
         const struct mli_Object *objects,
-        const struct mliDynMap *boundary_layer_names);
+        const struct mli_Map *boundary_layer_names);
 #endif

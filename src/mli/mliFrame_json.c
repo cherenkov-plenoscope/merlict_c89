@@ -81,7 +81,7 @@ int mliFrame_boundary_layers_form_json_token(
         struct mli_Uint32Vector *boundary_layers,
         const uint32_t object_idx,
         const struct mli_Object *objects,
-        const struct mliDynMap *boundary_layer_names,
+        const struct mli_Map *boundary_layer_names,
         const struct mli_Json *json,
         const uint64_t token)
 {
@@ -109,7 +109,7 @@ int mliFrame_boundary_layers_form_json_token(
                         "Expected object's material-key to be in "
                         "object-reference's mtls in tree.json.");
 
-                chk_msg(mliDynMap_get_value_for_string_from_json(
+                chk_msg(mli_Map_get_value_for_string_from_json(
                                 boundary_layer_names,
                                 json,
                                 token_material_key + 1,
@@ -132,12 +132,12 @@ int mliFrame_object_reference_form_json_token(
         uint32_t *object_reference,
         const struct mli_Json *json,
         const uint64_t token,
-        const struct mliDynMap *object_names)
+        const struct mli_Map *object_names)
 {
         uint64_t token_obj_key;
         chk_msg(mli_Json_token_by_key(json, token, "obj", &token_obj_key),
                 "Expected object to have key 'obj'.");
-        chk_msg(mliDynMap_get_value_for_string_from_json(
+        chk_msg(mli_Map_get_value_for_string_from_json(
                         object_names,
                         json,
                         token_obj_key + 1,
@@ -153,9 +153,9 @@ int mliFrame_from_json(
         struct mliFrame *mother,
         const struct mli_Json *json,
         const uint64_t token_children,
-        const struct mliDynMap *object_names,
+        const struct mli_Map *object_names,
         const struct mli_Object *objects,
-        const struct mliDynMap *boundary_layer_names)
+        const struct mli_Map *boundary_layer_names)
 {
         uint64_t num_children;
         uint64_t c;

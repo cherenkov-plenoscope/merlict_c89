@@ -11,27 +11,27 @@ struct mliMapItem {
         uint64_t value;
 };
 
-MLI_VECTOR_DEFINITON(mli_VectorMapItem, struct mliMapItem)
+MLI_VECTOR_DEFINITON(mli_MapItemVector, struct mliMapItem)
 
-struct mliDynMap {
-        struct mli_VectorMapItem items;
+struct mli_Map {
+        struct mli_MapItemVector items;
 };
 
-struct mliDynMap mliDynMap_init(void);
-void mliDynMap_free(struct mliDynMap *map);
-int mliDynMap_malloc(struct mliDynMap *map);
-uint64_t mliDynMap_size(const struct mliDynMap *map);
-int mliDynMap_has(const struct mliDynMap *map, const struct mli_String *key);
-int mliDynMap_insert(
-        struct mliDynMap *map,
+struct mli_Map mli_Map_init(void);
+void mli_Map_free(struct mli_Map *map);
+int mli_Map_malloc(struct mli_Map *map);
+uint64_t mli_Map_size(const struct mli_Map *map);
+int mli_Map_has(const struct mli_Map *map, const struct mli_String *key);
+int mli_Map_insert(
+        struct mli_Map *map,
         const struct mli_String *key,
         uint64_t value);
-int mliDynMap_find(
-        const struct mliDynMap *map,
+int mli_Map_find(
+        const struct mli_Map *map,
         const struct mli_String *key,
         uint64_t *idx);
-int mliDynMap_get(
-        const struct mliDynMap *map,
+int mli_Map_get(
+        const struct mli_Map *map,
         const struct mli_String *key,
         uint64_t *value);
 

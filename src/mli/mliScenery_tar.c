@@ -49,7 +49,7 @@ int mliScenery_malloc_from_Archive(
         uint64_t total_num_boundary_layers = 0u;
 
         struct mli_ResourceNameMap material_names = mli_ResourceNameMap_init();
-        struct mliDynMap object_names = mliDynMap_init();
+        struct mli_Map object_names = mli_Map_init();
         struct mliFrame root = mliFrame_init();
 
         chk_dbg;
@@ -58,7 +58,7 @@ int mliScenery_malloc_from_Archive(
                 "Failed to malloc materials.");
 
         chk_dbg;
-        chk(mliDynMap_malloc(&object_names));
+        chk(mli_Map_malloc(&object_names));
 
         chk_dbg;
         num_objects = mliArchive_num_filename_prefix_sufix(
@@ -101,7 +101,7 @@ int mliScenery_malloc_from_Archive(
                 "Can not set robjects.");
 
         mli_ResourceNameMap_free(&material_names);
-        mliDynMap_free(&object_names);
+        mli_Map_free(&object_names);
         mliFrame_free(&root);
 
         chk_msg(mliAccelerator_malloc_from_Geometry(
