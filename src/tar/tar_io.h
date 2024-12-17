@@ -1,7 +1,7 @@
 #ifndef MLITARIO_H_
 #define MLITARIO_H_
 
-#include "../io/IOMemory.h"
+#include "../io/io_memory.h"
 #include "tar.h"
 
 int mli_Tar_read_data_to_IO(

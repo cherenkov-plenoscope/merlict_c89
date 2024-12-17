@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "json_jsmn.h"
-#include "../io/IOMemory.h"
+#include "../io/io_memory.h"
 #include "../string/string.h"
 
 struct mli_Json {

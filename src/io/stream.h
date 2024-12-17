@@ -4,20 +4,20 @@
 
 #include <stdint.h>
 #include "io_file.h"
-#include "IOMemory.h"
+#include "io_memory.h"
 
 #define MLI_IO_TYPE_VOID 0
 #define MLI_IO_TYPE_FILE 10
 #define MLI_IO_TYPE_MEMORY 20
 
-union mli_IOType {
+union mli_IoType {
         struct mli_IoFile file;
         struct mli_IO memory;
 };
 
 struct mli_Stream {
         int type;
-        union mli_IOType data;
+        union mli_IoType data;
 };
 
 struct mli_Stream mli_Stream_init(void);

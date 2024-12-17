@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../string/string.h"
-#include "IOMemory.h"
+#include "io_memory.h"
 #include <stdarg.h>
 
 int mli_IO_text_getc(struct mli_IO *byt);
