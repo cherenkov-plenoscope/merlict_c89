@@ -3,8 +3,9 @@
 #define MLI_IOMEMORY_H_
 
 #include <stdint.h>
+#include <stddef.h>
 
-struct mli_IO {
+struct mli_IoMemory {
         /* memory */
         unsigned char *cstr;
 
@@ -18,37 +19,45 @@ struct mli_IO {
         uint64_t pos;
 };
 
-struct mli_IO mli_IO_init(void);
-int mli_IO_close(struct mli_IO *self);
-int mli_IO_open(struct mli_IO *self);
-size_t mli_IO_write(
-        struct mli_IO *self,
+struct mli_IoMemory mli_IoMemory_init(void);
+int mli_IoMemory_close(struct mli_IoMemory *self);
+int mli_IoMemory_open(struct mli_IoMemory *self);
+size_t mli_IoMemory_write(
+        struct mli_IoMemory *self,
         const void *ptr,
         const size_t size,
         const size_t count);
-size_t mli_IO_read(
-        struct mli_IO *self,
+size_t mli_IoMemory_read(
+        struct mli_IoMemory *self,
         void *ptr,
         const size_t size,
         const size_t count);
-void mli_IO_rewind(struct mli_IO *self);
-int64_t mli_IO_tell(struct mli_IO *self);
-int64_t mli_IO_seek(
-        struct mli_IO *self,
+void mli_IoMemory_rewind(struct mli_IoMemory *self);
+int64_t mli_IoMemory_tell(struct mli_IoMemory *self);
+int64_t mli_IoMemory_seek(
+        struct mli_IoMemory *self,
         const int64_t offset,
         const int64_t origin);
-int mli_IO_eof(const struct mli_IO *self);
+int mli_IoMemory_eof(const struct mli_IoMemory *self);
 
 /* to/from path */
-int mli_IO_write_from_path(struct mli_IO *self, const char *path);
-int mli_IO_read_to_path(struct mli_IO *self, const char *path);
+int mli_IoMemory_write_from_path(struct mli_IoMemory *self, const char *path);
+int mli_IoMemory_read_to_path(struct mli_IoMemory *self, const char *path);
 
 /* internal */
-int mli_IO__malloc(struct mli_IO *self);
-int mli_IO__malloc_capacity(struct mli_IO *self, const uint64_t capacity);
-int mli_IO__realloc_capacity(struct mli_IO *self, const uint64_t new_capacity);
-int mli_IO__shrink_to_fit(struct mli_IO *self);
-int mli_IO__write_unsigned_char(struct mli_IO *self, const unsigned char *c);
-int mli_IO__read_unsigned_char(struct mli_IO *self, unsigned char *c);
-int mli_IO__write_cstr(struct mli_IO *self, const char *cstr);
+int mli_IoMemory__malloc(struct mli_IoMemory *self);
+int mli_IoMemory__malloc_capacity(
+        struct mli_IoMemory *self,
+        const uint64_t capacity);
+int mli_IoMemory__realloc_capacity(
+        struct mli_IoMemory *self,
+        const uint64_t new_capacity);
+int mli_IoMemory__shrink_to_fit(struct mli_IoMemory *self);
+int mli_IoMemory__write_unsigned_char(
+        struct mli_IoMemory *self,
+        const unsigned char *c);
+int mli_IoMemory__read_unsigned_char(
+        struct mli_IoMemory *self,
+        unsigned char *c);
+int mli_IoMemory__write_cstr(struct mli_IoMemory *self, const char *cstr);
 #endif

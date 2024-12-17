@@ -12,37 +12,41 @@
 
 union mli_IoType {
         struct mli_IoFile file;
-        struct mli_IO memory;
+        struct mli_IoMemory memory;
 };
 
-struct mli_Stream {
+struct mli_IO {
         int type;
         union mli_IoType data;
 };
 
-struct mli_Stream mli_Stream_init(void);
-int mli_Stream_close(struct mli_Stream *self);
-int mli_Stream_open_memory(struct mli_Stream *self);
-int mli_Stream_open_file(
-        struct mli_Stream *self,
+struct mli_IO mli_IO_init(void);
+int mli_IO_close(struct mli_IO *self);
+int mli_IO_open_memory(struct mli_IO *self);
+int mli_IO_open_file(
+        struct mli_IO *self,
         const struct mli_String *filename,
         const struct mli_String *mode);
-size_t mli_Stream_write(
-        struct mli_Stream *self,
+int mli_IO__open_file_cstr(
+        struct mli_IO *self,
+        const char *filename,
+        const char *mode);
+size_t mli_IO_write(
+        struct mli_IO *self,
         const void *ptr,
         const size_t size,
         const size_t count);
-size_t mli_Stream_read(
-        struct mli_Stream *self,
+size_t mli_IO_read(
+        struct mli_IO *self,
         void *ptr,
         const size_t size,
         const size_t count);
-void mli_Stream_rewind(struct mli_Stream *self);
-int64_t mli_Stream_tell(struct mli_Stream *self);
-int64_t mli_Stream_seek(
-        struct mli_Stream *self,
+void mli_IO_rewind(struct mli_IO *self);
+int64_t mli_IO_tell(struct mli_IO *self);
+int64_t mli_IO_seek(
+        struct mli_IO *self,
         const int64_t offset,
         const int64_t origin);
-int mli_Stream_eof(const struct mli_Stream *self);
+int mli_IO_eof(const struct mli_IO *self);
 
 #endif

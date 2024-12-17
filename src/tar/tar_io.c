@@ -10,7 +10,6 @@ int mli_Tar_read_data_to_IO(
         const uint64_t size)
 {
         uint64_t i;
-        chk_msg(buff->cstr != NULL, "buff is not allocated.");
         for (i = 0; i < size; i++) {
                 unsigned char c;
                 chk(mli_Tar_read_data(tar, (void *)(&c), 1));

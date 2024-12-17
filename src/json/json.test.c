@@ -71,13 +71,17 @@ CASE("mli_Json_init, defaults")
 
 CASE("mli_Json_malloc_from_path")
 {
+        struct mli_IO file = mli_IO_init();
         struct mli_Json json = mli_Json_init();
         uint64_t return_idx;
         int64_t myint;
         double myfloat;
 
-        CHECK(mli_Json_malloc_from_path(
-                &json, "data/mli/tests/resources/json/example.json"));
+        CHECK(mli_IO__open_file_cstr(
+                &file, "data/mli/tests/resources/json/example.json", "r"));
+        CHECK(mli_Json_from_io(&json, &file));
+        mli_IO_close(&file);
+
         CHECK(mli_Json_debug_to_path(
                 &json, "data/mli/tests/resources/json/example.debug.tmp"));
 

@@ -11,13 +11,14 @@
 int mliScenery_malloc_fread_tar(struct mliScenery *scenery, FILE *f)
 {
         struct mliArchive archive = mliArchive_init();
-        chk_dbg chk_msg(
-                mliArchive_malloc_fread(&archive, f),
+        chk_dbg;
+        chk_msg(mliArchive_malloc_fread(&archive, f),
                 "Can't read archive from file.");
-        chk_dbg chk_msg(
-                mliScenery_malloc_from_Archive(scenery, &archive),
+        chk_dbg;
+        chk_msg(mliScenery_malloc_from_Archive(scenery, &archive),
                 "Can't malloc Scenery from Archive.");
-        chk_dbg mliArchive_free(&archive);
+        chk_dbg;
+        mliArchive_free(&archive);
         return 1;
 chk_error:
         return 0;
@@ -27,11 +28,13 @@ int mliScenery_malloc_from_path_tar(
         struct mliScenery *scenery,
         const char *path)
 {
-        chk_dbg FILE *f = fopen(path, "rb");
+        FILE *f = fopen(path, "rb");
+        chk_dbg;
         chk_msgf(f != NULL, ("Can't open path '%s'.", path))
                 chk_msg(mliScenery_malloc_fread_tar(scenery, f),
                         "Can't fread Scenery from file.");
-        chk_dbg fclose(f);
+        chk_dbg;
+        fclose(f);
         return 1;
 chk_error:
         return 0;
@@ -49,27 +52,29 @@ int mliScenery_malloc_from_Archive(
         struct mliDynMap object_names = mliDynMap_init();
         struct mliFrame root = mliFrame_init();
 
-        chk_dbg chk_msg(
-                mliMaterials_malloc_form_archive(
+        chk_dbg;
+        chk_msg(mliMaterials_malloc_form_archive(
                         &scenery->materials, &material_names, archive),
                 "Failed to malloc materials.");
 
-        chk_dbg chk(mliDynMap_malloc(&object_names));
+        chk_dbg;
+        chk(mliDynMap_malloc(&object_names));
 
-        chk_dbg num_objects = mliArchive_num_filename_prefix_sufix(
+        chk_dbg;
+        num_objects = mliArchive_num_filename_prefix_sufix(
                 archive, "geometry/objects/", ".obj");
 
-        chk_dbg chk_msg(
-                mliGeometry_malloc_objects(&scenery->geometry, num_objects),
+        chk_dbg;
+        chk_msg(mliGeometry_malloc_objects(&scenery->geometry, num_objects),
                 "Failed to malloc geometry.objects.");
 
-        chk_dbg chk_msg(
-                mli_set_geometry_objects_and_names_from_archive(
+        chk_dbg;
+        chk_msg(mli_set_geometry_objects_and_names_from_archive(
                         &scenery->geometry, &object_names, archive),
                 "Failed to malloc geometry.objects.");
 
-        chk_dbg chk_msg(
-                mli_check_malloc_root_frame_from_Archive(
+        chk_dbg;
+        chk_msg(mli_check_malloc_root_frame_from_Archive(
                         &root,
                         archive,
                         &object_names,
@@ -87,8 +92,8 @@ int mliScenery_malloc_from_Archive(
                         total_num_boundary_layers),
                 "Failed to malloc geometry to materials map.");
 
-        chk_dbg chk_msg(
-                mliGeometry_malloc_references(&scenery->geometry, num_robjects),
+        chk_dbg;
+        chk_msg(mliGeometry_malloc_references(&scenery->geometry, num_robjects),
                 "Failed to malloc geometry.references.");
 
         chk_msg(mliFrame_set_robjects_and_material_map(
@@ -107,7 +112,8 @@ int mliScenery_malloc_from_Archive(
         chk_msg(mliGeometry_warn_objects(&scenery->geometry),
                 "Failed to warn about objects.");
 
-        chk_dbg return 1;
+        chk_dbg;
+        return 1;
 chk_error:
         return 0;
 }

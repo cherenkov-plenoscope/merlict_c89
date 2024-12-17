@@ -7,7 +7,7 @@ CASE("mli_Func_from_csv")
         struct mli_String sy = mli_String_init();
         struct mli_IO io = mli_IO_init();
 
-        CHECK(mli_IO_open(&io));
+        CHECK(mli_IO_open_memory(&io));
         CHECK(mli_IO_text_write_cstr_format(&io, "wavelength/m,something/1\n"));
         CHECK(mli_IO_text_write_cstr_format(&io, "300e-9,0.1\n"));
         CHECK(mli_IO_text_write_cstr_format(&io, "400e-9,0.2\n"));

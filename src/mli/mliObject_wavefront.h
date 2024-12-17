@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliObject.h"
-#include "../io/io_memory.h"
+#include "../io/io.h"
 #include "../string/string.h"
 
 int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io);

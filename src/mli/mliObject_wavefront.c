@@ -547,10 +547,9 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
         chk(mli_String_from_cstr(&sf, "f "));
         chk(mli_String_from_cstr(&susemtl, "usemtl "));
 
-        chk_dbg
-                /* parse wavefront into dyn */
-                while (1)
-        {
+        chk_dbg;
+        /* parse wavefront into dyn */
+        while (1) {
                 line_number += 1;
                 chk_msg(line_number < 1000 * 1000 * 1000,
                         "Expected less than 1e9 lines in wavefront obj file. "

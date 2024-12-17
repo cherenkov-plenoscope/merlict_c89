@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "json_jsmn.h"
-#include "../io/io_memory.h"
+#include "../io/io.h"
 #include "../string/string.h"
 
 struct mli_Json {
@@ -70,6 +70,7 @@ int mli_Json_cstrcmp(
         const struct mli_Json *json,
         const uint64_t token,
         const char *str);
+int mli_Json_from_io(struct mli_Json *self, struct mli_IO *io);
 int mli_Json_malloc_from_path(struct mli_Json *json, const char *path);
 int mli_Json_malloc_from_cstr(struct mli_Json *json, const char *cstr);
 int mli_Json_malloc_tokens__(struct mli_Json *json);

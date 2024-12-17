@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../string/string.h"
-#include "io_memory.h"
+#include "io.h"
 #include <stdarg.h>
 
 int mli_IO_text_getc(struct mli_IO *self);
@@ -13,6 +13,7 @@ int mli_IO_text_putc(struct mli_IO *self, const char c);
 int mli_IO_text_write_cstr(struct mli_IO *self, const char *cstr);
 int mli_IO_text_write_cstr_format(struct mli_IO *self, const char *format, ...);
 
+int mli_IO_text_read_string(struct mli_IO *self, struct mli_String *str);
 int mli_IO_text_read_line(
         struct mli_IO *self,
         struct mli_String *line,

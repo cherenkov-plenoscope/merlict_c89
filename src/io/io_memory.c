@@ -5,9 +5,9 @@
 #include "../chk/chk.h"
 #include "../math/math.h"
 
-struct mli_IO mli_IO_init(void)
+struct mli_IoMemory mli_IoMemory_init(void)
 {
-        struct mli_IO byt;
+        struct mli_IoMemory byt;
         byt.cstr = NULL;
         byt.capacity = 0u;
         byt.size = 0u;
@@ -15,17 +15,19 @@ struct mli_IO mli_IO_init(void)
         return byt;
 }
 
-int mli_IO_close(struct mli_IO *self)
+int mli_IoMemory_close(struct mli_IoMemory *self)
 {
         const int RC_IS_ALWAYS_1 = 1;
         free(self->cstr);
-        (*self) = mli_IO_init();
+        (*self) = mli_IoMemory_init();
         return RC_IS_ALWAYS_1;
 }
 
-int mli_IO__malloc_capacity(struct mli_IO *self, const uint64_t capacity)
+int mli_IoMemory__malloc_capacity(
+        struct mli_IoMemory *self,
+        const uint64_t capacity)
 {
-        mli_IO_close(self);
+        mli_IoMemory_close(self);
         self->capacity = MLI_MATH_MAX2(2u, capacity);
         self->size = 0u;
         chk_malloc(self->cstr, unsigned char, self->capacity + 1u);
@@ -35,26 +37,28 @@ chk_error:
         return 0;
 }
 
-int mli_IO__malloc(struct mli_IO *self)
+int mli_IoMemory__malloc(struct mli_IoMemory *self)
 {
-        chk(mli_IO__malloc_capacity(self, 0u));
+        chk(mli_IoMemory__malloc_capacity(self, 0u));
         return 1;
 chk_error:
         return 0;
 }
 
-int mli_IO__realloc_capacity(struct mli_IO *self, const uint64_t new_capacity)
+int mli_IoMemory__realloc_capacity(
+        struct mli_IoMemory *self,
+        const uint64_t new_capacity)
 {
         uint64_t numcpy;
-        struct mli_IO tmp = mli_IO_init();
+        struct mli_IoMemory tmp = mli_IoMemory_init();
 
-        chk_msg(mli_IO__malloc_capacity(&tmp, self->capacity),
+        chk_msg(mli_IoMemory__malloc_capacity(&tmp, self->capacity),
                 "Failed to allocate temporary swap.");
         memcpy(tmp.cstr, self->cstr, self->capacity);
         tmp.pos = self->pos;
         tmp.size = self->size;
 
-        chk_msg(mli_IO__malloc_capacity(self, new_capacity),
+        chk_msg(mli_IoMemory__malloc_capacity(self, new_capacity),
                 "Faild to allocate new capacity.");
 
         if (new_capacity >= tmp.capacity) {
@@ -73,16 +77,16 @@ int mli_IO__realloc_capacity(struct mli_IO *self, const uint64_t new_capacity)
         self->pos = tmp.pos;
         self->size = tmp.size;
 
-        mli_IO_close(&tmp);
+        mli_IoMemory_close(&tmp);
         return 1;
 chk_error:
         return 0;
 }
 
-int mli_IO_open(struct mli_IO *self)
+int mli_IoMemory_open(struct mli_IoMemory *self)
 {
         if (self->cstr == NULL) {
-                chk(mli_IO__malloc(self));
+                chk(mli_IoMemory__malloc(self));
         } else {
                 chk_msg(self->capacity >= 2u,
                         "Expected minimal capacity of 2.");
@@ -95,28 +99,30 @@ chk_error:
         return 0;
 }
 
-int mli_IO__shrink_to_fit(struct mli_IO *self)
+int mli_IoMemory__shrink_to_fit(struct mli_IoMemory *self)
 {
-        chk_msg(mli_IO__realloc_capacity(self, self->size),
+        chk_msg(mli_IoMemory__realloc_capacity(self, self->size),
                 "Failed to reallocate to size.");
         return 1;
 chk_error:
         return 0;
 }
 
-int mli_IO__write_unsigned_char(struct mli_IO *self, const unsigned char *c)
+int mli_IoMemory__write_unsigned_char(
+        struct mli_IoMemory *self,
+        const unsigned char *c)
 {
         /* 'puts' a single selfe (char) to the selfesIo-buffer */
         const uint64_t new_size = self->size + 1u;
 
         if (self->cstr == NULL) {
-                chk(mli_IO__malloc(self));
+                chk(mli_IoMemory__malloc(self));
         }
 
         if (new_size >= self->capacity) {
                 const uint64_t min_new_capacity =
                         MLI_MATH_MAX2(new_size, 2 * self->capacity);
-                chk_msg(mli_IO__realloc_capacity(self, min_new_capacity),
+                chk_msg(mli_IoMemory__realloc_capacity(self, min_new_capacity),
                         "Failed to reallocate.");
         }
         self->cstr[self->size] = (*c);
@@ -128,7 +134,9 @@ chk_error:
         return 0;
 }
 
-int mli_IO__read_unsigned_char(struct mli_IO *self, unsigned char *c)
+int mli_IoMemory__read_unsigned_char(
+        struct mli_IoMemory *self,
+        unsigned char *c)
 {
         if (self->pos >= self->size) {
                 return EOF;
@@ -138,8 +146,8 @@ int mli_IO__read_unsigned_char(struct mli_IO *self, unsigned char *c)
         return 1;
 }
 
-size_t mli_IO_write(
-        struct mli_IO *self,
+size_t mli_IoMemory_write(
+        struct mli_IoMemory *self,
         const void *ptr,
         const size_t size,
         const size_t count)
@@ -149,14 +157,14 @@ size_t mli_IO_write(
 
         size_t i;
         for (i = 0u; i < block_size; i++) {
-                chk_msg(mli_IO__write_unsigned_char(self, &block[i]), "");
+                chk_msg(mli_IoMemory__write_unsigned_char(self, &block[i]), "");
         }
 chk_error:
         return (i + 1u) / size;
 }
 
-size_t mli_IO_read(
-        struct mli_IO *self,
+size_t mli_IoMemory_read(
+        struct mli_IoMemory *self,
         void *ptr,
         const size_t size,
         const size_t count)
@@ -167,7 +175,7 @@ size_t mli_IO_read(
         size_t i;
         for (i = 0u; i < block_size; i++) {
                 unsigned char c;
-                const int rc = mli_IO__read_unsigned_char(self, &c);
+                const int rc = mli_IoMemory__read_unsigned_char(self, &c);
                 if (rc == EOF) {
                         return i / size;
                         ;
@@ -178,12 +186,15 @@ size_t mli_IO_read(
         return (i + 1u) / size;
 }
 
-void mli_IO_rewind(struct mli_IO *self) { self->pos = 0u; }
+void mli_IoMemory_rewind(struct mli_IoMemory *self) { self->pos = 0u; }
 
-int64_t mli_IO_tell(struct mli_IO *self) { return (int64_t)self->pos; }
+int64_t mli_IoMemory_tell(struct mli_IoMemory *self)
+{
+        return (int64_t)self->pos;
+}
 
-int64_t mli_IO_seek(
-        struct mli_IO *self,
+int64_t mli_IoMemory_seek(
+        struct mli_IoMemory *self,
         const int64_t offset,
         const int64_t origin)
 {
@@ -194,7 +205,7 @@ int64_t mli_IO_seek(
          */
         if (origin == SEEK_CUR) {
                 const int64_t new_pos = self->pos + offset;
-                return mli_IO_seek(self, new_pos, SEEK_SET);
+                return mli_IoMemory_seek(self, new_pos, SEEK_SET);
         } else if (origin == SEEK_SET) {
                 if (offset < 0 || offset >= (int64_t)self->size) {
                         return FAIL;
@@ -207,7 +218,7 @@ int64_t mli_IO_seek(
         }
 }
 
-int mli_IO_eof(const struct mli_IO *self)
+int mli_IoMemory_eof(const struct mli_IoMemory *self)
 {
         if (self->pos < self->size) {
                 return 0;
@@ -216,19 +227,19 @@ int mli_IO_eof(const struct mli_IO *self)
         }
 }
 
-int mli_IO_write_from_path(struct mli_IO *self, const char *path)
+int mli_IoMemory_write_from_path(struct mli_IoMemory *self, const char *path)
 {
         int rc;
         unsigned char c;
         FILE *f = fopen(path, "rt");
         chk_msg(f, "Failed to open file.");
-        chk_msg(mli_IO__malloc(self), "Can not malloc string.");
+        chk_msg(mli_IoMemory__malloc(self), "Can not malloc string.");
         while (1) {
                 rc = fread((void *)(&c), sizeof(unsigned char), 1, f);
                 if (rc == 0) {
                         break;
                 }
-                chk_msg(mli_IO__write_unsigned_char(self, &c),
+                chk_msg(mli_IoMemory__write_unsigned_char(self, &c),
                         "Failed to write char to IO.");
         }
         fclose(f);
@@ -236,17 +247,17 @@ int mli_IO_write_from_path(struct mli_IO *self, const char *path)
 chk_error:
         if (f != NULL)
                 fclose(f);
-        mli_IO_close(self);
+        mli_IoMemory_close(self);
         return 0;
 }
 
-int mli_IO_read_to_path(struct mli_IO *self, const char *path)
+int mli_IoMemory_read_to_path(struct mli_IoMemory *self, const char *path)
 {
         FILE *f = fopen(path, "w");
         chk_msg(f != NULL, "Failed to open path.");
         while (1) {
                 unsigned char c;
-                int rc = mli_IO__read_unsigned_char(self, &c);
+                int rc = mli_IoMemory__read_unsigned_char(self, &c);
                 if (rc == EOF) {
                         break;
                 }
@@ -259,12 +270,12 @@ chk_error:
         return 0;
 }
 
-int mli_IO__write_cstr(struct mli_IO *self, const char *cstr)
+int mli_IoMemory__write_cstr(struct mli_IoMemory *self, const char *cstr)
 {
         /* For testing purposes */
         size_t i = 0;
         while (cstr[i] != '\0') {
-                chk(mli_IO_write(
+                chk(mli_IoMemory_write(
                         self, (unsigned char *)(&cstr[i]), sizeof(char), 1));
                 i += 1;
         }

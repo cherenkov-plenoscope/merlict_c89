@@ -55,12 +55,20 @@ chk_error:
         return 0;
 }
 
+int mli_IO_text_read_string(struct mli_IO *self, struct mli_String *str)
+{
+        chk(mli_IO_text_read_line(self, str, '\0'));
+        return 1;
+chk_error:
+        return 0;
+}
+
 int mli_IO_text_read_line(
         struct mli_IO *self,
         struct mli_String *line,
         const char delimiter)
 {
-        chk(mli_String_malloc(line, 16));
+        chk(mli_String_malloc(line, 0));
 
         if (mli_IO_eof(self)) {
                 return EOF;
@@ -71,6 +79,8 @@ int mli_IO_text_read_line(
                 if (c == delimiter) {
                         break;
                 } else if (c == '\0') {
+                        break;
+                } else if (c == EOF) {
                         break;
                 } else {
                         chk(mli_String_push_back(line, c));

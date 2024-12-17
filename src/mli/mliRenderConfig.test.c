@@ -6,7 +6,7 @@ CASE("Parse_from_jsonline")
         struct mli_IO ss = mli_IO_init();
         struct mliRenderConfig cc = mliRenderConfig_init();
 
-        mli_IO_open(&ss);
+        mli_IO_open_memory(&ss);
         mli_IO_text_write_cstr_format(&ss, "{");
         mli_IO_text_write_cstr_format(&ss, "    \"camera\": {");
         mli_IO_text_write_cstr_format(&ss, "        \"pos\": [1,2,3],");
@@ -66,8 +66,9 @@ CASE("Parse_from_jsonline")
         mli_IO_text_write_cstr_format(&ss, "    }, ");
         mli_IO_text_write_cstr_format(&ss, "    \"random_seed\": 1337");
         mli_IO_text_write_cstr_format(&ss, "}");
+        mli_IO_rewind(&ss);
 
-        CHECK(mli_Json_malloc_from_cstr(&json, (char *)ss.cstr));
+        CHECK(mli_Json_from_io(&json, &ss));
         CHECK(mliRenderConfig_from_json(&cc, &json, 0));
         mli_Json_free(&json);
         mli_IO_close(&ss);

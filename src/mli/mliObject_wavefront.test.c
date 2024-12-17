@@ -371,7 +371,7 @@ CASE("mliObject, read wavefront file")
 {
         struct mli_IO str = mli_IO_init();
         struct mliObject obj = mliObject_init();
-        CHECK(mli_IO_write_from_path(
+        CHECK(mli_IO__open_file_cstr(
                 &str,
                 "data/"
                 "mli/"
@@ -381,8 +381,8 @@ CASE("mliObject, read wavefront file")
                 "001/"
                 "geometry/"
                 "objects/"
-                "hexagonal_mirror_facet.obj"));
-        mli_IO_rewind(&str);
+                "hexagonal_mirror_facet.obj",
+                "r"));
         CHECK(mliObject_malloc_from_wavefront(&obj, &str));
         mli_IO_close(&str);
 
@@ -400,7 +400,7 @@ CASE("mliObject, write and read binary-string")
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
         FILE *f;
-        CHECK(mli_IO_write_from_path(
+        CHECK(mli_IO__open_file_cstr(
                 &str,
                 "data/"
                 "mli/"
@@ -410,8 +410,8 @@ CASE("mliObject, write and read binary-string")
                 "001/"
                 "geometry/"
                 "objects/"
-                "hexagonal_mirror_facet.obj"));
-        mli_IO_rewind(&str);
+                "hexagonal_mirror_facet.obj",
+                "r"));
         CHECK(mliObject_malloc_from_wavefront(&obj, &str));
         mli_IO_close(&str);
 
@@ -469,7 +469,7 @@ CASE("mliObject, write and read ascii-text-string")
         struct mli_IO str = mli_IO_init();
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        CHECK(mli_IO_write_from_path(
+        CHECK(mli_IO__open_file_cstr(
                 &str,
                 "data/"
                 "mli/"
@@ -479,22 +479,22 @@ CASE("mliObject, write and read ascii-text-string")
                 "001/"
                 "geometry/"
                 "objects/"
-                "hexagonal_mirror_facet.obj"));
-        mli_IO_rewind(&str);
+                "hexagonal_mirror_facet.obj",
+                "r"));
         CHECK(mliObject_malloc_from_wavefront(&obj, &str));
         mli_IO_close(&str);
 
+        CHECK(mli_IO__open_file_cstr(
+                &f,
+                "data/mli/tests/resources/hexagonal_mirror_facet.obj.tmp",
+                "w"));
         mliObject_fprint_to_wavefront(&f, &obj);
-        mli_IO_rewind(&f);
-        mli_IO_read_to_path(
-                &f, "data/mli/tests/resources/hexagonal_mirror_facet.obj.tmp");
         mli_IO_close(&f);
 
-        CHECK(mli_IO_write_from_path(
+        CHECK(mli_IO__open_file_cstr(
                 &str,
-                "data/mli/tests/resources/"
-                "hexagonal_mirror_facet.obj.tmp"));
-        mli_IO_rewind(&str);
+                "data/mli/tests/resources/hexagonal_mirror_facet.obj.tmp",
+                "r"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, &str));
         mli_IO_close(&str);
 
@@ -532,7 +532,7 @@ CASE("mliObject, read and write multiple materials")
         struct mli_IO str = mli_IO_init();
         struct mliObject obj_orig = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        CHECK(mli_IO_write_from_path(
+        CHECK(mli_IO__open_file_cstr(
                 &str,
                 "data/"
                 "mli/"
@@ -542,8 +542,8 @@ CASE("mliObject, read and write multiple materials")
                 "002/"
                 "geometry/"
                 "objects/"
-                "cube_with_materials.obj"));
-        mli_IO_rewind(&str);
+                "cube_with_materials.obj",
+                "r"));
         CHECK(mliObject_malloc_from_wavefront(&obj_orig, &str));
         mli_IO_close(&str);
         CHECK(obj_orig.num_vertices == 8);
@@ -551,20 +551,17 @@ CASE("mliObject, read and write multiple materials")
         CHECK(obj_orig.num_faces == 12);
         CHECK(obj_orig.num_materials == 6);
 
+        CHECK(mli_IO__open_file_cstr(
+                &f,
+                "data/mli/tests/resources/cube_with_materials.obj.tmp",
+                "w"));
         mliObject_fprint_to_wavefront(&f, &obj_orig);
-        mli_IO_rewind(&f);
-        mli_IO_read_to_path(
-                &f, "data/mli/tests/resources/cube_with_materials.obj.tmp");
         mli_IO_close(&f);
 
-        CHECK(mli_IO_write_from_path(
+        CHECK(mli_IO__open_file_cstr(
                 &str,
-                "data/"
-                "mli/"
-                "tests/"
-                "resources/"
-                "cube_with_materials.obj.tmp"));
-        mli_IO_rewind(&str);
+                "data/mli/tests/resources/cube_with_materials.obj.tmp",
+                "r"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, &str));
         mli_IO_close(&str);
 
@@ -601,35 +598,33 @@ CASE("mliObject, read and write repeating materials")
         struct mli_IO str = mli_IO_init();
         struct mliObject obj_orig = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        CHECK(mli_IO_write_from_path(
+        CHECK(mli_IO__open_file_cstr(
                 &str,
                 "data/"
                 "mli/"
                 "tests/"
                 "resources/"
-                "repeating_material.obj"));
-        mli_IO_rewind(&str);
+                "repeating_material.obj",
+                "r"));
         CHECK(mliObject_malloc_from_wavefront(&obj_orig, &str));
         mli_IO_close(&str);
+
         CHECK(obj_orig.num_vertices == 5);
         CHECK(obj_orig.num_vertex_normals == 1);
         CHECK(obj_orig.num_faces == 3);
         CHECK(obj_orig.num_materials == 2);
 
+        CHECK(mli_IO__open_file_cstr(
+                &f,
+                "data/mli/tests/resources/repeating_material.obj.tmp",
+                "r"));
         mliObject_fprint_to_wavefront(&f, &obj_orig);
-        mli_IO_rewind(&f);
-        mli_IO_read_to_path(
-                &f, "data/mli/tests/resources/repeating_material.obj.tmp");
         mli_IO_close(&f);
 
-        CHECK(mli_IO_write_from_path(
+        CHECK(mli_IO__open_file_cstr(
                 &str,
-                "data/"
-                "mli/"
-                "tests/"
-                "resources/"
-                "repeating_material.obj.tmp"));
-        mli_IO_rewind(&str);
+                "data/mli/tests/resources/repeating_material.obj.tmp",
+                "r"));
         CHECK(mliObject_malloc_from_wavefront(&obj_back, &str));
         mli_IO_close(&str);
 

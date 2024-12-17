@@ -27,46 +27,49 @@ int mli_set_geometry_objects_and_names_from_archive(
         struct mli_String basename = mli_String_init();
         struct mli_String extension = mli_String_init();
 
-        chk_dbg
-                /* objects */
-                obj_idx = 0u;
+        chk_dbg;
+        /* objects */
+        obj_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 struct mli_String *filename =
                         &archive->filenames.items.array[arc_idx].key;
 
-                chk_dbg if (
-                        mli_String_starts_with_cstr(
-                                filename, "geometry/objects/") &&
-                        mli_String_ends_with_cstr(filename, ".obj"))
-                {
+                chk_dbg;
+                if (mli_String_starts_with_cstr(
+                            filename, "geometry/objects/") &&
+                    mli_String_ends_with_cstr(filename, ".obj")) {
                         struct mli_String *payload =
                                 &archive->textfiles.array[arc_idx];
                         struct mli_IO buff = mli_IO_init();
-                        chk_dbg chk(mli_IO_text_write_String(&buff, payload));
+                        chk_dbg;
+                        chk(mli_IO_open_memory(&buff));
+                        chk(mli_IO_text_write_String(&buff, payload));
                         mli_IO_rewind(&buff);
 
-                        chk_dbg chk_msg(
-                                obj_idx < geometry->num_objects,
+                        chk_dbg;
+                        chk_msg(obj_idx < geometry->num_objects,
                                 "Expected less objects in archive.");
-                        chk_dbg chk(mli_path_basename(filename, &basename));
+                        chk_dbg;
+                        chk(mli_path_basename(filename, &basename));
                         chk(mli_path_splitext(&basename, &key, &extension));
 
                         chk_msg(mliDynMap_insert(object_names, &key, obj_idx),
                                 "Failed to insert object-filename into map.");
-                        chk_dbg chk_msg(
-                                mliObject_malloc_from_wavefront(
+                        chk_dbg;
+                        chk_msg(mliObject_malloc_from_wavefront(
                                         &geometry->objects[obj_idx], &buff),
                                 "Failed to parse wave-front-object.");
-                        chk_dbg chk(mli_String_copy(
+                        chk_dbg;
+                        chk(mli_String_copy(
                                 &geometry->object_names[obj_idx], &key));
                         obj_idx += 1u;
 
                         mli_IO_close(&buff);
                 }
         }
-        chk_dbg
+        chk_dbg;
 
-                mli_String_free(&extension);
+        mli_String_free(&extension);
         mli_String_free(&basename);
         mli_String_free(&key);
         return 1;
@@ -96,37 +99,41 @@ int mliMaterials_malloc_form_archive(
         struct mli_String basename = mli_String_init();
         struct mli_String extension = mli_String_init();
 
-        chk_dbg
-                /* free */
-                mliMaterials_free(materials);
-        chk_dbg mli_ResourceNameMap_free(names);
-        chk_dbg chk(mli_ResourceNameMap_malloc(names));
-        chk_dbg
-                /* estimate capacity */
-                /* boundary_layers */
-                chk_dbg chk(mli_String_from_cstr(
-                        &fixname, "materials/boundary_layers.json"));
+        chk_dbg;
+        /* free */
+        mliMaterials_free(materials);
+        chk_dbg;
+        mli_ResourceNameMap_free(names);
+        chk_dbg;
+        chk(mli_ResourceNameMap_malloc(names));
+        chk_dbg;
+        /* estimate capacity */
+        /* boundary_layers */
+        chk_dbg;
+        chk(mli_String_from_cstr(&fixname, "materials/boundary_layers.json"));
         chk_msg(mliArchive_get_malloc_json(
                         archive, &fixname, &boundary_layers_json),
                 "Failed to parse 'materials/boundary_layers.json'.");
-        chk_dbg chk_msg(
-                boundary_layers_json.tokens[0].type == JSMN_OBJECT,
+        chk_dbg;
+        chk_msg(boundary_layers_json.tokens[0].type == JSMN_OBJECT,
                 "Expected key 'boundary_layers' to be a json-object.");
         cap.num_boundary_layers = boundary_layers_json.tokens[0].size;
-        chk_dbg cap.num_media = mliArchive_num_filename_prefix_sufix(
+        chk_dbg;
+        cap.num_media = mliArchive_num_filename_prefix_sufix(
                 archive, "materials/media/", ".json");
-        chk_dbg cap.num_surfaces = mliArchive_num_filename_prefix_sufix(
+        chk_dbg;
+        cap.num_surfaces = mliArchive_num_filename_prefix_sufix(
                 archive, "materials/surfaces/", ".json");
 
         chk_msg(mliMaterials_malloc(materials, cap),
                 "Can not malloc materials.");
 
-        chk_dbg
-                /* set fields */
-                /* ---------- */
+        chk_dbg;
+        /* set fields */
+        /* ---------- */
 
-                /* media */
-                med_idx = 0u;
+        /* media */
+        med_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 struct mli_String *filename =
                         &archive->filenames.items.array[arc_idx].key;
@@ -154,9 +161,9 @@ int mliMaterials_malloc_form_archive(
                 }
         }
 
-        chk_dbg
-                /* surfaces */
-                srf_idx = 0u;
+        chk_dbg;
+        /* surfaces */
+        srf_idx = 0u;
         for (arc_idx = 0u; arc_idx < mliArchive_num(archive); arc_idx++) {
                 struct mli_String *filename =
                         &archive->filenames.items.array[arc_idx].key;
@@ -185,22 +192,23 @@ int mliMaterials_malloc_form_archive(
                         srf_idx += 1u;
                 }
         }
-        chk_dbg
-                /* boundary_layers */
-                chk_msg(mliMaterials_assign_boundary_layers_from_json(
-                                materials,
-                                &names->boundary_layers,
-                                &names->surfaces,
-                                &names->media,
-                                &boundary_layers_json),
-                        "Failed to copy boundary_layers from materials.json.");
+        chk_dbg;
+        /* boundary_layers */
+        chk_msg(mliMaterials_assign_boundary_layers_from_json(
+                        materials,
+                        &names->boundary_layers,
+                        &names->surfaces,
+                        &names->media,
+                        &boundary_layers_json),
+                "Failed to copy boundary_layers from materials.json.");
 
         for (i = 0; i < materials->num_boundary_layers; i++) {
                 chk(mli_String_copy(
                         &materials->boundary_layer_names[i],
                         &names->boundary_layers.items.array[i].key));
         }
-        chk_dbg mli_Json_free(&boundary_layers_json);
+        chk_dbg;
+        mli_Json_free(&boundary_layers_json);
 
         /* default medium */
         chk(mli_String_from_cstr(&fixname, "materials/default_medium.txt"));
@@ -212,7 +220,8 @@ int mliMaterials_malloc_form_archive(
         chk_msg(mliDynMap_get(&names->media, &key, &materials->default_medium),
                 "Failed to assign the 'default_medium'.");
 
-        chk_dbg mli_String_free(&fixname);
+        chk_dbg;
+        mli_String_free(&fixname);
         mli_String_free(&extension);
         mli_String_free(&basename);
         mli_String_free(&key);

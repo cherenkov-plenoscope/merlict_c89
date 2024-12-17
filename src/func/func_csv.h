@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../func/func.h"
-#include "../io/io_memory.h"
+#include "../io/io.h"
 #include "../string/string.h"
 
 int mli_Func_from_csv(

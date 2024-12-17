@@ -77,6 +77,9 @@ int chk_eprintf(const char *format, ...);
                 chk_msg(num_read == NUM, "Can not read from file.");           \
         }
 
-#define chk_dbg /*fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);*/
+#define chk_dbg                                                                \
+        {                                                                      \
+                /*fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);*/           \
+        }
 
 #endif

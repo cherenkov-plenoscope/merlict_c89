@@ -36,8 +36,8 @@ CASE("mliArchive, read tar")
         CHECK(mliArchive_has(&arc, &tmp));
 
         CHECK(mliArchive_get(&arc, &tmp, &data));
-        /*CHECK(data->length == 119 + 1);*/
 
+        CHECK(mli_IO_open_memory(&io));
         CHECK(mli_IO_text_write_String(&io, data));
         mli_IO_rewind(&io);
         CHECK(mliObject_malloc_from_wavefront(&triangle, &io));

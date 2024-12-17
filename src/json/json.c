@@ -6,6 +6,7 @@
 #include "../cstr/cstr_numbers.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
+#include "../io/io_text.h"
 
 struct mli_Json mli_Json_init(void)
 {
@@ -75,19 +76,40 @@ chk_error:
         return 0;
 }
 
+int mli_Json_from_io(struct mli_Json *self, struct mli_IO *io)
+{
+        mli_Json_free(self);
+        chk_msg(mli_IO_text_read_string(io, &self->raw),
+                "Failed to read file into String.");
+        chk_msg(mli_Json_malloc_tokens__(self), "Can't malloc Json's tokens.");
+        chk_msg(mli_Json_parse_tokens__(self), "Can't parse Json into tokens.");
+        return 1;
+chk_error:
+        mli_Json_free(self);
+        return 0;
+}
+
 int mli_Json_malloc_from_path(struct mli_Json *json, const char *path)
 {
         struct mli_IO ff = mli_IO_init();
+        struct mli_String _path = mli_String_init();
+        struct mli_String _mode = mli_String_init();
+
         mli_Json_free(json);
-        chk_msg(mli_IO_write_from_path(&ff, path),
+
+        chk(mli_String_from_cstr(&_path, path));
+        chk(mli_String_from_cstr(&_mode, "r"));
+        chk_msg(mli_IO_open_file(&ff, &_path, &_mode),
                 "Failed to read file into Json's Str.");
-        chk_msg(mli_String_from_cstr(&json->raw, (char *)ff.cstr),
-                "Failed to copy cstr.");
+        chk_msg(mli_Json_from_io(json, &ff), "Failed to malloc Json from io.");
         mli_IO_close(&ff);
-        chk_msg(mli_Json_malloc_tokens__(json), "Can't malloc Json's tokens.");
-        chk_msg(mli_Json_parse_tokens__(json), "Can't parse Json into tokens.");
+        mli_String_free(&_path);
+        mli_String_free(&_mode);
+
         return 1;
 chk_error:
+        mli_String_free(&_path);
+        mli_String_free(&_mode);
         mli_IO_close(&ff);
         mli_Json_free(json);
         return 0;
