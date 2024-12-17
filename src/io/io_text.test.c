@@ -87,25 +87,25 @@ CASE("mli_IO_text_write_multi_line_debug_view")
         struct mli_IO f = mli_IO_init();
         struct mli_String text = mli_String_init();
 
-        CHECK(mli_IO_text_write_cstr_format(&f, "TEXT\n"));
-        CHECK(mli_IO_text_write_cstr_format(&f, "====\n"));
-        CHECK(mli_IO_text_write_cstr_format(&f, "auto hirsch flasche bat\n"));
-        CHECK(mli_IO_text_write_cstr_format(&f, "tisch rad wein\n"));
-        CHECK(mli_IO_text_write_cstr_format(&f, "\n"));
-        CHECK(mli_IO_text_write_cstr_format(&f, "Ausserdem: Stuhl\n"));
-        CHECK(mli_IO_text_write_cstr_format(&f, "1.)\n"));
-        CHECK(mli_IO_text_write_cstr_format(&f, " - soziooekonomisch\n"));
-        CHECK(mli_IO_text_write_cstr_format(&f, "ENDE\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "TEXT\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "====\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "auto hirsch flasche bat\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "tisch rad wein\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "Ausserdem: Stuhl\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "1.)\n"));
+        CHECK(mli_IO_text_write_cstr(&f, " - soziooekonomisch\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "ENDE\n"));
         mli_IO_rewind(&f);
 
         CHECK(mli_String_from_cstr(&text, (char *)f.cstr));
         mli_IO_close(&f);
 
         CHECK(mli_IO_text_write_multi_line_debug_view(&f, &text, 1, 3));
-        CHECK(mli_IO_text_write_cstr_format(&f, "\n---\n\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "\n---\n\n"));
 
         CHECK(mli_IO_text_write_multi_line_debug_view(&f, &text, 4, 5));
-        CHECK(mli_IO_text_write_cstr_format(&f, "\n---\n\n"));
+        CHECK(mli_IO_text_write_cstr(&f, "\n---\n\n"));
 
         CHECK(mli_IO_text_write_multi_line_debug_view(&f, &text, 7, 2));
 
@@ -115,4 +115,16 @@ CASE("mli_IO_text_write_multi_line_debug_view")
 
         mli_IO_close(&f);
         mli_String_free(&text);
+}
+
+CASE("mli_IO_text_write_cstr_format")
+{
+        struct mli_IO byt = mli_IO_init();
+
+        mli_IO_text_write_cstr_format(&byt, "Hans %03d Lok %.3fh!", 8, 3.141);
+        mli_IO_rewind(&byt);
+
+        CHECK(0 == strcmp((char *)byt.cstr, "Hans 008 Lok 3.141h!"));
+
+        mli_IO_close(&byt);
 }

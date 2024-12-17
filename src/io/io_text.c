@@ -26,6 +26,19 @@ chk_error:
         return 0;
 }
 
+int mli_IO_text_write_cstr(struct mli_IO *self, const char *cstr)
+{
+        struct mli_String tmp = mli_String_init();
+        chk_msg(mli_String_from_cstr(&tmp, cstr),
+                "Can't malloc mli_String from cstr");
+        chk(mli_IO_text_write_String(self, &tmp));
+        mli_String_free(&tmp);
+        return 1;
+chk_error:
+        mli_String_free(&tmp);
+        return 0;
+}
+
 int mli_IO_text_write_cstr_format(struct mli_IO *self, const char *format, ...)
 {
         struct mli_String tmp = mli_String_init();

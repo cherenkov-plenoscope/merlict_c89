@@ -258,3 +258,18 @@ chk_error:
         fclose(f);
         return 0;
 }
+
+int mli_IO__write_cstr(struct mli_IO *self, const char *cstr)
+{
+        /* For testing purposes */
+        size_t i = 0;
+        while (cstr[i] != '\0') {
+                chk(mli_IO_write(
+                        self, (unsigned char *)(&cstr[i]), sizeof(char), 1));
+                i += 1;
+        }
+
+        return 1;
+chk_error:
+        return 0;
+}

@@ -3,7 +3,6 @@
 #define MLI_IOMEMORY_H_
 
 #include <stdint.h>
-#include "../string/string.h"
 
 struct mli_IO {
         /* memory */
@@ -51,4 +50,5 @@ int mli_IO__realloc_capacity(struct mli_IO *self, const uint64_t new_capacity);
 int mli_IO__shrink_to_fit(struct mli_IO *self);
 int mli_IO__write_unsigned_char(struct mli_IO *self, const unsigned char *c);
 int mli_IO__read_unsigned_char(struct mli_IO *self, unsigned char *c);
+int mli_IO__write_cstr(struct mli_IO *self, const char *cstr);
 #endif

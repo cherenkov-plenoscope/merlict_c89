@@ -10,7 +10,7 @@
 int mli_IO_text_getc(struct mli_IO *self);
 int mli_IO_text_putc(struct mli_IO *self, const char c);
 
-int mli_IO_text_write_cstr(struct mli_IO *self, const char *str);
+int mli_IO_text_write_cstr(struct mli_IO *self, const char *cstr);
 int mli_IO_text_write_cstr_format(struct mli_IO *self, const char *format, ...);
 
 int mli_IO_text_read_line(

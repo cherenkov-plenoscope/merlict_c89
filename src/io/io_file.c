@@ -22,6 +22,8 @@ int mli_IoFile_close(struct mli_IoFile *self)
                         rc = EOF;
                 }
         }
+
+        (*self) = mli_IoFile_init();
         return rc;
 }
 
