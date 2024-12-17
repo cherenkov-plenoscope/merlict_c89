@@ -29,7 +29,7 @@ int mliMaterials_surfaces_equal(
         chk_msg(a->num_surfaces == b->num_surfaces,
                 "Different number of surfaces.");
         for (i = 0; i < a->num_surfaces; i++) {
-                chk_msg(mliSurface_equal(&a->surfaces[i], &b->surfaces[i]),
+                chk_msg(mli_Surface_equal(&a->surfaces[i], &b->surfaces[i]),
                         "Different Surface.");
                 chk_msg(mli_String_equal(
                                 &a->surface_names[i], &b->surface_names[i]),

@@ -8,14 +8,14 @@
 #include "../object/object_wavefront.h"
 #include "mliScenery_valid.h"
 
-int mliSurface_malloc_random_phong(
-        struct mliSurface *srf,
+int mli_Surface_malloc_random_phong(
+        struct mli_Surface *srf,
         struct mli_Prng *prng)
 {
         struct mli_prng_UniformRange uniform_range;
         struct mli_Color color;
 
-        mliSurface_free(srf);
+        mli_Surface_free(srf);
         uniform_range.start = 0.0;
         uniform_range.range = 1.0;
         color = mli_Color_set(
@@ -28,7 +28,7 @@ int mliSurface_malloc_random_phong(
          * b: 450nm
          */
 
-        srf->material = MLI_MATERIAL_PHONG;
+        srf->material = MLI_SURFACE_PHONG;
 
         /* no specular reflection */
         chk(mli_Func_malloc(&srf->specular_reflection, 2));
@@ -138,7 +138,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         scenery->materials.media[0].absorbtion.y[1] = 0.0;
 
         for (i = 0u; i < total_num_boundary_layers; i++) {
-                chk_msg(mliSurface_malloc_random_phong(
+                chk_msg(mli_Surface_malloc_random_phong(
                                 &scenery->materials.surfaces[i], &prng),
                         "Can't draw random phong surface.");
 

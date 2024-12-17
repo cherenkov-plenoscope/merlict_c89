@@ -1,29 +1,29 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLISURFACE_H_
-#define MLISURFACE_H_
+#ifndef MLI_SURFACE_H_
+#define MLI_SURFACE_H_
 
 #include <stdint.h>
 #include "../func/func.h"
 #include "../color/color.h"
 #include "../string/string.h"
 
-#define MLI_MATERIAL_PHONG 100u
-#define MLI_MATERIAL_TRANSPARENT 102u
+#define MLI_SURFACE_PHONG 100u
+#define MLI_SURFACE_TRANSPARENT 102u
 
-struct mliSurface {
+struct mli_Surface {
         uint32_t material;
 
         struct mli_Func specular_reflection;
         struct mli_Func diffuse_reflection;
 };
 
-int mliSurface_malloc(
-        struct mliSurface *surface,
+int mli_Surface_malloc(
+        struct mli_Surface *surface,
         const uint32_t num_points_specular_reflection,
         const uint32_t num_points_diffuse_reflection);
-void mliSurface_free(struct mliSurface *surface);
-struct mliSurface mliSurface_init(void);
-int mliSurface_equal(const struct mliSurface *a, const struct mliSurface *b);
+void mli_Surface_free(struct mli_Surface *surface);
+struct mli_Surface mli_Surface_init(void);
+int mli_Surface_equal(const struct mli_Surface *a, const struct mli_Surface *b);
 
 int mli_material_type_to_string(const uint32_t type, struct mli_String *s);
 int mli_material_type_from_string(const struct mli_String *s, uint32_t *id);

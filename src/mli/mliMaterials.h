@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../object/object.h"
 #include "../func/func.h"
-#include "mliSurface.h"
+#include "../surface/surface.h"
 #include "../medium/medium.h"
 #include "mliBoundaryLayer.h"
 #include "../string/string.h"
@@ -20,7 +20,7 @@ struct mliMaterialsCapacity mliMaterialsCapacity_init(void);
 
 struct mliMaterials {
         uint64_t num_surfaces;
-        struct mliSurface *surfaces;
+        struct mli_Surface *surfaces;
         struct mli_String *surface_names;
 
         uint64_t num_media;

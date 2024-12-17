@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mliMaterials_serialize.h"
 #include "../medium/medium_serialize.h"
-#include "mliSurface_serialize.h"
+#include "../surface/surface_serialize.h"
 #include "../magicid/magicid.h"
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
@@ -25,7 +25,7 @@ int mliMaterials_to_io(const struct mliMaterials *res, struct mli_IO *f)
         }
         for (i = 0; i < res->num_surfaces; i++) {
                 chk(mli_String_to_io(&res->surface_names[i], f));
-                chk(mliSurface_to_io(&res->surfaces[i], f));
+                chk(mli_Surface_to_io(&res->surfaces[i], f));
         }
         for (i = 0; i < res->num_boundary_layers; i++) {
                 chk(mli_String_to_io(&res->boundary_layer_names[i], f));
@@ -70,7 +70,7 @@ int mliMaterials_from_io(struct mliMaterials *res, struct mli_IO *f)
         for (i = 0; i < res->num_surfaces; i++) {
                 chk_msg(mli_String_from_io(&res->surface_names[i], f),
                         "Failed to fread surface name.");
-                chk_msg(mliSurface_from_io(&res->surfaces[i], f),
+                chk_msg(mli_Surface_from_io(&res->surfaces[i], f),
                         "Failed to fread Surface.");
         }
         for (i = 0; i < res->num_boundary_layers; i++) {

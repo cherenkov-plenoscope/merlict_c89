@@ -55,11 +55,11 @@ CASE("simple propagation")
 
         CHECK(side_going_to.medium == MED_GLASS);
         CHECK(scenery.materials.surfaces[side_going_to.surface].material ==
-              MLI_MATERIAL_TRANSPARENT);
+              MLI_SURFACE_TRANSPARENT);
 
         CHECK(side_coming_from.medium == MED_VACUUM);
         CHECK(scenery.materials.surfaces[side_coming_from.surface].material ==
-              MLI_MATERIAL_TRANSPARENT);
+              MLI_SURFACE_TRANSPARENT);
 
         CHECK(mliDynPhotonInteraction_malloc(&history, max_interactions));
 

@@ -199,18 +199,18 @@ int mli_propagate_photon_interact_with_object(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec)
 {
-        struct mliSurface surface_coming_from;
+        struct mli_Surface surface_coming_from;
         const struct mliSide side_coming_from =
                 mli_get_side_coming_from(env->scenery, isec);
         surface_coming_from =
                 env->scenery->materials.surfaces[side_coming_from.surface];
         switch (surface_coming_from.material) {
-        case MLI_MATERIAL_TRANSPARENT:
+        case MLI_SURFACE_TRANSPARENT:
                 chk_msg(mli_propagate_photon_fresnel_refraction_and_reflection(
                                 env, isec),
                         "Failed Fresnel.");
                 break;
-        case MLI_MATERIAL_PHONG:
+        case MLI_SURFACE_PHONG:
                 chk_msg(mli_propagate_photon_phong(env, isec),
                         "Failed Phong-material.");
                 break;

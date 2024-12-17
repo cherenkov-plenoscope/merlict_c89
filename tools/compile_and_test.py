@@ -56,6 +56,7 @@ module_paths = [
     os.path.join("src", "homtra"),
     os.path.join("src", "object"),
     os.path.join("src", "medium"),
+    os.path.join("src", "surface"),
     os.path.join("src", "triangle"),
     os.path.join("src", "testing"),
     os.path.join("src", "mli"),

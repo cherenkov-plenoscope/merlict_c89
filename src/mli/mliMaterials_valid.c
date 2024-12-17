@@ -23,9 +23,9 @@ int mliMaterials_valid_surfaces(const struct mliMaterials *materials)
         uint32_t i = 0u;
         for (i = 0; i < materials->num_surfaces; i++) {
                 chk_msg((materials->surfaces[i].material ==
-                         MLI_MATERIAL_PHONG) ||
+                         MLI_SURFACE_PHONG) ||
                                 (materials->surfaces[i].material ==
-                                 MLI_MATERIAL_TRANSPARENT),
+                                 MLI_SURFACE_TRANSPARENT),
                         "Material-type is unknown.");
                 chk_msg(mli_Func_is_valid(
                                 &materials->surfaces[i].specular_reflection),

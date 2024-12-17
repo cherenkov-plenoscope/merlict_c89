@@ -1,17 +1,17 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliSurface_json.h"
+#include "surface_json.h"
 #include "../func/func_json.h"
 #include "../color/color_json.h"
 #include "../chk/chk.h"
 
-int mliSurface_malloc_from_json_string(
-        struct mliSurface *surface,
+int mli_Surface_malloc_from_json_string(
+        struct mli_Surface *surface,
         const struct mli_String *str)
 {
         struct mli_Json json = mli_Json_init();
         chk_msg(mli_Json_from_string(&json, str),
                 "Failed to read json string to malloc surface.");
-        chk_msg(mliSurface_malloc_from_json_token(surface, &json, 0),
+        chk_msg(mli_Surface_malloc_from_json_token(surface, &json, 0),
                 "Failed to malloc surface from json.");
         mli_Json_free(&json);
         return 1;
@@ -44,8 +44,8 @@ chk_error:
         return 0;
 }
 
-int mliSurface_malloc_from_json_token(
-        struct mliSurface *surface,
+int mli_Surface_malloc_from_json_token(
+        struct mli_Surface *surface,
         const struct mli_Json *json,
         const uint64_t token)
 {

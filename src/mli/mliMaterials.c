@@ -46,7 +46,7 @@ void mliMaterials_free(struct mliMaterials *res)
 
         chk_dbg for (i = 0; i < res->num_surfaces; i++)
         {
-                mliSurface_free(&(res->surfaces[i]));
+                mli_Surface_free(&(res->surfaces[i]));
                 mli_String_free(&res->surface_names[i]);
         }
         free(res->surfaces);
@@ -79,10 +79,10 @@ int mliMaterials_malloc(
                 res->medium_names[i] = mli_String_init();
         }
 
-        chk_malloc(res->surfaces, struct mliSurface, res->num_surfaces);
+        chk_malloc(res->surfaces, struct mli_Surface, res->num_surfaces);
         chk_malloc(res->surface_names, struct mli_String, res->num_surfaces);
         for (i = 0; i < res->num_surfaces; i++) {
-                res->surfaces[i] = mliSurface_init();
+                res->surfaces[i] = mli_Surface_init();
                 res->surface_names[i] = mli_String_init();
         }
 
@@ -192,9 +192,9 @@ void mliMaterials_info_fprint(FILE *f, const struct mliMaterials *res)
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
                 fprintf(f, "%24s ", res->surface_names[i].array);
-                if (res->surfaces[i].material == MLI_MATERIAL_TRANSPARENT) {
+                if (res->surfaces[i].material == MLI_SURFACE_TRANSPARENT) {
                         fprintf(f, "%12s ", "transparent");
-                } else if (res->surfaces[i].material == MLI_MATERIAL_PHONG) {
+                } else if (res->surfaces[i].material == MLI_SURFACE_PHONG) {
                         fprintf(f, "%12s ", "Phong");
                 } else {
                         fprintf(f, "%12s ", "UNKNOWN");

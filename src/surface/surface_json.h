@@ -1,17 +1,17 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLISURFACE_JSON_H_
-#define MLISURFACE_JSON_H_
+#ifndef MLI_SURFACE_JSON_H_
+#define MLI_SURFACE_JSON_H_
 
 #include <stdint.h>
-#include "mliSurface.h"
+#include "../surface/surface.h"
 #include "../json/json.h"
 #include "../string/string.h"
 
-int mliSurface_malloc_from_json_string(
-        struct mliSurface *surface,
+int mli_Surface_malloc_from_json_string(
+        struct mli_Surface *surface,
         const struct mli_String *str);
-int mliSurface_malloc_from_json_token(
-        struct mliSurface *surface,
+int mli_Surface_malloc_from_json_token(
+        struct mli_Surface *surface,
         const struct mli_Json *json,
         const uint64_t token);
 int mli_material_type_from_json_token(

@@ -15,7 +15,7 @@
 #include "../medium/medium_json.h"
 #include "mliFrame.h"
 #include "mliFrame_json.h"
-#include "mliSurface_json.h"
+#include "../surface/surface_json.h"
 
 int mli_set_geometry_objects_and_names_from_archive(
         struct mliGeometry *geometry,
@@ -172,7 +172,7 @@ int mliMaterials_malloc_form_archive(
                     mli_String_ends_with_cstr(filename, ".json")) {
                         struct mli_String *payload =
                                 &archive->textfiles.array[arc_idx];
-                        chk_msg(mliSurface_malloc_from_json_string(
+                        chk_msg(mli_Surface_malloc_from_json_string(
                                         &materials->surfaces[srf_idx], payload),
                                 "Failed to parse surface json from "
                                 "file.");
