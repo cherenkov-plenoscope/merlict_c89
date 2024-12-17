@@ -19,9 +19,9 @@ int mli_Frame_type_from_json_token(
         } else if (!has_obj && !has_children) {
                 chk_bad("Frame must have either of keys 'obj', or 'children'.");
         } else if (has_obj && !has_children) {
-                (*type) = MLI_OBJECT;
+                (*type) = MLI_FRAME_TYPE_OBJECT;
         } else if (!has_obj && has_children) {
-                (*type) = MLI_FRAME;
+                (*type) = MLI_FRAME_TYPE_FRAME;
         } else {
                 chk_bad("Not expected to happen");
         }
@@ -169,7 +169,8 @@ int mli_Frame_from_json(
                 uint64_t type;
                 uint64_t token_grandchildren;
 
-                chk_msg(mli_Frame_type_from_json_token(&type, json, token_child),
+                chk_msg(mli_Frame_type_from_json_token(
+                                &type, json, token_child),
                         "Failed to read type of Frame.");
 
                 child = mli_Frame_add(mother, type);
@@ -184,7 +185,7 @@ int mli_Frame_from_json(
                         "Failed to set id of Frame from json.");
 
                 switch (type) {
-                case MLI_FRAME:
+                case MLI_FRAME_TYPE_FRAME:
                         chk_msg(mli_Json_token_by_key(
                                         json,
                                         token_child,
@@ -202,7 +203,7 @@ int mli_Frame_from_json(
                                 "Failed to populate grandchildren "
                                 "Frames from json.");
                         break;
-                case MLI_OBJECT:
+                case MLI_FRAME_TYPE_OBJECT:
                         chk_msg(mli_Frame_object_reference_form_json_token(
                                         &child->object,
                                         json,

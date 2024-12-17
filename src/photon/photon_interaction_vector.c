@@ -3,7 +3,9 @@
 #include "../chk/chk.h"
 #include <stdlib.h>
 
-MLI_VECTOR_IMPLEMENTATION(mli_PhotonInteractionVector, struct mli_PhotonInteraction)
+MLI_VECTOR_IMPLEMENTATION(
+        mli_PhotonInteractionVector,
+        struct mli_PhotonInteraction)
 
 int mli_PhotonInteractionVector_time_of_flight(
         const struct mli_PhotonInteractionVector *history,

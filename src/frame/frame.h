@@ -7,8 +7,8 @@
 #include "../vector/uint32_vector.h"
 #include "frame_ptr_vector.h"
 
-#define MLI_FRAME 1000u
-#define MLI_OBJECT 1001u
+#define MLI_FRAME_TYPE_FRAME 1000u
+#define MLI_FRAME_TYPE_OBJECT 1001u
 
 struct mli_Frame {
         uint32_t type;
@@ -26,8 +26,8 @@ struct mli_Frame {
 void mli_Frame_set_frame2root(struct mli_Frame *f);
 void mli_Frame_print(struct mli_Frame *f);
 void mli_Frame_print_walk(const struct mli_Frame *f, const uint64_t indention);
-int mli_string_to_type(const char *s, uint64_t *type);
-int mli_type_to_string(const uint64_t type, char *s);
+int mli_frame_string_to_type(const char *s, uint64_t *type);
+int mli_frame_type_to_string(const uint64_t type, char *s);
 struct mli_Frame *mli_Frame_add(struct mli_Frame *mother, const uint64_t type);
 int mli_Frame_set_mother_and_child(
         struct mli_Frame *mother,

@@ -13,7 +13,7 @@ int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
 {
         uint64_t c;
         switch (frame->type) {
-        case MLI_FRAME:
+        case MLI_FRAME_TYPE_FRAME:
                 for (c = 0; c < frame->children.size; c++) {
                         chk(mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
                                 frame->children.array[c],
@@ -21,7 +21,7 @@ int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
                                 total_num_boundary_layers));
                 }
                 break;
-        case MLI_OBJECT:
+        case MLI_FRAME_TYPE_OBJECT:
                 (*num_robjects) += 1;
                 (*total_num_boundary_layers) += frame->boundary_layers.size;
                 break;
@@ -61,7 +61,7 @@ int mli_Frame_set_robjects_and_material_map_walk(
         uint64_t material_idx;
         uint64_t robject_idx;
         switch (frame->type) {
-        case MLI_FRAME:
+        case MLI_FRAME_TYPE_FRAME:
                 for (c = 0; c < frame->children.size; c++) {
                         chk(mli_Frame_set_robjects_and_material_map_walk(
                                 frame->children.array[c],
@@ -71,7 +71,7 @@ int mli_Frame_set_robjects_and_material_map_walk(
                                 total_num_boundary_layers));
                 }
                 break;
-        case MLI_OBJECT:
+        case MLI_FRAME_TYPE_OBJECT:
                 robject_idx = (*num_robjects);
 
                 chk_msg(frame->object < geometry->num_objects,

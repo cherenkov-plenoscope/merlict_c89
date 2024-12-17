@@ -252,7 +252,8 @@ int mli_check_malloc_root_frame_from_Archive(
                 "Failed to parse 'geometry/relations.json'.");
         chk_msg(mli_Json_token_by_key(&tree_json, 0, "children", &token),
                 "Expected 'tree.json' to have key 'children'.");
-        chk_msg(mli_Frame_malloc(root, MLI_FRAME), "Can not malloc root-frame.");
+        chk_msg(mli_Frame_malloc(root, MLI_FRAME_TYPE_FRAME),
+                "Can not malloc root-frame.");
         chk_msg(mli_Frame_from_json(
                         root,
                         &tree_json,
