@@ -59,7 +59,7 @@ struct mliIdx3 mliAxisAlignedGrid_get_voxel_idx(
 
 int mliAxisAlignedGrid_find_voxel_of_first_interaction(
         const struct mliAxisAlignedGrid *grid,
-        const struct mliRay *ray,
+        const struct mli_Ray *ray,
         struct mliIdx3 *bin)
 {
         if (mli_AABB_is_point_inside(grid->bounds, ray->support)) {
@@ -68,17 +68,17 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
         } else {
                 double ray_parameter_near, ray_parameter_far;
                 int has_intersection;
-                mliRay_aabb_intersections(
+                mli_Ray_aabb_intersections(
                         (*ray),
                         grid->bounds,
                         &ray_parameter_near,
                         &ray_parameter_far);
                 has_intersection =
-                        mliRay_aabb_intersections_is_valid_given_near_and_far(
+                        mli_Ray_aabb_intersections_is_valid_given_near_and_far(
                                 ray_parameter_near, ray_parameter_far);
                 if (has_intersection) {
                         struct mli_Vec inner;
-                        inner = mliRay_at(ray, ray_parameter_near);
+                        inner = mli_Ray_at(ray, ray_parameter_near);
                         (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, inner);
 
                         if (bin->x >= grid->num_bins.x) {
@@ -139,24 +139,24 @@ struct mli_Vec mliAxisAlignedGridTraversal_first_plane(
         return first;
 }
 
-double calc_t_for_x_plane(const double x_plane, const struct mliRay *ray)
+double calc_t_for_x_plane(const double x_plane, const struct mli_Ray *ray)
 {
         return -(ray->support.x - x_plane) / (ray->direction.x);
 }
 
-double calc_t_for_y_plane(const double y_plane, const struct mliRay *ray)
+double calc_t_for_y_plane(const double y_plane, const struct mli_Ray *ray)
 {
         return -(ray->support.y - y_plane) / (ray->direction.y);
 }
 
-double calc_t_for_z_plane(const double z_plane, const struct mliRay *ray)
+double calc_t_for_z_plane(const double z_plane, const struct mli_Ray *ray)
 {
         return -(ray->support.z - z_plane) / (ray->direction.z);
 }
 
 struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
         const struct mliAxisAlignedGrid *grid,
-        const struct mliRay *ray)
+        const struct mli_Ray *ray)
 {
         struct mliAxisAlignedGridTraversal traversal;
 
@@ -265,7 +265,7 @@ void mliAxisAlignedGridTraversal_fprint(
                 t->tDelta.z);
 }
 
-void mliRay_fprint(FILE *f, struct mliRay *ray)
+void mli_Ray_fprint(FILE *f, struct mli_Ray *ray)
 {
         fprintf(f,
                 "[%f, %f, %f] + lam*[%f, %f, %f]",

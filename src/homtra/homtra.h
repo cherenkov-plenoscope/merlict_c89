@@ -39,20 +39,20 @@ struct mli_Vec mli_HomTraComp_pos_inverse(
 struct mli_Vec mli_HomTraComp_pos(
         const struct mli_HomTra *t,
         const struct mli_Vec in);
-struct mliRay mli_HomTraComp_ray_inverse(
+struct mli_Ray mli_HomTraComp_ray_inverse(
         const struct mli_HomTra *t,
-        const struct mliRay in);
-struct mliRay mli_HomTraComp_ray(
+        const struct mli_Ray in);
+struct mli_Ray mli_HomTraComp_ray(
         const struct mli_HomTra *t,
-        const struct mliRay in);
-struct mliRay mli_transform_ray_inverse(
+        const struct mli_Ray in);
+struct mli_Ray mli_transform_ray_inverse(
         const struct mli_Mat *rotation,
         const struct mli_Vec translation,
-        const struct mliRay in);
-struct mliRay mli_transform_ray(
+        const struct mli_Ray in);
+struct mli_Ray mli_transform_ray(
         const struct mli_Mat *rotation,
         const struct mli_Vec translation,
-        const struct mliRay in);
+        const struct mli_Ray in);
 struct mli_Vec mli_transform_position_inverse(
         const struct mli_Mat *rotation,
         const struct mli_Vec translation,

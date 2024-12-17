@@ -32,17 +32,17 @@ struct mliTracer mliTracer_init(void);
 
 struct mli_Color mliTracer_trace_ray(
         const struct mliTracer *tracer,
-        const struct mliRay ray,
+        const struct mli_Ray ray,
         struct mli_Prng *prng);
 
 struct mli_Color mliTracer_trace_ray_with_atmosphere(
         const struct mliTracer *tracer,
-        const struct mliRay ray,
+        const struct mli_Ray ray,
         struct mli_Prng *prng);
 
 struct mli_Color mliTracer_trace_ray_without_atmosphere(
         const struct mliTracer *tracer,
-        const struct mliRay ray,
+        const struct mli_Ray ray,
         struct mli_Prng *prng);
 
 double mli_trace_sun_obstruction(

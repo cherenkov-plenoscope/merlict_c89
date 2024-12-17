@@ -122,7 +122,7 @@ struct mli_Vec mliApertureCamera_ray_support_on_aperture(
         const double aperture_radius,
         struct mli_Prng *prng);
 
-struct mliRay mliApertureCamera_get_ray_for_pixel(
+struct mli_Ray mliApertureCamera_get_ray_for_pixel(
         const double focal_length,
         const double aperture_radius,
         const double image_sensor_distance,

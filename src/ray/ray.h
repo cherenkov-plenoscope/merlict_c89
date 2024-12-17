@@ -5,16 +5,16 @@
 #include <stdio.h>
 #include "../vec/vec.h"
 
-struct mliRay {
+struct mli_Ray {
         struct mli_Vec support;
         struct mli_Vec direction;
 };
 
-struct mli_Vec mliRay_at(const struct mliRay *ray, const double t);
-struct mliRay mliRay_set(
+struct mli_Vec mli_Ray_at(const struct mli_Ray *ray, const double t);
+struct mli_Ray mli_Ray_set(
         const struct mli_Vec support,
         const struct mli_Vec direction);
-int mliRay_sphere_intersection(
+int mli_Ray_sphere_intersection(
         const struct mli_Vec support,
         const struct mli_Vec direction,
         const double radius,

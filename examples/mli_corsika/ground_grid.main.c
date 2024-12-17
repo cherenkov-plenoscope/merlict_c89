@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 
         float raw[8] = {0.0};
         struct mli_corsika_PhotonBunch bunch;
-        struct mliRay ray;
+        struct mli_Ray ray;
         int i;
 
         chk(mli_Tar_read_begin(&arc, stdin));
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
                                                 fprintf(stderr,
                                                         "-------------------"
                                                         "\n");
-                                                mliRay_fprint(stderr, &ray);
+                                                mli_Ray_fprint(stderr, &ray);
                                                 fprintf(stderr, "\n");
                                                 mliAxisAlignedGridTraversal_fprint(
                                                         stderr, &traversal);

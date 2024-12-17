@@ -2,18 +2,18 @@
 #include "ray.h"
 #include "../math/math_quadratic_equation.h"
 
-struct mliRay mliRay_set(
+struct mli_Ray mli_Ray_set(
         const struct mli_Vec support,
         const struct mli_Vec direction)
 {
-        struct mliRay ray;
+        struct mli_Ray ray;
         ray.support = support;
         ray.direction =
                 mli_Vec_multiply(direction, 1. / mli_Vec_norm(direction));
         return ray;
 }
 
-struct mli_Vec mliRay_at(const struct mliRay *ray, const double t)
+struct mli_Vec mli_Ray_at(const struct mli_Ray *ray, const double t)
 {
         struct mli_Vec out;
         out.x = ray->support.x + t * ray->direction.x;
@@ -22,7 +22,7 @@ struct mli_Vec mliRay_at(const struct mliRay *ray, const double t)
         return out;
 }
 
-int mliRay_sphere_intersection(
+int mli_Ray_sphere_intersection(
         const struct mli_Vec support,
         const struct mli_Vec direction,
         const double radius,

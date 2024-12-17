@@ -25,7 +25,7 @@ struct mli_Color mli_trace_to_intersection_atmosphere(
         struct mli_Prng *prng);
 struct mli_Color mli_trace_with_atmosphere(
         const struct mliTracer *tracer,
-        const struct mliRay ray,
+        const struct mli_Ray ray,
         struct mli_Prng *prng);
 
 #endif

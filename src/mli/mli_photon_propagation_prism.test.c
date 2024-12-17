@@ -52,7 +52,7 @@ CASE("refraction_in_prism")
                 struct mliPhotonInteraction final_intersection;
                 uint64_t final_robj_id;
 
-                photon.ray = mliRay_set(
+                photon.ray = mli_Ray_set(
                         mli_Vec_init(0.0, -1.0, -angle_of_attack),
                         mli_Vec_init(0.0, 1.0, angle_of_attack));
                 photon.wavelength =

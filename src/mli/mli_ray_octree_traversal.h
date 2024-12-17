@@ -11,7 +11,7 @@
 
 void mli_ray_octree_traversal(
         const struct mliOcTree *octree,
-        const struct mliRay ray,
+        const struct mli_Ray ray,
         void *work,
         void (*work_on_leaf_node)(
                 void *,

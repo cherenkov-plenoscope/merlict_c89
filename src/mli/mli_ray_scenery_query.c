@@ -25,7 +25,7 @@ void mli_inner_object_traversal(
 
                 struct mliFace fv = inner->object->faces_vertices[face_idx];
 
-                int32_t hit = mliRay_intersects_triangle(
+                int32_t hit = mli_Ray_intersects_triangle(
                         inner->ray_object,
                         inner->object->vertices[fv.a],
                         inner->object->vertices[fv.b],
@@ -35,7 +35,7 @@ void mli_inner_object_traversal(
                 tmp_isec.geometry_id.face = face_idx;
 
                 if (hit) {
-                        tmp_isec.position_local = mliRay_at(
+                        tmp_isec.position_local = mli_Ray_at(
                                 &inner->ray_object, tmp_isec.distance_of_ray);
 
                         inner->has_intersection = 1;
@@ -52,7 +52,7 @@ int mli_query_object_reference(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
         const struct mli_HomTraComp robject2root_comp,
-        const struct mliRay ray_root,
+        const struct mli_Ray ray_root,
         struct mliIntersection *isec)
 {
         struct mli_HomTra robject2root =
@@ -115,7 +115,7 @@ void mli_outer_scenery_traversal(
 
 int mli_query_intersection(
         const struct mliScenery *scenery,
-        const struct mliRay ray_root,
+        const struct mli_Ray ray_root,
         struct mliIntersection *isec)
 {
         struct mliQueryOuterWork outer;
@@ -142,7 +142,7 @@ int mli_query_intersection(
 
 int mli_query_intersection_with_surface_normal(
         const struct mliScenery *scenery,
-        const struct mliRay ray_root,
+        const struct mli_Ray ray_root,
         struct mliIntersectionSurfaceNormal *isecsrf)
 {
         struct mliIntersection isec = mliIntersection_init();
@@ -158,7 +158,7 @@ int mli_query_intersection_with_surface_normal(
 
                 struct mli_HomTra robject2root = mli_HomTraComp_from_compact(
                         scenery->geometry.robject2root[robject_idx]);
-                struct mliRay ray_object =
+                struct mli_Ray ray_object =
                         mli_HomTraComp_ray_inverse(&robject2root, ray_root);
 
                 struct mliObject *obj = &scenery->geometry.objects[object_idx];
@@ -169,7 +169,7 @@ int mli_query_intersection_with_surface_normal(
                 (*isecsrf) = mliIntersectionSurfaceNormal_init();
                 isecsrf->distance_of_ray = isec.distance_of_ray;
                 isecsrf->geometry_id = isec.geometry_id;
-                isecsrf->position = mliRay_at(&ray_root, isec.distance_of_ray);
+                isecsrf->position = mli_Ray_at(&ray_root, isec.distance_of_ray);
                 isecsrf->position_local = isec.position_local;
 
                 /* find surface-normal */

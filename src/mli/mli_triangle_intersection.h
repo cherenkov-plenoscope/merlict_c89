@@ -12,8 +12,8 @@ struct mli_Vec mliTriangle_interpolate_surface_normal(
         const struct mli_Vec vertex_normal_c,
         const struct mliBarycentrigWeights weights);
 
-int mliRay_intersects_triangle(
-        const struct mliRay ray,
+int mli_Ray_intersects_triangle(
+        const struct mli_Ray ray,
         const struct mli_Vec vertex_a,
         const struct mli_Vec vertex_b,
         const struct mli_Vec vertex_c,

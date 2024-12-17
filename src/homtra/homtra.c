@@ -92,23 +92,23 @@ struct mli_Vec mli_transform_position_inverse(
         return out;
 }
 
-struct mliRay mli_transform_ray(
+struct mli_Ray mli_transform_ray(
         const struct mli_Mat *rotation,
         const struct mli_Vec translation,
-        const struct mliRay in)
+        const struct mli_Ray in)
 {
-        struct mliRay out;
+        struct mli_Ray out;
         out.support = mli_transform_position(rotation, translation, in.support);
         out.direction = mli_transform_orientation(rotation, in.direction);
         return out;
 }
 
-struct mliRay mli_transform_ray_inverse(
+struct mli_Ray mli_transform_ray_inverse(
         const struct mli_Mat *rotation,
         const struct mli_Vec translation,
-        const struct mliRay in)
+        const struct mli_Ray in)
 {
-        struct mliRay out;
+        struct mli_Ray out;
         out.support = mli_transform_position_inverse(
                 rotation, translation, in.support);
         out.direction =
@@ -116,16 +116,16 @@ struct mliRay mli_transform_ray_inverse(
         return out;
 }
 
-struct mliRay mli_HomTraComp_ray(
+struct mli_Ray mli_HomTraComp_ray(
         const struct mli_HomTra *t,
-        const struct mliRay in)
+        const struct mli_Ray in)
 {
         return mli_transform_ray(&t->rotation, t->translation, in);
 }
 
-struct mliRay mli_HomTraComp_ray_inverse(
+struct mli_Ray mli_HomTraComp_ray_inverse(
         const struct mli_HomTra *t,
-        const struct mliRay in)
+        const struct mli_Ray in)
 {
         return mli_transform_ray_inverse(&t->rotation, t->translation, in);
 }

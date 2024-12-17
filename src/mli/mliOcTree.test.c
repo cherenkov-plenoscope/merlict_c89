@@ -62,9 +62,9 @@ CASE("ray parallel to axis")
                 &scenery.geometry.object_names[obj], "teapot"));
 
         for (i = 0; i < 6; i++) {
-                struct mliRay ray;
+                struct mli_Ray ray;
 
-                ray = mliRay_set(sups[i], dirs[i]);
+                ray = mli_Ray_set(sups[i], dirs[i]);
 
                 isec = mliIntersection_init();
 

@@ -63,7 +63,7 @@ struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
         const struct mli_Vec photon_direction_of_motion =
                 mli_corsika_photon_direction_of_motion(bunch);
 
-        const struct mliRay ray_running_upwards_to_production = mliRay_set(
+        const struct mli_Ray ray_running_upwards_to_production = mli_Ray_set(
                 mli_corsika_photon_support_on_observation_level(bunch),
                 mli_Vec_multiply(photon_direction_of_motion, -1.0));
 
@@ -74,7 +74,7 @@ struct mliPhoton mli_corsika_PhotonBunch_to_merlict_photon(
                                  bunch));
 
         const struct mli_Vec photon_emission_position =
-                mliRay_at(&ray_running_upwards_to_production, offset);
+                mli_Ray_at(&ray_running_upwards_to_production, offset);
 
         struct mliPhoton photon;
         photon.ray.support = photon_emission_position;

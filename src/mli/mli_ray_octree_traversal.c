@@ -285,7 +285,7 @@ void mli_ray_octree_traversal_sub(
 
 void mli_ray_octree_traversal(
         const struct mliOcTree *octree,
-        const struct mliRay ray,
+        const struct mli_Ray ray,
         void *work,
         void (*work_on_leaf_node)(
                 void *,
@@ -294,7 +294,7 @@ void mli_ray_octree_traversal(
 {
         struct mli_Vec t0, t1;
         struct mli_Vec div;
-        struct mliRay ray_wrt_octree;
+        struct mli_Ray ray_wrt_octree;
         struct mli_Vec cube_upper, cube_size;
         struct mliCube cube;
         int32_t octree_root_node, octree_root_type;

@@ -2,8 +2,8 @@
 #include "ray_AABB.h"
 #include "../math/math.h"
 
-void mliRay_aabb_intersections(
-        const struct mliRay ray,
+void mli_Ray_aabb_intersections(
+        const struct mli_Ray ray,
         const struct mli_AABB aabb,
         double *t_near,
         double *t_far)
@@ -36,7 +36,7 @@ void mliRay_aabb_intersections(
         (*t_far) = MLI_MATH_MIN3(t2.x, t2.y, t2.z);
 }
 
-int mliRay_aabb_intersections_is_valid_given_near_and_far(
+int mli_Ray_aabb_intersections_is_valid_given_near_and_far(
         const double t_near,
         const double t_far)
 {
@@ -49,10 +49,12 @@ int mliRay_aabb_intersections_is_valid_given_near_and_far(
         return 1;
 }
 
-int mliRay_has_overlap_aabb(const struct mliRay ray, const struct mli_AABB aabb)
+int mli_Ray_has_overlap_aabb(
+        const struct mli_Ray ray,
+        const struct mli_AABB aabb)
 {
         double t_near, t_far;
-        mliRay_aabb_intersections(ray, aabb, &t_near, &t_far);
-        return mliRay_aabb_intersections_is_valid_given_near_and_far(
+        mli_Ray_aabb_intersections(ray, aabb, &t_near, &t_far);
+        return mli_Ray_aabb_intersections_is_valid_given_near_and_far(
                 t_near, t_far);
 }

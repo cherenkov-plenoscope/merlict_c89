@@ -35,7 +35,7 @@ void mliPinHoleCamera_render_image_with_view(
         const double row_over_column_pixel_ratio,
         struct mli_Prng *prng);
 
-struct mliRay mliPinHoleCamera_ray_at_row_col(
+struct mli_Ray mliPinHoleCamera_ray_at_row_col(
         const struct mliPinHoleCamera *camera,
         const struct mli_Image *image,
         const uint32_t row,

@@ -6,7 +6,7 @@
 #include "../ray/ray.h"
 
 struct mliPhoton {
-        struct mliRay ray;
+        struct mli_Ray ray;
         double wavelength;
         int64_t id;
 };

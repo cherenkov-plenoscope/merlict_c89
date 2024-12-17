@@ -72,7 +72,7 @@ int mli_propagate_photon_phong(
                                 MLI_PHOTON_DIFFUSE_REFLECTION,
                                 env->scenery,
                                 isec)));
-                env->photon->ray = mliRay_set(
+                env->photon->ray = mli_Ray_set(
                         isec->position,
                         mli_draw_lambertian_direction_wrt_surface_normal(
                                 env->prng, isec->surface_normal));
@@ -85,7 +85,7 @@ int mli_propagate_photon_phong(
                                 MLI_PHOTON_SPECULAR_REFLECTION,
                                 env->scenery,
                                 isec)));
-                env->photon->ray = mliRay_set(
+                env->photon->ray = mli_Ray_set(
                         isec->position,
                         mli_Vec_mirror(
                                 env->photon->ray.direction,
@@ -112,7 +112,7 @@ int mli_propagate_photon_pass_boundary_layer(
                 env->history,
                 mliPhotonInteraction_from_Intersection(
                         MLI_PHOTON_REFRACTION, env->scenery, isec)));
-        env->photon->ray = mliRay_set(
+        env->photon->ray = mli_Ray_set(
                 isec->position, mliFresnel_refraction_direction(fresnel));
         chk_msg(mli_propagate_photon_env(env),
                 "Failed to continue after passing boundary layer");
@@ -180,7 +180,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
                                 MLI_PHOTON_FRESNEL_REFLECTION,
                                 env->scenery,
                                 isec)));
-                env->photon->ray = mliRay_set(
+                env->photon->ray = mli_Ray_set(
                         isec->position,
                         mliFresnel_reflection_direction(fresnel));
                 chk_msg(mli_propagate_photon_env(env),
@@ -292,7 +292,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
                 if (photon_is_absorbed_before_reaching_surface) {
                         /* absorbtion in medium */
                         phia.type = MLI_PHOTON_ABSORBTION_MEDIUM;
-                        phia.position = mliRay_at(
+                        phia.position = mli_Ray_at(
                                 &env->photon->ray, distance_until_absorbtion);
                         ;
                         phia.position_local = phia.position;
@@ -344,8 +344,8 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
 
                 /* absorbtion in medium */
                 phia.type = MLI_PHOTON_ABSORBTION_MEDIUM;
-                phia.position =
-                        mliRay_at(&env->photon->ray, distance_until_absorbtion);
+                phia.position = mli_Ray_at(
+                        &env->photon->ray, distance_until_absorbtion);
                 phia.position_local = phia.position;
                 phia.distance_of_ray = distance_until_absorbtion;
                 phia.on_geometry_surface = 0;

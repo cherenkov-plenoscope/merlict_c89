@@ -59,7 +59,7 @@ struct mli_Color mli_trace_color_tone_of_diffuse_sky(
 {
         int i;
         struct mli_Color sky = mli_Color_set(0.0, 0.0, 0.0);
-        struct mliRay obstruction_ray;
+        struct mli_Ray obstruction_ray;
         struct mli_Vec facing_surface_normal;
         struct mliIntersection isec;
         int has_direct_view_to_sky = 0;
@@ -138,7 +138,7 @@ struct mli_Color mli_trace_to_intersection_atmosphere(
 
 struct mli_Color mliTracer_trace_ray_with_atmosphere(
         const struct mliTracer *tracer,
-        const struct mliRay ray,
+        const struct mli_Ray ray,
         struct mli_Prng *prng)
 {
         struct mliIntersectionSurfaceNormal intersection =

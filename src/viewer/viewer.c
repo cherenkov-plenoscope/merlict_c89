@@ -424,8 +424,8 @@ int mli_viewer_run_interactive_viewer(
                                 struct mli_HomTra camera2root =
                                         mli_HomTraComp_from_compact(
                                                 camera2root_comp);
-                                struct mliRay probing_ray_wrt_camera;
-                                struct mliRay probing_ray_wrt_root;
+                                struct mli_Ray probing_ray_wrt_camera;
+                                struct mli_Ray probing_ray_wrt_root;
 
                                 probing_ray_wrt_camera =
                                         mliPinHoleCamera_ray_at_row_col(

@@ -27,7 +27,7 @@ struct mliPinHoleCamera mliPinHoleCamera_init(
         return sensor;
 }
 
-struct mliRay mliPinHoleCamera_ray_at_row_col(
+struct mli_Ray mliPinHoleCamera_ray_at_row_col(
         const struct mliPinHoleCamera *camera,
         const struct mli_Image *image,
         const uint32_t row,
@@ -43,7 +43,7 @@ struct mliRay mliPinHoleCamera_ray_at_row_col(
         struct mli_Vec sensor_intersection = camera->principal_point;
         sensor_intersection = mli_Vec_add(sensor_intersection, s_row);
         sensor_intersection = mli_Vec_add(sensor_intersection, s_col);
-        return mliRay_set(pin_hole_position, sensor_intersection);
+        return mli_Ray_set(pin_hole_position, sensor_intersection);
 }
 
 void mliPinHoleCamera_render_image(
@@ -62,10 +62,10 @@ void mliPinHoleCamera_render_image(
         for (i = 0; i < num_pixel; i++) {
                 struct mli_image_Pixel px =
                         mli_image_PixelWalk_get_Pixel(&walk, &image->geometry);
-                struct mliRay ray_wrt_camera = mliPinHoleCamera_ray_at_row_col(
+                struct mli_Ray ray_wrt_camera = mliPinHoleCamera_ray_at_row_col(
                         &camera, image, px.row, px.col);
 
-                struct mliRay ray_wrt_root =
+                struct mli_Ray ray_wrt_root =
                         mli_HomTraComp_ray(&camera2root, ray_wrt_camera);
 
                 struct mli_Color color =

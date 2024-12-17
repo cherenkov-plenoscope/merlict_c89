@@ -27,7 +27,7 @@ struct mliAxisAlignedGrid mliAxisAlignedGrid_set(
 
 int mliAxisAlignedGrid_find_voxel_of_first_interaction(
         const struct mliAxisAlignedGrid *grid,
-        const struct mliRay *ray,
+        const struct mli_Ray *ray,
         struct mliIdx3 *bin);
 
 #define MLI_AXIS_ALIGNED_GRID_RAY_DOES_NOT_INTERSECT_GRID 0
@@ -45,12 +45,12 @@ struct mliAxisAlignedGridTraversal {
 
 struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
         const struct mliAxisAlignedGrid *grid,
-        const struct mliRay *ray);
+        const struct mli_Ray *ray);
 int mliAxisAlignedGridTraversal_next(
         struct mliAxisAlignedGridTraversal *traversal);
 
 void mliAxisAlignedGridTraversal_fprint(
         FILE *f,
         struct mliAxisAlignedGridTraversal *traversal);
-void mliRay_fprint(FILE *f, struct mliRay *ray);
+void mli_Ray_fprint(FILE *f, struct mli_Ray *ray);
 #endif

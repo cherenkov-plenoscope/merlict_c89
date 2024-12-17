@@ -42,7 +42,7 @@ CASE("focussing_a_parallel_beam")
                 struct mliPhotonInteraction final_intersection;
                 uint64_t final_robj_id;
 
-                photon.ray = mliRay_set(
+                photon.ray = mli_Ray_set(
                         mli_Vec_add(
                                 mli_random_position_on_disc(
                                         mirror_radius, &prng),

@@ -4,8 +4,8 @@
 #include "mli_barycentric.h"
 #include "../math/math.h"
 
-int mliRay_intersects_triangle(
-        const struct mliRay ray,
+int mli_Ray_intersects_triangle(
+        const struct mli_Ray ray,
         const struct mli_Vec vertex_a,
         const struct mli_Vec vertex_b,
         const struct mli_Vec vertex_c,

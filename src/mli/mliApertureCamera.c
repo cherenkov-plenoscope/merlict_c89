@@ -124,7 +124,7 @@ double mliApertureCamera_focal_length_given_field_of_view_and_sensor_width(
         return image_sensor_radius / tan(fov_opening_angle);
 }
 
-struct mliRay mliApertureCamera_get_ray_for_pixel(
+struct mli_Ray mliApertureCamera_get_ray_for_pixel(
         const double focal_length,
         const double aperture_radius,
         const double image_sensor_distance,
@@ -163,7 +163,7 @@ struct mliRay mliApertureCamera_get_ray_for_pixel(
                 direction = mli_Vec_substract(object_point, aperture_support);
         }
 
-        return mliRay_set(aperture_support, direction);
+        return mli_Ray_set(aperture_support, direction);
 }
 
 void mliApertureCamera_aquire_pixels(
@@ -181,7 +181,7 @@ void mliApertureCamera_aquire_pixels(
 
         colors_to_do->size = 0;
         for (i = 0; i < pixels_to_do->size; i++) {
-                struct mliRay ray_wrt_camera =
+                struct mli_Ray ray_wrt_camera =
                         mliApertureCamera_get_ray_for_pixel(
                                 camera.focal_length,
                                 camera.aperture_radius,
@@ -194,7 +194,7 @@ void mliApertureCamera_aquire_pixels(
                                 pixels_to_do->array[i].row,
                                 prng);
 
-                struct mliRay ray_wrt_root =
+                struct mli_Ray ray_wrt_root =
                         mli_HomTraComp_ray(&camera2root, ray_wrt_camera);
 
                 struct mli_Color set_color =

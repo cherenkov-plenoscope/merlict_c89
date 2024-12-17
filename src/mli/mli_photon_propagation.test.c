@@ -13,7 +13,7 @@ CASE("simple propagation")
         uint64_t MED_GLASS = 0;
 
         struct mliPhoton photon;
-        photon.ray = mliRay_set(mli_Vec_init(0, 0, -3), mli_Vec_init(0, 0, 1));
+        photon.ray = mli_Ray_set(mli_Vec_init(0, 0, -3), mli_Vec_init(0, 0, 1));
         photon.wavelength = 600e-9;
         photon.id = 0;
 

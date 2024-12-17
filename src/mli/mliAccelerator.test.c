@@ -10,7 +10,7 @@ CASE("mliAccelerator, init")
 {
         struct mliScenery scenery = mliScenery_init();
         struct mli_Color color;
-        struct mliRay ray;
+        struct mli_Ray ray;
         struct mli_Prng prng = mli_Prng_init_MT19937(0);
         struct mliTracerConfig tracer_config = mliTracerConfig_init();
         struct mli_ColorObserver color_observer = mli_ColorObserver_init();
@@ -35,7 +35,7 @@ CASE("mliAccelerator, init")
         tracer.scenery_color_materials = &color_materials;
         tracer.config = &tracer_config;
 
-        ray = mliRay_set(
+        ray = mli_Ray_set(
                 mli_Vec_init(0.0, 0.0, -5.0), mli_Vec_init(0.0, 0.0, 1.0));
 
         color = mliTracer_trace_ray(&tracer, ray, &prng);

@@ -15,25 +15,25 @@
 
 int mli_query_intersection(
         const struct mliScenery *scenery,
-        const struct mliRay ray_root,
+        const struct mli_Ray ray_root,
         struct mliIntersection *isec);
 
 int mli_query_intersection_with_surface_normal(
         const struct mliScenery *scenery,
-        const struct mliRay ray_root,
+        const struct mli_Ray ray_root,
         struct mliIntersectionSurfaceNormal *isecsrf);
 
 int mli_query_object_reference(
         const struct mliObject *object,
         const struct mliOcTree *object_octree,
         const struct mli_HomTraComp local2root_comp,
-        const struct mliRay ray_root,
+        const struct mli_Ray ray_root,
         struct mliIntersection *isec);
 
 struct mliQueryInnerWork {
         struct mliIntersection *intersection;
         const struct mliObject *object;
-        struct mliRay ray_object;
+        struct mli_Ray ray_object;
         int has_intersection;
 };
 
@@ -41,7 +41,7 @@ struct mliQueryOuterWork {
         struct mliIntersection *intersection;
         const struct mliGeometry *geometry;
         const struct mliAccelerator *accelerator;
-        struct mliRay ray_root;
+        struct mli_Ray ray_root;
 };
 
 void mli_outer_scenery_traversal(

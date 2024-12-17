@@ -120,7 +120,7 @@ struct mli_Color mliAtmosphere_compute_depth(
                 opticalDepthR += hr;
                 opticalDepthM += hm;
                 /* light optical depth */
-                mliRay_sphere_intersection(
+                mli_Ray_sphere_intersection(
                         samplePosition,
                         atmosphere->sunDirection,
                         atmosphere->atmosphereRadius,
@@ -192,7 +192,7 @@ struct mli_Color mliAtmosphere_hit_outer_atmosphere(
 {
         double t_minus = -1.0;
         double t_plus = -1.0;
-        int has_intersection = mliRay_sphere_intersection(
+        int has_intersection = mli_Ray_sphere_intersection(
                 orig, dir, atmosphere->atmosphereRadius, &t_minus, &t_plus);
 
         if (!has_intersection || t_plus < 0.0) {
@@ -216,7 +216,7 @@ struct mli_Color mliAtmosphere_hit_earth_body(
         double t_minus = DBL_MAX;
         double t_plus = DBL_MAX;
         double t_max = DBL_MAX;
-        int intersects_earth_body = mliRay_sphere_intersection(
+        int intersects_earth_body = mli_Ray_sphere_intersection(
                 orig, dir, atmosphere->earthRadius, &t_minus, &t_plus);
 
         if (intersects_earth_body && t_minus > 0) {
