@@ -2,7 +2,7 @@
 
 CASE("ray and orientated bounding box")
 {
-        struct mliAABB aabb;
+        struct mli_AABB aabb;
         /*
          *         (-1, -2,  0)                         (-1, -1,  0)
          *                     O----------------------O
@@ -70,7 +70,7 @@ CASE("ray and orientated bounding box")
 
 CASE("ray inside aabb")
 {
-        struct mliAABB aabb;
+        struct mli_AABB aabb;
         struct mli_Vec direction;
         double near, far;
         int i;
@@ -115,7 +115,7 @@ CASE("ray inside aabb")
 
 CASE("ray aabb actual test cases")
 {
-        struct mliAABB aabb;
+        struct mli_AABB aabb;
         /*struct mli_Vec aabbextent;*/
         struct mliRay ray;
         /*struct mli_Vec vn, vf;*/

@@ -3,17 +3,17 @@
 #include "../homtra/homtra.h"
 #include "mliObject.h"
 #include "mliObject_AABB.h"
-#include "mliAABB.h"
+#include "../aabb/aabb.h"
 #include "mliGeometryAndAccelerator.h"
 
 int mliGeometry_robject_has_overlap_aabb(
         const struct mliGeometryAndAccelerator *accgeo,
         const uint32_t robject_idx,
-        const struct mliAABB aabb)
+        const struct mli_AABB aabb)
 {
-        const struct mliAABB robject_aabb =
+        const struct mli_AABB robject_aabb =
                 accgeo->accelerator->robject_aabbs[robject_idx];
-        if (mliAABB_is_overlapping(aabb, robject_aabb)) {
+        if (mli_AABB_is_overlapping(aabb, robject_aabb)) {
                 /* Only test the object's faces when its own aabb has an
                  * overlap with the aabb to test for.
                  */
@@ -32,7 +32,7 @@ int mliGeometry_robject_has_overlap_aabb(
 int mliGeometry_robject_has_overlap_aabb_void(
         const void *accgeo,
         const uint32_t robject_idx,
-        const struct mliAABB aabb)
+        const struct mli_AABB aabb)
 {
         return mliGeometry_robject_has_overlap_aabb(
                 (const struct mliGeometryAndAccelerator *)accgeo,

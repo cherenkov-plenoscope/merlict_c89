@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../vec/vec.h"
-#include "mliAABB.h"
+#include "../aabb/aabb.h"
 
 #define MLI_IS_BIT(var, pos) ((var) & (1 << (pos)))
 
@@ -26,8 +26,8 @@ struct mliCube mliCube_octree_child(
         const uint32_t sx,
         const uint32_t sy,
         const uint32_t sz);
-struct mliCube mliCube_outermost_cube(const struct mliAABB a);
+struct mliCube mliCube_outermost_cube(const struct mli_AABB a);
 struct mli_Vec mliCube_center(const struct mliCube a);
-struct mliAABB mliCube_to_aabb(const struct mliCube a);
+struct mli_AABB mliCube_to_aabb(const struct mliCube a);
 struct mli_Vec mliCube_upper(const struct mliCube a);
 #endif

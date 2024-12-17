@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "../vec/vec.h"
-#include "mliAABB.h"
+#include "../aabb/aabb.h"
 #include "../ray/ray.h"
 
 struct mliIdx3 {
@@ -16,13 +16,13 @@ struct mliIdx3 {
 struct mliIdx3 mliIdx3_set(const int64_t x, const int64_t y, const int64_t z);
 
 struct mliAxisAlignedGrid {
-        struct mliAABB bounds;
+        struct mli_AABB bounds;
         struct mliIdx3 num_bins;
         struct mli_Vec bin_width;
 };
 
 struct mliAxisAlignedGrid mliAxisAlignedGrid_set(
-        struct mliAABB bounds,
+        struct mli_AABB bounds,
         struct mliIdx3 num_bins);
 
 int mliAxisAlignedGrid_find_voxel_of_first_interaction(

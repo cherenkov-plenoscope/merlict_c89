@@ -33,7 +33,7 @@ CASE("mliCube_octree_child")
 
 CASE("Cube to Orientated-Bounding-Box")
 {
-        struct mliAABB a;
+        struct mli_AABB a;
         struct mliCube cube;
         cube.lower = mli_Vec_init(.0, .0, .0);
         cube.edge_length = 1.;
@@ -44,7 +44,7 @@ CASE("Cube to Orientated-Bounding-Box")
 
 CASE("mliCube_outermost_cube")
 {
-        struct mliAABB a;
+        struct mli_AABB a;
         struct mliCube cube;
         a.lower = mli_Vec_init(.0, .0, .0);
         a.upper = mli_Vec_init(1., 2., 3.);
@@ -56,13 +56,13 @@ CASE("mliCube_outermost_cube")
         CHECK_MARGIN(cube.edge_length, 3., 1e-7);
 }
 
-CASE("mliAABB_center")
+CASE("mli_AABB_center")
 {
         struct mli_Vec center;
-        struct mliAABB aabb;
+        struct mli_AABB aabb;
         aabb.lower = mli_Vec_init(.5, .5, .5);
         aabb.upper = mli_Vec_init(1.5, 1.5, 1.5);
-        center = mliAABB_center(aabb);
+        center = mli_AABB_center(aabb);
         CHECK_MARGIN(center.x, 1., 1e-7);
         CHECK_MARGIN(center.y, 1., 1e-7);
         CHECK_MARGIN(center.z, 1., 1e-7);
@@ -70,7 +70,7 @@ CASE("mliAABB_center")
 
 CASE("mliTriangle_aabb")
 {
-        struct mliAABB aabb = mliTriangle_aabb(
+        struct mli_AABB aabb = mliTriangle_aabb(
                 mli_Vec_init(-5., 2., -.8),
                 mli_Vec_init(20., -3., 19.),
                 mli_Vec_init(10., 6., 2.5));
@@ -106,7 +106,7 @@ CASE("mli_Vec_overlap_aabb, upper, and lower cases")
 
 CASE("mliTriangle_has_overlap_aabb")
 {
-        struct mliAABB aabb;
+        struct mli_AABB aabb;
         aabb.lower = mli_Vec_init(0., 0., 0.);
         aabb.upper = mli_Vec_init(2., 2., 2.);
         CHECK(mliTriangle_has_overlap_aabb(

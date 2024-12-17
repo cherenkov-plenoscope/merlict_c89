@@ -50,9 +50,9 @@ int mliAccelerator_malloc(
         }
 
         accel->num_robjects = num_robjects;
-        chk_malloc(accel->robject_aabbs, struct mliAABB, accel->num_robjects);
+        chk_malloc(accel->robject_aabbs, struct mli_AABB, accel->num_robjects);
         for (rob = 0; rob < accel->num_robjects; rob++) {
-                accel->robject_aabbs[rob] = mliAABB_set(
+                accel->robject_aabbs[rob] = mli_AABB_set(
                         mli_Vec_init(0.0, 0.0, 0.0),
                         mli_Vec_init(0.0, 0.0, 0.0));
         }
@@ -106,7 +106,7 @@ int mliAccelerator_malloc_from_Geometry(
         struct mliAccelerator *accel,
         const struct mliGeometry *geometry)
 {
-        struct mliAABB outermost_aabb;
+        struct mli_AABB outermost_aabb;
         struct mliGeometryAndAccelerator accgeo;
         accgeo.accelerator = accel;
         accgeo.geometry = geometry;
@@ -173,10 +173,11 @@ void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel)
         }
 }
 
-struct mliAABB mliAccelerator_outermost_aabb(const struct mliAccelerator *accel)
+struct mli_AABB mliAccelerator_outermost_aabb(
+        const struct mliAccelerator *accel)
 {
         uint32_t rob;
-        struct mliAABB aabb;
+        struct mli_AABB aabb;
         if (accel->num_robjects == 0) {
                 aabb.lower =
                         mli_Vec_init(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
@@ -187,7 +188,7 @@ struct mliAABB mliAccelerator_outermost_aabb(const struct mliAccelerator *accel)
         aabb.lower = accel->robject_aabbs[0].lower;
         aabb.upper = accel->robject_aabbs[0].upper;
         for (rob = 0; rob < accel->num_robjects; rob++) {
-                aabb = mliAABB_outermost(aabb, accel->robject_aabbs[rob]);
+                aabb = mli_AABB_outermost(aabb, accel->robject_aabbs[rob]);
         }
         return aabb;
 }

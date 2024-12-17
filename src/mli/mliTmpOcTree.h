@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "mliGeometry.h"
-#include "mliAABB.h"
+#include "../aabb/aabb.h"
 #include "mliCube.h"
 #include "mliOctOverlaps.h"
 
@@ -60,7 +60,7 @@ int mliTmpNode_malloc_tree_from_bundle(
         int (*item_in_bundle_has_overlap_aabb)(
                 const void *,
                 const uint32_t,
-                const struct mliAABB),
+                const struct mli_AABB),
         const struct mliCube bundle_cube);
 int mliTmpNode_add_children(
         struct mliTmpNode *node,
@@ -68,7 +68,7 @@ int mliTmpNode_add_children(
         int (*item_in_bundle_has_overlap_aabb)(
                 const void *,
                 const uint32_t,
-                const struct mliAABB),
+                const struct mli_AABB),
         const struct mliCube cube,
         const uint64_t depth,
         const uint64_t max_depth);
@@ -94,8 +94,8 @@ int mliTmpOcTree_malloc_from_bundle(
         int (*item_in_bundle_has_overlap_aabb)(
                 const void *,
                 const uint32_t,
-                const struct mliAABB),
-        struct mliAABB bundle_aabb);
+                const struct mli_AABB),
+        struct mli_AABB bundle_aabb);
 
 void mliTmpOcTree_free(struct mliTmpOcTree *octree);
 struct mliTmpOcTree mliTmpOcTree_init(void);

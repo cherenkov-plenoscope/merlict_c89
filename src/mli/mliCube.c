@@ -9,9 +9,9 @@ struct mli_Vec mliCube_upper(const struct mliCube a)
                 mli_Vec_init(a.edge_length, a.edge_length, a.edge_length));
 }
 
-struct mliAABB mliCube_to_aabb(const struct mliCube a)
+struct mli_AABB mliCube_to_aabb(const struct mliCube a)
 {
-        struct mliAABB out;
+        struct mli_AABB out;
         out.lower = a.lower;
         out.upper = mliCube_upper(a);
         return out;
@@ -25,14 +25,14 @@ struct mli_Vec mliCube_center(const struct mliCube a)
                 a.lower.z + a.edge_length * .5);
 }
 
-struct mliCube mliCube_outermost_cube(const struct mliAABB a)
+struct mliCube mliCube_outermost_cube(const struct mli_AABB a)
 {
         struct mliCube cube;
         struct mli_Vec center;
         struct mli_Vec half_diagonal;
         struct mli_Vec diff;
         double max_half_length;
-        center = mliAABB_center(a);
+        center = mli_AABB_center(a);
         diff = mli_Vec_substract(a.upper, a.lower);
         max_half_length = .5 * MLI_MATH_MAX3(diff.x, diff.y, diff.z);
         half_diagonal.x = max_half_length;

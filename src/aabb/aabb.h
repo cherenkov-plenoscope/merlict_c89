@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIAABB_H_
-#define MLIAABB_H_
+#ifndef MLI_AABB_H_
+#define MLI_AABB_H_
 
 #include "../vec/vec.h"
 
-struct mliAABB {
+struct mli_AABB {
         /*
          * Rectangular (A)xis-(A)ligned-(B)ounding-(B)ox
          * oriented w.r.t. the unit-vectors.
@@ -30,16 +30,18 @@ struct mliAABB {
         struct mli_Vec upper;
 };
 
-struct mliAABB mliAABB_set(
+struct mli_AABB mli_AABB_set(
         const struct mli_Vec lower,
         const struct mli_Vec upper);
-struct mli_Vec mliAABB_center(const struct mliAABB a);
-struct mliAABB mliAABB_outermost(
-        const struct mliAABB a,
-        const struct mliAABB b);
-int mliAABB_valid(const struct mliAABB a);
-int mliAABB_equal(const struct mliAABB a, const struct mliAABB b);
-int mliAABB_overlapp_aabb(const struct mliAABB a, const struct mliAABB b);
-int mliAABB_is_overlapping(const struct mliAABB a, const struct mliAABB b);
-int mliAABB_is_point_inside(const struct mliAABB a, const struct mli_Vec point);
+struct mli_Vec mli_AABB_center(const struct mli_AABB a);
+struct mli_AABB mli_AABB_outermost(
+        const struct mli_AABB a,
+        const struct mli_AABB b);
+int mli_AABB_valid(const struct mli_AABB a);
+int mli_AABB_equal(const struct mli_AABB a, const struct mli_AABB b);
+int mli_AABB_overlapp_aabb(const struct mli_AABB a, const struct mli_AABB b);
+int mli_AABB_is_overlapping(const struct mli_AABB a, const struct mli_AABB b);
+int mli_AABB_is_point_inside(
+        const struct mli_AABB a,
+        const struct mli_Vec point);
 #endif

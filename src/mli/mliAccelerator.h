@@ -11,7 +11,7 @@ struct mliAccelerator {
         struct mliOcTree *object_octrees;
 
         uint32_t num_robjects;
-        struct mliAABB *robject_aabbs;
+        struct mli_AABB *robject_aabbs;
 
         struct mliOcTree scenery_octree;
 };
@@ -39,7 +39,7 @@ int mliAccelerator_set_object_octrees(
 
 void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel);
 
-struct mliAABB mliAccelerator_outermost_aabb(
+struct mli_AABB mliAccelerator_outermost_aabb(
         const struct mliAccelerator *accel);
 
 #endif

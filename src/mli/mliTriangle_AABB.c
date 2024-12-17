@@ -347,10 +347,10 @@ struct mliTriangle mliTriangle_set_in_norm_aabb(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c,
-        const struct mliAABB aabb)
+        const struct mli_AABB aabb)
 {
         struct mliTriangle tri;
-        struct mli_Vec aabb_center = mliAABB_center(aabb);
+        struct mli_Vec aabb_center = mli_AABB_center(aabb);
         const double inv_scale_x = 1.0 / (aabb.upper.x - aabb.lower.x);
         const double inv_scale_y = 1.0 / (aabb.upper.y - aabb.lower.y);
         const double inv_scale_z = 1.0 / (aabb.upper.z - aabb.lower.z);
@@ -377,7 +377,7 @@ int mliTriangle_has_overlap_aabb(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c,
-        const struct mliAABB aabb)
+        const struct mli_AABB aabb)
 {
         struct mliTriangle tri = mliTriangle_set_in_norm_aabb(a, b, c, aabb);
         if (mliTriangle_intersects_norm_aabb(tri) == MLI_INSIDE)
@@ -386,12 +386,12 @@ int mliTriangle_has_overlap_aabb(
                 return 0;
 }
 
-struct mliAABB mliTriangle_aabb(
+struct mli_AABB mliTriangle_aabb(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c)
 {
-        struct mliAABB aabb;
+        struct mli_AABB aabb;
         aabb.lower.x = MLI_MATH_MIN3(a.x, b.x, c.x);
         aabb.lower.y = MLI_MATH_MIN3(a.y, b.y, c.y);
         aabb.lower.z = MLI_MATH_MIN3(a.z, b.z, c.z);

@@ -473,7 +473,7 @@ chk_error:
 int mliOcTree_malloc_from_Geometry(
         struct mliOcTree *octree,
         const struct mliGeometryAndAccelerator *accgeo,
-        const struct mliAABB outermost_aabb)
+        const struct mli_AABB outermost_aabb)
 {
         uint64_t num_nodes = 0;
         uint64_t num_leafs = 0;

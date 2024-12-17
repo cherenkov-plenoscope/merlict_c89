@@ -23,13 +23,13 @@ struct mliIdx3 mliIdx3_set(const int64_t x, const int64_t y, const int64_t z)
 }
 
 struct mliAxisAlignedGrid mliAxisAlignedGrid_set(
-        struct mliAABB bounds,
+        struct mli_AABB bounds,
         struct mliIdx3 num_bins)
 {
         struct mliAxisAlignedGrid grid;
         grid.bounds = bounds;
         grid.num_bins = num_bins;
-        assert(mliAABB_valid(grid.bounds));
+        assert(mli_AABB_valid(grid.bounds));
         assert(grid.num_bins.x > 0);
         assert(grid.num_bins.y > 0);
         assert(grid.num_bins.z > 0);
@@ -62,7 +62,7 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
         const struct mliRay *ray,
         struct mliIdx3 *bin)
 {
-        if (mliAABB_is_point_inside(grid->bounds, ray->support)) {
+        if (mli_AABB_is_point_inside(grid->bounds, ray->support)) {
                 (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, ray->support);
                 return MLI_AXIS_ALIGNED_GRID_RAY_STARTS_INSIDE_GRID;
         } else {

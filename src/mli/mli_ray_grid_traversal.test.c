@@ -8,7 +8,7 @@ CASE("ray and grid")
         struct mliIdx3 bin;
 
         grid = mliAxisAlignedGrid_set(
-                mliAABB_set(
+                mli_AABB_set(
                         mli_Vec_init(-0.5, -0.5, -0.5),
                         mli_Vec_init(0.5, 0.5, 0.5)),
                 mliIdx3_set(3, 3, 3));
@@ -88,7 +88,7 @@ CASE("ray and grid traversal simple")
         struct mliRay ray;
 
         grid = mliAxisAlignedGrid_set(
-                mliAABB_set(
+                mli_AABB_set(
                         mli_Vec_init(-2.5, -1.5, -1),
                         mli_Vec_init(2.5, 1.5, 1)),
                 mliIdx3_set(5, 3, 2));
@@ -221,7 +221,7 @@ CASE("Actual example from simulated shower")
         struct mliRay ray;
 
         grid = mliAxisAlignedGrid_set(
-                mliAABB_set(
+                mli_AABB_set(
                         mli_Vec_init(
                                 -5119268.215672, -5119974.912158, -5000.000000),
                         mli_Vec_init(
@@ -259,7 +259,7 @@ CASE("Elaborated example")
         struct mli_prng_UniformRange range;
 
         grid = mliAxisAlignedGrid_set(
-                mliAABB_set(mli_Vec_init(-3, -3, -3), mli_Vec_init(3, 3, 3)),
+                mli_AABB_set(mli_Vec_init(-3, -3, -3), mli_Vec_init(3, 3, 3)),
                 mliIdx3_set(10, 10, 10));
         prng = mli_Prng_init_MT19937(0u);
         num_overlaps = 0;

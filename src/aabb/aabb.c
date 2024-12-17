@@ -1,21 +1,23 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliAABB.h"
+#include "aabb.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
 
-struct mliAABB mliAABB_set(
+struct mli_AABB mli_AABB_set(
         const struct mli_Vec lower,
         const struct mli_Vec upper)
 {
-        struct mliAABB a;
+        struct mli_AABB a;
         a.lower = lower;
         a.upper = upper;
         return a;
 }
 
-struct mliAABB mliAABB_outermost(const struct mliAABB a, const struct mliAABB b)
+struct mli_AABB mli_AABB_outermost(
+        const struct mli_AABB a,
+        const struct mli_AABB b)
 {
-        struct mliAABB c;
+        struct mli_AABB c;
         c.lower.x = MLI_MATH_MIN2(a.lower.x, b.lower.x);
         c.lower.y = MLI_MATH_MIN2(a.lower.y, b.lower.y);
         c.lower.z = MLI_MATH_MIN2(a.lower.z, b.lower.z);
@@ -25,13 +27,13 @@ struct mliAABB mliAABB_outermost(const struct mliAABB a, const struct mliAABB b)
         return c;
 }
 
-struct mli_Vec mliAABB_center(const struct mliAABB a)
+struct mli_Vec mli_AABB_center(const struct mli_AABB a)
 {
         struct mli_Vec sum = mli_Vec_add(a.upper, a.lower);
         return mli_Vec_multiply(sum, .5);
 }
 
-int mliAABB_valid(const struct mliAABB a)
+int mli_AABB_valid(const struct mli_AABB a)
 {
         chk_msg(!MLI_MATH_IS_NAN(a.lower.x), "aabb.lower.x is 'nan'.");
         chk_msg(!MLI_MATH_IS_NAN(a.lower.y), "aabb.lower.y is 'nan'.");
@@ -49,7 +51,7 @@ chk_error:
         return 0;
 }
 
-int mliAABB_equal(const struct mliAABB a, const struct mliAABB b)
+int mli_AABB_equal(const struct mli_AABB a, const struct mli_AABB b)
 {
         chk_msg(mli_Vec_equal(a.lower, b.lower),
                 "Expected 'lower'-corner to be equal.");
@@ -60,7 +62,7 @@ chk_error:
         return 0;
 }
 
-int mliAABB_is_overlapping(const struct mliAABB a, const struct mliAABB b)
+int mli_AABB_is_overlapping(const struct mli_AABB a, const struct mli_AABB b)
 {
         const int over_x = (a.upper.x >= b.lower.x) && (b.upper.x >= a.lower.x);
         const int over_y = (a.upper.y >= b.lower.y) && (b.upper.y >= a.lower.y);
@@ -68,7 +70,9 @@ int mliAABB_is_overlapping(const struct mliAABB a, const struct mliAABB b)
         return (over_x && over_y) && over_z;
 }
 
-int mliAABB_is_point_inside(const struct mliAABB a, const struct mli_Vec point)
+int mli_AABB_is_point_inside(
+        const struct mli_AABB a,
+        const struct mli_Vec point)
 {
         if (a.lower.x > point.x || a.upper.x <= point.x)
                 return 0;

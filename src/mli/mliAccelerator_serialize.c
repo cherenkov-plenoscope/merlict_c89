@@ -22,7 +22,7 @@ int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f)
         }
         chk_fwrite(
                 accel->robject_aabbs,
-                sizeof(struct mliAABB),
+                sizeof(struct mli_AABB),
                 accel->num_robjects,
                 f);
         mliOcTree_fwrite(&accel->scenery_octree, f);
@@ -58,7 +58,7 @@ int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f)
 
         chk_fread(
                 accel->robject_aabbs,
-                sizeof(struct mliAABB),
+                sizeof(struct mli_AABB),
                 accel->num_robjects,
                 f);
 

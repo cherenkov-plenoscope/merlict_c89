@@ -95,6 +95,6 @@ struct mliGeometryAndAccelerator;
 int mliOcTree_malloc_from_Geometry(
         struct mliOcTree *octree,
         const struct mliGeometryAndAccelerator *accgeo,
-        const struct mliAABB outermost_aabb);
+        const struct mli_AABB outermost_aabb);
 
 #endif

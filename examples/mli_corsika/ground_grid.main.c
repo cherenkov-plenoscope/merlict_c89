@@ -50,7 +50,7 @@ int mliAxisAlignedGrid_set_from_config(
 
         mli_String_free(&line);
 
-        (*grid) = mliAxisAlignedGrid_set(mliAABB_set(lower, upper), num_bins);
+        (*grid) = mliAxisAlignedGrid_set(mli_AABB_set(lower, upper), num_bins);
 
         return 1;
 chk_error:
