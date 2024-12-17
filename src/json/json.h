@@ -14,12 +14,21 @@ struct mli_Json {
         struct jsmntok_t *tokens;
 };
 
-int mli_Json_debug_to_path(const struct mli_Json *json, const char *path);
-int mli_Json_debug_fprint(FILE *f, const struct mli_Json *json);
+int mli_Json_from_string(struct mli_Json *self, const struct mli_String *str);
+int mli_Json_from_io(struct mli_Json *self, struct mli_IO *io);
+void mli_Json_free(struct mli_Json *self);
+struct mli_Json mli_Json_init(void);
+
+int mli_Json_debug_to_io(const struct mli_Json *self, struct mli_IO *io);
+int mli_Json_debug_token_to_io(
+        const struct mli_Json *self,
+        const uint64_t token,
+        struct mli_IO *io);
 int mli_Json_debug_token_fprint(
         FILE *f,
-        const struct mli_Json *json,
+        const struct mli_Json *self,
         const uint64_t token);
+
 uint64_t mli_Json_token_by_index(
         const struct mli_Json *json,
         const uint64_t start_token_idx,
@@ -70,10 +79,7 @@ int mli_Json_cstrcmp(
         const struct mli_Json *json,
         const uint64_t token,
         const char *str);
-int mli_Json_from_string(struct mli_Json *self, const struct mli_String *str);
-int mli_Json_from_io(struct mli_Json *self, struct mli_IO *io);
-int mli_Json_malloc_tokens__(struct mli_Json *json);
-int mli_Json_parse_tokens__(struct mli_Json *json);
-void mli_Json_free(struct mli_Json *json);
-struct mli_Json mli_Json_init(void);
+
+int mli_Json__malloc_tokens(struct mli_Json *json);
+int mli_Json__parse_tokens(struct mli_Json *json);
 #endif

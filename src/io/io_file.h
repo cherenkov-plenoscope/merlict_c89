@@ -8,8 +8,6 @@
 #include "../string/string.h"
 
 struct mli_IoFile {
-        struct mli_String filename;
-        struct mli_String mode;
         FILE *cfile;
 };
 
@@ -19,6 +17,7 @@ int mli_IoFile_open(
         struct mli_IoFile *self,
         const struct mli_String *filename,
         const struct mli_String *mode);
+int mli_IoFile_adopt_cfile(struct mli_IoFile *self, FILE *cfile);
 size_t mli_IoFile_write(
         struct mli_IoFile *self,
         const void *ptr,
@@ -36,4 +35,5 @@ int64_t mli_IoFile_seek(
         const int64_t offset,
         const int64_t origin);
 int mli_IoFile_eof(const struct mli_IoFile *self);
+int mli_IoFile__cfile_is_stdin_or_stdout_stderr(const struct mli_IoFile *self);
 #endif

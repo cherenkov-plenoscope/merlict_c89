@@ -24,7 +24,7 @@ void mli_Json_free(struct mli_Json *json)
         (*json) = mli_Json_init();
 }
 
-int mli_Json_malloc_tokens__(struct mli_Json *json)
+int mli_Json__malloc_tokens(struct mli_Json *json)
 {
         struct jsmntok_t default_token = {JSMN_UNDEFINED, 0, 0, 0};
         chk_msg(&json->raw.array != NULL, "Expected raw cstr to be malloced.");
@@ -36,7 +36,7 @@ chk_error:
         return 0;
 }
 
-int mli_Json_parse_tokens__(struct mli_Json *json)
+int mli_Json__parse_tokens(struct mli_Json *json)
 {
         int64_t num_tokens_parsed;
         struct jsmn_parser parser;
@@ -69,8 +69,8 @@ int mli_Json_from_string(struct mli_Json *self, const struct mli_String *str)
         mli_Json_free(self);
         chk_msg(mli_String_copy(&self->raw, str),
                 "Failed to copy string into json->raw.");
-        chk_msg(mli_Json_malloc_tokens__(self), "Can't malloc Json's tokens.");
-        chk_msg(mli_Json_parse_tokens__(self), "Can't parse Json into tokens.");
+        chk_msg(mli_Json__malloc_tokens(self), "Can't malloc Json's tokens.");
+        chk_msg(mli_Json__parse_tokens(self), "Can't parse Json into tokens.");
         return 1;
 chk_error:
         mli_Json_free(self);
@@ -82,8 +82,8 @@ int mli_Json_from_io(struct mli_Json *self, struct mli_IO *io)
         mli_Json_free(self);
         chk_msg(mli_IO_text_read_string(io, &self->raw),
                 "Failed to read file into String.");
-        chk_msg(mli_Json_malloc_tokens__(self), "Can't malloc Json's tokens.");
-        chk_msg(mli_Json_parse_tokens__(self), "Can't parse Json into tokens.");
+        chk_msg(mli_Json__malloc_tokens(self), "Can't malloc Json's tokens.");
+        chk_msg(mli_Json__parse_tokens(self), "Can't parse Json into tokens.");
         return 1;
 chk_error:
         mli_Json_free(self);
@@ -296,49 +296,53 @@ uint64_t mli_Json_token_by_index(
 
 int mli_Json_debug_token_fprint(
         FILE *f,
-        const struct mli_Json *json,
+        const struct mli_Json *self,
         const uint64_t token)
 {
+        struct mli_IO io = mli_IO_init();
+        mli_IO_adopt_file(&io, f);
+        chk(mli_Json_debug_token_to_io(self, token, &io));
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_Json_debug_token_to_io(
+        const struct mli_Json *self,
+        const uint64_t token,
+        struct mli_IO *io)
+{
         uint64_t i = 0u;
-        struct jsmntok_t t = json->tokens[token];
+        struct jsmntok_t t = self->tokens[token];
         uint32_t token_size = t.end - t.start;
         uint64_t line_number =
-                1u + mli_String_countn(&json->raw, '\n', t.start);
-        chk(fprintf(f, "line: %u, ", (uint32_t)line_number));
-        chk(fprintf(f, "token: %u, ", (uint32_t)token));
-        chk(fprintf(f, "type: %d, ", t.type));
-        chk(fprintf(f, "children: %d, ", t.size));
-        chk(fprintf(f, "chars: (%d -> %d, %d)\n", t.start, t.end, token_size));
+                1u + mli_String_countn(&self->raw, '\n', t.start);
+
+        chk(mli_IO_text_write_cstr_format(
+                io, "line: %u, ", (uint32_t)line_number));
+        chk(mli_IO_text_write_cstr_format(io, "token: %u, ", (uint32_t)token));
+        chk(mli_IO_text_write_cstr_format(io, "type: %d, ", t.type));
+        chk(mli_IO_text_write_cstr_format(io, "children: %d, ", t.size));
+        chk(mli_IO_text_write_cstr_format(
+                io, "chars: (%d -> %d, %d)\n", t.start, t.end, token_size));
+
         for (i = 0; i < token_size; i++) {
-                chk(fputc((char)json->raw.array[t.start + i], f));
+                chk(mli_IO_text_putc(io, self->raw.array[t.start + i]));
         }
-        chk(fprintf(f, "\n"));
+        chk(mli_IO_text_putc(io, '\n'));
         return 1;
 chk_error:
         return 0;
 }
 
-int mli_Json_debug_fprint(FILE *f, const struct mli_Json *json)
+int mli_Json_debug_to_io(const struct mli_Json *self, struct mli_IO *io)
 {
         uint64_t i;
-        for (i = 0; i < json->num_tokens; i++) {
-                chk_msg(mli_Json_debug_token_fprint(f, json, i),
-                        "Failed to write json-token debug-info to file.");
+        for (i = 0; i < self->num_tokens; i++) {
+                chk_msg(mli_Json_debug_token_to_io(self, i, io),
+                        "Failed to write json-token debug-info to io.");
         }
         return 1;
 chk_error:
-        return 0;
-}
-
-int mli_Json_debug_to_path(const struct mli_Json *json, const char *path)
-{
-        FILE *f;
-        f = fopen(path, "wt");
-        chk_msg(f != NULL, "Failed to open file for Json debug output.");
-        chk_msg(mli_Json_debug_fprint(f, json), "Failed to fprint debug.");
-        fclose(f);
-        return 1;
-chk_error:
-        fclose(f);
         return 0;
 }

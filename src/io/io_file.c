@@ -5,8 +5,6 @@
 struct mli_IoFile mli_IoFile_init(void)
 {
         struct mli_IoFile out;
-        out.filename = mli_String_init();
-        out.mode = mli_String_init();
         out.cfile = NULL;
         return out;
 }
@@ -14,12 +12,12 @@ struct mli_IoFile mli_IoFile_init(void)
 int mli_IoFile_close(struct mli_IoFile *self)
 {
         int rc = 1;
-        mli_String_free(&self->filename);
-        mli_String_free(&self->mode);
         if (self->cfile != NULL) {
-                int fclose_rc = fclose(self->cfile);
-                if (fclose_rc == EOF) {
-                        rc = EOF;
+                if (!mli_IoFile__cfile_is_stdin_or_stdout_stderr(self)) {
+                        int fclose_rc = fclose(self->cfile);
+                        if (fclose_rc == EOF) {
+                                rc = EOF;
+                        }
                 }
         }
 
@@ -33,15 +31,19 @@ int mli_IoFile_open(
         const struct mli_String *mode)
 {
         mli_IoFile_close(self);
-        chk_msg(mli_String_copy(&self->filename, filename),
-                "Can not copy filename.");
-        chk_msg(mli_String_copy(&self->mode, mode), "Can not copy mode.");
-        self->cfile = fopen(self->filename.array, self->mode.array);
+        self->cfile = fopen(filename->array, mode->array);
         chk_msg(self->cfile != NULL, "Failed to open file.");
         return 1;
 chk_error:
         mli_IoFile_close(self);
         return 0;
+}
+
+int mli_IoFile_adopt_cfile(struct mli_IoFile *self, FILE *cfile)
+{
+        mli_IoFile_close(self);
+        self->cfile = cfile;
+        return 1;
 }
 
 size_t mli_IoFile_write(
@@ -83,3 +85,17 @@ int64_t mli_IoFile_seek(
 }
 
 int mli_IoFile_eof(const struct mli_IoFile *self) { return feof(self->cfile); }
+
+int mli_IoFile__cfile_is_stdin_or_stdout_stderr(const struct mli_IoFile *self)
+{
+        if (self->cfile == stdin) {
+                return 1;
+        }
+        if (self->cfile == stdout) {
+                return 1;
+        }
+        if (self->cfile == stderr) {
+                return 1;
+        }
+        return 0;
+}

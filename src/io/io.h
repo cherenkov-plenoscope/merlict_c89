@@ -27,6 +27,7 @@ int mli_IO_open_file(
         struct mli_IO *self,
         const struct mli_String *filename,
         const struct mli_String *mode);
+int mli_IO_adopt_file(struct mli_IO *self, FILE *cfile);
 int mli_IO__open_file_cstr(
         struct mli_IO *self,
         const char *filename,

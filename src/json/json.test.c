@@ -85,8 +85,10 @@ CASE("mli_Json_from_io_path")
         CHECK(mli_Json_from_io(&json, &file));
         mli_IO_close(&file);
 
-        CHECK(mli_Json_debug_to_path(
-                &json, "data/mli/tests/resources/json/example.debug.tmp"));
+        CHECK(mli_IO__open_file_cstr(
+                &file, "data/mli/tests/resources/json/example.debug.tmp", "w"));
+        CHECK(mli_Json_debug_to_io(&json, &file));
+        mli_IO_close(&file);
 
         CHECK(mli_Json_token_by_key(&json, 0, "name", &return_idx));
         CHECK(return_idx == 1);
@@ -161,8 +163,11 @@ CASE("parse mli_Vec and mli_Color")
                 &io, "data/mli/tests/resources/json/vec.json", "r"));
         CHECK(mli_Json_from_io(&json, &io));
         mli_IO_close(&io);
-        CHECK(mli_Json_debug_to_path(
-                &json, "data/mli/tests/resources/json/vec.debug.tmp"));
+
+        CHECK(mli_IO__open_file_cstr(
+                &io, "data/mli/tests/resources/json/vec.debug.tmp", "w"));
+        CHECK(mli_Json_debug_to_io(&json, &io));
+        mli_IO_close(&io);
 
         CHECK(mli_Json_token_by_key(&json, 0, "vec1", &token));
         CHECK(mli_Vec_from_json_token(&vec1, &json, token + 1));

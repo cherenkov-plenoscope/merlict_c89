@@ -31,6 +31,14 @@ int mli_IO_open_file(
         return mli_IoFile_open(&self->data.file, filename, mode);
 }
 
+int mli_IO_adopt_file(struct mli_IO *self, FILE *cfile)
+{
+        mli_IO_close(self);
+        self->type = MLI_IO_TYPE_FILE;
+        self->data.file = mli_IoFile_init();
+        return mli_IoFile_adopt_cfile(&self->data.file, cfile);
+}
+
 int mli_IO__open_file_cstr(
         struct mli_IO *self,
         const char *filename,

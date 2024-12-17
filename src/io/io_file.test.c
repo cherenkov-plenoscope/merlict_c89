@@ -3,8 +3,6 @@
 CASE("mli_IoFile_init")
 {
         struct mli_IoFile ff = mli_IoFile_init();
-        CHECK(ff.filename.size == 0);
-        CHECK(ff.mode.size == 0);
         CHECK(ff.cfile == NULL);
 }
 
