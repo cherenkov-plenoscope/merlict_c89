@@ -4,11 +4,13 @@
 
 #include "geometry.h"
 
-int mliGeometry_equal(const struct mliGeometry *a, const struct mliGeometry *b);
-int mliGeometry_objects_equal(
-        const struct mliGeometry *a,
-        const struct mliGeometry *b);
-int mliGeometry_object_references_equal(
-        const struct mliGeometry *a,
-        const struct mliGeometry *b);
+int mli_Geometry_equal(
+        const struct mli_Geometry *a,
+        const struct mli_Geometry *b);
+int mli_Geometry_objects_equal(
+        const struct mli_Geometry *a,
+        const struct mli_Geometry *b);
+int mli_Geometry_object_references_equal(
+        const struct mli_Geometry *a,
+        const struct mli_Geometry *b);
 #endif

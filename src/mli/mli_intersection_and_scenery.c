@@ -3,14 +3,14 @@
 
 uint32_t mliScenery_resolve_boundary_layer_idx(
         const struct mliScenery *scenery,
-        const struct mliGeometryId geometry_id)
+        const struct mli_GeometryId geometry_id)
 {
         const uint32_t robject_idx = geometry_id.robj;
         const uint32_t object_idx = scenery->geometry.robjects[robject_idx];
         const uint32_t face_idx = geometry_id.face;
         const uint32_t obj_mtl_idx = mli_Object_resolve_material_idx(
                 &scenery->geometry.objects[object_idx], face_idx);
-        const uint32_t boundary_layer_idx = mliGeometryToMaterialMap_get(
+        const uint32_t boundary_layer_idx = mli_GeometryToMaterialMap_get(
                 &scenery->geomap, robject_idx, obj_mtl_idx);
         return boundary_layer_idx;
 }

@@ -8,7 +8,7 @@
 #include "../string/string.h"
 #include "../object/object.h"
 
-struct mliGeometry {
+struct mli_Geometry {
         uint32_t num_objects;
         struct mli_Object *objects;
         struct mli_String *object_names;
@@ -19,28 +19,28 @@ struct mliGeometry {
         struct mli_HomTraComp *robject2root;
 };
 
-int mliGeometry_malloc(
-        struct mliGeometry *geometry,
+int mli_Geometry_malloc(
+        struct mli_Geometry *self,
         const uint32_t num_objects,
         const uint32_t num_robjects);
-int mliGeometry_malloc_references(
-        struct mliGeometry *geometry,
+int mli_Geometry_malloc_references(
+        struct mli_Geometry *self,
         const uint32_t num_robjects);
-int mliGeometry_malloc_objects(
-        struct mliGeometry *geometry,
+int mli_Geometry_malloc_objects(
+        struct mli_Geometry *self,
         const uint32_t num_objects);
 
-void mliGeometry_free(struct mliGeometry *geometry);
-void mliGeometry_free_objects(struct mliGeometry *geometry);
-void mliGeometry_free_references(struct mliGeometry *geometry);
+void mli_Geometry_free(struct mli_Geometry *self);
+void mli_Geometry_free_objects(struct mli_Geometry *self);
+void mli_Geometry_free_references(struct mli_Geometry *self);
 
-struct mliGeometry mliGeometry_init(void);
-void mliGeometry_init_objects(struct mliGeometry *geometry);
-void mliGeometry_init_references(struct mliGeometry *geometry);
+struct mli_Geometry mli_Geometry_init(void);
+void mli_Geometry_init_objects(struct mli_Geometry *self);
+void mli_Geometry_init_references(struct mli_Geometry *self);
 
-void mliGeometry_info_fprint(FILE *f, const struct mliGeometry *geometry);
-struct mli_BoundaryLayer mliGeometry_object_surfaces(
-        const struct mliGeometry *geometry,
+void mli_Geometry_info_fprint(FILE *f, const struct mli_Geometry *self);
+struct mli_BoundaryLayer mli_Geometry_object_surfaces(
+        const struct mli_Geometry *self,
         const uint32_t object_idx);
-int mliGeometry_warn_objects(const struct mliGeometry *geometry);
+int mli_Geometry_warn_objects(const struct mli_Geometry *self);
 #endif

@@ -115,14 +115,14 @@ CASE("mliScenery, read, write")
         /* geometry */
         /* -------- */
         CHECK(mli_IO__open_file_cstr(&f, geom_path, "w"));
-        CHECK(mliGeometry_to_io(&orig.geometry, &f));
+        CHECK(mli_Geometry_to_io(&orig.geometry, &f));
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, geom_path, "r"));
-        CHECK(mliGeometry_from_io(&back.geometry, &f));
+        CHECK(mli_Geometry_from_io(&back.geometry, &f));
         mli_IO_close(&f);
 
-        CHECK(mliGeometry_equal(&back.geometry, &orig.geometry));
+        CHECK(mli_Geometry_equal(&back.geometry, &orig.geometry));
 
         /* materials */
         /* --------- */
@@ -151,14 +151,14 @@ CASE("mliScenery, read, write")
         /* geomap */
         /* ------ */
         CHECK(mli_IO__open_file_cstr(&f, gmap_path, "w"));
-        CHECK(mliGeometryToMaterialMap_to_io(&orig.geomap, &f));
+        CHECK(mli_GeometryToMaterialMap_to_io(&orig.geomap, &f));
         mli_IO_close(&f);
 
         CHECK(mli_IO__open_file_cstr(&f, gmap_path, "r"));
-        CHECK(mliGeometryToMaterialMap_from_io(&back.geomap, &f));
+        CHECK(mli_GeometryToMaterialMap_from_io(&back.geomap, &f));
         mli_IO_close(&f);
 
-        CHECK(mliGeometryToMaterialMap_equal(&back.geomap, &orig.geomap));
+        CHECK(mli_GeometryToMaterialMap_equal(&back.geomap, &orig.geomap));
 
         /* full scenery */
         /* ------------ */

@@ -19,7 +19,7 @@
 
 struct mli_PhotonInteraction {
         int32_t on_geometry_surface;
-        struct mliGeometryId geometry_id;
+        struct mli_GeometryId geometry_id;
 
         struct mli_Vec position;
         struct mli_Vec position_local;

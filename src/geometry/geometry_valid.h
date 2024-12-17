@@ -4,8 +4,8 @@
 
 #include "geometry.h"
 
-int mliGeometry_valid(const struct mliGeometry *geometry);
-int mliGeometry_valid_objects(const struct mliGeometry *geometry);
-int mliGeometry_valid_robjects_HomTras(const struct mliGeometry *geometry);
-int mliGeometry_valid_object_references(const struct mliGeometry *geometry);
+int mli_Geometry_valid(const struct mli_Geometry *geometry);
+int mli_Geometry_valid_objects(const struct mli_Geometry *geometry);
+int mli_Geometry_valid_robjects_HomTras(const struct mli_Geometry *geometry);
+int mli_Geometry_valid_object_references(const struct mli_Geometry *geometry);
 #endif

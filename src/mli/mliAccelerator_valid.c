@@ -24,7 +24,7 @@ chk_error:
 
 int mliAccelerator_valid_wrt_Geometry(
         const struct mliAccelerator *accel,
-        const struct mliGeometry *geometry)
+        const struct mli_Geometry *geometry)
 {
         uint32_t i = 0u;
         chk_msg(accel->num_objects == geometry->num_objects,

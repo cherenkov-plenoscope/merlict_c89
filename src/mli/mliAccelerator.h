@@ -27,15 +27,15 @@ int mliAccelerator_malloc(
 
 int mliAccelerator_malloc_from_Geometry(
         struct mliAccelerator *accel,
-        const struct mliGeometry *geometry);
+        const struct mli_Geometry *geometry);
 
 int mliAccelerator_set_robject_aabbs(
         struct mliAccelerator *accel,
-        const struct mliGeometry *geometry);
+        const struct mli_Geometry *geometry);
 
 int mliAccelerator_set_object_octrees(
         struct mliAccelerator *accel,
-        const struct mliGeometry *geometry);
+        const struct mli_Geometry *geometry);
 
 void mliAccelerator_info_fprint(FILE *f, const struct mliAccelerator *accel);
 

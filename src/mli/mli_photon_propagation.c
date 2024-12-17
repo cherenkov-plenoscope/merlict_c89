@@ -279,7 +279,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
                         phia.position_local = phia.position;
                         phia.distance_of_ray = 0.0;
                         phia.on_geometry_surface = 0;
-                        phia.geometry_id = mliGeometryId_init();
+                        phia.geometry_id = mli_GeometryId_init();
                         phia.from_outside_to_inside = 1;
 
                         phia.medium_coming_from = side_coming_from.medium;
@@ -298,7 +298,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
                         phia.position_local = phia.position;
                         phia.distance_of_ray = distance_until_absorbtion;
                         phia.on_geometry_surface = 0;
-                        phia.geometry_id = mliGeometryId_init();
+                        phia.geometry_id = mli_GeometryId_init();
                         phia.from_outside_to_inside = 1;
 
                         phia.medium_coming_from = side_coming_from.medium;
@@ -332,7 +332,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
                         phia.position_local = phia.position;
                         phia.distance_of_ray = 0.0;
                         phia.on_geometry_surface = 0;
-                        phia.geometry_id = mliGeometryId_init();
+                        phia.geometry_id = mli_GeometryId_init();
                         phia.from_outside_to_inside = 1;
 
                         phia.medium_coming_from = default_medium;
@@ -349,7 +349,7 @@ int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
                 phia.position_local = phia.position;
                 phia.distance_of_ray = distance_until_absorbtion;
                 phia.on_geometry_surface = 0;
-                phia.geometry_id = mliGeometryId_init();
+                phia.geometry_id = mli_GeometryId_init();
                 phia.from_outside_to_inside = 1;
 
                 phia.medium_coming_from = default_medium;

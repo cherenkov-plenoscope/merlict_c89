@@ -93,10 +93,10 @@ int mli_OcTree_malloc_from_object_wavefront(
         struct mli_OcTree *octree,
         const struct mli_Object *object);
 
-struct mliGeometryAndAccelerator;
+struct mli_GeometryAndAccelerator;
 int mli_OcTree_malloc_from_Geometry(
         struct mli_OcTree *octree,
-        const struct mliGeometryAndAccelerator *accgeo,
+        const struct mli_GeometryAndAccelerator *accgeo,
         const struct mli_AABB outermost_aabb);
 
 #endif

@@ -6,7 +6,7 @@
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mliGeometry_from_io(struct mliGeometry *geometry, struct mli_IO *f)
+int mli_Geometry_from_io(struct mli_Geometry *geometry, struct mli_IO *f)
 {
         uint32_t i;
         uint32_t num_objects = 0u;
@@ -15,15 +15,15 @@ int mliGeometry_from_io(struct mliGeometry *geometry, struct mli_IO *f)
 
         /* magic identifier */
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
-        chk(mli_MagicId_has_word(&magic, "mliGeometry"));
+        chk(mli_MagicId_has_word(&magic, "mli_Geometry"));
         mli_MagicId_warn_version(&magic);
 
         /* payload */
         chk_IO_read(&num_objects, sizeof(uint32_t), 1u, f);
         chk_IO_read(&num_robjects, sizeof(uint32_t), 1u, f);
 
-        chk_msg(mliGeometry_malloc(geometry, num_objects, num_robjects),
-                "Failed to malloc robjects in mliGeometry.");
+        chk_msg(mli_Geometry_malloc(geometry, num_objects, num_robjects),
+                "Failed to malloc robjects in mli_Geometry.");
 
         for (i = 0; i < geometry->num_objects; i++) {
                 chk_msg(mli_Object_from_io(&geometry->objects[i], f),
@@ -53,13 +53,13 @@ chk_error:
         return 0;
 }
 
-int mliGeometry_to_io(const struct mliGeometry *geometry, struct mli_IO *f)
+int mli_Geometry_to_io(const struct mli_Geometry *geometry, struct mli_IO *f)
 {
         uint32_t i;
         struct mli_MagicId magic;
 
         /* magic identifier */
-        chk(mli_MagicId_set(&magic, "mliGeometry"));
+        chk(mli_MagicId_set(&magic, "mli_Geometry"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         /* payload */

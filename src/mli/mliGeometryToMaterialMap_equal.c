@@ -3,9 +3,9 @@
 #include <stdint.h>
 #include "../chk/chk.h"
 
-int mliGeometryToMaterialMap_equal(
-        const struct mliGeometryToMaterialMap *a,
-        const struct mliGeometryToMaterialMap *b)
+int mli_GeometryToMaterialMap_equal(
+        const struct mli_GeometryToMaterialMap *a,
+        const struct mli_GeometryToMaterialMap *b)
 {
         uint32_t i = 0u;
         chk_msg(a->num_robjects == b->num_robjects,

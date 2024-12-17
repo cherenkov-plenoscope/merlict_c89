@@ -8,10 +8,10 @@
 #include "mliAccelerator.h"
 
 struct mliScenery {
-        struct mliGeometry geometry;
+        struct mli_Geometry geometry;
         struct mliAccelerator accelerator;
         struct mli_Materials materials;
-        struct mliGeometryToMaterialMap geomap;
+        struct mli_GeometryToMaterialMap geomap;
 };
 
 struct mliScenery mliScenery_init(void);

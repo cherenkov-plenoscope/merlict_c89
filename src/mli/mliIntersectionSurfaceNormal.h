@@ -7,7 +7,7 @@
 #include "../geometry/geometry_id.h"
 
 struct mliIntersectionSurfaceNormal {
-        struct mliGeometryId geometry_id;
+        struct mli_GeometryId geometry_id;
         struct mli_Vec position;
         struct mli_Vec surface_normal;
         struct mli_Vec position_local;

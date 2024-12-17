@@ -52,8 +52,8 @@ chk_error:
 
 int mli_Frame_set_robjects_and_material_map_walk(
         const struct mli_Frame *frame,
-        struct mliGeometry *geometry,
-        struct mliGeometryToMaterialMap *geomap,
+        struct mli_Geometry *geometry,
+        struct mli_GeometryToMaterialMap *geomap,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers)
 {
@@ -92,7 +92,7 @@ int mli_Frame_set_robjects_and_material_map_walk(
                 for (material_idx = 0;
                      material_idx < frame->boundary_layers.size;
                      material_idx++) {
-                        mliGeometryToMaterialMap_set(
+                        mli_GeometryToMaterialMap_set(
                                 geomap,
                                 robject_idx,
                                 material_idx,
@@ -113,8 +113,8 @@ chk_error:
 
 int mli_Frame_set_robjects_and_material_map(
         const struct mli_Frame *frame,
-        struct mliGeometry *geometry,
-        struct mliGeometryToMaterialMap *geomap)
+        struct mli_Geometry *geometry,
+        struct mli_GeometryToMaterialMap *geomap)
 {
         uint64_t num_robjects = 0u;
         uint64_t total_num_boundary_layers = 0u;

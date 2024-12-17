@@ -7,13 +7,13 @@
 #include "../mli/mliAccelerator.h"
 #include "../aabb/aabb.h"
 
-int mliGeometry_robject_has_overlap_aabb_void(
+int mli_Geometry_robject_has_overlap_aabb_void(
         const void *accgeo,
         const uint32_t robject_idx,
         const struct mli_AABB aabb);
 
-int mliGeometry_robject_has_overlap_aabb(
-        const struct mliGeometryAndAccelerator *accgeo,
+int mli_Geometry_robject_has_overlap_aabb(
+        const struct mli_GeometryAndAccelerator *accgeo,
         const uint32_t robject_idx,
         const struct mli_AABB aabb);
 

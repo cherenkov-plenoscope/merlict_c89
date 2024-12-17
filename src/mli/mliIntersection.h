@@ -6,7 +6,7 @@
 #include "../geometry/geometry_id.h"
 
 struct mliIntersection {
-        struct mliGeometryId geometry_id;
+        struct mli_GeometryId geometry_id;
         struct mli_Vec position_local;
         double distance_of_ray;
 };

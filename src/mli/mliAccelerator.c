@@ -65,7 +65,7 @@ chk_error:
 
 int mliAccelerator_set_robject_aabbs(
         struct mliAccelerator *accel,
-        const struct mliGeometry *geometry)
+        const struct mli_Geometry *geometry)
 {
         uint32_t rob;
         chk_msg(accel->num_robjects == geometry->num_robjects,
@@ -85,7 +85,7 @@ chk_error:
 
 int mliAccelerator_set_object_octrees(
         struct mliAccelerator *accel,
-        const struct mliGeometry *geometry)
+        const struct mli_Geometry *geometry)
 {
         uint32_t obj;
         chk_msg(accel->num_objects == geometry->num_objects,
@@ -105,16 +105,16 @@ chk_error:
 
 int mliAccelerator_malloc_from_Geometry(
         struct mliAccelerator *accel,
-        const struct mliGeometry *geometry)
+        const struct mli_Geometry *geometry)
 {
         struct mli_AABB outermost_aabb;
-        struct mliGeometryAndAccelerator accgeo;
+        struct mli_GeometryAndAccelerator accgeo;
         accgeo.accelerator = accel;
         accgeo.geometry = geometry;
 
         chk_msg(mliAccelerator_malloc(
                         accel, geometry->num_objects, geometry->num_robjects),
-                "Failed to malloc mliAccelerator from mliGeometry's "
+                "Failed to malloc mliAccelerator from mli_Geometry's "
                 "num_robjects");
 
         chk_msg(mliAccelerator_set_robject_aabbs(accel, geometry),

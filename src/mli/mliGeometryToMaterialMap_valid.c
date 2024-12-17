@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include "../chk/chk.h"
 
-int mliGeometryToMaterialMap_valid(
-        const struct mliGeometryToMaterialMap *geomap)
+int mli_GeometryToMaterialMap_valid(
+        const struct mli_GeometryToMaterialMap *geomap)
 {
         uint32_t i = 0u;
         chk_msg(geomap->total_num_boundary_layers >= geomap->num_robjects,
@@ -21,9 +21,9 @@ chk_error:
         return 0;
 }
 
-int mliGeometryToMaterialMap_valid_wrt_Geometry(
-        const struct mliGeometryToMaterialMap *geomap,
-        const struct mliGeometry *geometry)
+int mli_GeometryToMaterialMap_valid_wrt_Geometry(
+        const struct mli_GeometryToMaterialMap *geomap,
+        const struct mli_Geometry *geometry)
 {
         uint32_t robj = 0u;
         uint32_t total_num_boundary_layers = 0u;
@@ -34,7 +34,7 @@ int mliGeometryToMaterialMap_valid_wrt_Geometry(
                 const uint32_t obj = geometry->robjects[robj];
                 const uint32_t obj_num_materials =
                         geometry->objects[obj].num_materials;
-                chk_msg(mliGeometryToMaterialMap_num_boundary_layers_in_robject(
+                chk_msg(mli_GeometryToMaterialMap_num_boundary_layers_in_robject(
                                 geomap, robj) == obj_num_materials,
                         "Expected robject to have same num boundary-layers.");
                 total_num_boundary_layers += obj_num_materials;
@@ -47,8 +47,8 @@ chk_error:
         return 0;
 }
 
-int mliGeometryToMaterialMap_valid_wrt_Materials(
-        const struct mliGeometryToMaterialMap *geomap,
+int mli_GeometryToMaterialMap_valid_wrt_Materials(
+        const struct mli_GeometryToMaterialMap *geomap,
         const struct mli_Materials *materials)
 {
         uint32_t i = 0u;

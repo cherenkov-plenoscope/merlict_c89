@@ -4,10 +4,10 @@
 
 #include <stdint.h>
 
-struct mliGeometryId {
+struct mli_GeometryId {
         uint32_t robj;
         uint32_t face;
 };
 
-struct mliGeometryId mliGeometryId_init(void);
+struct mli_GeometryId mli_GeometryId_init(void);
 #endif

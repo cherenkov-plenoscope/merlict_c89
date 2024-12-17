@@ -15,10 +15,10 @@ int mliScenery_to_io(const struct mliScenery *scenery, struct mli_IO *f)
         chk(mli_MagicId_set(&magic, "mliScenery"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
-        chk(mliGeometry_to_io(&scenery->geometry, f));
+        chk(mli_Geometry_to_io(&scenery->geometry, f));
         chk(mliAccelerator_to_io(&scenery->accelerator, f));
         chk(mli_Materials_to_io(&scenery->materials, f));
-        chk(mliGeometryToMaterialMap_to_io(&scenery->geomap, f));
+        chk(mli_GeometryToMaterialMap_to_io(&scenery->geomap, f));
         return 1;
 chk_error:
         return 0;
@@ -34,10 +34,10 @@ int mliScenery_from_io(struct mliScenery *scenery, struct mli_IO *f)
         chk(mli_MagicId_has_word(&magic, "mliScenery"));
         mli_MagicId_warn_version(&magic);
 
-        chk(mliGeometry_from_io(&scenery->geometry, f));
+        chk(mli_Geometry_from_io(&scenery->geometry, f));
         chk(mliAccelerator_from_io(&scenery->accelerator, f));
         chk(mli_Materials_from_io(&scenery->materials, f));
-        chk(mliGeometryToMaterialMap_from_io(&scenery->geomap, f));
+        chk(mli_GeometryToMaterialMap_from_io(&scenery->geomap, f));
         return 1;
 chk_error:
         mliScenery_free(scenery);

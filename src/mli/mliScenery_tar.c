@@ -65,7 +65,7 @@ int mliScenery_malloc_from_Archive(
                 archive, "geometry/objects/", ".obj");
 
         chk_dbg;
-        chk_msg(mliGeometry_malloc_objects(&scenery->geometry, num_objects),
+        chk_msg(mli_Geometry_malloc_objects(&scenery->geometry, num_objects),
                 "Failed to malloc geometry.objects.");
 
         chk_dbg;
@@ -86,14 +86,15 @@ int mliScenery_malloc_from_Archive(
                         &root, &num_robjects, &total_num_boundary_layers),
                 "Can not estimate num_robjects from tree of frames.");
 
-        chk_msg(mliGeometryToMaterialMap_malloc(
+        chk_msg(mli_GeometryToMaterialMap_malloc(
                         &scenery->geomap,
                         num_robjects,
                         total_num_boundary_layers),
                 "Failed to malloc geometry to materials map.");
 
         chk_dbg;
-        chk_msg(mliGeometry_malloc_references(&scenery->geometry, num_robjects),
+        chk_msg(mli_Geometry_malloc_references(
+                        &scenery->geometry, num_robjects),
                 "Failed to malloc geometry.references.");
 
         chk_msg(mli_Frame_set_robjects_and_material_map(
@@ -109,7 +110,7 @@ int mliScenery_malloc_from_Archive(
                 "Failed to malloc accelerator from geometry.");
 
         chk_msg(mliScenery_valid(scenery), "Expected scenery to be valid.");
-        chk_msg(mliGeometry_warn_objects(&scenery->geometry),
+        chk_msg(mli_Geometry_warn_objects(&scenery->geometry),
                 "Failed to warn about objects.");
 
         chk_dbg;

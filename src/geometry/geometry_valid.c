@@ -4,7 +4,7 @@
 #include "../math/math.h"
 #include "../chk/chk.h"
 
-int mliGeometry_valid_objects(const struct mliGeometry *geometry)
+int mli_Geometry_valid_objects(const struct mli_Geometry *geometry)
 {
         uint32_t i = 0;
         for (i = 0; i < geometry->num_objects; i++) {
@@ -27,7 +27,7 @@ chk_error:
         return 0;
 }
 
-int mliGeometry_valid_robjects_HomTras(const struct mliGeometry *geometry)
+int mli_Geometry_valid_robjects_HomTras(const struct mli_Geometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
@@ -49,7 +49,7 @@ chk_error:
         return 0;
 }
 
-int mliGeometry_valid_object_references(const struct mliGeometry *geometry)
+int mli_Geometry_valid_object_references(const struct mli_Geometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
@@ -66,13 +66,13 @@ chk_error:
         return 0;
 }
 
-int mliGeometry_valid(const struct mliGeometry *geometry)
+int mli_Geometry_valid(const struct mli_Geometry *geometry)
 {
-        chk_msg(mliGeometry_valid_objects(geometry),
+        chk_msg(mli_Geometry_valid_objects(geometry),
                 "Expected objects to be valid.");
-        chk_msg(mliGeometry_valid_robjects_HomTras(geometry),
+        chk_msg(mli_Geometry_valid_robjects_HomTras(geometry),
                 "Expected robject transformations to be free of 'nan'.");
-        chk_msg(mliGeometry_valid_object_references(geometry),
+        chk_msg(mli_Geometry_valid_object_references(geometry),
                 "Expected object-references to be valid.");
         return 1;
 chk_error:

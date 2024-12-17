@@ -5,10 +5,10 @@
 #include "../io/io.h"
 #include "mliGeometryToMaterialMap.h"
 
-int mliGeometryToMaterialMap_from_io(
-        struct mliGeometryToMaterialMap *geomap,
+int mli_GeometryToMaterialMap_from_io(
+        struct mli_GeometryToMaterialMap *geomap,
         struct mli_IO *f);
-int mliGeometryToMaterialMap_to_io(
-        const struct mliGeometryToMaterialMap *geomap,
+int mli_GeometryToMaterialMap_to_io(
+        const struct mli_GeometryToMaterialMap *geomap,
         struct mli_IO *f);
 #endif

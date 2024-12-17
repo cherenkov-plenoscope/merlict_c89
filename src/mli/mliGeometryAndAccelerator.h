@@ -5,12 +5,12 @@
 #include "../geometry/geometry.h"
 #include "mliAccelerator.h"
 
-struct mliGeometryAndAccelerator {
+struct mli_GeometryAndAccelerator {
         /*
          * A temporary container to allow access to both geometry and its
          * accelerator using only one pointer.
          */
-        const struct mliGeometry *geometry;
+        const struct mli_Geometry *geometry;
         const struct mliAccelerator *accelerator;
 };
 

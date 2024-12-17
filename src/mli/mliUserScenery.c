@@ -18,7 +18,7 @@
 #include "../surface/surface_json.h"
 
 int mli_set_geometry_objects_and_names_from_archive(
-        struct mliGeometry *geometry,
+        struct mli_Geometry *geometry,
         struct mli_Map *object_names,
         const struct mli_Archive *archive)
 {

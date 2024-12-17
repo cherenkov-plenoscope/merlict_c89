@@ -87,7 +87,7 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         mliScenery_free(scenery);
 
-        chk_msg(mliGeometry_malloc(&scenery->geometry, 1u, 1u),
+        chk_msg(mli_Geometry_malloc(&scenery->geometry, 1u, 1u),
                 "Failed to malloc geometry.");
 
         /* set object */
@@ -158,7 +158,7 @@ int mliScenery_malloc_minimal_from_wavefront(
                         i));
         }
 
-        chk_msg(mliGeometryToMaterialMap_malloc(
+        chk_msg(mli_GeometryToMaterialMap_malloc(
                         &scenery->geomap,
                         scenery->geometry.num_robjects,
                         total_num_boundary_layers),
@@ -166,7 +166,7 @@ int mliScenery_malloc_minimal_from_wavefront(
 
         /* set map */
         for (i = 0u; i < total_num_boundary_layers; i++) {
-                mliGeometryToMaterialMap_set(&scenery->geomap, 0u, i, i);
+                mli_GeometryToMaterialMap_set(&scenery->geomap, 0u, i, i);
         }
 
         chk_msg(mliAccelerator_malloc_from_Geometry(

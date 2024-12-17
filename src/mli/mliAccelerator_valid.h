@@ -7,5 +7,5 @@
 int mliAccelerator_valid(const struct mliAccelerator *accel);
 int mliAccelerator_valid_wrt_Geometry(
         const struct mliAccelerator *accel,
-        const struct mliGeometry *geometry);
+        const struct mli_Geometry *geometry);
 #endif

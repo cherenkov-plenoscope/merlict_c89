@@ -5,7 +5,7 @@
 struct mliIntersection mliIntersection_init(void)
 {
         struct mliIntersection psec;
-        psec.geometry_id = mliGeometryId_init();
+        psec.geometry_id = mli_GeometryId_init();
         psec.position_local = mli_Vec_init(0.0, 0.0, 0.0);
         psec.distance_of_ray = DBL_MAX;
         return psec;

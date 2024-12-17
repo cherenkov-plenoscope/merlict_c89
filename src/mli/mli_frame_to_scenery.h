@@ -4,18 +4,18 @@
 
 #include <stdint.h>
 struct mli_Frame;
-struct mliGeometry;
-struct mliGeometryToMaterialMap;
+struct mli_Geometry;
+struct mli_GeometryToMaterialMap;
 
 int mli_Frame_set_robjects_and_material_map(
         const struct mli_Frame *frame,
-        struct mliGeometry *geometry,
-        struct mliGeometryToMaterialMap *geomap);
+        struct mli_Geometry *geometry,
+        struct mli_GeometryToMaterialMap *geomap);
 
 int mli_Frame_set_robjects_and_material_map_walk(
         const struct mli_Frame *frame,
-        struct mliGeometry *geometry,
-        struct mliGeometryToMaterialMap *geomap,
+        struct mli_Geometry *geometry,
+        struct mli_GeometryToMaterialMap *geomap,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers);
 
