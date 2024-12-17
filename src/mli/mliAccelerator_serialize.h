@@ -2,9 +2,9 @@
 #ifndef MLIACCELERATOR_SERIALIZE_H_
 #define MLIACCELERATOR_SERIALIZE_H_
 
-#include <stdio.h>
+#include "../io/io.h"
 #include "mliAccelerator.h"
 
-int mliAccelerator_malloc_fread(struct mliAccelerator *accel, FILE *f);
-int mliAccelerator_fwrite(const struct mliAccelerator *accel, FILE *f);
+int mliAccelerator_malloc_fread(struct mliAccelerator *accel, struct mli_IO *f);
+int mliAccelerator_fwrite(const struct mliAccelerator *accel, struct mli_IO *f);
 #endif

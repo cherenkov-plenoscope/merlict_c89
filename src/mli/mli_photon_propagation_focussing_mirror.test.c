@@ -1,15 +1,12 @@
 /* Copyright 2019 Sebastian Achim Mueller                                     */
 #include <math.h>
 
-/*
-
- */
-
 CASE("focussing_a_parallel_beam")
 {
 #define NUM_PIXEL 127
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         struct mliScenery scenery = mliScenery_init();
+        struct mli_IO f = mli_IO_init();
         struct mliDynPhotonInteraction photon_history =
                 mliDynPhotonInteraction_init();
         struct mli_prng_UniformRange wavelength_range;
@@ -90,13 +87,17 @@ CASE("focussing_a_parallel_beam")
         mli_Image_multiply(
                 &screen_img,
                 mli_Color_set(1.0, 255.0 / max_color.g, 255.0 / max_color.b));
-        CHECK(mli_Image_write_to_path(
-                &screen_img,
+
+        CHECK(mli_IO__open_file_cstr(
+                &f,
                 "data/"
                 "mli/"
                 "tests/"
                 "resources/"
-                "optics_focussing_mirror-psf.ppm.tmp"));
+                "optics_focussing_mirror-psf.ppm.tmp",
+                "w"));
+        CHECK(mli_Image_fwrite(&screen_img, &f));
+        mli_IO_close(&f);
 
         mliScenery_free(&scenery);
         mliDynPhotonInteraction_free(&photon_history);

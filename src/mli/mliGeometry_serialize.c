@@ -6,7 +6,7 @@
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
+int mliGeometry_malloc_fread(struct mliGeometry *geometry, struct mli_IO *f)
 {
         uint32_t i;
         uint32_t num_objects = 0u;
@@ -14,13 +14,13 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
         struct mliMagicId magic;
 
         /* magic identifier */
-        chk_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
         chk(mliMagicId_has_word(&magic, "mliGeometry"));
         mliMagicId_warn_version(&magic);
 
         /* payload */
-        chk_fread(&num_objects, sizeof(uint32_t), 1u, f);
-        chk_fread(&num_robjects, sizeof(uint32_t), 1u, f);
+        chk_IO_read(&num_objects, sizeof(uint32_t), 1u, f);
+        chk_IO_read(&num_robjects, sizeof(uint32_t), 1u, f);
 
         chk_msg(mliGeometry_malloc(geometry, num_objects, num_robjects),
                 "Failed to malloc robjects in mliGeometry.");
@@ -32,17 +32,17 @@ int mliGeometry_malloc_fread(struct mliGeometry *geometry, FILE *f)
                         "Failed to read object name into geometry.");
         }
 
-        chk_fread(
+        chk_IO_read(
                 geometry->robjects,
                 sizeof(uint32_t),
                 geometry->num_robjects,
                 f);
-        chk_fread(
+        chk_IO_read(
                 geometry->robject_ids,
                 sizeof(uint32_t),
                 geometry->num_robjects,
                 f);
-        chk_fread(
+        chk_IO_read(
                 geometry->robject2root,
                 sizeof(struct mli_HomTraComp),
                 geometry->num_robjects,
@@ -53,18 +53,18 @@ chk_error:
         return 0;
 }
 
-int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
+int mliGeometry_fwrite(const struct mliGeometry *geometry, struct mli_IO *f)
 {
         uint32_t i;
         struct mliMagicId magic;
 
         /* magic identifier */
         chk(mliMagicId_set(&magic, "mliGeometry"));
-        chk_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
 
         /* payload */
-        chk_fwrite(&geometry->num_objects, sizeof(uint32_t), 1, f);
-        chk_fwrite(&geometry->num_robjects, sizeof(uint32_t), 1, f);
+        chk_IO_write(&geometry->num_objects, sizeof(uint32_t), 1, f);
+        chk_IO_write(&geometry->num_robjects, sizeof(uint32_t), 1, f);
 
         for (i = 0; i < geometry->num_objects; i++) {
                 chk_msg(mliObject_fwrite(&geometry->objects[i], f),
@@ -73,17 +73,17 @@ int mliGeometry_fwrite(const struct mliGeometry *geometry, FILE *f)
                         "Failed to write object name.");
         }
 
-        chk_fwrite(
+        chk_IO_write(
                 geometry->robjects,
                 sizeof(uint32_t),
                 geometry->num_robjects,
                 f);
-        chk_fwrite(
+        chk_IO_write(
                 geometry->robject_ids,
                 sizeof(uint32_t),
                 geometry->num_robjects,
                 f);
-        chk_fwrite(
+        chk_IO_write(
                 geometry->robject2root,
                 sizeof(struct mli_HomTraComp),
                 geometry->num_robjects,

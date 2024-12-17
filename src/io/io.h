@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "io_file.h"
 #include "io_memory.h"
+#include "../chk/chk.h"
 
 #define MLI_IO_TYPE_VOID 0
 #define MLI_IO_TYPE_FILE 10
@@ -49,5 +50,19 @@ int64_t mli_IO_seek(
         const int64_t offset,
         const int64_t origin);
 int mli_IO_eof(const struct mli_IO *self);
+
+#define chk_IO_write(PTR, SIZE_OF_TYPE, NUM, IO)                               \
+        {                                                                      \
+                const uint64_t num_written =                                   \
+                        mli_IO_write(PTR, SIZE_OF_TYPE, NUM, IO);              \
+                chk_msg(num_written == NUM, "Can not write to file.");         \
+        }
+
+#define chk_IO_read(PTR, SIZE_OF_TYPE, NUM, IO)                                \
+        {                                                                      \
+                const uint64_t num_read =                                      \
+                        mli_IO_read(PTR, SIZE_OF_TYPE, NUM, IO);               \
+                chk_msg(num_read == NUM, "Can not read from file.");           \
+        }
 
 #endif

@@ -9,11 +9,11 @@
 #include "mliMaterials_serialize.h"
 #include "mliGeometryToMaterialMap_serialize.h"
 
-int mliScenery_fwrite(const struct mliScenery *scenery, FILE *f)
+int mliScenery_fwrite(const struct mliScenery *scenery, struct mli_IO *f)
 {
         struct mliMagicId magic;
         chk(mliMagicId_set(&magic, "mliScenery"));
-        chk_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
 
         chk(mliGeometry_fwrite(&scenery->geometry, f));
         chk(mliAccelerator_fwrite(&scenery->accelerator, f));
@@ -24,13 +24,13 @@ chk_error:
         return 0;
 }
 
-int mliScenery_malloc_fread(struct mliScenery *scenery, FILE *f)
+int mliScenery_malloc_fread(struct mliScenery *scenery, struct mli_IO *f)
 {
         struct mliMagicId magic;
 
         mliScenery_free(scenery);
 
-        chk_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
         chk(mliMagicId_has_word(&magic, "mliScenery"));
         mliMagicId_warn_version(&magic);
 
@@ -46,31 +46,25 @@ chk_error:
 
 int mliScenery_malloc_from_path(struct mliScenery *scenery, const char *path)
 {
-        FILE *f;
-        f = fopen(path, "r");
-        chk_msg(f != NULL, "Can not open file for reading.");
-        chk_msg(mliScenery_malloc_fread(scenery, f), "Can not read file.");
-        fclose(f);
+        struct mli_IO f = mli_IO_init();
+        chk_msg(mli_IO__open_file_cstr(&f, path, "r"), "Can't open file.");
+        chk_msg(mliScenery_malloc_fread(scenery, &f), "Can't read from file.");
+        mli_IO_close(&f);
         return 1;
 chk_error:
-        if (f != NULL) {
-                fclose(f);
-        }
+        mli_IO_close(&f);
         mliScenery_free(scenery);
         return 0;
 }
 
 int mliScenery_write_to_path(const struct mliScenery *scenery, const char *path)
 {
-        FILE *f;
-        f = fopen(path, "w");
-        chk_msg(f != NULL, "Can not open file for writing.");
-        chk_msg(mliScenery_fwrite(scenery, f), "Failed to write to file.");
-        fclose(f);
+        struct mli_IO f = mli_IO_init();
+        chk_msg(mli_IO__open_file_cstr(&f, path, "w"), "Can't write to file.");
+        chk_msg(mliScenery_fwrite(scenery, &f), "Can't write to file.");
+        mli_IO_close(&f);
         return 1;
 chk_error:
-        if (f != NULL) {
-                fclose(f);
-        }
+        mli_IO_close(&f);
         return 0;
 }

@@ -117,6 +117,19 @@ int mli_viewer_get_key(void)
         }
 }
 
+int mli_viewer_image_to_path(const struct mli_Image *img, const char *path)
+{
+        struct mli_IO f = mli_IO_init();
+        chk_msg(mli_IO__open_file_cstr(&f, path, "w"),
+                "Can't open path to write image.");
+        chk_msg(mli_Image_fwrite(img, &f), "Can't write image to file.");
+        mli_IO_close(&f);
+        return 1;
+chk_error:
+        mli_IO_close(&f);
+        return 0;
+}
+
 int mli_viewer_export_image(
         const struct mliTracer *tracer,
         const struct mli_viewer_Config config,
@@ -148,7 +161,7 @@ int mli_viewer_export_image(
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mliApertureCamera_render_image(
                 apcam, camera2root_comp, tracer, &full, prng);
-        chk_msg(mli_Image_write_to_path(&full, path), "Failed to write ppm.");
+        chk_msg(mli_viewer_image_to_path(&full, path), "Failed to write ppm.");
         mli_Image_free(&full);
         return 1;
 chk_error:

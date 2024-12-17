@@ -84,6 +84,7 @@ CASE("scaling")
 CASE("mli_Image_write_to_ppm, mli_Image_malloc_from_ppm")
 {
         const char path[] = "data/mli/tests/resources/image/img.ppm.tmp";
+        struct mli_IO f = mli_IO_init();
         struct mli_Image img = mli_Image_init();
         struct mli_Image back = mli_Image_init();
         uint32_t col;
@@ -101,9 +102,14 @@ CASE("mli_Image_write_to_ppm, mli_Image_malloc_from_ppm")
                         mli_Image_set_by_col_row(&img, col, row, color);
                 }
         }
-        mli_Image_write_to_path(&img, path);
+        CHECK(mli_IO__open_file_cstr(&f, path, "w"));
+        CHECK(mli_Image_fwrite(&img, &f));
+        CHECK(mli_IO_close(&f));
 
-        CHECK(mli_Image_malloc_from_path(&back, path));
+        CHECK(mli_IO__open_file_cstr(&f, path, "r"));
+        CHECK(mli_Image_malloc_fread(&back, &f));
+        CHECK(mli_IO_close(&f));
+
         CHECK(mli_Image_num_cols(&back) == 3u);
         CHECK(mli_Image_num_rows(&back) == 2u);
 

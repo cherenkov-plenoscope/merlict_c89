@@ -4,12 +4,12 @@
 #include "../func/func_serialize.h"
 #include "../chk/chk.h"
 
-int mliMedium_fwrite(const struct mliMedium *med, FILE *f)
+int mliMedium_fwrite(const struct mliMedium *med, struct mli_IO *f)
 {
         struct mliMagicId magic = mliMagicId_init();
         /* magic identifier */
         chk(mliMagicId_set(&magic, "mliMedium"));
-        chk_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
 
         chk(mli_Func_fwrite(&med->refraction, f));
         chk(mli_Func_fwrite(&med->absorbtion, f));
@@ -19,11 +19,11 @@ chk_error:
         return 0;
 }
 
-int mliMedium_malloc_fread(struct mliMedium *med, FILE *f)
+int mliMedium_malloc_fread(struct mliMedium *med, struct mli_IO *f)
 {
         struct mliMagicId magic;
         /* magic identifier */
-        chk_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
         chk(mliMagicId_has_word(&magic, "mliMedium"));
         mliMagicId_warn_version(&magic);
 

@@ -5,18 +5,18 @@
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
+int mliMaterials_fwrite(const struct mliMaterials *res, struct mli_IO *f)
 {
         uint64_t i;
         struct mliMagicId magic = mliMagicId_init();
 
         /* magic identifier */
         chk(mliMagicId_set(&magic, "mliMaterials"));
-        chk_fwrite(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk_IO_write(&magic, sizeof(struct mliMagicId), 1u, f);
 
-        chk_fwrite(&res->num_media, sizeof(uint64_t), 1u, f);
-        chk_fwrite(&res->num_surfaces, sizeof(uint64_t), 1u, f);
-        chk_fwrite(&res->num_boundary_layers, sizeof(uint64_t), 1u, f);
+        chk_IO_write(&res->num_media, sizeof(uint64_t), 1u, f);
+        chk_IO_write(&res->num_surfaces, sizeof(uint64_t), 1u, f);
+        chk_IO_write(&res->num_boundary_layers, sizeof(uint64_t), 1u, f);
 
         for (i = 0; i < res->num_media; i++) {
                 chk(mli_String_fwrite(&res->medium_names[i], f));
@@ -28,33 +28,33 @@ int mliMaterials_fwrite(const struct mliMaterials *res, FILE *f)
         }
         for (i = 0; i < res->num_boundary_layers; i++) {
                 chk(mli_String_fwrite(&res->boundary_layer_names[i], f));
-                chk_fwrite(
+                chk_IO_write(
                         &res->boundary_layers[i],
                         sizeof(struct mliBoundaryLayer),
                         1,
                         f);
         }
-        chk_fwrite(&res->default_medium, sizeof(uint64_t), 1, f);
+        chk_IO_write(&res->default_medium, sizeof(uint64_t), 1, f);
 
         return 1;
 chk_error:
         return 0;
 }
 
-int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
+int mliMaterials_malloc_fread(struct mliMaterials *res, struct mli_IO *f)
 {
         uint64_t i;
         struct mliMagicId magic;
         struct mliMaterialsCapacity cap;
 
         /* magic identifier */
-        chk_fread(&magic, sizeof(struct mliMagicId), 1u, f);
+        chk_IO_read(&magic, sizeof(struct mliMagicId), 1u, f);
         chk(mliMagicId_has_word(&magic, "mliMaterials"));
         mliMagicId_warn_version(&magic);
 
-        chk_fread(&cap.num_media, sizeof(uint64_t), 1u, f);
-        chk_fread(&cap.num_surfaces, sizeof(uint64_t), 1u, f);
-        chk_fread(&cap.num_boundary_layers, sizeof(uint64_t), 1u, f);
+        chk_IO_read(&cap.num_media, sizeof(uint64_t), 1u, f);
+        chk_IO_read(&cap.num_surfaces, sizeof(uint64_t), 1u, f);
+        chk_IO_read(&cap.num_boundary_layers, sizeof(uint64_t), 1u, f);
 
         chk(mliMaterials_malloc(res, cap));
 
@@ -76,13 +76,13 @@ int mliMaterials_malloc_fread(struct mliMaterials *res, FILE *f)
                 chk_msg(mli_String_malloc_fread(
                                 &res->boundary_layer_names[i], f),
                         "Failed to fread boundary layer name.");
-                chk_fread(
+                chk_IO_read(
                         &res->boundary_layers[i],
                         sizeof(struct mliBoundaryLayer),
                         1,
                         f);
         }
-        chk_fread(&res->default_medium, sizeof(uint64_t), 1, f);
+        chk_IO_read(&res->default_medium, sizeof(uint64_t), 1, f);
 
         return 1;
 chk_error:

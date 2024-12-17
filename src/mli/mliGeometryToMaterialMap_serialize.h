@@ -2,13 +2,13 @@
 #ifndef MLIGEOMETRYTOMATERIALMAP_SERIALIZE_H_
 #define MLIGEOMETRYTOMATERIALMAP_SERIALIZE_H_
 
-#include <stdio.h>
+#include "../io/io.h"
 #include "mliGeometryToMaterialMap.h"
 
 int mliGeometryToMaterialMap_malloc_fread(
         struct mliGeometryToMaterialMap *geomap,
-        FILE *f);
+        struct mli_IO *f);
 int mliGeometryToMaterialMap_fwrite(
         const struct mliGeometryToMaterialMap *geomap,
-        FILE *f);
+        struct mli_IO *f);
 #endif

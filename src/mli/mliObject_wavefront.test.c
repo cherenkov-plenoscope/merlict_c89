@@ -396,12 +396,14 @@ CASE("mliObject, read wavefront file")
 CASE("mliObject, write and read binary-string")
 {
         uint64_t i;
-        struct mli_IO str = mli_IO_init();
+        struct mli_IO f = mli_IO_init();
         struct mliObject obj = mliObject_init();
         struct mliObject obj_back = mliObject_init();
-        FILE *f;
+        char facet_bin_path[] =
+                "data/mli/tests/resources/hexagonal_mirror_facet.bin.tmp";
+
         CHECK(mli_IO__open_file_cstr(
-                &str,
+                &f,
                 "data/"
                 "mli/"
                 "tests/"
@@ -412,30 +414,16 @@ CASE("mliObject, write and read binary-string")
                 "objects/"
                 "hexagonal_mirror_facet.obj",
                 "r"));
-        CHECK(mliObject_malloc_from_wavefront(&obj, &str));
-        mli_IO_close(&str);
+        CHECK(mliObject_malloc_from_wavefront(&obj, &f));
+        mli_IO_close(&f);
 
-        f =
-                fopen("data/"
-                      "mli/"
-                      "tests/"
-                      "resources/"
-                      "hexagonal_mirror_facet.bin.tmp",
-                      "w");
-        CHECK(f != NULL);
-        mliObject_fwrite(&obj, f);
-        fclose(f);
+        CHECK(mli_IO__open_file_cstr(&f, facet_bin_path, "w"));
+        mliObject_fwrite(&obj, &f);
+        mli_IO_close(&f);
 
-        f =
-                fopen("data/"
-                      "mli/"
-                      "tests/"
-                      "resources/"
-                      "hexagonal_mirror_facet.bin.tmp",
-                      "r");
-        CHECK(f != NULL);
-        mliObject_malloc_fread(&obj_back, f);
-        fclose(f);
+        CHECK(mli_IO__open_file_cstr(&f, facet_bin_path, "r"));
+        mliObject_malloc_fread(&obj_back, &f);
+        mli_IO_close(&f);
 
         CHECK(obj.num_vertices == obj_back.num_vertices);
         CHECK(obj.num_vertex_normals == obj_back.num_vertex_normals);
