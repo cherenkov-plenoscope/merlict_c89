@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliTriangle_AABB.h"
+#include "triangle_aabb.h"
 #include <math.h>
 #include "../math/math.h"
 
-#define MLI_INSIDE 0
-#define MLI_OUTSIDE 1
+#define MLI_TRIANGLE_INSIDE 0
+#define MLI_TRIANGLE_OUTSIDE 1
 
 /* Voorhies, Douglas,
  * Triangle-Cube Intersection,
@@ -119,34 +119,34 @@ int64_t mli_triangle_aabb_check_line(
         if ((0x01 & outcode_diff) != 0)
                 if (mli_triangle_aabb_check_point(
                             p1, p2, (0.5f - p1.x) / (p2.x - p1.x), 0x3e) ==
-                    MLI_INSIDE)
-                        return (MLI_INSIDE);
+                    MLI_TRIANGLE_INSIDE)
+                        return (MLI_TRIANGLE_INSIDE);
         if ((0x02 & outcode_diff) != 0)
                 if (mli_triangle_aabb_check_point(
                             p1, p2, (-0.5f - p1.x) / (p2.x - p1.x), 0x3d) ==
-                    MLI_INSIDE)
-                        return (MLI_INSIDE);
+                    MLI_TRIANGLE_INSIDE)
+                        return (MLI_TRIANGLE_INSIDE);
         if ((0x04 & outcode_diff) != 0)
                 if (mli_triangle_aabb_check_point(
                             p1, p2, (0.5f - p1.y) / (p2.y - p1.y), 0x3b) ==
-                    MLI_INSIDE)
-                        return (MLI_INSIDE);
+                    MLI_TRIANGLE_INSIDE)
+                        return (MLI_TRIANGLE_INSIDE);
         if ((0x08 & outcode_diff) != 0)
                 if (mli_triangle_aabb_check_point(
                             p1, p2, (-0.5f - p1.y) / (p2.y - p1.y), 0x37) ==
-                    MLI_INSIDE)
-                        return (MLI_INSIDE);
+                    MLI_TRIANGLE_INSIDE)
+                        return (MLI_TRIANGLE_INSIDE);
         if ((0x10 & outcode_diff) != 0)
                 if (mli_triangle_aabb_check_point(
                             p1, p2, (0.5f - p1.z) / (p2.z - p1.z), 0x2f) ==
-                    MLI_INSIDE)
-                        return (MLI_INSIDE);
+                    MLI_TRIANGLE_INSIDE)
+                        return (MLI_TRIANGLE_INSIDE);
         if ((0x20 & outcode_diff) != 0)
                 if (mli_triangle_aabb_check_point(
                             p1, p2, (-0.5f - p1.z) / (p2.z - p1.z), 0x1f) ==
-                    MLI_INSIDE)
-                        return (MLI_INSIDE);
-        return (MLI_OUTSIDE);
+                    MLI_TRIANGLE_INSIDE)
+                        return (MLI_TRIANGLE_INSIDE);
+        return (MLI_TRIANGLE_OUTSIDE);
 }
 
 /* Test if 3D point is inside 3D triangle */
@@ -161,17 +161,17 @@ int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mli_Vec p)
         /* If P is outside triangle bbox, there cannot be an intersection. */
 
         if (p.x > MLI_MATH_MAX3(t.v1.x, t.v2.x, t.v3.x))
-                return (MLI_OUTSIDE);
+                return (MLI_TRIANGLE_OUTSIDE);
         if (p.y > MLI_MATH_MAX3(t.v1.y, t.v2.y, t.v3.y))
-                return (MLI_OUTSIDE);
+                return (MLI_TRIANGLE_OUTSIDE);
         if (p.z > MLI_MATH_MAX3(t.v1.z, t.v2.z, t.v3.z))
-                return (MLI_OUTSIDE);
+                return (MLI_TRIANGLE_OUTSIDE);
         if (p.x < MLI_MATH_MIN3(t.v1.x, t.v2.x, t.v3.x))
-                return (MLI_OUTSIDE);
+                return (MLI_TRIANGLE_OUTSIDE);
         if (p.y < MLI_MATH_MIN3(t.v1.y, t.v2.y, t.v3.y))
-                return (MLI_OUTSIDE);
+                return (MLI_TRIANGLE_OUTSIDE);
         if (p.z < MLI_MATH_MIN3(t.v1.z, t.v2.z, t.v3.z))
-                return (MLI_OUTSIDE);
+                return (MLI_TRIANGLE_OUTSIDE);
 
         /* For each triangle side, make a vector out of it by subtracting
          * vertexes; */
@@ -201,20 +201,20 @@ int64_t mliTriangle_intersects_point(struct mliTriangle t, struct mli_Vec p)
 
         /* If all three crossproduct vectors agree in their component signs,  */
         /* then the point must be inside all three.                           */
-        /* P cannot be MLI_OUTSIDE all three sides simultaneously. */
+        /* P cannot be MLI_TRIANGLE_OUTSIDE all three sides simultaneously. */
 
         /* this is the old test; with the revised MLI_MATH_SIGN3() macro, the
          * test needs to be revised. */
         return ((sign12_bitmask & sign23_bitmask & sign31_bitmask) == 0)
-                       ? MLI_OUTSIDE
-                       : MLI_INSIDE;
+                       ? MLI_TRIANGLE_OUTSIDE
+                       : MLI_TRIANGLE_INSIDE;
 }
 
 /**********************************************/
 /* This is the main algorithm procedure.      */
 /* Triangle t is compared with a unit cube,   */
 /* centered on the origin.                    */
-/* It returns MLI_INSIDE (0) or MLI_OUTSIDE(1) if t   */
+/* It returns MLI_TRIANGLE_INSIDE (0) or MLI_TRIANGLE_OUTSIDE(1) if t   */
 /* intersects or does not intersect the cube. */
 /**********************************************/
 
@@ -228,18 +228,21 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
         /* First compare all three vertexes with all six face-planes */
         /* If any vertex is inside the cube, return immediately!     */
 
-        if ((v1_test = mli_triangle_aabb_face_plane(t.v1)) == MLI_INSIDE)
-                return (MLI_INSIDE);
-        if ((v2_test = mli_triangle_aabb_face_plane(t.v2)) == MLI_INSIDE)
-                return (MLI_INSIDE);
-        if ((v3_test = mli_triangle_aabb_face_plane(t.v3)) == MLI_INSIDE)
-                return (MLI_INSIDE);
+        if ((v1_test = mli_triangle_aabb_face_plane(t.v1)) ==
+            MLI_TRIANGLE_INSIDE)
+                return (MLI_TRIANGLE_INSIDE);
+        if ((v2_test = mli_triangle_aabb_face_plane(t.v2)) ==
+            MLI_TRIANGLE_INSIDE)
+                return (MLI_TRIANGLE_INSIDE);
+        if ((v3_test = mli_triangle_aabb_face_plane(t.v3)) ==
+            MLI_TRIANGLE_INSIDE)
+                return (MLI_TRIANGLE_INSIDE);
 
         /* If all three vertexes were outside of one or more face-planes, */
         /* return immediately with a trivial rejection!                   */
 
         if ((v1_test & v2_test & v3_test) != 0)
-                return (MLI_OUTSIDE);
+                return (MLI_TRIANGLE_OUTSIDE);
 
         /* Now do the same trivial rejection test for the 12 edge planes */
 
@@ -247,7 +250,7 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
         v2_test |= mli_triangle_aabb_bevel_2d(t.v2) << 8;
         v3_test |= mli_triangle_aabb_bevel_2d(t.v3) << 8;
         if ((v1_test & v2_test & v3_test) != 0)
-                return (MLI_OUTSIDE);
+                return (MLI_TRIANGLE_OUTSIDE);
 
         /* Now do the same trivial rejection test for the 8 corner planes */
 
@@ -255,7 +258,7 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
         v2_test |= mli_triangle_aabb_bevel_3d(t.v2) << 24;
         v3_test |= mli_triangle_aabb_bevel_3d(t.v3) << 24;
         if ((v1_test & v2_test & v3_test) != 0)
-                return (MLI_OUTSIDE);
+                return (MLI_TRIANGLE_OUTSIDE);
 
         /* If vertex 1 and 2, as a pair, cannot be trivially rejected */
         /* by the above tests, then see if the v1-->v2 triangle edge  */
@@ -266,16 +269,19 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
 
         if ((v1_test & v2_test) == 0)
                 if (mli_triangle_aabb_check_line(
-                            t.v1, t.v2, v1_test | v2_test) == MLI_INSIDE)
-                        return (MLI_INSIDE);
+                            t.v1, t.v2, v1_test | v2_test) ==
+                    MLI_TRIANGLE_INSIDE)
+                        return (MLI_TRIANGLE_INSIDE);
         if ((v1_test & v3_test) == 0)
                 if (mli_triangle_aabb_check_line(
-                            t.v1, t.v3, v1_test | v3_test) == MLI_INSIDE)
-                        return (MLI_INSIDE);
+                            t.v1, t.v3, v1_test | v3_test) ==
+                    MLI_TRIANGLE_INSIDE)
+                        return (MLI_TRIANGLE_INSIDE);
         if ((v2_test & v3_test) == 0)
                 if (mli_triangle_aabb_check_line(
-                            t.v2, t.v3, v2_test | v3_test) == MLI_INSIDE)
-                        return (MLI_INSIDE);
+                            t.v2, t.v3, v2_test | v3_test) ==
+                    MLI_TRIANGLE_INSIDE)
+                        return (MLI_TRIANGLE_INSIDE);
 
         /* By now, we know that the triangle is not off to any side,     */
         /* and that its sides do not penetrate the cube.  We must now    */
@@ -312,35 +318,35 @@ int64_t mliTriangle_intersects_norm_aabb(struct mliTriangle t)
                 hitpp.x = hitpp.y = hitpp.z = d / denom;
                 if (fabs(hitpp.x) <= 0.5)
                         if (mliTriangle_intersects_point(t, hitpp) ==
-                            MLI_INSIDE)
-                                return (MLI_INSIDE);
+                            MLI_TRIANGLE_INSIDE)
+                                return (MLI_TRIANGLE_INSIDE);
         }
         if (fabs(denom = (norm.x + norm.y - norm.z)) > MLI_MATH_EPSILON) {
                 hitpn.z = -(hitpn.x = hitpn.y = d / denom);
                 if (fabs(hitpn.x) <= 0.5)
                         if (mliTriangle_intersects_point(t, hitpn) ==
-                            MLI_INSIDE)
-                                return (MLI_INSIDE);
+                            MLI_TRIANGLE_INSIDE)
+                                return (MLI_TRIANGLE_INSIDE);
         }
         if (fabs(denom = (norm.x - norm.y + norm.z)) > MLI_MATH_EPSILON) {
                 hitnp.y = -(hitnp.x = hitnp.z = d / denom);
                 if (fabs(hitnp.x) <= 0.5)
                         if (mliTriangle_intersects_point(t, hitnp) ==
-                            MLI_INSIDE)
-                                return (MLI_INSIDE);
+                            MLI_TRIANGLE_INSIDE)
+                                return (MLI_TRIANGLE_INSIDE);
         }
         if (fabs(denom = (norm.x - norm.y - norm.z)) > MLI_MATH_EPSILON) {
                 hitnn.y = hitnn.z = -(hitnn.x = d / denom);
                 if (fabs(hitnn.x) <= 0.5)
                         if (mliTriangle_intersects_point(t, hitnn) ==
-                            MLI_INSIDE)
-                                return (MLI_INSIDE);
+                            MLI_TRIANGLE_INSIDE)
+                                return (MLI_TRIANGLE_INSIDE);
         }
 
         /* No edge touched the cube; no cube diagonal touched the triangle. */
         /* We're done...there was no intersection.                          */
 
-        return (MLI_OUTSIDE);
+        return (MLI_TRIANGLE_OUTSIDE);
 }
 
 struct mliTriangle mliTriangle_set_in_norm_aabb(
@@ -380,7 +386,7 @@ int mliTriangle_has_overlap_aabb(
         const struct mli_AABB aabb)
 {
         struct mliTriangle tri = mliTriangle_set_in_norm_aabb(a, b, c, aabb);
-        if (mliTriangle_intersects_norm_aabb(tri) == MLI_INSIDE)
+        if (mliTriangle_intersects_norm_aabb(tri) == MLI_TRIANGLE_INSIDE)
                 return 1;
         else
                 return 0;

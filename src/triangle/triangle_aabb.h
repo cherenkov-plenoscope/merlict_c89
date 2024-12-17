@@ -1,16 +1,11 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLITRIANGLE_AABB_H_
-#define MLITRIANGLE_AABB_H_
+#ifndef MLI_TRIANGLE_AABB_H_
+#define MLI_TRIANGLE_AABB_H_
 
 #include <stdint.h>
+#include "triangle.h"
 #include "../vec/vec.h"
 #include "../aabb/aabb.h"
-
-struct mliTriangle {
-        struct mli_Vec v1;
-        struct mli_Vec v2;
-        struct mli_Vec v3;
-};
 
 struct mli_AABB mliTriangle_aabb(
         const struct mli_Vec a,

@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLI_BARYCENTRIC_H_
-#define MLI_BARYCENTRIC_H_
+#ifndef MLI_TRIANGLE_BARYCENTRIC_H_
+#define MLI_TRIANGLE_BARYCENTRIC_H_
 
 #include "../vec/vec.h"
 

@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_triangle_intersection.h"
 #include <math.h>
-#include "mli_barycentric.h"
+#include "../triangle/triangle_barycentric.h"
 #include "../math/math.h"
 
 int mli_Ray_intersects_triangle(

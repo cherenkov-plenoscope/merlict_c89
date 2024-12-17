@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_barycentric.h"
+#include "triangle_barycentric.h"
 
 struct mliBarycentrigWeights mli_barycentric_weights(
         const struct mli_Vec a,
