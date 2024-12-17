@@ -46,11 +46,11 @@ int mli_Func_from_csv(
         struct mli_String line = mli_String_init();
         struct mli_String sx = mli_String_init();
         struct mli_String sy = mli_String_init();
-        struct mliDynDouble x = mliDynDouble_init();
-        struct mliDynDouble y = mliDynDouble_init();
+        struct mli_DoubleVector x = mli_DoubleVector_init();
+        struct mli_DoubleVector y = mli_DoubleVector_init();
 
-        chk(mliDynDouble_malloc(&x, 0u));
-        chk(mliDynDouble_malloc(&y, 0u));
+        chk(mli_DoubleVector_malloc(&x, 0u));
+        chk(mli_DoubleVector_malloc(&y, 0u));
 
         mli_Func_free(func);
         while (1) {
@@ -75,8 +75,8 @@ int mli_Func_from_csv(
                         } else {
                                 chk(mli_String_to_double(&_x, &sx));
                                 chk(mli_String_to_double(&_y, &sy));
-                                chk(mliDynDouble_push_back(&x, _x));
-                                chk(mliDynDouble_push_back(&y, _y));
+                                chk(mli_DoubleVector_push_back(&x, _x));
+                                chk(mli_DoubleVector_push_back(&y, _y));
                         }
                 }
         }
@@ -91,15 +91,15 @@ int mli_Func_from_csv(
         mli_String_free(&line);
         mli_String_free(&sx);
         mli_String_free(&sy);
-        mliDynDouble_free(&x);
-        mliDynDouble_free(&y);
+        mli_DoubleVector_free(&x);
+        mli_DoubleVector_free(&y);
         return 1;
 chk_error:
         mli_String_free(&line);
         mli_String_free(&sx);
         mli_String_free(&sy);
-        mliDynDouble_free(&x);
-        mliDynDouble_free(&y);
+        mli_DoubleVector_free(&x);
+        mli_DoubleVector_free(&y);
 
         mli_String_free(xname);
         mli_String_free(yname);

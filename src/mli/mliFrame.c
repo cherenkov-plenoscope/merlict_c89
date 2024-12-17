@@ -17,7 +17,7 @@ struct mliFrame mliFrame_init(void)
         f.children = mliDynFramePtr_init();
         f.object = 0u;
 
-        f.boundary_layers = mliDynUint32_init();
+        f.boundary_layers = mli_Uint32Vector_init();
         return f;
 }
 
@@ -32,7 +32,7 @@ void mliFrame_free(struct mliFrame *f)
                 mliDynFramePtr_free(&f->children);
         }
         if (f->type == MLI_OBJECT) {
-                mliDynUint32_free(&f->boundary_layers);
+                mli_Uint32Vector_free(&f->boundary_layers);
         }
         (*f) = mliFrame_init();
 }
@@ -46,7 +46,7 @@ int mliFrame_malloc(struct mliFrame *f, const uint64_t type)
                         "Can not allocate children of frame.");
         }
         if (type == MLI_OBJECT) {
-                chk_msg(mliDynUint32_malloc(&f->boundary_layers, 0u),
+                chk_msg(mli_Uint32Vector_malloc(&f->boundary_layers, 0u),
                         "Failed to malloc frame's boundary_layers.");
         }
         return 1;

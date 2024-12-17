@@ -528,7 +528,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
 
         struct mli_object_FaceVector fv = mli_object_FaceVector_init();
         struct mli_object_FaceVector fvn = mli_object_FaceVector_init();
-        struct mliDynUint32 fm = mliDynUint32_init();
+        struct mli_Uint32Vector fm = mli_Uint32Vector_init();
 
         struct mliDynMap material_names = mliDynMap_init();
 
@@ -538,7 +538,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
 
         chk(mli_object_FaceVector_malloc(&fv, 0u));
         chk(mli_object_FaceVector_malloc(&fvn, 0u));
-        chk(mliDynUint32_malloc(&fm, 0u));
+        chk(mli_Uint32Vector_malloc(&fm, 0u));
 
         chk(mliDynMap_malloc(&material_names));
 
@@ -596,7 +596,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
                                         &fv, tmp_fv));
                                 chk(mli_object_FaceVector_push_back(
                                         &fvn, tmp_fvn));
-                                chk(mliDynUint32_push_back(&fm, mtl));
+                                chk(mli_Uint32Vector_push_back(&fm, mtl));
                         } else if (mli_String_starts_with(&line, &susemtl)) {
                                 chk(mli_String_copyn(
                                         &tmp, &line, 7, line.size - 7));
@@ -644,7 +644,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
 
         mli_object_FaceVector_free(&fv);
         mli_object_FaceVector_free(&fvn);
-        mliDynUint32_free(&fm);
+        mli_Uint32Vector_free(&fm);
 
         mliDynMap_free(&material_names);
 
@@ -665,7 +665,7 @@ chk_error:
 
         mli_object_FaceVector_free(&fv);
         mli_object_FaceVector_free(&fvn);
-        mliDynUint32_free(&fm);
+        mli_Uint32Vector_free(&fm);
 
         mliDynMap_free(&material_names);
 

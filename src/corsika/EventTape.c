@@ -17,7 +17,7 @@ struct mliEventTapeWriter mliEventTapeWriter_init(void)
         tio.run_number = 0;
         tio.event_number = 0;
         tio.cherenkov_bunch_block_number = 1;
-        tio.buffer = mliDynFloat_init();
+        tio.buffer = mli_FloatVector_init();
         return tio;
 }
 
@@ -29,7 +29,7 @@ int mliEventTapeWriter_finalize(struct mliEventTapeWriter *tio)
                 chk_msg(mli_Tar_write_finalize(&tio->tar),
                         "Can't finalize tar-file.");
         }
-        mliDynFloat_free(&tio->buffer);
+        mli_FloatVector_free(&tio->buffer);
         (*tio) = mliEventTapeWriter_init();
         return 1;
 chk_error:
@@ -44,7 +44,7 @@ int mliEventTapeWriter_begin(
         chk_msg(mliEventTapeWriter_finalize(tio),
                 "Can't close and free previous tar-io-writer.");
         chk_msg(mli_Tar_write_begin(&tio->tar, stream), "Can't begin tar.");
-        chk_msg(mliDynFloat_malloc(&tio->buffer, 8 * num_bunches_buffer),
+        chk_msg(mli_FloatVector_malloc(&tio->buffer, 8 * num_bunches_buffer),
                 "Can't malloc cherenkov-bunch-buffer.");
         return 1;
 chk_error:

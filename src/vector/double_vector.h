@@ -3,5 +3,5 @@
 #define MLI_DOUBLE_VECTOR_H_
 
 #include "../vector/vector.h"
-MLI_VECTOR_DEFINITON(mliDynDouble, double)
+MLI_VECTOR_DEFINITON(mli_DoubleVector, double)
 #endif

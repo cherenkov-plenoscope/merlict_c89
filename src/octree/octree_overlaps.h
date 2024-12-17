@@ -4,10 +4,10 @@
 
 #include "../vector/vector.h"
 
-#define mli_octree_OverlapVector mliDynUint32
-#define mli_octree_OverlapVector_init mliDynUint32_init
-#define mli_octree_OverlapVector_malloc mliDynUint32_malloc
-#define mli_octree_OverlapVector_free mliDynUint32_free
-#define mli_octree_OverlapVector_push_back mliDynUint32_push_back
+#define mli_octree_OverlapVector mli_Uint32Vector
+#define mli_octree_OverlapVector_init mli_Uint32Vector_init
+#define mli_octree_OverlapVector_malloc mli_Uint32Vector_malloc
+#define mli_octree_OverlapVector_free mli_Uint32Vector_free
+#define mli_octree_OverlapVector_push_back mli_Uint32Vector_push_back
 
 #endif

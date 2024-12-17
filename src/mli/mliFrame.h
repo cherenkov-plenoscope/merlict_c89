@@ -20,7 +20,7 @@ struct mliFrame {
         struct mliDynFramePtr children;
 
         uint32_t object;
-        struct mliDynUint32 boundary_layers;
+        struct mli_Uint32Vector boundary_layers;
 };
 
 void mliFrame_set_frame2root(struct mliFrame *f);

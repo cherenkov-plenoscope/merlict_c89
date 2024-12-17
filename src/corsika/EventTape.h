@@ -17,7 +17,7 @@ struct mliEventTapeWriter {
         int run_number;
         int event_number;
         int cherenkov_bunch_block_number;
-        struct mliDynFloat buffer;
+        struct mli_FloatVector buffer;
 };
 struct mliEventTapeWriter mliEventTapeWriter_init(void);
 

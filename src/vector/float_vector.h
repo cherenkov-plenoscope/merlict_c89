@@ -3,5 +3,5 @@
 #define MLID_FLOAT_VECTOR_H_
 
 #include "vector.h"
-MLI_VECTOR_DEFINITON(mliDynFloat, float)
+MLI_VECTOR_DEFINITON(mli_FloatVector, float)
 #endif

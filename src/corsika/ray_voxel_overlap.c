@@ -253,13 +253,13 @@ void c_overlap_of_ray_with_voxels(
 
 void mli_corsika_overlap_of_ray_with_voxels(
         const struct mli_corsika_PhotonBunch *bunch,
-        const struct mliDynDouble *x_bin_edges,
-        const struct mliDynDouble *y_bin_edges,
-        const struct mliDynDouble *z_bin_edges,
-        struct mliDynUint32 *x_idxs,
-        struct mliDynUint32 *y_idxs,
-        struct mliDynUint32 *z_idxs,
-        struct mliDynDouble *overlaps)
+        const struct mli_DoubleVector *x_bin_edges,
+        const struct mli_DoubleVector *y_bin_edges,
+        const struct mli_DoubleVector *z_bin_edges,
+        struct mli_Uint32Vector *x_idxs,
+        struct mli_Uint32Vector *y_idxs,
+        struct mli_Uint32Vector *z_idxs,
+        struct mli_DoubleVector *overlaps)
 {
         double support[3];
         double direction[3];

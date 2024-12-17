@@ -28,7 +28,7 @@ int mliFrame_type_from_json_token(
         const struct mli_Json *json,
         const uint64_t token);
 int mliFrame_boundary_layers_form_json_token(
-        struct mliDynUint32 *boundary_layers,
+        struct mli_Uint32Vector *boundary_layers,
         const uint32_t object_idx,
         const struct mli_Object *objects,
         const struct mliDynMap *boundary_layer_names,

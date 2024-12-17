@@ -78,7 +78,7 @@ chk_error:
 }
 
 int mliFrame_boundary_layers_form_json_token(
-        struct mliDynUint32 *boundary_layers,
+        struct mli_Uint32Vector *boundary_layers,
         const uint32_t object_idx,
         const struct mli_Object *objects,
         const struct mliDynMap *boundary_layer_names,
@@ -116,7 +116,7 @@ int mliFrame_boundary_layers_form_json_token(
                                 &boundary_layer_idx),
                         "Expected boundary-layer to exist in materials.");
 
-                chk_msg(mliDynUint32_push_back(
+                chk_msg(mli_Uint32Vector_push_back(
                                 boundary_layers, boundary_layer_idx),
                         "Failed to push-back boundary_layer_idx into "
                         "frame's boundary_layers.");

@@ -80,7 +80,8 @@ CASE("position_on_disc")
         double disc_radius = 1.337;
         double evaluation_disc_radius = disc_radius / 5.0;
         struct mliDynVec points = mliDynVec_init();
-        struct mliDynDouble counts_in_evaluation_bins = mliDynDouble_init();
+        struct mli_DoubleVector counts_in_evaluation_bins =
+                mli_DoubleVector_init();
         uint64_t i = 0;
         struct mli_Vec mean;
         double r, phi;
@@ -103,7 +104,7 @@ CASE("position_on_disc")
         CHECK_MARGIN(mean.z, 0.0, 1e-3);
         /* distibution is evenly spread */
 
-        mliDynDouble_malloc(&counts_in_evaluation_bins, 0);
+        mli_DoubleVector_malloc(&counts_in_evaluation_bins, 0);
         for (r = evaluation_disc_radius;
              r < disc_radius - evaluation_disc_radius;
              r = r + evaluation_disc_radius) {
@@ -119,7 +120,7 @@ CASE("position_on_disc")
                                         counts_in_evaluation_bin++;
                                 }
                         }
-                        CHECK(mliDynDouble_push_back(
+                        CHECK(mli_DoubleVector_push_back(
                                 &counts_in_evaluation_bins,
                                 counts_in_evaluation_bin));
                 }

@@ -17,9 +17,9 @@ int mliEventIo_read_telescope_offsets(
         uint64_t n;
         float toff;
 
-        struct mli_ArrayFloat xoff = mli_ArrayFloat_init();
-        struct mli_ArrayFloat yoff = mli_ArrayFloat_init();
-        struct mli_ArrayFloat weight = mli_ArrayFloat_init();
+        struct mli_FloatArray xoff = mli_FloatArray_init();
+        struct mli_FloatArray yoff = mli_FloatArray_init();
+        struct mli_FloatArray weight = mli_FloatArray_init();
 
         chk_fread(&_narray, sizeof(int32_t), 1, f);
         chk_msg(_narray >= 0, "Expected num. of arrays to be positive.");
@@ -27,9 +27,9 @@ int mliEventIo_read_telescope_offsets(
 
         chk_fread(&toff, sizeof(float), 1, f);
 
-        chk(mli_ArrayFloat_malloc(&xoff, narray));
-        chk(mli_ArrayFloat_malloc(&yoff, narray));
-        chk(mli_ArrayFloat_malloc(&weight, narray));
+        chk(mli_FloatArray_malloc(&xoff, narray));
+        chk(mli_FloatArray_malloc(&yoff, narray));
+        chk(mli_FloatArray_malloc(&weight, narray));
 
         num_following_arrays = (int)((length - length_first_two) / narray / 4);
 
@@ -58,9 +58,9 @@ int mliEventIo_read_telescope_offsets(
                 telescope_offsets->array[n].weight = weight.array[n];
         }
 
-        mli_ArrayFloat_free(&xoff);
-        mli_ArrayFloat_free(&yoff);
-        mli_ArrayFloat_free(&weight);
+        mli_FloatArray_free(&xoff);
+        mli_FloatArray_free(&yoff);
+        mli_FloatArray_free(&weight);
 
         return 1;
 chk_error:
