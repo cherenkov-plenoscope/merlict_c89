@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../func/func.h"
 #include "../color/color.h"
-#include "../json/json.h"
+#include "../string/string.h"
 
 #define MLI_MATERIAL_PHONG 100u
 #define MLI_MATERIAL_TRANSPARENT 102u
@@ -31,11 +31,4 @@ int mliSurface_malloc_fread(struct mliSurface *srf, FILE *f);
 int mli_material_type_to_string(const uint32_t type, struct mli_String *s);
 int mli_material_type_from_string(const struct mli_String *s, uint32_t *id);
 
-int mliSurface_malloc_from_json_str(
-        struct mliSurface *surface,
-        const char *json_str);
-int mliSurface_malloc_from_json_token(
-        struct mliSurface *surface,
-        const struct mli_Json *json,
-        const uint64_t token);
 #endif

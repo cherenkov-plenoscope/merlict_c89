@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "mliSurface.h"
 #include "../json/json.h"
+#include "../string/string.h"
 
 int mliSurface_malloc_from_json_str(
         struct mliSurface *surface,

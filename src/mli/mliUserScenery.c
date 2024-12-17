@@ -15,6 +15,7 @@
 #include "mliMedium_json.h"
 #include "mliFrame.h"
 #include "mliFrame_json.h"
+#include "mliSurface_json.h"
 
 int mli_set_geometry_objects_and_names_from_archive(
         struct mliGeometry *geometry,
