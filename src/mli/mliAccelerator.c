@@ -15,7 +15,7 @@ struct mliAccelerator mliAccelerator_init(void)
         accel.num_robjects = 0u;
         accel.robject_aabbs = NULL;
 
-        accel.scenery_octree = mliOcTree_init();
+        accel.scenery_octree = mli_OcTree_init();
 
         return accel;
 }
@@ -24,10 +24,10 @@ void mliAccelerator_free(struct mliAccelerator *accel)
 {
         uint32_t obj;
 
-        mliOcTree_free(&accel->scenery_octree);
+        mli_OcTree_free(&accel->scenery_octree);
 
         for (obj = 0; obj < accel->num_objects; obj++) {
-                mliOcTree_free(&accel->object_octrees[obj]);
+                mli_OcTree_free(&accel->object_octrees[obj]);
         }
         free(accel->object_octrees);
 
@@ -44,9 +44,10 @@ int mliAccelerator_malloc(
         mliAccelerator_free(accel);
 
         accel->num_objects = num_objects;
-        chk_malloc(accel->object_octrees, struct mliOcTree, accel->num_objects);
+        chk_malloc(
+                accel->object_octrees, struct mli_OcTree, accel->num_objects);
         for (obj = 0; obj < accel->num_objects; obj++) {
-                accel->object_octrees[obj] = mliOcTree_init();
+                accel->object_octrees[obj] = mli_OcTree_init();
         }
 
         accel->num_robjects = num_robjects;
@@ -91,10 +92,10 @@ int mliAccelerator_set_object_octrees(
                 "Expected num_objects to be equal, but its not.");
 
         for (obj = 0; obj < accel->num_objects; obj++) {
-                chk_msg(mliOcTree_malloc_from_object_wavefront(
+                chk_msg(mli_OcTree_malloc_from_object_wavefront(
                                 &accel->object_octrees[obj],
                                 &geometry->objects[obj]),
-                        "Failed to setup mliOctree for object-wavefront.");
+                        "Failed to setup mli_OcTree for object-wavefront.");
         }
 
         return 1;
@@ -124,7 +125,7 @@ int mliAccelerator_malloc_from_Geometry(
 
         outermost_aabb = mliAccelerator_outermost_aabb(accel);
 
-        chk_msg(mliOcTree_malloc_from_Geometry(
+        chk_msg(mli_OcTree_malloc_from_Geometry(
                         &accel->scenery_octree, &accgeo, outermost_aabb),
                 "Failed to set up octree across all robjects in geometry.");
 

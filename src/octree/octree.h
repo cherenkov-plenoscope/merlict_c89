@@ -9,91 +9,93 @@
 #define MLI_OCTREE_TYPE_NODE 1
 #define MLI_OCTREE_TYPE_LEAF 2
 
-struct mliLeafAddress {
+struct mli_octree_LeafAddress {
         uint32_t first_object_link;
         uint32_t num_object_links;
 };
 
-struct mliLeafArray {
+struct mli_octree_LeafArray {
         uint64_t num_leafs;
-        struct mliLeafAddress *adresses;
+        struct mli_octree_LeafAddress *adresses;
         uint64_t num_object_links;
         uint32_t *object_links;
 };
 
-struct mliNode {
+struct mli_octree_Node {
         uint32_t children[8];
         uint8_t types[8];
 };
 
-struct mliOcTree {
+struct mli_OcTree {
         struct mliCube cube;
         uint64_t num_nodes;
-        struct mliNode *nodes;
-        struct mliLeafArray leafs;
+        struct mli_octree_Node *nodes;
+        struct mli_octree_LeafArray leafs;
         uint8_t root_type;
 };
 
-void mliOcTree_print(const struct mliOcTree *tree);
-void mliOcTree_print_walk(
-        const struct mliOcTree *tree,
+void mli_OcTree_print(const struct mli_OcTree *tree);
+void mli_OcTree_print_walk(
+        const struct mli_OcTree *tree,
         const int32_t node_idx,
         const uint8_t node_type,
         const uint32_t indent,
         const uint32_t child);
-int mliOcTree_equal_payload(
-        const struct mliOcTree *tree,
+int mli_OcTree_equal_payload(
+        const struct mli_OcTree *tree,
         const struct mliTmpOcTree *tmp_octree);
-int mliOcTree_equal_payload_walk(
-        const struct mliOcTree *tree,
+int mli_OcTree_equal_payload_walk(
+        const struct mli_OcTree *tree,
         const int32_t node_idx,
         const int32_t node_type,
         const struct mliTmpNode *tmp_node);
-uint32_t mliOcTree_leaf_object_link(
-        const struct mliOcTree *tree,
+uint32_t mli_OcTree_leaf_object_link(
+        const struct mli_OcTree *tree,
         const uint64_t leaf,
         const uint64_t object_link);
-uint64_t mliOcTree_leaf_num_objects(
-        const struct mliOcTree *tree,
+uint64_t mli_OcTree_leaf_num_objects(
+        const struct mli_OcTree *tree,
         const uint64_t leaf);
-uint64_t mliOcTree_node_num_children(
-        const struct mliOcTree *tree,
+uint64_t mli_OcTree_node_num_children(
+        const struct mli_OcTree *tree,
         const uint64_t node_idx);
-void mliOcTree_set(struct mliOcTree *tree, const struct mliTmpOcTree *dyntree);
-void mliOcTree_set_walk(
-        struct mliOcTree *tree,
+void mli_OcTree_set(
+        struct mli_OcTree *tree,
+        const struct mliTmpOcTree *dyntree);
+void mli_OcTree_set_walk(
+        struct mli_OcTree *tree,
         const struct mliTmpNode *dynnode,
         uint64_t *object_link_size);
-void mliOcTree_set_leaf(
-        struct mliOcTree *tree,
+void mli_OcTree_set_leaf(
+        struct mli_OcTree *tree,
         const struct mliTmpNode *dynnode,
         uint64_t *object_link_size);
-void mliOcTree_set_node(
-        struct mliOcTree *tree,
+void mli_OcTree_set_node(
+        struct mli_OcTree *tree,
         const struct mliTmpNode *dynnode);
-int mliOcTree_malloc(
-        struct mliOcTree *tree,
+int mli_OcTree_malloc(
+        struct mli_OcTree *tree,
         const uint64_t num_nodes,
         const uint64_t num_leafs,
         const uint64_t num_object_links);
-void mliOcTree_free(struct mliOcTree *tree);
-struct mliOcTree mliOcTree_init(void);
-struct mliNode mliNode_init(void);
-int mliLeafArray_malloc(
-        struct mliLeafArray *leafs,
+void mli_OcTree_free(struct mli_OcTree *tree);
+struct mli_OcTree mli_OcTree_init(void);
+struct mli_octree_Node mli_octree_Node_init(void);
+int mli_octree_LeafArray_malloc(
+        struct mli_octree_LeafArray *leafs,
         const uint64_t num_leafs,
         const uint64_t num_object_links);
-void mliLeafArray_free(struct mliLeafArray *leafs);
-struct mliLeafArray mliLeafArray_init(void);
-struct mliLeafAddress mliLeafAddress_init(void);
+void mli_octree_LeafArray_free(struct mli_octree_LeafArray *leafs);
+struct mli_octree_LeafArray mli_octree_LeafArray_init(void);
+struct mli_octree_LeafAddress mli_octree_LeafAddress_init(void);
 
-int mliOcTree_malloc_from_object_wavefront(
-        struct mliOcTree *octree,
+int mli_OcTree_malloc_from_object_wavefront(
+        struct mli_OcTree *octree,
         const struct mli_Object *object);
 
 struct mliGeometryAndAccelerator;
-int mliOcTree_malloc_from_Geometry(
-        struct mliOcTree *octree,
+int mli_OcTree_malloc_from_Geometry(
+        struct mli_OcTree *octree,
         const struct mliGeometryAndAccelerator *accgeo,
         const struct mli_AABB outermost_aabb);
 

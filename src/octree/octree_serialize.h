@@ -5,7 +5,7 @@
 #include "../io/io.h"
 #include "octree.h"
 
-int mliOcTree_to_io(const struct mliOcTree *octree, struct mli_IO *f);
-int mliOcTree_from_io(struct mliOcTree *octree, struct mli_IO *f);
+int mli_OcTree_to_io(const struct mli_OcTree *octree, struct mli_IO *f);
+int mli_OcTree_from_io(struct mli_OcTree *octree, struct mli_IO *f);
 
 #endif

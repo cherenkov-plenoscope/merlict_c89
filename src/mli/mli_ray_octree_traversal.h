@@ -10,25 +10,25 @@
 #define MLI_RAY_OCTREE_TRAVERSAL_EPSILON 1.0e-307
 
 void mli_ray_octree_traversal(
-        const struct mliOcTree *octree,
+        const struct mli_OcTree *octree,
         const struct mli_Ray ray,
         void *work,
         void (*work_on_leaf_node)(
                 void *,
-                const struct mliOcTree *,
+                const struct mli_OcTree *,
                 const uint32_t));
 
 void mli_ray_octree_traversal_sub(
         struct mli_Vec t0,
         struct mli_Vec t1,
-        const struct mliOcTree *octree,
+        const struct mli_OcTree *octree,
         const int32_t node_idx,
         const int32_t node_type,
         uint8_t permutation,
         void *work,
         void (*work_on_leaf_node)(
                 void *,
-                const struct mliOcTree *,
+                const struct mli_OcTree *,
                 const uint32_t));
 
 int mli_ray_octree_traversal_next_octree_node(

@@ -7,21 +7,21 @@
 
 void mli_inner_object_traversal(
         void *_inner,
-        const struct mliOcTree *object_octree,
+        const struct mli_OcTree *object_octree,
         const uint32_t object_octree_leaf_idx)
 {
         /* traverse faces in an object-wavefront */
         struct mliQueryInnerWork *inner = (struct mliQueryInnerWork *)_inner;
 
         uint32_t f;
-        const uint32_t num_faces_in_object_leaf = mliOcTree_leaf_num_objects(
+        const uint32_t num_faces_in_object_leaf = mli_OcTree_leaf_num_objects(
                 object_octree, object_octree_leaf_idx);
 
         struct mliIntersection tmp_isec = mliIntersection_init();
 
         for (f = 0; f < num_faces_in_object_leaf; f++) {
 
-                uint32_t face_idx = mliOcTree_leaf_object_link(
+                uint32_t face_idx = mli_OcTree_leaf_object_link(
                         object_octree, object_octree_leaf_idx, f);
 
                 struct mli_object_Face fv =
@@ -52,7 +52,7 @@ void mli_inner_object_traversal(
 
 int mli_query_object_reference(
         const struct mli_Object *object,
-        const struct mliOcTree *object_octree,
+        const struct mli_OcTree *object_octree,
         const struct mli_HomTraComp robject2root_comp,
         const struct mli_Ray ray_root,
         struct mliIntersection *isec)
@@ -77,7 +77,7 @@ int mli_query_object_reference(
 
 void mli_outer_scenery_traversal(
         void *_outer,
-        const struct mliOcTree *scenery_octree,
+        const struct mli_OcTree *scenery_octree,
         const uint32_t scenery_octree_leaf_idx)
 {
         /* traverse object-wavefronts in a scenery */
@@ -85,14 +85,14 @@ void mli_outer_scenery_traversal(
 
         uint32_t ro;
         const uint32_t num_robjects_in_scenery_leaf =
-                mliOcTree_leaf_num_objects(
+                mli_OcTree_leaf_num_objects(
                         scenery_octree, scenery_octree_leaf_idx);
 
         struct mliIntersection tmp_isec = mliIntersection_init();
 
         for (ro = 0; ro < num_robjects_in_scenery_leaf; ro++) {
 
-                uint32_t robject_idx = mliOcTree_leaf_object_link(
+                uint32_t robject_idx = mli_OcTree_leaf_object_link(
                         scenery_octree, scenery_octree_leaf_idx, ro);
                 uint32_t object_idx = outer->geometry->robjects[robject_idx];
 

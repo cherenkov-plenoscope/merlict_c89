@@ -3,7 +3,7 @@
 #include "../chk/chk.h"
 #include "../math/math.h"
 
-int mliOcTree_valid(const struct mliOcTree *octree)
+int mli_OcTree_valid(const struct mli_OcTree *octree)
 {
         uint32_t n, c;
         chk_msg(!MLI_MATH_IS_NAN(octree->cube.lower.x),
@@ -48,8 +48,8 @@ chk_error:
         return 0;
 }
 
-int mliOcTree_valid_wrt_links(
-        const struct mliOcTree *octree,
+int mli_OcTree_valid_wrt_links(
+        const struct mli_OcTree *octree,
         const uint32_t num_links)
 {
         uint32_t n;

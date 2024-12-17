@@ -2,7 +2,7 @@
 
 CASE("init mliCaOctree")
 {
-        struct mliOcTree octree = mliOcTree_init();
+        struct mli_OcTree octree = mli_OcTree_init();
         CHECK(mli_Vec_equal(octree.cube.lower, mli_Vec_init(0.0, 0.0, 0.0)));
         CHECK(octree.cube.edge_length == 0.0);
         CHECK(octree.num_nodes == 0);
@@ -14,7 +14,10 @@ CASE("init mliCaOctree")
         CHECK(octree.leafs.object_links == NULL);
 }
 
-CASE("sizeof mliNode") { CHECK(sizeof(struct mliNode) == 5 * 8); }
+CASE("sizeof mli_octree_Node")
+{
+        CHECK(sizeof(struct mli_octree_Node) == 5 * 8);
+}
 
 CASE("ray parallel to axis")
 {

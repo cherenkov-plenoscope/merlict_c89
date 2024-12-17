@@ -4,5 +4,5 @@
 
 #include "octree.h"
 
-int mliOcTree_equal(const struct mliOcTree *a, const struct mliOcTree *b);
+int mli_OcTree_equal(const struct mli_OcTree *a, const struct mli_OcTree *b);
 #endif

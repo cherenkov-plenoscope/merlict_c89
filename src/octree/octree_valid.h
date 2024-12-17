@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include "octree.h"
 
-int mliOcTree_valid(const struct mliOcTree *octree);
-int mliOcTree_valid_wrt_links(
-        const struct mliOcTree *octree,
+int mli_OcTree_valid(const struct mli_OcTree *octree);
+int mli_OcTree_valid_wrt_links(
+        const struct mli_OcTree *octree,
         const uint32_t num_links);
 #endif

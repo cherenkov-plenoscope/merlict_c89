@@ -8,12 +8,12 @@
 
 struct mliAccelerator {
         uint32_t num_objects;
-        struct mliOcTree *object_octrees;
+        struct mli_OcTree *object_octrees;
 
         uint32_t num_robjects;
         struct mli_AABB *robject_aabbs;
 
-        struct mliOcTree scenery_octree;
+        struct mli_OcTree scenery_octree;
 };
 
 struct mliAccelerator mliAccelerator_init(void);
