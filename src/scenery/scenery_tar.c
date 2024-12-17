@@ -72,7 +72,7 @@ int mli_Scenery_malloc_from_Archive(
                 "Failed to malloc geometry.objects.");
 
         chk_dbg;
-        chk_msg(mli_check_malloc_root_frame_from_Archive(
+        chk_msg(mli_Frame_tree_from_Archive(
                         &root,
                         archive,
                         &object_names,

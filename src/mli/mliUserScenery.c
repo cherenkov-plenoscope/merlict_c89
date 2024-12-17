@@ -239,7 +239,7 @@ chk_error:
         return 0;
 }
 
-int mli_check_malloc_root_frame_from_Archive(
+int mli_Frame_tree_from_Archive(
         struct mli_Frame *root,
         const struct mli_Archive *archive,
         const struct mli_Map *object_names,
