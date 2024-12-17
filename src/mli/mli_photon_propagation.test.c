@@ -3,7 +3,7 @@
 CASE("simple propagation")
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
-        struct mliScenery scenery = mliScenery_init();
+        struct mli_Scenery scenery = mli_Scenery_init();
         struct mli_PhotonInteractionVector history =
                 mli_PhotonInteractionVector_init();
         struct mliIntersectionSurfaceNormal intersection;
@@ -18,7 +18,7 @@ CASE("simple propagation")
         photon.wavelength = 600e-9;
         photon.id = 0;
 
-        CHECK(mliScenery_malloc_from_path_tar(
+        CHECK(mli_Scenery_malloc_from_path_tar(
                 &scenery,
                 "data/"
                 "mli/"
@@ -71,6 +71,6 @@ CASE("simple propagation")
 
         mli_PhotonInteractionVector_print(&history, &scenery);
 
-        mliScenery_free(&scenery);
+        mli_Scenery_free(&scenery);
         mli_PhotonInteractionVector_free(&history);
 }

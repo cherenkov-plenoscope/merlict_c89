@@ -9,7 +9,7 @@ MLI_VECTOR_IMPLEMENTATION(
 
 int mli_PhotonInteractionVector_time_of_flight(
         const struct mli_PhotonInteractionVector *history,
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const double wavelength,
         double *total_time_of_flight)
 {
@@ -32,7 +32,7 @@ chk_error:
 
 void mli_PhotonInteractionVector_print(
         const struct mli_PhotonInteractionVector *history,
-        const struct mliScenery *scenery)
+        const struct mli_Scenery *scenery)
 {
         uint64_t i;
         char type_string[1024];

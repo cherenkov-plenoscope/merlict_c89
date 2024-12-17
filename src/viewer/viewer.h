@@ -32,9 +32,9 @@ int mli_viewer_export_image(
         const char *path);
 
 int mli_viewer_run_interactive_viewer(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mli_viewer_Config config);
 int mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mli_viewer_Config config);
 #endif

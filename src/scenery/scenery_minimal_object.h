@@ -4,7 +4,7 @@
 
 #include "scenery.h"
 
-int mliScenery_malloc_minimal_from_wavefront(
-        struct mliScenery *scenery,
+int mli_Scenery_malloc_minimal_from_wavefront(
+        struct mli_Scenery *self,
         const char *path);
 #endif

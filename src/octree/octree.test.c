@@ -21,7 +21,7 @@ CASE("sizeof mli_octree_Node")
 
 CASE("ray parallel to axis")
 {
-        struct mliScenery scenery = mliScenery_init();
+        struct mli_Scenery scenery = mli_Scenery_init();
         uint32_t i;
         uint32_t robj = 0;
         uint32_t obj;
@@ -51,7 +51,7 @@ CASE("ray parallel to axis")
         sups[5] = mli_Vec_init(0, 10, 0);
         dirs[5] = mli_Vec_init(N, -1, N);
 
-        CHECK(mliScenery_malloc_from_path_tar(
+        CHECK(mli_Scenery_malloc_from_path_tar(
                 &scenery,
                 "data/"
                 "mli/"
@@ -81,5 +81,5 @@ CASE("ray parallel to axis")
                 CHECK(isec.distance_of_ray != DBL_MAX);
         }
 
-        mliScenery_free(&scenery);
+        mli_Scenery_free(&scenery);
 }

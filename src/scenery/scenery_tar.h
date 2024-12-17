@@ -5,11 +5,11 @@
 #include "scenery.h"
 #include "../archive/archive.h"
 
-int mliScenery_from_io_tar(struct mliScenery *scenery, FILE *f);
-int mliScenery_malloc_from_path_tar(
-        struct mliScenery *scenery,
+int mli_Scenery_from_io_tar(struct mli_Scenery *self, FILE *f);
+int mli_Scenery_malloc_from_path_tar(
+        struct mli_Scenery *self,
         const char *path);
-int mliScenery_malloc_from_Archive(
-        struct mliScenery *scenery,
+int mli_Scenery_malloc_from_Archive(
+        struct mli_Scenery *self,
         const struct mli_Archive *archive);
 #endif

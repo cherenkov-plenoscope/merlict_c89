@@ -5,7 +5,7 @@ CASE("focussing_a_parallel_beam")
 {
 #define NUM_PIXEL 127
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
-        struct mliScenery scenery = mliScenery_init();
+        struct mli_Scenery scenery = mli_Scenery_init();
         struct mli_IO f = mli_IO_init();
         struct mli_PhotonInteractionVector photon_history =
                 mli_PhotonInteractionVector_init();
@@ -25,7 +25,7 @@ CASE("focussing_a_parallel_beam")
         mli_math_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
         wavelength_range = mli_prng_UniformRange_set(380e-9, 700e-9);
 
-        CHECK(mliScenery_malloc_from_path_tar(
+        CHECK(mli_Scenery_malloc_from_path_tar(
                 &scenery,
                 "data/"
                 "mli/"
@@ -99,7 +99,7 @@ CASE("focussing_a_parallel_beam")
         CHECK(mli_Image_to_io(&screen_img, &f));
         mli_IO_close(&f);
 
-        mliScenery_free(&scenery);
+        mli_Scenery_free(&scenery);
         mli_PhotonInteractionVector_free(&photon_history);
         mli_Image_free(&screen_img);
 }

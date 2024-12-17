@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "mli_intersection_and_scenery.h"
 
-uint32_t mliScenery_resolve_boundary_layer_idx(
-        const struct mliScenery *scenery,
+uint32_t mli_Scenery_resolve_boundary_layer_idx(
+        const struct mli_Scenery *scenery,
         const struct mli_GeometryId geometry_id)
 {
         const uint32_t robject_idx = geometry_id.robj;
@@ -16,12 +16,12 @@ uint32_t mliScenery_resolve_boundary_layer_idx(
 }
 
 struct mli_boundarylayer_Side mli_get_side_coming_from(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mli_BoundaryLayer layer =
                 scenery->materials
-                        .boundary_layers[mliScenery_resolve_boundary_layer_idx(
+                        .boundary_layers[mli_Scenery_resolve_boundary_layer_idx(
                                 scenery, isec->geometry_id)];
         if (isec->from_outside_to_inside)
                 return layer.outer;
@@ -30,12 +30,12 @@ struct mli_boundarylayer_Side mli_get_side_coming_from(
 }
 
 struct mli_boundarylayer_Side mli_get_side_going_to(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
         struct mli_BoundaryLayer layer =
                 scenery->materials
-                        .boundary_layers[mliScenery_resolve_boundary_layer_idx(
+                        .boundary_layers[mli_Scenery_resolve_boundary_layer_idx(
                                 scenery, isec->geometry_id)];
         if (isec->from_outside_to_inside)
                 return layer.inner;
@@ -44,7 +44,7 @@ struct mli_boundarylayer_Side mli_get_side_going_to(
 }
 
 const struct mli_Func *mli_get_refractive_index_going_to(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
         const struct mli_boundarylayer_Side going_to =
@@ -53,7 +53,7 @@ const struct mli_Func *mli_get_refractive_index_going_to(
 }
 
 const struct mli_Func *mli_get_refractive_index_coming_from(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec)
 {
         const struct mli_boundarylayer_Side coming_from =

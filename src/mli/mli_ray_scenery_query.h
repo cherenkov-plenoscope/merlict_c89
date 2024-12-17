@@ -14,12 +14,12 @@
 #include "mliIntersectionSurfaceNormal.h"
 
 int mli_query_intersection(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
         struct mliIntersection *isec);
 
 int mli_query_intersection_with_surface_normal(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
         struct mliIntersectionSurfaceNormal *isecsrf);
 

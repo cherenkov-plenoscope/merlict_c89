@@ -7,14 +7,14 @@
 #include "../materials/materials.h"
 #include "../accelerator/accelerator.h"
 
-struct mliScenery {
+struct mli_Scenery {
         struct mli_Geometry geometry;
         struct mli_Accelerator accelerator;
         struct mli_Materials materials;
         struct mli_GeometryToMaterialMap geomap;
 };
 
-struct mliScenery mliScenery_init(void);
-void mliScenery_free(struct mliScenery *scenery);
-void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery);
+struct mli_Scenery mli_Scenery_init(void);
+void mli_Scenery_free(struct mli_Scenery *self);
+void mli_Scenery_info_fprint(FILE *f, const struct mli_Scenery *self);
 #endif

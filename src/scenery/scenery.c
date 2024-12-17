@@ -3,32 +3,32 @@
 #include <math.h>
 #include <stdint.h>
 
-struct mliScenery mliScenery_init(void)
+struct mli_Scenery mli_Scenery_init(void)
 {
-        struct mliScenery scenery;
-        scenery.geometry = mli_Geometry_init();
-        scenery.accelerator = mli_Accelerator_init();
-        scenery.materials = mli_Materials_init();
-        scenery.geomap = mli_GeometryToMaterialMap_init();
-        return scenery;
+        struct mli_Scenery out;
+        out.geometry = mli_Geometry_init();
+        out.accelerator = mli_Accelerator_init();
+        out.materials = mli_Materials_init();
+        out.geomap = mli_GeometryToMaterialMap_init();
+        return out;
 }
 
-void mliScenery_free(struct mliScenery *scenery)
+void mli_Scenery_free(struct mli_Scenery *self)
 {
-        mli_Geometry_free(&scenery->geometry);
-        mli_Accelerator_free(&scenery->accelerator);
-        mli_Materials_free(&scenery->materials);
-        mli_GeometryToMaterialMap_free(&scenery->geomap);
+        mli_Geometry_free(&self->geometry);
+        mli_Accelerator_free(&self->accelerator);
+        mli_Materials_free(&self->materials);
+        mli_GeometryToMaterialMap_free(&self->geomap);
 }
 
-void mliScenery_info_fprint(FILE *f, const struct mliScenery *scenery)
+void mli_Scenery_info_fprint(FILE *f, const struct mli_Scenery *self)
 {
-        mli_Geometry_info_fprint(f, &scenery->geometry);
+        mli_Geometry_info_fprint(f, &self->geometry);
         fprintf(f, "\n");
-        mli_Accelerator_info_fprint(f, &scenery->accelerator);
+        mli_Accelerator_info_fprint(f, &self->accelerator);
         fprintf(f, "\n");
-        mli_Materials_info_fprint(f, &scenery->materials);
+        mli_Materials_info_fprint(f, &self->materials);
         fprintf(f, "\n");
-        mli_GeometryToMaterialMap_info_fprint(f, &scenery->geomap);
+        mli_GeometryToMaterialMap_info_fprint(f, &self->geomap);
         fprintf(f, "\n");
 }

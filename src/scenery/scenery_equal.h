@@ -4,5 +4,5 @@
 
 #include "scenery.h"
 
-int mliScenery_equal(const struct mliScenery *a, const struct mliScenery *b);
+int mli_Scenery_equal(const struct mli_Scenery *a, const struct mli_Scenery *b);
 #endif

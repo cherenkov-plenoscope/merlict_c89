@@ -8,7 +8,7 @@
 #include "mliColorMaterials.h"
 #include "mliAtmosphere.h"
 
-struct mliScenery;
+struct mli_Scenery;
 struct mli_Prng;
 
 struct mliTracerConfig {
@@ -23,7 +23,7 @@ struct mliTracerConfig {
 struct mliTracerConfig mliTracerConfig_init(void);
 
 struct mliTracer {
-        const struct mliScenery *scenery;
+        const struct mli_Scenery *scenery;
         const struct mli_ColorMaterials *scenery_color_materials;
         const struct mliTracerConfig *config;
 };

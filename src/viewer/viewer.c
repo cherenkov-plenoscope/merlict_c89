@@ -169,7 +169,7 @@ chk_error:
 }
 
 int mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mli_viewer_Config config)
 {
 #ifdef HAVE_TERMIOS_H
@@ -184,7 +184,7 @@ int mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
 }
 
 int mli_viewer_run_interactive_viewer(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mli_viewer_Config config)
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(config.random_seed);
@@ -507,7 +507,7 @@ int mli_viewer_run_interactive_viewer(
                 }
                 if (print_scenery_info) {
                         mli_viewer_clear_screen();
-                        mliScenery_info_fprint(stdout, scenery);
+                        mli_Scenery_info_fprint(stdout, scenery);
                 }
         }
 

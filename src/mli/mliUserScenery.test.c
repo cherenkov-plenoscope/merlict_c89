@@ -11,15 +11,15 @@ CASE("mliUserScenery, init")
 
 CASE("mli_Materials, estimate capacity from archive") {}
 
-CASE("mliScenery, malloc from archive")
+CASE("mli_Scenery, malloc from archive")
 {
-        struct mliScenery scenery = mliScenery_init();
+        struct mli_Scenery scenery = mli_Scenery_init();
 
         uint64_t obj_teapot_idx, obj_hex_idx;
         uint64_t srf_grass, srf_wood, srf_leafs, srf_blue_glass;
         uint64_t med_vacuum;
 
-        CHECK(mliScenery_malloc_from_path_tar(
+        CHECK(mli_Scenery_malloc_from_path_tar(
                 &scenery,
                 "data/"
                 "mli/"
@@ -90,20 +90,20 @@ CASE("mliScenery, malloc from archive")
                 "vacuum",
                 &med_vacuum));
 
-        mliScenery_free(&scenery);
+        mli_Scenery_free(&scenery);
 }
 
-CASE("mliScenery, read, write")
+CASE("mli_Scenery, read, write")
 {
-        struct mliScenery orig = mliScenery_init();
-        struct mliScenery back = mliScenery_init();
+        struct mli_Scenery orig = mli_Scenery_init();
+        struct mli_Scenery back = mli_Scenery_init();
         struct mli_IO f = mli_IO_init();
         char geom_path[] = "data/mli/tests/resources/geometry.bin.tmp";
         char mate_path[] = "data/mli/tests/resources/materials.bin.tmp";
         char acce_path[] = "data/mli/tests/resources/accelerator.bin.tmp";
         char gmap_path[] = "data/mli/tests/resources/geomap.bin.tmp";
 
-        CHECK(mliScenery_malloc_from_path_tar(
+        CHECK(mli_Scenery_malloc_from_path_tar(
                 &orig,
                 "data/"
                 "mli/"
@@ -162,12 +162,12 @@ CASE("mliScenery, read, write")
 
         /* full scenery */
         /* ------------ */
-        CHECK(mliScenery_write_to_path(
+        CHECK(mli_Scenery_write_to_path(
                 &orig, "data/mli/tests/resources/scenery.bin.tmp"));
-        CHECK(mliScenery_malloc_from_path(
+        CHECK(mli_Scenery_malloc_from_path(
                 &back, "data/mli/tests/resources/scenery.bin.tmp"));
-        CHECK(mliScenery_equal(&back, &orig));
+        CHECK(mli_Scenery_equal(&back, &orig));
 
-        mliScenery_free(&back);
-        mliScenery_free(&orig);
+        mli_Scenery_free(&back);
+        mli_Scenery_free(&orig);
 }

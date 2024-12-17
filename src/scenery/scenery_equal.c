@@ -6,7 +6,7 @@
 #include "../mli/mliGeometryToMaterialMap_equal.h"
 #include "../chk/chk.h"
 
-int mliScenery_equal(const struct mliScenery *a, const struct mliScenery *b)
+int mli_Scenery_equal(const struct mli_Scenery *a, const struct mli_Scenery *b)
 {
         chk_msg(mli_Geometry_equal(&a->geometry, &b->geometry),
                 "Expected geometry to be valid.");

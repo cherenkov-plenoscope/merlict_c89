@@ -11,11 +11,11 @@ MLI_VECTOR_DEFINITON(mli_PhotonInteractionVector, struct mli_PhotonInteraction)
 
 void mli_PhotonInteractionVector_print(
         const struct mli_PhotonInteractionVector *history,
-        const struct mliScenery *scenery);
+        const struct mli_Scenery *scenery);
 
 int mli_PhotonInteractionVector_time_of_flight(
         const struct mli_PhotonInteractionVector *history,
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const double wavelength,
         double *total_time_of_flight);
 #endif

@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 {
         struct mli_ArrayString args = mli_ArrayString_init();
         struct mli_viewer_Config config = mli_viewer_Config_default();
-        struct mliScenery scenery = mliScenery_init();
+        struct mli_Scenery scenery = mli_Scenery_init();
 
         chk_msg(
                 mli_ArrayString_from_argc_argv(&args, argc, argv),
@@ -47,17 +47,17 @@ int main(int argc, char *argv[])
 
         if (args.size >= 2) {
                 if (mli_String_ends_with_cstr(&args.array[1], ".tar")) {
-                        chk_msg(mliScenery_malloc_from_path_tar(
+                        chk_msg(mli_Scenery_malloc_from_path_tar(
                                         &scenery,
                                         args.array[1].array),
                                 "Can not read scenery from '.tar'.");
                 } else if (mli_String_ends_with_cstr(&args.array[1], ".mli")) {
-                        chk_msg(mliScenery_malloc_from_path(
+                        chk_msg(mli_Scenery_malloc_from_path(
                                 &scenery,
                                 args.array[1].array),
                                 "Can not read scenery from '.mli'.");
                 } else if (mli_String_ends_with_cstr(&args.array[1], ".obj")) {
-                        chk_msg(mliScenery_malloc_minimal_from_wavefront(
+                        chk_msg(mli_Scenery_malloc_minimal_from_wavefront(
                                         &scenery,
                                         args.array[1].array),
                                 "Can not read scenery from '.obj'.");
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
                 "Failure in viewer");
 
         mli_ArrayString_free(&args);
-        mliScenery_free(&scenery);
+        mli_Scenery_free(&scenery);
         return EXIT_SUCCESS;
 chk_error:
         return EXIT_FAILURE;

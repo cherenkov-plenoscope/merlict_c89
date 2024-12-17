@@ -74,8 +74,8 @@ chk_error:
         return 0;
 }
 
-int mliScenery_malloc_minimal_from_wavefront(
-        struct mliScenery *scenery,
+int mli_Scenery_malloc_minimal_from_wavefront(
+        struct mli_Scenery *self,
         const char *path)
 {
         uint32_t i, total_num_boundary_layers;
@@ -85,9 +85,9 @@ int mliScenery_malloc_minimal_from_wavefront(
         struct mli_String _path = mli_String_init();
         struct mli_String _mode = mli_String_init();
 
-        mliScenery_free(scenery);
+        mli_Scenery_free(self);
 
-        chk_msg(mli_Geometry_malloc(&scenery->geometry, 1u, 1u),
+        chk_msg(mli_Geometry_malloc(&self->geometry, 1u, 1u),
                 "Failed to malloc geometry.");
 
         /* set object */
@@ -95,7 +95,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         chk(mli_String_from_cstr(&_mode, "r"));
         chk_msg(mli_IO_open_file(&str, &_path, &_mode), "Failed to open file.");
         chk_msg(mli_Object_malloc_from_wavefront(
-                        &scenery->geometry.objects[0], &str),
+                        &self->geometry.objects[0], &str),
                 "Failed to malloc wavefront-object from string.");
         mli_IO_close(&str);
 
@@ -103,77 +103,77 @@ int mliScenery_malloc_minimal_from_wavefront(
         mli_String_free(&_mode);
 
         chk(mli_String_from_cstr(
-                &scenery->geometry.object_names[0], "default-object"));
+                &self->geometry.object_names[0], "default-object"));
 
         /* set reference */
-        scenery->geometry.robjects[0] = 0u;
-        scenery->geometry.robject_ids[0] = 0u;
-        scenery->geometry.robject2root[0] = mli_HomTraComp_set(
+        self->geometry.robjects[0] = 0u;
+        self->geometry.robject_ids[0] = 0u;
+        self->geometry.robject2root[0] = mli_HomTraComp_set(
                 mli_Vec_init(0.0, 0.0, 0.0),
                 mli_Quaternion_set_tait_bryan(0.0, 0.0, 0.0));
 
         /* materials */
-        total_num_boundary_layers = scenery->geometry.objects[0].num_materials;
+        total_num_boundary_layers = self->geometry.objects[0].num_materials;
 
         mtlcap.num_media = 1u;
         mtlcap.num_boundary_layers = total_num_boundary_layers;
         mtlcap.num_surfaces = total_num_boundary_layers;
 
-        chk_msg(mli_Materials_malloc(&scenery->materials, mtlcap),
+        chk_msg(mli_Materials_malloc(&self->materials, mtlcap),
                 "Failed to malloc materials.");
 
         chk(mli_String_from_cstr(
-                &scenery->materials.medium_names[0], "vacuum"));
+                &self->materials.medium_names[0], "vacuum"));
 
-        chk(mli_Func_malloc(&scenery->materials.media[0].refraction, 2));
-        scenery->materials.media[0].refraction.x[0] = 200e-9;
-        scenery->materials.media[0].refraction.x[1] = 1200e-9;
-        scenery->materials.media[0].refraction.y[0] = 1.0;
-        scenery->materials.media[0].refraction.y[1] = 1.0;
+        chk(mli_Func_malloc(&self->materials.media[0].refraction, 2));
+        self->materials.media[0].refraction.x[0] = 200e-9;
+        self->materials.media[0].refraction.x[1] = 1200e-9;
+        self->materials.media[0].refraction.y[0] = 1.0;
+        self->materials.media[0].refraction.y[1] = 1.0;
 
-        chk(mli_Func_malloc(&scenery->materials.media[0].absorbtion, 2));
-        scenery->materials.media[0].absorbtion.x[0] = 200e-9;
-        scenery->materials.media[0].absorbtion.x[1] = 1200e-9;
-        scenery->materials.media[0].absorbtion.y[0] = 0.0;
-        scenery->materials.media[0].absorbtion.y[1] = 0.0;
+        chk(mli_Func_malloc(&self->materials.media[0].absorbtion, 2));
+        self->materials.media[0].absorbtion.x[0] = 200e-9;
+        self->materials.media[0].absorbtion.x[1] = 1200e-9;
+        self->materials.media[0].absorbtion.y[0] = 0.0;
+        self->materials.media[0].absorbtion.y[1] = 0.0;
 
         for (i = 0u; i < total_num_boundary_layers; i++) {
                 chk_msg(mli_Surface_malloc_random_phong(
-                                &scenery->materials.surfaces[i], &prng),
+                                &self->materials.surfaces[i], &prng),
                         "Can't draw random phong surface.");
 
                 chk(mli_String_from_cstr_fromat(
-                        &scenery->materials.surface_names[i],
+                        &self->materials.surface_names[i],
                         "surface_%06u",
                         i));
 
-                scenery->materials.boundary_layers[i].inner.medium = 0u;
-                scenery->materials.boundary_layers[i].outer.medium = 0u;
-                scenery->materials.boundary_layers[i].inner.surface = i;
-                scenery->materials.boundary_layers[i].outer.surface = i;
+                self->materials.boundary_layers[i].inner.medium = 0u;
+                self->materials.boundary_layers[i].outer.medium = 0u;
+                self->materials.boundary_layers[i].inner.surface = i;
+                self->materials.boundary_layers[i].outer.surface = i;
 
                 chk(mli_String_from_cstr_fromat(
-                        &scenery->materials.boundary_layer_names[i],
+                        &self->materials.boundary_layer_names[i],
                         "boundary_layer_%06u",
                         i));
         }
 
         chk_msg(mli_GeometryToMaterialMap_malloc(
-                        &scenery->geomap,
-                        scenery->geometry.num_robjects,
+                        &self->geomap,
+                        self->geometry.num_robjects,
                         total_num_boundary_layers),
                 "Failed to malloc geometry to materials map.");
 
         /* set map */
         for (i = 0u; i < total_num_boundary_layers; i++) {
-                mli_GeometryToMaterialMap_set(&scenery->geomap, 0u, i, i);
+                mli_GeometryToMaterialMap_set(&self->geomap, 0u, i, i);
         }
 
         chk_msg(mli_Accelerator_malloc_from_Geometry(
-                        &scenery->accelerator, &scenery->geometry),
+                        &self->accelerator, &self->geometry),
                 "Failed to malloc accelerator from geometry.");
 
-        chk_msg(mliScenery_valid(scenery), "Expected scenery to be valid.");
+        chk_msg(mli_Scenery_valid(self), "Expected scenery to be valid.");
         return 1;
 chk_error:
         return 0;

@@ -8,7 +8,7 @@ CASE("mli_Accelerator, init")
 
 CASE("mli_Accelerator, init")
 {
-        struct mliScenery scenery = mliScenery_init();
+        struct mli_Scenery scenery = mli_Scenery_init();
         struct mli_Color color;
         struct mli_Ray ray;
         struct mli_Prng prng = mli_Prng_init_MT19937(0);
@@ -17,7 +17,7 @@ CASE("mli_Accelerator, init")
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         struct mliTracer tracer = mliTracer_init();
 
-        chk_dbg CHECK(mliScenery_malloc_from_path_tar(
+        chk_dbg CHECK(mli_Scenery_malloc_from_path_tar(
                 &scenery,
                 "data/"
                 "mli/"
@@ -46,5 +46,5 @@ CASE("mli_Accelerator, init")
 
         mli_ColorObserver_free(&color_observer);
         mli_ColorMaterials_free(&color_materials);
-        mliScenery_free(&scenery);
+        mli_Scenery_free(&scenery);
 }

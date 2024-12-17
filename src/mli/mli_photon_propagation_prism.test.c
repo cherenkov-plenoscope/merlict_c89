@@ -15,7 +15,7 @@
 CASE("refraction_in_prism")
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
-        struct mliScenery scenery = mliScenery_init();
+        struct mli_Scenery scenery = mli_Scenery_init();
         struct mli_PhotonInteractionVector photon_history =
                 mli_PhotonInteractionVector_init();
         struct mli_prng_UniformRange wavelength_range;
@@ -34,7 +34,7 @@ CASE("refraction_in_prism")
 
         mli_math_linspace(0.375, 0.44, screen_bin_edges, 33);
 
-        CHECK(mliScenery_malloc_from_path_tar(
+        CHECK(mli_Scenery_malloc_from_path_tar(
                 &scenery,
                 "data/"
                 "mli/"
@@ -104,6 +104,6 @@ CASE("refraction_in_prism")
         CHECK(fraction_passing_prism < 0.9);
         CHECK(fraction_passing_prism > 0.8);
 
-        mliScenery_free(&scenery);
+        mli_Scenery_free(&scenery);
         mli_PhotonInteractionVector_free(&photon_history);
 }

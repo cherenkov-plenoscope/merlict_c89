@@ -12,7 +12,7 @@
 #include "../fresnel/fresnel.h"
 
 struct mliEnv {
-        const struct mliScenery *scenery;
+        const struct mli_Scenery *scenery;
         struct mli_PhotonInteractionVector *history;
         struct mli_Photon *photon;
         struct mli_Prng *prng;
@@ -20,7 +20,7 @@ struct mliEnv {
 };
 
 int mli_propagate_photon(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         struct mli_PhotonInteractionVector *history,
         struct mli_Photon *photon,
         struct mli_Prng *prng,
@@ -38,7 +38,7 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
         struct mliEnv *env,
         const struct mliIntersectionSurfaceNormal *isec);
 int mli_propagate_photon_probability_passing_medium_coming_from(
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mli_Photon *photon,
         const struct mliIntersectionSurfaceNormal *isec,
         double *probability_passing);
@@ -51,7 +51,7 @@ int mli_propagate_photon_phong(
         const struct mliIntersectionSurfaceNormal *isec);
 struct mli_PhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
-        const struct mliScenery *scenery,
+        const struct mli_Scenery *scenery,
         const struct mliIntersectionSurfaceNormal *isec);
 int mli_propagate_photon_env(struct mliEnv *env);
 #endif

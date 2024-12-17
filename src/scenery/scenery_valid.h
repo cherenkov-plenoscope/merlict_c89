@@ -4,5 +4,5 @@
 
 #include "scenery.h"
 
-int mliScenery_valid(const struct mliScenery *scenery);
+int mli_Scenery_valid(const struct mli_Scenery *self);
 #endif
