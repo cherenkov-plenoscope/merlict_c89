@@ -23,6 +23,59 @@ CASE("mli_IoMemory_open")
         mli_IoMemory_close(&byt);
 }
 
+CASE("mli_IoMemory_rewind")
+{
+        struct mli_IoMemory byt = mli_IoMemory_init();
+        unsigned char c;
+        CHECK(mli_IoMemory_open(&byt));
+
+        CHECK(byt.cstr != NULL);
+        CHECK(byt.capacity == 2u);
+        CHECK(byt.size == 0u);
+        CHECK(byt.pos == 0u);
+
+        c = 'a';
+        CHECK(mli_IoMemory__write_unsigned_char(&byt, &c));
+        c = 'b';
+        CHECK(mli_IoMemory__write_unsigned_char(&byt, &c));
+        c = 'c';
+        CHECK(mli_IoMemory__write_unsigned_char(&byt, &c));
+        c = '\0';
+        CHECK(mli_IoMemory__write_unsigned_char(&byt, &c));
+        CHECK(byt.size == 4u);
+        CHECK(byt.pos == 4u);
+
+        mli_IoMemory_rewind(&byt);
+
+        CHECK(byt.size == 4u);
+        CHECK(byt.pos == 0u);
+        CHECK(mli_IoMemory__read_unsigned_char(&byt, &c));
+        CHECK(c == 'a');
+        CHECK(mli_IoMemory__read_unsigned_char(&byt, &c));
+        CHECK(c == 'b');
+        CHECK(mli_IoMemory__read_unsigned_char(&byt, &c));
+        CHECK(c == 'c');
+        CHECK(mli_IoMemory__read_unsigned_char(&byt, &c));
+        CHECK(c == '\0');
+        CHECK(byt.size == 4u);
+        CHECK(byt.pos == 4u);
+
+        mli_IoMemory_rewind(&byt);
+
+        CHECK(byt.size == 4u);
+        CHECK(byt.pos == 0u);
+        c = 'x';
+        CHECK(mli_IoMemory__write_unsigned_char(&byt, &c));
+        c = 'y';
+        CHECK(mli_IoMemory__write_unsigned_char(&byt, &c));
+        c = '\0';
+        CHECK(mli_IoMemory__write_unsigned_char(&byt, &c));
+        CHECK(byt.size == 4u);
+        CHECK(byt.pos == 3u);
+
+        mli_IoMemory_close(&byt);
+}
+
 CASE("mli_IoMemory__shrink_to_fit")
 {
         struct mli_IoMemory str = mli_IoMemory_init();

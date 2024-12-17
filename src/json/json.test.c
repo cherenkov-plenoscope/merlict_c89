@@ -46,9 +46,11 @@ CASE("Tokenize json-literal")
 CASE("mli_Json_cstr_by_token")
 {
         struct mli_Json json = mli_Json_init();
-        char json_str[] = "{\"hans\": 1337}";
+        struct mli_String str = mli_String_init();
         char buff[] = "abcde";
-        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
+
+        CHECK(mli_String_from_cstr(&str, "{\"hans\": 1337}"));
+        CHECK(mli_Json_from_string(&json, &str));
         CHECK(mli_Json_cstr_by_token(&json, 1, buff, 5));
         CHECK(buff[0] == 'h');
         CHECK(buff[1] == 'a');
@@ -58,6 +60,7 @@ CASE("mli_Json_cstr_by_token")
 
         CHECK(!mli_Json_cstr_by_token(&json, 1, buff, 4));
         mli_Json_free(&json);
+        mli_String_free(&str);
 }
 
 CASE("mli_Json_init, defaults")
@@ -112,33 +115,37 @@ CASE("mli_Json_malloc_from_path")
         mli_Json_free(&json);
 }
 
-CASE("mli_Json_malloc_from_cstr")
+CASE("mli_Json_malloc_from_string")
 {
         struct mli_Json json = mli_Json_init();
-        char json_str[1024];
+        struct mli_String str = mli_String_init();
         uint64_t token = 0u;
         int64_t value = 0;
-        sprintf(json_str, "{\"key\": 1337}");
-        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
+
+        CHECK(mli_String_from_cstr(&str, "{\"key\": 1337}"));
+        CHECK(mli_Json_from_string(&json, &str));
         CHECK(mli_Json_token_by_key(&json, 0, "key", &token));
         CHECK(mli_Json_int64_by_token(&json, token + 1, &value));
         CHECK(value == 1337);
         mli_Json_free(&json);
+        mli_String_free(&str);
 }
 
 CASE("mli_Json_int64_by_key")
 {
         struct mli_Json json = mli_Json_init();
-        char json_str[1024];
+        struct mli_String str = mli_String_init();
         int64_t int_val = 0;
         double dbl_val = 0.0;
-        sprintf(json_str, "{\"aaa\": 1337, \"bbb\": 4.2}");
-        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
+
+        CHECK(mli_String_from_cstr(&str, "{\"aaa\": 1337, \"bbb\": 4.2}"));
+        CHECK(mli_Json_from_string(&json, &str));
         CHECK(mli_Json_int64_by_key(&json, 0, &int_val, "aaa"));
         CHECK(mli_Json_double_by_key(&json, 0, &dbl_val, "bbb"));
         CHECK(int_val == 1337);
         CHECK(dbl_val == 4.2);
         mli_Json_free(&json);
+        mli_String_free(&str);
 }
 
 CASE("parse mli_Vec and mli_Color")
@@ -176,7 +183,7 @@ CASE("parse mli_Vec and mli_Color")
 
 CASE("rotation representations")
 {
-        char json_str[1024];
+        struct mli_String str = mli_String_init();
         struct mli_Quaternion q;
         struct mli_Quaternion q_expected;
         struct mli_Json json = mli_Json_init();
@@ -184,33 +191,36 @@ CASE("rotation representations")
         /* unity */
         q_expected = mli_Quaternion_set_tait_bryan(0., 0., 0.);
 
-        sprintf(json_str,
+        CHECK(mli_String_from_cstr(
+                &str,
                 "{"
                 "\"repr\": \"tait_bryan\", "
                 "\"xyz_deg\": [0, 0, 0]"
-                "}");
-        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
+                "}"));
+        CHECK(mli_Json_from_string(&json, &str));
         CHECK(mli_Quaternion_from_json(&q, &json, 0));
         mli_Json_free(&json);
         CHECK(mli_Quaternion_equal_margin(q, q_expected, 1e-6));
 
-        sprintf(json_str,
+        CHECK(mli_String_from_cstr(
+                &str,
                 "{"
                 "\"repr\": \"axis_angle\", "
                 "\"axis\": [0, 0, 0], "
                 "\"angle_deg\": 0."
-                "}");
-        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
+                "}"));
+        CHECK(mli_Json_from_string(&json, &str));
         CHECK(mli_Quaternion_from_json(&q, &json, 0));
         mli_Json_free(&json);
         CHECK(mli_Quaternion_equal_margin(q, q_expected, 1e-6));
 
-        sprintf(json_str,
+        CHECK(mli_String_from_cstr(
+                &str,
                 "{"
                 "\"repr\": \"quaternion\", "
                 "\"xyz\": [0, 0, 0]"
-                "}");
-        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
+                "}"));
+        CHECK(mli_Json_from_string(&json, &str));
         CHECK(mli_Quaternion_from_json(&q, &json, 0));
         mli_Json_free(&json);
         CHECK(mli_Quaternion_equal_margin(q, q_expected, 1e-6));
@@ -219,35 +229,40 @@ CASE("rotation representations")
         q_expected =
                 mli_Quaternion_set_tait_bryan(0., 0., -mli_math_deg2rad(45.));
 
-        sprintf(json_str,
+        CHECK(mli_String_from_cstr(
+                &str,
                 "{"
                 "\"repr\": \"tait_bryan\", "
                 "\"xyz_deg\": [0, 0, -45]"
-                "}");
-        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
+                "}"));
+        CHECK(mli_Json_from_string(&json, &str));
         CHECK(mli_Quaternion_from_json(&q, &json, 0));
         mli_Json_free(&json);
         CHECK(mli_Quaternion_equal_margin(q, q_expected, 1e-6));
 
-        sprintf(json_str,
+        CHECK(mli_String_from_cstr(
+                &str,
                 "{"
                 "\"repr\": \"axis_angle\", "
                 "\"axis\": [0, 0, 1], "
                 "\"angle_deg\": 45"
-                "}");
-        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
+                "}"));
+        CHECK(mli_Json_from_string(&json, &str));
         CHECK(mli_Quaternion_from_json(&q, &json, 0));
         mli_Json_free(&json);
         CHECK(mli_Quaternion_equal_margin(q, q_expected, 1e-6));
 
-        sprintf(json_str,
+        CHECK(mli_String_from_cstr_fromat(
+                &str,
                 "{"
                 "\"repr\": \"quaternion\", "
                 "\"xyz\": [0, 0, %f]"
                 "}",
-                q_expected.z);
-        CHECK(mli_Json_malloc_from_cstr(&json, json_str));
+                q_expected.z));
+        CHECK(mli_Json_from_string(&json, &str));
         CHECK(mli_Quaternion_from_json(&q, &json, 0));
         mli_Json_free(&json);
         CHECK(mli_Quaternion_equal_margin(q, q_expected, 1e-6));
+
+        mli_String_free(&str);
 }

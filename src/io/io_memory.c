@@ -113,7 +113,13 @@ int mli_IoMemory__write_unsigned_char(
         const unsigned char *c)
 {
         /* 'puts' a single selfe (char) to the selfesIo-buffer */
-        const uint64_t new_size = self->size + 1u;
+        uint64_t new_size;
+
+        if (self->pos == self->size) {
+                new_size = self->size + 1u;
+        } else {
+                new_size = self->size;
+        }
 
         if (self->cstr == NULL) {
                 chk(mli_IoMemory__malloc(self));
@@ -125,7 +131,7 @@ int mli_IoMemory__write_unsigned_char(
                 chk_msg(mli_IoMemory__realloc_capacity(self, min_new_capacity),
                         "Failed to reallocate.");
         }
-        self->cstr[self->size] = (*c);
+        self->cstr[self->pos] = (*c);
         self->size = new_size;
         self->pos += 1;
 
