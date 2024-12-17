@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLITRIANGLE_INTERSECTION_H_
-#define MLITRIANGLE_INTERSECTION_H_
+#ifndef MLI_TRIANGLE_INTERSECTION_H_
+#define MLI_TRIANGLE_INTERSECTION_H_
 
+#include "triangle_barycentric.h"
 #include "../vec/vec.h"
 #include "../ray/ray.h"
-#include "../triangle/triangle_barycentric.h"
 
 struct mli_Vec mliTriangle_interpolate_surface_normal(
         const struct mli_Vec vertex_normal_a,
