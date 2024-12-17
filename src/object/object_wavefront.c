@@ -22,7 +22,7 @@
 
 #define MLI_WAVEFRONT_LINE_BUFF_LENGTH 64
 
-int mliObject_is_face_line_toggle(const int state)
+int mli_Object_is_face_line_toggle(const int state)
 {
         switch (state) {
         case 3:
@@ -59,7 +59,7 @@ chk_error:
         return 0;
 }
 
-int mliObject_parse_face_line(
+int mli_Object_parse_face_line(
         const struct mli_String *line,
         struct mli_object_Face *faces_vertices,
         struct mli_object_Face *faces_texture_points,
@@ -259,10 +259,10 @@ int mliObject_parse_face_line(
                         *line_mode = MLI_WAVEFRONT_FACE_LINE_V_VT_VN;
                 }
 
-                if (mliObject_is_face_line_toggle(state)) {
+                if (mli_Object_is_face_line_toggle(state)) {
                         wuff.array[wuff.size] = c;
                         wuff.size++;
-                } else if (mliObject_is_face_line_toggle(old_state)) {
+                } else if (mli_Object_is_face_line_toggle(old_state)) {
                         uint64_t r;
                         for (r = wuff.size; r < MAX_NUM_CHARS; r++) {
                                 wuff.array[r] = '\0';
@@ -341,7 +341,7 @@ chk_error:
         return 0;
 }
 
-int mliObject_is_vert_line_toggle(const int state)
+int mli_Object_is_vert_line_toggle(const int state)
 {
         switch (state) {
         case 2:
@@ -353,7 +353,7 @@ int mliObject_is_vert_line_toggle(const int state)
         return 0;
 }
 
-int mliObject_parse_three_float_line(
+int mli_Object_parse_three_float_line(
         const struct mli_String *line,
         struct mli_Vec *v)
 {
@@ -443,10 +443,10 @@ int mliObject_parse_three_float_line(
                         state = error_state;
                 }
 
-                if (mliObject_is_vert_line_toggle(state)) {
+                if (mli_Object_is_vert_line_toggle(state)) {
                         wuff.array[wuff.size] = c;
                         wuff.size++;
-                } else if (mliObject_is_vert_line_toggle(old_state)) {
+                } else if (mli_Object_is_vert_line_toggle(old_state)) {
                         uint64_t r;
                         for (r = wuff.size; r < MAX_NUM_CHARS; r++) {
                                 wuff.array[r] = '\0';
@@ -476,7 +476,7 @@ chk_error:
         return 0;
 }
 
-int mliObject_parse_face_vertices_and_normals(
+int mli_Object_parse_face_vertices_and_normals(
         const struct mli_String *line,
         struct mli_object_Face *fv,
         struct mli_object_Face *fvn)
@@ -484,7 +484,7 @@ int mliObject_parse_face_vertices_and_normals(
         int line_mode = -1;
         struct mli_object_Face tmp_fvt;
 
-        chk_msg(mliObject_parse_face_line(line, fv, &tmp_fvt, fvn, &line_mode),
+        chk_msg(mli_Object_parse_face_line(line, fv, &tmp_fvt, fvn, &line_mode),
                 "Can not parse face-line.");
 
         chk_msg((line_mode == MLI_WAVEFRONT_FACE_LINE_V_VT_VN) ||
@@ -509,7 +509,7 @@ chk_error:
         return 0;
 }
 
-int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
+int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
 {
         uint64_t i = 0u;
         uint64_t line_number = 0u;
@@ -567,7 +567,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
                                 struct mli_Vec tmp_vn;
                                 chk(mli_String_copyn(
                                         &tmp, &line, 2, line.size - 2));
-                                chk_msg(mliObject_parse_three_float_line(
+                                chk_msg(mli_Object_parse_three_float_line(
                                                 &tmp, &tmp_vn),
                                         "Can not parse vertex-normal-line.");
                                 chk_msg(mli_Vec_dot(tmp_vn, tmp_vn) > 0.0,
@@ -579,7 +579,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
                                 struct mli_Vec tmp_v;
                                 chk(mli_String_copyn(
                                         &tmp, &line, 1, line.size - 1));
-                                chk_msg(mliObject_parse_three_float_line(
+                                chk_msg(mli_Object_parse_three_float_line(
                                                 &tmp, &tmp_v),
                                         "Can not parse vertex-line.");
                                 chk(mliDynVec_push_back(&v, tmp_v));
@@ -589,7 +589,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
                                 chk_msg(mliDynMap_size(&material_names) > 0,
                                         "Expected 'usemtl' before first "
                                         "face 'f'.");
-                                chk_msg(mliObject_parse_face_vertices_and_normals(
+                                chk_msg(mli_Object_parse_face_vertices_and_normals(
                                                 &line, &tmp_fv, &tmp_fvn),
                                         "Failed to parse face-line.");
                                 chk(mli_object_FaceVector_push_back(
@@ -614,17 +614,17 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
         }
         chk_dbg
 
-                /* copy dyn into static mliObject */
+                /* copy dyn into static mli_Object */
                 chk_msg(fv.size == fvn.size,
                         "Expected num. vertex-indices == num. "
                         "vertex-normal-indices.");
-        chk_msg(mliObject_malloc(
+        chk_msg(mli_Object_malloc(
                         obj,
                         v.size,
                         vn.size,
                         fv.size,
                         mliDynMap_size(&material_names)),
-                "Failed to malloc mliObject from file.");
+                "Failed to malloc mli_Object from file.");
         chk_dbg MLI_MATH_NCPY(v.array, obj->vertices, v.size);
         MLI_MATH_NCPY(vn.array, obj->vertex_normals, vn.size);
         MLI_MATH_NCPY(fv.array, obj->faces_vertices, fv.size);
@@ -636,7 +636,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
                         &material_names.items.array[i].key));
         }
 
-        chk_msg(mliObject_is_valid(obj), "Expected object to be valid.");
+        chk_msg(mli_Object_is_valid(obj), "Expected object to be valid.");
 
         /* free dyn */
         mliDynVec_free(&v);
@@ -657,7 +657,7 @@ int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io)
 
         return 1;
 chk_error:
-        mliObject_free(obj);
+        mli_Object_free(obj);
 
         /* free dyn */
         mliDynVec_free(&v);
@@ -679,7 +679,9 @@ chk_error:
         return 0;
 }
 
-int mliObject_fprint_to_wavefront(struct mli_IO *f, const struct mliObject *obj)
+int mli_Object_fprint_to_wavefront(
+        struct mli_IO *f,
+        const struct mli_Object *obj)
 {
         uint32_t i, mtl, face;
         chk(mli_IO_text_write_cstr_format(f, "# vertices\n"));

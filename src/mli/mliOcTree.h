@@ -89,7 +89,7 @@ struct mliLeafAddress mliLeafAddress_init(void);
 
 int mliOcTree_malloc_from_object_wavefront(
         struct mliOcTree *octree,
-        const struct mliObject *object);
+        const struct mli_Object *object);
 
 struct mliGeometryAndAccelerator;
 int mliOcTree_malloc_from_Geometry(

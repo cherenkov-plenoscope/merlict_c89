@@ -18,7 +18,7 @@ int mliGeometry_valid_objects(const struct mliGeometry *geometry)
                         "Expected object_names size to "
                         "match zero termination.");
 
-                chk_msg(mliObject_is_valid(&geometry->objects[i]),
+                chk_msg(mli_Object_is_valid(&geometry->objects[i]),
                         "Expected object to be valid.");
         }
         return 1;

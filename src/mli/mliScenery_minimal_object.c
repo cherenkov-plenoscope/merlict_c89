@@ -94,7 +94,7 @@ int mliScenery_malloc_minimal_from_wavefront(
         chk(mli_String_from_cstr(&_path, path));
         chk(mli_String_from_cstr(&_mode, "r"));
         chk_msg(mli_IO_open_file(&str, &_path, &_mode), "Failed to open file.");
-        chk_msg(mliObject_malloc_from_wavefront(
+        chk_msg(mli_Object_malloc_from_wavefront(
                         &scenery->geometry.objects[0], &str),
                 "Failed to malloc wavefront-object from string.");
         mli_IO_close(&str);

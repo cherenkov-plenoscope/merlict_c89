@@ -3,19 +3,19 @@
 #include "../math/math.h"
 #include "../chk/chk.h"
 
-int mliObject_is_valid(const struct mliObject *obj)
+int mli_Object_is_valid(const struct mli_Object *obj)
 {
-        chk_msg(mliObject_has_valid_vertices(obj), "Bad vertex.");
-        chk_msg(mliObject_has_valid_faces(obj), "Expected faces to be valid.");
-        chk_msg(mliObject_has_valid_normals(obj, MLI_MATH_EPSILON),
+        chk_msg(mli_Object_has_valid_vertices(obj), "Bad vertex.");
+        chk_msg(mli_Object_has_valid_faces(obj), "Expected faces to be valid.");
+        chk_msg(mli_Object_has_valid_normals(obj, MLI_MATH_EPSILON),
                 "Bad vertex-normal.");
-        chk_msg(mliObject_has_valid_materials(obj), "Bad material.");
+        chk_msg(mli_Object_has_valid_materials(obj), "Bad material.");
         return 1;
 chk_error:
         return 0;
 }
 
-int mliObject_has_valid_faces(const struct mliObject *obj)
+int mli_Object_has_valid_faces(const struct mli_Object *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_faces; i++) {
@@ -48,7 +48,7 @@ chk_error:
         return 0;
 }
 
-int mliObject_has_valid_vertices(const struct mliObject *obj)
+int mli_Object_has_valid_vertices(const struct mli_Object *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_vertices; i++) {
@@ -62,8 +62,8 @@ chk_error:
         return 0;
 }
 
-int mliObject_has_valid_normals(
-        const struct mliObject *obj,
+int mli_Object_has_valid_normals(
+        const struct mli_Object *obj,
         const double epsilon)
 {
         uint32_t i = 0;
@@ -86,7 +86,7 @@ chk_error:
         return 0;
 }
 
-int mliObject_has_valid_materials(const struct mliObject *obj)
+int mli_Object_has_valid_materials(const struct mli_Object *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_materials; i++) {
@@ -98,8 +98,8 @@ chk_error:
         return 0;
 }
 
-int mliObject_num_unused(
-        const struct mliObject *obj,
+int mli_Object_num_unused(
+        const struct mli_Object *obj,
         uint32_t *num_unused_vertices,
         uint32_t *num_unused_vertex_normals,
         uint32_t *num_unused_materials)

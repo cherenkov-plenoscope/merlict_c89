@@ -3,8 +3,8 @@
 #include "../mli/mliTriangle_AABB.h"
 #include "../math/math.h"
 
-int mliObject_face_in_local_frame_has_overlap_aabb(
-        const struct mliObject *obj,
+int mli_Object_face_in_local_frame_has_overlap_aabb(
+        const struct mli_Object *obj,
         const uint64_t face_idx,
         const struct mli_AABB aabb)
 {
@@ -23,8 +23,8 @@ int mliObject_face_in_local_frame_has_overlap_aabb(
         return 0;
 }
 
-int mliObject_has_overlap_aabb(
-        const struct mliObject *obj,
+int mli_Object_has_overlap_aabb(
+        const struct mli_Object *obj,
         const struct mli_HomTra local2root,
         const struct mli_AABB aabb)
 {
@@ -52,17 +52,17 @@ int mliObject_has_overlap_aabb(
         return 0;
 }
 
-int mliObject_face_in_local_frame_has_overlap_aabb_void(
+int mli_Object_face_in_local_frame_has_overlap_aabb_void(
         const void *obj,
         const uint32_t face_idx,
         const struct mli_AABB aabb)
 {
-        return mliObject_face_in_local_frame_has_overlap_aabb(
-                (const struct mliObject *)obj, (uint64_t)face_idx, aabb);
+        return mli_Object_face_in_local_frame_has_overlap_aabb(
+                (const struct mli_Object *)obj, (uint64_t)face_idx, aabb);
 }
 
-struct mli_AABB mliObject_aabb(
-        const struct mliObject *obj,
+struct mli_AABB mli_Object_aabb(
+        const struct mli_Object *obj,
         const struct mli_HomTra local2root)
 {
         struct mli_AABB aabb;
@@ -125,10 +125,10 @@ struct mli_AABB mliObject_aabb(
         return aabb;
 }
 
-struct mli_AABB mliObject_aabb_in_local_frame(const struct mliObject *obj)
+struct mli_AABB mli_Object_aabb_in_local_frame(const struct mli_Object *obj)
 {
         struct mli_HomTra unity;
         unity.translation = mli_Vec_init(0.0, 0.0, 0.0);
         unity.rotation = mli_Mat_unity();
-        return mliObject_aabb(obj, unity);
+        return mli_Object_aabb(obj, unity);
 }

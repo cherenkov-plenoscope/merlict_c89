@@ -9,17 +9,17 @@
 #include "../string/string.h"
 #include "../vec/vec.h"
 
-int mliObject_malloc_from_wavefront(struct mliObject *obj, struct mli_IO *io);
-int mliObject_fprint_to_wavefront(
+int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io);
+int mli_Object_fprint_to_wavefront(
         struct mli_IO *f,
-        const struct mliObject *obj);
-int mliObject_parse_face_line(
+        const struct mli_Object *obj);
+int mli_Object_parse_face_line(
         const struct mli_String *line,
         struct mli_object_Face *faces_vertices,
         struct mli_object_Face *faces_texture_points,
         struct mli_object_Face *faces_vertex_normals,
         int *line_mode);
-int mliObject_parse_three_float_line(
+int mli_Object_parse_three_float_line(
         const struct mli_String *line,
         struct mli_Vec *v);
 #endif

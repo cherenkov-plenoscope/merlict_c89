@@ -5,6 +5,6 @@
 #include "../io/io.h"
 #include "object.h"
 
-int mliObject_to_io(const struct mliObject *obj, struct mli_IO *f);
-int mliObject_from_io(struct mliObject *obj, struct mli_IO *f);
+int mli_Object_to_io(const struct mli_Object *obj, struct mli_IO *f);
+int mli_Object_from_io(struct mli_Object *obj, struct mli_IO *f);
 #endif

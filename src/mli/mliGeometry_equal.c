@@ -11,7 +11,7 @@ int mliGeometry_objects_equal(
                 "Expected num_objects to be equal.");
 
         for (i = 0; i < a->num_objects; i++) {
-                chk_msg(mliObject_equal(&a->objects[i], &b->objects[i]),
+                chk_msg(mli_Object_equal(&a->objects[i], &b->objects[i]),
                         "Expected object to be equal.");
                 chk_msg(mli_String_equal(
                                 &a->object_names[i], &b->object_names[i]),

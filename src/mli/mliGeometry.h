@@ -10,7 +10,7 @@
 
 struct mliGeometry {
         uint32_t num_objects;
-        struct mliObject *objects;
+        struct mli_Object *objects;
         struct mli_String *object_names;
 
         uint32_t num_robjects;

@@ -26,7 +26,7 @@ int mliGeometry_from_io(struct mliGeometry *geometry, struct mli_IO *f)
                 "Failed to malloc robjects in mliGeometry.");
 
         for (i = 0; i < geometry->num_objects; i++) {
-                chk_msg(mliObject_from_io(&geometry->objects[i], f),
+                chk_msg(mli_Object_from_io(&geometry->objects[i], f),
                         "Failed to read object into geometry.");
                 chk_msg(mli_String_from_io(&geometry->object_names[i], f),
                         "Failed to read object name into geometry.");
@@ -67,7 +67,7 @@ int mliGeometry_to_io(const struct mliGeometry *geometry, struct mli_IO *f)
         chk_IO_write(&geometry->num_robjects, sizeof(uint32_t), 1, f);
 
         for (i = 0; i < geometry->num_objects; i++) {
-                chk_msg(mliObject_to_io(&geometry->objects[i], f),
+                chk_msg(mli_Object_to_io(&geometry->objects[i], f),
                         "Failed to write objects.");
                 chk_msg(mli_String_to_io(&geometry->object_names[i], f),
                         "Failed to write object name.");

@@ -51,7 +51,7 @@ void mli_inner_object_traversal(
 }
 
 int mli_query_object_reference(
-        const struct mliObject *object,
+        const struct mli_Object *object,
         const struct mliOcTree *object_octree,
         const struct mli_HomTraComp robject2root_comp,
         const struct mli_Ray ray_root,
@@ -163,7 +163,7 @@ int mli_query_intersection_with_surface_normal(
                 struct mli_Ray ray_object =
                         mli_HomTraComp_ray_inverse(&robject2root, ray_root);
 
-                struct mliObject *obj = &scenery->geometry.objects[object_idx];
+                struct mli_Object *obj = &scenery->geometry.objects[object_idx];
 
                 struct mli_object_Face fv = obj->faces_vertices[face_idx];
                 struct mli_object_Face fvn =

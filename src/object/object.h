@@ -7,7 +7,7 @@
 #include "object_face.h"
 #include "../string/string.h"
 
-struct mliObject {
+struct mli_Object {
         uint32_t num_vertices;
         struct mli_Vec *vertices;
 
@@ -23,16 +23,16 @@ struct mliObject {
         struct mli_String *material_names;
 };
 
-int mliObject_malloc(
-        struct mliObject *obj,
+int mli_Object_malloc(
+        struct mli_Object *obj,
         const uint64_t num_vertices,
         const uint64_t num_vertex_normals,
         const uint64_t num_faces,
         const uint64_t num_materials);
-void mliObject_free(struct mliObject *obj);
-struct mliObject mliObject_init(void);
-int mliObject_equal(const struct mliObject *a, const struct mliObject *b);
-uint32_t mliObject_resolve_material_idx(
-        const struct mliObject *obj,
+void mli_Object_free(struct mli_Object *obj);
+struct mli_Object mli_Object_init(void);
+int mli_Object_equal(const struct mli_Object *a, const struct mli_Object *b);
+uint32_t mli_Object_resolve_material_idx(
+        const struct mli_Object *obj,
         const uint32_t face_idx);
 #endif

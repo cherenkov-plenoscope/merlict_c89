@@ -17,12 +17,12 @@ int mli_set_geometry_objects_and_names_from_archive(
         struct mliDynMap *object_names,
         const struct mliArchive *archive);
 
-struct mliObject;
+struct mli_Object;
 struct mliFrame;
 int mli_check_malloc_root_frame_from_Archive(
         struct mliFrame *root,
         const struct mliArchive *archive,
         const struct mliDynMap *object_names,
-        const struct mliObject *objects,
+        const struct mli_Object *objects,
         const struct mliDynMap *boundary_layer_names);
 #endif

@@ -30,7 +30,7 @@ void mliGeometry_free_objects(struct mliGeometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_objects; i++) {
-                mliObject_free(&(geometry->objects[i]));
+                mli_Object_free(&(geometry->objects[i]));
                 mli_String_free(&(geometry->object_names[i]));
         }
         free(geometry->objects);
@@ -59,13 +59,13 @@ int mliGeometry_malloc_objects(
 {
         uint32_t i;
         geometry->num_objects = num_objects;
-        chk_malloc(geometry->objects, struct mliObject, geometry->num_objects);
+        chk_malloc(geometry->objects, struct mli_Object, geometry->num_objects);
         chk_malloc(
                 geometry->object_names,
                 struct mli_String,
                 geometry->num_objects);
         for (i = 0; i < geometry->num_objects; i++) {
-                geometry->objects[i] = mliObject_init();
+                geometry->objects[i] = mli_Object_init();
                 geometry->object_names[i] = mli_String_init();
         }
         return 1;
@@ -191,7 +191,7 @@ int mliGeometry_warn_objects(const struct mliGeometry *geometry)
         uint32_t o;
         for (o = 0; o < geometry->num_objects; o++) {
                 uint32_t v, vn, mtl;
-                chk_msg(mliObject_num_unused(
+                chk_msg(mli_Object_num_unused(
                                 &(geometry->objects)[o], &v, &vn, &mtl),
                         "Can't estimate num unused v/vn/mtl in object.");
                 if (v > 0 || vn > 0 || mtl > 0) {

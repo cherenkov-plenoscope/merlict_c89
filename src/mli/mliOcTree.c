@@ -441,7 +441,7 @@ void mliOcTree_print(const struct mliOcTree *tree)
 
 int mliOcTree_malloc_from_object_wavefront(
         struct mliOcTree *octree,
-        const struct mliObject *object)
+        const struct mli_Object *object)
 {
         uint64_t num_nodes = 0;
         uint64_t num_leafs = 0;
@@ -451,10 +451,10 @@ int mliOcTree_malloc_from_object_wavefront(
                         &tmp_octree,
                         (const void *)object,
                         object->num_faces,
-                        mliObject_face_in_local_frame_has_overlap_aabb_void,
-                        mliObject_aabb_in_local_frame(object)),
+                        mli_Object_face_in_local_frame_has_overlap_aabb_void,
+                        mli_Object_aabb_in_local_frame(object)),
                 "Failed to create dynamic, and temporary TmpOcTree "
-                "from mliObject");
+                "from mli_Object");
         mliTmpNode_set_flat_index(&tmp_octree.root);
         mliTmpNode_num_nodes_leafs_objects(
                 &tmp_octree.root, &num_nodes, &num_leafs, &num_object_links);

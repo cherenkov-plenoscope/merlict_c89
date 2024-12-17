@@ -4,9 +4,9 @@
 #include "../chk/chk.h"
 #include <stdlib.h>
 
-struct mliObject mliObject_init(void)
+struct mli_Object mli_Object_init(void)
 {
-        struct mliObject obj;
+        struct mli_Object obj;
         obj.num_vertices = 0;
         obj.vertices = NULL;
 
@@ -23,7 +23,7 @@ struct mliObject mliObject_init(void)
         return obj;
 }
 
-void mliObject_free(struct mliObject *obj)
+void mli_Object_free(struct mli_Object *obj)
 {
         size_t i;
         free(obj->vertices);
@@ -36,11 +36,11 @@ void mliObject_free(struct mliObject *obj)
                 mli_String_free(&obj->material_names[i]);
         }
         free(obj->material_names);
-        *obj = mliObject_init();
+        *obj = mli_Object_init();
 }
 
-int mliObject_malloc(
-        struct mliObject *obj,
+int mli_Object_malloc(
+        struct mli_Object *obj,
         const uint64_t num_vertices,
         const uint64_t num_vertex_normals,
         const uint64_t num_faces,
@@ -56,7 +56,7 @@ int mliObject_malloc(
         chk_msg(num_materials <= num_faces,
                 "Expected num_materials <= num_faces");
 
-        mliObject_free(obj);
+        mli_Object_free(obj);
         obj->num_vertices = num_vertices;
         obj->num_vertex_normals = num_vertex_normals;
         obj->num_faces = num_faces;
@@ -79,7 +79,7 @@ chk_error:
         return 0;
 }
 
-int mliObject_equal(const struct mliObject *a, const struct mliObject *b)
+int mli_Object_equal(const struct mli_Object *a, const struct mli_Object *b)
 {
         uint64_t i;
         chk(a->num_vertices == b->num_vertices);
@@ -110,8 +110,8 @@ chk_error:
         return 0;
 }
 
-uint32_t mliObject_resolve_material_idx(
-        const struct mliObject *obj,
+uint32_t mli_Object_resolve_material_idx(
+        const struct mli_Object *obj,
         const uint32_t face_idx)
 {
         assert(face_idx < obj->num_faces);

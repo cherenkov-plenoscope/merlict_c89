@@ -5,11 +5,11 @@
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mliObject_to_io(const struct mliObject *obj, struct mli_IO *f)
+int mli_Object_to_io(const struct mli_Object *obj, struct mli_IO *f)
 {
         uint64_t i;
         struct mli_MagicId magic;
-        chk(mli_MagicId_set(&magic, "mliObject"));
+        chk(mli_MagicId_set(&magic, "mli_Object"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk_IO_write(&obj->num_vertices, sizeof(uint32_t), 1u, f);
@@ -47,7 +47,7 @@ chk_error:
         return 0;
 }
 
-int mliObject_from_io(struct mliObject *obj, struct mli_IO *f)
+int mli_Object_from_io(struct mli_Object *obj, struct mli_IO *f)
 {
         uint64_t i;
         uint32_t num_vertices;
@@ -56,7 +56,7 @@ int mliObject_from_io(struct mliObject *obj, struct mli_IO *f)
         uint32_t num_materials;
         struct mli_MagicId magic;
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
-        chk(mli_MagicId_has_word(&magic, "mliObject"));
+        chk(mli_MagicId_has_word(&magic, "mli_Object"));
         mli_MagicId_warn_version(&magic);
 
         chk_IO_read(&num_vertices, sizeof(uint32_t), 1u, f);
@@ -64,7 +64,7 @@ int mliObject_from_io(struct mliObject *obj, struct mli_IO *f)
         chk_IO_read(&num_faces, sizeof(uint32_t), 1u, f);
         chk_IO_read(&num_materials, sizeof(uint32_t), 1u, f);
 
-        chk(mliObject_malloc(
+        chk(mli_Object_malloc(
                 obj,
                 num_vertices,
                 num_vertex_normals,
@@ -95,10 +95,10 @@ int mliObject_from_io(struct mliObject *obj, struct mli_IO *f)
                 chk(mli_String_from_io(&obj->material_names[i], f));
         }
 
-        chk_msg(mliObject_has_valid_faces(obj),
+        chk_msg(mli_Object_has_valid_faces(obj),
                 "A face refers to a not existing vertex/vertex_normal.");
         return 1;
 chk_error:
-        mliObject_free(obj);
+        mli_Object_free(obj);
         return 0;
 }

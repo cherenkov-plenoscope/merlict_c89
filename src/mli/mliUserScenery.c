@@ -57,7 +57,7 @@ int mli_set_geometry_objects_and_names_from_archive(
                         chk_msg(mliDynMap_insert(object_names, &key, obj_idx),
                                 "Failed to insert object-filename into map.");
                         chk_dbg;
-                        chk_msg(mliObject_malloc_from_wavefront(
+                        chk_msg(mli_Object_malloc_from_wavefront(
                                         &geometry->objects[obj_idx], &buff),
                                 "Failed to parse wave-front-object.");
                         chk_dbg;
@@ -241,7 +241,7 @@ int mli_check_malloc_root_frame_from_Archive(
         struct mliFrame *root,
         const struct mliArchive *archive,
         const struct mliDynMap *object_names,
-        const struct mliObject *objects,
+        const struct mli_Object *objects,
         const struct mliDynMap *boundary_layer_names)
 {
         uint64_t token = 0u;

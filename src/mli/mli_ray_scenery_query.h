@@ -24,7 +24,7 @@ int mli_query_intersection_with_surface_normal(
         struct mliIntersectionSurfaceNormal *isecsrf);
 
 int mli_query_object_reference(
-        const struct mliObject *object,
+        const struct mli_Object *object,
         const struct mliOcTree *object_octree,
         const struct mli_HomTraComp local2root_comp,
         const struct mli_Ray ray_root,
@@ -32,7 +32,7 @@ int mli_query_object_reference(
 
 struct mliQueryInnerWork {
         struct mliIntersection *intersection;
-        const struct mliObject *object;
+        const struct mli_Object *object;
         struct mli_Ray ray_object;
         int has_intersection;
 };

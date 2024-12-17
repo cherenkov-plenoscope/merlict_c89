@@ -5,7 +5,7 @@ CASE("mliArchive, read tar")
         struct mliArchive arc = mliArchive_init();
         struct mli_String *data = NULL;
         struct mli_IO io = mli_IO_init();
-        struct mliObject triangle = mliObject_init();
+        struct mli_Object triangle = mli_Object_init();
         struct mli_String tmp = mli_String_init();
 
         CHECK(mliArchive_malloc_from_path(
@@ -40,7 +40,7 @@ CASE("mliArchive, read tar")
         CHECK(mli_IO_open_memory(&io));
         CHECK(mli_IO_text_write_String(&io, data));
         mli_IO_rewind(&io);
-        CHECK(mliObject_malloc_from_wavefront(&triangle, &io));
+        CHECK(mli_Object_malloc_from_wavefront(&triangle, &io));
         CHECK(triangle.num_vertices == 3u);
         CHECK(triangle.num_vertex_normals == 1u);
         CHECK(triangle.num_faces == 1);
@@ -51,5 +51,5 @@ CASE("mliArchive, read tar")
         mli_String_free(&tmp);
         mli_IO_close(&io);
         mliArchive_free(&arc);
-        mliObject_free(&triangle);
+        mli_Object_free(&triangle);
 }

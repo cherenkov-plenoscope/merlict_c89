@@ -5,15 +5,15 @@
 #include <stdint.h>
 #include "object.h"
 
-int mliObject_is_valid(const struct mliObject *obj);
-int mliObject_has_valid_vertices(const struct mliObject *obj);
-int mliObject_has_valid_faces(const struct mliObject *obj);
-int mliObject_has_valid_normals(
-        const struct mliObject *obj,
+int mli_Object_is_valid(const struct mli_Object *obj);
+int mli_Object_has_valid_vertices(const struct mli_Object *obj);
+int mli_Object_has_valid_faces(const struct mli_Object *obj);
+int mli_Object_has_valid_normals(
+        const struct mli_Object *obj,
         const double epsilon);
-int mliObject_has_valid_materials(const struct mliObject *obj);
-int mliObject_num_unused(
-        const struct mliObject *obj,
+int mli_Object_has_valid_materials(const struct mli_Object *obj);
+int mli_Object_num_unused(
+        const struct mli_Object *obj,
         uint32_t *num_unused_vertices,
         uint32_t *num_unused_vertex_normals,
         uint32_t *num_unused_materials);

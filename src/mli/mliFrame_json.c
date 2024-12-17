@@ -80,7 +80,7 @@ chk_error:
 int mliFrame_boundary_layers_form_json_token(
         struct mliDynUint32 *boundary_layers,
         const uint32_t object_idx,
-        const struct mliObject *objects,
+        const struct mli_Object *objects,
         const struct mliDynMap *boundary_layer_names,
         const struct mli_Json *json,
         const uint64_t token)
@@ -154,7 +154,7 @@ int mliFrame_from_json(
         const struct mli_Json *json,
         const uint64_t token_children,
         const struct mliDynMap *object_names,
-        const struct mliObject *objects,
+        const struct mli_Object *objects,
         const struct mliDynMap *boundary_layer_names)
 {
         uint64_t num_children;

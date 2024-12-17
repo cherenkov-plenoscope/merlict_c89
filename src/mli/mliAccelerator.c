@@ -72,7 +72,7 @@ int mliAccelerator_set_robject_aabbs(
 
         for (rob = 0; rob < accel->num_robjects; rob++) {
                 const uint32_t robject = geometry->robjects[rob];
-                accel->robject_aabbs[rob] = mliObject_aabb(
+                accel->robject_aabbs[rob] = mli_Object_aabb(
                         &geometry->objects[robject],
                         mli_HomTraComp_from_compact(
                                 geometry->robject2root[rob]));

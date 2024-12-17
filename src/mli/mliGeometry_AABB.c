@@ -19,11 +19,11 @@ int mliGeometry_robject_has_overlap_aabb(
                  */
                 const uint32_t obj_idx =
                         accgeo->geometry->robjects[robject_idx];
-                const struct mliObject *obj_ptr =
+                const struct mli_Object *obj_ptr =
                         &accgeo->geometry->objects[obj_idx];
                 const struct mli_HomTra robj2root = mli_HomTraComp_from_compact(
                         accgeo->geometry->robject2root[robject_idx]);
-                return mliObject_has_overlap_aabb(obj_ptr, robj2root, aabb);
+                return mli_Object_has_overlap_aabb(obj_ptr, robj2root, aabb);
         } else {
                 return 0;
         }
