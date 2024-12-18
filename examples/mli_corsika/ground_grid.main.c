@@ -12,7 +12,7 @@
 #include "../../src/tar/tar.h"
 #include "../../src/tar/tar_io.h"
 #include "../../src/vector/vector.h"
-#include "../../src/AxisAlignedGrid/AxisAlignedGrid.h"
+#include "../../src/axis_aligned_grid/axis_aligned_grid.h"
 
 int mli_AxisAlignedGrid_set_from_config(
         struct mli_AxisAlignedGrid *grid,
@@ -20,7 +20,7 @@ int mli_AxisAlignedGrid_set_from_config(
 {
         struct mli_Vec lower;
         struct mli_Vec upper;
-        struct mliIdx3 num_bins;
+        struct mli_Idx3 num_bins;
         struct mli_String line = mli_String_init();
         chk(mli_String_malloc(&line, 100));
         mli_IO_rewind(text);

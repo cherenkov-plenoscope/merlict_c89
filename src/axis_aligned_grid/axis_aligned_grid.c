@@ -1,5 +1,5 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
-#include "AxisAlignedGrid.h"
+#include "axis_aligned_grid.h"
 #include "../math/math.h"
 #include "../ray/ray_AABB.h"
 #include <assert.h>
@@ -13,9 +13,9 @@
  * Toronto, Ontario, Canada M5S 1A4
  */
 
-struct mliIdx3 mliIdx3_set(const int64_t x, const int64_t y, const int64_t z)
+struct mli_Idx3 mli_Idx3_set(const int64_t x, const int64_t y, const int64_t z)
 {
-        struct mliIdx3 iii;
+        struct mli_Idx3 iii;
         iii.x = x;
         iii.y = y;
         iii.z = z;
@@ -24,7 +24,7 @@ struct mliIdx3 mliIdx3_set(const int64_t x, const int64_t y, const int64_t z)
 
 struct mli_AxisAlignedGrid mli_AxisAlignedGrid_set(
         struct mli_AABB bounds,
-        struct mliIdx3 num_bins)
+        struct mli_Idx3 num_bins)
 {
         struct mli_AxisAlignedGrid grid;
         grid.bounds = bounds;
@@ -42,12 +42,12 @@ struct mli_AxisAlignedGrid mli_AxisAlignedGrid_set(
         return grid;
 }
 
-struct mliIdx3 mli_AxisAlignedGrid_get_voxel_idx(
+struct mli_Idx3 mli_AxisAlignedGrid_get_voxel_idx(
         const struct mli_AxisAlignedGrid *grid,
         struct mli_Vec point)
 {
         struct mli_Vec pg = mli_Vec_substract(point, grid->bounds.lower);
-        struct mliIdx3 iii;
+        struct mli_Idx3 iii;
         pg.x /= grid->bin_width.x;
         pg.y /= grid->bin_width.y;
         pg.z /= grid->bin_width.z;
@@ -60,7 +60,7 @@ struct mliIdx3 mli_AxisAlignedGrid_get_voxel_idx(
 int mli_AxisAlignedGrid_find_voxel_of_first_interaction(
         const struct mli_AxisAlignedGrid *grid,
         const struct mli_Ray *ray,
-        struct mliIdx3 *bin)
+        struct mli_Idx3 *bin)
 {
         if (mli_AABB_is_point_inside(grid->bounds, ray->support)) {
                 (*bin) = mli_AxisAlignedGrid_get_voxel_idx(grid, ray->support);
@@ -101,7 +101,7 @@ int mli_AxisAlignedGrid_find_voxel_of_first_interaction(
 
 struct mli_Vec mli_AxisAlignedGridTraversal_first_plane(
         const struct mli_AxisAlignedGrid *grid,
-        const struct mliIdx3 voxel,
+        const struct mli_Idx3 voxel,
         const struct mli_Vec ray_direction)
 {
         struct mli_Vec voxel_lower = mli_Vec_init(
