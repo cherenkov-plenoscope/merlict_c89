@@ -5,6 +5,7 @@
 #include "../vec/vec_random.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
+#include "../thin_lens/thin_lens.h"
 
 struct mli_camera_Aperture mli_camera_Aperture_init(void)
 {
@@ -94,26 +95,6 @@ struct mli_Vec mli_camera_Aperture_ray_support_on_aperture(
 {
         /* use a perfect disc as aperture */
         return mli_Vec_random_position_on_disc(aperture_radius, prng);
-}
-
-double mli_thin_lens_get_object_given_focal_and_image(
-        const double focal_length,
-        const double image_distance)
-{
-        /* 1/f = 1/g + 1/b */
-        /* 1/g = 1/f - 1/b */
-        /* g = 1/(1/f - 1/b) */
-        return 1.0 / (1.0 / focal_length - 1.0 / image_distance);
-}
-
-double mli_thin_lens_get_image_given_focal_and_object(
-        const double focal_length,
-        const double object_distance)
-{
-        /* 1/f = 1/g + 1/b */
-        /* 1/b = 1/f - 1/g */
-        /* b = 1/(1/f - 1/g) */
-        return 1.0 / (1.0 / focal_length - 1.0 / object_distance);
 }
 
 double mli_camera_Aperture_focal_length_given_field_of_view_and_sensor_width(
