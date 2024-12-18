@@ -157,8 +157,9 @@ void mli_trace_ray_octree_traversal_sub(
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = mli_trace_ray_octree_traversal_next_octree_node(
-                                nt1, 4, 2, 1);
+                        proc_node =
+                                mli_trace_ray_octree_traversal_next_octree_node(
+                                        nt1, 4, 2, 1);
                         break;
                 }
                 case 1: {
@@ -174,8 +175,9 @@ void mli_trace_ray_octree_traversal_sub(
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = mli_trace_ray_octree_traversal_next_octree_node(
-                                nt1, 5, 3, 8);
+                        proc_node =
+                                mli_trace_ray_octree_traversal_next_octree_node(
+                                        nt1, 5, 3, 8);
                         break;
                 }
                 case 2: {
@@ -191,8 +193,9 @@ void mli_trace_ray_octree_traversal_sub(
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = mli_trace_ray_octree_traversal_next_octree_node(
-                                nt1, 6, 8, 3);
+                        proc_node =
+                                mli_trace_ray_octree_traversal_next_octree_node(
+                                        nt1, 6, 8, 3);
                         break;
                 }
                 case 3: {
@@ -208,8 +211,9 @@ void mli_trace_ray_octree_traversal_sub(
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = mli_trace_ray_octree_traversal_next_octree_node(
-                                nt1, 7, 8, 8);
+                        proc_node =
+                                mli_trace_ray_octree_traversal_next_octree_node(
+                                        nt1, 7, 8, 8);
                         break;
                 }
                 case 4: {
@@ -225,8 +229,9 @@ void mli_trace_ray_octree_traversal_sub(
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = mli_trace_ray_octree_traversal_next_octree_node(
-                                nt1, 8, 6, 5);
+                        proc_node =
+                                mli_trace_ray_octree_traversal_next_octree_node(
+                                        nt1, 8, 6, 5);
                         break;
                 }
                 case 5: {
@@ -242,8 +247,9 @@ void mli_trace_ray_octree_traversal_sub(
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = mli_trace_ray_octree_traversal_next_octree_node(
-                                nt1, 8, 7, 8);
+                        proc_node =
+                                mli_trace_ray_octree_traversal_next_octree_node(
+                                        nt1, 8, 7, 8);
                         break;
                 }
                 case 6: {
@@ -259,8 +265,9 @@ void mli_trace_ray_octree_traversal_sub(
                                 permutation,
                                 work,
                                 work_on_leaf_node);
-                        proc_node = mli_trace_ray_octree_traversal_next_octree_node(
-                                nt1, 8, 8, 7);
+                        proc_node =
+                                mli_trace_ray_octree_traversal_next_octree_node(
+                                        nt1, 8, 8, 7);
                         break;
                 }
                 case 7: {
@@ -313,7 +320,8 @@ void mli_trace_ray_octree_traversal(
                 ray_wrt_octree.direction.x = -ray_wrt_octree.direction.x;
                 permutation |= 4;
         } else if (ray_wrt_octree.direction.x == 0.0) {
-                ray_wrt_octree.direction.x = MLI_TRACE_RAY_OCTREE_TRAVERSAL_EPSILON;
+                ray_wrt_octree.direction.x =
+                        MLI_TRACE_RAY_OCTREE_TRAVERSAL_EPSILON;
         }
 
         if (ray_wrt_octree.direction.y < 0) {
@@ -322,7 +330,8 @@ void mli_trace_ray_octree_traversal(
                 ray_wrt_octree.direction.y = -ray_wrt_octree.direction.y;
                 permutation |= 2;
         } else if (ray_wrt_octree.direction.y == 0.0) {
-                ray_wrt_octree.direction.y = MLI_TRACE_RAY_OCTREE_TRAVERSAL_EPSILON;
+                ray_wrt_octree.direction.y =
+                        MLI_TRACE_RAY_OCTREE_TRAVERSAL_EPSILON;
         }
 
         if (ray_wrt_octree.direction.z < 0) {
@@ -331,7 +340,8 @@ void mli_trace_ray_octree_traversal(
                 ray_wrt_octree.direction.z = -ray_wrt_octree.direction.z;
                 permutation |= 1;
         } else if (ray_wrt_octree.direction.z == 0.0) {
-                ray_wrt_octree.direction.z = MLI_TRACE_RAY_OCTREE_TRAVERSAL_EPSILON;
+                ray_wrt_octree.direction.z =
+                        MLI_TRACE_RAY_OCTREE_TRAVERSAL_EPSILON;
         }
 
         div.x = 1.0 / ray_wrt_octree.direction.x;

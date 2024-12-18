@@ -10,11 +10,11 @@
 #include "../frame/frame.h"
 #include "../frame/frame_from_archive.h"
 
-int mli_Scenery_from_io_tar(struct mli_Scenery *self, FILE *f)
+int mli_Scenery_from_io_tar(struct mli_Scenery *self, struct mli_IO *f)
 {
         struct mli_Archive archive = mli_Archive_init();
         chk_dbg;
-        chk_msg(mli_Archive_from_file(&archive, f),
+        chk_msg(mli_Archive_from_io(&archive, f),
                 "Can't read archive from file.");
         chk_dbg;
         chk_msg(mli_Scenery_malloc_from_Archive(self, &archive),
@@ -26,15 +26,16 @@ chk_error:
         return 0;
 }
 
-int mli_Scenery_malloc_from_path_tar(struct mli_Scenery *self, const char *path)
+int mli_Scenery__from_path_cstr(struct mli_Scenery *self, const char *path)
 {
-        FILE *f = fopen(path, "rb");
+        struct mli_IO f = mli_IO_init();
+        chk_msgf(
+                mli_IO__open_file_cstr(&f, path, "r"),
+                ("Can't open path '%s'.", path));
+        chk_msg(mli_Scenery_from_io_tar(self, &f),
+                "Can't fread Scenery from file.");
         chk_dbg;
-        chk_msgf(f != NULL, ("Can't open path '%s'.", path))
-                chk_msg(mli_Scenery_from_io_tar(self, f),
-                        "Can't fread Scenery from file.");
-        chk_dbg;
-        fclose(f);
+        mli_IO_close(&f);
         return 1;
 chk_error:
         return 0;

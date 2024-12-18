@@ -153,7 +153,8 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
         double reflection_propability;
         struct mli_Vec facing_surface_normal;
         chk_msg(mli_Func_evaluate(
-                        mli_trace_get_refractive_index_going_to(env->scenery, isec),
+                        mli_trace_get_refractive_index_going_to(
+                                env->scenery, isec),
                         env->photon->wavelength,
                         &n_going_to),
                 "Failed to eval. refraction going to for wavelength.");
@@ -251,8 +252,9 @@ int mli_propagate_photon_work_on_causal_intersection(
         struct mli_Func *absorbtion_in_medium_passing_through;
         struct mli_PhotonInteraction phia;
 
-        ray_does_intersect_surface = mli_trace_query_intersection_with_surface_normal(
-                env->scenery, env->photon->ray, &next_intersection);
+        ray_does_intersect_surface =
+                mli_trace_query_intersection_with_surface_normal(
+                        env->scenery, env->photon->ray, &next_intersection);
 
         if (ray_does_intersect_surface) {
                 int photon_is_absorbed_before_reaching_surface;

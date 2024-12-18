@@ -175,3 +175,17 @@ int mli_IO_eof(const struct mli_IO *self)
         }
         return rc;
 }
+
+int mli_IO_flush(struct mli_IO *self)
+{
+        int64_t rc = -1;
+        switch (self->type) {
+        case MLI_IO_TYPE_MEMORY:
+                rc = 1;
+                break;
+        case MLI_IO_TYPE_FILE:
+                rc = mli_IoFile_flush(&self->data.file);
+                break;
+        }
+        return rc;
+}

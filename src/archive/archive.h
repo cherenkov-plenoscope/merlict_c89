@@ -3,7 +3,7 @@
 #define MLI_ARCHIVE_H_
 
 #include <stdint.h>
-#include <stdio.h>
+#include "../io/io.h"
 #include "../string/string.h"
 #include "../string/string_vector.h"
 #include "../map/map.h"
@@ -17,8 +17,8 @@ struct mli_Archive mli_Archive_init(void);
 
 void mli_Archive_free(struct mli_Archive *self);
 int mli_Archive_malloc(struct mli_Archive *self);
-int mli_Archive_from_file(struct mli_Archive *self, FILE *f);
-int mli_Archive_from_path(struct mli_Archive *self, const char *path);
+int mli_Archive_from_io(struct mli_Archive *self, struct mli_IO *f);
+int mli_Archive__from_path_cstr(struct mli_Archive *self, const char *path);
 int mli_Archive_push_back(
         struct mli_Archive *self,
         const struct mli_String *filename,

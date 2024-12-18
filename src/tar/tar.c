@@ -284,7 +284,7 @@ struct mli_Tar mli_Tar_init(void)
 /*                                 read                                       */
 /* ========================================================================== */
 
-int mli_Tar_read_begin(struct mli_Tar *tar, FILE *stream)
+int mli_Tar_read_begin(struct mli_Tar *tar, struct mli_IO *stream)
 {
         chk_msg(tar->stream == NULL,
                 "Can't begin reading tar. "
@@ -299,7 +299,7 @@ chk_error:
 
 int mli_Tar_tread(struct mli_Tar *tar, void *data, const uint64_t size)
 {
-        int64_t res = fread(data, 1, size, tar->stream);
+        int64_t res = mli_IO_read(data, 1, size, tar->stream);
         chk_msg(res >= 0, "Failed reading from tar.");
         chk_msg((uint64_t)res == size, "Failed reading from tar.");
         tar->pos += size;
@@ -372,7 +372,7 @@ chk_error:
 /*                                  write                                     */
 /* ========================================================================== */
 
-int mli_Tar_write_begin(struct mli_Tar *tar, FILE *stream)
+int mli_Tar_write_begin(struct mli_Tar *tar, struct mli_IO *stream)
 {
         chk_msg(tar->stream == NULL,
                 "Can't begin writing tar. "
@@ -387,7 +387,7 @@ chk_error:
 
 int mli_Tar_twrite(struct mli_Tar *tar, const void *data, const uint64_t size)
 {
-        int64_t res = fwrite(data, 1, size, tar->stream);
+        int64_t res = mli_IO_write(data, 1, size, tar->stream);
         chk_msg(res >= 0, "Failed writing to tar.");
         chk_msg((uint64_t)res == size, "Failed writing to tar.");
         tar->pos += size;

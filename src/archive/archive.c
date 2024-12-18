@@ -63,7 +63,7 @@ chk_error:
         return 0;
 }
 
-int mli_Archive_from_file(struct mli_Archive *self, FILE *f)
+int mli_Archive_from_io(struct mli_Archive *self, struct mli_IO *f)
 {
         struct mli_Tar tar = mli_Tar_init();
         struct mli_TarHeader tarh = mli_TarHeader_init();
@@ -110,13 +110,14 @@ chk_error:
         return 0;
 }
 
-int mli_Archive_from_path(struct mli_Archive *self, const char *path)
+int mli_Archive__from_path_cstr(struct mli_Archive *self, const char *path)
 {
-        FILE *f = fopen(path, "rb");
-        chk_msgf(f != NULL, ("Can't open path '%s'.", path))
-                chk_msg(mli_Archive_from_file(self, f),
-                        "Can't fread Archive from file.");
-        fclose(f);
+        struct mli_IO f = mli_IO_init();
+        chk_msg(mli_IO__open_file_cstr(&f, path, "r"),
+                "Cant open archive from path.");
+        chk_msg(mli_Archive_from_io(self, &f),
+                "Can't fread Archive from file.");
+        mli_IO_close(&f);
         return 1;
 chk_error:
         return 0;

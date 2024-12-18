@@ -8,7 +8,7 @@ CASE("mli_Archive, read tar")
         struct mli_Object triangle = mli_Object_init();
         struct mli_String tmp = mli_String_init();
 
-        CHECK(mli_Archive_from_path(
+        CHECK(mli_Archive__from_path_cstr(
                 &arc,
                 "data/"
                 "mli/"

@@ -51,7 +51,7 @@ CASE("ray parallel to axis")
         sups[5] = mli_Vec_init(0, 10, 0);
         dirs[5] = mli_Vec_init(N, -1, N);
 
-        CHECK(mli_Scenery_malloc_from_path_tar(
+        CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
                 "mli/"

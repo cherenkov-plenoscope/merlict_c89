@@ -34,7 +34,7 @@ CASE("refraction_in_prism")
 
         mli_math_linspace(0.375, 0.44, screen_bin_edges, 33);
 
-        CHECK(mli_Scenery_malloc_from_path_tar(
+        CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
                 "mli/"

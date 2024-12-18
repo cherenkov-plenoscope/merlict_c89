@@ -11,7 +11,8 @@ void mli_tracer_inner_object_traversal(
         const uint32_t object_octree_leaf_idx)
 {
         /* traverse faces in an object-wavefront */
-        struct mli_trace_QueryInnerWork *inner = (struct mli_trace_QueryInnerWork *)_inner;
+        struct mli_trace_QueryInnerWork *inner =
+                (struct mli_trace_QueryInnerWork *)_inner;
 
         uint32_t f;
         const uint32_t num_faces_in_object_leaf = mli_OcTree_leaf_num_objects(
@@ -81,7 +82,8 @@ void mli_tracer_outer_scenery_traversal(
         const uint32_t scenery_octree_leaf_idx)
 {
         /* traverse object-wavefronts in a scenery */
-        struct mli_tracer_QueryOuterWork *outer = (struct mli_tracer_QueryOuterWork *)_outer;
+        struct mli_tracer_QueryOuterWork *outer =
+                (struct mli_tracer_QueryOuterWork *)_outer;
 
         uint32_t ro;
         const uint32_t num_robjects_in_scenery_leaf =

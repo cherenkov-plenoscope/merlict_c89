@@ -18,7 +18,7 @@ CASE("simple propagation")
         photon.wavelength = 600e-9;
         photon.id = 0;
 
-        CHECK(mli_Scenery_malloc_from_path_tar(
+        CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
                 "mli/"
@@ -51,7 +51,8 @@ CASE("simple propagation")
 
         CHECK(scenery.materials.num_media == 2);
 
-        side_coming_from = mli_trace_get_side_coming_from(&scenery, &intersection);
+        side_coming_from =
+                mli_trace_get_side_coming_from(&scenery, &intersection);
         side_going_to = mli_trace_get_side_going_to(&scenery, &intersection);
 
         CHECK(side_going_to.medium == MED_GLASS);

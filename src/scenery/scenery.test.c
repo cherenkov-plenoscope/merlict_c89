@@ -8,7 +8,7 @@ CASE("mli_Scenery, malloc from archive")
         uint64_t srf_grass, srf_wood, srf_leafs, srf_blue_glass;
         uint64_t med_vacuum;
 
-        CHECK(mli_Scenery_malloc_from_path_tar(
+        CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
                 "mli/"
@@ -92,7 +92,7 @@ CASE("mli_Scenery, read, write")
         char acce_path[] = "data/mli/tests/resources/accelerator.bin.tmp";
         char gmap_path[] = "data/mli/tests/resources/geomap.bin.tmp";
 
-        CHECK(mli_Scenery_malloc_from_path_tar(
+        CHECK(mli_Scenery__from_path_cstr(
                 &orig,
                 "data/"
                 "mli/"

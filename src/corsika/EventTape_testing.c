@@ -1,6 +1,7 @@
 /* Copyright 2020 Sebastian A. Mueller */
 #include "EventTape_testing.h"
 #include "../chk/chk.h"
+#include "../io/io.h"
 
 void mliEventTape_testing_set_random_corsika_header(
         float *head,
@@ -111,8 +112,8 @@ int mliEventTape_testing_write_and_read(
         float buncho[8] = {0.0};
         float bunchi[8] = {0.0};
 
-        FILE *ostream = NULL;
-        FILE *istream = NULL;
+        struct mli_IO ostream = mli_IO_init();
+        struct mli_IO istream = mli_IO_init();
         struct mliEventTapeWriter taro = mliEventTapeWriter_init();
         struct mliEventTapeReader tari = mliEventTapeReader_init();
 
@@ -121,8 +122,8 @@ int mliEventTape_testing_write_and_read(
 
         /* write RUN */
         /* ========= */
-        ostream = fopen(path, "wb");
-        chk_msg(mliEventTapeWriter_begin(&taro, ostream, buffer_size),
+        chk(mli_IO__open_file_cstr(&ostream, path, "w"));
+        chk_msg(mliEventTapeWriter_begin(&taro, &ostream, buffer_size),
                 "Can't begin writer.");
         /* set RUNH */
         mliEventTape_testing_set_random_RUNH(corho, 18.0, &prng);
@@ -144,14 +145,14 @@ int mliEventTape_testing_write_and_read(
         }
 
         chk_msg(mliEventTapeWriter_finalize(&taro), "Can't finalize writer.");
-        fclose(ostream);
+        mli_IO_close(&ostream);
 
         /* read RUN */
         /* ======== */
         mli_Prng_reinit(&prng, random_seed);
 
-        istream = fopen(path, "rb");
-        chk_msg(mliEventTapeReader_begin(&tari, istream),
+        chk(mli_IO__open_file_cstr(&istream, path, "r"));
+        chk_msg(mliEventTapeReader_begin(&tari, &istream),
                 "Can't begin reader.");
 
         /* check RUNH */
@@ -195,7 +196,7 @@ int mliEventTape_testing_write_and_read(
                 "Did not expect another EVTH.");
 
         chk_msg(mliEventTapeReader_finalize(&tari), "Can't finalize reader.");
-        fclose(istream);
+        mli_IO_close(&istream);
         return 1;
 chk_error:
         return 0;

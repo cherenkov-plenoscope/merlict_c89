@@ -50,6 +50,7 @@ int64_t mli_IO_seek(
         const int64_t offset,
         const int64_t origin);
 int mli_IO_eof(const struct mli_IO *self);
+int mli_IO_flush(struct mli_IO *self);
 
 #define chk_IO_write(PTR, SIZE_OF_TYPE, NUM, IO)                               \
         {                                                                      \

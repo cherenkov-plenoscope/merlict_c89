@@ -61,6 +61,8 @@ chk_error:
 
 int main(int argc, char *argv[])
 {
+        struct mli_IO io_in = mli_IO_init();
+        struct mli_IO io_out = mli_IO_init();
         struct mli_Tar arc = mli_Tar_init();
         struct mli_Tar out = mli_Tar_init();
         struct mli_TarHeader arch = mli_TarHeader_init();
@@ -74,8 +76,11 @@ int main(int argc, char *argv[])
         struct mli_Ray ray;
         int i;
 
-        chk(mli_Tar_read_begin(&arc, stdin));
-        chk(mli_Tar_write_begin(&out, stdout));
+        chk(mli_IO_adopt_file(&io_in, stdin));
+        chk(mli_IO_adopt_file(&io_out, stdout));
+
+        chk(mli_Tar_read_begin(&arc, &io_in));
+        chk(mli_Tar_write_begin(&out, &io_out));
         chk(mli_corsika_Histogram2d_malloc(&hist, HIST_TARGET_SIZE));
 
         while (mli_Tar_read_header(&arc, &arch)) {
@@ -167,7 +172,7 @@ int main(int argc, char *argv[])
                                         (const void *)&(bins.array[0]),
                                         outh.size),
                                 "Failed to write histogram to tar in stdout.");
-                        fflush(out.stream);
+                        mli_IO_flush(&io_out);
                 } else {
                         chk_bad("Expected one of "
                                 "['init.txt', 'cer.x8.float32', "
@@ -178,7 +183,7 @@ int main(int argc, char *argv[])
         mli_corsika_Histogram2d_free(&hist);
         mli_Tar_read_finalize(&arc);
         mli_Tar_write_finalize(&out);
-        fflush(out.stream);
+        mli_IO_flush(&io_out);
 
         return EXIT_SUCCESS;
 chk_error:

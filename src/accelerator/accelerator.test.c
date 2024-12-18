@@ -17,7 +17,7 @@ CASE("mli_Accelerator, init")
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         struct mli_Shader tracer = mli_Shader_init();
 
-        chk_dbg CHECK(mli_Scenery_malloc_from_path_tar(
+        chk_dbg CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
                 "mli/"

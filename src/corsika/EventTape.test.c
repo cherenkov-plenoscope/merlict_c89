@@ -8,8 +8,8 @@ CASE("EventTape: run_normal")
         const uint64_t NUM_BUNCHES[] = {23, 65, 0, 9, 7, 0};
         const float EVENT_NUMBERS[] = {1, 2, 3, 4, 5, 6};
         uint64_t e, b;
-        FILE *ostream = NULL;
-        FILE *istream = NULL;
+        struct mli_IO ostream = mli_IO_init();
+        struct mli_IO istream = mli_IO_init();
         struct mliEventTapeWriter taro = mliEventTapeWriter_init();
         struct mliEventTapeReader tari = mliEventTapeReader_init();
         float corho[273] = {0.0};
@@ -22,8 +22,8 @@ CASE("EventTape: run_normal")
 
         /* write */
         /* ----- */
-        ostream = fopen(path, "wb");
-        CHECK(mliEventTapeWriter_begin(&taro, ostream, BUFFER_SIZE));
+        CHECK(mli_IO__open_file_cstr(&ostream, path, "w"));
+        CHECK(mliEventTapeWriter_begin(&taro, &ostream, BUFFER_SIZE));
         mliEventTape_testing_set_random_RUNH(corho, 42.0, &prng);
         CHECK(mliEventTapeWriter_write_runh(&taro, corho));
 
@@ -38,14 +38,14 @@ CASE("EventTape: run_normal")
                 }
         }
         CHECK(mliEventTapeWriter_finalize(&taro));
-        fclose(ostream);
+        mli_IO_close(&ostream);
 
         /* read back */
         /* --------- */
         mli_Prng_reinit(&prng, random_seed);
 
-        istream = fopen(path, "rb");
-        CHECK(mliEventTapeReader_begin(&tari, istream));
+        CHECK(mli_IO__open_file_cstr(&istream, path, "r"));
+        CHECK(mliEventTapeReader_begin(&tari, &istream));
 
         /* work on RUNH */
         CHECK(mliEventTapeReader_read_runh(&tari, corhi));
@@ -75,7 +75,7 @@ CASE("EventTape: run_normal")
         }
         CHECK(!mliEventTapeReader_read_evth(&tari, corhi));
         CHECK(mliEventTapeReader_finalize(&tari));
-        fclose(istream);
+        mli_IO_close(&istream);
 }
 
 CASE("EventTape: run_one_event_no_bunches")

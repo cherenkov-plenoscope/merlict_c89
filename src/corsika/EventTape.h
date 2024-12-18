@@ -23,7 +23,7 @@ struct mliEventTapeWriter mliEventTapeWriter_init(void);
 
 int mliEventTapeWriter_begin(
         struct mliEventTapeWriter *tio,
-        FILE *stream,
+        struct mli_IO *stream,
         const uint64_t num_bunches_buffer);
 int mliEventTapeWriter_finalize(struct mliEventTapeWriter *tio);
 
@@ -62,7 +62,9 @@ struct mliEventTapeReader {
 };
 struct mliEventTapeReader mliEventTapeReader_init(void);
 
-int mliEventTapeReader_begin(struct mliEventTapeReader *tio, FILE *stream);
+int mliEventTapeReader_begin(
+        struct mliEventTapeReader *tio,
+        struct mli_IO *stream);
 int mliEventTapeReader_finalize(struct mliEventTapeReader *tio);
 
 int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh);

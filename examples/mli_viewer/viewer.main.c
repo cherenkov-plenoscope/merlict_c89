@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
         if (args.size >= 2) {
                 if (mli_String_ends_with_cstr(&args.array[1], ".tar")) {
-                        chk_msg(mli_Scenery_malloc_from_path_tar(
+                        chk_msg(mli_Scenery__from_path_cstr(
                                         &scenery,
                                         args.array[1].array),
                                 "Can not read scenery from '.tar'.");

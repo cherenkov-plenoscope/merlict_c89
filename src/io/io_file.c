@@ -86,6 +86,8 @@ int64_t mli_IoFile_seek(
 
 int mli_IoFile_eof(const struct mli_IoFile *self) { return feof(self->cfile); }
 
+int mli_IoFile_flush(struct mli_IoFile *self) { return fflush(self->cfile); }
+
 int mli_IoFile__cfile_is_stdin_or_stdout_stderr(const struct mli_IoFile *self)
 {
         if (self->cfile == stdin) {

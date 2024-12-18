@@ -25,7 +25,7 @@ CASE("focussing_a_parallel_beam")
         mli_math_linspace(-2e-3, 2e-3, screen_bin_edges, NUM_PIXEL + 1);
         wavelength_range = mli_prng_UniformRange_set(380e-9, 700e-9);
 
-        CHECK(mli_Scenery_malloc_from_path_tar(
+        CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
                 "mli/"

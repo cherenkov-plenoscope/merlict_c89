@@ -38,7 +38,7 @@ chk_error:
 
 int mliEventTapeWriter_begin(
         struct mliEventTapeWriter *tio,
-        FILE *stream,
+        struct mli_IO *stream,
         const uint64_t num_bunches_buffer)
 {
         chk_msg(mliEventTapeWriter_finalize(tio),
@@ -68,7 +68,7 @@ int mliEventTapeWriter_write_corsika_header(
                         MLI_CORSIKA_HEADER_SIZE_BYTES),
                 "Can't write data of corsika-header to tar.");
         if (tio->flush_tar_stream_after_each_file) {
-                fflush(tio->tar.stream);
+                mli_IO_flush(tio->tar.stream);
         }
         return 1;
 chk_error:
@@ -142,7 +142,7 @@ int mliEventTapeWriter_flush_cherenkov_bunch_block(
                         tio->buffer.size * sizeof(float)),
                 "Can't write cherenkov-bunch-block to tar-file.");
         if (tio->flush_tar_stream_after_each_file) {
-                fflush(tio->tar.stream);
+                mli_IO_flush(tio->tar.stream);
         }
         tio->buffer.size = 0;
         tio->cherenkov_bunch_block_number += 1;
@@ -198,7 +198,9 @@ chk_error:
         return 0;
 }
 
-int mliEventTapeReader_begin(struct mliEventTapeReader *tio, FILE *stream)
+int mliEventTapeReader_begin(
+        struct mliEventTapeReader *tio,
+        struct mli_IO *stream)
 {
         chk_msg(mliEventTapeReader_finalize(tio),
                 "Can't close and free previous tar-io-reader.");

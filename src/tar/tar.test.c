@@ -2,15 +2,16 @@
 
 CASE("Write and read tape-archive")
 {
-        FILE *f = NULL;
+        struct mli_IO f = mli_IO_init();
         struct mli_Tar tar = mli_Tar_init();
         struct mli_TarHeader tarh = mli_TarHeader_init();
+        char path[] = "data/mli/tests/resources/tar/123.tar.tmp";
         char payload[1024] = {'\0'};
 
         sprintf(payload, "%s", "Hello world!");
 
-        f = fopen("data/mli/tests/resources/tar/123.tar.tmp", "wb");
-        CHECK(mli_Tar_write_begin(&tar, f));
+        CHECK(mli_IO__open_file_cstr(&f, path, "w"));
+        CHECK(mli_Tar_write_begin(&tar, &f));
         CHECK(mli_TarHeader_set_directory(&tarh, "resources"));
         CHECK(mli_Tar_write_header(&tar, &tarh));
         CHECK(mli_TarHeader_set_normal_file(
@@ -18,13 +19,13 @@ CASE("Write and read tape-archive")
         CHECK(mli_Tar_write_header(&tar, &tarh));
         CHECK(mli_Tar_write_data(&tar, payload, strlen(payload)));
         CHECK(mli_Tar_write_finalize(&tar));
-        fclose(f);
+        mli_IO_close(&f);
 
         memset(payload, '\0', sizeof(payload));
 
-        f = fopen("data/mli/tests/resources/tar/123.tar.tmp", "rb");
+        CHECK(mli_IO__open_file_cstr(&f, path, "r"));
         tar = mli_Tar_init();
-        CHECK(mli_Tar_read_begin(&tar, f));
+        CHECK(mli_Tar_read_begin(&tar, &f));
         CHECK(mli_Tar_read_header(&tar, &tarh));
         CHECK(0 == strcmp("resources", tarh.name));
         CHECK(tarh.type == MLI_TAR_DIRECTORY);
@@ -33,7 +34,7 @@ CASE("Write and read tape-archive")
         CHECK(mli_Tar_read_data(&tar, payload, tarh.size));
         CHECK(0 == strcmp("Hello world!", payload));
         CHECK(mli_Tar_read_finalize(&tar));
-        fclose(f);
+        mli_IO_close(&f);
 }
 
 CASE("ustar2001_size_base_256_init")

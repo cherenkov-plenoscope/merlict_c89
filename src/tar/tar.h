@@ -30,6 +30,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include "../io/io.h"
 
 #define MLI_TAR_VERSION_MAYOR 1
 #define MLI_TAR_VERSION_MINOR 0
@@ -107,19 +108,19 @@ int mli_TarHeader_from_raw(
 /* tar */
 /* === */
 struct mli_Tar {
-        FILE *stream;
+        struct mli_IO *stream;
         uint64_t pos;
         uint64_t remaining_data;
 };
 
 struct mli_Tar mli_Tar_init(void);
 
-int mli_Tar_read_begin(struct mli_Tar *tar, FILE *file);
+int mli_Tar_read_begin(struct mli_Tar *tar, struct mli_IO *stream);
 int mli_Tar_read_header(struct mli_Tar *tar, struct mli_TarHeader *h);
 int mli_Tar_read_data(struct mli_Tar *tar, void *ptr, uint64_t size);
 int mli_Tar_read_finalize(struct mli_Tar *tar);
 
-int mli_Tar_write_begin(struct mli_Tar *tar, FILE *file);
+int mli_Tar_write_begin(struct mli_Tar *tar, struct mli_IO *stream);
 int mli_Tar_write_header(struct mli_Tar *tar, const struct mli_TarHeader *h);
 int mli_Tar_write_data(struct mli_Tar *tar, const void *data, uint64_t size);
 int mli_Tar_write_finalize(struct mli_Tar *tar);
