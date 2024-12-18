@@ -1,6 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "image_chunk.h"
 #include <assert.h>
+#include <stdlib.h>
+#include "../chk/chk.h"
 
 struct mli_image_Chunk mli_image_Chunk_init(void)
 {

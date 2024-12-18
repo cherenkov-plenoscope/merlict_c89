@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "image_Pixel.h"
 
-MLI_VECTOR_IMPLEMENTATION(mli_image_PixelVector, struct mli_image_Pixel)
-
 struct mli_image_Pixel mli_image_Pixel_set_col_row(
         const uint16_t col,
         const uint16_t row)

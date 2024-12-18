@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "../color/color.h"
 #include "image_Pixel.h"
+#include "image_PixelVector.h"
 #include "image_chunk.h"
 #include "image_PixelWalk.h"
 

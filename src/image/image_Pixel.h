@@ -3,7 +3,7 @@
 #define MLI_IMAGE_PIXEL_H_
 
 #include <stdint.h>
-#include "../vector/vector.h"
+#include <stdio.h>
 
 struct mli_image_Pixel {
         uint16_t col;
@@ -13,8 +13,6 @@ struct mli_image_Pixel {
 struct mli_image_Pixel mli_image_Pixel_set_col_row(
         const uint16_t col,
         const uint16_t row);
-
-MLI_VECTOR_DEFINITON(mli_image_PixelVector, struct mli_image_Pixel)
 
 void mli_image_Pixel_fprint(FILE *f, const struct mli_image_Pixel *self);
 
