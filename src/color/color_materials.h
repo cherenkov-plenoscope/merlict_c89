@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLICOLORMATERIALS_H_
-#define MLICOLORMATERIALS_H_
+#ifndef MLI_COLOR_MATERIALS_H_
+#define MLI_COLOR_MATERIALS_H_
 
 #include <stdint.h>
 #include "../materials/materials.h"

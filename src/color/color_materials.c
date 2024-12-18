@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliColorMaterials.h"
+#include "color_materials.h"
 #include <stdlib.h>
 #include "../chk/chk.h"
 

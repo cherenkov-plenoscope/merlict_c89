@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../ray/ray.h"
 #include "../color/color.h"
-#include "mliColorMaterials.h"
+#include "../color/color_materials.h"
 #include "../atmosphere/atmosphere.h"
 
 struct mli_Scenery;
