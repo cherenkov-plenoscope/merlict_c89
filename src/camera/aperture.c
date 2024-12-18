@@ -1,15 +1,15 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliApertureCamera.h"
+#include "aperture.h"
 #include <math.h>
 #include <assert.h>
 #include "../vec/vec_random.h"
 #include "../math/math.h"
 #include "../chk/chk.h"
 
-struct mliApertureCamera mliApertureCamera_init(void)
+struct mli_camera_Aperture mli_camera_Aperture_init(void)
 {
         const double mm = 1e-3;
-        struct mliApertureCamera apcam;
+        struct mli_camera_Aperture apcam;
         apcam.focal_length = 50.0 * mm;
         apcam.aperture_radius = apcam.focal_length / 2.0;
         apcam.image_sensor_distance = apcam.focal_length;
@@ -18,7 +18,7 @@ struct mliApertureCamera mliApertureCamera_init(void)
         return apcam;
 }
 
-struct mli_Vec mliApertureCamera_pixel_center_on_image_sensor_plane(
+struct mli_Vec mli_camera_Aperture_pixel_center_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,
         const double image_sensor_distance,
@@ -42,7 +42,7 @@ struct mli_Vec mliApertureCamera_pixel_center_on_image_sensor_plane(
         return pixel_center;
 }
 
-struct mli_Vec mliApertureCamera_pixel_support_on_image_sensor_plane(
+struct mli_Vec mli_camera_Aperture_pixel_support_on_image_sensor_plane(
         const double image_sensor_width_x,
         const double image_sensor_width_y,
         const double image_sensor_distance,
@@ -55,7 +55,7 @@ struct mli_Vec mliApertureCamera_pixel_support_on_image_sensor_plane(
         double pixel_bin_width_x = image_sensor_width_x / (double)num_pixel_x;
         double pixel_bin_width_y = image_sensor_width_y / (double)num_pixel_y;
         struct mli_Vec support =
-                mliApertureCamera_pixel_center_on_image_sensor_plane(
+                mli_camera_Aperture_pixel_center_on_image_sensor_plane(
                         image_sensor_width_x,
                         image_sensor_width_y,
                         image_sensor_distance,
@@ -74,7 +74,7 @@ struct mli_Vec mliApertureCamera_pixel_support_on_image_sensor_plane(
         return support;
 }
 
-struct mli_Vec mliApertureCamera_get_object_point(
+struct mli_Vec mli_camera_Aperture_get_object_point(
         const double focal_length,
         const struct mli_Vec pixel_support)
 {
@@ -88,7 +88,7 @@ struct mli_Vec mliApertureCamera_get_object_point(
                 object_distance);
 }
 
-struct mli_Vec mliApertureCamera_ray_support_on_aperture(
+struct mli_Vec mli_camera_Aperture_ray_support_on_aperture(
         const double aperture_radius,
         struct mli_Prng *prng)
 {
@@ -116,7 +116,7 @@ double mli_thin_lens_get_image_given_focal_and_object(
         return 1.0 / (1.0 / focal_length - 1.0 / object_distance);
 }
 
-double mliApertureCamera_focal_length_given_field_of_view_and_sensor_width(
+double mli_camera_Aperture_focal_length_given_field_of_view_and_sensor_width(
         const double field_of_view,
         const double image_sensor_width)
 {
@@ -125,7 +125,7 @@ double mliApertureCamera_focal_length_given_field_of_view_and_sensor_width(
         return image_sensor_radius / tan(fov_opening_angle);
 }
 
-struct mli_Ray mliApertureCamera_get_ray_for_pixel(
+struct mli_Ray mli_camera_Aperture_get_ray_for_pixel(
         const double focal_length,
         const double aperture_radius,
         const double image_sensor_distance,
@@ -139,11 +139,11 @@ struct mli_Ray mliApertureCamera_get_ray_for_pixel(
 {
         struct mli_Vec direction;
         struct mli_Vec aperture_support =
-                mliApertureCamera_ray_support_on_aperture(
+                mli_camera_Aperture_ray_support_on_aperture(
                         aperture_radius, prng);
 
         struct mli_Vec image_sensor_support =
-                (mliApertureCamera_pixel_support_on_image_sensor_plane(
+                (mli_camera_Aperture_pixel_support_on_image_sensor_plane(
                         image_sensor_width_x,
                         image_sensor_width_y,
                         image_sensor_distance,
@@ -158,7 +158,7 @@ struct mli_Ray mliApertureCamera_get_ray_for_pixel(
                 direction = mli_Vec_multiply(image_sensor_support, -1.0);
         } else {
                 struct mli_Vec object_point =
-                        mliApertureCamera_get_object_point(
+                        mli_camera_Aperture_get_object_point(
                                 focal_length, image_sensor_support);
 
                 direction = mli_Vec_substract(object_point, aperture_support);
@@ -167,8 +167,8 @@ struct mli_Ray mliApertureCamera_get_ray_for_pixel(
         return mli_Ray_set(aperture_support, direction);
 }
 
-void mliApertureCamera_aquire_pixels(
-        const struct mliApertureCamera camera,
+void mli_camera_Aperture_aquire_pixels(
+        const struct mli_camera_Aperture camera,
         const struct mli_Image *image,
         const struct mli_HomTraComp camera2root_comp,
         const struct mliTracer *tracer,
@@ -183,7 +183,7 @@ void mliApertureCamera_aquire_pixels(
         colors_to_do->size = 0;
         for (i = 0; i < pixels_to_do->size; i++) {
                 struct mli_Ray ray_wrt_camera =
-                        mliApertureCamera_get_ray_for_pixel(
+                        mli_camera_Aperture_get_ray_for_pixel(
                                 camera.focal_length,
                                 camera.aperture_radius,
                                 camera.image_sensor_distance,
@@ -207,7 +207,7 @@ void mliApertureCamera_aquire_pixels(
         return;
 }
 
-void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
+void mli_camera_Aperture_assign_pixel_colors_to_sum_and_exposure_image(
         const struct mli_image_PixelVector *pixels,
         const struct mli_ColorVector *colors,
         struct mli_Image *sum_image,
@@ -231,8 +231,8 @@ void mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
         }
 }
 
-int mliApertureCamera_render_image(
-        const struct mliApertureCamera camera,
+int mli_camera_Aperture_render_image(
+        const struct mli_camera_Aperture camera,
         const struct mli_HomTraComp camera2root_comp,
         const struct mliTracer *tracer,
         struct mli_Image *image,
@@ -286,7 +286,7 @@ int mliApertureCamera_render_image(
         =============
         */
         mli_image_PixelVector_push_back_all_from_image(&pixels_to_do, image);
-        mliApertureCamera_aquire_pixels(
+        mli_camera_Aperture_aquire_pixels(
                 camera,
                 image,
                 camera2root_comp,
@@ -294,7 +294,7 @@ int mliApertureCamera_render_image(
                 &pixels_to_do,
                 &colors_to_do,
                 prng);
-        mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
+        mli_camera_Aperture_assign_pixel_colors_to_sum_and_exposure_image(
                 &pixels_to_do, &colors_to_do, &sum_image, &exposure_image);
         mli_Image_divide_pixelwise(&sum_image, &exposure_image, image);
         chk(mli_Image_sobel(image, &sobel_image));
@@ -315,7 +315,7 @@ int mliApertureCamera_render_image(
                         (uint32_t)MAX_ITERATIONS,
                         pixels_to_do.size / 1000,
                         pixels_to_do.size % 1000);
-                mliApertureCamera_aquire_pixels(
+                mli_camera_Aperture_aquire_pixels(
                         camera,
                         image,
                         camera2root_comp,
@@ -323,7 +323,7 @@ int mliApertureCamera_render_image(
                         &pixels_to_do,
                         &colors_to_do,
                         prng);
-                mliApertureCamera_assign_pixel_colors_to_sum_and_exposure_image(
+                mli_camera_Aperture_assign_pixel_colors_to_sum_and_exposure_image(
                         &pixels_to_do,
                         &colors_to_do,
                         &sum_image,

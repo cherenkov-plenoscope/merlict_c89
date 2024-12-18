@@ -10,8 +10,8 @@
 #include "../image/image.h"
 #include "../image/image_print.h"
 #include "../image/image_ppm.h"
-#include "../mli/mliPinHoleCamera.h"
-#include "../mli/mliApertureCamera.h"
+#include "../camera/pinhole.h"
+#include "../camera/aperture.h"
 #include "../mli/mli_ray_scenery_query.h"
 #include "../version/version.h"
 #include "toggle_stdin.h"
@@ -140,7 +140,7 @@ int mli_viewer_export_image(
 {
         struct mli_Image full = mli_Image_init();
         struct mli_HomTraComp camera2root_comp;
-        struct mliApertureCamera apcam = mliApertureCamera_init();
+        struct mli_camera_Aperture apcam = mli_camera_Aperture_init();
 
         const double image_ratio =
                 ((double)config.export_num_cols /
@@ -149,7 +149,7 @@ int mli_viewer_export_image(
                 &full, config.export_num_cols, config.export_num_rows));
         camera2root_comp = mli_View_to_HomTraComp(view);
         apcam.focal_length =
-                mliApertureCamera_focal_length_given_field_of_view_and_sensor_width(
+                mli_camera_Aperture_focal_length_given_field_of_view_and_sensor_width(
                         view.field_of_view,
                         config.aperture_camera_image_sensor_width);
         apcam.aperture_radius = 0.5 * (apcam.focal_length /
@@ -159,7 +159,7 @@ int mli_viewer_export_image(
                         apcam.focal_length, object_distance);
         apcam.image_sensor_width_x = config.aperture_camera_image_sensor_width;
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
-        mliApertureCamera_render_image(
+        mli_camera_Aperture_render_image(
                 apcam, camera2root_comp, tracer, &full, prng);
         chk_msg(mli_viewer_image_to_path(&full, path), "Failed to write ppm.");
         mli_Image_free(&full);
@@ -394,7 +394,7 @@ int mli_viewer_run_interactive_viewer(
         show_image:
                 if (update_image) {
                         if (super_resolution) {
-                                mliPinHoleCamera_render_image_with_view(
+                                mli_camera_PinHole_render_image_with_view(
                                         view,
                                         &tracer,
                                         &img2,
@@ -402,7 +402,7 @@ int mli_viewer_run_interactive_viewer(
                                         &prng);
                                 mli_Image_scale_down_twice(&img2, &img);
                         } else {
-                                mliPinHoleCamera_render_image_with_view(
+                                mli_camera_PinHole_render_image_with_view(
                                         view,
                                         &tracer,
                                         &img,
@@ -427,8 +427,8 @@ int mli_viewer_run_interactive_viewer(
                                 num_symbols,
                                 print_mode);
                         {
-                                struct mliPinHoleCamera pin_hole_camera =
-                                        mliPinHoleCamera_init(
+                                struct mli_camera_PinHole pin_hole_camera =
+                                        mli_camera_PinHole_init(
                                                 view.field_of_view,
                                                 &img,
                                                 row_over_column_pixel_ratio);
@@ -442,7 +442,7 @@ int mli_viewer_run_interactive_viewer(
                                 struct mli_Ray probing_ray_wrt_root;
 
                                 probing_ray_wrt_camera =
-                                        mliPinHoleCamera_ray_at_row_col(
+                                        mli_camera_PinHole_ray_at_row_col(
                                                 &pin_hole_camera,
                                                 &img,
                                                 cursor.row,
