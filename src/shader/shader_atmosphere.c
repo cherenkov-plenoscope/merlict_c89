@@ -6,8 +6,8 @@
 #include "../math/math.h"
 #include "../intersection/intersection.h"
 #include "../intersection/intersection_surface_normal.h"
-#include "../trace/mli_ray_scenery_query.h"
-#include "../trace/mli_intersection_and_scenery.h"
+#include "../trace/ray_scenery_query.h"
+#include "../trace/intersection_and_scenery.h"
 
 struct mli_Color mli_trace_color_tone_of_sun(
         const struct mli_shader_Config *config,

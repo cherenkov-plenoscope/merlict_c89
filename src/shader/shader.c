@@ -3,11 +3,11 @@
 #include <math.h>
 #include <stdint.h>
 #include "shader_atmosphere.h"
-#include "../trace/mli_intersection_and_scenery.h"
-#include "../trace/mli_ray_octree_traversal.h"
+#include "../trace/intersection_and_scenery.h"
+#include "../trace/ray_octree_traversal.h"
 #include "../vec/vec_random.h"
 #include "../intersection/intersection.h"
-#include "../trace/mli_ray_scenery_query.h"
+#include "../trace/ray_scenery_query.h"
 #include "../chk/chk.h"
 
 struct mli_Shader mli_Shader_init(void)

@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_ray_scenery_query.h"
+#include "ray_scenery_query.h"
 #include <float.h>
-#include "mli_from_outside_to_inside.h"
+#include "from_outside_to_inside.h"
 #include "../triangle/triangle_intersection.h"
 #include "../object/object_face.h"
 

@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "photon_propagation.h"
-#include "../trace/mli_intersection_and_scenery.h"
+#include "../trace/intersection_and_scenery.h"
 #include "../lambertian/lambertian.h"
-#include "../trace/mli_ray_scenery_query.h"
+#include "../trace/ray_scenery_query.h"
 #include "../chk/chk.h"
 #include <math.h>
 

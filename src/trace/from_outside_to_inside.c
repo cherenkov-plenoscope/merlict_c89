@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_from_outside_to_inside.h"
+#include "from_outside_to_inside.h"
 
 int mli_ray_runs_from_outside_to_inside(
         const struct mli_Vec ray_direction_local,

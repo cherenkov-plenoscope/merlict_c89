@@ -3,7 +3,7 @@
 #define MLI_RAY_SCENERY_QUERY_H_
 
 #include <stdint.h>
-#include "mli_ray_octree_traversal.h"
+#include "ray_octree_traversal.h"
 #include "../ray/ray.h"
 #include "../homtra/homtra.h"
 #include "../object/object.h"

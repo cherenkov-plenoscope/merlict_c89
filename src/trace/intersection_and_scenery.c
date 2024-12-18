@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_intersection_and_scenery.h"
+#include "intersection_and_scenery.h"
 
 uint32_t mli_Scenery_resolve_boundary_layer_idx(
         const struct mli_Scenery *scenery,

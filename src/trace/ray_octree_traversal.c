@@ -1,5 +1,5 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_ray_octree_traversal.h"
+#include "ray_octree_traversal.h"
 #include "../math/math.h"
 #include <float.h>
 
