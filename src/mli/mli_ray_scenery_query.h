@@ -10,8 +10,8 @@
 #include "../octree/octree.h"
 #include "../accelerator/accelerator.h"
 #include "../scenery/scenery.h"
-#include "mliIntersection.h"
-#include "mliIntersectionSurfaceNormal.h"
+#include "../intersection/intersection.h"
+#include "../intersection/intersection_surface_normal.h"
 
 int mli_query_intersection(
         const struct mli_Scenery *scenery,

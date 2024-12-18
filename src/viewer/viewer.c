@@ -6,7 +6,7 @@
 #include <time.h>
 #include "../chk/chk.h"
 #include "../math/math.h"
-#include "../mli/mliIntersectionSurfaceNormal.h"
+#include "../intersection/intersection_surface_normal.h"
 #include "../image/image.h"
 #include "../image/image_print.h"
 #include "../image/image_ppm.h"

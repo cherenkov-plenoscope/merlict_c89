@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include "../vec/vec_random.h"
 #include "../math/math.h"
-#include "mliIntersectionSurfaceNormal.h"
-#include "mliIntersection.h"
+#include "../intersection/intersection.h"
+#include "../intersection/intersection_surface_normal.h"
 #include "mli_ray_scenery_query.h"
 #include "mli_intersection_and_scenery.h"
 

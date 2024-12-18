@@ -74,6 +74,7 @@ module_paths = [
     os.path.join("src", "atmosphere"),
     os.path.join("src", "thin_lens"),
     os.path.join("src", "camera"),
+    os.path.join("src", "intersection"),
     os.path.join("src", "scenery"),
     os.path.join("src", "testing"),
     os.path.join("src", "mli"),

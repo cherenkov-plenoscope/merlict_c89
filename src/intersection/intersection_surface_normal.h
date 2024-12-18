@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIINTERSECTIONSURFACENORMAL_H_
-#define MLIINTERSECTIONSURFACENORMAL_H_
+#ifndef MLI_INTERSECTION_SURFACE_NORMAL_H_
+#define MLI_INTERSECTION_SURFACE_NORMAL_H_
 
 #include <stdint.h>
 #include "../vec/vec.h"

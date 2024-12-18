@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIINTERSECTION_H_
-#define MLIINTERSECTION_H_
+#ifndef MLI_INTERSECTION_H_
+#define MLI_INTERSECTION_H_
 
 #include "../vec/vec.h"
 #include "../geometry/geometry_id.h"

@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include "photon.h"
-#include "../mli/mliIntersectionSurfaceNormal.h"
+#include "../intersection/intersection_surface_normal.h"
 #include "../vec/vec.h"
 #include "../materials/materials.h"
 

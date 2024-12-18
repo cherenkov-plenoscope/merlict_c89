@@ -7,7 +7,7 @@
 #include "../color/color.h"
 #include "../ray/ray.h"
 #include "mliTracer.h"
-#include "mliIntersectionSurfaceNormal.h"
+#include "../intersection/intersection_surface_normal.h"
 
 struct mli_Vec mli_random_direction_in_hemisphere(
         struct mli_Prng *prng,
