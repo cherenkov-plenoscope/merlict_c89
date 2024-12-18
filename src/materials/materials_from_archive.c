@@ -8,7 +8,7 @@
 #include "../cstr/cstr.h"
 #include "../io/io_text.h"
 #include "../path/path.h"
-#include "../mli/mliUserScenery_json.h"
+#include "../materials/materials_from_archive_json.h"
 #include "../archive/archive.h"
 #include "../medium/medium_json.h"
 #include "../frame/frame.h"
@@ -129,7 +129,7 @@ int mli_Materials_from_Archive(
         }
         chk_dbg;
         /* boundary_layers */
-        chk_msg(mli_Materials_assign_boundary_layers_from_json(
+        chk_msg(mli_Materials_from_Archive__assign_boundary_layers_from_json(
                         materials,
                         &names->boundary_layers,
                         &names->surfaces,

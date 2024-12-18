@@ -9,7 +9,6 @@
 #include "../cstr/cstr.h"
 #include "../io/io_text.h"
 #include "../path/path.h"
-#include "../mli/mliUserScenery_json.h"
 #include "../archive/archive.h"
 #include "../object/object_wavefront.h"
 #include "../medium/medium_json.h"

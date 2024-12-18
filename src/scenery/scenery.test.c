@@ -1,16 +1,5 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("mliUserScenery, init")
-{
-        struct mli_Materials resources = mli_Materials_init();
-        CHECK(resources.num_surfaces == 0u);
-        CHECK(resources.surfaces == NULL);
-        CHECK(resources.num_media == 0u);
-        CHECK(resources.media == NULL);
-}
-
-CASE("mli_Materials, estimate capacity from archive") {}
-
 CASE("mli_Scenery, malloc from archive")
 {
         struct mli_Scenery scenery = mli_Scenery_init();
