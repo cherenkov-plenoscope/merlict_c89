@@ -17,7 +17,7 @@
 
 int mli_Materials_from_Archive(
         struct mli_Materials *materials,
-        struct mli_ResourceNameMap *names,
+        struct mli_materials_Names *names,
         const struct mli_Archive *archive)
 {
         uint64_t i = 0u;
@@ -39,9 +39,9 @@ int mli_Materials_from_Archive(
         /* free */
         mli_Materials_free(materials);
         chk_dbg;
-        mli_ResourceNameMap_free(names);
+        mli_materials_Names_free(names);
         chk_dbg;
-        chk(mli_ResourceNameMap_malloc(names));
+        chk(mli_materials_Names_malloc(names));
         chk_dbg;
         /* estimate capacity */
         /* boundary_layers */
@@ -164,7 +164,7 @@ int mli_Materials_from_Archive(
 chk_error:
         mli_Json_free(&boundary_layers_json);
         mli_Materials_free(materials);
-        mli_ResourceNameMap_free(names);
+        mli_materials_Names_free(names);
 
         mli_String_free(&fixname);
         mli_String_free(&extension);

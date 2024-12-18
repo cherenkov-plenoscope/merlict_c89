@@ -3,7 +3,6 @@
 #define MLI_GEOMETRY_FROM_ARCHIVE_H_
 
 #include "../map/map.h"
-#include "../mli/mliResourceNameMap.h"
 
 struct mli_Archive;
 struct mli_Geometry;

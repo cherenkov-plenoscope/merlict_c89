@@ -48,7 +48,7 @@ int mli_Scenery_malloc_from_Archive(
         uint64_t num_objects = 0u;
         uint64_t total_num_boundary_layers = 0u;
 
-        struct mli_ResourceNameMap material_names = mli_ResourceNameMap_init();
+        struct mli_materials_Names material_names = mli_materials_Names_init();
         struct mli_Map object_names = mli_Map_init();
         struct mli_Frame root = mli_Frame_init();
 
@@ -98,7 +98,7 @@ int mli_Scenery_malloc_from_Archive(
                         &root, &self->geometry, &self->geomap),
                 "Can not set robjects.");
 
-        mli_ResourceNameMap_free(&material_names);
+        mli_materials_Names_free(&material_names);
         mli_Map_free(&object_names);
         mli_Frame_free(&root);
 
