@@ -40,7 +40,7 @@ CASE("simple propagation")
 
         CHECK(scenery.materials.default_medium == MED_VACUUM);
 
-        CHECK(mli_trace_query_intersection_with_surface_normal(
+        CHECK(mli_raytracing_query_intersection_with_surface_normal(
                 &scenery, photon.ray, &intersection));
 
         CHECK(mli_Vec_equal_margin(
@@ -52,8 +52,9 @@ CASE("simple propagation")
         CHECK(scenery.materials.num_media == 2);
 
         side_coming_from =
-                mli_trace_get_side_coming_from(&scenery, &intersection);
-        side_going_to = mli_trace_get_side_going_to(&scenery, &intersection);
+                mli_raytracing_get_side_coming_from(&scenery, &intersection);
+        side_going_to =
+                mli_raytracing_get_side_going_to(&scenery, &intersection);
 
         CHECK(side_going_to.medium == MED_GLASS);
         CHECK(scenery.materials.surfaces[side_going_to.surface].material ==

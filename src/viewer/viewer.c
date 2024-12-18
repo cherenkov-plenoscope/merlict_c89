@@ -13,7 +13,7 @@
 #include "../image/image_ppm.h"
 #include "../camera/pinhole.h"
 #include "../camera/aperture.h"
-#include "../trace/ray_scenery_query.h"
+#include "../raytracing/ray_scenery_query.h"
 #include "../version/version.h"
 #include "toggle_stdin.h"
 
@@ -455,7 +455,7 @@ int mli_viewer_run_interactive_viewer(
                                         mli_IntersectionSurfaceNormal_init();
 
                                 has_probing_intersection =
-                                        mli_trace_query_intersection_with_surface_normal(
+                                        mli_raytracing_query_intersection_with_surface_normal(
                                                 scenery,
                                                 probing_ray_wrt_root,
                                                 &probing_intersection);

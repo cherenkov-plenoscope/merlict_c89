@@ -3,11 +3,11 @@
 #include <math.h>
 #include <stdint.h>
 #include "shader_atmosphere.h"
-#include "../trace/intersection_and_scenery.h"
-#include "../trace/ray_octree_traversal.h"
+#include "../raytracing/intersection_and_scenery.h"
+#include "../raytracing/ray_octree_traversal.h"
 #include "../vec/vec_random.h"
 #include "../intersection/intersection.h"
-#include "../trace/ray_scenery_query.h"
+#include "../raytracing/ray_scenery_query.h"
 #include "../chk/chk.h"
 
 struct mli_Shader mli_Shader_init(void)
@@ -50,7 +50,7 @@ double mli_Shader_trace_sun_obstruction(
 
                 struct mli_Intersection isec;
 
-                const int has_intersection = mli_trace_query_intersection(
+                const int has_intersection = mli_raytracing_query_intersection(
                         tracer->scenery, line_of_sight_to_source, &isec);
 
                 if (has_intersection) {
@@ -62,7 +62,7 @@ double mli_Shader_trace_sun_obstruction(
                tracer->config->num_trails_global_light_source;
 }
 
-struct mli_Color mli_trace_to_intersection(
+struct mli_Color mli_raytracing_to_intersection(
         const struct mli_Shader *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
@@ -75,7 +75,8 @@ struct mli_Color mli_trace_to_intersection(
         const double sun_visibility = mli_Shader_trace_sun_visibility(
                 tracer, intersection->position, prng);
 
-        side = mli_trace_get_side_coming_from(tracer->scenery, intersection);
+        side = mli_raytracing_get_side_coming_from(
+                tracer->scenery, intersection);
         color = tracer->scenery_color_materials->surfaces[side.surface]
                         .diffuse_reflection;
 
@@ -99,9 +100,10 @@ struct mli_Color mli_Shader_trace_ray_without_atmosphere(
         struct mli_IntersectionSurfaceNormal intersection =
                 mli_IntersectionSurfaceNormal_init();
 
-        if (mli_trace_query_intersection_with_surface_normal(
+        if (mli_raytracing_query_intersection_with_surface_normal(
                     tracer->scenery, ray, &intersection)) {
-                return mli_trace_to_intersection(tracer, &intersection, prng);
+                return mli_raytracing_to_intersection(
+                        tracer, &intersection, prng);
         } else {
                 return tracer->config->background_color;
         }

@@ -76,7 +76,7 @@ module_paths = [
     os.path.join("src", "camera"),
     os.path.join("src", "intersection"),
     os.path.join("src", "scenery"),
-    os.path.join("src", "trace"),
+    os.path.join("src", "raytracing"),
     os.path.join("src", "shader"),
     os.path.join("src", "testing"),
     os.path.join("src", "mli"),
