@@ -134,8 +134,8 @@ void mli_Materials_info_fprint(FILE *f, const struct mli_Materials *res)
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
                 fprintf(f, "%24s ", res->medium_names[i].array);
-                fprintf(f, "%12d ", res->media[i].absorbtion.num_points);
-                fprintf(f, "%12d ", res->media[i].refraction.num_points);
+                fprintf(f, "%12ld ", res->media[i].absorbtion.num_points);
+                fprintf(f, "%12ld ", res->media[i].refraction.num_points);
                 if (i == res->default_medium) {
                         fprintf(f, "%12s", "True");
                 }
@@ -199,10 +199,10 @@ void mli_Materials_info_fprint(FILE *f, const struct mli_Materials *res)
                         fprintf(f, "%12s ", "UNKNOWN");
                 }
                 fprintf(f,
-                        "%6d ",
+                        "%6ld ",
                         res->surfaces[i].specular_reflection.num_points);
                 fprintf(f,
-                        "%6d ",
+                        "%6ld ",
                         res->surfaces[i].diffuse_reflection.num_points);
                 fprintf(f, "\n");
         }

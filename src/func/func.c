@@ -21,7 +21,7 @@ void mli_Func_free(struct mli_Func *f)
         (*f) = mli_Func_init();
 }
 
-int mli_Func_malloc(struct mli_Func *f, const uint32_t num_points)
+int mli_Func_malloc(struct mli_Func *f, const uint64_t num_points)
 {
         mli_Func_free(f);
         f->num_points = num_points;
@@ -35,7 +35,7 @@ chk_error:
 
 int mli_Func_x_is_strictly_increasing(const struct mli_Func *f)
 {
-        uint32_t i;
+        uint64_t i;
         for (i = 1; i < f->num_points; i++) {
                 if (f->x[i] <= f->x[i - 1]) {
                         return 0;
@@ -47,7 +47,7 @@ int mli_Func_x_is_strictly_increasing(const struct mli_Func *f)
 int mli_Func_evaluate(const struct mli_Func *f, const double xarg, double *out)
 {
         double y1, y0, x1, x0;
-        uint32_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
+        uint64_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
         if (idx == 0) {
                 chk_bad("mli_Func argument below lower bound.");
         } else if (idx == f->num_points) {
@@ -83,7 +83,7 @@ double mli_Func_evaluate_with_default_when_out_of_range(
         const double default_value)
 {
         double y1, y0, x1, x0;
-        uint32_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
+        uint64_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
         if (idx == 0) {
                 /* mli_Func argument below lower bound */
                 return default_value;
@@ -104,7 +104,7 @@ double mli_Func_evaluate_with_default_closest(
         const double xarg)
 {
         double y1, y0, x1, x0;
-        uint32_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
+        uint64_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
         if (idx == 0) {
                 /* mli_Func argument below lower bound */
                 return f->y[0];

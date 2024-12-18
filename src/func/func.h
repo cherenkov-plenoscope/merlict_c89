@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 struct mli_Func {
-        uint32_t num_points;
+        uint64_t num_points;
         double *x;
         double *y;
 };
@@ -30,7 +30,7 @@ double mli_Func_evaluate_with_default_closest(
         const struct mli_Func *f,
         const double xarg);
 int mli_Func_x_is_strictly_increasing(const struct mli_Func *f);
-int mli_Func_malloc(struct mli_Func *f, const uint32_t num_points);
+int mli_Func_malloc(struct mli_Func *f, const uint64_t num_points);
 void mli_Func_free(struct mli_Func *f);
 struct mli_Func mli_Func_init(void);
 int mli_Func_is_valid(const struct mli_Func *func);
