@@ -50,7 +50,7 @@ double mli_Shader_trace_sun_obstruction(
 
                 struct mli_Intersection isec;
 
-                const int has_intersection = mli_query_intersection(
+                const int has_intersection = mli_trace_query_intersection(
                         tracer->scenery, line_of_sight_to_source, &isec);
 
                 if (has_intersection) {
@@ -75,7 +75,7 @@ struct mli_Color mli_trace_to_intersection(
         const double sun_visibility = mli_Shader_trace_sun_visibility(
                 tracer, intersection->position, prng);
 
-        side = mli_get_side_coming_from(tracer->scenery, intersection);
+        side = mli_trace_get_side_coming_from(tracer->scenery, intersection);
         color = tracer->scenery_color_materials->surfaces[side.surface]
                         .diffuse_reflection;
 
@@ -99,7 +99,7 @@ struct mli_Color mli_Shader_trace_ray_without_atmosphere(
         struct mli_IntersectionSurfaceNormal intersection =
                 mli_IntersectionSurfaceNormal_init();
 
-        if (mli_query_intersection_with_surface_normal(
+        if (mli_trace_query_intersection_with_surface_normal(
                     tracer->scenery, ray, &intersection)) {
                 return mli_trace_to_intersection(tracer, &intersection, prng);
         } else {

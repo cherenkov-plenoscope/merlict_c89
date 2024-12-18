@@ -454,7 +454,7 @@ int mli_viewer_run_interactive_viewer(
                                         mli_IntersectionSurfaceNormal_init();
 
                                 has_probing_intersection =
-                                        mli_query_intersection_with_surface_normal(
+                                        mli_trace_query_intersection_with_surface_normal(
                                                 scenery,
                                                 probing_ray_wrt_root,
                                                 &probing_intersection);

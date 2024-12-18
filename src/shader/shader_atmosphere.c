@@ -66,7 +66,7 @@ struct mli_Color mli_trace_color_tone_of_diffuse_sky(
                 obstruction_ray.support = intersection->position;
                 obstruction_ray.direction = rnd_dir;
 
-                has_direct_view_to_sky = !mli_query_intersection(
+                has_direct_view_to_sky = !mli_trace_query_intersection(
                         tracer->scenery, obstruction_ray, &isec);
 
                 if (has_direct_view_to_sky) {
@@ -111,7 +111,7 @@ struct mli_Color mli_trace_to_intersection_atmosphere(
                         tracer, intersection, prng);
         }
 
-        side = mli_get_side_coming_from(tracer->scenery, intersection);
+        side = mli_trace_get_side_coming_from(tracer->scenery, intersection);
         color = tracer->scenery_color_materials->surfaces[side.surface]
                         .diffuse_reflection;
 
@@ -133,7 +133,7 @@ struct mli_Color mli_Shader_trace_ray_with_atmosphere(
         struct mli_IntersectionSurfaceNormal intersection =
                 mli_IntersectionSurfaceNormal_init();
         struct mli_Color out;
-        int has_intersection = mli_query_intersection_with_surface_normal(
+        int has_intersection = mli_trace_query_intersection_with_surface_normal(
                 tracer->scenery, ray, &intersection);
 
         if (has_intersection) {

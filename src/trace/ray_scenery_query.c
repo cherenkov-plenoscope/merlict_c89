@@ -5,13 +5,13 @@
 #include "../triangle/triangle_intersection.h"
 #include "../object/object_face.h"
 
-void mli_inner_object_traversal(
+void mli_tracer_inner_object_traversal(
         void *_inner,
         const struct mli_OcTree *object_octree,
         const uint32_t object_octree_leaf_idx)
 {
         /* traverse faces in an object-wavefront */
-        struct mliQueryInnerWork *inner = (struct mliQueryInnerWork *)_inner;
+        struct mli_trace_QueryInnerWork *inner = (struct mli_trace_QueryInnerWork *)_inner;
 
         uint32_t f;
         const uint32_t num_faces_in_object_leaf = mli_OcTree_leaf_num_objects(
@@ -60,28 +60,28 @@ int mli_query_object_reference(
         struct mli_HomTra robject2root =
                 mli_HomTraComp_from_compact(robject2root_comp);
 
-        struct mliQueryInnerWork inner;
+        struct mli_trace_QueryInnerWork inner;
         inner.has_intersection = 0;
         inner.intersection = isec;
         inner.ray_object = mli_HomTraComp_ray_inverse(&robject2root, ray_root);
         inner.object = object;
 
-        mli_ray_octree_traversal(
+        mli_trace_ray_octree_traversal(
                 object_octree,
                 inner.ray_object,
                 (void *)&inner,
-                mli_inner_object_traversal);
+                mli_tracer_inner_object_traversal);
 
         return inner.has_intersection;
 }
 
-void mli_outer_scenery_traversal(
+void mli_tracer_outer_scenery_traversal(
         void *_outer,
         const struct mli_OcTree *scenery_octree,
         const uint32_t scenery_octree_leaf_idx)
 {
         /* traverse object-wavefronts in a scenery */
-        struct mliQueryOuterWork *outer = (struct mliQueryOuterWork *)_outer;
+        struct mli_tracer_QueryOuterWork *outer = (struct mli_tracer_QueryOuterWork *)_outer;
 
         uint32_t ro;
         const uint32_t num_robjects_in_scenery_leaf =
@@ -115,12 +115,12 @@ void mli_outer_scenery_traversal(
         return;
 }
 
-int mli_query_intersection(
+int mli_trace_query_intersection(
         const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
         struct mli_Intersection *isec)
 {
-        struct mliQueryOuterWork outer;
+        struct mli_tracer_QueryOuterWork outer;
 
         (*isec) = mli_Intersection_init();
 
@@ -129,11 +129,11 @@ int mli_query_intersection(
         outer.accelerator = &scenery->accelerator;
         outer.ray_root = ray_root;
 
-        mli_ray_octree_traversal(
+        mli_trace_ray_octree_traversal(
                 &scenery->accelerator.scenery_octree,
                 ray_root,
                 (void *)&outer,
-                mli_outer_scenery_traversal);
+                mli_tracer_outer_scenery_traversal);
 
         if (isec->distance_of_ray == DBL_MAX) {
                 return 0;
@@ -142,7 +142,7 @@ int mli_query_intersection(
         }
 }
 
-int mli_query_intersection_with_surface_normal(
+int mli_trace_query_intersection_with_surface_normal(
         const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
         struct mli_IntersectionSurfaceNormal *isecsrf)
@@ -150,7 +150,7 @@ int mli_query_intersection_with_surface_normal(
         struct mli_Intersection isec = mli_Intersection_init();
 
         const int has_intersection =
-                mli_query_intersection(scenery, ray_root, &isec);
+                mli_trace_query_intersection(scenery, ray_root, &isec);
 
         if (has_intersection) {
                 uint32_t robject_idx = isec.geometry_id.robj;
@@ -189,7 +189,7 @@ int mli_query_intersection_with_surface_normal(
                         &robject2root, isecsrf->surface_normal_local);
 
                 isecsrf->from_outside_to_inside =
-                        mli_ray_runs_from_outside_to_inside(
+                        mli_trace_ray_runs_from_outside_to_inside(
                                 ray_object.direction,
                                 isecsrf->surface_normal_local);
 

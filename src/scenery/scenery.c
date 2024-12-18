@@ -32,3 +32,17 @@ void mli_Scenery_info_fprint(FILE *f, const struct mli_Scenery *self)
         mli_GeometryToMaterialMap_info_fprint(f, &self->geomap);
         fprintf(f, "\n");
 }
+
+uint32_t mli_Scenery_resolve_boundary_layer_idx(
+        const struct mli_Scenery *scenery,
+        const struct mli_GeometryId geometry_id)
+{
+        const uint32_t robject_idx = geometry_id.robj;
+        const uint32_t object_idx = scenery->geometry.robjects[robject_idx];
+        const uint32_t face_idx = geometry_id.face;
+        const uint32_t obj_mtl_idx = mli_Object_resolve_material_idx(
+                &scenery->geometry.objects[object_idx], face_idx);
+        const uint32_t boundary_layer_idx = mli_GeometryToMaterialMap_get(
+                &scenery->geomap, robject_idx, obj_mtl_idx);
+        return boundary_layer_idx;
+}

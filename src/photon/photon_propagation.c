@@ -15,8 +15,8 @@ struct mli_PhotonInteraction mliPhotonInteraction_from_Intersection(
 
         struct mli_boundarylayer_Side side_coming_from, side_going_to;
 
-        side_coming_from = mli_get_side_coming_from(scenery, isec);
-        side_going_to = mli_get_side_going_to(scenery, isec);
+        side_coming_from = mli_trace_get_side_coming_from(scenery, isec);
+        side_going_to = mli_trace_get_side_going_to(scenery, isec);
 
         phia.type = type;
         phia.position = isec->position;
@@ -38,7 +38,7 @@ int mli_propagate_photon_phong(
         double diffuse;
         double rnd;
         struct mli_boundarylayer_Side side_coming_from =
-                mli_get_side_coming_from(env->scenery, isec);
+                mli_trace_get_side_coming_from(env->scenery, isec);
 
         chk_msg(mli_Func_evaluate(
                         &env->scenery->materials
@@ -129,7 +129,7 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
 {
         double one_over_e_way;
         const struct mli_boundarylayer_Side side_coming_from =
-                mli_get_side_coming_from(scenery, isec);
+                mli_trace_get_side_coming_from(scenery, isec);
         chk_msg(mli_Func_evaluate(
                         &scenery->materials.media[side_coming_from.medium]
                                  .absorbtion,
@@ -153,12 +153,12 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
         double reflection_propability;
         struct mli_Vec facing_surface_normal;
         chk_msg(mli_Func_evaluate(
-                        mli_get_refractive_index_going_to(env->scenery, isec),
+                        mli_trace_get_refractive_index_going_to(env->scenery, isec),
                         env->photon->wavelength,
                         &n_going_to),
                 "Failed to eval. refraction going to for wavelength.");
         chk_msg(mli_Func_evaluate(
-                        mli_get_refractive_index_coming_from(
+                        mli_trace_get_refractive_index_coming_from(
                                 env->scenery, isec),
                         env->photon->wavelength,
                         &n_coming_from),
@@ -201,7 +201,7 @@ int mli_propagate_photon_interact_with_object(
 {
         struct mli_Surface surface_coming_from;
         const struct mli_boundarylayer_Side side_coming_from =
-                mli_get_side_coming_from(env->scenery, isec);
+                mli_trace_get_side_coming_from(env->scenery, isec);
         surface_coming_from =
                 env->scenery->materials.surfaces[side_coming_from.surface];
         switch (surface_coming_from.material) {
@@ -251,14 +251,14 @@ int mli_propagate_photon_work_on_causal_intersection(
         struct mli_Func *absorbtion_in_medium_passing_through;
         struct mli_PhotonInteraction phia;
 
-        ray_does_intersect_surface = mli_query_intersection_with_surface_normal(
+        ray_does_intersect_surface = mli_trace_query_intersection_with_surface_normal(
                 env->scenery, env->photon->ray, &next_intersection);
 
         if (ray_does_intersect_surface) {
                 int photon_is_absorbed_before_reaching_surface;
                 struct mli_boundarylayer_Side side_coming_from;
 
-                side_coming_from = mli_get_side_coming_from(
+                side_coming_from = mli_trace_get_side_coming_from(
                         env->scenery, &next_intersection);
                 absorbtion_in_medium_passing_through =
                         &env->scenery->materials.media[side_coming_from.medium]
