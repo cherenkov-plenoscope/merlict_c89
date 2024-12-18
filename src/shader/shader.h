@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLITRACER_H_
-#define MLITRACER_H_
+#ifndef MLI_SHADER_H_
+#define MLI_SHADER_H_
 
 #include <stdint.h>
 #include "../ray/ray.h"

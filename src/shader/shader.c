@@ -1,13 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliTracer.h"
+#include "shader.h"
 #include <math.h>
 #include <stdint.h>
-#include "mliTracer_atmosphere.h"
-#include "mli_intersection_and_scenery.h"
-#include "mli_ray_octree_traversal.h"
+#include "shader_atmosphere.h"
+#include "../mli/mli_intersection_and_scenery.h"
+#include "../mli/mli_ray_octree_traversal.h"
 #include "../vec/vec_random.h"
 #include "../intersection/intersection.h"
-#include "mli_ray_scenery_query.h"
+#include "../mli/mli_ray_scenery_query.h"
 #include "../chk/chk.h"
 
 struct mliTracer mliTracer_init(void)

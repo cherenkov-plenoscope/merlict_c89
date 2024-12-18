@@ -1,9 +1,9 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLITRACERCONFIG_JSON_H_
-#define MLITRACERCONFIG_JSON_H_
+#ifndef MLI_SHADER_CONFIG_JSON_H_
+#define MLI_SHADER_CONFIG_JSON_H_
 
 #include <stdint.h>
-#include "mliTracer.h"
+#include "shader.h"
 #include "../json/json.h"
 
 int mliTracerConfig_from_json_token(

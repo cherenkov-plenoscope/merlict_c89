@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../vec/vec.h"
 #include "../homtra/homtra.h"
-#include "../mli/mliTracer.h"
+#include "../shader/shader.h"
 #include "../image/image.h"
 #include "../color/color_vector.h"
 

@@ -1,12 +1,12 @@
 /* Copyright 2018-2023 Sebastian Achim Mueller */
-#ifndef MLITRACER_ATMOSPHERE_H_
-#define MLITRACER_ATMOSPHERE_H_
+#ifndef MLI_SHADER_ATMOSPHERE_H_
+#define MLI_SHADER_ATMOSPHERE_H_
 
 #include "../vec/vec.h"
 #include "../scenery/scenery.h"
 #include "../color/color.h"
 #include "../ray/ray.h"
-#include "mliTracer.h"
+#include "shader.h"
 #include "../intersection/intersection_surface_normal.h"
 
 struct mli_Vec mli_random_direction_in_hemisphere(

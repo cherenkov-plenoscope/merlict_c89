@@ -3,7 +3,7 @@
 #define MLI_CAMERA_PINHOLE_H_
 
 #include <stdint.h>
-#include "../mli/mliTracer.h"
+#include "../shader/shader.h"
 #include "../view/view.h"
 #include "../image/image.h"
 

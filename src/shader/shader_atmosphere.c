@@ -1,13 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mliTracer.h"
+#include "shader_atmosphere.h"
 #include <math.h>
 #include <stdint.h>
 #include "../vec/vec_random.h"
 #include "../math/math.h"
 #include "../intersection/intersection.h"
 #include "../intersection/intersection_surface_normal.h"
-#include "mli_ray_scenery_query.h"
-#include "mli_intersection_and_scenery.h"
+#include "../mli/mli_ray_scenery_query.h"
+#include "../mli/mli_intersection_and_scenery.h"
 
 struct mli_Vec mli_random_direction_in_hemisphere(
         struct mli_Prng *prng,
