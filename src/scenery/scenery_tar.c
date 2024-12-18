@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "../chk/chk.h"
 #include "scenery_valid.h"
-#include "../mli/mli_frame_to_scenery.h"
+#include "../geometry/geometry_set_from_frame.h"
 #include "../geometry/geometry_from_archive.h"
 #include "../materials/materials_from_archive.h"
 #include "../frame/frame.h"
@@ -94,7 +94,7 @@ int mli_Scenery_malloc_from_Archive(
         chk_msg(mli_Geometry_malloc_references(&self->geometry, num_robjects),
                 "Failed to malloc geometry.references.");
 
-        chk_msg(mli_Frame_set_robjects_and_material_map(
+        chk_msg(mli_Geometry_set_robjects_and_material_map_from_frame(
                         &root, &self->geometry, &self->geomap),
                 "Can not set robjects.");
 
