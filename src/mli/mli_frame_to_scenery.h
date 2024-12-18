@@ -19,14 +19,4 @@ int mli_Frame_set_robjects_and_material_map_walk(
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers);
 
-int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
-        const struct mli_Frame *frame,
-        uint64_t *num_robjects,
-        uint64_t *total_num_boundary_layers);
-
-int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
-        const struct mli_Frame *frame,
-        uint64_t *num_robjects,
-        uint64_t *total_num_boundary_layers);
-
 #endif

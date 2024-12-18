@@ -35,4 +35,12 @@ int mli_Frame_set_mother_and_child(
 int mli_Frame_malloc(struct mli_Frame *f, const uint64_t type);
 void mli_Frame_free(struct mli_Frame *f);
 struct mli_Frame mli_Frame_init(void);
+int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
+        const struct mli_Frame *frame,
+        uint64_t *num_robjects,
+        uint64_t *total_num_boundary_layers);
+int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+        const struct mli_Frame *frame,
+        uint64_t *num_robjects,
+        uint64_t *total_num_boundary_layers);
 #endif

@@ -176,3 +176,47 @@ void mli_Frame_set_frame2root(struct mli_Frame *f)
                 }
         }
 }
+
+int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+        const struct mli_Frame *frame,
+        uint64_t *num_robjects,
+        uint64_t *total_num_boundary_layers)
+{
+        uint64_t c;
+        switch (frame->type) {
+        case MLI_FRAME_TYPE_FRAME:
+                for (c = 0; c < frame->children.size; c++) {
+                        chk(mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+                                frame->children.array[c],
+                                num_robjects,
+                                total_num_boundary_layers));
+                }
+                break;
+        case MLI_FRAME_TYPE_OBJECT:
+                (*num_robjects) += 1;
+                (*total_num_boundary_layers) += frame->boundary_layers.size;
+                break;
+        default:
+                chk_bad("Expected either type 'frame' or 'object'.");
+                break;
+        }
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
+        const struct mli_Frame *frame,
+        uint64_t *num_robjects,
+        uint64_t *total_num_boundary_layers)
+{
+        (*num_robjects) = 0u;
+        (*total_num_boundary_layers) = 0u;
+        chk_msg(mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+                        frame, num_robjects, total_num_boundary_layers),
+                "Failed to walk tree of frames to estimate "
+                "num_robjects and total_num_boundary_layers.");
+        return 1;
+chk_error:
+        return 0;
+}
