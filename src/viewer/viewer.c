@@ -12,7 +12,7 @@
 #include "../image/image_ppm.h"
 #include "../camera/pinhole.h"
 #include "../camera/aperture.h"
-#include "../mli/mli_ray_scenery_query.h"
+#include "../trace/mli_ray_scenery_query.h"
 #include "../version/version.h"
 #include "toggle_stdin.h"
 
