@@ -10,9 +10,9 @@
 #include "../mli/mli_ray_scenery_query.h"
 #include "../chk/chk.h"
 
-struct mliTracer mliTracer_init(void)
+struct mli_Shader mli_Shader_init(void)
 {
-        struct mliTracer tracer;
+        struct mli_Shader tracer;
         tracer.scenery = NULL;
         tracer.scenery_color_materials = NULL;
         tracer.config = NULL;
@@ -20,7 +20,7 @@ struct mliTracer mliTracer_init(void)
 }
 
 double mli_trace_sun_visibility(
-        const struct mliTracer *tracer,
+        const struct mli_Shader *tracer,
         const struct mli_Vec position,
         struct mli_Prng *prng)
 {
@@ -28,7 +28,7 @@ double mli_trace_sun_visibility(
 }
 
 double mli_trace_sun_obstruction(
-        const struct mliTracer *tracer,
+        const struct mli_Shader *tracer,
         const struct mli_Vec position,
         struct mli_Prng *prng)
 {
@@ -63,7 +63,7 @@ double mli_trace_sun_obstruction(
 }
 
 struct mli_Color mli_trace_to_intersection(
-        const struct mliTracer *tracer,
+        const struct mli_Shader *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
@@ -91,8 +91,8 @@ struct mli_Color mli_trace_to_intersection(
         return color;
 }
 
-struct mli_Color mliTracer_trace_ray_without_atmosphere(
-        const struct mliTracer *tracer,
+struct mli_Color mli_Shader_trace_ray_without_atmosphere(
+        const struct mli_Shader *tracer,
         const struct mli_Ray ray,
         struct mli_Prng *prng)
 {
@@ -107,22 +107,22 @@ struct mli_Color mliTracer_trace_ray_without_atmosphere(
         }
 }
 
-struct mli_Color mliTracer_trace_ray(
-        const struct mliTracer *tracer,
+struct mli_Color mli_Shader_trace_ray(
+        const struct mli_Shader *tracer,
         const struct mli_Ray ray,
         struct mli_Prng *prng)
 {
         if (tracer->config->have_atmosphere) {
-                return mliTracer_trace_ray_with_atmosphere(tracer, ray, prng);
+                return mli_Shader_trace_ray_with_atmosphere(tracer, ray, prng);
         } else {
-                return mliTracer_trace_ray_without_atmosphere(
+                return mli_Shader_trace_ray_without_atmosphere(
                         tracer, ray, prng);
         }
 }
 
-struct mliTracerConfig mliTracerConfig_init(void)
+struct mli_shader_Config mli_shader_Config_init(void)
 {
-        struct mliTracerConfig config;
+        struct mli_shader_Config config;
         config.background_color = mli_Color_set(128.0, 128.0, 128.0);
         config.num_trails_global_light_source = 3;
         config.have_atmosphere = 0;

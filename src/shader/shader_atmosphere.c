@@ -21,7 +21,7 @@ struct mli_Vec mli_random_direction_in_hemisphere(
 }
 
 struct mli_Color mli_trace_color_tone_of_sun(
-        const struct mliTracerConfig *config,
+        const struct mli_shader_Config *config,
         const struct mli_Vec support)
 {
         struct mli_Color sun_color = mli_Color_set(1.0, 1.0, 1.0);
@@ -53,7 +53,7 @@ struct mli_Color mli_trace_color_tone_of_sun(
 }
 
 struct mli_Color mli_trace_color_tone_of_diffuse_sky(
-        const struct mliTracer *tracer,
+        const struct mli_Shader *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
@@ -100,7 +100,7 @@ struct mli_Color mli_trace_color_tone_of_diffuse_sky(
 }
 
 struct mli_Color mli_trace_to_intersection_atmosphere(
-        const struct mliTracer *tracer,
+        const struct mli_Shader *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
@@ -136,8 +136,8 @@ struct mli_Color mli_trace_to_intersection_atmosphere(
         return mli_Color_multiply_elementwise(color, tone);
 }
 
-struct mli_Color mliTracer_trace_ray_with_atmosphere(
-        const struct mliTracer *tracer,
+struct mli_Color mli_Shader_trace_ray_with_atmosphere(
+        const struct mli_Shader *tracer,
         const struct mli_Ray ray,
         struct mli_Prng *prng)
 {

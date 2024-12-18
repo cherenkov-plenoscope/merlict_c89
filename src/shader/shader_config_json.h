@@ -6,8 +6,8 @@
 #include "shader.h"
 #include "../json/json.h"
 
-int mliTracerConfig_from_json_token(
-        struct mliTracerConfig *tc,
+int mli_shader_Config_from_json_token(
+        struct mli_shader_Config *tc,
         const struct mli_Json *json,
         const uint64_t tkn);
 #endif
