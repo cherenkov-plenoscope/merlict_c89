@@ -1,8 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "mli_photon_propagation.h"
-#include "mli_intersection_and_scenery.h"
+#include "photon_propagation.h"
+#include "../mli/mli_intersection_and_scenery.h"
 #include "../lambertian/lambertian.h"
-#include "mli_ray_scenery_query.h"
+#include "../mli/mli_ray_scenery_query.h"
 #include "../chk/chk.h"
 #include <math.h>
 
@@ -31,7 +31,7 @@ struct mli_PhotonInteraction mliPhotonInteraction_from_Intersection(
 }
 
 int mli_propagate_photon_phong(
-        struct mliEnv *env,
+        struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec)
 {
         double specular;
@@ -104,7 +104,7 @@ chk_error:
 }
 
 int mli_propagate_photon_pass_boundary_layer(
-        struct mliEnv *env,
+        struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec,
         const struct mli_Fresnel fresnel)
 {
@@ -144,7 +144,7 @@ chk_error:
 }
 
 int mli_propagate_photon_fresnel_refraction_and_reflection(
-        struct mliEnv *env,
+        struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec)
 {
         struct mli_Fresnel fresnel;
@@ -196,7 +196,7 @@ chk_error:
 }
 
 int mli_propagate_photon_interact_with_object(
-        struct mliEnv *env,
+        struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec)
 {
         struct mli_Surface surface_coming_from;
@@ -242,7 +242,8 @@ chk_error:
         return 0;
 }
 
-int mli_propagate_photon_work_on_causal_intersection(struct mliEnv *env)
+int mli_propagate_photon_work_on_causal_intersection(
+        struct mli_PhotonPropagation *env)
 {
         int ray_does_intersect_surface = 0;
         double distance_until_absorbtion = 0.0;
@@ -363,7 +364,7 @@ chk_error:
         return 0;
 }
 
-int mli_propagate_photon_env(struct mliEnv *env)
+int mli_propagate_photon_env(struct mli_PhotonPropagation *env)
 {
         if (env->max_interactions > env->history->size) {
                 chk_msg(mli_propagate_photon_work_on_causal_intersection(env),
@@ -381,7 +382,7 @@ int mli_propagate_photon(
         struct mli_Prng *prng,
         const uint64_t max_interactions)
 {
-        struct mliEnv env;
+        struct mli_PhotonPropagation env;
         env.scenery = scenery;
         env.history = history;
         env.photon = photon;
