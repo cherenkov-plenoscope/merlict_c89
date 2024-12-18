@@ -7,20 +7,10 @@
 #include "../color/color.h"
 #include "../color/color_materials.h"
 #include "../atmosphere/atmosphere.h"
+#include "shader_config.h"
 
 struct mli_Scenery;
 struct mli_Prng;
-
-struct mli_shader_Config {
-        uint64_t num_trails_global_light_source;
-
-        int have_atmosphere;
-        struct mli_Atmosphere atmosphere;
-
-        struct mli_Color background_color;
-};
-
-struct mli_shader_Config mli_shader_Config_init(void);
 
 struct mli_Shader {
         const struct mli_Scenery *scenery;
