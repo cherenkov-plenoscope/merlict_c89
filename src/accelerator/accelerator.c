@@ -1,7 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "accelerator.h"
 #include "../object/object_AABB.h"
-#include "../mli/mliGeometryAndAccelerator.h"
+#include "../geometry/geometry_and_accelerator.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
 

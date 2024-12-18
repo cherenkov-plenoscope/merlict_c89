@@ -1,10 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "geometry_aabb.h"
+#include "geometry_and_accelerator.h"
 #include "../homtra/homtra.h"
 #include "../object/object.h"
 #include "../object/object_AABB.h"
 #include "../aabb/aabb.h"
-#include "../mli/mliGeometryAndAccelerator.h"
 
 int mli_Geometry_robject_has_overlap_aabb(
         const struct mli_GeometryAndAccelerator *accgeo,

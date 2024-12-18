@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLIGEOMETRYANDACCELERATOR_H_
-#define MLIGEOMETRYANDACCELERATOR_H_
+#ifndef MLI_GEOMETRY_AND_ACCELERATOR_H_
+#define MLI_GEOMETRY_AND_ACCELERATOR_H_
 
 #include "../geometry/geometry.h"
 #include "../accelerator/accelerator.h"

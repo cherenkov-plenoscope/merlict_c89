@@ -3,7 +3,7 @@
 #include <assert.h>
 #include "../object/object_AABB.h"
 #include "../geometry/geometry_aabb.h"
-#include "../mli/mliGeometryAndAccelerator.h"
+#include "../geometry/geometry_and_accelerator.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
 
