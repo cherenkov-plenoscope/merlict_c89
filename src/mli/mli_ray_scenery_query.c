@@ -17,7 +17,7 @@ void mli_inner_object_traversal(
         const uint32_t num_faces_in_object_leaf = mli_OcTree_leaf_num_objects(
                 object_octree, object_octree_leaf_idx);
 
-        struct mliIntersection tmp_isec = mliIntersection_init();
+        struct mli_Intersection tmp_isec = mli_Intersection_init();
 
         for (f = 0; f < num_faces_in_object_leaf; f++) {
 
@@ -55,7 +55,7 @@ int mli_query_object_reference(
         const struct mli_OcTree *object_octree,
         const struct mli_HomTraComp robject2root_comp,
         const struct mli_Ray ray_root,
-        struct mliIntersection *isec)
+        struct mli_Intersection *isec)
 {
         struct mli_HomTra robject2root =
                 mli_HomTraComp_from_compact(robject2root_comp);
@@ -88,7 +88,7 @@ void mli_outer_scenery_traversal(
                 mli_OcTree_leaf_num_objects(
                         scenery_octree, scenery_octree_leaf_idx);
 
-        struct mliIntersection tmp_isec = mliIntersection_init();
+        struct mli_Intersection tmp_isec = mli_Intersection_init();
 
         for (ro = 0; ro < num_robjects_in_scenery_leaf; ro++) {
 
@@ -118,11 +118,11 @@ void mli_outer_scenery_traversal(
 int mli_query_intersection(
         const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
-        struct mliIntersection *isec)
+        struct mli_Intersection *isec)
 {
         struct mliQueryOuterWork outer;
 
-        (*isec) = mliIntersection_init();
+        (*isec) = mli_Intersection_init();
 
         outer.intersection = isec;
         outer.geometry = &scenery->geometry;
@@ -145,9 +145,9 @@ int mli_query_intersection(
 int mli_query_intersection_with_surface_normal(
         const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
-        struct mliIntersectionSurfaceNormal *isecsrf)
+        struct mli_IntersectionSurfaceNormal *isecsrf)
 {
-        struct mliIntersection isec = mliIntersection_init();
+        struct mli_Intersection isec = mli_Intersection_init();
 
         const int has_intersection =
                 mli_query_intersection(scenery, ray_root, &isec);
@@ -169,7 +169,7 @@ int mli_query_intersection_with_surface_normal(
                 struct mli_object_Face fvn =
                         obj->faces_vertex_normals[face_idx];
 
-                (*isecsrf) = mliIntersectionSurfaceNormal_init();
+                (*isecsrf) = mli_IntersectionSurfaceNormal_init();
                 isecsrf->distance_of_ray = isec.distance_of_ray;
                 isecsrf->geometry_id = isec.geometry_id;
                 isecsrf->position = mli_Ray_at(&ray_root, isec.distance_of_ray);

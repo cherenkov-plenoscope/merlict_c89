@@ -7,14 +7,14 @@
 
 const struct mli_Func *mli_get_refractive_index_coming_from(
         const struct mli_Scenery *scenery,
-        const struct mliIntersectionSurfaceNormal *isec);
+        const struct mli_IntersectionSurfaceNormal *isec);
 const struct mli_Func *mli_get_refractive_index_going_to(
         const struct mli_Scenery *scenery,
-        const struct mliIntersectionSurfaceNormal *isec);
+        const struct mli_IntersectionSurfaceNormal *isec);
 struct mli_boundarylayer_Side mli_get_side_going_to(
         const struct mli_Scenery *scenery,
-        const struct mliIntersectionSurfaceNormal *isec);
+        const struct mli_IntersectionSurfaceNormal *isec);
 struct mli_boundarylayer_Side mli_get_side_coming_from(
         const struct mli_Scenery *scenery,
-        const struct mliIntersectionSurfaceNormal *isec);
+        const struct mli_IntersectionSurfaceNormal *isec);
 #endif

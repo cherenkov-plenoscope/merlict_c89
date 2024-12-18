@@ -2,9 +2,9 @@
 #include "intersection.h"
 #include <float.h>
 
-struct mliIntersection mliIntersection_init(void)
+struct mli_Intersection mli_Intersection_init(void)
 {
-        struct mliIntersection psec;
+        struct mli_Intersection psec;
         psec.geometry_id = mli_GeometryId_init();
         psec.position_local = mli_Vec_init(0.0, 0.0, 0.0);
         psec.distance_of_ray = DBL_MAX;

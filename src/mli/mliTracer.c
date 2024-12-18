@@ -48,7 +48,7 @@ double mli_trace_sun_obstruction(
                 struct mli_Ray line_of_sight_to_source = mli_Ray_set(
                         position, mli_Vec_substract(pos_in_source, position));
 
-                struct mliIntersection isec;
+                struct mli_Intersection isec;
 
                 const int has_intersection = mli_query_intersection(
                         tracer->scenery, line_of_sight_to_source, &isec);
@@ -64,7 +64,7 @@ double mli_trace_sun_obstruction(
 
 struct mli_Color mli_trace_to_intersection(
         const struct mliTracer *tracer,
-        const struct mliIntersectionSurfaceNormal *intersection,
+        const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
         struct mli_Color color;
@@ -96,8 +96,8 @@ struct mli_Color mliTracer_trace_ray_without_atmosphere(
         const struct mli_Ray ray,
         struct mli_Prng *prng)
 {
-        struct mliIntersectionSurfaceNormal intersection =
-                mliIntersectionSurfaceNormal_init();
+        struct mli_IntersectionSurfaceNormal intersection =
+                mli_IntersectionSurfaceNormal_init();
 
         if (mli_query_intersection_with_surface_normal(
                     tracer->scenery, ray, &intersection)) {

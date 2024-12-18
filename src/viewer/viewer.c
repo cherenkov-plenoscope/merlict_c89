@@ -207,7 +207,7 @@ int mli_viewer_run_interactive_viewer(
         int print_help = 0;
         int print_scenery_info = 0;
         int has_probing_intersection = 0;
-        struct mliIntersectionSurfaceNormal probing_intersection;
+        struct mli_IntersectionSurfaceNormal probing_intersection;
 
         chk_msg(mli_ColorObserver_malloc_cie1931(&color_observer),
                 "Can't malloc color observer.");
@@ -451,7 +451,7 @@ int mli_viewer_run_interactive_viewer(
                                         &camera2root, probing_ray_wrt_camera);
 
                                 probing_intersection =
-                                        mliIntersectionSurfaceNormal_init();
+                                        mli_IntersectionSurfaceNormal_init();
 
                                 has_probing_intersection =
                                         mli_query_intersection_with_surface_normal(

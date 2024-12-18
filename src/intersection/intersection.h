@@ -5,11 +5,11 @@
 #include "../vec/vec.h"
 #include "../geometry/geometry_id.h"
 
-struct mliIntersection {
+struct mli_Intersection {
         struct mli_GeometryId geometry_id;
         struct mli_Vec position_local;
         double distance_of_ray;
 };
 
-struct mliIntersection mliIntersection_init(void);
+struct mli_Intersection mli_Intersection_init(void);
 #endif

@@ -2,9 +2,9 @@
 #include "intersection_surface_normal.h"
 #include <float.h>
 
-struct mliIntersectionSurfaceNormal mliIntersectionSurfaceNormal_init(void)
+struct mli_IntersectionSurfaceNormal mli_IntersectionSurfaceNormal_init(void)
 {
-        struct mliIntersectionSurfaceNormal isec;
+        struct mli_IntersectionSurfaceNormal isec;
         isec.geometry_id = mli_GeometryId_init();
         isec.position = mli_Vec_init(0.0, 0.0, 0.0);
         isec.surface_normal = mli_Vec_init(0.0, 0.0, 1.0);

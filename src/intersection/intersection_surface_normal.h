@@ -6,7 +6,7 @@
 #include "../vec/vec.h"
 #include "../geometry/geometry_id.h"
 
-struct mliIntersectionSurfaceNormal {
+struct mli_IntersectionSurfaceNormal {
         struct mli_GeometryId geometry_id;
         struct mli_Vec position;
         struct mli_Vec surface_normal;
@@ -16,6 +16,6 @@ struct mliIntersectionSurfaceNormal {
         int64_t from_outside_to_inside;
 };
 
-struct mliIntersectionSurfaceNormal mliIntersectionSurfaceNormal_init(void);
+struct mli_IntersectionSurfaceNormal mli_IntersectionSurfaceNormal_init(void);
 
 #endif

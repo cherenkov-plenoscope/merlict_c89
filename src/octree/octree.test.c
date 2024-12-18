@@ -25,7 +25,7 @@ CASE("ray parallel to axis")
         uint32_t i;
         uint32_t robj = 0;
         uint32_t obj;
-        struct mliIntersection isec;
+        struct mli_Intersection isec;
         struct mli_Vec sups[6];
         struct mli_Vec dirs[6];
         const double N = 0.0;
@@ -69,7 +69,7 @@ CASE("ray parallel to axis")
 
                 ray = mli_Ray_set(sups[i], dirs[i]);
 
-                isec = mliIntersection_init();
+                isec = mli_Intersection_init();
 
                 mli_query_object_reference(
                         &scenery.geometry.objects[obj],
