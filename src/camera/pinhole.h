@@ -16,27 +16,27 @@ struct mli_camera_PinHole {
         double row_over_column_pixel_ratio;
 };
 
-struct mli_camera_PinHole mli_camera_PinHole_init(
+struct mli_camera_PinHole mli_camera_PinHole_set(
         const double field_of_view,
         const struct mli_Image *image,
         const double row_over_column_pixel_ratio);
 
 void mli_camera_PinHole_render_image(
-        struct mli_camera_PinHole camera,
+        struct mli_camera_PinHole self,
         const struct mli_HomTraComp camera2root_comp,
-        const struct mli_Shader *tracer,
+        const struct mli_Shader *shader,
         struct mli_Image *image,
         struct mli_Prng *prng);
 
 void mli_camera_PinHole_render_image_with_view(
         const struct mli_View view,
-        const struct mli_Shader *tracer,
+        const struct mli_Shader *shader,
         struct mli_Image *image,
         const double row_over_column_pixel_ratio,
         struct mli_Prng *prng);
 
 struct mli_Ray mli_camera_PinHole_ray_at_row_col(
-        const struct mli_camera_PinHole *camera,
+        const struct mli_camera_PinHole *self,
         const struct mli_Image *image,
         const uint32_t row,
         const uint32_t col);

@@ -149,7 +149,7 @@ struct mli_Ray mli_camera_Aperture_get_ray_for_pixel(
 }
 
 void mli_camera_Aperture_aquire_pixels(
-        const struct mli_camera_Aperture camera,
+        const struct mli_camera_Aperture self,
         const struct mli_Image *image,
         const struct mli_HomTraComp camera2root_comp,
         const struct mli_Shader *tracer,
@@ -165,11 +165,11 @@ void mli_camera_Aperture_aquire_pixels(
         for (i = 0; i < pixels_to_do->size; i++) {
                 struct mli_Ray ray_wrt_camera =
                         mli_camera_Aperture_get_ray_for_pixel(
-                                camera.focal_length,
-                                camera.aperture_radius,
-                                camera.image_sensor_distance,
-                                camera.image_sensor_width_x,
-                                camera.image_sensor_width_y,
+                                self.focal_length,
+                                self.aperture_radius,
+                                self.image_sensor_distance,
+                                self.image_sensor_width_x,
+                                self.image_sensor_width_y,
                                 mli_Image_num_cols(image),
                                 mli_Image_num_rows(image),
                                 pixels_to_do->array[i].col,
@@ -213,7 +213,7 @@ void mli_camera_Aperture_assign_pixel_colors_to_sum_and_exposure_image(
 }
 
 int mli_camera_Aperture_render_image(
-        const struct mli_camera_Aperture camera,
+        const struct mli_camera_Aperture self,
         const struct mli_HomTraComp camera2root_comp,
         const struct mli_Shader *tracer,
         struct mli_Image *image,
@@ -268,7 +268,7 @@ int mli_camera_Aperture_render_image(
         */
         mli_image_PixelVector_push_back_all_from_image(&pixels_to_do, image);
         mli_camera_Aperture_aquire_pixels(
-                camera,
+                self,
                 image,
                 camera2root_comp,
                 tracer,
@@ -297,7 +297,7 @@ int mli_camera_Aperture_render_image(
                         pixels_to_do.size / 1000,
                         pixels_to_do.size % 1000);
                 mli_camera_Aperture_aquire_pixels(
-                        camera,
+                        self,
                         image,
                         camera2root_comp,
                         tracer,

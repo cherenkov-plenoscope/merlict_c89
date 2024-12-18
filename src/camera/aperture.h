@@ -105,14 +105,6 @@ struct mli_Vec mli_camera_Aperture_get_object_point(
         const double focal_length,
         const struct mli_Vec pixel_support);
 
-double mli_thin_lens_get_object_given_focal_and_image(
-        const double focal_length,
-        const double image_distance);
-
-double mli_thin_lens_get_image_given_focal_and_object(
-        const double focal_length,
-        const double object_distance);
-
 double mli_camera_Aperture_focal_length_given_field_of_view_and_sensor_width(
         const double field_of_view,
         const double image_sensor_width);
@@ -144,14 +136,14 @@ struct mli_camera_Aperture {
 struct mli_camera_Aperture mli_camera_Aperture_init(void);
 
 int mli_camera_Aperture_render_image(
-        const struct mli_camera_Aperture camera,
+        const struct mli_camera_Aperture self,
         const struct mli_HomTraComp camera2root_comp,
         const struct mli_Shader *tracer,
         struct mli_Image *image,
         struct mli_Prng *prng);
 
 void mli_camera_Aperture_aquire_pixels(
-        const struct mli_camera_Aperture camera,
+        const struct mli_camera_Aperture self,
         const struct mli_Image *image,
         const struct mli_HomTraComp camera2root_comp,
         const struct mli_Shader *tracer,

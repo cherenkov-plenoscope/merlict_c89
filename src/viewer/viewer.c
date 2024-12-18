@@ -7,6 +7,7 @@
 #include "../chk/chk.h"
 #include "../math/math.h"
 #include "../intersection/intersection_surface_normal.h"
+#include "../thin_lens/thin_lens.h"
 #include "../image/image.h"
 #include "../image/image_print.h"
 #include "../image/image_ppm.h"
@@ -428,7 +429,7 @@ int mli_viewer_run_interactive_viewer(
                                 print_mode);
                         {
                                 struct mli_camera_PinHole pin_hole_camera =
-                                        mli_camera_PinHole_init(
+                                        mli_camera_PinHole_set(
                                                 view.field_of_view,
                                                 &img,
                                                 row_over_column_pixel_ratio);
