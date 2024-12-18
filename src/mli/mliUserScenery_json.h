@@ -4,8 +4,10 @@
 
 #include <stdint.h>
 #include "../json/json.h"
-#include "mliUserScenery.h"
+#include "../map/map.h"
 #include "../boundarylayer/boundarylayer.h"
+
+struct mli_Materials;
 
 int mli_boundarylayer_Side_from_json(
         struct mli_boundarylayer_Side *side,

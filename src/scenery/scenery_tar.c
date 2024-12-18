@@ -5,8 +5,10 @@
 #include "../chk/chk.h"
 #include "scenery_valid.h"
 #include "../mli/mli_frame_to_scenery.h"
-#include "../mli/mliUserScenery.h"
+#include "../geometry/geometry_from_archive.h"
+#include "../materials/materials_from_archive.h"
 #include "../frame/frame.h"
+#include "../frame/frame_from_archive.h"
 
 int mli_Scenery_from_io_tar(struct mli_Scenery *self, FILE *f)
 {
@@ -51,7 +53,7 @@ int mli_Scenery_malloc_from_Archive(
         struct mli_Frame root = mli_Frame_init();
 
         chk_dbg;
-        chk_msg(mli_Materials_malloc_form_archive(
+        chk_msg(mli_Materials_from_Archive(
                         &self->materials, &material_names, archive),
                 "Failed to malloc materials.");
 
@@ -67,12 +69,12 @@ int mli_Scenery_malloc_from_Archive(
                 "Failed to malloc geometry.objects.");
 
         chk_dbg;
-        chk_msg(mli_set_geometry_objects_and_names_from_archive(
+        chk_msg(mli_Geometry_from_archive(
                         &self->geometry, &object_names, archive),
                 "Failed to malloc geometry.objects.");
 
         chk_dbg;
-        chk_msg(mli_Frame_tree_from_Archive(
+        chk_msg(mli_Frame_from_Archive(
                         &root,
                         archive,
                         &object_names,
