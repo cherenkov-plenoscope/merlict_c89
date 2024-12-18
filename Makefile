@@ -2,7 +2,7 @@
 CC          := gcc
 
 #The Target Binary Program
-TARGET      := viewer
+TARGET      := ground_grid
 
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src

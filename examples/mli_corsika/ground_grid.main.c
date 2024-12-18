@@ -12,10 +12,10 @@
 #include "../../src/tar/tar.h"
 #include "../../src/tar/tar_io.h"
 #include "../../src/vector/vector.h"
-#include "../../src/mli/mli_ray_grid_traversal.h"
+#include "../../src/AxisAlignedGrid/AxisAlignedGrid.h"
 
-int mliAxisAlignedGrid_set_from_config(
-        struct mliAxisAlignedGrid *grid,
+int mli_AxisAlignedGrid_set_from_config(
+        struct mli_AxisAlignedGrid *grid,
         struct mli_IO *text)
 {
         struct mli_Vec lower;
@@ -50,7 +50,7 @@ int mliAxisAlignedGrid_set_from_config(
 
         mli_String_free(&line);
 
-        (*grid) = mliAxisAlignedGrid_set(mli_AABB_set(lower, upper), num_bins);
+        (*grid) = mli_AxisAlignedGrid_set(mli_AABB_set(lower, upper), num_bins);
 
         return 1;
 chk_error:
@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
         struct mli_TarHeader arch = mli_TarHeader_init();
 
         struct mli_corsika_Histogram2d hist = mli_corsika_Histogram2d_init();
-        struct mliAxisAlignedGrid grid;
-        struct mliAxisAlignedGridTraversal traversal;
+        struct mli_AxisAlignedGrid grid;
+        struct mli_AxisAlignedGridTraversal traversal;
 
         float raw[8] = {0.0};
         struct mli_corsika_PhotonBunch bunch;
@@ -88,10 +88,10 @@ int main(int argc, char *argv[])
                         } else {
                                 mli_corsika_Histogram2d_reset(&hist);
                         }
-                        chk(mli_IO_open(&config_text));
+                        chk(mli_IO_open_memory(&config_text));
                         chk(mli_Tar_read_data_to_IO(
                                 &arc, &config_text, arch.size));
-                        chk(mliAxisAlignedGrid_set_from_config(
+                        chk(mli_AxisAlignedGrid_set_from_config(
                                 &grid, &config_text));
                         mli_IO_close(&config_text);
                 } else if (strcmp(arch.name, "cer.x8.float32") == 0) {
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
                                                 ray.direction.x,
                                                 ray.direction.y);
 
-                                traversal = mliAxisAlignedGridTraversal_start(
+                                traversal = mli_AxisAlignedGridTraversal_start(
                                         &grid, &ray);
 
                                 while (traversal.valid) {
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
                                                         "\n");
                                                 mli_Ray_fprint(stderr, &ray);
                                                 fprintf(stderr, "\n");
-                                                mliAxisAlignedGridTraversal_fprint(
+                                                mli_AxisAlignedGridTraversal_fprint(
                                                         stderr, &traversal);
                                         }
                                         num += 1;
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
                                                 traversal.voxel.x,
                                                 traversal.voxel.y,
                                                 bunch.weight_photons));
-                                        mliAxisAlignedGridTraversal_next(
+                                        mli_AxisAlignedGridTraversal_next(
                                                 &traversal);
                                 }
                         }

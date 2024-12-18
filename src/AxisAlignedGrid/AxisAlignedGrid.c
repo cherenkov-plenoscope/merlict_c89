@@ -1,5 +1,5 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
-#include "mli_ray_grid_traversal.h"
+#include "AxisAlignedGrid.h"
 #include "../math/math.h"
 #include "../ray/ray_AABB.h"
 #include <assert.h>
@@ -22,11 +22,11 @@ struct mliIdx3 mliIdx3_set(const int64_t x, const int64_t y, const int64_t z)
         return iii;
 }
 
-struct mliAxisAlignedGrid mliAxisAlignedGrid_set(
+struct mli_AxisAlignedGrid mli_AxisAlignedGrid_set(
         struct mli_AABB bounds,
         struct mliIdx3 num_bins)
 {
-        struct mliAxisAlignedGrid grid;
+        struct mli_AxisAlignedGrid grid;
         grid.bounds = bounds;
         grid.num_bins = num_bins;
         assert(mli_AABB_valid(grid.bounds));
@@ -42,8 +42,8 @@ struct mliAxisAlignedGrid mliAxisAlignedGrid_set(
         return grid;
 }
 
-struct mliIdx3 mliAxisAlignedGrid_get_voxel_idx(
-        const struct mliAxisAlignedGrid *grid,
+struct mliIdx3 mli_AxisAlignedGrid_get_voxel_idx(
+        const struct mli_AxisAlignedGrid *grid,
         struct mli_Vec point)
 {
         struct mli_Vec pg = mli_Vec_substract(point, grid->bounds.lower);
@@ -57,14 +57,14 @@ struct mliIdx3 mliAxisAlignedGrid_get_voxel_idx(
         return iii;
 }
 
-int mliAxisAlignedGrid_find_voxel_of_first_interaction(
-        const struct mliAxisAlignedGrid *grid,
+int mli_AxisAlignedGrid_find_voxel_of_first_interaction(
+        const struct mli_AxisAlignedGrid *grid,
         const struct mli_Ray *ray,
         struct mliIdx3 *bin)
 {
         if (mli_AABB_is_point_inside(grid->bounds, ray->support)) {
-                (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, ray->support);
-                return MLI_AXIS_ALIGNED_GRID_RAY_STARTS_INSIDE_GRID;
+                (*bin) = mli_AxisAlignedGrid_get_voxel_idx(grid, ray->support);
+                return MLI_AXISALIGNEDGRID_RAY_STARTS_INSIDE_GRID;
         } else {
                 double ray_parameter_near, ray_parameter_far;
                 int has_intersection;
@@ -79,7 +79,7 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
                 if (has_intersection) {
                         struct mli_Vec inner;
                         inner = mli_Ray_at(ray, ray_parameter_near);
-                        (*bin) = mliAxisAlignedGrid_get_voxel_idx(grid, inner);
+                        (*bin) = mli_AxisAlignedGrid_get_voxel_idx(grid, inner);
 
                         if (bin->x >= grid->num_bins.x) {
                                 bin->x -= 1;
@@ -91,16 +91,16 @@ int mliAxisAlignedGrid_find_voxel_of_first_interaction(
                                 bin->z -= 1;
                         }
 
-                        return MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS;
+                        return MLI_AXISALIGNEDGRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS;
                 } else {
-                        return MLI_AXIS_ALIGNED_GRID_RAY_DOES_NOT_INTERSECT_GRID;
+                        return MLI_AXISALIGNEDGRID_RAY_DOES_NOT_INTERSECT_GRID;
                 }
         }
         return 0;
 }
 
-struct mli_Vec mliAxisAlignedGridTraversal_first_plane(
-        const struct mliAxisAlignedGrid *grid,
+struct mli_Vec mli_AxisAlignedGridTraversal_first_plane(
+        const struct mli_AxisAlignedGrid *grid,
         const struct mliIdx3 voxel,
         const struct mli_Vec ray_direction)
 {
@@ -154,14 +154,14 @@ double calc_t_for_z_plane(const double z_plane, const struct mli_Ray *ray)
         return -(ray->support.z - z_plane) / (ray->direction.z);
 }
 
-struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
-        const struct mliAxisAlignedGrid *grid,
+struct mli_AxisAlignedGridTraversal mli_AxisAlignedGridTraversal_start(
+        const struct mli_AxisAlignedGrid *grid,
         const struct mli_Ray *ray)
 {
-        struct mliAxisAlignedGridTraversal traversal;
+        struct mli_AxisAlignedGridTraversal traversal;
 
         traversal.grid = grid;
-        traversal.valid = mliAxisAlignedGrid_find_voxel_of_first_interaction(
+        traversal.valid = mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                 grid, ray, &traversal.voxel);
         if (traversal.valid) {
                 struct mli_Vec first_plane;
@@ -169,7 +169,7 @@ struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
                 traversal.step.y = MLI_MATH_SIGN(ray->direction.y);
                 traversal.step.z = MLI_MATH_SIGN(ray->direction.z);
 
-                first_plane = mliAxisAlignedGridTraversal_first_plane(
+                first_plane = mli_AxisAlignedGridTraversal_first_plane(
                         grid, traversal.voxel, ray->direction);
 
                 traversal.tMax.x = calc_t_for_x_plane(first_plane.x, ray);
@@ -183,10 +183,10 @@ struct mliAxisAlignedGridTraversal mliAxisAlignedGridTraversal_start(
         return traversal;
 }
 
-int mliAxisAlignedGridTraversal_next(
-        struct mliAxisAlignedGridTraversal *traversal)
+int mli_AxisAlignedGridTraversal_next(
+        struct mli_AxisAlignedGridTraversal *traversal)
 {
-        struct mliAxisAlignedGridTraversal *t = traversal;
+        struct mli_AxisAlignedGridTraversal *t = traversal;
         int RAY_LEFT_GRID = 0;
 
         if (t->tMax.x < t->tMax.y) {
@@ -229,11 +229,11 @@ int mliAxisAlignedGridTraversal_next(
         return traversal->valid;
 }
 
-void mliAxisAlignedGridTraversal_fprint(
+void mli_AxisAlignedGridTraversal_fprint(
         FILE *f,
-        struct mliAxisAlignedGridTraversal *traversal)
+        struct mli_AxisAlignedGridTraversal *traversal)
 {
-        struct mliAxisAlignedGridTraversal *t = traversal;
+        struct mli_AxisAlignedGridTraversal *t = traversal;
         fprintf(f,
                 "  grid.bounds.upper: [%f, %f, %f]\n",
                 t->grid->bounds.upper.x,

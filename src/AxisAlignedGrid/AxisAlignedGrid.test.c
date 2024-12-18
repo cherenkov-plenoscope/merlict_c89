@@ -3,11 +3,11 @@
 CASE("ray and grid")
 {
         int rc;
-        struct mliAxisAlignedGrid grid;
+        struct mli_AxisAlignedGrid grid;
         struct mli_Ray ray;
         struct mliIdx3 bin;
 
-        grid = mliAxisAlignedGrid_set(
+        grid = mli_AxisAlignedGrid_set(
                 mli_AABB_set(
                         mli_Vec_init(-0.5, -0.5, -0.5),
                         mli_Vec_init(0.5, 0.5, 0.5)),
@@ -17,64 +17,59 @@ CASE("ray and grid")
         CHECK_MARGIN(grid.bin_width.z, 0.333, 0.01);
 
         ray = mli_Ray_set(mli_Vec_init(0, 0, 2), mli_Vec_init(0, 0, 1));
-        rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
+        rc = mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_DOES_NOT_INTERSECT_GRID);
+        CHECK(rc == MLI_AXISALIGNEDGRID_RAY_DOES_NOT_INTERSECT_GRID);
 
         ray = mli_Ray_set(mli_Vec_init(0, 0, 0), mli_Vec_init(0, 0, 1));
-        rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
+        rc = mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_STARTS_INSIDE_GRID);
+        CHECK(rc == MLI_AXISALIGNEDGRID_RAY_STARTS_INSIDE_GRID);
         CHECK(bin.x == 1);
         CHECK(bin.y == 1);
         CHECK(bin.z == 1);
 
         ray = mli_Ray_set(mli_Vec_init(-2, 0, 0), mli_Vec_init(1, 0, 0));
-        rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
+        rc = mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc ==
-              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc == MLI_AXISALIGNEDGRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 0);
         CHECK(bin.y == 1);
         CHECK(bin.z == 1);
 
         ray = mli_Ray_set(mli_Vec_init(2, 0, 0), mli_Vec_init(-1, 0, 0));
-        rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
+        rc = mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc ==
-              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc == MLI_AXISALIGNEDGRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 2);
         CHECK(bin.y == 1);
         CHECK(bin.z == 1);
 
         ray = mli_Ray_set(mli_Vec_init(-2, -2, -2), mli_Vec_init(-1, -1, -1));
-        rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
+        rc = mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc == MLI_AXIS_ALIGNED_GRID_RAY_DOES_NOT_INTERSECT_GRID);
+        CHECK(rc == MLI_AXISALIGNEDGRID_RAY_DOES_NOT_INTERSECT_GRID);
 
         ray = mli_Ray_set(mli_Vec_init(-2, -2, -2), mli_Vec_init(1, 1, 1));
-        rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
+        rc = mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc ==
-              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc == MLI_AXISALIGNEDGRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 0);
         CHECK(bin.y == 0);
         CHECK(bin.z == 0);
 
         ray = mli_Ray_set(mli_Vec_init(2, 2, 2), mli_Vec_init(-1, -1, -1));
-        rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
+        rc = mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc ==
-              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc == MLI_AXISALIGNEDGRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 2);
         CHECK(bin.y == 2);
         CHECK(bin.z == 2);
 
         ray = mli_Ray_set(mli_Vec_init(0, 2, 2), mli_Vec_init(0, -1, -1));
-        rc = mliAxisAlignedGrid_find_voxel_of_first_interaction(
+        rc = mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                 &grid, &ray, &bin);
-        CHECK(rc ==
-              MLI_AXIS_ALIGNED_GRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
+        CHECK(rc == MLI_AXISALIGNEDGRID_RAY_STARTS_OUTSIDE_GRID_BUT_INTERSECTS);
         CHECK(bin.x == 1);
         CHECK(bin.y == 2);
         CHECK(bin.z == 2);
@@ -83,11 +78,11 @@ CASE("ray and grid")
 CASE("ray and grid traversal simple")
 {
         int rc;
-        struct mliAxisAlignedGrid grid;
-        struct mliAxisAlignedGridTraversal traversal;
+        struct mli_AxisAlignedGrid grid;
+        struct mli_AxisAlignedGridTraversal traversal;
         struct mli_Ray ray;
 
-        grid = mliAxisAlignedGrid_set(
+        grid = mli_AxisAlignedGrid_set(
                 mli_AABB_set(
                         mli_Vec_init(-2.5, -1.5, -1),
                         mli_Vec_init(2.5, 1.5, 1)),
@@ -98,102 +93,102 @@ CASE("ray and grid traversal simple")
 
         /* X-AXIS */
         ray = mli_Ray_set(mli_Vec_init(-3, 0.2, 0.1), mli_Vec_init(1, 0, 0));
-        traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
+        traversal = mli_AxisAlignedGridTraversal_start(&grid, &ray);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 0);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
-        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
+        /*mli_AxisAlignedGridTraversal_fprint(stderr, &traversal);*/
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 1);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 2);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 3);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 4);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(!traversal.valid);
 
         /* Y-AXIS */
         ray = mli_Ray_set(mli_Vec_init(0.2, 8.3, 0.1), mli_Vec_init(0, -1, 0));
-        traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
+        traversal = mli_AxisAlignedGridTraversal_start(&grid, &ray);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 2);
         CHECK(traversal.voxel.y == 2);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 2);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 2);
         CHECK(traversal.voxel.y == 0);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(!traversal.valid);
 
         /* Z-AXIS */
         ray = mli_Ray_set(
                 mli_Vec_init(0.2, -0.1, -1223.0), mli_Vec_init(0, 0, 1));
-        traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
+        traversal = mli_AxisAlignedGridTraversal_start(&grid, &ray);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 2);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 0);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 2);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(!traversal.valid);
 
         /* start inside */
         ray = mli_Ray_set(mli_Vec_init(0.0, 0.0, 0.5), mli_Vec_init(1, 0, 0));
-        traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
+        traversal = mli_AxisAlignedGridTraversal_start(&grid, &ray);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 2);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
-        /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
+        /*mli_AxisAlignedGridTraversal_fprint(stderr, &traversal);*/
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
+        /*mli_AxisAlignedGridTraversal_fprint(stderr, &traversal);*/
 
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
@@ -201,14 +196,14 @@ CASE("ray and grid traversal simple")
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(traversal.valid);
         CHECK(traversal.voxel.x == 4);
         CHECK(traversal.voxel.y == 1);
         CHECK(traversal.voxel.z == 1);
 
-        rc = mliAxisAlignedGridTraversal_next(&traversal);
+        rc = mli_AxisAlignedGridTraversal_next(&traversal);
         CHECK(rc == traversal.valid);
         CHECK(!traversal.valid);
 }
@@ -216,11 +211,11 @@ CASE("ray and grid traversal simple")
 CASE("Actual example from simulated shower")
 {
         int not_too_often = 4;
-        struct mliAxisAlignedGrid grid;
-        struct mliAxisAlignedGridTraversal traversal;
+        struct mli_AxisAlignedGrid grid;
+        struct mli_AxisAlignedGridTraversal traversal;
         struct mli_Ray ray;
 
-        grid = mliAxisAlignedGrid_set(
+        grid = mli_AxisAlignedGrid_set(
                 mli_AABB_set(
                         mli_Vec_init(
                                 -5119268.215672, -5119974.912158, -5000.000000),
@@ -237,14 +232,14 @@ CASE("Actual example from simulated shower")
         ray.support = mli_Vec_init(8.808299e+04, 3.914948e+04, 0.000000e+00);
         ray.direction = mli_Vec_init(-1.900087e-02, 2.265741e-01, 9.738086e-01);
 
-        traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
-        mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
+        traversal = mli_AxisAlignedGridTraversal_start(&grid, &ray);
+        mli_AxisAlignedGridTraversal_fprint(stderr, &traversal);
 
         while (traversal.valid) {
                 not_too_often -= 1;
                 CHECK(not_too_often > 0);
-                mliAxisAlignedGridTraversal_next(&traversal);
-                mliAxisAlignedGridTraversal_fprint(stderr, &traversal);
+                mli_AxisAlignedGridTraversal_next(&traversal);
+                mli_AxisAlignedGridTraversal_fprint(stderr, &traversal);
         }
 }
 
@@ -252,13 +247,13 @@ CASE("Elaborated example")
 {
         int i, num_overlaps, num_rays, rc_aabb, rc_sphere;
         double overlaps_per_ray, minus_solution, plus_solution;
-        struct mliAxisAlignedGrid grid;
-        struct mliAxisAlignedGridTraversal traversal;
+        struct mli_AxisAlignedGrid grid;
+        struct mli_AxisAlignedGridTraversal traversal;
         struct mli_Ray ray;
         struct mli_Prng prng;
         struct mli_prng_UniformRange range;
 
-        grid = mliAxisAlignedGrid_set(
+        grid = mli_AxisAlignedGrid_set(
                 mli_AABB_set(mli_Vec_init(-3, -3, -3), mli_Vec_init(3, 3, 3)),
                 mliIdx3_set(10, 10, 10));
         prng = mli_Prng_init_MT19937(0u);
@@ -307,17 +302,17 @@ CASE("Elaborated example")
                 /*fprintf(stderr, "para: %e, %d\n", para, rc_aabb);*/
                 CHECK(rc_aabb);
 
-                traversal = mliAxisAlignedGridTraversal_start(&grid, &ray);
+                traversal = mli_AxisAlignedGridTraversal_start(&grid, &ray);
 
-                /*mliAxisAlignedGridTraversal_fprint(stderr, &traversal);*/
+                /*mli_AxisAlignedGridTraversal_fprint(stderr, &traversal);*/
 
                 CHECK(traversal.valid);
                 num_overlaps += 1;
 
                 while (traversal.valid) {
                         num_overlaps += 1;
-                        mliAxisAlignedGridTraversal_next(&traversal);
-                        /*mliAxisAlignedGridTraversal_fprint(stderr,
+                        mli_AxisAlignedGridTraversal_next(&traversal);
+                        /*mli_AxisAlignedGridTraversal_fprint(stderr,
                          * &traversal);*/
                 }
         }
