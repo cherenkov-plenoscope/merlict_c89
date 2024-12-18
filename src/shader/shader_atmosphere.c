@@ -9,17 +9,6 @@
 #include "../mli/mli_ray_scenery_query.h"
 #include "../mli/mli_intersection_and_scenery.h"
 
-struct mli_Vec mli_random_direction_in_hemisphere(
-        struct mli_Prng *prng,
-        struct mli_Vec normal)
-{
-        struct mli_Vec rnd_dir;
-        do {
-                rnd_dir = mli_Vec_random_position_inside_unit_sphere(prng);
-        } while (mli_Vec_dot(normal, rnd_dir) <= 0.0);
-        return mli_Vec_normalized(rnd_dir);
-}
-
 struct mli_Color mli_trace_color_tone_of_sun(
         const struct mli_shader_Config *config,
         const struct mli_Vec support)
@@ -71,7 +60,7 @@ struct mli_Color mli_trace_color_tone_of_diffuse_sky(
                         : mli_Vec_multiply(intersection->surface_normal, -1.0);
 
         for (i = 0; i < num_samples; i++) {
-                struct mli_Vec rnd_dir = mli_random_direction_in_hemisphere(
+                struct mli_Vec rnd_dir = mli_Vec_random_direction_in_hemisphere(
                         prng, facing_surface_normal);
 
                 obstruction_ray.support = intersection->position;
@@ -110,8 +99,8 @@ struct mli_Color mli_trace_to_intersection_atmosphere(
         double theta;
         double lambert_factor;
 
-        const double sun_visibility =
-                mli_trace_sun_visibility(tracer, intersection->position, prng);
+        const double sun_visibility = mli_Shader_trace_sun_visibility(
+                tracer, intersection->position, prng);
 
         if (sun_visibility > 0.0) {
                 tone = mli_trace_color_tone_of_sun(

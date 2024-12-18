@@ -35,12 +35,12 @@ struct mli_Color mli_Shader_trace_ray_without_atmosphere(
         const struct mli_Ray ray,
         struct mli_Prng *prng);
 
-double mli_trace_sun_obstruction(
+double mli_Shader_trace_sun_obstruction(
         const struct mli_Shader *tracer,
         const struct mli_Vec position,
         struct mli_Prng *prng);
 
-double mli_trace_sun_visibility(
+double mli_Shader_trace_sun_visibility(
         const struct mli_Shader *tracer,
         const struct mli_Vec position,
         struct mli_Prng *prng);

@@ -39,3 +39,14 @@ struct mli_Vec mli_Vec_random_position_inside_unit_sphere(struct mli_Prng *prng)
         } while ((pos.x * pos.x + pos.y * pos.y + pos.z * pos.z) > 1.0);
         return pos;
 }
+
+struct mli_Vec mli_Vec_random_direction_in_hemisphere(
+        struct mli_Prng *prng,
+        struct mli_Vec normal)
+{
+        struct mli_Vec rnd_dir;
+        do {
+                rnd_dir = mli_Vec_random_position_inside_unit_sphere(prng);
+        } while (mli_Vec_dot(normal, rnd_dir) <= 0.0);
+        return mli_Vec_normalized(rnd_dir);
+}

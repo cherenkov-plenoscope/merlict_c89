@@ -14,4 +14,7 @@ struct mli_Vec mli_Vec_random_draw_direction_in_zenith_azimuth_range(
         struct mli_Prng *prng);
 struct mli_Vec mli_Vec_random_position_inside_unit_sphere(
         struct mli_Prng *prng);
+struct mli_Vec mli_Vec_random_direction_in_hemisphere(
+        struct mli_Prng *prng,
+        struct mli_Vec normal);
 #endif

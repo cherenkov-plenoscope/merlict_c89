@@ -9,9 +9,6 @@
 #include "shader.h"
 #include "../intersection/intersection_surface_normal.h"
 
-struct mli_Vec mli_random_direction_in_hemisphere(
-        struct mli_Prng *prng,
-        struct mli_Vec normal);
 struct mli_Color mli_trace_color_tone_of_sun(
         const struct mli_shader_Config *config,
         const struct mli_Vec support);

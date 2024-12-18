@@ -19,15 +19,15 @@ struct mli_Shader mli_Shader_init(void)
         return tracer;
 }
 
-double mli_trace_sun_visibility(
+double mli_Shader_trace_sun_visibility(
         const struct mli_Shader *tracer,
         const struct mli_Vec position,
         struct mli_Prng *prng)
 {
-        return (1.0 - mli_trace_sun_obstruction(tracer, position, prng));
+        return (1.0 - mli_Shader_trace_sun_obstruction(tracer, position, prng));
 }
 
-double mli_trace_sun_obstruction(
+double mli_Shader_trace_sun_obstruction(
         const struct mli_Shader *tracer,
         const struct mli_Vec position,
         struct mli_Prng *prng)
@@ -72,8 +72,8 @@ struct mli_Color mli_trace_to_intersection(
         double theta;
         double lambert_factor;
 
-        const double sun_visibility =
-                mli_trace_sun_visibility(tracer, intersection->position, prng);
+        const double sun_visibility = mli_Shader_trace_sun_visibility(
+                tracer, intersection->position, prng);
 
         side = mli_get_side_coming_from(tracer->scenery, intersection);
         color = tracer->scenery_color_materials->surfaces[side.surface]
