@@ -18,6 +18,19 @@ chk_error:
         return 0;
 }
 
+int mli_Materials_valid_spectra(const struct mli_Materials *materials)
+{
+        uint32_t i = 0u;
+        for (i = 0; i < materials->num_spectra; i++) {
+                chk_msg(mli_Func_is_valid(&materials->spectra[i]),
+                        "Expected spectrum function to be valid.");
+        }
+        return 1;
+chk_error:
+        fprintf(stderr, "In materials.spectra[%u]\n", i);
+        return 0;
+}
+
 int mli_Materials_valid_surfaces(const struct mli_Materials *materials)
 {
         uint32_t i = 0u;
@@ -71,6 +84,8 @@ int mli_Materials_valid(const struct mli_Materials *materials)
 {
         chk_msg(materials->default_medium <= materials->num_media,
                 "Expected default-medium to reference a valid medium.");
+        chk_msg(mli_Materials_valid_spectra(materials),
+                "Expected spectra to be valid.");
         chk_msg(mli_Materials_valid_media(materials),
                 "Expected media to be valid.");
         chk_msg(mli_Materials_valid_surfaces(materials),

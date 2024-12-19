@@ -30,6 +30,8 @@ int mli_Func_from_csv_split_line(
                         }
                 }
         }
+        chk(mli_String_strip(sx, sx));
+        chk(mli_String_strip(sy, sy));
         return 1;
 chk_error:
         return 0;

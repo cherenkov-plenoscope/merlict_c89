@@ -7,6 +7,9 @@
 int mli_Materials_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);
+int mli_Materials_spectra_equal(
+        const struct mli_Materials *a,
+        const struct mli_Materials *b);
 int mli_Materials_surfaces_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);

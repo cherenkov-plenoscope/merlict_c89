@@ -7,6 +7,7 @@
 struct mli_MaterialsCapacity mli_MaterialsCapacity_init(void)
 {
         struct mli_MaterialsCapacity cap;
+        cap.num_spectra = 0;
         cap.num_surfaces = 0;
         cap.num_media = 0;
         cap.num_boundary_layers = 0;
@@ -17,6 +18,11 @@ struct mli_Materials mli_Materials_init(void)
 {
         struct mli_Materials res;
         res.default_medium = 0u;
+
+        res.num_spectra = 0;
+        res.spectra = NULL;
+        res.spectra_infos = NULL;
+        res.spectra_names = NULL;
 
         res.num_media = 0u;
         res.media = NULL;
@@ -35,30 +41,36 @@ struct mli_Materials mli_Materials_init(void)
 void mli_Materials_free(struct mli_Materials *res)
 {
         uint64_t i;
-        chk_dbg for (i = 0; i < res->num_media; i++)
-        {
+        for (i = 0; i < res->num_spectra; i++) {
+                mli_Func_free(&(res->spectra[i]));
+                mli_FuncInfo_free(&(res->spectra_infos[i]));
+                mli_String_free(&(res->spectra_names[i]));
+        }
+        free(res->spectra);
+        free(res->spectra_infos);
+        free(res->spectra_names);
+
+        for (i = 0; i < res->num_media; i++) {
                 mli_Medium_free(&(res->media[i]));
                 mli_String_free(&(res->medium_names[i]));
         }
         free(res->media);
         free(res->medium_names);
 
-        chk_dbg for (i = 0; i < res->num_surfaces; i++)
-        {
+        for (i = 0; i < res->num_surfaces; i++) {
                 mli_Surface_free(&(res->surfaces[i]));
                 mli_String_free(&res->surface_names[i]);
         }
         free(res->surfaces);
         free(res->surface_names);
 
-        chk_dbg for (i = 0; i < res->num_boundary_layers; i++)
-        {
+        for (i = 0; i < res->num_boundary_layers; i++) {
                 mli_String_free(&res->boundary_layer_names[i]);
         }
         free(res->boundary_layers);
         free(res->boundary_layer_names);
 
-        chk_dbg(*res) = mli_Materials_init();
+        (*res) = mli_Materials_init();
 }
 
 int mli_Materials_malloc(
@@ -67,9 +79,19 @@ int mli_Materials_malloc(
 {
         uint64_t i;
         mli_Materials_free(res);
+        res->num_spectra = rescap.num_spectra;
         res->num_surfaces = rescap.num_surfaces;
         res->num_media = rescap.num_media;
         res->num_boundary_layers = rescap.num_boundary_layers;
+
+        chk_malloc(res->spectra, struct mli_Func, res->num_spectra);
+        chk_malloc(res->spectra_infos, struct mli_FuncInfo, res->num_spectra);
+        chk_malloc(res->spectra_names, struct mli_String, res->num_spectra);
+        for (i = 0; i < res->num_spectra; i++) {
+                res->spectra[i] = mli_Func_init();
+                res->spectra_infos[i] = mli_FuncInfo_init();
+                res->spectra_names[i] = mli_String_init();
+        }
 
         chk_malloc(res->media, struct mli_Medium, res->num_media);
         chk_malloc(res->medium_names, struct mli_String, res->num_media);

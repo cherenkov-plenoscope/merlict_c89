@@ -15,10 +15,16 @@ int mli_Materials_to_io(const struct mli_Materials *res, struct mli_IO *f)
         chk(mli_MagicId_set(&magic, "mli_Materials"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
+        chk_IO_write(&res->num_spectra, sizeof(uint64_t), 1u, f);
         chk_IO_write(&res->num_media, sizeof(uint64_t), 1u, f);
         chk_IO_write(&res->num_surfaces, sizeof(uint64_t), 1u, f);
         chk_IO_write(&res->num_boundary_layers, sizeof(uint64_t), 1u, f);
 
+        for (i = 0; i < res->num_spectra; i++) {
+                chk(mli_String_to_io(&res->spectra_names[i], f));
+                chk(mli_FuncInfo_to_io(&res->spectra_infos[i], f));
+                chk(mli_Func_to_io(&res->spectra[i], f));
+        }
         for (i = 0; i < res->num_media; i++) {
                 chk(mli_String_to_io(&res->medium_names[i], f));
                 chk(mli_Medium_to_io(&res->media[i], f));
@@ -53,6 +59,7 @@ int mli_Materials_from_io(struct mli_Materials *res, struct mli_IO *f)
         chk(mli_MagicId_has_word(&magic, "mli_Materials"));
         mli_MagicId_warn_version(&magic);
 
+        chk_IO_read(&cap.num_spectra, sizeof(uint64_t), 1u, f);
         chk_IO_read(&cap.num_media, sizeof(uint64_t), 1u, f);
         chk_IO_read(&cap.num_surfaces, sizeof(uint64_t), 1u, f);
         chk_IO_read(&cap.num_boundary_layers, sizeof(uint64_t), 1u, f);
@@ -60,9 +67,16 @@ int mli_Materials_from_io(struct mli_Materials *res, struct mli_IO *f)
         chk(mli_Materials_malloc(res, cap));
 
         /* payload */
+        for (i = 0; i < res->num_spectra; i++) {
+                chk_msg(mli_String_from_io(&res->spectra_names[i], f),
+                        "Failed to read spectra name.");
+                chk_msg(mli_FuncInfo_from_io(&res->spectra_infos[i], f),
+                        "Failed to read spectra infos");
+                chk_msg(mli_Func_from_io(&res->spectra[i], f),
+                        "Failed to read spectra.");
+        }
         for (i = 0; i < res->num_media; i++) {
-                chk_dbg chk_msg(
-                        mli_String_from_io(&res->medium_names[i], f),
+                chk_msg(mli_String_from_io(&res->medium_names[i], f),
                         "Failed to fread medium name.");
                 chk_msg(mli_Medium_from_io(&res->media[i], f),
                         "Failed to fread Medium.");

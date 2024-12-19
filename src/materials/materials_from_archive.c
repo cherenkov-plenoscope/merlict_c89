@@ -14,6 +14,7 @@
 #include "../frame/frame.h"
 #include "../frame/frame_json.h"
 #include "../surface/surface_json.h"
+#include "../func/func_csv.h"
 
 int mli_Materials_from_Archive(
         struct mli_Materials *materials,
@@ -21,6 +22,7 @@ int mli_Materials_from_Archive(
         const struct mli_Archive *archive)
 {
         uint64_t i = 0u;
+        uint64_t spc_idx = 0;
         uint64_t med_idx = 0;
         uint64_t srf_idx = 0;
         uint64_t arc_idx = 0;
@@ -63,12 +65,64 @@ int mli_Materials_from_Archive(
         cap.num_surfaces = mli_Archive_num_filename_prefix_sufix(
                 archive, "materials/surfaces/", ".json");
 
+        cap.num_spectra = mli_Archive_num_filename_prefix_sufix(
+                archive, "materials/spectra/", ".csv");
+
         chk_msg(mli_Materials_malloc(materials, cap),
                 "Can not malloc materials.");
 
         chk_dbg;
         /* set fields */
         /* ---------- */
+
+        /* spectra */
+        spc_idx = 0u;
+        for (arc_idx = 0u; arc_idx < mli_Archive_size(archive); arc_idx++) {
+                struct mli_String *filename =
+                        &archive->filenames.items.array[arc_idx].key;
+
+                chk_dbg;
+                if (mli_String_starts_with_cstr(
+                            filename, "materials/spectra/") &&
+                    mli_String_ends_with_cstr(filename, ".csv")) {
+                        struct mli_String *payload =
+                                &archive->textfiles.array[arc_idx];
+                        struct mli_IO buff = mli_IO_init();
+                        chk(spc_idx < materials->num_spectra);
+
+                        chk(mli_FuncInfo_malloc(
+                                &materials->spectra_infos[spc_idx]));
+                        chk_dbg;
+                        chk(mli_IO_open_memory(&buff));
+                        chk_dbg;
+                        chk(mli_IO_text_write_String(&buff, payload));
+                        chk_dbg;
+                        mli_IO_rewind(&buff);
+                        chk_dbg;
+                        chk_msg(mli_Func_from_csv(
+                                        &materials->spectra[spc_idx],
+                                        &materials->spectra_infos[spc_idx].x,
+                                        &materials->spectra_infos[spc_idx].y,
+                                        &buff),
+                                "Failed to parse spectral function from "
+                                "archive.");
+                        chk_dbg;
+                        mli_IO_close(&buff);
+
+                        chk_dbg;
+                        chk(mli_path_basename(filename, &basename));
+                        chk(mli_path_splitext(&basename, &key, &extension));
+                        chk_msg(mli_Map_insert(&names->spectra, &key, spc_idx),
+                                "Failed to insert spectrum-name into map.");
+
+                        chk_dbg;
+                        chk(mli_String_copy(
+                                &materials->spectra_names[spc_idx],
+                                &names->spectra.items.array[spc_idx].key));
+                        spc_idx += 1u;
+                }
+        }
+        chk_dbg;
 
         /* media */
         med_idx = 0u;

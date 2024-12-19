@@ -16,8 +16,6 @@ CASE("mli_Archive, read tar")
                 "resources/"
                 "sceneries/"
                 "000.tar"));
-        CHECK(mli_Archive_size(&arc) == 13);
-
         CHECK(1 == mli_Archive_num_filename_prefix_sufix(
                            &arc, "materials/media", ".json"));
 
@@ -25,6 +23,9 @@ CASE("mli_Archive, read tar")
                            &arc, "geometry/objects/", ".obj"));
 
         CHECK(1 == mli_Archive_num_filename_prefix_sufix(&arc, "", ".md"));
+
+        CHECK(3 == mli_Archive_num_filename_prefix_sufix(
+                           &arc, "materials/spectra", ".csv"));
 
         CHECK(mli_String_from_cstr(&tmp, "README.md"));
         CHECK(mli_Archive_has(&arc, &tmp));

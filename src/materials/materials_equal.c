@@ -63,6 +63,27 @@ chk_error:
         return 0;
 }
 
+int mli_Materials_spectra_equal(
+        const struct mli_Materials *a,
+        const struct mli_Materials *b)
+{
+        uint64_t i = 0u;
+        chk_msg(a->num_spectra == b->num_spectra, "Different 'num_spectra'.");
+        for (i = 0; i < a->num_spectra; i++) {
+                chk_msg(mli_Func_equal(a->spectra[i], b->spectra[i]),
+                        "Different spectral function.");
+                chk_msg(mli_FuncInfo_equal(
+                                &a->spectra_infos[i], &b->spectra_infos[i]),
+                        "Different spectrum name.");
+                chk_msg(mli_String_equal(
+                                &a->spectra_names[i], &b->spectra_names[i]),
+                        "Different spectrum name.");
+        }
+        return 1;
+chk_error:
+        return 0;
+}
+
 int mli_Materials_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b)
@@ -73,6 +94,8 @@ int mli_Materials_equal(
         chk_msg(mli_Materials_surfaces_equal(a, b), "Different surfaces.");
         chk_msg(mli_Materials_boundary_layers_equal(a, b),
                 "Different boundary_layers.");
+        chk_msg(mli_Materials_boundary_layers_equal(a, b),
+                "Different spectra.");
         return 1;
 chk_error:
         return 0;

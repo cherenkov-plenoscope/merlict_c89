@@ -5,6 +5,7 @@
 #include "../map/map.h"
 
 struct mli_materials_Names {
+        struct mli_Map spectra;
         struct mli_Map media;
         struct mli_Map surfaces;
         struct mli_Map boundary_layers;
