@@ -275,3 +275,64 @@ CASE("rotation representations")
 
         mli_String_free(&str);
 }
+
+CASE("mli_JsonWalk")
+{
+        int64_t val;
+        uint64_t SIZE;
+        double favl;
+        struct mli_Json json = mli_Json_init();
+        struct mli_JsonWalk walk = mli_JsonWalk_init();
+        struct mli_JsonWalk sidewalk = mli_JsonWalk_init();
+        struct mli_String str = mli_String_init();
+        struct mli_String payload = mli_String_init();
+
+        CHECK(mli_String_from_cstr(
+                &str,
+                "{"
+                "\"hans\": 1337, "
+                "\"peter\": \"bla\", "
+                "\"foo\": [42,43,44], "
+                "\"rale\": 3.6"
+                "}"));
+        CHECK(mli_Json_from_string(&json, &str));
+
+        walk = mli_JsonWalk_set(&json);
+        CHECK(mli_JsonWalk_to_key(&walk, "hans"));
+        CHECK(mli_JsonWalk_get_int64(&walk, &val));
+        CHECK(val == 1337);
+
+        walk = mli_JsonWalk_set(&json);
+        CHECK(mli_JsonWalk_to_key(&walk, "peter"));
+        CHECK(mli_JsonWalk_get_string(&walk, &payload));
+        CHECK(mli_String_equal_cstr(&payload, "bla"));
+
+        walk = mli_JsonWalk_set(&json);
+        CHECK(mli_JsonWalk_to_key(&walk, "foo"));
+        CHECK(mli_JsonWalk_get_array_size(&walk, &SIZE));
+        CHECK(SIZE == 3);
+
+        sidewalk = mli_JsonWalk_copy(&walk);
+        CHECK(mli_JsonWalk_to_idx(&sidewalk, 1));
+        CHECK(mli_JsonWalk_get_int64(&sidewalk, &val));
+        CHECK(val == 43);
+
+        sidewalk = mli_JsonWalk_copy(&walk);
+        CHECK(mli_JsonWalk_to_idx(&sidewalk, 0));
+        CHECK(mli_JsonWalk_get_int64(&sidewalk, &val));
+        CHECK(val == 42);
+
+        sidewalk = mli_JsonWalk_copy(&walk);
+        CHECK(mli_JsonWalk_to_idx(&sidewalk, 2));
+        CHECK(mli_JsonWalk_get_int64(&sidewalk, &val));
+        CHECK(val == 44);
+
+        mli_JsonWalk_to_root(&walk);
+        CHECK(mli_JsonWalk_to_key(&walk, "rale"));
+        CHECK(mli_JsonWalk_get_double(&walk, &favl));
+        CHECK_MARGIN(favl, 3.6, 1e-9);
+
+        mli_Json_free(&json);
+        mli_String_free(&str);
+        mli_String_free(&payload);
+}

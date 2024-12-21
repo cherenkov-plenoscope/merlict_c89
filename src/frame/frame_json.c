@@ -163,8 +163,8 @@ int mli_Frame_from_json(
                 "Expected Frame's children to be a json-array '[]'.");
         num_children = json->tokens[token_children].size;
         for (c = 0; c < num_children; c++) {
-                uint64_t token_child =
-                        mli_Json_token_by_index(json, token_children, c);
+                uint64_t token_child = mli_Json__token_by_index_unsafe(
+                        json, token_children, c);
                 struct mli_Frame *child = NULL;
                 uint64_t type;
                 uint64_t token_grandchildren;

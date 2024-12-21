@@ -108,6 +108,21 @@ chk_error:
         return 0;
 }
 
+int mli_Json_string_by_token(
+        const struct mli_Json *json,
+        const uint64_t token,
+        struct mli_String *return_string)
+{
+        const struct jsmntok_t t = json->tokens[token];
+        const uint64_t size = t.end - t.start;
+        chk(mli_String_malloc(return_string, size));
+        memcpy(return_string->array, json->raw.array + t.start, size);
+        return_string->size = size;
+        return 1;
+chk_error:
+        return 0;
+}
+
 int mli_Json_int64_by_token(
         const struct mli_Json *json,
         const uint64_t token,
@@ -272,7 +287,7 @@ chk_error:
         return 0;
 }
 
-uint64_t mli_Json_token_by_index(
+uint64_t mli_Json__token_by_index_unsafe(
         const struct mli_Json *json,
         const uint64_t token,
         const uint64_t index)
@@ -292,6 +307,23 @@ uint64_t mli_Json_token_by_index(
                 child += 1;
         }
         return idx;
+}
+
+int mli_Json_token_by_idx(
+        const struct mli_Json *json,
+        const uint64_t token,
+        const uint64_t idx,
+        uint64_t *idx_token)
+{
+        chk_msgf(
+                (int64_t)idx < json->tokens[token].size,
+                ("Array idx '%lu' is out of range for size '%lu'.",
+                 token,
+                 json->tokens[token].size));
+        (*idx_token) = mli_Json__token_by_index_unsafe(json, token, idx);
+        return 1;
+chk_error:
+        return 0;
 }
 
 int mli_Json_debug_token_fprint(

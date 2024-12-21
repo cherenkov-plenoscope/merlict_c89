@@ -29,7 +29,7 @@ int mli_Json_debug_token_fprint(
         const struct mli_Json *self,
         const uint64_t token);
 
-uint64_t mli_Json_token_by_index(
+uint64_t mli_Json__token_by_index_unsafe(
         const struct mli_Json *json,
         const uint64_t start_token_idx,
         const uint64_t child_idx);
@@ -38,6 +38,12 @@ int mli_Json_token_by_key(
         const uint64_t token,
         const char *key,
         uint64_t *key_token);
+int mli_Json_token_by_idx(
+        const struct mli_Json *json,
+        const uint64_t token,
+        const uint64_t idx,
+        uint64_t *idx_token);
+
 int mli_Json_token_by_key_eprint(
         const struct mli_Json *json,
         const uint64_t token,
@@ -65,6 +71,10 @@ int mli_Json_cstr_by_token(
         const uint64_t token,
         char *return_string,
         const uint64_t return_string_size);
+int mli_Json_string_by_token(
+        const struct mli_Json *json,
+        const uint64_t token,
+        struct mli_String *return_string);
 int mli_Json_int64_by_key(
         const struct mli_Json *json,
         const uint64_t token,

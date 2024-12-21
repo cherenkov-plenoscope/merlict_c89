@@ -31,6 +31,17 @@ chk_error:
         return 0;
 }
 
+int mli_Materials_valid_default_medium(const struct mli_Materials *materials)
+{
+        chk_msg(materials->default_refraction < materials->num_spectra,
+                "Expected default_refraction < num_spectra.");
+        chk_msg(materials->default_absorbtion < materials->num_spectra,
+                "Expected default_absorbtion < num_spectra.");
+        return 1;
+chk_error:
+        return 0;
+}
+
 int mli_Materials_valid_surfaces(const struct mli_Materials *materials)
 {
         uint32_t i = 0u;
@@ -86,6 +97,8 @@ int mli_Materials_valid(const struct mli_Materials *materials)
                 "Expected default-medium to reference a valid medium.");
         chk_msg(mli_Materials_valid_spectra(materials),
                 "Expected spectra to be valid.");
+        chk_msg(mli_Materials_valid_default_medium(materials),
+                "Expected default medium to be valid.");
         chk_msg(mli_Materials_valid_media(materials),
                 "Expected media to be valid.");
         chk_msg(mli_Materials_valid_surfaces(materials),

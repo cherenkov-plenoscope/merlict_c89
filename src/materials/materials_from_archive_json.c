@@ -25,7 +25,8 @@ int mli_Materials_from_Archive__assign_boundary_layers_from_json(
                 "json-object.size.");
 
         for (s = 0; s < materials->num_boundary_layers; s++) {
-                uint64_t token_s_name = mli_Json_token_by_index(json, token, s);
+                uint64_t token_s_name =
+                        mli_Json__token_by_index_unsafe(json, token, s);
                 uint64_t token_s = token_s_name + 1;
 
                 chk_msg(json->tokens[token_s_name].type == JSMN_STRING,

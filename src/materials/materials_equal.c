@@ -88,14 +88,29 @@ int mli_Materials_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b)
 {
-        chk_msg(a->default_medium == b->default_medium,
-                "Different default_medium.");
+        chk_msg(mli_Materials_spectra_equal(a, b), "Different spectra.");
+        chk_msg(mli_Materials_default_medium_equal(a, b),
+                "Different defaull medium.");
+
         chk_msg(mli_Materials_media_equal(a, b), "Different media.");
         chk_msg(mli_Materials_surfaces_equal(a, b), "Different surfaces.");
         chk_msg(mli_Materials_boundary_layers_equal(a, b),
                 "Different boundary_layers.");
         chk_msg(mli_Materials_boundary_layers_equal(a, b),
                 "Different spectra.");
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_Materials_default_medium_equal(
+        const struct mli_Materials *a,
+        const struct mli_Materials *b)
+{
+        chk_msg(a->default_refraction == b->default_refraction,
+                "Different default_refraction.");
+        chk_msg(a->default_absorbtion == b->default_absorbtion,
+                "Different default_absorbtion.");
         return 1;
 chk_error:
         return 0;

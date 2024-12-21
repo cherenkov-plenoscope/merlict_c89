@@ -26,6 +26,9 @@ struct mli_Materials {
         struct mli_FuncInfo *spectra_infos;
         struct mli_String *spectra_names;
 
+        uint64_t default_refraction;
+        uint64_t default_absorbtion;
+
         uint64_t num_surfaces;
         struct mli_Surface *surfaces;
         struct mli_String *surface_names;

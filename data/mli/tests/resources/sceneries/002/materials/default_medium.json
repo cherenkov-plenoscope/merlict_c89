@@ -1,0 +1,4 @@
+{
+    "refraction": "vacuum_refraction",
+    "absorbtion": "vacuum_absorbtion",
+}
