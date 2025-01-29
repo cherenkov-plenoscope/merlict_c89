@@ -28,4 +28,9 @@ int mli_Materials_from_Archive__assign_boundary_layers_from_json(
         const struct mli_Map *medium_names,
         const struct mli_Json *json);
 
+int mli_Materials_from_Archive__assign_default_medium_from_json(
+        struct mli_Materials *materials,
+        struct mli_Map *spectra_names,
+        const struct mli_Json *json);
+
 #endif
