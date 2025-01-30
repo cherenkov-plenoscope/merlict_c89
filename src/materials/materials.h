@@ -11,6 +11,7 @@
 #include "../boundarylayer/boundarylayer.h"
 #include "../string/string.h"
 #include "../spectrum/spectrum_array.h"
+#include "../boundarylayer/boundarylayer_array.h"
 
 struct mli_MaterialsCapacity {
         uint64_t num_spectra;
@@ -23,6 +24,7 @@ struct mli_MaterialsCapacity mli_MaterialsCapacity_init(void);
 
 struct mli_Materials {
         struct mli_SpectrumArray spectra;
+        struct mli_BoundaryLayer2Array layers2;
 
         uint64_t default_refraction;
         uint64_t default_absorbtion;

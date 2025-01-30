@@ -20,6 +20,7 @@ struct mli_Materials mli_Materials_init(void)
         res.default_medium = 0u;
 
         res.spectra = mli_SpectrumArray_init();
+        res.layers2 = mli_BoundaryLayer2Array_init();
 
         res.default_refraction = 0;
         res.default_absorbtion = 0;
@@ -42,6 +43,7 @@ void mli_Materials_free(struct mli_Materials *res)
 {
         uint64_t i;
         mli_SpectrumArray_free(&res->spectra);
+        mli_BoundaryLayer2Array_free(&res->layers2);
 
         for (i = 0; i < res->num_media; i++) {
                 mli_Medium_free(&(res->media[i]));
@@ -79,6 +81,12 @@ int mli_Materials_malloc(
         chk(mli_SpectrumArray_malloc(&res->spectra, rescap.num_spectra));
         for (i = 0; i < res->spectra.size; i++) {
                 res->spectra.array[i] = mli_Spectrum_init();
+        }
+
+        chk(mli_BoundaryLayer2Array_malloc(
+                &res->layers2, rescap.num_boundary_layers));
+        for (i = 0; i < res->layers2.size; i++) {
+                res->layers2.array[i] = mli_BoundaryLayer2_init();
         }
 
         chk_malloc(res->media, struct mli_Medium, res->num_media);

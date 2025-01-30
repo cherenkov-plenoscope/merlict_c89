@@ -26,3 +26,19 @@ void mli_BoundaryLayer_print(const struct mli_BoundaryLayer a)
                 a.outer.surface,
                 a.outer.medium);
 }
+
+void mli_BoundaryLayer2_free(struct mli_BoundaryLayer2 *self)
+{
+        mli_String_free(&self->name);
+}
+
+struct mli_BoundaryLayer2 mli_BoundaryLayer2_init(void)
+{
+        struct mli_BoundaryLayer2 layer;
+        layer.inner.medium = mli_BoundaryLayer_Medium_init();
+        layer.inner.surface = mli_BoundaryLayer_Surface_init();
+        layer.outer.medium = mli_BoundaryLayer_Medium_init();
+        layer.outer.surface = mli_BoundaryLayer_Surface_init();
+        layer.name = mli_String_init();
+        return layer;
+}
