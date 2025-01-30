@@ -117,37 +117,3 @@ chk_error:
         mli_Json_debug_token_fprint(stderr, json, token_surface);
         return 0;
 }
-
-int mli_Materials_from_Archive__assign_default_medium_from_json(
-        struct mli_Materials *materials,
-        struct mli_Map *spectra_names,
-        const struct mli_Json *json)
-{
-        struct mli_JsonWalk walk = mli_JsonWalk_set(json);
-        struct mli_String refraction_key = mli_String_init();
-        struct mli_String absorbtion_key = mli_String_init();
-
-        chk(mli_JsonWalk_to_key(&walk, "refraction"));
-        chk(mli_JsonWalk_get_string(&walk, &refraction_key));
-        chk(mli_Map_get(
-                spectra_names,
-                &refraction_key,
-                &materials->default_refraction));
-
-        mli_JsonWalk_to_root(&walk);
-
-        chk(mli_JsonWalk_to_key(&walk, "absorbtion"));
-        chk(mli_JsonWalk_get_string(&walk, &absorbtion_key));
-        chk(mli_Map_get(
-                spectra_names,
-                &absorbtion_key,
-                &materials->default_absorbtion));
-
-        mli_String_free(&refraction_key);
-        mli_String_free(&absorbtion_key);
-        return 1;
-chk_error:
-        mli_String_free(&refraction_key);
-        mli_String_free(&absorbtion_key);
-        return 0;
-}

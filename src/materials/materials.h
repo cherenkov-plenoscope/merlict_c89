@@ -29,9 +29,6 @@ struct mli_Materials {
 
         struct mli_BoundaryLayer2Array layers2;
 
-        uint64_t default_refraction;
-        uint64_t default_absorbtion;
-
         uint64_t num_surfaces;
         struct mli_Surface *surfaces;
         struct mli_String *surface_names;

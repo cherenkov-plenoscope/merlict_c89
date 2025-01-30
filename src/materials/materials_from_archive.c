@@ -16,34 +16,6 @@
 #include "../surface/surface_json.h"
 #include "../func/func_csv.h"
 
-int mli_Materials_from_Archive__default_medium(
-        struct mli_Materials *materials,
-        struct mli_materials_Names *names,
-        const struct mli_Archive *archive)
-{
-        struct mli_String *filecontent = NULL;
-        struct mli_String filename = mli_String_init();
-        struct mli_Json json = mli_Json_init();
-
-        chk(mli_String_from_cstr(&filename, "materials/default_medium.json"));
-        chk_msg(mli_Archive_get(archive, &filename, &filecontent),
-                "Can not find 'materials/default_medium.json' in archive.");
-        chk_msg(mli_Json_from_string(&json, filecontent),
-                "Failed to parse 'materials/default_medium.json'.");
-
-        chk_msg(mli_Materials_from_Archive__assign_default_medium_from_json(
-                        materials, &names->spectra, &json),
-                "Can not read default meduim from "
-                "'materials/default_medium.json'.");
-
-        mli_String_free(&filename);
-        return 1;
-chk_error:
-        mli_Json_free(&json);
-        mli_String_free(&filename);
-        return 0;
-}
-
 int mli_Materials_from_Archive(
         struct mli_Materials *materials,
         struct mli_materials_Names *names,
@@ -231,10 +203,6 @@ int mli_Materials_from_Archive(
         mli_Json_free(&boundary_layers_json);
 
         /* default medium */
-
-        chk(mli_Materials_from_Archive__default_medium(
-                materials, names, archive));
-
         chk(mli_String_from_cstr(&fixname, "materials/default_medium.txt"));
         chk_msg(mli_Archive_get(archive, &fixname, &default_medium_text),
                 "Can not find 'materials/default_medium.txt' in scenery.");

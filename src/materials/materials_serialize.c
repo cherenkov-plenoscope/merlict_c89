@@ -44,9 +44,6 @@ int mli_Materials_to_io(const struct mli_Materials *res, struct mli_IO *f)
                         1,
                         f);
         }
-        chk_IO_write(&res->default_refraction, sizeof(uint64_t), 1, f);
-        chk_IO_write(&res->default_absorbtion, sizeof(uint64_t), 1, f);
-
         chk_IO_write(&res->default_medium, sizeof(uint64_t), 1, f);
 
         return 1;
@@ -104,9 +101,6 @@ int mli_Materials_from_io(struct mli_Materials *res, struct mli_IO *f)
                         1,
                         f);
         }
-        chk_IO_read(&res->default_refraction, sizeof(uint64_t), 1, f);
-        chk_IO_read(&res->default_absorbtion, sizeof(uint64_t), 1, f);
-
         chk_IO_read(&res->default_medium, sizeof(uint64_t), 1, f);
 
         return 1;

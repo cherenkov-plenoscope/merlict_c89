@@ -24,9 +24,6 @@ struct mli_Materials mli_Materials_init(void)
 
         res.layers2 = mli_BoundaryLayer2Array_init();
 
-        res.default_refraction = 0;
-        res.default_absorbtion = 0;
-
         res.num_media = 0u;
         res.media = NULL;
         res.medium_names = NULL;
