@@ -1,0 +1,4 @@
+{
+    "inner": {"medium": "vacuum", "surface": "perfect_absorber"},
+    "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+}

@@ -1,0 +1,4 @@
+{
+    "inner": {"medium": "vacuum", "surface": "housing"},
+    "outer": {"medium": "vacuum", "surface": "mirror"}
+}

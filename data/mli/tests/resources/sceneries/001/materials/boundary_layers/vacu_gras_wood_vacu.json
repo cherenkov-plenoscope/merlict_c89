@@ -1,0 +1,4 @@
+{
+    "inner": {"medium": "vacuum", "surface": "grass"},
+    "outer": {"medium": "vacuum", "surface": "wood"}
+}

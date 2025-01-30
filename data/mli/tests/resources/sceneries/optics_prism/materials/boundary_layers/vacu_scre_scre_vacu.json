@@ -1,0 +1,4 @@
+{
+    "inner": {"medium": "vacuum", "surface": "screen"},
+    "outer": {"medium": "vacuum", "surface": "screen"}
+}

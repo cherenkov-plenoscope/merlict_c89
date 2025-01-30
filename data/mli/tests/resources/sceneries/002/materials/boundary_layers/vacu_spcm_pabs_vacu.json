@@ -1,0 +1,4 @@
+{
+    "inner": {"medium": "vacuum", "surface": "specular_mirror"},
+    "outer": {"medium": "vacuum", "surface": "perfect_absorber"}
+}
