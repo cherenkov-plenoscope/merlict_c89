@@ -19,10 +19,7 @@ struct mli_Materials mli_Materials_init(void)
         struct mli_Materials res;
         res.default_medium = 0u;
 
-        res.num_spectra = 0;
-        res.spectra = NULL;
-        res.spectra_infos = NULL;
-        res.spectra_names = NULL;
+        res.spectra = mli_SpectrumArray_init();
 
         res.default_refraction = 0;
         res.default_absorbtion = 0;
@@ -44,14 +41,7 @@ struct mli_Materials mli_Materials_init(void)
 void mli_Materials_free(struct mli_Materials *res)
 {
         uint64_t i;
-        for (i = 0; i < res->num_spectra; i++) {
-                mli_Func_free(&(res->spectra[i]));
-                mli_FuncInfo_free(&(res->spectra_infos[i]));
-                mli_String_free(&(res->spectra_names[i]));
-        }
-        free(res->spectra);
-        free(res->spectra_infos);
-        free(res->spectra_names);
+        mli_SpectrumArray_free(&res->spectra);
 
         for (i = 0; i < res->num_media; i++) {
                 mli_Medium_free(&(res->media[i]));
@@ -82,18 +72,13 @@ int mli_Materials_malloc(
 {
         uint64_t i;
         mli_Materials_free(res);
-        res->num_spectra = rescap.num_spectra;
         res->num_surfaces = rescap.num_surfaces;
         res->num_media = rescap.num_media;
         res->num_boundary_layers = rescap.num_boundary_layers;
 
-        chk_malloc(res->spectra, struct mli_Func, res->num_spectra);
-        chk_malloc(res->spectra_infos, struct mli_FuncInfo, res->num_spectra);
-        chk_malloc(res->spectra_names, struct mli_String, res->num_spectra);
-        for (i = 0; i < res->num_spectra; i++) {
-                res->spectra[i] = mli_Func_init();
-                res->spectra_infos[i] = mli_FuncInfo_init();
-                res->spectra_names[i] = mli_String_init();
+        chk(mli_SpectrumArray_malloc(&res->spectra, rescap.num_spectra));
+        for (i = 0; i < res->spectra.size; i++) {
+                res->spectra.array[i] = mli_Spectrum_init();
         }
 
         chk_malloc(res->media, struct mli_Medium, res->num_media);

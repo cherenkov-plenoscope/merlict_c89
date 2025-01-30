@@ -21,8 +21,9 @@ chk_error:
 int mli_Materials_valid_spectra(const struct mli_Materials *materials)
 {
         uint32_t i = 0u;
-        for (i = 0; i < materials->num_spectra; i++) {
-                chk_msg(mli_Func_is_valid(&materials->spectra[i]),
+        for (i = 0; i < materials->spectra.size; i++) {
+                chk_msg(mli_Func_is_valid(
+                                &materials->spectra.array[i].spectrum),
                         "Expected spectrum function to be valid.");
         }
         return 1;
@@ -33,10 +34,10 @@ chk_error:
 
 int mli_Materials_valid_default_medium(const struct mli_Materials *materials)
 {
-        chk_msg(materials->default_refraction < materials->num_spectra,
-                "Expected default_refraction < num_spectra.");
-        chk_msg(materials->default_absorbtion < materials->num_spectra,
-                "Expected default_absorbtion < num_spectra.");
+        chk_msg(materials->default_refraction < materials->spectra.size,
+                "Expected default_refraction < spectra.size.");
+        chk_msg(materials->default_absorbtion < materials->spectra.size,
+                "Expected default_absorbtion < spectra.size.");
         return 1;
 chk_error:
         return 0;

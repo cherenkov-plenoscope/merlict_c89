@@ -62,6 +62,7 @@ module_paths = [
     os.path.join("src", "object"),
     os.path.join("src", "medium"),
     os.path.join("src", "surface"),
+    os.path.join("src", "spectrum"),
     os.path.join("src", "materials"),
     os.path.join("src", "triangle"),
     os.path.join("src", "octree"),

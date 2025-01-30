@@ -10,6 +10,7 @@
 #include "../medium/medium.h"
 #include "../boundarylayer/boundarylayer.h"
 #include "../string/string.h"
+#include "../spectrum/spectrum_array.h"
 
 struct mli_MaterialsCapacity {
         uint64_t num_spectra;
@@ -21,10 +22,7 @@ struct mli_MaterialsCapacity {
 struct mli_MaterialsCapacity mli_MaterialsCapacity_init(void);
 
 struct mli_Materials {
-        uint64_t num_spectra;
-        struct mli_Func *spectra;
-        struct mli_FuncInfo *spectra_infos;
-        struct mli_String *spectra_names;
+        struct mli_SpectrumArray spectra;
 
         uint64_t default_refraction;
         uint64_t default_absorbtion;

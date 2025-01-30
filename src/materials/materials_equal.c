@@ -68,16 +68,12 @@ int mli_Materials_spectra_equal(
         const struct mli_Materials *b)
 {
         uint64_t i = 0u;
-        chk_msg(a->num_spectra == b->num_spectra, "Different 'num_spectra'.");
-        for (i = 0; i < a->num_spectra; i++) {
-                chk_msg(mli_Func_equal(a->spectra[i], b->spectra[i]),
-                        "Different spectral function.");
-                chk_msg(mli_FuncInfo_equal(
-                                &a->spectra_infos[i], &b->spectra_infos[i]),
-                        "Different spectrum name.");
-                chk_msg(mli_String_equal(
-                                &a->spectra_names[i], &b->spectra_names[i]),
-                        "Different spectrum name.");
+        chk_msg(a->spectra.size == b->spectra.size,
+                "Different number of spectra.");
+        for (i = 0; i < a->spectra.size; i++) {
+                chk_msg(mli_Spectrum_equal(
+                                &a->spectra.array[i], &b->spectra.array[i]),
+                        "Spectrum is not equal.");
         }
         return 1;
 chk_error:

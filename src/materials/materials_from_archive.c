@@ -116,10 +116,10 @@ int mli_Materials_from_Archive(
                         struct mli_String *payload =
                                 &archive->textfiles.array[arc_idx];
                         struct mli_IO buff = mli_IO_init();
-                        chk(spc_idx < materials->num_spectra);
+                        chk(spc_idx < materials->spectra.size);
 
                         chk(mli_FuncInfo_malloc(
-                                &materials->spectra_infos[spc_idx]));
+                                &materials->spectra.array[spc_idx].info));
                         chk_dbg;
                         chk(mli_IO_open_memory(&buff));
                         chk_dbg;
@@ -128,9 +128,12 @@ int mli_Materials_from_Archive(
                         mli_IO_rewind(&buff);
                         chk_dbg;
                         chk_msg(mli_Func_from_csv(
-                                        &materials->spectra[spc_idx],
-                                        &materials->spectra_infos[spc_idx].x,
-                                        &materials->spectra_infos[spc_idx].y,
+                                        &materials->spectra.array[spc_idx]
+                                                 .spectrum,
+                                        &materials->spectra.array[spc_idx]
+                                                 .info.x,
+                                        &materials->spectra.array[spc_idx]
+                                                 .info.y,
                                         &buff),
                                 "Failed to parse spectral function from "
                                 "archive.");
@@ -145,7 +148,7 @@ int mli_Materials_from_Archive(
 
                         chk_dbg;
                         chk(mli_String_copy(
-                                &materials->spectra_names[spc_idx],
+                                &materials->spectra.array[spc_idx].name,
                                 &names->spectra.items.array[spc_idx].key));
                         spc_idx += 1u;
                 }
