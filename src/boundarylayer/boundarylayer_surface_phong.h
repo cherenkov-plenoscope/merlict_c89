@@ -10,4 +10,8 @@ struct mli_BoundaryLayer_Surface_Phong {
         double shininess_constant;
 };
 
+int mli_BoundaryLayer_Surface_Phong_equal(
+        const struct mli_BoundaryLayer_Surface_Phong *a,
+        const struct mli_BoundaryLayer_Surface_Phong *b);
+
 #endif

@@ -7,4 +7,9 @@
 struct mli_BoundaryLayer_Surface_Lambertian {
         uint64_t reflection_spectrum;
 };
+
+int mli_BoundaryLayer_Surface_Lambertian_equal(
+        const struct mli_BoundaryLayer_Surface_Lambertian *a,
+        const struct mli_BoundaryLayer_Surface_Lambertian *b);
+
 #endif

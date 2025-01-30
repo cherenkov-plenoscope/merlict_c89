@@ -10,4 +10,8 @@ struct mli_BoundaryLayer_Surface_Cook_Torrance {
         double surface_roughness_constant;
 };
 
+int mli_BoundaryLayer_Surface_Cook_Torrance_equal(
+        const struct mli_BoundaryLayer_Surface_Cook_Torrance *a,
+        const struct mli_BoundaryLayer_Surface_Cook_Torrance *b);
+
 #endif

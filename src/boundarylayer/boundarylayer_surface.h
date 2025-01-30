@@ -25,6 +25,10 @@ struct mli_BoundaryLayer_Surface {
 };
 struct mli_BoundaryLayer_Surface mli_BoundaryLayer_Surface_init(void);
 
+int mli_BoundaryLayer_Surface_equal(
+        const struct mli_BoundaryLayer_Surface *a,
+        const struct mli_BoundaryLayer_Surface *b);
+
 int mli_BoundaryLayer_Surface_type_to_string(
         const uint64_t type,
         struct mli_String *s);

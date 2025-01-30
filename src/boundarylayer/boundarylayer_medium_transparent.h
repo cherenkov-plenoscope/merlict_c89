@@ -8,4 +8,8 @@ struct mli_BoundaryLayerMedium_Transparent {
         uint64_t refraction_spectrum;
 };
 
+int mli_BoundaryLayer_Medium_Transparent_equal(
+        const struct mli_BoundaryLayerMedium_Transparent *a,
+        const struct mli_BoundaryLayerMedium_Transparent *b);
+
 #endif

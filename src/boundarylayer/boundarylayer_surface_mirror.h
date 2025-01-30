@@ -7,4 +7,9 @@
 struct mli_BoundaryLayer_Surface_Mirror {
         uint64_t reflection_spectrum;
 };
+
+int mli_BoundaryLayer_Surface_Mirror_equal(
+        const struct mli_BoundaryLayer_Surface_Mirror *a,
+        const struct mli_BoundaryLayer_Surface_Mirror *b);
+
 #endif

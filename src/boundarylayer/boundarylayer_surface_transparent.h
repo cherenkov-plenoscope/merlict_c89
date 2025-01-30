@@ -7,4 +7,9 @@
 struct mli_BoundaryLayer_Surface_Transparent {
         uint64_t nothing;
 };
+
+int mli_BoundaryLayer_Surface_Transparent_equal(
+        const struct mli_BoundaryLayer_Surface_Transparent *a,
+        const struct mli_BoundaryLayer_Surface_Transparent *b);
+
 #endif

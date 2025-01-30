@@ -18,6 +18,10 @@ struct mli_BoundaryLayer_Medium {
 
 struct mli_BoundaryLayer_Medium mli_BoundaryLayer_Medium_init(void);
 
+int mli_BoundaryLayer_Medium_equal(
+        const struct mli_BoundaryLayer_Medium *a,
+        const struct mli_BoundaryLayer_Medium *b);
+
 int mli_BoundaryLayer_Medium_type_to_string(
         const uint64_t type,
         struct mli_String *s);
