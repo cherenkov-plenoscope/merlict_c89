@@ -1,4 +1,5 @@
 {
-    "refraction": [[200e-9, 1.0], [1.2e-6, 1.0]],
-    "absorbtion": [[200e-9, 1e99], [1.2e-6, 1e99]]
+    "type": "transparent",
+    "refraction_spectrum": "vacuum_refraction",
+    "absorbtion_spectrum": "vacuum_absorbtion"
 }

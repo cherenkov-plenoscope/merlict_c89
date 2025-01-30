@@ -21,4 +21,9 @@ int mli_BoundaryLayer_Surface_Transparent_from_io(
         struct mli_BoundaryLayer_Surface_Transparent *self,
         struct mli_IO *f);
 
+int mli_BoundaryLayer_Surface_Transparent_from_json_string(
+        struct mli_BoundaryLayer_Surface_Transparent *self,
+        const struct mli_Map *spectra_names,
+        const struct mli_String *json_string);
+
 #endif

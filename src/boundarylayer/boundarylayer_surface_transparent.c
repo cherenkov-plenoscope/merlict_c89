@@ -38,3 +38,18 @@ int mli_BoundaryLayer_Surface_Transparent_from_io(
 chk_error:
         return 0;
 }
+
+int mli_BoundaryLayer_Surface_Transparent_from_json_string(
+        struct mli_BoundaryLayer_Surface_Transparent *self,
+        const struct mli_Map *spectra_names,
+        const struct mli_String *json_string)
+{
+        chk(spectra_names != NULL);
+        chk(json_string != NULL);
+
+        self->nothing = 0;
+
+        return 1;
+chk_error:
+        return 0;
+}

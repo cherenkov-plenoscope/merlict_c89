@@ -2,7 +2,9 @@
 #ifndef MLI_BOUNDARYLAYER_MEDIUM_TRANSPARENT_H_
 #define MLI_BOUNDARYLAYER_MEDIUM_TRANSPARENT_H_
 
-#include "../io/io.h"
+struct mli_IO;
+struct mli_Map;
+struct mli_String;
 
 #define MLI_BOUNDARYLAYER_MEDIUM_TYPE_TRANSPARENT 100
 
@@ -20,5 +22,10 @@ int mli_BoundaryLayer_Medium_Transparent_to_io(
 int mli_BoundaryLayer_Medium_Transparent_from_io(
         struct mli_BoundaryLayerMedium_Transparent *self,
         struct mli_IO *f);
+
+int mli_BoundaryLayer_Medium_Transparent_from_json_string(
+        struct mli_BoundaryLayerMedium_Transparent *self,
+        const struct mli_Map *spectra_names,
+        const struct mli_String *json_string);
 
 #endif

@@ -8,7 +8,8 @@
 #include "boundarylayer_surface_phong.h"
 #include "boundarylayer_surface_cook_torrance.h"
 #include "../string/string.h"
-#include "../io/io.h"
+struct mli_IO;
+struct mli_Map;
 
 #define MLI_BOUNDARYLAYER_SURFACE_TYPE_NONE 0
 
@@ -44,5 +45,11 @@ int mli_BoundaryLayer_Surface_to_io(
 int mli_BoundaryLayer_Surface_from_io(
         struct mli_BoundaryLayer_Surface *self,
         struct mli_IO *f);
+
+int mli_BoundaryLayer_Surface_from_json_string_and_name(
+        struct mli_BoundaryLayer_Surface *self,
+        const struct mli_Map *spectra_names,
+        const struct mli_String *json_string,
+        const struct mli_String *name);
 
 #endif

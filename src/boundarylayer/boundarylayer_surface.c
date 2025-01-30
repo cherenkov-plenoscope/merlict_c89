@@ -200,3 +200,54 @@ int mli_BoundaryLayer_Surface_from_io(
 chk_error:
         return 0;
 }
+
+int mli_BoundaryLayer_Surface_from_json_string_and_name(
+        struct mli_BoundaryLayer_Surface *self,
+        const struct mli_Map *spectra_names,
+        const struct mli_String *json_string,
+        const struct mli_String *name)
+{
+        struct mli_Json json = mli_Json_init();
+        struct mli_JsonWalk walk = mli_JsonWalk_init();
+        struct mli_String key = mli_String_init();
+
+        chk_msg(mli_Json_from_string(&json, json_string),
+                "Can't parse surface from json string.");
+        walk = mli_JsonWalk_set(&json);
+
+        chk_msg(mli_JsonWalk_to_key(&walk, "type"),
+                "Expected field 'type' in surface json string.");
+
+        chk_msg(mli_JsonWalk_get_string(&walk, &key),
+                "Expected field 'type' to hold a string.");
+
+        chk_msg(mli_BoundaryLayer_Medium_type_from_string(&key, &self->type),
+                "Can't map surface 'type' from json string.");
+
+        chk_msg(mli_String_copy(&self->name, name), "Can't copy surface name.");
+
+        mli_JsonWalk_to_root(&walk);
+
+        switch (self->type) {
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
+                chk_msg(mli_BoundaryLayer_Surface_Phong_from_json_string(
+                                &self->data.phong, spectra_names, json_string),
+                        "Can't parse 'phong' surface from json.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT:
+                chk_msg(mli_BoundaryLayer_Surface_Transparent_from_json_string(
+                                &self->data.transparent,
+                                spectra_names,
+                                json_string),
+                        "Can't parse 'transparent' surface from json.");
+                break;
+        default:
+                chk_bad("surface-type-id is unknown.");
+        }
+
+        mli_String_free(&key);
+        mli_Json_free(&json);
+        return 1;
+chk_error:
+        return 0;
+}

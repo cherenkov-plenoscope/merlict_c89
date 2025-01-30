@@ -13,6 +13,7 @@ union mli_BoundaryLayer_MediumData {
 };
 
 struct mli_BoundaryLayer_Medium {
+        struct mli_String name;
         uint64_t type;
         union mli_BoundaryLayer_MediumData data;
 };
@@ -36,5 +37,11 @@ int mli_BoundaryLayer_Medium_to_io(
 int mli_BoundaryLayer_Medium_from_io(
         struct mli_BoundaryLayer_Medium *self,
         struct mli_IO *f);
+
+int mli_BoundaryLayer_Medium_from_json_string_and_name(
+        struct mli_BoundaryLayer_Medium *self,
+        const struct mli_Map *spectra_names,
+        const struct mli_String *json_string,
+        const struct mli_String *name);
 
 #endif

@@ -1,4 +1,5 @@
 {
-    "refraction": [[200e-9, 1.49], [1.2e-6, 1.49]],
-    "absorbtion": [[200e-9, 1e99], [1.2e-6, 1e99]]
+    "type": "transparent",
+    "refraction_spectrum": "simple_glass_refraction",
+    "absorbtion_spectrum": "vacuum_absorbtion"
 }
