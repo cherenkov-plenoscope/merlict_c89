@@ -5,6 +5,7 @@
 struct mli_BoundaryLayer_Surface mli_BoundaryLayer_Surface_init(void)
 {
         struct mli_BoundaryLayer_Surface out;
+        out.name = mli_String_init();
         out.type = MLI_BOUNDARYLAYER_SURFACE_TYPE_NONE;
         return out;
 }
@@ -14,6 +15,8 @@ int mli_BoundaryLayer_Surface_equal(
         const struct mli_BoundaryLayer_Surface *b)
 {
         chk_msg(a->type == b->type, "Different types of surface models.");
+        chk_msg(mli_String_equal(&a->name, &b->name),
+                "Different names of surface models.");
 
         switch (a->type) {
         case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
@@ -112,6 +115,9 @@ int mli_BoundaryLayer_Surface_to_io(
         struct mli_MagicId magic = mli_MagicId_init();
         chk(mli_MagicId_set(&magic, "mli_BoundaryLayer_Surface"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
+
+        chk_msg(mli_String_to_io(&self->name, f),
+                "Can't write surface.name to io.");
         chk_IO_write(&self->type, sizeof(uint64_t), 1u, f);
 
         switch (self->type) {
@@ -156,6 +162,9 @@ int mli_BoundaryLayer_Surface_from_io(
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
         chk(mli_MagicId_has_word(&magic, "mli_BoundaryLayer_Surface"));
         mli_MagicId_warn_version(&magic);
+
+        chk_msg(mli_String_from_io(&self->name, f),
+                "Can't read surface.name from io.");
         chk_IO_read(&self->type, sizeof(uint64_t), 1u, f);
 
         switch (self->type) {

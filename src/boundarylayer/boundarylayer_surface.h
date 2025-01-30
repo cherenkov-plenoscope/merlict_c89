@@ -21,6 +21,7 @@ union mli_BoundaryLayer_SurfaceData {
 };
 
 struct mli_BoundaryLayer_Surface {
+        struct mli_String name;
         uint64_t type;
         union mli_BoundaryLayer_SurfaceData data;
 };
