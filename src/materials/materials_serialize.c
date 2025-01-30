@@ -23,6 +23,11 @@ int mli_Materials_to_io(const struct mli_Materials *res, struct mli_IO *f)
         for (i = 0; i < res->spectra.size; i++) {
                 chk(mli_Spectrum_to_io(&res->spectra.array[i], f));
         }
+        /*
+        for (i = 0; i < res->layers2.size; i++) {
+                chk(mli_BoundaryLayer2_to_io(&res->layers2.array[i], f));
+        }*/
+
         for (i = 0; i < res->num_media; i++) {
                 chk(mli_String_to_io(&res->medium_names[i], f));
                 chk(mli_Medium_to_io(&res->media[i], f));
@@ -72,6 +77,12 @@ int mli_Materials_from_io(struct mli_Materials *res, struct mli_IO *f)
                 chk_msg(mli_Spectrum_from_io(&res->spectra.array[i], f),
                         "Failed to read spectrum.");
         }
+        /*
+        for (i = 0; i < res->layers2.size; i++) {
+                chk_msg(mli_BoundaryLayer2_from_io(&res->layers2.array[i], f),
+                        "Failed to read layer.");
+        }*/
+
         for (i = 0; i < res->num_media; i++) {
                 chk_msg(mli_String_from_io(&res->medium_names[i], f),
                         "Failed to fread medium name.");

@@ -19,6 +19,9 @@ int mli_Materials_media_equal(
 int mli_Materials_boundary_layers_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);
+int mli_Materials_layers2_equal(
+        const struct mli_Materials *a,
+        const struct mli_Materials *b);
 int mli_Materials_default_medium_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);

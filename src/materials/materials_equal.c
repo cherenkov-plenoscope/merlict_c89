@@ -63,6 +63,28 @@ chk_error:
         return 0;
 }
 
+int mli_Materials_layers2_equal(
+        const struct mli_Materials *a,
+        const struct mli_Materials *b)
+{
+        uint32_t i = 0u;
+        chk_msg(a->layers2.size == b->layers2.size,
+                "Different number of boundary layers.");
+        for (i = 0; i < a->layers2.size; i++) {
+                chk_msg(mli_BoundaryLayer2_equal_physics(
+                                &a->layers2.array[i], &b->layers2.array[i]),
+                        "Different boundary layer.");
+                chk_msg(mli_String_equal(
+                                &a->layers2.array[i].name,
+                                &b->layers2.array[i].name),
+                        "Different boundary layer name.");
+        }
+        return 1;
+chk_error:
+        fprintf(stderr, "In materials.layers2[%u].\n", i);
+        return 0;
+}
+
 int mli_Materials_spectra_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b)
@@ -92,8 +114,10 @@ int mli_Materials_equal(
         chk_msg(mli_Materials_surfaces_equal(a, b), "Different surfaces.");
         chk_msg(mli_Materials_boundary_layers_equal(a, b),
                 "Different boundary_layers.");
-        chk_msg(mli_Materials_boundary_layers_equal(a, b),
-                "Different spectra.");
+        /*
+        chk_msg(mli_Materials_layers2_equal(a, b),
+                "Different layers2.");
+        */
         return 1;
 chk_error:
         return 0;

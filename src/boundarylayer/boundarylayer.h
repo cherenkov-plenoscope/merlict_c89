@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "../string/string.h"
+#include "../io/io.h"
 
 struct mli_boundarylayer_Side {
         uint32_t surface;
@@ -38,7 +39,15 @@ struct mli_BoundaryLayer2 {
 void mli_BoundaryLayer2_free(struct mli_BoundaryLayer2 *self);
 struct mli_BoundaryLayer2 mli_BoundaryLayer2_init(void);
 
-int mli_BoundaryLayer2_equal(
-        const struct mli_BoundaryLayer2 a,
-        const struct mli_BoundaryLayer2 b);
+int mli_BoundaryLayer2_equal_physics(
+        const struct mli_BoundaryLayer2 *a,
+        const struct mli_BoundaryLayer2 *b);
+
+int mli_BoundaryLayer2_to_io(
+        const struct mli_BoundaryLayer2 *self,
+        struct mli_IO *f);
+int mli_BoundaryLayer2_from_io(
+        struct mli_BoundaryLayer2 *self,
+        struct mli_IO *f);
+
 #endif

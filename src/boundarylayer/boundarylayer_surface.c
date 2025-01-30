@@ -104,3 +104,90 @@ int mli_BoundaryLayer_Surface_type_from_string(
 chk_error:
         return 0;
 }
+
+int mli_BoundaryLayer_Surface_to_io(
+        const struct mli_BoundaryLayer_Surface *self,
+        struct mli_IO *f)
+{
+        struct mli_MagicId magic = mli_MagicId_init();
+        chk(mli_MagicId_set(&magic, "mli_BoundaryLayer_Surface"));
+        chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk_IO_write(&self->type, sizeof(uint64_t), 1u, f);
+
+        switch (self->type) {
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
+                chk_msg(mli_BoundaryLayer_Surface_Phong_to_io(
+                                &self->data.phong, f),
+                        "Can't write 'phong' surface to io.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT:
+                chk_msg(mli_BoundaryLayer_Surface_Transparent_to_io(
+                                &self->data.transparent, f),
+                        "Can't write 'transparent' surface to io.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_LAMBERTIAN:
+                chk_msg(mli_BoundaryLayer_Surface_Lambertian_to_io(
+                                &self->data.lambertian, f),
+                        "Can't write 'lambertian' surface to io.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_MIRROR:
+                chk_msg(mli_BoundaryLayer_Surface_Mirror_to_io(
+                                &self->data.mirror, f),
+                        "Can't write 'mirror' surface to io.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_COOK_TORRANCE:
+                chk_msg(mli_BoundaryLayer_Surface_Cook_Torrance_to_io(
+                                &self->data.cook_torrance, f),
+                        "Can't write 'cook-torrance' surface to io.");
+                break;
+        default:
+                chk_bad("surface-type-id is unknown.");
+        }
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_BoundaryLayer_Surface_from_io(
+        struct mli_BoundaryLayer_Surface *self,
+        struct mli_IO *f)
+{
+        struct mli_MagicId magic;
+        chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
+        chk(mli_MagicId_has_word(&magic, "mli_BoundaryLayer_Surface"));
+        mli_MagicId_warn_version(&magic);
+        chk_IO_read(&self->type, sizeof(uint64_t), 1u, f);
+
+        switch (self->type) {
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
+                chk_msg(mli_BoundaryLayer_Surface_Phong_from_io(
+                                &self->data.phong, f),
+                        "Can't read 'phong' surface from io.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT:
+                chk_msg(mli_BoundaryLayer_Surface_Transparent_from_io(
+                                &self->data.transparent, f),
+                        "Can't read 'transparent' surface from io.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_LAMBERTIAN:
+                chk_msg(mli_BoundaryLayer_Surface_Lambertian_from_io(
+                                &self->data.lambertian, f),
+                        "Can't read 'lambertian' surface from io.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_MIRROR:
+                chk_msg(mli_BoundaryLayer_Surface_Mirror_from_io(
+                                &self->data.mirror, f),
+                        "Can't read 'mirror' surface from io.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_COOK_TORRANCE:
+                chk_msg(mli_BoundaryLayer_Surface_Cook_Torrance_from_io(
+                                &self->data.cook_torrance, f),
+                        "Can't read 'cook-torrance' surface from io.");
+                break;
+        default:
+                chk_bad("surface-type-id is unknown.");
+        }
+        return 1;
+chk_error:
+        return 0;
+}

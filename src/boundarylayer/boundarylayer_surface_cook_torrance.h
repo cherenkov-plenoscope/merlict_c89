@@ -2,6 +2,8 @@
 #ifndef MLI_BOUNDARYLAYER_SURFACE_COOK_TORRANCE_H_
 #define MLI_BOUNDARYLAYER_SURFACE_COOK_TORRANCE_H_
 
+#include "../io/io.h"
+
 #define MLI_BOUNDARYLAYER_SURFACE_TYPE_COOK_TORRANCE 5000
 
 struct mli_BoundaryLayer_Surface_Cook_Torrance {
@@ -13,5 +15,12 @@ struct mli_BoundaryLayer_Surface_Cook_Torrance {
 int mli_BoundaryLayer_Surface_Cook_Torrance_equal(
         const struct mli_BoundaryLayer_Surface_Cook_Torrance *a,
         const struct mli_BoundaryLayer_Surface_Cook_Torrance *b);
+
+int mli_BoundaryLayer_Surface_Cook_Torrance_to_io(
+        const struct mli_BoundaryLayer_Surface_Cook_Torrance *self,
+        struct mli_IO *f);
+int mli_BoundaryLayer_Surface_Cook_Torrance_from_io(
+        struct mli_BoundaryLayer_Surface_Cook_Torrance *self,
+        struct mli_IO *f);
 
 #endif

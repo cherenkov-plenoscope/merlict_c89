@@ -8,6 +8,7 @@
 #include "boundarylayer_surface_phong.h"
 #include "boundarylayer_surface_cook_torrance.h"
 #include "../string/string.h"
+#include "../io/io.h"
 
 #define MLI_BOUNDARYLAYER_SURFACE_TYPE_NONE 0
 
@@ -35,5 +36,12 @@ int mli_BoundaryLayer_Surface_type_to_string(
 int mli_BoundaryLayer_Surface_type_from_string(
         const struct mli_String *s,
         uint64_t *id);
+
+int mli_BoundaryLayer_Surface_to_io(
+        const struct mli_BoundaryLayer_Surface *self,
+        struct mli_IO *f);
+int mli_BoundaryLayer_Surface_from_io(
+        struct mli_BoundaryLayer_Surface *self,
+        struct mli_IO *f);
 
 #endif
