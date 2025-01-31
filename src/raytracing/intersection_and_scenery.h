@@ -11,10 +11,10 @@ const struct mli_Func *mli_raytracing_get_refractive_index_coming_from(
 const struct mli_Func *mli_raytracing_get_refractive_index_going_to(
         const struct mli_Scenery *scenery,
         const struct mli_IntersectionSurfaceNormal *isec);
-struct mli_boundarylayer_Side mli_raytracing_get_side_going_to(
+struct mli_BoundaryLayer_Side mli_raytracing_get_side_going_to(
         const struct mli_Scenery *scenery,
         const struct mli_IntersectionSurfaceNormal *isec);
-struct mli_boundarylayer_Side mli_raytracing_get_side_coming_from(
+struct mli_BoundaryLayer_Side mli_raytracing_get_side_coming_from(
         const struct mli_Scenery *scenery,
         const struct mli_IntersectionSurfaceNormal *isec);
 #endif

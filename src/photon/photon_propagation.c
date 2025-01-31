@@ -13,7 +13,7 @@ struct mli_PhotonInteraction mliPhotonInteraction_from_Intersection(
 {
         struct mli_PhotonInteraction phia;
 
-        struct mli_boundarylayer_Side side_coming_from, side_going_to;
+        struct mli_BoundaryLayer_Side side_coming_from, side_going_to;
 
         side_coming_from = mli_raytracing_get_side_coming_from(scenery, isec);
         side_going_to = mli_raytracing_get_side_going_to(scenery, isec);
@@ -34,26 +34,33 @@ int mli_propagate_photon_phong(
         struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec)
 {
-        double specular;
+        double spectral_reflection_propability;
         double diffuse;
+        double specular;
+
         double rnd;
-        struct mli_boundarylayer_Side side_coming_from =
+        struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(env->scenery, isec);
 
+        const struct mli_BoundaryLayer_Surface_Phong *phong =
+                &env->scenery->materials.surfaces2
+                        .array[side_coming_from.surface]
+                        .data.phong;
+        const struct mli_Func *reflection_spectrum =
+                &env->scenery->materials.spectra
+                        .array[phong->reflection_spectrum]
+                        .spectrum;
+
         chk_msg(mli_Func_evaluate(
-                        &env->scenery->materials
-                                 .surfaces[side_coming_from.surface]
-                                 .diffuse_reflection,
+                        reflection_spectrum,
                         env->photon->wavelength,
-                        &diffuse),
-                "Failed to eval. diffuse reflection for wavelength.");
-        chk_msg(mli_Func_evaluate(
-                        &env->scenery->materials
-                                 .surfaces[side_coming_from.surface]
-                                 .specular_reflection,
-                        env->photon->wavelength,
-                        &specular),
-                "Failed to eval. specular reflection for wavelength.");
+                        &spectral_reflection_propability),
+                "Failed to eval. spectral_reflection_propability for "
+                "wavelength.");
+
+        diffuse = phong->diffuse_weight * spectral_reflection_propability;
+        specular = phong->specular_weight * spectral_reflection_propability;
+
         rnd = mli_Prng_uniform(env->prng);
         /*
                                                       absorbtion
@@ -128,8 +135,23 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
         double *probability_passing)
 {
         double one_over_e_way;
-        const struct mli_boundarylayer_Side side_coming_from =
+        const struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(scenery, isec);
+        const struct mli_BoundaryLayer_Medium *medium_coming_from =
+                &env->scenery->materials.media2.array[side_coming_from.medium];
+
+        switch (medium_coming_from->type) {
+        case MLI_BOUNDARYLAYER_MEDIUM_TYPE_TRANSPARENT:
+                (*probability_passing) = 1.0;
+                break;
+        case MLI_BOUNDARYLAYER_MEDIUM_TYPE_ABSORBER:
+                chk_msg(mli_propagate_photon_phong(env, isec), "Failed Phong.");
+                break;
+        default:
+                chk_bad("Unkown type of medium.");
+                break;
+        }
+
         chk_msg(mli_Func_evaluate(
                         &scenery->materials.media[side_coming_from.medium]
                                  .absorbtion,
@@ -200,23 +222,31 @@ int mli_propagate_photon_interact_with_object(
         struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec)
 {
-        struct mli_Surface surface_coming_from;
-        const struct mli_boundarylayer_Side side_coming_from =
+        const struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(env->scenery, isec);
-        surface_coming_from =
-                env->scenery->materials.surfaces[side_coming_from.surface];
-        switch (surface_coming_from.material) {
-        case MLI_SURFACE_TRANSPARENT:
+        const struct mli_BoundaryLayer_Surface *surface_coming_from =
+                &env->scenery->materials.surfaces2.array[side_coming_from.surface];
+
+        switch (surface_coming_from->type) {
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT:
                 chk_msg(mli_propagate_photon_fresnel_refraction_and_reflection(
                                 env, isec),
                         "Failed Fresnel.");
                 break;
-        case MLI_SURFACE_PHONG:
-                chk_msg(mli_propagate_photon_phong(env, isec),
-                        "Failed Phong-material.");
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
+                chk_msg(mli_propagate_photon_phong(env, isec), "Failed Phong.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_MIRROR:
+                chk_bad("Surface type mirror not yet implemented.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_LAMBERTIAN:
+                chk_bad("Surface type lambertian not yet implemented.");
+                break;
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_COOK_TORRANCE:
+                chk_bad("Surface type cook-torrance not yet implemented.");
                 break;
         default:
-                chk_bad("Unkown material of surface.");
+                chk_bad("Unkown type of surface.");
                 break;
         }
         return 1;
@@ -258,7 +288,7 @@ int mli_propagate_photon_work_on_causal_intersection(
 
         if (ray_does_intersect_surface) {
                 int photon_is_absorbed_before_reaching_surface;
-                struct mli_boundarylayer_Side side_coming_from;
+                struct mli_BoundaryLayer_Side side_coming_from;
 
                 side_coming_from = mli_raytracing_get_side_coming_from(
                         env->scenery, &next_intersection);

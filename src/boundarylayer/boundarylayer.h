@@ -6,22 +6,6 @@
 #include "../string/string.h"
 #include "../io/io.h"
 
-struct mli_boundarylayer_Side {
-        uint32_t surface;
-        uint32_t medium;
-};
-
-struct mli_BoundaryLayer {
-        struct mli_boundarylayer_Side inner;
-        struct mli_boundarylayer_Side outer;
-};
-
-int mli_BoundaryLayer_equal(
-        const struct mli_BoundaryLayer a,
-        const struct mli_BoundaryLayer b);
-
-void mli_BoundaryLayer_print(const struct mli_BoundaryLayer a);
-
 #include "boundarylayer_surface.h"
 #include "boundarylayer_medium.h"
 

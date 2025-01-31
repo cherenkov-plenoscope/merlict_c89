@@ -74,19 +74,29 @@ chk_error:
 int mli_Spectrum_print_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
 {
         uint64_t xamin, xamax, yamin, yamax = 0;
-        MLI_MATH_ARRAY_ARGMIN(self->spectrum.x, self->spectrum.num_points, xamin);
-        MLI_MATH_ARRAY_ARGMAX(self->spectrum.x, self->spectrum.num_points, xamax);
-        MLI_MATH_ARRAY_ARGMIN(self->spectrum.y, self->spectrum.num_points, yamin);
-        MLI_MATH_ARRAY_ARGMAX(self->spectrum.y, self->spectrum.num_points, yamax);
+        MLI_MATH_ARRAY_ARGMIN(
+                self->spectrum.x, self->spectrum.num_points, xamin);
+        MLI_MATH_ARRAY_ARGMAX(
+                self->spectrum.x, self->spectrum.num_points, xamax);
+        MLI_MATH_ARRAY_ARGMIN(
+                self->spectrum.y, self->spectrum.num_points, yamin);
+        MLI_MATH_ARRAY_ARGMAX(
+                self->spectrum.y, self->spectrum.num_points, yamax);
 
         chk(mli_IO_text_write_cstr_format(f, "name: '%s', ", self->name.array));
-        chk(mli_IO_text_write_cstr_format(f, "comment: '%s', ", self->info.comment.array));
-        chk(mli_IO_text_write_cstr_format(f, "num. points: %lu\n", self->spectrum.num_points));
-        chk(mli_IO_text_write_cstr_format(f, "x: [%e, %e), '%s'\n",
+        chk(mli_IO_text_write_cstr_format(
+                f, "comment: '%s', ", self->info.comment.array));
+        chk(mli_IO_text_write_cstr_format(
+                f, "num. points: %lu\n", self->spectrum.num_points));
+        chk(mli_IO_text_write_cstr_format(
+                f,
+                "x: [%e, %e), '%s'\n",
                 self->spectrum.x[xamin],
                 self->spectrum.x[xamax],
                 self->info.x.array));
-        chk(mli_IO_text_write_cstr_format(f, "y: [%e, %e), '%s'\n",
+        chk(mli_IO_text_write_cstr_format(
+                f,
+                "y: [%e, %e), '%s'\n",
                 self->spectrum.y[yamin],
                 self->spectrum.y[yamax],
                 self->info.y.array));

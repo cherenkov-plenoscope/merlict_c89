@@ -8,7 +8,6 @@
 #include "../cstr/cstr.h"
 #include "../io/io_text.h"
 #include "../path/path.h"
-#include "../materials/materials_from_archive_json.h"
 #include "../archive/archive.h"
 #include "../medium/medium_json.h"
 #include "../frame/frame.h"
@@ -130,10 +129,11 @@ int mli_Materials_from_Archive__set_media(
                 }
         }
 
-        chk_msgf(med_idx == materials->media2.size,
+        chk_msgf(
+                med_idx == materials->media2.size,
                 ("Expected to parse %lu media but only found %lu.",
-                materials->media2.size,
-                med_idx));
+                 materials->media2.size,
+                 med_idx));
 
         mli_String_free(&key);
 
@@ -180,10 +180,11 @@ int mli_Materials_from_Archive__set_surfaces(
                 }
         }
 
-        chk_msgf(srf_idx == materials->surfaces2.size,
+        chk_msgf(
+                srf_idx == materials->surfaces2.size,
                 ("Expected to parse %lu surfaces but only found %lu.",
-                materials->surfaces2.size,
-                srf_idx));
+                 materials->surfaces2.size,
+                 srf_idx));
 
         mli_String_free(&key);
 
@@ -212,29 +213,37 @@ int mli_BoundaryLayer2_from_json_string_and_name(
         chk(mli_JsonWalk_to_key(&walk, "inner"));
         chk(mli_JsonWalk_to_key(&walk, "medium"));
         chk(mli_JsonWalk_get_string(&walk, &key));
-        chk_msgf(mli_Map_get(media_names, &key, &self->inner.medium),
-                ("Expected 'inner->medium':'%s' to be in media_names.", key.array));
+        chk_msgf(
+                mli_Map_get(media_names, &key, &self->inner.medium),
+                ("Expected 'inner->medium':'%s' to be in media_names.",
+                 key.array));
 
         walk = mli_JsonWalk_set(&json);
         chk(mli_JsonWalk_to_key(&walk, "inner"));
         chk(mli_JsonWalk_to_key(&walk, "surface"));
         chk(mli_JsonWalk_get_string(&walk, &key));
-        chk_msgf(mli_Map_get(surface_names, &key, &self->inner.surface),
-                ("Expected 'inner->surface':'%s' to be in surface_names.", key.array));
+        chk_msgf(
+                mli_Map_get(surface_names, &key, &self->inner.surface),
+                ("Expected 'inner->surface':'%s' to be in surface_names.",
+                 key.array));
 
         walk = mli_JsonWalk_set(&json);
         chk(mli_JsonWalk_to_key(&walk, "outer"));
         chk(mli_JsonWalk_to_key(&walk, "medium"));
         chk(mli_JsonWalk_get_string(&walk, &key));
-        chk_msgf(mli_Map_get(media_names, &key, &self->outer.medium),
-                ("Expected 'outer->medium':'%s' to be in media_names.", key.array));
+        chk_msgf(
+                mli_Map_get(media_names, &key, &self->outer.medium),
+                ("Expected 'outer->medium':'%s' to be in media_names.",
+                 key.array));
 
         walk = mli_JsonWalk_set(&json);
         chk(mli_JsonWalk_to_key(&walk, "outer"));
         chk(mli_JsonWalk_to_key(&walk, "surface"));
         chk(mli_JsonWalk_get_string(&walk, &key));
-        chk_msgf(mli_Map_get(surface_names, &key, &self->outer.surface),
-                ("Expected 'outer->surface':'%s' to be in surface_names.", key.array));
+        chk_msgf(
+                mli_Map_get(surface_names, &key, &self->outer.surface),
+                ("Expected 'outer->surface':'%s' to be in surface_names.",
+                 key.array));
 
         mli_Json_free(&json);
         mli_String_free(&key);
@@ -262,29 +271,33 @@ int mli_Materials_from_Archive__set_boundary_layers(
                                 &archive->textfiles.array[arc_idx];
 
                         chk_msg(bdl_idx < materials->layers2.size,
-                                "Expected sufficient capacity for boundary layers.");
+                                "Expected sufficient capacity for boundary "
+                                "layers.");
 
                         chk(mli_Materials__key_from_filename(&key, filename));
 
                         chk_msg(mli_BoundaryLayer2_from_json_string_and_name(
-                                &materials->layers2.array[bdl_idx],
-                                &names->surfaces,
-                                &names->media,
-                                payload,
-                                &key),
+                                        &materials->layers2.array[bdl_idx],
+                                        &names->surfaces,
+                                        &names->media,
+                                        payload,
+                                        &key),
                                 "Can't set boundary layer from json string.");
 
-                        chk_msg(mli_Map_insert(&names->boundary_layers, &key, bdl_idx),
-                                "Failed to insert boundary layer name into map.");
+                        chk_msg(mli_Map_insert(
+                                        &names->boundary_layers, &key, bdl_idx),
+                                "Failed to insert boundary layer name into "
+                                "map.");
 
                         bdl_idx += 1u;
                 }
         }
 
-        chk_msgf(bdl_idx == materials->layers2.size,
+        chk_msgf(
+                bdl_idx == materials->layers2.size,
                 ("Expected to parse %lu boundary layers but only found %lu.",
-                materials->layers2.size,
-                bdl_idx));
+                 materials->layers2.size,
+                 bdl_idx));
 
         mli_String_free(&key);
 

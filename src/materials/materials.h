@@ -29,25 +29,13 @@ struct mli_Materials {
         struct mli_MediumArray media2;
         struct mli_BoundaryLayer2Array layers2;
 
-        uint64_t num_surfaces;
-        struct mli_Surface *surfaces;
-        struct mli_String *surface_names;
-
-        uint64_t num_media;
-        struct mli_Medium *media;
-        struct mli_String *medium_names;
-
-        uint64_t num_boundary_layers;
-        struct mli_BoundaryLayer *boundary_layers;
-        struct mli_String *boundary_layer_names;
-
         uint64_t default_medium;
 };
 
 int mli_Materials_malloc(
-        struct mli_Materials *res,
+        struct mli_Materials *self,
         const struct mli_MaterialsCapacity rescap);
-void mli_Materials_free(struct mli_Materials *res);
+void mli_Materials_free(struct mli_Materials *self);
 struct mli_Materials mli_Materials_init(void);
-void mli_Materials_info_fprint(FILE *f, const struct mli_Materials *res);
+int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self);
 #endif

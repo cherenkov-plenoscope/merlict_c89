@@ -42,11 +42,12 @@ int mli_photon_time_of_flight(
         double *time_of_flight)
 {
         double refractive_index;
-        chk_msg(mli_Func_evaluate(
-                        &materials->media[phisec->medium_coming_from]
-                                 .refraction,
-                        wavelength,
-                        &refractive_index),
+        const uint64_t spc_idx =
+                materials->media2.array[phisec->medium_coming_from]
+                        .refraction_spectrum;
+        const struct mli_Func *spc =
+                &materials->spectra.array[spc_idx].spectrum;
+        chk_msg(mli_Func_evaluate(spc, wavelength, &refractive_index),
                 "Failed to eval. refraction for wavelength.");
 
         (*time_of_flight) = (refractive_index * phisec->distance_of_ray) /

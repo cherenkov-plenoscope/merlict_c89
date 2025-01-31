@@ -5,8 +5,32 @@ struct mli_BoundaryLayer_Medium mli_BoundaryLayer_Medium_init(void)
 {
         struct mli_BoundaryLayer_Medium out;
         out.name = mli_String_init();
+        out.refraction_spectrum = 0u;
         out.type = MLI_BOUNDARYLAYER_MEDIUM_TYPE_NONE;
         return out;
+}
+
+int mli_BoundaryLayer_Medium_valid_wrt_materials(
+        const struct mli_BoundaryLayer_Medium *self,
+        const struct mli_Materials *materials)
+{
+        chk_msg(mli_String_valid(&self->name, 1), "name is invalid.");
+
+        chk_msg(self->refraction_spectrum < materials->spectra.size,
+                "refraction_spectrum index is not in materials.");
+
+        switch (self->type) {
+        case MLI_BOUNDARYLAYER_MEDIUM_TYPE_TRANSPARENT:
+                chk_msg(mli_BoundaryLayer_Medium_Transparent_valid_wrt_materials(
+                                &self->data.transparent, materials),
+                        "'transparent' media are not valid.");
+                break;
+        default:
+                chk_badf(("medium-type-id '%lu' is unknown.", self->type));
+        }
+        return 1;
+chk_error:
+        return 0;
 }
 
 int mli_BoundaryLayer_Medium_equal(
@@ -16,6 +40,9 @@ int mli_BoundaryLayer_Medium_equal(
         chk_msg(a->type == b->type, "Different types of medium models.");
         chk_msg(mli_String_equal(&a->name, &b->name),
                 "Different names of medium models.");
+
+        chk_msg(a->refraction_spectrum == b->refraction_spectrum,
+                "Different refraction_spectrum.");
 
         switch (a->type) {
         case MLI_BOUNDARYLAYER_MEDIUM_TYPE_TRANSPARENT:
@@ -73,6 +100,8 @@ int mli_BoundaryLayer_Medium_to_io(
 
         chk_msg(mli_String_to_io(&self->name, f),
                 "Can't write medium.name to io.");
+        chk_IO_write(&self->refraction_spectrum, sizeof(uint64_t), 1u, f);
+
         chk_IO_write(&self->type, sizeof(uint64_t), 1u, f);
 
         switch (self->type) {
@@ -100,6 +129,8 @@ int mli_BoundaryLayer_Medium_from_io(
 
         chk_msg(mli_String_from_io(&self->name, f),
                 "Can't read medium.name from io.");
+        chk_IO_read(&self->refraction_spectrum, sizeof(uint64_t), 1u, f);
+
         chk_IO_read(&self->type, sizeof(uint64_t), 1u, f);
 
         switch (self->type) {
@@ -128,20 +159,24 @@ int mli_BoundaryLayer_Medium_from_json_string_and_name(
 
         chk_msg(mli_Json_from_string(&json, json_string),
                 "Can't parse medium from json string.");
-        walk = mli_JsonWalk_set(&json);
 
+        walk = mli_JsonWalk_set(&json);
+        chk_msg(mli_JsonWalk_to_key(&walk, "refraction_spectrum"),
+                "Expected field 'refraction_spectrum' in medium json string.");
+        chk_msg(mli_JsonWalk_get_string(&walk, &key),
+                "Expected 'refraction_spectrum' to hold a string.");
+        chk_msg(mli_Map_get(spectra_names, &key, &self->refraction_spectrum),
+                "Expected 'refraction_spectrum' to be in spectra_names.");
+
+        walk = mli_JsonWalk_set(&json);
         chk_msg(mli_JsonWalk_to_key(&walk, "type"),
                 "Expected field 'type' in medium json string.");
-
         chk_msg(mli_JsonWalk_get_string(&walk, &key),
                 "Expected field 'type' to hold a string.");
-
         chk_msg(mli_BoundaryLayer_Medium_type_from_string(&key, &self->type),
                 "Can't map medium 'type' from json string.");
 
         chk_msg(mli_String_copy(&self->name, name), "Can't copy medium name.");
-
-        mli_JsonWalk_to_root(&walk);
 
         switch (self->type) {
         case MLI_BOUNDARYLAYER_MEDIUM_TYPE_TRANSPARENT:

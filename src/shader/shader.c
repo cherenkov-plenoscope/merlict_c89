@@ -68,7 +68,7 @@ struct mli_Color mli_raytracing_to_intersection(
         struct mli_Prng *prng)
 {
         struct mli_Color color;
-        struct mli_boundarylayer_Side side;
+        struct mli_BoundaryLayer_Side side;
         double theta;
         double lambert_factor;
 

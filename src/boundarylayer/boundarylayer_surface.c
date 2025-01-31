@@ -221,7 +221,8 @@ int mli_BoundaryLayer_Surface_from_json_string_and_name(
         chk_msg(mli_JsonWalk_get_string(&walk, &key),
                 "Expected field 'type' to hold a string.");
 
-        chk_msgf(mli_BoundaryLayer_Surface_type_from_string(&key, &self->type),
+        chk_msgf(
+                mli_BoundaryLayer_Surface_type_from_string(&key, &self->type),
                 ("Can't map surface 'type':'%s' from json string.", key.array));
 
         chk_msg(mli_String_copy(&self->name, name), "Can't copy surface name.");

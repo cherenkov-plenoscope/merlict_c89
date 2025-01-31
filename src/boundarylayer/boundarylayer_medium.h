@@ -5,6 +5,7 @@
 #include "boundarylayer_medium_transparent.h"
 #include "../string/string.h"
 #include "../io/io.h"
+struct mli_Materials;
 
 #define MLI_BOUNDARYLAYER_MEDIUM_TYPE_NONE 0
 
@@ -14,11 +15,16 @@ union mli_BoundaryLayer_MediumData {
 
 struct mli_BoundaryLayer_Medium {
         struct mli_String name;
+        uint64_t refraction_spectrum;
         uint64_t type;
         union mli_BoundaryLayer_MediumData data;
 };
 
 struct mli_BoundaryLayer_Medium mli_BoundaryLayer_Medium_init(void);
+
+int mli_BoundaryLayer_Medium_valid_wrt_materials(
+        const struct mli_BoundaryLayer_Medium *self,
+        const struct mli_Materials *materials);
 
 int mli_BoundaryLayer_Medium_equal(
         const struct mli_BoundaryLayer_Medium *a,
