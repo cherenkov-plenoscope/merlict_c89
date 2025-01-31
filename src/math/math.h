@@ -32,6 +32,28 @@
                 }                                                              \
         } while (0)
 
+#define MLI_MATH_ARRAY_ARGMIN(arr, num, argmin)                                \
+        do {                                                                   \
+                uint64_t i;                                                    \
+                argmin = 0;                                                    \
+                for (i = 1; i < num; i++) {                                    \
+                        if (arr[i] < arr[argmin]) {                            \
+                                argmin = i;                                    \
+                        }                                                      \
+                }                                                              \
+        } while (0)
+
+#define MLI_MATH_ARRAY_ARGMAX(arr, num, argmax)                                \
+        do {                                                                   \
+                uint64_t i;                                                    \
+                argmax = 0;                                                    \
+                for (i = 1; i < num; i++) {                                    \
+                        if (arr[i] > arr[argmax]) {                            \
+                                argmax = i;                                    \
+                        }                                                      \
+                }                                                              \
+        } while (0)
+
 #define MLI_MATH_UPPER_COMPARE(points, num_points, point_arg, return_idx)      \
         do {                                                                   \
                 uint64_t first, last, middle;                                  \

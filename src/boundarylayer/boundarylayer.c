@@ -35,32 +35,31 @@ void mli_BoundaryLayer2_free(struct mli_BoundaryLayer2 *self)
 struct mli_BoundaryLayer2 mli_BoundaryLayer2_init(void)
 {
         struct mli_BoundaryLayer2 layer;
-        layer.inner.medium = mli_BoundaryLayer_Medium_init();
-        layer.inner.surface = mli_BoundaryLayer_Surface_init();
-        layer.outer.medium = mli_BoundaryLayer_Medium_init();
-        layer.outer.surface = mli_BoundaryLayer_Surface_init();
+        layer.inner.medium = 0;
+        layer.inner.surface = 0;
+        layer.outer.medium = 0;
+        layer.outer.surface = 0;
         layer.name = mli_String_init();
         return layer;
 }
 
-int mli_BoundaryLayer2_equal_physics(
+int mli_BoundaryLayer2_equal(
         const struct mli_BoundaryLayer2 *a,
         const struct mli_BoundaryLayer2 *b)
 {
-        if (!mli_BoundaryLayer_Surface_equal(
-                    &a->inner.surface, &b->inner.surface)) {
+        if (!mli_String_equal(&a->name, &b->name)) {
                 return 0;
         }
-        if (!mli_BoundaryLayer_Medium_equal(
-                    &a->inner.medium, &b->inner.medium)) {
+        if (a->inner.surface != b->inner.surface) {
                 return 0;
         }
-        if (!mli_BoundaryLayer_Surface_equal(
-                    &a->outer.surface, &b->outer.surface)) {
+        if (a->inner.medium != b->inner.medium) {
                 return 0;
         }
-        if (!mli_BoundaryLayer_Medium_equal(
-                    &a->outer.medium, &b->outer.medium)) {
+        if (a->outer.surface != b->outer.surface) {
+                return 0;
+        }
+        if (a->outer.medium != b->outer.medium) {
                 return 0;
         }
         return 1;
@@ -74,14 +73,12 @@ int mli_BoundaryLayer2_to_io(
         chk(mli_MagicId_set(&magic, "mli_BoundaryLayer2"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
-        chk_msg(mli_BoundaryLayer_Medium_to_io(&self->inner.medium, f),
-                "Can't write inner.medium to io.");
-        chk_msg(mli_BoundaryLayer_Surface_to_io(&self->inner.surface, f),
-                "Can't write inner.surface to io.");
-        chk_msg(mli_BoundaryLayer_Medium_to_io(&self->outer.medium, f),
-                "Can't write outer.medium to io.");
-        chk_msg(mli_BoundaryLayer_Surface_to_io(&self->outer.surface, f),
-                "Can't write outer.surface to io.");
+        chk_msg(mli_String_to_io(&self->name, f),
+                "Can't write boundary layer name to io.");
+        chk_IO_write(&self->inner.medium, sizeof(uint64_t), 1u, f);
+        chk_IO_write(&self->inner.surface, sizeof(uint64_t), 1u, f);
+        chk_IO_write(&self->outer.medium, sizeof(uint64_t), 1u, f);
+        chk_IO_write(&self->outer.surface, sizeof(uint64_t), 1u, f);
 
         return 1;
 chk_error:
@@ -97,14 +94,12 @@ int mli_BoundaryLayer2_from_io(
         chk(mli_MagicId_has_word(&magic, "mli_BoundaryLayer2"));
         mli_MagicId_warn_version(&magic);
 
-        chk_msg(mli_BoundaryLayer_Medium_from_io(&self->inner.medium, f),
-                "Can't read inner.medium from io.");
-        chk_msg(mli_BoundaryLayer_Surface_from_io(&self->inner.surface, f),
-                "Can't read inner.surface from io.");
-        chk_msg(mli_BoundaryLayer_Medium_from_io(&self->outer.medium, f),
-                "Can't read outer.medium from io.");
-        chk_msg(mli_BoundaryLayer_Surface_from_io(&self->outer.surface, f),
-                "Can't read outer.surface from io.");
+        chk_msg(mli_String_from_io(&self->name, f),
+                "Can't read boundary layer name from io.");
+        chk_IO_read(&self->inner.medium, sizeof(uint64_t), 1u, f);
+        chk_IO_read(&self->inner.surface, sizeof(uint64_t), 1u, f);
+        chk_IO_read(&self->outer.medium, sizeof(uint64_t), 1u, f);
+        chk_IO_read(&self->outer.surface, sizeof(uint64_t), 1u, f);
 
         return 1;
 chk_error:

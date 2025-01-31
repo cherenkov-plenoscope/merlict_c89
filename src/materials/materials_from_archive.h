@@ -7,6 +7,11 @@
 
 struct mli_Materials;
 struct mli_Archive;
+
+int mli_Materials__key_from_filename(
+        struct mli_String *key,
+        const struct mli_String *filename);
+
 int mli_Materials_from_Archive(
         struct mli_Materials *materials,
         struct mli_materials_Names *names,

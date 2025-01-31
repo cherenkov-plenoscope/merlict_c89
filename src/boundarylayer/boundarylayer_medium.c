@@ -56,7 +56,7 @@ int mli_BoundaryLayer_Medium_type_from_string(
                 (*id) = MLI_BOUNDARYLAYER_MEDIUM_TYPE_TRANSPARENT;
                 return 1;
         } else {
-                chk_bad("medium-type-string is unknown.");
+                chk_badf(("medium-type-string '%s' is unknown.", s->array));
         }
         return 1;
 chk_error:

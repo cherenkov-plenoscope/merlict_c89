@@ -54,6 +54,15 @@ int chk_eprintf(const char *format, ...);
                 goto chk_error;                                                \
         }
 
+#define chk_badf(MSGFMT)                                                       \
+        {                                                                      \
+                chk_eprint_head();                                             \
+                chk_eprintf MSGFMT;                                            \
+                chk_eprintf("\n");                                             \
+                errno = 0;                                                     \
+                goto chk_error;                                                \
+        }
+
 #define chk(C) chk_msg(C, "Not expected.")
 
 #define chk_mem(C) chk_msg((C), "Out of memory.")

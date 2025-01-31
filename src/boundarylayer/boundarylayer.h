@@ -26,8 +26,8 @@ void mli_BoundaryLayer_print(const struct mli_BoundaryLayer a);
 #include "boundarylayer_medium.h"
 
 struct mli_BoundaryLayer_Side {
-        struct mli_BoundaryLayer_Surface surface;
-        struct mli_BoundaryLayer_Medium medium;
+        uint64_t surface;
+        uint64_t medium;
 };
 
 struct mli_BoundaryLayer2 {
@@ -39,7 +39,7 @@ struct mli_BoundaryLayer2 {
 void mli_BoundaryLayer2_free(struct mli_BoundaryLayer2 *self);
 struct mli_BoundaryLayer2 mli_BoundaryLayer2_init(void);
 
-int mli_BoundaryLayer2_equal_physics(
+int mli_BoundaryLayer2_equal(
         const struct mli_BoundaryLayer2 *a,
         const struct mli_BoundaryLayer2 *b);
 

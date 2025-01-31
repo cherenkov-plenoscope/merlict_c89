@@ -221,12 +221,10 @@ int mli_BoundaryLayer_Surface_from_json_string_and_name(
         chk_msg(mli_JsonWalk_get_string(&walk, &key),
                 "Expected field 'type' to hold a string.");
 
-        chk_msg(mli_BoundaryLayer_Medium_type_from_string(&key, &self->type),
-                "Can't map surface 'type' from json string.");
+        chk_msgf(mli_BoundaryLayer_Surface_type_from_string(&key, &self->type),
+                ("Can't map surface 'type':'%s' from json string.", key.array));
 
         chk_msg(mli_String_copy(&self->name, name), "Can't copy surface name.");
-
-        mli_JsonWalk_to_root(&walk);
 
         switch (self->type) {
         case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
@@ -242,7 +240,7 @@ int mli_BoundaryLayer_Surface_from_json_string_and_name(
                         "Can't parse 'transparent' surface from json.");
                 break;
         default:
-                chk_bad("surface-type-id is unknown.");
+                chk_badf(("surface-type-id '%lu' is unknown.", self->type));
         }
 
         mli_String_free(&key);

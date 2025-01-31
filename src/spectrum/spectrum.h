@@ -21,4 +21,6 @@ int mli_Spectrum_equal(
 int mli_Spectrum_to_io(const struct mli_Spectrum *self, struct mli_IO *f);
 int mli_Spectrum_from_io(struct mli_Spectrum *self, struct mli_IO *f);
 
+int mli_Spectrum_print_to_io(const struct mli_Spectrum *self, struct mli_IO *f);
+
 #endif

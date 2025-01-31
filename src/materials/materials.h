@@ -27,7 +27,6 @@ struct mli_Materials {
         struct mli_SpectrumArray spectra;
         struct mli_SurfaceArray surfaces2;
         struct mli_MediumArray media2;
-
         struct mli_BoundaryLayer2Array layers2;
 
         uint64_t num_surfaces;
