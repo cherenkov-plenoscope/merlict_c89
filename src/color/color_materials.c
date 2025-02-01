@@ -4,8 +4,6 @@
 #include "../chk/chk.h"
 #include "colorObserver.h"
 
-MLI_ARRAY_IMPLEMENTATION(mli_ColorSpectrumArray, struct mli_ColorSpectrum)
-
 struct mli_ColorMaterials mli_ColorMaterials_init(void)
 {
         struct mli_ColorMaterials out;

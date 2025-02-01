@@ -3,12 +3,9 @@
 #define MLI_COLOR_MATERIALS_H_
 
 #include <stdint.h>
-#include "../array/array.h"
-#include "../vec/vec.h"
 #include "../materials/materials.h"
 #include "color_spectrum.h"
-
-MLI_ARRAY_DEFINITON(mli_ColorSpectrumArray, struct mli_ColorSpectrum)
+#include "color_spectrum_array.h"
 
 struct mli_ColorMaterials {
         struct mli_ColorSpectrumBinEdges wavelength_bin_edges;
