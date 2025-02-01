@@ -11,10 +11,8 @@
 #include "../path/path.h"
 #include "../archive/archive.h"
 #include "../object/object_wavefront.h"
-#include "../medium/medium_json.h"
 #include "../frame/frame.h"
 #include "../frame/frame_json.h"
-#include "../surface/surface_json.h"
 
 int mli_Geometry_from_archive(
         struct mli_Geometry *geometry,

@@ -9,10 +9,8 @@
 #include "../io/io_text.h"
 #include "../path/path.h"
 #include "../archive/archive.h"
-#include "../medium/medium_json.h"
 #include "../frame/frame.h"
 #include "../frame/frame_json.h"
-#include "../surface/surface_json.h"
 #include "../func/func_csv.h"
 
 int mli_Materials__key_from_filename(

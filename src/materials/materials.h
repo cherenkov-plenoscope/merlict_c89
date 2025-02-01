@@ -6,8 +6,6 @@
 #include "../object/object.h"
 #include "../func/func.h"
 #include "../func/func_info.h"
-#include "../surface/surface.h"
-#include "../medium/medium.h"
 #include "../boundarylayer/boundarylayer.h"
 #include "../string/string.h"
 #include "../spectrum/spectrum_array.h"
