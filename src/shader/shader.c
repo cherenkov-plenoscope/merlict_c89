@@ -156,20 +156,23 @@ struct mli_Color mli_Shader_trace_ray(
         struct mli_Prng *prng)
 {
         /*
+
+        */
+        struct mli_ColorSpectrum spectrum;
+        struct mli_Vec xyz, rgb;
+
         if (tracer->config->have_atmosphere) {
-                return mli_Shader_trace_ray_with_atmosphere(tracer, ray, prng);
+                spectrum =
+                        mli_Shader_trace_ray_with_atmosphere(tracer, ray, prng);
         } else {
-                return mli_Shader_trace_ray_without_atmosphere(
+                spectrum = mli_Shader_trace_ray_without_atmosphere(
                         tracer, ray, prng);
         }
-        */
-        struct mli_ColorSpectrum spectrum =
-                mli_Shader_trace_ray_without_atmosphere(tracer, ray, prng);
 
-        struct mli_Vec xyz = mli_ColorMaterials_ColorSpectrum_to_xyz(
+        xyz = mli_ColorMaterials_ColorSpectrum_to_xyz(
                 tracer->scenery_color_materials, &spectrum);
 
-        struct mli_Vec rgb = mli_Mat_dot_product(
+        rgb = mli_Mat_dot_product(
                 &tracer->scenery_color_materials
                          ->observer_matching_curve_xyz_to_rgb,
                 xyz);

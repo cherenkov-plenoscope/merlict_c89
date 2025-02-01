@@ -49,14 +49,17 @@ void mli_viewer_print_help(void)
         printf("                                  down              [  e  ]\n");
         printf("\n");
         printf("  Field-of-view                 Quality\n");
-        printf("    increace          [  m  ]     super sampling    [  b  ]\n");
-        printf("    decreace          [  n  ]     color/monochrome  [  g  ]\n");
+        printf("    increase          [  m  ]     super sampling    [  b  ]\n");
+        printf("    decrease          [  n  ]     color/monochrome  [  g  ]\n");
         printf("\n");
         printf("  Atmosphere                    Sun\n");
         printf("    on/off            [  0  ]     later daytime     [  9  ]\n");
         printf("    - altitude        [  4  ]     earlier daytime   [  8  ]\n");
         printf("    + altitude        [  5  ]     + latitude        [  7  ]\n");
         printf("                                  - latitude        [  6  ]\n");
+        printf("  Gamma                                                    \n");
+        printf("    + increase        [  x  ]                              \n");
+        printf("    - decrease        [  z  ]                              \n");
         printf("\n");
         mli_version_authors_and_affiliations_fprint(stdout);
 }
@@ -64,7 +67,8 @@ void mli_viewer_print_help(void)
 void mli_viewer_print_info_line(
         const struct mli_View view,
         const struct mli_viewer_Cursor cursor,
-        const struct mli_shader_Config tracer_config)
+        const struct mli_shader_Config tracer_config,
+        const struct mli_Color gamma)
 {
         printf("Help 'h', "
                "Cam: "
@@ -78,6 +82,7 @@ void mli_viewer_print_info_line(
                mli_math_rad2deg(view.rotation.y),
                mli_math_rad2deg(view.rotation.z),
                mli_math_rad2deg(view.field_of_view));
+        printf("gamma %.2f, ", gamma.r);
         printf("Sun: lat % 3.0fdeg, %02d:%02dh, alt % 3.1fkm",
                mli_math_rad2deg(tracer_config.atmosphere.sunLatitude),
                (int)(tracer_config.atmosphere.sunHourAngle),
@@ -201,6 +206,7 @@ int mli_viewer_run_interactive_viewer(
         char timestamp[20];
         struct mli_View view = config.view;
         struct mli_Image img = mli_Image_init();
+        struct mli_Image img_gamma = mli_Image_init();
         struct mli_Image img2 = mli_Image_init();
         const double row_over_column_pixel_ratio = 2.0;
         int update_image = 1;
@@ -208,6 +214,7 @@ int mli_viewer_run_interactive_viewer(
         int print_scenery_info = 0;
         int has_probing_intersection = 0;
         struct mli_IntersectionSurfaceNormal probing_intersection;
+        struct mli_Color gamma = mli_Color_set(1.0, 1.0, 1.0);
 
         chk_msg(mli_ColorMaterials_malloc_from_Materials(
                         &color_materials, &scenery->materials),
@@ -382,6 +389,12 @@ int mli_viewer_run_interactive_viewer(
                                 tracer_config.have_atmosphere =
                                         !tracer_config.have_atmosphere;
                                 break;
+                        case 'x':
+                                gamma = mli_Color_multiply(gamma, 1.05);
+                                break;
+                        case 'z':
+                                gamma = mli_Color_multiply(gamma, 0.95);
+                                break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
                                 update_image = 0;
@@ -406,6 +419,8 @@ int mli_viewer_run_interactive_viewer(
                                         row_over_column_pixel_ratio,
                                         &prng);
                         }
+                        chk(mli_Image_copy(&img, &img_gamma));
+                        mli_Image_power(&img_gamma, gamma);
                 }
                 mli_viewer_clear_screen();
                 if (cursor.active) {
@@ -417,7 +432,7 @@ int mli_viewer_run_interactive_viewer(
                         rows[0] = cursor.row;
                         cols[0] = cursor.col;
                         mli_Image_print_chars(
-                                &img,
+                                &img_gamma,
                                 symbols,
                                 rows,
                                 cols,
@@ -457,9 +472,9 @@ int mli_viewer_run_interactive_viewer(
                                                 &probing_intersection);
                         }
                 } else {
-                        mli_Image_print(&img, print_mode);
+                        mli_Image_print(&img_gamma, print_mode);
                 }
-                mli_viewer_print_info_line(view, cursor, tracer_config);
+                mli_viewer_print_info_line(view, cursor, tracer_config, gamma);
                 if (cursor.active) {
                         printf("Intersection: ");
                         if (has_probing_intersection) {
@@ -511,9 +526,12 @@ int mli_viewer_run_interactive_viewer(
         mli_ColorMaterials_free(&color_materials);
         mli_Image_free(&img);
         mli_Image_free(&img2);
+        mli_Image_free(&img_gamma);
         return 1;
 chk_error:
+        mli_ColorMaterials_free(&color_materials);
         mli_Image_free(&img);
         mli_Image_free(&img2);
+        mli_Image_free(&img_gamma);
         return 0;
 }
