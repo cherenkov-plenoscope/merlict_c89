@@ -7,9 +7,10 @@
 #define MLI_SURFACE_TYPE_COOK_TORRANCE 5000
 
 struct mli_Surface_Cook_Torrance {
-        uint64_t specular_reflection_spectrum;
-        uint64_t diffuse_reflection_spectrum;
-        double surface_roughness_constant;
+        uint64_t reflection_spectrum;
+        double diffuse_weight;
+        double specular_weight;
+        double roughness;
 };
 
 int mli_Surface_Cook_Torrance_equal(
@@ -22,5 +23,10 @@ int mli_Surface_Cook_Torrance_to_io(
 int mli_Surface_Cook_Torrance_from_io(
         struct mli_Surface_Cook_Torrance *self,
         struct mli_IO *f);
+
+int mli_Surface_Cook_Torrance_from_json_string(
+        struct mli_Surface_Cook_Torrance *self,
+        const struct mli_Map *spectra_names,
+        const struct mli_String *json_string);
 
 #endif

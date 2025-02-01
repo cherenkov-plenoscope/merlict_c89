@@ -195,6 +195,13 @@ int mli_Surface_from_json_string_and_name(
                                 json_string),
                         "Can't parse 'transparent' surface from json.");
                 break;
+        case MLI_SURFACE_TYPE_COOK_TORRANCE:
+                chk_msg(mli_Surface_Cook_Torrance_from_json_string(
+                                &self->data.cook_torrance,
+                                spectra_names,
+                                json_string),
+                        "Can't parse 'cook-torrance' surface from json.");
+                break;
         default:
                 chk_badf(("surface-type-id '%lu' is unknown.", self->type));
         }
