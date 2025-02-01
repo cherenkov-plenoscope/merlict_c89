@@ -114,7 +114,7 @@ int mli_Materials_from_Archive__set_media(
 
                         chk(mli_Materials__key_from_filename(&key, filename));
 
-                        chk_msg(mli_BoundaryLayer_Medium_from_json_string_and_name(
+                        chk_msg(mli_Medium_from_json_string_and_name(
                                         &materials->media.array[med_idx],
                                         &names->spectra,
                                         payload,

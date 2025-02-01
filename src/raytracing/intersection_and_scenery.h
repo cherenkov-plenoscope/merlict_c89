@@ -8,7 +8,7 @@
 struct mli_IntersectionLayerSide {
         const struct mli_Surface *surface;
         uint64_t surface_idx;
-        const struct mli_BoundaryLayer_Medium *medium;
+        const struct mli_Medium *medium;
         uint64_t medium_idx;
 };
 

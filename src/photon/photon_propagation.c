@@ -136,7 +136,7 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
 {
         const struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(scenery, isec);
-        const struct mli_BoundaryLayer_Medium *medium_coming_from =
+        const struct mli_Medium *medium_coming_from =
                 &scenery->materials.media.array[side_coming_from.medium];
 
         const struct mli_Func *absorbtion_spectrum =
@@ -274,7 +274,7 @@ int mli_propagate_photon_work_on_causal_intersection(
         double distance_until_absorbtion = 0.0;
         struct mli_IntersectionSurfaceNormal next_intersection;
         struct mli_Func *absorbtion_in_medium_passing_through;
-        struct mli_BoundaryLayer_Medium *medium_passing_through;
+        struct mli_Medium *medium_passing_through;
         struct mli_PhotonInteraction phia;
 
         ray_does_intersect_surface =

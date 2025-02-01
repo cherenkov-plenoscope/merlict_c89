@@ -80,7 +80,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
         struct mli_String _mode = mli_String_init();
         struct mli_Spectrum *spectrum = NULL;
         struct mli_Surface *surface = NULL;
-        struct mli_BoundaryLayer_Medium *medium = NULL;
+        struct mli_Medium *medium = NULL;
         struct mli_BoundaryLayer2 *layer = NULL;
 
         mli_Scenery_free(self);
@@ -136,7 +136,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
         spec += 1;
 
         medium = &self->materials.media.array[0];
-        mli_BoundaryLayer_Medium_free(medium);
+        mli_Medium_free(medium);
         chk(mli_String_from_cstr(&medium->name, "vacuum"));
         medium->refraction_spectrum = 0;
         medium->absorbtion_spectrum = 1;

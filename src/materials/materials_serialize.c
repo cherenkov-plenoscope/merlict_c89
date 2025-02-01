@@ -23,7 +23,7 @@ int mli_Materials_to_io(const struct mli_Materials *self, struct mli_IO *f)
                 chk(mli_Surface_to_io(&self->surfaces.array[i], f));
         }
         for (i = 0; i < self->media.size; i++) {
-                chk(mli_BoundaryLayer_Medium_to_io(&self->media.array[i], f));
+                chk(mli_Medium_to_io(&self->media.array[i], f));
         }
         for (i = 0; i < self->boundary_layers.size; i++) {
                 chk(mli_BoundaryLayer2_to_io(
@@ -61,7 +61,7 @@ int mli_Materials_from_io(struct mli_Materials *self, struct mli_IO *f)
                 chk(mli_Surface_from_io(&self->surfaces.array[i], f));
         }
         for (i = 0; i < self->media.size; i++) {
-                chk(mli_BoundaryLayer_Medium_from_io(&self->media.array[i], f));
+                chk(mli_Medium_from_io(&self->media.array[i], f));
         }
         for (i = 0; i < self->boundary_layers.size; i++) {
                 chk(mli_BoundaryLayer2_from_io(

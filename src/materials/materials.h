@@ -6,12 +6,11 @@
 #include "../object/object.h"
 #include "../func/func.h"
 #include "../func/func_info.h"
-#include "../boundarylayer/boundarylayer.h"
 #include "../string/string.h"
 #include "../spectrum/spectrum_array.h"
 #include "../boundarylayer/boundarylayer_array.h"
 #include "../surface/surface_array.h"
-#include "../boundarylayer/boundarylayer_medium_array.h"
+#include "../medium/medium_array.h"
 
 struct mli_MaterialsCapacity {
         uint64_t num_spectra;

@@ -7,7 +7,7 @@ int mli_Materials_valid_media(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
         for (i = 0; i < self->media.size; i++) {
-                chk_msg(mli_BoundaryLayer_Medium_valid_wrt_materials(
+                chk_msg(mli_Medium_valid_wrt_materials(
                                 &self->media.array[i], self),
                         "Medium is not valid.");
         }

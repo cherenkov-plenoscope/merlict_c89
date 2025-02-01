@@ -54,7 +54,7 @@ int mli_Materials_malloc(
 
         chk(mli_MediumArray_malloc(&self->media, rescap.num_media));
         for (i = 0; i < self->media.size; i++) {
-                self->media.array[i] = mli_BoundaryLayer_Medium_init();
+                self->media.array[i] = mli_Medium_init();
         }
 
         chk(mli_BoundaryLayer2Array_malloc(
@@ -95,7 +95,7 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         }
         fprintf(f, "\n");
         for (i = 0; i < self->media.size; i++) {
-                struct mli_BoundaryLayer_Medium *medium = &self->media.array[i];
+                struct mli_Medium *medium = &self->media.array[i];
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
                 fprintf(f, "%24s ", medium->name.array);

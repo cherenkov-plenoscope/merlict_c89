@@ -9,7 +9,7 @@ int mli_Materials_media_equal(
         uint64_t i = 0u;
         chk_msg(a->media.size == b->media.size, "Different number of media.");
         for (i = 0; i < a->media.size; i++) {
-                chk_msg(mli_BoundaryLayer_Medium_equal(
+                chk_msg(mli_Medium_equal(
                                 &a->media.array[i], &b->media.array[i]),
                         "Medium is different.");
         }

@@ -1,5 +1,5 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
-#include "boundarylayer_medium.h"
+#include "medium.h"
 #include "../io/io.h"
 #include "../magicid/magicid.h"
 #include "../string/string_serialize.h"
@@ -8,23 +8,23 @@
 #include "../json/json_walk.h"
 #include "../map/map.h"
 
-struct mli_BoundaryLayer_Medium mli_BoundaryLayer_Medium_init(void)
+struct mli_Medium mli_Medium_init(void)
 {
-        struct mli_BoundaryLayer_Medium out;
+        struct mli_Medium out;
         out.name = mli_String_init();
         out.refraction_spectrum = 0;
         out.absorbtion_spectrum = 0;
         return out;
 }
 
-void mli_BoundaryLayer_Medium_free(struct mli_BoundaryLayer_Medium *self)
+void mli_Medium_free(struct mli_Medium *self)
 {
         mli_String_free(&self->name);
-        (*self) = mli_BoundaryLayer_Medium_init();
+        (*self) = mli_Medium_init();
 }
 
-int mli_BoundaryLayer_Medium_valid_wrt_materials(
-        const struct mli_BoundaryLayer_Medium *self,
+int mli_Medium_valid_wrt_materials(
+        const struct mli_Medium *self,
         const struct mli_Materials *materials)
 {
         chk_msg(mli_String_valid(&self->name, 1), "name is invalid.");
@@ -39,9 +39,7 @@ chk_error:
         return 0;
 }
 
-int mli_BoundaryLayer_Medium_equal(
-        const struct mli_BoundaryLayer_Medium *a,
-        const struct mli_BoundaryLayer_Medium *b)
+int mli_Medium_equal(const struct mli_Medium *a, const struct mli_Medium *b)
 {
         chk_msg(mli_String_equal(&a->name, &b->name),
                 "Different names of medium models.");
@@ -55,12 +53,10 @@ chk_error:
         return 0;
 }
 
-int mli_BoundaryLayer_Medium_to_io(
-        const struct mli_BoundaryLayer_Medium *self,
-        struct mli_IO *f)
+int mli_Medium_to_io(const struct mli_Medium *self, struct mli_IO *f)
 {
         struct mli_MagicId magic = mli_MagicId_init();
-        chk(mli_MagicId_set(&magic, "mli_BoundaryLayer_Medium"));
+        chk(mli_MagicId_set(&magic, "mli_Medium"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk_msg(mli_String_to_io(&self->name, f),
@@ -73,13 +69,11 @@ chk_error:
         return 0;
 }
 
-int mli_BoundaryLayer_Medium_from_io(
-        struct mli_BoundaryLayer_Medium *self,
-        struct mli_IO *f)
+int mli_Medium_from_io(struct mli_Medium *self, struct mli_IO *f)
 {
         struct mli_MagicId magic;
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
-        chk(mli_MagicId_has_word(&magic, "mli_BoundaryLayer_Medium"));
+        chk(mli_MagicId_has_word(&magic, "mli_Medium"));
         mli_MagicId_warn_version(&magic);
 
         chk_msg(mli_String_from_io(&self->name, f),
@@ -92,8 +86,8 @@ chk_error:
         return 0;
 }
 
-int mli_BoundaryLayer_Medium_from_json_string_and_name(
-        struct mli_BoundaryLayer_Medium *self,
+int mli_Medium_from_json_string_and_name(
+        struct mli_Medium *self,
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string,
         const struct mli_String *name)
@@ -102,7 +96,7 @@ int mli_BoundaryLayer_Medium_from_json_string_and_name(
         struct mli_JsonWalk walk = mli_JsonWalk_init();
         struct mli_String key = mli_String_init();
 
-        mli_BoundaryLayer_Medium_free(self);
+        mli_Medium_free(self);
 
         chk_msg(mli_String_copy(&self->name, name), "Can't copy medium name.");
 

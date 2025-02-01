@@ -31,11 +31,11 @@ struct mli_IntersectionLayer mli_raytracing_get_intersection_layer(
 
         const struct mli_Surface *inner_surface =
                 &scenery->materials.surfaces.array[layer.inner.surface];
-        const struct mli_BoundaryLayer_Medium *inner_medium =
+        const struct mli_Medium *inner_medium =
                 &scenery->materials.media.array[layer.inner.medium];
         const struct mli_Surface *outer_surface =
                 &scenery->materials.surfaces.array[layer.outer.surface];
-        const struct mli_BoundaryLayer_Medium *outer_medium =
+        const struct mli_Medium *outer_medium =
                 &scenery->materials.media.array[layer.outer.medium];
 
         if (isec->from_outside_to_inside) {
