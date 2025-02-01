@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "photon_interaction.h"
 #include "../chk/chk.h"
+#include "../physics/physics.h"
 
 int mli_photon_interaction_type_to_string(const int32_t type, char *s)
 {
@@ -51,7 +52,7 @@ int mli_photon_time_of_flight(
                 "Failed to eval. refraction for wavelength.");
 
         (*time_of_flight) = (refractive_index * phisec->distance_of_ray) /
-                            MLI_PHOTON_VACUUM_SPPED_OF_LIGHT;
+                            MLI_PHYSICS_SPEED_OF_LIGHT_M_PER_S;
         return 1;
 chk_error:
         return 0;

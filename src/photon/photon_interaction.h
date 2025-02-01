@@ -8,7 +8,6 @@
 #include "../vec/vec.h"
 #include "../materials/materials.h"
 
-#define MLI_PHOTON_VACUUM_SPPED_OF_LIGHT 299792458.0
 #define MLI_PHOTON_CREATION 101u
 #define MLI_PHOTON_ABSORBTION 102u
 #define MLI_PHOTON_ABSORBTION_MEDIUM 103u

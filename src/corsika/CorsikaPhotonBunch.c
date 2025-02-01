@@ -1,6 +1,7 @@
 /* Copyright 2016 Sebastian A. Mueller */
 #include "CorsikaPhotonBunch.h"
 #include "../math/math.h"
+#include "../physics/physics.h"
 
 MLI_VECTOR_IMPLEMENTATION(
         mliDynCorsikaPhotonBunch,
@@ -59,7 +60,7 @@ struct mli_Photon mli_corsika_PhotonBunch_to_merlict_photon(
                 The photon's id.
         */
 
-        const double VACUUM_SPPED_OF_LIGHT = 299792458.0;
+        const double vacuum_speed_of_light = MLI_PHYSICS_SPEED_OF_LIGHT_M_PER_S;
         const struct mli_Vec photon_direction_of_motion =
                 mli_corsika_photon_direction_of_motion(bunch);
 
@@ -69,7 +70,7 @@ struct mli_Photon mli_corsika_PhotonBunch_to_merlict_photon(
 
         const double offset =
                 (production_distance_offset +
-                 VACUUM_SPPED_OF_LIGHT *
+                 vacuum_speed_of_light *
                          mli_corsika_photon_relative_arrival_time_on_observation_level(
                                  bunch));
 
