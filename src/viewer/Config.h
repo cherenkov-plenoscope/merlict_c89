@@ -13,6 +13,7 @@ struct mli_viewer_Config {
         uint64_t export_num_rows;
         double step_length;
         struct mli_View view;
+        double gamma;
 
         double aperture_camera_f_stop_ratio;
         double aperture_camera_image_sensor_width;

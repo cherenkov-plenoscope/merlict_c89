@@ -20,7 +20,7 @@ void mli_viewer_print_info_line(
         const struct mli_View view,
         const struct mli_viewer_Cursor cursor,
         const struct mli_shader_Config tracer_config,
-        const struct mli_Color gamma);
+        const double gamma);
 
 void mli_viewer_timestamp_now_19chars(char *buffer);
 

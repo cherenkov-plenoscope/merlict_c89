@@ -68,7 +68,7 @@ void mli_viewer_print_info_line(
         const struct mli_View view,
         const struct mli_viewer_Cursor cursor,
         const struct mli_shader_Config tracer_config,
-        const struct mli_Color gamma)
+        const double gamma)
 {
         printf("Help 'h', "
                "Cam: "
@@ -82,7 +82,7 @@ void mli_viewer_print_info_line(
                mli_math_rad2deg(view.rotation.y),
                mli_math_rad2deg(view.rotation.z),
                mli_math_rad2deg(view.field_of_view));
-        printf("gamma %.2f, ", gamma.r);
+        printf("gamma %.2f, ", gamma);
         printf("Sun: lat % 3.0fdeg, %02d:%02dh, alt % 3.1fkm",
                mli_math_rad2deg(tracer_config.atmosphere.sunLatitude),
                (int)(tracer_config.atmosphere.sunHourAngle),
@@ -214,7 +214,7 @@ int mli_viewer_run_interactive_viewer(
         int print_scenery_info = 0;
         int has_probing_intersection = 0;
         struct mli_IntersectionSurfaceNormal probing_intersection;
-        struct mli_Color gamma = mli_Color_set(1.0, 1.0, 1.0);
+        double gamma = config.gamma;
 
         chk_msg(mli_ColorMaterials_malloc_from_Materials(
                         &color_materials, &scenery->materials),
@@ -390,10 +390,10 @@ int mli_viewer_run_interactive_viewer(
                                         !tracer_config.have_atmosphere;
                                 break;
                         case 'x':
-                                gamma = mli_Color_multiply(gamma, 1.05);
+                                gamma *= 1.05;
                                 break;
                         case 'z':
-                                gamma = mli_Color_multiply(gamma, 0.95);
+                                gamma *= 0.95;
                                 break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
@@ -420,7 +420,8 @@ int mli_viewer_run_interactive_viewer(
                                         &prng);
                         }
                         chk(mli_Image_copy(&img, &img_gamma));
-                        mli_Image_power(&img_gamma, gamma);
+                        mli_Image_power(
+                                &img_gamma, mli_Color_set(gamma, gamma, gamma));
                 }
                 mli_viewer_clear_screen();
                 if (cursor.active) {
