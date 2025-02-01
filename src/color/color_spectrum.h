@@ -1,6 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLI_COLORSPECTRUM_H_
-#define MLI_COLORSPECTRUM_H_
+#ifndef MLI_COLOR_SPECTRUM_H_
+#define MLI_COLOR_SPECTRUM_H_
 
 struct mli_Func;
 

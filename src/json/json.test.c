@@ -149,14 +149,13 @@ CASE("mli_Json_int64_by_key")
         mli_String_free(&str);
 }
 
-CASE("parse mli_Vec and mli_Color")
+CASE("parse mli_Vec")
 {
         uint64_t token;
         struct mli_IO io = mli_IO_init();
         struct mli_Json json = mli_Json_init();
         struct mli_Vec vec1 = mli_Vec_init(0., 0., 0.);
         struct mli_Vec vec2 = mli_Vec_init(0., 0., 0.);
-        struct mli_Color col = mli_Color_set(0., 0., 0.);
 
         CHECK(mli_IO__open_file_cstr(&io, "data/json/vec.json", "r"));
         CHECK(mli_Json_from_io(&json, &io));
@@ -177,12 +176,6 @@ CASE("parse mli_Vec and mli_Color")
         CHECK_MARGIN(vec2.x, 1.2, 1e-6);
         CHECK_MARGIN(vec2.y, 3.4, 1e-6);
         CHECK_MARGIN(vec2.z, -5.6, 1e-6);
-
-        CHECK(mli_Json_token_by_key(&json, 0, "color", &token));
-        CHECK(mli_Color_from_json_token(&col, &json, token + 1));
-        CHECK_MARGIN(col.r, 128., 1e-6);
-        CHECK_MARGIN(col.g, 255., 1e-6);
-        CHECK_MARGIN(col.b, 12., 1e-6);
 
         mli_Json_free(&json);
 }

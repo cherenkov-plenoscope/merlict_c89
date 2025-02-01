@@ -1,6 +1,5 @@
 /* Copyright 2018-2021 Sebastian Achim Mueller */
 #include "atmosphere_json.h"
-#include "../color/color_json.h"
 #include "../chk/chk.h"
 
 int mli_Atmosphere_from_json_token(

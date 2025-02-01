@@ -3,7 +3,6 @@
 #include "../frame/frame_json.h"
 #include "../atmosphere/atmosphere_json.h"
 #include "../chk/chk.h"
-#include "../color/color_json.h"
 
 int mli_shader_Config_from_json_token(
         struct mli_shader_Config *tc,
