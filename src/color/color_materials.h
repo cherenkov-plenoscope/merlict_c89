@@ -3,6 +3,7 @@
 #define MLI_COLOR_MATERIALS_H_
 
 #include <stdint.h>
+#include "../mat/mat.h"
 #include "../materials/materials.h"
 #include "color_spectrum.h"
 #include "color_spectrum_array.h"

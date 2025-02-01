@@ -1,6 +1,10 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "boundarylayer_surface.h"
 #include "../chk/chk.h"
+#include "../magicid/magicid.h"
+#include "../string/string_serialize.h"
+#include "../json/json.h"
+#include "../json/json_walk.h"
 
 struct mli_BoundaryLayer_Surface mli_BoundaryLayer_Surface_init(void)
 {

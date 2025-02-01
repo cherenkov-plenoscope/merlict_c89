@@ -1,5 +1,12 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "boundarylayer_medium.h"
+#include "../io/io.h"
+#include "../magicid/magicid.h"
+#include "../string/string_serialize.h"
+#include "../materials/materials.h"
+#include "../json/json.h"
+#include "../json/json_walk.h"
+#include "../map/map.h"
 
 struct mli_BoundaryLayer_Medium mli_BoundaryLayer_Medium_init(void)
 {

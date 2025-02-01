@@ -2,6 +2,8 @@
 #include "spectrum.h"
 #include <stdlib.h>
 #include "../chk/chk.h"
+#include "../func/func_serialize.h"
+#include "../io/io_text.h"
 
 void mli_Spectrum_free(struct mli_Spectrum *self)
 {

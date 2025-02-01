@@ -3,6 +3,8 @@
 #define MLI_BOUNDARYLAYER_SURFACE_TRANSPARENT_H_
 
 #include "../io/io.h"
+struct mli_Map;
+struct mli_String;
 
 #define MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT 1000
 

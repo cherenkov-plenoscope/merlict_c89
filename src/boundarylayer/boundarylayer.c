@@ -1,6 +1,8 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "boundarylayer.h"
 #include <stdio.h>
+#include "../magicid/magicid.h"
+#include "../string/string_serialize.h"
 
 void mli_BoundaryLayer2_free(struct mli_BoundaryLayer2 *self)
 {

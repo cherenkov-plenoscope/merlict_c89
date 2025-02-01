@@ -1,6 +1,7 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "color_spectrum.h"
 #include "../chk/chk.h"
+#include "../math/math.h"
 #include "../func/func.h"
 #include "../physics/physics.h"
 

@@ -1,5 +1,9 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "boundarylayer_surface_phong.h"
+#include "../magicid/magicid.h"
+#include "../json/json.h"
+#include "../json/json_walk.h"
+#include "../map/map.h"
 
 int mli_BoundaryLayer_Surface_Phong_equal(
         const struct mli_BoundaryLayer_Surface_Phong *a,

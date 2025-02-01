@@ -1,5 +1,6 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "boundarylayer_surface_lambertian.h"
+#include "../magicid/magicid.h"
 
 int mli_BoundaryLayer_Surface_Lambertian_equal(
         const struct mli_BoundaryLayer_Surface_Lambertian *a,

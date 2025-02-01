@@ -3,8 +3,9 @@
 #define MLI_BOUNDARYLAYER_MEDIUM_H_
 
 #include "../string/string.h"
-#include "../io/io.h"
+struct mli_IO;
 struct mli_Materials;
+struct mli_Map;
 
 struct mli_BoundaryLayer_Medium {
         struct mli_String name;

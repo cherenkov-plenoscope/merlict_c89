@@ -5,6 +5,7 @@
 #include "../string/string.h"
 #include "../geometry/geometry.h"
 #include "../json/json.h"
+#include "../json/json_walk.h"
 #include "../cstr/cstr.h"
 #include "../io/io_text.h"
 #include "../path/path.h"
