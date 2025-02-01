@@ -3,7 +3,6 @@
 #define MLI_SURFACE_H_
 
 #include "surface_transparent.h"
-#include "surface_phong.h"
 #include "surface_cook_torrance.h"
 #include "../string/string.h"
 struct mli_IO;
@@ -13,7 +12,6 @@ struct mli_Map;
 
 union mli_SurfaceData {
         struct mli_Surface_Transparent transparent;
-        struct mli_Surface_Phong phong;
         struct mli_Surface_Cook_Torrance cook_torrance;
 };
 

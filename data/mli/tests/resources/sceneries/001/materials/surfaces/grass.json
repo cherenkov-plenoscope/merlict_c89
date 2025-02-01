@@ -1,7 +1,7 @@
 {
-    "type": "phong",
+    "type": "cook-torrance",
     "reflection_spectrum": "grass_reflection",
     "diffuse_weight": 1.0,
     "specular_weight": 0.0,
-    "shininess": 32.0,
+    "roughness": 0.6,
 }

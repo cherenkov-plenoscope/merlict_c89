@@ -1,7 +1,7 @@
 {
-    "type": "phong",
+    "type": "cook-torrance",
     "reflection_spectrum": "perfect_mirror_reflection",
-    "diffuse_weight": 0.0,
     "specular_weight": 1.0,
-    "shininess": 1.0,
+    "diffuse_weight": 0.0,
+    "roughness": 0.0,
 }

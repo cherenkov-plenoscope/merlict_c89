@@ -153,11 +153,11 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                 mli_Surface_free(surface);
                 chk(mli_String_from_cstr_fromat(
                         &surface->name, "surface_%06u", i));
-                surface->type = MLI_SURFACE_TYPE_PHONG;
-                surface->data.phong.reflection_spectrum = spec;
-                surface->data.phong.diffuse_weight = 1.0;
-                surface->data.phong.specular_weight = 0.0;
-                surface->data.phong.shininess = 16.0;
+                surface->type = MLI_SURFACE_TYPE_COOK_TORRANCE;
+                surface->data.cook_torrance.reflection_spectrum = spec;
+                surface->data.cook_torrance.diffuse_weight = 1.0;
+                surface->data.cook_torrance.specular_weight = 0.0;
+                surface->data.cook_torrance.roughness = 0.2;
 
                 layer = &self->materials.boundary_layers.array[i];
                 mli_BoundaryLayer_free(layer);

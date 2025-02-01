@@ -1,5 +1,7 @@
 {
-    "type": "phong",
-    "specular_reflection": [[200e-9, 0.0], [450e-9, 0.11], [550e-9, 0.5], [600e-9, 0.7], [1.2e-6, 0.0]],
-    "diffuse_reflection": [[200e-9, 0.0], [450e-9, 0.11], [550e-9, 0.5], [600e-9, 0.7], [1.2e-6, 0.0]]
+    "type": "cook-torrance",
+    "reflection_spectrum": "grass_reflection",
+    "diffuse_weight": 0.7,
+    "specular_weight": 0.2,
+    "roughness": 0.1,
 }

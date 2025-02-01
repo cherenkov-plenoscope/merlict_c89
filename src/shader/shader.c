@@ -62,7 +62,7 @@ double mli_Shader_trace_sun_obstruction(
                tracer->config->num_trails_global_light_source;
 }
 
-struct mli_ColorSpectrum mli_raytracing_phong(
+struct mli_ColorSpectrum mli_raytracing_cooktorrance(
         const struct mli_Shader *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         const struct mli_IntersectionLayer *intersection_layer,
@@ -121,8 +121,8 @@ struct mli_ColorSpectrum mli_raytracing_to_intersection(
                 tracer->scenery, intersection);
 
         switch (intersection_layer.side_coming_from.surface->type) {
-        case MLI_SURFACE_TYPE_PHONG:
-                spectrum = mli_raytracing_phong(
+        case MLI_SURFACE_TYPE_COOK_TORRANCE:
+                spectrum = mli_raytracing_cooktorrance(
                         tracer, intersection, &intersection_layer, prng);
                 break;
         default:

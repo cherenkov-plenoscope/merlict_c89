@@ -30,7 +30,7 @@ struct mli_PhotonInteraction mliPhotonInteraction_from_Intersection(
         return phia;
 }
 
-int mli_propagate_photon_phong(
+int mli_propagate_photon_cooktorrance(
         struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec)
 {
@@ -42,13 +42,13 @@ int mli_propagate_photon_phong(
         struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(env->scenery, isec);
 
-        const struct mli_Surface_Phong *phong =
+        const struct mli_Surface_Cook_Torrance *cook =
                 &env->scenery->materials.surfaces
                          .array[side_coming_from.surface]
-                         .data.phong;
+                         .data.cook_torrance;
         const struct mli_Func *reflection_spectrum =
                 &env->scenery->materials.spectra
-                         .array[phong->reflection_spectrum]
+                         .array[cook->reflection_spectrum]
                          .spectrum;
 
         chk_msg(mli_Func_evaluate(
@@ -58,8 +58,8 @@ int mli_propagate_photon_phong(
                 "Failed to eval. spectral_reflection_propability for "
                 "wavelength.");
 
-        diffuse = phong->diffuse_weight * spectral_reflection_propability;
-        specular = phong->specular_weight * spectral_reflection_propability;
+        diffuse = cook->diffuse_weight * spectral_reflection_propability;
+        specular = cook->specular_weight * spectral_reflection_propability;
 
         rnd = mli_Prng_uniform(env->prng);
         /*
@@ -84,7 +84,8 @@ int mli_propagate_photon_phong(
                         mli_lambertian_cosine_law_draw_direction_wrt_surface_normal(
                                 env->prng, isec->surface_normal));
                 chk_msg(mli_propagate_photon_env(env),
-                        "Failed to continue after diffuse reflection phong.");
+                        "Failed to continue after diffuse reflection "
+                        "cook_torrance.");
         } else if (rnd < (specular + diffuse)) {
                 chk(mli_PhotonInteractionVector_push_back(
                         env->history,
@@ -98,7 +99,8 @@ int mli_propagate_photon_phong(
                                 env->photon->ray.direction,
                                 isec->surface_normal));
                 chk_msg(mli_propagate_photon_env(env),
-                        "Failed to continue after specular reflection phong.");
+                        "Failed to continue after specular reflection "
+                        "cook_torrance.");
         } else {
                 chk(mli_PhotonInteractionVector_push_back(
                         env->history,
@@ -227,11 +229,9 @@ int mli_propagate_photon_interact_with_object(
                                 env, isec),
                         "Failed Fresnel.");
                 break;
-        case MLI_SURFACE_TYPE_PHONG:
-                chk_msg(mli_propagate_photon_phong(env, isec), "Failed Phong.");
-                break;
         case MLI_SURFACE_TYPE_COOK_TORRANCE:
-                chk_bad("Surface type cook-torrance not yet implemented.");
+                chk_msg(mli_propagate_photon_cooktorrance(env, isec),
+                        "Failed cook-torrance.");
                 break;
         default:
                 chk_bad("Unkown type of surface.");
