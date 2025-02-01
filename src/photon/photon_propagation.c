@@ -233,9 +233,6 @@ int mli_propagate_photon_interact_with_object(
         case MLI_SURFACE_TYPE_MIRROR:
                 chk_bad("Surface type mirror not yet implemented.");
                 break;
-        case MLI_SURFACE_TYPE_LAMBERTIAN:
-                chk_bad("Surface type lambertian not yet implemented.");
-                break;
         case MLI_SURFACE_TYPE_COOK_TORRANCE:
                 chk_bad("Surface type cook-torrance not yet implemented.");
                 break;

@@ -18,11 +18,6 @@ CASE("boundarylayer_surface_model_names")
         CHECK(mli_Surface_type_from_string(&s, &type));
         CHECK(type == MLI_SURFACE_TYPE_TRANSPARENT);
 
-        CHECK(mli_Surface_type_to_string(MLI_SURFACE_TYPE_LAMBERTIAN, &s));
-        CHECK(mli_String_equal_cstr(&s, "lambertian"));
-        CHECK(mli_Surface_type_from_string(&s, &type));
-        CHECK(type == MLI_SURFACE_TYPE_LAMBERTIAN);
-
         CHECK(mli_Surface_type_to_string(MLI_SURFACE_TYPE_MIRROR, &s));
         CHECK(mli_String_equal_cstr(&s, "mirror"));
         CHECK(mli_Surface_type_from_string(&s, &type));

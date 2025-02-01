@@ -36,11 +36,6 @@ int mli_Surface_equal(const struct mli_Surface *a, const struct mli_Surface *b)
                                 &a->data.transparent, &b->data.transparent),
                         "'transparent' surfaces are not equal.");
                 break;
-        case MLI_SURFACE_TYPE_LAMBERTIAN:
-                chk_msg(mli_Surface_Lambertian_equal(
-                                &a->data.lambertian, &b->data.lambertian),
-                        "'lambertian' surfaces are not equal.");
-                break;
         case MLI_SURFACE_TYPE_MIRROR:
                 chk_msg(mli_Surface_Mirror_equal(
                                 &a->data.mirror, &b->data.mirror),
@@ -69,9 +64,6 @@ int mli_Surface_type_to_string(const uint64_t type, struct mli_String *s)
         case MLI_SURFACE_TYPE_TRANSPARENT:
                 chk(mli_String_from_cstr(s, "transparent"));
                 break;
-        case MLI_SURFACE_TYPE_LAMBERTIAN:
-                chk(mli_String_from_cstr(s, "lambertian"));
-                break;
         case MLI_SURFACE_TYPE_MIRROR:
                 chk(mli_String_from_cstr(s, "mirror"));
                 break;
@@ -93,9 +85,6 @@ int mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id)
                 return 1;
         } else if (mli_String_equal_cstr(s, "transparent")) {
                 (*id) = MLI_SURFACE_TYPE_TRANSPARENT;
-                return 1;
-        } else if (mli_String_equal_cstr(s, "lambertian")) {
-                (*id) = MLI_SURFACE_TYPE_LAMBERTIAN;
                 return 1;
         } else if (mli_String_equal_cstr(s, "mirror")) {
                 (*id) = MLI_SURFACE_TYPE_MIRROR;
@@ -130,10 +119,6 @@ int mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f)
                 chk_msg(mli_Surface_Transparent_to_io(
                                 &self->data.transparent, f),
                         "Can't write 'transparent' surface to io.");
-                break;
-        case MLI_SURFACE_TYPE_LAMBERTIAN:
-                chk_msg(mli_Surface_Lambertian_to_io(&self->data.lambertian, f),
-                        "Can't write 'lambertian' surface to io.");
                 break;
         case MLI_SURFACE_TYPE_MIRROR:
                 chk_msg(mli_Surface_Mirror_to_io(&self->data.mirror, f),
@@ -172,11 +157,6 @@ int mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f)
                 chk_msg(mli_Surface_Transparent_from_io(
                                 &self->data.transparent, f),
                         "Can't read 'transparent' surface from io.");
-                break;
-        case MLI_SURFACE_TYPE_LAMBERTIAN:
-                chk_msg(mli_Surface_Lambertian_from_io(
-                                &self->data.lambertian, f),
-                        "Can't read 'lambertian' surface from io.");
                 break;
         case MLI_SURFACE_TYPE_MIRROR:
                 chk_msg(mli_Surface_Mirror_from_io(&self->data.mirror, f),
