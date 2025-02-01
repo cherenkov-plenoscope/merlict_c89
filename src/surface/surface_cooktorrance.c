@@ -1,14 +1,14 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
-#include "surface_cook_torrance.h"
+#include "surface_cooktorrance.h"
 #include "../io/io.h"
 #include "../magicid/magicid.h"
 #include "../json/json.h"
 #include "../json/json_walk.h"
 #include "../map/map.h"
 
-int mli_Surface_Cook_Torrance_equal(
-        const struct mli_Surface_Cook_Torrance *a,
-        const struct mli_Surface_Cook_Torrance *b)
+int mli_Surface_CookTorrance_equal(
+        const struct mli_Surface_CookTorrance *a,
+        const struct mli_Surface_CookTorrance *b)
 {
         if (a->reflection_spectrum != b->reflection_spectrum) {
                 return 0;
@@ -25,12 +25,12 @@ int mli_Surface_Cook_Torrance_equal(
         return 1;
 }
 
-int mli_Surface_Cook_Torrance_to_io(
-        const struct mli_Surface_Cook_Torrance *self,
+int mli_Surface_CookTorrance_to_io(
+        const struct mli_Surface_CookTorrance *self,
         struct mli_IO *f)
 {
         struct mli_MagicId magic = mli_MagicId_init();
-        chk(mli_MagicId_set(&magic, "mli_Surface_Cook_Torrance"));
+        chk(mli_MagicId_set(&magic, "mli_Surface_CookTorrance"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk_IO_write(&self->reflection_spectrum, sizeof(uint64_t), 1u, f);
@@ -43,13 +43,13 @@ chk_error:
         return 0;
 }
 
-int mli_Surface_Cook_Torrance_from_io(
-        struct mli_Surface_Cook_Torrance *self,
+int mli_Surface_CookTorrance_from_io(
+        struct mli_Surface_CookTorrance *self,
         struct mli_IO *f)
 {
         struct mli_MagicId magic;
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
-        chk(mli_MagicId_has_word(&magic, "mli_Surface_Cook_Torrance"));
+        chk(mli_MagicId_has_word(&magic, "mli_Surface_CookTorrance"));
         mli_MagicId_warn_version(&magic);
 
         chk_IO_read(&self->reflection_spectrum, sizeof(uint64_t), 1u, f);
@@ -62,8 +62,8 @@ chk_error:
         return 0;
 }
 
-int mli_Surface_Cook_Torrance_from_json_string(
-        struct mli_Surface_Cook_Torrance *self,
+int mli_Surface_CookTorrance_from_json_string(
+        struct mli_Surface_CookTorrance *self,
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string)
 {

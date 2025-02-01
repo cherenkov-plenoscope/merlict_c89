@@ -14,7 +14,8 @@ int mli_StringVector_from_argc_argv(
         chk_msg(mli_StringVector_malloc(self, argc), "Failed to malloc Argv.");
         for (i = 0; i < argc; i++) {
                 struct mli_String *field = NULL;
-                chk_msg(mli_StringVector_push_back(self, mli_String_init()), "");
+                chk_msg(mli_StringVector_push_back(self, mli_String_init()),
+                        "");
                 field = &self->array[i];
                 chk_msg(mli_String_from_cstr(field, argv[i]),
                         "Failed to malloc string in Argv.");

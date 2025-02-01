@@ -18,10 +18,10 @@ CASE("boundarylayer_surface_model_names")
         CHECK(mli_Surface_type_from_string(&s, &type));
         CHECK(type == MLI_SURFACE_TYPE_TRANSPARENT);
 
-        CHECK(mli_Surface_type_to_string(MLI_SURFACE_TYPE_COOK_TORRANCE, &s));
+        CHECK(mli_Surface_type_to_string(MLI_SURFACE_TYPE_COOKTORRANCE, &s));
         CHECK(mli_String_equal_cstr(&s, "cook-torrance"));
         CHECK(mli_Surface_type_from_string(&s, &type));
-        CHECK(type == MLI_SURFACE_TYPE_COOK_TORRANCE);
+        CHECK(type == MLI_SURFACE_TYPE_COOKTORRANCE);
 
         mli_String_free(&s);
 }

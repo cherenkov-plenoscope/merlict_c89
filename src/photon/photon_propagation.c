@@ -42,7 +42,7 @@ int mli_propagate_photon_cooktorrance(
         struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(env->scenery, isec);
 
-        const struct mli_Surface_Cook_Torrance *cook =
+        const struct mli_Surface_CookTorrance *cook =
                 &env->scenery->materials.surfaces
                          .array[side_coming_from.surface]
                          .data.cook_torrance;
@@ -229,7 +229,7 @@ int mli_propagate_photon_interact_with_object(
                                 env, isec),
                         "Failed Fresnel.");
                 break;
-        case MLI_SURFACE_TYPE_COOK_TORRANCE:
+        case MLI_SURFACE_TYPE_COOKTORRANCE:
                 chk_msg(mli_propagate_photon_cooktorrance(env, isec),
                         "Failed cook-torrance.");
                 break;

@@ -120,7 +120,7 @@ struct mli_ColorSpectrum mli_raytracing_to_intersection_atmosphere(
                 tracer->scenery, intersection);
 
         switch (intersection_layer.side_coming_from.surface->type) {
-        case MLI_SURFACE_TYPE_COOK_TORRANCE:
+        case MLI_SURFACE_TYPE_COOKTORRANCE:
                 spectrum = mli_ColorSpectrum_init_zeros();
                 break;
         default:

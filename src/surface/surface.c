@@ -32,8 +32,8 @@ int mli_Surface_equal(const struct mli_Surface *a, const struct mli_Surface *b)
                                 &a->data.transparent, &b->data.transparent),
                         "'transparent' surfaces are not equal.");
                 break;
-        case MLI_SURFACE_TYPE_COOK_TORRANCE:
-                chk_msg(mli_Surface_Cook_Torrance_equal(
+        case MLI_SURFACE_TYPE_COOKTORRANCE:
+                chk_msg(mli_Surface_CookTorrance_equal(
                                 &a->data.cook_torrance, &b->data.cook_torrance),
                         "'cook-torrance' surfaces are not equal.");
                 break;
@@ -52,7 +52,7 @@ int mli_Surface_type_to_string(const uint64_t type, struct mli_String *s)
         case MLI_SURFACE_TYPE_TRANSPARENT:
                 chk(mli_String_from_cstr(s, "transparent"));
                 break;
-        case MLI_SURFACE_TYPE_COOK_TORRANCE:
+        case MLI_SURFACE_TYPE_COOKTORRANCE:
                 chk(mli_String_from_cstr(s, "cook-torrance"));
                 break;
         default:
@@ -69,7 +69,7 @@ int mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id)
                 (*id) = MLI_SURFACE_TYPE_TRANSPARENT;
                 return 1;
         } else if (mli_String_equal_cstr(s, "cook-torrance")) {
-                (*id) = MLI_SURFACE_TYPE_COOK_TORRANCE;
+                (*id) = MLI_SURFACE_TYPE_COOKTORRANCE;
                 return 1;
         } else {
                 chk_bad("surface-type-string is unknown.");
@@ -95,8 +95,8 @@ int mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f)
                                 &self->data.transparent, f),
                         "Can't write 'transparent' surface to io.");
                 break;
-        case MLI_SURFACE_TYPE_COOK_TORRANCE:
-                chk_msg(mli_Surface_Cook_Torrance_to_io(
+        case MLI_SURFACE_TYPE_COOKTORRANCE:
+                chk_msg(mli_Surface_CookTorrance_to_io(
                                 &self->data.cook_torrance, f),
                         "Can't write 'cook-torrance' surface to io.");
                 break;
@@ -125,8 +125,8 @@ int mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f)
                                 &self->data.transparent, f),
                         "Can't read 'transparent' surface from io.");
                 break;
-        case MLI_SURFACE_TYPE_COOK_TORRANCE:
-                chk_msg(mli_Surface_Cook_Torrance_from_io(
+        case MLI_SURFACE_TYPE_COOKTORRANCE:
+                chk_msg(mli_Surface_CookTorrance_from_io(
                                 &self->data.cook_torrance, f),
                         "Can't read 'cook-torrance' surface from io.");
                 break;
@@ -172,8 +172,8 @@ int mli_Surface_from_json_string_and_name(
                                 json_string),
                         "Can't parse 'transparent' surface from json.");
                 break;
-        case MLI_SURFACE_TYPE_COOK_TORRANCE:
-                chk_msg(mli_Surface_Cook_Torrance_from_json_string(
+        case MLI_SURFACE_TYPE_COOKTORRANCE:
+                chk_msg(mli_Surface_CookTorrance_from_json_string(
                                 &self->data.cook_torrance,
                                 spectra_names,
                                 json_string),

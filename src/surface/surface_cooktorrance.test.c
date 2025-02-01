@@ -1,8 +1,8 @@
 /* Copyright 2019-2024 Sebastian Achim Mueller                                */
 
-CASE("surface_cook_torrance")
+CASE("surface_CookTorrance")
 {
-        struct mli_Surface_Cook_Torrance cook;
+        struct mli_Surface_CookTorrance cook;
         struct mli_String json_string = mli_String_init();
         struct mli_String key = mli_String_init();
         struct mli_Map spectra_names = mli_Map_init();
@@ -20,7 +20,7 @@ CASE("surface_cook_torrance")
                 "\"roughness\": 0.2"
                 "}"));
 
-        CHECK(mli_Surface_Cook_Torrance_from_json_string(
+        CHECK(mli_Surface_CookTorrance_from_json_string(
                 &cook, &spectra_names, &json_string));
 
         CHECK(cook.reflection_spectrum == 1337u);
