@@ -30,6 +30,7 @@ int mli_viewer_export_image(
         const struct mli_View view,
         struct mli_Prng *prng,
         const double object_distance,
+        const double gamma,
         const char *path);
 
 int mli_viewer_run_interactive_viewer(

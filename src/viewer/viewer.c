@@ -142,6 +142,7 @@ int mli_viewer_export_image(
         const struct mli_View view,
         struct mli_Prng *prng,
         const double object_distance,
+        const double gamma,
         const char *path)
 {
         struct mli_Image full = mli_Image_init();
@@ -167,6 +168,7 @@ int mli_viewer_export_image(
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mli_camera_Aperture_render_image(
                 apcam, camera2root_comp, tracer, &full, prng);
+        mli_Image_power(&full, mli_Color_set(gamma, gamma, gamma));
         chk_msg(mli_viewer_image_to_path(&full, path), "Failed to write ppm.");
         mli_Image_free(&full);
         return 1;
@@ -277,6 +279,7 @@ int mli_viewer_run_interactive_viewer(
                                         view,
                                         &prng,
                                         probing_intersection.distance_of_ray,
+                                        gamma,
                                         path));
                                 update_image = 0;
                                 break;
