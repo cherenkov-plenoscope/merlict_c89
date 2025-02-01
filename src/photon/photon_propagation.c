@@ -283,16 +283,14 @@ int mli_propagate_photon_work_on_causal_intersection(
 
         if (ray_does_intersect_surface) {
                 int photon_is_absorbed_before_reaching_surface;
-                struct mli_BoundaryLayer_Side side_coming_from;
+                struct mli_IntersectionLayer layer;
 
-                side_coming_from = mli_raytracing_get_side_coming_from(
+                layer = mli_raytracing_get_intersection_layer(
                         env->scenery, &next_intersection);
-                medium_passing_through =
-                        &env->scenery->materials.media
-                                 .array[side_coming_from.medium];
+
                 absorbtion_in_medium_passing_through =
                         &env->scenery->materials.spectra
-                                 .array[medium_passing_through
+                                 .array[layer.side_coming_from.medium
                                                 ->absorbtion_spectrum]
                                  .spectrum;
 
@@ -316,8 +314,10 @@ int mli_propagate_photon_work_on_causal_intersection(
                         phia.geometry_id = mli_GeometryId_init();
                         phia.from_outside_to_inside = 1;
 
-                        phia.medium_coming_from = side_coming_from.medium;
-                        phia.medium_going_to = side_coming_from.medium;
+                        phia.medium_coming_from =
+                                layer.side_coming_from.medium_idx;
+                        phia.medium_going_to =
+                                layer.side_coming_from.medium_idx;
 
                         chk(mli_PhotonInteractionVector_push_back(
                                 env->history, phia));
@@ -335,8 +335,10 @@ int mli_propagate_photon_work_on_causal_intersection(
                         phia.geometry_id = mli_GeometryId_init();
                         phia.from_outside_to_inside = 1;
 
-                        phia.medium_coming_from = side_coming_from.medium;
-                        phia.medium_going_to = side_coming_from.medium;
+                        phia.medium_coming_from =
+                                layer.side_coming_from.medium_idx;
+                        phia.medium_going_to =
+                                layer.side_coming_from.medium_idx;
 
                         chk(mli_PhotonInteractionVector_push_back(
                                 env->history, phia));

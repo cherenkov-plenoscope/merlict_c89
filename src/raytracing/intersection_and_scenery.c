@@ -5,7 +5,9 @@ struct mli_IntersectionLayerSide mli_IntersectionLayerSide_init(void)
 {
         struct mli_IntersectionLayerSide side;
         side.surface = NULL;
+        side.surface_idx = 0;
         side.medium = NULL;
+        side.medium_idx = 0;
         return side;
 }
 
@@ -39,15 +41,23 @@ struct mli_IntersectionLayer mli_raytracing_get_intersection_layer(
         if (isec->from_outside_to_inside) {
                 ilay.side_coming_from.surface = outer_surface;
                 ilay.side_coming_from.medium = outer_medium;
+                ilay.side_coming_from.surface_idx = layer.outer.surface;
+                ilay.side_coming_from.medium_idx = layer.outer.medium;
 
                 ilay.side_going_to.surface = inner_surface;
                 ilay.side_going_to.medium = inner_medium;
+                ilay.side_going_to.surface_idx = layer.inner.surface;
+                ilay.side_going_to.medium_idx = layer.inner.medium;
         } else {
                 ilay.side_coming_from.surface = inner_surface;
                 ilay.side_coming_from.medium = inner_medium;
+                ilay.side_coming_from.surface_idx = layer.inner.surface;
+                ilay.side_coming_from.medium_idx = layer.inner.medium;
 
                 ilay.side_going_to.surface = outer_surface;
                 ilay.side_going_to.medium = outer_medium;
+                ilay.side_going_to.surface_idx = layer.outer.surface;
+                ilay.side_going_to.medium_idx = layer.outer.medium;
         }
 
         return ilay;

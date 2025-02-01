@@ -65,6 +65,10 @@ CASE("focussing_a_parallel_beam")
                         scenery.geometry.robject_ids[final_intersection
                                                              .geometry_id.robj];
 
+                /*
+                mli_PhotonInteractionVector_print(&photon_history, &scenery);
+                */
+
                 if (final_robj_id == 42) {
                         count_reaching_screen += 1.0;
 
@@ -78,6 +82,7 @@ CASE("focussing_a_parallel_beam")
                 }
         }
         fraction_reaching_screen = count_reaching_screen / (double)NUM_PHOTONS;
+
         CHECK(fraction_reaching_screen < 0.99);
         CHECK(fraction_reaching_screen > 0.95);
 
