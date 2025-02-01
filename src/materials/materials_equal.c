@@ -27,7 +27,7 @@ int mli_Materials_surfaces_equal(
         chk_msg(a->surfaces.size == b->surfaces.size,
                 "Different number of surfaces.");
         for (i = 0; i < a->surfaces.size; i++) {
-                chk_msg(mli_BoundaryLayer_Surface_equal(
+                chk_msg(mli_Surface_equal(
                                 &a->surfaces.array[i], &b->surfaces.array[i]),
                         "Surface is different.");
         }

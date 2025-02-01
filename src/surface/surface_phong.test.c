@@ -2,7 +2,7 @@
 
 CASE("boundarylayer_surface_phong")
 {
-        struct mli_BoundaryLayer_Surface_Phong phong;
+        struct mli_Surface_Phong phong;
         struct mli_String json_string = mli_String_init();
         struct mli_String key = mli_String_init();
         struct mli_Map spectra_names = mli_Map_init();
@@ -20,7 +20,7 @@ CASE("boundarylayer_surface_phong")
                 "\"shininess\": 32.0"
                 "}"));
 
-        CHECK(mli_BoundaryLayer_Surface_Phong_from_json_string(
+        CHECK(mli_Surface_Phong_from_json_string(
                 &phong, &spectra_names, &json_string));
 
         CHECK(phong.reflection_spectrum == 1337u);

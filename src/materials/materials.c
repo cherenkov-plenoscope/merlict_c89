@@ -49,7 +49,7 @@ int mli_Materials_malloc(
 
         chk(mli_SurfaceArray_malloc(&self->surfaces, rescap.num_surfaces));
         for (i = 0; i < self->surfaces.size; i++) {
-                self->surfaces.array[i] = mli_BoundaryLayer_Surface_init();
+                self->surfaces.array[i] = mli_Surface_init();
         }
 
         chk(mli_MediumArray_malloc(&self->media, rescap.num_media));
@@ -114,11 +114,9 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         }
         fprintf(f, "\n");
         for (i = 0; i < self->surfaces.size; i++) {
-                struct mli_BoundaryLayer_Surface *surface =
-                        &self->surfaces.array[i];
+                struct mli_Surface *surface = &self->surfaces.array[i];
                 struct mli_String tmp = mli_String_init();
-                chk(mli_BoundaryLayer_Surface_type_to_string(
-                        surface->type, &tmp));
+                chk(mli_Surface_type_to_string(surface->type, &tmp));
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
                 fprintf(f, "%24s ", surface->name.array);

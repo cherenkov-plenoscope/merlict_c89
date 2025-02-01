@@ -1,13 +1,13 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
-#include "boundarylayer_surface_phong.h"
+#include "surface_phong.h"
 #include "../magicid/magicid.h"
 #include "../json/json.h"
 #include "../json/json_walk.h"
 #include "../map/map.h"
 
-int mli_BoundaryLayer_Surface_Phong_equal(
-        const struct mli_BoundaryLayer_Surface_Phong *a,
-        const struct mli_BoundaryLayer_Surface_Phong *b)
+int mli_Surface_Phong_equal(
+        const struct mli_Surface_Phong *a,
+        const struct mli_Surface_Phong *b)
 {
         if (a->reflection_spectrum != b->reflection_spectrum) {
                 return 0;
@@ -24,12 +24,12 @@ int mli_BoundaryLayer_Surface_Phong_equal(
         return 1;
 }
 
-int mli_BoundaryLayer_Surface_Phong_to_io(
-        const struct mli_BoundaryLayer_Surface_Phong *self,
+int mli_Surface_Phong_to_io(
+        const struct mli_Surface_Phong *self,
         struct mli_IO *f)
 {
         struct mli_MagicId magic = mli_MagicId_init();
-        chk(mli_MagicId_set(&magic, "mli_BoundaryLayer_Surface_Phong"));
+        chk(mli_MagicId_set(&magic, "mli_Surface_Phong"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk_IO_write(&self->reflection_spectrum, sizeof(uint64_t), 1u, f);
@@ -42,13 +42,11 @@ chk_error:
         return 0;
 }
 
-int mli_BoundaryLayer_Surface_Phong_from_io(
-        struct mli_BoundaryLayer_Surface_Phong *self,
-        struct mli_IO *f)
+int mli_Surface_Phong_from_io(struct mli_Surface_Phong *self, struct mli_IO *f)
 {
         struct mli_MagicId magic;
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
-        chk(mli_MagicId_has_word(&magic, "mli_BoundaryLayer_Surface_Phong"));
+        chk(mli_MagicId_has_word(&magic, "mli_Surface_Phong"));
         mli_MagicId_warn_version(&magic);
 
         chk_IO_read(&self->reflection_spectrum, sizeof(uint64_t), 1u, f);
@@ -61,8 +59,8 @@ chk_error:
         return 0;
 }
 
-int mli_BoundaryLayer_Surface_Phong_from_json_string(
-        struct mli_BoundaryLayer_Surface_Phong *self,
+int mli_Surface_Phong_from_json_string(
+        struct mli_Surface_Phong *self,
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string)
 {

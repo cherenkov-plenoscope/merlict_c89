@@ -49,12 +49,12 @@ CASE("simple propagation")
         CHECK(ilayer.side_going_to.medium ==
               &scenery.materials.media.array[MED_GLASS]);
         CHECK(ilayer.side_going_to.surface->type ==
-              MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT);
+              mli_Surface_TYPE_TRANSPARENT);
 
         CHECK(ilayer.side_coming_from.medium ==
               &scenery.materials.media.array[MED_VACUUM]);
         CHECK(ilayer.side_coming_from.surface->type ==
-              MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT);
+              mli_Surface_TYPE_TRANSPARENT);
 
         CHECK(mli_PhotonInteractionVector_malloc(&history, max_interactions));
 

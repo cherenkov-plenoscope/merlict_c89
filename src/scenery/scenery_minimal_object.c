@@ -79,7 +79,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
         struct mli_String _path = mli_String_init();
         struct mli_String _mode = mli_String_init();
         struct mli_Spectrum *spectrum = NULL;
-        struct mli_BoundaryLayer_Surface *surface = NULL;
+        struct mli_Surface *surface = NULL;
         struct mli_BoundaryLayer_Medium *medium = NULL;
         struct mli_BoundaryLayer2 *layer = NULL;
 
@@ -150,10 +150,10 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                         &spectrum->spectrum, mli_Color_random_uniform(&prng)));
 
                 surface = &self->materials.surfaces.array[i];
-                mli_BoundaryLayer_Surface_free(surface);
+                mli_Surface_free(surface);
                 chk(mli_String_from_cstr_fromat(
                         &surface->name, "surface_%06u", i));
-                surface->type = MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG;
+                surface->type = mli_Surface_TYPE_PHONG;
                 surface->data.phong.reflection_spectrum = spec;
                 surface->data.phong.diffuse_weight = 1.0;
                 surface->data.phong.specular_weight = 0.0;

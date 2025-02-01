@@ -165,7 +165,7 @@ int mli_Materials_from_Archive__set_surfaces(
 
                         chk(mli_Materials__key_from_filename(&key, filename));
 
-                        chk_msg(mli_BoundaryLayer_Surface_from_json_string_and_name(
+                        chk_msg(mli_Surface_from_json_string_and_name(
                                         &materials->surfaces.array[srf_idx],
                                         &names->spectra,
                                         payload,

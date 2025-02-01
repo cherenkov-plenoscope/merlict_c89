@@ -42,7 +42,7 @@ int mli_propagate_photon_phong(
         struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(env->scenery, isec);
 
-        const struct mli_BoundaryLayer_Surface_Phong *phong =
+        const struct mli_Surface_Phong *phong =
                 &env->scenery->materials.surfaces
                          .array[side_coming_from.surface]
                          .data.phong;
@@ -217,26 +217,26 @@ int mli_propagate_photon_interact_with_object(
 {
         const struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(env->scenery, isec);
-        const struct mli_BoundaryLayer_Surface *surface_coming_from =
+        const struct mli_Surface *surface_coming_from =
                 &env->scenery->materials.surfaces
                          .array[side_coming_from.surface];
 
         switch (surface_coming_from->type) {
-        case MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT:
+        case mli_Surface_TYPE_TRANSPARENT:
                 chk_msg(mli_propagate_photon_fresnel_refraction_and_reflection(
                                 env, isec),
                         "Failed Fresnel.");
                 break;
-        case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
+        case mli_Surface_TYPE_PHONG:
                 chk_msg(mli_propagate_photon_phong(env, isec), "Failed Phong.");
                 break;
-        case MLI_BOUNDARYLAYER_SURFACE_TYPE_MIRROR:
+        case mli_Surface_TYPE_MIRROR:
                 chk_bad("Surface type mirror not yet implemented.");
                 break;
-        case MLI_BOUNDARYLAYER_SURFACE_TYPE_LAMBERTIAN:
+        case mli_Surface_TYPE_LAMBERTIAN:
                 chk_bad("Surface type lambertian not yet implemented.");
                 break;
-        case MLI_BOUNDARYLAYER_SURFACE_TYPE_COOK_TORRANCE:
+        case mli_Surface_TYPE_COOK_TORRANCE:
                 chk_bad("Surface type cook-torrance not yet implemented.");
                 break;
         default:

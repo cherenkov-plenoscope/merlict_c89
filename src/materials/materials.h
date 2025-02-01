@@ -10,7 +10,7 @@
 #include "../string/string.h"
 #include "../spectrum/spectrum_array.h"
 #include "../boundarylayer/boundarylayer_array.h"
-#include "../boundarylayer/boundarylayer_surface_array.h"
+#include "../surface/surface_array.h"
 #include "../boundarylayer/boundarylayer_medium_array.h"
 
 struct mli_MaterialsCapacity {

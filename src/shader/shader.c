@@ -82,7 +82,7 @@ struct mli_ColorSpectrum mli_raytracing_phong(
                 return spectrum;
         }
         /*
-        struct mli_BoundaryLayer_Surface_Phong *phong = NULL;
+        struct mli_Surface_Phong *phong = NULL;
 
         phong = racer->scenery->materials
 
@@ -121,7 +121,7 @@ struct mli_ColorSpectrum mli_raytracing_to_intersection(
                 tracer->scenery, intersection);
 
         switch (intersection_layer.side_coming_from.surface->type) {
-        case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
+        case mli_Surface_TYPE_PHONG:
                 spectrum = mli_raytracing_phong(
                         tracer, intersection, &intersection_layer, prng);
                 break;

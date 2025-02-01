@@ -6,9 +6,6 @@
 #include "../string/string.h"
 #include "../io/io.h"
 
-#include "boundarylayer_surface.h"
-#include "boundarylayer_medium.h"
-
 struct mli_BoundaryLayer_Side {
         uint64_t surface;
         uint64_t medium;
