@@ -38,7 +38,7 @@ int mli_Surface_equal(const struct mli_Surface *a, const struct mli_Surface *b)
                         "'cook-torrance' surfaces are not equal.");
                 break;
         default:
-                chk_bad("surface-type-id is unknown.");
+                chk_badf(("surface-type-id '%lu' is unknown.", a->type));
         }
 
         return 1;
@@ -56,7 +56,7 @@ int mli_Surface_type_to_string(const uint64_t type, struct mli_String *s)
                 chk(mli_String_from_cstr(s, "cook-torrance"));
                 break;
         default:
-                chk_bad("surface-type-id is unknown.");
+                chk_badf(("surface-type-id '%lu' is unknown.", type));
         }
         return 1;
 chk_error:
@@ -72,7 +72,7 @@ int mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id)
                 (*id) = MLI_SURFACE_TYPE_COOKTORRANCE;
                 return 1;
         } else {
-                chk_bad("surface-type-string is unknown.");
+                chk_badf(("surface-type-string '%s' is unknown.", s->array));
         }
         return 1;
 chk_error:
@@ -101,7 +101,7 @@ int mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f)
                         "Can't write 'cook-torrance' surface to io.");
                 break;
         default:
-                chk_bad("surface-type-id is unknown.");
+                chk_badf(("surface-type-id '%lu' is unknown.", self->type));
         }
         return 1;
 chk_error:
@@ -131,7 +131,7 @@ int mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f)
                         "Can't read 'cook-torrance' surface from io.");
                 break;
         default:
-                chk_bad("surface-type-id is unknown.");
+                chk_badf(("surface-type-id '%lu' is unknown.", self->type));
         }
         return 1;
 chk_error:
