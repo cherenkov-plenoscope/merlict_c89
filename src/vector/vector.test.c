@@ -123,7 +123,6 @@ CASE("DynArray shrink_to_fit")
         mtlDynDummy_free(&vec);
 }
 
-
 CASE("DynArray push")
 {
         uint64_t i;

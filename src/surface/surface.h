@@ -11,7 +11,7 @@
 struct mli_IO;
 struct mli_Map;
 
-#define mli_Surface_TYPE_NONE 0
+#define MLI_SURFACE_TYPE_NONE 0
 
 union mli_SurfaceData {
         struct mli_Surface_Transparent transparent;

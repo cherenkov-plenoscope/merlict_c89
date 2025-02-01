@@ -4,7 +4,7 @@
 
 #include "../io/io.h"
 
-#define mli_Surface_TYPE_LAMBERTIAN 2000
+#define MLI_SURFACE_TYPE_LAMBERTIAN 2000
 
 struct mli_Surface_Lambertian {
         uint64_t reflection_spectrum;

@@ -6,7 +6,7 @@
 struct mli_Map;
 struct mli_String;
 
-#define mli_Surface_TYPE_PHONG 4000
+#define MLI_SURFACE_TYPE_PHONG 4000
 
 struct mli_Surface_Phong {
         uint64_t reflection_spectrum;

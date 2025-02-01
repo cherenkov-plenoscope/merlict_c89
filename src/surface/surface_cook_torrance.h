@@ -4,7 +4,7 @@
 
 #include "../io/io.h"
 
-#define mli_Surface_TYPE_COOK_TORRANCE 5000
+#define MLI_SURFACE_TYPE_COOK_TORRANCE 5000
 
 struct mli_Surface_Cook_Torrance {
         uint64_t specular_reflection_spectrum;

@@ -6,7 +6,7 @@
 struct mli_Map;
 struct mli_String;
 
-#define mli_Surface_TYPE_TRANSPARENT 1000
+#define MLI_SURFACE_TYPE_TRANSPARENT 1000
 
 struct mli_Surface_Transparent {
         uint64_t nothing;

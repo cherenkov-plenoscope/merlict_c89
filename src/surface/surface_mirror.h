@@ -4,7 +4,7 @@
 
 #include "../io/io.h"
 
-#define mli_Surface_TYPE_MIRROR 3000
+#define MLI_SURFACE_TYPE_MIRROR 3000
 
 struct mli_Surface_Mirror {
         uint64_t reflection_spectrum;

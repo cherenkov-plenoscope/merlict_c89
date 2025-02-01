@@ -153,7 +153,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                 mli_Surface_free(surface);
                 chk(mli_String_from_cstr_fromat(
                         &surface->name, "surface_%06u", i));
-                surface->type = mli_Surface_TYPE_PHONG;
+                surface->type = MLI_SURFACE_TYPE_PHONG;
                 surface->data.phong.reflection_spectrum = spec;
                 surface->data.phong.diffuse_weight = 1.0;
                 surface->data.phong.specular_weight = 0.0;

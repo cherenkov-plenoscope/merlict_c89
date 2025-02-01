@@ -121,7 +121,7 @@ struct mli_ColorSpectrum mli_raytracing_to_intersection(
                 tracer->scenery, intersection);
 
         switch (intersection_layer.side_coming_from.surface->type) {
-        case mli_Surface_TYPE_PHONG:
+        case MLI_SURFACE_TYPE_PHONG:
                 spectrum = mli_raytracing_phong(
                         tracer, intersection, &intersection_layer, prng);
                 break;

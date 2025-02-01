@@ -222,21 +222,21 @@ int mli_propagate_photon_interact_with_object(
                          .array[side_coming_from.surface];
 
         switch (surface_coming_from->type) {
-        case mli_Surface_TYPE_TRANSPARENT:
+        case MLI_SURFACE_TYPE_TRANSPARENT:
                 chk_msg(mli_propagate_photon_fresnel_refraction_and_reflection(
                                 env, isec),
                         "Failed Fresnel.");
                 break;
-        case mli_Surface_TYPE_PHONG:
+        case MLI_SURFACE_TYPE_PHONG:
                 chk_msg(mli_propagate_photon_phong(env, isec), "Failed Phong.");
                 break;
-        case mli_Surface_TYPE_MIRROR:
+        case MLI_SURFACE_TYPE_MIRROR:
                 chk_bad("Surface type mirror not yet implemented.");
                 break;
-        case mli_Surface_TYPE_LAMBERTIAN:
+        case MLI_SURFACE_TYPE_LAMBERTIAN:
                 chk_bad("Surface type lambertian not yet implemented.");
                 break;
-        case mli_Surface_TYPE_COOK_TORRANCE:
+        case MLI_SURFACE_TYPE_COOK_TORRANCE:
                 chk_bad("Surface type cook-torrance not yet implemented.");
                 break;
         default:
