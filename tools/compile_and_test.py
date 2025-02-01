@@ -104,7 +104,7 @@ def run_and_save_sdtout(call, stdout_path):
 
 def tar_sceneries(scenery_name):
     in_path = os.path.join(
-        "data", "mli", "tests", "resources", "sceneries", scenery_name
+        "data", "sceneries", scenery_name
     )
     out_path = in_path + ".tar"
     call = ["tar", "-cvf", out_path, "--directory", in_path, "."]
