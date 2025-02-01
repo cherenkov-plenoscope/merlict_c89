@@ -10,7 +10,6 @@ int mli_shader_Config_from_json_token(
         const struct mli_Json *json,
         const uint64_t tkn)
 {
-        uint64_t bgctkn;
         uint64_t atmtkn;
         uint64_t have_atmosphere;
         chk(mli_Json_uint64_by_key(
@@ -24,9 +23,6 @@ int mli_shader_Config_from_json_token(
         chk(mli_Json_uint64_by_key(
                 json, tkn, &have_atmosphere, "have_atmosphere"));
         tc->have_atmosphere = (int)have_atmosphere;
-
-        chk(mli_Json_token_by_key(json, tkn, "background_color", &bgctkn));
-        chk(mli_Color_from_json_token(&tc->background_color, json, bgctkn + 1));
 
         chk(mli_Json_token_by_key(json, tkn, "atmosphere", &atmtkn));
         chk(mli_Atmosphere_from_json_token(&tc->atmosphere, json, atmtkn + 1));

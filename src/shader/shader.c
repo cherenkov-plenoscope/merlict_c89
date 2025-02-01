@@ -62,37 +62,78 @@ double mli_Shader_trace_sun_obstruction(
                tracer->config->num_trails_global_light_source;
 }
 
-struct mli_Color mli_raytracing_to_intersection(
+struct mli_ColorSpectrum mli_raytracing_phong(
         const struct mli_Shader *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
+        const struct mli_IntersectionLayer *intersection_layer,
         struct mli_Prng *prng)
 {
-        struct mli_Color color;
-        struct mli_BoundaryLayer_Side side;
-        double theta;
-        double lambert_factor;
+        struct mli_ColorSpectrum spectrum = mli_ColorSpectrum_init_zeros();
+        if (tracer) {
+                return spectrum;
+        }
+        if (intersection) {
+                return spectrum;
+        }
+        if (intersection_layer) {
+                return spectrum;
+        }
+        if (prng) {
+                return spectrum;
+        }
+        /*
+        struct mli_BoundaryLayer_Surface_Phong *phong = NULL;
 
-        const double sun_visibility = mli_Shader_trace_sun_visibility(
-                tracer, intersection->position, prng);
+        phong = racer->scenery->materials
 
-        side = mli_raytracing_get_side_coming_from(
-                tracer->scenery, intersection);
-        color = tracer->scenery_color_materials->surfaces[side.surface]
+        spectrum =
+        tracer->scenery_color_materials->surfaces[ilayer.side_coming_from.surface]
                         .diffuse_reflection;
 
         theta = mli_Vec_angle_between(
                 tracer->config->atmosphere.sunDirection,
                 intersection->surface_normal);
+
         lambert_factor = fabs(cos(theta));
 
         color.r = color.r * 0.5 * (1.0 + sun_visibility * lambert_factor);
         color.g = color.g * 0.5 * (1.0 + sun_visibility * lambert_factor);
         color.b = color.b * 0.5 * (1.0 + sun_visibility * lambert_factor);
-
-        return color;
+        */
+        return spectrum;
 }
 
-struct mli_Color mli_Shader_trace_ray_without_atmosphere(
+struct mli_ColorSpectrum mli_raytracing_to_intersection(
+        const struct mli_Shader *tracer,
+        const struct mli_IntersectionSurfaceNormal *intersection,
+        struct mli_Prng *prng)
+{
+        struct mli_ColorSpectrum spectrum;
+        struct mli_IntersectionLayer intersection_layer;
+        /*
+        double theta;
+        double lambert_factor;
+
+        const double sun_visibility = mli_Shader_trace_sun_visibility(
+                tracer, intersection->position, prng);
+        */
+        intersection_layer = mli_raytracing_get_intersection_layer(
+                tracer->scenery, intersection);
+
+        switch (intersection_layer.side_coming_from.surface->type) {
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
+                spectrum = mli_raytracing_phong(
+                        tracer, intersection, &intersection_layer, prng);
+                break;
+        default:
+                chk_warning("surface type is not implemented.");
+                spectrum = mli_ColorSpectrum_init_zeros();
+        }
+
+        return spectrum;
+}
+
+struct mli_ColorSpectrum mli_Shader_trace_ray_without_atmosphere(
         const struct mli_Shader *tracer,
         const struct mli_Ray ray,
         struct mli_Prng *prng)
@@ -105,7 +146,7 @@ struct mli_Color mli_Shader_trace_ray_without_atmosphere(
                 return mli_raytracing_to_intersection(
                         tracer, &intersection, prng);
         } else {
-                return tracer->config->background_color;
+                return tracer->config->ambient_radiance_W_per_m2_per_sr;
         }
 }
 
@@ -114,10 +155,24 @@ struct mli_Color mli_Shader_trace_ray(
         const struct mli_Ray ray,
         struct mli_Prng *prng)
 {
+        /*
         if (tracer->config->have_atmosphere) {
                 return mli_Shader_trace_ray_with_atmosphere(tracer, ray, prng);
         } else {
                 return mli_Shader_trace_ray_without_atmosphere(
                         tracer, ray, prng);
         }
+        */
+        struct mli_ColorSpectrum spectrum =
+                mli_Shader_trace_ray_without_atmosphere(tracer, ray, prng);
+
+        struct mli_Vec xyz = mli_ColorMaterials_ColorSpectrum_to_xyz(
+                tracer->scenery_color_materials, &spectrum);
+
+        struct mli_Vec rgb = mli_Mat_dot_product(
+                &tracer->scenery_color_materials
+                         ->observer_matching_curve_xyz_to_rgb,
+                xyz);
+
+        return mli_Color_set(rgb.x, rgb.y, rgb.z);
 }

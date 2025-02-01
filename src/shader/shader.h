@@ -25,12 +25,12 @@ struct mli_Color mli_Shader_trace_ray(
         const struct mli_Ray ray,
         struct mli_Prng *prng);
 
-struct mli_Color mli_Shader_trace_ray_with_atmosphere(
+struct mli_ColorSpectrum mli_Shader_trace_ray_with_atmosphere(
         const struct mli_Shader *tracer,
         const struct mli_Ray ray,
         struct mli_Prng *prng);
 
-struct mli_Color mli_Shader_trace_ray_without_atmosphere(
+struct mli_ColorSpectrum mli_Shader_trace_ray_without_atmosphere(
         const struct mli_Shader *tracer,
         const struct mli_Ray ray,
         struct mli_Prng *prng);

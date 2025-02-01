@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "../color/color.h"
+#include "../color/color_materials.h"
 #include "../vec/vec.h"
 
 struct mli_Atmosphere {
@@ -20,8 +21,14 @@ struct mli_Atmosphere {
         double Height_Rayleigh;
         double Height_Mie;
 
+        /*
         struct mli_Color beta_Rayleigh;
         struct mli_Color beta_Mie;
+        */
+
+        struct mli_ColorSpectrum beta_Rayleigh_spectrum;
+        struct mli_ColorSpectrum beta_Mie_spectrum;
+        struct mli_ColorSpectrum sun_spectrum;
 
         uint64_t numSamples;
         uint64_t numSamplesLight;
@@ -54,24 +61,26 @@ void mli_Atmosphere_decrease_altitude(
         struct mli_Atmosphere *self,
         const double factor);
 
-struct mli_Color mli_Atmosphere_query(
+void mli_ColorSpectrum_set_beta_rayleigh(struct mli_ColorSpectrum *self);
+
+struct mli_ColorSpectrum mli_Atmosphere_query(
         const struct mli_Atmosphere *self,
         const struct mli_Vec orig,
         const struct mli_Vec dir);
 
-struct mli_Color mli_Atmosphere_hit_earth_body(
+struct mli_ColorSpectrum mli_Atmosphere_hit_earth_body(
         const struct mli_Atmosphere *self,
         const struct mli_Vec orig,
         const struct mli_Vec dir);
 
-struct mli_Color mli_Atmosphere_hit_outer_atmosphere(
+struct mli_ColorSpectrum mli_Atmosphere_hit_outer_atmosphere(
         const struct mli_Atmosphere *self,
         const struct mli_Vec orig,
         const struct mli_Vec dir,
         double tmin,
         double tmax);
 
-struct mli_Color mli_Atmosphere_compute_depth(
+struct mli_ColorSpectrum mli_Atmosphere_compute_depth(
         const struct mli_Atmosphere *self,
         const struct mli_Vec orig,
         const struct mli_Vec dir,

@@ -9,45 +9,48 @@
 #include "../raytracing/ray_scenery_query.h"
 #include "../raytracing/intersection_and_scenery.h"
 
-struct mli_Color mli_raytracing_color_tone_of_sun(
+struct mli_ColorSpectrum mli_raytracing_color_tone_of_sun(
         const struct mli_shader_Config *config,
         const struct mli_Vec support)
 {
-        struct mli_Color sun_color = mli_Color_set(1.0, 1.0, 1.0);
+        struct mli_ColorSpectrum sun_spectrum = config->atmosphere.sun_spectrum;
         double width_atmosphere = config->atmosphere.atmosphereRadius -
                                   config->atmosphere.earthRadius;
 
         if (config->atmosphere.altitude < width_atmosphere) {
-                struct mli_Color color_close_to_sun = mli_Atmosphere_query(
-                        &config->atmosphere,
-                        support,
-                        config->atmosphere.sunDirection);
+                struct mli_ColorSpectrum color_close_to_sun =
+                        mli_Atmosphere_query(
+                                &config->atmosphere,
+                                support,
+                                config->atmosphere.sunDirection);
 
                 double f = config->atmosphere.sunDirection.z;
-                double max = MLI_MATH_MAX3(
-                        color_close_to_sun.r,
-                        color_close_to_sun.g,
-                        color_close_to_sun.b);
+                uint64_t argmax = 0;
+                double vmax = 1.0;
+                MLI_MATH_ARRAY_ARGMAX(
+                        color_close_to_sun.values,
+                        MLI_COLORSPECTRUM_SIZE,
+                        argmax);
+                vmax = color_close_to_sun.values[argmax];
+                color_close_to_sun = mli_ColorSpectrum_multiply_scalar(
+                        color_close_to_sun, (1.0 / vmax));
 
-                color_close_to_sun.r /= max;
-                color_close_to_sun.g /= max;
-                color_close_to_sun.b /= max;
-
-                return mli_Color_add(
-                        mli_Color_multiply(sun_color, f),
-                        mli_Color_multiply(color_close_to_sun, (1.0 - f)));
+                return mli_ColorSpectrum_add(
+                        mli_ColorSpectrum_multiply_scalar(sun_spectrum, f),
+                        mli_ColorSpectrum_multiply_scalar(
+                                color_close_to_sun, (1.0 - f)));
         } else {
-                return sun_color;
+                return sun_spectrum;
         }
 }
 
-struct mli_Color mli_raytracing_color_tone_of_diffuse_sky(
+struct mli_ColorSpectrum mli_raytracing_color_tone_of_diffuse_sky(
         const struct mli_Shader *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
         int i;
-        struct mli_Color sky = mli_Color_set(0.0, 0.0, 0.0);
+        struct mli_ColorSpectrum sky = mli_ColorSpectrum_init_zeros();
         struct mli_Ray obstruction_ray;
         struct mli_Vec facing_surface_normal;
         struct mli_Intersection isec;
@@ -70,7 +73,7 @@ struct mli_Color mli_raytracing_color_tone_of_diffuse_sky(
                         tracer->scenery, obstruction_ray, &isec);
 
                 if (has_direct_view_to_sky) {
-                        struct mli_Color sample = mli_Atmosphere_query(
+                        struct mli_ColorSpectrum sample = mli_Atmosphere_query(
                                 &tracer->config->atmosphere,
                                 intersection->position,
                                 rnd_dir);
@@ -79,23 +82,25 @@ struct mli_Color mli_raytracing_color_tone_of_diffuse_sky(
                                 rnd_dir, facing_surface_normal);
                         double lambert_factor = fabs(cos(theta));
 
-                        sky = mli_Color_add(
+                        sky = mli_ColorSpectrum_add(
                                 sky,
-                                mli_Color_multiply(sample, lambert_factor));
+                                mli_ColorSpectrum_multiply_scalar(
+                                        sample, lambert_factor));
                 }
         }
 
-        return mli_Color_multiply(sky, 1.0 / (255.0 * num_samples));
+        return mli_ColorSpectrum_multiply_scalar(
+                sky, 1.0 / (255.0 * num_samples));
 }
 
-struct mli_Color mli_raytracing_to_intersection_atmosphere(
+struct mli_ColorSpectrum mli_raytracing_to_intersection_atmosphere(
         const struct mli_Shader *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
-        struct mli_Color color;
-        struct mli_Color tone;
-        struct mli_BoundaryLayer_Side side;
+        struct mli_ColorSpectrum spectrum;
+        struct mli_ColorSpectrum tone;
+        struct mli_IntersectionLayer intersection_layer;
         double theta;
         double lambert_factor;
 
@@ -105,35 +110,42 @@ struct mli_Color mli_raytracing_to_intersection_atmosphere(
         if (sun_visibility > 0.0) {
                 tone = mli_raytracing_color_tone_of_sun(
                         tracer->config, intersection->position);
-                tone = mli_Color_multiply(tone, sun_visibility);
+                tone = mli_ColorSpectrum_multiply_scalar(tone, sun_visibility);
         } else {
                 tone = mli_raytracing_color_tone_of_diffuse_sky(
                         tracer, intersection, prng);
         }
 
-        side = mli_raytracing_get_side_coming_from(
+        intersection_layer = mli_raytracing_get_intersection_layer(
                 tracer->scenery, intersection);
-        color = tracer->scenery_color_materials->surfaces[side.surface]
-                        .diffuse_reflection;
+
+        switch (intersection_layer.side_coming_from.surface->type) {
+        case MLI_BOUNDARYLAYER_SURFACE_TYPE_PHONG:
+                spectrum = mli_ColorSpectrum_init_zeros();
+                break;
+        default:
+                chk_warning("surface type is not implemented.");
+                spectrum = mli_ColorSpectrum_init_zeros();
+        }
 
         theta = mli_Vec_angle_between(
                 tracer->config->atmosphere.sunDirection,
                 intersection->surface_normal);
         lambert_factor = fabs(cos(theta));
 
-        color = mli_Color_multiply(color, lambert_factor);
+        spectrum = mli_ColorSpectrum_multiply_scalar(spectrum, lambert_factor);
 
-        return mli_Color_multiply_elementwise(color, tone);
+        return mli_ColorSpectrum_multiply(spectrum, tone);
 }
 
-struct mli_Color mli_Shader_trace_ray_with_atmosphere(
+struct mli_ColorSpectrum mli_Shader_trace_ray_with_atmosphere(
         const struct mli_Shader *tracer,
         const struct mli_Ray ray,
         struct mli_Prng *prng)
 {
         struct mli_IntersectionSurfaceNormal intersection =
                 mli_IntersectionSurfaceNormal_init();
-        struct mli_Color out;
+        struct mli_ColorSpectrum out;
         int has_intersection =
                 mli_raytracing_query_intersection_with_surface_normal(
                         tracer->scenery, ray, &intersection);

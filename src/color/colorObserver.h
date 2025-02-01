@@ -4,6 +4,7 @@
 
 #include "../color/color.h"
 #include "../func/func.h"
+#include "../mat/mat.h"
 
 struct mli_ColorObserver {
         /* Color detection efficiency by wavelength.
@@ -28,5 +29,17 @@ int mli_ColorObserver_is_valid(const struct mli_ColorObserver *self);
 int mli_Func_malloc_cie1931_spectral_matching_curve_x(struct mli_Func *self);
 int mli_Func_malloc_cie1931_spectral_matching_curve_y(struct mli_Func *self);
 int mli_Func_malloc_cie1931_spectral_matching_curve_z(struct mli_Func *self);
+
+struct mli_Mat mli_Mat_cie1931_spectral_matching_xyz_to_rgb(void);
+struct mli_Mat mli_ColorObserver_rgb_to_xyz(void);
+
+int mli_Func_malloc_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
+        struct mli_Func *self,
+        const double wavelength_start,
+        const double wavelength_stop,
+        const double temperature,
+        const uint64_t num_points);
+int mli_Func_malloc_spectral_irradiance_of_sky_at_sealevel_W_per_m2_per_m(
+        struct mli_Func *self);
 
 #endif

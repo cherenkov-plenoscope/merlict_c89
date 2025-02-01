@@ -69,4 +69,8 @@ void mli_Mat_lup_solve(
         const int *P,
         const struct mli_Vec *b,
         struct mli_Vec *x);
+struct mli_Vec mli_Mat_dot_product(
+        const struct mli_Mat *m,
+        const struct mli_Vec v);
+
 #endif

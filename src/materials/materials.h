@@ -38,4 +38,12 @@ int mli_Materials_malloc(
 void mli_Materials_free(struct mli_Materials *self);
 struct mli_Materials mli_Materials_init(void);
 int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self);
+
+int mli_Materials__has_surface_name_cstr(
+        const struct mli_Materials *self,
+        const char *name);
+int mli_Materials__has_medium_name_cstr(
+        const struct mli_Materials *self,
+        const char *name);
+
 #endif

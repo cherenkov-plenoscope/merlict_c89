@@ -87,7 +87,6 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         fprintf(f, "    ");
         fprintf(f, "%3s ", "#");
         fprintf(f, "%24s ", "name");
-        fprintf(f, "%24s ", "type");
         fprintf(f, "%12s ", "default");
         fprintf(f, "\n");
         fprintf(f, "    ");
@@ -98,12 +97,10 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         for (i = 0; i < self->media2.size; i++) {
                 struct mli_BoundaryLayer_Medium *medium =
                         &self->media2.array[i];
-                chk(mli_BoundaryLayer_Medium_type_to_string(
-                        medium->type, &tmp));
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
                 fprintf(f, "%24s ", medium->name.array);
-                fprintf(f, "%24s ", tmp.array);
+
                 if (i == self->default_medium) {
                         fprintf(f, "%12s", "True");
                 }
@@ -156,5 +153,32 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         return 1;
 chk_error:
         mli_String_free(&tmp);
+        return 0;
+}
+
+int mli_Materials__has_surface_name_cstr(
+        const struct mli_Materials *self,
+        const char *name)
+{
+        uint64_t i;
+        for (i = 0; i < self->surfaces2.size; i++) {
+                if (mli_String_equal_cstr(
+                            &self->surfaces2.array[i].name, name)) {
+                        return 1;
+                }
+        }
+        return 0;
+}
+
+int mli_Materials__has_medium_name_cstr(
+        const struct mli_Materials *self,
+        const char *name)
+{
+        uint64_t i;
+        for (i = 0; i < self->media2.size; i++) {
+                if (mli_String_equal_cstr(&self->media2.array[i].name, name)) {
+                        return 1;
+                }
+        }
         return 0;
 }

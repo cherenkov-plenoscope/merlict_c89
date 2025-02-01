@@ -7,7 +7,7 @@ CASE("simple propagation")
         struct mli_PhotonInteractionVector history =
                 mli_PhotonInteractionVector_init();
         struct mli_IntersectionSurfaceNormal intersection;
-        struct mli_BoundaryLayer_Side side_coming_from, side_going_to;
+        struct mli_IntersectionLayer ilayer = mli_IntersectionLayer_init();
         uint64_t max_interactions = 16;
 
         uint64_t MED_VACUUM = 0;
@@ -27,17 +27,10 @@ CASE("simple propagation")
                 "sceneries/"
                 "002.tar"));
 
-        CHECK(mli_String__find_idx_with_cstr(
-                scenery.materials.medium_names,
-                scenery.materials.num_media,
-                "glass",
-                &MED_GLASS));
-        CHECK(mli_String__find_idx_with_cstr(
-                scenery.materials.medium_names,
-                scenery.materials.num_media,
-                "vacuum",
-                &MED_VACUUM));
-
+        CHECK(mli_String_equal_cstr(
+                &scenery.materials.media2.array[MED_GLASS].name, "glass"));
+        CHECK(mli_String_equal_cstr(
+                &scenery.materials.media2.array[MED_VACUUM].name, "vacuum"));
         CHECK(scenery.materials.default_medium == MED_VACUUM);
 
         CHECK(mli_raytracing_query_intersection_with_surface_normal(
@@ -49,20 +42,19 @@ CASE("simple propagation")
                 intersection.surface_normal, mli_Vec_init(0, 0, -1), 1e-9));
         CHECK_MARGIN(intersection.distance_of_ray, 3., 1e-9);
 
-        CHECK(scenery.materials.num_media == 2);
+        CHECK(scenery.materials.media2.size == 2);
 
-        side_coming_from =
-                mli_raytracing_get_side_coming_from(&scenery, &intersection);
-        side_going_to =
-                mli_raytracing_get_side_going_to(&scenery, &intersection);
+        ilayer = mli_raytracing_get_intersection_layer(&scenery, &intersection);
 
-        CHECK(side_going_to.medium == MED_GLASS);
-        CHECK(scenery.materials.surfaces[side_going_to.surface].material ==
-              MLI_SURFACE_TRANSPARENT);
+        CHECK(ilayer.side_going_to.medium ==
+              &scenery.materials.media2.array[MED_GLASS]);
+        CHECK(ilayer.side_going_to.surface->type ==
+              MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT);
 
-        CHECK(side_coming_from.medium == MED_VACUUM);
-        CHECK(scenery.materials.surfaces[side_coming_from.surface].material ==
-              MLI_SURFACE_TRANSPARENT);
+        CHECK(ilayer.side_coming_from.medium ==
+              &scenery.materials.media2.array[MED_VACUUM]);
+        CHECK(ilayer.side_coming_from.surface->type ==
+              MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT);
 
         CHECK(mli_PhotonInteractionVector_malloc(&history, max_interactions));
 

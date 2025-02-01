@@ -5,8 +5,6 @@ CASE("mli_Scenery, malloc from archive")
         struct mli_Scenery scenery = mli_Scenery_init();
 
         uint64_t obj_teapot_idx, obj_hex_idx;
-        uint64_t srf_grass, srf_wood, srf_leafs, srf_blue_glass;
-        uint64_t med_vacuum;
 
         CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
@@ -38,8 +36,8 @@ CASE("mli_Scenery, malloc from archive")
         CHECK(1202 ==
               scenery.geometry.objects[obj_teapot_idx].num_vertex_normals);
 
-        CHECK(4 == scenery.materials.num_surfaces);
-        CHECK(2 == scenery.materials.num_media);
+        CHECK(4 == scenery.materials.surfaces2.size);
+        CHECK(2 == scenery.materials.media2.size);
 
         /* frames
          * ------
@@ -53,31 +51,16 @@ CASE("mli_Scenery, malloc from archive")
          *              |_____ obj4 (hex)
          */
 
-        CHECK(mli_String__find_idx_with_cstr(
-                scenery.materials.surface_names,
-                scenery.materials.num_surfaces,
-                "grass",
-                &srf_grass));
-        CHECK(mli_String__find_idx_with_cstr(
-                scenery.materials.surface_names,
-                scenery.materials.num_surfaces,
-                "wood",
-                &srf_wood));
-        CHECK(mli_String__find_idx_with_cstr(
-                scenery.materials.surface_names,
-                scenery.materials.num_surfaces,
-                "leafs",
-                &srf_leafs));
-        CHECK(mli_String__find_idx_with_cstr(
-                scenery.materials.surface_names,
-                scenery.materials.num_surfaces,
-                "blue_glass",
-                &srf_blue_glass));
-        CHECK(mli_String__find_idx_with_cstr(
-                scenery.materials.medium_names,
-                scenery.materials.num_media,
-                "vacuum",
-                &med_vacuum));
+        CHECK(mli_Materials__has_surface_name_cstr(
+                &scenery.materials, "grass"));
+        CHECK(mli_Materials__has_surface_name_cstr(&scenery.materials, "wood"));
+        CHECK(mli_Materials__has_surface_name_cstr(
+                &scenery.materials, "leafs"));
+        CHECK(mli_Materials__has_surface_name_cstr(
+                &scenery.materials, "blue_glass"));
+
+        CHECK(mli_Materials__has_medium_name_cstr(
+                &scenery.materials, "vacuum"));
 
         mli_Scenery_free(&scenery);
 }

@@ -35,7 +35,7 @@ int mli_Materials_valid_surfaces(const struct mli_Materials *self)
         uint64_t i = 0u;
         for (i = 0; i < self->surfaces2.size; i++) {
                 chk(self);
-                fprintf(stderr, "IMPLEMENT ME!!!");
+                chk_warning("IMPLEMENT ME!!!");
         }
         return 1;
 chk_error:

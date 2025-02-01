@@ -2,6 +2,7 @@
 #include "colorObserver.h"
 #include "../chk/chk.h"
 #include "../func/func.h"
+#include "../physics/physics.h"
 
 struct mli_ColorObserver mli_ColorObserver_init(void)
 {
@@ -260,6 +261,111 @@ int mli_Func_malloc_cie1931_spectral_matching_curve_z(struct mli_Func *self)
         for (i = 0; i < self->num_points; i++) {
                 self->x[i] = Z[i][0];
                 self->y[i] = Z[i][1];
+        }
+        return 1;
+chk_error:
+        return 0;
+}
+
+struct mli_Mat mli_Mat_cie1931_spectral_matching_xyz_to_rgb(void)
+{
+        struct mli_Mat m;
+        m.r00 = +3.240479;
+        m.r10 = -1.537150;
+        m.r20 = -0.498535;
+        m.r01 = -0.969256;
+        m.r11 = +1.875991;
+        m.r21 = +0.041556;
+        m.r02 = +0.055648;
+        m.r12 = -0.204043;
+        m.r22 = +1.057311;
+        return m;
+}
+
+struct mli_Mat mli_ColorObserver_rgb_to_xyz(void)
+{
+        struct mli_Mat m;
+        m.r00 = +0.412453;
+        m.r10 = +0.357580;
+        m.r20 = +0.180423;
+        m.r01 = +0.212671;
+        m.r11 = +0.715160;
+        m.r21 = +0.072169;
+        m.r02 = +0.019334;
+        m.r12 = +0.119193;
+        m.r22 = +0.950227;
+        return m;
+}
+
+int mli_Func_malloc_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
+        struct mli_Func *self,
+        const double wavelength_start,
+        const double wavelength_stop,
+        const double temperature,
+        const uint64_t num_points)
+{
+        uint64_t i;
+        const double start = wavelength_start;
+        const double stop = wavelength_stop;
+        const double step = (stop - start) / (double)num_points;
+        chk_msg(mli_Func_malloc(self, num_points),
+                "Can't malloc function for black body spectrum.");
+        for (i = 0; i < self->num_points; i++) {
+                const double wavelength = start + step * (double)i;
+                const double radiance =
+                        mli_physics_plancks_spectral_radiance_law_W_per_m2_per_sr_per_m(
+                                wavelength, temperature);
+                self->x[i] = wavelength;
+                self->y[i] = radiance;
+        }
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_Func_malloc_spectral_irradiance_of_sky_at_sealevel_W_per_m2_per_m(
+        struct mli_Func *self)
+{
+        /*
+        Spectral irradiance of the sky at sea level
+        -------------------------------------------
+        CIE publication Number 85, in year 1989
+        - 0m above sea level
+        - Relative air mass: 1
+        - Water vapor content: 1.42 cm precipitable water
+        - Ozone content: 0.34 cm at standard temperature and pressure (STP), 0C,
+        1 atmosphere
+        - Spectral optical depth of aerosol extinction (at 500 nm): 0.1
+        - Ground reflectance: 0.2
+
+        wavelength / nm, spectral irradiance / W m{^-2} (nm){^-1}
+        */
+        float I[][2] = {
+                {200.00, 0.000000},  {308.16, 0.011976},  {316.47, 0.116766},
+                {329.76, 0.215569},  {351.37, 0.305389},  {369.65, 0.473054},
+                {402.88, 0.544910},  {399.56, 0.874251},  {424.48, 0.970060},
+                {434.45, 0.847305},  {449.41, 1.287425},  {485.97, 1.344311},
+                {544.13, 1.356287},  {592.32, 1.326347},  {643.83, 1.281437},
+                {657.13, 1.211776},  {667.10, 1.289621},  {685.38, 1.262675},
+                {687.04, 1.062076},  {698.67, 1.187824},  {716.95, 1.172854},
+                {718.61, 1.011178},  {735.23, 1.098004},  {756.83, 1.127944},
+                {765.14, 0.436327},  {771.79, 1.077046},  {788.40, 1.059082},
+                {790.07, 1.011178},  {810.01, 0.987226},  {814.99, 0.807585},
+                {831.61, 0.870459},  {836.60, 0.924351},  {854.87, 0.879441},
+                {883.12, 0.870459},  {893.09, 0.825549},  {901.40, 0.630938},
+                {924.67, 0.636926},  {934.64, 0.268663},  {961.23, 0.340519},
+                {974.52, 0.577046},  {986.15, 0.693812},  {1036.00, 0.648902},
+                {1090.84, 0.544112}, {1112.44, 0.403393}, {1115.77, 0.169860},
+                {1132.39, 0.133932}, {1153.99, 0.235729}, {1165.62, 0.406387},
+                {1220.46, 0.430339}, {1255.35, 0.427345}, {1265.32, 0.370459},
+                {1293.57, 0.394411}, {1315.18, 0.304591}, {1330.13, 0.208782},
+                {1348.41, 0.098004}, {1353.40, 0.011178}};
+        uint64_t i;
+        chk_msg(mli_Func_malloc(self, sizeof(I) / sizeof(I[0])),
+                "Can't malloc function from Spectrum.");
+        for (i = 0; i < self->num_points; i++) {
+                self->x[i] = I[i][0] * 1e-9;
+                self->y[i] = I[i][1] * 1e9;
         }
         return 1;
 chk_error:

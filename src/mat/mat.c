@@ -634,3 +634,14 @@ void mli_Mat_lup_solve(
                 i--;
         }
 }
+
+struct mli_Vec mli_Mat_dot_product(
+        const struct mli_Mat *m,
+        const struct mli_Vec v)
+{
+        struct mli_Vec o;
+        o.x = m->r00 * v.x + m->r10 * v.y + m->r20 * v.z;
+        o.y = m->r01 * v.x + m->r11 * v.y + m->r21 * v.z;
+        o.z = m->r02 * v.x + m->r12 * v.y + m->r22 * v.z;
+        return o;
+}

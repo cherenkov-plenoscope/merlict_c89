@@ -10,6 +10,12 @@ struct mli_BoundaryLayer_Surface mli_BoundaryLayer_Surface_init(void)
         return out;
 }
 
+void mli_BoundaryLayer_Surface_free(struct mli_BoundaryLayer_Surface *self)
+{
+        mli_String_free(&self->name);
+        (*self) = mli_BoundaryLayer_Surface_init();
+}
+
 int mli_BoundaryLayer_Surface_equal(
         const struct mli_BoundaryLayer_Surface *a,
         const struct mli_BoundaryLayer_Surface *b)

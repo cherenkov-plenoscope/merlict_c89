@@ -44,12 +44,12 @@ int mli_propagate_photon_phong(
 
         const struct mli_BoundaryLayer_Surface_Phong *phong =
                 &env->scenery->materials.surfaces2
-                        .array[side_coming_from.surface]
-                        .data.phong;
+                         .array[side_coming_from.surface]
+                         .data.phong;
         const struct mli_Func *reflection_spectrum =
                 &env->scenery->materials.spectra
-                        .array[phong->reflection_spectrum]
-                        .spectrum;
+                         .array[phong->reflection_spectrum]
+                         .spectrum;
 
         chk_msg(mli_Func_evaluate(
                         reflection_spectrum,
@@ -134,32 +134,25 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
         const struct mli_IntersectionSurfaceNormal *isec,
         double *probability_passing)
 {
-        double one_over_e_way;
         const struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(scenery, isec);
         const struct mli_BoundaryLayer_Medium *medium_coming_from =
-                &env->scenery->materials.media2.array[side_coming_from.medium];
+                &scenery->materials.media2.array[side_coming_from.medium];
 
-        switch (medium_coming_from->type) {
-        case MLI_BOUNDARYLAYER_MEDIUM_TYPE_TRANSPARENT:
-                (*probability_passing) = 1.0;
-                break;
-        case MLI_BOUNDARYLAYER_MEDIUM_TYPE_ABSORBER:
-                chk_msg(mli_propagate_photon_phong(env, isec), "Failed Phong.");
-                break;
-        default:
-                chk_bad("Unkown type of medium.");
-                break;
-        }
+        const struct mli_Func *absorbtion_spectrum =
+                &scenery->materials.spectra
+                         .array[medium_coming_from->absorbtion_spectrum]
+                         .spectrum;
+        double one_over_e_way;
 
         chk_msg(mli_Func_evaluate(
-                        &scenery->materials.media[side_coming_from.medium]
-                                 .absorbtion,
+                        absorbtion_spectrum,
                         photon->wavelength,
                         &one_over_e_way),
                 "Photon's wavelength is out of range to "
                 "evaluate absorbtion in medium coming from");
         (*probability_passing) = exp(-isec->distance_of_ray / one_over_e_way);
+
         return 1;
 chk_error:
         return 0;
@@ -225,7 +218,8 @@ int mli_propagate_photon_interact_with_object(
         const struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(env->scenery, isec);
         const struct mli_BoundaryLayer_Surface *surface_coming_from =
-                &env->scenery->materials.surfaces2.array[side_coming_from.surface];
+                &env->scenery->materials.surfaces2
+                         .array[side_coming_from.surface];
 
         switch (surface_coming_from->type) {
         case MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT:
@@ -280,6 +274,7 @@ int mli_propagate_photon_work_on_causal_intersection(
         double distance_until_absorbtion = 0.0;
         struct mli_IntersectionSurfaceNormal next_intersection;
         struct mli_Func *absorbtion_in_medium_passing_through;
+        struct mli_BoundaryLayer_Medium *medium_passing_through;
         struct mli_PhotonInteraction phia;
 
         ray_does_intersect_surface =
@@ -292,9 +287,15 @@ int mli_propagate_photon_work_on_causal_intersection(
 
                 side_coming_from = mli_raytracing_get_side_coming_from(
                         env->scenery, &next_intersection);
+                medium_passing_through =
+                        &env->scenery->materials.media2
+                                 .array[side_coming_from.medium];
                 absorbtion_in_medium_passing_through =
-                        &env->scenery->materials.media[side_coming_from.medium]
-                                 .absorbtion;
+                        &env->scenery->materials.spectra
+                                 .array[medium_passing_through
+                                                ->absorbtion_spectrum]
+                                 .spectrum;
+
                 chk(mli_propagate_photon_distance_until_absorbtion(
                         absorbtion_in_medium_passing_through,
                         env->photon->wavelength,
@@ -349,9 +350,14 @@ int mli_propagate_photon_work_on_causal_intersection(
                 const uint64_t default_medium =
                         env->scenery->materials.default_medium;
 
+                medium_passing_through =
+                        &env->scenery->materials.media2.array[default_medium];
                 absorbtion_in_medium_passing_through =
-                        &env->scenery->materials.media[default_medium]
-                                 .absorbtion;
+                        &env->scenery->materials.spectra
+                                 .array[medium_passing_through
+                                                ->absorbtion_spectrum]
+                                 .spectrum;
+
                 chk(mli_propagate_photon_distance_until_absorbtion(
                         absorbtion_in_medium_passing_through,
                         env->photon->wavelength,

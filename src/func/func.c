@@ -229,3 +229,20 @@ int mli_Func_is_valid(const struct mli_Func *func)
 chk_error:
         return 0;
 }
+
+int mli_Func_malloc_constant(
+        struct mli_Func *self,
+        const double start,
+        const double stop,
+        const double value)
+{
+        chk(mli_Func_malloc(self, 2));
+        self->x[0] = start;
+        self->y[0] = value;
+        self->x[1] = stop;
+        self->y[1] = value;
+
+        return 1;
+chk_error:
+        return 0;
+}

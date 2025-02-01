@@ -191,7 +191,6 @@ int mli_viewer_run_interactive_viewer(
         struct mli_Prng prng = mli_Prng_init_MT19937(config.random_seed);
         struct mli_shader_Config tracer_config = mli_shader_Config_init();
         struct mli_Shader tracer = mli_Shader_init();
-        struct mli_ColorObserver color_observer = mli_ColorObserver_init();
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         char path[1024];
         int key;
@@ -210,12 +209,9 @@ int mli_viewer_run_interactive_viewer(
         int has_probing_intersection = 0;
         struct mli_IntersectionSurfaceNormal probing_intersection;
 
-        chk_msg(mli_ColorObserver_malloc_cie1931(&color_observer),
-                "Can't malloc color observer.");
         chk_msg(mli_ColorMaterials_malloc_from_Materials(
-                        &color_materials, &scenery->materials, &color_observer),
+                        &color_materials, &scenery->materials),
                 "Can't malloc color materials from scenery materials.");
-        mli_ColorObserver_free(&color_observer);
 
         tracer.scenery = scenery;
         tracer.config = &tracer_config;

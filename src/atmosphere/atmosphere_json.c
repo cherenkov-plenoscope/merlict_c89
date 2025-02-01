@@ -8,9 +8,6 @@ int mli_Atmosphere_from_json_token(
         const struct mli_Json *json,
         const uint64_t tkn)
 {
-        uint64_t beta_rayleigh_tkn;
-        uint64_t beta_mie_tkn;
-
         (*atm) = mli_Atmosphere_init();
 
         chk(mli_Json_double_by_key(
@@ -44,23 +41,6 @@ int mli_Atmosphere_from_json_token(
                 json, tkn, &atm->numSamplesLight, "numSamplesLight"));
         chk_msg(atm->numSamplesLight > 0,
                 "Expected atmosphere->numSamplesLight > 0.");
-
-        chk(mli_Json_token_by_key(
-                json, tkn, "beta_Rayleigh", &beta_rayleigh_tkn));
-        chk(mli_Color_from_json_token(
-                &atm->beta_Rayleigh, json, beta_rayleigh_tkn + 1));
-        chk_msg(atm->beta_Rayleigh.r > 0.0,
-                "Expected atmosphere->beta_Rayleigh.r > 0.");
-        chk_msg(atm->beta_Rayleigh.g > 0.0,
-                "Expected atmosphere->beta_Rayleigh.g > 0.");
-        chk_msg(atm->beta_Rayleigh.b > 0.0,
-                "Expected atmosphere->beta_Rayleigh.b > 0.");
-
-        chk(mli_Json_token_by_key(json, tkn, "beta_Mie", &beta_mie_tkn));
-        chk(mli_Color_from_json_token(&atm->beta_Mie, json, beta_mie_tkn + 1));
-        chk_msg(atm->beta_Mie.r > 0.0, "Expected atmosphere->beta_Mie.r > 0.");
-        chk_msg(atm->beta_Mie.g > 0.0, "Expected atmosphere->beta_Mie.g > 0.");
-        chk_msg(atm->beta_Mie.b > 0.0, "Expected atmosphere->beta_Mie.b > 0.");
 
         chk(mli_Json_double_by_key(json, tkn, &atm->power, "power"));
         chk_msg(atm->power > 0, "Expected atmosphere->power > 0.");

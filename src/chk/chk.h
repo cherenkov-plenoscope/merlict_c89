@@ -91,4 +91,11 @@ int chk_eprintf(const char *format, ...);
                 /*fprintf(stderr, "%s, %d\n", __FILE__, __LINE__);*/           \
         }
 
+#define chk_warning(MSG)                                                       \
+        {                                                                      \
+                chk_eprintf("[WARNING] (%s:%d) ", __FILE__, __LINE__);         \
+                chk_eprintf("%s", MSG);                                        \
+                chk_eprintf("\n");                                             \
+        }
+
 #endif

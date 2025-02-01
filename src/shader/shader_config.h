@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "../color/color.h"
+#include "../color/color_materials.h"
 #include "../atmosphere/atmosphere.h"
 
 struct mli_Scenery;
@@ -15,7 +16,7 @@ struct mli_shader_Config {
         int have_atmosphere;
         struct mli_Atmosphere atmosphere;
 
-        struct mli_Color background_color;
+        struct mli_ColorSpectrum ambient_radiance_W_per_m2_per_sr;
 };
 
 struct mli_shader_Config mli_shader_Config_init(void);

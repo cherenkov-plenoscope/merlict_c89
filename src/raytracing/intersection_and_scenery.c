@@ -1,6 +1,58 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "intersection_and_scenery.h"
 
+struct mli_IntersectionLayerSide mli_IntersectionLayerSide_init(void)
+{
+        struct mli_IntersectionLayerSide side;
+        side.surface = NULL;
+        side.medium = NULL;
+        return side;
+}
+
+struct mli_IntersectionLayer mli_IntersectionLayer_init(void)
+{
+        struct mli_IntersectionLayer ilay;
+        ilay.side_coming_from = mli_IntersectionLayerSide_init();
+        ilay.side_going_to = mli_IntersectionLayerSide_init();
+        return ilay;
+}
+
+struct mli_IntersectionLayer mli_raytracing_get_intersection_layer(
+        const struct mli_Scenery *scenery,
+        const struct mli_IntersectionSurfaceNormal *isec)
+{
+        const uint64_t idx = mli_Scenery_resolve_boundary_layer_idx(
+                scenery, isec->geometry_id);
+        const struct mli_BoundaryLayer2 layer =
+                scenery->materials.layers2.array[idx];
+        struct mli_IntersectionLayer ilay = mli_IntersectionLayer_init();
+
+        const struct mli_BoundaryLayer_Surface *inner_surface =
+                &scenery->materials.surfaces2.array[layer.inner.surface];
+        const struct mli_BoundaryLayer_Medium *inner_medium =
+                &scenery->materials.media2.array[layer.inner.medium];
+        const struct mli_BoundaryLayer_Surface *outer_surface =
+                &scenery->materials.surfaces2.array[layer.outer.surface];
+        const struct mli_BoundaryLayer_Medium *outer_medium =
+                &scenery->materials.media2.array[layer.outer.medium];
+
+        if (isec->from_outside_to_inside) {
+                ilay.side_coming_from.surface = outer_surface;
+                ilay.side_coming_from.medium = outer_medium;
+
+                ilay.side_going_to.surface = inner_surface;
+                ilay.side_going_to.medium = inner_medium;
+        } else {
+                ilay.side_coming_from.surface = inner_surface;
+                ilay.side_coming_from.medium = inner_medium;
+
+                ilay.side_going_to.surface = outer_surface;
+                ilay.side_going_to.medium = outer_medium;
+        }
+
+        return ilay;
+}
+
 struct mli_BoundaryLayer_Side mli_raytracing_get_side_coming_from(
         const struct mli_Scenery *scenery,
         const struct mli_IntersectionSurfaceNormal *isec)
