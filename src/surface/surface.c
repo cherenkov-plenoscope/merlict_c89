@@ -34,7 +34,7 @@ int mli_Surface_equal(const struct mli_Surface *a, const struct mli_Surface *b)
                 break;
         case MLI_SURFACE_TYPE_COOKTORRANCE:
                 chk_msg(mli_Surface_CookTorrance_equal(
-                                &a->data.cook_torrance, &b->data.cook_torrance),
+                                &a->data.cooktorrance, &b->data.cooktorrance),
                         "'cook-torrance' surfaces are not equal.");
                 break;
         default:
@@ -97,7 +97,7 @@ int mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f)
                 break;
         case MLI_SURFACE_TYPE_COOKTORRANCE:
                 chk_msg(mli_Surface_CookTorrance_to_io(
-                                &self->data.cook_torrance, f),
+                                &self->data.cooktorrance, f),
                         "Can't write 'cook-torrance' surface to io.");
                 break;
         default:
@@ -127,7 +127,7 @@ int mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f)
                 break;
         case MLI_SURFACE_TYPE_COOKTORRANCE:
                 chk_msg(mli_Surface_CookTorrance_from_io(
-                                &self->data.cook_torrance, f),
+                                &self->data.cooktorrance, f),
                         "Can't read 'cook-torrance' surface from io.");
                 break;
         default:
@@ -174,7 +174,7 @@ int mli_Surface_from_json_string_and_name(
                 break;
         case MLI_SURFACE_TYPE_COOKTORRANCE:
                 chk_msg(mli_Surface_CookTorrance_from_json_string(
-                                &self->data.cook_torrance,
+                                &self->data.cooktorrance,
                                 spectra_names,
                                 json_string),
                         "Can't parse 'cook-torrance' surface from json.");

@@ -154,10 +154,10 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                 chk(mli_String_from_cstr_fromat(
                         &surface->name, "surface_%06u", i));
                 surface->type = MLI_SURFACE_TYPE_COOKTORRANCE;
-                surface->data.cook_torrance.reflection_spectrum = spec;
-                surface->data.cook_torrance.diffuse_weight = 1.0;
-                surface->data.cook_torrance.specular_weight = 0.0;
-                surface->data.cook_torrance.roughness = 0.2;
+                surface->data.cooktorrance.reflection_spectrum = spec;
+                surface->data.cooktorrance.diffuse_weight = 1.0;
+                surface->data.cooktorrance.specular_weight = 0.0;
+                surface->data.cooktorrance.roughness = 0.2;
 
                 layer = &self->materials.boundary_layers.array[i];
                 mli_BoundaryLayer_free(layer);

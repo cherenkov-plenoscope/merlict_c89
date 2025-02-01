@@ -45,7 +45,7 @@ int mli_propagate_photon_cooktorrance(
         const struct mli_Surface_CookTorrance *cook =
                 &env->scenery->materials.surfaces
                          .array[side_coming_from.surface]
-                         .data.cook_torrance;
+                         .data.cooktorrance;
         const struct mli_Func *reflection_spectrum =
                 &env->scenery->materials.spectra
                          .array[cook->reflection_spectrum]
@@ -85,7 +85,7 @@ int mli_propagate_photon_cooktorrance(
                                 env->prng, isec->surface_normal));
                 chk_msg(mli_propagate_photon_env(env),
                         "Failed to continue after diffuse reflection "
-                        "cook_torrance.");
+                        "cooktorrance.");
         } else if (rnd < (specular + diffuse)) {
                 chk(mli_PhotonInteractionVector_push_back(
                         env->history,
@@ -100,7 +100,7 @@ int mli_propagate_photon_cooktorrance(
                                 isec->surface_normal));
                 chk_msg(mli_propagate_photon_env(env),
                         "Failed to continue after specular reflection "
-                        "cook_torrance.");
+                        "cooktorrance.");
         } else {
                 chk(mli_PhotonInteractionVector_push_back(
                         env->history,

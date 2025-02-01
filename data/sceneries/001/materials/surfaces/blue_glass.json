@@ -1,3 +1,7 @@
 {
-    "type": "transparent",
+    "type": "cook-torrance",
+    "reflection_spectrum": "something_bluish",
+    "diffuse_weight": 0.5,
+    "specular_weight": 0.5,
+    "roughness": 0.1,
 }

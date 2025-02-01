@@ -12,7 +12,7 @@ struct mli_Map;
 
 union mli_SurfaceData {
         struct mli_Surface_Transparent transparent;
-        struct mli_Surface_CookTorrance cook_torrance;
+        struct mli_Surface_CookTorrance cooktorrance;
 };
 
 struct mli_Surface {

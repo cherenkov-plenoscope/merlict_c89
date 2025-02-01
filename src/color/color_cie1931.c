@@ -1,99 +1,10 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
-#include "colorObserver.h"
+#include "color_cie1931.h"
 #include "../chk/chk.h"
 #include "../func/func.h"
 #include "../physics/physics.h"
 
-struct mli_ColorObserver mli_ColorObserver_init(void)
-{
-        struct mli_ColorObserver out;
-        out.x = mli_Func_init();
-        out.y = mli_Func_init();
-        out.z = mli_Func_init();
-        return out;
-}
-
-void mli_ColorObserver_free(struct mli_ColorObserver *self)
-{
-        mli_Func_free(&self->x);
-        mli_Func_free(&self->y);
-        mli_Func_free(&self->z);
-}
-
-int mli_ColorObserver_malloc_cie1931(struct mli_ColorObserver *self)
-{
-        /*
-         * https://en.wikipedia.org/wiki/CIE_1931_color_space
-         * The spectral sensitivity of a 'standard observer' as defined by the
-         * International Commission on Illumination in 1931.
-         *
-         * Here the observer is normalized for the largest response of the
-         * three channeks x, y, and z to be 1.0.
-         */
-        mli_ColorObserver_free(self);
-        chk(mli_Func_malloc_cie1931_spectral_matching_curve_x(&self->x));
-        chk(mli_Func_malloc_cie1931_spectral_matching_curve_y(&self->y));
-        chk(mli_Func_malloc_cie1931_spectral_matching_curve_z(&self->z));
-        chk_msg(mli_ColorObserver_is_valid(self),
-                "Expected ColorObserver spectra to be valid.");
-        return 1;
-chk_error:
-        mli_ColorObserver_free(self);
-        return 0;
-}
-
-int mli_ColorObserver_is_valid(const struct mli_ColorObserver *self)
-{
-        uint64_t i;
-        for (i = 0; i < self->x.num_points; i++) {
-                chk_msg(self->x.y[i] >= 0.0 && self->x.y[i] <= 1.0,
-                        "Expected 0.0 <= X <= 1.0.");
-        }
-        for (i = 0; i < self->y.num_points; i++) {
-                chk_msg(self->y.y[i] >= 0.0 && self->y.y[i] <= 1.0,
-                        "Expected 0.0 <= Y <= 1.0.");
-        }
-        for (i = 0; i < self->z.num_points; i++) {
-                chk_msg(self->z.y[i] >= 0.0 && self->z.y[i] <= 1.0,
-                        "Expected 0.0 <= Z <= 1.0.");
-        }
-        chk_msg(mli_Func_x_is_strictly_increasing(&self->x),
-                "Expected wavelength in X to be strictly "
-                "increasing.");
-        chk_msg(mli_Func_x_is_strictly_increasing(&self->y),
-                "Expected wavelength in Y to be strictly "
-                "increasing.");
-        chk_msg(mli_Func_x_is_strictly_increasing(&self->z),
-                "Expected wavelength in Z to be strictly "
-                "increasing.");
-        return 1;
-chk_error:
-        return 0;
-}
-
-int mli_ColorObserver_evaluate(
-        const struct mli_ColorObserver *self,
-        const struct mli_Func *func,
-        struct mli_Color *color)
-{
-        double r, g, b;
-        (*color) = mli_Color_set(0.0, 0.0, 0.0);
-        chk_msg(func->num_points > 1, "Expected function's num_points > 1");
-        chk_msg(mli_Func_fold_numeric_default_closest(&self->x, func, &r),
-                "Can't fold red channel.");
-        chk_msg(mli_Func_fold_numeric_default_closest(&self->y, func, &g),
-                "Can't fold green channel.");
-        chk_msg(mli_Func_fold_numeric_default_closest(&self->z, func, &b),
-                "Can't fold blue channel.");
-        color->r = (float)(r);
-        color->g = (float)(g);
-        color->b = (float)(b);
-        return 1;
-chk_error:
-        return 0;
-}
-
-int mli_Func_malloc_cie1931_spectral_matching_curve_x(struct mli_Func *self)
+int mli_cie1931_spectral_matching_curve_x(struct mli_Func *self)
 {
         float X[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
@@ -151,7 +62,7 @@ chk_error:
         return 0;
 }
 
-int mli_Func_malloc_cie1931_spectral_matching_curve_y(struct mli_Func *self)
+int mli_cie1931_spectral_matching_curve_y(struct mli_Func *self)
 {
         float Y[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
@@ -209,7 +120,7 @@ chk_error:
         return 0;
 }
 
-int mli_Func_malloc_cie1931_spectral_matching_curve_z(struct mli_Func *self)
+int mli_cie1931_spectral_matching_curve_z(struct mli_Func *self)
 {
         float Z[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
@@ -267,7 +178,7 @@ chk_error:
         return 0;
 }
 
-struct mli_Mat mli_Mat_cie1931_spectral_matching_xyz_to_rgb(void)
+struct mli_Mat mli_cie1931_spectral_matching_xyz_to_rgb(void)
 {
         struct mli_Mat m;
         m.r00 = +3.240479;
@@ -282,7 +193,7 @@ struct mli_Mat mli_Mat_cie1931_spectral_matching_xyz_to_rgb(void)
         return m;
 }
 
-struct mli_Mat mli_ColorObserver_rgb_to_xyz(void)
+struct mli_Mat mli_cie1931_spectral_matching_rgb_to_xyz(void)
 {
         struct mli_Mat m;
         m.r00 = +0.412453;
@@ -297,7 +208,7 @@ struct mli_Mat mli_ColorObserver_rgb_to_xyz(void)
         return m;
 }
 
-int mli_Func_malloc_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
+int mli_cie1931_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
         struct mli_Func *self,
         const double wavelength_start,
         const double wavelength_stop,
@@ -317,55 +228,6 @@ int mli_Func_malloc_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
                                 wavelength, temperature);
                 self->x[i] = wavelength;
                 self->y[i] = radiance;
-        }
-        return 1;
-chk_error:
-        return 0;
-}
-
-int mli_Func_malloc_spectral_irradiance_of_sky_at_sealevel_W_per_m2_per_m(
-        struct mli_Func *self)
-{
-        /*
-        Spectral irradiance of the sky at sea level
-        -------------------------------------------
-        CIE publication Number 85, in year 1989
-        - 0m above sea level
-        - Relative air mass: 1
-        - Water vapor content: 1.42 cm precipitable water
-        - Ozone content: 0.34 cm at standard temperature and pressure (STP), 0C,
-        1 atmosphere
-        - Spectral optical depth of aerosol extinction (at 500 nm): 0.1
-        - Ground reflectance: 0.2
-
-        wavelength / nm, spectral irradiance / W m{^-2} (nm){^-1}
-        */
-        float I[][2] = {
-                {200.00, 0.000000},  {308.16, 0.011976},  {316.47, 0.116766},
-                {329.76, 0.215569},  {351.37, 0.305389},  {369.65, 0.473054},
-                {402.88, 0.544910},  {399.56, 0.874251},  {424.48, 0.970060},
-                {434.45, 0.847305},  {449.41, 1.287425},  {485.97, 1.344311},
-                {544.13, 1.356287},  {592.32, 1.326347},  {643.83, 1.281437},
-                {657.13, 1.211776},  {667.10, 1.289621},  {685.38, 1.262675},
-                {687.04, 1.062076},  {698.67, 1.187824},  {716.95, 1.172854},
-                {718.61, 1.011178},  {735.23, 1.098004},  {756.83, 1.127944},
-                {765.14, 0.436327},  {771.79, 1.077046},  {788.40, 1.059082},
-                {790.07, 1.011178},  {810.01, 0.987226},  {814.99, 0.807585},
-                {831.61, 0.870459},  {836.60, 0.924351},  {854.87, 0.879441},
-                {883.12, 0.870459},  {893.09, 0.825549},  {901.40, 0.630938},
-                {924.67, 0.636926},  {934.64, 0.268663},  {961.23, 0.340519},
-                {974.52, 0.577046},  {986.15, 0.693812},  {1036.00, 0.648902},
-                {1090.84, 0.544112}, {1112.44, 0.403393}, {1115.77, 0.169860},
-                {1132.39, 0.133932}, {1153.99, 0.235729}, {1165.62, 0.406387},
-                {1220.46, 0.430339}, {1255.35, 0.427345}, {1265.32, 0.370459},
-                {1293.57, 0.394411}, {1315.18, 0.304591}, {1330.13, 0.208782},
-                {1348.41, 0.098004}, {1353.40, 0.011178}};
-        uint64_t i;
-        chk_msg(mli_Func_malloc(self, sizeof(I) / sizeof(I[0])),
-                "Can't malloc function from Spectrum.");
-        for (i = 0; i < self->num_points; i++) {
-                self->x[i] = I[i][0] * 1e-9;
-                self->y[i] = I[i][1] * 1e9;
         }
         return 1;
 chk_error:

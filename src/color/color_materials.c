@@ -2,7 +2,7 @@
 #include "color_materials.h"
 #include <stdlib.h>
 #include "../chk/chk.h"
-#include "colorObserver.h"
+#include "color_cie1931.h"
 
 struct mli_ColorMaterials mli_ColorMaterials_init(void)
 {
@@ -30,23 +30,23 @@ int mli_ColorMaterials_set_observer_cie1931(struct mli_ColorMaterials *self)
         struct mli_Func func = mli_Func_init();
 
         self->observer_matching_curve_xyz_to_rgb =
-                mli_Mat_cie1931_spectral_matching_xyz_to_rgb();
+                mli_cie1931_spectral_matching_xyz_to_rgb();
 
-        chk(mli_Func_malloc_cie1931_spectral_matching_curve_x(&func));
+        chk(mli_cie1931_spectral_matching_curve_x(&func));
         chk_msg(mli_ColorSpectrum_from_func(
                         &self->observer_matching_curve_x,
                         &self->wavelength_bin_edges,
                         &func),
                 "Failed to resample cie1931.x onto ColorSpectrum.");
 
-        chk(mli_Func_malloc_cie1931_spectral_matching_curve_y(&func));
+        chk(mli_cie1931_spectral_matching_curve_y(&func));
         chk_msg(mli_ColorSpectrum_from_func(
                         &self->observer_matching_curve_y,
                         &self->wavelength_bin_edges,
                         &func),
                 "Failed to resample cie1931.y onto ColorSpectrum.");
 
-        chk(mli_Func_malloc_cie1931_spectral_matching_curve_z(&func));
+        chk(mli_cie1931_spectral_matching_curve_z(&func));
         chk_msg(mli_ColorSpectrum_from_func(
                         &self->observer_matching_curve_z,
                         &self->wavelength_bin_edges,
