@@ -36,8 +36,8 @@ CASE("mli_Scenery, malloc from archive")
         CHECK(1202 ==
               scenery.geometry.objects[obj_teapot_idx].num_vertex_normals);
 
-        CHECK(4 == scenery.materials.surfaces2.size);
-        CHECK(2 == scenery.materials.media2.size);
+        CHECK(4 == scenery.materials.surfaces.size);
+        CHECK(2 == scenery.materials.media.size);
 
         /* frames
          * ------

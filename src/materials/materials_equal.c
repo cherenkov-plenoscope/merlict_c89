@@ -7,10 +7,10 @@ int mli_Materials_media_equal(
         const struct mli_Materials *b)
 {
         uint64_t i = 0u;
-        chk_msg(a->media2.size == b->media2.size, "Different number of media.");
-        for (i = 0; i < a->media2.size; i++) {
+        chk_msg(a->media.size == b->media.size, "Different number of media.");
+        for (i = 0; i < a->media.size; i++) {
                 chk_msg(mli_BoundaryLayer_Medium_equal(
-                                &a->media2.array[i], &b->media2.array[i]),
+                                &a->media.array[i], &b->media.array[i]),
                         "Medium is different.");
         }
         return 1;
@@ -24,11 +24,11 @@ int mli_Materials_surfaces_equal(
         const struct mli_Materials *b)
 {
         uint64_t i = 0u;
-        chk_msg(a->surfaces2.size == b->surfaces2.size,
+        chk_msg(a->surfaces.size == b->surfaces.size,
                 "Different number of surfaces.");
-        for (i = 0; i < a->surfaces2.size; i++) {
+        for (i = 0; i < a->surfaces.size; i++) {
                 chk_msg(mli_BoundaryLayer_Surface_equal(
-                                &a->surfaces2.array[i], &b->surfaces2.array[i]),
+                                &a->surfaces.array[i], &b->surfaces.array[i]),
                         "Surface is different.");
         }
         return 1;
@@ -42,11 +42,12 @@ int mli_Materials_boundary_layers_equal(
         const struct mli_Materials *b)
 {
         uint64_t i = 0u;
-        chk_msg(a->layers2.size == b->layers2.size,
+        chk_msg(a->boundary_layers.size == b->boundary_layers.size,
                 "Different number of boundary_layers.");
-        for (i = 0; i < a->layers2.size; i++) {
+        for (i = 0; i < a->boundary_layers.size; i++) {
                 chk_msg(mli_BoundaryLayer2_equal(
-                                &a->layers2.array[i], &b->layers2.array[i]),
+                                &a->boundary_layers.array[i],
+                                &b->boundary_layers.array[i]),
                         "Boundary layer is different.");
         }
         return 1;

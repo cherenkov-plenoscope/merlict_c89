@@ -28,9 +28,9 @@ CASE("simple propagation")
                 "002.tar"));
 
         CHECK(mli_String_equal_cstr(
-                &scenery.materials.media2.array[MED_GLASS].name, "glass"));
+                &scenery.materials.media.array[MED_GLASS].name, "glass"));
         CHECK(mli_String_equal_cstr(
-                &scenery.materials.media2.array[MED_VACUUM].name, "vacuum"));
+                &scenery.materials.media.array[MED_VACUUM].name, "vacuum"));
         CHECK(scenery.materials.default_medium == MED_VACUUM);
 
         CHECK(mli_raytracing_query_intersection_with_surface_normal(
@@ -42,17 +42,17 @@ CASE("simple propagation")
                 intersection.surface_normal, mli_Vec_init(0, 0, -1), 1e-9));
         CHECK_MARGIN(intersection.distance_of_ray, 3., 1e-9);
 
-        CHECK(scenery.materials.media2.size == 2);
+        CHECK(scenery.materials.media.size == 2);
 
         ilayer = mli_raytracing_get_intersection_layer(&scenery, &intersection);
 
         CHECK(ilayer.side_going_to.medium ==
-              &scenery.materials.media2.array[MED_GLASS]);
+              &scenery.materials.media.array[MED_GLASS]);
         CHECK(ilayer.side_going_to.surface->type ==
               MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT);
 
         CHECK(ilayer.side_coming_from.medium ==
-              &scenery.materials.media2.array[MED_VACUUM]);
+              &scenery.materials.media.array[MED_VACUUM]);
         CHECK(ilayer.side_coming_from.surface->type ==
               MLI_BOUNDARYLAYER_SURFACE_TYPE_TRANSPARENT);
 

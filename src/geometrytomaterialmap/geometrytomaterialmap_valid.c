@@ -53,7 +53,8 @@ int mli_GeometryToMaterialMap_valid_wrt_Materials(
 {
         uint32_t i = 0u;
         for (i = 0u; i < geomap->total_num_boundary_layers; i++) {
-                chk_msg(geomap->boundary_layers[i] < materials->layers2.size,
+                chk_msg(geomap->boundary_layers[i] <
+                                materials->boundary_layers.size,
                         "Expected geomap's boundary_layers[i] to refer to "
                         "a valid boundary_layer in Materials.");
         }

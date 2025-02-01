@@ -108,13 +108,13 @@ int mli_Materials_from_Archive__set_media(
                         struct mli_String *payload =
                                 &archive->textfiles.array[arc_idx];
 
-                        chk_msg(med_idx < materials->media2.size,
+                        chk_msg(med_idx < materials->media.size,
                                 "Expected sufficient capacity for media.");
 
                         chk(mli_Materials__key_from_filename(&key, filename));
 
                         chk_msg(mli_BoundaryLayer_Medium_from_json_string_and_name(
-                                        &materials->media2.array[med_idx],
+                                        &materials->media.array[med_idx],
                                         &names->spectra,
                                         payload,
                                         &key),
@@ -128,9 +128,9 @@ int mli_Materials_from_Archive__set_media(
         }
 
         chk_msgf(
-                med_idx == materials->media2.size,
+                med_idx == materials->media.size,
                 ("Expected to parse %lu media but only found %lu.",
-                 materials->media2.size,
+                 materials->media.size,
                  med_idx));
 
         mli_String_free(&key);
@@ -159,13 +159,13 @@ int mli_Materials_from_Archive__set_surfaces(
                         struct mli_String *payload =
                                 &archive->textfiles.array[arc_idx];
 
-                        chk_msg(srf_idx < materials->surfaces2.size,
+                        chk_msg(srf_idx < materials->surfaces.size,
                                 "Expected sufficient capacity for surfaces.");
 
                         chk(mli_Materials__key_from_filename(&key, filename));
 
                         chk_msg(mli_BoundaryLayer_Surface_from_json_string_and_name(
-                                        &materials->surfaces2.array[srf_idx],
+                                        &materials->surfaces.array[srf_idx],
                                         &names->spectra,
                                         payload,
                                         &key),
@@ -179,9 +179,9 @@ int mli_Materials_from_Archive__set_surfaces(
         }
 
         chk_msgf(
-                srf_idx == materials->surfaces2.size,
+                srf_idx == materials->surfaces.size,
                 ("Expected to parse %lu surfaces but only found %lu.",
-                 materials->surfaces2.size,
+                 materials->surfaces.size,
                  srf_idx));
 
         mli_String_free(&key);
@@ -268,14 +268,15 @@ int mli_Materials_from_Archive__set_boundary_layers(
                         struct mli_String *payload =
                                 &archive->textfiles.array[arc_idx];
 
-                        chk_msg(bdl_idx < materials->layers2.size,
+                        chk_msg(bdl_idx < materials->boundary_layers.size,
                                 "Expected sufficient capacity for boundary "
                                 "layers.");
 
                         chk(mli_Materials__key_from_filename(&key, filename));
 
                         chk_msg(mli_BoundaryLayer2_from_json_string_and_name(
-                                        &materials->layers2.array[bdl_idx],
+                                        &materials->boundary_layers
+                                                 .array[bdl_idx],
                                         &names->surfaces,
                                         &names->media,
                                         payload,
@@ -292,9 +293,9 @@ int mli_Materials_from_Archive__set_boundary_layers(
         }
 
         chk_msgf(
-                bdl_idx == materials->layers2.size,
+                bdl_idx == materials->boundary_layers.size,
                 ("Expected to parse %lu boundary layers but only found %lu.",
-                 materials->layers2.size,
+                 materials->boundary_layers.size,
                  bdl_idx));
 
         mli_String_free(&key);

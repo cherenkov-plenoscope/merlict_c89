@@ -4,8 +4,8 @@ CASE("mli_Materials_init")
 {
         struct mli_Materials mtl = mli_Materials_init();
         CHECK(mtl.spectra.size == 0u);
-        CHECK(mtl.surfaces2.size == 0u);
-        CHECK(mtl.media2.size == 0u);
-        CHECK(mtl.layers2.size == 0u);
+        CHECK(mtl.surfaces.size == 0u);
+        CHECK(mtl.media.size == 0u);
+        CHECK(mtl.boundary_layers.size == 0u);
         CHECK(mtl.default_medium == 0u);
 }

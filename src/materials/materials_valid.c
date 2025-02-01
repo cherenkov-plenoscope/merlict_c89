@@ -6,9 +6,9 @@
 int mli_Materials_valid_media(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
-        for (i = 0; i < self->media2.size; i++) {
+        for (i = 0; i < self->media.size; i++) {
                 chk_msg(mli_BoundaryLayer_Medium_valid_wrt_materials(
-                                &self->media2.array[i], self),
+                                &self->media.array[i], self),
                         "Medium is not valid.");
         }
         return 1;
@@ -33,7 +33,7 @@ chk_error:
 int mli_Materials_valid_surfaces(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
-        for (i = 0; i < self->surfaces2.size; i++) {
+        for (i = 0; i < self->surfaces.size; i++) {
                 chk(self);
                 chk_warning("IMPLEMENT ME!!!");
         }
@@ -46,15 +46,16 @@ chk_error:
 int mli_Materials_valid_boundary_layers(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
-        for (i = 0; i < self->layers2.size; i++) {
-                struct mli_BoundaryLayer2 *layer = &self->layers2.array[i];
-                chk_msg(layer->inner.surface < self->surfaces2.size,
+        for (i = 0; i < self->boundary_layers.size; i++) {
+                struct mli_BoundaryLayer2 *layer =
+                        &self->boundary_layers.array[i];
+                chk_msg(layer->inner.surface < self->surfaces.size,
                         "inner.surface is invalid.");
-                chk_msg(layer->outer.surface < self->surfaces2.size,
+                chk_msg(layer->outer.surface < self->surfaces.size,
                         "outer.surface is invalid.");
-                chk_msg(layer->inner.medium < self->media2.size,
+                chk_msg(layer->inner.medium < self->media.size,
                         "inner.medium is invalid.");
-                chk_msg(layer->outer.medium < self->media2.size,
+                chk_msg(layer->outer.medium < self->media.size,
                         "outer.medium is invalid.");
 
                 chk_msg(mli_String_valid(&layer->name, 1),
@@ -68,7 +69,7 @@ chk_error:
 
 int mli_Materials_valid(const struct mli_Materials *self)
 {
-        chk_msg(self->default_medium <= self->media2.size,
+        chk_msg(self->default_medium <= self->media.size,
                 "Expected default-medium to reference a valid medium.");
         chk(mli_Materials_valid_spectra(self));
         chk(mli_Materials_valid_media(self));

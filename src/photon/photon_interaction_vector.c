@@ -80,10 +80,9 @@ void mli_PhotonInteractionVector_print(
                 printf("%-24s ", type_string);
 
                 printf("{%-12s,%-12s}  ",
-                       scenery->materials.media2
-                               .array[phisec.medium_coming_from]
+                       scenery->materials.media.array[phisec.medium_coming_from]
                                .name.array,
-                       scenery->materials.media2.array[phisec.medium_going_to]
+                       scenery->materials.media.array[phisec.medium_going_to]
                                .name.array);
 
                 if (phisec.type == MLI_PHOTON_CREATION) {

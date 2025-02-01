@@ -23,9 +23,9 @@ struct mli_MaterialsCapacity mli_MaterialsCapacity_init(void);
 
 struct mli_Materials {
         struct mli_SpectrumArray spectra;
-        struct mli_SurfaceArray surfaces2;
-        struct mli_MediumArray media2;
-        struct mli_BoundaryLayer2Array layers2;
+        struct mli_SurfaceArray surfaces;
+        struct mli_MediumArray media;
+        struct mli_BoundaryLayer2Array boundary_layers;
 
         uint64_t default_medium;
 };

@@ -135,7 +135,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                 &spectrum->spectrum, 200e-9, 1200e-9, 0.0));
         spec += 1;
 
-        medium = &self->materials.media2.array[0];
+        medium = &self->materials.media.array[0];
         mli_BoundaryLayer_Medium_free(medium);
         chk(mli_String_from_cstr(&medium->name, "vacuum"));
         medium->refraction_spectrum = 0;
@@ -149,7 +149,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                 chk(mli_Func_malloc_color_spectrum(
                         &spectrum->spectrum, mli_Color_random_uniform(&prng)));
 
-                surface = &self->materials.surfaces2.array[i];
+                surface = &self->materials.surfaces.array[i];
                 mli_BoundaryLayer_Surface_free(surface);
                 chk(mli_String_from_cstr_fromat(
                         &surface->name, "surface_%06u", i));
@@ -159,7 +159,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                 surface->data.phong.specular_weight = 0.0;
                 surface->data.phong.shininess = 16.0;
 
-                layer = &self->materials.layers2.array[i];
+                layer = &self->materials.boundary_layers.array[i];
                 mli_BoundaryLayer2_free(layer);
                 chk(mli_String_from_cstr_fromat(&layer->name, "layer_%06u", i));
                 layer->inner.medium = 0;

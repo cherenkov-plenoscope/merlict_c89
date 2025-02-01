@@ -43,7 +43,7 @@ int mli_photon_time_of_flight(
 {
         double refractive_index;
         const uint64_t spc_idx =
-                materials->media2.array[phisec->medium_coming_from]
+                materials->media.array[phisec->medium_coming_from]
                         .refraction_spectrum;
         const struct mli_Func *spc =
                 &materials->spectra.array[spc_idx].spectrum;

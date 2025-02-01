@@ -43,7 +43,7 @@ int mli_propagate_photon_phong(
                 mli_raytracing_get_side_coming_from(env->scenery, isec);
 
         const struct mli_BoundaryLayer_Surface_Phong *phong =
-                &env->scenery->materials.surfaces2
+                &env->scenery->materials.surfaces
                          .array[side_coming_from.surface]
                          .data.phong;
         const struct mli_Func *reflection_spectrum =
@@ -137,7 +137,7 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
         const struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(scenery, isec);
         const struct mli_BoundaryLayer_Medium *medium_coming_from =
-                &scenery->materials.media2.array[side_coming_from.medium];
+                &scenery->materials.media.array[side_coming_from.medium];
 
         const struct mli_Func *absorbtion_spectrum =
                 &scenery->materials.spectra
@@ -218,7 +218,7 @@ int mli_propagate_photon_interact_with_object(
         const struct mli_BoundaryLayer_Side side_coming_from =
                 mli_raytracing_get_side_coming_from(env->scenery, isec);
         const struct mli_BoundaryLayer_Surface *surface_coming_from =
-                &env->scenery->materials.surfaces2
+                &env->scenery->materials.surfaces
                          .array[side_coming_from.surface];
 
         switch (surface_coming_from->type) {
@@ -288,7 +288,7 @@ int mli_propagate_photon_work_on_causal_intersection(
                 side_coming_from = mli_raytracing_get_side_coming_from(
                         env->scenery, &next_intersection);
                 medium_passing_through =
-                        &env->scenery->materials.media2
+                        &env->scenery->materials.media
                                  .array[side_coming_from.medium];
                 absorbtion_in_medium_passing_through =
                         &env->scenery->materials.spectra
@@ -351,7 +351,7 @@ int mli_propagate_photon_work_on_causal_intersection(
                         env->scenery->materials.default_medium;
 
                 medium_passing_through =
-                        &env->scenery->materials.media2.array[default_medium];
+                        &env->scenery->materials.media.array[default_medium];
                 absorbtion_in_medium_passing_through =
                         &env->scenery->materials.spectra
                                  .array[medium_passing_through
