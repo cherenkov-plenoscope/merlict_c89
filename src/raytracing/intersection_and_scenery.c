@@ -25,7 +25,7 @@ struct mli_IntersectionLayer mli_raytracing_get_intersection_layer(
 {
         const uint64_t idx = mli_Scenery_resolve_boundary_layer_idx(
                 scenery, isec->geometry_id);
-        const struct mli_BoundaryLayer2 layer =
+        const struct mli_BoundaryLayer layer =
                 scenery->materials.boundary_layers.array[idx];
         struct mli_IntersectionLayer ilay = mli_IntersectionLayer_init();
 
@@ -69,7 +69,7 @@ struct mli_BoundaryLayer_Side mli_raytracing_get_side_coming_from(
 {
         const uint64_t idx = mli_Scenery_resolve_boundary_layer_idx(
                 scenery, isec->geometry_id);
-        struct mli_BoundaryLayer2 layer =
+        struct mli_BoundaryLayer layer =
                 scenery->materials.boundary_layers.array[idx];
         if (isec->from_outside_to_inside)
                 return layer.outer;
@@ -83,7 +83,7 @@ struct mli_BoundaryLayer_Side mli_raytracing_get_side_going_to(
 {
         const uint64_t idx = mli_Scenery_resolve_boundary_layer_idx(
                 scenery, isec->geometry_id);
-        struct mli_BoundaryLayer2 layer =
+        struct mli_BoundaryLayer layer =
                 scenery->materials.boundary_layers.array[idx];
         if (isec->from_outside_to_inside)
                 return layer.inner;

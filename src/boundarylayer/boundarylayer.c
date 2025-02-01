@@ -4,14 +4,14 @@
 #include "../magicid/magicid.h"
 #include "../string/string_serialize.h"
 
-void mli_BoundaryLayer2_free(struct mli_BoundaryLayer2 *self)
+void mli_BoundaryLayer_free(struct mli_BoundaryLayer *self)
 {
         mli_String_free(&self->name);
 }
 
-struct mli_BoundaryLayer2 mli_BoundaryLayer2_init(void)
+struct mli_BoundaryLayer mli_BoundaryLayer_init(void)
 {
-        struct mli_BoundaryLayer2 layer;
+        struct mli_BoundaryLayer layer;
         layer.inner.medium = 0;
         layer.inner.surface = 0;
         layer.outer.medium = 0;
@@ -20,9 +20,9 @@ struct mli_BoundaryLayer2 mli_BoundaryLayer2_init(void)
         return layer;
 }
 
-int mli_BoundaryLayer2_equal(
-        const struct mli_BoundaryLayer2 *a,
-        const struct mli_BoundaryLayer2 *b)
+int mli_BoundaryLayer_equal(
+        const struct mli_BoundaryLayer *a,
+        const struct mli_BoundaryLayer *b)
 {
         if (!mli_String_equal(&a->name, &b->name)) {
                 return 0;
@@ -42,12 +42,12 @@ int mli_BoundaryLayer2_equal(
         return 1;
 }
 
-int mli_BoundaryLayer2_to_io(
-        const struct mli_BoundaryLayer2 *self,
+int mli_BoundaryLayer_to_io(
+        const struct mli_BoundaryLayer *self,
         struct mli_IO *f)
 {
         struct mli_MagicId magic = mli_MagicId_init();
-        chk(mli_MagicId_set(&magic, "mli_BoundaryLayer2"));
+        chk(mli_MagicId_set(&magic, "mli_BoundaryLayer"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
 
         chk_msg(mli_String_to_io(&self->name, f),
@@ -62,13 +62,11 @@ chk_error:
         return 0;
 }
 
-int mli_BoundaryLayer2_from_io(
-        struct mli_BoundaryLayer2 *self,
-        struct mli_IO *f)
+int mli_BoundaryLayer_from_io(struct mli_BoundaryLayer *self, struct mli_IO *f)
 {
         struct mli_MagicId magic;
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
-        chk(mli_MagicId_has_word(&magic, "mli_BoundaryLayer2"));
+        chk(mli_MagicId_has_word(&magic, "mli_BoundaryLayer"));
         mli_MagicId_warn_version(&magic);
 
         chk_msg(mli_String_from_io(&self->name, f),

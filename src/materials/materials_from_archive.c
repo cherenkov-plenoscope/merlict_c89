@@ -192,8 +192,8 @@ chk_error:
         return 0;
 }
 
-int mli_BoundaryLayer2_from_json_string_and_name(
-        struct mli_BoundaryLayer2 *self,
+int mli_BoundaryLayer_from_json_string_and_name(
+        struct mli_BoundaryLayer *self,
         const struct mli_Map *surface_names,
         const struct mli_Map *media_names,
         const struct mli_String *json_string,
@@ -275,7 +275,7 @@ int mli_Materials_from_Archive__set_boundary_layers(
 
                         chk(mli_Materials__key_from_filename(&key, filename));
 
-                        chk_msg(mli_BoundaryLayer2_from_json_string_and_name(
+                        chk_msg(mli_BoundaryLayer_from_json_string_and_name(
                                         &materials->boundary_layers
                                                  .array[bdl_idx],
                                         &names->surfaces,

@@ -81,7 +81,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
         struct mli_Spectrum *spectrum = NULL;
         struct mli_Surface *surface = NULL;
         struct mli_Medium *medium = NULL;
-        struct mli_BoundaryLayer2 *layer = NULL;
+        struct mli_BoundaryLayer *layer = NULL;
 
         mli_Scenery_free(self);
 
@@ -160,7 +160,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                 surface->data.phong.shininess = 16.0;
 
                 layer = &self->materials.boundary_layers.array[i];
-                mli_BoundaryLayer2_free(layer);
+                mli_BoundaryLayer_free(layer);
                 chk(mli_String_from_cstr_fromat(&layer->name, "layer_%06u", i));
                 layer->inner.medium = 0;
                 layer->inner.surface = i;

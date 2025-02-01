@@ -20,7 +20,7 @@ struct mli_Materials mli_Materials_init(void)
         res.spectra = mli_SpectrumArray_init();
         res.surfaces = mli_SurfaceArray_init();
         res.media = mli_MediumArray_init();
-        res.boundary_layers = mli_BoundaryLayer2Array_init();
+        res.boundary_layers = mli_BoundaryLayerArray_init();
 
         res.default_medium = 0u;
         return res;
@@ -31,7 +31,7 @@ void mli_Materials_free(struct mli_Materials *self)
         mli_SpectrumArray_free(&self->spectra);
         mli_SurfaceArray_free(&self->surfaces);
         mli_MediumArray_free(&self->media);
-        mli_BoundaryLayer2Array_free(&self->boundary_layers);
+        mli_BoundaryLayerArray_free(&self->boundary_layers);
         (*self) = mli_Materials_init();
 }
 
@@ -57,10 +57,10 @@ int mli_Materials_malloc(
                 self->media.array[i] = mli_Medium_init();
         }
 
-        chk(mli_BoundaryLayer2Array_malloc(
+        chk(mli_BoundaryLayerArray_malloc(
                 &self->boundary_layers, rescap.num_boundary_layers));
         for (i = 0; i < self->boundary_layers.size; i++) {
-                self->boundary_layers.array[i] = mli_BoundaryLayer2_init();
+                self->boundary_layers.array[i] = mli_BoundaryLayer_init();
         }
 
         return 1;
@@ -132,7 +132,7 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         }
         fprintf(f, "\n");
         for (i = 0; i < self->boundary_layers.size; i++) {
-                struct mli_BoundaryLayer2 *layer =
+                struct mli_BoundaryLayer *layer =
                         &self->boundary_layers.array[i];
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);

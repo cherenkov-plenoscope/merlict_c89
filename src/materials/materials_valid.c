@@ -47,7 +47,7 @@ int mli_Materials_valid_boundary_layers(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
         for (i = 0; i < self->boundary_layers.size; i++) {
-                struct mli_BoundaryLayer2 *layer =
+                struct mli_BoundaryLayer *layer =
                         &self->boundary_layers.array[i];
                 chk_msg(layer->inner.surface < self->surfaces.size,
                         "inner.surface is invalid.");

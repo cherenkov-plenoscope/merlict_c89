@@ -11,24 +11,22 @@ struct mli_BoundaryLayer_Side {
         uint64_t medium;
 };
 
-struct mli_BoundaryLayer2 {
+struct mli_BoundaryLayer {
         struct mli_BoundaryLayer_Side inner;
         struct mli_BoundaryLayer_Side outer;
         struct mli_String name;
 };
 
-void mli_BoundaryLayer2_free(struct mli_BoundaryLayer2 *self);
-struct mli_BoundaryLayer2 mli_BoundaryLayer2_init(void);
+void mli_BoundaryLayer_free(struct mli_BoundaryLayer *self);
+struct mli_BoundaryLayer mli_BoundaryLayer_init(void);
 
-int mli_BoundaryLayer2_equal(
-        const struct mli_BoundaryLayer2 *a,
-        const struct mli_BoundaryLayer2 *b);
+int mli_BoundaryLayer_equal(
+        const struct mli_BoundaryLayer *a,
+        const struct mli_BoundaryLayer *b);
 
-int mli_BoundaryLayer2_to_io(
-        const struct mli_BoundaryLayer2 *self,
+int mli_BoundaryLayer_to_io(
+        const struct mli_BoundaryLayer *self,
         struct mli_IO *f);
-int mli_BoundaryLayer2_from_io(
-        struct mli_BoundaryLayer2 *self,
-        struct mli_IO *f);
+int mli_BoundaryLayer_from_io(struct mli_BoundaryLayer *self, struct mli_IO *f);
 
 #endif

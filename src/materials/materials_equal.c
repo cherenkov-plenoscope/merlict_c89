@@ -45,7 +45,7 @@ int mli_Materials_boundary_layers_equal(
         chk_msg(a->boundary_layers.size == b->boundary_layers.size,
                 "Different number of boundary_layers.");
         for (i = 0; i < a->boundary_layers.size; i++) {
-                chk_msg(mli_BoundaryLayer2_equal(
+                chk_msg(mli_BoundaryLayer_equal(
                                 &a->boundary_layers.array[i],
                                 &b->boundary_layers.array[i]),
                         "Boundary layer is different.");
