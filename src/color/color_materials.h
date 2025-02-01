@@ -6,50 +6,7 @@
 #include "../array/array.h"
 #include "../vec/vec.h"
 #include "../materials/materials.h"
-
-#define MLI_COLORSPECTRUM_SIZE 30
-#define MLI_COLORSPECTRUM_WAVELENGTH_START 400e-9
-#define MLI_COLORSPECTRUM_WAVELENGTH_STOP 700e-9
-
-struct mli_ColorSpectrumBinEdges {
-        float values[MLI_COLORSPECTRUM_SIZE + 1];
-};
-
-struct mli_ColorSpectrumBinEdges mli_ColorSpectrumBinEdges_init(void);
-
-struct mli_ColorSpectrum {
-        float values[MLI_COLORSPECTRUM_SIZE];
-};
-
-struct mli_ColorSpectrum mli_ColorSpectrum_init_zeros(void);
-
-struct mli_ColorSpectrum mli_ColorSpectrum_add(
-        const struct mli_ColorSpectrum a,
-        const struct mli_ColorSpectrum b);
-
-struct mli_ColorSpectrum mli_ColorSpectrum_exp(
-        const struct mli_ColorSpectrum a,
-        const double factor);
-
-struct mli_ColorSpectrum mli_ColorSpectrum_multiply(
-        const struct mli_ColorSpectrum a,
-        const struct mli_ColorSpectrum b);
-
-struct mli_ColorSpectrum mli_ColorSpectrum_multiply_scalar(
-        const struct mli_ColorSpectrum a,
-        const double factor);
-
-double mli_ColorSpectrum_multiply_and_sum(
-        const struct mli_ColorSpectrum *a,
-        const struct mli_ColorSpectrum *b);
-
-float mli_ColorSpectrum_sum(const struct mli_ColorSpectrum *self);
-
-void mli_ColorSpectrum_set(struct mli_ColorSpectrum *self, const float value);
-
-int mli_ColorSpectrum_set_radiance_of_black_body_W_per_m2_per_sr(
-        struct mli_ColorSpectrum *self,
-        const double temperature);
+#include "color_spectrum.h"
 
 MLI_ARRAY_DEFINITON(mli_ColorSpectrumArray, struct mli_ColorSpectrum)
 
