@@ -5,7 +5,7 @@ CASE("Write and read tape-archive")
         struct mli_IO f = mli_IO_init();
         struct mli_Tar tar = mli_Tar_init();
         struct mli_TarHeader tarh = mli_TarHeader_init();
-        char path[] = "data/mli/tests/resources/tar/123.tar.tmp";
+        char path[] = "data/tar/123.tar.tmp";
         char payload[1024] = {'\0'};
 
         sprintf(payload, "%s", "Hello world!");

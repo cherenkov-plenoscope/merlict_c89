@@ -37,9 +37,6 @@ CASE("refraction_in_prism")
         CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
-                "mli/"
-                "tests/"
-                "resources/"
                 "sceneries/"
                 "optics_prism.tar"));
 

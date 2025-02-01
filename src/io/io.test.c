@@ -22,8 +22,7 @@ CASE("mli_IO_open_file")
         struct mli_IO fstream = mli_IO_init();
         struct mli_IO mstream = mli_IO_init();
 
-        CHECK(mli_String_from_cstr(
-                &filename, "data/mli/tests/resources/mli_IO.txt.tmp"));
+        CHECK(mli_String_from_cstr(&filename, "data/mli_IO.txt.tmp"));
         CHECK(mli_String_from_cstr(&mode, "w"));
 
         CHECK(mli_IO_open_file(&fstream, &filename, &mode));

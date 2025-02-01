@@ -28,9 +28,6 @@ CASE("focussing_a_parallel_beam")
         CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
-                "mli/"
-                "tests/"
-                "resources/"
                 "sceneries/"
                 "optics_focussing_mirror.tar"));
 
@@ -96,9 +93,6 @@ CASE("focussing_a_parallel_beam")
         CHECK(mli_IO__open_file_cstr(
                 &f,
                 "data/"
-                "mli/"
-                "tests/"
-                "resources/"
                 "optics_focussing_mirror-psf.ppm.tmp",
                 "w"));
         CHECK(mli_Image_to_io(&screen_img, &f));

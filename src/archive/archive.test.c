@@ -11,9 +11,6 @@ CASE("mli_Archive, read tar")
         CHECK(mli_Archive__from_path_cstr(
                 &arc,
                 "data/"
-                "mli/"
-                "tests/"
-                "resources/"
                 "sceneries/"
                 "000.tar"));
         CHECK(1 == mli_Archive_num_filename_prefix_sufix(

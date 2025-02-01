@@ -20,9 +20,6 @@ CASE("mli_Accelerator, init")
         CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
-                "mli/"
-                "tests/"
-                "resources/"
                 "sceneries/"
                 "001.tar"));
         chk_dbg;

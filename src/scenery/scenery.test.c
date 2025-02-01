@@ -9,9 +9,6 @@ CASE("mli_Scenery, malloc from archive")
         CHECK(mli_Scenery__from_path_cstr(
                 &scenery,
                 "data/"
-                "mli/"
-                "tests/"
-                "resources/"
                 "sceneries/"
                 "001.tar"));
 
@@ -70,17 +67,14 @@ CASE("mli_Scenery, read, write")
         struct mli_Scenery orig = mli_Scenery_init();
         struct mli_Scenery back = mli_Scenery_init();
         struct mli_IO f = mli_IO_init();
-        char geom_path[] = "data/mli/tests/resources/geometry.bin.tmp";
-        char mate_path[] = "data/mli/tests/resources/materials.bin.tmp";
-        char acce_path[] = "data/mli/tests/resources/accelerator.bin.tmp";
-        char gmap_path[] = "data/mli/tests/resources/geomap.bin.tmp";
+        char geom_path[] = "data/geometry.bin.tmp";
+        char mate_path[] = "data/materials.bin.tmp";
+        char acce_path[] = "data/accelerator.bin.tmp";
+        char gmap_path[] = "data/geomap.bin.tmp";
 
         CHECK(mli_Scenery__from_path_cstr(
                 &orig,
                 "data/"
-                "mli/"
-                "tests/"
-                "resources/"
                 "sceneries/"
                 "002.tar"));
 
@@ -134,10 +128,8 @@ CASE("mli_Scenery, read, write")
 
         /* full scenery */
         /* ------------ */
-        CHECK(mli_Scenery_write_to_path(
-                &orig, "data/mli/tests/resources/scenery.bin.tmp"));
-        CHECK(mli_Scenery_malloc_from_path(
-                &back, "data/mli/tests/resources/scenery.bin.tmp"));
+        CHECK(mli_Scenery_write_to_path(&orig, "data/scenery.bin.tmp"));
+        CHECK(mli_Scenery_malloc_from_path(&back, "data/scenery.bin.tmp"));
         CHECK(mli_Scenery_equal(&back, &orig));
 
         mli_Scenery_free(&back);
