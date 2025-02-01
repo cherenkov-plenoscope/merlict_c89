@@ -3,28 +3,25 @@
 #include "args.h"
 #include "../chk/chk.h"
 
-MLI_ARRAY_IMPLEMENTATION_FREE(
-        mli_ArrayString,
-        struct mli_String,
-        mli_String_free)
-
-int mli_ArrayString_from_argc_argv(
-        struct mli_ArrayString *self,
+int mli_StringVector_from_argc_argv(
+        struct mli_StringVector *self,
         int argc,
         char *argv[])
 {
         int i;
-        mli_ArrayString_free(self);
+        mli_StringVector_free(self);
         chk_msg(argc >= 0, "Expected 'argc' >= 0.");
-        chk_msg(mli_ArrayString_malloc(self, argc), "Failed to malloc Argv.");
+        chk_msg(mli_StringVector_malloc(self, argc), "Failed to malloc Argv.");
         for (i = 0; i < argc; i++) {
-                struct mli_String *field = &self->array[i];
+                struct mli_String *field = NULL;
+                chk_msg(mli_StringVector_push_back(self, mli_String_init()), "");
+                field = &self->array[i];
                 chk_msg(mli_String_from_cstr(field, argv[i]),
                         "Failed to malloc string in Argv.");
         }
 
         return 1;
 chk_error:
-        mli_ArrayString_free(self);
+        mli_StringVector_free(self);
         return 0;
 }

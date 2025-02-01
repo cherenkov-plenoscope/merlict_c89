@@ -36,12 +36,12 @@
 
 int main(int argc, char *argv[])
 {
-        struct mli_ArrayString args = mli_ArrayString_init();
+        struct mli_StringVector args = mli_StringVector_init();
         struct mli_viewer_Config config = mli_viewer_Config_default();
         struct mli_Scenery scenery = mli_Scenery_init();
 
         chk_msg(
-                mli_ArrayString_from_argc_argv(&args, argc, argv),
+                mli_StringVector_from_argc_argv(&args, argc, argv),
                 "Failed to copy argc and argv."
         );
 
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
                         &scenery, config),
                 "Failure in viewer");
 
-        mli_ArrayString_free(&args);
+        mli_StringVector_free(&args);
         mli_Scenery_free(&scenery);
         return EXIT_SUCCESS;
 chk_error:

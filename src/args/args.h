@@ -2,13 +2,10 @@
 #ifndef MLI_ARGS_H_
 #define MLI_ARGS_H_
 
-#include "../array/array.h"
-#include "../string/string.h"
+#include "../string/string_vector.h"
 
-MLI_ARRAY_DEFINITON(mli_ArrayString, struct mli_String)
-
-int mli_ArrayString_from_argc_argv(
-        struct mli_ArrayString *self,
+int mli_StringVector_from_argc_argv(
+        struct mli_StringVector *self,
         int argc,
         char *argv[]);
 

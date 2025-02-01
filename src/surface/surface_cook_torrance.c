@@ -2,6 +2,9 @@
 #include "surface_cook_torrance.h"
 #include "../io/io.h"
 #include "../magicid/magicid.h"
+#include "../json/json.h"
+#include "../json/json_walk.h"
+#include "../map/map.h"
 
 int mli_Surface_Cook_Torrance_equal(
         const struct mli_Surface_Cook_Torrance *a,
