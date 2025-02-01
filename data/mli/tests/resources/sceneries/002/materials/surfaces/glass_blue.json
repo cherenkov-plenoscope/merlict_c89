@@ -1,5 +1,5 @@
 {
-    "material": "transparent",
+    "type": "transparent",
     "specular_reflection": [[200e-9, 1.0], [1.2e-6, 1.0]],
     "diffuse_reflection": [[2.00000000e-07, 0.00000000e+00],
        [3.80000000e-07, 0.00000000e+00],

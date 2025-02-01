@@ -32,9 +32,9 @@ int mli_Scenery__from_path_cstr(struct mli_Scenery *self, const char *path)
         chk_msgf(
                 mli_IO__open_file_cstr(&f, path, "r"),
                 ("Can't open path '%s'.", path));
-        chk_msg(mli_Scenery_from_io_tar(self, &f),
-                "Can't fread Scenery from file.");
-        chk_dbg;
+        chk_msgf(
+                mli_Scenery_from_io_tar(self, &f),
+                ("Can't fread Scenery from path '%s'.", path));
         mli_IO_close(&f);
         return 1;
 chk_error:

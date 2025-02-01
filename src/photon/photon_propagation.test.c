@@ -11,7 +11,7 @@ CASE("simple propagation")
         uint64_t max_interactions = 16;
 
         uint64_t MED_VACUUM = 0;
-        uint64_t MED_GLASS = 0;
+        uint64_t MED_GLASS = 1;
 
         struct mli_Photon photon;
         photon.ray = mli_Ray_set(mli_Vec_init(0, 0, -3), mli_Vec_init(0, 0, 1));

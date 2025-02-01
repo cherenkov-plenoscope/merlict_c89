@@ -1,5 +1,7 @@
 {
-    "material": "Phong",
-    "specular_reflection": [[200e-9, 1.0], [1.2e-6, 1.0]],
-    "diffuse_reflection": [[200e-9, 0.0], [1.2e-6, 0.0]],
+    "type": "phong",
+    "reflection_spectrum": "perfect_mirror_reflection",
+    "diffuse_weight": 0.0,
+    "specular_weight": 1.0,
+    "shininess": 1.0,
 }
