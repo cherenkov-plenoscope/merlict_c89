@@ -90,6 +90,40 @@ CASE("DynArray malloc 0")
         CHECK(mtlDynDummy_test_free(&colors));
 }
 
+CASE("DynArray shrink_to_fit")
+{
+        uint64_t i;
+        struct mtlDynDummy vec = mtlDynDummy_init();
+
+        CHECK(mtlDynDummy_malloc(&vec, 60));
+        CHECK(vec.capacity == 60);
+        CHECK(vec.size == 0);
+
+        for (i = 0; i < 27; i++) {
+                struct mtlDummy item;
+                item.r = i * 1.;
+                item.g = i * 2.;
+                item.b = i * 3.;
+                CHECK(vec.size == i);
+                CHECK(mtlDynDummy_push_back(&vec, item));
+                CHECK(vec.size == i + 1);
+                CHECK(vec.capacity == 60);
+        }
+        CHECK(mtlDynDummy_shrink_to_fit(&vec));
+        CHECK(vec.size == i);
+        CHECK(vec.size == vec.capacity);
+
+        for (i = 0; i < vec.size; i++) {
+                struct mtlDummy item = vec.array[i];
+                CHECK(item.r == i * 1.);
+                CHECK(item.g == i * 2.);
+                CHECK(item.b == i * 3.);
+        }
+
+        mtlDynDummy_free(&vec);
+}
+
+
 CASE("DynArray push")
 {
         uint64_t i;

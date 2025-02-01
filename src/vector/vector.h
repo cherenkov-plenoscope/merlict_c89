@@ -21,6 +21,7 @@
                                                                                \
         int NAME##_malloc(struct NAME *self, const uint64_t capacity);         \
         int NAME##_realloc(struct NAME *self, const uint64_t capacity);        \
+        int NAME##_shrink_to_fit(struct NAME *self);                           \
                                                                                \
         int NAME##_push_back(struct NAME *self, PAYLOAD_TYPE item);            \
                                                                                \
@@ -104,6 +105,25 @@
                 return 0;                                                      \
         }
 
+#define MLI_VECTOR_IMPLEMENTATION_PRIMITIVE_FREE(NAME, PAYLOAD_TYPE)           \
+        void NAME##_free(struct NAME *self)                                    \
+        {                                                                      \
+                free(self->array);                                             \
+                (*self) = NAME##_init();                                       \
+        }
+
+#define MLI_VECTOR_IMPLEMENTATION_PAYLOAD_FREE(                                \
+        NAME, PAYLOAD_TYPE, PAYLOAD_FREE)                                      \
+        void NAME##_free(struct NAME *self)                                    \
+        {                                                                      \
+                size_t i;                                                      \
+                for (i = 0; i < self->size; i++) {                             \
+                        PAYLOAD_FREE(&self->array[i]);                         \
+                }                                                              \
+                free(self->array);                                             \
+                (*self) = NAME##_init();                                       \
+        }
+
 #define MLI_VECTOR_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                   \
                                                                                \
         struct NAME NAME##_init(void)                                          \
@@ -115,10 +135,9 @@
                 return out;                                                    \
         }                                                                      \
                                                                                \
-        void NAME##_free(struct NAME *self)                                    \
+        int NAME##_shrink_to_fit(struct NAME *self)                            \
         {                                                                      \
-                free(self->array);                                             \
-                (*self) = NAME##_init();                                       \
+                return NAME##_realloc(self, self->size);                       \
         }                                                                      \
                                                                                \
         int NAME##_push_back(struct NAME *self, PAYLOAD_TYPE item)             \
@@ -184,10 +203,17 @@
 
 #define MLI_VECTOR_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                          \
         MLI_VECTOR_IMPLEMENTATION_MALLOC(NAME, PAYLOAD_TYPE)                   \
-        MLI_VECTOR_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)
+        MLI_VECTOR_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                   \
+        MLI_VECTOR_IMPLEMENTATION_PRIMITIVE_FREE(NAME, PAYLOAD_TYPE)
 
 #define MLI_VECTOR_IMPLEMENTATION_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)         \
         MLI_VECTOR_IMPLEMENTATION_MALLOC_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)  \
-        MLI_VECTOR_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)
+        MLI_VECTOR_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                   \
+        MLI_VECTOR_IMPLEMENTATION_PRIMITIVE_FREE(NAME, PAYLOAD_TYPE)
+
+#define MLI_VECTOR_IMPLEMENTATION_FREE(NAME, PAYLOAD_TYPE, PAYLOAD_FREE)       \
+        MLI_VECTOR_IMPLEMENTATION_MALLOC(NAME, PAYLOAD_TYPE)                   \
+        MLI_VECTOR_IMPLEMENTATION_BASICS(NAME, PAYLOAD_TYPE)                   \
+        MLI_VECTOR_IMPLEMENTATION_PAYLOAD_FREE(NAME, PAYLOAD_TYPE, PAYLOAD_FREE)
 
 #endif
