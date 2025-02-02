@@ -34,8 +34,9 @@ int mli_Materials_valid_surfaces(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
         for (i = 0; i < self->surfaces.size; i++) {
-                chk(self);
-                chk_warning("IMPLEMENT ME!!!");
+                chk_msg(mli_Surface_valid_wrt_materials(
+                                &self->surfaces.array[i], self),
+                        "Surface is not valid.");
         }
         return 1;
 chk_error:

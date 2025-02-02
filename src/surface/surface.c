@@ -189,3 +189,29 @@ int mli_Surface_from_json_string_and_name(
 chk_error:
         return 0;
 }
+
+int mli_Surface_valid_wrt_materials(
+        const struct mli_Surface *self,
+        const struct mli_Materials *materials)
+{
+        chk_msg(mli_String_valid(&self->name, 1), "name is invalid.");
+
+        switch (self->type) {
+        case MLI_SURFACE_TYPE_TRANSPARENT:
+                chk_msg(mli_Surface_Transparent_valid_wrt_materials(
+                                &self->data.transparent, materials),
+                        "'transparent' surfaces are not valid.");
+                break;
+        case MLI_SURFACE_TYPE_COOKTORRANCE:
+                chk_msg(mli_Surface_CookTorrance_valid_wrt_materials(
+                                &self->data.cooktorrance, materials),
+                        "'cook-torrance' surfaces are not valid.");
+                break;
+        default:
+                chk_badf(("surface-type-id '%lu' is unknown.", self->type));
+        }
+
+        return 1;
+chk_error:
+        return 0;
+}

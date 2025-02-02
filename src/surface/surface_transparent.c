@@ -3,6 +3,7 @@
 #include "../chk/chk.h"
 #include "../magicid/magicid.h"
 #include "../io/io.h"
+#include "../materials/materials.h"
 
 int mli_Surface_Transparent_equal(
         const struct mli_Surface_Transparent *a,
@@ -51,6 +52,17 @@ int mli_Surface_Transparent_from_json_string(
 
         self->nothing = 0;
 
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_Surface_Transparent_valid_wrt_materials(
+        const struct mli_Surface_Transparent *self,
+        const struct mli_Materials *materials)
+{
+        chk(self);
+        chk(materials);
         return 1;
 chk_error:
         return 0;

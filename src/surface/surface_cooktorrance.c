@@ -6,6 +6,7 @@
 #include "../json/json.h"
 #include "../json/json_walk.h"
 #include "../map/map.h"
+#include "../materials/materials.h"
 
 int mli_Surface_CookTorrance_equal(
         const struct mli_Surface_CookTorrance *a,
@@ -104,6 +105,32 @@ int mli_Surface_CookTorrance_from_json_string(
 
         mli_String_free(&key);
         mli_Json_free(&json);
+
+        return 1;
+chk_error:
+        return 0;
+}
+
+int mli_Surface_CookTorrance_valid_wrt_materials(
+        const struct mli_Surface_CookTorrance *self,
+        const struct mli_Materials *materials)
+{
+        chk_msg(self->reflection_spectrum < materials->spectra.size,
+                "reflection_spectrum index is not in materials.");
+
+        chk_msg(self->diffuse_weight >= 0.0, "Expected diffuse_weight >= 0.0");
+        chk_msg(self->diffuse_weight <= 1.0, "Expected diffuse_weight <= 1.0");
+
+        chk_msg(self->specular_weight >= 0.0,
+                "Expected specular_weight >= 0.0");
+        chk_msg(self->specular_weight <= 1.0,
+                "Expected specular_weight <= 1.0");
+
+        chk_msg(self->specular_weight + self->diffuse_weight <= 1.0,
+                "Expected (specular_weight + diffuse_weight) <= 1.0");
+
+        chk_msg(self->roughness >= 0.0, "Expected roughness >= 0.0");
+        chk_msg(self->roughness <= 1.0, "Expected roughness <= 1.0");
 
         return 1;
 chk_error:

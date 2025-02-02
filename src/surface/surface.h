@@ -8,6 +8,7 @@
 #include "../string/string.h"
 struct mli_IO;
 struct mli_Map;
+struct mli_Materials;
 
 #define MLI_SURFACE_TYPE_NONE 0
 
@@ -38,5 +39,9 @@ int mli_Surface_from_json_string_and_name(
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string,
         const struct mli_String *name);
+
+int mli_Surface_valid_wrt_materials(
+        const struct mli_Surface *self,
+        const struct mli_Materials *materials);
 
 #endif

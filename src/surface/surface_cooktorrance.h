@@ -6,6 +6,7 @@
 #include "../io/io.h"
 struct mli_Map;
 struct mli_String;
+struct mli_Materials;
 
 #define MLI_SURFACE_TYPE_COOKTORRANCE 5000
 
@@ -31,5 +32,9 @@ int mli_Surface_CookTorrance_from_json_string(
         struct mli_Surface_CookTorrance *self,
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string);
+
+int mli_Surface_CookTorrance_valid_wrt_materials(
+        const struct mli_Surface_CookTorrance *self,
+        const struct mli_Materials *materials);
 
 #endif
