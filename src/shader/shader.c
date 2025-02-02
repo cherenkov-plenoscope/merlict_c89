@@ -311,13 +311,14 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_transparent(
         struct mli_ColorSpectrum reflection_component;
         struct mli_ColorSpectrum refraction_component;
         struct mli_ColorSpectrum out = mli_ColorSpectrum_init_zeros();
+        struct mli_Fresnel fresnel;
 
         facing_surface_normal =
                 intersection->from_outside_to_inside
                         ? intersection->surface_normal
                         : mli_Vec_multiply(intersection->surface_normal, -1.0);
 
-        struct mli_Fresnel fresnel = mli_Fresnel_init(
+        fresnel = mli_Fresnel_init(
                 ray.direction, facing_surface_normal, n_from, n_to);
 
         reflection_weight = mli_Fresnel_reflection_propability(fresnel);
