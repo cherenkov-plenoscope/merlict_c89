@@ -12,10 +12,26 @@ CASE("Fresnel: orthogonal_incident")
         normal = mli_Vec_normalized(normal);
         fresnel = mli_Fresnel_init(incident, normal, n_from, n_going_to);
 
-        CHECK(0.0 < mli_Fresnel_reflection_propability(fresnel));
-        CHECK(0.05 > mli_Fresnel_reflection_propability(fresnel));
+        CHECK(mli_Fresnel_reflection_propability(fresnel) > 0.0);
+        CHECK(mli_Fresnel_reflection_propability(fresnel) < 0.05);
         CHECK(mli_Vec_equal_margin(
                 mli_Fresnel_refraction_direction(fresnel), incident, 1e-9));
+}
+
+CASE("Fresnel: 45deg")
+{
+        double n_from = 1.0;
+        double n_going_to = 1.56;
+        struct mli_Vec incident = {0.0, -1.0, -1.0};
+        struct mli_Vec normal = {0.0, 0.0, 1.0};
+        struct mli_Fresnel fresnel;
+
+        incident = mli_Vec_normalized(incident);
+        normal = mli_Vec_normalized(normal);
+        fresnel = mli_Fresnel_init(incident, normal, n_from, n_going_to);
+
+        CHECK(mli_Fresnel_reflection_propability(fresnel) > 0.05);
+        CHECK(mli_Fresnel_reflection_propability(fresnel) < 0.06);
 }
 
 CASE("Fresnel: flat_incident")
