@@ -248,42 +248,65 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
         struct mli_ShaderPath path,
         struct mli_Prng *prng)
 {
-        struct mli_ColorSpectrum incoming;
-        struct mli_ColorSpectrum outgoing;
-        struct mli_ColorSpectrum reflection;
+        struct mli_ColorSpectrum out = mli_ColorSpectrum_init_zeros();
+
         const struct mli_Surface_CookTorrance *cook =
                 &intersection_layer->side_coming_from.surface->data
                          .cooktorrance;
-        double theta_source;
-        double theta_view;
-        double lambert_factor_source;
-        double lambert_factor_view;
-        double factor;
 
-        assert(intersection_layer->side_coming_from.surface->type ==
-               MLI_SURFACE_TYPE_COOKTORRANCE);
+        struct mli_ColorSpectrum reflection =
+                tracer->scenery_color_materials->spectra
+                        .array[cook->reflection_spectrum];
 
-        incoming = mli_Shader_trace_ambient_sun(tracer, intersection, prng);
+        struct mli_Vec facing_surface_normal =
+                intersection->from_outside_to_inside
+                        ? intersection->surface_normal
+                        : mli_Vec_multiply(intersection->surface_normal, -1.0);
 
-        reflection = tracer->scenery_color_materials->spectra
-                             .array[cook->reflection_spectrum];
+        /* diffuse */
+        if (path.weight * cook->diffuse_weight > 0.05) {
+                struct mli_ColorSpectrum diffuse;
+                double theta_source = mli_Vec_angle_between(
+                        tracer->config->atmosphere.sunDirection,
+                        facing_surface_normal);
+                double theta_view = mli_Vec_angle_between(
+                        ray.direction, facing_surface_normal);
 
-        theta_source = mli_Vec_angle_between(
-                tracer->config->atmosphere.sunDirection,
-                intersection->surface_normal);
+                double lambert_factor_source = fabs(cos(theta_source));
+                double lambert_factor_view = fabs(cos(theta_view));
 
-        theta_view = mli_Vec_angle_between(
-                ray.direction, intersection->surface_normal);
+                double factor = lambert_factor_source * lambert_factor_view *
+                                cook->diffuse_weight;
 
-        lambert_factor_source = fabs(cos(theta_source));
-        lambert_factor_view = fabs(cos(theta_view));
+                struct mli_ColorSpectrum incoming =
+                        mli_Shader_trace_ambient_sun(
+                                tracer, intersection, prng);
 
-        factor = lambert_factor_source * lambert_factor_view *
-                 cook->diffuse_weight;
+                diffuse = mli_ColorSpectrum_multiply(incoming, reflection);
+                diffuse = mli_ColorSpectrum_multiply_scalar(diffuse, factor);
+                out = mli_ColorSpectrum_add(out, diffuse);
+        }
 
-        outgoing = mli_ColorSpectrum_multiply(incoming, reflection);
-        outgoing = mli_ColorSpectrum_multiply_scalar(outgoing, factor);
-        return outgoing;
+        /* specular */
+        if (path.weight * cook->specular_weight > 0.05) {
+
+                struct mli_ColorSpectrum specular;
+                struct mli_Vec specular_reflection_direction =
+                        mli_Vec_mirror(ray.direction, facing_surface_normal);
+
+                struct mli_Ray nray = mli_Ray_set(
+                        intersection->position, specular_reflection_direction);
+
+                path.weight *= cook->specular_weight;
+                specular = mli_Shader_trace_path_to_next_intersection(
+                        tracer, nray, path, prng);
+                specular = mli_ColorSpectrum_multiply(specular, reflection);
+                specular = mli_ColorSpectrum_multiply_scalar(
+                        specular, cook->specular_weight);
+                out = mli_ColorSpectrum_add(out, specular);
+        }
+
+        return out;
 }
 
 struct mli_ColorSpectrum mli_Shader_trace_intersection_transparent(
