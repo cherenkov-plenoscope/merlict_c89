@@ -2,6 +2,7 @@
 import argparse
 import os
 import io
+import glob
 import subprocess
 
 
@@ -29,63 +30,7 @@ parser = argparse.ArgumentParser(
     ),
 )
 args = parser.parse_args()
-module_paths = [
-    os.path.join("src", "chk"),
-    os.path.join("src", "version"),
-    os.path.join("src", "magicid"),
-    os.path.join("src", "math"),
-    os.path.join("src", "vector"),
-    os.path.join("src", "array"),
-    os.path.join("src", "cstr"),
-    os.path.join("src", "archive"),
-    os.path.join("src", "string"),
-    os.path.join("src", "argv"),
-    os.path.join("src", "map"),
-    os.path.join("src", "path"),
-    os.path.join("src", "prng"),
-    os.path.join("src", "io"),
-    os.path.join("src", "json"),
-    os.path.join("src", "image"),
-    os.path.join("src", "fresnel"),
-    os.path.join("src", "lambertian"),
-    os.path.join("src", "physics"),
-    os.path.join("src", "func"),
-    os.path.join("src", "tar"),
-    os.path.join("src", "avl"),
-    os.path.join("src", "color"),
-    os.path.join("src", "vec"),
-    os.path.join("src", "aabb"),
-    os.path.join("src", "ray"),
-    os.path.join("src", "mat"),
-    os.path.join("src", "cube"),
-    os.path.join("src", "quaternion"),
-    os.path.join("src", "homtra"),
-    os.path.join("src", "object"),
-    os.path.join("src", "spectrum"),
-    os.path.join("src", "surface"),
-    os.path.join("src", "medium"),
-    os.path.join("src", "materials"),
-    os.path.join("src", "triangle"),
-    os.path.join("src", "octree"),
-    os.path.join("src", "frame"),
-    os.path.join("src", "boundarylayer"),
-    os.path.join("src", "photon"),
-    os.path.join("src", "geometry"),
-    os.path.join("src", "accelerator"),
-    os.path.join("src", "geometrytomaterialmap"),
-    os.path.join("src", "atmosphere"),
-    os.path.join("src", "thin_lens"),
-    os.path.join("src", "camera"),
-    os.path.join("src", "intersection"),
-    os.path.join("src", "scenery"),
-    os.path.join("src", "raytracing"),
-    os.path.join("src", "shader"),
-    os.path.join("src", "testing"),
-    os.path.join("src", "mli"),
-    os.path.join("src", "corsika"),
-    os.path.join("src", "view"),
-    os.path.join("src", "viewer"),
-]
+module_paths = glob.glob("src/*")
 
 
 def print_file(path):
