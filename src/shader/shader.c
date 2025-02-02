@@ -7,9 +7,18 @@
 #include "../raytracing/intersection_and_scenery.h"
 #include "../raytracing/ray_octree_traversal.h"
 #include "../vec/vec_random.h"
+#include "../fresnel/fresnel.h"
 #include "../intersection/intersection.h"
 #include "../raytracing/ray_scenery_query.h"
 #include "../chk/chk.h"
+
+struct mli_ShaderPath mli_ShaderPath_init(void)
+{
+        struct mli_ShaderPath out;
+        out.weight = 1.0;
+        out.num_interactions = 0u;
+        return out;
+}
 
 struct mli_Shader mli_Shader_init(void)
 {
@@ -71,9 +80,10 @@ struct mli_Color mli_Shader_trace_ray(
 {
         struct mli_ColorSpectrum spectrum;
         struct mli_Vec xyz, rgb;
+        struct mli_ShaderPath path = mli_ShaderPath_init();
 
-        spectrum =
-                mli_Shader_trace_path_to_next_intersection(tracer, ray, prng);
+        spectrum = mli_Shader_trace_path_to_next_intersection(
+                tracer, ray, path, prng);
 
         xyz = mli_ColorMaterials_ColorSpectrum_to_xyz(
                 tracer->scenery_color_materials, &spectrum);
@@ -89,18 +99,27 @@ struct mli_Color mli_Shader_trace_ray(
 struct mli_ColorSpectrum mli_Shader_trace_path_to_next_intersection(
         const struct mli_Shader *tracer,
         const struct mli_Ray ray,
+        struct mli_ShaderPath path,
         struct mli_Prng *prng)
 {
         struct mli_IntersectionSurfaceNormal intersection =
                 mli_IntersectionSurfaceNormal_init();
         struct mli_ColorSpectrum out;
-        int has_intersection =
+        int has_intersection = 0;
+
+        if (path.weight < 0.05 || path.num_interactions > 25) {
+                return mli_ColorSpectrum_init_zeros();
+        }
+
+        path.num_interactions += 1;
+
+        has_intersection =
                 mli_raytracing_query_intersection_with_surface_normal(
                         tracer->scenery, ray, &intersection);
 
         if (has_intersection) {
                 out = mli_Shader_trace_next_intersection(
-                        tracer, &intersection, prng);
+                        tracer, ray, &intersection, path, prng);
         } else {
                 out = mli_Shader_trace_ambient_background(tracer, ray);
         }
@@ -184,7 +203,9 @@ struct mli_ColorSpectrum mli_Shader_trace_ambient_sun_whitebox(
 
 struct mli_ColorSpectrum mli_Shader_trace_next_intersection(
         const struct mli_Shader *tracer,
+        const struct mli_Ray ray,
         const struct mli_IntersectionSurfaceNormal *intersection,
+        struct mli_ShaderPath path,
         struct mli_Prng *prng)
 {
         struct mli_ColorSpectrum out;
@@ -196,11 +217,21 @@ struct mli_ColorSpectrum mli_Shader_trace_next_intersection(
         switch (intersection_layer.side_coming_from.surface->type) {
         case MLI_SURFACE_TYPE_COOKTORRANCE:
                 out = mli_Shader_trace_intersection_cooktorrance(
-                        tracer, intersection, &intersection_layer, prng);
+                        tracer,
+                        ray,
+                        intersection,
+                        &intersection_layer,
+                        path,
+                        prng);
                 break;
         case MLI_SURFACE_TYPE_TRANSPARENT:
                 out = mli_Shader_trace_intersection_transparent(
-                        tracer, intersection, &intersection_layer, prng);
+                        tracer,
+                        ray,
+                        intersection,
+                        &intersection_layer,
+                        path,
+                        prng);
                 break;
         default:
                 chk_warning("surface type is not implemented.");
@@ -211,8 +242,10 @@ struct mli_ColorSpectrum mli_Shader_trace_next_intersection(
 
 struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
         const struct mli_Shader *tracer,
+        const struct mli_Ray ray,
         const struct mli_IntersectionSurfaceNormal *intersection,
         const struct mli_IntersectionLayer *intersection_layer,
+        struct mli_ShaderPath path,
         struct mli_Prng *prng)
 {
         struct mli_ColorSpectrum incoming;
@@ -221,8 +254,10 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
         const struct mli_Surface_CookTorrance *cook =
                 &intersection_layer->side_coming_from.surface->data
                          .cooktorrance;
-        double theta;
-        double lambert_factor;
+        double theta_source;
+        double theta_view;
+        double lambert_factor_source;
+        double lambert_factor_view;
         double factor;
 
         assert(intersection_layer->side_coming_from.surface->type ==
@@ -233,13 +268,18 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
         reflection = tracer->scenery_color_materials->spectra
                              .array[cook->reflection_spectrum];
 
-        theta = mli_Vec_angle_between(
+        theta_source = mli_Vec_angle_between(
                 tracer->config->atmosphere.sunDirection,
                 intersection->surface_normal);
 
-        lambert_factor = fabs(cos(theta));
+        theta_view = mli_Vec_angle_between(
+                ray.direction, intersection->surface_normal);
 
-        factor = lambert_factor * cook->diffuse_weight;
+        lambert_factor_source = fabs(cos(theta_source));
+        lambert_factor_view = fabs(cos(theta_view));
+
+        factor = lambert_factor_source * lambert_factor_view *
+                 cook->diffuse_weight;
 
         outgoing = mli_ColorSpectrum_multiply(incoming, reflection);
         outgoing = mli_ColorSpectrum_multiply_scalar(outgoing, factor);
@@ -248,14 +288,77 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
 
 struct mli_ColorSpectrum mli_Shader_trace_intersection_transparent(
         const struct mli_Shader *tracer,
+        const struct mli_Ray ray,
         const struct mli_IntersectionSurfaceNormal *intersection,
         const struct mli_IntersectionLayer *intersection_layer,
+        struct mli_ShaderPath path,
         struct mli_Prng *prng)
 {
-        const struct mli_Surface_Transparent *transparent =
-                &intersection_layer->side_coming_from.surface->data.transparent;
-        assert(intersection_layer->side_coming_from.surface->type ==
-               MLI_SURFACE_TYPE_TRANSPARENT);
+        const uint64_t WAVELENGTH_BIN = 12;
+        const uint64_t n_from_idx = intersection_layer->side_coming_from.medium
+                                            ->refraction_spectrum;
+        const uint64_t n_to_idx =
+                intersection_layer->side_going_to.medium->refraction_spectrum;
+        double n_from =
+                tracer->scenery_color_materials->spectra.array[n_from_idx]
+                        .values[WAVELENGTH_BIN];
+        double n_to = tracer->scenery_color_materials->spectra.array[n_to_idx]
+                              .values[WAVELENGTH_BIN];
 
-        return mli_ColorSpectrum_init_zeros();
+        double reflection_weight = -1.0;
+        double refraction_weight = -1.0;
+        struct mli_Vec facing_surface_normal;
+        struct mli_ColorSpectrum reflection_component;
+        struct mli_ColorSpectrum refraction_component;
+        struct mli_ColorSpectrum out = mli_ColorSpectrum_init_zeros();
+
+        facing_surface_normal =
+                intersection->from_outside_to_inside
+                        ? intersection->surface_normal
+                        : mli_Vec_multiply(intersection->surface_normal, -1.0);
+
+        struct mli_Fresnel fresnel = mli_Fresnel_init(
+                ray.direction, facing_surface_normal, n_from, n_to);
+
+        reflection_weight = mli_Fresnel_reflection_propability(fresnel);
+        refraction_weight = 1.0 - reflection_weight;
+
+        assert(reflection_weight >= 0.0);
+        assert(reflection_weight <= 1.0);
+
+        assert(refraction_weight >= 0.0);
+        assert(refraction_weight <= 1.0);
+
+        if (path.weight * reflection_weight > 0.05) {
+                struct mli_Ray nray = mli_Ray_set(
+                        intersection->position,
+                        mli_Fresnel_reflection_direction(fresnel));
+
+                path.weight *= reflection_weight;
+                reflection_component =
+                        mli_Shader_trace_path_to_next_intersection(
+                                tracer, nray, path, prng);
+
+                reflection_component = mli_ColorSpectrum_multiply_scalar(
+                        reflection_component, reflection_weight);
+
+                out = mli_ColorSpectrum_add(out, reflection_component);
+        }
+
+        if (path.weight * refraction_weight > 0.05) {
+                struct mli_Ray nray = mli_Ray_set(
+                        intersection->position,
+                        mli_Fresnel_refraction_direction(fresnel));
+                path.weight *= refraction_weight;
+                refraction_component =
+                        mli_Shader_trace_path_to_next_intersection(
+                                tracer, nray, path, prng);
+
+                refraction_component = mli_ColorSpectrum_multiply_scalar(
+                        refraction_component, refraction_weight);
+
+                out = mli_ColorSpectrum_add(out, refraction_component);
+        }
+
+        return out;
 }

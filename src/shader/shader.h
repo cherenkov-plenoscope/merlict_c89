@@ -20,6 +20,13 @@ struct mli_Shader {
         const struct mli_shader_Config *config;
 };
 
+struct mli_ShaderPath {
+        double weight;
+        uint64_t num_interactions;
+};
+
+struct mli_ShaderPath mli_ShaderPath_init(void);
+
 struct mli_Shader mli_Shader_init(void);
 
 double mli_Shader_estimate_sun_obstruction_weight(
@@ -66,23 +73,30 @@ struct mli_ColorSpectrum mli_Shader_trace_ambient_sun_whitebox(
 struct mli_ColorSpectrum mli_Shader_trace_path_to_next_intersection(
         const struct mli_Shader *tracer,
         const struct mli_Ray ray,
+        struct mli_ShaderPath path,
         struct mli_Prng *prng);
 
 struct mli_ColorSpectrum mli_Shader_trace_next_intersection(
         const struct mli_Shader *tracer,
+        const struct mli_Ray ray,
         const struct mli_IntersectionSurfaceNormal *intersection,
+        struct mli_ShaderPath path,
         struct mli_Prng *prng);
 
 struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
         const struct mli_Shader *tracer,
+        const struct mli_Ray ray,
         const struct mli_IntersectionSurfaceNormal *intersection,
         const struct mli_IntersectionLayer *intersection_layer,
+        struct mli_ShaderPath path,
         struct mli_Prng *prng);
 
 struct mli_ColorSpectrum mli_Shader_trace_intersection_transparent(
         const struct mli_Shader *tracer,
+        const struct mli_Ray ray,
         const struct mli_IntersectionSurfaceNormal *intersection,
         const struct mli_IntersectionLayer *intersection_layer,
+        struct mli_ShaderPath path,
         struct mli_Prng *prng);
 
 #endif
