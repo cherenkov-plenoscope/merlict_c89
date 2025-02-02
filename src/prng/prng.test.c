@@ -1,6 +1,6 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-#include "prng_testing.h"
+#include "../vector/double_vector.h"
 
 CASE("average of uniform distribution")
 {
@@ -95,19 +95,19 @@ CASE("uniform_0_to_1_stddev")
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(0u);
         const uint64_t num_samples = 42 * 1337;
-        struct mtl_VectorDoubles samples = mtl_VectorDoubles_init();
+        struct mli_DoubleVector samples = mli_DoubleVector_init();
         double mean, std;
         uint64_t i = 0;
 
-        CHECK(mtl_VectorDoubles_malloc(&samples, num_samples));
+        CHECK(mli_DoubleVector_malloc(&samples, num_samples));
         for (i = 0; i < num_samples; i++) {
-                mtl_VectorDoubles_push_back(&samples, mli_Prng_uniform(&prng));
+                mli_DoubleVector_push_back(&samples, mli_Prng_uniform(&prng));
         }
         mean = mli_math_mean(samples.array, samples.size);
         std = mli_math_std(samples.array, samples.size, mean);
 
         CHECK_MARGIN(1.0 / sqrt(12.0), std, 1e-3);
-        mtl_VectorDoubles_free(&samples);
+        mli_DoubleVector_free(&samples);
 }
 
 CASE("draw_from_poisson_distribution")
