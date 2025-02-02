@@ -87,6 +87,7 @@ module_paths = [
     os.path.join("src", "viewer"),
 ]
 
+
 def print_file(path):
     with open(path, "rt") as f:
         print(f.read())
@@ -103,9 +104,7 @@ def run_and_save_sdtout(call, stdout_path):
 
 
 def tar_sceneries(scenery_name):
-    in_path = os.path.join(
-        "data", "sceneries", scenery_name
-    )
+    in_path = os.path.join("data", "sceneries", scenery_name)
     out_path = in_path + ".tar"
     call = ["tar", "-cvf", out_path, "--directory", in_path, "."]
     stdout_path = os.path.join("build", "tar_{:s}.o".format(scenery_name))
