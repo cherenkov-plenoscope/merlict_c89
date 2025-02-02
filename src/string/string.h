@@ -2,9 +2,10 @@
 #ifndef MLI_STRING_H_
 #define MLI_STRING_H_
 
+#include <stdint.h>
+#include <stdarg.h>
 #include "../vector/vector.h"
 #include "../array/array.h"
-#include <stdarg.h>
 
 MLI_VECTOR_DEFINITON(mli_String, char)
 

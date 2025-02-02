@@ -4,6 +4,7 @@
 
 #include "../func/func.h"
 #include "../mat/mat.h"
+#include <stdint.h>
 
 /* Color detection efficiency by wavelength.
  * The color observer has three color channels (x,y,z).

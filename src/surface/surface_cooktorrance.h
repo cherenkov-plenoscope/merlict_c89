@@ -2,6 +2,7 @@
 #ifndef MLI_SURFACE_COOKTORRANCE_H_
 #define MLI_SURFACE_COOKTORRANCE_H_
 
+#include <stdint.h>
 #include "../io/io.h"
 struct mli_Map;
 struct mli_String;

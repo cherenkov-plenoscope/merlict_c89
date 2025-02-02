@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "boundarylayer.h"
 #include <stdio.h>
+#include "../chk/chk.h"
 #include "../magicid/magicid.h"
 #include "../string/string_serialize.h"
 

@@ -2,6 +2,7 @@
 #ifndef MLI_SCENERY_H_
 #define MLI_SCENERY_H_
 
+#include <stdint.h>
 #include "../geometry/geometry.h"
 #include "../geometry/geometry_id.h"
 #include "../geometrytomaterialmap/geometrytomaterialmap.h"

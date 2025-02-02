@@ -2,6 +2,7 @@
 #ifndef MLI_RAYTRACING_INTERSECTION_AND_SCENERY_H_
 #define MLI_RAYTRACING_INTERSECTION_AND_SCENERY_H_
 
+#include <stdint.h>
 #include "../intersection/intersection_surface_normal.h"
 #include "../scenery/scenery.h"
 

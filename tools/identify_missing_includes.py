@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import glob
 import argparse
@@ -9,29 +10,41 @@ parser = argparse.ArgumentParser(
     ),
 )
 parser.add_argument(
-    "lib",
-    metavar="PATH",
+    "src_directory",
+    metavar="SRC_DIRECTORY",
+    nargs="?",
     type=str,
-    help=("e.g. 'libs/mli' or 'libs/mli_corsika'."),
+    default="src",
+    help=("Path to the 'src' directory."),
 )
 
 args = parser.parse_args()
-libpaths = args.lib
+src_directory = args.src_directory
 
-cpaths = glob.glob(os.path.join(libpaths, "src", "*.c"))
+cpaths = []
+hpaths = []
+for subdir in os.walk(src_directory):
+    for filename in subdir[2]:
+        filepath = os.path.join(subdir[0], filename)
+        if filename.endswith(".h"):
+            hpaths.append(filepath)
+        elif filename.endswith(".c"):
+            cpaths.append(filepath)
+        else:
+            print(f"Ignoring '{filepath:s}'")
+
+hpaths = sorted(hpaths)
 cpaths = sorted(cpaths)
+
 ccode = {}
 for cpath in cpaths:
     with open(cpath) as f:
         ccode[cpath] = f.read()
 
-hpaths = glob.glob(os.path.join(libpaths, "src", "*.h"))
-hpaths = sorted(hpaths)
 hcode = {}
 for hpath in hpaths:
     with open(hpath) as f:
         hcode[hpath] = f.read()
-
 
 # assert
 for cpath in ccode:
@@ -55,18 +68,10 @@ for p in hcode:
                 not "#include <stdint.h>" in hcode[p]
                 and not "#include <inttypes.h>" in hcode[p]
             ):
-                print(
-                    "Expected #include <stdint.h> / <inttypes.h> in {:s}.".format(
-                        p
-                    )
-                )
-
+                print("Expected '#include <stdint.h>' in {:s}.".format(p))
 
 # chk
-if libpaths == os.path.join("libs", "mli"):
-    chk_include_path = "chk.h"
-else:
-    chk_include_path = "../../mli/src/chk.h"
+chk_include_path = "../chk/chk.h"
 
 for cpath in ccode:
     if "chk_error:" in ccode[cpath]:

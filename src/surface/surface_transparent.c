@@ -1,5 +1,6 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "surface_transparent.h"
+#include "../chk/chk.h"
 #include "../magicid/magicid.h"
 #include "../io/io.h"
 

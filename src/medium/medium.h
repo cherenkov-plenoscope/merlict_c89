@@ -3,6 +3,7 @@
 #define MLI_MEDIUM_H_
 
 #include "../string/string.h"
+#include <stdint.h>
 struct mli_IO;
 struct mli_Materials;
 struct mli_Map;

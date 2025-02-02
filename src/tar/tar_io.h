@@ -1,6 +1,7 @@
 #ifndef MLITARIO_H_
 #define MLITARIO_H_
 
+#include <stdint.h>
 #include "../io/io.h"
 #include "tar.h"
 

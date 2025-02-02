@@ -1,5 +1,6 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "surface_cooktorrance.h"
+#include "../chk/chk.h"
 #include "../io/io.h"
 #include "../magicid/magicid.h"
 #include "../json/json.h"

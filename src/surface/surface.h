@@ -2,6 +2,7 @@
 #ifndef MLI_SURFACE_H_
 #define MLI_SURFACE_H_
 
+#include <stdint.h>
 #include "surface_transparent.h"
 #include "surface_cooktorrance.h"
 #include "../string/string.h"
