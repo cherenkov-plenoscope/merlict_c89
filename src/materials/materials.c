@@ -78,6 +78,31 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         fprintf(f, "---------\n");
         fprintf(f, "\n");
 
+        fprintf(f, "    spectra\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        fprintf(f, "%3s ", "#");
+        fprintf(f, "%24s ", "name");
+        fprintf(f, "\n");
+        fprintf(f, "    ");
+        for (i = 0; i < 70; i++) {
+                fprintf(f, "-");
+        }
+        fprintf(f, "\n");
+        for (i = 0; i < self->spectra.size; i++) {
+                struct mli_Spectrum *spectrum = &self->spectra.array[i];
+                fprintf(f, "    ");
+                fprintf(f, "% 3d ", i);
+                fprintf(f, "%24s ", spectrum->name.array);
+
+                fprintf(f, "\n");
+        }
+        fprintf(f, "\n");
+
         fprintf(f, "    media\n");
         fprintf(f, "    ");
         for (i = 0; i < 70; i++) {
@@ -87,6 +112,8 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         fprintf(f, "    ");
         fprintf(f, "%3s ", "#");
         fprintf(f, "%24s ", "name");
+        fprintf(f, "%12s ", "refraction");
+        fprintf(f, "%12s ", "absorbtion");
         fprintf(f, "%12s ", "default");
         fprintf(f, "\n");
         fprintf(f, "    ");
@@ -99,6 +126,8 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
                 fprintf(f, "    ");
                 fprintf(f, "% 3d ", i);
                 fprintf(f, "%24s ", medium->name.array);
+                fprintf(f, "%12lu ", medium->refraction_spectrum);
+                fprintf(f, "%12lu ", medium->absorbtion_spectrum);
 
                 if (i == self->default_medium) {
                         fprintf(f, "%12s", "True");

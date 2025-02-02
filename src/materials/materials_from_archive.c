@@ -337,8 +337,6 @@ int mli_Materials_from_Archive(
         struct mli_materials_Names *names,
         const struct mli_Archive *archive)
 {
-        uint64_t iii = 0;
-        struct mli_IO ioerr = mli_IO_init();
         struct mli_MaterialsCapacity capacity = mli_MaterialsCapacity_init();
 
         /* free */
@@ -377,14 +375,6 @@ int mli_Materials_from_Archive(
         chk_msg(mli_Materials_from_Archive__set_default_medium(
                         materials, names, archive),
                 "Can't set default_medium from archive.");
-
-        chk(mli_IO_adopt_file(&ioerr, stderr));
-        chk(mli_IO_text_write_cstr_format(&ioerr, "materials->spectra\n"));
-        chk(mli_IO_text_write_cstr_format(&ioerr, "------------------\n"));
-        for (iii = 0; iii < materials->spectra.size; iii++) {
-                struct mli_Spectrum *spectrum = &materials->spectra.array[iii];
-                chk(mli_Spectrum_print_to_io(spectrum, &ioerr));
-        }
 
         return 1;
 chk_error:
