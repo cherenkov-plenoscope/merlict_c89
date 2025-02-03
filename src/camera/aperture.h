@@ -5,9 +5,11 @@
 #include <stdint.h>
 #include "../vec/vec.h"
 #include "../homtra/homtra.h"
-#include "../shader/shader.h"
 #include "../image/image.h"
 #include "../color/color_vector.h"
+
+struct mli_Shader;
+struct mli_Prng;
 
 /*
 principal-rays of the thin-lens

@@ -6,6 +6,7 @@
 #include "../math/math.h"
 #include "../chk/chk.h"
 #include "../thin_lens/thin_lens.h"
+#include "../pathtracer/pathtracer.h"
 
 struct mli_camera_Aperture mli_camera_Aperture_init(void)
 {

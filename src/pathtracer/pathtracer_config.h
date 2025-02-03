@@ -3,7 +3,6 @@
 #define MLI_SHADER_CONFIG_H_
 
 #include <stdint.h>
-#include "../color/color.h"
 #include "../color/color_materials.h"
 #include "../atmosphere/atmosphere.h"
 

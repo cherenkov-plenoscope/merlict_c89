@@ -1,5 +1,5 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
-#include "shader_config.h"
+#include "pathtracer_config.h"
 
 struct mli_shader_Config mli_shader_Config_init(void)
 {

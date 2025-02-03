@@ -2,6 +2,8 @@
 #include "pinhole.h"
 #include <math.h>
 #include <assert.h>
+#include "../pathtracer/pathtracer.h"
+#include "../image/image.h"
 #include "../image/image_PixelWalk.h"
 #include "../math/math.h"
 #include "../homtra/homtra.h"

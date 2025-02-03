@@ -1,9 +1,10 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#include "shader.h"
+#include "pathtracer.h"
 #include <math.h>
 #include <stdint.h>
 #include <assert.h>
-#include "shader_atmosphere.h"
+#include "pathtracer_config.h"
+#include "pathtracer_atmosphere.h"
 #include "../raytracing/intersection_and_scenery.h"
 #include "../raytracing/ray_octree_traversal.h"
 #include "../vec/vec_random.h"

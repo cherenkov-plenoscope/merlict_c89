@@ -3,9 +3,12 @@
 #define MLI_CAMERA_PINHOLE_H_
 
 #include <stdint.h>
-#include "../shader/shader.h"
 #include "../view/view.h"
-#include "../image/image.h"
+#include "../vec/vec.h"
+
+struct mli_Shader;
+struct mli_Image;
+struct mli_Prng;
 
 struct mli_camera_PinHole {
         struct mli_Vec optical_axis;

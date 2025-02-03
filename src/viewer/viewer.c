@@ -15,6 +15,7 @@
 #include "../camera/aperture.h"
 #include "../raytracing/ray_scenery_query.h"
 #include "../version/version.h"
+#include "../pathtracer/pathtracer_config.h"
 #include "toggle_stdin.h"
 
 void mli_viewer_clear_screen(void)

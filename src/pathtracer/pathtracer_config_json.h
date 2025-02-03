@@ -3,7 +3,7 @@
 #define MLI_SHADER_CONFIG_JSON_H_
 
 #include <stdint.h>
-#include "shader.h"
+#include "pathtracer_config.h"
 #include "../json/json.h"
 
 int mli_shader_Config_from_json_token(

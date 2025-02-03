@@ -3,9 +3,9 @@
 #define MLI_VIEWER_VIEWER_H_
 
 #include "../scenery/scenery.h"
-#include "../shader/shader.h"
 #include "../prng/prng.h"
 #include "../view/view.h"
+#include "../pathtracer/pathtracer.h"
 #include "Cursor.h"
 #include "Config.h"
 

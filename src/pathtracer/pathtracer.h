@@ -7,8 +7,8 @@
 #include "../color/color.h"
 #include "../color/color_materials.h"
 #include "../atmosphere/atmosphere.h"
-#include "shader_config.h"
 
+struct mli_shader_Config;
 struct mli_Scenery;
 struct mli_Prng;
 struct mli_IntersectionSurfaceNormal;
