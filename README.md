@@ -5,16 +5,22 @@
 
 Merlict simulates light. It finds the intersections of a ray and a complex 3D
 geometry with special emphasis on surface normals. Merlict can propagate photons
-based on geometric optics according to Fresnel. Merlict comes with its own
-interactive viewer for the terminal. Merlict is a library written in ```c89```.
+based on geometric optics according to Fresnel. Merlict can render images and
+has an interactive viewer for the terminal. Merlict is a library written in
+```c89```.
 
 Merlict reads your scenery from text files which describe your objects, the
 geometric relations between them, their materials, and their sourrounding media.
 Merlict can read a subset of the popular [object-wavefront
-format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```. You
-define photons with a creation position, direction, and wavelength. For each
-photon, merlict gives you the list of physical interactions up to its
-absorbtion.
+format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```. Merlict
+reads the spectral properties of your material's (e.g. reflection or refraction)
+from ```.csv``` files. You define photons with a creation position, direction,
+and wavelength. For each photon, merlict gives you the list of physical
+interactions up to the photon's absorbtion.
+
+Independent of light and photons, merlict can query the intersections
+(including the surface normals) of rays in complex sceneries. You can use this
+to empower your own particle or photon propagator.
 
 Merlict would not exist without the author's past and present affiliations:
 
@@ -63,10 +69,10 @@ make
 ## Almagamate into a single header and a single source
 
 Merlict has ```tool/almagamate.py``` which can combine the headers and sources
-into a single file. This is a poor man's build system which is primarily used to
-almagamate the sources for a ```python``` (```cython```) build. It makes the
-```cython``` side of things very easy. You can use the almagamated sources for
-your build system as well. This way you only have to:
+into a single header and source file. This is a poor man's build system which is
+primarily used to almagamate the sources for a ```python``` (```cython```)
+build. It makes the ```cython``` side of things very easy. You can use the
+almagamated sources for your build system as well. This way you only have to:
 
 ```c
 #include "mli.h"
@@ -105,35 +111,11 @@ that you do not have to press [Enter] after each keypress.
 
 #### Build :hammer:
 
-When using ```tools/almagamate.py```:
-
-First run almagamate:
-
-```bash
-python ./tools/almagamate.py \
-        build/almagamate \
-        libs/mli \
-        libs/mli_viewer \
-        --header_path build/almagamate/mli-mli_viewer.h \
-        --source_path build/almagamate/mli-mli_viewer.c
-```
-
-Second build the viewer:
-
-```bash
-gcc \
-        -include build/almagamate/mli-mli_viewer.h \
-        -include build/almagamate/mli-mli_viewer.c \
-        libs/mli_viewer/apps/viewer.main.c \
-        -o build/viewer \
-        -lm
-```
-
-See also ```libs/mli_viewer/apps/viewer.main.c```.
+See ```./examples/mli_viewer/viewer.main.c```.
 
 #### Run
 ```bash
-build/viewer libs/mli/tests/resources/sceneries/001.tar
+./build/viewer data/sceneries/001.tar
 ```
 
  ASCII-art                 | ANSI-escape-codes
@@ -263,16 +245,13 @@ Then its the core developer's job to:
 But of course the author will happily recive pull-requests that meet such
 expectations :wink:.
 
-Merlict tries to migrate towards a physical layout according to the 'The
-Pitchfork Layout' in 'merged Header Placement'. The merged headers are prefered
-as there are only public headers anyhow.
-
 # Suggested Tools
 - [Blender](https://www.blender.org/) to inspect and manipulate objects. It is
   especially useful to visualize surface-normals.
 
 - [OpenScad](http://www.openscad.org/) to create meshes in a parametric way.
-  Unfortunately it does not have a concept of vertex-normals.
+  As openscad does not have a concept of vertex-normals, it is mostly only
+  useful for flat surfaces or non optical surfaces.
 
 - [refractive-index-database](https://refractiveindex.info/) a database of
   refractive indices of various materials.
