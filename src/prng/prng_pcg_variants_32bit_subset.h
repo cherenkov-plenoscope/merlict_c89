@@ -1,19 +1,4 @@
-/**
- *  2021 March 23, Sebastian Achim Mueller
- *
- *  Based on 'pcg_variants.h' written by Melissa O'Neill.
- *
- *  I only kept the version with the 64bit sequence state to generate
- *  32bit numbers.
- *  I dropped 'advance', and 'boundedrand'.
- *  I only kept the seeding and the generation.
- *  I split the original header-only into a source.c and a header.h.
- */
-
-/*
- * PCG Random Number Generation for C.
- *
- * Copyright 2014 Melissa O'Neill <oneill@pcg-random.org>
+/* Copyright 2014 Melissa O'Neill <oneill@pcg-random.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +16,17 @@
  * including its license and other licensing options, visit
  *
  *     http://www.pcg-random.org
+ */
+
+/*  2021 March 23, Sebastian Achim Mueller
+ *
+ *  Based on 'pcg_variants.h' written by Melissa O'Neill.
+ *
+ *  I only kept the version with the 64bit sequence state to generate
+ *  32bit numbers.
+ *  I dropped 'advance', and 'boundedrand'.
+ *  I only kept the seeding and the generation.
+ *  I split the original header-only into a source.c and a header.h.
  */
 
 #ifndef MLI_PRNG_PCG_VARIANTS_32BIT_SUBSET_H_INCLUDED

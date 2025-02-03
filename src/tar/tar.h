@@ -1,5 +1,4 @@
-/**
- * Copyright (c) 2017 rxi
+/* Copyright (c) 2017 rxi
  * Copyright (c) 2019 Sebastian A. Mueller
  *                    Max-Planck-Institute for nuclear-physics, Heidelberg
  *

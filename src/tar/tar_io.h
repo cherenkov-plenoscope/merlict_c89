@@ -1,3 +1,4 @@
+/* Copyright 2018-2024 Sebastian Achim Mueller */
 #ifndef MLITARIO_H_
 #define MLITARIO_H_
 

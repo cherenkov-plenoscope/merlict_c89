@@ -59,7 +59,6 @@ stdint_keys = [
     "int64_t",
 ]
 
-
 # stdint
 for p in hcode:
     for key in stdint_keys:
@@ -81,3 +80,19 @@ for cpath in ccode:
                     chk_include_path, cpath
                 )
             )
+
+# Check the copyright notice
+# --------------------------
+
+def warn_about_copyright(path, code):
+    lines = code.splitlines()
+    if len(lines) > 0:
+        firts_line = lines[0]
+        if not firts_line.startswith("/* Copyright"):
+            print(f"Check copyright in: {path:s}")
+
+for hpath in hcode:
+    warn_about_copyright(hpath, hcode[hpath])
+
+for cpath in ccode:
+    warn_about_copyright(cpath, hcode[hpath])
