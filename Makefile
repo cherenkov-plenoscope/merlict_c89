@@ -1,9 +1,6 @@
 #Compiler and Linker
 CC          := gcc
 
-#The Target Binary Program
-TARGET      := ground_grid
-
 #The Directories, Source, Includes, Objects, Binary and Resources
 SRCDIR      := src
 INCDIR      := $(SRCDIR)
@@ -29,11 +26,13 @@ SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT) | grep -v $(TEST
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
 #Defauilt Make
-all: resources $(TARGET)
+all: resources ground_grid viewer
 
-viewer: examples/mli_viewer/viewer.main.c
+viewer: examples/mli_viewer/viewer.main.c $(OBJECTS)
+	$(CC) -o $(TARGETDIR)/viewer $^ $(LIB)
 
-ground_grid: examples/mli_corsika/ground_grid.main.c
+ground_grid: examples/mli_corsika/ground_grid.main.c $(OBJECTS)
+	$(CC) -o $(TARGETDIR)/ground_grid $^ $(LIB)
 
 #Remake
 remake: cleaner all
@@ -58,10 +57,6 @@ cleaner: clean
 #Pull in dependency info for *existing* .o files
 -include $(OBJECTS:.$(OBJEXT)=.$(DEPEXT))
 
-#Link
-$(TARGET): $(OBJECTS)
-	$(CC) -o $(TARGETDIR)/$(TARGET) $^ $(LIB)
-
 #Compile
 $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(dir $@)
@@ -73,4 +68,4 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
 
 #Non-File Targets
-.PHONY: all remake clean cleaner resources
+.PHONY: all remake clean cleaner resources directories
