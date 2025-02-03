@@ -84,12 +84,14 @@ for cpath in ccode:
 # Check the copyright notice
 # --------------------------
 
+
 def warn_about_copyright(path, code):
     lines = code.splitlines()
     if len(lines) > 0:
         firts_line = lines[0]
         if not firts_line.startswith("/* Copyright"):
             print(f"Check copyright in: {path:s}")
+
 
 for hpath in hcode:
     warn_about_copyright(hpath, hcode[hpath])
