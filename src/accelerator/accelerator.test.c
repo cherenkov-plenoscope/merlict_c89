@@ -14,7 +14,7 @@ CASE("mli_Accelerator, init")
         struct mli_Prng prng = mli_Prng_init_MT19937(0);
         struct mli_shader_Config tracer_config = mli_shader_Config_init();
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
-        struct mli_Shader tracer = mli_Shader_init();
+        struct mli_PathTracer tracer = mli_pathtracer_init();
 
         chk_dbg;
         CHECK(mli_Scenery__from_path_cstr(
@@ -34,7 +34,7 @@ CASE("mli_Accelerator, init")
         ray = mli_Ray_set(
                 mli_Vec_init(0.0, 0.0, -5.0), mli_Vec_init(0.0, 0.0, 1.0));
 
-        color = mli_Shader_trace_ray(&tracer, ray, &prng);
+        color = mli_pathtracer_trace_ray(&tracer, ray, &prng);
 
         fprintf(stdout, "color (%e,%e,%e)\n", color.r, color.g, color.b);
         /*

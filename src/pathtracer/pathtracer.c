@@ -13,34 +13,34 @@
 #include "../raytracing/ray_scenery_query.h"
 #include "../chk/chk.h"
 
-struct mli_ShaderPath mli_ShaderPath_init(void)
+struct mli_pathtracer_Path mli_pathtracer_Path_init(void)
 {
-        struct mli_ShaderPath out;
+        struct mli_pathtracer_Path out;
         out.weight = 1.0;
         out.num_interactions = 0u;
         return out;
 }
 
-struct mli_Shader mli_Shader_init(void)
+struct mli_PathTracer mli_pathtracer_init(void)
 {
-        struct mli_Shader tracer;
+        struct mli_PathTracer tracer;
         tracer.scenery = NULL;
         tracer.scenery_color_materials = NULL;
         tracer.config = NULL;
         return tracer;
 }
 
-double mli_Shader_estimate_sun_visibility_weight(
-        const struct mli_Shader *tracer,
+double mli_pathtracer_estimate_sun_visibility_weight(
+        const struct mli_PathTracer *tracer,
         const struct mli_Vec position,
         struct mli_Prng *prng)
 {
-        return (1.0 - mli_Shader_estimate_sun_obstruction_weight(
+        return (1.0 - mli_pathtracer_estimate_sun_obstruction_weight(
                               tracer, position, prng));
 }
 
-double mli_Shader_estimate_sun_obstruction_weight(
-        const struct mli_Shader *tracer,
+double mli_pathtracer_estimate_sun_obstruction_weight(
+        const struct mli_PathTracer *tracer,
         const struct mli_Vec position,
         struct mli_Prng *prng)
 {
@@ -74,16 +74,16 @@ double mli_Shader_estimate_sun_obstruction_weight(
                tracer->config->num_trails_global_light_source;
 }
 
-struct mli_Color mli_Shader_trace_ray(
-        const struct mli_Shader *tracer,
+struct mli_Color mli_pathtracer_trace_ray(
+        const struct mli_PathTracer *tracer,
         const struct mli_Ray ray,
         struct mli_Prng *prng)
 {
         struct mli_ColorSpectrum spectrum;
         struct mli_Vec xyz, rgb;
-        struct mli_ShaderPath path = mli_ShaderPath_init();
+        struct mli_pathtracer_Path path = mli_pathtracer_Path_init();
 
-        spectrum = mli_Shader_trace_path_to_next_intersection(
+        spectrum = mli_pathtracer_trace_path_to_next_intersection(
                 tracer, ray, path, prng);
 
         xyz = mli_ColorMaterials_ColorSpectrum_to_xyz(
@@ -97,10 +97,10 @@ struct mli_Color mli_Shader_trace_ray(
         return mli_Color_set(rgb.x, rgb.y, rgb.z);
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_path_to_next_intersection(
-        const struct mli_Shader *tracer,
+struct mli_ColorSpectrum mli_pathtracer_trace_path_to_next_intersection(
+        const struct mli_PathTracer *tracer,
         const struct mli_Ray ray,
-        struct mli_ShaderPath path,
+        struct mli_pathtracer_Path path,
         struct mli_Prng *prng)
 {
         struct mli_IntersectionSurfaceNormal intersection =
@@ -119,64 +119,65 @@ struct mli_ColorSpectrum mli_Shader_trace_path_to_next_intersection(
                         tracer->scenery, ray, &intersection);
 
         if (has_intersection) {
-                out = mli_Shader_trace_next_intersection(
+                out = mli_pathtracer_trace_next_intersection(
                         tracer, ray, &intersection, path, prng);
         } else {
-                out = mli_Shader_trace_ambient_background(tracer, ray);
+                out = mli_pathtracer_trace_ambient_background(tracer, ray);
         }
         return out;
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_ambient_background(
-        const struct mli_Shader *tracer,
+struct mli_ColorSpectrum mli_pathtracer_trace_ambient_background(
+        const struct mli_PathTracer *tracer,
         const struct mli_Ray ray)
 {
         if (tracer->config->have_atmosphere) {
-                return mli_Shader_trace_ambient_background_atmosphere(
+                return mli_pathtracer_trace_ambient_background_atmosphere(
                         tracer, ray);
         } else {
-                return mli_Shader_trace_ambient_background_whitebox(tracer);
+                return mli_pathtracer_trace_ambient_background_whitebox(tracer);
         }
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_ambient_background_atmosphere(
-        const struct mli_Shader *tracer,
+struct mli_ColorSpectrum mli_pathtracer_trace_ambient_background_atmosphere(
+        const struct mli_PathTracer *tracer,
         const struct mli_Ray ray)
 {
         return mli_Atmosphere_query(
                 &tracer->config->atmosphere, ray.support, ray.direction);
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_ambient_background_whitebox(
-        const struct mli_Shader *tracer)
+struct mli_ColorSpectrum mli_pathtracer_trace_ambient_background_whitebox(
+        const struct mli_PathTracer *tracer)
 {
         return mli_ColorSpectrum_multiply_scalar(
                 tracer->config->ambient_radiance_W_per_m2_per_sr, 0.5);
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_ambient_sun(
-        const struct mli_Shader *tracer,
+struct mli_ColorSpectrum mli_pathtracer_trace_ambient_sun(
+        const struct mli_PathTracer *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
         if (tracer->config->have_atmosphere) {
-                return mli_Shader_trace_ambient_sun_atmosphere(
+                return mli_pathtracer_trace_ambient_sun_atmosphere(
                         tracer, intersection, prng);
         } else {
-                return mli_Shader_trace_ambient_sun_whitebox(
+                return mli_pathtracer_trace_ambient_sun_whitebox(
                         tracer, intersection, prng);
         }
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_ambient_sun_atmosphere(
-        const struct mli_Shader *tracer,
+struct mli_ColorSpectrum mli_pathtracer_trace_ambient_sun_atmosphere(
+        const struct mli_PathTracer *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
         struct mli_ColorSpectrum tone;
 
-        const double sun_visibility = mli_Shader_estimate_sun_visibility_weight(
-                tracer, intersection->position, prng);
+        const double sun_visibility =
+                mli_pathtracer_estimate_sun_visibility_weight(
+                        tracer, intersection->position, prng);
 
         if (sun_visibility > 0.0) {
                 tone = mli_raytracing_color_tone_of_sun(
@@ -189,24 +190,25 @@ struct mli_ColorSpectrum mli_Shader_trace_ambient_sun_atmosphere(
         return tone;
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_ambient_sun_whitebox(
-        const struct mli_Shader *tracer,
+struct mli_ColorSpectrum mli_pathtracer_trace_ambient_sun_whitebox(
+        const struct mli_PathTracer *tracer,
         const struct mli_IntersectionSurfaceNormal *intersection,
         struct mli_Prng *prng)
 {
-        const double sun_visibility = mli_Shader_estimate_sun_visibility_weight(
-                tracer, intersection->position, prng);
+        const double sun_visibility =
+                mli_pathtracer_estimate_sun_visibility_weight(
+                        tracer, intersection->position, prng);
 
         return mli_ColorSpectrum_multiply_scalar(
                 tracer->config->ambient_radiance_W_per_m2_per_sr,
                 sun_visibility);
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_next_intersection(
-        const struct mli_Shader *tracer,
+struct mli_ColorSpectrum mli_pathtracer_trace_next_intersection(
+        const struct mli_PathTracer *tracer,
         const struct mli_Ray ray,
         const struct mli_IntersectionSurfaceNormal *intersection,
-        struct mli_ShaderPath path,
+        struct mli_pathtracer_Path path,
         struct mli_Prng *prng)
 {
         struct mli_ColorSpectrum out;
@@ -217,7 +219,7 @@ struct mli_ColorSpectrum mli_Shader_trace_next_intersection(
 
         switch (intersection_layer.side_coming_from.surface->type) {
         case MLI_SURFACE_TYPE_COOKTORRANCE:
-                out = mli_Shader_trace_intersection_cooktorrance(
+                out = mli_pathtracer_trace_intersection_cooktorrance(
                         tracer,
                         ray,
                         intersection,
@@ -226,7 +228,7 @@ struct mli_ColorSpectrum mli_Shader_trace_next_intersection(
                         prng);
                 break;
         case MLI_SURFACE_TYPE_TRANSPARENT:
-                out = mli_Shader_trace_intersection_transparent(
+                out = mli_pathtracer_trace_intersection_transparent(
                         tracer,
                         ray,
                         intersection,
@@ -241,12 +243,12 @@ struct mli_ColorSpectrum mli_Shader_trace_next_intersection(
         return out;
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
-        const struct mli_Shader *tracer,
+struct mli_ColorSpectrum mli_pathtracer_trace_intersection_cooktorrance(
+        const struct mli_PathTracer *tracer,
         const struct mli_Ray ray,
         const struct mli_IntersectionSurfaceNormal *intersection,
         const struct mli_IntersectionLayer *intersection_layer,
-        struct mli_ShaderPath path,
+        struct mli_pathtracer_Path path,
         struct mli_Prng *prng)
 {
         struct mli_ColorSpectrum out = mli_ColorSpectrum_init_zeros();
@@ -280,7 +282,7 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
                                 cook->diffuse_weight;
 
                 struct mli_ColorSpectrum incoming =
-                        mli_Shader_trace_ambient_sun(
+                        mli_pathtracer_trace_ambient_sun(
                                 tracer, intersection, prng);
 
                 diffuse = mli_ColorSpectrum_multiply(incoming, reflection);
@@ -299,7 +301,7 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
                         intersection->position, specular_reflection_direction);
 
                 path.weight *= cook->specular_weight;
-                specular = mli_Shader_trace_path_to_next_intersection(
+                specular = mli_pathtracer_trace_path_to_next_intersection(
                         tracer, nray, path, prng);
                 specular = mli_ColorSpectrum_multiply(specular, reflection);
                 specular = mli_ColorSpectrum_multiply_scalar(
@@ -310,12 +312,12 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_cooktorrance(
         return out;
 }
 
-struct mli_ColorSpectrum mli_Shader_trace_intersection_transparent(
-        const struct mli_Shader *tracer,
+struct mli_ColorSpectrum mli_pathtracer_trace_intersection_transparent(
+        const struct mli_PathTracer *tracer,
         const struct mli_Ray ray,
         const struct mli_IntersectionSurfaceNormal *intersection,
         const struct mli_IntersectionLayer *intersection_layer,
-        struct mli_ShaderPath path,
+        struct mli_pathtracer_Path path,
         struct mli_Prng *prng)
 {
         const uint64_t WAVELENGTH_BIN = 12;
@@ -361,7 +363,7 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_transparent(
 
                 path.weight *= reflection_weight;
                 reflection_component =
-                        mli_Shader_trace_path_to_next_intersection(
+                        mli_pathtracer_trace_path_to_next_intersection(
                                 tracer, nray, path, prng);
 
                 reflection_component = mli_ColorSpectrum_multiply_scalar(
@@ -376,7 +378,7 @@ struct mli_ColorSpectrum mli_Shader_trace_intersection_transparent(
                         mli_Fresnel_refraction_direction(fresnel));
                 path.weight *= refraction_weight;
                 refraction_component =
-                        mli_Shader_trace_path_to_next_intersection(
+                        mli_pathtracer_trace_path_to_next_intersection(
                                 tracer, nray, path, prng);
 
                 refraction_component = mli_ColorSpectrum_multiply_scalar(

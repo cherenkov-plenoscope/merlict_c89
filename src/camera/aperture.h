@@ -8,7 +8,7 @@
 #include "../image/image.h"
 #include "../color/color_vector.h"
 
-struct mli_Shader;
+struct mli_PathTracer;
 struct mli_Prng;
 
 /*
@@ -140,7 +140,7 @@ struct mli_camera_Aperture mli_camera_Aperture_init(void);
 int mli_camera_Aperture_render_image(
         const struct mli_camera_Aperture self,
         const struct mli_HomTraComp camera2root_comp,
-        const struct mli_Shader *tracer,
+        const struct mli_PathTracer *tracer,
         struct mli_Image *image,
         struct mli_Prng *prng);
 
@@ -148,7 +148,7 @@ void mli_camera_Aperture_aquire_pixels(
         const struct mli_camera_Aperture self,
         const struct mli_Image *image,
         const struct mli_HomTraComp camera2root_comp,
-        const struct mli_Shader *tracer,
+        const struct mli_PathTracer *tracer,
         const struct mli_image_PixelVector *pixels_to_do,
         struct mli_ColorVector *colors_to_do,
         struct mli_Prng *prng);

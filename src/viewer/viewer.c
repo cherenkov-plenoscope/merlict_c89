@@ -138,7 +138,7 @@ chk_error:
 }
 
 int mli_viewer_export_image(
-        const struct mli_Shader *tracer,
+        const struct mli_PathTracer *tracer,
         const struct mli_viewer_Config config,
         const struct mli_View view,
         struct mli_Prng *prng,
@@ -198,7 +198,7 @@ int mli_viewer_run_interactive_viewer(
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(config.random_seed);
         struct mli_shader_Config tracer_config = mli_shader_Config_init();
-        struct mli_Shader tracer = mli_Shader_init();
+        struct mli_PathTracer tracer = mli_pathtracer_init();
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         char path[1024];
         int key;
