@@ -13,14 +13,6 @@
 #include "../raytracing/ray_scenery_query.h"
 #include "../chk/chk.h"
 
-struct mli_pathtracer_Path mli_pathtracer_Path_init(void)
-{
-        struct mli_pathtracer_Path out;
-        out.weight = 1.0;
-        out.num_interactions = 0u;
-        return out;
-}
-
 struct mli_PathTracer mli_pathtracer_init(void)
 {
         struct mli_PathTracer tracer;

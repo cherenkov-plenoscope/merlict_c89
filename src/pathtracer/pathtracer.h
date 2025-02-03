@@ -1,14 +1,15 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
-#ifndef MLI_SHADER_H_
-#define MLI_SHADER_H_
+#ifndef MLI_PATHTRACER_H_
+#define MLI_PATHTRACER_H_
 
 #include <stdint.h>
+#include "pathtracer_path.h"
 #include "../ray/ray.h"
 #include "../color/color.h"
 #include "../color/color_materials.h"
 #include "../atmosphere/atmosphere.h"
 
-struct mli_shader_Config;
+struct mli_pathtracer_Config;
 struct mli_Scenery;
 struct mli_Prng;
 struct mli_IntersectionSurfaceNormal;
@@ -17,15 +18,8 @@ struct mli_IntersectionLayer;
 struct mli_PathTracer {
         const struct mli_Scenery *scenery;
         const struct mli_ColorMaterials *scenery_color_materials;
-        const struct mli_shader_Config *config;
+        const struct mli_pathtracer_Config *config;
 };
-
-struct mli_pathtracer_Path {
-        double weight;
-        uint64_t num_interactions;
-};
-
-struct mli_pathtracer_Path mli_pathtracer_Path_init(void);
 
 struct mli_PathTracer mli_pathtracer_init(void);
 

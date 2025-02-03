@@ -4,8 +4,8 @@
 #include "../atmosphere/atmosphere_json.h"
 #include "../chk/chk.h"
 
-int mli_shader_Config_from_json_token(
-        struct mli_shader_Config *tc,
+int mli_pathtracer_Config_from_json_token(
+        struct mli_pathtracer_Config *tc,
         const struct mli_Json *json,
         const uint64_t tkn)
 {

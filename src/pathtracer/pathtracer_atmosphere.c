@@ -12,7 +12,7 @@
 #include "../raytracing/intersection_and_scenery.h"
 
 struct mli_ColorSpectrum mli_raytracing_color_tone_of_sun(
-        const struct mli_shader_Config *config,
+        const struct mli_pathtracer_Config *config,
         const struct mli_Vec support)
 {
         struct mli_ColorSpectrum sun_spectrum = config->atmosphere.sun_spectrum;

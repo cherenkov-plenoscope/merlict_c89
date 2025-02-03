@@ -1,9 +1,9 @@
 /* Copyright 2018-2024 Sebastian Achim Mueller */
 #include "pathtracer_config.h"
 
-struct mli_shader_Config mli_shader_Config_init(void)
+struct mli_pathtracer_Config mli_pathtracer_Config_init(void)
 {
-        struct mli_shader_Config config;
+        struct mli_pathtracer_Config config;
         mli_ColorSpectrum_set_radiance_of_black_body_W_per_m2_per_sr(
                 &config.ambient_radiance_W_per_m2_per_sr, 5000.0);
 

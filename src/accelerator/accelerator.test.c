@@ -12,7 +12,8 @@ CASE("mli_Accelerator, init")
         struct mli_Color color;
         struct mli_Ray ray;
         struct mli_Prng prng = mli_Prng_init_MT19937(0);
-        struct mli_shader_Config tracer_config = mli_shader_Config_init();
+        struct mli_pathtracer_Config tracer_config =
+                mli_pathtracer_Config_init();
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         struct mli_PathTracer tracer = mli_pathtracer_init();
 

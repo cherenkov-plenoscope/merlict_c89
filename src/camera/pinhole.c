@@ -51,7 +51,7 @@ struct mli_Ray mli_camera_PinHole_ray_at_row_col(
 void mli_camera_PinHole_render_image(
         struct mli_camera_PinHole self,
         const struct mli_HomTraComp camera2root_comp,
-        const struct mli_PathTracer *shader,
+        const struct mli_PathTracer *pathtracer,
         struct mli_Image *image,
         struct mli_Prng *prng)
 {
@@ -71,8 +71,8 @@ void mli_camera_PinHole_render_image(
                 struct mli_Ray ray_wrt_root =
                         mli_HomTraComp_ray(&camera2root, ray_wrt_camera);
 
-                struct mli_Color color =
-                        mli_pathtracer_trace_ray(shader, ray_wrt_root, prng);
+                struct mli_Color color = mli_pathtracer_trace_ray(
+                        pathtracer, ray_wrt_root, prng);
                 mli_Image_set_by_col_row(image, px.col, px.row, color);
                 mli_image_PixelWalk_walk(&walk, &image->geometry);
         }
@@ -80,7 +80,7 @@ void mli_camera_PinHole_render_image(
 
 void mli_camera_PinHole_render_image_with_view(
         const struct mli_View view,
-        const struct mli_PathTracer *shader,
+        const struct mli_PathTracer *pathtracer,
         struct mli_Image *image,
         const double row_over_column_pixel_ratio,
         struct mli_Prng *prng)
@@ -89,5 +89,5 @@ void mli_camera_PinHole_render_image_with_view(
                 view.field_of_view, image, row_over_column_pixel_ratio);
         struct mli_HomTraComp camera2root_comp = mli_View_to_HomTraComp(view);
         mli_camera_PinHole_render_image(
-                camera, camera2root_comp, shader, image, prng);
+                camera, camera2root_comp, pathtracer, image, prng);
 }

@@ -153,7 +153,7 @@ void mli_camera_Aperture_aquire_pixels(
         const struct mli_camera_Aperture self,
         const struct mli_Image *image,
         const struct mli_HomTraComp camera2root_comp,
-        const struct mli_PathTracer *tracer,
+        const struct mli_PathTracer *pathtracer,
         const struct mli_image_PixelVector *pixels_to_do,
         struct mli_ColorVector *colors_to_do,
         struct mli_Prng *prng)
@@ -180,8 +180,8 @@ void mli_camera_Aperture_aquire_pixels(
                 struct mli_Ray ray_wrt_root =
                         mli_HomTraComp_ray(&camera2root, ray_wrt_camera);
 
-                struct mli_Color set_color =
-                        mli_pathtracer_trace_ray(tracer, ray_wrt_root, prng);
+                struct mli_Color set_color = mli_pathtracer_trace_ray(
+                        pathtracer, ray_wrt_root, prng);
 
                 mli_ColorVector_push_back(colors_to_do, set_color);
         }
@@ -216,7 +216,7 @@ void mli_camera_Aperture_assign_pixel_colors_to_sum_and_exposure_image(
 int mli_camera_Aperture_render_image(
         const struct mli_camera_Aperture self,
         const struct mli_HomTraComp camera2root_comp,
-        const struct mli_PathTracer *tracer,
+        const struct mli_PathTracer *pathtracer,
         struct mli_Image *image,
         struct mli_Prng *prng)
 {
@@ -272,7 +272,7 @@ int mli_camera_Aperture_render_image(
                 self,
                 image,
                 camera2root_comp,
-                tracer,
+                pathtracer,
                 &pixels_to_do,
                 &colors_to_do,
                 prng);
@@ -301,7 +301,7 @@ int mli_camera_Aperture_render_image(
                         self,
                         image,
                         camera2root_comp,
-                        tracer,
+                        pathtracer,
                         &pixels_to_do,
                         &colors_to_do,
                         prng);

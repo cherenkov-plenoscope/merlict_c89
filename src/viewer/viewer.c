@@ -68,7 +68,7 @@ void mli_viewer_print_help(void)
 void mli_viewer_print_info_line(
         const struct mli_View view,
         const struct mli_viewer_Cursor cursor,
-        const struct mli_shader_Config tracer_config,
+        const struct mli_pathtracer_Config tracer_config,
         const double gamma)
 {
         printf("Help 'h', "
@@ -197,7 +197,8 @@ int mli_viewer_run_interactive_viewer(
         const struct mli_viewer_Config config)
 {
         struct mli_Prng prng = mli_Prng_init_MT19937(config.random_seed);
-        struct mli_shader_Config tracer_config = mli_shader_Config_init();
+        struct mli_pathtracer_Config tracer_config =
+                mli_pathtracer_Config_init();
         struct mli_PathTracer tracer = mli_pathtracer_init();
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         char path[1024];
