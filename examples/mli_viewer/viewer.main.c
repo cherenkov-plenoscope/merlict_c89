@@ -14,26 +14,6 @@
 #include "../../src/args/args.h"
 #include "../../src/string/string_numbers.h"
 
-/*
-        1) Almagamate
-        -------------
-        python ./tools/almagamate.py \
-                build/almagamate \
-                libs/mli \
-                libs/mli_viewer \
-                --header_path build/almagamate/mli-mli_viewer.h \
-                --source_path build/almagamate/mli-mli_viewer.c
-
-        2) Compile
-        ----------
-        gcc \
-                -include build/almagamate/mli-mli_viewer.h \
-                -include build/almagamate/mli-mli_viewer.c \
-                libs/mli_viewer/apps/viewer.main.c \
-                -o build/viewer \
-                -lm
-*/
-
 int main(int argc, char *argv[])
 {
         struct mli_StringVector args = mli_StringVector_init();
