@@ -4,6 +4,8 @@
 #include "../chk/chk.h"
 #include "../func/func_serialize.h"
 #include "../io/io_text.h"
+#include "../magicid/magicid.h"
+#include "../string/string_serialize.h"
 
 void mli_Spectrum_free(struct mli_Spectrum *self)
 {
@@ -35,9 +37,6 @@ int mli_Spectrum_equal(
 chk_error:
         return 0;
 }
-
-#include "../magicid/magicid.h"
-#include "../string/string_serialize.h"
 
 int mli_Spectrum_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
 {
