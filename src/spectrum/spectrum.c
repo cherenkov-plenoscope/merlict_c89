@@ -87,8 +87,6 @@ int mli_Spectrum_print_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
 
         chk(mli_IO_text_write_cstr_format(f, "name: '%s', ", self->name.array));
         chk(mli_IO_text_write_cstr_format(
-                f, "comment: '%s', ", self->info.comment.array));
-        chk(mli_IO_text_write_cstr_format(
                 f, "num. points: %lu\n", self->spectrum.num_points));
         chk(mli_IO_text_write_cstr_format(
                 f,

@@ -8,7 +8,6 @@
 struct mli_FuncInfo {
         struct mli_String x;
         struct mli_String y;
-        struct mli_String comment;
 };
 
 struct mli_FuncInfo mli_FuncInfo_init(void);
