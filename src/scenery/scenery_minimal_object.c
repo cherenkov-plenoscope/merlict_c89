@@ -130,7 +130,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
         spec += 1;
 
         spectrum = &self->materials.spectra.array[spec];
-        chk(mli_String_from_cstr(&spectrum->name, "vacuum_absorbtion"));
+        chk(mli_String_from_cstr(&spectrum->name, "vacuum_absorption"));
         chk(mli_Func_malloc_constant(
                 &spectrum->spectrum, 200e-9, 1200e-9, 0.0));
         spec += 1;
@@ -139,7 +139,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
         mli_Medium_free(medium);
         chk(mli_String_from_cstr(&medium->name, "vacuum"));
         medium->refraction_spectrum = 0;
-        medium->absorbtion_spectrum = 1;
+        medium->absorption_spectrum = 1;
 
         for (i = 0u; i < total_num_boundary_layers; i++) {
                 spectrum = &self->materials.spectra.array[spec];

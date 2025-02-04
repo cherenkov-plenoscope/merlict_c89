@@ -14,7 +14,7 @@ struct mli_Medium mli_Medium_init(void)
         struct mli_Medium out;
         out.name = mli_String_init();
         out.refraction_spectrum = 0;
-        out.absorbtion_spectrum = 0;
+        out.absorption_spectrum = 0;
         return out;
 }
 
@@ -32,8 +32,8 @@ int mli_Medium_valid_wrt_materials(
 
         chk_msg(self->refraction_spectrum < materials->spectra.size,
                 "refraction_spectrum index is not in materials.");
-        chk_msg(self->absorbtion_spectrum < materials->spectra.size,
-                "absorbtion_spectrum index is not in materials.");
+        chk_msg(self->absorption_spectrum < materials->spectra.size,
+                "absorption_spectrum index is not in materials.");
 
         return 1;
 chk_error:
@@ -46,8 +46,8 @@ int mli_Medium_equal(const struct mli_Medium *a, const struct mli_Medium *b)
                 "Different names of medium models.");
         chk_msg(a->refraction_spectrum == b->refraction_spectrum,
                 "Different refraction_spectrum.");
-        chk_msg(a->absorbtion_spectrum == b->absorbtion_spectrum,
-                "Different absorbtion_spectrum.");
+        chk_msg(a->absorption_spectrum == b->absorption_spectrum,
+                "Different absorption_spectrum.");
 
         return 1;
 chk_error:
@@ -63,7 +63,7 @@ int mli_Medium_to_io(const struct mli_Medium *self, struct mli_IO *f)
         chk_msg(mli_String_to_io(&self->name, f),
                 "Can't write medium.name to io.");
         chk_IO_write(&self->refraction_spectrum, sizeof(int64_t), 1u, f);
-        chk_IO_write(&self->absorbtion_spectrum, sizeof(int64_t), 1u, f);
+        chk_IO_write(&self->absorption_spectrum, sizeof(int64_t), 1u, f);
 
         return 1;
 chk_error:
@@ -80,7 +80,7 @@ int mli_Medium_from_io(struct mli_Medium *self, struct mli_IO *f)
         chk_msg(mli_String_from_io(&self->name, f),
                 "Can't read medium.name from io.");
         chk_IO_read(&self->refraction_spectrum, sizeof(int64_t), 1u, f);
-        chk_IO_read(&self->absorbtion_spectrum, sizeof(int64_t), 1u, f);
+        chk_IO_read(&self->absorption_spectrum, sizeof(int64_t), 1u, f);
 
         return 1;
 chk_error:
@@ -113,12 +113,12 @@ int mli_Medium_from_json_string_and_name(
                 "Expected 'refraction_spectrum' to be in spectra_names.");
 
         walk = mli_JsonWalk_set(&json);
-        chk_msg(mli_JsonWalk_to_key(&walk, "absorbtion_spectrum"),
-                "Expected field 'absorbtion_spectrum' in medium json string.");
+        chk_msg(mli_JsonWalk_to_key(&walk, "absorption_spectrum"),
+                "Expected field 'absorption_spectrum' in medium json string.");
         chk_msg(mli_JsonWalk_get_string(&walk, &key),
-                "Expected 'absorbtion_spectrum' to hold a string.");
-        chk_msg(mli_Map_get(spectra_names, &key, &self->absorbtion_spectrum),
-                "Expected 'absorbtion_spectrum' to be in spectra_names.");
+                "Expected 'absorption_spectrum' to hold a string.");
+        chk_msg(mli_Map_get(spectra_names, &key, &self->absorption_spectrum),
+                "Expected 'absorption_spectrum' to be in spectra_names.");
 
         mli_String_free(&key);
         mli_Json_free(&json);

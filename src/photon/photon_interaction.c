@@ -9,11 +9,11 @@ int mli_photon_interaction_type_to_string(const int32_t type, char *s)
         case MLI_PHOTON_CREATION:
                 sprintf(s, "creation");
                 break;
-        case MLI_PHOTON_ABSORBTION:
-                sprintf(s, "absorbtion");
+        case MLI_PHOTON_ABSORPTION:
+                sprintf(s, "absorption");
                 break;
-        case MLI_PHOTON_ABSORBTION_MEDIUM:
-                sprintf(s, "absorbtion in medium");
+        case MLI_PHOTON_ABSORPTION_MEDIUM:
+                sprintf(s, "absorption in medium");
                 break;
         case MLI_PHOTON_FRESNEL_REFLECTION:
                 sprintf(s, "Fresnel reflection");

@@ -63,7 +63,7 @@ int mli_propagate_photon_cooktorrance(
 
         rnd = mli_Prng_uniform(env->prng);
         /*
-                                                      absorbtion
+                                                      absorption
                   diffuse      specular        (1.0 - diffuse - specular)
                   __/\____  _____/\__________  ___________/\____________
                  /        \/                 \/                         \
@@ -105,7 +105,7 @@ int mli_propagate_photon_cooktorrance(
                 chk(mli_PhotonInteractionVector_push_back(
                         env->history,
                         mliPhotonInteraction_from_Intersection(
-                                MLI_PHOTON_ABSORBTION, env->scenery, isec)));
+                                MLI_PHOTON_ABSORPTION, env->scenery, isec)));
         }
         return 1;
 chk_error:
@@ -141,18 +141,18 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
         const struct mli_Medium *medium_coming_from =
                 &scenery->materials.media.array[side_coming_from.medium];
 
-        const struct mli_Func *absorbtion_spectrum =
+        const struct mli_Func *absorption_spectrum =
                 &scenery->materials.spectra
-                         .array[medium_coming_from->absorbtion_spectrum]
+                         .array[medium_coming_from->absorption_spectrum]
                          .spectrum;
         double absorption_coefficient;
 
         chk_msg(mli_Func_evaluate(
-                        absorbtion_spectrum,
+                        absorption_spectrum,
                         photon->wavelength,
                         &absorption_coefficient),
                 "Photon's wavelength is out of range to "
-                "evaluate absorbtion in medium coming from");
+                "evaluate absorption in medium coming from");
         (*probability_passing) =
                 exp(-isec->distance_of_ray * absorption_coefficient);
 
@@ -243,19 +243,19 @@ chk_error:
         return 0;
 }
 
-int mli_propagate_photon_distance_until_absorbtion(
-        const struct mli_Func *absorbtion_in_medium_passing_through,
+int mli_propagate_photon_distance_until_absorption(
+        const struct mli_Func *absorption_in_medium_passing_through,
         const double wavelength,
         struct mli_Prng *prng,
-        double *distance_until_absorbtion)
+        double *distance_until_absorption)
 {
         double absorption_coefficient;
         chk_msg(mli_Func_evaluate(
-                        absorbtion_in_medium_passing_through,
+                        absorption_in_medium_passing_through,
                         wavelength,
                         &absorption_coefficient),
-                "Failed to eval. absorbtion for wavelength.");
-        (*distance_until_absorbtion) =
+                "Failed to eval. absorption for wavelength.");
+        (*distance_until_absorption) =
                 mli_Prng_expovariate(prng, absorption_coefficient);
         return 1;
 chk_error:
@@ -266,9 +266,9 @@ int mli_propagate_photon_work_on_causal_intersection(
         struct mli_PhotonPropagation *env)
 {
         int ray_does_intersect_surface = 0;
-        double distance_until_absorbtion = 0.0;
+        double distance_until_absorption = 0.0;
         struct mli_IntersectionSurfaceNormal next_intersection;
-        struct mli_Func *absorbtion_in_medium_passing_through;
+        struct mli_Func *absorption_in_medium_passing_through;
         struct mli_Medium *medium_passing_through;
         struct mli_PhotonInteraction phia;
 
@@ -283,20 +283,20 @@ int mli_propagate_photon_work_on_causal_intersection(
                 layer = mli_raytracing_get_intersection_layer(
                         env->scenery, &next_intersection);
 
-                absorbtion_in_medium_passing_through =
+                absorption_in_medium_passing_through =
                         &env->scenery->materials.spectra
                                  .array[layer.side_coming_from.medium
-                                                ->absorbtion_spectrum]
+                                                ->absorption_spectrum]
                                  .spectrum;
 
-                chk(mli_propagate_photon_distance_until_absorbtion(
-                        absorbtion_in_medium_passing_through,
+                chk(mli_propagate_photon_distance_until_absorption(
+                        absorption_in_medium_passing_through,
                         env->photon->wavelength,
                         env->prng,
-                        &distance_until_absorbtion));
+                        &distance_until_absorption));
 
                 photon_is_absorbed_before_reaching_surface =
-                        distance_until_absorbtion <
+                        distance_until_absorption <
                         next_intersection.distance_of_ray;
 
                 if (env->history->size == 0) {
@@ -319,13 +319,13 @@ int mli_propagate_photon_work_on_causal_intersection(
                 }
 
                 if (photon_is_absorbed_before_reaching_surface) {
-                        /* absorbtion in medium */
-                        phia.type = MLI_PHOTON_ABSORBTION_MEDIUM;
+                        /* absorption in medium */
+                        phia.type = MLI_PHOTON_ABSORPTION_MEDIUM;
                         phia.position = mli_Ray_at(
-                                &env->photon->ray, distance_until_absorbtion);
+                                &env->photon->ray, distance_until_absorption);
                         ;
                         phia.position_local = phia.position;
-                        phia.distance_of_ray = distance_until_absorbtion;
+                        phia.distance_of_ray = distance_until_absorption;
                         phia.on_geometry_surface = 0;
                         phia.geometry_id = mli_GeometryId_init();
                         phia.from_outside_to_inside = 1;
@@ -349,17 +349,17 @@ int mli_propagate_photon_work_on_causal_intersection(
 
                 medium_passing_through =
                         &env->scenery->materials.media.array[default_medium];
-                absorbtion_in_medium_passing_through =
+                absorption_in_medium_passing_through =
                         &env->scenery->materials.spectra
                                  .array[medium_passing_through
-                                                ->absorbtion_spectrum]
+                                                ->absorption_spectrum]
                                  .spectrum;
 
-                chk(mli_propagate_photon_distance_until_absorbtion(
-                        absorbtion_in_medium_passing_through,
+                chk(mli_propagate_photon_distance_until_absorption(
+                        absorption_in_medium_passing_through,
                         env->photon->wavelength,
                         env->prng,
-                        &distance_until_absorbtion));
+                        &distance_until_absorption));
 
                 if (env->history->size == 0) {
                         /* creation */
@@ -378,12 +378,12 @@ int mli_propagate_photon_work_on_causal_intersection(
                                 env->history, phia));
                 }
 
-                /* absorbtion in medium */
-                phia.type = MLI_PHOTON_ABSORBTION_MEDIUM;
+                /* absorption in medium */
+                phia.type = MLI_PHOTON_ABSORPTION_MEDIUM;
                 phia.position = mli_Ray_at(
-                        &env->photon->ray, distance_until_absorbtion);
+                        &env->photon->ray, distance_until_absorption);
                 phia.position_local = phia.position;
-                phia.distance_of_ray = distance_until_absorbtion;
+                phia.distance_of_ray = distance_until_absorption;
                 phia.on_geometry_surface = 0;
                 phia.geometry_id = mli_GeometryId_init();
                 phia.from_outside_to_inside = 1;

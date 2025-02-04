@@ -1,5 +1,5 @@
 {
     "type": "transparent",
     "refraction_spectrum": "schott_n_kzfs2_refraction",
-    "absorbtion_spectrum": "vacuum_absorbtion"
+    "absorption_spectrum": "vacuum_absorption"
 }

@@ -113,7 +113,7 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         fprintf(f, "%3s ", "#");
         fprintf(f, "%24s ", "name");
         fprintf(f, "%12s ", "refraction");
-        fprintf(f, "%12s ", "absorbtion");
+        fprintf(f, "%12s ", "absorption");
         fprintf(f, "%12s ", "default");
         fprintf(f, "\n");
         fprintf(f, "    ");
@@ -127,7 +127,7 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
                 fprintf(f, "% 3d ", i);
                 fprintf(f, "%24s ", medium->name.array);
                 fprintf(f, "%12lu ", medium->refraction_spectrum);
-                fprintf(f, "%12lu ", medium->absorbtion_spectrum);
+                fprintf(f, "%12lu ", medium->absorption_spectrum);
 
                 if (i == self->default_medium) {
                         fprintf(f, "%12s", "True");

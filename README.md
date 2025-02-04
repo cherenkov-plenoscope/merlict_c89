@@ -16,7 +16,7 @@ format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) ```.obj```. Merlict
 reads the spectral properties of your material's (e.g. reflection or refraction)
 from ```.csv``` files. You define photons with a creation position, direction,
 and wavelength. For each photon, merlict gives you the list of physical
-interactions up to the photon's absorbtion.
+interactions up to the photon's absorption.
 
 Independent of light and photons, merlict can query the intersections
 (including the surface normals) of rays in complex sceneries. You can use this

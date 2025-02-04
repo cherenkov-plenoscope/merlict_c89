@@ -1,5 +1,5 @@
 {
     "type": "transparent",
     "refraction_spectrum": "vacuum_refraction",
-    "absorbtion_spectrum": "vacuum_absorbtion"
+    "absorption_spectrum": "vacuum_absorption"
 }

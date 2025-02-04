@@ -27,11 +27,11 @@ int mli_propagate_photon(
         const uint64_t max_interactions);
 int mli_propagate_photon_work_on_causal_intersection(
         struct mli_PhotonPropagation *env);
-int mli_propagate_photon_distance_until_absorbtion(
-        const struct mli_Func *absorbtion_in_medium_passing_through,
+int mli_propagate_photon_distance_until_absorption(
+        const struct mli_Func *absorption_in_medium_passing_through,
         const double wavelength,
         struct mli_Prng *prng,
-        double *distance_until_absorbtion);
+        double *distance_until_absorption);
 int mli_propagate_photon_interact_with_object(
         struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec);

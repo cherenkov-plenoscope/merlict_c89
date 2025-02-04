@@ -11,7 +11,7 @@ struct mli_Map;
 struct mli_Medium {
         struct mli_String name;
         uint64_t refraction_spectrum;
-        uint64_t absorbtion_spectrum;
+        uint64_t absorption_spectrum;
 };
 
 struct mli_Medium mli_Medium_init(void);
