@@ -145,15 +145,16 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
                 &scenery->materials.spectra
                          .array[medium_coming_from->absorbtion_spectrum]
                          .spectrum;
-        double one_over_e_way;
+        double absorption_coefficient;
 
         chk_msg(mli_Func_evaluate(
                         absorbtion_spectrum,
                         photon->wavelength,
-                        &one_over_e_way),
+                        &absorption_coefficient),
                 "Photon's wavelength is out of range to "
                 "evaluate absorbtion in medium coming from");
-        (*probability_passing) = exp(-isec->distance_of_ray / one_over_e_way);
+        (*probability_passing) =
+                exp(-isec->distance_of_ray * absorption_coefficient);
 
         return 1;
 chk_error:
@@ -248,14 +249,14 @@ int mli_propagate_photon_distance_until_absorbtion(
         struct mli_Prng *prng,
         double *distance_until_absorbtion)
 {
-        double one_over_e_way;
+        double absorption_coefficient;
         chk_msg(mli_Func_evaluate(
                         absorbtion_in_medium_passing_through,
                         wavelength,
-                        &one_over_e_way),
+                        &absorption_coefficient),
                 "Failed to eval. absorbtion for wavelength.");
         (*distance_until_absorbtion) =
-                mli_Prng_expovariate(prng, 1. / one_over_e_way);
+                mli_Prng_expovariate(prng, absorption_coefficient);
         return 1;
 chk_error:
         return 0;
