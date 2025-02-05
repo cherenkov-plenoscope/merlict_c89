@@ -304,6 +304,7 @@ int mli_String_equal(
 int mli_String_valid(const struct mli_String *self, const size_t min_size)
 {
         const int64_t size = mli_String__discover_size(self);
+        chk_msg(self->array != NULL, "Expected string to be allocated.");
         chk_msg(size >= (int64_t)min_size,
                 "Expected string to have min_size "
                 "and to be '\\0' terminated.");

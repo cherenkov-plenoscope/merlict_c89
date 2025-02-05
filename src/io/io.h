@@ -56,14 +56,14 @@ int mli_IO_flush(struct mli_IO *self);
         {                                                                      \
                 const uint64_t num_written =                                   \
                         mli_IO_write(PTR, SIZE_OF_TYPE, NUM, IO);              \
-                chk_msg(num_written == NUM, "Can not write to file.");         \
+                chk_msg(num_written == NUM, "Can not write to mli_IO.");       \
         }
 
 #define chk_IO_read(PTR, SIZE_OF_TYPE, NUM, IO)                                \
         {                                                                      \
                 const uint64_t num_read =                                      \
                         mli_IO_read(PTR, SIZE_OF_TYPE, NUM, IO);               \
-                chk_msg(num_read == NUM, "Can not read from file.");           \
+                chk_msg(num_read == NUM, "Can not read from mli_IO.");         \
         }
 
 #endif

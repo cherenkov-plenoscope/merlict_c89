@@ -13,6 +13,32 @@ CASE("mli_IO_open_memory")
         mli_IO_close(&stream);
 }
 
+CASE("mli_IO_memory write /read even and odd number of bytes.")
+{
+        struct mli_IO f = mli_IO_init();
+        struct mli_String s = mli_String_init();
+        struct mli_String b = mli_String_init();
+        CHECK(mli_IO_open_memory(&f));
+
+        CHECK(mli_String_from_cstr_fromat(&s, "1234"));
+        CHECK(mli_String_to_io(&s, &f));
+        mli_IO_rewind(&f);
+        CHECK(mli_String_from_io(&b, &f));
+        CHECK(mli_String_equal_cstr(&b, "1234"));
+
+        mli_IO_rewind(&f);
+
+        CHECK(mli_String_from_cstr_fromat(&s, "123"));
+        CHECK(mli_String_to_io(&s, &f));
+        mli_IO_rewind(&f);
+        CHECK(mli_String_from_io(&b, &f));
+        CHECK(mli_String_equal_cstr(&b, "123"));
+
+        mli_IO_close(&f);
+        mli_String_free(&s);
+        mli_String_free(&b);
+}
+
 CASE("mli_IO_open_file")
 {
         struct mli_String filename = mli_String_init();

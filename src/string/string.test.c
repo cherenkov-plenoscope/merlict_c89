@@ -290,3 +290,27 @@ CASE("replace CRLF and CR linebreaks with LF")
         mli_String_free(&src);
         mli_String_free(&dst);
 }
+
+CASE("string valid")
+{
+        struct mli_String s = mli_String_init();
+        CHECK(!mli_String_valid(&s, 0));
+
+        CHECK(mli_String_from_cstr_fromat(&s, "text"));
+        CHECK(mli_String_valid(&s, 0));
+
+        mli_String_free(&s);
+}
+
+CASE("serialize an empty string")
+{
+        struct mli_String s = mli_String_init();
+        struct mli_IO f = mli_IO_init();
+        CHECK(mli_IO_open_memory(&f));
+
+        CHECK(mli_String_from_cstr_fromat(&s, ""));
+        CHECK(mli_String_to_io(&s, &f));
+
+        mli_String_free(&s);
+        mli_IO_close(&f);
+}

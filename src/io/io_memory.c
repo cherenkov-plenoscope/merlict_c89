@@ -121,7 +121,7 @@ int mli_IoMemory__write_unsigned_char(
         }
 
         if (self->cstr == NULL) {
-                chk(mli_IoMemory__malloc(self));
+                chk_msg(mli_IoMemory__malloc(self), "Failed to malloc.");
         }
 
         if (new_size >= self->capacity) {
@@ -161,11 +161,14 @@ size_t mli_IoMemory_write(
         unsigned char *block = (unsigned char *)ptr;
 
         size_t i;
+        size_t num_written = 0;
         for (i = 0u; i < block_size; i++) {
-                chk_msg(mli_IoMemory__write_unsigned_char(self, &block[i]), "");
+                chk_msg(mli_IoMemory__write_unsigned_char(self, &block[i]),
+                        "Failed to write char block to mli_IoMemory");
         }
+        num_written = i / size;
 chk_error:
-        return (i + 1u) / size;
+        return num_written;
 }
 
 size_t mli_IoMemory_read(
@@ -188,7 +191,7 @@ size_t mli_IoMemory_read(
                         block[i] = c;
                 }
         }
-        return (i + 1u) / size;
+        return i / size;
 }
 
 void mli_IoMemory_rewind(struct mli_IoMemory *self) { self->pos = 0u; }
