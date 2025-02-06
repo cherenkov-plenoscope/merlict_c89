@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 #include "../color/color.h"
+#include "../bool/bool.h"
+#include "../chk/chk.h"
 #include "image_Pixel.h"
 
 struct mli_image_Chunk {
@@ -12,7 +14,7 @@ struct mli_image_Chunk {
 };
 struct mli_image_Chunk mli_image_Chunk_init(void);
 void mli_image_Chunk_free(struct mli_image_Chunk *self);
-int mli_image_Chunk_malloc(
+chk_rc mli_image_Chunk_malloc(
         struct mli_image_Chunk *self,
         const uint64_t edge_size);
 void mli_image_Chunk_set(
@@ -46,7 +48,7 @@ struct mli_image_ChunkGeometry mli_image_ChunkGeometry_set(
         const uint64_t num_rows,
         const uint64_t chunk_edge_size);
 
-int mli_image_ChunkGeometry_equal(
+mli_bool mli_image_ChunkGeometry_equal(
         const struct mli_image_ChunkGeometry a,
         const struct mli_image_ChunkGeometry b);
 

@@ -6,7 +6,7 @@
 #include "../object/object_AABB.h"
 #include "../aabb/aabb.h"
 
-int mli_Geometry_robject_has_overlap_aabb(
+mli_bool mli_Geometry_robject_has_overlap_aabb(
         const struct mli_GeometryAndAccelerator *accgeo,
         const uint32_t robject_idx,
         const struct mli_AABB aabb)
@@ -25,11 +25,11 @@ int mli_Geometry_robject_has_overlap_aabb(
                         accgeo->geometry->robject2root[robject_idx]);
                 return mli_Object_has_overlap_aabb(obj_ptr, robj2root, aabb);
         } else {
-                return 0;
+                return MLI_FALSE;
         }
 }
 
-int mli_Geometry_robject_has_overlap_aabb_void(
+mli_bool mli_Geometry_robject_has_overlap_aabb_void(
         const void *accgeo,
         const uint32_t robject_idx,
         const struct mli_AABB aabb)

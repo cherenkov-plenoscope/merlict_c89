@@ -5,6 +5,7 @@
 #include "../vec/vec.h"
 #include "../ray/ray.h"
 #include "../mat/mat.h"
+#include "../bool/bool.h"
 #include "../quaternion/quaternion.h"
 
 struct mli_HomTraComp {
@@ -24,7 +25,7 @@ struct mli_HomTraComp mli_HomTraComp_set(
 struct mli_HomTraComp mli_HomTraComp_sequence(
         const struct mli_HomTraComp a,
         const struct mli_HomTraComp b);
-int mli_HomTraComp_equal(
+mli_bool mli_HomTraComp_equal(
         const struct mli_HomTraComp a,
         const struct mli_HomTraComp b);
 struct mli_Vec mli_HomTraComp_dir_inverse(

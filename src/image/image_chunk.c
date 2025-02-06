@@ -18,7 +18,7 @@ void mli_image_Chunk_free(struct mli_image_Chunk *self)
         (*self) = mli_image_Chunk_init();
 }
 
-int mli_image_Chunk_malloc(
+chk_rc mli_image_Chunk_malloc(
         struct mli_image_Chunk *self,
         const uint64_t edge_size)
 {
@@ -87,19 +87,19 @@ struct mli_image_ChunkGeometry mli_image_ChunkGeometry_set(
         return out;
 }
 
-int mli_image_ChunkGeometry_equal(
+mli_bool mli_image_ChunkGeometry_equal(
         const struct mli_image_ChunkGeometry a,
         const struct mli_image_ChunkGeometry b)
 {
         if (a.num_cols != b.num_cols)
-                return 0;
+                return MLI_FALSE;
         if (a.num_rows != b.num_rows)
-                return 0;
+                return MLI_FALSE;
         if (a.chunk_edge_size != b.chunk_edge_size)
-                return 0;
+                return MLI_FALSE;
         if (a.num_chunks_row != b.num_chunks_row)
-                return 0;
+                return MLI_FALSE;
         if (a.num_chunks_col != b.num_chunks_col)
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }

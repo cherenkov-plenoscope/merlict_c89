@@ -29,7 +29,7 @@ void mli_Image_free(struct mli_Image *self)
         (*self) = mli_Image_init();
 }
 
-int mli_Image__malloc(
+chk_rc mli_Image__malloc(
         struct mli_Image *self,
         const uint32_t num_cols,
         const uint32_t num_rows)
@@ -56,26 +56,26 @@ int mli_Image__malloc(
                                 self->geometry.chunk_edge_size));
                 }
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Image_free(self);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_Image_malloc(
+chk_rc mli_Image_malloc(
         struct mli_Image *self,
         const uint32_t num_cols,
         const uint32_t num_rows)
 {
         if (self->geometry.num_cols == num_cols &&
             self->geometry.num_rows == num_rows) {
-                return 1;
+                return CHK_SUCCESS;
         } else {
                 return mli_Image__malloc(self, num_cols, num_rows);
         }
 }
 
-int mli_Image_malloc_same_size(
+chk_rc mli_Image_malloc_same_size(
         struct mli_Image *self,
         const struct mli_Image *other)
 {
@@ -191,7 +191,7 @@ void mli_Image_set_all(
         }
 }
 
-int mli_Image_scale_down_twice(
+chk_rc mli_Image_scale_down_twice(
         const struct mli_Image *src,
         struct mli_Image *dst)
 {
@@ -227,7 +227,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Image_sobel(const struct mli_Image *src, struct mli_Image *dst)
+chk_rc mli_Image_sobel(const struct mli_Image *src, struct mli_Image *dst)
 {
         uint64_t i;
         uint64_t NUM = mli_Image_num_pixel(src);
@@ -384,7 +384,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Image_luminance_threshold_dilatation(
+chk_rc mli_Image_luminance_threshold_dilatation(
         const struct mli_Image *self,
         const float threshold,
         const struct mli_Color marker,
@@ -443,7 +443,7 @@ void mli_image_PixelVector_push_back_all_from_image(
         }
 }
 
-int mli_image_PixelVector_above_threshold(
+chk_rc mli_image_PixelVector_above_threshold(
         const struct mli_Image *self,
         const float threshold,
         struct mli_image_PixelVector *pixels)
@@ -469,7 +469,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Image_copy(const struct mli_Image *src, struct mli_Image *dst)
+chk_rc mli_Image_copy(const struct mli_Image *src, struct mli_Image *dst)
 {
         uint64_t i;
         const uint64_t NUM = mli_Image_num_pixel(src);
@@ -489,7 +489,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Image_fabs_difference(
+chk_rc mli_Image_fabs_difference(
         const struct mli_Image *a,
         const struct mli_Image *b,
         struct mli_Image *out)
@@ -606,7 +606,7 @@ void mli_Image_power(struct mli_Image *self, const struct mli_Color power)
         }
 }
 
-int mli_Image_divide_pixelwise(
+chk_rc mli_Image_divide_pixelwise(
         const struct mli_Image *numerator,
         const struct mli_Image *denominator,
         struct mli_Image *out)

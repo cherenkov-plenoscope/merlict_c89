@@ -5,7 +5,7 @@
 #include "../string/string_numbers.h"
 #include "../io/io_text.h"
 
-int mli_Image_from_io(struct mli_Image *img, struct mli_IO *f)
+chk_rc mli_Image_from_io(struct mli_Image *img, struct mli_IO *f)
 {
         struct mli_String line = mli_String_init();
         uint64_t num_comment_lines = 0;
@@ -55,14 +55,14 @@ int mli_Image_from_io(struct mli_Image *img, struct mli_IO *f)
                 }
         }
         mli_String_free(&line);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&line);
         mli_Image_free(img);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_Image_to_io(const struct mli_Image *img, struct mli_IO *f)
+chk_rc mli_Image_to_io(const struct mli_Image *img, struct mli_IO *f)
 {
 
         uint32_t col;

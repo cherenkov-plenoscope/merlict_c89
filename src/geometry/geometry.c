@@ -65,10 +65,10 @@ int mli_Geometry_malloc_objects(
                 self->objects[i] = mli_Object_init();
                 self->object_names[i] = mli_String_init();
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Geometry_free_objects(self);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Geometry_malloc_references(
@@ -80,10 +80,10 @@ int mli_Geometry_malloc_references(
         chk_malloc(self->robject_ids, uint32_t, self->num_robjects);
         chk_malloc(
                 self->robject2root, struct mli_HomTraComp, self->num_robjects);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Geometry_free_references(self);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Geometry_malloc(
@@ -94,10 +94,10 @@ int mli_Geometry_malloc(
         mli_Geometry_free(self);
         chk(mli_Geometry_malloc_objects(self, num_objects));
         chk(mli_Geometry_malloc_references(self, num_robjects));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Geometry_free(self);
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_Geometry_info_fprint(FILE *f, const struct mli_Geometry *self)

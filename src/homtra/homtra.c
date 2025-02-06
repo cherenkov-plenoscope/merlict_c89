@@ -158,15 +158,15 @@ struct mli_Vec mli_HomTraComp_dir_inverse(
         return mli_transform_orientation_inverse(&t->rotation, in);
 }
 
-int mli_HomTraComp_equal(
+mli_bool mli_HomTraComp_equal(
         const struct mli_HomTraComp a,
         const struct mli_HomTraComp b)
 {
         if (!mli_Vec_equal(a.translation, b.translation))
-                return 0;
+                return MLI_FALSE;
         if (!mli_Quaternion_equal(a.rotation, b.rotation))
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }
 
 struct mli_HomTraComp mli_HomTraComp_sequence(

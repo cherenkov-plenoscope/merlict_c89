@@ -14,7 +14,7 @@
 #include "../frame/frame.h"
 #include "../frame/frame_json.h"
 
-int mli_Geometry_from_archive(
+chk_rc mli_Geometry_from_archive(
         struct mli_Geometry *geometry,
         struct mli_Map *object_names,
         const struct mli_Archive *archive)
@@ -70,10 +70,10 @@ int mli_Geometry_from_archive(
         mli_String_free(&extension);
         mli_String_free(&basename);
         mli_String_free(&key);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&extension);
         mli_String_free(&basename);
         mli_String_free(&key);
-        return 0;
+        return CHK_FAIL;
 }

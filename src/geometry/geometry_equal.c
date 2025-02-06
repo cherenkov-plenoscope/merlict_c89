@@ -17,10 +17,10 @@ int mli_Geometry_objects_equal(
                                 &a->object_names[i], &b->object_names[i]),
                         "Expected object_name to be equal.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         fprintf(stderr, "In geometry.object[%u]\n", i);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Geometry_object_references_equal(
@@ -45,10 +45,10 @@ int mli_Geometry_object_references_equal(
                         "Expected homogenous transformation of "
                         "object-references to be equal");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         fprintf(stderr, "In geometry.object_reference[%lu]\n", rob);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Geometry_equal(

@@ -30,8 +30,8 @@ int mli_Func_from_io(struct mli_Func *func, struct mli_IO *f)
         chk_IO_read(func->x, sizeof(double), func->num_points, f);
         chk_IO_read(func->y, sizeof(double), func->num_points, f);
         chk_msg(mli_Func_is_valid(func), "Expected function to be valid.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Func_free(func);
-        return 0;
+        return CHK_FAIL;
 }

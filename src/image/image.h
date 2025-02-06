@@ -3,6 +3,7 @@
 #define MLI_IMAGE_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
 #include "../color/color.h"
 #include "image_Pixel.h"
 #include "image_PixelVector.h"
@@ -18,18 +19,18 @@ struct mli_Image mli_Image_init(void);
 
 void mli_Image_free(struct mli_Image *self);
 
-int mli_Image_malloc(
+chk_rc mli_Image_malloc(
         struct mli_Image *self,
         const uint32_t num_cols,
         const uint32_t num_rows);
 
-int mli_Image_malloc_same_size(
+chk_rc mli_Image_malloc_same_size(
         struct mli_Image *self,
         const struct mli_Image *other);
 
-int mli_Image_copy(const struct mli_Image *src, struct mli_Image *dst);
+chk_rc mli_Image_copy(const struct mli_Image *src, struct mli_Image *dst);
 
-int mli_Image__malloc(
+chk_rc mli_Image__malloc(
         struct mli_Image *self,
         const uint32_t num_cols,
         const uint32_t num_rows);
@@ -67,25 +68,20 @@ struct mli_Color mli_Image_get_by_col_row(
         const uint32_t col,
         const uint32_t row);
 
-int mli_image_PixelVector_malloc_from_image_above_threshold(
-        struct mli_image_PixelVector *pixels,
-        const struct mli_Image *image,
-        const float threshold);
-
-int mli_image_PixelVector_above_threshold(
+chk_rc mli_image_PixelVector_above_threshold(
         const struct mli_Image *to_do_image,
         const float threshold,
         struct mli_image_PixelVector *pixels);
 
-int mli_Image_luminance_threshold_dilatation(
+chk_rc mli_Image_luminance_threshold_dilatation(
         const struct mli_Image *self,
         const float threshold,
         const struct mli_Color marker,
         struct mli_Image *out);
 
-int mli_Image_sobel(const struct mli_Image *src, struct mli_Image *dst);
+chk_rc mli_Image_sobel(const struct mli_Image *src, struct mli_Image *dst);
 
-int mli_Image_scale_down_twice(
+chk_rc mli_Image_scale_down_twice(
         const struct mli_Image *source,
         struct mli_Image *destination);
 
@@ -96,7 +92,7 @@ void mli_image_PixelVector_push_back_all_from_image(
         struct mli_image_PixelVector *pixels,
         const struct mli_Image *image);
 
-int mli_Image_fabs_difference(
+chk_rc mli_Image_fabs_difference(
         const struct mli_Image *a,
         const struct mli_Image *b,
         struct mli_Image *out);
@@ -114,7 +110,7 @@ struct mli_Color mli_Image_max(const struct mli_Image *img);
 void mli_Image_multiply(struct mli_Image *img, const struct mli_Color color);
 void mli_Image_power(struct mli_Image *self, const struct mli_Color power);
 
-int mli_Image_divide_pixelwise(
+chk_rc mli_Image_divide_pixelwise(
         const struct mli_Image *numerator,
         const struct mli_Image *denominator,
         struct mli_Image *out);
