@@ -29,6 +29,8 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../io/io.h"
 
 #define MLI_TAR_VERSION_MAYOR 1
@@ -50,16 +52,16 @@
 /* basics */
 /* ====== */
 uint64_t mli_Tar_round_up(uint64_t n, uint64_t incr);
-int mli_Tar_field_to_uint(
+chk_rc mli_Tar_field_to_uint(
         uint64_t *out,
         const char *field,
         const uint64_t fieldsize);
-int mli_Tar_uint_to_field(
+chk_rc mli_Tar_uint_to_field(
         const uint64_t value,
         char *field,
         const uint64_t fieldsize);
-int mli_Tar_uint64_to_field12_2001star_base256(uint64_t val, char *field);
-int mli_Tar_field12_to_uint64_2001star_base256(
+chk_rc mli_Tar_uint64_to_field12_2001star_base256(uint64_t val, char *field);
+chk_rc mli_Tar_field12_to_uint64_2001star_base256(
         const char *field,
         uint64_t *val);
 
@@ -89,18 +91,18 @@ struct mli_TarHeader {
 };
 
 uint64_t mli_TarRawHeader_checksum(const struct mli_TarRawHeader *rh);
-int mli_TarRawHeader_is_null(const struct mli_TarRawHeader *rh);
-int mli_TarRawHeader_from_header(
+mli_bool mli_TarRawHeader_is_null(const struct mli_TarRawHeader *rh);
+chk_rc mli_TarRawHeader_from_header(
         struct mli_TarRawHeader *rh,
         const struct mli_TarHeader *h);
 
 struct mli_TarHeader mli_TarHeader_init(void);
-int mli_TarHeader_set_directory(struct mli_TarHeader *h, const char *name);
-int mli_TarHeader_set_normal_file(
+chk_rc mli_TarHeader_set_directory(struct mli_TarHeader *h, const char *name);
+chk_rc mli_TarHeader_set_normal_file(
         struct mli_TarHeader *h,
         const char *name,
         const uint64_t size);
-int mli_TarHeader_from_raw(
+chk_rc mli_TarHeader_from_raw(
         struct mli_TarHeader *h,
         const struct mli_TarRawHeader *rh);
 
@@ -114,14 +116,14 @@ struct mli_Tar {
 
 struct mli_Tar mli_Tar_init(void);
 
-int mli_Tar_read_begin(struct mli_Tar *tar, struct mli_IO *stream);
-int mli_Tar_read_header(struct mli_Tar *tar, struct mli_TarHeader *h);
-int mli_Tar_read_data(struct mli_Tar *tar, void *ptr, uint64_t size);
-int mli_Tar_read_finalize(struct mli_Tar *tar);
+chk_rc mli_Tar_read_begin(struct mli_Tar *tar, struct mli_IO *stream);
+chk_rc mli_Tar_read_header(struct mli_Tar *tar, struct mli_TarHeader *h);
+chk_rc mli_Tar_read_data(struct mli_Tar *tar, void *ptr, uint64_t size);
+chk_rc mli_Tar_read_finalize(struct mli_Tar *tar);
 
-int mli_Tar_write_begin(struct mli_Tar *tar, struct mli_IO *stream);
-int mli_Tar_write_header(struct mli_Tar *tar, const struct mli_TarHeader *h);
-int mli_Tar_write_data(struct mli_Tar *tar, const void *data, uint64_t size);
-int mli_Tar_write_finalize(struct mli_Tar *tar);
+chk_rc mli_Tar_write_begin(struct mli_Tar *tar, struct mli_IO *stream);
+chk_rc mli_Tar_write_header(struct mli_Tar *tar, const struct mli_TarHeader *h);
+chk_rc mli_Tar_write_data(struct mli_Tar *tar, const void *data, uint64_t size);
+chk_rc mli_Tar_write_finalize(struct mli_Tar *tar);
 
 #endif

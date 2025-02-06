@@ -379,7 +379,7 @@ struct mli_Triangle mli_Triangle_set_in_norm_aabb(
         return tri;
 }
 
-int mli_Triangle_has_overlap_aabb(
+mli_bool mli_Triangle_has_overlap_aabb(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c,
@@ -387,9 +387,9 @@ int mli_Triangle_has_overlap_aabb(
 {
         struct mli_Triangle tri = mli_Triangle_set_in_norm_aabb(a, b, c, aabb);
         if (mli_Triangle_intersects_norm_aabb(tri) == MLI_TRIANGLE_INSIDE)
-                return 1;
+                return MLI_TRUE;
         else
-                return 0;
+                return MLI_FALSE;
 }
 
 struct mli_AABB mli_Triangle_aabb(

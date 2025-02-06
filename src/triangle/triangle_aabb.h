@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "triangle.h"
+#include "../bool/bool.h"
 #include "../vec/vec.h"
 #include "../aabb/aabb.h"
 
@@ -11,7 +12,7 @@ struct mli_AABB mli_Triangle_aabb(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c);
-int mli_Triangle_has_overlap_aabb(
+mli_bool mli_Triangle_has_overlap_aabb(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const struct mli_Vec c,
