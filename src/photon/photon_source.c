@@ -21,9 +21,9 @@ int mli_photon_source_parallel_towards_z_from_xy_disc(
                 ph.id = i;
                 chk(mli_PhotonVector_push_back(out_photons, ph));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_photon_source_point_like_opening_cone_towards_z(
@@ -49,7 +49,7 @@ int mli_photon_source_point_like_opening_cone_towards_z(
                 ph.id = i;
                 chk(mli_PhotonVector_push_back(out_photons, ph));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

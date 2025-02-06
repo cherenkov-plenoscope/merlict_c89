@@ -31,9 +31,9 @@ int mli_photon_interaction_type_to_string(const int32_t type, char *s)
                 chk_bad("PhotonInteraction.type is unknown.");
                 break;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_photon_time_of_flight(
@@ -53,7 +53,7 @@ int mli_photon_time_of_flight(
 
         (*time_of_flight) = (refractive_index * phisec->distance_of_ray) /
                             MLI_PHYSICS_SPEED_OF_LIGHT_M_PER_S;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

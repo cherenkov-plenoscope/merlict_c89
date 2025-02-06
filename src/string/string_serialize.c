@@ -10,9 +10,9 @@ int mli_String_to_io(const struct mli_String *self, struct mli_IO *f)
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
         chk_IO_write(&self->size, sizeof(uint64_t), 1u, f);
         chk_IO_write(self->array, sizeof(char), self->size, f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_String_from_io(struct mli_String *self, struct mli_IO *f)
@@ -26,7 +26,7 @@ int mli_String_from_io(struct mli_String *self, struct mli_IO *f)
         chk(mli_String_malloc(self, size));
         self->size = size;
         chk_IO_read(self->array, sizeof(char), self->size, f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

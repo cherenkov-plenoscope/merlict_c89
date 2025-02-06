@@ -204,7 +204,7 @@ int mli_Geometry_warn_objects(const struct mli_Geometry *self)
                 }
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

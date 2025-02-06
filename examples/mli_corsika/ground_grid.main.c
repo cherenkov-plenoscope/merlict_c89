@@ -52,9 +52,9 @@ int mli_AxisAlignedGrid_set_from_config(
 
         (*grid) = mli_AxisAlignedGrid_set(mli_AABB_set(lower, upper), num_bins);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 #define HIST_TARGET_SIZE 10000

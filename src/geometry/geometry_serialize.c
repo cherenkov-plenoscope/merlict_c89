@@ -48,9 +48,9 @@ int mli_Geometry_from_io(struct mli_Geometry *geometry, struct mli_IO *f)
                 geometry->num_robjects,
                 f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Geometry_to_io(const struct mli_Geometry *geometry, struct mli_IO *f)
@@ -89,7 +89,7 @@ int mli_Geometry_to_io(const struct mli_Geometry *geometry, struct mli_IO *f)
                 geometry->num_robjects,
                 f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

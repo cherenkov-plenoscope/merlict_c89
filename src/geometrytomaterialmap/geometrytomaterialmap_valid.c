@@ -16,9 +16,9 @@ int mli_GeometryToMaterialMap_valid(
                         "Expected all position of first_boundary_layer[i] < "
                         "total_num_boundary_layers");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_GeometryToMaterialMap_valid_wrt_Geometry(
@@ -42,9 +42,9 @@ int mli_GeometryToMaterialMap_valid_wrt_Geometry(
         chk_msg(total_num_boundary_layers == geomap->total_num_boundary_layers,
                 "Expected total_num_boundary_layers to match the Geometry.");
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_GeometryToMaterialMap_valid_wrt_Materials(
@@ -58,7 +58,7 @@ int mli_GeometryToMaterialMap_valid_wrt_Materials(
                         "Expected geomap's boundary_layers[i] to refer to "
                         "a valid boundary_layer in Materials.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

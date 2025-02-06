@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "cube.h"
 #include "../math/math.h"
+#include "../bool/bool.h"
 
 struct mli_Vec mli_Cube_upper(const struct mli_Cube a)
 {
@@ -92,8 +93,8 @@ struct mli_Cube mli_Cube_octree_child_code(
 int mli_Cube_equal(const struct mli_Cube a, const struct mli_Cube b)
 {
         if (a.edge_length != b.edge_length)
-                return 0;
+                return MLI_FALSE;
         if (!mli_Vec_equal(a.lower, b.lower))
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }

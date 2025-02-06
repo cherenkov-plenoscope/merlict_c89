@@ -33,9 +33,9 @@ int mli_Spectrum_equal(
                 "Different spectrum name.");
         chk_msg(mli_String_equal(&a->name, &b->name),
                 "Different spectrum name.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Spectrum_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
@@ -48,9 +48,9 @@ int mli_Spectrum_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
         chk(mli_FuncInfo_to_io(&self->info, f));
         chk(mli_Func_to_io(&self->spectrum, f));
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Spectrum_from_io(struct mli_Spectrum *self, struct mli_IO *f)
@@ -67,9 +67,9 @@ int mli_Spectrum_from_io(struct mli_Spectrum *self, struct mli_IO *f)
                 "Failed to read spectrum info.");
         chk_msg(mli_Func_from_io(&self->spectrum, f),
                 "Failed to read spectrum.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Spectrum_print_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
@@ -99,7 +99,7 @@ int mli_Spectrum_print_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
                 self->spectrum.y[yamin],
                 self->spectrum.y[yamax],
                 self->info.y.array));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

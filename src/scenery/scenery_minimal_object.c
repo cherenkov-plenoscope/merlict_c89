@@ -48,9 +48,9 @@ int mli_Func_malloc_color_spectrum(
         self->x[10] = 1200e-9;
         self->y[10] = 0.0;
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 struct mli_Color mli_Color_random_uniform(struct mli_Prng *prng)
@@ -186,7 +186,7 @@ int mli_Scenery_malloc_minimal_from_wavefront(
                 "Failed to malloc accelerator from geometry.");
 
         chk_msg(mli_Scenery_valid(self), "Expected scenery to be valid.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

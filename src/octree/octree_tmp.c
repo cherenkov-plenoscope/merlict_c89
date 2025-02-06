@@ -46,9 +46,9 @@ int mli_octree_TmpNode_malloc(
         mli_octree_TmpNode_free(n);
         n->num_objects = num_objects;
         chk_malloc(n->objects, uint32_t, n->num_objects);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 uint32_t mli_octree_TmpNode_signs_to_child(
@@ -141,9 +141,9 @@ int mli_octree_TmpNode_add_children(
                         max_depth);
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_octree_TmpNode_malloc_tree_from_bundle(
@@ -174,9 +174,9 @@ int mli_octree_TmpNode_malloc_tree_from_bundle(
                 bundle_cube,
                 start_depth,
                 max_depth);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_octree_TmpNode_num_children(const struct mli_octree_TmpNode *node)
@@ -383,9 +383,9 @@ int mli_octree_TmpOcTree_malloc_from_bundle(
                         item_in_bundle_has_overlap_aabb,
                         octree->cube),
                 "Failed to allocate dynamic octree from bundle.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_octree_TmpOcTree_print(const struct mli_octree_TmpOcTree *octree)

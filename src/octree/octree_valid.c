@@ -43,9 +43,9 @@ int mli_OcTree_valid(const struct mli_OcTree *octree)
                         }
                 }
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_OcTree_valid_wrt_links(
@@ -57,7 +57,7 @@ int mli_OcTree_valid_wrt_links(
                 chk_msg(octree->leafs.object_links[n] < num_links,
                         "Expected object_links[n] <  num_links.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

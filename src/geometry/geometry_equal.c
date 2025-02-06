@@ -59,7 +59,7 @@ int mli_Geometry_equal(
                 "Expected objects to be equal.");
         chk_msg(mli_Geometry_object_references_equal(a, b),
                 "Expected object-references to be equal.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

@@ -54,9 +54,9 @@ int mli_ColorMaterials_set_observer_cie1931(struct mli_ColorMaterials *self)
                 "Failed to resample cie1931.z onto ColorSpectrum.");
 
         mli_Func_free(&func);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_ColorMaterials_malloc(
@@ -69,10 +69,10 @@ int mli_ColorMaterials_malloc(
 
         chk_msg(mli_ColorMaterials_set_observer_cie1931(self),
                 "Failed to set observer_matching_curves.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_ColorMaterials_free(self);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_ColorMaterials_malloc_from_Materials(
@@ -91,10 +91,10 @@ int mli_ColorMaterials_malloc_from_Materials(
                         "Failed to resample spectrum onto ColorSpectrum.");
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_ColorMaterials_free(self);
-        return 0;
+        return CHK_FAIL;
 }
 
 struct mli_Vec mli_ColorMaterials_ColorSpectrum_to_xyz(

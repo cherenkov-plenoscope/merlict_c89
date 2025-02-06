@@ -42,9 +42,9 @@ int mli_Object_to_io(const struct mli_Object *obj, struct mli_IO *f)
                 chk(mli_String_to_io(&obj->material_names[i], f));
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Object_from_io(struct mli_Object *obj, struct mli_IO *f)

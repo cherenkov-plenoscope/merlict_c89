@@ -1,5 +1,6 @@
 #include "avl_Dict.h"
 #include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../math/math.h"
 
 struct mli_AvlDict mli_AvlDict_init(void)
@@ -26,10 +27,10 @@ int mli_AvlDict_malloc(struct mli_AvlDict *dict, const uint64_t capacity)
         mli_AvlDict_free(dict);
         dict->capacity = capacity;
         chk_malloc(dict->nodes, struct mli_AvlNode, dict->capacity);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_AvlDict_free(dict);
-        return 0;
+        return CHK_FAIL;
 }
 
 struct mli_AvlNode *mli_AvlDict_find(
@@ -50,7 +51,7 @@ int mli_AvlDict_update__(
         struct mli_AvlDict *out)
 {
         if (node == NULL) {
-                return 1;
+                return CHK_SUCCESS;
         }
         chk_msg(mli_AvlDict_set(out, node->key, node->value),
                 "Failed to insert key/value into destination dict while "
@@ -67,9 +68,9 @@ int mli_AvlDict_update__(
                 chk_msg(mli_AvlDict_update__(right, out), "2");
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_AvlDict_swap(struct mli_AvlDict *a, struct mli_AvlDict *b)
@@ -94,9 +95,9 @@ int mli_AvlDict_grow(struct mli_AvlDict *dict)
 
         mli_AvlDict_swap(dict, &tmp);
         mli_AvlDict_free(&tmp);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_AvlDict_insert(
@@ -123,9 +124,9 @@ int mli_AvlDict_insert(
         dict->back += 1;
         dict->len += 1;
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_AvlDict_set(
@@ -142,9 +143,9 @@ int mli_AvlDict_set(
                 chk_msg(mli_AvlDict_insert(dict, key, value),
                         "Can't insert key/value into mli_AvlDict.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_AvlDict_shrink(struct mli_AvlDict *dict)
@@ -163,9 +164,9 @@ int mli_AvlDict_shrink(struct mli_AvlDict *dict)
 
         mli_AvlDict_swap(dict, &tmp);
         mli_AvlDict_free(&tmp);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_AvlDict_pop(struct mli_AvlDict *dict, const int64_t key)
@@ -186,18 +187,18 @@ int mli_AvlDict_pop(struct mli_AvlDict *dict, const int64_t key)
                 chk_msg(mli_AvlDict_shrink(dict), "Failed to shrink capacity.");
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_AvlDict_has(struct mli_AvlDict *dict, const int64_t key)
 {
         struct mli_AvlNode *nn = mli_AvlDict_find(dict, key);
         if (nn == NULL) {
-                return 0;
+                return MLI_FALSE;
         } else {
-                return 1;
+                return MLI_TRUE;
         }
 }
 
@@ -205,10 +206,10 @@ int mli_AvlDict_get(struct mli_AvlDict *dict, const int64_t key, int64_t *value)
 {
         struct mli_AvlNode *nn = mli_AvlDict_find(dict, key);
         if (nn == NULL) {
-                return 0;
+                return CHK_FAIL;
         } else {
                 (*value) = nn->value;
-                return 1;
+                return CHK_SUCCESS;
         }
 }
 

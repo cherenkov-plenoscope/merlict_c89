@@ -21,10 +21,10 @@ int mli_Geometry_valid_objects(const struct mli_Geometry *geometry)
                 chk_msg(mli_Object_is_valid(&geometry->objects[i]),
                         "Expected object to be valid.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         fprintf(stderr, "In geometry.objects[%u]\n", i);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Geometry_valid_robjects_HomTras(const struct mli_Geometry *geometry)
@@ -43,10 +43,10 @@ int mli_Geometry_valid_robjects_HomTras(const struct mli_Geometry *geometry)
                 chk_msg(!MLI_MATH_IS_NAN(q.y), "quaternion.y is 'nan'.");
                 chk_msg(!MLI_MATH_IS_NAN(q.z), "quaternion.z is 'nan'.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         fprintf(stderr, "In geometry.robject2root[%u]\n", i);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Geometry_valid_object_references(const struct mli_Geometry *geometry)
@@ -60,10 +60,10 @@ int mli_Geometry_valid_object_references(const struct mli_Geometry *geometry)
                  *       the user wants.
                  */
         }
-        return 1;
+        return CHK_SUCCESS;
         fprintf(stderr, "In geometry.robject[%u]\n", i);
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Geometry_valid(const struct mli_Geometry *geometry)
@@ -74,7 +74,7 @@ int mli_Geometry_valid(const struct mli_Geometry *geometry)
                 "Expected robject transformations to be free of 'nan'.");
         chk_msg(mli_Geometry_valid_object_references(geometry),
                 "Expected object-references to be valid.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

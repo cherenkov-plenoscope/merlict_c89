@@ -24,9 +24,9 @@ int mli_Materials__key_from_filename(
         chk(mli_path_splitext(&basename, key, &extension));
         mli_String_free(&extension);
         mli_String_free(&basename);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Materials_from_Archive__set_spectra(
@@ -85,9 +85,9 @@ int mli_Materials_from_Archive__set_spectra(
 
         mli_String_free(&key);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Materials_from_Archive__set_media(
@@ -136,9 +136,9 @@ int mli_Materials_from_Archive__set_media(
 
         mli_String_free(&key);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Materials_from_Archive__set_surfaces(
@@ -187,9 +187,9 @@ int mli_Materials_from_Archive__set_surfaces(
 
         mli_String_free(&key);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_BoundaryLayer_from_json_string_and_name(
@@ -246,9 +246,9 @@ int mli_BoundaryLayer_from_json_string_and_name(
 
         mli_Json_free(&json);
         mli_String_free(&key);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Materials_from_Archive__set_boundary_layers(
@@ -301,9 +301,9 @@ int mli_Materials_from_Archive__set_boundary_layers(
 
         mli_String_free(&key);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Materials_from_Archive__set_default_medium(
@@ -327,9 +327,9 @@ int mli_Materials_from_Archive__set_default_medium(
         mli_String_free(&filename);
         mli_String_free(&key);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Materials_from_Archive(

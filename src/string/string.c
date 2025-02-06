@@ -52,9 +52,9 @@ int mli_String_from_cstr(struct mli_String *self, const char *s)
         chk(mli_String_malloc(self, length));
         self->size = length;
         strncpy(self->array, s, self->size);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_String_ends_with(
@@ -311,9 +311,9 @@ int mli_String_valid(const struct mli_String *self, const size_t min_size)
         chk_msg(size == (int64_t)self->size,
                 "Expected string.size to "
                 "match zero termination.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_String__find_idx_with_cstr(

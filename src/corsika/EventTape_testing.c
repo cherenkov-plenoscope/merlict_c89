@@ -1,6 +1,7 @@
 /* Copyright 2020 Sebastian A. Mueller */
 #include "EventTape_testing.h"
 #include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../io/io.h"
 
 void mliEventTape_testing_set_random_corsika_header(
@@ -51,37 +52,37 @@ int mliEventTape_testing_bunches_are_equal(float *b1, float *b2)
 {
         if (b1[0] != b2[0]) {
                 fprintf(stderr, "Bunch missmatch x_cm.\n");
-                return 0;
+                return MLI_FALSE;
         }
         if (b1[1] != b2[1]) {
                 fprintf(stderr, "Bunch missmatch y_cm.\n");
-                return 0;
+                return MLI_FALSE;
         }
         if (b1[2] != b2[2]) {
                 fprintf(stderr, "Bunch missmatch ux.\n");
-                return 0;
+                return MLI_FALSE;
         }
         if (b1[3] != b2[3]) {
                 fprintf(stderr, "Bunch missmatch vy.\n");
-                return 0;
+                return MLI_FALSE;
         }
         if (b1[4] != b2[4]) {
                 fprintf(stderr, "Bunch missmatch time_ns.\n");
-                return 0;
+                return MLI_FALSE;
         }
         if (b1[5] != b2[5]) {
                 fprintf(stderr, "Bunch missmatch z_emission_cm.\n");
-                return 0;
+                return MLI_FALSE;
         }
         if (b1[6] != b2[6]) {
                 fprintf(stderr, "Bunch missmatch weight_photons.\n");
-                return 0;
+                return MLI_FALSE;
         }
         if (b1[7] != b2[7]) {
                 fprintf(stderr, "Bunch missmatch wavelength_nm.\n");
-                return 0;
+                return MLI_FALSE;
         }
-        return 1;
+        return MLI_TRUE;
 }
 
 int mliEventTape_testing_corsika_headers_are_equal(
@@ -92,10 +93,10 @@ int mliEventTape_testing_corsika_headers_are_equal(
         for (i = 0; i < 273; i++) {
                 if (h1[i] != h2[i]) {
                         fprintf(stderr, "Corsika-header missmatch at %d.\n", i);
-                        return 0;
+                        return MLI_FALSE;
                 }
         }
-        return 1;
+        return MLI_TRUE;
 }
 
 int mliEventTape_testing_write_and_read(
@@ -197,7 +198,7 @@ int mliEventTape_testing_write_and_read(
 
         chk_msg(mliEventTapeReader_finalize(&tari), "Can't finalize reader.");
         mli_IO_close(&istream);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

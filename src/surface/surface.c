@@ -41,9 +41,9 @@ int mli_Surface_equal(const struct mli_Surface *a, const struct mli_Surface *b)
                 chk_badf(("surface-type-id '%lu' is unknown.", a->type));
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_type_to_string(const uint64_t type, struct mli_String *s)
@@ -58,9 +58,9 @@ int mli_Surface_type_to_string(const uint64_t type, struct mli_String *s)
         default:
                 chk_badf(("surface-type-id '%lu' is unknown.", type));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id)
@@ -74,9 +74,9 @@ int mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id)
         } else {
                 chk_badf(("surface-type-string '%s' is unknown.", s->array));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f)
@@ -103,9 +103,9 @@ int mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f)
         default:
                 chk_badf(("surface-type-id '%lu' is unknown.", self->type));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f)
@@ -133,9 +133,9 @@ int mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f)
         default:
                 chk_badf(("surface-type-id '%lu' is unknown.", self->type));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_from_json_string_and_name(
@@ -185,9 +185,9 @@ int mli_Surface_from_json_string_and_name(
 
         mli_String_free(&key);
         mli_Json_free(&json);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_valid_wrt_materials(
@@ -211,7 +211,7 @@ int mli_Surface_valid_wrt_materials(
                 chk_badf(("surface-type-id '%lu' is unknown.", self->type));
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

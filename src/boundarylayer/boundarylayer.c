@@ -2,6 +2,7 @@
 #include "boundarylayer.h"
 #include <stdio.h>
 #include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../magicid/magicid.h"
 #include "../string/string_serialize.h"
 
@@ -26,21 +27,21 @@ int mli_BoundaryLayer_equal(
         const struct mli_BoundaryLayer *b)
 {
         if (!mli_String_equal(&a->name, &b->name)) {
-                return 0;
+                return MLI_FALSE;
         }
         if (a->inner.surface != b->inner.surface) {
-                return 0;
+                return MLI_FALSE;
         }
         if (a->inner.medium != b->inner.medium) {
-                return 0;
+                return MLI_FALSE;
         }
         if (a->outer.surface != b->outer.surface) {
-                return 0;
+                return MLI_FALSE;
         }
         if (a->outer.medium != b->outer.medium) {
-                return 0;
+                return MLI_FALSE;
         }
-        return 1;
+        return MLI_TRUE;
 }
 
 int mli_BoundaryLayer_to_io(
@@ -58,9 +59,9 @@ int mli_BoundaryLayer_to_io(
         chk_IO_write(&self->outer.medium, sizeof(uint64_t), 1u, f);
         chk_IO_write(&self->outer.surface, sizeof(uint64_t), 1u, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_BoundaryLayer_from_io(struct mli_BoundaryLayer *self, struct mli_IO *f)
@@ -77,7 +78,7 @@ int mli_BoundaryLayer_from_io(struct mli_BoundaryLayer *self, struct mli_IO *f)
         chk_IO_read(&self->outer.medium, sizeof(uint64_t), 1u, f);
         chk_IO_read(&self->outer.surface, sizeof(uint64_t), 1u, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

@@ -62,9 +62,9 @@ int mli_Geometry__set_robjects_and_material_map_from_frame_walk(
                 chk_bad("Expected either type 'frame' or 'object'.");
                 break;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Geometry_set_robjects_and_material_map_from_frame(
@@ -82,7 +82,7 @@ int mli_Geometry_set_robjects_and_material_map_from_frame(
                         &total_num_boundary_layers),
                 "Failed to walk tree of frames to set "
                 "robjects and material map.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

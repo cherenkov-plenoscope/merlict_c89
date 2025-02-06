@@ -172,9 +172,9 @@ int mli_viewer_export_image(
         mli_Image_power(&full, mli_Color_set(gamma, gamma, gamma));
         chk_msg(mli_viewer_image_to_path(&full, path), "Failed to write ppm.");
         mli_Image_free(&full);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_viewer_run_interactive_viewer_try_non_canonical_stdin(

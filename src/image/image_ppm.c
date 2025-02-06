@@ -92,7 +92,7 @@ int mli_Image_to_io(const struct mli_Image *img, struct mli_IO *f)
                         chk_IO_write(&b, sizeof(uint8_t), 1u, f);
                 }
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

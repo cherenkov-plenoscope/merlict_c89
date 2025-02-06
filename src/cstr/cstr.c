@@ -3,18 +3,19 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../math/math.h"
 
 int mli_cstr_ends_with(const char *str, const char *sufix)
 {
         uint64_t len_str, len_sufix;
         if (!str || !sufix) {
-                return 0;
+                return MLI_FALSE;
         }
         len_str = strlen(str);
         len_sufix = strlen(sufix);
         if (len_sufix > len_str) {
-                return 0;
+                return MLI_FALSE;
         }
         return strncmp(str + len_str - len_sufix, sufix, len_sufix) == 0;
 }
@@ -23,12 +24,12 @@ int mli_cstr_starts_with(const char *str, const char *prefix)
 {
         uint64_t len_str, len_prefix;
         if (!str || !prefix) {
-                return 0;
+                return MLI_FALSE;
         }
         len_str = strlen(str);
         len_prefix = strlen(prefix);
         if (len_prefix > len_str) {
-                return 0;
+                return MLI_FALSE;
         }
         return strncmp(str, prefix, len_prefix) == 0;
 }
@@ -36,26 +37,26 @@ int mli_cstr_starts_with(const char *str, const char *prefix)
 int mli_cstr_is_CRLF(const char *s)
 {
         if (s[0] == '\0') {
-                return 0;
+                return MLI_FALSE;
         }
         if (s[1] == '\0') {
-                return 0;
+                return MLI_FALSE;
         }
         if (s[0] == '\r' && s[1] == '\n') {
-                return 1;
+                return MLI_TRUE;
         }
-        return 0;
+        return MLI_FALSE;
 }
 
 int mli_cstr_is_CR(const char *s)
 {
         if (s[0] == '\0') {
-                return 0;
+                return MLI_FALSE;
         }
         if (s[0] == '\r') {
-                return 1;
+                return MLI_TRUE;
         }
-        return 0;
+        return MLI_FALSE;
 }
 
 int mli_cstr_assert_only_NUL_LF_TAB_controls(const char *str)
@@ -82,12 +83,12 @@ int mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(const char *str, const int dbg)
                                                 (uint8_t)str[pos],
                                                 pos);
                                 }
-                                return 0;
+                                return MLI_FALSE;
                         }
                 }
                 pos += 1;
         }
-        return 1;
+        return MLI_TRUE;
 }
 
 int mli_fprint_line_match(
@@ -101,9 +102,9 @@ int mli_fprint_line_match(
         } else {
                 chk(fprintf(f, "  |  "));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_cstr_match_templeate(
@@ -113,18 +114,18 @@ int mli_cstr_match_templeate(
 {
         uint64_t i;
         if (strlen(s) != strlen(t)) {
-                return 0;
+                return MLI_FALSE;
         }
         for (i = 0; i < strlen(s); i++) {
                 if (t[i] == digit_wildcard) {
                         if (!isdigit(s[i])) {
-                                return 0;
+                                return MLI_FALSE;
                         }
                 } else {
                         if (s[i] != t[i]) {
-                                return 0;
+                                return MLI_FALSE;
                         }
                 }
         }
-        return 1;
+        return MLI_TRUE;
 }

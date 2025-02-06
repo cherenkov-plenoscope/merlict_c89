@@ -332,7 +332,7 @@ int mli_camera_Aperture_render_image(
         mli_Image_free(&diff_image);
         mli_ColorVector_free(&colors_to_do);
         mli_image_PixelVector_free(&pixels_to_do);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Image_free(&sum_image);
         mli_Image_free(&exposure_image);
@@ -342,5 +342,5 @@ chk_error:
         mli_Image_free(&diff_image);
         mli_ColorVector_free(&colors_to_do);
         mli_image_PixelVector_free(&pixels_to_do);
-        return 0;
+        return CHK_FAIL;
 }

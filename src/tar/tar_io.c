@@ -16,9 +16,9 @@ int mli_Tar_read_data_to_IO(
                 chk(mli_IO_write((void *)(&c), sizeof(unsigned char), 1, buff));
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Tar_write_data_from_IO(
@@ -34,7 +34,7 @@ int mli_Tar_write_data_from_IO(
                 chk(mli_Tar_write_data(tar, (void *)(&c), 1));
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

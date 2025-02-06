@@ -31,9 +31,9 @@ int mli_Archive_malloc(struct mli_Archive *self)
         mli_Archive_free(self);
         chk(mli_StringVector_malloc(&self->textfiles, 0u));
         chk(mli_Map_malloc(&self->filenames));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Archive_push_back(
@@ -58,9 +58,9 @@ int mli_Archive_push_back(
                 "Can not push back mli_String.");
         text = &self->textfiles.array[next];
         chk_msg(mli_String_copy(text, payload), "Can not copy payload.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Archive_from_io(struct mli_Archive *self, struct mli_IO *f)
@@ -101,13 +101,13 @@ int mli_Archive_from_io(struct mli_Archive *self, struct mli_IO *f)
         chk_msg(mli_Tar_read_finalize(&tar), "Can't finalize reading tar.");
         mli_String_free(&payload);
         mli_String_free(&filename);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         fprintf(stderr, "tar->filename: '%s'.\n", tarh_name);
         mli_String_free(&payload);
         mli_String_free(&filename);
         mli_Archive_free(self);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Archive__from_path_cstr(struct mli_Archive *self, const char *path)
@@ -118,9 +118,9 @@ int mli_Archive__from_path_cstr(struct mli_Archive *self, const char *path)
         chk_msg(mli_Archive_from_io(self, &f),
                 "Can't fread Archive from file.");
         mli_IO_close(&f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Archive_has(
@@ -140,9 +140,9 @@ int mli_Archive_get(
         chk(mli_Map_find(&self->filenames, filename, &idx));
         txt = &self->textfiles.array[idx];
         (*str) = txt;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 uint64_t mli_Archive_size(const struct mli_Archive *self)

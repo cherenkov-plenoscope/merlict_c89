@@ -19,9 +19,9 @@ int mli_Quaternion_tait_bryan_from_json(
                 mli_math_deg2rad(xyz_deg.x),
                 mli_math_deg2rad(xyz_deg.y),
                 mli_math_deg2rad(xyz_deg.z));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Quaternion_axis_angle_from_json(
@@ -42,9 +42,9 @@ int mli_Quaternion_axis_angle_from_json(
                 "Failed to parse axis_angle's 'angle_deg' from json.");
         *quat = mli_Quaternion_set_rotaxis_and_angle(
                 axis, mli_math_deg2rad(angle_deg));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Quaternion_quaternion_from_json(
@@ -61,9 +61,9 @@ int mli_Quaternion_quaternion_from_json(
         *quat = mli_Quaternion_set_unit_xyz(q.x, q.y, q.z);
         chk_msg(fabs(mli_Quaternion_norm(*quat) - 1.) < 1e-6,
                 "Expected norm(quaternion) < 1e-6. Expected unit-quaternion.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Quaternion_from_json(
@@ -89,7 +89,7 @@ int mli_Quaternion_from_json(
         } else {
                 chk_bad("Unknown representation 'repr' in rotation.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

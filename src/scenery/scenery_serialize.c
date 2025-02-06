@@ -19,9 +19,9 @@ int mli_Scenery_to_io(const struct mli_Scenery *self, struct mli_IO *f)
         chk(mli_Accelerator_to_io(&self->accelerator, f));
         chk(mli_Materials_to_io(&self->materials, f));
         chk(mli_GeometryToMaterialMap_to_io(&self->geomap, f));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Scenery_from_io(struct mli_Scenery *self, struct mli_IO *f)

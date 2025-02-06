@@ -118,9 +118,9 @@ int mli_octree_LeafArray_malloc(
         for (i = 0; i < leafs->num_object_links; i++) {
                 leafs->object_links[i] = 0u;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 struct mli_octree_Node mli_octree_Node_init(void)
@@ -167,9 +167,9 @@ int mli_OcTree_malloc(
                 tree->nodes[i] = mli_octree_Node_init();
         chk(mli_octree_LeafArray_malloc(
                 &tree->leafs, num_leafs, num_object_links));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_OcTree_set_node(
@@ -355,9 +355,9 @@ int mli_OcTree_equal_payload_walk(
                 chk_bad("node_idx must be either node, leaf or none");
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_OcTree_equal_payload(
@@ -371,9 +371,9 @@ int mli_OcTree_equal_payload(
         chk_msg(mli_OcTree_equal_payload_walk(
                         tree, root_node_idx, root_node_type, &tmp_octree->root),
                 "Tree is not equal");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_OcTree_print_walk(
@@ -471,9 +471,9 @@ int mli_OcTree_malloc_from_object_wavefront(
         mli_OcTree_set(octree, &tmp_octree);
         mli_octree_TmpOcTree_free(&tmp_octree);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_OcTree_malloc_from_Geometry(
@@ -503,7 +503,7 @@ int mli_OcTree_malloc_from_Geometry(
         mli_OcTree_set(octree, &tmp_octree);
         mli_octree_TmpOcTree_free(&tmp_octree);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

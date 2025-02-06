@@ -27,7 +27,7 @@ int mli_Accelerator_equal(
         chk_msg(mli_OcTree_equal(&a->scenery_octree, &b->scenery_octree),
                 "Expected scenery_octree to be equal.");
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

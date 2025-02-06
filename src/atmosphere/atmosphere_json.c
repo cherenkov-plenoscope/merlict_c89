@@ -46,7 +46,7 @@ int mli_Atmosphere_from_json_token(
         chk(mli_Json_double_by_key(json, tkn, &atm->altitude, "altitude"));
         chk_msg(atm->altitude > 0, "Expected atmosphere->altitude > 0.");
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

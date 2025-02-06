@@ -40,9 +40,9 @@ int mli_Surface_CookTorrance_to_io(
         chk_IO_write(&self->specular_weight, sizeof(double), 1u, f);
         chk_IO_write(&self->roughness, sizeof(double), 1u, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_CookTorrance_from_io(
@@ -59,9 +59,9 @@ int mli_Surface_CookTorrance_from_io(
         chk_IO_read(&self->specular_weight, sizeof(double), 1u, f);
         chk_IO_read(&self->roughness, sizeof(double), 1u, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_CookTorrance_from_json_string(
@@ -106,9 +106,9 @@ int mli_Surface_CookTorrance_from_json_string(
         mli_String_free(&key);
         mli_Json_free(&json);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_CookTorrance_valid_wrt_materials(
@@ -132,7 +132,7 @@ int mli_Surface_CookTorrance_valid_wrt_materials(
         chk_msg(self->roughness >= 0.0, "Expected roughness >= 0.0");
         chk_msg(self->roughness <= 1.0, "Expected roughness <= 1.0");
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

@@ -32,9 +32,9 @@ int mli_Func_from_csv_split_line(
         }
         chk(mli_String_strip(sx, sx));
         chk(mli_String_strip(sy, sy));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Func_from_csv(
@@ -95,7 +95,7 @@ int mli_Func_from_csv(
         mli_String_free(&sy);
         mli_DoubleVector_free(&x);
         mli_DoubleVector_free(&y);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&line);
         mli_String_free(&sx);
@@ -106,5 +106,5 @@ chk_error:
         mli_String_free(xname);
         mli_String_free(yname);
         mli_Func_free(func);
-        return 0;
+        return CHK_FAIL;
 }

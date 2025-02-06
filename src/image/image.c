@@ -222,9 +222,9 @@ int mli_Image_scale_down_twice(
                 mli_image_PixelWalk_walk(&w, &dst->geometry);
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Image_sobel(const struct mli_Image *src, struct mli_Image *dst)
@@ -379,9 +379,9 @@ int mli_Image_sobel(const struct mli_Image *src, struct mli_Image *dst)
                 mli_Image__set_by_PixelWalk(dst, w, color_result);
                 mli_image_PixelWalk_walk(&w, &src->geometry);
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Image_luminance_threshold_dilatation(
@@ -421,9 +421,9 @@ int mli_Image_luminance_threshold_dilatation(
                         }
                 }
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_image_PixelVector_push_back_all_from_image(
@@ -464,9 +464,9 @@ int mli_image_PixelVector_above_threshold(
                 }
                 mli_image_PixelWalk_walk(&w, &self->geometry);
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Image_copy(const struct mli_Image *src, struct mli_Image *dst)
@@ -484,9 +484,9 @@ int mli_Image_copy(const struct mli_Image *src, struct mli_Image *dst)
                 mli_image_PixelWalk_walk(&walk, &src->geometry);
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Image_fabs_difference(
@@ -512,9 +512,9 @@ int mli_Image_fabs_difference(
                 mli_Image__set_by_PixelWalk(out, w, _o);
                 mli_image_PixelWalk_walk(&w, &out->geometry);
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_Image_histogram(
@@ -633,7 +633,7 @@ int mli_Image_divide_pixelwise(
                 mli_Image__set_by_PixelWalk(out, w, _out);
                 mli_image_PixelWalk_walk(&w, &out->geometry);
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

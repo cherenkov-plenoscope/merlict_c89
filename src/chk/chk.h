@@ -13,6 +13,10 @@
  *  Learn C the hard way
  */
 
+#define CHK_SUCCESS 1
+#define CHK_FAIL 0
+#define chk_rc int
+
 int chk_eprintf(const char *format, ...);
 
 #define chk_clean_errno() (errno == 0 ? "None" : strerror(errno))

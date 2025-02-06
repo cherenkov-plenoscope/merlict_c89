@@ -26,7 +26,7 @@ int mli_pathtracer_Config_from_json_token(
         chk(mli_Json_token_by_key(json, tkn, "atmosphere", &atmtkn));
         chk(mli_Atmosphere_from_json_token(&tc->atmosphere, json, atmtkn + 1));
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

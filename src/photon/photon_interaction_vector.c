@@ -25,9 +25,9 @@ int mli_PhotonInteractionVector_time_of_flight(
                         "Can't estimate time-of-flight.");
                 (*total_time_of_flight) += time_of_flight;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_PhotonInteractionVector_print(

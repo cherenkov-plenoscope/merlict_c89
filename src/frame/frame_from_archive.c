@@ -44,9 +44,9 @@ int mli_Frame_from_Archive(
         mli_Frame_set_frame2root(root);
 
         mli_String_free(&fixname);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&fixname);
         mli_Json_free(&tree_json);
-        return 0;
+        return CHK_FAIL;
 }

@@ -2,6 +2,7 @@
 #include "func_info.h"
 #include "../magicid/magicid.h"
 #include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../string/string_serialize.h"
 
 struct mli_FuncInfo mli_FuncInfo_init(void)
@@ -23,9 +24,9 @@ int mli_FuncInfo_malloc(struct mli_FuncInfo *self)
 {
         chk(mli_String_malloc(&self->x, 0u));
         chk(mli_String_malloc(&self->y, 0u));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_FuncInfo_equal(
@@ -33,10 +34,10 @@ int mli_FuncInfo_equal(
         const struct mli_FuncInfo *b)
 {
         if (!mli_String_equal(&a->x, &b->x))
-                return 0;
+                return MLI_FALSE;
         if (!mli_String_equal(&a->y, &b->y))
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }
 
 int mli_FuncInfo_to_io(const struct mli_FuncInfo *self, struct mli_IO *f)
@@ -46,9 +47,9 @@ int mli_FuncInfo_to_io(const struct mli_FuncInfo *self, struct mli_IO *f)
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
         chk(mli_String_to_io(&self->x, f));
         chk(mli_String_to_io(&self->y, f));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_FuncInfo_from_io(struct mli_FuncInfo *self, struct mli_IO *f)
@@ -59,7 +60,7 @@ int mli_FuncInfo_from_io(struct mli_FuncInfo *self, struct mli_IO *f)
         mli_MagicId_warn_version(&magic);
         chk(mli_String_from_io(&self->x, f));
         chk(mli_String_from_io(&self->y, f));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

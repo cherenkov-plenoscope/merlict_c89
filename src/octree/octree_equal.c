@@ -42,7 +42,7 @@ int mli_OcTree_equal(const struct mli_OcTree *a, const struct mli_OcTree *b)
                         "octree.leafs.object_links[i] not equal");
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

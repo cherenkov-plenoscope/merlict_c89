@@ -31,17 +31,17 @@ int mli_IoMemory__malloc_capacity(
         self->size = 0u;
         chk_malloc(self->cstr, unsigned char, self->capacity + 1u);
         memset(self->cstr, '\0', self->capacity + 1u);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IoMemory__malloc(struct mli_IoMemory *self)
 {
         chk(mli_IoMemory__malloc_capacity(self, 0u));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IoMemory__realloc_capacity(
@@ -77,9 +77,9 @@ int mli_IoMemory__realloc_capacity(
         self->size = tmp.size;
 
         mli_IoMemory_close(&tmp);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IoMemory_open(struct mli_IoMemory *self)
@@ -93,18 +93,18 @@ int mli_IoMemory_open(struct mli_IoMemory *self)
                 self->size = 0u;
                 memset(self->cstr, '\0', self->capacity + 1u);
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IoMemory__shrink_to_fit(struct mli_IoMemory *self)
 {
         chk_msg(mli_IoMemory__realloc_capacity(self, self->size),
                 "Failed to reallocate to size.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IoMemory__write_unsigned_char(
@@ -134,9 +134,9 @@ int mli_IoMemory__write_unsigned_char(
         self->size = new_size;
         self->pos += 1;
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IoMemory__read_unsigned_char(
@@ -245,7 +245,7 @@ int mli_IoMemory__write_cstr(struct mli_IoMemory *self, const char *cstr)
                 i += 1;
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

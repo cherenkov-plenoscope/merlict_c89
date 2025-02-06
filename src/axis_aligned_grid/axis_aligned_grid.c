@@ -96,7 +96,7 @@ int mli_AxisAlignedGrid_find_voxel_of_first_interaction(
                         return MLI_AXISALIGNEDGRID_RAY_DOES_NOT_INTERSECT_GRID;
                 }
         }
-        return 0;
+        return MLI_AXISALIGNEDGRID_RAY_DOES_NOT_INTERSECT_GRID;
 }
 
 struct mli_Vec mli_AxisAlignedGridTraversal_first_plane(

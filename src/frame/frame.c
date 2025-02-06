@@ -49,9 +49,9 @@ int mli_Frame_malloc(struct mli_Frame *f, const uint64_t type)
                 chk_msg(mli_Uint32Vector_malloc(&f->boundary_layers, 0u),
                         "Failed to malloc frame's boundary_layers.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Frame_set_mother_and_child(
@@ -64,9 +64,9 @@ int mli_Frame_set_mother_and_child(
                 "Can not push back child-frame.");
 
         child->mother = (struct mli_Frame *)mother;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 struct mli_Frame *mli_Frame_add(struct mli_Frame *mother, const uint64_t type)
@@ -94,9 +94,9 @@ int mli_frame_type_to_string(const uint64_t type, char *s)
                 chk_bad("Type is unknown.");
                 break;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_frame_string_to_type(const char *s, uint64_t *type)
@@ -108,9 +108,9 @@ int mli_frame_string_to_type(const char *s, uint64_t *type)
         } else {
                 chk_bad("Type is unknown.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_Frame_print_walk(const struct mli_Frame *f, const uint64_t indention)
@@ -200,9 +200,9 @@ int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
                 chk_bad("Expected either type 'frame' or 'object'.");
                 break;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
@@ -216,7 +216,7 @@ int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
                         frame, num_robjects, total_num_boundary_layers),
                 "Failed to walk tree of frames to estimate "
                 "num_robjects and total_num_boundary_layers.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

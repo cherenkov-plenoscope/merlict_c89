@@ -32,9 +32,9 @@ int mli_GeometryToMaterialMap_from_io(
                 sizeof(uint32_t),
                 geomap->num_robjects,
                 f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_GeometryToMaterialMap_to_io(
@@ -61,7 +61,7 @@ int mli_GeometryToMaterialMap_to_io(
                 sizeof(uint32_t),
                 geomap->num_robjects,
                 f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

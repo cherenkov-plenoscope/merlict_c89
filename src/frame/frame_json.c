@@ -26,10 +26,10 @@ int mli_Frame_type_from_json_token(
                 chk_bad("Not expected to happen");
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Json_debug_token_fprint(stderr, json, token);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Frame_id_from_json_token(
@@ -46,10 +46,10 @@ int mli_Frame_id_from_json_token(
         chk_msg(_id >= 0, "Expected Frame's id >= 0.");
         (*id) = _id;
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Json_debug_token_fprint(stderr, json, token);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Frame_pos_rot_from_json_token(
@@ -71,10 +71,10 @@ int mli_Frame_pos_rot_from_json_token(
         chk_msg(mli_Quaternion_from_json(
                         &frame2mother->rotation, json, token_rot + 1),
                 "Failed to parse Frame's 'rot' from json.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Json_debug_token_fprint(stderr, json, token);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Frame_boundary_layers_form_json_token(
@@ -122,10 +122,10 @@ int mli_Frame_boundary_layers_form_json_token(
                         "frame's boundary_layers.");
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Json_debug_token_fprint(stderr, json, token);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Frame_object_reference_form_json_token(
@@ -143,10 +143,10 @@ int mli_Frame_object_reference_form_json_token(
                         token_obj_key + 1,
                         object_reference),
                 "Failed to get object-reference 'obj' from map");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Json_debug_token_fprint(stderr, json, token);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Frame_from_json(
@@ -226,7 +226,7 @@ int mli_Frame_from_json(
                         break;
                 }
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

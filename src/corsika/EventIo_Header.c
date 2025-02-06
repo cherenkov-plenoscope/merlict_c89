@@ -140,7 +140,7 @@ int mliEventIoHeader_read(struct mliEventIoHeader *header, FILE *f, int level)
 
         return length_read;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mliEventIoHeader_fprint(const struct mliEventIoHeader head, FILE *f)

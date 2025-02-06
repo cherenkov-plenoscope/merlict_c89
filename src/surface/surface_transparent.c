@@ -23,9 +23,9 @@ int mli_Surface_Transparent_to_io(
         chk(mli_MagicId_set(&magic, "mli_Surface_Transparent"));
         chk_IO_write(&magic, sizeof(struct mli_MagicId), 1u, f);
         chk_IO_write(&self->nothing, sizeof(uint64_t), 1u, f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_Transparent_from_io(
@@ -37,9 +37,9 @@ int mli_Surface_Transparent_from_io(
         chk(mli_MagicId_has_word(&magic, "mli_Surface_Transparent"));
         mli_MagicId_warn_version(&magic);
         chk_IO_read(&self->nothing, sizeof(uint64_t), 1u, f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_Transparent_from_json_string(
@@ -52,9 +52,9 @@ int mli_Surface_Transparent_from_json_string(
 
         self->nothing = 0;
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Surface_Transparent_valid_wrt_materials(
@@ -63,7 +63,7 @@ int mli_Surface_Transparent_valid_wrt_materials(
 {
         chk(self);
         chk(materials);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

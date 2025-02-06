@@ -57,9 +57,9 @@ int mli_cie1931_spectral_matching_curve_x(struct mli_Func *self)
                 self->x[i] = X[i][0];
                 self->y[i] = X[i][1];
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_cie1931_spectral_matching_curve_y(struct mli_Func *self)
@@ -115,9 +115,9 @@ int mli_cie1931_spectral_matching_curve_y(struct mli_Func *self)
                 self->x[i] = Y[i][0];
                 self->y[i] = Y[i][1];
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_cie1931_spectral_matching_curve_z(struct mli_Func *self)
@@ -173,9 +173,9 @@ int mli_cie1931_spectral_matching_curve_z(struct mli_Func *self)
                 self->x[i] = Z[i][0];
                 self->y[i] = Z[i][1];
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 struct mli_Mat mli_cie1931_spectral_matching_xyz_to_rgb(void)
@@ -229,7 +229,7 @@ int mli_cie1931_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
                 self->x[i] = wavelength;
                 self->y[i] = radiance;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

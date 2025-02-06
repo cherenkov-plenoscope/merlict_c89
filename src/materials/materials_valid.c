@@ -76,7 +76,7 @@ int mli_Materials_valid(const struct mli_Materials *self)
         chk(mli_Materials_valid_media(self));
         chk(mli_Materials_valid_surfaces(self));
         chk(mli_Materials_valid_boundary_layers(self));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

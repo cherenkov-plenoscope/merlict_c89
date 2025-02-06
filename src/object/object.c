@@ -74,9 +74,9 @@ int mli_Object_malloc(
         for (i = 0; i < obj->num_materials; i++) {
                 obj->material_names[i] = mli_String_init();
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Object_equal(const struct mli_Object *a, const struct mli_Object *b)
@@ -105,9 +105,9 @@ int mli_Object_equal(const struct mli_Object *a, const struct mli_Object *b)
                 chk(mli_String_equal(
                         &a->material_names[i], &b->material_names[i]));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 uint32_t mli_Object_resolve_material_idx(

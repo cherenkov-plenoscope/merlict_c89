@@ -32,9 +32,9 @@ int mli_Materials_to_io(const struct mli_Materials *self, struct mli_IO *f)
 
         chk_IO_write(&self->default_medium, sizeof(uint64_t), 1, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Materials_from_io(struct mli_Materials *self, struct mli_IO *f)
@@ -69,7 +69,7 @@ int mli_Materials_from_io(struct mli_Materials *self, struct mli_IO *f)
         }
         chk_IO_read(&self->default_medium, sizeof(uint64_t), 1, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

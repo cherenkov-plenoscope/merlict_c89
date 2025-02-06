@@ -12,9 +12,9 @@ int mli_Func_to_io(const struct mli_Func *func, struct mli_IO *f)
         chk_IO_write(&func->num_points, sizeof(uint64_t), 1u, f);
         chk_IO_write(func->x, sizeof(double), func->num_points, f);
         chk_IO_write(func->y, sizeof(double), func->num_points, f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Func_from_io(struct mli_Func *func, struct mli_IO *f)

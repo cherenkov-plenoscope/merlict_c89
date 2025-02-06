@@ -21,9 +21,9 @@ int mli_IO_text_putc(struct mli_IO *self, const char c)
 {
         chk_msg(mli_IO_write((void *)(&c), sizeof(char), 1, self),
                 "Can not write char to IO.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IO_text_write_cstr(struct mli_IO *self, const char *cstr)
@@ -58,9 +58,9 @@ chk_error:
 int mli_IO_text_read_string(struct mli_IO *self, struct mli_String *str)
 {
         chk(mli_IO_text_read_line(self, str, '\0'));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IO_text_read_line(
@@ -87,9 +87,9 @@ int mli_IO_text_read_line(
                 }
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IO_text_write_String(struct mli_IO *self, const struct mli_String *str)
@@ -102,9 +102,9 @@ int mli_IO_text_write_String(struct mli_IO *self, const struct mli_String *str)
                 }
                 chk(mli_IO_text_putc(self, c));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IO_text_write_multi_line_debug_view_line_match(
@@ -118,9 +118,9 @@ int mli_IO_text_write_multi_line_debug_view_line_match(
         } else {
                 chk(mli_IO_text_write_cstr_format(self, "  |  "));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IO_text_write_multi_line_debug_view(
@@ -162,7 +162,7 @@ int mli_IO_text_write_multi_line_debug_view(
         }
         chk(mli_IO_text_putc(self, '\n'));
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

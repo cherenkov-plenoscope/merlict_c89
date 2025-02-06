@@ -107,9 +107,9 @@ int mli_propagate_photon_cooktorrance(
                         mliPhotonInteraction_from_Intersection(
                                 MLI_PHOTON_ABSORPTION, env->scenery, isec)));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_propagate_photon_pass_boundary_layer(
@@ -125,9 +125,9 @@ int mli_propagate_photon_pass_boundary_layer(
                 isec->position, mli_Fresnel_refraction_direction(fresnel));
         chk_msg(mli_propagate_photon_env(env),
                 "Failed to continue after passing boundary layer");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_propagate_photon_probability_passing_medium_coming_from(
@@ -156,9 +156,9 @@ int mli_propagate_photon_probability_passing_medium_coming_from(
         (*probability_passing) =
                 exp(-isec->distance_of_ray * absorption_coefficient);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_propagate_photon_fresnel_refraction_and_reflection(
@@ -209,9 +209,9 @@ int mli_propagate_photon_fresnel_refraction_and_reflection(
                                 env, isec, fresnel),
                         "Failed to pass boundary");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_propagate_photon_interact_with_object(
@@ -238,9 +238,9 @@ int mli_propagate_photon_interact_with_object(
                 chk_bad("Unkown type of surface.");
                 break;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_propagate_photon_distance_until_absorption(
@@ -257,9 +257,9 @@ int mli_propagate_photon_distance_until_absorption(
                 "Failed to eval. absorption for wavelength.");
         (*distance_until_absorption) =
                 mli_Prng_expovariate(prng, absorption_coefficient);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_propagate_photon_work_on_causal_intersection(
@@ -394,9 +394,9 @@ int mli_propagate_photon_work_on_causal_intersection(
                 chk(mli_PhotonInteractionVector_push_back(env->history, phia));
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_propagate_photon_env(struct mli_PhotonPropagation *env)
@@ -405,9 +405,9 @@ int mli_propagate_photon_env(struct mli_PhotonPropagation *env)
                 chk_msg(mli_propagate_photon_work_on_causal_intersection(env),
                         "Failed to work on intersection.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_propagate_photon(
@@ -424,7 +424,7 @@ int mli_propagate_photon(
         env.prng = prng;
         env.max_interactions = max_interactions;
         chk(mli_propagate_photon_env(&env));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

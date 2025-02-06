@@ -19,9 +19,9 @@ int mli_materials_Names_malloc(struct mli_materials_Names *namemap)
         chk_mem(mli_Map_malloc(&namemap->media));
         chk_mem(mli_Map_malloc(&namemap->surfaces));
         chk_mem(mli_Map_malloc(&namemap->boundary_layers));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_materials_Names_free(struct mli_materials_Names *namemap)

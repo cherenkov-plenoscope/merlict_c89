@@ -46,9 +46,9 @@ int mli_OcTree_to_io(const struct mli_OcTree *octree, struct mli_IO *f)
         /* root type */
         chk_IO_write(&octree->root_type, sizeof(uint8_t), 1u, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_OcTree_from_io(struct mli_OcTree *octree, struct mli_IO *f)
@@ -97,7 +97,7 @@ int mli_OcTree_from_io(struct mli_OcTree *octree, struct mli_IO *f)
         /* root type */
         chk_IO_read(&octree->root_type, sizeof(uint8_t), 1u, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

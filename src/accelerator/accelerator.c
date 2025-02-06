@@ -57,9 +57,9 @@ int mli_Accelerator_malloc(
                         mli_Vec_init(0.0, 0.0, 0.0));
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Accelerator_set_robject_aabbs(
@@ -77,9 +77,9 @@ int mli_Accelerator_set_robject_aabbs(
                         mli_HomTraComp_from_compact(
                                 geometry->robject2root[rob]));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Accelerator_set_object_octrees(
@@ -97,9 +97,9 @@ int mli_Accelerator_set_object_octrees(
                         "Failed to setup mli_OcTree for object-wavefront.");
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Accelerator_malloc_from_Geometry(
@@ -128,9 +128,9 @@ int mli_Accelerator_malloc_from_Geometry(
                         &self->scenery_octree, &accgeo, outermost_aabb),
                 "Failed to set up octree across all robjects in geometry.");
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_Accelerator_info_fprint(FILE *f, const struct mli_Accelerator *self)

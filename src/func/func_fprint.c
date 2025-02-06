@@ -73,7 +73,7 @@ int mli_Func_fprint(
         }
         fprintf(f, "%-8.2e ", cfg.x_stop);
         fprintf(f, "\n");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

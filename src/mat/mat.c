@@ -491,9 +491,9 @@ int mli_Mat_find_eigenvector_for_eigenvalue(
         mli_Mat_lup_solve(&A, pivots, &right_hand_side, eigen_vector);
         (*eigen_vector) = mli_Vec_normalized(*eigen_vector);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Mat_lup_decompose(struct mli_Mat *A, int *P, const double tolerance)

@@ -16,7 +16,7 @@ int mli_Scenery_equal(const struct mli_Scenery *a, const struct mli_Scenery *b)
                 "Expected accelerator to be valid.");
         chk_msg(mli_GeometryToMaterialMap_equal(&a->geomap, &b->geomap),
                 "Expected geomap to be valid.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

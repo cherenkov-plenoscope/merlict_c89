@@ -22,7 +22,7 @@ int mli_GeometryToMaterialMap_equal(
                         "Expected all first_boundary_layer_in_robject "
                         "to be equal.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

@@ -27,9 +27,9 @@ int mli_Accelerator_to_io(const struct mli_Accelerator *self, struct mli_IO *f)
                 f);
         chk(mli_OcTree_to_io(&self->scenery_octree, f));
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Accelerator_from_io(struct mli_Accelerator *self, struct mli_IO *f)
@@ -64,7 +64,7 @@ int mli_Accelerator_from_io(struct mli_Accelerator *self, struct mli_IO *f)
 
         chk_mem(mli_OcTree_from_io(&self->scenery_octree, f));
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

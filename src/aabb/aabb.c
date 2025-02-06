@@ -2,6 +2,7 @@
 #include "aabb.h"
 #include "../chk/chk.h"
 #include "../math/math.h"
+#include "../bool/bool.h"
 
 struct mli_AABB mli_AABB_set(
         const struct mli_Vec lower,
@@ -46,9 +47,9 @@ int mli_AABB_valid(const struct mli_AABB a)
         chk_msg(a.lower.x <= a.upper.x, "Expected lower.x <= upper.x");
         chk_msg(a.lower.y <= a.upper.y, "Expected lower.y <= upper.y");
         chk_msg(a.lower.z <= a.upper.z, "Expected lower.z <= upper.z");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_AABB_equal(const struct mli_AABB a, const struct mli_AABB b)
@@ -57,9 +58,9 @@ int mli_AABB_equal(const struct mli_AABB a, const struct mli_AABB b)
                 "Expected 'lower'-corner to be equal.");
         chk_msg(mli_Vec_equal(a.upper, b.upper),
                 "Expected 'upper'-corner to be equal.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_AABB_is_overlapping(const struct mli_AABB a, const struct mli_AABB b)
@@ -75,10 +76,10 @@ int mli_AABB_is_point_inside(
         const struct mli_Vec point)
 {
         if (a.lower.x > point.x || a.upper.x <= point.x)
-                return 0;
+                return MLI_FALSE;
         if (a.lower.y > point.y || a.upper.y <= point.y)
-                return 0;
+                return MLI_FALSE;
         if (a.lower.z > point.z || a.upper.z <= point.z)
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }

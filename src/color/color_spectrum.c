@@ -126,9 +126,9 @@ int mli_ColorSpectrum_from_func(
                 self->values[i] = val_mean;
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_ColorSpectrum_set_radiance_of_black_body_W_per_m2_per_sr(

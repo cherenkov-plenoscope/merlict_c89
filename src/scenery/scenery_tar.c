@@ -21,9 +21,9 @@ int mli_Scenery_from_io_tar(struct mli_Scenery *self, struct mli_IO *f)
                 "Can't malloc Scenery from Archive.");
         chk_dbg;
         mli_Archive_free(&archive);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Scenery__from_path_cstr(struct mli_Scenery *self, const char *path)
@@ -36,9 +36,9 @@ int mli_Scenery__from_path_cstr(struct mli_Scenery *self, const char *path)
                 mli_Scenery_from_io_tar(self, &f),
                 ("Can't fread Scenery from path '%s'.", path));
         mli_IO_close(&f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Scenery_malloc_from_Archive(
@@ -112,7 +112,7 @@ int mli_Scenery_malloc_from_Archive(
                 "Failed to warn about objects.");
 
         chk_dbg;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

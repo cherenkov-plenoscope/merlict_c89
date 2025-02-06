@@ -41,9 +41,9 @@ int mli_JsonWalk_to_key(struct mli_JsonWalk *self, const char *key)
                 mli_Json_token_by_key(self->json, self->token, key, &key_token),
                 ("No key '%s'", key));
         self->token = key_token + 1;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_JsonWalk_to_idx(struct mli_JsonWalk *self, const uint64_t idx)
@@ -55,9 +55,9 @@ int mli_JsonWalk_to_idx(struct mli_JsonWalk *self, const uint64_t idx)
                 mli_Json_token_by_idx(self->json, self->token, idx, &idx_token),
                 ("No index '%lu'", idx));
         self->token = idx_token;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_JsonWalk_to_root(struct mli_JsonWalk *self) { self->token = 0; }
@@ -67,9 +67,9 @@ int mli_JsonWalk_get_array_size(const struct mli_JsonWalk *self, uint64_t *size)
         chk_msg(mli_JsonWalk__type(self) == JSMN_ARRAY,
                 "Can only get size of json-array.");
         (*size) = self->json->tokens[self->token].size;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_JsonWalk_get_string(

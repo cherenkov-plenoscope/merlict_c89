@@ -26,18 +26,18 @@ int mli_String_nto_double(
         chk_msg(actual_num_chars == expected_num_chars,
                 "double has not the expected number of chars.");
         *out = l;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_String_to_double(double *out, const struct mli_String *str)
 {
         chk_msg(mli_String_nto_double(out, str, str->size),
                 "Can not convert mli_String to double.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_String_nto_int64(
@@ -61,9 +61,9 @@ int mli_String_nto_int64(
         chk_msg(actual_num_chars == expected_num_chars,
                 "Integer has not the expected number of chars.");
         *out = l;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_String_to_int64(
@@ -73,9 +73,9 @@ int mli_String_to_int64(
 {
         chk_msg(mli_String_nto_int64(out, str, base, str->size),
                 "Can not convert string to int64.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_String_nto_uint64(
@@ -88,9 +88,9 @@ int mli_String_nto_uint64(
         chk(mli_String_nto_int64(&tmp, str, base, expected_num_chars));
         chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_String_to_uint64(
@@ -102,9 +102,9 @@ int mli_String_to_uint64(
         chk(mli_String_to_int64(&tmp, str, base));
         chk_msg(tmp >= 0, "Expected a positive integer.");
         (*out) = tmp;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_String_reverse_print_uint64(

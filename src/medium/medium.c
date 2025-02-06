@@ -35,9 +35,9 @@ int mli_Medium_valid_wrt_materials(
         chk_msg(self->absorption_spectrum < materials->spectra.size,
                 "absorption_spectrum index is not in materials.");
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Medium_equal(const struct mli_Medium *a, const struct mli_Medium *b)
@@ -49,9 +49,9 @@ int mli_Medium_equal(const struct mli_Medium *a, const struct mli_Medium *b)
         chk_msg(a->absorption_spectrum == b->absorption_spectrum,
                 "Different absorption_spectrum.");
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Medium_to_io(const struct mli_Medium *self, struct mli_IO *f)
@@ -65,9 +65,9 @@ int mli_Medium_to_io(const struct mli_Medium *self, struct mli_IO *f)
         chk_IO_write(&self->refraction_spectrum, sizeof(int64_t), 1u, f);
         chk_IO_write(&self->absorption_spectrum, sizeof(int64_t), 1u, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Medium_from_io(struct mli_Medium *self, struct mli_IO *f)
@@ -82,9 +82,9 @@ int mli_Medium_from_io(struct mli_Medium *self, struct mli_IO *f)
         chk_IO_read(&self->refraction_spectrum, sizeof(int64_t), 1u, f);
         chk_IO_read(&self->absorption_spectrum, sizeof(int64_t), 1u, f);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Medium_from_json_string_and_name(
@@ -122,7 +122,7 @@ int mli_Medium_from_json_string_and_name(
 
         mli_String_free(&key);
         mli_Json_free(&json);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

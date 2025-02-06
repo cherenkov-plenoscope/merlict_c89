@@ -54,9 +54,9 @@ int mli_String_to_uint32(uint32_t *out, const struct mli_String *str)
         uint64_t u = 0;
         chk(mli_String_to_uint64(&u, str, 10));
         (*out) = (uint32_t)u;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Object_parse_face_line(
@@ -471,9 +471,9 @@ int mli_Object_parse_three_float_line(
                 old_state = state;
                 i++;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Object_parse_face_vertices_and_normals(
@@ -504,9 +504,9 @@ int mli_Object_parse_face_vertices_and_normals(
         fvn->a -= 1;
         fvn->b -= 1;
         fvn->c -= 1;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
@@ -724,7 +724,7 @@ int mli_Object_fprint_to_wavefront(
                         obj->faces_vertex_normals[face].c + 1));
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

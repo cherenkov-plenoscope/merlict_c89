@@ -31,9 +31,9 @@ int mliEventTapeWriter_finalize(struct mliEventTapeWriter *tio)
         }
         mli_FloatVector_free(&tio->buffer);
         (*tio) = mliEventTapeWriter_init();
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeWriter_begin(
@@ -46,9 +46,9 @@ int mliEventTapeWriter_begin(
         chk_msg(mli_Tar_write_begin(&tio->tar, stream), "Can't begin tar.");
         chk_msg(mli_FloatVector_malloc(&tio->buffer, 8 * num_bunches_buffer),
                 "Can't malloc cherenkov-bunch-buffer.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeWriter_write_corsika_header(
@@ -70,9 +70,9 @@ int mliEventTapeWriter_write_corsika_header(
         if (tio->flush_tar_stream_after_each_file) {
                 mli_IO_flush(tio->tar.stream);
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeWriter_write_runh(
@@ -85,9 +85,9 @@ int mliEventTapeWriter_write_runh(
         sprintf(path, "%09d/RUNH.float32", tio->run_number);
         chk_msg(mliEventTapeWriter_write_corsika_header(tio, path, runh),
                 "Can't write 'RUNH.float32' to event-tape.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeWriter_write_evth(
@@ -116,9 +116,9 @@ int mliEventTapeWriter_write_evth(
                 tio->event_number);
         chk_msg(mliEventTapeWriter_write_corsika_header(tio, path, evth),
                 "Can't write 'EVTH.float32' to event-tape.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeWriter_flush_cherenkov_bunch_block(
@@ -146,9 +146,9 @@ int mliEventTapeWriter_flush_cherenkov_bunch_block(
         }
         tio->buffer.size = 0;
         tio->cherenkov_bunch_block_number += 1;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeWriter_write_cherenkov_bunch(
@@ -164,9 +164,9 @@ int mliEventTapeWriter_write_cherenkov_bunch(
                 tio->buffer.array[tio->buffer.size] = bunch[i];
                 tio->buffer.size += 1;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 /* reader */
@@ -193,9 +193,9 @@ int mliEventTapeReader_finalize(struct mliEventTapeReader *tio)
                         "Can't finalize reading tar.");
         }
         (*tio) = mliEventTapeReader_init();
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeReader_begin(
@@ -206,9 +206,9 @@ int mliEventTapeReader_begin(
                 "Can't close and free previous tar-io-reader.");
         chk_msg(mli_Tar_read_begin(&tio->tar, stream), "Can't begin tar.");
         tio->has_tarh = mli_Tar_read_header(&tio->tar, &tio->tarh);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh)
@@ -235,9 +235,9 @@ int mliEventTapeReader_read_runh(struct mliEventTapeReader *tio, float *runh)
                 "Expected run_number in RUNH's path "
                 "to match run_number in RUNH.");
         tio->has_tarh = mli_Tar_read_header(&tio->tar, &tio->tarh);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth)
@@ -251,10 +251,10 @@ int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth)
         char match[MLI_TAR_NAME_LENGTH] = "ddddddddd/ddddddddd/EVTH.float32";
 
         if (!tio->has_tarh) {
-                return 0;
+                return CHK_FAIL;
         }
         if (!mli_cstr_match_templeate(tio->tarh.name, match, 'd')) {
-                return 0;
+                return CHK_FAIL;
         }
         chk_msg(mli_cstr_nto_uint64(
                         &path_event_number,
@@ -297,9 +297,9 @@ int mliEventTapeReader_read_evth(struct mliEventTapeReader *tio, float *evth)
         tio->block_at = 0;
         tio->has_still_bunches_in_event = 1;
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeReader_tarh_might_be_valid_cherenkov_block(
@@ -347,9 +347,9 @@ int mliEventTapeReader_tarh_is_valid_cherenkov_block(
         chk_msg(path_block_number == tio->cherenkov_bunch_block_number,
                 "Expected different cherenkov-bunch-block-number in "
                 "cherenkov-block-path.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mliEventTapeReader_read_cherenkov_bunch(
@@ -357,19 +357,19 @@ int mliEventTapeReader_read_cherenkov_bunch(
         float *bunch)
 {
         if (tio->has_still_bunches_in_event == 0) {
-                return 0;
+                return CHK_FAIL;
         }
         if (tio->block_at == tio->block_size) {
                 tio->cherenkov_bunch_block_number += 1;
                 tio->has_tarh = mli_Tar_read_header(&tio->tar, &tio->tarh);
                 if (!tio->has_tarh) {
                         tio->has_still_bunches_in_event = 0;
-                        return 0;
+                        return CHK_FAIL;
                 }
                 if (!mliEventTapeReader_tarh_might_be_valid_cherenkov_block(
                             tio)) {
                         tio->has_still_bunches_in_event = 0;
-                        return 0;
+                        return CHK_FAIL;
                 }
                 chk_msg(mliEventTapeReader_tarh_is_valid_cherenkov_block(tio),
                         "Cherenkov-bunch-block's tar-header doesn't match.");
@@ -386,7 +386,7 @@ int mliEventTapeReader_read_cherenkov_bunch(
                 "Failed to read cherenkov_bunch.");
 
         tio->block_at += 1;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

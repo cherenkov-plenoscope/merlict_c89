@@ -25,9 +25,9 @@ int mli_Map_malloc(struct mli_Map *map)
 {
         chk_msg(mli_MapItemVector_malloc(&map->items, 0u),
                 "Failed to malloc map items.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 uint64_t mli_Map_size(const struct mli_Map *map) { return map->items.size; }
@@ -70,9 +70,9 @@ int mli_Map_insert(
                 "Failed to malloc map item key.") item.value = value;
         chk_msg(mli_MapItemVector_push_back(&map->items, item),
                 "Failed to mmaloc item.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Map_get(
@@ -85,7 +85,7 @@ int mli_Map_get(
         chk_msg(mli_Map_find(map, key, &idx), "Key does not exist.");
         item = &map->items.array[idx];
         (*value) = item->value;
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

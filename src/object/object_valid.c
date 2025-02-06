@@ -10,9 +10,9 @@ int mli_Object_is_valid(const struct mli_Object *obj)
         chk_msg(mli_Object_has_valid_normals(obj, MLI_MATH_EPSILON),
                 "Bad vertex-normal.");
         chk_msg(mli_Object_has_valid_materials(obj), "Bad material.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Object_has_valid_faces(const struct mli_Object *obj)
@@ -155,7 +155,7 @@ int mli_Object_num_unused(
         free(v);
         free(vn);
         free(mtl);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

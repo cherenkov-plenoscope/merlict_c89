@@ -25,9 +25,9 @@ int mli_image_Chunk_malloc(
         const uint64_t num_pixel = edge_size * edge_size;
         self->edge_size = edge_size;
         chk_malloc(self->array, struct mli_Color, num_pixel);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_image_Chunk_set(

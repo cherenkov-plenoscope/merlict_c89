@@ -31,9 +31,9 @@ int mli_MagicId_set(struct mli_MagicId *magic, const char *word)
                 magic->word[i] = '\0';
                 i += 1;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_MagicId_has_word(const struct mli_MagicId *magic, const char *word)
@@ -55,9 +55,9 @@ int mli_MagicId_has_word(const struct mli_MagicId *magic, const char *word)
                 }
                 i += 1;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_MagicId_warn_version(const struct mli_MagicId *magic)

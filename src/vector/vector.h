@@ -46,9 +46,9 @@
                 self->capacity = MLI_MATH_MAX2(2, capacity);                   \
                 self->size = 0;                                                \
                 chk_malloc(self->array, PAYLOAD_TYPE, self->capacity);         \
-                return 1;                                                      \
+                return CHK_SUCCESS;                                            \
         chk_error:                                                             \
-                return 0;                                                      \
+                return CHK_FAIL;                                               \
         }                                                                      \
                                                                                \
         int NAME##_realloc(struct NAME *self, const uint64_t capacity)         \
@@ -61,9 +61,9 @@
                 if (self->capacity < self->size) {                             \
                         self->size = self->capacity;                           \
                 }                                                              \
-                return 1;                                                      \
+                return CHK_SUCCESS;                                            \
         chk_error:                                                             \
-                return 0;                                                      \
+                return CHK_FAIL;                                               \
         }
 
 #define MLI_VECTOR_IMPLEMENTATION_MALLOC_ZERO_TERMINATION(NAME, PAYLOAD_TYPE)  \
@@ -76,9 +76,9 @@
                 memset(self->array,                                            \
                        '\0',                                                   \
                        (self->capacity + 1) * sizeof(PAYLOAD_TYPE));           \
-                return 1;                                                      \
+                return CHK_SUCCESS;                                            \
         chk_error:                                                             \
-                return 0;                                                      \
+                return CHK_FAIL;                                               \
         }                                                                      \
                                                                                \
         int NAME##_realloc(struct NAME *self, const uint64_t capacity)         \
@@ -100,9 +100,9 @@
                                '\0',                                           \
                                num_fields_after_size * sizeof(PAYLOAD_TYPE));  \
                 }                                                              \
-                return 1;                                                      \
+                return CHK_SUCCESS;                                            \
         chk_error:                                                             \
-                return 0;                                                      \
+                return CHK_FAIL;                                               \
         }
 
 #define MLI_VECTOR_IMPLEMENTATION_PRIMITIVE_FREE(NAME, PAYLOAD_TYPE)           \
@@ -150,9 +150,9 @@
                 self->array[self->size] = item;                                \
                 self->size += 1;                                               \
                                                                                \
-                return 1;                                                      \
+                return CHK_SUCCESS;                                            \
         chk_error:                                                             \
-                return 0;                                                      \
+                return CHK_FAIL;                                               \
         }                                                                      \
                                                                                \
         int NAME##_set(                                                        \
@@ -160,9 +160,9 @@
         {                                                                      \
                 chk_msg(at < self->size, "Out of range.");                     \
                 self->array[at] = item;                                        \
-                return 1;                                                      \
+                return CHK_SUCCESS;                                            \
         chk_error:                                                             \
-                return 0;                                                      \
+                return CHK_FAIL;                                               \
         }                                                                      \
                                                                                \
         int NAME##_get(                                                        \
@@ -172,9 +172,9 @@
         {                                                                      \
                 chk_msg(at < self->size, "Out of range.");                     \
                 (*item) = self->array[at];                                     \
-                return 1;                                                      \
+                return CHK_SUCCESS;                                            \
         chk_error:                                                             \
-                return 0;                                                      \
+                return CHK_FAIL;                                               \
         }                                                                      \
                                                                                \
         int NAME##_copy(struct NAME *dst, const struct NAME *src)              \
@@ -196,9 +196,9 @@
                        &src->array[start],                                     \
                        length * sizeof(PAYLOAD_TYPE));                         \
                 dst->size = length;                                            \
-                return 1;                                                      \
+                return CHK_SUCCESS;                                            \
         chk_error:                                                             \
-                return 0;                                                      \
+                return CHK_FAIL;                                               \
         }
 
 #define MLI_VECTOR_IMPLEMENTATION(NAME, PAYLOAD_TYPE)                          \

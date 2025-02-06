@@ -1,6 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "../color/color.h"
 #include "../math/math.h"
+#include "../bool/bool.h"
 
 struct mli_Color mli_Color_set(const float r, const float g, const float b)
 {
@@ -68,12 +69,12 @@ struct mli_Color mli_Color_truncate(
 int mli_Color_equal(const struct mli_Color a, const struct mli_Color b)
 {
         if (a.r != b.r)
-                return 0;
+                return MLI_FALSE;
         if (a.g != b.g)
-                return 0;
+                return MLI_FALSE;
         if (a.b != b.b)
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }
 
 int mli_Color_is_in_range(
@@ -82,19 +83,19 @@ int mli_Color_is_in_range(
         const float stop)
 {
         if (MLI_MATH_IS_NAN(c.r))
-                return 0;
+                return MLI_FALSE;
         if (MLI_MATH_IS_NAN(c.g))
-                return 0;
+                return MLI_FALSE;
         if (MLI_MATH_IS_NAN(c.b))
-                return 0;
+                return MLI_FALSE;
 
         if (c.r < start || c.r >= stop)
-                return 0;
+                return MLI_FALSE;
         if (c.g < start || c.g >= stop)
-                return 0;
+                return MLI_FALSE;
         if (c.b < start || c.b >= stop)
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }
 
 float mli_Color_luminance(const struct mli_Color self)

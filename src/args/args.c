@@ -21,8 +21,8 @@ int mli_StringVector_from_argc_argv(
                         "Failed to malloc string in Argv.");
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_StringVector_free(self);
-        return 0;
+        return CHK_FAIL;
 }

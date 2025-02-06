@@ -99,9 +99,9 @@ int mli_corsika_Histogram2d_flatten__(
                 }
                 return 1;
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_corsika_Histogram2d_flatten(
@@ -112,9 +112,9 @@ int mli_corsika_Histogram2d_flatten(
                         (const struct mli_AvlNode *)hist->dict.tree.root, f),
                 "Failed to write dict.");
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 void mli_corsika_Histogram2d_reset(struct mli_corsika_Histogram2d *hist)

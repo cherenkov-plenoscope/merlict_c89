@@ -68,9 +68,9 @@ int mli_Materials_spectra_equal(
                                 &a->spectra.array[i], &b->spectra.array[i]),
                         "Spectrum is not equal.");
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Materials_default_medium_equal(
@@ -79,9 +79,9 @@ int mli_Materials_default_medium_equal(
 {
         chk_msg(a->default_medium == b->default_medium,
                 "Different default_medium.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Materials_equal(
@@ -93,7 +93,7 @@ int mli_Materials_equal(
         chk(mli_Materials_surfaces_equal(a, b));
         chk(mli_Materials_boundary_layers_equal(a, b));
         chk(mli_Materials_default_medium_equal(a, b));
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }

@@ -17,7 +17,7 @@ int mli_Vec_from_json_token(
                 "Can not parse mli_Vec y-value.");
         chk_msg(mli_Json_double_by_token(json, token + 3, &v->z),
                 "Can not parse mli_Vec z-value.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
-        return 0;
+        return CHK_FAIL;
 }
