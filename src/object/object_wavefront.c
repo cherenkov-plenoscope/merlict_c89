@@ -50,16 +50,6 @@ mli_bool mli_Object_is_face_line_toggle(const int state)
         return MLI_FALSE;
 }
 
-chk_rc mli_String_to_uint32(uint32_t *out, const struct mli_String *str)
-{
-        uint64_t u = 0;
-        chk(mli_String_to_uint64(&u, str, 10));
-        (*out) = (uint32_t)u;
-        return CHK_SUCCESS;
-chk_error:
-        return CHK_FAIL;
-}
-
 chk_rc mli_Object_parse_face_line(
         const struct mli_String *line,
         struct mli_object_Face *faces_vertices,

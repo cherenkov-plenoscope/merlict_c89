@@ -107,6 +107,16 @@ chk_error:
         return CHK_FAIL;
 }
 
+chk_rc mli_String_to_uint32(uint32_t *out, const struct mli_String *str)
+{
+        uint64_t u = 0;
+        chk(mli_String_to_uint64(&u, str, 10));
+        (*out) = (uint32_t)u;
+        return CHK_SUCCESS;
+chk_error:
+        return CHK_FAIL;
+}
+
 chk_rc mli_String_reverse_print_uint64(
         const uint64_t u,
         struct mli_String *str,

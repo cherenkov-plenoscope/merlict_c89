@@ -37,4 +37,6 @@ chk_rc mli_String_print_uint64(
         const uint64_t min_num_digits,
         const char leading_char);
 
+chk_rc mli_String_to_uint32(uint32_t *out, const struct mli_String *str);
+
 #endif
