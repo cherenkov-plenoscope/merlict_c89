@@ -316,7 +316,7 @@ chk_rc mli_Tar_read_header(struct mli_Tar *tar, struct mli_TarHeader *h)
 
         if (mli_TarRawHeader_is_null(&rh)) {
                 (*h) = mli_TarHeader_init();
-                return 0;
+                return CHK_FAIL;
         }
 
         chk_msg(mli_TarHeader_from_raw(h, &rh), "Failed to parse raw header.");
