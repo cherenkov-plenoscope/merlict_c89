@@ -12,7 +12,7 @@ struct mli_IO mli_IO_init(void)
         return out;
 }
 
-int mli_IO_open_memory(struct mli_IO *self)
+chk_rc mli_IO_open_memory(struct mli_IO *self)
 {
         mli_IO_close(self);
         self->type = MLI_IO_TYPE_MEMORY;
@@ -20,7 +20,7 @@ int mli_IO_open_memory(struct mli_IO *self)
         return mli_IoMemory_open(&self->data.memory);
 }
 
-int mli_IO_open_file(
+chk_rc mli_IO_open_file(
         struct mli_IO *self,
         const struct mli_String *filename,
         const struct mli_String *mode)
@@ -31,7 +31,7 @@ int mli_IO_open_file(
         return mli_IoFile_open(&self->data.file, filename, mode);
 }
 
-int mli_IO_adopt_file(struct mli_IO *self, FILE *cfile)
+chk_rc mli_IO_adopt_file(struct mli_IO *self, FILE *cfile)
 {
         mli_IO_close(self);
         self->type = MLI_IO_TYPE_FILE;
@@ -39,7 +39,7 @@ int mli_IO_adopt_file(struct mli_IO *self, FILE *cfile)
         return mli_IoFile_adopt_cfile(&self->data.file, cfile);
 }
 
-int mli_IO__open_file_cstr(
+chk_rc mli_IO__open_file_cstr(
         struct mli_IO *self,
         const char *filename,
         const char *mode)
@@ -53,12 +53,12 @@ int mli_IO__open_file_cstr(
 
         mli_String_free(&_filename);
         mli_String_free(&_mode);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&_filename);
         mli_String_free(&_mode);
         mli_IO_close(self);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_IO_close(struct mli_IO *self)

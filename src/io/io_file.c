@@ -25,7 +25,7 @@ int mli_IoFile_close(struct mli_IoFile *self)
         return rc;
 }
 
-int mli_IoFile_open(
+chk_rc mli_IoFile_open(
         struct mli_IoFile *self,
         const struct mli_String *filename,
         const struct mli_String *mode)
@@ -33,17 +33,17 @@ int mli_IoFile_open(
         mli_IoFile_close(self);
         self->cfile = fopen(filename->array, mode->array);
         chk_msg(self->cfile != NULL, "Failed to open file.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_IoFile_close(self);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_IoFile_adopt_cfile(struct mli_IoFile *self, FILE *cfile)
+chk_rc mli_IoFile_adopt_cfile(struct mli_IoFile *self, FILE *cfile)
 {
         mli_IoFile_close(self);
         self->cfile = cfile;
-        return 1;
+        return CHK_SUCCESS;
 }
 
 size_t mli_IoFile_write(
@@ -88,16 +88,17 @@ int mli_IoFile_eof(const struct mli_IoFile *self) { return feof(self->cfile); }
 
 int mli_IoFile_flush(struct mli_IoFile *self) { return fflush(self->cfile); }
 
-int mli_IoFile__cfile_is_stdin_or_stdout_stderr(const struct mli_IoFile *self)
+mli_bool mli_IoFile__cfile_is_stdin_or_stdout_stderr(
+        const struct mli_IoFile *self)
 {
         if (self->cfile == stdin) {
-                return 1;
+                return MLI_TRUE;
         }
         if (self->cfile == stdout) {
-                return 1;
+                return MLI_TRUE;
         }
         if (self->cfile == stderr) {
-                return 1;
+                return MLI_TRUE;
         }
-        return 0;
+        return MLI_FALSE;
 }

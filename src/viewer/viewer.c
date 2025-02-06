@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <time.h>
 #include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../math/math.h"
 #include "../intersection/intersection_surface_normal.h"
 #include "../thin_lens/thin_lens.h"
@@ -124,20 +125,20 @@ int mli_viewer_get_key(void)
         }
 }
 
-int mli_viewer_image_to_path(const struct mli_Image *img, const char *path)
+chk_rc mli_viewer_image_to_path(const struct mli_Image *img, const char *path)
 {
         struct mli_IO f = mli_IO_init();
         chk_msg(mli_IO__open_file_cstr(&f, path, "w"),
                 "Can't open path to write image.");
         chk_msg(mli_Image_to_io(img, &f), "Can't write image to file.");
         mli_IO_close(&f);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_IO_close(&f);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_viewer_export_image(
+chk_rc mli_viewer_export_image(
         const struct mli_PathTracer *tracer,
         const struct mli_viewer_Config config,
         const struct mli_View view,
@@ -177,14 +178,14 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
+chk_rc mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
         const struct mli_Scenery *scenery,
         const struct mli_viewer_Config config)
 {
 #ifdef HAVE_TERMIOS_H
         struct termios old_terminal = mli_viewer_non_canonical_stdin();
 #endif
-        int rc = mli_viewer_run_interactive_viewer(scenery, config);
+        chk_rc rc = mli_viewer_run_interactive_viewer(scenery, config);
 
 #ifdef HAVE_TERMIOS_H
         mli_viewer_restore_stdin(&old_terminal);
@@ -192,7 +193,7 @@ int mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
         return rc;
 }
 
-int mli_viewer_run_interactive_viewer(
+chk_rc mli_viewer_run_interactive_viewer(
         const struct mli_Scenery *scenery,
         const struct mli_viewer_Config config)
 {
@@ -203,7 +204,7 @@ int mli_viewer_run_interactive_viewer(
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         char path[1024];
         int key;
-        int super_resolution = 0;
+        mli_bool super_resolution = MLI_FALSE;
         struct mli_viewer_Cursor cursor;
         uint64_t num_screenshots = 0;
         uint64_t print_mode = MLI_ASCII_MONOCHROME;
@@ -213,10 +214,10 @@ int mli_viewer_run_interactive_viewer(
         struct mli_Image img_gamma = mli_Image_init();
         struct mli_Image img2 = mli_Image_init();
         const double row_over_column_pixel_ratio = 2.0;
-        int update_image = 1;
-        int print_help = 0;
-        int print_scenery_info = 0;
-        int has_probing_intersection = 0;
+        mli_bool update_image = MLI_TRUE;
+        mli_bool print_help = MLI_FALSE;
+        mli_bool print_scenery_info = MLI_FALSE;
+        mli_bool has_probing_intersection = MLI_FALSE;
         struct mli_IntersectionSurfaceNormal probing_intersection;
         double gamma = config.gamma;
 
@@ -244,12 +245,12 @@ int mli_viewer_run_interactive_viewer(
         goto show_image;
 
         while ((key = mli_viewer_get_key()) != MLI_VIEWER_ESCAPE_KEY) {
-                update_image = 1;
-                print_help = 0;
-                print_scenery_info = 0;
+                update_image = MLI_TRUE;
+                print_help = MLI_FALSE;
+                print_scenery_info = MLI_FALSE;
                 if (cursor.active) {
-                        update_image = 0;
-                        super_resolution = 0;
+                        update_image = MLI_FALSE;
+                        super_resolution = MLI_FALSE;
                         switch (key) {
                         case 'i':
                                 mli_viewer_Cursor_move_up(&cursor);
@@ -267,7 +268,7 @@ int mli_viewer_run_interactive_viewer(
                                 cursor.active = !cursor.active;
                                 break;
                         case 'h':
-                                print_help = 1;
+                                print_help = MLI_TRUE;
                                 break;
                         case MLI_VIEWER_SPACE_KEY:
                                 sprintf(path,
@@ -283,7 +284,7 @@ int mli_viewer_run_interactive_viewer(
                                         probing_intersection.distance_of_ray,
                                         gamma,
                                         path));
-                                update_image = 0;
+                                update_image = MLI_FALSE;
                                 break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
@@ -336,15 +337,15 @@ int mli_viewer_run_interactive_viewer(
                                 view = mli_View_increase_fov(view, 1.05);
                                 break;
                         case 'h':
-                                print_help = 1;
-                                update_image = 0;
+                                print_help = MLI_TRUE;
+                                update_image = MLI_FALSE;
                                 break;
                         case 'b':
                                 super_resolution = !super_resolution;
                                 break;
                         case 'c':
                                 cursor.active = !cursor.active;
-                                update_image = 0;
+                                update_image = MLI_FALSE;
                                 break;
                         case MLI_VIEWER_SPACE_KEY:
                                 printf("Go into cursor-mode first.\n");
@@ -360,8 +361,8 @@ int mli_viewer_run_interactive_viewer(
                                 }
                                 break;
                         case 'p':
-                                print_scenery_info = 1;
-                                update_image = 0;
+                                print_scenery_info = MLI_TRUE;
+                                update_image = MLI_FALSE;
                                 break;
 
                         case '4':
@@ -402,7 +403,7 @@ int mli_viewer_run_interactive_viewer(
                                 break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
-                                update_image = 0;
+                                update_image = MLI_FALSE;
                                 break;
                         }
                 }
@@ -533,11 +534,11 @@ int mli_viewer_run_interactive_viewer(
         mli_Image_free(&img);
         mli_Image_free(&img2);
         mli_Image_free(&img_gamma);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_ColorMaterials_free(&color_materials);
         mli_Image_free(&img);
         mli_Image_free(&img2);
         mli_Image_free(&img_gamma);
-        return 0;
+        return CHK_FAIL;
 }

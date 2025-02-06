@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "../chk/chk.h"
 
-int mli_String_nto_double(
+chk_rc mli_String_nto_double(
         double *out,
         const struct mli_String *str,
         const uint64_t expected_num_chars)
@@ -31,7 +31,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_String_to_double(double *out, const struct mli_String *str)
+chk_rc mli_String_to_double(double *out, const struct mli_String *str)
 {
         chk_msg(mli_String_nto_double(out, str, str->size),
                 "Can not convert mli_String to double.");
@@ -40,7 +40,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_String_nto_int64(
+chk_rc mli_String_nto_int64(
         int64_t *out,
         const struct mli_String *str,
         const uint64_t base,
@@ -66,7 +66,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_String_to_int64(
+chk_rc mli_String_to_int64(
         int64_t *out,
         const struct mli_String *str,
         const uint64_t base)
@@ -78,7 +78,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_String_nto_uint64(
+chk_rc mli_String_nto_uint64(
         uint64_t *out,
         const struct mli_String *str,
         const uint64_t base,
@@ -93,7 +93,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_String_to_uint64(
+chk_rc mli_String_to_uint64(
         uint64_t *out,
         const struct mli_String *str,
         const uint64_t base)
@@ -107,7 +107,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_String_reverse_print_uint64(
+chk_rc mli_String_reverse_print_uint64(
         const uint64_t u,
         struct mli_String *str,
         const uint64_t base)
@@ -145,13 +145,13 @@ int mli_String_reverse_print_uint64(
                 chk_msg(str->size < 127, "Exceeded max_num_chars.");
         } while (quotient > 0u);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(str);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_String_print_uint64(
+chk_rc mli_String_print_uint64(
         const uint64_t u,
         struct mli_String *str,
         const uint64_t base,
@@ -189,9 +189,9 @@ int mli_String_print_uint64(
         }
 
         mli_String_free(&tmp);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         /*mli_String_free(str);*/
         mli_String_free(&tmp);
-        return 0;
+        return CHK_FAIL;
 }

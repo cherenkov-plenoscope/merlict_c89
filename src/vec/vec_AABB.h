@@ -3,8 +3,9 @@
 #define MLI_VEC_AABB_H_
 
 #include "../vec/vec.h"
+#include "../bool/bool.h"
 
-int mli_Vec_overlap_aabb(
+mli_bool mli_Vec_overlap_aabb(
         const struct mli_Vec a,
         const struct mli_Vec aabb_lower,
         const struct mli_Vec aabb_upper);

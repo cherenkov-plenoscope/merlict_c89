@@ -23,13 +23,13 @@ struct mli_IO {
 
 struct mli_IO mli_IO_init(void);
 int mli_IO_close(struct mli_IO *self);
-int mli_IO_open_memory(struct mli_IO *self);
-int mli_IO_open_file(
+chk_rc mli_IO_open_memory(struct mli_IO *self);
+chk_rc mli_IO_open_file(
         struct mli_IO *self,
         const struct mli_String *filename,
         const struct mli_String *mode);
-int mli_IO_adopt_file(struct mli_IO *self, FILE *cfile);
-int mli_IO__open_file_cstr(
+chk_rc mli_IO_adopt_file(struct mli_IO *self, FILE *cfile);
+chk_rc mli_IO__open_file_cstr(
         struct mli_IO *self,
         const char *filename,
         const char *mode);

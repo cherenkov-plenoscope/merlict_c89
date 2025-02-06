@@ -2,6 +2,7 @@
 #ifndef MLI_VIEWER_VIEWER_H_
 #define MLI_VIEWER_VIEWER_H_
 
+#include "../chk/chk.h"
 #include "../scenery/scenery.h"
 #include "../prng/prng.h"
 #include "../view/view.h"
@@ -24,7 +25,7 @@ void mli_viewer_print_info_line(
 
 void mli_viewer_timestamp_now_19chars(char *buffer);
 
-int mli_viewer_export_image(
+chk_rc mli_viewer_export_image(
         const struct mli_PathTracer *tracer,
         const struct mli_viewer_Config config,
         const struct mli_View view,
@@ -33,10 +34,10 @@ int mli_viewer_export_image(
         const double gamma,
         const char *path);
 
-int mli_viewer_run_interactive_viewer(
+chk_rc mli_viewer_run_interactive_viewer(
         const struct mli_Scenery *scenery,
         const struct mli_viewer_Config config);
-int mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
+chk_rc mli_viewer_run_interactive_viewer_try_non_canonical_stdin(
         const struct mli_Scenery *scenery,
         const struct mli_viewer_Config config);
 #endif
