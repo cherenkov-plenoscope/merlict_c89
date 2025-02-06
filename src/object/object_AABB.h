@@ -3,11 +3,12 @@
 #define MLI_OBJECT_AABB_H_
 
 #include <stdint.h>
+#include "../bool/bool.h"
 #include "../homtra/homtra.h"
 #include "object.h"
 #include "../aabb/aabb.h"
 
-int mli_Object_has_overlap_aabb(
+mli_bool mli_Object_has_overlap_aabb(
         const struct mli_Object *obj,
         const struct mli_HomTra local2root,
         const struct mli_AABB aabb);
@@ -16,12 +17,12 @@ struct mli_AABB mli_Object_aabb(
         const struct mli_Object *obj,
         const struct mli_HomTra local2root);
 
-int mli_Object_face_in_local_frame_has_overlap_aabb(
+mli_bool mli_Object_face_in_local_frame_has_overlap_aabb(
         const struct mli_Object *obj,
         const uint64_t face_idx,
         const struct mli_AABB aabb);
 
-int mli_Object_face_in_local_frame_has_overlap_aabb_void(
+mli_bool mli_Object_face_in_local_frame_has_overlap_aabb_void(
         const void *obj,
         const uint32_t face_idx,
         const struct mli_AABB aabb);

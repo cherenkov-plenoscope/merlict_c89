@@ -3,6 +3,8 @@
 #define MLI_MAT_H_
 
 #include <stdint.h>
+#include "../bool/bool.h"
+#include "../chk/chk.h"
 #include "../vec/vec.h"
 
 struct mli_Mat {
@@ -20,7 +22,7 @@ struct mli_Mat {
 void mli_Mat_set(struct mli_Mat *a, uint64_t col, uint64_t row, const double v);
 double mli_Mat_get(const struct mli_Mat *a, uint64_t col, uint64_t row);
 struct mli_Mat mli_Mat_unity(void);
-int mli_Mat_equal_margin(
+mli_bool mli_Mat_equal_margin(
         const struct mli_Mat a,
         const struct mli_Mat b,
         const double margin);
@@ -47,7 +49,7 @@ void mli_Mat_qr_decompose(
         const struct mli_Mat m,
         struct mli_Mat *q,
         struct mli_Mat *r);
-int mli_Mat_has_shurform(const struct mli_Mat m, const double margin);
+mli_bool mli_Mat_has_shurform(const struct mli_Mat m, const double margin);
 void mli_Mat_find_eigenvalues(
         const struct mli_Mat a,
         double *e0,
@@ -55,12 +57,12 @@ void mli_Mat_find_eigenvalues(
         double *e2,
         const double margin,
         const uint64_t max_num_iterations);
-int mli_Mat_find_eigenvector_for_eigenvalue(
+chk_rc mli_Mat_find_eigenvector_for_eigenvalue(
         struct mli_Mat a,
         const double eigen_value,
         struct mli_Vec *eigen_vector,
         const double tolerance);
-int mli_Mat_lup_decompose(
+chk_rc mli_Mat_lup_decompose(
         struct mli_Mat *A,
         int *pivots,
         const double tolerance);

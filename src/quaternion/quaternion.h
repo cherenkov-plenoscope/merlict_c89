@@ -4,6 +4,7 @@
 
 #include "../vec/vec.h"
 #include "../mat/mat.h"
+#include "../bool/bool.h"
 
 struct mli_Quaternion {
         double w;
@@ -28,11 +29,11 @@ struct mli_Quaternion mli_Quaternion_product(
         const struct mli_Quaternion q);
 struct mli_Quaternion mli_Quaternion_complex_conjugate(
         const struct mli_Quaternion q);
-int mli_Quaternion_equal_margin(
+mli_bool mli_Quaternion_equal_margin(
         const struct mli_Quaternion a,
         const struct mli_Quaternion b,
         const double margin);
-int mli_Quaternion_equal(
+mli_bool mli_Quaternion_equal(
         const struct mli_Quaternion a,
         const struct mli_Quaternion b);
 struct mli_Quaternion mli_Quaternion_set(

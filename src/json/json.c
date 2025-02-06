@@ -5,6 +5,7 @@
 #include "../cstr/cstr.h"
 #include "../cstr/cstr_numbers.h"
 #include "../math/math.h"
+#include "../bool/bool.h"
 #include "../chk/chk.h"
 #include "../io/io_text.h"
 
@@ -24,7 +25,7 @@ void mli_Json_free(struct mli_Json *json)
         (*json) = mli_Json_init();
 }
 
-int mli_Json__malloc_tokens(struct mli_Json *json)
+chk_rc mli_Json__malloc_tokens(struct mli_Json *json)
 {
         struct jsmntok_t default_token = {JSMN_UNDEFINED, 0, 0, 0};
         chk_msg(&json->raw.array != NULL, "Expected raw cstr to be malloced.");
@@ -36,7 +37,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json__parse_tokens(struct mli_Json *json)
+chk_rc mli_Json__parse_tokens(struct mli_Json *json)
 {
         int64_t num_tokens_parsed;
         struct jsmn_parser parser;
@@ -64,7 +65,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_from_string(struct mli_Json *self, const struct mli_String *str)
+chk_rc mli_Json_from_string(struct mli_Json *self, const struct mli_String *str)
 {
         mli_Json_free(self);
         chk_msg(mli_String_copy(&self->raw, str),
@@ -77,7 +78,7 @@ chk_error:
         return 0;
 }
 
-int mli_Json_from_io(struct mli_Json *self, struct mli_IO *io)
+chk_rc mli_Json_from_io(struct mli_Json *self, struct mli_IO *io)
 {
         mli_Json_free(self);
         chk_msg(mli_IO_text_read_string(io, &self->raw),
@@ -90,7 +91,7 @@ chk_error:
         return 0;
 }
 
-int mli_Json_cstr_by_token(
+chk_rc mli_Json_cstr_by_token(
         const struct mli_Json *json,
         const uint64_t token,
         char *return_string,
@@ -108,7 +109,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_string_by_token(
+chk_rc mli_Json_string_by_token(
         const struct mli_Json *json,
         const uint64_t token,
         struct mli_String *return_string)
@@ -123,7 +124,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_int64_by_token(
+chk_rc mli_Json_int64_by_token(
         const struct mli_Json *json,
         const uint64_t token,
         int64_t *return_int64)
@@ -143,7 +144,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_uint64_by_token(
+chk_rc mli_Json_uint64_by_token(
         const struct mli_Json *json,
         const uint64_t token,
         uint64_t *val)
@@ -157,7 +158,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_int64_by_key(
+chk_rc mli_Json_int64_by_key(
         const struct mli_Json *json,
         const uint64_t token,
         int64_t *val,
@@ -173,7 +174,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_uint64_by_key(
+chk_rc mli_Json_uint64_by_key(
         const struct mli_Json *json,
         const uint64_t token,
         uint64_t *val,
@@ -188,7 +189,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_double_by_token(
+chk_rc mli_Json_double_by_token(
         const struct mli_Json *json,
         const uint64_t token,
         double *val)
@@ -205,7 +206,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_double_by_key(
+chk_rc mli_Json_double_by_key(
         const struct mli_Json *json,
         const uint64_t token,
         double *val,
@@ -222,7 +223,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_cstrcmp(
+mli_bool mli_Json_cstrcmp(
         const struct mli_Json *json,
         const uint64_t token,
         const char *str)
@@ -233,25 +234,25 @@ int mli_Json_cstrcmp(
         const uint64_t str_length = strlen(str);
 
         if (token_length != str_length) {
-                return 0;
+                return MLI_FALSE;
         }
         for (i = 0; i < token_length; i++) {
                 const char token_char = (char)json->raw.array[t.start + i];
                 const char str_char = str[i];
                 if (token_char != str_char) {
-                        return 0;
+                        return MLI_FALSE;
                 }
         }
-        return 1;
+        return MLI_TRUE;
 }
 
-int mli_Json_token_by_key(
+chk_rc mli_Json_token_by_key(
         const struct mli_Json *json,
         const uint64_t token,
         const char *key,
         uint64_t *key_token)
 {
-        int64_t found = 0;
+        int64_t num_found = 0;
         int64_t child = 0;
         int64_t subchild_balance = 0;
         int64_t idx = token + 1;
@@ -259,7 +260,7 @@ int mli_Json_token_by_key(
         while (child < json->tokens[token].size) {
                 if (mli_Json_cstrcmp(json, idx, key)) {
                         (*key_token) = idx;
-                        found += 1;
+                        num_found += 1;
                 }
                 subchild_balance += json->tokens[idx].size;
                 while (subchild_balance > 0) {
@@ -270,10 +271,14 @@ int mli_Json_token_by_key(
                 idx += 1;
                 child += 1;
         }
-        return found;
+        if (num_found > 0) {
+                return CHK_SUCCESS;
+        } else {
+                return CHK_FAIL;
+        }
 }
 
-int mli_Json_token_by_key_eprint(
+chk_rc mli_Json_token_by_key_eprint(
         const struct mli_Json *json,
         const uint64_t token,
         const char *key,
@@ -309,7 +314,7 @@ uint64_t mli_Json__token_by_index_unsafe(
         return idx;
 }
 
-int mli_Json_token_by_idx(
+chk_rc mli_Json_token_by_idx(
         const struct mli_Json *json,
         const uint64_t token,
         const uint64_t idx,
@@ -326,7 +331,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_debug_token_fprint(
+chk_rc mli_Json_debug_token_fprint(
         FILE *f,
         const struct mli_Json *self,
         const uint64_t token)
@@ -339,7 +344,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_debug_token_to_io(
+chk_rc mli_Json_debug_token_to_io(
         const struct mli_Json *self,
         const uint64_t token,
         struct mli_IO *io)
@@ -367,7 +372,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Json_debug_to_io(const struct mli_Json *self, struct mli_IO *io)
+chk_rc mli_Json_debug_to_io(const struct mli_Json *self, struct mli_IO *io)
 {
         uint64_t i;
         for (i = 0; i < self->num_tokens; i++) {

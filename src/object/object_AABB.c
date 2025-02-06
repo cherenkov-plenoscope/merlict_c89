@@ -3,14 +3,14 @@
 #include "../triangle/triangle_aabb.h"
 #include "../math/math.h"
 
-int mli_Object_face_in_local_frame_has_overlap_aabb(
+mli_bool mli_Object_face_in_local_frame_has_overlap_aabb(
         const struct mli_Object *obj,
         const uint64_t face_idx,
         const struct mli_AABB aabb)
 {
         struct mli_object_Face face;
         if (face_idx >= obj->num_faces) {
-                return 0;
+                return MLI_FALSE;
         }
         face = obj->faces_vertices[face_idx];
         if (mli_Triangle_has_overlap_aabb(
@@ -18,12 +18,12 @@ int mli_Object_face_in_local_frame_has_overlap_aabb(
                     obj->vertices[face.b],
                     obj->vertices[face.c],
                     aabb)) {
-                return 1;
+                return MLI_TRUE;
         }
-        return 0;
+        return MLI_FALSE;
 }
 
-int mli_Object_has_overlap_aabb(
+mli_bool mli_Object_has_overlap_aabb(
         const struct mli_Object *obj,
         const struct mli_HomTra local2root,
         const struct mli_AABB aabb)
@@ -46,13 +46,13 @@ int mli_Object_has_overlap_aabb(
 
                 if (mli_Triangle_has_overlap_aabb(
                             a_root, b_root, c_root, aabb)) {
-                        return 1;
+                        return MLI_TRUE;
                 }
         }
-        return 0;
+        return MLI_FALSE;
 }
 
-int mli_Object_face_in_local_frame_has_overlap_aabb_void(
+mli_bool mli_Object_face_in_local_frame_has_overlap_aabb_void(
         const void *obj,
         const uint32_t face_idx,
         const struct mli_AABB aabb)

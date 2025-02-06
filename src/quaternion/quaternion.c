@@ -34,39 +34,39 @@ struct mli_Quaternion mli_Quaternion_set_unit_xyz(
         return mli_Quaternion_set(w, x, y, z);
 }
 
-int mli_Quaternion_equal(
+mli_bool mli_Quaternion_equal(
         const struct mli_Quaternion a,
         const struct mli_Quaternion b)
 {
         if (fabs(a.w - b.w) > DBL_EPSILON)
-                return 0;
+                return MLI_FALSE;
         if (fabs(a.x - b.x) > DBL_EPSILON)
-                return 0;
+                return MLI_FALSE;
         if (fabs(a.y - b.y) > DBL_EPSILON)
-                return 0;
+                return MLI_FALSE;
         if (fabs(a.z - b.z) > DBL_EPSILON)
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }
 
-int mli_Quaternion_equal_margin(
+mli_bool mli_Quaternion_equal_margin(
         const struct mli_Quaternion a,
         const struct mli_Quaternion b,
         const double margin)
 {
         if (fabs(a.w - b.w) >= margin) {
-                return 0;
+                return MLI_FALSE;
         }
         if (fabs(a.x - b.x) >= margin) {
-                return 0;
+                return MLI_FALSE;
         }
         if (fabs(a.y - b.y) >= margin) {
-                return 0;
+                return MLI_FALSE;
         }
         if (fabs(a.z - b.z) >= margin) {
-                return 0;
+                return MLI_FALSE;
         }
-        return 1;
+        return MLI_TRUE;
 }
 
 struct mli_Quaternion mli_Quaternion_complex_conjugate(

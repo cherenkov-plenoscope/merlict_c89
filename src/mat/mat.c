@@ -135,7 +135,7 @@ struct mli_Mat mli_Mat_unity(void)
         return u;
 }
 
-int mli_Mat_equal_margin(
+mli_bool mli_Mat_equal_margin(
         const struct mli_Mat a,
         const struct mli_Mat b,
         const double margin)
@@ -146,11 +146,11 @@ int mli_Mat_equal_margin(
                         const double diff = fabs(
                                 mli_Mat_get(&a, i, j) - mli_Mat_get(&b, i, j));
                         if (diff > margin) {
-                                return 0;
+                                return MLI_FALSE;
                         }
                 }
         }
-        return 1;
+        return MLI_TRUE;
 }
 
 struct mli_Mat mli_Mat_init_tait_bryan(
@@ -432,15 +432,15 @@ void mli_Mat_qr_decompose(
         (*q) = mli_Mat_transpose(*q);
 }
 
-int mli_Mat_has_shurform(const struct mli_Mat m, const double margin)
+mli_bool mli_Mat_has_shurform(const struct mli_Mat m, const double margin)
 {
         if (fabs(m.r10) > margin)
-                return 0;
+                return MLI_FALSE;
         if (fabs(m.r20) > margin)
-                return 0;
+                return MLI_FALSE;
         if (fabs(m.r21) > margin)
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }
 
 void mli_Mat_find_eigenvalues(
@@ -471,7 +471,7 @@ void mli_Mat_find_eigenvalues(
         (*e2) = ak.r22;
 }
 
-int mli_Mat_find_eigenvector_for_eigenvalue(
+chk_rc mli_Mat_find_eigenvector_for_eigenvalue(
         struct mli_Mat A,
         const double eigen_value,
         struct mli_Vec *eigen_vector,
@@ -496,7 +496,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Mat_lup_decompose(struct mli_Mat *A, int *P, const double tolerance)
+chk_rc mli_Mat_lup_decompose(struct mli_Mat *A, int *P, const double tolerance)
 {
         /*
         Parameters
@@ -542,7 +542,7 @@ int mli_Mat_lup_decompose(struct mli_Mat *A, int *P, const double tolerance)
                 }
 
                 if (maxA < tolerance) {
-                        return 0; /* failure, matrix is degenerate */
+                        return CHK_FAIL; /* failure, matrix is degenerate */
                 }
 
                 if (imax != i) {
@@ -584,7 +584,7 @@ int mli_Mat_lup_decompose(struct mli_Mat *A, int *P, const double tolerance)
                 }
         }
 
-        return 1; /* decomposition done */
+        return CHK_SUCCESS; /* decomposition done */
 }
 
 void mli_Mat_lup_solve(
