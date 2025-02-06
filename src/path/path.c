@@ -1,7 +1,6 @@
-#include "../chk/chk.h"
 #include "path.h"
 
-int mli_path_strip_this_dir(
+chk_rc mli_path_strip_this_dir(
         const struct mli_String *src,
         struct mli_String *dst)
 {
@@ -23,14 +22,14 @@ int mli_path_strip_this_dir(
         length = cpysrc.size - start;
         chk(mli_String_copyn(dst, &cpysrc, start, length));
         mli_String_free(&cpysrc);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&cpysrc);
         mli_String_free(dst);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_path_basename(const struct mli_String *src, struct mli_String *dst)
+chk_rc mli_path_basename(const struct mli_String *src, struct mli_String *dst)
 {
         int64_t pos_last_del = -1;
         mli_String_free(dst);
@@ -44,13 +43,13 @@ int mli_path_basename(const struct mli_String *src, struct mli_String *dst)
                 chk(mli_String_from_cstr_fromat(
                         dst, &src->array[pos_last_del + 1]));
         }
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(dst);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_path_splitext(
+chk_rc mli_path_splitext(
         const struct mli_String *src,
         struct mli_String *dst,
         struct mli_String *ext)
@@ -76,10 +75,10 @@ int mli_path_splitext(
         }
 
         mli_String_free(&tmp);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&tmp);
         mli_String_free(dst);
         mli_String_free(ext);
-        return 0;
+        return CHK_FAIL;
 }

@@ -3,19 +3,19 @@
 #include "../math/math.h"
 #include "../chk/chk.h"
 
-int mli_Object_is_valid(const struct mli_Object *obj)
+mli_bool mli_Object_is_valid(const struct mli_Object *obj)
 {
         chk_msg(mli_Object_has_valid_vertices(obj), "Bad vertex.");
         chk_msg(mli_Object_has_valid_faces(obj), "Expected faces to be valid.");
         chk_msg(mli_Object_has_valid_normals(obj, MLI_MATH_EPSILON),
                 "Bad vertex-normal.");
         chk_msg(mli_Object_has_valid_materials(obj), "Bad material.");
-        return CHK_SUCCESS;
+        return MLI_TRUE;
 chk_error:
-        return CHK_FAIL;
+        return MLI_FALSE;
 }
 
-int mli_Object_has_valid_faces(const struct mli_Object *obj)
+mli_bool mli_Object_has_valid_faces(const struct mli_Object *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_faces; i++) {
@@ -42,13 +42,13 @@ int mli_Object_has_valid_faces(const struct mli_Object *obj)
                         "Expected faces_materials < "
                         "num_materials");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
-        fprintf(stderr, "In obj.faces[%u]\n", i);
-        return 0;
+        chk_eprintf("In obj.faces[%u]\n", i);
+        return MLI_FALSE;
 }
 
-int mli_Object_has_valid_vertices(const struct mli_Object *obj)
+mli_bool mli_Object_has_valid_vertices(const struct mli_Object *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_vertices; i++) {
@@ -56,13 +56,13 @@ int mli_Object_has_valid_vertices(const struct mli_Object *obj)
                 chk_msg(!MLI_MATH_IS_NAN(obj->vertices[i].y), "Y is 'nan'.");
                 chk_msg(!MLI_MATH_IS_NAN(obj->vertices[i].z), "Z is 'nan'.");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
-        fprintf(stderr, "In obj.vertices[%u]\n", i);
-        return 0;
+        chk_eprintf("In obj.vertices[%u]\n", i);
+        return MLI_FALSE;
 }
 
-int mli_Object_has_valid_normals(
+mli_bool mli_Object_has_valid_normals(
         const struct mli_Object *obj,
         const double epsilon)
 {
@@ -80,25 +80,25 @@ int mli_Object_has_valid_normals(
                 chk_msg(fabs(norm - 1.0) <= epsilon,
                         "Expected vertex_normals to be normalized.");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
-        fprintf(stderr, "In obj.vertex_normals[%u]\n", i);
-        return 0;
+        chk_eprintf("In obj.vertex_normals[%u]\n", i);
+        return MLI_FALSE;
 }
 
-int mli_Object_has_valid_materials(const struct mli_Object *obj)
+mli_bool mli_Object_has_valid_materials(const struct mli_Object *obj)
 {
         uint32_t i = 0;
         for (i = 0; i < obj->num_materials; i++) {
                 chk(mli_String_valid(&obj->material_names[i], 1));
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
-        fprintf(stderr, "In obj.material_names[%u]\n", i);
-        return 0;
+        chk_eprintf("In obj.material_names[%u]\n", i);
+        return MLI_FALSE;
 }
 
-int mli_Object_num_unused(
+chk_rc mli_Object_num_unused(
         const struct mli_Object *obj,
         uint32_t *num_unused_vertices,
         uint32_t *num_unused_vertex_normals,
@@ -157,5 +157,8 @@ int mli_Object_num_unused(
         free(mtl);
         return CHK_SUCCESS;
 chk_error:
+        free(v);
+        free(vn);
+        free(mtl);
         return CHK_FAIL;
 }

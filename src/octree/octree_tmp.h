@@ -3,6 +3,7 @@
 #define MLI_OCTREE_TMP_H_
 
 #include <stdint.h>
+#include "../bool/bool.h"
 #include "../geometry/geometry.h"
 #include "../aabb/aabb.h"
 #include "../cube/cube.h"
@@ -28,7 +29,7 @@ struct mli_octree_TmpNode {
         int32_t leaf_index;
 };
 
-int mli_octree_TmpNode_malloc(
+chk_rc mli_octree_TmpNode_malloc(
         struct mli_octree_TmpNode *n,
         const uint32_t num_objects);
 void mli_octree_TmpNode_free(struct mli_octree_TmpNode *n);
@@ -49,26 +50,26 @@ void mli_octree_TmpNode_set_flat_index_walk(
         int32_t *flat_index,
         int32_t *node_index,
         int32_t *leaf_index);
-int mli_octree_TmpNode_exists_and_has_objects(
+mli_bool mli_octree_TmpNode_exists_and_has_objects(
         const struct mli_octree_TmpNode *node);
 void mli_octree_TmpNode_print(
         const struct mli_octree_TmpNode *node,
         const uint32_t indent,
         const uint32_t child);
-int mli_octree_TmpNode_num_children(const struct mli_octree_TmpNode *node);
-int mli_octree_TmpNode_malloc_tree_from_bundle(
+uint32_t mli_octree_TmpNode_num_children(const struct mli_octree_TmpNode *node);
+chk_rc mli_octree_TmpNode_malloc_tree_from_bundle(
         struct mli_octree_TmpNode *root_node,
         const void *bundle,
         const uint32_t num_items_in_bundle,
-        int (*item_in_bundle_has_overlap_aabb)(
+        mli_bool (*item_in_bundle_has_overlap_aabb)(
                 const void *,
                 const uint32_t,
                 const struct mli_AABB),
         const struct mli_Cube bundle_cube);
-int mli_octree_TmpNode_add_children(
+chk_rc mli_octree_TmpNode_add_children(
         struct mli_octree_TmpNode *node,
         const void *bundle,
-        int (*item_in_bundle_has_overlap_aabb)(
+        mli_bool (*item_in_bundle_has_overlap_aabb)(
                 const void *,
                 const uint32_t,
                 const struct mli_AABB),
@@ -90,11 +91,11 @@ struct mli_octree_TmpOcTree {
         struct mli_octree_TmpNode root;
 };
 
-int mli_octree_TmpOcTree_malloc_from_bundle(
+chk_rc mli_octree_TmpOcTree_malloc_from_bundle(
         struct mli_octree_TmpOcTree *octree,
         const void *bundle,
         const uint32_t num_items_in_bundle,
-        int (*item_in_bundle_has_overlap_aabb)(
+        mli_bool (*item_in_bundle_has_overlap_aabb)(
                 const void *,
                 const uint32_t,
                 const struct mli_AABB),
