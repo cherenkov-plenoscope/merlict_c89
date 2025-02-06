@@ -73,7 +73,9 @@ chk_error:
         return CHK_FAIL;
 }
 
-chk_rc mli_Tar_field12_to_uint64_2001star_base256(const char *field, uint64_t *val)
+chk_rc mli_Tar_field12_to_uint64_2001star_base256(
+        const char *field,
+        uint64_t *val)
 {
         uint8_t tmp[12];
         uint64_t i = 0u;
@@ -384,7 +386,10 @@ chk_error:
         return CHK_FAIL;
 }
 
-chk_rc mli_Tar_twrite(struct mli_Tar *tar, const void *data, const uint64_t size)
+chk_rc mli_Tar_twrite(
+        struct mli_Tar *tar,
+        const void *data,
+        const uint64_t size)
 {
         int64_t res = mli_IO_write(data, 1, size, tar->stream);
         chk_msg(res >= 0, "Failed writing to tar.");

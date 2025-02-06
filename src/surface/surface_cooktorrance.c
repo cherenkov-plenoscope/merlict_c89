@@ -8,26 +8,26 @@
 #include "../map/map.h"
 #include "../materials/materials.h"
 
-int mli_Surface_CookTorrance_equal(
+mli_bool mli_Surface_CookTorrance_equal(
         const struct mli_Surface_CookTorrance *a,
         const struct mli_Surface_CookTorrance *b)
 {
         if (a->reflection_spectrum != b->reflection_spectrum) {
-                return 0;
+                return MLI_FALSE;
         }
         if (a->diffuse_weight != b->diffuse_weight) {
-                return 0;
+                return MLI_FALSE;
         }
         if (a->specular_weight != b->specular_weight) {
-                return 0;
+                return MLI_FALSE;
         }
         if (a->roughness != b->roughness) {
-                return 0;
+                return MLI_FALSE;
         }
-        return 1;
+        return MLI_TRUE;
 }
 
-int mli_Surface_CookTorrance_to_io(
+chk_rc mli_Surface_CookTorrance_to_io(
         const struct mli_Surface_CookTorrance *self,
         struct mli_IO *f)
 {
@@ -45,7 +45,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Surface_CookTorrance_from_io(
+chk_rc mli_Surface_CookTorrance_from_io(
         struct mli_Surface_CookTorrance *self,
         struct mli_IO *f)
 {
@@ -64,7 +64,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Surface_CookTorrance_from_json_string(
+chk_rc mli_Surface_CookTorrance_from_json_string(
         struct mli_Surface_CookTorrance *self,
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string)
@@ -111,7 +111,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Surface_CookTorrance_valid_wrt_materials(
+chk_rc mli_Surface_CookTorrance_valid_wrt_materials(
         const struct mli_Surface_CookTorrance *self,
         const struct mli_Materials *materials)
 {

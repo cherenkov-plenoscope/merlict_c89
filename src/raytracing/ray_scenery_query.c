@@ -51,7 +51,7 @@ void mli_raytracing_inner_object_traversal(
         return;
 }
 
-int mli_raytracing_query_object_reference(
+mli_bool mli_raytracing_query_object_reference(
         const struct mli_Object *object,
         const struct mli_OcTree *object_octree,
         const struct mli_HomTraComp robject2root_comp,
@@ -117,7 +117,7 @@ void mli_raytracing_outer_scenery_traversal(
         return;
 }
 
-int mli_raytracing_query_intersection(
+mli_bool mli_raytracing_query_intersection(
         const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
         struct mli_Intersection *isec)
@@ -138,13 +138,13 @@ int mli_raytracing_query_intersection(
                 mli_raytracing_outer_scenery_traversal);
 
         if (isec->distance_of_ray == DBL_MAX) {
-                return 0;
+                return MLI_FALSE;
         } else {
-                return 1;
+                return MLI_TRUE;
         }
 }
 
-int mli_raytracing_query_intersection_with_surface_normal(
+mli_bool mli_raytracing_query_intersection_with_surface_normal(
         const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
         struct mli_IntersectionSurfaceNormal *isecsrf)
@@ -195,8 +195,8 @@ int mli_raytracing_query_intersection_with_surface_normal(
                                 ray_object.direction,
                                 isecsrf->surface_normal_local);
 
-                return 1;
+                return MLI_TRUE;
         } else {
-                return 0;
+                return MLI_FALSE;
         }
 }

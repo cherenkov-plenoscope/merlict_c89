@@ -13,17 +13,17 @@
 #include "../intersection/intersection.h"
 #include "../intersection/intersection_surface_normal.h"
 
-int mli_raytracing_query_intersection(
+mli_bool mli_raytracing_query_intersection(
         const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
         struct mli_Intersection *isec);
 
-int mli_raytracing_query_intersection_with_surface_normal(
+mli_bool mli_raytracing_query_intersection_with_surface_normal(
         const struct mli_Scenery *scenery,
         const struct mli_Ray ray_root,
         struct mli_IntersectionSurfaceNormal *isecsrf);
 
-int mli_raytracing_query_object_reference(
+mli_bool mli_raytracing_query_object_reference(
         const struct mli_Object *object,
         const struct mli_OcTree *object_octree,
         const struct mli_HomTraComp local2root_comp,
@@ -34,7 +34,7 @@ struct mli_raytracing_QueryInnerWork {
         struct mli_Intersection *intersection;
         const struct mli_Object *object;
         struct mli_Ray ray_object;
-        int has_intersection;
+        mli_bool has_intersection;
 };
 
 struct mli_raytracing_QueryOuterWork {
