@@ -122,7 +122,7 @@ struct mli_Vec mli_Vec_mirror(
         return out;
 }
 
-int mli_Vec_equal_margin(
+mli_bool mli_Vec_equal_margin(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const double distance_margin)
@@ -134,15 +134,15 @@ int mli_Vec_equal_margin(
         return distance_squared <= distance_margin * distance_margin;
 }
 
-int mli_Vec_equal(const struct mli_Vec a, const struct mli_Vec b)
+mli_bool mli_Vec_equal(const struct mli_Vec a, const struct mli_Vec b)
 {
         if (fabs(a.x - b.x) > DBL_EPSILON)
-                return 0;
+                return MLI_FALSE;
         if (fabs(a.y - b.y) > DBL_EPSILON)
-                return 0;
+                return MLI_FALSE;
         if (fabs(a.z - b.z) > DBL_EPSILON)
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }
 
 uint32_t mli_Vec_octant(const struct mli_Vec a)
@@ -165,19 +165,19 @@ uint32_t mli_Vec_octant(const struct mli_Vec a)
         return 4 * sx + 2 * sy + 1 * sz;
 }
 
-int mli_Vec_sign3_bitmask(const struct mli_Vec a, const double epsilon)
+int64_t mli_Vec_sign3_bitmask(const struct mli_Vec a, const double epsilon)
 {
         /* bits: 7  6  5  4  3  2  1  0  */
         /*             xp yp zp xn yn zn */
 
-        const int xn = a.x < epsilon ? 4 : 0;   /* 2**2 */
-        const int xp = a.x > -epsilon ? 32 : 0; /* 2**5 */
+        const int64_t xn = a.x < epsilon ? 4 : 0;   /* 2**2 */
+        const int64_t xp = a.x > -epsilon ? 32 : 0; /* 2**5 */
 
-        const int yn = a.y < epsilon ? 2 : 0;   /* 2**1 */
-        const int yp = a.y > -epsilon ? 16 : 0; /* 2**4 */
+        const int64_t yn = a.y < epsilon ? 2 : 0;   /* 2**1 */
+        const int64_t yp = a.y > -epsilon ? 16 : 0; /* 2**4 */
 
-        const int zn = a.z < epsilon ? 1 : 0;  /* 2**0 */
-        const int zp = a.z > -epsilon ? 8 : 0; /* 2**3 */
+        const int64_t zn = a.z < epsilon ? 1 : 0;  /* 2**0 */
+        const int64_t zp = a.z > -epsilon ? 8 : 0; /* 2**3 */
 
         return (xn | xp | yn | yp | zn | zp);
 }

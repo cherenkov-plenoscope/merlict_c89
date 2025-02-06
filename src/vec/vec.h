@@ -3,6 +3,7 @@
 #define MLI_VEC_H_
 
 #include <stdint.h>
+#include "../bool/bool.h"
 
 struct mli_Vec {
         double x;
@@ -12,8 +13,8 @@ struct mli_Vec {
 
 void mli_Vec_print(const struct mli_Vec v);
 uint32_t mli_Vec_octant(const struct mli_Vec a);
-int mli_Vec_equal(const struct mli_Vec a, const struct mli_Vec b);
-int mli_Vec_equal_margin(
+mli_bool mli_Vec_equal(const struct mli_Vec a, const struct mli_Vec b);
+mli_bool mli_Vec_equal_margin(
         const struct mli_Vec a,
         const struct mli_Vec b,
         const double distance_margin);
@@ -32,7 +33,7 @@ struct mli_Vec mli_Vec_substract(
         const struct mli_Vec b);
 struct mli_Vec mli_Vec_add(const struct mli_Vec a, const struct mli_Vec b);
 struct mli_Vec mli_Vec_init(const double x, const double y, const double z);
-int mli_Vec_sign3_bitmask(const struct mli_Vec a, const double epsilon);
+int64_t mli_Vec_sign3_bitmask(const struct mli_Vec a, const double epsilon);
 struct mli_Vec mli_Vec_mean(
         const struct mli_Vec *vecs,
         const uint64_t num_vecs);
