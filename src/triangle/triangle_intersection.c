@@ -3,7 +3,7 @@
 #include <math.h>
 #include "../math/math.h"
 
-int mli_Ray_intersects_triangle(
+mli_bool mli_Ray_intersects_triangle(
         const struct mli_Ray ray,
         const struct mli_Vec vertex_a,
         const struct mli_Vec vertex_b,
@@ -21,26 +21,26 @@ int mli_Ray_intersects_triangle(
         a = mli_Vec_dot(edge1, h);
 
         if (a > -MLI_MATH_EPSILON && a < MLI_MATH_EPSILON)
-                return 0; /* This ray is parallel to this triangle. */
+                return MLI_FALSE; /* This ray is parallel to this triangle. */
         f = 1.0 / a;
         s = mli_Vec_substract(ray.support, vertex_a);
         u = f * mli_Vec_dot(s, h);
         if (u < 0.0 || u > 1.0)
-                return 0;
+                return MLI_FALSE;
         q = mli_Vec_cross(s, edge1);
         v = f * mli_Vec_dot(ray.direction, q);
         if (v < 0.0 || u + v > 1.0)
-                return 0;
+                return MLI_FALSE;
         /* At this stage we can compute t to find out where the intersection */
         /* point is on the line. */
         t = f * mli_Vec_dot(edge2, q);
         if (t > MLI_MATH_EPSILON) {
                 (*intersection_ray_parameter) = t;
-                return 1;
+                return MLI_TRUE;
         } else {
                 /* This means that there is a line intersection but not a */
                 /* ray intersection. */
-                return 0;
+                return MLI_FALSE;
         }
 }
 
