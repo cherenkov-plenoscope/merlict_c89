@@ -1,8 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "map_json.h"
-#include "../chk/chk.h"
 
-int mli_Map_insert_key_from_json(
+chk_rc mli_Map_insert_key_from_json(
         struct mli_Map *map,
         const struct mli_Json *json,
         const uint64_t token,
@@ -22,11 +21,11 @@ int mli_Map_insert_key_from_json(
         chk_msg(mli_Map_insert(map, &buff, value),
                 "Failed to insert name and value into map.");
         mli_String_free(&buff);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&buff);
         mli_Json_debug_token_fprint(stderr, json, token);
-        return 0;
+        return CHK_FAIL;
 }
 
 int mli_Map_get_value_for_string_from_json(
@@ -52,9 +51,9 @@ int mli_Map_get_value_for_string_from_json(
         (*out_value) = (uint32_t)value;
 
         mli_String_free(&buff);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&buff);
         mli_Json_debug_token_fprint(stderr, json, token);
-        return 0;
+        return CHK_FAIL;
 }

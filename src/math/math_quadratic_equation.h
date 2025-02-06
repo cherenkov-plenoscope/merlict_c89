@@ -2,7 +2,9 @@
 #ifndef MLI_MATH_QUADRATIC_EQUATION_H_
 #define MLI_MATH_QUADRATIC_EQUATION_H_
 
-int mli_math_quadratic_equation(
+#include "../chk/chk.h"
+
+chk_rc mli_math_quadratic_equation(
         const double p,
         const double q,
         double *minus_solution,

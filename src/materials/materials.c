@@ -35,7 +35,7 @@ void mli_Materials_free(struct mli_Materials *self)
         (*self) = mli_Materials_init();
 }
 
-int mli_Materials_malloc(
+chk_rc mli_Materials_malloc(
         struct mli_Materials *self,
         const struct mli_MaterialsCapacity rescap)
 {
@@ -63,13 +63,13 @@ int mli_Materials_malloc(
                 self->boundary_layers.array[i] = mli_BoundaryLayer_init();
         }
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Materials_free(self);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
+chk_rc mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
 {
         uint32_t i = 0;
         struct mli_String tmp = mli_String_init();
@@ -177,13 +177,13 @@ int mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self)
         }
 
         mli_String_free(&tmp);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&tmp);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_Materials__has_surface_name_cstr(
+mli_bool mli_Materials__has_surface_name_cstr(
         const struct mli_Materials *self,
         const char *name)
 {
@@ -191,21 +191,21 @@ int mli_Materials__has_surface_name_cstr(
         for (i = 0; i < self->surfaces.size; i++) {
                 if (mli_String_equal_cstr(
                             &self->surfaces.array[i].name, name)) {
-                        return 1;
+                        return MLI_TRUE;
                 }
         }
-        return 0;
+        return MLI_FALSE;
 }
 
-int mli_Materials__has_medium_name_cstr(
+mli_bool mli_Materials__has_medium_name_cstr(
         const struct mli_Materials *self,
         const char *name)
 {
         uint64_t i;
         for (i = 0; i < self->media.size; i++) {
                 if (mli_String_equal_cstr(&self->media.array[i].name, name)) {
-                        return 1;
+                        return MLI_TRUE;
                 }
         }
-        return 0;
+        return MLI_FALSE;
 }

@@ -21,7 +21,7 @@ void mli_Map_free(struct mli_Map *map)
         mli_MapItemVector_free(&map->items);
 }
 
-int mli_Map_malloc(struct mli_Map *map)
+chk_rc mli_Map_malloc(struct mli_Map *map)
 {
         chk_msg(mli_MapItemVector_malloc(&map->items, 0u),
                 "Failed to malloc map items.");
@@ -32,7 +32,7 @@ chk_error:
 
 uint64_t mli_Map_size(const struct mli_Map *map) { return map->items.size; }
 
-int mli_Map_find(
+chk_rc mli_Map_find(
         const struct mli_Map *map,
         const struct mli_String *key,
         uint64_t *idx)
@@ -42,19 +42,23 @@ int mli_Map_find(
                 struct mliMapItem *item = &map->items.array[i];
                 if (mli_String_compare(&item->key, key) == 0) {
                         (*idx) = i;
-                        return 1;
+                        return CHK_SUCCESS;
                 }
         }
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_Map_has(const struct mli_Map *map, const struct mli_String *key)
+mli_bool mli_Map_has(const struct mli_Map *map, const struct mli_String *key)
 {
         uint64_t idx;
-        return mli_Map_find(map, key, &idx);
+        if (mli_Map_find(map, key, &idx) == CHK_SUCCESS) {
+                return MLI_TRUE;
+        } else {
+                return MLI_FALSE;
+        }
 }
 
-int mli_Map_insert(
+chk_rc mli_Map_insert(
         struct mli_Map *map,
         const struct mli_String *key,
         uint64_t value)
@@ -75,7 +79,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Map_get(
+chk_rc mli_Map_get(
         const struct mli_Map *map,
         const struct mli_String *key,
         uint64_t *value)

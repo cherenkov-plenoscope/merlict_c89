@@ -2,10 +2,9 @@
 #include "object_serialize.h"
 #include "object_valid.h"
 #include "../magicid/magicid.h"
-#include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mli_Object_to_io(const struct mli_Object *obj, struct mli_IO *f)
+chk_rc mli_Object_to_io(const struct mli_Object *obj, struct mli_IO *f)
 {
         uint64_t i;
         struct mli_MagicId magic;
@@ -47,7 +46,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Object_from_io(struct mli_Object *obj, struct mli_IO *f)
+chk_rc mli_Object_from_io(struct mli_Object *obj, struct mli_IO *f)
 {
         uint64_t i;
         uint32_t num_vertices;
@@ -97,8 +96,8 @@ int mli_Object_from_io(struct mli_Object *obj, struct mli_IO *f)
 
         chk_msg(mli_Object_has_valid_faces(obj),
                 "A face refers to a not existing vertex/vertex_normal.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Object_free(obj);
-        return 0;
+        return CHK_FAIL;
 }

@@ -3,7 +3,6 @@
 #include <assert.h>
 #include "../version/version.h"
 #include "../math/math.h"
-#include "../chk/chk.h"
 
 struct mli_MagicId mli_MagicId_init(void)
 {
@@ -15,7 +14,7 @@ struct mli_MagicId mli_MagicId_init(void)
         return magic;
 }
 
-int mli_MagicId_set(struct mli_MagicId *magic, const char *word)
+chk_rc mli_MagicId_set(struct mli_MagicId *magic, const char *word)
 {
         uint64_t i, len;
         (*magic) = mli_MagicId_init();
@@ -36,7 +35,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_MagicId_has_word(const struct mli_MagicId *magic, const char *word)
+chk_rc mli_MagicId_has_word(const struct mli_MagicId *magic, const char *word)
 {
         uint64_t i, len;
         chk_msg(strlen(word) < sizeof(magic->word),
@@ -46,12 +45,12 @@ int mli_MagicId_has_word(const struct mli_MagicId *magic, const char *word)
 
         for (i = 0; i < len; i++) {
                 if (magic->word[i] != word[i]) {
-                        return 0;
+                        return CHK_FAIL;
                 }
         }
         while (i < sizeof(magic->word)) {
                 if (magic->word[i] != '\0') {
-                        return 0;
+                        return CHK_FAIL;
                 }
                 i += 1;
         }

@@ -2,24 +2,25 @@
 #ifndef MLI_MATERIALS_EQUAL_H_
 #define MLI_MATERIALS_EQUAL_H_
 
+#include "../bool/bool.h"
 #include "../materials/materials.h"
 
-int mli_Materials_equal(
+mli_bool mli_Materials_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);
-int mli_Materials_spectra_equal(
+mli_bool mli_Materials_spectra_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);
-int mli_Materials_surfaces_equal(
+mli_bool mli_Materials_surfaces_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);
-int mli_Materials_media_equal(
+mli_bool mli_Materials_media_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);
-int mli_Materials_boundary_layers_equal(
+mli_bool mli_Materials_boundary_layers_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);
-int mli_Materials_default_medium_equal(
+mli_bool mli_Materials_default_medium_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b);
 #endif

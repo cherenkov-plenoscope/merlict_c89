@@ -3,6 +3,7 @@
 #define MLI_OBJECT_FACE_H_
 
 #include <stdint.h>
+#include "../bool/bool.h"
 
 struct mli_object_Face {
         uint32_t a;
@@ -10,7 +11,7 @@ struct mli_object_Face {
         uint32_t c;
 };
 
-int mli_object_Face_equal(
+mli_bool mli_object_Face_equal(
         const struct mli_object_Face a,
         const struct mli_object_Face b);
 struct mli_object_Face mli_object_Face_set(

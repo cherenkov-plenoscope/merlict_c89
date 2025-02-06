@@ -2,7 +2,7 @@
 #include "math_quadratic_equation.h"
 #include <math.h>
 
-int mli_math_quadratic_equation(
+chk_rc mli_math_quadratic_equation(
         const double p,
         const double q,
         double *minus_solution,
@@ -22,8 +22,8 @@ int mli_math_quadratic_equation(
                 squareroot = sqrt(inner_part_of_squareroot);
                 (*minus_solution) = -p_over_2 - squareroot;
                 (*plus_solution) = -p_over_2 + squareroot;
-                return 1;
+                return CHK_SUCCESS;
         } else {
-                return 0;
+                return CHK_FAIL;
         }
 }

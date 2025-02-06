@@ -14,7 +14,7 @@
 #include "../frame/frame_json.h"
 #include "../func/func_csv.h"
 
-int mli_Materials__key_from_filename(
+chk_rc mli_Materials__key_from_filename(
         struct mli_String *key,
         const struct mli_String *filename)
 {
@@ -29,7 +29,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Materials_from_Archive__set_spectra(
+chk_rc mli_Materials_from_Archive__set_spectra(
         struct mli_Materials *materials,
         struct mli_materials_Names *names,
         const struct mli_Archive *archive)
@@ -90,7 +90,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Materials_from_Archive__set_media(
+chk_rc mli_Materials_from_Archive__set_media(
         struct mli_Materials *materials,
         struct mli_materials_Names *names,
         const struct mli_Archive *archive)
@@ -141,7 +141,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Materials_from_Archive__set_surfaces(
+chk_rc mli_Materials_from_Archive__set_surfaces(
         struct mli_Materials *materials,
         struct mli_materials_Names *names,
         const struct mli_Archive *archive)
@@ -192,7 +192,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_BoundaryLayer_from_json_string_and_name(
+chk_rc mli_BoundaryLayer_from_json_string_and_name(
         struct mli_BoundaryLayer *self,
         const struct mli_Map *surface_names,
         const struct mli_Map *media_names,
@@ -251,7 +251,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Materials_from_Archive__set_boundary_layers(
+chk_rc mli_Materials_from_Archive__set_boundary_layers(
         struct mli_Materials *materials,
         struct mli_materials_Names *names,
         const struct mli_Archive *archive)
@@ -306,7 +306,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Materials_from_Archive__set_default_medium(
+chk_rc mli_Materials_from_Archive__set_default_medium(
         struct mli_Materials *materials,
         struct mli_materials_Names *names,
         const struct mli_Archive *archive)
@@ -332,7 +332,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Materials_from_Archive(
+chk_rc mli_Materials_from_Archive(
         struct mli_Materials *materials,
         struct mli_materials_Names *names,
         const struct mli_Archive *archive)
@@ -376,9 +376,9 @@ int mli_Materials_from_Archive(
                         materials, names, archive),
                 "Can't set default_medium from archive.");
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Materials_free(materials);
         mli_materials_Names_free(names);
-        return 0;
+        return CHK_FAIL;
 }

@@ -4,6 +4,7 @@
 #include "object_valid.h"
 #include <ctype.h>
 #include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../vector/vector.h"
 #include "../string/string_numbers.h"
 #include "../map/map.h"
@@ -22,7 +23,7 @@
 
 #define MLI_WAVEFRONT_LINE_BUFF_LENGTH 64
 
-int mli_Object_is_face_line_toggle(const int state)
+mli_bool mli_Object_is_face_line_toggle(const int state)
 {
         switch (state) {
         case 3:
@@ -43,13 +44,13 @@ int mli_Object_is_face_line_toggle(const int state)
         case 21:
         case 23:
         case 25:
-                return 1;
+                return MLI_TRUE;
                 break;
         }
-        return 0;
+        return MLI_FALSE;
 }
 
-int mli_String_to_uint32(uint32_t *out, const struct mli_String *str)
+chk_rc mli_String_to_uint32(uint32_t *out, const struct mli_String *str)
 {
         uint64_t u = 0;
         chk(mli_String_to_uint64(&u, str, 10));
@@ -59,7 +60,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Object_parse_face_line(
+chk_rc mli_Object_parse_face_line(
         const struct mli_String *line,
         struct mli_object_Face *faces_vertices,
         struct mli_object_Face *faces_texture_points,
@@ -335,25 +336,25 @@ int mli_Object_parse_face_line(
                 i++;
         }
         mli_String_free(&wuff);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&wuff);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_Object_is_vert_line_toggle(const int state)
+mli_bool mli_Object_is_vert_line_toggle(const int state)
 {
         switch (state) {
         case 2:
         case 4:
         case 6:
-                return 1;
+                return MLI_TRUE;
                 break;
         }
-        return 0;
+        return MLI_FALSE;
 }
 
-int mli_Object_parse_three_float_line(
+chk_rc mli_Object_parse_three_float_line(
         const struct mli_String *line,
         struct mli_Vec *v)
 {
@@ -476,7 +477,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Object_parse_face_vertices_and_normals(
+chk_rc mli_Object_parse_face_vertices_and_normals(
         const struct mli_String *line,
         struct mli_object_Face *fv,
         struct mli_object_Face *fvn)
@@ -509,7 +510,9 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
+chk_rc mli_Object_malloc_from_wavefront(
+        struct mli_Object *obj,
+        struct mli_IO *io)
 {
         uint64_t i = 0u;
         uint64_t line_number = 0u;
@@ -654,7 +657,7 @@ int mli_Object_malloc_from_wavefront(struct mli_Object *obj, struct mli_IO *io)
         mli_String_free(&sf);
         mli_String_free(&susemtl);
 
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Object_free(obj);
 
@@ -675,10 +678,10 @@ chk_error:
         mli_String_free(&sf);
         mli_String_free(&susemtl);
 
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_Object_fprint_to_wavefront(
+chk_rc mli_Object_fprint_to_wavefront(
         struct mli_IO *f,
         const struct mli_Object *obj)
 {

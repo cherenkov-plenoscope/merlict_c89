@@ -3,7 +3,7 @@
 #include "../object/object.h"
 #include "../chk/chk.h"
 
-int mli_Materials_valid_media(const struct mli_Materials *self)
+mli_bool mli_Materials_valid_media(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
         for (i = 0; i < self->media.size; i++) {
@@ -11,26 +11,26 @@ int mli_Materials_valid_media(const struct mli_Materials *self)
                                 &self->media.array[i], self),
                         "Medium is not valid.");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
-        fprintf(stderr, "In materials.media[%lu]\n", i);
-        return 0;
+        chk_eprintf("In materials.media[%lu]\n", i);
+        return MLI_FALSE;
 }
 
-int mli_Materials_valid_spectra(const struct mli_Materials *self)
+mli_bool mli_Materials_valid_spectra(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
         for (i = 0; i < self->spectra.size; i++) {
                 chk_msg(mli_Func_is_valid(&self->spectra.array[i].spectrum),
                         "Expected spectrum function to be valid.");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
-        fprintf(stderr, "In materials.spectra[%lu]\n", i);
-        return 0;
+        chk_eprintf("In materials.spectra[%lu]\n", i);
+        return MLI_FALSE;
 }
 
-int mli_Materials_valid_surfaces(const struct mli_Materials *self)
+mli_bool mli_Materials_valid_surfaces(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
         for (i = 0; i < self->surfaces.size; i++) {
@@ -38,13 +38,13 @@ int mli_Materials_valid_surfaces(const struct mli_Materials *self)
                                 &self->surfaces.array[i], self),
                         "Surface is not valid.");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
-        fprintf(stderr, "In materials.surface[%lu]\n", i);
-        return 0;
+        chk_eprintf("In materials.surface[%lu]\n", i);
+        return MLI_FALSE;
 }
 
-int mli_Materials_valid_boundary_layers(const struct mli_Materials *self)
+mli_bool mli_Materials_valid_boundary_layers(const struct mli_Materials *self)
 {
         uint64_t i = 0u;
         for (i = 0; i < self->boundary_layers.size; i++) {
@@ -62,13 +62,13 @@ int mli_Materials_valid_boundary_layers(const struct mli_Materials *self)
                 chk_msg(mli_String_valid(&layer->name, 1),
                         "boundary_layer.name is invalid.");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
-        fprintf(stderr, "In materials.boundary_layers[%lu]\n", i);
-        return 0;
+        chk_eprintf("In materials.boundary_layers[%lu]\n", i);
+        return MLI_FALSE;
 }
 
-int mli_Materials_valid(const struct mli_Materials *self)
+mli_bool mli_Materials_valid(const struct mli_Materials *self)
 {
         chk_msg(self->default_medium <= self->media.size,
                 "Expected default-medium to reference a valid medium.");
@@ -76,7 +76,7 @@ int mli_Materials_valid(const struct mli_Materials *self)
         chk(mli_Materials_valid_media(self));
         chk(mli_Materials_valid_surfaces(self));
         chk(mli_Materials_valid_boundary_layers(self));
-        return CHK_SUCCESS;
+        return MLI_TRUE;
 chk_error:
-        return CHK_FAIL;
+        return MLI_FALSE;
 }

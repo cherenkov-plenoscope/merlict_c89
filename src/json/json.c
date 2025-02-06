@@ -72,10 +72,10 @@ chk_rc mli_Json_from_string(struct mli_Json *self, const struct mli_String *str)
                 "Failed to copy string into json->raw.");
         chk_msg(mli_Json__malloc_tokens(self), "Can't malloc Json's tokens.");
         chk_msg(mli_Json__parse_tokens(self), "Can't parse Json into tokens.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Json_free(self);
-        return 0;
+        return CHK_FAIL;
 }
 
 chk_rc mli_Json_from_io(struct mli_Json *self, struct mli_IO *io)
@@ -85,10 +85,10 @@ chk_rc mli_Json_from_io(struct mli_Json *self, struct mli_IO *io)
                 "Failed to read file into String.");
         chk_msg(mli_Json__malloc_tokens(self), "Can't malloc Json's tokens.");
         chk_msg(mli_Json__parse_tokens(self), "Can't parse Json into tokens.");
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_Json_free(self);
-        return 0;
+        return CHK_FAIL;
 }
 
 chk_rc mli_Json_cstr_by_token(

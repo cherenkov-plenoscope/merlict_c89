@@ -17,7 +17,7 @@ int mli_IO_text_getc(struct mli_IO *self)
         }
 }
 
-int mli_IO_text_putc(struct mli_IO *self, const char c)
+chk_rc mli_IO_text_putc(struct mli_IO *self, const char c)
 {
         chk_msg(mli_IO_write((void *)(&c), sizeof(char), 1, self),
                 "Can not write char to IO.");
@@ -26,20 +26,23 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IO_text_write_cstr(struct mli_IO *self, const char *cstr)
+chk_rc mli_IO_text_write_cstr(struct mli_IO *self, const char *cstr)
 {
         struct mli_String tmp = mli_String_init();
         chk_msg(mli_String_from_cstr(&tmp, cstr),
                 "Can't malloc mli_String from cstr");
         chk(mli_IO_text_write_String(self, &tmp));
         mli_String_free(&tmp);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         mli_String_free(&tmp);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_IO_text_write_cstr_format(struct mli_IO *self, const char *format, ...)
+chk_rc mli_IO_text_write_cstr_format(
+        struct mli_IO *self,
+        const char *format,
+        ...)
 {
         struct mli_String tmp = mli_String_init();
         va_list args;
@@ -48,14 +51,14 @@ int mli_IO_text_write_cstr_format(struct mli_IO *self, const char *format, ...)
         chk(mli_IO_text_write_String(self, &tmp));
         va_end(args);
         mli_String_free(&tmp);
-        return 1;
+        return CHK_SUCCESS;
 chk_error:
         va_end(args);
         mli_String_free(&tmp);
-        return 0;
+        return CHK_FAIL;
 }
 
-int mli_IO_text_read_string(struct mli_IO *self, struct mli_String *str)
+chk_rc mli_IO_text_read_string(struct mli_IO *self, struct mli_String *str)
 {
         chk(mli_IO_text_read_line(self, str, '\0'));
         return CHK_SUCCESS;
@@ -63,7 +66,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IO_text_read_line(
+chk_rc mli_IO_text_read_line(
         struct mli_IO *self,
         struct mli_String *line,
         const char delimiter)
@@ -92,7 +95,9 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IO_text_write_String(struct mli_IO *self, const struct mli_String *str)
+chk_rc mli_IO_text_write_String(
+        struct mli_IO *self,
+        const struct mli_String *str)
 {
         uint64_t i;
         for (i = 0; i < str->size; i++) {
@@ -107,7 +112,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IO_text_write_multi_line_debug_view_line_match(
+chk_rc mli_IO_text_write_multi_line_debug_view_line_match(
         struct mli_IO *self,
         const int64_t line_number,
         const int64_t line_number_of_interest)
@@ -123,7 +128,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IO_text_write_multi_line_debug_view(
+chk_rc mli_IO_text_write_multi_line_debug_view(
         struct mli_IO *self,
         const struct mli_String *text,
         const uint64_t line_number,

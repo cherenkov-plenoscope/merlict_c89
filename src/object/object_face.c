@@ -13,15 +13,15 @@ struct mli_object_Face mli_object_Face_set(
         return face;
 }
 
-int mli_object_Face_equal(
+mli_bool mli_object_Face_equal(
         const struct mli_object_Face a,
         const struct mli_object_Face b)
 {
         if (a.a != b.a)
-                return 0;
+                return MLI_FALSE;
         if (a.b != b.b)
-                return 0;
+                return MLI_FALSE;
         if (a.c != b.c)
-                return 0;
-        return 1;
+                return MLI_FALSE;
+        return MLI_TRUE;
 }

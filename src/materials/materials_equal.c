@@ -2,7 +2,7 @@
 #include "materials_equal.h"
 #include "../chk/chk.h"
 
-int mli_Materials_media_equal(
+mli_bool mli_Materials_media_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b)
 {
@@ -13,13 +13,13 @@ int mli_Materials_media_equal(
                                 &a->media.array[i], &b->media.array[i]),
                         "Medium is different.");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
         fprintf(stderr, "In materials.media[%lu].\n", i);
-        return 0;
+        return MLI_FALSE;
 }
 
-int mli_Materials_surfaces_equal(
+mli_bool mli_Materials_surfaces_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b)
 {
@@ -31,13 +31,13 @@ int mli_Materials_surfaces_equal(
                                 &a->surfaces.array[i], &b->surfaces.array[i]),
                         "Surface is different.");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
         fprintf(stderr, "In materials.surfaces[%lu].\n", i);
-        return 0;
+        return MLI_FALSE;
 }
 
-int mli_Materials_boundary_layers_equal(
+mli_bool mli_Materials_boundary_layers_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b)
 {
@@ -50,13 +50,13 @@ int mli_Materials_boundary_layers_equal(
                                 &b->boundary_layers.array[i]),
                         "Boundary layer is different.");
         }
-        return 1;
+        return MLI_TRUE;
 chk_error:
         fprintf(stderr, "In materials.boundary_layers[%lu].\n", i);
-        return 0;
+        return MLI_FALSE;
 }
 
-int mli_Materials_spectra_equal(
+mli_bool mli_Materials_spectra_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b)
 {
@@ -68,23 +68,23 @@ int mli_Materials_spectra_equal(
                                 &a->spectra.array[i], &b->spectra.array[i]),
                         "Spectrum is not equal.");
         }
-        return CHK_SUCCESS;
+        return MLI_TRUE;
 chk_error:
-        return CHK_FAIL;
+        return MLI_FALSE;
 }
 
-int mli_Materials_default_medium_equal(
+mli_bool mli_Materials_default_medium_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b)
 {
         chk_msg(a->default_medium == b->default_medium,
                 "Different default_medium.");
-        return CHK_SUCCESS;
+        return MLI_TRUE;
 chk_error:
-        return CHK_FAIL;
+        return MLI_FALSE;
 }
 
-int mli_Materials_equal(
+mli_bool mli_Materials_equal(
         const struct mli_Materials *a,
         const struct mli_Materials *b)
 {
@@ -93,7 +93,7 @@ int mli_Materials_equal(
         chk(mli_Materials_surfaces_equal(a, b));
         chk(mli_Materials_boundary_layers_equal(a, b));
         chk(mli_Materials_default_medium_equal(a, b));
-        return CHK_SUCCESS;
+        return MLI_TRUE;
 chk_error:
-        return CHK_FAIL;
+        return MLI_FALSE;
 }
