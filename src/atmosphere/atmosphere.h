@@ -21,11 +21,6 @@ struct mli_Atmosphere {
         double Height_Rayleigh;
         double Height_Mie;
 
-        /*
-        struct mli_Color beta_Rayleigh;
-        struct mli_Color beta_Mie;
-        */
-
         struct mli_ColorSpectrum beta_Rayleigh_spectrum;
         struct mli_ColorSpectrum beta_Mie_spectrum;
         struct mli_ColorSpectrum sun_spectrum;

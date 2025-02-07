@@ -12,18 +12,6 @@ struct mli_Color mli_Color_set(const float r, const float g, const float b)
         return rgb;
 }
 
-struct mli_Color mli_Color_mix(
-        const struct mli_Color a,
-        const struct mli_Color b,
-        const float refl)
-{
-        struct mli_Color out;
-        out.r = (1.f - refl) * a.r + refl * b.r;
-        out.g = (1.f - refl) * a.g + refl * b.g;
-        out.b = (1.f - refl) * a.b + refl * b.b;
-        return out;
-}
-
 struct mli_Color mli_Color_mean(
         const struct mli_Color colors[],
         const uint32_t num_colors)
@@ -113,11 +101,4 @@ struct mli_Color mli_Color_add(
 struct mli_Color mli_Color_multiply(const struct mli_Color c, const double f)
 {
         return mli_Color_set(c.r * f, c.g * f, c.b * f);
-}
-
-struct mli_Color mli_Color_multiply_elementwise(
-        const struct mli_Color u,
-        const struct mli_Color v)
-{
-        return mli_Color_set(u.r * v.r, u.g * v.g, u.b * v.b);
 }

@@ -30,11 +30,6 @@ struct mli_Atmosphere mli_Atmosphere_init(void)
         atm.Height_Rayleigh = 7994.0;
         atm.Height_Mie = 1200.0;
 
-        /*
-        atm.beta_Rayleigh = mli_Color_set(3.8e-6, 13.5e-6, 33.1e-6);
-        atm.beta_Mie = mli_Color_multiply(mli_Color_set(1.0, 1.0, 1.0), 41e-6);
-        */
-
         mli_ColorSpectrum_set_beta_rayleigh(&atm.beta_Rayleigh_spectrum);
         mli_ColorSpectrum_set(&atm.beta_Mie_spectrum, 41e-6);
         mli_ColorSpectrum_set_radiance_of_black_body_W_per_m2_per_sr(

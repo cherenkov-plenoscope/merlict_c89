@@ -1,13 +1,12 @@
 /* Copyright 2019-2020 Sebastian Achim Mueller                                */
 
-CASE("mli_Color_mix")
+CASE("mli_Color_truncate")
 {
-        struct mli_Color red = {255., 0., 0.};
-        struct mli_Color blue = {0., 0., 255.};
-        struct mli_Color mix = mli_Color_mix(red, blue, 0.2);
-        CHECK_MARGIN(mix.r, 255. * 0.8, 1e-6);
-        CHECK_MARGIN(mix.g, 0., 1e-6);
-        CHECK_MARGIN(mix.b, 255. * 0.2, 1e-6);
+        struct mli_Color in = mli_Color_set(100.0, -14.0, 16.0);
+        struct mli_Color out = mli_Color_truncate(in, -6.0, 24.0);
+        CHECK_MARGIN(out.r, 24.0, 1e-6);
+        CHECK_MARGIN(out.g, -6.0, 1e-6);
+        CHECK_MARGIN(out.b, 16.0, 1e-6);
 }
 
 CASE("mli_Color_mean")
