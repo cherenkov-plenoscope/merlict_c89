@@ -14,12 +14,11 @@ struct mli_IoMemory mli_IoMemory_init(void)
         return byt;
 }
 
-int mli_IoMemory_close(struct mli_IoMemory *self)
+chk_rc mli_IoMemory_close(struct mli_IoMemory *self)
 {
-        const int RC_IS_ALWAYS_1 = 1;
         free(self->cstr);
         (*self) = mli_IoMemory_init();
-        return RC_IS_ALWAYS_1;
+        return CHK_SUCCESS;
 }
 
 chk_rc mli_IoMemory__malloc_capacity(
@@ -226,7 +225,7 @@ int64_t mli_IoMemory_seek(
         }
 }
 
-int mli_IoMemory_eof(const struct mli_IoMemory *self)
+int64_t mli_IoMemory_eof(const struct mli_IoMemory *self)
 {
         if (self->pos < self->size) {
                 return 0;

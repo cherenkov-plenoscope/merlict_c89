@@ -8,7 +8,7 @@
 #include "io.h"
 #include <stdarg.h>
 
-int mli_IO_text_getc(struct mli_IO *self);
+int64_t mli_IO_text_getc(struct mli_IO *self);
 chk_rc mli_IO_text_putc(struct mli_IO *self, const char c);
 
 chk_rc mli_IO_text_write_cstr(struct mli_IO *self, const char *cstr);

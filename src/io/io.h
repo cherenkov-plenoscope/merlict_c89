@@ -7,22 +7,24 @@
 #include "io_memory.h"
 #include "../chk/chk.h"
 
-#define MLI_IO_TYPE_VOID 0
-#define MLI_IO_TYPE_FILE 10
-#define MLI_IO_TYPE_MEMORY 20
+enum mli_io_type_code {
+        MLI_IO_TYPE_VOID = 0,
+        MLI_IO_TYPE_FILE = 10,
+        MLI_IO_TYPE_MEMORY = 20
+};
 
-union mli_IoType {
+union mli_io_Type {
         struct mli_IoFile file;
         struct mli_IoMemory memory;
 };
 
 struct mli_IO {
-        int type;
-        union mli_IoType data;
+        enum mli_io_type_code type;
+        union mli_io_Type data;
 };
 
 struct mli_IO mli_IO_init(void);
-int mli_IO_close(struct mli_IO *self);
+chk_rc mli_IO_close(struct mli_IO *self);
 chk_rc mli_IO_open_memory(struct mli_IO *self);
 chk_rc mli_IO_open_file(
         struct mli_IO *self,
@@ -49,8 +51,8 @@ int64_t mli_IO_seek(
         struct mli_IO *self,
         const int64_t offset,
         const int64_t origin);
-int mli_IO_eof(const struct mli_IO *self);
-int mli_IO_flush(struct mli_IO *self);
+int64_t mli_IO_eof(const struct mli_IO *self);
+int64_t mli_IO_flush(struct mli_IO *self);
 
 #define chk_IO_write(PTR, SIZE_OF_TYPE, NUM, IO)                               \
         {                                                                      \

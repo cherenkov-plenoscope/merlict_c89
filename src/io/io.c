@@ -61,9 +61,9 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IO_close(struct mli_IO *self)
+chk_rc mli_IO_close(struct mli_IO *self)
 {
-        int rc = 0;
+        chk_rc rc = CHK_FAIL;
         switch (self->type) {
         case MLI_IO_TYPE_MEMORY:
                 rc = mli_IoMemory_close(&self->data.memory);
@@ -72,7 +72,8 @@ int mli_IO_close(struct mli_IO *self)
                 rc = mli_IoFile_close(&self->data.file);
                 break;
         case MLI_IO_TYPE_VOID:
-                rc = 1;
+                chk_warning("Expected io->type != VOID in order to close.");
+                rc = CHK_FAIL;
                 break;
         }
         (*self) = mli_IO_init();
@@ -93,7 +94,8 @@ size_t mli_IO_write(
         case MLI_IO_TYPE_FILE:
                 rc = mli_IoFile_write(ptr, size, count, &self->data.file);
                 break;
-        default:
+        case MLI_IO_TYPE_VOID:
+                chk_warning("Expected io->type != VOID in order to write.");
                 rc = 0;
         }
         return rc;
@@ -113,7 +115,8 @@ size_t mli_IO_read(
         case MLI_IO_TYPE_FILE:
                 rc = mli_IoFile_read(ptr, size, count, &self->data.file);
                 break;
-        default:
+        case MLI_IO_TYPE_VOID:
+                chk_warning("Expected io->type != VOID in order to read.");
                 rc = 0;
         }
         return rc;
@@ -128,12 +131,14 @@ void mli_IO_rewind(struct mli_IO *self)
         case MLI_IO_TYPE_FILE:
                 rewind(self->data.file.cfile);
                 break;
+        case MLI_IO_TYPE_VOID:
+                chk_warning("Expected io->type != VOID in order to rewind.");
         }
 }
 
 int64_t mli_IO_tell(struct mli_IO *self)
 {
-        int64_t rc = -1;
+        int64_t rc = EOF;
         switch (self->type) {
         case MLI_IO_TYPE_MEMORY:
                 rc = mli_IoMemory_tell(&self->data.memory);
@@ -141,6 +146,9 @@ int64_t mli_IO_tell(struct mli_IO *self)
         case MLI_IO_TYPE_FILE:
                 rc = mli_IoFile_tell(&self->data.file);
                 break;
+        case MLI_IO_TYPE_VOID:
+                rc = EOF;
+                chk_warning("Expected io->type != VOID in order to tell.");
         }
         return rc;
 }
@@ -150,7 +158,7 @@ int64_t mli_IO_seek(
         const int64_t offset,
         const int64_t origin)
 {
-        int64_t rc = -1;
+        int64_t rc = EOF;
         switch (self->type) {
         case MLI_IO_TYPE_MEMORY:
                 rc = mli_IoMemory_seek(&self->data.memory, offset, origin);
@@ -158,11 +166,14 @@ int64_t mli_IO_seek(
         case MLI_IO_TYPE_FILE:
                 rc = mli_IoFile_seek(&self->data.file, offset, origin);
                 break;
+        case MLI_IO_TYPE_VOID:
+                rc = EOF;
+                chk_warning("Expected io->type != VOID in order to seek.");
         }
         return rc;
 }
 
-int mli_IO_eof(const struct mli_IO *self)
+int64_t mli_IO_eof(const struct mli_IO *self)
 {
         int64_t rc = EOF;
         switch (self->type) {
@@ -172,20 +183,26 @@ int mli_IO_eof(const struct mli_IO *self)
         case MLI_IO_TYPE_FILE:
                 rc = mli_IoFile_eof(&self->data.file);
                 break;
+        case MLI_IO_TYPE_VOID:
+                rc = EOF;
+                chk_warning("Expected io->type != VOID in order to eof.");
         }
         return rc;
 }
 
-int mli_IO_flush(struct mli_IO *self)
+int64_t mli_IO_flush(struct mli_IO *self)
 {
-        int64_t rc = -1;
+        int64_t rc = EOF;
         switch (self->type) {
         case MLI_IO_TYPE_MEMORY:
-                rc = 1;
+                rc = 0;
                 break;
         case MLI_IO_TYPE_FILE:
                 rc = mli_IoFile_flush(&self->data.file);
                 break;
+        case MLI_IO_TYPE_VOID:
+                rc = EOF;
+                chk_warning("Expected io->type != VOID in order to flush.");
         }
         return rc;
 }

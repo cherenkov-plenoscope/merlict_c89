@@ -9,14 +9,14 @@ struct mli_IoFile mli_IoFile_init(void)
         return out;
 }
 
-int mli_IoFile_close(struct mli_IoFile *self)
+chk_rc mli_IoFile_close(struct mli_IoFile *self)
 {
-        int rc = 1;
+        chk_rc rc = CHK_SUCCESS;
         if (self->cfile != NULL) {
                 if (!mli_IoFile__cfile_is_stdin_or_stdout_stderr(self)) {
                         int fclose_rc = fclose(self->cfile);
                         if (fclose_rc == EOF) {
-                                rc = EOF;
+                                rc = CHK_FAIL;
                         }
                 }
         }
@@ -84,9 +84,15 @@ int64_t mli_IoFile_seek(
         return fseek(self->cfile, offset, origin);
 }
 
-int mli_IoFile_eof(const struct mli_IoFile *self) { return feof(self->cfile); }
+int64_t mli_IoFile_eof(const struct mli_IoFile *self)
+{
+        return feof(self->cfile);
+}
 
-int mli_IoFile_flush(struct mli_IoFile *self) { return fflush(self->cfile); }
+int64_t mli_IoFile_flush(struct mli_IoFile *self)
+{
+        return fflush(self->cfile);
+}
 
 mli_bool mli_IoFile__cfile_is_stdin_or_stdout_stderr(
         const struct mli_IoFile *self)

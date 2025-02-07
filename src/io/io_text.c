@@ -6,14 +6,14 @@
 #include "../math/math.h"
 #include "../cstr/cstr.h"
 
-int mli_IO_text_getc(struct mli_IO *self)
+int64_t mli_IO_text_getc(struct mli_IO *self)
 {
         char c = EOF;
         size_t rc = mli_IO_read((void *)(&c), sizeof(char), 1, self);
         if (rc == 0) {
                 return EOF;
         } else {
-                return (int)c;
+                return (int64_t)c;
         }
 }
 

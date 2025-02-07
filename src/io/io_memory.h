@@ -21,7 +21,7 @@ struct mli_IoMemory {
 };
 
 struct mli_IoMemory mli_IoMemory_init(void);
-int mli_IoMemory_close(struct mli_IoMemory *self);
+chk_rc mli_IoMemory_close(struct mli_IoMemory *self);
 chk_rc mli_IoMemory_open(struct mli_IoMemory *self);
 size_t mli_IoMemory_write(
         const void *ptr,
@@ -39,7 +39,7 @@ int64_t mli_IoMemory_seek(
         struct mli_IoMemory *self,
         const int64_t offset,
         const int64_t origin);
-int mli_IoMemory_eof(const struct mli_IoMemory *self);
+int64_t mli_IoMemory_eof(const struct mli_IoMemory *self);
 
 /* internal */
 chk_rc mli_IoMemory__malloc(struct mli_IoMemory *self);
