@@ -88,14 +88,14 @@ CASE("focussing_a_parallel_beam")
         max_color = mli_Image_max(&screen_img);
         mli_Image_multiply(
                 &screen_img,
-                mli_Color_set(1.0, 255.0 / max_color.g, 255.0 / max_color.b));
+                mli_Color_set(1.0, 1.0 / max_color.g, 1.0 / max_color.b));
 
         CHECK(mli_IO_open_file_cstr(
                 &f,
                 "data/"
                 "optics_focussing_mirror-psf.ppm.tmp",
                 "w"));
-        CHECK(mli_Image_to_io(&screen_img, &f));
+        CHECK(mli_Image_to_io(&screen_img, &f, MLI_IMAGE_PPM_COLOR_DEPTH_8BIT));
         mli_IO_close(&f);
 
         mli_Scenery_free(&scenery);

@@ -39,17 +39,21 @@ void mli_Image_print_ansi_escape_chars(
         const uint64_t *cols,
         const uint64_t num_symbols)
 {
+        const double color_depth_factor = 255.0;
         uint32_t col, row, sym;
         char symbol;
+
         for (row = 0; row < mli_Image_num_rows(img); row++) {
                 for (col = 0; col < mli_Image_num_cols(img); col++) {
+                        uint8_t r, g, b;
                         struct mli_Color color =
                                 mli_Image_get_by_col_row(img, col, row);
-                        struct mli_Color out =
-                                mli_Color_truncate(color, 0., 255.);
-                        uint8_t r = (uint8_t)out.r;
-                        uint8_t g = (uint8_t)out.g;
-                        uint8_t b = (uint8_t)out.b;
+                        color = mli_Color_multiply(color, color_depth_factor);
+                        color = mli_Color_truncate(
+                                color, 0., color_depth_factor);
+                        r = (uint8_t)color.r;
+                        g = (uint8_t)color.g;
+                        b = (uint8_t)color.b;
                         symbol = ' ';
                         for (sym = 0; sym < num_symbols; sym++) {
                                 if (rows[sym] == row && cols[sym] == col) {
@@ -71,6 +75,7 @@ void mli_Image_print_ascii_chars(
         const uint64_t *cols,
         const uint64_t num_symbols)
 {
+        const double color_depth_factor = 15.0;
         uint32_t col, row, sym;
         char symbol;
         char chars_with_ascending_fill[16] = {
@@ -92,12 +97,15 @@ void mli_Image_print_ascii_chars(
                 '#'};
         for (row = 0; row < mli_Image_num_rows(img); row++) {
                 for (col = 0; col < mli_Image_num_cols(img); col++) {
+                        float lum = 0.0;
+                        int64_t l = 0;
                         struct mli_Color color =
                                 mli_Image_get_by_col_row(img, col, row);
-                        struct mli_Color out =
-                                mli_Color_truncate(color, 0., 255.);
-                        float lum = 1.0 / 3.0 * (out.r + out.g + out.b);
-                        int64_t l = lum / 16.0;
+                        color = mli_Color_multiply(color, color_depth_factor);
+                        color = mli_Color_truncate(
+                                color, 0., color_depth_factor);
+                        lum = 1.0 / 3.0 * (color.r + color.g + color.b);
+                        l = lum;
                         if (l < 0) {
                                 l = 0;
                         }

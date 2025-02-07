@@ -95,15 +95,15 @@ CASE("mli_Image_write_to_ppm, mli_Image_malloc_from_ppm")
         for (col = 0; col < mli_Image_num_cols(&img); col++) {
                 for (row = 0; row < mli_Image_num_rows(&img); row++) {
                         struct mli_Color color;
-                        tone = (double)col * (double)row;
+                        tone = 1e-2 * (double)col * (double)row;
                         color.r = tone;
-                        color.g = tone + 1.;
-                        color.b = tone + 2.;
+                        color.g = tone + 1e-2;
+                        color.b = tone + 2e-2;
                         mli_Image_set_by_col_row(&img, col, row, color);
                 }
         }
         CHECK(mli_IO_open_file_cstr(&f, path, "w"));
-        CHECK(mli_Image_to_io(&img, &f));
+        CHECK(mli_Image_to_io(&img, &f, MLI_IMAGE_PPM_COLOR_DEPTH_8BIT));
         CHECK(mli_IO_close(&f));
 
         CHECK(mli_IO_open_file_cstr(&f, path, "r"));
@@ -119,9 +119,9 @@ CASE("mli_Image_write_to_ppm, mli_Image_malloc_from_ppm")
                                 mli_Image_get_by_col_row(&img, col, row);
                         struct mli_Color c_back =
                                 mli_Image_get_by_col_row(&back, col, row);
-                        CHECK_MARGIN(c_in.r, c_back.r, 1.);
-                        CHECK_MARGIN(c_in.g, c_back.g, 1.);
-                        CHECK_MARGIN(c_in.b, c_back.b, 1.);
+                        CHECK_MARGIN(c_in.r, c_back.r, 1e-2);
+                        CHECK_MARGIN(c_in.g, c_back.g, 1e-2);
+                        CHECK_MARGIN(c_in.b, c_back.b, 1e-2);
                 }
         }
 
@@ -143,12 +143,12 @@ CASE("mli_Image_sobel")
         struct mli_Image dst = mli_Image_init();
         CHECK(mli_Image_malloc(&src, 160, 90));
 
-        mli_Image_set_all(&src, mli_Color_set(128, 128, 128));
+        mli_Image_set_all(&src, mli_Color_set(0.5, 0.5, 0.5));
 
         for (col = BOX_X_START; col < BOX_X_STOP; col++) {
                 for (row = BOX_Y_START; row < BOX_Y_STOP; row++) {
                         mli_Image_set_by_col_row(
-                                &src, col, row, mli_Color_set(255, 0, 0));
+                                &src, col, row, mli_Color_set(1.0, 0, 0));
                 }
         }
 
@@ -159,7 +159,7 @@ CASE("mli_Image_sobel")
                         struct mli_Color c =
                                 mli_Image_get_by_col_row(&dst, col, row);
                         float l = mli_Color_luminance(c);
-                        CHECK_MARGIN(l, 0.0, 1.0);
+                        CHECK_MARGIN(l, 0.0, 1e-2);
                 }
         }
 
