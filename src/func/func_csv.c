@@ -6,7 +6,7 @@
 #include "../string/string_numbers.h"
 #include "../io/io_text.h"
 
-int mli_Func_from_csv_split_line(
+chk_rc mli_Func_from_csv_split_line(
         struct mli_String *line,
         struct mli_String *sx,
         struct mli_String *sy)
@@ -37,7 +37,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Func_from_csv(
+chk_rc mli_Func_from_csv(
         struct mli_Func *func,
         struct mli_String *xname,
         struct mli_String *yname,

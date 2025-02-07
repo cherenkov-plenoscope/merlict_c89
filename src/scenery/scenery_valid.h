@@ -3,6 +3,7 @@
 #define MLI_SCENERY_VALID_H_
 
 #include "scenery.h"
+#include "../bool/bool.h"
 
-int mli_Scenery_valid(const struct mli_Scenery *self);
+mli_bool mli_Scenery_valid(const struct mli_Scenery *self);
 #endif

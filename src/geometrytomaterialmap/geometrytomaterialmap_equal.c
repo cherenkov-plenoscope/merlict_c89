@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "../chk/chk.h"
 
-int mli_GeometryToMaterialMap_equal(
+mli_bool mli_GeometryToMaterialMap_equal(
         const struct mli_GeometryToMaterialMap *a,
         const struct mli_GeometryToMaterialMap *b)
 {

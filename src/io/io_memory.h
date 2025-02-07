@@ -21,7 +21,7 @@ struct mli_IoMemory {
 
 struct mli_IoMemory mli_IoMemory_init(void);
 int mli_IoMemory_close(struct mli_IoMemory *self);
-int mli_IoMemory_open(struct mli_IoMemory *self);
+chk_rc mli_IoMemory_open(struct mli_IoMemory *self);
 size_t mli_IoMemory_write(
         const void *ptr,
         const size_t size,
@@ -41,19 +41,19 @@ int64_t mli_IoMemory_seek(
 int mli_IoMemory_eof(const struct mli_IoMemory *self);
 
 /* internal */
-int mli_IoMemory__malloc(struct mli_IoMemory *self);
-int mli_IoMemory__malloc_capacity(
+chk_rc mli_IoMemory__malloc(struct mli_IoMemory *self);
+chk_rc mli_IoMemory__malloc_capacity(
         struct mli_IoMemory *self,
         const uint64_t capacity);
-int mli_IoMemory__realloc_capacity(
+chk_rc mli_IoMemory__realloc_capacity(
         struct mli_IoMemory *self,
         const uint64_t new_capacity);
-int mli_IoMemory__shrink_to_fit(struct mli_IoMemory *self);
-int mli_IoMemory__write_unsigned_char(
+chk_rc mli_IoMemory__shrink_to_fit(struct mli_IoMemory *self);
+chk_rc mli_IoMemory__write_unsigned_char(
         struct mli_IoMemory *self,
         const unsigned char *c);
-int mli_IoMemory__read_unsigned_char(
+chk_rc mli_IoMemory__read_unsigned_char(
         struct mli_IoMemory *self,
         unsigned char *c);
-int mli_IoMemory__write_cstr(struct mli_IoMemory *self, const char *cstr);
+chk_rc mli_IoMemory__write_cstr(struct mli_IoMemory *self, const char *cstr);
 #endif

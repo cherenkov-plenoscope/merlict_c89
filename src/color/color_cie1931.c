@@ -4,7 +4,7 @@
 #include "../func/func.h"
 #include "../physics/physics.h"
 
-int mli_cie1931_spectral_matching_curve_x(struct mli_Func *self)
+chk_rc mli_cie1931_spectral_matching_curve_x(struct mli_Func *self)
 {
         float X[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
@@ -62,7 +62,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_cie1931_spectral_matching_curve_y(struct mli_Func *self)
+chk_rc mli_cie1931_spectral_matching_curve_y(struct mli_Func *self)
 {
         float Y[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
@@ -120,7 +120,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_cie1931_spectral_matching_curve_z(struct mli_Func *self)
+chk_rc mli_cie1931_spectral_matching_curve_z(struct mli_Func *self)
 {
         float Z[][2] = {
                 {2.000e-07, 0.000e+00}, {3.800e-07, 0.000e+00},
@@ -208,7 +208,7 @@ struct mli_Mat mli_cie1931_spectral_matching_rgb_to_xyz(void)
         return m;
 }
 
-int mli_cie1931_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
+chk_rc mli_cie1931_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
         struct mli_Func *self,
         const double wavelength_start,
         const double wavelength_stop,

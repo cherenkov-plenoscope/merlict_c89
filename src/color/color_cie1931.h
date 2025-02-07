@@ -2,6 +2,7 @@
 #ifndef MLICOLOR_CIE1931_H_
 #define MLICOLOR_CIE1931_H_
 
+#include "../chk/chk.h"
 #include "../func/func.h"
 #include "../mat/mat.h"
 #include <stdint.h>
@@ -12,14 +13,14 @@
  * specific wavelength of light.
  */
 
-int mli_cie1931_spectral_matching_curve_x(struct mli_Func *self);
-int mli_cie1931_spectral_matching_curve_y(struct mli_Func *self);
-int mli_cie1931_spectral_matching_curve_z(struct mli_Func *self);
+chk_rc mli_cie1931_spectral_matching_curve_x(struct mli_Func *self);
+chk_rc mli_cie1931_spectral_matching_curve_y(struct mli_Func *self);
+chk_rc mli_cie1931_spectral_matching_curve_z(struct mli_Func *self);
 
 struct mli_Mat mli_cie1931_spectral_matching_xyz_to_rgb(void);
 struct mli_Mat mli_cie1931_spectral_matching_rgb_to_xyz(void);
 
-int mli_cie1931_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
+chk_rc mli_cie1931_spectral_radiance_of_black_body_W_per_m2_per_sr_per_m(
         struct mli_Func *self,
         const double wavelength_start,
         const double wavelength_stop,

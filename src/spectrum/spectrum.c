@@ -23,7 +23,7 @@ struct mli_Spectrum mli_Spectrum_init(void)
         return out;
 }
 
-int mli_Spectrum_equal(
+mli_bool mli_Spectrum_equal(
         const struct mli_Spectrum *a,
         const struct mli_Spectrum *b)
 {
@@ -38,7 +38,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Spectrum_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
+chk_rc mli_Spectrum_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
 {
         struct mli_MagicId magic = mli_MagicId_init();
         chk(mli_MagicId_set(&magic, "mli_Spectrum"));
@@ -53,7 +53,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Spectrum_from_io(struct mli_Spectrum *self, struct mli_IO *f)
+chk_rc mli_Spectrum_from_io(struct mli_Spectrum *self, struct mli_IO *f)
 {
         struct mli_MagicId magic;
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
@@ -72,7 +72,9 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Spectrum_print_to_io(const struct mli_Spectrum *self, struct mli_IO *f)
+chk_rc mli_Spectrum_print_to_io(
+        const struct mli_Spectrum *self,
+        struct mli_IO *f)
 {
         uint64_t xamin, xamax, yamin, yamax = 0;
         MLI_MATH_ARRAY_ARGMIN(

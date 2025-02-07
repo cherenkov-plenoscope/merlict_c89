@@ -3,6 +3,8 @@
 #define MLI_SPECTRUM_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../func/func.h"
 #include "../func/func_info.h"
 #include "../string/string.h"
@@ -14,13 +16,15 @@ struct mli_Spectrum {
 };
 void mli_Spectrum_free(struct mli_Spectrum *self);
 struct mli_Spectrum mli_Spectrum_init(void);
-int mli_Spectrum_equal(
+mli_bool mli_Spectrum_equal(
         const struct mli_Spectrum *a,
         const struct mli_Spectrum *b);
 
-int mli_Spectrum_to_io(const struct mli_Spectrum *self, struct mli_IO *f);
-int mli_Spectrum_from_io(struct mli_Spectrum *self, struct mli_IO *f);
+chk_rc mli_Spectrum_to_io(const struct mli_Spectrum *self, struct mli_IO *f);
+chk_rc mli_Spectrum_from_io(struct mli_Spectrum *self, struct mli_IO *f);
 
-int mli_Spectrum_print_to_io(const struct mli_Spectrum *self, struct mli_IO *f);
+chk_rc mli_Spectrum_print_to_io(
+        const struct mli_Spectrum *self,
+        struct mli_IO *f);
 
 #endif

@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include "../chk/chk.h"
 #include "../func/func.h"
 
 struct mli_Func_fprint_Config {
@@ -15,7 +16,7 @@ struct mli_Func_fprint_Config {
         int y_num;
 };
 
-int mli_Func_fprint(
+chk_rc mli_Func_fprint(
         FILE *f,
         const struct mli_Func *func,
         struct mli_Func_fprint_Config plot);

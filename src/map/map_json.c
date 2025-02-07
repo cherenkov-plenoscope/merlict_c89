@@ -28,7 +28,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Map_get_value_for_string_from_json(
+chk_rc mli_Map_get_value_for_string_from_json(
         const struct mli_Map *map,
         const struct mli_Json *json,
         const uint64_t token,

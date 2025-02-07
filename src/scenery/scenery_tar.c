@@ -10,7 +10,7 @@
 #include "../frame/frame.h"
 #include "../frame/frame_from_archive.h"
 
-int mli_Scenery_from_io_tar(struct mli_Scenery *self, struct mli_IO *f)
+chk_rc mli_Scenery_from_io_tar(struct mli_Scenery *self, struct mli_IO *f)
 {
         struct mli_Archive archive = mli_Archive_init();
         chk_dbg;
@@ -26,7 +26,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Scenery__from_path_cstr(struct mli_Scenery *self, const char *path)
+chk_rc mli_Scenery__from_path_cstr(struct mli_Scenery *self, const char *path)
 {
         struct mli_IO f = mli_IO_init();
         chk_msgf(
@@ -41,7 +41,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Scenery_malloc_from_Archive(
+chk_rc mli_Scenery_malloc_from_Archive(
         struct mli_Scenery *self,
         const struct mli_Archive *archive)
 {

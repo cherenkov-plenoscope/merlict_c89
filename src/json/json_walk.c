@@ -27,12 +27,12 @@ struct mli_JsonWalk mli_JsonWalk_copy(const struct mli_JsonWalk *self)
         return out;
 }
 
-int mli_JsonWalk__type(const struct mli_JsonWalk *self)
+enum jsmntype_t mli_JsonWalk__type(const struct mli_JsonWalk *self)
 {
         return self->json->tokens[self->token].type;
 }
 
-int mli_JsonWalk_to_key(struct mli_JsonWalk *self, const char *key)
+chk_rc mli_JsonWalk_to_key(struct mli_JsonWalk *self, const char *key)
 {
         uint64_t key_token;
         chk_msg(mli_JsonWalk__type(self) == JSMN_OBJECT,
@@ -46,7 +46,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_JsonWalk_to_idx(struct mli_JsonWalk *self, const uint64_t idx)
+chk_rc mli_JsonWalk_to_idx(struct mli_JsonWalk *self, const uint64_t idx)
 {
         uint64_t idx_token;
         chk_msg(mli_JsonWalk__type(self) == JSMN_ARRAY,
@@ -62,7 +62,9 @@ chk_error:
 
 void mli_JsonWalk_to_root(struct mli_JsonWalk *self) { self->token = 0; }
 
-int mli_JsonWalk_get_array_size(const struct mli_JsonWalk *self, uint64_t *size)
+chk_rc mli_JsonWalk_get_array_size(
+        const struct mli_JsonWalk *self,
+        uint64_t *size)
 {
         chk_msg(mli_JsonWalk__type(self) == JSMN_ARRAY,
                 "Can only get size of json-array.");
@@ -72,19 +74,19 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_JsonWalk_get_string(
+chk_rc mli_JsonWalk_get_string(
         const struct mli_JsonWalk *self,
         struct mli_String *val)
 {
         return mli_Json_string_by_token(self->json, self->token, val);
 }
 
-int mli_JsonWalk_get_int64(const struct mli_JsonWalk *self, int64_t *val)
+chk_rc mli_JsonWalk_get_int64(const struct mli_JsonWalk *self, int64_t *val)
 {
         return mli_Json_int64_by_token(self->json, self->token, val);
 }
 
-int mli_JsonWalk_get_double(const struct mli_JsonWalk *self, double *val)
+chk_rc mli_JsonWalk_get_double(const struct mli_JsonWalk *self, double *val)
 {
         return mli_Json_double_by_token(self->json, self->token, val);
 }

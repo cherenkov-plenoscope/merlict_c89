@@ -23,7 +23,7 @@ void mli_GeometryToMaterialMap_free(struct mli_GeometryToMaterialMap *map)
         (*map) = mli_GeometryToMaterialMap_init();
 }
 
-int mli_GeometryToMaterialMap_malloc(
+chk_rc mli_GeometryToMaterialMap_malloc(
         struct mli_GeometryToMaterialMap *map,
         const uint32_t num_robjects,
         const uint32_t total_num_boundary_layers)

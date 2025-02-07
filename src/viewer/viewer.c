@@ -111,11 +111,11 @@ void mli_viewer_timestamp_now_19chars(char *buffer)
                 nowtm->tm_sec);
 }
 
-int mli_viewer_get_key(void)
+mli_key_code mli_viewer_get_key(void)
 {
         /* Waits for keystroke and returns ascii-code.
          */
-        const int key = getchar();
+        const mli_key_code key = getchar();
         if (key == EOF) {
                 /* In case of EOF, return EOF */
                 return key;
@@ -203,7 +203,7 @@ chk_rc mli_viewer_run_interactive_viewer(
         struct mli_PathTracer tracer = mli_pathtracer_init();
         struct mli_ColorMaterials color_materials = mli_ColorMaterials_init();
         char path[1024];
-        int key;
+        mli_key_code key;
         mli_bool super_resolution = MLI_FALSE;
         struct mli_viewer_Cursor cursor;
         uint64_t num_screenshots = 0;

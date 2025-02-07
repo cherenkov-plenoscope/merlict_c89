@@ -39,7 +39,7 @@ void mli_Object_free(struct mli_Object *obj)
         *obj = mli_Object_init();
 }
 
-int mli_Object_malloc(
+chk_rc mli_Object_malloc(
         struct mli_Object *obj,
         const uint64_t num_vertices,
         const uint64_t num_vertex_normals,
@@ -79,7 +79,9 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Object_equal(const struct mli_Object *a, const struct mli_Object *b)
+mli_bool mli_Object_equal(
+        const struct mli_Object *a,
+        const struct mli_Object *b)
 {
         uint64_t i;
         chk(a->num_vertices == b->num_vertices);

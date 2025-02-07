@@ -3,6 +3,7 @@
 #define MLI_GEOMETRY_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
 #include "../homtra/homtra.h"
 #include "../materials/materials.h"
 #include "../string/string.h"
@@ -19,14 +20,14 @@ struct mli_Geometry {
         struct mli_HomTraComp *robject2root;
 };
 
-int mli_Geometry_malloc(
+chk_rc mli_Geometry_malloc(
         struct mli_Geometry *self,
         const uint32_t num_objects,
         const uint32_t num_robjects);
-int mli_Geometry_malloc_references(
+chk_rc mli_Geometry_malloc_references(
         struct mli_Geometry *self,
         const uint32_t num_robjects);
-int mli_Geometry_malloc_objects(
+chk_rc mli_Geometry_malloc_objects(
         struct mli_Geometry *self,
         const uint32_t num_objects);
 
@@ -42,5 +43,5 @@ void mli_Geometry_info_fprint(FILE *f, const struct mli_Geometry *self);
 struct mli_BoundaryLayer mli_Geometry_object_surfaces(
         const struct mli_Geometry *self,
         const uint32_t object_idx);
-int mli_Geometry_warn_objects(const struct mli_Geometry *self);
+chk_rc mli_Geometry_warn_objects(const struct mli_Geometry *self);
 #endif

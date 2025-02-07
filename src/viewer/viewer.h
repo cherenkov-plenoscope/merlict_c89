@@ -10,8 +10,11 @@
 #include "Cursor.h"
 #include "Config.h"
 
+#define mli_key_code int
 #define MLI_VIEWER_ESCAPE_KEY 27
 #define MLI_VIEWER_SPACE_KEY 32
+
+mli_key_code mli_viewer_get_key(void);
 
 void mli_viewer_clear_screen(void);
 

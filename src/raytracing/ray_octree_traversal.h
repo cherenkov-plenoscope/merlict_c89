@@ -7,6 +7,7 @@
 #include "../octree/octree.h"
 #include "../ray/ray.h"
 
+#define mli_octree_node int
 #define MLI_RAYTRACING_RAY_OCTREE_TRAVERSAL_EPSILON 1.0e-307
 
 void mli_raytracing_ray_octree_traversal(
@@ -31,13 +32,13 @@ void mli_raytracing_ray_octree_traversal_sub(
                 const struct mli_OcTree *,
                 const uint32_t));
 
-int mli_raytracing_ray_octree_traversal_next_octree_node(
+mli_octree_node mli_raytracing_ray_octree_traversal_next_octree_node(
         const struct mli_Vec tm,
-        int x,
-        int y,
-        int z);
+        mli_octree_node x,
+        mli_octree_node y,
+        mli_octree_node z);
 
-int mli_raytracing_ray_octree_traversal_first_octree_node(
+mli_octree_node mli_raytracing_ray_octree_traversal_first_octree_node(
         const struct mli_Vec t0,
         const struct mli_Vec tm);
 

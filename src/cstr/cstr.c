@@ -6,7 +6,7 @@
 #include "../bool/bool.h"
 #include "../math/math.h"
 
-int mli_cstr_ends_with(const char *str, const char *sufix)
+mli_bool mli_cstr_ends_with(const char *str, const char *sufix)
 {
         uint64_t len_str, len_sufix;
         if (!str || !sufix) {
@@ -20,7 +20,7 @@ int mli_cstr_ends_with(const char *str, const char *sufix)
         return strncmp(str + len_str - len_sufix, sufix, len_sufix) == 0;
 }
 
-int mli_cstr_starts_with(const char *str, const char *prefix)
+mli_bool mli_cstr_starts_with(const char *str, const char *prefix)
 {
         uint64_t len_str, len_prefix;
         if (!str || !prefix) {
@@ -34,7 +34,7 @@ int mli_cstr_starts_with(const char *str, const char *prefix)
         return strncmp(str, prefix, len_prefix) == 0;
 }
 
-int mli_cstr_is_CRLF(const char *s)
+mli_bool mli_cstr_is_CRLF(const char *s)
 {
         if (s[0] == '\0') {
                 return MLI_FALSE;
@@ -48,7 +48,7 @@ int mli_cstr_is_CRLF(const char *s)
         return MLI_FALSE;
 }
 
-int mli_cstr_is_CR(const char *s)
+mli_bool mli_cstr_is_CR(const char *s)
 {
         if (s[0] == '\0') {
                 return MLI_FALSE;
@@ -59,12 +59,14 @@ int mli_cstr_is_CR(const char *s)
         return MLI_FALSE;
 }
 
-int mli_cstr_assert_only_NUL_LF_TAB_controls(const char *str)
+mli_bool mli_cstr_assert_only_NUL_LF_TAB_controls(const char *str)
 {
-        return mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(str, 1);
+        return mli_cstr_assert_only_NUL_LF_TAB_controls__dbg(str, 1);
 }
 
-int mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(const char *str, const int dbg)
+mli_bool mli_cstr_assert_only_NUL_LF_TAB_controls__dbg(
+        const char *str,
+        const int dbg)
 {
         uint64_t pos = 0;
         while (str[pos] != '\0') {
@@ -91,23 +93,7 @@ int mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(const char *str, const int dbg)
         return MLI_TRUE;
 }
 
-int mli_fprint_line_match(
-        FILE *f,
-        const int64_t line,
-        const int64_t line_number)
-{
-        chk(fprintf(f, "% 6d", (int32_t)line));
-        if (line == line_number) {
-                chk(fprintf(f, "->|  "));
-        } else {
-                chk(fprintf(f, "  |  "));
-        }
-        return CHK_SUCCESS;
-chk_error:
-        return CHK_FAIL;
-}
-
-int mli_cstr_match_templeate(
+mli_bool mli_cstr_match_templeate(
         const char *s,
         const char *t,
         const char digit_wildcard)

@@ -2,6 +2,7 @@
 #ifndef MLI_COLOR_SPECTRUM_H_
 #define MLI_COLOR_SPECTRUM_H_
 
+#include "../chk/chk.h"
 struct mli_Func;
 
 #define MLI_COLORSPECTRUM_SIZE 30
@@ -48,7 +49,7 @@ void mli_ColorSpectrum_set_radiance_of_black_body_W_per_m2_per_sr(
         struct mli_ColorSpectrum *self,
         const double temperature);
 
-int mli_ColorSpectrum_from_func(
+chk_rc mli_ColorSpectrum_from_func(
         struct mli_ColorSpectrum *self,
         const struct mli_ColorSpectrumBinEdges *wavelength_bin_edges,
         const struct mli_Func *func);

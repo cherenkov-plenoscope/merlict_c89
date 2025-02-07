@@ -22,7 +22,7 @@ void mli_AvlDict_free(struct mli_AvlDict *dict)
         (*dict) = mli_AvlDict_init();
 }
 
-int mli_AvlDict_malloc(struct mli_AvlDict *dict, const uint64_t capacity)
+chk_rc mli_AvlDict_malloc(struct mli_AvlDict *dict, const uint64_t capacity)
 {
         mli_AvlDict_free(dict);
         dict->capacity = capacity;
@@ -46,7 +46,7 @@ struct mli_AvlNode *mli_AvlDict_find(
         return out;
 }
 
-int mli_AvlDict_update__(
+chk_rc mli_AvlDict_update__(
         const struct mli_AvlNode *node,
         struct mli_AvlDict *out)
 {
@@ -80,7 +80,7 @@ void mli_AvlDict_swap(struct mli_AvlDict *a, struct mli_AvlDict *b)
         (*b) = swap;
 }
 
-int mli_AvlDict_grow(struct mli_AvlDict *dict)
+chk_rc mli_AvlDict_grow(struct mli_AvlDict *dict)
 {
         uint64_t new_capacity = (dict->capacity * 2);
         struct mli_AvlDict tmp = mli_AvlDict_init();
@@ -100,7 +100,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_AvlDict_insert(
+chk_rc mli_AvlDict_insert(
         struct mli_AvlDict *dict,
         const int64_t key,
         const int64_t value)
@@ -129,7 +129,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_AvlDict_set(
+chk_rc mli_AvlDict_set(
         struct mli_AvlDict *dict,
         const int64_t key,
         const int64_t value)
@@ -148,7 +148,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_AvlDict_shrink(struct mli_AvlDict *dict)
+chk_rc mli_AvlDict_shrink(struct mli_AvlDict *dict)
 {
         uint64_t new_capacity = (dict->len * 3) / 2;
         struct mli_AvlDict tmp = mli_AvlDict_init();
@@ -169,7 +169,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_AvlDict_pop(struct mli_AvlDict *dict, const int64_t key)
+chk_rc mli_AvlDict_pop(struct mli_AvlDict *dict, const int64_t key)
 {
         int rc_remove;
         struct mli_AvlNode *nn = mli_AvlDict_find(dict, key);
@@ -192,7 +192,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_AvlDict_has(struct mli_AvlDict *dict, const int64_t key)
+mli_bool mli_AvlDict_has(struct mli_AvlDict *dict, const int64_t key)
 {
         struct mli_AvlNode *nn = mli_AvlDict_find(dict, key);
         if (nn == NULL) {
@@ -202,7 +202,10 @@ int mli_AvlDict_has(struct mli_AvlDict *dict, const int64_t key)
         }
 }
 
-int mli_AvlDict_get(struct mli_AvlDict *dict, const int64_t key, int64_t *value)
+chk_rc mli_AvlDict_get(
+        struct mli_AvlDict *dict,
+        const int64_t key,
+        int64_t *value)
 {
         struct mli_AvlNode *nn = mli_AvlDict_find(dict, key);
         if (nn == NULL) {

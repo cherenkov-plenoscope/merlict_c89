@@ -6,7 +6,7 @@
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mli_Geometry_from_io(struct mli_Geometry *geometry, struct mli_IO *f)
+chk_rc mli_Geometry_from_io(struct mli_Geometry *geometry, struct mli_IO *f)
 {
         uint32_t i;
         uint32_t num_objects = 0u;
@@ -53,7 +53,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Geometry_to_io(const struct mli_Geometry *geometry, struct mli_IO *f)
+chk_rc mli_Geometry_to_io(const struct mli_Geometry *geometry, struct mli_IO *f)
 {
         uint32_t i;
         struct mli_MagicId magic;

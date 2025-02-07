@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "../chk/chk.h"
 
-int mli_GeometryToMaterialMap_valid(
+mli_bool mli_GeometryToMaterialMap_valid(
         const struct mli_GeometryToMaterialMap *geomap)
 {
         uint32_t i = 0u;
@@ -21,7 +21,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_GeometryToMaterialMap_valid_wrt_Geometry(
+mli_bool mli_GeometryToMaterialMap_valid_wrt_Geometry(
         const struct mli_GeometryToMaterialMap *geomap,
         const struct mli_Geometry *geometry)
 {
@@ -47,7 +47,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_GeometryToMaterialMap_valid_wrt_Materials(
+mli_bool mli_GeometryToMaterialMap_valid_wrt_Materials(
         const struct mli_GeometryToMaterialMap *geomap,
         const struct mli_Materials *materials)
 {

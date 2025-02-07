@@ -3,6 +3,7 @@
 #define MLI_CUBE_H_
 
 #include <stdint.h>
+#include "../bool/bool.h"
 #include "../vec/vec.h"
 #include "../aabb/aabb.h"
 
@@ -15,7 +16,7 @@ struct mli_Cube {
         double edge_length;
 };
 
-int mli_Cube_equal(const struct mli_Cube a, const struct mli_Cube b);
+mli_bool mli_Cube_equal(const struct mli_Cube a, const struct mli_Cube b);
 struct mli_Cube mli_Cube_octree_child_code(
         const struct mli_Cube cube,
         const uint8_t a);

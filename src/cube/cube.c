@@ -90,7 +90,7 @@ struct mli_Cube mli_Cube_octree_child_code(
         return child;
 }
 
-int mli_Cube_equal(const struct mli_Cube a, const struct mli_Cube b)
+mli_bool mli_Cube_equal(const struct mli_Cube a, const struct mli_Cube b)
 {
         if (a.edge_length != b.edge_length)
                 return MLI_FALSE;

@@ -5,7 +5,7 @@
 #include "func_fprint.h"
 #include "../chk/chk.h"
 
-int mli_Func_fprint(
+chk_rc mli_Func_fprint(
         FILE *f,
         const struct mli_Func *func,
         struct mli_Func_fprint_Config cfg)

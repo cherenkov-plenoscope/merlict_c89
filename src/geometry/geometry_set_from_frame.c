@@ -6,7 +6,7 @@
 #include "../frame/frame.h"
 #include "../geometrytomaterialmap/geometrytomaterialmap.h"
 
-int mli_Geometry__set_robjects_and_material_map_from_frame_walk(
+chk_rc mli_Geometry__set_robjects_and_material_map_from_frame_walk(
         const struct mli_Frame *frame,
         struct mli_Geometry *geometry,
         struct mli_GeometryToMaterialMap *geomap,
@@ -67,7 +67,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Geometry_set_robjects_and_material_map_from_frame(
+chk_rc mli_Geometry_set_robjects_and_material_map_from_frame(
         const struct mli_Frame *frame,
         struct mli_Geometry *geometry,
         struct mli_GeometryToMaterialMap *geomap)

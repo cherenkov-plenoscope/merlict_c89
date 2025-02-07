@@ -3,7 +3,7 @@
 #include "../chk/chk.h"
 #include "../physics/physics.h"
 
-int mli_photon_interaction_type_to_string(const int32_t type, char *s)
+chk_rc mli_photon_interaction_type_to_string(const int32_t type, char *s)
 {
         switch (type) {
         case MLI_PHOTON_CREATION:
@@ -36,7 +36,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_photon_time_of_flight(
+chk_rc mli_photon_time_of_flight(
         const struct mli_Materials *materials,
         const struct mli_PhotonInteraction *phisec,
         const double wavelength,

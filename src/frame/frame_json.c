@@ -5,7 +5,7 @@
 #include "../vec/vec_json.h"
 #include "../quaternion/quaternion_json.h"
 
-int mli_Frame_type_from_json_token(
+chk_rc mli_Frame_type_from_json_token(
         uint64_t *type,
         const struct mli_Json *json,
         const uint64_t token)
@@ -32,7 +32,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Frame_id_from_json_token(
+chk_rc mli_Frame_id_from_json_token(
         uint32_t *id,
         const struct mli_Json *json,
         const uint64_t token)
@@ -52,7 +52,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Frame_pos_rot_from_json_token(
+chk_rc mli_Frame_pos_rot_from_json_token(
         struct mli_HomTraComp *frame2mother,
         const struct mli_Json *json,
         const uint64_t token)
@@ -77,7 +77,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Frame_boundary_layers_form_json_token(
+chk_rc mli_Frame_boundary_layers_form_json_token(
         struct mli_Uint32Vector *boundary_layers,
         const uint32_t object_idx,
         const struct mli_Object *objects,
@@ -128,7 +128,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Frame_object_reference_form_json_token(
+chk_rc mli_Frame_object_reference_form_json_token(
         uint32_t *object_reference,
         const struct mli_Json *json,
         const uint64_t token,
@@ -149,7 +149,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Frame_from_json(
+chk_rc mli_Frame_from_json(
         struct mli_Frame *mother,
         const struct mli_Json *json,
         const uint64_t token_children,

@@ -22,7 +22,7 @@ void mli_Func_free(struct mli_Func *f)
         (*f) = mli_Func_init();
 }
 
-int mli_Func_malloc(struct mli_Func *f, const uint64_t num_points)
+chk_rc mli_Func_malloc(struct mli_Func *f, const uint64_t num_points)
 {
         mli_Func_free(f);
         f->num_points = num_points;
@@ -34,7 +34,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Func_x_is_strictly_increasing(const struct mli_Func *f)
+mli_bool mli_Func_x_is_strictly_increasing(const struct mli_Func *f)
 {
         uint64_t i;
         for (i = 1; i < f->num_points; i++) {
@@ -45,7 +45,10 @@ int mli_Func_x_is_strictly_increasing(const struct mli_Func *f)
         return MLI_TRUE;
 }
 
-int mli_Func_evaluate(const struct mli_Func *f, const double xarg, double *out)
+chk_rc mli_Func_evaluate(
+        const struct mli_Func *f,
+        const double xarg,
+        double *out)
 {
         double y1, y0, x1, x0;
         uint64_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
@@ -65,7 +68,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Func_in_range(const struct mli_Func *f, const double xarg)
+mli_bool mli_Func_in_range(const struct mli_Func *f, const double xarg)
 {
         if (f->num_points < 2) {
                 return MLI_FALSE;
@@ -78,120 +81,7 @@ int mli_Func_in_range(const struct mli_Func *f, const double xarg)
         return MLI_FALSE;
 }
 
-double mli_Func_evaluate_with_default_when_out_of_range(
-        const struct mli_Func *f,
-        const double xarg,
-        const double default_value)
-{
-        double y1, y0, x1, x0;
-        uint64_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
-        if (idx == 0) {
-                /* mli_Func argument below lower bound */
-                return default_value;
-        } else if (idx == f->num_points) {
-                /* mli_Func argument above upper bound */
-                return default_value;
-        } else {
-                y1 = f->y[idx];
-                y0 = f->y[idx - 1u];
-                x1 = f->x[idx];
-                x0 = f->x[idx - 1u];
-                return mli_math_linear_interpolate_2d(xarg, x0, y0, x1, y1);
-        }
-}
-
-double mli_Func_evaluate_with_default_closest(
-        const struct mli_Func *f,
-        const double xarg)
-{
-        double y1, y0, x1, x0;
-        uint64_t idx = mli_math_upper_compare_double(f->x, f->num_points, xarg);
-        if (idx == 0) {
-                /* mli_Func argument below lower bound */
-                return f->y[0];
-        } else if (idx == f->num_points) {
-                /* mli_Func argument above upper bound */
-                return f->y[f->num_points - 1];
-        } else {
-                y1 = f->y[idx];
-                y0 = f->y[idx - 1u];
-                x1 = f->x[idx];
-                x0 = f->x[idx - 1u];
-                return mli_math_linear_interpolate_2d(xarg, x0, y0, x1, y1);
-        }
-}
-
-int mli_Func_fold_numeric(
-        const struct mli_Func *a,
-        const struct mli_Func *b,
-        double *fold)
-{
-        uint64_t i;
-        const uint64_t NUM_STEPS = 1024 * 8;
-        const double xmin = a->x[0];
-        const double xmax = a->x[a->num_points - 1];
-        const double step_size = (xmax - xmin) / (double)NUM_STEPS;
-        chk_msg(a->num_points >= 2u, "Expect a->num_points >= 2.");
-        chk_msg(b->num_points >= 2u, "Expect b->num_points >= 2.");
-        chk_msg(a->x[0] == b->x[0], "Expect a->x[0] == b->x[0].");
-        chk_msg(a->x[a->num_points - 1] == b->x[b->num_points - 1],
-                "Expect a->x[:-1] == b->x[:-1].");
-        (*fold) = 0.0;
-        for (i = 0; i < NUM_STEPS; i++) {
-                double ra = MLI_MATH_NAN;
-                double rb = MLI_MATH_NAN;
-                double x = xmin + (double)i * step_size;
-                chk(mli_Func_evaluate(a, x, &ra));
-                chk(mli_Func_evaluate(b, x, &rb));
-                (*fold) += (ra * rb) * step_size;
-        }
-        return CHK_SUCCESS;
-chk_error:
-        return CHK_FAIL;
-}
-
-int mli_Func_fold_numeric_default_closest(
-        const struct mli_Func *a,
-        const struct mli_Func *b,
-        double *fold)
-{
-        double x_start, x_stop, x_step, x_range, x_weight;
-        uint64_t i;
-        const uint64_t NUM_STEPS = 1024 * 8;
-
-        chk_msg(a->num_points >= 2u, "Expect a->num_points >= 2.");
-        chk_msg(b->num_points >= 2u, "Expect b->num_points >= 2.");
-
-        chk_msg(mli_Func_x_is_strictly_increasing(a),
-                "Expected function a to be strictly_increasing.");
-        chk_msg(mli_Func_x_is_strictly_increasing(b),
-                "Expected function b to be strictly_increasing.");
-
-        x_start = MLI_MATH_MAX2(a->x[0], b->x[0]);
-        x_stop =
-                MLI_MATH_MIN2(a->x[a->num_points - 1], b->x[b->num_points - 1]);
-        x_range = x_stop - x_start;
-        x_step = (x_range) / (double)NUM_STEPS;
-        x_weight = x_step / x_range;
-
-        (*fold) = 0.0;
-        if (x_start < x_stop) {
-                for (i = 0; i < NUM_STEPS; i++) {
-                        double ra = MLI_MATH_NAN;
-                        double rb = MLI_MATH_NAN;
-                        double x = x_start + (double)i * x_step;
-                        ra = mli_Func_evaluate_with_default_closest(a, x);
-                        rb = mli_Func_evaluate_with_default_closest(b, x);
-                        (*fold) += (ra * rb) * x_weight;
-                }
-        }
-
-        return CHK_SUCCESS;
-chk_error:
-        return CHK_FAIL;
-}
-
-int mli_Func_equal(const struct mli_Func a, const struct mli_Func b)
+mli_bool mli_Func_equal(const struct mli_Func a, const struct mli_Func b)
 {
         uint64_t i;
         if (a.num_points != b.num_points)
@@ -205,7 +95,7 @@ int mli_Func_equal(const struct mli_Func a, const struct mli_Func b)
         return MLI_TRUE;
 }
 
-int mli_Func_is_valid(const struct mli_Func *func)
+mli_bool mli_Func_is_valid(const struct mli_Func *func)
 {
         uint64_t i;
         chk_msg(func->num_points >= 2,
@@ -231,7 +121,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Func_malloc_constant(
+mli_bool mli_Func_malloc_constant(
         struct mli_Func *self,
         const double start,
         const double stop,

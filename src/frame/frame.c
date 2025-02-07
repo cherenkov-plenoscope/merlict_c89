@@ -37,7 +37,7 @@ void mli_Frame_free(struct mli_Frame *f)
         (*f) = mli_Frame_init();
 }
 
-int mli_Frame_malloc(struct mli_Frame *f, const uint64_t type)
+chk_rc mli_Frame_malloc(struct mli_Frame *f, const uint64_t type)
 {
         mli_Frame_free(f);
         f->type = type;
@@ -54,7 +54,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Frame_set_mother_and_child(
+chk_rc mli_Frame_set_mother_and_child(
         struct mli_Frame *mother,
         struct mli_Frame *child)
 {
@@ -81,7 +81,7 @@ chk_error:
         return NULL;
 }
 
-int mli_frame_type_to_string(const uint64_t type, char *s)
+chk_rc mli_frame_type_to_string(const uint64_t type, char *s)
 {
         switch (type) {
         case MLI_FRAME_TYPE_FRAME:
@@ -99,7 +99,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_frame_string_to_type(const char *s, uint64_t *type)
+chk_rc mli_frame_string_to_type(const char *s, uint64_t *type)
 {
         if (strcmp(s, "frame") == 0) {
                 *type = MLI_FRAME_TYPE_FRAME;
@@ -177,7 +177,7 @@ void mli_Frame_set_frame2root(struct mli_Frame *f)
         }
 }
 
-int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
+chk_rc mli_Frame_estimate_num_robjects_and_total_num_boundary_layers_walk(
         const struct mli_Frame *frame,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers)
@@ -205,7 +205,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
+chk_rc mli_Frame_estimate_num_robjects_and_total_num_boundary_layers(
         const struct mli_Frame *frame,
         uint64_t *num_robjects,
         uint64_t *total_num_boundary_layers)

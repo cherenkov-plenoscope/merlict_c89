@@ -4,9 +4,10 @@
 
 #include <stdint.h>
 #include "octree.h"
+#include "../bool/bool.h"
 
-int mli_OcTree_valid(const struct mli_OcTree *octree);
-int mli_OcTree_valid_wrt_links(
+mli_bool mli_OcTree_valid(const struct mli_OcTree *octree);
+mli_bool mli_OcTree_valid_wrt_links(
         const struct mli_OcTree *octree,
         const uint32_t num_links);
 #endif

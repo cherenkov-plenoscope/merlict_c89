@@ -3,6 +3,9 @@
 #define MLI_SCENERY_EQUAL_H_
 
 #include "scenery.h"
+#include "../bool/bool.h"
 
-int mli_Scenery_equal(const struct mli_Scenery *a, const struct mli_Scenery *b);
+mli_bool mli_Scenery_equal(
+        const struct mli_Scenery *a,
+        const struct mli_Scenery *b);
 #endif

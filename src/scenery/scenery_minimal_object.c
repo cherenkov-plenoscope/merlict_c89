@@ -8,7 +8,7 @@
 #include "../object/object_wavefront.h"
 #include "scenery_valid.h"
 
-int mli_Func_malloc_color_spectrum(
+chk_rc mli_Func_malloc_color_spectrum(
         struct mli_Func *self,
         const struct mli_Color color)
 {
@@ -67,7 +67,7 @@ struct mli_Color mli_Color_random_uniform(struct mli_Prng *prng)
         return out;
 }
 
-int mli_Scenery_malloc_minimal_from_wavefront(
+chk_rc mli_Scenery_malloc_minimal_from_wavefront(
         struct mli_Scenery *self,
         const char *path)
 {

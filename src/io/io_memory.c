@@ -22,7 +22,7 @@ int mli_IoMemory_close(struct mli_IoMemory *self)
         return RC_IS_ALWAYS_1;
 }
 
-int mli_IoMemory__malloc_capacity(
+chk_rc mli_IoMemory__malloc_capacity(
         struct mli_IoMemory *self,
         const uint64_t capacity)
 {
@@ -36,7 +36,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IoMemory__malloc(struct mli_IoMemory *self)
+chk_rc mli_IoMemory__malloc(struct mli_IoMemory *self)
 {
         chk(mli_IoMemory__malloc_capacity(self, 0u));
         return CHK_SUCCESS;
@@ -44,7 +44,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IoMemory__realloc_capacity(
+chk_rc mli_IoMemory__realloc_capacity(
         struct mli_IoMemory *self,
         const uint64_t new_capacity)
 {
@@ -82,7 +82,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IoMemory_open(struct mli_IoMemory *self)
+chk_rc mli_IoMemory_open(struct mli_IoMemory *self)
 {
         if (self->cstr == NULL) {
                 chk(mli_IoMemory__malloc(self));
@@ -98,7 +98,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IoMemory__shrink_to_fit(struct mli_IoMemory *self)
+chk_rc mli_IoMemory__shrink_to_fit(struct mli_IoMemory *self)
 {
         chk_msg(mli_IoMemory__realloc_capacity(self, self->size),
                 "Failed to reallocate to size.");
@@ -107,7 +107,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IoMemory__write_unsigned_char(
+chk_rc mli_IoMemory__write_unsigned_char(
         struct mli_IoMemory *self,
         const unsigned char *c)
 {
@@ -139,7 +139,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_IoMemory__read_unsigned_char(
+chk_rc mli_IoMemory__read_unsigned_char(
         struct mli_IoMemory *self,
         unsigned char *c)
 {
@@ -235,7 +235,7 @@ int mli_IoMemory_eof(const struct mli_IoMemory *self)
         }
 }
 
-int mli_IoMemory__write_cstr(struct mli_IoMemory *self, const char *cstr)
+chk_rc mli_IoMemory__write_cstr(struct mli_IoMemory *self, const char *cstr)
 {
         /* For testing purposes */
         size_t i = 0;

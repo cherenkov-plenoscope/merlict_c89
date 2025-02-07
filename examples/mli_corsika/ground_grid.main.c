@@ -14,7 +14,7 @@
 #include "../../src/vector/vector.h"
 #include "../../src/axis_aligned_grid/axis_aligned_grid.h"
 
-int mli_AxisAlignedGrid_set_from_config(
+chk_rc mli_AxisAlignedGrid_set_from_config(
         struct mli_AxisAlignedGrid *grid,
         struct mli_IO *text)
 {

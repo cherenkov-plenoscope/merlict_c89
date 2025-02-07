@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "avl_Tree.h"
 
 struct mli_AvlDict {
@@ -16,15 +18,15 @@ struct mli_AvlDict {
 
 struct mli_AvlDict mli_AvlDict_init(void);
 void mli_AvlDict_free(struct mli_AvlDict *dict);
-int mli_AvlDict_malloc(struct mli_AvlDict *dict, const uint64_t capacity);
+chk_rc mli_AvlDict_malloc(struct mli_AvlDict *dict, const uint64_t capacity);
 
-int mli_AvlDict_set(
+chk_rc mli_AvlDict_set(
         struct mli_AvlDict *dict,
         const int64_t key,
         const int64_t value);
-int mli_AvlDict_pop(struct mli_AvlDict *dict, const int64_t key);
-int mli_AvlDict_has(struct mli_AvlDict *dict, const int64_t key);
-int mli_AvlDict_get(
+chk_rc mli_AvlDict_pop(struct mli_AvlDict *dict, const int64_t key);
+mli_bool mli_AvlDict_has(struct mli_AvlDict *dict, const int64_t key);
+chk_rc mli_AvlDict_get(
         struct mli_AvlDict *dict,
         const int64_t key,
         int64_t *value);

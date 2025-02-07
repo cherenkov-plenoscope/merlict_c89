@@ -72,45 +72,45 @@ CASE("assert no unexpected control codes in ascii-text.")
         char txt[32];
         uint8_t i;
 
-        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg("", 0));
-        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg("\n", 0));
-        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg("\0", 0));
-        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg("house", 0));
-        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg("house\n", 0));
+        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls__dbg("", 0));
+        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls__dbg("\n", 0));
+        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls__dbg("\0", 0));
+        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls__dbg("house", 0));
+        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls__dbg("house\n", 0));
 
-        CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg("\r", 0));
+        CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls__dbg("\r", 0));
 
         memset(txt, '\0', sizeof(txt));
         sprintf(txt, "%c", 0);
-        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
+        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls__dbg(txt, 0));
 
         for (i = 1; i < 9; i++) {
                 memset(txt, '\0', sizeof(txt));
                 sprintf(txt, "%c", i);
-                CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
+                CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls__dbg(txt, 0));
         }
 
         memset(txt, '\0', sizeof(txt));
         sprintf(txt, "%c", 9);
-        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
+        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls__dbg(txt, 0));
 
         memset(txt, '\0', sizeof(txt));
         sprintf(txt, "%c", 10);
-        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
+        CHECK(mli_cstr_assert_only_NUL_LF_TAB_controls__dbg(txt, 0));
 
         for (i = 11; i < 32; i++) {
                 memset(txt, '\0', sizeof(txt));
                 sprintf(txt, "%c", i);
-                CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
+                CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls__dbg(txt, 0));
         }
 
         memset(txt, '\0', sizeof(txt));
         sprintf(txt, "%c", 127);
-        CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
+        CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls__dbg(txt, 0));
 
         for (i = 128; i < 255; i++) {
                 memset(txt, '\0', sizeof(txt));
                 sprintf(txt, "%c", i);
-                CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls_dbg(txt, 0));
+                CHECK(!mli_cstr_assert_only_NUL_LF_TAB_controls__dbg(txt, 0));
         }
 }

@@ -3,6 +3,7 @@
 #define MLI_COLOR_MATERIALS_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
 #include "../mat/mat.h"
 #include "../materials/materials.h"
 #include "color_spectrum.h"
@@ -25,12 +26,12 @@ struct mli_Vec mli_ColorMaterials_ColorSpectrum_to_xyz(
         const struct mli_ColorSpectrum *spectrum);
 
 struct mli_ColorMaterials mli_ColorMaterials_init(void);
-int mli_ColorMaterials_malloc(
+chk_rc mli_ColorMaterials_malloc(
         struct mli_ColorMaterials *self,
         const uint64_t num_spectra);
-int mli_ColorMaterials_set_observer_cie1931(struct mli_ColorMaterials *self);
+chk_rc mli_ColorMaterials_set_observer_cie1931(struct mli_ColorMaterials *self);
 
-int mli_ColorMaterials_malloc_from_Materials(
+chk_rc mli_ColorMaterials_malloc_from_Materials(
         struct mli_ColorMaterials *self,
         const struct mli_Materials *materials);
 

@@ -3,6 +3,8 @@
 #define MLI_OBJECT_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../vec/vec.h"
 #include "object_face.h"
 #include "../string/string.h"
@@ -23,7 +25,7 @@ struct mli_Object {
         struct mli_String *material_names;
 };
 
-int mli_Object_malloc(
+chk_rc mli_Object_malloc(
         struct mli_Object *obj,
         const uint64_t num_vertices,
         const uint64_t num_vertex_normals,
@@ -31,7 +33,9 @@ int mli_Object_malloc(
         const uint64_t num_materials);
 void mli_Object_free(struct mli_Object *obj);
 struct mli_Object mli_Object_init(void);
-int mli_Object_equal(const struct mli_Object *a, const struct mli_Object *b);
+mli_bool mli_Object_equal(
+        const struct mli_Object *a,
+        const struct mli_Object *b);
 uint32_t mli_Object_resolve_material_idx(
         const struct mli_Object *obj,
         const uint32_t face_idx);

@@ -12,7 +12,7 @@ struct mli_materials_Names mli_materials_Names_init(void)
         return nm;
 }
 
-int mli_materials_Names_malloc(struct mli_materials_Names *namemap)
+chk_rc mli_materials_Names_malloc(struct mli_materials_Names *namemap)
 {
         mli_materials_Names_free(namemap);
         chk_mem(mli_Map_malloc(&namemap->spectra));

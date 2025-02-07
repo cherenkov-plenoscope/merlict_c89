@@ -4,7 +4,7 @@
 #include "../chk/chk.h"
 #include "../string/string_serialize.h"
 
-int mli_Materials_to_io(const struct mli_Materials *self, struct mli_IO *f)
+chk_rc mli_Materials_to_io(const struct mli_Materials *self, struct mli_IO *f)
 {
         uint64_t i;
         struct mli_MagicId magic = mli_MagicId_init();
@@ -37,7 +37,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Materials_from_io(struct mli_Materials *self, struct mli_IO *f)
+chk_rc mli_Materials_from_io(struct mli_Materials *self, struct mli_IO *f)
 {
         uint64_t i;
         struct mli_MagicId magic;

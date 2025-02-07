@@ -3,6 +3,7 @@
 #define MLI_GEOMETRYTOMATERIALMAP_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
 #include "../geometry/geometry.h"
 #include "../materials/materials.h"
 
@@ -14,7 +15,7 @@ struct mli_GeometryToMaterialMap {
 };
 
 struct mli_GeometryToMaterialMap mli_GeometryToMaterialMap_init(void);
-int mli_GeometryToMaterialMap_malloc(
+chk_rc mli_GeometryToMaterialMap_malloc(
         struct mli_GeometryToMaterialMap *map,
         const uint32_t num_robjects,
         const uint32_t total_num_boundary_layers);

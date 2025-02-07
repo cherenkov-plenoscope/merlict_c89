@@ -213,7 +213,7 @@ void mli_camera_Aperture_assign_pixel_colors_to_sum_and_exposure_image(
         }
 }
 
-int mli_camera_Aperture_render_image(
+chk_rc mli_camera_Aperture_render_image(
         const struct mli_camera_Aperture self,
         const struct mli_HomTraComp camera2root_comp,
         const struct mli_PathTracer *pathtracer,

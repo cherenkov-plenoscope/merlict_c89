@@ -3,7 +3,7 @@
 #include "../magicid/magicid.h"
 #include "../chk/chk.h"
 
-int mli_Func_to_io(const struct mli_Func *func, struct mli_IO *f)
+chk_rc mli_Func_to_io(const struct mli_Func *func, struct mli_IO *f)
 {
         struct mli_MagicId magic;
         chk(mli_MagicId_set(&magic, "mli_Func"));
@@ -17,7 +17,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Func_from_io(struct mli_Func *func, struct mli_IO *f)
+chk_rc mli_Func_from_io(struct mli_Func *func, struct mli_IO *f)
 {
         uint64_t num_points;
         struct mli_MagicId magic;

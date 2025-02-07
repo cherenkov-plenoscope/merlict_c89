@@ -55,7 +55,7 @@
  *      cite{revelles2000efficient}
  */
 
-int mli_raytracing_ray_octree_traversal_first_octree_node(
+mli_octree_node mli_raytracing_ray_octree_traversal_first_octree_node(
         const struct mli_Vec t0,
         const struct mli_Vec tm)
 {
@@ -67,7 +67,7 @@ int mli_raytracing_ray_octree_traversal_first_octree_node(
                                 child |= 2;
                         if (tm.z < t0.x)
                                 child |= 1;
-                        return (int)child;
+                        return (mli_octree_node)child;
                 }
         } else {
                 if (t0.y > t0.z) {
@@ -76,7 +76,7 @@ int mli_raytracing_ray_octree_traversal_first_octree_node(
                                 child |= 4;
                         if (tm.z < t0.y)
                                 child |= 1;
-                        return (int)child;
+                        return (mli_octree_node)child;
                 }
         }
         /* X-Y-plane */
@@ -84,14 +84,14 @@ int mli_raytracing_ray_octree_traversal_first_octree_node(
                 child |= 4;
         if (tm.y < t0.z)
                 child |= 2;
-        return (int)child;
+        return (mli_octree_node)child;
 }
 
-int mli_raytracing_ray_octree_traversal_next_octree_node(
+mli_octree_node mli_raytracing_ray_octree_traversal_next_octree_node(
         const struct mli_Vec tm,
-        int x,
-        int y,
-        int z)
+        mli_octree_node x,
+        mli_octree_node y,
+        mli_octree_node z)
 {
         if (tm.x < tm.y) {
                 if (tm.x < tm.z) {

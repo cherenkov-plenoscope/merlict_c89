@@ -66,7 +66,7 @@ struct mli_Color mli_Color_truncate(
         return out;
 }
 
-int mli_Color_equal(const struct mli_Color a, const struct mli_Color b)
+mli_bool mli_Color_equal(const struct mli_Color a, const struct mli_Color b)
 {
         if (a.r != b.r)
                 return MLI_FALSE;
@@ -77,7 +77,7 @@ int mli_Color_equal(const struct mli_Color a, const struct mli_Color b)
         return MLI_TRUE;
 }
 
-int mli_Color_is_in_range(
+mli_bool mli_Color_is_in_range(
         const struct mli_Color c,
         const float start,
         const float stop)

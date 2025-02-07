@@ -53,7 +53,7 @@ void mli_Geometry_free(struct mli_Geometry *self)
         (*self) = mli_Geometry_init();
 }
 
-int mli_Geometry_malloc_objects(
+chk_rc mli_Geometry_malloc_objects(
         struct mli_Geometry *self,
         const uint32_t num_objects)
 {
@@ -71,7 +71,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Geometry_malloc_references(
+chk_rc mli_Geometry_malloc_references(
         struct mli_Geometry *self,
         const uint32_t num_robjects)
 {
@@ -86,7 +86,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Geometry_malloc(
+chk_rc mli_Geometry_malloc(
         struct mli_Geometry *self,
         const uint32_t num_objects,
         const uint32_t num_robjects)
@@ -175,7 +175,7 @@ void mli_Geometry_info_fprint(FILE *f, const struct mli_Geometry *self)
         }
 }
 
-int mli_Geometry_warn_objects(const struct mli_Geometry *self)
+chk_rc mli_Geometry_warn_objects(const struct mli_Geometry *self)
 {
         uint32_t o;
         for (o = 0; o < self->num_objects; o++) {

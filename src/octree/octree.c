@@ -4,7 +4,6 @@
 #include "../object/object_AABB.h"
 #include "../geometry/geometry_aabb.h"
 #include "../geometry/geometry_and_accelerator.h"
-#include "../chk/chk.h"
 #include "../math/math.h"
 
 /*
@@ -98,7 +97,7 @@ void mli_octree_LeafArray_free(struct mli_octree_LeafArray *leafs)
         *leafs = mli_octree_LeafArray_init();
 }
 
-int mli_octree_LeafArray_malloc(
+chk_rc mli_octree_LeafArray_malloc(
         struct mli_octree_LeafArray *leafs,
         const uint64_t num_leafs,
         const uint64_t num_object_links)
@@ -153,7 +152,7 @@ void mli_OcTree_free(struct mli_OcTree *tree)
         *tree = mli_OcTree_init();
 }
 
-int mli_OcTree_malloc(
+chk_rc mli_OcTree_malloc(
         struct mli_OcTree *tree,
         const uint64_t num_nodes,
         const uint64_t num_leafs,
@@ -283,7 +282,7 @@ uint32_t mli_OcTree_leaf_object_link(
         return tree->leafs.object_links[i];
 }
 
-int mli_OcTree_equal_payload_walk(
+mli_bool mli_OcTree_equal_payload_walk(
         const struct mli_OcTree *tree,
         const int32_t node_idx,
         const int32_t node_type,
@@ -360,7 +359,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_OcTree_equal_payload(
+mli_bool mli_OcTree_equal_payload(
         const struct mli_OcTree *tree,
         const struct mli_octree_TmpOcTree *tmp_octree)
 {
@@ -445,7 +444,7 @@ void mli_OcTree_print(const struct mli_OcTree *tree)
         }
 }
 
-int mli_OcTree_malloc_from_object_wavefront(
+chk_rc mli_OcTree_malloc_from_object_wavefront(
         struct mli_OcTree *octree,
         const struct mli_Object *object)
 {
@@ -476,7 +475,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_OcTree_malloc_from_Geometry(
+chk_rc mli_OcTree_malloc_from_Geometry(
         struct mli_OcTree *octree,
         const struct mli_GeometryAndAccelerator *accgeo,
         const struct mli_AABB outermost_aabb)

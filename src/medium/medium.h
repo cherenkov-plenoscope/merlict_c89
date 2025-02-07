@@ -3,6 +3,8 @@
 #define MLI_MEDIUM_H_
 
 #include "../string/string.h"
+#include "../chk/chk.h"
+#include "../bool/bool.h"
 #include <stdint.h>
 struct mli_IO;
 struct mli_Materials;
@@ -18,16 +20,18 @@ struct mli_Medium mli_Medium_init(void);
 
 void mli_Medium_free(struct mli_Medium *self);
 
-int mli_Medium_valid_wrt_materials(
+mli_bool mli_Medium_valid_wrt_materials(
         const struct mli_Medium *self,
         const struct mli_Materials *materials);
 
-int mli_Medium_equal(const struct mli_Medium *a, const struct mli_Medium *b);
+mli_bool mli_Medium_equal(
+        const struct mli_Medium *a,
+        const struct mli_Medium *b);
 
-int mli_Medium_to_io(const struct mli_Medium *self, struct mli_IO *f);
-int mli_Medium_from_io(struct mli_Medium *self, struct mli_IO *f);
+chk_rc mli_Medium_to_io(const struct mli_Medium *self, struct mli_IO *f);
+chk_rc mli_Medium_from_io(struct mli_Medium *self, struct mli_IO *f);
 
-int mli_Medium_from_json_string_and_name(
+chk_rc mli_Medium_from_json_string_and_name(
         struct mli_Medium *self,
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string,

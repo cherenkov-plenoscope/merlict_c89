@@ -1,14 +1,13 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "frame_from_archive.h"
 #include <stdint.h>
-#include "../chk/chk.h"
 #include "../string/string.h"
 #include "../json/json.h"
 #include "../cstr/cstr.h"
 #include "../io/io_text.h"
 #include "../frame/frame_json.h"
 
-int mli_Frame_from_Archive(
+chk_rc mli_Frame_from_Archive(
         struct mli_Frame *root,
         const struct mli_Archive *archive,
         const struct mli_Map *object_names,

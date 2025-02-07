@@ -4,21 +4,22 @@
 
 #include <stdint.h>
 #include "quaternion.h"
+#include "../chk/chk.h"
 #include "../json/json.h"
 
-int mli_Quaternion_tait_bryan_from_json(
+chk_rc mli_Quaternion_tait_bryan_from_json(
         struct mli_Quaternion *quat,
         const struct mli_Json *json,
         const uint64_t token);
-int mli_Quaternion_axis_angle_from_json(
+chk_rc mli_Quaternion_axis_angle_from_json(
         struct mli_Quaternion *quat,
         const struct mli_Json *json,
         const uint64_t token);
-int mli_Quaternion_quaternion_from_json(
+chk_rc mli_Quaternion_quaternion_from_json(
         struct mli_Quaternion *quat,
         const struct mli_Json *json,
         const uint64_t token);
-int mli_Quaternion_from_json(
+chk_rc mli_Quaternion_from_json(
         struct mli_Quaternion *quat,
         const struct mli_Json *json,
         const uint64_t token);

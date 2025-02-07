@@ -187,14 +187,14 @@ int mli_AxisAlignedGridTraversal_next(
         struct mli_AxisAlignedGridTraversal *traversal)
 {
         struct mli_AxisAlignedGridTraversal *t = traversal;
-        int RAY_LEFT_GRID = 0;
+        int RAY_ESCAPED_GRID = 0;
 
         if (t->tMax.x < t->tMax.y) {
                 if (t->tMax.x < t->tMax.z) {
                         t->voxel.x += t->step.x;
                         if (t->voxel.x < 0 ||
                             t->voxel.x >= t->grid->num_bins.x) {
-                                traversal->valid = RAY_LEFT_GRID;
+                                traversal->valid = RAY_ESCAPED_GRID;
                                 return traversal->valid;
                         }
                         t->tMax.x += t->tDelta.x;
@@ -202,7 +202,7 @@ int mli_AxisAlignedGridTraversal_next(
                         t->voxel.z += t->step.z;
                         if (t->voxel.z < 0 ||
                             t->voxel.z >= t->grid->num_bins.z) {
-                                traversal->valid = RAY_LEFT_GRID;
+                                traversal->valid = RAY_ESCAPED_GRID;
                                 return traversal->valid;
                         }
                         t->tMax.z += t->tDelta.z;
@@ -212,7 +212,7 @@ int mli_AxisAlignedGridTraversal_next(
                         t->voxel.y += t->step.y;
                         if (t->voxel.y < 0 ||
                             t->voxel.y >= t->grid->num_bins.y) {
-                                traversal->valid = RAY_LEFT_GRID;
+                                traversal->valid = RAY_ESCAPED_GRID;
                                 return traversal->valid;
                         }
                         t->tMax.y += t->tDelta.y;
@@ -220,7 +220,7 @@ int mli_AxisAlignedGridTraversal_next(
                         t->voxel.z += t->step.z;
                         if (t->voxel.z < 0 ||
                             t->voxel.z >= t->grid->num_bins.z) {
-                                traversal->valid = RAY_LEFT_GRID;
+                                traversal->valid = RAY_ESCAPED_GRID;
                                 return traversal->valid;
                         }
                         t->tMax.z += t->tDelta.z;

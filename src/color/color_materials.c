@@ -25,7 +25,7 @@ void mli_ColorMaterials_free(struct mli_ColorMaterials *self)
         (*self) = mli_ColorMaterials_init();
 }
 
-int mli_ColorMaterials_set_observer_cie1931(struct mli_ColorMaterials *self)
+chk_rc mli_ColorMaterials_set_observer_cie1931(struct mli_ColorMaterials *self)
 {
         struct mli_Func func = mli_Func_init();
 
@@ -59,7 +59,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_ColorMaterials_malloc(
+chk_rc mli_ColorMaterials_malloc(
         struct mli_ColorMaterials *self,
         const uint64_t num_spectra)
 {
@@ -75,7 +75,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_ColorMaterials_malloc_from_Materials(
+chk_rc mli_ColorMaterials_malloc_from_Materials(
         struct mli_ColorMaterials *self,
         const struct mli_Materials *materials)
 {

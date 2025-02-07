@@ -101,7 +101,7 @@ float mli_ColorSpectrum_sum(const struct mli_ColorSpectrum *self)
         return c;
 }
 
-int mli_ColorSpectrum_from_func(
+chk_rc mli_ColorSpectrum_from_func(
         struct mli_ColorSpectrum *self,
         const struct mli_ColorSpectrumBinEdges *wavelength_bin_edges,
         const struct mli_Func *func)

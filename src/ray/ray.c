@@ -22,7 +22,7 @@ struct mli_Vec mli_Ray_at(const struct mli_Ray *ray, const double t)
         return out;
 }
 
-int mli_Ray_sphere_intersection(
+chk_rc mli_Ray_sphere_intersection(
         const struct mli_Vec support,
         const struct mli_Vec direction,
         const double radius,

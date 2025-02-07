@@ -2,7 +2,9 @@
 #include "octree_equal.h"
 #include "../chk/chk.h"
 
-int mli_OcTree_equal(const struct mli_OcTree *a, const struct mli_OcTree *b)
+mli_bool mli_OcTree_equal(
+        const struct mli_OcTree *a,
+        const struct mli_OcTree *b)
 {
         uint64_t i, j;
         chk_msg(a->num_nodes == b->num_nodes, "num_nodes not equal.");

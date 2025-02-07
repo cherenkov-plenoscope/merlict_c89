@@ -4,7 +4,7 @@
 #include "../vec/vec_random.h"
 #include "../math/math.h"
 
-int mli_photon_source_parallel_towards_z_from_xy_disc(
+chk_rc mli_photon_source_parallel_towards_z_from_xy_disc(
         struct mli_PhotonVector *out_photons,
         const double wavelength,
         const double radius,
@@ -26,7 +26,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_photon_source_point_like_opening_cone_towards_z(
+chk_rc mli_photon_source_point_like_opening_cone_towards_z(
         struct mli_PhotonVector *out_photons,
         const double wavelength,
         const double opening_angle,

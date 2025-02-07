@@ -3,6 +3,7 @@
 #define MLI_CAMERA_APERTURE_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
 #include "../vec/vec.h"
 #include "../homtra/homtra.h"
 #include "../image/image.h"
@@ -137,7 +138,7 @@ struct mli_camera_Aperture {
 
 struct mli_camera_Aperture mli_camera_Aperture_init(void);
 
-int mli_camera_Aperture_render_image(
+chk_rc mli_camera_Aperture_render_image(
         const struct mli_camera_Aperture self,
         const struct mli_HomTraComp camera2root_comp,
         const struct mli_PathTracer *pathtracer,

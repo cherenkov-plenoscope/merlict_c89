@@ -20,7 +20,7 @@ void mli_FuncInfo_free(struct mli_FuncInfo *self)
         (*self) = mli_FuncInfo_init();
 }
 
-int mli_FuncInfo_malloc(struct mli_FuncInfo *self)
+chk_rc mli_FuncInfo_malloc(struct mli_FuncInfo *self)
 {
         chk(mli_String_malloc(&self->x, 0u));
         chk(mli_String_malloc(&self->y, 0u));
@@ -29,7 +29,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_FuncInfo_equal(
+mli_bool mli_FuncInfo_equal(
         const struct mli_FuncInfo *a,
         const struct mli_FuncInfo *b)
 {
@@ -40,7 +40,7 @@ int mli_FuncInfo_equal(
         return MLI_TRUE;
 }
 
-int mli_FuncInfo_to_io(const struct mli_FuncInfo *self, struct mli_IO *f)
+chk_rc mli_FuncInfo_to_io(const struct mli_FuncInfo *self, struct mli_IO *f)
 {
         struct mli_MagicId magic = mli_MagicId_init();
         chk(mli_MagicId_set(&magic, "mli_FuncInfo"));
@@ -52,7 +52,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_FuncInfo_from_io(struct mli_FuncInfo *self, struct mli_IO *f)
+chk_rc mli_FuncInfo_from_io(struct mli_FuncInfo *self, struct mli_IO *f)
 {
         struct mli_MagicId magic = mli_MagicId_init();
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);

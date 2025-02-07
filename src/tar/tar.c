@@ -298,7 +298,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Tar_tread(struct mli_Tar *tar, void *data, const uint64_t size)
+chk_rc mli_Tar_tread(struct mli_Tar *tar, void *data, const uint64_t size)
 {
         int64_t res = mli_IO_read(data, 1, size, tar->stream);
         chk_msg(res >= 0, "Failed reading from tar.");

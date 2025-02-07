@@ -3,6 +3,8 @@
 #define MLI_BOUNDARYLAYER_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "../string/string.h"
 #include "../io/io.h"
 
@@ -20,13 +22,15 @@ struct mli_BoundaryLayer {
 void mli_BoundaryLayer_free(struct mli_BoundaryLayer *self);
 struct mli_BoundaryLayer mli_BoundaryLayer_init(void);
 
-int mli_BoundaryLayer_equal(
+mli_bool mli_BoundaryLayer_equal(
         const struct mli_BoundaryLayer *a,
         const struct mli_BoundaryLayer *b);
 
-int mli_BoundaryLayer_to_io(
+chk_rc mli_BoundaryLayer_to_io(
         const struct mli_BoundaryLayer *self,
         struct mli_IO *f);
-int mli_BoundaryLayer_from_io(struct mli_BoundaryLayer *self, struct mli_IO *f);
+chk_rc mli_BoundaryLayer_from_io(
+        struct mli_BoundaryLayer *self,
+        struct mli_IO *f);
 
 #endif

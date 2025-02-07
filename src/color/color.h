@@ -3,6 +3,7 @@
 #define MLI_COLOR_H_
 
 #include <stdint.h>
+#include "../bool/bool.h"
 
 struct mli_Color {
         float r;
@@ -10,7 +11,7 @@ struct mli_Color {
         float b;
 };
 
-int mli_Color_equal(const struct mli_Color a, const struct mli_Color b);
+mli_bool mli_Color_equal(const struct mli_Color a, const struct mli_Color b);
 struct mli_Color mli_Color_truncate(
         const struct mli_Color color,
         const float start,
@@ -23,7 +24,7 @@ struct mli_Color mli_Color_mix(
         const struct mli_Color b,
         const float refl);
 struct mli_Color mli_Color_set(const float r, const float g, const float b);
-int mli_Color_is_in_range(
+mli_bool mli_Color_is_in_range(
         const struct mli_Color c,
         const float start,
         const float stop);

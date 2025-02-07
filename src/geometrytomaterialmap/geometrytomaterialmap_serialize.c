@@ -3,7 +3,7 @@
 #include "../magicid/magicid.h"
 #include "../chk/chk.h"
 
-int mli_GeometryToMaterialMap_from_io(
+chk_rc mli_GeometryToMaterialMap_from_io(
         struct mli_GeometryToMaterialMap *geomap,
         struct mli_IO *f)
 {
@@ -37,7 +37,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_GeometryToMaterialMap_to_io(
+chk_rc mli_GeometryToMaterialMap_to_io(
         const struct mli_GeometryToMaterialMap *geomap,
         struct mli_IO *f)
 {

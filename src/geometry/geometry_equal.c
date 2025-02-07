@@ -2,7 +2,7 @@
 #include "geometry_equal.h"
 #include "../chk/chk.h"
 
-int mli_Geometry_objects_equal(
+mli_bool mli_Geometry_objects_equal(
         const struct mli_Geometry *a,
         const struct mli_Geometry *b)
 {
@@ -23,7 +23,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Geometry_object_references_equal(
+mli_bool mli_Geometry_object_references_equal(
         const struct mli_Geometry *a,
         const struct mli_Geometry *b)
 {
@@ -51,7 +51,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Geometry_equal(
+mli_bool mli_Geometry_equal(
         const struct mli_Geometry *a,
         const struct mli_Geometry *b)
 {

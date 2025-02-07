@@ -3,6 +3,8 @@
 #define MLI_OCTREE_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "octree_tmp.h"
 
 #define MLI_OCTREE_TYPE_NONE 0
@@ -41,10 +43,10 @@ void mli_OcTree_print_walk(
         const uint8_t node_type,
         const uint32_t indent,
         const uint32_t child);
-int mli_OcTree_equal_payload(
+mli_bool mli_OcTree_equal_payload(
         const struct mli_OcTree *tree,
         const struct mli_octree_TmpOcTree *tmp_octree);
-int mli_OcTree_equal_payload_walk(
+mli_bool mli_OcTree_equal_payload_walk(
         const struct mli_OcTree *tree,
         const int32_t node_idx,
         const int32_t node_type,
@@ -73,7 +75,7 @@ void mli_OcTree_set_leaf(
 void mli_OcTree_set_node(
         struct mli_OcTree *tree,
         const struct mli_octree_TmpNode *dynnode);
-int mli_OcTree_malloc(
+chk_rc mli_OcTree_malloc(
         struct mli_OcTree *tree,
         const uint64_t num_nodes,
         const uint64_t num_leafs,
@@ -81,7 +83,7 @@ int mli_OcTree_malloc(
 void mli_OcTree_free(struct mli_OcTree *tree);
 struct mli_OcTree mli_OcTree_init(void);
 struct mli_octree_Node mli_octree_Node_init(void);
-int mli_octree_LeafArray_malloc(
+chk_rc mli_octree_LeafArray_malloc(
         struct mli_octree_LeafArray *leafs,
         const uint64_t num_leafs,
         const uint64_t num_object_links);
@@ -89,12 +91,12 @@ void mli_octree_LeafArray_free(struct mli_octree_LeafArray *leafs);
 struct mli_octree_LeafArray mli_octree_LeafArray_init(void);
 struct mli_octree_LeafAddress mli_octree_LeafAddress_init(void);
 
-int mli_OcTree_malloc_from_object_wavefront(
+chk_rc mli_OcTree_malloc_from_object_wavefront(
         struct mli_OcTree *octree,
         const struct mli_Object *object);
 
 struct mli_GeometryAndAccelerator;
-int mli_OcTree_malloc_from_Geometry(
+chk_rc mli_OcTree_malloc_from_Geometry(
         struct mli_OcTree *octree,
         const struct mli_GeometryAndAccelerator *accgeo,
         const struct mli_AABB outermost_aabb);

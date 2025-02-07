@@ -6,7 +6,7 @@
 #include "../geometrytomaterialmap/geometrytomaterialmap_valid.h"
 #include "../chk/chk.h"
 
-int mli_Scenery_valid(const struct mli_Scenery *self)
+mli_bool mli_Scenery_valid(const struct mli_Scenery *self)
 {
         /* check in itself */
         chk_msg(mli_Materials_valid(&self->materials),

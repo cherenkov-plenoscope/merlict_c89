@@ -30,7 +30,7 @@ struct mli_PhotonInteraction mliPhotonInteraction_from_Intersection(
         return phia;
 }
 
-int mli_propagate_photon_cooktorrance(
+chk_rc mli_propagate_photon_cooktorrance(
         struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec)
 {
@@ -112,7 +112,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_propagate_photon_pass_boundary_layer(
+chk_rc mli_propagate_photon_pass_boundary_layer(
         struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec,
         const struct mli_Fresnel fresnel)
@@ -130,7 +130,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_propagate_photon_probability_passing_medium_coming_from(
+chk_rc mli_propagate_photon_probability_passing_medium_coming_from(
         const struct mli_Scenery *scenery,
         const struct mli_Photon *photon,
         const struct mli_IntersectionSurfaceNormal *isec,
@@ -161,7 +161,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_propagate_photon_fresnel_refraction_and_reflection(
+chk_rc mli_propagate_photon_fresnel_refraction_and_reflection(
         struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec)
 {
@@ -214,7 +214,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_propagate_photon_interact_with_object(
+chk_rc mli_propagate_photon_interact_with_object(
         struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec)
 {
@@ -243,7 +243,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_propagate_photon_distance_until_absorption(
+chk_rc mli_propagate_photon_distance_until_absorption(
         const struct mli_Func *absorption_in_medium_passing_through,
         const double wavelength,
         struct mli_Prng *prng,
@@ -262,7 +262,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_propagate_photon_work_on_causal_intersection(
+chk_rc mli_propagate_photon_work_on_causal_intersection(
         struct mli_PhotonPropagation *env)
 {
         int ray_does_intersect_surface = 0;
@@ -399,7 +399,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_propagate_photon_env(struct mli_PhotonPropagation *env)
+chk_rc mli_propagate_photon_env(struct mli_PhotonPropagation *env)
 {
         if (env->max_interactions > env->history->size) {
                 chk_msg(mli_propagate_photon_work_on_causal_intersection(env),
@@ -410,7 +410,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_propagate_photon(
+chk_rc mli_propagate_photon(
         const struct mli_Scenery *scenery,
         struct mli_PhotonInteractionVector *history,
         struct mli_Photon *photon,

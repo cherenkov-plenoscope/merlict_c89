@@ -4,7 +4,7 @@
 #include "../math/math.h"
 #include "../chk/chk.h"
 
-int mli_Geometry_valid_objects(const struct mli_Geometry *geometry)
+mli_bool mli_Geometry_valid_objects(const struct mli_Geometry *geometry)
 {
         uint32_t i = 0;
         for (i = 0; i < geometry->num_objects; i++) {
@@ -27,7 +27,8 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Geometry_valid_robjects_HomTras(const struct mli_Geometry *geometry)
+mli_bool mli_Geometry_valid_robjects_HomTras(
+        const struct mli_Geometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
@@ -49,7 +50,8 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Geometry_valid_object_references(const struct mli_Geometry *geometry)
+mli_bool mli_Geometry_valid_object_references(
+        const struct mli_Geometry *geometry)
 {
         uint32_t i;
         for (i = 0; i < geometry->num_robjects; i++) {
@@ -66,7 +68,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Geometry_valid(const struct mli_Geometry *geometry)
+mli_bool mli_Geometry_valid(const struct mli_Geometry *geometry)
 {
         chk_msg(mli_Geometry_valid_objects(geometry),
                 "Expected objects to be valid.");

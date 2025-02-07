@@ -24,7 +24,7 @@ void mli_Medium_free(struct mli_Medium *self)
         (*self) = mli_Medium_init();
 }
 
-int mli_Medium_valid_wrt_materials(
+mli_bool mli_Medium_valid_wrt_materials(
         const struct mli_Medium *self,
         const struct mli_Materials *materials)
 {
@@ -40,7 +40,9 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Medium_equal(const struct mli_Medium *a, const struct mli_Medium *b)
+mli_bool mli_Medium_equal(
+        const struct mli_Medium *a,
+        const struct mli_Medium *b)
 {
         chk_msg(mli_String_equal(&a->name, &b->name),
                 "Different names of medium models.");
@@ -54,7 +56,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Medium_to_io(const struct mli_Medium *self, struct mli_IO *f)
+chk_rc mli_Medium_to_io(const struct mli_Medium *self, struct mli_IO *f)
 {
         struct mli_MagicId magic = mli_MagicId_init();
         chk(mli_MagicId_set(&magic, "mli_Medium"));
@@ -70,7 +72,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Medium_from_io(struct mli_Medium *self, struct mli_IO *f)
+chk_rc mli_Medium_from_io(struct mli_Medium *self, struct mli_IO *f)
 {
         struct mli_MagicId magic;
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
@@ -87,7 +89,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Medium_from_json_string_and_name(
+chk_rc mli_Medium_from_json_string_and_name(
         struct mli_Medium *self,
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string,

@@ -4,7 +4,6 @@
 
 #include "scenery.h"
 #include "../chk/chk.h"
-#include "../bool/bool.h"
 #include "../io/io.h"
 
 chk_rc mli_Scenery_to_io(const struct mli_Scenery *self, struct mli_IO *f);

@@ -20,7 +20,9 @@ void mli_Surface_free(struct mli_Surface *self)
         (*self) = mli_Surface_init();
 }
 
-int mli_Surface_equal(const struct mli_Surface *a, const struct mli_Surface *b)
+mli_bool mli_Surface_equal(
+        const struct mli_Surface *a,
+        const struct mli_Surface *b)
 {
         chk_msg(a->type == b->type, "Different types of surface models.");
         chk_msg(mli_String_equal(&a->name, &b->name),
@@ -46,7 +48,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Surface_type_to_string(const uint64_t type, struct mli_String *s)
+chk_rc mli_Surface_type_to_string(const uint64_t type, struct mli_String *s)
 {
         switch (type) {
         case MLI_SURFACE_TYPE_TRANSPARENT:
@@ -63,7 +65,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id)
+chk_rc mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id)
 {
         if (mli_String_equal_cstr(s, "transparent")) {
                 (*id) = MLI_SURFACE_TYPE_TRANSPARENT;
@@ -79,7 +81,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f)
+chk_rc mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f)
 {
         struct mli_MagicId magic = mli_MagicId_init();
         chk(mli_MagicId_set(&magic, "mli_Surface"));
@@ -108,7 +110,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f)
+chk_rc mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f)
 {
         struct mli_MagicId magic;
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);
@@ -138,7 +140,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Surface_from_json_string_and_name(
+chk_rc mli_Surface_from_json_string_and_name(
         struct mli_Surface *self,
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string,
@@ -190,7 +192,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Surface_valid_wrt_materials(
+chk_rc mli_Surface_valid_wrt_materials(
         const struct mli_Surface *self,
         const struct mli_Materials *materials)
 {

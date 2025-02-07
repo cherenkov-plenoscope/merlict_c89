@@ -3,6 +3,8 @@
 #define MLI_SURFACE_H_
 
 #include <stdint.h>
+#include "../chk/chk.h"
+#include "../bool/bool.h"
 #include "surface_transparent.h"
 #include "surface_cooktorrance.h"
 #include "../string/string.h"
@@ -26,21 +28,23 @@ struct mli_Surface mli_Surface_init(void);
 
 void mli_Surface_free(struct mli_Surface *self);
 
-int mli_Surface_equal(const struct mli_Surface *a, const struct mli_Surface *b);
+mli_bool mli_Surface_equal(
+        const struct mli_Surface *a,
+        const struct mli_Surface *b);
 
-int mli_Surface_type_to_string(const uint64_t type, struct mli_String *s);
-int mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id);
+chk_rc mli_Surface_type_to_string(const uint64_t type, struct mli_String *s);
+chk_rc mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id);
 
-int mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f);
-int mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f);
+chk_rc mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f);
+chk_rc mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f);
 
-int mli_Surface_from_json_string_and_name(
+chk_rc mli_Surface_from_json_string_and_name(
         struct mli_Surface *self,
         const struct mli_Map *spectra_names,
         const struct mli_String *json_string,
         const struct mli_String *name);
 
-int mli_Surface_valid_wrt_materials(
+chk_rc mli_Surface_valid_wrt_materials(
         const struct mli_Surface *self,
         const struct mli_Materials *materials);
 

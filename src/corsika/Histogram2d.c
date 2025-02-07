@@ -31,20 +31,20 @@ void mli_corsika_Histogram2d_free(struct mli_corsika_Histogram2d *hist)
         mli_AvlDict_free(&hist->dict);
 }
 
-int mli_corsika_Histogram2d_malloc(
+chk_rc mli_corsika_Histogram2d_malloc(
         struct mli_corsika_Histogram2d *hist,
         const uint64_t capacity)
 {
         return mli_AvlDict_malloc(&hist->dict, capacity);
 }
 
-int mli_corsika_Histogram2d_assign(
+chk_rc mli_corsika_Histogram2d_assign(
         struct mli_corsika_Histogram2d *hist,
         const int32_t x,
         const int32_t y,
         const double weight)
 {
-        int has;
+        chk_rc has;
         union i4i4_to_i8 key;
         int64_t ival = 0;
         key.i4i4.x = x;
@@ -67,7 +67,7 @@ uint64_t mli_corsika_Histogram2d_len(const struct mli_corsika_Histogram2d *hist)
         return hist->dict.len;
 }
 
-int mli_corsika_Histogram2d_flatten__(
+chk_rc mli_corsika_Histogram2d_flatten__(
         const struct mli_AvlNode *node,
         struct mliDynCorsikaHistogram2dBin *f)
 {
@@ -104,7 +104,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_corsika_Histogram2d_flatten(
+chk_rc mli_corsika_Histogram2d_flatten(
         const struct mli_corsika_Histogram2d *hist,
         struct mliDynCorsikaHistogram2dBin *f)
 {

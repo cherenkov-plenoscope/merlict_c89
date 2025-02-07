@@ -1,8 +1,6 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "boundarylayer.h"
 #include <stdio.h>
-#include "../chk/chk.h"
-#include "../bool/bool.h"
 #include "../magicid/magicid.h"
 #include "../string/string_serialize.h"
 
@@ -22,7 +20,7 @@ struct mli_BoundaryLayer mli_BoundaryLayer_init(void)
         return layer;
 }
 
-int mli_BoundaryLayer_equal(
+mli_bool mli_BoundaryLayer_equal(
         const struct mli_BoundaryLayer *a,
         const struct mli_BoundaryLayer *b)
 {
@@ -44,7 +42,7 @@ int mli_BoundaryLayer_equal(
         return MLI_TRUE;
 }
 
-int mli_BoundaryLayer_to_io(
+chk_rc mli_BoundaryLayer_to_io(
         const struct mli_BoundaryLayer *self,
         struct mli_IO *f)
 {
@@ -64,7 +62,9 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_BoundaryLayer_from_io(struct mli_BoundaryLayer *self, struct mli_IO *f)
+chk_rc mli_BoundaryLayer_from_io(
+        struct mli_BoundaryLayer *self,
+        struct mli_IO *f)
 {
         struct mli_MagicId magic;
         chk_IO_read(&magic, sizeof(struct mli_MagicId), 1u, f);

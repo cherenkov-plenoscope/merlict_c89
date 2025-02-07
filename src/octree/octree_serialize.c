@@ -3,7 +3,7 @@
 #include "../magicid/magicid.h"
 #include "../chk/chk.h"
 
-int mli_OcTree_to_io(const struct mli_OcTree *octree, struct mli_IO *f)
+chk_rc mli_OcTree_to_io(const struct mli_OcTree *octree, struct mli_IO *f)
 {
         struct mli_MagicId magic;
 
@@ -51,7 +51,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_OcTree_from_io(struct mli_OcTree *octree, struct mli_IO *f)
+chk_rc mli_OcTree_from_io(struct mli_OcTree *octree, struct mli_IO *f)
 {
         uint64_t num_nodes;
         uint64_t num_leafs;
