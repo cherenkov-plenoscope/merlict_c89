@@ -6,4 +6,6 @@
 #define MLI_FALSE 0
 #define mli_bool int
 
+char mli_bool_to_char(const mli_bool self);
+
 #endif

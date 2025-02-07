@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include "../chk/chk.h"
 
 struct mli_IoMemory {
         /* memory */
