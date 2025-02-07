@@ -90,7 +90,7 @@ CASE("focussing_a_parallel_beam")
                 &screen_img,
                 mli_Color_set(1.0, 255.0 / max_color.g, 255.0 / max_color.b));
 
-        CHECK(mli_IO__open_file_cstr(
+        CHECK(mli_IO_open_file_cstr(
                 &f,
                 "data/"
                 "optics_focussing_mirror-psf.ppm.tmp",

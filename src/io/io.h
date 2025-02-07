@@ -29,7 +29,7 @@ chk_rc mli_IO_open_file(
         const struct mli_String *filename,
         const struct mli_String *mode);
 chk_rc mli_IO_adopt_file(struct mli_IO *self, FILE *cfile);
-chk_rc mli_IO__open_file_cstr(
+chk_rc mli_IO_open_file_cstr(
         struct mli_IO *self,
         const char *filename,
         const char *mode);

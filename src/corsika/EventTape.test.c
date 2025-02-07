@@ -22,7 +22,7 @@ CASE("EventTape: run_normal")
 
         /* write */
         /* ----- */
-        CHECK(mli_IO__open_file_cstr(&ostream, path, "w"));
+        CHECK(mli_IO_open_file_cstr(&ostream, path, "w"));
         CHECK(mliEventTapeWriter_begin(&taro, &ostream, BUFFER_SIZE));
         mliEventTape_testing_set_random_RUNH(corho, 42.0, &prng);
         CHECK(mliEventTapeWriter_write_runh(&taro, corho));
@@ -44,7 +44,7 @@ CASE("EventTape: run_normal")
         /* --------- */
         mli_Prng_reinit(&prng, random_seed);
 
-        CHECK(mli_IO__open_file_cstr(&istream, path, "r"));
+        CHECK(mli_IO_open_file_cstr(&istream, path, "r"));
         CHECK(mliEventTapeReader_begin(&tari, &istream));
 
         /* work on RUNH */

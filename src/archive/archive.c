@@ -113,7 +113,7 @@ chk_error:
 chk_rc mli_Archive__from_path_cstr(struct mli_Archive *self, const char *path)
 {
         struct mli_IO f = mli_IO_init();
-        chk_msg(mli_IO__open_file_cstr(&f, path, "r"),
+        chk_msg(mli_IO_open_file_cstr(&f, path, "r"),
                 "Cant open archive from path.");
         chk_msg(mli_Archive_from_io(self, &f),
                 "Can't fread Archive from file.");

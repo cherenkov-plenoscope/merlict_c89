@@ -80,12 +80,11 @@ CASE("mli_Json_from_io_path")
         int64_t myint;
         double myfloat;
 
-        CHECK(mli_IO__open_file_cstr(&file, "data/json/example.json", "r"));
+        CHECK(mli_IO_open_file_cstr(&file, "data/json/example.json", "r"));
         CHECK(mli_Json_from_io(&json, &file));
         mli_IO_close(&file);
 
-        CHECK(mli_IO__open_file_cstr(
-                &file, "data/json/example.debug.tmp", "w"));
+        CHECK(mli_IO_open_file_cstr(&file, "data/json/example.debug.tmp", "w"));
         CHECK(mli_Json_debug_to_io(&json, &file));
         mli_IO_close(&file);
 
@@ -157,11 +156,11 @@ CASE("parse mli_Vec")
         struct mli_Vec vec1 = mli_Vec_init(0., 0., 0.);
         struct mli_Vec vec2 = mli_Vec_init(0., 0., 0.);
 
-        CHECK(mli_IO__open_file_cstr(&io, "data/json/vec.json", "r"));
+        CHECK(mli_IO_open_file_cstr(&io, "data/json/vec.json", "r"));
         CHECK(mli_Json_from_io(&json, &io));
         mli_IO_close(&io);
 
-        CHECK(mli_IO__open_file_cstr(&io, "data/json/vec.debug.tmp", "w"));
+        CHECK(mli_IO_open_file_cstr(&io, "data/json/vec.debug.tmp", "w"));
         CHECK(mli_Json_debug_to_io(&json, &io));
         mli_IO_close(&io);
 

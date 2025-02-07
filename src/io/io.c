@@ -39,7 +39,7 @@ chk_rc mli_IO_adopt_file(struct mli_IO *self, FILE *cfile)
         return mli_IoFile_adopt_cfile(&self->data.file, cfile);
 }
 
-chk_rc mli_IO__open_file_cstr(
+chk_rc mli_IO_open_file_cstr(
         struct mli_IO *self,
         const char *filename,
         const char *mode)

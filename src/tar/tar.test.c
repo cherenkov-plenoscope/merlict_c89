@@ -10,7 +10,7 @@ CASE("Write and read tape-archive")
 
         sprintf(payload, "%s", "Hello world!");
 
-        CHECK(mli_IO__open_file_cstr(&f, path, "w"));
+        CHECK(mli_IO_open_file_cstr(&f, path, "w"));
         CHECK(mli_Tar_write_begin(&tar, &f));
         CHECK(mli_TarHeader_set_directory(&tarh, "resources"));
         CHECK(mli_Tar_write_header(&tar, &tarh));
@@ -23,7 +23,7 @@ CASE("Write and read tape-archive")
 
         memset(payload, '\0', sizeof(payload));
 
-        CHECK(mli_IO__open_file_cstr(&f, path, "r"));
+        CHECK(mli_IO_open_file_cstr(&f, path, "r"));
         tar = mli_Tar_init();
         CHECK(mli_Tar_read_begin(&tar, &f));
         CHECK(mli_Tar_read_header(&tar, &tarh));

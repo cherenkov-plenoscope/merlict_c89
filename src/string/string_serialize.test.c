@@ -13,11 +13,11 @@ CASE("mli_String_serialize")
 
         CHECK(mli_String_from_cstr(&first, "Yolo421!"));
 
-        CHECK(mli_IO__open_file_cstr(&f, path, "w"));
+        CHECK(mli_IO_open_file_cstr(&f, path, "w"));
         CHECK(mli_String_to_io(&first, &f));
         mli_IO_close(&f);
 
-        CHECK(mli_IO__open_file_cstr(&f, path, "r"));
+        CHECK(mli_IO_open_file_cstr(&f, path, "r"));
         CHECK(mli_String_from_io(&second, &f));
         mli_IO_close(&f);
 

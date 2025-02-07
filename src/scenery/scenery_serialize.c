@@ -47,7 +47,7 @@ chk_error:
 chk_rc mli_Scenery_malloc_from_path(struct mli_Scenery *self, const char *path)
 {
         struct mli_IO f = mli_IO_init();
-        chk_msg(mli_IO__open_file_cstr(&f, path, "r"), "Can't open file.");
+        chk_msg(mli_IO_open_file_cstr(&f, path, "r"), "Can't open file.");
         chk_msg(mli_Scenery_from_io(self, &f), "Can't read from file.");
         mli_IO_close(&f);
         return CHK_SUCCESS;
@@ -62,7 +62,7 @@ chk_rc mli_Scenery_write_to_path(
         const char *path)
 {
         struct mli_IO f = mli_IO_init();
-        chk_msg(mli_IO__open_file_cstr(&f, path, "w"), "Can't write to file.");
+        chk_msg(mli_IO_open_file_cstr(&f, path, "w"), "Can't write to file.");
         chk_msg(mli_Scenery_to_io(self, &f), "Can't write to file.");
         mli_IO_close(&f);
         return CHK_SUCCESS;

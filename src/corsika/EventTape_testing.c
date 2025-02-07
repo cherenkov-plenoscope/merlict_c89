@@ -123,7 +123,7 @@ int mliEventTape_testing_write_and_read(
 
         /* write RUN */
         /* ========= */
-        chk(mli_IO__open_file_cstr(&ostream, path, "w"));
+        chk(mli_IO_open_file_cstr(&ostream, path, "w"));
         chk_msg(mliEventTapeWriter_begin(&taro, &ostream, buffer_size),
                 "Can't begin writer.");
         /* set RUNH */
@@ -152,7 +152,7 @@ int mliEventTape_testing_write_and_read(
         /* ======== */
         mli_Prng_reinit(&prng, random_seed);
 
-        chk(mli_IO__open_file_cstr(&istream, path, "r"));
+        chk(mli_IO_open_file_cstr(&istream, path, "r"));
         chk_msg(mliEventTapeReader_begin(&tari, &istream),
                 "Can't begin reader.");
 

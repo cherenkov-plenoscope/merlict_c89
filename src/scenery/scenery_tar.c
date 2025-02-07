@@ -30,7 +30,7 @@ chk_rc mli_Scenery__from_path_cstr(struct mli_Scenery *self, const char *path)
 {
         struct mli_IO f = mli_IO_init();
         chk_msgf(
-                mli_IO__open_file_cstr(&f, path, "r"),
+                mli_IO_open_file_cstr(&f, path, "r"),
                 ("Can't open path '%s'.", path));
         chk_msgf(
                 mli_Scenery_from_io_tar(self, &f),
