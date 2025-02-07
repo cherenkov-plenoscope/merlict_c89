@@ -72,7 +72,6 @@ chk_rc mli_IO_close(struct mli_IO *self)
                 rc = mli_IoFile_close(&self->data.file);
                 break;
         case MLI_IO_TYPE_VOID:
-                chk_warning("Expected io->type != VOID in order to close.");
                 rc = CHK_FAIL;
                 break;
         }

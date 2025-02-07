@@ -14,6 +14,7 @@ struct mli_viewer_Config mli_viewer_Config_default(void)
         cfg.export_num_rows = 720u;
 
         cfg.step_length = 1.0;
+        cfg.gain = 0.1;
         cfg.gamma = 1.0;
 
         cfg.view.position.x = 0.;

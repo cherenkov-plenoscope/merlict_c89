@@ -173,13 +173,30 @@ chk_rc mli_image_ppm__read_color_16bit(
         struct mli_Color *color,
         struct mli_IO *f)
 {
-        uint16_t r, g, b;
-        chk_IO_read(&r, sizeof(uint16_t), 1u, f);
-        chk_IO_read(&g, sizeof(uint16_t), 1u, f);
-        chk_IO_read(&b, sizeof(uint16_t), 1u, f);
-        color->r = (float)r;
-        color->g = (float)g;
-        color->b = (float)b;
+        uint8_t rl, gl, bl, rh, gh, bh;
+        float frl, fgl, fbl, frh, fgh, fbh;
+
+        chk_IO_read(&rh, sizeof(uint8_t), 1u, f);
+        chk_IO_read(&rl, sizeof(uint8_t), 1u, f);
+
+        chk_IO_read(&gh, sizeof(uint8_t), 1u, f);
+        chk_IO_read(&gl, sizeof(uint8_t), 1u, f);
+
+        chk_IO_read(&bh, sizeof(uint8_t), 1u, f);
+        chk_IO_read(&bl, sizeof(uint8_t), 1u, f);
+
+        frh = (float)rh;
+        frl = (float)rl;
+
+        fgh = (float)gh;
+        fgl = (float)gl;
+
+        fbh = (float)bh;
+        fbl = (float)bl;
+
+        color->r = frh * 256.0 + frl;
+        color->g = fgh * 256.0 + fgl;
+        color->b = fbh * 256.0 + fbl;
         return CHK_SUCCESS;
 chk_error:
         return CHK_FAIL;
@@ -190,12 +207,24 @@ chk_rc mli_image_ppm__write_color_16bit(
         struct mli_IO *f)
 {
         struct mli_Color out = mli_Color_truncate(color, 0., 65535.);
-        uint16_t r = (uint16_t)out.r;
-        uint16_t g = (uint16_t)out.g;
-        uint16_t b = (uint16_t)out.b;
-        chk_IO_write(&r, sizeof(uint16_t), 1u, f);
-        chk_IO_write(&g, sizeof(uint16_t), 1u, f);
-        chk_IO_write(&b, sizeof(uint16_t), 1u, f);
+
+        uint8_t rl = (uint8_t)((uint64_t)out.r % 256);
+        uint8_t gl = (uint8_t)((uint64_t)out.g % 256);
+        uint8_t bl = (uint8_t)((uint64_t)out.b % 256);
+
+        uint8_t rh = (uint8_t)((uint64_t)out.r / 256);
+        uint8_t gh = (uint8_t)((uint64_t)out.g / 256);
+        uint8_t bh = (uint8_t)((uint64_t)out.b / 256);
+
+        chk_IO_write(&rh, sizeof(uint8_t), 1u, f);
+        chk_IO_write(&rl, sizeof(uint8_t), 1u, f);
+
+        chk_IO_write(&gh, sizeof(uint8_t), 1u, f);
+        chk_IO_write(&gl, sizeof(uint8_t), 1u, f);
+
+        chk_IO_write(&bh, sizeof(uint8_t), 1u, f);
+        chk_IO_write(&bl, sizeof(uint8_t), 1u, f);
+
         return CHK_SUCCESS;
 chk_error:
         return CHK_FAIL;

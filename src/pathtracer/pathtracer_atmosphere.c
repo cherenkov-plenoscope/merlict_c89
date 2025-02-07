@@ -57,7 +57,7 @@ struct mli_ColorSpectrum mli_raytracing_color_tone_of_diffuse_sky(
         struct mli_Vec facing_surface_normal;
         struct mli_Intersection isec;
         int has_direct_view_to_sky = 0;
-        int num_samples = 5;
+        int num_samples = 3;
 
         facing_surface_normal =
                 intersection->from_outside_to_inside
@@ -91,6 +91,5 @@ struct mli_ColorSpectrum mli_raytracing_color_tone_of_diffuse_sky(
                 }
         }
 
-        return mli_ColorSpectrum_multiply_scalar(
-                sky, 1.0 / (255.0 * num_samples));
+        return mli_ColorSpectrum_multiply_scalar(sky, 1.0 / num_samples);
 }

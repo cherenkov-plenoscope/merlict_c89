@@ -59,9 +59,11 @@ void mli_viewer_print_help(void)
         printf("    - altitude        [  4  ]     earlier daytime   [  8  ]\n");
         printf("    + altitude        [  5  ]     + latitude        [  7  ]\n");
         printf("                                  - latitude        [  6  ]\n");
-        printf("  Gamma                                                    \n");
-        printf("    + increase        [  x  ]                              \n");
-        printf("    - decrease        [  z  ]                              \n");
+        printf("  Colors                                                   \n");
+        printf("    + gamma           [  x  ]                              \n");
+        printf("    - gamma           [  z  ]                              \n");
+        printf("    + gain            [  .  ]                              \n");
+        printf("    - gain            [  ,  ]                              \n");
         printf("\n");
         mli_version_authors_and_affiliations_fprint(stdout);
 }
@@ -70,7 +72,8 @@ void mli_viewer_print_info_line(
         const struct mli_View view,
         const struct mli_viewer_Cursor cursor,
         const struct mli_pathtracer_Config tracer_config,
-        const double gamma)
+        const double gamma,
+        const double gain)
 {
         printf("Help 'h', "
                "Cam: "
@@ -85,6 +88,7 @@ void mli_viewer_print_info_line(
                mli_math_rad2deg(view.rotation.z),
                mli_math_rad2deg(view.field_of_view));
         printf("gamma %.2f, ", gamma);
+        printf("gain %.2f, ", gain);
         printf("Sun: lat % 3.0fdeg, %02d:%02dh, alt % 3.1fkm",
                mli_math_rad2deg(tracer_config.atmosphere.sunLatitude),
                (int)(tracer_config.atmosphere.sunHourAngle),
@@ -130,7 +134,8 @@ chk_rc mli_viewer_image_to_path(const struct mli_Image *img, const char *path)
         struct mli_IO f = mli_IO_init();
         chk_msg(mli_IO_open_file_cstr(&f, path, "w"),
                 "Can't open path to write image.");
-        chk_msg(mli_Image_to_io(img, &f), "Can't write image to file.");
+        chk_msg(mli_Image_to_io(img, &f, MLI_IMAGE_PPM_COLOR_DEPTH_16BIT),
+                "Can't write image to file.");
         mli_IO_close(&f);
         return CHK_SUCCESS;
 chk_error:
@@ -145,6 +150,7 @@ chk_rc mli_viewer_export_image(
         struct mli_Prng *prng,
         const double object_distance,
         const double gamma,
+        const double gain,
         const char *path)
 {
         struct mli_Image full = mli_Image_init();
@@ -170,6 +176,7 @@ chk_rc mli_viewer_export_image(
         apcam.image_sensor_width_y = apcam.image_sensor_width_x / image_ratio;
         mli_camera_Aperture_render_image(
                 apcam, camera2root_comp, tracer, &full, prng);
+        mli_Image_multiply(&full, mli_Color_set(gain, gain, gain));
         mli_Image_power(&full, mli_Color_set(gamma, gamma, gamma));
         chk_msg(mli_viewer_image_to_path(&full, path), "Failed to write ppm.");
         mli_Image_free(&full);
@@ -220,6 +227,7 @@ chk_rc mli_viewer_run_interactive_viewer(
         mli_bool has_probing_intersection = MLI_FALSE;
         struct mli_IntersectionSurfaceNormal probing_intersection;
         double gamma = config.gamma;
+        double gain = config.gain;
 
         chk_msg(mli_ColorMaterials_malloc_from_Materials(
                         &color_materials, &scenery->materials),
@@ -283,6 +291,7 @@ chk_rc mli_viewer_run_interactive_viewer(
                                         &prng,
                                         probing_intersection.distance_of_ray,
                                         gamma,
+                                        gain,
                                         path));
                                 update_image = MLI_FALSE;
                                 break;
@@ -401,6 +410,12 @@ chk_rc mli_viewer_run_interactive_viewer(
                         case 'z':
                                 gamma *= 0.95;
                                 break;
+                        case '.':
+                                gain *= 1.05;
+                                break;
+                        case ',':
+                                gain *= 0.95;
+                                break;
                         default:
                                 printf("Key Press unknown: %d\n", key);
                                 update_image = MLI_FALSE;
@@ -426,6 +441,8 @@ chk_rc mli_viewer_run_interactive_viewer(
                                         &prng);
                         }
                         chk(mli_Image_copy(&img, &img_gamma));
+                        mli_Image_multiply(
+                                &img_gamma, mli_Color_set(gain, gain, gain));
                         mli_Image_power(
                                 &img_gamma, mli_Color_set(gamma, gamma, gamma));
                 }
@@ -481,7 +498,8 @@ chk_rc mli_viewer_run_interactive_viewer(
                 } else {
                         mli_Image_print(&img_gamma, print_mode);
                 }
-                mli_viewer_print_info_line(view, cursor, tracer_config, gamma);
+                mli_viewer_print_info_line(
+                        view, cursor, tracer_config, gamma, gain);
                 if (cursor.active) {
                         printf("Intersection: ");
                         if (has_probing_intersection) {

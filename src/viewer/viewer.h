@@ -24,7 +24,8 @@ void mli_viewer_print_info_line(
         const struct mli_View view,
         const struct mli_viewer_Cursor cursor,
         const struct mli_pathtracer_Config tracer_config,
-        const double gamma);
+        const double gamma,
+        const double gain);
 
 void mli_viewer_timestamp_now_19chars(char *buffer);
 
@@ -35,6 +36,7 @@ chk_rc mli_viewer_export_image(
         struct mli_Prng *prng,
         const double object_distance,
         const double gamma,
+        const double gain,
         const char *path);
 
 chk_rc mli_viewer_run_interactive_viewer(

@@ -74,6 +74,7 @@ struct mli_Color mli_pathtracer_trace_ray(
         struct mli_ColorSpectrum spectrum;
         struct mli_Vec xyz, rgb;
         struct mli_pathtracer_Path path = mli_pathtracer_Path_init();
+        const double fff = 1. / 255.;
 
         spectrum = mli_pathtracer_trace_path_to_next_intersection(
                 tracer, ray, path, prng);
@@ -86,7 +87,7 @@ struct mli_Color mli_pathtracer_trace_ray(
                          ->observer_matching_curve_xyz_to_rgb,
                 xyz);
 
-        return mli_Color_set(rgb.x, rgb.y, rgb.z);
+        return mli_Color_set(rgb.x * fff, rgb.y * fff, rgb.z * fff);
 }
 
 struct mli_ColorSpectrum mli_pathtracer_trace_path_to_next_intersection(
