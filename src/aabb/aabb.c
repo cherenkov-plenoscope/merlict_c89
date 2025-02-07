@@ -34,7 +34,7 @@ struct mli_Vec mli_AABB_center(const struct mli_AABB a)
         return mli_Vec_multiply(sum, .5);
 }
 
-int mli_AABB_valid(const struct mli_AABB a)
+mli_bool mli_AABB_valid(const struct mli_AABB a)
 {
         chk_msg(!MLI_MATH_IS_NAN(a.lower.x), "aabb.lower.x is 'nan'.");
         chk_msg(!MLI_MATH_IS_NAN(a.lower.y), "aabb.lower.y is 'nan'.");
@@ -52,7 +52,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_AABB_equal(const struct mli_AABB a, const struct mli_AABB b)
+mli_bool mli_AABB_equal(const struct mli_AABB a, const struct mli_AABB b)
 {
         chk_msg(mli_Vec_equal(a.lower, b.lower),
                 "Expected 'lower'-corner to be equal.");
@@ -63,7 +63,9 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_AABB_is_overlapping(const struct mli_AABB a, const struct mli_AABB b)
+mli_bool mli_AABB_is_overlapping(
+        const struct mli_AABB a,
+        const struct mli_AABB b)
 {
         const int over_x = (a.upper.x >= b.lower.x) && (b.upper.x >= a.lower.x);
         const int over_y = (a.upper.y >= b.lower.y) && (b.upper.y >= a.lower.y);
@@ -71,7 +73,7 @@ int mli_AABB_is_overlapping(const struct mli_AABB a, const struct mli_AABB b)
         return (over_x && over_y) && over_z;
 }
 
-int mli_AABB_is_point_inside(
+mli_bool mli_AABB_is_point_inside(
         const struct mli_AABB a,
         const struct mli_Vec point)
 {

@@ -36,20 +36,20 @@ void mli_Ray_aabb_intersections(
         (*t_far) = MLI_MATH_MIN3(t2.x, t2.y, t2.z);
 }
 
-int mli_Ray_aabb_intersections_is_valid_given_near_and_far(
+mli_bool mli_Ray_aabb_intersections_is_valid_given_near_and_far(
         const double t_near,
         const double t_far)
 {
         if (t_far < 0) {
-                return 0;
+                return MLI_FALSE;
         }
         if (t_near > t_far) {
-                return 0;
+                return MLI_FALSE;
         }
-        return 1;
+        return MLI_TRUE;
 }
 
-int mli_Ray_has_overlap_aabb(
+mli_bool mli_Ray_has_overlap_aabb(
         const struct mli_Ray ray,
         const struct mli_AABB aabb)
 {

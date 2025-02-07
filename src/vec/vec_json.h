@@ -4,9 +4,10 @@
 
 #include <stdint.h>
 #include "vec.h"
+#include "../chk/chk.h"
 #include "../json/json.h"
 
-int mli_Vec_from_json_token(
+chk_rc mli_Vec_from_json_token(
         struct mli_Vec *v,
         const struct mli_Json *json,
         const uint64_t token);

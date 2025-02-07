@@ -3,7 +3,7 @@
 #include "../chk/chk.h"
 #include "../octree/octree_equal.h"
 
-int mli_Accelerator_equal(
+mli_bool mli_Accelerator_equal(
         const struct mli_Accelerator *a,
         const struct mli_Accelerator *b)
 {

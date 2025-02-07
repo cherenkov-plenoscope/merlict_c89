@@ -44,7 +44,7 @@ float mli_ColorSpectrum_sum(const struct mli_ColorSpectrum *self);
 
 void mli_ColorSpectrum_set(struct mli_ColorSpectrum *self, const float value);
 
-int mli_ColorSpectrum_set_radiance_of_black_body_W_per_m2_per_sr(
+void mli_ColorSpectrum_set_radiance_of_black_body_W_per_m2_per_sr(
         struct mli_ColorSpectrum *self,
         const double temperature);
 

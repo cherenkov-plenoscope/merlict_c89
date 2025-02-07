@@ -4,9 +4,10 @@
 
 #include <stdint.h>
 #include "atmosphere.h"
+#include "../chk/chk.h"
 #include "../json/json.h"
 
-int mli_Atmosphere_from_json_token(
+chk_rc mli_Atmosphere_from_json_token(
         struct mli_Atmosphere *atm,
         const struct mli_Json *json,
         const uint64_t tkn);

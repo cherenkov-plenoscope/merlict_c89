@@ -3,6 +3,7 @@
 #define MLI_AABB_H_
 
 #include "../vec/vec.h"
+#include "../bool/bool.h"
 
 struct mli_AABB {
         /*
@@ -37,11 +38,12 @@ struct mli_Vec mli_AABB_center(const struct mli_AABB a);
 struct mli_AABB mli_AABB_outermost(
         const struct mli_AABB a,
         const struct mli_AABB b);
-int mli_AABB_valid(const struct mli_AABB a);
-int mli_AABB_equal(const struct mli_AABB a, const struct mli_AABB b);
-int mli_AABB_overlapp_aabb(const struct mli_AABB a, const struct mli_AABB b);
-int mli_AABB_is_overlapping(const struct mli_AABB a, const struct mli_AABB b);
-int mli_AABB_is_point_inside(
+mli_bool mli_AABB_valid(const struct mli_AABB a);
+mli_bool mli_AABB_equal(const struct mli_AABB a, const struct mli_AABB b);
+mli_bool mli_AABB_is_overlapping(
+        const struct mli_AABB a,
+        const struct mli_AABB b);
+mli_bool mli_AABB_is_point_inside(
         const struct mli_AABB a,
         const struct mli_Vec point);
 #endif

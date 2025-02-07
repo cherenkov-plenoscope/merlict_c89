@@ -67,10 +67,10 @@ int mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id)
 {
         if (mli_String_equal_cstr(s, "transparent")) {
                 (*id) = MLI_SURFACE_TYPE_TRANSPARENT;
-                return 1;
+                return CHK_SUCCESS;
         } else if (mli_String_equal_cstr(s, "cook-torrance")) {
                 (*id) = MLI_SURFACE_TYPE_COOKTORRANCE;
-                return 1;
+                return CHK_SUCCESS;
         } else {
                 chk_badf(("surface-type-string '%s' is unknown.", s->array));
         }

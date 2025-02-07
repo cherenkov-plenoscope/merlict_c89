@@ -26,7 +26,7 @@ void mli_Archive_free(struct mli_Archive *self)
         (*self) = mli_Archive_init();
 }
 
-int mli_Archive_malloc(struct mli_Archive *self)
+chk_rc mli_Archive_malloc(struct mli_Archive *self)
 {
         mli_Archive_free(self);
         chk(mli_StringVector_malloc(&self->textfiles, 0u));
@@ -36,7 +36,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Archive_push_back(
+chk_rc mli_Archive_push_back(
         struct mli_Archive *self,
         const struct mli_String *filename,
         const struct mli_String *payload)
@@ -63,7 +63,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Archive_from_io(struct mli_Archive *self, struct mli_IO *f)
+chk_rc mli_Archive_from_io(struct mli_Archive *self, struct mli_IO *f)
 {
         struct mli_Tar tar = mli_Tar_init();
         struct mli_TarHeader tarh = mli_TarHeader_init();
@@ -103,14 +103,14 @@ int mli_Archive_from_io(struct mli_Archive *self, struct mli_IO *f)
         mli_String_free(&filename);
         return CHK_SUCCESS;
 chk_error:
-        fprintf(stderr, "tar->filename: '%s'.\n", tarh_name);
+        chk_eprintf("tar->filename: '%s'.\n", tarh_name);
         mli_String_free(&payload);
         mli_String_free(&filename);
         mli_Archive_free(self);
         return CHK_FAIL;
 }
 
-int mli_Archive__from_path_cstr(struct mli_Archive *self, const char *path)
+chk_rc mli_Archive__from_path_cstr(struct mli_Archive *self, const char *path)
 {
         struct mli_IO f = mli_IO_init();
         chk_msg(mli_IO__open_file_cstr(&f, path, "r"),
@@ -123,14 +123,14 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Archive_has(
+mli_bool mli_Archive_has(
         const struct mli_Archive *self,
         const struct mli_String *filename)
 {
         return mli_Map_has(&self->filenames, filename);
 }
 
-int mli_Archive_get(
+chk_rc mli_Archive_get(
         const struct mli_Archive *self,
         const struct mli_String *filename,
         struct mli_String **str)

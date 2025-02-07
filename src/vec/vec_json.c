@@ -1,8 +1,7 @@
 /* Copyright 2018-2020 Sebastian Achim Mueller */
 #include "vec_json.h"
-#include "../chk/chk.h"
 
-int mli_Vec_from_json_token(
+chk_rc mli_Vec_from_json_token(
         struct mli_Vec *v,
         const struct mli_Json *json,
         const uint64_t token)

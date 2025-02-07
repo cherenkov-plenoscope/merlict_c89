@@ -4,7 +4,9 @@
 #include "../magicid/magicid.h"
 #include "../octree/octree_serialize.h"
 
-int mli_Accelerator_to_io(const struct mli_Accelerator *self, struct mli_IO *f)
+chk_rc mli_Accelerator_to_io(
+        const struct mli_Accelerator *self,
+        struct mli_IO *f)
 {
         uint64_t i = 0;
 
@@ -32,7 +34,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Accelerator_from_io(struct mli_Accelerator *self, struct mli_IO *f)
+chk_rc mli_Accelerator_from_io(struct mli_Accelerator *self, struct mli_IO *f)
 {
         uint64_t i = 0u;
         struct mli_MagicId magic;

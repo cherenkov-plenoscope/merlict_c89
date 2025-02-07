@@ -3,8 +3,9 @@
 #define MLI_ACCELERATOR_EQUAL_H_
 
 #include "accelerator.h"
+#include "../bool/bool.h"
 
-int mli_Accelerator_equal(
+mli_bool mli_Accelerator_equal(
         const struct mli_Accelerator *a,
         const struct mli_Accelerator *b);
 #endif

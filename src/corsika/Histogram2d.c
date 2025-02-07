@@ -72,7 +72,7 @@ int mli_corsika_Histogram2d_flatten__(
         struct mliDynCorsikaHistogram2dBin *f)
 {
         if (node == NULL) {
-                return 1;
+                return CHK_SUCCESS;
         } else {
                 union i4i4_to_i8 key;
                 struct mli_corsika_Histogram2dBin bin;
@@ -97,7 +97,7 @@ int mli_corsika_Histogram2d_flatten__(
                         chk_msg(mli_corsika_Histogram2d_flatten__(right, f),
                                 "Failed right");
                 }
-                return 1;
+                return CHK_SUCCESS;
         }
         return CHK_SUCCESS;
 chk_error:

@@ -3,7 +3,7 @@
 #include "args.h"
 #include "../chk/chk.h"
 
-int mli_StringVector_from_argc_argv(
+chk_rc mli_StringVector_from_argc_argv(
         struct mli_StringVector *self,
         int argc,
         char *argv[])

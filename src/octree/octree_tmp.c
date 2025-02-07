@@ -76,11 +76,11 @@ chk_rc mli_octree_TmpNode_add_children(
         struct mli_octree_OverlapVector overlap[8];
 
         if (node->num_objects <= 32u) {
-                return 1;
+                return CHK_SUCCESS;
         }
 
         if (depth == max_depth) {
-                return 1;
+                return CHK_SUCCESS;
         }
 
         for (c = 0u; c < 8u; c++) {

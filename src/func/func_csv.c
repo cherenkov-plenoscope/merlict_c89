@@ -19,7 +19,7 @@ int mli_Func_from_csv_split_line(
                 char c = line->array[i];
                 if (c == ',') {
                         if (num_commas > 0) {
-                                return 1;
+                                return CHK_SUCCESS;
                         }
                         num_commas += 1;
                 } else {

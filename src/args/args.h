@@ -3,8 +3,9 @@
 #define MLI_ARGS_H_
 
 #include "../string/string_vector.h"
+#include "../chk/chk.h"
 
-int mli_StringVector_from_argc_argv(
+chk_rc mli_StringVector_from_argc_argv(
         struct mli_StringVector *self,
         int argc,
         char *argv[]);

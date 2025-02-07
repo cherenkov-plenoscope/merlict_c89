@@ -4,7 +4,7 @@
 #include "../magicid/magicid.h"
 #include "../octree/octree_valid.h"
 
-int mli_Accelerator_valid(const struct mli_Accelerator *self)
+mli_bool mli_Accelerator_valid(const struct mli_Accelerator *self)
 {
         uint32_t i = 0u;
         for (i = 0u; i < self->num_objects; i++) {
@@ -22,7 +22,7 @@ chk_error:
         return CHK_FAIL;
 }
 
-int mli_Accelerator_valid_wrt_Geometry(
+mli_bool mli_Accelerator_valid_wrt_Geometry(
         const struct mli_Accelerator *self,
         const struct mli_Geometry *geometry)
 {
