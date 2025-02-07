@@ -11,8 +11,6 @@ struct mli_Map;
 struct mli_String;
 struct mli_Materials;
 
-#define MLI_SURFACE_TYPE_COOKTORRANCE 5000
-
 struct mli_Surface_CookTorrance {
         uint64_t reflection_spectrum;
         double diffuse_weight;

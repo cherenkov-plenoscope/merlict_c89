@@ -5,8 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define MLI_EVENTIO_TOP_LEVEL 1
-#define MLI_EVENTIO_SUB_LEVEL 0
+enum mli_eventio_level { MLI_EVENTIO_TOP_LEVEL = 1, MLI_EVENTIO_SUB_LEVEL = 0 };
 
 struct mliEventIoHeader {
         int is_sync;

@@ -7,9 +7,11 @@
 #include "../bool/bool.h"
 #include "octree_tmp.h"
 
-#define MLI_OCTREE_TYPE_NONE 0
-#define MLI_OCTREE_TYPE_NODE 1
-#define MLI_OCTREE_TYPE_LEAF 2
+enum mli_octree_type {
+        MLI_OCTREE_TYPE_NONE = 0,
+        MLI_OCTREE_TYPE_NODE = 1,
+        MLI_OCTREE_TYPE_LEAF = 2
+};
 
 struct mli_octree_LeafAddress {
         uint32_t first_object_link;

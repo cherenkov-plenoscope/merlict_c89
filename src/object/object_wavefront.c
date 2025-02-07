@@ -21,8 +21,6 @@
 #define MLI_WAVEFRONT_FACE_LINE_V_VN 37
 #define MLI_WAVEFRONT_FACE_LINE_V_VT_VN 25
 
-#define MLI_WAVEFRONT_LINE_BUFF_LENGTH 64
-
 mli_bool mli_Object_is_face_line_toggle(const int state)
 {
         switch (state) {

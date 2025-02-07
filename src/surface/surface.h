@@ -5,14 +5,13 @@
 #include <stdint.h>
 #include "../chk/chk.h"
 #include "../bool/bool.h"
+#include "surface_type.h"
 #include "surface_transparent.h"
 #include "surface_cooktorrance.h"
 #include "../string/string.h"
 struct mli_IO;
 struct mli_Map;
 struct mli_Materials;
-
-#define MLI_SURFACE_TYPE_NONE 0
 
 union mli_SurfaceData {
         struct mli_Surface_Transparent transparent;
@@ -31,9 +30,6 @@ void mli_Surface_free(struct mli_Surface *self);
 mli_bool mli_Surface_equal(
         const struct mli_Surface *a,
         const struct mli_Surface *b);
-
-chk_rc mli_Surface_type_to_string(const uint64_t type, struct mli_String *s);
-chk_rc mli_Surface_type_from_string(const struct mli_String *s, uint64_t *id);
 
 chk_rc mli_Surface_to_io(const struct mli_Surface *self, struct mli_IO *f);
 chk_rc mli_Surface_from_io(struct mli_Surface *self, struct mli_IO *f);
