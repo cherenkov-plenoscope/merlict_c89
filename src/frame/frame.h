@@ -8,8 +8,10 @@
 #include "../vector/uint32_vector.h"
 #include "frame_ptr_vector.h"
 
-#define MLI_FRAME_TYPE_FRAME 1000u
-#define MLI_FRAME_TYPE_OBJECT 1001u
+enum mli_frame_types {
+        MLI_FRAME_TYPE_FRAME = 1000,
+        MLI_FRAME_TYPE_OBJECT = 1001
+};
 
 struct mli_Frame {
         uint32_t type;

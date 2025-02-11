@@ -37,14 +37,17 @@
 #define MLI_TAR_VERSION_MINOR 0
 #define MLI_TAR_VERSION_PATCH 0
 
-#define MLI_TAR_NORMAL_FILE '0'
-#define MLI_TAR_HARD_LINK '1'
-#define MLI_TAR_SYMBOLIC_LINK '2'
-#define MLI_TAR_CHARACTER_SPECIAL '3'
-#define MLI_TAR_BLOCK_SPECIAL '4'
-#define MLI_TAR_DIRECTORY '5'
-#define MLI_TAR_FIFO '6'
-#define MLI_TAR_NAME_LENGTH 100
+enum mli_tar_file_types {
+        MLI_TAR_NORMAL_FILE = '0',
+        MLI_TAR_HARD_LINK = '1',
+        MLI_TAR_SYMBOLIC_LINK = '2',
+        MLI_TAR_CHARACTER_SPECIAL = '3',
+        MLI_TAR_BLOCK_SPECIAL = '4',
+        MLI_TAR_DIRECTORY = '5',
+        MLI_TAR_FIFO = '6'
+};
+
+enum mli_tar_name_lengths { MLI_TAR_NAME_LENGTH = 100 };
 
 #define MLI_TAR_OCTAL 8u
 #define MLI_TAR_MAX_FILESIZE_OCTAL 8589934592lu /* 8^11 */
@@ -92,6 +95,7 @@ struct mli_TarHeader {
 
 uint64_t mli_TarRawHeader_checksum(const struct mli_TarRawHeader *rh);
 mli_bool mli_TarRawHeader_is_null(const struct mli_TarRawHeader *rh);
+mli_bool mli_Tar_is_known_file_type(const int file_type);
 chk_rc mli_TarRawHeader_from_header(
         struct mli_TarRawHeader *rh,
         const struct mli_TarHeader *h);

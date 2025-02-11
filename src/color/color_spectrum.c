@@ -5,12 +5,16 @@
 #include "../func/func.h"
 #include "../physics/physics.h"
 
+double MLI_COLORSPECTRUM_WAVELENGTH_START(void) { return 400e-9; }
+
+double MLI_COLORSPECTRUM_WAVELENGTH_STOP(void) { return 700e-9; }
+
 struct mli_ColorSpectrumBinEdges mli_ColorSpectrumBinEdges_init(void)
 {
         uint64_t i;
         const uint64_t size = MLI_COLORSPECTRUM_SIZE;
-        const float start = MLI_COLORSPECTRUM_WAVELENGTH_START;
-        const float stop = MLI_COLORSPECTRUM_WAVELENGTH_STOP;
+        const float start = MLI_COLORSPECTRUM_WAVELENGTH_START();
+        const float stop = MLI_COLORSPECTRUM_WAVELENGTH_STOP();
         const float step = (stop - start) / (float)size;
         struct mli_ColorSpectrumBinEdges edges;
         for (i = 0; i < size + 1; i++) {

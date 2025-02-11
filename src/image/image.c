@@ -6,7 +6,7 @@
 #include "../chk/chk.h"
 #include <float.h>
 
-#define MLI_IMAGE_CHUNK_EDGE_SIZE (2u * 3u * 5u)
+enum mli_image_chunk_edge_sizes { MLI_IMAGE_CHUNK_EDGE_SIZE = (2u * 3u * 5u) };
 
 struct mli_Image mli_Image_init(void)
 {

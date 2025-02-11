@@ -11,8 +11,11 @@
 #include "Config.h"
 
 #define mli_key_code int
-#define MLI_VIEWER_ESCAPE_KEY 27
-#define MLI_VIEWER_SPACE_KEY 32
+
+enum mli_viewer_key_codes {
+        MLI_VIEWER_ESCAPE_KEY = 27,
+        MLI_VIEWER_SPACE_KEY = 32
+};
 
 mli_key_code mli_viewer_get_key(void);
 

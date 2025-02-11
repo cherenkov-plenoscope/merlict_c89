@@ -5,9 +5,11 @@
 #include "../chk/chk.h"
 struct mli_Func;
 
-#define MLI_COLORSPECTRUM_SIZE 30
-#define MLI_COLORSPECTRUM_WAVELENGTH_START 400e-9
-#define MLI_COLORSPECTRUM_WAVELENGTH_STOP 700e-9
+enum mli_ColorSpectrum_sizes { MLI_COLORSPECTRUM_SIZE = 30 };
+
+double MLI_COLORSPECTRUM_WAVELENGTH_START(void);
+
+double MLI_COLORSPECTRUM_WAVELENGTH_STOP(void);
 
 struct mli_ColorSpectrumBinEdges {
         float values[MLI_COLORSPECTRUM_SIZE + 1];

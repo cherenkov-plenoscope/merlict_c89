@@ -5,8 +5,10 @@
 #include <stdint.h>
 #include "../image/image.h"
 
-#define MLI_ASCII_MONOCHROME 100
-#define MLI_ANSI_ESCAPE_COLOR 101
+enum mli_Image_print_modes {
+        MLI_IMAGE_PRINT_ASCII_MONOCHROME = 100,
+        MLI_IMAGE_PRINT_ASCII_ESCAPE_COLOR = 101
+};
 
 void mli_Image_print(const struct mli_Image *img, const uint64_t print_mode);
 void mli_Image_print_chars(

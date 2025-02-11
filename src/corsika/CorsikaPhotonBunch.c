@@ -60,7 +60,8 @@ struct mli_Photon mli_corsika_PhotonBunch_to_merlict_photon(
                 The photon's id.
         */
 
-        const double vacuum_speed_of_light = MLI_PHYSICS_SPEED_OF_LIGHT_M_PER_S;
+        const double vacuum_speed_of_light =
+                MLI_PHYSICS_SPEED_OF_LIGHT_M_PER_S();
         const struct mli_Vec photon_direction_of_motion =
                 mli_corsika_photon_direction_of_motion(bunch);
 

@@ -6,9 +6,11 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define MLI_AVL_DEPTH_GREW_BY_ONE 1
-#define MLI_AVL_DEPTH_DID_NOT_CHANGE 0
-#define MLI_AVL_DEPTH_SHRUNK_BY_ONE -1
+enum mli_avltree_depth_changes {
+        MLI_AVL_DEPTH_GREW_BY_ONE = 1,
+        MLI_AVL_DEPTH_DID_NOT_CHANGE = 0,
+        MLI_AVL_DEPTH_SHRUNK_BY_ONE = -1
+};
 
 struct mli_Avl {
         struct mli_Avl *left;

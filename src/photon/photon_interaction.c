@@ -52,7 +52,7 @@ chk_rc mli_photon_time_of_flight(
                 "Failed to eval. refraction for wavelength.");
 
         (*time_of_flight) = (refractive_index * phisec->distance_of_ray) /
-                            MLI_PHYSICS_SPEED_OF_LIGHT_M_PER_S;
+                            MLI_PHYSICS_SPEED_OF_LIGHT_M_PER_S();
         return CHK_SUCCESS;
 chk_error:
         return CHK_FAIL;

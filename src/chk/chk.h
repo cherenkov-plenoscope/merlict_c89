@@ -13,8 +13,8 @@
  *  Learn C the hard way
  */
 
-#define CHK_SUCCESS 1
-#define CHK_FAIL 0
+enum chk_rc_states { CHK_FAIL = 0, CHK_SUCCESS = 1 };
+
 #define chk_rc int
 
 int chk_eprintf(const char *format, ...);

@@ -162,7 +162,11 @@ chk_rc mli_TarRawHeader_from_header(
         }
         chk_msg(mli_Tar_uint_to_field(h->mtime, rh->mtime, sizeof(rh->mtime)),
                 "bad mtime");
-        rh->type = h->type ? h->type : MLI_TAR_NORMAL_FILE;
+        if (mli_Tar_is_known_file_type(h->type)) {
+                rh->type = h->type;
+        } else {
+                rh->type = MLI_TAR_NORMAL_FILE;
+        }
         memcpy(rh->name, h->name, sizeof(rh->name));
         memcpy(rh->linkname, h->linkname, sizeof(rh->linkname));
 
@@ -452,4 +456,20 @@ chk_rc mli_Tar_write_finalize(struct mli_Tar *tar)
         return CHK_SUCCESS;
 chk_error:
         return CHK_FAIL;
+}
+
+mli_bool mli_Tar_is_known_file_type(const int file_type)
+{
+        mli_bool outcome = MLI_FALSE;
+        switch (file_type) {
+        case MLI_TAR_NORMAL_FILE:
+        case MLI_TAR_HARD_LINK:
+        case MLI_TAR_SYMBOLIC_LINK:
+        case MLI_TAR_CHARACTER_SPECIAL:
+        case MLI_TAR_BLOCK_SPECIAL:
+        case MLI_TAR_DIRECTORY:
+        case MLI_TAR_FIFO:
+                outcome = MLI_TRUE;
+        };
+        return outcome;
 }

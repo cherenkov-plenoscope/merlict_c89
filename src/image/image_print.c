@@ -17,13 +17,13 @@ void mli_Image_print_chars(
         const uint64_t num_symbols,
         const uint64_t print_mode)
 {
-        if (print_mode == MLI_ANSI_ESCAPE_COLOR) {
+        if (print_mode == MLI_IMAGE_PRINT_ASCII_ESCAPE_COLOR) {
                 mli_Image_print_ansi_escape_chars(
                         img, symbols, rows, cols, num_symbols);
         } else {
                 mli_Image_print_ascii_chars(
                         img, symbols, rows, cols, num_symbols);
-                if (print_mode != MLI_ASCII_MONOCHROME) {
+                if (print_mode != MLI_IMAGE_PRINT_ASCII_MONOCHROME) {
                         fprintf(stderr,
                                 "Do not know print_mode %u\n",
                                 (uint32_t)print_mode);

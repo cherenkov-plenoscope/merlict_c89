@@ -8,13 +8,15 @@
 #include "../vec/vec.h"
 #include "../materials/materials.h"
 
-#define MLI_PHOTON_CREATION 101u
-#define MLI_PHOTON_ABSORPTION 102u
-#define MLI_PHOTON_ABSORPTION_MEDIUM 103u
-#define MLI_PHOTON_FRESNEL_REFLECTION 104u
-#define MLI_PHOTON_REFRACTION 105u
-#define MLI_PHOTON_SPECULAR_REFLECTION 106u
-#define MLI_PHOTON_DIFFUSE_REFLECTION 107u
+enum mli_photon_interaction_types {
+        MLI_PHOTON_CREATION = 101u,
+        MLI_PHOTON_ABSORPTION = 102u,
+        MLI_PHOTON_ABSORPTION_MEDIUM = 103u,
+        MLI_PHOTON_FRESNEL_REFLECTION = 104u,
+        MLI_PHOTON_REFRACTION = 105u,
+        MLI_PHOTON_SPECULAR_REFLECTION = 106u,
+        MLI_PHOTON_DIFFUSE_REFLECTION = 107u
+};
 
 struct mli_PhotonInteraction {
         int32_t on_geometry_surface;

@@ -214,7 +214,7 @@ chk_rc mli_viewer_run_interactive_viewer(
         mli_bool super_resolution = MLI_FALSE;
         struct mli_viewer_Cursor cursor;
         uint64_t num_screenshots = 0;
-        uint64_t print_mode = MLI_ASCII_MONOCHROME;
+        uint64_t print_mode = MLI_IMAGE_PRINT_ASCII_MONOCHROME;
         char timestamp[20];
         struct mli_View view = config.view;
         struct mli_Image img = mli_Image_init();
@@ -360,13 +360,18 @@ chk_rc mli_viewer_run_interactive_viewer(
                                 printf("Go into cursor-mode first.\n");
                                 break;
                         case 'g':
-                                if (print_mode == MLI_ASCII_MONOCHROME) {
-                                        print_mode = MLI_ANSI_ESCAPE_COLOR;
+                                if (print_mode ==
+                                    MLI_IMAGE_PRINT_ASCII_MONOCHROME) {
+                                        print_mode =
+                                                MLI_IMAGE_PRINT_ASCII_ESCAPE_COLOR;
                                 } else if (
-                                        print_mode == MLI_ANSI_ESCAPE_COLOR) {
-                                        print_mode = MLI_ASCII_MONOCHROME;
+                                        print_mode ==
+                                        MLI_IMAGE_PRINT_ASCII_ESCAPE_COLOR) {
+                                        print_mode =
+                                                MLI_IMAGE_PRINT_ASCII_MONOCHROME;
                                 } else {
-                                        print_mode = MLI_ASCII_MONOCHROME;
+                                        print_mode =
+                                                MLI_IMAGE_PRINT_ASCII_MONOCHROME;
                                 }
                                 break;
                         case 'p':
