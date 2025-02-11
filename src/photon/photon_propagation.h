@@ -48,9 +48,6 @@ chk_rc mli_propagate_photon_pass_boundary_layer(
         struct mli_PhotonPropagation *env,
         const struct mli_IntersectionSurfaceNormal *isec,
         const struct mli_Fresnel fresnel);
-chk_rc mli_propagate_photon_phong(
-        struct mli_PhotonPropagation *env,
-        const struct mli_IntersectionSurfaceNormal *isec);
 struct mli_PhotonInteraction mliPhotonInteraction_from_Intersection(
         const int64_t type,
         const struct mli_Scenery *scenery,
