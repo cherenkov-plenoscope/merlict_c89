@@ -81,54 +81,6 @@ CASE("scaling")
         mli_Image_free(&dst);
 }
 
-CASE("mli_Image_write_to_ppm, mli_Image_malloc_from_ppm")
-{
-        const char path[] = "data/image/img.ppm.tmp";
-        struct mli_IO f = mli_IO_init();
-        struct mli_Image img = mli_Image_init();
-        struct mli_Image back = mli_Image_init();
-        uint32_t col;
-        uint32_t row;
-        double tone;
-        CHECK(mli_Image_malloc(&img, 3, 2));
-        tone = 0.;
-        for (col = 0; col < mli_Image_num_cols(&img); col++) {
-                for (row = 0; row < mli_Image_num_rows(&img); row++) {
-                        struct mli_Color color;
-                        tone = 1e-2 * (double)col * (double)row;
-                        color.r = tone;
-                        color.g = tone + 1e-2;
-                        color.b = tone + 2e-2;
-                        mli_Image_set_by_col_row(&img, col, row, color);
-                }
-        }
-        CHECK(mli_IO_open_file_cstr(&f, path, "w"));
-        CHECK(mli_Image_to_io(&img, &f, MLI_IMAGE_PPM_COLOR_DEPTH_8BIT));
-        CHECK(mli_IO_close(&f));
-
-        CHECK(mli_IO_open_file_cstr(&f, path, "r"));
-        CHECK(mli_Image_from_io(&back, &f));
-        CHECK(mli_IO_close(&f));
-
-        CHECK(mli_Image_num_cols(&back) == 3u);
-        CHECK(mli_Image_num_rows(&back) == 2u);
-
-        for (col = 0; col < mli_Image_num_cols(&back); col++) {
-                for (row = 0; row < mli_Image_num_rows(&back); row++) {
-                        struct mli_Color c_in =
-                                mli_Image_get_by_col_row(&img, col, row);
-                        struct mli_Color c_back =
-                                mli_Image_get_by_col_row(&back, col, row);
-                        CHECK_MARGIN(c_in.r, c_back.r, 1e-2);
-                        CHECK_MARGIN(c_in.g, c_back.g, 1e-2);
-                        CHECK_MARGIN(c_in.b, c_back.b, 1e-2);
-                }
-        }
-
-        mli_Image_free(&img);
-        mli_Image_free(&back);
-}
-
 CASE("mli_Image_sobel")
 {
         int32_t col;

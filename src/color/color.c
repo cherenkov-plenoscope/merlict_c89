@@ -65,6 +65,20 @@ mli_bool mli_Color_equal(const struct mli_Color a, const struct mli_Color b)
         return MLI_TRUE;
 }
 
+mli_bool mli_Color_equal_margin(
+        const struct mli_Color a,
+        const struct mli_Color b,
+        const double epsilon)
+{
+        if (fabs(a.r - b.r) > epsilon)
+                return MLI_FALSE;
+        if (fabs(a.g - b.g) > epsilon)
+                return MLI_FALSE;
+        if (fabs(a.b - b.b) > epsilon)
+                return MLI_FALSE;
+        return MLI_TRUE;
+}
+
 mli_bool mli_Color_is_in_range(
         const struct mli_Color c,
         const float start,

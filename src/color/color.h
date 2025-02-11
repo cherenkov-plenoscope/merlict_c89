@@ -12,6 +12,10 @@ struct mli_Color {
 };
 
 mli_bool mli_Color_equal(const struct mli_Color a, const struct mli_Color b);
+mli_bool mli_Color_equal_margin(
+        const struct mli_Color a,
+        const struct mli_Color b,
+        const double epsilon);
 struct mli_Color mli_Color_truncate(
         const struct mli_Color color,
         const float start,
