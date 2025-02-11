@@ -53,8 +53,7 @@ chk_rc mli_Accelerator_malloc(
         chk_malloc(self->robject_aabbs, struct mli_AABB, self->num_robjects);
         for (rob = 0; rob < self->num_robjects; rob++) {
                 self->robject_aabbs[rob] = mli_AABB_set(
-                        mli_Vec_init(0.0, 0.0, 0.0),
-                        mli_Vec_init(0.0, 0.0, 0.0));
+                        mli_Vec_set(0.0, 0.0, 0.0), mli_Vec_set(0.0, 0.0, 0.0));
         }
 
         return CHK_SUCCESS;
@@ -180,9 +179,9 @@ struct mli_AABB mli_Accelerator_outermost_aabb(
         struct mli_AABB aabb;
         if (self->num_robjects == 0) {
                 aabb.lower =
-                        mli_Vec_init(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
+                        mli_Vec_set(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
                 aabb.upper =
-                        mli_Vec_init(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
+                        mli_Vec_set(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
                 return aabb;
         }
         aabb.lower = self->robject_aabbs[0].lower;

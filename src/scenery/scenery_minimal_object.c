@@ -107,7 +107,7 @@ chk_rc mli_Scenery_malloc_minimal_from_wavefront(
         self->geometry.robjects[0] = 0u;
         self->geometry.robject_ids[0] = 0u;
         self->geometry.robject2root[0] = mli_HomTraComp_set(
-                mli_Vec_init(0.0, 0.0, 0.0),
+                mli_Vec_set(0.0, 0.0, 0.0),
                 mli_Quaternion_set_tait_bryan(0.0, 0.0, 0.0));
 
         /* materials */

@@ -33,7 +33,7 @@ CASE("mli_Accelerator, init")
         tracer.config = &tracer_config;
 
         ray = mli_Ray_set(
-                mli_Vec_init(0.0, 0.0, -5.0), mli_Vec_init(0.0, 0.0, 1.0));
+                mli_Vec_set(0.0, 0.0, -5.0), mli_Vec_set(0.0, 0.0, 1.0));
 
         color = mli_pathtracer_trace_ray(&tracer, ray, &prng);
 

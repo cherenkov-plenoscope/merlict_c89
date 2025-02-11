@@ -136,7 +136,7 @@ struct mli_octree_Node mli_octree_Node_init(void)
 struct mli_OcTree mli_OcTree_init(void)
 {
         struct mli_OcTree tree;
-        tree.cube.lower = mli_Vec_init(0., 0., 0.);
+        tree.cube.lower = mli_Vec_set(0., 0., 0.);
         tree.cube.edge_length = 0.;
         tree.num_nodes = 0u;
         tree.nodes = NULL;

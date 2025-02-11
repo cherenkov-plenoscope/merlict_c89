@@ -4,7 +4,7 @@
 #include <math.h>
 #include <float.h>
 
-struct mli_Vec mli_Vec_init(const double x, const double y, const double z)
+struct mli_Vec mli_Vec_set(const double x, const double y, const double z)
 {
         struct mli_Vec out;
         out.x = x;
@@ -185,14 +185,14 @@ int64_t mli_Vec_sign3_bitmask(const struct mli_Vec a, const double epsilon)
 struct mli_Vec mli_Vec_mean(const struct mli_Vec *vecs, const uint64_t num_vecs)
 {
         uint64_t i;
-        struct mli_Vec mean = mli_Vec_init(0.0, 0.0, 0.0);
+        struct mli_Vec mean = mli_Vec_set(0.0, 0.0, 0.0);
         for (i = 0; i < num_vecs; i++) {
                 mean = mli_Vec_add(mean, vecs[i]);
         }
         return mli_Vec_multiply(mean, (1.0 / num_vecs));
 }
 
-void mli_Vec_set(struct mli_Vec *a, const uint64_t dim, const double v)
+void mli_Vec_set_dim(struct mli_Vec *a, const uint64_t dim, const double v)
 {
         switch (dim) {
         case 0:
@@ -210,7 +210,7 @@ void mli_Vec_set(struct mli_Vec *a, const uint64_t dim, const double v)
         }
 }
 
-double mli_Vec_get(const struct mli_Vec *a, const uint64_t dim)
+double mli_Vec_get_dim(const struct mli_Vec *a, const uint64_t dim)
 {
         double o = 0.0;
         switch (dim) {

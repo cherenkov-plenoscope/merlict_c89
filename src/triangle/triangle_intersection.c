@@ -50,7 +50,7 @@ struct mli_Vec mli_Triangle_interpolate_surface_normal(
         const struct mli_Vec vertex_normal_c,
         const struct mli_triangle_BarycentrigWeights weights)
 {
-        return mli_Vec_init(
+        return mli_Vec_set(
                 vertex_normal_a.x * weights.a + vertex_normal_b.x * weights.b +
                         vertex_normal_c.x * weights.c,
 

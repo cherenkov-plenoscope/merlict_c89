@@ -14,7 +14,7 @@ CASE("simple propagation")
         uint64_t MED_GLASS = 1;
 
         struct mli_Photon photon;
-        photon.ray = mli_Ray_set(mli_Vec_init(0, 0, -3), mli_Vec_init(0, 0, 1));
+        photon.ray = mli_Ray_set(mli_Vec_set(0, 0, -3), mli_Vec_set(0, 0, 1));
         photon.wavelength = 600e-9;
         photon.id = 0;
 
@@ -34,9 +34,9 @@ CASE("simple propagation")
                 &scenery, photon.ray, &intersection));
 
         CHECK(mli_Vec_equal_margin(
-                intersection.position, mli_Vec_init(0, 0, 0), 1e-9));
+                intersection.position, mli_Vec_set(0, 0, 0), 1e-9));
         CHECK(mli_Vec_equal_margin(
-                intersection.surface_normal, mli_Vec_init(0, 0, -1), 1e-9));
+                intersection.surface_normal, mli_Vec_set(0, 0, -1), 1e-9));
         CHECK_MARGIN(intersection.distance_of_ray, 3., 1e-9);
 
         CHECK(scenery.materials.media.size == 2);

@@ -10,7 +10,7 @@ struct mli_Frame mli_Frame_init(void)
         struct mli_Frame f;
         f.type = MLI_FRAME_TYPE_FRAME;
         f.id = 0u;
-        f.frame2mother.translation = mli_Vec_init(0., 0., 0.);
+        f.frame2mother.translation = mli_Vec_set(0., 0., 0.);
         f.frame2mother.rotation = mli_Quaternion_set_tait_bryan(0., 0., 0.);
         f.frame2root = f.frame2mother;
         f.mother = NULL;

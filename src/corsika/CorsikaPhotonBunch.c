@@ -137,13 +137,13 @@ struct mli_Vec mli_corsika_photon_direction_of_motion(
           down towards the observation-plane.
   */
         const double z = sqrt(1.0 - bunch.ux * bunch.ux - bunch.vy * bunch.vy);
-        return mli_Vec_init(bunch.ux, bunch.vy, -z);
+        return mli_Vec_set(bunch.ux, bunch.vy, -z);
 }
 
 struct mli_Vec mli_corsika_photon_support_on_observation_level(
         const struct mli_corsika_PhotonBunch bunch)
 {
-        return mli_Vec_init(
+        return mli_Vec_set(
                 (double)bunch.x_cm * 1e-2, (double)bunch.y_cm * 1e-2, 0.0);
 }
 

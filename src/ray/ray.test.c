@@ -23,13 +23,13 @@ CASE("ray and orientated bounding box")
          */
 
         double near, far;
-        aabb.lower = mli_Vec_init(-1., -2, -3);
-        aabb.upper = mli_Vec_init(1., -1, 0);
+        aabb.lower = mli_Vec_set(-1., -2, -3);
+        aabb.upper = mli_Vec_set(1., -1, 0);
 
         /* ray starts below the box */
         mli_Ray_aabb_intersections(
                 mli_Ray_set(
-                        mli_Vec_init(0., -1.5, -4.), mli_Vec_init(0., 0., 1.)),
+                        mli_Vec_set(0., -1.5, -4.), mli_Vec_set(0., 0., 1.)),
                 aabb,
                 &near,
                 &far);
@@ -41,7 +41,7 @@ CASE("ray and orientated bounding box")
         /* ray starts above the box */
         mli_Ray_aabb_intersections(
                 mli_Ray_set(
-                        mli_Vec_init(0., -1.5, +4.), mli_Vec_init(0., 0., 1.)),
+                        mli_Vec_set(0., -1.5, +4.), mli_Vec_set(0., 0., 1.)),
                 aabb,
                 &near,
                 &far);
@@ -51,7 +51,7 @@ CASE("ray and orientated bounding box")
         /* ray starts inside the box */
         mli_Ray_aabb_intersections(
                 mli_Ray_set(
-                        mli_Vec_init(0., -1.5, -1.5), mli_Vec_init(0., 0., 1.)),
+                        mli_Vec_set(0., -1.5, -1.5), mli_Vec_set(0., 0., 1.)),
                 aabb,
                 &near,
                 &far);
@@ -62,7 +62,7 @@ CASE("ray and orientated bounding box")
 
         /* ray starts beside the box */
         mli_Ray_aabb_intersections(
-                mli_Ray_set(mli_Vec_init(10, 10, -5), mli_Vec_init(0., 0., 1.)),
+                mli_Ray_set(mli_Vec_set(10, 10, -5), mli_Vec_set(0., 0., 1.)),
                 aabb,
                 &near,
                 &far);
@@ -76,35 +76,35 @@ CASE("ray inside aabb")
         struct mli_Vec direction;
         double near, far;
         int i;
-        aabb.lower = mli_Vec_init(-1, -1, -1);
-        aabb.upper = mli_Vec_init(1, 1, 1);
+        aabb.lower = mli_Vec_set(-1, -1, -1);
+        aabb.upper = mli_Vec_set(1, 1, 1);
 
         /* ray starts inside the box */
         for (i = 0; i < 6; i++) {
                 switch (i) {
                 case 0:
-                        direction = mli_Vec_init(-1, 0, 0);
+                        direction = mli_Vec_set(-1, 0, 0);
                         break;
                 case 1:
-                        direction = mli_Vec_init(1, 0, 0);
+                        direction = mli_Vec_set(1, 0, 0);
                         break;
                 case 2:
-                        direction = mli_Vec_init(0, -1, 0);
+                        direction = mli_Vec_set(0, -1, 0);
                         break;
                 case 3:
-                        direction = mli_Vec_init(0, 1, 0);
+                        direction = mli_Vec_set(0, 1, 0);
                         break;
                 case 4:
-                        direction = mli_Vec_init(0, 0, -1);
+                        direction = mli_Vec_set(0, 0, -1);
                         break;
                 case 5:
-                        direction = mli_Vec_init(0, 0, 1);
+                        direction = mli_Vec_set(0, 0, 1);
                         break;
                 default:
                         CHECK(0);
                 }
                 mli_Ray_aabb_intersections(
-                        mli_Ray_set(mli_Vec_init(0., 0., 0.), direction),
+                        mli_Ray_set(mli_Vec_set(0., 0., 0.), direction),
                         aabb,
                         &near,
                         &far);
@@ -122,12 +122,12 @@ CASE("ray aabb actual test cases")
         struct mli_Ray ray;
         /*struct mli_Vec vn, vf;*/
         double near, far;
-        aabb.lower = mli_Vec_init(-5124735.0, -5120543.0, -5000.0);
-        aabb.upper = mli_Vec_init(5115265.0, 5119457.0, 5000.0);
+        aabb.lower = mli_Vec_set(-5124735.0, -5120543.0, -5000.0);
+        aabb.upper = mli_Vec_set(5115265.0, 5119457.0, 5000.0);
         /*aabbextent = mli_Vec_substract(aabb.upper, aabb.lower);*/
         ray = mli_Ray_set(
-                mli_Vec_init(-15220843.0, -16454620.0, 0.0),
-                mli_Vec_init(0.678895, 0.734165, 0.010214));
+                mli_Vec_set(-15220843.0, -16454620.0, 0.0),
+                mli_Vec_set(0.678895, 0.734165, 0.010214));
 
         mli_Ray_aabb_intersections(ray, aabb, &near, &far);
         CHECK(!mli_Ray_aabb_intersections_is_valid_given_near_and_far(
@@ -147,11 +147,11 @@ CASE("../homtra/homtraComp, transform direction")
         struct mli_HomTraComp Tcomp;
         struct mli_HomTra T;
         struct mli_Vec v1, v2, v3;
-        Tcomp.translation = mli_Vec_init(1., 0., 0.);
+        Tcomp.translation = mli_Vec_set(1., 0., 0.);
         Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
-                mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90));
+                mli_Vec_set(0., 0., 1.), mli_math_deg2rad(90));
         T = mli_HomTraComp_from_compact(Tcomp);
-        v1 = mli_Vec_init(1., 0., 0.);
+        v1 = mli_Vec_set(1., 0., 0.);
         v2 = mli_HomTraComp_dir(&T, v1);
         CHECK_MARGIN(v2.x, 0., 1e-6);
         CHECK_MARGIN(v2.y, 1., 1e-6);
@@ -166,11 +166,11 @@ CASE("../homtra/homtraComp, transform direction")
 CASE("unity transformation must not change ray")
 {
         struct mli_Ray ray =
-                mli_Ray_set(mli_Vec_init(0., 0., 1.), mli_Vec_init(0., 0., 1.));
+                mli_Ray_set(mli_Vec_set(0., 0., 1.), mli_Vec_set(0., 0., 1.));
         struct mli_Ray ray2;
         struct mli_HomTraComp Tcomp;
         struct mli_HomTra T;
-        Tcomp.translation = mli_Vec_init(0., 0., 0.);
+        Tcomp.translation = mli_Vec_set(0., 0., 0.);
         Tcomp.rotation = mli_Quaternion_set_tait_bryan(0., 0., 0.);
         T = mli_HomTraComp_from_compact(Tcomp);
         ray2 = mli_HomTraComp_ray(&T, ray);
@@ -181,13 +181,13 @@ CASE("unity transformation must not change ray")
 CASE("translation")
 {
         struct mli_Ray ray =
-                mli_Ray_set(mli_Vec_init(0., 0., 1.), mli_Vec_init(0., 0., 1.));
+                mli_Ray_set(mli_Vec_set(0., 0., 1.), mli_Vec_set(0., 0., 1.));
         struct mli_Ray ray2;
         struct mli_HomTraComp Tcomp;
         struct mli_HomTra T;
-        Tcomp.translation = mli_Vec_init(1., 0., 0.);
+        Tcomp.translation = mli_Vec_set(1., 0., 0.);
         Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
-                mli_Vec_init(0., 0., 1.), 0.);
+                mli_Vec_set(0., 0., 1.), 0.);
         T = mli_HomTraComp_from_compact(Tcomp);
         ray2 = mli_HomTraComp_ray(&T, ray);
         CHECK(ray2.support.x == 1.);
@@ -199,13 +199,13 @@ CASE("translation")
 CASE("rotation")
 {
         struct mli_Ray ray =
-                mli_Ray_set(mli_Vec_init(0., 0., 1.), mli_Vec_init(1., 0., 0.));
+                mli_Ray_set(mli_Vec_set(0., 0., 1.), mli_Vec_set(1., 0., 0.));
         struct mli_Ray ray2;
         struct mli_HomTraComp Tcomp;
         struct mli_HomTra T;
-        Tcomp.translation = mli_Vec_init(0., 0., 0.);
+        Tcomp.translation = mli_Vec_set(0., 0., 0.);
         Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
-                mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90));
+                mli_Vec_set(0., 0., 1.), mli_math_deg2rad(90));
         T = mli_HomTraComp_from_compact(Tcomp);
         ray2 = mli_HomTraComp_ray(&T, ray);
         CHECK(mli_Vec_equal_margin(ray2.support, ray.support, 1e-6));
@@ -217,14 +217,14 @@ CASE("rotation")
 CASE("translation and rotation")
 {
         struct mli_Ray ray =
-                mli_Ray_set(mli_Vec_init(0., 0., 1.), mli_Vec_init(1., 0., 0.));
+                mli_Ray_set(mli_Vec_set(0., 0., 1.), mli_Vec_set(1., 0., 0.));
         struct mli_Ray ray2;
         struct mli_Ray ray3;
         struct mli_HomTraComp Tcomp;
         struct mli_HomTra T;
-        Tcomp.translation = mli_Vec_init(0., 1., 0.);
+        Tcomp.translation = mli_Vec_set(0., 1., 0.);
         Tcomp.rotation = mli_Quaternion_set_rotaxis_and_angle(
-                mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90));
+                mli_Vec_set(0., 0., 1.), mli_math_deg2rad(90));
         T = mli_HomTraComp_from_compact(Tcomp);
         ray2 = mli_HomTraComp_ray(&T, ray);
         CHECK_MARGIN(ray2.support.x, 0., 1e-6);

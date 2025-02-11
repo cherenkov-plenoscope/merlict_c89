@@ -147,8 +147,8 @@ void mli_raytracing_ray_octree_traversal_sub(
         do {
                 switch (proc_node) {
                 case 0: {
-                        nt0 = mli_Vec_init(t0.x, t0.y, t0.z);
-                        nt1 = mli_Vec_init(tm.x, tm.y, tm.z);
+                        nt0 = mli_Vec_set(t0.x, t0.y, t0.z);
+                        nt1 = mli_Vec_set(tm.x, tm.y, tm.z);
                         mli_raytracing_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -164,8 +164,8 @@ void mli_raytracing_ray_octree_traversal_sub(
                         break;
                 }
                 case 1: {
-                        nt0 = mli_Vec_init(t0.x, t0.y, tm.z);
-                        nt1 = mli_Vec_init(tm.x, tm.y, t1.z);
+                        nt0 = mli_Vec_set(t0.x, t0.y, tm.z);
+                        nt1 = mli_Vec_set(tm.x, tm.y, t1.z);
                         mli_raytracing_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -182,8 +182,8 @@ void mli_raytracing_ray_octree_traversal_sub(
                         break;
                 }
                 case 2: {
-                        nt0 = mli_Vec_init(t0.x, tm.y, t0.z);
-                        nt1 = mli_Vec_init(tm.x, t1.y, tm.z);
+                        nt0 = mli_Vec_set(t0.x, tm.y, t0.z);
+                        nt1 = mli_Vec_set(tm.x, t1.y, tm.z);
                         mli_raytracing_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -200,8 +200,8 @@ void mli_raytracing_ray_octree_traversal_sub(
                         break;
                 }
                 case 3: {
-                        nt0 = mli_Vec_init(t0.x, tm.y, tm.z);
-                        nt1 = mli_Vec_init(tm.x, t1.y, t1.z);
+                        nt0 = mli_Vec_set(t0.x, tm.y, tm.z);
+                        nt1 = mli_Vec_set(tm.x, t1.y, t1.z);
                         mli_raytracing_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -218,8 +218,8 @@ void mli_raytracing_ray_octree_traversal_sub(
                         break;
                 }
                 case 4: {
-                        nt0 = mli_Vec_init(tm.x, t0.y, t0.z);
-                        nt1 = mli_Vec_init(t1.x, tm.y, tm.z);
+                        nt0 = mli_Vec_set(tm.x, t0.y, t0.z);
+                        nt1 = mli_Vec_set(t1.x, tm.y, tm.z);
                         mli_raytracing_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -236,8 +236,8 @@ void mli_raytracing_ray_octree_traversal_sub(
                         break;
                 }
                 case 5: {
-                        nt0 = mli_Vec_init(tm.x, t0.y, tm.z);
-                        nt1 = mli_Vec_init(t1.x, tm.y, t1.z);
+                        nt0 = mli_Vec_set(tm.x, t0.y, tm.z);
+                        nt1 = mli_Vec_set(t1.x, tm.y, t1.z);
                         mli_raytracing_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -254,8 +254,8 @@ void mli_raytracing_ray_octree_traversal_sub(
                         break;
                 }
                 case 6: {
-                        nt0 = mli_Vec_init(tm.x, tm.y, t0.z);
-                        nt1 = mli_Vec_init(t1.x, t1.y, tm.z);
+                        nt0 = mli_Vec_set(tm.x, tm.y, t0.z);
+                        nt1 = mli_Vec_set(t1.x, t1.y, tm.z);
                         mli_raytracing_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,
@@ -272,8 +272,8 @@ void mli_raytracing_ray_octree_traversal_sub(
                         break;
                 }
                 case 7: {
-                        nt0 = mli_Vec_init(tm.x, tm.y, tm.z);
-                        nt1 = mli_Vec_init(t1.x, t1.y, t1.z);
+                        nt0 = mli_Vec_set(tm.x, tm.y, tm.z);
+                        nt1 = mli_Vec_set(t1.x, t1.y, t1.z);
                         mli_raytracing_ray_octree_traversal_sub(
                                 nt0,
                                 nt1,

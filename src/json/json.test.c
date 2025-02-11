@@ -153,8 +153,8 @@ CASE("parse mli_Vec")
         uint64_t token;
         struct mli_IO io = mli_IO_init();
         struct mli_Json json = mli_Json_init();
-        struct mli_Vec vec1 = mli_Vec_init(0., 0., 0.);
-        struct mli_Vec vec2 = mli_Vec_init(0., 0., 0.);
+        struct mli_Vec vec1 = mli_Vec_set(0., 0., 0.);
+        struct mli_Vec vec2 = mli_Vec_set(0., 0., 0.);
 
         CHECK(mli_IO_open_file_cstr(&io, "data/json/vec.json", "r"));
         CHECK(mli_Json_from_io(&json, &io));

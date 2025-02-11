@@ -13,14 +13,14 @@ CASE("mli_Quaternion, defaults")
 CASE("rotation is pure i.e. norm is 1.")
 {
         struct mli_Quaternion q = mli_Quaternion_set_rotaxis_and_angle(
-                mli_Vec_init(1., 0., 0.), mli_math_deg2rad(23.));
+                mli_Vec_set(1., 0., 0.), mli_math_deg2rad(23.));
         CHECK_MARGIN(mli_Quaternion_norm(q), 1., 1e-6);
 }
 
 CASE("unity quaternion and matrix")
 {
         struct mli_Quaternion q_eye = mli_Quaternion_set_rotaxis_and_angle(
-                mli_Vec_init(1., 0., 0.), mli_math_deg2rad(0.));
+                mli_Vec_set(1., 0., 0.), mli_math_deg2rad(0.));
         struct mli_Mat r_eye = mli_Quaternion_to_matrix(q_eye);
         CHECK_MARGIN(r_eye.r00, 1., 1e-6);
         CHECK_MARGIN(r_eye.r01, 0., 1e-6);
@@ -38,7 +38,7 @@ CASE("unity quaternion and matrix")
 CASE("rotation matrix z-axis +90deg")
 {
         struct mli_Quaternion z90 = mli_Quaternion_set_rotaxis_and_angle(
-                mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90.));
+                mli_Vec_set(0., 0., 1.), mli_math_deg2rad(90.));
         struct mli_Mat r_z90 = mli_Quaternion_to_matrix(z90);
 
         CHECK_MARGIN(r_z90.r00, 0., 1e-6);
@@ -86,9 +86,9 @@ CASE("sequence of rotations")
          *
          */
         struct mli_Quaternion x90 = mli_Quaternion_set_rotaxis_and_angle(
-                mli_Vec_init(1., 0., 0.), mli_math_deg2rad(90.));
+                mli_Vec_set(1., 0., 0.), mli_math_deg2rad(90.));
         struct mli_Quaternion z90 = mli_Quaternion_set_rotaxis_and_angle(
-                mli_Vec_init(0., 0., 1.), mli_math_deg2rad(90.));
+                mli_Vec_set(0., 0., 1.), mli_math_deg2rad(90.));
         struct mli_Quaternion z90_x90;
         struct mli_Mat r_z90_x90;
         CHECK_MARGIN(mli_Quaternion_norm(x90), 1., 1e-6);

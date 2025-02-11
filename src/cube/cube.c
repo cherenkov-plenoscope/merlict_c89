@@ -7,7 +7,7 @@ struct mli_Vec mli_Cube_upper(const struct mli_Cube a)
 {
         return mli_Vec_add(
                 a.lower,
-                mli_Vec_init(a.edge_length, a.edge_length, a.edge_length));
+                mli_Vec_set(a.edge_length, a.edge_length, a.edge_length));
 }
 
 struct mli_AABB mli_Cube_to_aabb(const struct mli_Cube a)
@@ -20,7 +20,7 @@ struct mli_AABB mli_Cube_to_aabb(const struct mli_Cube a)
 
 struct mli_Vec mli_Cube_center(const struct mli_Cube a)
 {
-        return mli_Vec_init(
+        return mli_Vec_set(
                 a.lower.x + a.edge_length * .5,
                 a.lower.y + a.edge_length * .5,
                 a.lower.z + a.edge_length * .5);

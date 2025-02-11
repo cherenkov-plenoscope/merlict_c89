@@ -70,16 +70,16 @@ void mli_Atmosphere_set_sun_direction(
                         2.0 * MLI_MATH_PI * self->sunHourAngle / 24.0;
 
                 const struct mli_HomTraComp tc_latitude = mli_HomTraComp_set(
-                        mli_Vec_init(0.0, 0.0, 0.0),
+                        mli_Vec_set(0.0, 0.0, 0.0),
                         mli_Quaternion_set_tait_bryan(
                                 self->sunLatitude, 0.0, 0.0));
                 const struct mli_HomTraComp tc_hour = mli_HomTraComp_set(
-                        mli_Vec_init(0.0, 0.0, 0.0),
+                        mli_Vec_set(0.0, 0.0, 0.0),
                         mli_Quaternion_set_tait_bryan(0.0, hours_rad, 0.0));
                 const struct mli_HomTraComp tc =
                         mli_HomTraComp_sequence(tc_latitude, tc_hour);
                 const struct mli_HomTra t = mli_HomTraComp_from_compact(tc);
-                const struct mli_Vec zenith = mli_Vec_init(0.0, 0.0, 1.0);
+                const struct mli_Vec zenith = mli_Vec_set(0.0, 0.0, 1.0);
                 self->sunDirection = mli_HomTraComp_dir(&t, zenith);
         }
 }

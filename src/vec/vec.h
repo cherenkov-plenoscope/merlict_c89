@@ -32,11 +32,11 @@ struct mli_Vec mli_Vec_substract(
         const struct mli_Vec a,
         const struct mli_Vec b);
 struct mli_Vec mli_Vec_add(const struct mli_Vec a, const struct mli_Vec b);
-struct mli_Vec mli_Vec_init(const double x, const double y, const double z);
+struct mli_Vec mli_Vec_set(const double x, const double y, const double z);
 int64_t mli_Vec_sign3_bitmask(const struct mli_Vec a, const double epsilon);
 struct mli_Vec mli_Vec_mean(
         const struct mli_Vec *vecs,
         const uint64_t num_vecs);
-void mli_Vec_set(struct mli_Vec *a, const uint64_t dim, const double val);
-double mli_Vec_get(const struct mli_Vec *a, const uint64_t dim);
+void mli_Vec_set_dim(struct mli_Vec *a, const uint64_t dim, const double val);
+double mli_Vec_get_dim(const struct mli_Vec *a, const uint64_t dim);
 #endif

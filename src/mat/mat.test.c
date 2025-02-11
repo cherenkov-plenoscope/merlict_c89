@@ -8,15 +8,15 @@ CASE("covariance")
         struct mli_Mat cov;
 
         /* random values */
-        vecs[0] = mli_Vec_init(73.0, 7.0, 83.0);
-        vecs[1] = mli_Vec_init(39.0, 97.0, 63.0);
-        vecs[2] = mli_Vec_init(56.0, 95.0, 84.0);
-        vecs[3] = mli_Vec_init(99.0, 21.0, 74.0);
-        vecs[4] = mli_Vec_init(66.0, 50.0, 5.0);
-        vecs[5] = mli_Vec_init(91.0, 29.0, 62.0);
-        vecs[6] = mli_Vec_init(29.0, 1.0, 76.0);
-        vecs[7] = mli_Vec_init(76.0, 42.0, 42.0);
-        vecs[8] = mli_Vec_init(80.0, 46.0, 63.0);
+        vecs[0] = mli_Vec_set(73.0, 7.0, 83.0);
+        vecs[1] = mli_Vec_set(39.0, 97.0, 63.0);
+        vecs[2] = mli_Vec_set(56.0, 95.0, 84.0);
+        vecs[3] = mli_Vec_set(99.0, 21.0, 74.0);
+        vecs[4] = mli_Vec_set(66.0, 50.0, 5.0);
+        vecs[5] = mli_Vec_set(91.0, 29.0, 62.0);
+        vecs[6] = mli_Vec_set(29.0, 1.0, 76.0);
+        vecs[7] = mli_Vec_set(76.0, 42.0, 42.0);
+        vecs[8] = mli_Vec_set(80.0, 46.0, 63.0);
 
         vecs_mean = mli_Vec_mean(vecs, 9);
         cov = mli_Mat_covariance(vecs, 9, vecs_mean);

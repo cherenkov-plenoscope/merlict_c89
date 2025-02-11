@@ -11,21 +11,21 @@ struct mli_Vec mli_View_optical_axis(const struct mli_View cam)
 {
         struct mli_Mat rotation = mli_Mat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rotation, mli_Vec_init(0., 0., 1.));
+        return mli_transform_orientation(&rotation, mli_Vec_set(0., 0., 1.));
 }
 
 struct mli_Vec mli_View_direction_right(const struct mli_View cam)
 {
         struct mli_Mat rotation = mli_Mat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rotation, mli_Vec_init(1., 0., 0.));
+        return mli_transform_orientation(&rotation, mli_Vec_set(1., 0., 0.));
 }
 
 struct mli_Vec mli_View_direction_up(const struct mli_View cam)
 {
         struct mli_Mat rotation = mli_Mat_init_tait_bryan(
                 cam.rotation.x, cam.rotation.y, cam.rotation.z);
-        return mli_transform_orientation(&rotation, mli_Vec_init(0., 1., 0.));
+        return mli_transform_orientation(&rotation, mli_Vec_set(0., 1., 0.));
 }
 
 struct mli_View mli_View_move_forward(

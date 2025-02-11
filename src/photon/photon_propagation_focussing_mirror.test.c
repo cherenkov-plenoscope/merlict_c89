@@ -40,8 +40,8 @@ CASE("focussing_a_parallel_beam")
                         mli_Vec_add(
                                 mli_Vec_random_position_on_disc(
                                         mirror_radius, &prng),
-                                mli_Vec_init(0.0, 0.0, 10.0)),
-                        mli_Vec_init(0.0, 0.0, -1.0));
+                                mli_Vec_set(0.0, 0.0, 10.0)),
+                        mli_Vec_set(0.0, 0.0, -1.0));
                 photon.wavelength =
                         mli_prng_draw_uniform(wavelength_range, &prng);
                 photon.id = i;

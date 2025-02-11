@@ -9,7 +9,7 @@ CASE("full_sphere")
                 mli_prng_UniformRange_set(0.0, 2.0 * MLI_MATH_PI);
         const struct mli_prng_ZenithRange zenith =
                 mli_prng_ZenithRange_set(0.0, MLI_MATH_PI);
-        struct mli_Vec mean_position = mli_Vec_init(0., 0., 0.);
+        struct mli_Vec mean_position = mli_Vec_set(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -1.0, 1e-6);
 
@@ -34,7 +34,7 @@ CASE("octo_sphere")
                 mli_prng_UniformRange_set(0.0, MLI_MATH_PI / 2.0);
         const struct mli_prng_ZenithRange zenith =
                 mli_prng_ZenithRange_set(0., MLI_MATH_PI / 2.0);
-        struct mli_Vec mean_position = mli_Vec_init(0., 0., 0.);
+        struct mli_Vec mean_position = mli_Vec_set(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 1.0, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
         for (i = 0; i < n; i++) {
@@ -58,7 +58,7 @@ CASE("octo_sphere_minus_z")
                 mli_prng_UniformRange_set(0.0, MLI_MATH_PI / 2.0);
         const struct mli_prng_ZenithRange zenith =
                 mli_prng_ZenithRange_set(MLI_MATH_PI / 2.0, MLI_MATH_PI);
-        struct mli_Vec mean_position = mli_Vec_init(0., 0., 0.);
+        struct mli_Vec mean_position = mli_Vec_set(0., 0., 0.);
         CHECK_MARGIN(zenith.z_min, 0.5, 1e-6);
         CHECK_MARGIN(zenith.z_range, -0.5, 1e-6);
         for (i = 0; i < n; i++) {
@@ -94,7 +94,7 @@ CASE("position_on_disc")
                         mli_Vec_random_position_on_disc(disc_radius, &prng)));
 
         /* mean position */
-        mean = mli_Vec_init(0., 0., 0.);
+        mean = mli_Vec_set(0., 0., 0.);
         for (i = 0; i < points.size; i++)
                 mean = mli_Vec_add(mean, points.array[i]);
         mean = mli_Vec_multiply(mean, 1.0 / (double)points.size);
@@ -112,7 +112,7 @@ CASE("position_on_disc")
                      phi = phi + MLI_MATH_PI / 3.0) {
                         double counts_in_evaluation_bin = 0.0;
                         struct mli_Vec eval_disc_pos =
-                                mli_Vec_init(r * cos(phi), r * sin(phi), 0.0);
+                                mli_Vec_set(r * cos(phi), r * sin(phi), 0.0);
                         for (i = 0; i < points.size; i++) {
                                 if (mli_Vec_norm_between(
                                             eval_disc_pos, points.array[i]) <=

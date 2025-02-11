@@ -104,11 +104,11 @@ struct mli_Vec mli_AxisAlignedGridTraversal_first_plane(
         const struct mli_Idx3 voxel,
         const struct mli_Vec ray_direction)
 {
-        struct mli_Vec voxel_lower = mli_Vec_init(
+        struct mli_Vec voxel_lower = mli_Vec_set(
                 grid->bounds.lower.x + (double)voxel.x * grid->bin_width.x,
                 grid->bounds.lower.y + (double)voxel.y * grid->bin_width.y,
                 grid->bounds.lower.z + (double)voxel.z * grid->bin_width.z);
-        struct mli_Vec voxel_upper = mli_Vec_init(
+        struct mli_Vec voxel_upper = mli_Vec_set(
                 grid->bounds.lower.x +
                         (double)(voxel.x + 1) * grid->bin_width.x,
                 grid->bounds.lower.y +

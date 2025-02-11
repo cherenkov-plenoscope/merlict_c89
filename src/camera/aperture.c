@@ -84,7 +84,7 @@ struct mli_Vec mli_camera_Aperture_get_object_point(
                 mli_thin_lens_get_object_given_focal_and_image(
                         focal_length, -1.0 * pixel_support.z);
         const double scaleing = object_distance / pixel_support.z;
-        return mli_Vec_init(
+        return mli_Vec_set(
                 scaleing * pixel_support.x,
                 scaleing * pixel_support.y,
                 object_distance);

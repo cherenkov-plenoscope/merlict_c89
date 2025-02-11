@@ -16,7 +16,7 @@ struct mli_Vec mli_Vec_random_draw_direction_in_zenith_azimuth_range(
         const double az = mli_prng_draw_uniform(azimuth, prng);
         const double zd = mli_prng_draw_zenith(zenith, prng);
         const double sin_zd = sin(zd);
-        return mli_Vec_init(sin_zd * cos(az), sin_zd * sin(az), cos(zd));
+        return mli_Vec_set(sin_zd * cos(az), sin_zd * sin(az), cos(zd));
 }
 
 struct mli_Vec mli_Vec_random_position_on_disc(
@@ -25,7 +25,7 @@ struct mli_Vec mli_Vec_random_position_on_disc(
 {
         const double r = sqrt(mli_Prng_uniform(prng)) * radius;
         const double azimuth = mli_Prng_uniform(prng) * MLI_MATH_2PI;
-        return mli_Vec_init(r * cos(azimuth), r * sin(azimuth), 0.0);
+        return mli_Vec_set(r * cos(azimuth), r * sin(azimuth), 0.0);
 }
 
 struct mli_Vec mli_Vec_random_position_inside_unit_sphere(struct mli_Prng *prng)

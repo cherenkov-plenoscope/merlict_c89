@@ -353,7 +353,7 @@ void mli_octree_TmpNode_num_nodes_leafs_objects(
 struct mli_octree_TmpOcTree mli_octree_TmpOcTree_init(void)
 {
         struct mli_octree_TmpOcTree octree;
-        octree.cube.lower = mli_Vec_init(0., 0., 0.);
+        octree.cube.lower = mli_Vec_set(0., 0., 0.);
         octree.cube.edge_length = 0.;
         octree.root = mli_octree_TmpNode_init();
         return octree;

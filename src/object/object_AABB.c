@@ -73,9 +73,9 @@ struct mli_AABB mli_Object_aabb(
 
         if (obj->num_faces == 0) {
                 aabb.lower =
-                        mli_Vec_init(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
+                        mli_Vec_set(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
                 aabb.upper =
-                        mli_Vec_init(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
+                        mli_Vec_set(MLI_MATH_NAN, MLI_MATH_NAN, MLI_MATH_NAN);
                 return aabb;
         }
 
@@ -128,7 +128,7 @@ struct mli_AABB mli_Object_aabb(
 struct mli_AABB mli_Object_aabb_in_local_frame(const struct mli_Object *obj)
 {
         struct mli_HomTra unity;
-        unity.translation = mli_Vec_init(0.0, 0.0, 0.0);
+        unity.translation = mli_Vec_set(0.0, 0.0, 0.0);
         unity.rotation = mli_Mat_unity();
         return mli_Object_aabb(obj, unity);
 }

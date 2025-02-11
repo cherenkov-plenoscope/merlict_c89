@@ -392,13 +392,13 @@ void mli_Mat_qr_decompose(
         /* column 0 */
         /* -------- */
         z = mli_Mat_minor(z, 0);
-        x = mli_Vec_init(z.r00, z.r10, z.r20);
+        x = mli_Vec_set(z.r00, z.r10, z.r20);
         xnorm = mli_Vec_norm(x);
         if (m.r00 > 0) {
                 xnorm = -xnorm;
         };
 
-        e = mli_Vec_init(xnorm, 0.0, 0.0);
+        e = mli_Vec_set(xnorm, 0.0, 0.0);
         e = mli_Vec_add(x, e);
         e = mli_Vec_normalized(e);
 
@@ -408,13 +408,13 @@ void mli_Mat_qr_decompose(
         /* column 1 */
         /* -------- */
         z = mli_Mat_minor(z, 1);
-        x = mli_Vec_init(z.r01, z.r11, z.r21);
+        x = mli_Vec_set(z.r01, z.r11, z.r21);
         xnorm = mli_Vec_norm(x);
         if (m.r11 > 0) {
                 xnorm = -xnorm;
         };
 
-        e = mli_Vec_init(0.0, xnorm, 0.0);
+        e = mli_Vec_set(0.0, xnorm, 0.0);
         e = mli_Vec_add(x, e);
         e = mli_Vec_normalized(e);
 
@@ -611,12 +611,12 @@ void mli_Mat_lup_solve(
         const uint64_t N = 3;
         uint64_t i, k, idown;
         for (i = 0; i < N; i++) {
-                mli_Vec_set(x, i, mli_Vec_get(b, P[i]));
+                mli_Vec_set_dim(x, i, mli_Vec_get_dim(b, P[i]));
                 for (k = 0; k < i; k++) {
                         const double tmp =
-                                (mli_Vec_get(x, i) -
-                                 mli_Mat_get(A, i, k) * mli_Vec_get(x, k));
-                        mli_Vec_set(x, i, tmp);
+                                (mli_Vec_get_dim(x, i) -
+                                 mli_Mat_get(A, i, k) * mli_Vec_get_dim(x, k));
+                        mli_Vec_set_dim(x, i, tmp);
                 }
         }
 
@@ -625,12 +625,12 @@ void mli_Mat_lup_solve(
                 double tmp;
                 for (k = i + 1; k < N; k++) {
                         const double tmp =
-                                (mli_Vec_get(x, i) -
-                                 mli_Mat_get(A, i, k) * mli_Vec_get(x, k));
-                        mli_Vec_set(x, i, tmp);
+                                (mli_Vec_get_dim(x, i) -
+                                 mli_Mat_get(A, i, k) * mli_Vec_get_dim(x, k));
+                        mli_Vec_set_dim(x, i, tmp);
                 }
-                tmp = mli_Vec_get(x, i) / mli_Mat_get(A, i, i);
-                mli_Vec_set(x, i, tmp);
+                tmp = mli_Vec_get_dim(x, i) / mli_Mat_get(A, i, i);
+                mli_Vec_set_dim(x, i, tmp);
                 i--;
         }
 }
