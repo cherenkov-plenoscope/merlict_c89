@@ -5,6 +5,7 @@
 #include "../../src/corsika/EventTape.h"
 #include "../../src/corsika/Histogram2d.h"
 #include "../../src/chk/chk.h"
+#include "../../src/bool/bool.h"
 #include "../../src/string/string_numbers.h"
 #include "../../src/math/math.h"
 #include "../../src/io/io.h"
@@ -101,7 +102,6 @@ int main(int argc, char *argv[])
                         mli_IO_close(&config_text);
                 } else if (strcmp(arch.name, "cer.x8.float32") == 0) {
                         const int num_bunches = arch.size / 32;
-                        int num = 0;
 
                         for (i = 0; i < num_bunches; i++) {
                                 chk_msg(mli_Tar_read_data(
@@ -124,18 +124,18 @@ int main(int argc, char *argv[])
                                         &grid, &ray);
 
                                 while (traversal.valid) {
-                                        int odd = 0;
+                                        mli_bool out_of_bounds = MLI_FALSE;
                                         if (traversal.voxel.x < 0 ||
                                             traversal.voxel.x >=
                                                     grid.num_bins.x) {
-                                                odd = 1;
+                                                out_of_bounds = MLI_TRUE;
                                         }
                                         if (traversal.voxel.y < 0 ||
                                             traversal.voxel.y >=
                                                     grid.num_bins.y) {
-                                                odd = 1;
+                                                out_of_bounds = MLI_TRUE;
                                         }
-                                        if (odd) {
+                                        if (out_of_bounds) {
                                                 fprintf(stderr,
                                                         "-------------------"
                                                         "\n");
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
                                                 mli_AxisAlignedGridTraversal_fprint(
                                                         stderr, &traversal);
                                         }
-                                        num += 1;
+
                                         chk(mli_corsika_Histogram2d_assign(
                                                 &hist,
                                                 traversal.voxel.x,
