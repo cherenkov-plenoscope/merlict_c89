@@ -111,11 +111,11 @@ merlict on a remote computer via ```ssh``` without an ```X```-server. Merlict's
 viewer will try to set your terminal's ```stdin``` to a non canonical mode so
 that you do not have to press [Enter] after each keypress.
 
-#### Build :hammer:
+### Build :hammer:
 
 See ```./examples/mli_viewer/viewer.main.c```.
 
-#### Run
+### Run
 ```bash
 ./build/viewer data/sceneries/001.tar
 ```
@@ -125,6 +125,13 @@ See ```./examples/mli_viewer/viewer.main.c```.
 ![viewer-ascii-art](/docs/viewer/teapot_ascii_v1-0-0.png)  |  ![viewer-ansi-escape](/docs/viewer/teapot_ansi_v1-0-0.png)
 
 ![viewer-rendering-ppm](/docs/viewer/teapot_full_v1-0-0.png)
+
+### Colors :rainbow:
+Merlict's viewer and visual path tracer do not use the conventional red-green-blue color space.
+Instead merlict uses the phiysical spectra directly.
+The light source has the spectrum of the sun, and the camera (or `eye') perceives
+colors according to the [CIE-1931](https://en.wikipedia.org/wiki/CIE_1931_color_space)
+tri-stimulus color theory.
 
 # Scenery
 
