@@ -26,13 +26,16 @@ SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT) | grep -v $(TEST
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 
 #Defauilt Make
-all: resources ground_grid viewer
+all: resources ground_grid viewer propagate_event_tape
 
 viewer: examples/mli_viewer/viewer.main.c $(OBJECTS)
 	$(CC) -o $(TARGETDIR)/viewer $^ $(LIB)
 
 ground_grid: examples/mli_corsika/ground_grid.main.c $(OBJECTS)
 	$(CC) -o $(TARGETDIR)/ground_grid $^ $(LIB)
+
+propagate_event_tape: examples/mli_corsika/propagate_event_tape.main.c $(OBJECTS)
+	$(CC) -o $(TARGETDIR)/propagate_event_tape $^ $(LIB)
 
 #Remake
 remake: cleaner all
