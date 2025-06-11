@@ -33,6 +33,9 @@ Merlict would not exist without the author's past and present affiliations:
 - Experimental Physics Vb, Astroparticle Physics,
   TU-Dortmund, Otto-Hahn-Str. 4a, 44227 Dortmund, Germany
 
+# Python :snake:
+Checkout [```merlict```](https://github.com/cherenkov-plenoscope/merlict) in ```python```!
+
 # Build :hammer:
 
 Merlict is organized in ['The Pitchfork Layout'](https://github.com/vector-of-bool/pitchfork).
