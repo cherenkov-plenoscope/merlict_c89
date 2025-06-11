@@ -331,6 +331,15 @@ expectations :wink:.
 - [refractive-index-database](https://refractiveindex.info/) a database of
   refractive indices of various materials.
 
+- [optic-object-wavefronts](https://github.com/cherenkov-plenoscope/optic_object_wavefronts)
+  makes accurate triangle meshes with vertex normals of the most common optical surfaces such
+  as spherical lenses or more complex objects such as Schmidt corrector plates for Schmidt
+  telescopes.
+
+- [triangle_mesh_io](https://github.com/cherenkov-plenoscope/triangle_mesh_io) can read,
+  write and partly convert common triangle mesh formats such as ```.stl```, ```.off```,
+  and ```.obj```. It can further add ```vertex-normals```.
+
 # Acknowledgement
 
 Finding intersections of triangles and cubes
