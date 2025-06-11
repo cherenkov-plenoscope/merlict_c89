@@ -89,7 +89,7 @@ in your headers, and
 in your sources. Thats it. :checkered_flag:
 
 With the ```--test``` flag the ```tool/almagamate.py``` further creates the
-```main()``` for unit testing. See ```./compile_and_test.sh``` for a minimal
+```main()``` for unit testing. See ```./compile_and_test.py``` for a minimal
 example. The test's ```main()``` does not use the almagamated sources but
 includes the source files from the ```src/```directory directly. This is done to
 ease debugging so that filenames and linenumber match the original sources.
@@ -293,10 +293,9 @@ wavelength. During propagation, merlict writes the history of the photon
 bouncing around in the scenery until it is absorbed.
 
 # Unit-Tests
-Merlict has a ```bash``` script ```bash ./compile_and_test.sh```
+Merlict has a ```python``` script ```./tools/compile_and_test.py```
 to prepare, build, and run the unit-tests. Run this script to check whether
-merlict builds and runs fine on your platform. The unit-tests and their
-resources are located in the ```./tests/``` directory.
+merlict builds and runs fine on your platform.
 
 The script
 - prepares the resources as it ```tar```s the sceneries into tape-archives,
@@ -315,7 +314,8 @@ Then its the core developer's job to:
   prefix.
 - Avoid all Warnings in```gcc``` and ```clang``` in both ```c``` and ```c++```
   mode.
-- Format ```c``` according to ```./tools/.clang-format```.
+- Format ```c``` according to ```./tools/.clang-format```. Run the linter using
+  ```python ./tools/lint.py```.
 
 But of course the author will happily recive pull-requests that meet such
 expectations :wink:.
