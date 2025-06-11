@@ -1,6 +1,6 @@
 ![merlict c89 logo](/docs/merlict_c89_logo_wide_32by9_low.jpg)
 
-[![Build Status](https://github.com/cherenkov-plenoscope/merict_c89/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/cherenkov-plenoscope/merict_c89/actions/workflows/test.yml)
+[![Build Status](https://github.com/cherenkov-plenoscope/merlict_c89/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/cherenkov-plenoscope/merlict_c89/actions/workflows/test.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Merlict simulates light. It finds the intersections of a ray and a complex 3D
