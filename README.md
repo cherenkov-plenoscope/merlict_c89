@@ -25,13 +25,13 @@ to empower your own particle or photon propagator.
 Merlict would not exist without the author's past and present affiliations:
 
 - Max-Planck-Institute for Nuclear Physics,
-  Saupfercheckweg 1, 69117 Heidelberg, Germany
+  Saupfercheckweg 1, 69117 Heidelberg, Germany :de:
 
 - Institute for Particle Physics and Astrophysics,
-  ETH-Zurich, Otto-Stern-Weg 5, 8093 Zurich, Switzerland
+  ETH-Zurich, Otto-Stern-Weg 5, 8093 Zurich, Switzerland :switzerland:
 
 - Experimental Physics Vb, Astroparticle Physics,
-  TU-Dortmund, Otto-Hahn-Str. 4a, 44227 Dortmund, Germany
+  TU-Dortmund, Otto-Hahn-Str. 4a, 44227 Dortmund, Germany :de:
 
 # Python :snake:
 Checkout [```merlict```](https://github.com/cherenkov-plenoscope/merlict) in ```python```!
