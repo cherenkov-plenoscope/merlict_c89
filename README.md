@@ -35,8 +35,7 @@ Merlict would not exist without the author's past and present affiliations:
 
 # Build :hammer:
 
-Merlict is organized in ['The Pitchfork
-Layout'](https://api.csswg.org/bikeshed/?force=1&url=https://raw.githubusercontent.com/vector-of-bool/pitchfork/develop/data/spec.bs).
+Merlict is organized in ['The Pitchfork Layout'](https://github.com/vector-of-bool/pitchfork).
 It uses the 'merged Header Placement' because it has no private headers and it
 uses the 'merged Tests Placement'. This hopefully gives you a reasonable chance
 to wrap your build system around it. Merlict's sources are split into modules
