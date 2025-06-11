@@ -124,37 +124,72 @@ See ```./examples/mli_viewer/viewer.main.c```.
 
 ![viewer-rendering-ppm](/docs/viewer/teapot_full_v1-0-0.png)
 
-# Interface
+# Scenery
 
-## Scenery
+Merlict reads the scenery from text files inside a tape archive (```.tar```).
+To get started it is best to create a directory, fill it with text files,
+wrap it into a tape archive, and finally feed it to ```merlict```.
+The scenery directory and the textfiles must follow a fixed structure.
 
-### Tree
-A tree with cartesian frames as nodes and object-references as leafs. The tree
-defines the relative position and orientation of your object-references.
+## structure
+Merlict's structure separates the scenery into its ```geometry/``` and the
+physical properties of its ```materials/```.
+In ```geometry/relations.json``` the geometry is linked to the materials.
 
-### Object
-A mesh of triangular ```faces``` which are defined by their ```vertices```, and
-```vertex-normals```. To approximate complex surfaces, especially complex
-surface-normals, you can control the ```vertex-normals``` of each ```face```.
-The surface-normal in an intersection will be the barycentric interpolation of
-the ```vertex-normals```.
+```
+    <my_scenery>/
+    |-> geometry/
+    |   |-> objects/
+    |   |   |-> sphere.obj
+    |   |   |-> mirror.obj
+    |   |   |-> lens.obj
+    |   |   |-> ...
+    |   |
+    |   |-> relations.json
+    |
+    |-> materials/
+    |   |-> spectra/
+    |   |   |-> vacuum_refraction.csv
+    |   |   |-> vacuum_absorption.csv
+    |   |   |-> water_refraction.csv
+    |   |   |-> aluminium_mirror_reflection.csv
+    |   |   |-> schott_n_kzfs2_refraction.csv
+    |   |   |-> ...
+    |   |
+    |   |-> media/
+    |   |   |-> schott_n_kzfs2.json
+    |   |   |-> vacuum.json
+    |   |   |-> ...
+    |   |
+    |   |-> surfaces/
+    |   |   |-> glass.json
+    |   |   |-> screen.json
+    |   |   |-> ...
+    |   |  
+    |   |-> boundary_layers/
+    |
+    |-> README.md
+```
 
-### Object-Reference
-A reference to an object. It bundles the object and the pysical properties of
-its surfaces and media.
+## ```./geometry/```
 
-### Materials
-You describe a medium by its transmissivity and its refractive index.
+All objects in the scenery are represented using meshes of triangles.
+It is up to you if you want to represent the scenery using many small
+and simple objects or rather like to represent the scenery using few and
+complex objects. Internally, the ray tracer in ```merlict``` does not care.
+A tree of relations in ```geometry/relations.json``` defines the relative
+positions and orientations of the objects in the scenery and links their
+surfaces to physical boundary layers which represent the materials.
 
-You define surfaces by their specular, and diffuse (lambertian) reflections
-approximating physical surfaces using the Phong-model.
+### ```./geometry/objects/```
+An object in merlict is a mesh of triangle ```faces```. Each ```face```
+references its three ```vertices``` and ```vertex-normals```.
+To simulate smooth optical surfaces, merlict uses meshes with
+```vertex-normals```. Also each ```face``` can reference a different material.
+Thus a single object can contain multiple physical surfaces and media.
+Merlict reads objects from object-wavefront files (```.obj```)
 
-## Photons
-Photons are defined by their creation-position, their direction, their
-wavelength. During propagation, merlict writes the history of the photon
-bouncing around in the scenery until it is absorbed.
-
-## Object-Wavefront Format ```.obj```
+### Object-Wavefront Format ```.obj```
 Merlict supports a subset of the [```obj```
 format](https://en.wikipedia.org/wiki/Wavefront_.obj_file) in ASCII-text. An
 object-wavefront defines a mesh of triangle-faces in a 3D space with special
@@ -216,9 +251,44 @@ f 1//6 2//6 3//6
 f 3//6 4//6 1//6
 ```
 
+### ```./geometry/relations.json```
+A tree with cartesian frames as nodes and object-references as leafs. The tree
+defines the relative position and orientation of your objects.
+
+
+## ```./materials/```
+The physical properties of surfaces and media are stored in the ```materials/```
+directory.
+In ```Merlict```, every triangle face represents a physical boundary layer.
+A boundary layer represents the boundary between two media such as air and water.
+Further, a boundary layer might also reference surface effects such as specular
+reflection.
+In merlict, ```boundary_layers``` reference ```media``` and ```surfaces```.
+And in turn a medium references a ```spectra``` such as a refraction spectra,
+and a surface in turn references a ```spectra``` such as a reflection spectra.
+
+### ```./materials/spectra/```
+A ```spectra``` is a one dimensional function of a physical property versus
+the wavelength. Merlict stores spectra in comma seperated value files (```.csv```)
+according to ```[# RFC 4180]```.
+
+### ```./materials/surfaces/```
+Merlict describes a surface using the `Cook-Torrance' model and it describes
+media using its refraction and absorbtion. Both surfaces and media reference
+spectra 
+
+### ```./materials/media/```
+
+### ```./materials/boundary_layers/```
+
+
+# Photons
+Photons are defined by their creation-position, their direction, their
+wavelength. During propagation, merlict writes the history of the photon
+bouncing around in the scenery until it is absorbed.
+
 # Unit-Tests
-Merlict has a ```bash``` script ```bash ./compile_and_test.sh
-```
+Merlict has a ```bash``` script ```bash ./compile_and_test.sh```
 to prepare, build, and run the unit-tests. Run this script to check whether
 merlict builds and runs fine on your platform. The unit-tests and their
 resources are located in the ```./tests/``` directory.
