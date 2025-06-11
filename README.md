@@ -129,6 +129,9 @@ Merlict reads the scenery from text files inside a tape archive (```.tar```).
 To get started it is best to create a directory, fill it with text files,
 wrap it into a tape archive, and finally feed it to ```merlict```.
 The scenery directory and the textfiles must follow a fixed structure.
+See e.g. ```./data/sceneries/optics_focussing_mirror``` for an example
+scenery used in the unit tests. To set up the scenery entirely in
+```python```, see [```merlict```](https://github.com/cherenkov-plenoscope/merlict).
 
 ## structure
 Merlict's structure separates the scenery into its ```geometry/``` and the
