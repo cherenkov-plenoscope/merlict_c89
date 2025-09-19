@@ -106,7 +106,7 @@ size_t mli_IO_read(
         const size_t count,
         struct mli_IO *self)
 {
-        size_t rc;
+        size_t rc = 0;
         switch (self->type) {
         case MLI_IO_TYPE_MEMORY:
                 rc = mli_IoMemory_read(ptr, size, count, &self->data.memory);
