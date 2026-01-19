@@ -673,7 +673,10 @@ chk_rc mli_Object_fprint_to_wavefront(
         struct mli_IO *f,
         const struct mli_Object *obj)
 {
-        uint32_t i, mtl, face;
+        uint32_t i, face;
+        int64_t mtl = -1;
+        mli_bool is_next_mtl;
+
         chk(mli_IO_text_write_cstr_format(f, "# vertices\n"));
         for (i = 0; i < obj->num_vertices; i++) {
                 chk(mli_IO_text_write_cstr_format(
@@ -696,8 +699,15 @@ chk_rc mli_Object_fprint_to_wavefront(
 
         chk(mli_IO_text_write_cstr_format(f, "# faces\n"));
         for (face = 0; face < obj->num_faces; face++) {
-                if ((face == 0) || (mtl != obj->faces_materials[face])) {
-                        mtl = obj->faces_materials[face];
+                if (face == 0) {
+                        is_next_mtl = MLI_TRUE;
+                } else {
+                        is_next_mtl =
+                                mtl != (int64_t)obj->faces_materials[face];
+                }
+
+                if (is_next_mtl) {
+                        mtl = (int64_t)obj->faces_materials[face];
                         chk(mli_IO_text_write_cstr_format(
                                 f,
                                 "usemtl %s\n",
