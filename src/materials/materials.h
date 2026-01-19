@@ -39,11 +39,4 @@ void mli_Materials_free(struct mli_Materials *self);
 struct mli_Materials mli_Materials_init(void);
 chk_rc mli_Materials_info_fprint(FILE *f, const struct mli_Materials *self);
 
-mli_bool mli_Materials__has_surface_name_cstr(
-        const struct mli_Materials *self,
-        const char *name);
-mli_bool mli_Materials__has_medium_name_cstr(
-        const struct mli_Materials *self,
-        const char *name);
-
 #endif

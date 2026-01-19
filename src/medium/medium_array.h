@@ -5,4 +5,12 @@
 #include "../array/array.h"
 #include "medium.h"
 MLI_ARRAY_DEFINITON(mli_MediumArray, struct mli_Medium)
+
+mli_bool mli_MediumArray_has_name_cstr(
+        const struct mli_MediumArray *self,
+        const char *name);
+int64_t mli_MediumArray_get_index_by_name_cstr(
+        const struct mli_MediumArray *self,
+        const char *name);
+
 #endif

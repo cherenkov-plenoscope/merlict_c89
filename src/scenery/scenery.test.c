@@ -48,16 +48,16 @@ CASE("mli_Scenery, malloc from archive")
          *              |_____ obj4 (hex)
          */
 
-        CHECK(mli_Materials__has_surface_name_cstr(
-                &scenery.materials, "grass"));
-        CHECK(mli_Materials__has_surface_name_cstr(&scenery.materials, "wood"));
-        CHECK(mli_Materials__has_surface_name_cstr(
-                &scenery.materials, "leafs"));
-        CHECK(mli_Materials__has_surface_name_cstr(
-                &scenery.materials, "blue_glass"));
+        CHECK(mli_SurfaceArray_has_name_cstr(
+                &scenery.materials.surfaces, "grass"));
+        CHECK(mli_SurfaceArray_has_name_cstr(&scenery.materials.surfaces, "wood"));
+        CHECK(mli_SurfaceArray_has_name_cstr(
+                &scenery.materials.surfaces, "leafs"));
+        CHECK(mli_SurfaceArray_has_name_cstr(
+                &scenery.materials.surfaces, "blue_glass"));
 
-        CHECK(mli_Materials__has_medium_name_cstr(
-                &scenery.materials, "vacuum"));
+        CHECK(mli_MediumArray_has_name_cstr(
+                &scenery.materials.media, "vacuum"));
 
         mli_Scenery_free(&scenery);
 }

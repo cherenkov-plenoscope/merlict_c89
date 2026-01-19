@@ -182,30 +182,3 @@ chk_error:
         mli_String_free(&tmp);
         return CHK_FAIL;
 }
-
-mli_bool mli_Materials__has_surface_name_cstr(
-        const struct mli_Materials *self,
-        const char *name)
-{
-        uint64_t i;
-        for (i = 0; i < self->surfaces.size; i++) {
-                if (mli_String_equal_cstr(
-                            &self->surfaces.array[i].name, name)) {
-                        return MLI_TRUE;
-                }
-        }
-        return MLI_FALSE;
-}
-
-mli_bool mli_Materials__has_medium_name_cstr(
-        const struct mli_Materials *self,
-        const char *name)
-{
-        uint64_t i;
-        for (i = 0; i < self->media.size; i++) {
-                if (mli_String_equal_cstr(&self->media.array[i].name, name)) {
-                        return MLI_TRUE;
-                }
-        }
-        return MLI_FALSE;
-}

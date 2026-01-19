@@ -24,10 +24,12 @@ CASE("simple propagation")
                 "sceneries/"
                 "002.tar"));
 
-        CHECK(mli_String_equal_cstr(
-                &scenery.materials.media.array[MED_GLASS].name, "glass"));
-        CHECK(mli_String_equal_cstr(
-                &scenery.materials.media.array[MED_VACUUM].name, "vacuum"));
+        CHECK(mli_MediumArray_has_name_cstr(&scenery.materials.media, "glass"));
+        MED_GLASS = mli_MediumArray_get_index_by_name_cstr(&scenery.materials.media, "glass");
+
+        CHECK(mli_MediumArray_has_name_cstr(&scenery.materials.media, "vacuum"));
+        MED_VACUUM = mli_MediumArray_get_index_by_name_cstr(&scenery.materials.media, "vacuum");
+
         CHECK(scenery.materials.default_medium == MED_VACUUM);
 
         CHECK(mli_raytracing_query_intersection_with_surface_normal(
