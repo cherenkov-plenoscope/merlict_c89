@@ -34,9 +34,8 @@ chk_rc mli_Func_fprint(
                         if (mli_Func_in_range(func, x)) {
                                 chk(mli_Func_evaluate(func, x, &y));
                                 jy = (y - cfg.y_start) / y_step;
-                                jy_sub =
-                                        (int)(NUM_Y_SUB_STEPS *
-                                              (jy - floor(jy)));
+                                jy_sub = (int)(NUM_Y_SUB_STEPS *
+                                               (jy - floor(jy)));
                                 if (iy == (int)(jy)) {
                                         switch (jy_sub) {
                                         case 0:

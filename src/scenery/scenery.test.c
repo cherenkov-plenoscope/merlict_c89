@@ -50,7 +50,8 @@ CASE("mli_Scenery, malloc from archive")
 
         CHECK(mli_SurfaceArray_has_name_cstr(
                 &scenery.materials.surfaces, "grass"));
-        CHECK(mli_SurfaceArray_has_name_cstr(&scenery.materials.surfaces, "wood"));
+        CHECK(mli_SurfaceArray_has_name_cstr(
+                &scenery.materials.surfaces, "wood"));
         CHECK(mli_SurfaceArray_has_name_cstr(
                 &scenery.materials.surfaces, "leafs"));
         CHECK(mli_SurfaceArray_has_name_cstr(
